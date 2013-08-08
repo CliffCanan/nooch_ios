@@ -1,0 +1,16 @@
+* These sample applications require a valid Pixate Engine license
+to compile and run.  Enter your license information (available 
+for purchase or trial use at www.pixate.com) in the 
+file "Shared Headers/LicenseInfo.h".  
+
+LicenseInfo.h is included by each sample so the license 
+only needs to be entered in this one file.
+
+
+* The Playground app is an open-source project available 
+at https://github.com/Pixate/Playground.
+
+* The source code is made available under a modified BSD license.
+See LICENSE for full details.
+
+

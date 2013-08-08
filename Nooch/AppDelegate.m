@@ -1,0 +1,230 @@
+//
+//  AppDelegate.m
+//  Nooch
+//
+//  Created by Preston Hults on 9/7/12.
+//  Copyright (c) 2012 Nooch. All rights reserved.
+//
+
+#import "AppDelegate.h"
+#import "AppSkel.h"
+#import "Tutorial1.h"
+#import "splash.h"
+#import "UAirship.h"
+#import "UAPush.h"
+#import "NoochHome.h"
+#import <CoreTelephony/CTCallCenter.h>
+
+@implementation AppDelegate
+
+static NSString *const kTrackingId = @"UA-36976317-2";
+@synthesize tracker = tracker_;
+@synthesize inactiveDate;
+bool modal;
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    inBack = NO;
+    [GMSServices provideAPIKey:@"AIzaSyDC-JeglFaO1kbXc2Z3ztCgh1AnwfIla-8"];
+    initialLoad=YES;
+    inactiveDate = [NSDate date];
+    [NSUserDefaults resetStandardUserDefaults];
+    [self.window setUserInteractionEnabled:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectCheck:) name:kReachabilityChangedNotification object:nil];
+    hostReach = [Reachability reachabilityWithHostName:MyUrl];
+    internetReach = [Reachability reachabilityForInternetConnection];
+    [internetReach startNotifier];
+    //google analytics
+    [GAI sharedInstance].debug = NO;
+    [GAI sharedInstance].dispatchInterval = 120;
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    self.tracker = [[GAI sharedInstance] trackerWithTrackingId:kTrackingId];
+
+    // Override point for customization after application launch.
+    NSMutableDictionary *takeOffOptions = [[NSMutableDictionary alloc] init];
+    [takeOffOptions setValue:launchOptions forKey:UAirshipTakeOffOptionsLaunchOptionsKey];
+    [UAirship takeOff:takeOffOptions];
+    [[UAPush shared] resetBadge];
+    [[UAPush shared] setPushEnabled:YES];
+    [[UAPush shared] registerForRemoteNotificationTypes: UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];
+    [self application:nil handleOpenURL:[NSURL URLWithString:@"Nooch:"]];
+    [self.window makeKeyAndVisible];
+
+    [application setApplicationIconBadgeNumber:0];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+
+    NSSetUncaughtExceptionHandler(&exceptionHandler);
+
+    NSLog(@"finished launching");
+    return YES;
+}
+
+-(void)connectCheck:(NSNotification *)notice{
+    Reachability* curReach = [notice object];
+    NSParameterAssert([curReach isKindOfClass: [Reachability class]]);
+    NetworkStatus netStat = [curReach currentReachabilityStatus];
+    
+    if ([self.window.subviews containsObject:noConnectionView] && (netStat == ReachableViaWWAN || netStat == ReachableViaWiFi)) {
+        [noConnectionView removeFromSuperview];
+        [self.window setUserInteractionEnabled:YES];
+    }else if(![self.window.subviews containsObject:noConnectionView] && netStat == NotReachable){
+        noConnectionView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, [[UIScreen mainScreen] bounds].size.height)];
+        noConnectionView.image = [UIImage imageNamed:@"No.png"];
+        [self.window addSubview:noConnectionView];
+        [self.window setUserInteractionEnabled:NO];
+    }
+}
+
+-(void)addRainbow{
+    [self.window addSubview:rainbowTop];
+}
+
+-(void)remRainbow{
+    [rainbowTop removeFromSuperview];
+}
+
+-(void)remTopRainbow{
+    [rainbowTop removeFromSuperview];
+}
+
+-(void)showWait:(NSString*)label{
+    loadingView = [[UIView alloc] initWithFrame:CGRectMake(75,( [[UIScreen mainScreen] bounds].size.height/2)-165, 170, 130)];
+    loadingView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.8];
+    loadingView.clipsToBounds = YES;
+    loadingView.layer.cornerRadius = 15.0;
+    activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    activityView.frame = CGRectMake(65, 20, activityView.bounds.size.width, activityView.bounds.size.height);
+    [activityView setBackgroundColor:[UIColor clearColor]];
+    [loadingView addSubview:activityView];
+    loadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 60, 130, 50)];
+    loadingLabel.backgroundColor = [UIColor clearColor];
+    loadingLabel.textColor = [UIColor whiteColor];
+    [loadingLabel setFont:[core nFont:@"Medium" size:15]];
+    [loadingLabel setNumberOfLines:2];
+    loadingLabel.textAlignment = UITextAlignmentCenter;
+    loadingLabel.text = @"Loading...";
+    [loadingView addSubview:loadingLabel];
+    loadingLabel.text = label;
+    [activityView startAnimating];
+    [self.window addSubview:loadingView];
+}
+
+-(void)endWait{
+    [loadingView removeFromSuperview];
+}
+
+void exceptionHandler(NSException *exception){
+    NSLog(@"Caught exception: %@",exception.description);
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    return YES;
+    /*if (!url) {  return NO; }
+     NSString *URLString = [url absoluteString];
+     [[NSUserDefaults standardUserDefaults] setObject:URLString forKey:@"url"];5
+     [[NSUserDefaults standardUserDefaults] synchronize];
+     return YES;*/
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application{
+    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application{
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
+    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    inBack = YES;
+    inactiveDate = [NSDate date];
+    splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, [[UIScreen mainScreen] bounds].size.height)];
+    splashView.image = [UIImage imageNamed:@"Default.png"];
+    if ([[UIScreen mainScreen] bounds].size.height > 500) {
+        splashView.image = [UIImage imageNamed:@"Default-568h@2x.png"];
+    }
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]) {
+        [me stamp];
+    }
+    if ([[[me usr] objectForKey:@"requiredImmediately"] isKindOfClass:[NSNull class]] || [[me usr] objectForKey:@"requiredImmediately"] == NULL)
+        [self.window addSubview:splashView];
+    else if([[[me usr] objectForKey:@"requiredImmediately"] boolValue])
+        [self.window addSubview:splashView];
+
+    UIViewController *v = [navCtrl.viewControllers objectAtIndex:[navCtrl.viewControllers count]-1];
+    if (v.presentedViewController) {
+        modal = YES;
+    }else{
+        modal = NO;
+    }
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application{
+    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    //[self.window setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]]];
+    NSLog(@"ummm %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]);
+    NSTimeInterval timeAway = [inactiveDate timeIntervalSinceNow];
+    [splashView removeFromSuperview];
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] length] > 0) {
+        if (timeAway > 30 || timeAway < -30) {
+            //init requireImmediately
+            if (![[me usr] objectForKey:@"requiredImmediately"]) {
+                if (modal) {
+                    [navCtrl dismissModalViewControllerAnimated:NO];
+                }
+                reqImm = YES;
+                [[UIApplication sharedApplication].keyWindow.rootViewController presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
+                //[[navCtrl.viewControllers objectAtIndex:[navCtrl.viewControllers count]-1] presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
+                
+            }else if([[[me usr] objectForKey:@"requiredImmediately"] boolValue]){
+                if (modal) {
+                    [navCtrl dismissModalViewControllerAnimated:NO];
+                }
+                reqImm = YES;
+                [[UIApplication sharedApplication].keyWindow.rootViewController presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
+                //[[navCtrl.viewControllers objectAtIndex:[navCtrl.viewControllers count]-1] presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
+            }
+        }
+    }
+    inBack = NO;
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application{
+    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [UAirship land];
+    [me stamp];
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
+    NSString *deviceTokens = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    deviceTokens = [deviceTokens stringByReplacingOccurrencesOfString:@" " withString:@""];
+    [[UAPush shared] registerDeviceToken:deviceToken];
+    [[NSUserDefaults standardUserDefaults] setValue:deviceTokens forKey:@"DeviceToken"];
+    NSLog(@"DeviceToken%@",deviceToken);
+    
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
+    NSLog(@"Error in registration. Error: %@", error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
+    NSLog(@"userInfo%@", userInfo);
+    [[UAPush shared] handleNotification:userInfo
+                       applicationState:application.applicationState];
+    // Reset the badge if you are using that functionality
+    [[UAPush shared] resetBadge]; // zero badge after push received
+    [[UAPush shared] setBadgeNumber:0];
+    [me histMore:@"ALL" sPos:1 len:20];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return YES;
+}
+
+@end

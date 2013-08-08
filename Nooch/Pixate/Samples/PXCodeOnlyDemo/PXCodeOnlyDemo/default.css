@@ -1,0 +1,7 @@
+#myButton {
+  color           : white;
+  background-color: red;
+  border-radius   : 10px;
+  border-color    : blue;
+  border-width    : 5px;
+}

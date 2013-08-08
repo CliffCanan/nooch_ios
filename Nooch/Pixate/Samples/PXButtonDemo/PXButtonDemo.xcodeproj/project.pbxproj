@@ -1,0 +1,422 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0A38CD221590FB2A00D827BE /* 08-chat.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A38CD201590FB2A00D827BE /* 08-chat.png */; };
+		0A38CD231590FB2A00D827BE /* 28-star.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A38CD211590FB2A00D827BE /* 28-star.png */; };
+		0A70E8CA16C46F93001108A1 /* PXEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A70E8C916C46F93001108A1 /* PXEngine.framework */; };
+		0ABAA0E4158D5D1B00C4A7F6 /* pixate.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0ABAA0E3158D5D1B00C4A7F6 /* pixate.svg */; };
+		0ABAA0E9158D5DB400C4A7F6 /* PXLogoSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ABAA0E7158D5DB400C4A7F6 /* PXLogoSplashViewController.m */; };
+		0ABAA0EA158D5DB400C4A7F6 /* PXLogoSplashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0ABAA0E8158D5DB400C4A7F6 /* PXLogoSplashViewController.xib */; };
+		9C3354471582A6BE00018018 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3354461582A6BE00018018 /* UIKit.framework */; };
+		9C3354491582A6BE00018018 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3354481582A6BE00018018 /* Foundation.framework */; };
+		9C33544B1582A6BE00018018 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C33544A1582A6BE00018018 /* CoreGraphics.framework */; };
+		9C3354511582A6BE00018018 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C33544F1582A6BE00018018 /* InfoPlist.strings */; };
+		9C3354531582A6BF00018018 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3354521582A6BF00018018 /* main.m */; };
+		9C3354571582A6BF00018018 /* PXAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3354561582A6BF00018018 /* PXAppDelegate.m */; };
+		9C33545A1582A6BF00018018 /* PXViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3354591582A6BF00018018 /* PXViewController.m */; };
+		9C880BE8159A89A6001CC616 /* PXLogoSplashViewController_ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C880BE7159A89A6001CC616 /* PXLogoSplashViewController_ipad.xib */; };
+		9C880C7C159A8C41001CC616 /* PXButtonDemoView_ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C880C7B159A8C41001CC616 /* PXButtonDemoView_ipad.xib */; };
+		9C902F83158D45FB0075B5AF /* PXKulerPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C902F82158D45FB0075B5AF /* PXKulerPickerCell.xib */; };
+		9C952EBC15E430CD0014277D /* default.css in Resources */ = {isa = PBXBuildFile; fileRef = 9C952EBB15E430CD0014277D /* default.css */; };
+		9CA60D1A160928EB006340D0 /* PXSwatchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA60D19160928EB006340D0 /* PXSwatchView.m */; };
+		9CAD63BF1611275800149384 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CAD63BE1611275800149384 /* Default-568h@2x.png */; };
+		9CAEB814159BB70000A019B1 /* PXTableHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CAEB813159BB70000A019B1 /* PXTableHeader.xib */; };
+		9CB0F7CC158AA406000E8624 /* PXButtonDemoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CB0F7CB158AA406000E8624 /* PXButtonDemoView.xib */; };
+		9CB0F806158BB277000E8624 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB0F805158BB277000E8624 /* Icon.png */; };
+		9CB0F809158BB283000E8624 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB0F808158BB283000E8624 /* Icon@2x.png */; };
+		9CB0F80B158BB28F000E8624 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB0F80A158BB28F000E8624 /* Icon-72@2x.png */; };
+		9CB0F80D158BB293000E8624 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB0F80C158BB293000E8624 /* Icon-72.png */; };
+		9CB0F888158C2012000E8624 /* PXKuler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB0F887158C2012000E8624 /* PXKuler.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0A38CD201590FB2A00D827BE /* 08-chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "08-chat.png"; sourceTree = "<group>"; };
+		0A38CD211590FB2A00D827BE /* 28-star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "28-star.png"; sourceTree = "<group>"; };
+		0A70E8C916C46F93001108A1 /* PXEngine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PXEngine.framework; path = ../../Frameworks/PXEngine.framework; sourceTree = "<group>"; };
+		0A791D2615E2F3B10009A389 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		0ABAA0E3158D5D1B00C4A7F6 /* pixate.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = pixate.svg; sourceTree = "<group>"; };
+		0ABAA0E6158D5DB400C4A7F6 /* PXLogoSplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXLogoSplashViewController.h; sourceTree = "<group>"; };
+		0ABAA0E7158D5DB400C4A7F6 /* PXLogoSplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXLogoSplashViewController.m; sourceTree = "<group>"; };
+		0ABAA0E8158D5DB400C4A7F6 /* PXLogoSplashViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PXLogoSplashViewController.xib; sourceTree = "<group>"; };
+		9C3354421582A6BE00018018 /* PXButtonDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PXButtonDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C3354461582A6BE00018018 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		9C3354481582A6BE00018018 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		9C33544A1582A6BE00018018 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		9C33544E1582A6BE00018018 /* PXButtonDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PXButtonDemo-Info.plist"; sourceTree = "<group>"; };
+		9C3354501582A6BE00018018 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9C3354521582A6BF00018018 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9C3354541582A6BF00018018 /* PXButtonDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PXButtonDemo-Prefix.pch"; sourceTree = "<group>"; };
+		9C3354551582A6BF00018018 /* PXAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PXAppDelegate.h; sourceTree = "<group>"; };
+		9C3354561582A6BF00018018 /* PXAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PXAppDelegate.m; sourceTree = "<group>"; };
+		9C3354581582A6BF00018018 /* PXViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PXViewController.h; sourceTree = "<group>"; };
+		9C3354591582A6BF00018018 /* PXViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PXViewController.m; sourceTree = "<group>"; };
+		9C880BE7159A89A6001CC616 /* PXLogoSplashViewController_ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PXLogoSplashViewController_ipad.xib; sourceTree = "<group>"; };
+		9C880C7B159A8C41001CC616 /* PXButtonDemoView_ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PXButtonDemoView_ipad.xib; sourceTree = "<group>"; };
+		9C902F82158D45FB0075B5AF /* PXKulerPickerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PXKulerPickerCell.xib; sourceTree = "<group>"; };
+		9C952EBB15E430CD0014277D /* default.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = default.css; sourceTree = "<group>"; };
+		9CA60D18160928EB006340D0 /* PXSwatchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXSwatchView.h; sourceTree = "<group>"; };
+		9CA60D19160928EB006340D0 /* PXSwatchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXSwatchView.m; sourceTree = "<group>"; };
+		9CAD63BE1611275800149384 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		9CAEB813159BB70000A019B1 /* PXTableHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PXTableHeader.xib; sourceTree = "<group>"; };
+		9CB0F7CB158AA406000E8624 /* PXButtonDemoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PXButtonDemoView.xib; sourceTree = "<group>"; };
+		9CB0F805158BB277000E8624 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		9CB0F808158BB283000E8624 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		9CB0F80A158BB28F000E8624 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72@2x.png"; sourceTree = "<group>"; };
+		9CB0F80C158BB293000E8624 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
+		9CB0F886158C2012000E8624 /* PXKuler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXKuler.h; sourceTree = "<group>"; };
+		9CB0F887158C2012000E8624 /* PXKuler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXKuler.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9C33543F1582A6BE00018018 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A70E8CA16C46F93001108A1 /* PXEngine.framework in Frameworks */,
+				9C3354471582A6BE00018018 /* UIKit.framework in Frameworks */,
+				9C3354491582A6BE00018018 /* Foundation.framework in Frameworks */,
+				9C33544B1582A6BE00018018 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0ABAA0E5158D5D1E00C4A7F6 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9C952EBB15E430CD0014277D /* default.css */,
+				0ABAA0E3158D5D1B00C4A7F6 /* pixate.svg */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		9C3354371582A6BE00018018 = {
+			isa = PBXGroup;
+			children = (
+				9CAD63BE1611275800149384 /* Default-568h@2x.png */,
+				9CB0F80E158BB29F000E8624 /* Icons */,
+				9C3354661582A6CF00018018 /* Dependencies */,
+				9C33544C1582A6BE00018018 /* PXButtonDemo */,
+				9C3354451582A6BE00018018 /* Frameworks */,
+				9C3354431582A6BE00018018 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9C3354431582A6BE00018018 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9C3354421582A6BE00018018 /* PXButtonDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9C3354451582A6BE00018018 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0A70E8C916C46F93001108A1 /* PXEngine.framework */,
+				9C33544A1582A6BE00018018 /* CoreGraphics.framework */,
+				0A791D2615E2F3B10009A389 /* CoreText.framework */,
+				9C3354481582A6BE00018018 /* Foundation.framework */,
+				9C3354461582A6BE00018018 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9C33544C1582A6BE00018018 /* PXButtonDemo */ = {
+			isa = PBXGroup;
+			children = (
+				0ABAA0E5158D5D1E00C4A7F6 /* Resources */,
+				9C902F89158D4D200075B5AF /* Classes */,
+				9C902F8A158D4D280075B5AF /* Views */,
+				9C33544D1582A6BE00018018 /* Supporting Files */,
+			);
+			path = PXButtonDemo;
+			sourceTree = "<group>";
+		};
+		9C33544D1582A6BE00018018 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9C33544E1582A6BE00018018 /* PXButtonDemo-Info.plist */,
+				9C33544F1582A6BE00018018 /* InfoPlist.strings */,
+				9C3354521582A6BF00018018 /* main.m */,
+				9C3354541582A6BF00018018 /* PXButtonDemo-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9C3354661582A6CF00018018 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		9C902F89158D4D200075B5AF /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				9CA60D18160928EB006340D0 /* PXSwatchView.h */,
+				9CA60D19160928EB006340D0 /* PXSwatchView.m */,
+				9C3354551582A6BF00018018 /* PXAppDelegate.h */,
+				9C3354561582A6BF00018018 /* PXAppDelegate.m */,
+				9C3354581582A6BF00018018 /* PXViewController.h */,
+				9C3354591582A6BF00018018 /* PXViewController.m */,
+				9CB0F886158C2012000E8624 /* PXKuler.h */,
+				9CB0F887158C2012000E8624 /* PXKuler.m */,
+				0ABAA0E6158D5DB400C4A7F6 /* PXLogoSplashViewController.h */,
+				0ABAA0E7158D5DB400C4A7F6 /* PXLogoSplashViewController.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		9C902F8A158D4D280075B5AF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9CB0F7CB158AA406000E8624 /* PXButtonDemoView.xib */,
+				9C880C7B159A8C41001CC616 /* PXButtonDemoView_ipad.xib */,
+				9C902F82158D45FB0075B5AF /* PXKulerPickerCell.xib */,
+				0ABAA0E8158D5DB400C4A7F6 /* PXLogoSplashViewController.xib */,
+				9C880BE7159A89A6001CC616 /* PXLogoSplashViewController_ipad.xib */,
+				9CAEB813159BB70000A019B1 /* PXTableHeader.xib */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		9CB0F80E158BB29F000E8624 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				0A38CD201590FB2A00D827BE /* 08-chat.png */,
+				0A38CD211590FB2A00D827BE /* 28-star.png */,
+				9CB0F80C158BB293000E8624 /* Icon-72.png */,
+				9CB0F80A158BB28F000E8624 /* Icon-72@2x.png */,
+				9CB0F808158BB283000E8624 /* Icon@2x.png */,
+				9CB0F805158BB277000E8624 /* Icon.png */,
+			);
+			name = Icons;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9C3354411582A6BE00018018 /* PXButtonDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9C3354631582A6BF00018018 /* Build configuration list for PBXNativeTarget "PXButtonDemo" */;
+			buildPhases = (
+				9C33543E1582A6BE00018018 /* Sources */,
+				9C33543F1582A6BE00018018 /* Frameworks */,
+				9C3354401582A6BE00018018 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PXButtonDemo;
+			productName = PXButtonDemo;
+			productReference = 9C3354421582A6BE00018018 /* PXButtonDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9C3354391582A6BE00018018 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = PX;
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "Pixate, Inc.";
+			};
+			buildConfigurationList = 9C33543C1582A6BE00018018 /* Build configuration list for PBXProject "PXButtonDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 9C3354371582A6BE00018018;
+			productRefGroup = 9C3354431582A6BE00018018 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9C3354411582A6BE00018018 /* PXButtonDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9C3354401582A6BE00018018 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C3354511582A6BE00018018 /* InfoPlist.strings in Resources */,
+				9CB0F7CC158AA406000E8624 /* PXButtonDemoView.xib in Resources */,
+				9CB0F806158BB277000E8624 /* Icon.png in Resources */,
+				9CB0F809158BB283000E8624 /* Icon@2x.png in Resources */,
+				9CB0F80B158BB28F000E8624 /* Icon-72@2x.png in Resources */,
+				9CB0F80D158BB293000E8624 /* Icon-72.png in Resources */,
+				9C902F83158D45FB0075B5AF /* PXKulerPickerCell.xib in Resources */,
+				0ABAA0E4158D5D1B00C4A7F6 /* pixate.svg in Resources */,
+				0ABAA0EA158D5DB400C4A7F6 /* PXLogoSplashViewController.xib in Resources */,
+				0A38CD221590FB2A00D827BE /* 08-chat.png in Resources */,
+				0A38CD231590FB2A00D827BE /* 28-star.png in Resources */,
+				9C880BE8159A89A6001CC616 /* PXLogoSplashViewController_ipad.xib in Resources */,
+				9C880C7C159A8C41001CC616 /* PXButtonDemoView_ipad.xib in Resources */,
+				9CAEB814159BB70000A019B1 /* PXTableHeader.xib in Resources */,
+				9C952EBC15E430CD0014277D /* default.css in Resources */,
+				9CAD63BF1611275800149384 /* Default-568h@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9C33543E1582A6BE00018018 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C3354531582A6BF00018018 /* main.m in Sources */,
+				9C3354571582A6BF00018018 /* PXAppDelegate.m in Sources */,
+				9C33545A1582A6BF00018018 /* PXViewController.m in Sources */,
+				9CB0F888158C2012000E8624 /* PXKuler.m in Sources */,
+				0ABAA0E9158D5DB400C4A7F6 /* PXLogoSplashViewController.m in Sources */,
+				9CA60D1A160928EB006340D0 /* PXSwatchView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		9C33544F1582A6BE00018018 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9C3354501582A6BE00018018 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9C3354611582A6BF00018018 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../Frameworks/**";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9C3354621582A6BF00018018 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../Frameworks/**";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9C3354641582A6BF00018018 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../Framework\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PXButtonDemo/PXButtonDemo-Prefix.pch";
+				INFOPLIST_FILE = "PXButtonDemo/PXButtonDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		9C3354651582A6BF00018018 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../Framework\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PXButtonDemo/PXButtonDemo-Prefix.pch";
+				INFOPLIST_FILE = "PXButtonDemo/PXButtonDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9C33543C1582A6BE00018018 /* Build configuration list for PBXProject "PXButtonDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9C3354611582A6BF00018018 /* Debug */,
+				9C3354621582A6BF00018018 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9C3354631582A6BF00018018 /* Build configuration list for PBXNativeTarget "PXButtonDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9C3354641582A6BF00018018 /* Debug */,
+				9C3354651582A6BF00018018 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9C3354391582A6BE00018018 /* Project object */;
+}

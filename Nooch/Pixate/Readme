@@ -1,0 +1,26 @@
+Welcome to Pixate Engine for iOS 1.0.  
+
+To get started with Pixate we suggest reading both the Release Notes and 
+the Getting Started pages located at the online Pixate Documentation 
+Center (http://www.pixate/com/documentation.html). Opening the 
+Documentation file in this directory will also visit the Documentation 
+Center. 
+
+RubyMotion users, you can see how to use the Pixate gem here: 
+
+  http://pixate.github.com/RubyMotion-Pixate/
+
+MonoTouch users, instructions for integrating MonoTouch and Pixate are here:
+
+  http://pixate.github.com/MonoTouch-Pixate/
+
+Titanium users, instructions for integrating Titanium and Pixate are here:
+
+  http://pixate.github.io/Titanium-Pixate/
+
+For questions or to report issues, please visit http://support.pixate.com.  
+
+Visit Pixate at http://pixate.com/blog for the latest Pixate news and tips.  
+
+Thanks,
+The Pixate Team

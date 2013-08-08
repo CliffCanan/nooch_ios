@@ -1,0 +1,17 @@
+#mainView {
+    background-color : rgb(35, 35, 36);
+}
+
+#previewView {
+    background-color : #171c1c;
+    border-radius    : 5px;
+	border-width     : 1px;
+    border-color     : rgb(92,93,94);
+}
+
+#textView {
+    background-color : none;
+    border-radius    : 5px;
+    border-width     : 1px;
+    border-color     : rgb(92,93,94);
+}
