@@ -678,19 +678,28 @@ NSString *oldFilter;
 -(void)getAssosPics{
     NSArray *keys = [NSArray new];
     keys = [[assosciateCache objectForKey:@"people"] allKeys];
-    for (NSString *key in keys) {
-        NSMutableDictionary *dict = [NSMutableDictionary new];
-        dict = [[assosciateCache objectForKey:@"people"] objectForKey:key];
-        if (![dict objectForKey:@"image"] && [dict objectForKey:@"Photo"]) {
-            NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[dict objectForKey:@"Photo"]]];
-            if ([imageData length] > 0) {
-                [dict setObject:imageData forKey:@"image"];
+    @try {
+        for (NSString *key in keys) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            dict = [[assosciateCache objectForKey:@"people"] objectForKey:key];
+            if (![dict objectForKey:@"image"] && [dict objectForKey:@"Photo"]) {
+                NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[dict objectForKey:@"Photo"]]];
+                if ([imageData length] > 0) {
+                    [dict setObject:imageData forKey:@"image"];
+                    ////malloc here
+                }
+                
                 
             }
-
-            
         }
     }
+    @catch (NSException *exception) {
+        NSLog(@"error gettin pictures");
+    }
+    @finally {
+        
+    }
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTable" object:nil userInfo:nil];
 }
 -(NSMutableData*)pic{

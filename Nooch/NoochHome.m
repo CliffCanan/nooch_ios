@@ -633,9 +633,9 @@ NSString *searchString;
 }
 -(void)syncAssos{
     [self getRecentDetails];
-    [self getFB];
+    //[self getFB];
     if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized || ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined) {
-        [self getAddressBookContacts];
+        //[self getAddressBookContacts];
     }
     [refreshControl endRefreshing];
 }
@@ -791,9 +791,6 @@ NSString *searchString;
     fbNoochFriendsTemp = [[temp3 sortedArrayUsingDescriptors:[NSArray arrayWithObject:descriptor]] mutableCopy];
     [me addAssos:fbFriendsTemp];
     [me addAssos:fbNoochFriendsTemp];
-}
-- (IBAction)connectFB:(id)sender {
-    
 }
 
 #pragma mark - recent handling
@@ -1050,7 +1047,7 @@ NSString *searchString;
         [pendingRequestView setHidden:YES];
     }
     //NSLog(@"update table/pending requests");
-    //[me endWaitStat];
+    [me endWaitStat];
 }
 
 #pragma mark - table view delegation
@@ -1244,6 +1241,7 @@ NSString *searchString;
             }
         }
     }
+    
     receiverFirst = [dict objectForKey:@"firstName"];
     receiverLast = [dict objectForKey:@"lastName"];
     receiverId = [dict objectForKey:@"MemberId"];
