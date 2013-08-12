@@ -261,7 +261,7 @@ NSString *curMemo;
     {
         sender.text = [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
         recipient.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"FirstName"] ,[dict objectForKey:@"LastName"] ];
-        if([dict objectForKey:@"image"] != NULL) secondPartyImage.image = [dict objectForKey:@"image"];
+        if([dict objectForKey:@"image"] != NULL) secondPartyImage.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
         else secondPartyImage.image = [UIImage imageNamed:@"profile_picture.png"];
         youImage.image = userPic.image;
     }
@@ -270,7 +270,7 @@ NSString *curMemo;
     {
         recipient.text = [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
         sender.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"FirstName"] ,[dict objectForKey:@"LastName"] ];
-        if([dict objectForKey:@"image"] != NULL) youImage.image =[dict objectForKey:@"image"];
+        if([dict objectForKey:@"image"] != NULL) youImage.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
         else youImage.image = [UIImage imageNamed:@"profile_picture.png"];
         secondPartyImage.image = userPic.image;
         goDisputeButton.hidden = YES;
@@ -350,7 +350,7 @@ NSString *curMemo;
             }
             sender.text = [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
             recipient.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"FirstName"] ,[dict objectForKey:@"LastName"] ];
-            if([dict objectForKey:@"image"] != NULL) secondPartyImage.image = [dict objectForKey:@"image"];
+            if([dict objectForKey:@"image"] != NULL) secondPartyImage.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
             else secondPartyImage.image = [UIImage imageNamed:@"profile_picture.png"];
             youImage.image = userPic.image;
         }else{
@@ -374,7 +374,7 @@ NSString *curMemo;
             }
             recipient.text = [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
             sender.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"FirstName"] ,[dict objectForKey:@"LastName"] ];
-            if([dict objectForKey:@"image"] != NULL) youImage.image = [dict objectForKey:@"image"];
+            if([dict objectForKey:@"image"] != NULL) youImage.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
             else youImage.image = [UIImage imageNamed:@"profile_picture.png"];
             secondPartyImage.image = userPic.image;
         }
@@ -455,14 +455,14 @@ NSString *curMemo;
     {
         sender.text =  [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
         recipient.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"FirstName"] ,[dict objectForKey:@"LastName"] ];
-        if([dict objectForKey:@"image"] != NULL) secondPartyImage.image = [dict objectForKey:@"image"];
+        if([dict objectForKey:@"image"] != NULL) secondPartyImage.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
         youImage.image = userPic.image;
     }
     else if([[dict objectForKey:@"TransactionType"] isEqualToString:@"Received from"])
     {
         sender.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"FirstName"] ,[dict objectForKey:@"LastName"] ];
         recipient.text =  [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
-        if([dict objectForKey:@"image"] != NULL) youImage.image =[dict objectForKey:@"image"];
+        if([dict objectForKey:@"image"] != NULL) youImage.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
         else youImage.image = [UIImage imageNamed:@"profile_picture.png"];
         secondPartyImage.image = userPic.image;
         goDisputeButton.hidden = YES;
@@ -572,7 +572,7 @@ NSString *curMemo;
     CGRect tranFrame;
     receiverFirst = [dict objectForKey:@"FirstName"];
     receiverLast = [dict objectForKey:@"LastName"];
-    receiverImgData = UIImagePNGRepresentation([dict objectForKey:@"image"]);
+    receiverImgData = [dict objectForKey:@"image"];
     if([[dict objectForKey:@"TransactionType"] isEqualToString:@"Sent"]){
         receiverId = [dict objectForKey:@"RecepientId"];
         tranFrame = secondPartyImage.frame;
