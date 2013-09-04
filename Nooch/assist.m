@@ -187,7 +187,7 @@ NSString *oldFilter;
     
 }/*}}}*/
 -(void)fetchPic{/*{{{*/
-    NSLog(@"photourl %@",[usr objectForKey:@"PhotoUrl"]);
+    //NSLog(@"photourl %@",[usr objectForKey:@"PhotoUrl"]);
     if ([usr objectForKey:@"PhotoUrl"] != NULL) {
         if ([[usr objectForKey:@"PhotoUrl"] rangeOfString:@"gv_no_photo"].location == NSNotFound ) {
             NSURL *photoUrl=[[NSURL alloc]initWithString:[usr objectForKey:@"PhotoUrl"]];
@@ -328,6 +328,7 @@ NSString *oldFilter;
         [usr setObject:bankResult forKey:@"banks"];
     }else if([tagName isEqualToString:@"cards"]){
         NSMutableArray *cardResult = [result JSONValue];
+        
         if ([cardResult isKindOfClass:[NSNull class]] || cardResult == nil) {
             cardResult = [NSMutableArray new];
         }
@@ -527,18 +528,18 @@ NSString *oldFilter;
             people = [[assosciateCache objectForKey:@"people"] mutableCopy];
         }
         if ([[additions objectAtIndex:0] objectForKey:@"recent"]) {
+            //NSLog(@"recents %@",additions);
             members = [[NSMutableArray alloc] init];
             for (int i = 0; i<[additions count]; i++) {
+                if ([[[additions objectAtIndex:i] objectForKey:@"firstName"] isKindOfClass:[NSNull class]] || [[[additions objectAtIndex:i] objectForKey:@"firstName"] length] < 1) {
+                    continue;
+                }
                 NSMutableDictionary *recEntry = [NSMutableDictionary new];
                 [recEntry setObject:[[additions objectAtIndex:i] objectForKey:@"MemberId"] forKey:@"MemberId"];
                 [recEntry setObject:[[additions objectAtIndex:i] objectForKey:@"firstName"] forKey:@"firstName"];
                 [recEntry setObject:[[additions objectAtIndex:i] objectForKey:@"lastName"] forKey:@"lastName"];
                 [members addObject:recEntry];
             }
-
-            
-            //[[NSNotificationCenter defaultCenter] postNotificationName:@"updateTable" object:self userInfo:nil];
-            //return;
         }
         for (NSMutableDictionary *dict in additions) {
             if ([dict objectForKey:@"image"]) {
@@ -550,12 +551,14 @@ NSString *oldFilter;
         
         NSMutableDictionary *arrayEntry = [NSMutableDictionary new];
         for (NSMutableDictionary *dict in additions) {
+            
             if ([dict objectForKey:@"MemberId"]) {
-                NSMutableDictionary *pers = [NSMutableDictionary new];
+                //NSMutableDictionary *pers = [NSMutableDictionary new];
                 
                 //nooch member entry
                 if ([people objectForKey:[dict objectForKey:@"MemberId"]]) {
-                    pers = [people objectForKey:[dict objectForKey:@"MemberId"]];
+                    NSLog(@"updating %@",[dict objectForKey:@"firstName"]);
+                    NSMutableDictionary *pers = [people objectForKey:[dict objectForKey:@"MemberId"]];
                     //person is in cache
                     if ([pers objectForKey:@"Photo"]) {
                         [dict removeObjectForKey:@"Photo"];
@@ -570,23 +573,28 @@ NSString *oldFilter;
                         [dict removeObjectForKey:@"lastName"];
                     }
                     [pers addEntriesFromDictionary:dict];
+                    [people setObject:pers forKey:[pers objectForKey:@"MemberId"]];
                 }else{
-                    
                     //not in cache
+                    if ([[dict objectForKey:@"firstName"] isEqualToString:@"Nate"]) {
+                        NSLog(@"%@",dict);
+                    }
                     bool found = NO;
                     for (NSString *strings in people) {
-                        //DA FUQ
                         NSMutableDictionary *d = [people objectForKey:strings];
                         if([[d objectForKey:@"firstName"] isEqualToString:[dict objectForKey:@"firstName"]] &&
                            [[d objectForKey:@"lastName"] isEqualToString:[dict objectForKey:@"lastName"]]){
                             found = YES;
                             //[dict removeObjectForKey:@"MemberId"];
                             [d addEntriesFromDictionary:dict];
+                            NSLog(@"sanity catch %@", d);
+                            [people setObject:d forKey:[d objectForKey:@"MemberId"]];
                             break;
                         }
                     }
                     if (!found) {
                         NSMutableDictionary *pers = [NSMutableDictionary dictionaryWithDictionary:dict];
+                        
                         [people setObject:pers forKey:[pers objectForKey:@"MemberId"]];
                     }
                 }
@@ -599,6 +607,7 @@ NSString *oldFilter;
                 }
             }else{
                 //non nooch member entry
+                
                 if ([dict objectForKey:@"firstName"]) {
                     [arrayEntry setObject:[dict objectForKey:@"firstName"] forKey:@"firstName"];
                 }
@@ -619,12 +628,17 @@ NSString *oldFilter;
                 if ([dict objectForKey:@"facebookId"]) {
                     [people setObject:dict forKey:[dict objectForKey:@"facebookId"]];
                 }
+                
+                
                 if (![nonmembers containsObject:arrayEntry]) {
                     [nonmembers addObject:arrayEntry];
                 }
+
+                
             }
 
         }
+        //NSLog(@"recents %@",members);
         NSSortDescriptor *sortDescriptor;
         sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"firstName" ascending:YES];
         NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
@@ -676,9 +690,9 @@ NSString *oldFilter;
     return responseArray;
 }
 -(void)getAssosPics{
-    NSArray *keys = [NSArray new];
-    keys = [[assosciateCache objectForKey:@"people"] allKeys];
     @try {
+        NSArray *keys = [NSArray new];
+        keys = [[assosciateCache objectForKey:@"people"] allKeys];
         for (NSString *key in keys) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             dict = [[assosciateCache objectForKey:@"people"] objectForKey:key];

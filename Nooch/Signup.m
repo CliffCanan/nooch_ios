@@ -274,6 +274,7 @@
         [[NSUserDefaults standardUserDefaults] setObject:passwordTextField.text forKey:@"password"];
 
         serve *isDup = [serve new];
+        isDup.tagName = @"duplicateCheck";
         isDup.Delegate = self;
         [isDup dupCheck:emailTextField.text];
     }

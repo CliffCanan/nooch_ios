@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "NoochHelper.h"
 #import "transfer.h"
+#import "UAPush.h"
 
 @interface history ()
 
@@ -39,9 +40,10 @@ NSString *curMemo;
     return self;
 }
 -(void)viewDidAppear:(BOOL)animated{
+    
     if([transactionId length] != 0){
         NSLog(@"checking for transaction to update");
-        for (NSDictionary *dict in [me histFilter:filterPick]) {
+        for (NSMutableDictionary *dict in [me histFilter:filterPick]) {
             if ([transactionId isEqualToString:[dict objectForKey:@"TransactionId"]]) {
                 NSLog(@"found transaction");
                 [self applyUpdateToDetails:dict];
@@ -85,6 +87,9 @@ NSString *curMemo;
 }
 -(void)viewWillAppear:(BOOL)animated{
     //[self hideMenu];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    [[UAPush shared] resetBadge];
+
     [navBar setBackgroundImage:[UIImage imageNamed:@"TopNavBarBackground.png"]  forBarMetrics:UIBarMetricsDefault];
     [leftNavBar addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tableReload:) name:@"tableReload" object:nil];
@@ -102,7 +107,7 @@ NSString *curMemo;
     if (viewDetails) {
         histSafe = NO;
         bool found = NO;
-        for (NSDictionary *dict in [me hist]) {
+        for (NSMutableDictionary *dict in [me hist]) {
             if ([[dict objectForKey:@"TransactionId"] isEqualToString:tId]) {
                 found = YES;
                 [self applyUpdateToDetails:dict];
@@ -118,7 +123,7 @@ NSString *curMemo;
             }
         }
         if (!found) {
-            for (NSDictionary *dict in [me hist]) {
+            for (NSMutableDictionary *dict in [me hist]) {
                 if ([[dict objectForKey:@"TransactionId"] isEqualToString:tId]) {
                     found = YES;
                     [self applyUpdateToDetails:dict];
@@ -278,6 +283,7 @@ NSString *curMemo;
     }
     else if([[dict objectForKey:@"TransactionType"] isEqualToString:@"Request"])
     {
+        
         [whichArrows setHighlighted:YES];
         if ([[dict objectForKey:@"Status"] isEqualToString:@"Pending"]) {
             CGRect frame = detailsTable.frame;
@@ -411,7 +417,7 @@ NSString *curMemo;
             memo.textColor = [core hexColor:@"DDDD2A"];
         }else{ strMessageToAppend = @"Completed"; memo.textColor = [core hexColor:@"99CC66"];}
         memo.text = strMessageToAppend;
-        statusOfTransfer.text = memo.text; memo.text = @"";
+        statusOfTransfer.text = memo.text; //memo.text = @"";
     }
 
     else if([[dict objectForKey:@"TransactionType"] isEqualToString:@"Withdraw"])
@@ -449,7 +455,7 @@ NSString *curMemo;
             memo.textColor = [core hexColor:@"DDDD2A"];
         }else{ strMessageToAppend = @"Completed"; memo.textColor = [core hexColor:@"99CC66"];}
         memo.text = strMessageToAppend;
-        statusOfTransfer.text = memo.text; memo.text = @"";
+        statusOfTransfer.text = memo.text; //memo.text = @"";
     }
     else if([[dict objectForKey:@"TransactionType"] isEqualToString:@"Sent to"])
     {
@@ -585,6 +591,11 @@ NSString *curMemo;
         startNewTransfer.userInteractionEnabled = YES;
     }else if([[dict objectForKey:@"TransactionType"] isEqualToString:@"Request"]){
         details4 = NO;
+        if ([[dict objectForKey:@"RecepientId"] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
+            tranFrame = secondPartyImage.frame;
+        else
+            tranFrame = youImage.frame;
+        startNewTransfer.userInteractionEnabled = YES;
         if ([[dict objectForKey:@"Status"] isEqualToString:@"Pending"]) {
             goDisputeButton.hidden = YES;
             dipusteNote.hidden = YES;
@@ -1651,6 +1662,11 @@ NSString *curMemo;
         tranFrame.size.height += 50;
         startNewTransfer.userInteractionEnabled = YES;
     }else if([[dict objectForKey:@"TransactionType"] isEqualToString:@"Request"]){
+        if ([[dict objectForKey:@"RecepientId"] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
+            tranFrame = secondPartyImage.frame;
+        else
+            tranFrame = youImage.frame;
+        startNewTransfer.userInteractionEnabled = YES;
         if ([[dict objectForKey:@"Status"] isEqualToString:@"Pending"]) {
             goDisputeButton.hidden = YES;
             dipusteNote.hidden = YES;

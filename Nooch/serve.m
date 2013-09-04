@@ -489,12 +489,12 @@ NSString *amnt;
     if ([tagName isEqualToString:@"EncryptReqImm"]) {
         
     }
-    self.responseData = [[NSMutableData alloc] init];
+    /*self.responseData = [[NSMutableData alloc] init];
     NSMutableURLRequest *request = [[connection originalRequest] mutableCopy];
     [request setTimeoutInterval:7.0f];
     NSURLConnection *connect =[[NSURLConnection alloc] initWithRequest:request delegate:self];
     if (!connect)
-        NSLog(@"connect error");
+        NSLog(@"connect error");*/
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     if (![tagName isEqualToString:@"info"]) {

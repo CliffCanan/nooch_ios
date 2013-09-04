@@ -369,6 +369,7 @@
         [NSURLConnection connectionWithRequest:request delegate:self];
     }else if ([tagName isEqualToString:@"getMemId"]){
         [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
+        [spinner stopAnimating];
         me = [core new];
         [me birth];
         [[me usr] setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"firstName"] forKey:@"firstName"];
@@ -379,19 +380,27 @@
         [me stamp];
         [navCtrl popToRootViewControllerAnimated:NO];
         [self dismissModalViewControllerAnimated:YES];
+        UIAlertView *decline= [[UIAlertView alloc] initWithTitle:@"Welcome" message:@"Thanks for joining us here at Nooch!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [decline show];
+        
+    }else if([tagName isEqualToString:@"loginRequest"]){
+        serve *req = [[serve alloc] init];
+        req.Delegate = self;
+        req.tagName = @"getMemId";
+        [req getMemIdFromuUsername:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]];
     }else if ([tagName isEqualToString:@"MemberRegistration"]){
-        NSLog(@"login result %@",loginResult);
+        NSLog(@"login result %@",result);
         if([[template objectForKey:@"Result"] isEqualToString:@"Thanks for registering! Check your email to complete activation."])
         {
-            UIAlertView *decline= [[UIAlertView alloc] initWithTitle:@"Welcome" message:@"Thanks for joining us here at Nooch!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [decline show];
-            [decline setTag:1];
+            
+            //[decline setTag:1];
             [[NSUserDefaults standardUserDefaults] setObject:@"asdfa" forKey:@"setPrompt"];
-            [spinner stopAnimating];
-            serve *req = [[serve alloc] init];
-            req.Delegate = self;
-            req.tagName = @"getMemId";
-            [req getMemIdFromuUsername:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]];
+            //[spinner stopAnimating];
+            serve *login = [serve new];
+            login.Delegate = self;
+            login.tagName = @"loginRequest";
+            [login login:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"] password:getEncryptedPassword];
+            
             keyboard.userInteractionEnabled = NO;
             leftNavButton.userInteractionEnabled = NO;
             return;
@@ -405,7 +414,7 @@
             return;
         }else{
             [spinner stopAnimating];
-            [self dismissModalViewControllerAnimated:YES];
+            //[self dismissModalViewControllerAnimated:YES];
             return;
         }
         
@@ -608,13 +617,12 @@
     if([template objectForKey:@"Status"])
     {
         getEncryptedPassword = [[NSString alloc] initWithString:[template objectForKey:@"Status"]];
-        NSLog(@"invCode : %@", inviteCode);
         serve *req = [[serve alloc] init];
         req.Delegate = self;
         req.tagName=@"MemberRegistration";
         keyboard.userInteractionEnabled = NO;
         leftNavButton.userInteractionEnabled = NO;
-        [req newUser:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"] first:[[NSUserDefaults standardUserDefaults] objectForKey:@"firstName"] last:[[NSUserDefaults standardUserDefaults] objectForKey:@"lastName"] password:getEncryptedPassword pin:encryptedPIN invCode:[[NSUserDefaults standardUserDefaults] objectForKey:@"invCode"]];
+        [req newUser:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"] first:[[NSUserDefaults standardUserDefaults] objectForKey:@"firstName"] last:[[NSUserDefaults standardUserDefaults] objectForKey:@"lastName"] password:getEncryptedPassword pin:encryptedPIN invCode:@"pilot"];
         //[req methodName:@"MemberRegistration" userName:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"] firstName:[[NSUserDefaults standardUserDefaults] objectForKey:@"firstName"] lastName:[[NSUserDefaults standardUserDefaults] objectForKey:@"lastName"] password:getEncryptedPassword pinNumber:encryptedPIN invCode:@"pilot"];//inviteCode
     }
 }

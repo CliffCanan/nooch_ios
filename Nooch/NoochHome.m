@@ -624,6 +624,7 @@ NSString *searchString;
         else if([[[me assos] objectForKey:@"members"] count] != 0){
             //[self getRecentDetails];
             [self.friendTable reloadData];
+            [self getRecentDetails];
         }else{
             [self.view addSubview:[me waitStat:@"Loading your contacts..."]];
             [self syncAssos];
@@ -633,9 +634,9 @@ NSString *searchString;
 }
 -(void)syncAssos{
     [self getRecentDetails];
-    //[self getFB];
+    [self getFB];
     if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized || ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined) {
-        //[self getAddressBookContacts];
+        [self getAddressBookContacts];
     }
     [refreshControl endRefreshing];
 }
@@ -675,6 +676,8 @@ NSString *searchString;
              friends = [me cleanForSave:friends];
              [self facebookProcess:friends];
          }];
+    }else{
+        NSLog(@"fb not allowed");
     }
 }
 
@@ -1151,13 +1154,13 @@ NSString *searchString;
             [dict setObject:UIImagePNGRepresentation([UIImage imageNamed:@"noochLogo.png"]) forKey:@"image"];
         }else{
             @try {
-                dict = [[[me assos] objectForKey:@"people"] objectForKey:[[[[me assos] objectForKey:@"members"] objectAtIndex:indexPath.row] objectForKey:@"MemberId"]];
-                //NSLog(@"dict %@",dict);
-                /*if (![[me usr] objectForKey:@"fbUID"]){
-                     dict = [[[me assos] objectForKey:@"people"] objectForKey:[[[[me assos] objectForKey:@"members"] objectAtIndex:indexPath.row-1] objectForKey:@"MemberId"]];
+                if ([[[me assos] objectForKey:@"people"] objectForKey:[[[[me assos] objectForKey:@"members"] objectAtIndex:indexPath.row] objectForKey:@"MemberId"]]) {
+                    dict = [[[me assos] objectForKey:@"people"] objectForKey:[[[[me assos] objectForKey:@"members"] objectAtIndex:indexPath.row] objectForKey:@"MemberId"]];
                 }else{
-                     dict = [[[me assos] objectForKey:@"people"] objectForKey:[[[[me assos] objectForKey:@"members"] objectAtIndex:indexPath.row] objectForKey:@"MemberId"]];
-                }*/
+                    dict = [[[me assos] objectForKey:@"members"] objectAtIndex:indexPath.row];
+                }
+                
+                
             }
             @catch (NSException *exception) {
                 NSLog(@"error grabbing person %@",exception.description);

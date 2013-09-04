@@ -186,6 +186,7 @@ void exceptionHandler(NSException *exception){
         }
     }
     inBack = NO;
+    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -218,6 +219,7 @@ void exceptionHandler(NSException *exception){
                        applicationState:application.applicationState];
     // Reset the badge if you are using that functionality
     [[UAPush shared] resetBadge]; // zero badge after push received
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [[UAPush shared] setBadgeNumber:0];
     [me histMore:@"ALL" sPos:1 len:20];
 }

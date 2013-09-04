@@ -226,7 +226,11 @@ bool firstTime;
     [navCtrl dismissModalViewControllerAnimated:YES];
 }
 -(void)viewWillAppear:(BOOL)animated{
-   
+    [resetPasswordView setHidden:NO];
+    CGRect inFrame = [resetPasswordView frame];
+    inFrame.origin.x = 320;
+    [resetPasswordView setFrame:inFrame];
+
     saveButton.hidden = YES;
     [navBar setBackgroundImage:[UIImage imageNamed:@"TopNavBarBackground.png"]  forBarMetrics:UIBarMetricsDefault];
     if(suspended){
@@ -426,9 +430,19 @@ bool firstTime;
         [resetPasswordView setFrame:CGRectMake(0,50,320,600)];
     }
     if(textField == password){
-        [resetPasswordView setHidden:NO];
         navBar.topItem.title = @"Reset Password";
-        [leftNavButton setBackgroundImage:[UIImage imageNamed:@"BackArrow.png"] forState:UIControlStateNormal];
+        CGRect inFrame = [resetPasswordView frame];
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.5];
+        inFrame.origin.x = 0;
+        [resetPasswordView setFrame:inFrame];
+        inFrame = validationBadge.frame;
+        inFrame.origin.x = -320;
+        [validationBadge setFrame:inFrame];
+        inFrame = profileScroll.frame;
+        inFrame.origin.x = -320;
+        [profileScroll setFrame:inFrame];
+        [UIView commitAnimations];
         [leftNavButton setFrame:CGRectMake(0, 0, 43, 43)];
         //[leftNavButton setBackgroundImage:[UIImage imageNamed:@"ProfileBack.png"] forState:UIControlStateNormal];
         //[leftNavButton setFrame:CGRectMake(0, 0, 63, 30)];
@@ -784,7 +798,21 @@ bool firstTime;
     [firstNewPass resignFirstResponder];
     [confirmNewPassword resignFirstResponder];
     [oldPassword resignFirstResponder];
-    [resetPasswordView setHidden:YES];
+
+    CGRect inFrame = [resetPasswordView frame];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.5];
+    inFrame.origin.x = 320;
+    [resetPasswordView setFrame:inFrame];
+    inFrame = validationBadge.frame;
+    inFrame.origin.x = 0;
+    [validationBadge setFrame:inFrame];
+    inFrame = profileScroll.frame;
+    inFrame.origin.x = 0;
+    [profileScroll setFrame:inFrame];
+    [UIView commitAnimations];
+
+
     navBar.topItem.title = @"Profile Info";
     [leftNavButton setBackgroundImage:[UIImage imageNamed:@"BackArrow.png"] forState:UIControlStateNormal];
     [leftNavButton setFrame:CGRectMake(0, 0, 43, 43)];
