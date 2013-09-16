@@ -44,20 +44,24 @@ NSString *searchString;
     return self;
 }
 -(void)viewWillAppear:(BOOL)animated{
+    //just a sanity check
     NSLog(@"memberId from userDefaults %@ and from userObject %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"],[[me usr] objectForKey:@"MemberId"]);
+    
     
     if (![[me usr] objectForKey:@"MemberId"]) {
         [[me usr] setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"MemberId"];
     }
     progressImage.hidden = YES;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTable:) name:@"updateTable" object:nil];
     [splashView removeFromSuperview];
     if(suspended){
-        [userBar setHighlighted:YES];
+        [userBar setHighlighted:YES]; //userbar is red when someone is suspended
     }else{
         [userBar setHighlighted:NO];
     }
-    if(transferFinished){
+    
+    if(transferFinished){     //boolean for when coming back to NoochHome after completing a transfer, so that a user isnt returned to the select recipient screen
         buttonView.hidden = NO;
         bannerView.hidden = NO;
         sendingMoney = NO;
@@ -77,7 +81,7 @@ NSString *searchString;
         transferFinished = NO;
     }
 
-    if(sendingMoney){
+    if(sendingMoney){ //for when someone left the home screen on the Select Recipient 'screen'
         navBar.topItem.title = @"";
         progressImage.hidden = NO;
         [leftNavButton removeTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
@@ -177,18 +181,22 @@ NSString *searchString;
     sendingMoney = NO;
     tutsArray = [NSMutableArray new];
     tutPos = 0;
+    [buttonView setFrame:CGRectMake(35,140,255,255)];
     if([[UIScreen mainScreen] bounds].size.height > 480){
         [tutsArray addObject:[UIImage imageNamed:@"CoachMarks1-568h@2x.png"]];
         [tutsArray addObject:[UIImage imageNamed:@"CoachMarks2-568h@2x.png"]];
         [tutsArray addObject:[UIImage imageNamed:@"CoachMarks3-568h@2x.png"]];
         [tutsArray addObject:[UIImage imageNamed:@"CoachMarks4-568h@2x.png"]];
-        [buttonView setFrame:CGRectMake(buttonView.frame.origin.x+7,buttonView.frame.origin.y+70,buttonView.frame.size.width,buttonView.frame.size.height)];
+        //[buttonView setFrame:CGRectMake(buttonView.frame.origin.x+7,buttonView.frame.origin.y+70,buttonView.frame.size.width,buttonView.frame.size.height)];
     }else{
         [tutsArray addObject:[UIImage imageNamed:@"CoachMarks1.png"]];
         [tutsArray addObject:[UIImage imageNamed:@"CoachMarks2.png"]];
         [tutsArray addObject:[UIImage imageNamed:@"CoachMarks3.png"]];
         [tutsArray addObject:[UIImage imageNamed:@"CoachMarks4.png"]];
-        [buttonView setFrame:CGRectMake(buttonView.frame.origin.x+7,buttonView.frame.origin.y+18,buttonView.frame.size.width,buttonView.frame.size.height)];
+        CGRect frame = buttonView.frame;
+        frame.origin.y = 180;
+        //[buttonView setFrame:frame];
+        //[buttonView setFrame:CGRectMake(buttonView.frame.origin.x+7,buttonView.frame.origin.y+18,buttonView.frame.size.width,buttonView.frame.size.height)];
     }
     if([[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] != NULL){
         serve *memDevice = [serve new];
@@ -622,9 +630,8 @@ NSString *searchString;
             [self causes:self];
         }
         else if([[[me assos] objectForKey:@"members"] count] != 0){
-            //[self getRecentDetails];
-            [self.friendTable reloadData];
             [self getRecentDetails];
+            [self.friendTable reloadData];
         }else{
             [self.view addSubview:[me waitStat:@"Loading your contacts..."]];
             [self syncAssos];

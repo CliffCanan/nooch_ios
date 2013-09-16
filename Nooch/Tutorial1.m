@@ -60,7 +60,6 @@
     [reqInvField resignFirstResponder];
 }
 - (IBAction)login:(id)sender {
-    NSLog(@"huhh");
     [navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"login"] animated:YES];
 }
 - (IBAction)createAcct:(id)sender {

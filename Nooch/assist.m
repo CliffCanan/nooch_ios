@@ -557,7 +557,6 @@ NSString *oldFilter;
                 
                 //nooch member entry
                 if ([people objectForKey:[dict objectForKey:@"MemberId"]]) {
-                    NSLog(@"updating %@",[dict objectForKey:@"firstName"]);
                     NSMutableDictionary *pers = [people objectForKey:[dict objectForKey:@"MemberId"]];
                     //person is in cache
                     if ([pers objectForKey:@"Photo"]) {
@@ -576,9 +575,6 @@ NSString *oldFilter;
                     [people setObject:pers forKey:[pers objectForKey:@"MemberId"]];
                 }else{
                     //not in cache
-                    if ([[dict objectForKey:@"firstName"] isEqualToString:@"Nate"]) {
-                        NSLog(@"%@",dict);
-                    }
                     bool found = NO;
                     for (NSString *strings in people) {
                         NSMutableDictionary *d = [people objectForKey:strings];
@@ -587,7 +583,6 @@ NSString *oldFilter;
                             found = YES;
                             //[dict removeObjectForKey:@"MemberId"];
                             [d addEntriesFromDictionary:dict];
-                            NSLog(@"sanity catch %@", d);
                             [people setObject:d forKey:[d objectForKey:@"MemberId"]];
                             break;
                         }
@@ -691,6 +686,7 @@ NSString *oldFilter;
 }
 -(void)getAssosPics{
     @try {
+        NSLog(@"grabbing pictures");
         NSArray *keys = [NSArray new];
         keys = [[assosciateCache objectForKey:@"people"] allKeys];
         for (NSString *key in keys) {
