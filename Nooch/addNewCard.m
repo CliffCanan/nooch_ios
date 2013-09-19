@@ -76,8 +76,8 @@
 - (IBAction)addCard:(id)sender {
     NSString *urlString =[NSString stringWithFormat:@"%@/GetEncryptedCardDetails", MyUrl];
     NSURL *url = [NSURL URLWithString:urlString];
-    NSMutableDictionary *accountData = [NSDictionary dictionaryWithObjectsAndKeys: cardNumField.text,@"CardNumber", secCodeField.text,@"VerificationNumber",expirationField.text, @"ExpirationDate", nil];
-    NSMutableDictionary *acctParam = [NSDictionary dictionaryWithObjectsAndKeys:(NSString *)accountData,@"cardDetails", nil];
+    NSDictionary *accountData = [NSDictionary dictionaryWithObjectsAndKeys: cardNumField.text,@"CardNumber", secCodeField.text,@"VerificationNumber",expirationField.text, @"ExpirationDate", nil];
+    NSDictionary *acctParam = [NSDictionary dictionaryWithObjectsAndKeys:(NSString *)accountData,@"cardDetails", nil];
     NSString *post = [acctParam JSONRepresentation];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
 
@@ -124,12 +124,12 @@
         cardType = @"";
     }
     NSLog(@"card type: %@",cardType);
-    NSMutableDictionary *accountData = [NSDictionary dictionaryWithObjectsAndKeys: [[me usr] objectForKey:@"MemberId"],@"MemberId", nameOnCard.text,@"CardHolderName",cardType,@"CardType",strCardNumber,@"CardNumber",strVerificationNumber,@"VerificationNumber",strExpirationDate,@"ExpirationDate",zipField.text,@"BillingZipCode",nil];
-    NSMutableDictionary *acctParam = [NSDictionary dictionaryWithObjectsAndKeys:(NSString *)accountData,@"accountInput", nil];
+    NSDictionary *accountData = [NSDictionary dictionaryWithObjectsAndKeys: [[me usr] objectForKey:@"MemberId"],@"MemberId", nameOnCard.text,@"CardHolderName",cardType,@"CardType",strCardNumber,@"CardNumber",strVerificationNumber,@"VerificationNumber",strExpirationDate,@"ExpirationDate",zipField.text,@"BillingZipCode",nil];
+    NSDictionary *acctParam = [NSDictionary dictionaryWithObjectsAndKeys:(NSString *)accountData,@"accountInput", nil];
     serve *addCard = [serve new];
     addCard.tagName = @"addCard";
     addCard.Delegate = self;
-    [addCard saveCard:acctParam];
+    [addCard saveCard:[acctParam mutableCopy]];
 }
 -(void)listen:(NSString *)result tagName:(NSString *)tagName{
     NSDictionary *save = [result JSONValue];

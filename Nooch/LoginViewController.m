@@ -103,11 +103,6 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (void)registerForKeyboardNotifications {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasHidden:) name:UIKeyboardDidHideNotification object:nil];
-}
-
 - (BOOL) textFieldShouldReturn:(UITextField *)textField{
     if(textField == emailAddress){
         [password becomeFirstResponder];
@@ -286,7 +281,7 @@
             [textBack setImage:textBack2];
             [writeMemo addSubview:textBack];
             UITextField *memoText = [[UITextField alloc] initWithFrame:CGRectMake(12, 30, 260, 25)];
-            [memoText setTextAlignment:UITextAlignmentCenter];
+            [memoText setTextAlignment:NSTextAlignmentCenter];
             [writeMemo addSubview:memoText];
             [writeMemo show];
             [writeMemo setTag:12];

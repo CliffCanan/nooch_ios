@@ -394,7 +394,7 @@ bool allowSharingValue;
 
     if([tagName isEqualToString:@"ValidatePinNumber"] ){
         if (requestRespond) {
-            NSString *idToUse;
+            //NSString *idToUse;
             NSMutableDictionary *transactionInput = [NSMutableDictionary dictionaryWithObjectsAndKeys:[loginResult valueForKey:@"Status"], @"PinNumber", [[me usr] objectForKey:@"MemberId"], @"MemberId", requestId, @"TransactionId", TransactionDate, @"TransactionDate", uid, @"DeviceId", latitudeField, @"Latitude", longitudeField, @"Longitude", altitudeField, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode", acceptOrDeny, @"Status", nil];
 
             NSMutableDictionary *transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"handleRequestInput", nil];
@@ -427,7 +427,7 @@ bool allowSharingValue;
             return;
         }
         NSMutableDictionary *transaction;
-        NSMutableDictionary *transactionInput;
+        NSDictionary *transactionInput;
         NSString *transMemo = [NSString stringWithFormat:@"%@%@",memoCat,memoField.text];
         if (!requestBar.hidden) {
             transactionInput = [NSDictionary dictionaryWithObjectsAndKeys:[loginResult valueForKey:@"Status"], @"PinNumber", [[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"], @"MemberId", receiverId, @"SenderId", receiveName, @"Name", [NSString stringWithFormat:@"%.02f", [actualAmount floatValue]], @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction", uid, @"DeviceId", latitudeField, @"Latitude", longitudeField, @"Longitude", altitudeField, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode",transMemo,@"Memo",@"Pending",@"Status", nil];
@@ -1152,7 +1152,7 @@ bool allowSharingValue;
     [textBack setImage:textBack2];
     [writeMemo addSubview:textBack];
     UITextField *memoText = [[UITextField alloc] initWithFrame:CGRectMake(12, 30, 260, 25)];
-    [memoText setTextAlignment:UITextAlignmentCenter];
+    [memoText setTextAlignment:NSTextAlignmentCenter];
     memoText.returnKeyType = UIReturnKeyDone;
     [writeMemo addSubview:memoText];
     [writeMemo show];

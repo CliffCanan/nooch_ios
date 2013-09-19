@@ -58,7 +58,7 @@ NSString *curMemo;
         [self.view addSubview:[me waitStat:@"Loading your history..."]];
         loadingCheck = YES;
         loadingHide = YES;
-        [me histMore:filterPick sPos:1 len:20];
+        [me histMore:filterPick sPos:3 len:30];
     }else{
         loadingHide = NO;
         loadingCheck = NO;
@@ -956,7 +956,7 @@ NSString *curMemo;
     if ([[me histFilter:filterPick] count] == 0 && histSearch) {
         UILabel *endLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 320, 30)];
         [endLabel setFont:[core nFont:@"Medium" size:16.0]];
-        [endLabel setTextAlignment:UITextAlignmentCenter];
+        [endLabel setTextAlignment:NSTextAlignmentCenter];
         [endLabel setText:@"No Results."];
         [cell.contentView addSubview:endLabel];
         cell.userInteractionEnabled = NO;
@@ -966,7 +966,7 @@ NSString *curMemo;
         loadingIndex = indexPath.row;
         loadingCheck = YES;
         NSLog(@"loading more");
-        [me histMore:filterPick sPos:1 len:loadingIndex+10];
+        [me histMore:filterPick sPos:3 len:loadingIndex+10];
     }
     if(indexPath.row == [[me histFilter:filterPick] count] && !histSearch && !loadingHide){
         cell.userInteractionEnabled = NO;
@@ -974,7 +974,7 @@ NSString *curMemo;
         if(limit){
             UILabel *endLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 320, 30)];
             [endLabel setFont:[core nFont:@"Medium" size:16.0]];
-            [endLabel setTextAlignment:UITextAlignmentCenter];
+            [endLabel setTextAlignment:NSTextAlignmentCenter];
             [endLabel setText:@"End of records."];
             [cell.contentView addSubview:endLabel];
         }else{
@@ -987,7 +987,7 @@ NSString *curMemo;
     if (indexPath.row == 0 && [[me hist] count] == 0 && limit) {
         UILabel *endLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 320, 30)];
         [endLabel setFont:[core nFont:@"Medium" size:16.0]];
-        [endLabel setTextAlignment:UITextAlignmentCenter];
+        [endLabel setTextAlignment:NSTextAlignmentCenter];
         [endLabel setText:@"No history."];
         [cell.contentView addSubview:endLabel];
     }
@@ -1022,7 +1022,7 @@ NSString *curMemo;
     dateLabel.textColor = [UIColor grayColor];
     dateLabel.clearsContextBeforeDrawing = YES;
     UILabel *amountLabel = [[UILabel alloc] initWithFrame:CGRectMake(228, 15, 70, 30)];
-    [amountLabel setTextAlignment:UITextAlignmentRight];
+    [amountLabel setTextAlignment:NSTextAlignmentRight];
     amountLabel.font = [core nFont:@"Regular" size:18];
     NSString *amount = [NSString stringWithFormat:@"$%.02f", [[tableViewBind objectForKey:@"Amount"] floatValue]];
     amountLabel.text = amount;
@@ -1818,7 +1818,7 @@ NSString *curMemo;
             NSDictionary *tDict = [tempArray lastObject];
             NSString *tId = [tDict objectForKey:@"TransactionId"];
             if(updateHistory){ //new user-generated transaction (aka sent money or bank interaction)
-                [self performSelectorInBackground:@selector(processNew:) withObject:tempHistArray];
+                //[self performSelectorInBackground:@selector(processNew:) withObject:tempHistArray];
                 updateHistory = NO;
                 return;
             }
@@ -1829,7 +1829,7 @@ NSString *curMemo;
                 [self.historyTable reloadData];
                 return;
             }
-            [self performSelectorInBackground:@selector(processNew:) withObject:tempHistArray];
+            //[self performSelectorInBackground:@selector(processNew:) withObject:tempHistArray];
         }else{
             NSString *resultValue = [res objectForKey:@"RaiseDisputeResult"];
             [me endWaitStat];

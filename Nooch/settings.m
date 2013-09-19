@@ -391,7 +391,7 @@ bool firstTime;
     }else if(tableView == logoutTable){
         if(indexPath.row == 0){
             [cell setIndentationWidth:110];
-            [cell.textLabel setTextAlignment:UITextAlignmentCenter];
+            [cell.textLabel setTextAlignment:NSTextAlignmentCenter];
             [cell.textLabel setText:@"Logout"];
         }
     }else if(tableView == resetPasswordTable){

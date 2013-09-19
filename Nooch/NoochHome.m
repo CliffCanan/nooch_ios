@@ -102,7 +102,7 @@ NSString *searchString;
     [self refreshBalance];
     searching = NO;
 
-    [me histMore:@"ALL" sPos:1 len:20];
+    
     
     balanceLabel.textColor = firstNameLabel.textColor = lastNameLabel.textColor = [UIColor whiteColor];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTable" object:nil];
@@ -178,10 +178,17 @@ NSString *searchString;
 }
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
+    //get history cached
+    [me histMore:@"ALL" sPos:3 len:30];
+    
+    
     sendingMoney = NO;
     tutsArray = [NSMutableArray new];
     tutPos = 0;
     [buttonView setFrame:CGRectMake(35,140,255,255)];
+    
+    
     if([[UIScreen mainScreen] bounds].size.height > 480){
         [tutsArray addObject:[UIImage imageNamed:@"CoachMarks1-568h@2x.png"]];
         [tutsArray addObject:[UIImage imageNamed:@"CoachMarks2-568h@2x.png"]];
@@ -198,6 +205,8 @@ NSString *searchString;
         //[buttonView setFrame:frame];
         //[buttonView setFrame:CGRectMake(buttonView.frame.origin.x+7,buttonView.frame.origin.y+18,buttonView.frame.size.width,buttonView.frame.size.height)];
     }
+    
+    //connect device udid to user's account
     if([[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] != NULL){
         serve *memDevice = [serve new];
         memDevice.Delegate = self;
@@ -205,7 +214,9 @@ NSString *searchString;
         [memDevice memberDevice:[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"]];
     }
     nHome = self;
-    //CAUSES SHIT
+    
+    
+    //causes are currently hardcoded in here
     causesArr = [NSMutableArray new];
     NSMutableDictionary *cause = [NSMutableDictionary new];
     [cause setObject:@"4K for" forKey:@"firstName" ];
@@ -256,6 +267,7 @@ NSString *searchString;
     [cause setObject:@"692635B9-65CB-48A4-A87A-39DC7121F85A" forKey:@"MemberId"];
     [causesArr addObject:[cause mutableCopy]];
 
+    //tutorial initialization
     [nextTut addTarget:self action:@selector(nextScreen) forControlEvents:UIControlEventTouchUpInside];
     [prevTut addTarget:self action:@selector(prevScreen) forControlEvents:UIControlEventTouchUpInside];
     tutorialView.hidden = YES;
@@ -272,6 +284,8 @@ NSString *searchString;
     [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(flashButton) userInfo:nil repeats:YES];
     transp = 1.0f;
     fadeIn = NO;
+    
+    //if user has autologin set bring up their data, otherwise redirect to the tutorial/login/signup flow
     if ([core isAlive:[self autoLogin]]) {
         me = [core new];
         NSMutableDictionary *loadInfo = [[NSMutableDictionary alloc] initWithContentsOfFile:[self autoLogin]];
@@ -285,6 +299,8 @@ NSString *searchString;
         [navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"tutorial"] animated:NO];
         return;
     }
+    
+    //if they have required immediately turned on or haven't selected the option yet, redirect them to PIN screen
     if (![[me usr] objectForKey:@"requiredImmediately"]) {
         reqImm = YES;
         [self presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
@@ -294,7 +310,7 @@ NSString *searchString;
     }
 }
 
-#pragma mark - side menus
+#pragma mark - side menu helper functions
 -(void)showMenu{
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
@@ -305,7 +321,7 @@ NSString *searchString;
     [self.slidingViewController anchorTopViewTo:ECLeft];
 }
 
-#pragma mark - how nooch works
+#pragma mark - how nooch works tutorial functions
 -(void)showTutorial{
     tutorialView.hidden = NO;
     prevTut.hidden = YES;
@@ -380,7 +396,7 @@ NSString *searchString;
     [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(tutDelay) userInfo:nil repeats:NO];
 }
 
-#pragma mark - constants
+#pragma mark - aesthetics and redirect functions
 -(void)flashButton{
     if (sendingMoney) {
         return;
@@ -550,6 +566,8 @@ NSString *searchString;
         viewDetails = YES;
     [navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"history"] animated:YES];
 }
+
+//go between donating tab and people tab
 - (IBAction)people:(id)sender {
     causes = NO;
     peepsOrCauses.highlighted = NO;
@@ -647,6 +665,9 @@ NSString *searchString;
     }
     [refreshControl endRefreshing];
 }
+
+
+#pragma mark - facebook handling
 -(void)getFB{
     if(me.fbAllowed){
         NSDictionary *options = @{
@@ -656,7 +677,7 @@ NSString *searchString;
                                   };
         ACAccountType *facebookAccountType = [me.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
         [me.accountStore requestAccessToAccountsWithType:facebookAccountType
-                                              options:options completion:^(BOOL granted, NSError *e)
+                                                 options:options completion:^(BOOL granted, NSError *e)
          {
              
          }];
@@ -687,8 +708,6 @@ NSString *searchString;
         NSLog(@"fb not allowed");
     }
 }
-
-#pragma mark - facebook handling
 - (NSString *)ToBase64:(NSData *)pBase64Data;{
 	unsigned char *pInData = (unsigned char *)[pBase64Data bytes];
 	int InLength = [pBase64Data length];
@@ -803,7 +822,7 @@ NSString *searchString;
     [me addAssos:fbNoochFriendsTemp];
 }
 
-#pragma mark - recent handling
+#pragma mark - recent's list handling
 -(void)getRecentDetails{
     recentUpdating = YES;
     serve *recentFetch =[serve new];

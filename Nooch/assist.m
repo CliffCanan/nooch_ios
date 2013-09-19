@@ -234,7 +234,7 @@ NSString *oldFilter;
 }
 -(NSMutableArray*)histFilter:(NSString*)filterPick{
     if (!histSafe) {
-        return sortedHist;
+        return sortedHist; 
     }
     if (!needsUpdating && [histSearching isEqualToString:@""]) {
         return sortedHist;

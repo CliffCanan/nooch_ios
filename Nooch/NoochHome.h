@@ -77,7 +77,7 @@ UIViewController *nHome;
 @property (weak, nonatomic) IBOutlet UIButton *startButton;
 @property (nonatomic) BOOL emailSend;
 @property (nonatomic) BOOL goSelectRecip;
-@property (nonatomic) IBOutlet UIImageView *userPic;
+@property (nonatomic, retain) IBOutlet UIImageView *userPic;
 @property (weak, nonatomic) IBOutlet UILabel *firstNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *lastNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *balanceLabel;

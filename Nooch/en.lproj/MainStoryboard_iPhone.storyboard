@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4504" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="sIt-xQ-cZH">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="sIt-xQ-cZH">
     <dependencies>
         <deployment defaultVersion="1296" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3734.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <scenes>
         <!--Splash-->
@@ -512,7 +512,7 @@
                                     <navigationItem title="Create Account" id="mKV-zF-N1H">
                                         <barButtonItem key="leftBarButtonItem" style="plain" id="dXX-LB-dpm">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="xiv-hE-JNr">
-                                                <rect key="frame" x="5" y="0.0" width="43" height="43"/>
+                                                <rect key="frame" x="16" y="0.0" width="43" height="43"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <state key="normal" image="BackArrow.png">
@@ -686,7 +686,7 @@
                                     <navigationItem title="Login" id="aJw-8u-8u6">
                                         <barButtonItem key="leftBarButtonItem" style="plain" id="SnW-HO-tLO">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="L15-XF-SQm">
-                                                <rect key="frame" x="5" y="0.0" width="43" height="43"/>
+                                                <rect key="frame" x="16" y="0.0" width="43" height="43"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <state key="normal" image="BackArrow.png">
@@ -806,7 +806,7 @@
                                     <navigationItem title="PIN" id="q0B-co-Yxz">
                                         <barButtonItem key="leftBarButtonItem" style="plain" id="iEK-ea-QfL">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="OYf-mY-b1x">
-                                                <rect key="frame" x="5" y="0.0" width="43" height="43"/>
+                                                <rect key="frame" x="16" y="0.0" width="43" height="43"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <state key="normal" backgroundImage="BackArrow.png">
@@ -1056,7 +1056,7 @@
             <objects>
                 <viewController storyboardIdentifier="limitsFees" id="RUq-Wd-mSx" customClass="limitsFees" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ctx-oV-xdR">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="479.99999999999994"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="BackgroundMAIN.png" id="UTe-7V-Ugi">
@@ -1064,7 +1064,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="jZQ-D3-ban">
-                                <rect key="frame" x="0.0" y="45.999999999999964" width="320" height="434"/>
+                                <rect key="frame" x="0.0" y="46" width="320" height="433.99999999999994"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="TransactionLimitsTable.png" id="xc1-mU-THc">
@@ -1121,7 +1121,7 @@
             <objects>
                 <viewController storyboardIdentifier="causes" id="AaD-fI-ieL" customClass="causeDetails" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zzT-LF-Gsi">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480.00000000000006"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="BackgroundMAIN.png" id="qF8-BS-T3c">
@@ -1913,7 +1913,7 @@
                                     <navigationItem id="9cP-hp-jxG">
                                         <barButtonItem key="leftBarButtonItem" style="plain" id="dOQ-Wx-AVl">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Ppq-5Y-qtB">
-                                                <rect key="frame" x="5" y="7" width="54" height="30"/>
+                                                <rect key="frame" x="16" y="7" width="54" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <state key="normal" backgroundImage="CancelButton_Dark.png">
@@ -3290,14 +3290,14 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Kea-zP-lfG">
-                                                            <rect key="frame" x="10" y="11" width="35" height="21"/>
+                                                            <rect key="frame" x="15" y="11" width="34" height="21"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         </label>
                                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Gio-OO-jzZ">
-                                                            <rect key="frame" x="246" y="11" width="44" height="21"/>
+                                                            <rect key="frame" x="241" y="11" width="44" height="21"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.21960784310000001" green="0.3294117647" blue="0.52941176469999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -3330,7 +3330,7 @@
                                     <navigationItem title="Add Funds" id="qb8-vJ-1Oz">
                                         <barButtonItem key="leftBarButtonItem" style="plain" id="Pe5-OS-iDX">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="MR9-oS-3ZZ">
-                                                <rect key="frame" x="5" y="7" width="54" height="30"/>
+                                                <rect key="frame" x="16" y="7" width="54" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <state key="normal" backgroundImage="CancelButton_Dark.png">
@@ -3906,14 +3906,14 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="X3r-XV-HUK">
-                                                            <rect key="frame" x="10" y="11" width="35" height="21"/>
+                                                            <rect key="frame" x="15" y="11" width="34" height="21"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         </label>
                                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="v6d-s1-4lL">
-                                                            <rect key="frame" x="246" y="11" width="44" height="21"/>
+                                                            <rect key="frame" x="241" y="11" width="44" height="21"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.21960784310000001" green="0.3294117647" blue="0.52941176469999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -3946,7 +3946,7 @@
                                     <navigationItem title="Withdraw Funds" id="dvQ-Sd-5tv">
                                         <barButtonItem key="leftBarButtonItem" style="plain" id="Dlb-Ol-Qpe">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="8vI-IT-GQw">
-                                                <rect key="frame" x="5" y="7" width="54" height="30"/>
+                                                <rect key="frame" x="16" y="7" width="54" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <state key="normal" backgroundImage="CancelButton_Dark.png">
@@ -4578,6 +4578,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="separatorColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="sectionIndexTrackingBackgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <sections/>
                                 <connections>
                                     <outlet property="dataSource" destination="oCx-gu-obh" id="nl7-tw-Xuy"/>

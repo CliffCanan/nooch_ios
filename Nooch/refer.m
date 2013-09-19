@@ -67,7 +67,7 @@
     cell.indentationWidth = 60;
     cell.textLabel.font = [core nFont:@"Regular" size:18.0];
     cell.textLabel.textColor = [core hexColor:@"FFFFFF"];
-    UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(24, 4, 32, 32)];
+    //UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(24, 4, 32, 32)];
     
     return cell;
 }
