@@ -49,7 +49,7 @@
     [v addSubview:enterInviteView];
 
     CGRect lPos = loginButton.frame;
-    lPos.origin.y = [UIScreen mainScreen].bounds.size.height - 54;
+    //lPos.origin.y = [UIScreen mainScreen].bounds.size.height - 54;
     [loginButton setFrame:lPos];
 
     

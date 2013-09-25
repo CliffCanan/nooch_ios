@@ -9,8 +9,8 @@
 #import "serve.h"
 @implementation serve
 @synthesize Delegate,tagName,responseData;
-//NSString * const ServerUrl = @"https://74.117.228.120/NoochService.svc";
-NSString * const ServerUrl = @"https://192.203.102.254/NoochService.svc";
+//NSString * const ServerUrl = @"https://74.117.228.120/NoochService.svc"; //production server
+NSString * const ServerUrl = @"https://192.203.102.254/NoochService.svc"; //development server
 bool locationUpdate;
 NSString *tranType;
 NSString *amnt;

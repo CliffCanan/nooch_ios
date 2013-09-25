@@ -43,7 +43,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Zz6-G6-xN5">
-                                <rect key="frame" x="0.0" y="470" width="0.0" height="0.0"/>
+                                <rect key="frame" x="240" y="444" width="69" height="34"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" backgroundImage="LoginButton_Small.png">
@@ -1121,11 +1121,11 @@
             <objects>
                 <viewController storyboardIdentifier="causes" id="AaD-fI-ieL" customClass="causeDetails" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zzT-LF-Gsi">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480.00000000000006"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="BackgroundMAIN.png" id="qF8-BS-T3c">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480.00000000000006"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Bjb-Tl-A7o">
@@ -1212,7 +1212,7 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </webView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ND0-6J-kse">
-                                <rect key="frame" x="0.0" y="425.00000000000006" width="320" height="55"/>
+                                <rect key="frame" x="0.0" y="425" width="320" height="55"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" backgroundImage="DonateButton.png">
