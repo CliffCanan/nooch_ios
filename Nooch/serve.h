@@ -76,6 +76,8 @@
 -(void)pinCheck:(NSString*)memId pin:(NSString*)pin;
 -(void)verifyBank:(NSString *)bankAcctId microOne:(NSString *)microOne microTwo:(NSString *)microTwo;
 -(void)withdrawFund:(NSString*)amount;
+//venturepact modification
+-(void)validateInviteCode:(NSString *)inviteCode;
 @end
 
 //392f9c86-1651-4459-a6a9-d362fcfc4366 - nooch team

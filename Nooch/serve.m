@@ -7,10 +7,14 @@
 //
 
 #import "serve.h"
+BOOL isCheckValidation;
 @implementation serve
 @synthesize Delegate,tagName,responseData;
 //NSString * const ServerUrl = @"https://74.117.228.120/NoochService.svc"; //production server
-NSString * const ServerUrl = @"https://192.203.102.254/NoochService.svc"; //development server
+//NSString * const ServerUrl = @"https://192.203.102.254/NoochService.svc"; //development server
+//http://noochweb.venturepact.com/NoochService.svc
+//NSString * const ServerUrl = @"http://172.17.60.150/NoochService/NoochService.svc";
+NSString * const ServerUrl = @"http://noochweb.venturepact.com/NoochService.svc"; //testing server Venturepact isCheckValidation;
 bool locationUpdate;
 NSString *tranType;
 NSString *amnt;
@@ -501,7 +505,20 @@ NSString *amnt;
         NSLog(@"serve connected for %@",self.tagName);
     }
     
-    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
+ NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
+   if (isCheckValidation) {
+       //isCheckValidation=NO;
+       NSDictionary*dictResponse=[responseString JSONValue];
+       if ([[[dictResponse valueForKey:@"validateInvitationCodeResult"] stringValue]isEqualToString:@"true"]) {
+           UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Valid Invite Code" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+           [alert show];
+       }
+       else
+       {
+           UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Not a Valid Invite Code" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+           [alert show];
+       }
+    }
     [self.Delegate listen:responseString tagName:self.tagName];
 }
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
@@ -512,5 +529,29 @@ NSString *amnt;
         [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
     [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
 }
+
+//Vneturepact Code
+-(void)validateInviteCode:(NSString *)inviteCode {
+    isCheckValidation=YES;
+    self.responseData = [[NSMutableData alloc] init];
+    NSString *urlString = [NSString stringWithFormat:@"%@/validateInvitationCode",ServerUrl];
+    NSURL *url = [NSURL URLWithString:urlString];
+    //NSMutableDictionary*emailParam=[[NSMutableDictionary alloc]init];
+    NSDictionary*emailParam=[NSDictionary dictionaryWithObjectsAndKeys:inviteCode,@"invitationCode", nil];
+  // emailParam = [NSMutableDictionary dictionaryWithObjectsAndKeys:inviteCode,@"invitationCode" , nil];
+    NSString *post = [emailParam JSONRepresentation];
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
+    [request setHTTPBody:postData];
+    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    if (!connection)
+        NSLog(@"connect error");
+}
+
 
 @end

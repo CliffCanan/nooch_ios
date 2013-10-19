@@ -48,9 +48,9 @@
     [v addSubview:requestInviteView];
     [v addSubview:enterInviteView];
 
-    CGRect lPos = loginButton.frame;
+//    CGRect lPos = loginButton.frame;
     //lPos.origin.y = [UIScreen mainScreen].bounds.size.height - 54;
-    [loginButton setFrame:lPos];
+    [loginButton setFrame:CGRectMake(240, 443, 69, 34)];
 
     
 }
@@ -120,41 +120,34 @@
     [UIView commitAnimations];
 }
 - (IBAction)checkCode:(id)sender {
-    if ([checkCodeField.text isEqualToString:@"pilot"] ||
-        [checkCodeField.text isEqualToString:@"booatms"] ||
-        [checkCodeField.text isEqualToString:@"boocash"] ||
-        [checkCodeField.text isEqualToString:@"philly"] ||
-        [checkCodeField.text isEqualToString:@"nomooch"] ||
-        [checkCodeField.text isEqualToString:@"letmein"] ||
-        [checkCodeField.text isEqualToString:@"moolah"] ||
-        [checkCodeField.text isEqualToString:@"sicinfit"] ||
-        [checkCodeField.text isEqualToString:@"statusquo"] ||
-        [checkCodeField.text isEqualToString:@"apple"] ||
-        [checkCodeField.text isEqualToString:@"surgam"] ||
-        [checkCodeField.text isEqualToString:@"madeinamerica"] ||
-        [checkCodeField.text isEqualToString:@"venmosux"] ||
-        [checkCodeField.text isEqualToString:@"paypalsux"]) {
-        inviteCode = [NSString new];
-        [UIView transitionFromView:enterInviteView toView:requestInviteView
-                          duration:0
-                           options:UIViewAnimationOptionTransitionFlipFromRight
-                        completion:NULL];
-        CGRect frame = v.frame;
-        frame.origin.x = 320;
-        [v setFrame:frame];
-        [shadow setAlpha:0.0f];
+ //   Boolean validateInvitationCode(string invitationCode);
+    
+    
+    [[serve new] validateInviteCode:checkCodeField.text];
+    
 
-        [UIView transitionFromView:requestInviteView toView:enterInviteView
-                          duration:0
-                           options:UIViewAnimationOptionTransitionFlipFromRight
-                        completion:NULL];
-        inviteCode = [NSString stringWithString:checkCodeField.text];
-        [[NSUserDefaults standardUserDefaults] setObject:inviteCode forKey:@"invCode"];
-        [navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"signup"] animated:YES];
-    }else{
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Code" message:@"The invite code you have entered is invalid." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [av show];
-    }
+//    if () {
+//        inviteCode = [NSString new];
+//        [UIView transitionFromView:enterInviteView toView:requestInviteView
+//                          duration:0
+//                           options:UIViewAnimationOptionTransitionFlipFromRight
+//                        completion:NULL];
+//        CGRect frame = v.frame;
+//        frame.origin.x = 320;
+//        [v setFrame:frame];
+//        [shadow setAlpha:0.0f];
+//
+//        [UIView transitionFromView:requestInviteView toView:enterInviteView
+//                          duration:0
+//                           options:UIViewAnimationOptionTransitionFlipFromRight
+//                        completion:NULL];
+//        inviteCode = [NSString stringWithString:checkCodeField.text];
+//        [[NSUserDefaults standardUserDefaults] setObject:inviteCode forKey:@"invCode"];
+//        [navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"signup"] animated:YES];
+//    }else{
+//        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Code" message:@"The invite code you have entered is invalid." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//        [av show];
+//    }
 }
 - (IBAction)enterCode:(id)sender {
     [UIView transitionFromView:requestInviteView toView:enterInviteView

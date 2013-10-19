@@ -42,21 +42,6 @@
                                 <rect key="frame" x="0.0" y="438" width="320" height="43"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Zz6-G6-xN5">
-                                <rect key="frame" x="240" y="444" width="69" height="34"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" backgroundImage="LoginButton_Small.png">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="login:" destination="zzJ-Da-yeP" eventType="touchUpInside" id="b7Q-bN-fHY"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JzN-0z-WL7">
                                 <rect key="frame" x="33" y="251" width="252" height="52"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -86,6 +71,11 @@
                                         <rect key="frame" x="0.0" y="-18" width="320" height="460"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
+                                    <view hidden="YES" contentMode="scaleToFill" id="93L-Tp-rYZ">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="600"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.57999999999999996" colorSpace="calibratedRGB"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
@@ -127,17 +117,21 @@
                                     <action selector="emailSignup:" destination="zzJ-Da-yeP" eventType="touchUpInside" id="4ax-FR-7dx"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Zz6-G6-xN5">
+                                <rect key="frame" x="240" y="443" width="69" height="34"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" backgroundImage="LoginButton_Small.png"/>
+                                <connections>
+                                    <action selector="login:" destination="zzJ-Da-yeP" eventType="touchUpInside" id="b7Q-bN-fHY"/>
+                                </connections>
+                            </button>
                             <pageControl opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="5" id="d2t-Yn-BtV">
                                 <rect key="frame" x="70" y="281" width="174" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <color key="pageIndicatorTintColor" red="0.57547433035714279" green="0.57547433035714279" blue="0.57547433035714279" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="currentPageIndicatorTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </pageControl>
-                            <view hidden="YES" contentMode="scaleToFill" id="93L-Tp-rYZ">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="600"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.57999999999999996" colorSpace="calibratedRGB"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <gestureRecognizers/>
@@ -1056,7 +1050,7 @@
             <objects>
                 <viewController storyboardIdentifier="limitsFees" id="RUq-Wd-mSx" customClass="limitsFees" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ctx-oV-xdR">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="479.99999999999994"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="BackgroundMAIN.png" id="UTe-7V-Ugi">
@@ -1084,7 +1078,7 @@
                                     <navigationItem title="PIN" id="Eiy-qX-7qZ">
                                         <barButtonItem key="leftBarButtonItem" style="plain" id="vBl-2h-MYP">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="mWy-fu-MvN">
-                                                <rect key="frame" x="5" y="0.0" width="43" height="43"/>
+                                                <rect key="frame" x="16" y="0.0" width="43" height="43"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <state key="normal" backgroundImage="BackArrow.png">
@@ -1230,7 +1224,7 @@
                                     <navigationItem title="Cause Details" id="WjO-Rt-gTs">
                                         <barButtonItem key="leftBarButtonItem" style="plain" id="Rjz-bx-WQu">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="03s-3T-fxK">
-                                                <rect key="frame" x="5" y="0.0" width="43" height="43"/>
+                                                <rect key="frame" x="16" y="0.0" width="43" height="43"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <state key="normal" backgroundImage="BackArrow.png">
@@ -2291,15 +2285,6 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="620"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" id="BbE-Tr-aYo">
-                                <rect key="frame" x="20" y="115" width="280" height="260"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="K1F-0q-KQZ" id="bJO-Af-GUU"/>
-                                    <outlet property="delegate" destination="K1F-0q-KQZ" id="y8z-Ve-KxB"/>
-                                </connections>
-                            </tableView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="rainbow.png" id="shE-dS-3mJ">
                                 <rect key="frame" x="0.0" y="44" width="320" height="4"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -2311,7 +2296,7 @@
                                     <navigationItem title="Refer a Friend" id="WJq-RP-g5V">
                                         <barButtonItem key="leftBarButtonItem" style="plain" id="XkE-WV-Lqy">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Xix-Sp-kQn">
-                                                <rect key="frame" x="5" y="7" width="54" height="30"/>
+                                                <rect key="frame" x="16" y="7" width="54" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <state key="normal" backgroundImage="CancelButton_Dark.png">
@@ -2336,12 +2321,49 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="UhJ-wn-zT2">
+                                <rect key="frame" x="20" y="190" width="55" height="46"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Text">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="SMSClicked:" destination="K1F-0q-KQZ" eventType="touchUpInside" id="wOu-BT-k8P"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="f89-Kv-oqh">
+                                <rect key="frame" x="74" y="190" width="55" height="46"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="fb">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="fbClicked:" destination="K1F-0q-KQZ" eventType="touchUpInside" id="zzz-ly-CU8"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3px-43-jkH">
+                                <rect key="frame" x="133" y="190" width="55" height="46"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                                <state key="normal" title="twitter"/>
+                                <connections>
+                                    <action selector="TwitterClicked:" destination="K1F-0q-KQZ" eventType="touchUpInside" id="reK-ke-F0y"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="l6C-fy-wxD">
+                                <rect key="frame" x="196" y="189" width="55" height="46"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                                <state key="normal" title="Email"/>
+                                <connections>
+                                    <action selector="EmailCLicked:" destination="K1F-0q-KQZ" eventType="touchUpInside" id="LTu-1x-q5h"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="navBar" destination="Xfx-Gg-EnT" id="ism-2B-FIR"/>
-                        <outlet property="options" destination="BbE-Tr-aYo" id="lbK-1p-320"/>
                         <outlet property="referCode" destination="qs3-5D-mLb" id="0bO-Sh-abg"/>
                     </connections>
                 </viewController>
@@ -3800,7 +3822,7 @@
                                     <navigationItem title="Bank Verification" id="W1z-A2-D7X">
                                         <barButtonItem key="leftBarButtonItem" style="plain" id="NK7-hk-5Rh">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="BDZ-fT-Aep">
-                                                <rect key="frame" x="5" y="7" width="54" height="30"/>
+                                                <rect key="frame" x="16" y="7" width="54" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <state key="normal" backgroundImage="CancelButton_Dark.png">
