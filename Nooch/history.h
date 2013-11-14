@@ -58,6 +58,8 @@ FPPopoverController *fp;
     NSString *TransactionDate;
     __weak IBOutlet UINavigationBar *navBar;
     __weak IBOutlet UIButton *leftNavBar;
+    //venturpact
+    int load,index;
 }
 @property (weak, nonatomic) IBOutlet UILabel *statusOfTransfer;
 @property (weak, nonatomic) IBOutlet UIImageView *secondPartyImage;
@@ -96,6 +98,6 @@ FPPopoverController *fp;
 @property (weak, nonatomic) IBOutlet UILabel *balance;
 @property (weak, nonatomic) IBOutlet UITableView *historyTable;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
-
+- (IBAction)ShowMap:(id)sender;
 -(void)dismissFP:(NSNotification *)notification;
 @end

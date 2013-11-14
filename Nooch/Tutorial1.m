@@ -7,12 +7,16 @@
 //
 
 #import "Tutorial1.h"
+#import "terms.h"
 #import "NoochHome.h"
 #import "AppSkel.h"
 #import "Signup.h"
-
+#import "privacy.h"
+#import "JSON.h"
 @interface Tutorial1 ()
-
+{ serve*serveOBJ;
+    NSMutableDictionary*dictResponse;
+}
 @end
 
 @implementation Tutorial1
@@ -50,10 +54,31 @@
 
 //    CGRect lPos = loginButton.frame;
     //lPos.origin.y = [UIScreen mainScreen].bounds.size.height - 54;
-    [loginButton setFrame:CGRectMake(240, 443, 69, 34)];
+    //[loginButton setFrame:CGRectMake(240, 443, 69, 34)];
+}
 
+-(void)listen:(NSString *)result tagName:(NSString*)tagName{
+    
+        dictResponse=[result JSONValue];
+            if ([[[dictResponse valueForKey:@"validateInvitationCodeResult"] stringValue]isEqualToString:@"1"])
+            {
+                
+                Signup*pNooch=[self.storyboard instantiateViewControllerWithIdentifier:@"signup"];
+                [self.navigationController pushViewController:pNooch animated:YES];
+
+
+            }
+            else
+            {
+                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Not a Valid Invite Code" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                
+            }
+    
     
 }
+
+
 
 -(void)viewWillDisappear:(BOOL)animated{
     [checkCodeField resignFirstResponder];
@@ -119,13 +144,25 @@
     [shadow setAlpha:1.0f];
     [UIView commitAnimations];
 }
+
 - (IBAction)checkCode:(id)sender {
+    NSString*get4chr=[checkCodeField.text substringToIndex:3];
+    if ([[get4chr uppercaseStringWithLocale:[NSLocale currentLocale]]isEqualToString:get4chr]) {
+        serveOBJ=[serve new];
+        [serveOBJ setDelegate:self];
+        [serveOBJ validateInviteCode:checkCodeField.text];
+    }
+    else
+    {
+        
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Check Your Referral Code" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        
+    }
  //   Boolean validateInvitationCode(string invitationCode);
     
     
-    [[serve new] validateInviteCode:checkCodeField.text];
     
-
 //    if () {
 //        inviteCode = [NSString new];
 //        [UIView transitionFromView:enterInviteView toView:requestInviteView
@@ -166,6 +203,12 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    CGSize result = [[UIScreen mainScreen] bounds].size;
+    if(result.height == 480){
+        
+        loginButton.frame=CGRectMake(240, 443, 69, 34);
+    }
+    
 	// Do any additional setup after loading the view.
     NSLog(@"Tutorial loaded");
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -183,7 +226,7 @@
     backgroundArray = [[NSArray alloc] initWithObjects:[UIImage imageNamed:@"Pic 2.png"],[UIImage imageNamed:@"Tutorial1.png"],[UIImage imageNamed:@"Tutorial2.png"],[UIImage imageNamed:@"Tutorial3.png"],[UIImage imageNamed:@"Tutorial4.png"], nil ];
     if([[UIScreen mainScreen] bounds].size.height > 480){
         pageControl.frame = CGRectMake(pageControl.frame.origin.x,pageControl.frame.origin.y+55,pageControl.frame.size.width,pageControl.frame.size.height);
-        loginButton.frame = CGRectMake(loginButton.frame.origin.x,loginButton.frame.origin.y+68,loginButton.frame.size.width,loginButton.frame.size.height);
+       // loginButton.frame = CGRectMake(loginButton.frame.origin.x,loginButton.frame.origin.y+68,loginButton.frame.size.width,loginButton.frame.size.height);
         createAccountButton.frame = CGRectMake(createAccountButton.frame.origin.x, createAccountButton.frame.origin.y+68, createAccountButton.frame.size.width, createAccountButton.frame.size.height);
     }
 }

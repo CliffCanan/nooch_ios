@@ -51,13 +51,15 @@
 - (IBAction)scanCard:(id)sender {
     CardIOPaymentViewController *scanViewController = [[CardIOPaymentViewController alloc] initWithPaymentDelegate:self];
     scanViewController.appToken = @"59f7a8042cb640198a5aeeaffae4e6ff"; // get your app token from the card.io website
-    [self presentModalViewController:scanViewController animated:YES];
+     [self presentViewController:scanViewController animated:YES completion:nil];
+    //[self presentModalViewController:scanViewController animated:YES];
 }
 
 - (void)userDidCancelPaymentViewController:(CardIOPaymentViewController *)scanViewController {
     NSLog(@"User canceled payment info");
     // Handle user cancellation here...
-    [scanViewController dismissModalViewControllerAnimated:YES];
+    [scanViewController dismissViewControllerAnimated:YES completion:nil];
+    //[scanViewController dismissModalViewControllerAnimated:YES];
 }
 - (void)userDidProvideCreditCardInfo:(CardIOCreditCardInfo *)info inPaymentViewController:(CardIOPaymentViewController *)scanViewController {
     // The full card number is available as info.cardNumber, but don't log that!
@@ -66,18 +68,24 @@
     expirationField.text = [NSString stringWithFormat:@"%02i/%i",info.expiryMonth,info.expiryYear];
     cardNumField.text = info.cardNumber;
     secCodeField.text = info.cvv;
-    [scanViewController dismissModalViewControllerAnimated:YES];
+    [scanViewController dismissViewControllerAnimated:YES completion:nil];
+
+    //[scanViewController dismissModalViewControllerAnimated:YES];
 }
 
 -(void)cancel{
     [[navCtrl.viewControllers objectAtIndex:0] performSelectorOnMainThread:@selector(showFundsMenu) withObject:nil waitUntilDone:YES];
-    [navCtrl dismissModalViewControllerAnimated:YES];
+    [navCtrl dismissViewControllerAnimated:YES completion:nil];
+
+   // [navCtrl dismissModalViewControllerAnimated:YES];
 }
 - (IBAction)addCard:(id)sender {
+    
     NSString *urlString =[NSString stringWithFormat:@"%@/GetEncryptedCardDetails", MyUrl];
     NSURL *url = [NSURL URLWithString:urlString];
     NSDictionary *accountData = [NSDictionary dictionaryWithObjectsAndKeys: cardNumField.text,@"CardNumber", secCodeField.text,@"VerificationNumber",expirationField.text, @"ExpirationDate", nil];
-    NSDictionary *acctParam = [NSDictionary dictionaryWithObjectsAndKeys:(NSString *)accountData,@"cardDetails", nil];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSDictionary *acctParam = [NSDictionary dictionaryWithObjectsAndKeys:(NSString *)accountData,@"cardDetails",[defaults valueForKey:@"OAuthToken"],@"accessToken", nil];
     NSString *post = [acctParam JSONRepresentation];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
 
@@ -148,7 +156,9 @@
         UIAlertView *serviceMessage= [[UIAlertView alloc] initWithTitle:@"" message:[serviceDict objectForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [serviceMessage show];
         [serviceMessage setTag:7];
-        [navCtrl dismissModalViewControllerAnimated:YES];
+        [navCtrl dismissViewControllerAnimated:YES completion:nil];
+
+        //[navCtrl dismissModalViewControllerAnimated:YES];
     }
     else
     {

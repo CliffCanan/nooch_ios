@@ -248,6 +248,11 @@
 }
 
 - (void)viewDidLoad {
+    //venturepact
+    locationController = [[MyCLController alloc] init];
+	locationController.delegate = self;
+	[locationController.locationManager startUpdatingLocation];
+    //
     NSLog(@"Pinlock screen loaded");
 	[super viewDidLoad];
     PINText = @"";
@@ -308,7 +313,8 @@
 -(void)goBack
 {
     if (self.resPin) {
-        [self dismissModalViewControllerAnimated:YES];
+       // [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }else{
         [navCtrl popViewControllerAnimated:YES];
     }
@@ -344,7 +350,16 @@
 	return self;
 }*/
 
+- (void)locationUpdate:(CLLocation *)location {
+	NSString*current = [location description];
+    lat=location.coordinate.latitude;
+    lon=location.coordinate.longitude;
+    NSLog(@"%@",current);
+}
 
+- (void)locationError:(NSError *)error {
+	//locationLabel.text = [error description];
+}
 # pragma mark - serve delegation
 
 -(void)listen:(NSString*)result tagName:(NSString*)tagName
@@ -358,7 +373,7 @@
         NSLog(@"got encrypted reqImm %@",template);
         responseData = [NSMutableData data];
 //        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@", @"https://192.203.102.254/NoochService.svc", @"ValidatePinNumber", @"memberId",[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"pinNo",[loginResult objectForKey:@"Status"]]]];
-        NSString * urlString = [NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@", @"http://172.17.60.150/NoochService/NoochService.svc", @"ValidatePinNumber", @"memberId",[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"pinNo",[loginResult objectForKey:@"Status"]];
+        NSString * urlString = [NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@", MyUrl, @"ValidatePinNumber", @"memberId",[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"pinNo",[loginResult objectForKey:@"Status"]];
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
 
         NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -382,7 +397,8 @@
         tempImg = UIImagePNGRepresentation(selectedPic);
         [me stamp];
         [navCtrl popToRootViewControllerAnimated:NO];
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
+        //[self dismissModalViewControllerAnimated:YES];
         UIAlertView *decline= [[UIAlertView alloc] initWithTitle:@"Welcome" message:@"Thanks for joining us here at Nooch!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [decline show];
         
@@ -402,13 +418,19 @@
             serve *login = [serve new];
             login.Delegate = self;
             login.tagName = @"loginRequest";
-            [login login:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"] password:getEncryptedPassword];
-            
+            [login login:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"] password:getEncryptedPassword remember:YES lat:lat lon:lon];
+        
             keyboard.userInteractionEnabled = NO;
             leftNavButton.userInteractionEnabled = NO;
             return;
         }
-        else if([[template objectForKey:@"Result"] isEqualToString:@"You are already a nooch member."])
+        else if([[template objectForKey:@"Result"] isEqualToString:@"Invite code used or does not exist."])
+        {
+                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Sorry! Referral Code Expired" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                 [alert show];
+           [navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"tutorial"] animated:YES];
+            
+        }else if([[template objectForKey:@"Result"] isEqualToString:@"You are already a nooch member."])
         {
             UIAlertView *decline= [[UIAlertView alloc] initWithTitle:@"Well..." message:@"This address already exists in our system, we do not support cloning you."delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [decline show];
@@ -424,7 +446,8 @@
         pinEncrypted = pinEncrypted;
         passwordEncrypted = getEncryptedPassword;
         [navCtrl popToRootViewControllerAnimated:NO];
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
+       // [self dismissModalViewControllerAnimated:YES];
         //[navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"login"] animated:YES];
     }else if([[loginResult objectForKey:@"Result"] isEqualToString:@"Success"] && [tagName isEqualToString:@"ValidatePinNumber"])
     {
@@ -515,9 +538,11 @@
         reqImm = NO;
 
         [navCtrl popToRootViewControllerAnimated:NO];
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
+      //  [self dismissModalViewControllerAnimated:YES];
     }else if(alertView.tag == 2){
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
+        //[self dismissModalViewControllerAnimated:YES];
     }
 }
 
@@ -553,7 +578,8 @@
             }else{
                 NSLog(@"yuppppp");
                 reqImm = NO;
-                [self dismissModalViewControllerAnimated:YES];
+                [self dismissViewControllerAnimated:YES completion:nil];
+                //[self dismissModalViewControllerAnimated:YES];
                 return;
             }
         }else if([[loginResult objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."])
@@ -625,7 +651,10 @@
         req.tagName=@"MemberRegistration";
         keyboard.userInteractionEnabled = NO;
         leftNavButton.userInteractionEnabled = NO;
-        [req newUser:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"] first:[[NSUserDefaults standardUserDefaults] objectForKey:@"firstName"] last:[[NSUserDefaults standardUserDefaults] objectForKey:@"lastName"] password:getEncryptedPassword pin:encryptedPIN invCode:@"pilot"];
+        NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+        
+        [req newUser:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"] first:[[NSUserDefaults standardUserDefaults] objectForKey:@"firstName"] last:[[NSUserDefaults standardUserDefaults] objectForKey:@"lastName"] password:
+         getEncryptedPassword pin:encryptedPIN invCode:[defaults valueForKey:@"RefCode"]];
         //[req methodName:@"MemberRegistration" userName:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"] firstName:[[NSUserDefaults standardUserDefaults] objectForKey:@"firstName"] lastName:[[NSUserDefaults standardUserDefaults] objectForKey:@"lastName"] password:getEncryptedPassword pinNumber:encryptedPIN invCode:@"pilot"];//inviteCode
     }
 }

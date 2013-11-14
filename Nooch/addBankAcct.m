@@ -6,14 +6,28 @@
 //  Copyright (c) 2013 Nooch. All rights reserved.
 //
 
+#define NUMBER @"1234567890"
+#define ALPHA               @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 #import "addBankAcct.h"
-
+#import "serve.h"
+#import <Foundation/Foundation.h>
 @interface addBankAcct ()
+{
+    NSString*SelectedBankName;
+    serve*serveOBJ;
+    NSArray *array;
+    NSDictionary *transactionInput;
+    NSString *first;
+    NSString *last;
+    NSMutableDictionary *transaction;
+    
+    NSString*ServiceType;
+   }
 
 @end
 
 @implementation addBankAcct
-
+@synthesize tbleBankList,bankListView;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -30,6 +44,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    ServiceType=@"list";
+    if (![self.view.subviews containsObject:bankListView]) {
+        [self.view addSubview:bankListView];
+    }
+    
+    
+    
+    //arrBankList=[[NSMutableArray alloc]init];
+    serveOBJ=[serve new];
+    [serveOBJ setDelegate:self];
+    [serveOBJ getBankList];
+    
 	// Do any additional setup after loading the view.
     scrollView.contentSize = CGSizeMake(320,600);
 
@@ -49,6 +75,7 @@
     detailsTable.layer.borderColor = [core hexColor:@"b3b3b3"].CGColor;
 }
 - (IBAction)addBank:(id)sender {
+    firstLast.text=[firstLast.text lowercaseString];
     if ([accountNum.text length] < 3 || [accountNum.text length] > 17)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Account Number" message:@"Please double check your account number, it should ranges between 3 and 17 digits." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -68,12 +95,13 @@
     }
     else
     {
-        NSArray *array = [firstLast.text componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        NSString *first = [array objectAtIndex:0];
-        NSString *last = [array lastObject];
-        NSDictionary *transactionInput  =[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId", @"test",@"BankName",accountNum.text,@"BankAcctNumber", routingNumber.text,@"BankAcctRoutingNumber",first,@"FirstName",last,@"LastName",nil];
+        array = [firstLast.text componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        first = [array objectAtIndex:0];
+         last = [array lastObject];
+         transactionInput  =[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId", SelectedBankName,@"BankName",accountNum.text,@"BankAcctNumber", routingNumber.text,@"BankAcctRoutingNumber",first,@"FirstName",last,@"LastName",nil];
 
-        NSMutableDictionary *transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"accountInput", nil];
+         transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"accountInput", nil];
+        ServiceType=@"SaveBank";
         serve *addBank = [serve new];
         addBank.tagName = @"addBank";
         addBank.Delegate = self;
@@ -82,9 +110,18 @@
 }
 
 -(void)listen:(NSString *)result tagName:(NSString *)tagName{
-    NSMutableDictionary *loginResult = [result JSONValue];
+    
+    
+    if ([ServiceType isEqualToString:@"list"]) {
+        arrBankList =[[NSMutableArray alloc]initWithArray:[result JSONValue]];
+        NSLog(@"list %@",arrBankList);
+        [tbleBankList reloadData];
+    }
+    else
+    {
     if([tagName isEqualToString:@"addBank"])
     {
+         NSMutableDictionary *loginResult = [result JSONValue];
         NSDictionary *resultValue = [loginResult valueForKey:@"SaveBankAccountDetailsResult"];
 
         if([[resultValue valueForKey:@"Result"] isEqualToString:@"Your account details have been saved successfully."]){
@@ -95,12 +132,22 @@
             routingNumber.text = @"";
             firstLast.text = @"";
             [self cancel];
+            [detailsTable reloadData];
+        }
+        else if ([ServiceType isEqualToString:@"SaveBank"])
+        {
+            NSMutableDictionary *Result = [result JSONValue];
+            if ([[[Result valueForKey:@"SaveBankAccountDetailsResult"]valueForKey:@"Result"]isEqualToString:@"Your account details have been saved successfully."]) {
+                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:[[Result valueForKey:@"SaveBankAccountDetailsResult"]valueForKey:@"Result"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+            }
         }
         else
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
         }
+    }
     }
 }
 
@@ -111,14 +158,68 @@
     [scrollView setContentOffset:CGPointMake(0.0,textField.frame.size.height+10*textField.tag) animated:YES];
 }
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-    NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    if(textField == routingNumber){
-        if([newString length] > 9)
-            return NO;
-    }else if(textField == accountNum){
-        if([newString length] > 16)
-            return NO;
+ //   NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+//    if(textField == routingNumber){
+//        if([newString length] > 9)
+//            return NO;
+//    }else if(textField == accountNum){
+//        if([newString length] > 16)
+//            return NO;
+//    }
+    if (textField == routingNumber || textField == accountNum )
+    {
+        if ([string isEqualToString:@""]) {
+            if (!textField.text.length)
+                return NO;
+            if ([[textField.text stringByReplacingCharactersInRange:range withString:string]rangeOfString:@""].length)
+                return NO;
+        }
+        
+        if ([textField.text stringByReplacingCharactersInRange:range withString:string].length < textField.text.length) {
+            return YES;
+        }
+        if (textField==routingNumber) {
+            if ([textField.text stringByReplacingCharactersInRange:range withString:string].length > 9) {
+                return NO;
+            }
+        }
+        else if (textField==accountNum)
+        {
+            if ([textField.text stringByReplacingCharactersInRange:range withString:string].length > 16) {
+                return NO;
+            }
+        }
+        
+        NSCharacterSet *charcter = [NSCharacterSet characterSetWithCharactersInString:NUMBER];
+        if ([string rangeOfCharacterFromSet:charcter].location != NSNotFound) {
+            return YES;
+        }
+        return NO;
     }
+
+    if (textField == bankName || textField == firstLast )
+    {
+        if ([string isEqualToString:@""]) {
+            if (!textField.text.length)
+                return NO;
+            if ([[textField.text stringByReplacingCharactersInRange:range withString:string]rangeOfString:@""].length)
+                return NO;
+        }
+        
+        if ([textField.text stringByReplacingCharactersInRange:range withString:string].length < textField.text.length) {
+            return YES;
+        }
+           //    if ([textField.text stringByReplacingCharactersInRange:range withString:string].length > 20) {
+        //            return NO;
+        //        }
+        
+        NSCharacterSet *charcter = [NSCharacterSet characterSetWithCharactersInString:ALPHA];
+        if ([string rangeOfCharacterFromSet:charcter].location != NSNotFound) {
+            return YES;
+        }
+        return NO;
+    }
+
     return YES;
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
@@ -153,10 +254,19 @@
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    
     return 1;
+        
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 3;
+    if ([tableView isEqual:tbleBankList]) {
+        return arrBankList.count;
+    }
+    else
+    {
+    return 4;
+    }
+    return 0;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellIdentifier = @"Cell";
@@ -166,6 +276,11 @@
     }
     for(UIView *subview in cell.contentView.subviews)
         [subview removeFromSuperview];
+    if ([tableView isEqual:tbleBankList]) {
+        cell.textLabel.text=[arrBankList objectAtIndex:indexPath.row];
+    }
+    else
+    {
     cell.detailTextLabel.text = @"";
     cell.indentationLevel = 1;
     cell.indentationWidth = 40;
@@ -179,18 +294,35 @@
         [cell.textLabel setText:@"Name on Account"];
     }else if(indexPath.row == 1){
         [cell.textLabel setText:@"Routing Number"];
-    }else{
+    }else if(indexPath.row==2){
         [cell.textLabel setText:@"Account Number"];
+    }
+    else if (indexPath.row==3)
+    {
+        [cell.textLabel setText:@"Bank Name"];
+       
+        bankName.text=SelectedBankName;
+        bankName.enabled=NO;
+    }
     }
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if ([tableView isEqual:tbleBankList]) {
+        [bankListView removeFromSuperview];
+        SelectedBankName=[arrBankList objectAtIndex:indexPath.row];
+        [detailsTable reloadData];
+        
+    }
+    else
+    {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
 }
 
 -(void)cancel{
     [[navCtrl.viewControllers objectAtIndex:0] performSelectorOnMainThread:@selector(showFundsMenu) withObject:nil waitUntilDone:YES];
-    [navCtrl dismissModalViewControllerAnimated:YES];
+    [navCtrl dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning

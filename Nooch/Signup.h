@@ -22,7 +22,7 @@ UIImage *selectedPic;
     
     __weak IBOutlet UIImageView *picture;
     __weak IBOutlet UINavigationBar *navBar;
-    __weak IBOutlet UIButton *leftNavButton;
+     IBOutlet UIButton *leftNavButton;
 }
 
 @property (nonatomic, retain) ACAccountStore *accountStore;

@@ -67,12 +67,14 @@
 
 -(void)goBack
 {
-    [navCtrl dismissModalViewControllerAnimated:YES];
+    [navCtrl dismissViewControllerAnimated:YES completion:nil];
+   // [navCtrl dismissModalViewControllerAnimated:YES];
 }
 
 - (IBAction) acceptButtonAction
 {
-    [navCtrl dismissModalViewControllerAnimated:YES];
+    [navCtrl dismissViewControllerAnimated:YES completion:nil];
+    //[navCtrl dismissModalViewControllerAnimated:YES];
 }
 
 -(void)listen:(NSString *)result tagName:(NSString*)tagName

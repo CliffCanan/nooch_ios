@@ -11,6 +11,12 @@
 #import "JSON.h"
 
 @implementation assist
+@synthesize arrRecordsCheck;
+NSString *responseStringForHis;
+NSMutableArray *newHistForHis;
+NSString *urlForHis;
+NSMutableURLRequest *requestForHis;
+NSURLConnection *connectionForHis;
 NSString *whichPing;
 NSString *endTransId;
 NSString *oldFilter;
@@ -212,23 +218,32 @@ NSString *oldFilter;
 -(void)histPoll{
     histSafe=NO;
   responseData = [NSMutableData data];
-  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@", MyUrl, @"GetTransactionsList", [usr objectForKey:@"MemberId"], @"ALL", @"pSize", [NSString stringWithFormat:@"%d",[histCache count]], @"pIndex", @"1"]]];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    
+    
+    
+  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@&accessToken=%@", MyUrl, @"GetTransactionsList", [usr objectForKey:@"MemberId"], @"ALL", @"pSize", [NSString stringWithFormat:@"%d",[histCache count]], @"pIndex", @"1",[defaults valueForKey:@"OAuthToken"]]]];
   [NSURLConnection connectionWithRequest:request delegate:self];
 }
 -(void)histUpdate{
     histSafe=NO;
+     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
    responseData = [NSMutableData data];
-  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@", MyUrl, @"GetTransactionsList", [usr objectForKey:@"MemberId"], @"ALL", @"pSize", @"20", @"pIndex", @"1"]]];
+  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@&accessToken=%@", MyUrl, @"GetTransactionsList", [usr objectForKey:@"MemberId"], @"ALL", @"pSize", @"20", @"pIndex", @"1",[defaults valueForKey:@"OAuthToken"]]]];
   [NSURLConnection connectionWithRequest:request delegate:self];
 }
 -(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len{
     histSafe=NO;
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    
+    
+
     responseData = [NSMutableData data];
-    NSString *url = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@", MyUrl, @"GetTransactionsList", [usr objectForKey:@"MemberId"], type, @"pSize", [NSString stringWithFormat:@"%d",len], @"pIndex", [NSString stringWithFormat:@"%d",sPos]];
+    urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@&accessToken=%@", MyUrl, @"GetTransactionsList", [usr objectForKey:@"MemberId"], type, @"pSize", [NSString stringWithFormat:@"%d",len], @"pIndex", [NSString stringWithFormat:@"%d",sPos],[defaults valueForKey:@"OAuthToken"]];
     NSLog(@"more hist %@",type);
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
-    NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
-    if (!connection) {
+    requestForHis = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlForHis]];
+  connectionForHis=[[NSURLConnection alloc] initWithRequest:requestForHis delegate:self];
+    if (!connectionForHis) {
         NSLog(@"failed to connect for history");
     }
 }
@@ -347,6 +362,9 @@ NSString *oldFilter;
         }
         if(![[loginResult objectForKey:@"FirstName"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"FirstName"] != NULL)
         {
+            NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+            [defaults setValue:[NSString stringWithFormat:@"%@",[loginResult objectForKey:@"FirstName"]]forKey:@"FullName"];
+            [defaults synchronize];
             [usr setObject:[loginResult objectForKey:@"FirstName"] forKey:@"firstName"];
             [usr setObject:[loginResult objectForKey:@"LastName"] forKey:@"lastName"];
         }
@@ -382,9 +400,9 @@ NSString *oldFilter;
     NSLog(@"failed updating lists");
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
-    NSMutableArray *newHist = [responseString JSONValue];
-    [self performSelectorInBackground:@selector(processNew:) withObject:newHist];
+    responseStringForHis = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
+    newHistForHis = [responseStringForHis JSONValue];
+    [self performSelectorInBackground:@selector(processNew:) withObject:newHistForHis];
 }
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
     return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
@@ -396,6 +414,7 @@ NSString *oldFilter;
 }
 -(void)processNew:(NSMutableArray*)newHist{
     [newHist setArray:[self sortByStringDate:newHist]];
+    arrRecordsCheck=[[NSArray alloc]initWithArray:newHist];
     if ([[[newHist lastObject] objectForKey:@"TransactionId"] isEqualToString:[[sortedHist lastObject] objectForKey:@"TransactionId"]] && loadingCheck) {
         limit = YES;
     }

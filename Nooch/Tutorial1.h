@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "serve.h"
 NSString *inviteCode;
 bool fbCreate;
 
-@interface Tutorial1 : UIViewController<UINavigationControllerDelegate,UITextFieldDelegate>{
+@interface Tutorial1 : UIViewController<UINavigationControllerDelegate,UITextFieldDelegate,serveD>{
     NSArray *backgroundArray;
     __weak IBOutlet UITextField *checkCodeField;
     __weak IBOutlet UITextField *reqInvField;

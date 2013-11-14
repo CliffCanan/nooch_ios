@@ -12,12 +12,16 @@
 #import "JSON.h"
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
-
+#import "MyCLController.h"
 @protocol serveD
+@required
 -(void)listen:(NSString *)result tagName:(NSString *)tagName;
 @end
 
-@interface serve : NSObject <CLLocationManagerDelegate>{
+@interface serve : NSObject <CLLocationManagerDelegate,MyCLControllerDelegate>{
+    //venturepact modification
+    
+
     NSMutableData *responseData;
     //NSMutableURLRequest *request;
     id<serveD> Delegate;
@@ -37,7 +41,7 @@
     NSString *Longitude;
     NSString *Altitude;
 }
-
+@property(nonatomic,strong) CLLocationManager *locationManager;
 @property (retain) id<serveD> Delegate;
 @property (nonatomic, retain) NSMutableData *responseData;
 @property (nonatomic, retain) NSString *tagName;
@@ -59,7 +63,8 @@
 -(void)privacyPolicy;
 -(void)tos;
 -(void)dupCheck:(NSString*)email;
--(void)login:(NSString*)email password:(NSString*)pass;
+//-(void)login:(NSString*)email password:(NSString*)pass;
+
 -(void)makeBankPrimary:(NSString*)bankId;
 -(void)makeCardPrimary:(NSString*)cardId;
 -(void)memberDevice:(NSString *)deviceToken;
@@ -77,7 +82,14 @@
 -(void)verifyBank:(NSString *)bankAcctId microOne:(NSString *)microOne microTwo:(NSString *)microTwo;
 -(void)withdrawFund:(NSString*)amount;
 //venturepact modification
+-(void)getBankList;
+-(void)login:(NSString*)email password:(NSString*)pass remember:(BOOL)isRem lat:(float)lat lon:(float)lng;
 -(void)validateInviteCode:(NSString *)inviteCode;
+-(void)SendSMSApi:(NSString*)phoneNo msg:(NSString*)msgText;
+-(void)GetReferralCode:(NSString*)memberid;
+-(void)getInvitedMemberList:(NSString*)memId;
+- (void)locationUpdate:(CLLocation *)location;
+- (void)locationError:(NSError *)error;
 @end
 
 //392f9c86-1651-4459-a6a9-d362fcfc4366 - nooch team

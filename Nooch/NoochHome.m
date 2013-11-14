@@ -16,9 +16,10 @@
 #import "history.h"
 
 @interface NoochHome ()
-
+{
+    UIView*loader;
+}
 @end
-
 //static NSString *pUnreservedCharsString = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~";
 static	const   char	*Base64Chars	=	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/0=";
 static	unsigned char	Base64Inverted[128];
@@ -28,7 +29,7 @@ NSMutableArray *tutsArray;
 int tutPos;
 
 @implementation NoochHome
-@synthesize mailComposer,userPic,firstNameLabel,lastNameLabel,balanceLabel,sendMoneyView,friendTable,blankLabel,
+@synthesize mailComposer,userPic,firstNameLabel,lastNameLabel,balanceLabel,sendMoneyView,friendTable,blankLabel,btnimgValidateNoti,
 spinner,display,emailSend,startButton,goSelectRecip,
 sorter,sections,sectionsSearch,buttonView,connectFbButton,bannerView;
 
@@ -179,6 +180,10 @@ NSString *searchString;
 - (void)viewDidLoad{
     [super viewDidLoad];
     
+    btnimgValidateNoti.hidden=YES;
+    
+    
+
     //get history cached
     [me histMore:@"ALL" sPos:3 len:30];
     
@@ -186,8 +191,18 @@ NSString *searchString;
     sendingMoney = NO;
     tutsArray = [NSMutableArray new];
     tutPos = 0;
-    [buttonView setFrame:CGRectMake(35,140,255,255)];
-    
+//    [buttonView setFrame:CGRectMake(0,140,320,350)];
+    CGSize result1 = [[UIScreen mainScreen] bounds].size;
+    if(result1.height == 480){
+        btnimgValidateNoti.frame=CGRectMake(0, 310, 320, 43);
+        
+    }
+    else if(result1.height==568)
+    {
+        btnimgValidateNoti.frame=CGRectMake(0, 330, 320, 43);
+    }
+    buttonView.frame=CGRectMake(0, 120, 320, 350);
+
     
     if([[UIScreen mainScreen] bounds].size.height > 480){
         [tutsArray addObject:[UIImage imageNamed:@"CoachMarks1-568h@2x.png"]];
@@ -303,10 +318,18 @@ NSString *searchString;
     //if they have required immediately turned on or haven't selected the option yet, redirect them to PIN screen
     if (![[me usr] objectForKey:@"requiredImmediately"]) {
         reqImm = YES;
-        [self presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
+        //Commented by Charanjit as the method has been depricated
+//        [self presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
+        
+        //new addition by Charanjit
+        [self presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:YES completion:nil];
+        
     }else if([[[me usr] objectForKey:@"requiredImmediately"] boolValue]){
         reqImm = YES;
-        [self presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
+        //commented by Charanjit
+//        [self presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
+        //new addition which does the same work
+        [self presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:YES completion:nil];
     }
 }
 
@@ -423,6 +446,23 @@ NSString *searchString;
     [sendMoneyOverlay setHidden:NO];
 }
 -(void)refreshBalance{
+//    if (![self.view.subviews containsObject:loader]) {
+//        loader=[[UIView alloc]initWithFrame:CGRectMake(110, 200, 100, 100)];
+//        UIActivityIndicatorView*activity=[[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(20, 20, 40, 50)];
+//        [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+//        [activity startAnimating];
+//        
+//        [loader addSubview:activity];
+//        [loader setBackgroundColor:[UIColor blackColor]];
+//        
+//        [self.view addSubview:loader];
+//    }
+
+    if (![self.view.subviews containsObject:loader]) {
+        loader=[me waitStat:@"Loading Account info..."];
+        [self.view addSubview:loader];
+    }
+   
     [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(updateBanner) userInfo:nil repeats:YES];
 }
 -(void)goBack{
@@ -510,10 +550,21 @@ NSString *searchString;
     sendMoneyView.hidden = YES;
 }
 -(void)updateBanner{
+     bannerView.hidden = NO;
+    balanceLabel.hidden=NO;
+    NSLog(@"%@",[[me usr] objectForKey:@"firstName"]);
     firstNameLabel.text=[[me usr] objectForKey:@"firstName"];
     lastNameLabel.text=[[me usr] objectForKey:@"lastName"];
     if([[me usr] objectForKey:@"Balance"] != NULL)
+    {
         balanceLabel.text =[@"$" stringByAppendingString:[[me usr] objectForKey:@"Balance"]];
+        if ([self.view.subviews containsObject:loader]) {
+            [loader removeFromSuperview];
+            [me endWaitStat];
+        }
+              // UIView*loader=[self.view viewWithTag:20003];
+        //[loader removeFromSuperview];
+    }
     else
         balanceLabel.text = @"";
     if([me pic] != NULL){
@@ -530,10 +581,38 @@ NSString *searchString;
         suspended = NO;
         [userBar setHighlighted:NO];
     }
+    CGSize result1 = [[UIScreen mainScreen] bounds].size;
+    if(result1.height == 480){
+        btnimgValidateNoti.frame=CGRectMake(0, 310, 320, 43);
+        
+    }
+    else if(result1.height==568)
+    {
+        btnimgValidateNoti.frame=CGRectMake(0, 330, 320, 43);
+    }
+    buttonView.frame=CGRectMake(0, 120, 320, 350);
+    
+
+        NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    if ([[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"]) {
+        btnimgValidateNoti.hidden=YES;
+    }
+    else
+    {
+        btnimgValidateNoti.hidden=NO;
+    }
+
+    }
+- (IBAction)btnTappedToGOSettings:(id)sender {
+    [self goSettings:nil];
 }
 -(IBAction)goSettings:(id)sender {
     profileGO = YES;
-    [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"settings"] animated:YES];
+    //commented by Charanjit
+//    [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"settings"] animated:YES];
+    
+    //removed depriciated method
+    [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"settings"] animated:YES completion:nil];
     
 }
 -(IBAction)goFunds:(id)sender {
@@ -1290,7 +1369,11 @@ NSString *searchString;
         if (causes) {
             [navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"causes"] animated:YES];
         }else{
-            [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
+            //commented by Charanjit due to deprication
+//            [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
+
+            //changed by Charanjit
+            [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES completion:nil];
         }
     }
 }
@@ -1357,13 +1440,14 @@ NSString *searchString;
 
 #pragma- server response delegation
 -(void) listen:(NSString *)result tagName:(NSString*)tagName{
-    
+
     NSDictionary *loginResult = [result JSONValue];
     if([tagName isEqualToString:@"SetDeviceToken"]){
         return;
     }
-    if ((loginResult != NULL) && ([loginResult count] > 0) && ([tagName isEqualToString:@"getMemberDetails"]))
+        if ((loginResult != NULL) && ([loginResult count] > 0) && ([tagName isEqualToString:@"getMemberDetails"]))
     {
+        
         if(emailSend){
             NSLog(@"email push");
             [me endWaitStat];
@@ -1374,9 +1458,12 @@ NSString *searchString;
             receiverId = [dict objectForKey:@"MemberId"];
             NSURL *photoUrl=[[NSURL alloc]initWithString:[loginResult objectForKey:@"PhotoUrl"]];
             receiverImgData = [NSData dataWithContentsOfURL:photoUrl];
-            [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
+            //commented by Charanjit
+//            [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
+            [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES completion:nil];
             return;
-        }else{
+        }
+        else{
             if([loginResult objectForKey:@"BalanceAmount"] != [NSNull null])
             {
                 [[me usr] setObject:[loginResult objectForKey:@"BalanceAmount"] forKey:@"Balance"];
@@ -1391,6 +1478,7 @@ NSString *searchString;
                 [[me usr] setObject:[loginResult objectForKey:@"FirstName"] forKey:@"firstName"];
                 [[me usr] setObject:[loginResult objectForKey:@"LastName"] forKey:@"lastName"];
             }
+           
             [self updateBanner];
         }
     }
@@ -1469,8 +1557,9 @@ NSString *searchString;
         [self emailSupport];
     }else if(alertView.tag ==16 && buttonIndex == 1){
         profileGO = YES;
-        [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"settings"] animated:YES];
-    }
+        //edit baljeet
+        [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"settings"] animated:YES completion:nil];
+            }
 }
 - (void)emailSupport {
     mailComposer = [[MFMailComposeViewController alloc] init];
@@ -1481,10 +1570,11 @@ NSString *searchString;
     [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
     [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
     [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-    [self presentModalViewController:mailComposer animated:YES];
+    [self presentViewController:mailComposer animated:YES completion:nil];
+//    [self presentModalViewController:mailComposer animated:YES];
 }
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
     if (result == MFMailComposeResultSent) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Thanks for Contacting Us" message:@"Our detectives will get the case." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];

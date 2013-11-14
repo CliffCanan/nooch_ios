@@ -18,7 +18,21 @@
 #import "history.h"
 
 @interface transfer ()
-
+{
+    NSMutableDictionary *transactionTransfer;
+    NSDictionary *transactionInputTransfer;
+    NSMutableURLRequest *requestTransfer;
+    NSString *postTransfer;
+    NSData *postDataTransfer;
+    NSDictionary *loginResult;
+    NSString *postLengthTransfer;
+    NSString *urlStrTranfer;
+    NSURL *urlTransfer;
+    NSString *responseString;
+    NSDictionary *loginResultTransfer;
+    NSDictionary *resultValueTransfer;
+    NSString * sentMessageTransfer;
+}
 @end
 
 @implementation transfer
@@ -179,7 +193,7 @@ bool allowSharingValue;
     loadingLabel.textColor = [UIColor whiteColor];
     [loadingLabel setFont:[core nFont:@"Medium" size:15]];
     [loadingLabel setNumberOfLines:2];
-    loadingLabel.textAlignment = UITextAlignmentCenter;
+    loadingLabel.textAlignment = NSTextAlignmentCenter;
     loadingLabel.text = @"Loading...";
     [loadingView addSubview:loadingLabel];
     userPic.clipsToBounds = YES;
@@ -203,12 +217,14 @@ bool allowSharingValue;
 #pragma mark - constants
 -(void)goBack{
     requestRespond = NO;
-    [navCtrl dismissModalViewControllerAnimated:YES];
+    [navCtrl dismissViewControllerAnimated:YES completion:nil];
+   // [navCtrl dismissModalViewControllerAnimated:YES];
 }
 -(void)backToSelect{
     sendingMoney = YES;
     requestRespond = NO;
-    [navCtrl dismissModalViewControllerAnimated:YES];
+    [navCtrl dismissViewControllerAnimated:YES completion:nil];
+    //[navCtrl dismissModalViewControllerAnimated:YES];
 }
 -(void)updateBanner{
     firstName.text=[[me usr] objectForKey:@"firstName"];
@@ -325,7 +341,7 @@ bool allowSharingValue;
     }
 }
 -(void)validAmount{
-    NSString *decimalPointRegex = @"[0-9]+(\.[0-9][0-9]?)?";
+    NSString *decimalPointRegex = @"[0-9]+(\\.[0-9][0-9]?)?";
     //NSString *decimalPointRegex=@"/^\$?[0-9]+(\.[0-9][0-9]?)?";
     NSCharacterSet *doNotWant = [NSCharacterSet characterSetWithCharactersInString:@"$ "];
     actualAmount= [[enterAmountField.text componentsSeparatedByCharactersInSet: doNotWant] componentsJoinedByString: @""];
@@ -358,10 +374,10 @@ bool allowSharingValue;
 
 # pragma mark - serve delegation
 -(void)listen:(NSString*)result tagName:(NSString*)tagName{
-    NSDictionary *loginResult = [result JSONValue];
+    loginResult = [result JSONValue];
     NSLog(@"pincheck result %@",loginResult);
 
-    NSString *receiveName = [receiverFirst stringByAppendingString:[NSString stringWithFormat:@" %@",receiverLast]];
+    NSString *receiveName1 = [receiverFirst stringByAppendingString:[NSString stringWithFormat:@" %@",receiverLast]];
 
     if ([city rangeOfString:@"null"].location != NSNotFound || city == NULL) {
         city = @"";
@@ -395,13 +411,13 @@ bool allowSharingValue;
     if([tagName isEqualToString:@"ValidatePinNumber"] ){
         if (requestRespond) {
             //NSString *idToUse;
-            NSMutableDictionary *transactionInput = [NSMutableDictionary dictionaryWithObjectsAndKeys:[loginResult valueForKey:@"Status"], @"PinNumber", [[me usr] objectForKey:@"MemberId"], @"MemberId", requestId, @"TransactionId", TransactionDate, @"TransactionDate", uid, @"DeviceId", latitudeField, @"Latitude", longitudeField, @"Longitude", altitudeField, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode", acceptOrDeny, @"Status", nil];
+           transactionInputTransfer = [NSMutableDictionary dictionaryWithObjectsAndKeys:[loginResult valueForKey:@"Status"], @"PinNumber", [[me usr] objectForKey:@"MemberId"], @"MemberId", requestId, @"TransactionId", TransactionDate, @"TransactionDate", uid, @"DeviceId", latitudeField, @"Latitude", longitudeField, @"Longitude", altitudeField, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode", acceptOrDeny, @"Status", nil];
 
-            NSMutableDictionary *transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"handleRequestInput", nil];
+            transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"handleRequestInput", nil];
 
-            NSLog(@"Request %@", transaction);
+            NSLog(@"Request %@", transactionTransfer);
 
-            NSString *post = [transaction JSONRepresentation];
+            NSString *post = [transactionTransfer JSONRepresentation];
 
             NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
             NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
@@ -413,56 +429,55 @@ bool allowSharingValue;
             NSURL *url = [NSURL URLWithString:urlStr];
             NSLog(@"URL string %@", url);
 
-            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-            [request setHTTPMethod:@"POST"];
-            [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-            [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-            [request setHTTPBody:postData];
+            requestTransfer = [[NSMutableURLRequest alloc] initWithURL:url];
+            [requestTransfer setHTTPMethod:@"POST"];
+            [requestTransfer setValue:postLength forHTTPHeaderField:@"Content-Length"];
+            [requestTransfer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+            [requestTransfer setHTTPBody:postData];
             
-            NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+            NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestTransfer delegate:self];
             if (connection)
             {
                 respData = [NSMutableData data];
             }
             return;
         }
-        NSMutableDictionary *transaction;
-        NSDictionary *transactionInput;
+       
         NSString *transMemo = [NSString stringWithFormat:@"%@%@",memoCat,memoField.text];
         if (!requestBar.hidden) {
-            transactionInput = [NSDictionary dictionaryWithObjectsAndKeys:[loginResult valueForKey:@"Status"], @"PinNumber", [[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"], @"MemberId", receiverId, @"SenderId", receiveName, @"Name", [NSString stringWithFormat:@"%.02f", [actualAmount floatValue]], @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction", uid, @"DeviceId", latitudeField, @"Latitude", longitudeField, @"Longitude", altitudeField, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode",transMemo,@"Memo",@"Pending",@"Status", nil];
-            transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"requestInput", nil];
+            transactionInputTransfer = [NSDictionary dictionaryWithObjectsAndKeys:[loginResult valueForKey:@"Status"], @"PinNumber", [[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"], @"MemberId", receiverId, @"SenderId", receiveName1, @"Name", [NSString stringWithFormat:@"%.02f", [actualAmount floatValue]], @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction", uid, @"DeviceId", latitudeField, @"Latitude", longitudeField, @"Longitude", altitudeField, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode",transMemo,@"Memo",@"Pending",@"Status", nil];
+            transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"requestInput", nil];
         }else{
-            transactionInput = [NSDictionary dictionaryWithObjectsAndKeys:[loginResult valueForKey:@"Status"], @"PinNumber", [[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"], @"MemberId", receiverId, @"RecepientId", receiveName, @"Name", [NSString stringWithFormat:@"%.02f", [actualAmount floatValue]], @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction", uid, @"DeviceId", latitudeField, @"Latitude", longitudeField, @"Longitude", altitudeField, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode",transMemo,@"Memo", nil];
-            transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"transactionInput", nil];
+            transactionInputTransfer = [NSDictionary dictionaryWithObjectsAndKeys:[loginResult valueForKey:@"Status"], @"PinNumber", [[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"], @"MemberId", receiverId, @"RecepientId", receiveName1, @"Name", [NSString stringWithFormat:@"%.02f", [actualAmount floatValue]], @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction", uid, @"DeviceId", latitudeField, @"Latitude", longitudeField, @"Longitude", altitudeField, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode",transMemo,@"Memo", nil];
+            transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput", nil];
         }
 
-        NSLog(@"Transaction %@", transaction);
+        NSLog(@"Transaction %@", transactionTransfer);
 
-        NSString *post = [transaction JSONRepresentation];
+       postTransfer = [transactionTransfer JSONRepresentation];
 
-        NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-        NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+       postDataTransfer = [postTransfer dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+        postLengthTransfer = [NSString stringWithFormat:@"%d", [postDataTransfer length]];
 
         self.respData = [NSMutableData data];
-        NSString *urlStr = [[NSString alloc] initWithString:MyUrl];
+        urlStrTranfer = [[NSString alloc] initWithString:MyUrl];
 
         if (!requestBar.hidden) {
-            urlStr = [urlStr stringByAppendingFormat:@"/%@", @"RequestMoney"];
+            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoney"];
         }else{
-            urlStr = [urlStr stringByAppendingFormat:@"/%@", @"TransferMoney"];
+            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoney"];
         }
 
-        NSURL *url = [NSURL URLWithString:urlStr];
-        NSLog(@"transaction server call: %@",url);
+       urlTransfer = [NSURL URLWithString:urlStrTranfer];
+        NSLog(@"transaction server call: %@",urlTransfer);
 
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-        [request setHTTPMethod:@"POST"];
-        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        [request setHTTPBody:postData];
+        requestTransfer = [[NSMutableURLRequest alloc] initWithURL:urlTransfer];
+        [requestTransfer setHTTPMethod:@"POST"];
+        [requestTransfer setValue:postLengthTransfer forHTTPHeaderField:@"Content-Length"];
+        [requestTransfer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [requestTransfer setHTTPBody:postDataTransfer];
 
-        NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestTransfer delegate:self];
         if (connection)
         {
             respData = [NSMutableData data];
@@ -481,8 +496,8 @@ bool allowSharingValue;
 	NSLog(@"Connection failed: %@", [error description]);
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSString *responseString = [[NSString alloc] initWithData:respData encoding:NSASCIIStringEncoding];
-    NSDictionary *loginResult = [responseString JSONValue];
+    responseString= [[NSString alloc] initWithData:respData encoding:NSASCIIStringEncoding];
+   loginResultTransfer = [responseString JSONValue];
     NSLog(@"Array is : %@", loginResult);
     if (requestRespond) {
         requestRespond = NO;
@@ -497,10 +512,10 @@ bool allowSharingValue;
     
     NSLog(@"transactionId %@",transactionId);
     
-    NSDictionary *resultValue = [loginResult valueForKey:@"TransferMoneyResult"];
+   resultValueTransfer = [loginResult valueForKey:@"TransferMoneyResult"];
     AppDelegate *appD = [UIApplication sharedApplication].delegate;
     [appD endWait];
-    if ([[resultValue valueForKey:@"Result"] isEqualToString:@"Your cash was sent successfully"])
+    if ([[resultValueTransfer valueForKey:@"Result"] isEqualToString:@"Your cash was sent successfully"])
     {
         [me histUpdate];
         int randNum = arc4random() % 12;
@@ -575,7 +590,7 @@ bool allowSharingValue;
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Pay Me" message:[NSString stringWithFormat:@"You requested %@ from %@ successfully.",amountToSend.text,receiverFirst] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",@"View Details",nil];
         [av setTag:1];
         [av show];
-    }else if([[resultValue valueForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]
+    }else if([[resultValueTransfer valueForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]
              || [[[loginResult objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]
              || [[[loginResult objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."])
     {
@@ -589,7 +604,7 @@ bool allowSharingValue;
         [backImage setHighlighted:YES];
         PINText = @"";
     }
-    else if([[resultValue valueForKey:@"Result"] isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]
+    else if([[resultValueTransfer valueForKey:@"Result"] isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]
             || [[[loginResult objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]
             || [[[loginResult objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."])
     {
@@ -604,7 +619,7 @@ bool allowSharingValue;
         [suspendedAlert show];
         [suspendedAlert setTag:9];
     }
-    else if([[resultValue valueForKey:@"Result"]isEqual:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]
+    else if([[resultValueTransfer valueForKey:@"Result"]isEqual:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]
             || [[[loginResult objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]
             || [[[loginResult objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])
     {
@@ -619,7 +634,7 @@ bool allowSharingValue;
         UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [suspendedAlert show];
         [suspendedAlert setTag:3];
-    }else if([[resultValue valueForKey:@"Result"]isEqual:@"Receiver does not exist."]
+    }else if([[resultValueTransfer valueForKey:@"Result"]isEqual:@"Receiver does not exist."]
              || [[[loginResult objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Receiver does not exist."]
              || [[[loginResult objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Receiver does not exist."]){
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Sorry!" message:@"Sending money to non-Noochers is not yet supported."delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -627,7 +642,7 @@ bool allowSharingValue;
         transferFinished = YES;
         sendingMoney = NO;
         [self goBack];
-    }else if([[resultValue valueForKey:@"Result"]isEqual:@"Please go to 'My Account' menu and configure your account details."]
+    }else if([[resultValueTransfer valueForKey:@"Result"]isEqual:@"Please go to 'My Account' menu and configure your account details."]
              || [[[loginResult objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Please go to 'My Account' menu and configure your account details."]
              || [[[loginResult objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Please go to 'My Account' menu and configure your account details."]){
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Sorry!" message:@"Sending money to non-Noochers is not yet supported."delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -674,10 +689,12 @@ bool allowSharingValue;
             transferFinished = YES;
             sendingMoney = NO;
             if (causes) {
-                [self dismissModalViewControllerAnimated:YES];
+                [self dismissViewControllerAnimated:YES completion:nil];
+               // [self dismissModalViewControllerAnimated:YES];
                 [navCtrl popToRootViewControllerAnimated:NO];
             }else{
-                [self dismissModalViewControllerAnimated:YES];
+                [self dismissViewControllerAnimated:YES completion:nil];
+               // [self dismissModalViewControllerAnimated:YES];
             }
             
         }
@@ -689,10 +706,12 @@ bool allowSharingValue;
             sendingMoney = NO;
             viewDetails = YES;
             if (causes) {
-                [self dismissModalViewControllerAnimated:YES];
+                [self dismissViewControllerAnimated:YES completion:nil];
+               // [self dismissModalViewControllerAnimated:YES];
                 [navCtrl popToRootViewControllerAnimated:NO];
             }else{
-                [self dismissModalViewControllerAnimated:YES];
+                [self dismissViewControllerAnimated:YES completion:nil];
+                //[self dismissModalViewControllerAnimated:YES];
             }
         }
         else if(buttonIndex==2){
@@ -805,9 +824,11 @@ bool allowSharingValue;
     }else if([actionSheet tag] == 3){
         transferFinished = YES;
         sendingMoney = NO;
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
+       // [self dismissModalViewControllerAnimated:YES];
     }else if ([actionSheet tag] == 21 && buttonIndex == 1){
-        [self dismissModalViewControllerAnimated:NO];
+        [self dismissViewControllerAnimated:YES completion:nil];
+        //[self dismissModalViewControllerAnimated:NO];
         [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"addFunds"] animated:YES];
     }else if([actionSheet tag] == 11){
         NSLog(@"hmph");
@@ -844,10 +865,12 @@ bool allowSharingValue;
 }
 -(void)finishedPosting{
     if (causes) {
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
+        //[self dismissModalViewControllerAnimated:YES];
         [navCtrl popToRootViewControllerAnimated:NO];
     }else{
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
+        //[self dismissModalViewControllerAnimated:YES];
     }
 }
 

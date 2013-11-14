@@ -5,36 +5,36 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>BA53F1D1-6FD9-407C-AE55-D2E1BC617F03</string>
+	<string>C7E0AC45-C512-4608-997B-3F5798DD917B</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Nooch</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>445625DB-D01F-489B-BD2F-0AF5A0F3C1AA</key>
-		<string>https://github.com/crks/nooch_ios.git</string>
+		<key>E31E4C48-336C-4860-A523-0E3C18F0AF62</key>
+		<string>https://bitbucket.org/venturepact/nooch-internaldept.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Nooch.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>445625DB-D01F-489B-BD2F-0AF5A0F3C1AA</key>
+		<key>E31E4C48-336C-4860-A523-0E3C18F0AF62</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/crks/nooch_ios.git</string>
+	<string>https://bitbucket.org/venturepact/nooch-internaldept.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>445625DB-D01F-489B-BD2F-0AF5A0F3C1AA</string>
+	<string>E31E4C48-336C-4860-A523-0E3C18F0AF62</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>445625DB-D01F-489B-BD2F-0AF5A0F3C1AA</string>
+			<string>E31E4C48-336C-4860-A523-0E3C18F0AF62</string>
 			<key>IDESourceControlWCCName</key>
-			<string>nooch_ios</string>
+			<string>Nooch1</string>
 		</dict>
 	</array>
 </dict>

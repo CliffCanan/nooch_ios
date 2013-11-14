@@ -28,7 +28,7 @@
     loadingLabel.textColor = [UIColor whiteColor];
     [loadingLabel setFont:[self nFont:@"Medium" size:15]];
     [loadingLabel setNumberOfLines:2];
-    loadingLabel.textAlignment = UITextAlignmentCenter;
+    loadingLabel.textAlignment = NSTextAlignmentCenter;
     loadingLabel.text = @"Loading...";
     [loadingView addSubview:loadingLabel];
     loadingLabel.text = label;
@@ -55,7 +55,7 @@
     loadingLabel.textColor = [UIColor whiteColor];
     [loadingLabel setFont:[self nFont:@"Medium" size:15]];
     [loadingLabel setNumberOfLines:2];
-    loadingLabel.textAlignment = UITextAlignmentCenter;
+    loadingLabel.textAlignment = NSTextAlignmentCenter;
     loadingLabel.text = @"Loading...";
     [loadingView addSubview:loadingLabel];
     loadingLabel.text = label;

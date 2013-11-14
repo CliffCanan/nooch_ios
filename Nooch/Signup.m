@@ -5,7 +5,9 @@
 //  Created by Preston Hults on 10/3/12.
 //  Copyright (c) 2012 Nooch. All rights reserved.
 //
-
+#define ALPHA               @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+#define EmailAlphaNumSet    @"ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_@.abcdefghijklmnopqrstuvwxyz"
+#define NUMBER @"1234567890+"
 #import "Signup.h"
 #import "JSON.h"
 #import "NoochHome.h"
@@ -51,6 +53,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    leftNavButton.hidden=YES;
 	// Do any additional setup after loading the view.
     NSLog(@"signup loaded");
     emailTextField.font = [core nFont:@"Medium" size:13];
@@ -210,6 +213,14 @@
 }
 
 - (IBAction)createAccount:(id)sender {
+    firstNameTextField.text=[firstNameTextField.text lowercaseString];
+    lastNameTextField.text=[lastNameTextField.text lowercaseString];
+    emailTextField.text=[emailTextField.text lowercaseString];
+    if ([firstNameTextField.text length]<4) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please enter at least 4 Letter First Name" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
     [spinner startAnimating];
     if(checkBox.isHighlighted){
         [self validation];
@@ -324,6 +335,57 @@
         [scrollView setContentOffset:CGPointMake(0.0,0.0) animated:YES];
     }
     return NO;
+}
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    
+    if (textField == emailTextField) {
+        if ([string isEqualToString:@""]) {
+            if (!textField.text.length)
+                return NO;
+            if ([[textField.text stringByReplacingCharactersInRange:range withString:string]rangeOfString:@""].length)
+                return NO;
+        }
+        
+        if ([textField.text stringByReplacingCharactersInRange:range withString:string].length < textField.text.length) {
+            return YES;
+        }
+        //        if ([textField.text stringByReplacingCharactersInRange:range withString:string].length > 20) {
+        //            return NO;
+        //        }
+        
+        NSCharacterSet *charcter = [NSCharacterSet characterSetWithCharactersInString:EmailAlphaNumSet];
+        if ([string rangeOfCharacterFromSet:charcter].location != NSNotFound) {
+            return YES;
+        }
+        return NO;
+
+    }
+    if (textField == firstNameTextField || textField == lastNameTextField)
+    {
+        if ([string isEqualToString:@""]) {
+            if (!textField.text.length)
+                return NO;
+            if ([[textField.text stringByReplacingCharactersInRange:range withString:string]rangeOfString:@""].length)
+                return NO;
+        }
+        
+        if ([textField.text stringByReplacingCharactersInRange:range withString:string].length < textField.text.length) {
+            return YES;
+        }
+//        if ([textField.text stringByReplacingCharactersInRange:range withString:string].length > 20) {
+//            return NO;
+//        }
+        
+        NSCharacterSet *charcter = [NSCharacterSet characterSetWithCharactersInString:ALPHA];
+        if ([string rangeOfCharacterFromSet:charcter].location != NSNotFound) {
+            return YES;
+        }
+        return NO;
+    }
+    
+    return YES;
+    
 }
 
 

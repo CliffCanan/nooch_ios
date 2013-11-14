@@ -34,7 +34,8 @@ NSString *histSearching;
 @property (nonatomic, retain) ACAccount *twitterAccount;
 @property (nonatomic) bool fbAllowed;
 @property (nonatomic) bool twitterAllowed;
-
+//venturepact
+@property(nonatomic,strong)NSArray*arrRecordsCheck;
 -(NSMutableDictionary*)usr;
 -(NSMutableArray*)hist;
 -(NSMutableData*)pic;
@@ -58,4 +59,6 @@ NSString *histSearching;
 -(void)fetchPic;
 -(void)getCards;
 -(void)getBanks;
+
+
 @end

@@ -100,7 +100,7 @@ bool modal;
     loadingLabel.textColor = [UIColor whiteColor];
     [loadingLabel setFont:[core nFont:@"Medium" size:15]];
     [loadingLabel setNumberOfLines:2];
-    loadingLabel.textAlignment = UITextAlignmentCenter;
+    loadingLabel.textAlignment = NSTextAlignmentCenter;
     loadingLabel.text = @"Loading...";
     [loadingView addSubview:loadingLabel];
     loadingLabel.text = label;
@@ -169,18 +169,18 @@ void exceptionHandler(NSException *exception){
             //init requireImmediately
             if (![[me usr] objectForKey:@"requiredImmediately"]) {
                 if (modal) {
-                    [navCtrl dismissModalViewControllerAnimated:NO];
+                    [navCtrl dismissViewControllerAnimated:NO completion:nil];
                 }
                 reqImm = YES;
-                [[UIApplication sharedApplication].keyWindow.rootViewController presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
+                [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO completion:nil];
                 //[[navCtrl.viewControllers objectAtIndex:[navCtrl.viewControllers count]-1] presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
                 
             }else if([[[me usr] objectForKey:@"requiredImmediately"] boolValue]){
                 if (modal) {
-                    [navCtrl dismissModalViewControllerAnimated:NO];
+                    [navCtrl dismissViewControllerAnimated:NO completion:nil];
                 }
                 reqImm = YES;
-                [[UIApplication sharedApplication].keyWindow.rootViewController presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
+                [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO completion:nil];
                 //[[navCtrl.viewControllers objectAtIndex:[navCtrl.viewControllers count]-1] presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
             }
         }

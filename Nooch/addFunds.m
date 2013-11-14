@@ -53,7 +53,9 @@ bool pinCheck;
     pinCheck = NO;
     amountField.text = @"";
     [[navCtrl.viewControllers objectAtIndex:0] performSelectorOnMainThread:@selector(showFundsMenu) withObject:nil waitUntilDone:YES];
-    [navCtrl dismissModalViewControllerAnimated:YES];
+    [navCtrl dismissViewControllerAnimated:YES completion:nil];
+
+    //[navCtrl dismissModalViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning

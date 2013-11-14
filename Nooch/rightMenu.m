@@ -11,7 +11,7 @@
 @interface rightMenu ()
 
 @end
-
+NSArray *bytedata;
 NSString* selectedId;
 bool isBank;
 int verifyAttempts;
@@ -143,13 +143,14 @@ int verifyAttempts;
         cell.textLabel.font = [core nFont:@"Medium" size:18.0];
         if (indexPath.row == 0) {
             cell.userInteractionEnabled = NO;
-            cell.textLabel.text = @"BALANCE";
+            cell.textLabel.text = @"NOOCH BALANCE";
+            cell.textLabel.font=[UIFont systemFontOfSize:15];
             iv.image = [UIImage imageNamed:@"n_Icon.png"];
-            UILabel *balance = [[UILabel alloc] initWithFrame:CGRectMake(180, 12, 100, 20)];
+            UILabel *balance = [[UILabel alloc] initWithFrame:CGRectMake(220, 12, 100, 20)];
             balance.backgroundColor = [UIColor clearColor];
             balance.textColor = [UIColor whiteColor];
             balance.text = [NSString stringWithFormat:@"$%@",[[me usr] objectForKey:@"Balance"]];
-            balance.font = [core nFont:@"Bold" size:18];
+            balance.font = [core nFont:@"Bold" size:15];
             [cell.contentView addSubview:balance];
         }else if(indexPath.row == 1){
             [cell.contentView addSubview:arrow];
@@ -162,11 +163,29 @@ int verifyAttempts;
         }
     }else if(indexPath.section == 1){
         if (indexPath.row == 0) {
+            //BankName BankPicture
             if ([[[me usr] objectForKey:@"banks"] count] > 0) {
                 [cell.contentView addSubview:arrow];
+                NSLog(@"%@",[[[me usr] objectForKey:@"banks"] objectAtIndex:0]);
                 NSDictionary *bank = [[[me usr] objectForKey:@"banks"] objectAtIndex:0];
-                cell.textLabel.text = [NSString stringWithFormat:@"Account **** %@",[[bank objectForKey:@"BankAcctNumber"] substringFromIndex:[[bank objectForKey:@"BankAcctNumber"] length] -4]];
-                iv.image = [UIImage imageNamed:@"Bank_Icon.png"];
+                cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[bank objectForKey:@"BankName"],[bank objectForKey:@"BankAcctNumber"]];
+                cell.textLabel.font=[UIFont fontWithName:@"Arial" size:12.0f];
+                bytedata = [bank valueForKey:@"BankPicture"];
+                
+                unsigned c = bytedata.count;
+                uint8_t *bytes = malloc(sizeof(*bytes) * c);
+                
+                unsigned i;
+                for (i = 0; i < c; i++)
+                {
+                    NSString *str = [bytedata objectAtIndex:i];
+                    int byte = [str intValue];
+                    bytes[i] = (uint8_t)byte;
+                }
+                
+                NSData *datos = [NSData dataWithBytes:bytes length:c];
+                
+        iv.image = [UIImage imageWithData:datos];
             }else{
                 cell.userInteractionEnabled = NO;
                 cell.textLabel.textColor = [core hexColor:@"adb1b3"];
@@ -223,6 +242,8 @@ int verifyAttempts;
         }
     }
     [cell.contentView addSubview:iv];
+    cell.backgroundColor=[UIColor colorWithRed:102.0f/255.0f green:102.0f/255.0f blue:102.0f/255.0f alpha:1.0f];
+
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -236,7 +257,8 @@ int verifyAttempts;
                 [set show];
                 return;
             }
-            [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"addFunds"] animated:YES];
+            [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"addFunds"] animated:YES completion:nil];
+//            [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"addFunds"] animated:YES];
         }else if(indexPath.row == 2){
             //[self hideActionMenu];
             if ([[[me usr] objectForKey:@"banks"] count] == 0) {
@@ -245,7 +267,8 @@ int verifyAttempts;
                 [set show];
                 return;
             }
-            [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"withdrawFunds"] animated:YES];
+            [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"withdrawFunds"] animated:YES completion:nil];
+           // [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"withdrawFunds"] animated:YES];
         }
     }else if(indexPath.section == 1){
         if (indexPath.row == 0) {
@@ -268,7 +291,8 @@ int verifyAttempts;
                 [removeSource setTitle:@"Delete Account" forState:UIControlStateNormal];
                 
                 if (![[bank objectForKey:@"IsVerified"] boolValue]) {
-                    [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"verify"] animated:YES];
+                    [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"verify"] animated:YES completion:nil];
+                 //   [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"verify"] animated:YES];
                 }else{
                     [UIView beginAnimations:nil context:nil];
                     [UIView setAnimationDuration:0.5];
@@ -315,7 +339,8 @@ int verifyAttempts;
                 [removeSource setTitle:@"Delete Account" forState:UIControlStateNormal];
                 
                 if (![[bank objectForKey:@"IsVerified"] boolValue]) {
-                    [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"verify"] animated:YES];
+                    [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"verify"] animated:YES completion:nil];
+                  //  [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"verify"] animated:YES];
                 }else{
                     [UIView beginAnimations:nil context:nil];
                     [UIView setAnimationDuration:0.5];
@@ -569,7 +594,8 @@ int verifyAttempts;
 }
 -(void)attachBank{
     [self hideActionMenu];
-    [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"addBank"] animated:YES];
+   // UIView*bankListView=[[UIView alloc]initWithFrame:CGRectMake(0, 50, 320, 420)];
+        [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"addBank"] animated:YES];
 }
 -(void)attachCard{
     [self hideActionMenu];
@@ -591,9 +617,11 @@ int verifyAttempts;
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (alertView.tag == 16 && buttonIndex == 1) {
         profileGO = YES;
-        [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"settings"] animated:YES];
+        [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"settings"] animated:YES completion:nil];
+       // [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"settings"] animated:YES];
     }else if(alertView.tag == 1 && buttonIndex == 1){
-        [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"addBank"] animated:YES];
+        [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"addBank"] animated:YES completion:nil];
+       
     }
 }
 

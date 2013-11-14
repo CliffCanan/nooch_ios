@@ -70,7 +70,10 @@ UIViewController *nHome;
     __weak IBOutlet UIButton *clearSearchButton;
     __weak IBOutlet UILabel *newRequests;
     __weak IBOutlet UIView *pendingRequestView;
+    
 }
+@property (strong, nonatomic) IBOutlet UIButton *btnimgValidateNoti;
+
 @property (weak, nonatomic) IBOutlet UIView *bannerView;
 @property (retain, nonatomic) IBOutlet UIButton *connectFbButton;
 @property (weak, nonatomic) IBOutlet UIView *buttonView;

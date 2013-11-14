@@ -44,6 +44,7 @@ UIPickerViewDelegate,UIPickerViewDataSource,UIActionSheetDelegate,DecryptionDele
     __weak IBOutlet UIButton *profileSettingsButton;
     __weak IBOutlet UINavigationBar *navBar;
     __weak IBOutlet UIButton *leftNavButton;
+    
 }
 @property (weak, nonatomic) IBOutlet UIImageView *validationBadge;
 @property (weak, nonatomic) IBOutlet UIPageControl *tutorialPage;
@@ -55,7 +56,7 @@ UIPickerViewDelegate,UIPickerViewDataSource,UIActionSheetDelegate,DecryptionDele
 @property (weak, nonatomic) IBOutlet UIView *resetPasswordView;
 @property (weak, nonatomic) IBOutlet UITableView *resetPasswordTable;
 @property (weak, nonatomic) IBOutlet UITableView *logoutTable;
-@property (weak, nonatomic) IBOutlet UITextField *contactPhone;
+@property (retain, nonatomic) IBOutlet UITextField *contactPhone;
 @property (weak, nonatomic) IBOutlet UITableView *contactsTable;
 @property (weak, nonatomic) IBOutlet UITableView *bankNotesTable;
 @property (weak, nonatomic) IBOutlet UITableView *networkTable;
@@ -117,14 +118,17 @@ UIPickerViewDelegate,UIPickerViewDataSource,UIActionSheetDelegate,DecryptionDele
 @property (weak, nonatomic) IBOutlet UILabel *balance;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIScrollView *profileScroll;
-@property (weak, nonatomic) IBOutlet UITextField *name;
-@property (weak, nonatomic) IBOutlet UITextField *email;
-@property (weak, nonatomic) IBOutlet UITextField *recoveryEmail;
-@property (weak, nonatomic) IBOutlet UITextField *address;
-@property (weak, nonatomic) IBOutlet UITextField *city;
-@property (weak, nonatomic) IBOutlet UITextField *state;
-@property (weak, nonatomic) IBOutlet UITextField *zip;
-@property (weak, nonatomic) IBOutlet UITextField *password;
+@property (strong, nonatomic) IBOutlet UITextField *name;
+@property (strong, nonatomic) IBOutlet UITextField *email;
+@property (strong, nonatomic) IBOutlet UITextField *recoveryEmail;
+@property (strong, nonatomic) IBOutlet UITextField *address;
+@property (strong, nonatomic) IBOutlet UITextField *city;
+@property (strong, nonatomic) IBOutlet UITextField *state;
+@property (strong, nonatomic) IBOutlet UITextField *zip;
+@property (strong, nonatomic) IBOutlet UITextField *password;
 @property (weak, nonatomic) IBOutlet UIButton *editPicButton;
+
+@property (strong, nonatomic) NSMutableDictionary *transactionInput;
+@property (strong, nonatomic) NSMutableDictionary *transaction;
 
 @end

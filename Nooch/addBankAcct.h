@@ -18,12 +18,16 @@
     IBOutlet UIView *inputAccess;
     __weak IBOutlet UIButton *saveButton;
     __weak IBOutlet UITextField *accountNum;
+     __weak IBOutlet UITextField *bankName;
     __weak IBOutlet UITextField *routingNumber;
     __weak IBOutlet UITextField *firstLast;
     __weak IBOutlet UIScrollView *scrollView;
     __weak IBOutlet UITableView *detailsTable;
     __weak IBOutlet UIButton *leftNavButton;
     __weak IBOutlet UINavigationBar *navBar;
+    NSMutableArray*arrBankList;
 }
+@property (strong, nonatomic) IBOutlet UIView *bankListView;
+@property (strong, nonatomic) IBOutlet UITableView *tbleBankList;
 
 @end

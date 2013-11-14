@@ -10,9 +10,9 @@
 #import "LoginViewController.h"
 #import "core.h"
 #import "serve.h"
+#import "MyCLController.h"
 
-
-@interface GCPINViewController : UIViewController <serveD,UIAlertViewDelegate,UITextFieldDelegate> {
+@interface GCPINViewController : UIViewController <serveD,UIAlertViewDelegate,UITextFieldDelegate,MyCLControllerDelegate> {
 @private
     __weak IBOutlet UIButton *leftNavButton;
     __weak IBOutlet UINavigationBar *navBar;
@@ -29,7 +29,10 @@
     NSString *encryptedPIN;
     NSString *newEncryptedPIN;
     //BOOL resPin;
-}
+    //venturepact
+    MyCLController *locationController;
+    float lon;
+    float lat;}
 
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImage;
 @property (weak, nonatomic) IBOutlet UILabel *prompt;

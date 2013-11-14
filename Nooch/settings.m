@@ -14,9 +14,12 @@
 #import "Base64.h"
 #import "Base64Transcoder.h"
 #import "initViews.h"
-
+#define NUMBERSPERIOD       @"0123456789"
+#define BACKSPACE  @""
+#define NUMBERSPERIODContactNO       @"0123456789+"
+#define ALPHA               @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 @interface settings ()
-
+@property (nonatomic , retain) NSString * SavePhoneNumber;
 @end
 
 //static NSString *pUnreservedCharsString = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~";
@@ -25,8 +28,8 @@ static	unsigned char	Base64Inverted[128];
 
 @implementation settings
 
-@synthesize logoutButton,scrollView,firstName,lastName,balance,userPic,profileScroll,name,email,recoveryEmail,password,address,city,state,zip,editPicButton,pinSettingsView,reqImmSwitch,notificationsScroll,b2nRequestEmail,b2nEmail,b2nPush,n2bEmail,n2bPush,n2bRequestEmail,failEmail,failPush,inviteEmail,invitePush,joinedEmail,joinedPush,lowEmail,lowPush,validEmail,validPush,updateEmail,updatePush,newsEmail,newsPush,receivedEmail,receivedPush,unclaimedEmail,sentEmail,fbConnectView,fbSharingSwitch,fbNotConnectedView,swiper1,swiper2,position,stepArray,info1Array,info2Array,backgroundArray,stepLabel,info1,info2,tutorialView,tutorialImage,mailComposer,runOnce,imageData,spinner,accountSettingsTable,helpTable,inputAccessory,aboutTable,profileTable,noochTransfersTable,networkTable,contactsTable,bankNotesTable,contactPhone,logoutTable,resetPasswordTable,resetPasswordView,oldPassword,confirmNewPassword,firstNewPass;
-@synthesize addressLine2,tutorialPage,validationBadge;
+@synthesize logoutButton,scrollView,firstName,lastName,balance,userPic,profileScroll,name,email,recoveryEmail,password,address,city,state,zip,editPicButton,pinSettingsView,reqImmSwitch,notificationsScroll,b2nRequestEmail,b2nEmail,b2nPush,n2bEmail,n2bPush,n2bRequestEmail,failEmail,failPush,inviteEmail,invitePush,joinedEmail,joinedPush,lowEmail,lowPush,validEmail,validPush,updateEmail,updatePush,newsEmail,newsPush,receivedEmail,receivedPush,unclaimedEmail,sentEmail,fbConnectView,fbSharingSwitch,fbNotConnectedView,swiper1,swiper2,position,stepArray,info1Array,info2Array,backgroundArray,stepLabel,info1,info2,tutorialView,tutorialImage,mailComposer,runOnce,imageData,spinner,accountSettingsTable,helpTable,inputAccessory,aboutTable,profileTable,noochTransfersTable,networkTable,contactsTable,bankNotesTable,contactPhone,logoutTable,resetPasswordTable,resetPasswordView,oldPassword,confirmNewPassword,firstNewPass,SavePhoneNumber;
+@synthesize addressLine2,tutorialPage,validationBadge,transaction,transactionInput;
 
 bool prompt;
 bool firstTime;
@@ -223,7 +226,8 @@ bool firstTime;
     [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(updateBanner) userInfo:nil repeats:YES];
 }
 -(void)goHome{
-    [navCtrl dismissModalViewControllerAnimated:YES];
+    [navCtrl dismissViewControllerAnimated:YES completion:nil];
+   // [navCtrl dismissModalViewControllerAnimated:YES];
 }
 -(void)viewWillAppear:(BOOL)animated{
     [resetPasswordView setHidden:NO];
@@ -427,7 +431,7 @@ bool firstTime;
 #pragma mark - textfield delegation
 -(void) textFieldDidBeginEditing:(UITextField *)textField{
     if(textField == confirmNewPassword){
-        [resetPasswordView setFrame:CGRectMake(0,50,320,600)];
+        [resetPasswordView setFrame:CGRectMake(0,80,320,600)];
     }
     if(textField == password){
         navBar.topItem.title = @"Reset Password";
@@ -482,9 +486,34 @@ bool firstTime;
     return YES;
 }
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-    if(textField == contactPhone){
+    if (textField == name || textField == city || textField==state)
+    {
+        if ([string isEqualToString:@""]) {
+            if (!textField.text.length)
+                return NO;
+            if ([[textField.text stringByReplacingCharactersInRange:range withString:string]rangeOfString:@""].length)
+                return NO;
+        }
+        
+        if ([textField.text stringByReplacingCharactersInRange:range withString:string].length < textField.text.length) {
+            return YES;
+        }
+        //        if ([textField.text stringByReplacingCharactersInRange:range withString:string].length > 20) {
+        //            return NO;
+        //        }
+        
+        NSCharacterSet *charcter = [NSCharacterSet characterSetWithCharactersInString:ALPHA];
+        if ([string rangeOfCharacterFromSet:charcter].location != NSNotFound) {
+            return YES;
+        }
+        return NO;
+    }
+    
+  
+   else if (textField == contactPhone){
+       
         int length = [self getLength:textField.text];
-        if(length == 10)
+        if(length == 13)
         {
             if(range.length == 0)
                 return NO;
@@ -506,9 +535,25 @@ bool firstTime;
             if(range.length > 0)
                 textField.text = [NSString stringWithFormat:@"(%@) %@",[num substringToIndex:3],[num substringFromIndex:3]];
         }
+       NSCharacterSet *charcter = [NSCharacterSet characterSetWithCharactersInString:NUMBERSPERIODContactNO];
+       //NSCharacterSet*bs=[NSCharacterSet characterSetWithCharactersInString:BACKSPACE];
+       if ([string rangeOfCharacterFromSet:charcter].location != NSNotFound) {
+           return YES;
+       }
+       else
+       {
+           if ([string isEqualToString:@""]) {
+               return YES;
+              // NSLog(@"Backspace");
+               
+           }
+           return NO;
+       }
+
     }
     return YES;
 }
+
 -(NSString*)formatNumber:(NSString*)mobileNumber{
 
     mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@"(" withString:@""];
@@ -544,9 +589,10 @@ bool firstTime;
 
 
 }
+
 -(void)textFieldDidEndEditing:(UITextField *)textField{
     [profileScroll setContentOffset:CGPointMake(0.0,0.0) animated:YES];
-    [resetPasswordView setFrame:CGRectMake(0,50,320,600)];
+    [resetPasswordView setFrame:CGRectMake(0,80,320,600)];
     if(resetPasswordView.isHidden){
 
     }
@@ -654,6 +700,7 @@ bool firstTime;
     if([[[me usr] objectForKey:@"Balance"] length] != 0)
         balance.text =[@"$" stringByAppendingString:[[me usr] objectForKey:@"Balance"]];
     firstName.text=[[me usr] objectForKey:@"firstName"];
+    
     lastName.text=[[me usr] objectForKey:@"lastName"];
     if([me pic] != NULL){
         userPic.image = [UIImage imageWithData:[me pic]];
@@ -877,6 +924,8 @@ bool firstTime;
     if([sInfoDic objectForKey:@"ContactNumber"]!=[NSNull null] && [[sInfoDic objectForKey:@"ContactNumber"] length] == 10)
     {
         self.contactPhone.text = [NSString stringWithFormat:@"(%@) %@-%@",[[sInfoDic objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(0, 3)],[[sInfoDic objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(3, 3)],[[sInfoDic objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(6, 4)]];
+        //charanjit's modification
+        self.SavePhoneNumber = self.contactPhone.text;
     }
     if([sInfoDic objectForKey:@"Password"]!=[NSNull null])
     {
@@ -1002,13 +1051,56 @@ bool firstTime;
     [scrollView setFrame:inFrame];
     [UIView commitAnimations];
 }
+//edit bt baljit
+-(BOOL)validateEmail:(NSString*)emailStr;
+{
+    NSString *emailCheck = @"[A-Z0-9a-z._%+]+@[A-Za-z0-9.]+\\.[A-Za-z]{2,3}";
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",emailCheck];
+    return [emailTest evaluateWithObject:emailStr];
+    
+}
+
 - (void)saveProfile {
     
+    if (![self validateEmail:[email text]]) {
+        email.text = @"";
+        [email becomeFirstResponder];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Valid Email ID" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        
+        return;
+    }
+    if ([name.text length]==0) {
+        UIAlertView *av =[ [UIAlertView alloc] initWithTitle:@"Nooch Money!" message:@"Please Enter Name" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [av show];
+        return;
+    }
+//    if ([name.text length]==0) {
+//        UIAlertView *av =[ [UIAlertView alloc] initWithTitle:@"Nooch Money!" message:@"Please Enter Name" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+//        [av show];
+//        return;
+//    }
     UIAlertView *av =[ [UIAlertView alloc] initWithTitle:@"I don't see you!" message:@"You haven't set your profile picture, would you like to?" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
     [av setTag:20];
     if([[me pic] isKindOfClass:[NSNull class]]){
         [av show];
     }
+    
+    if (![self.SavePhoneNumber isEqualToString:self.contactPhone.text]) {
+        NSLog(@"Not Same");
+        //do Phone Validation
+        
+        
+        serve *req = [[serve alloc] init];
+        [req SendSMSApi:@"+919855368297" msg:@"PLEASE RESPOND \"GO\" TO THE TEXT +1 (469)-804-7726"];
+        
+        // self.contactPhone.text
+        
+        
+        
+        
+    }
+
     [self.view addSubview:[me waitStat:@"Saving your profile..."]];
     [self getEncryptedPassword:password.text];
     NSString *timezoneStandard;
@@ -1071,19 +1163,33 @@ bool firstTime;
     }else{
         [[me usr] removeObjectForKey:@"Addr2"];
     }
-    NSMutableDictionary *transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",self.name.text,@"FirstName",self.email.text,@"UserName",nil];
+   
+    transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",self.name.text,@"FirstName",self.email.text,@"UserName",nil];
     [transactionInput setObject:getEncryptedPasswordValue forKey:@"Password"];
     [transactionInput setObject:[NSString stringWithFormat:@"%@ %@",self.address.text,self.addressLine2.text] forKey:@"Address"];
     [transactionInput setObject:self.city.text forKey:@"City"];
+    NSLog(@"%d",[contactPhone.text length]);
+    if ([contactPhone.text length]==0 ||[contactPhone.text length]<10)
+    {
+        [me endWaitStat];
+        UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"NoochMoney" message:@"Enter valid 10 digit Cell Number" delegate:nil cancelButtonTitle:@"OK"otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
+  else
+{
     NSString *number = [NSString stringWithFormat:@"%@%@%@",[contactPhone.text substringWithRange:NSMakeRange(1, 3)],[contactPhone.text substringWithRange:NSMakeRange(6, 3)],[contactPhone.text substringWithRange:NSMakeRange(10, 4)]];
     [transactionInput setObject:number forKey:@"ContactNumber"];
+
+}
+
     [transactionInput setObject:self.zip.text forKey:@"Zipcode"];
     [transactionInput setObject:@"false" forKey:@"UseFacebookPicture"];
     [transactionInput setObject:imageDic forKey:@"AttachmentFile"];
     [transactionInput setObject:recoverMail forKey:@"RecoveryMail"];
     [transactionInput setObject:self.state.text forKey:@"State"];
     [transactionInput setObject:timezoneStandard forKey:@"TimeZoneKey"];
-    NSMutableDictionary *transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"mySettings", nil];
+    transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"mySettings", nil];
     serve *req=[[serve alloc]init];
     req.Delegate = self;
     req.tagName=@"MySettingsResult";
@@ -1196,7 +1302,8 @@ bool firstTime;
 - (IBAction)changePIN:(id)sender {
     resetPIN = YES; reqImm = NO;
     UIViewController *pinChange = [storyboard instantiateViewControllerWithIdentifier:@"pin"];
-    [self presentModalViewController:pinChange animated:YES];
+    [self presentViewController:pinChange animated:YES completion:nil];
+   // [self presentModalViewController:pinChange animated:YES];
     [pinChange performSelector:@selector(resetPinFlag)];
 }
 - (IBAction)requireImmediately:(id)sender {
@@ -1394,8 +1501,8 @@ bool firstTime;
 
 }
 - (void)saveNotificationSettings {
-    NSDictionary *transactionInput=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",receivedEmail.isHighlighted?@"true":@"false",@"EmailTransferReceived",sentEmail.isHighlighted?@"true":@"false",@"EmailTransferSent",unclaimedEmail.isHighlighted?@"true":@"false",@"TransferUnclaimed",b2nRequestEmail.isHighlighted?@"true":@"false",@"BankToNoochRequested",b2nEmail.isHighlighted?@"true":@"false",@"BankToNoochCompleted",n2bRequestEmail.isHighlighted?@"true":@"false",@"NoochToBankRequested",n2bEmail.isHighlighted?@"true":@"false",@"NoochToBankCompleted",failEmail.isHighlighted?@"true":@"false",@"EmailTransferAttemptFailure",joinedEmail.isHighlighted?@"true":@"false",@"EmailFriendRequest",inviteEmail.isHighlighted?@"true":@"false",@"EmailInviteRequestAccept",@"true",@"InviteReminder",lowEmail.isHighlighted?@"true":@"false",@"LowBalance",validEmail.isHighlighted?@"true":@"false",@"ValidationRemainder",updateEmail.isHighlighted?@"true":@"false",@"ProductUpdates",newsEmail.isHighlighted?@"true":@"false",@"NewAndUpdate",notificationID,@"MemberNotificationId", nil];
-    NSMutableDictionary *notificationDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"notificationSettings", nil];
+    NSDictionary *transactionInput1=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",receivedEmail.isHighlighted?@"true":@"false",@"EmailTransferReceived",sentEmail.isHighlighted?@"true":@"false",@"EmailTransferSent",unclaimedEmail.isHighlighted?@"true":@"false",@"TransferUnclaimed",b2nRequestEmail.isHighlighted?@"true":@"false",@"BankToNoochRequested",b2nEmail.isHighlighted?@"true":@"false",@"BankToNoochCompleted",n2bRequestEmail.isHighlighted?@"true":@"false",@"NoochToBankRequested",n2bEmail.isHighlighted?@"true":@"false",@"NoochToBankCompleted",failEmail.isHighlighted?@"true":@"false",@"EmailTransferAttemptFailure",joinedEmail.isHighlighted?@"true":@"false",@"EmailFriendRequest",inviteEmail.isHighlighted?@"true":@"false",@"EmailInviteRequestAccept",@"true",@"InviteReminder",lowEmail.isHighlighted?@"true":@"false",@"LowBalance",validEmail.isHighlighted?@"true":@"false",@"ValidationRemainder",updateEmail.isHighlighted?@"true":@"false",@"ProductUpdates",newsEmail.isHighlighted?@"true":@"false",@"NewAndUpdate",notificationID,@"MemberNotificationId", nil];
+    NSMutableDictionary *notificationDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput1, @"notificationSettings", nil];
     serve *notificationService=[[serve alloc]init];
     notificationService.tagName=@"emailNotification";
     notificationService.Delegate=self;
@@ -1551,7 +1658,8 @@ bool firstTime;
     [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
     [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
     [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-    [self presentModalViewController:mailComposer animated:YES];
+    [self presentViewController:mailComposer animated:YES completion:nil];
+    //[self presentModalViewController:mailComposer animated:YES];
 }
 - (IBAction)emailSupport:(id)sender {
     mailComposer = [[MFMailComposeViewController alloc] init];
@@ -1562,10 +1670,12 @@ bool firstTime;
     [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
     [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
     [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-    [self presentModalViewController:mailComposer animated:YES];
+    [self presentViewController:mailComposer animated:YES completion:nil];
+   // [self presentModalViewController:mailComposer animated:YES];
 }
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
+    //[self dismissModalViewControllerAnimated:YES];
     if (result == MFMailComposeResultSent) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Thanks for the Feedback" message:@"Our scientists will study and consider these comments or suggestions to better the app." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
@@ -1603,7 +1713,8 @@ bool firstTime;
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
         sendingMoney = NO;
-        [navCtrl dismissModalViewControllerAnimated:NO];
+        [navCtrl dismissViewControllerAnimated:YES completion:nil];
+       // [navCtrl dismissModalViewControllerAnimated:NO];
         [navCtrl performSelector:@selector(disable)];
         [navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"tutorial"] animated:YES];
         me = [core new];
@@ -1642,6 +1753,10 @@ bool firstTime;
             NSString *validated = @"YES";
             [[me usr] setObject:validated forKey:@"validated"];
             validationBadge.highlighted = YES;
+            
+            NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+            [defaults setObject:@"YES" forKey:@"ProfileComplete"];
+            [defaults synchronize];
         }else{
             NSString *validated = @"YES"; //
             if ([[resultValue valueForKey:@"Result"] isEqualToString:@"Profile Validation Failed! Please provide valid contact informations such as address, city, state and contact number details."]) {

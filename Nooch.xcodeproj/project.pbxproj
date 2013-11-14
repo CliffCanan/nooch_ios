@@ -480,6 +480,8 @@
 		6BF64D3E174D3A650068D188 /* WelcomeText.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BF64D2A174D3A650068D188 /* WelcomeText.png */; };
 		6BF90A5C169B6AA2009486E7 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF90A5A169B6AA2009486E7 /* libGoogleAnalytics.a */; };
 		6BF90A5F169B79C5009486E7 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF90A5E169B79C5009486E7 /* libsqlite3.0.dylib */; };
+		84BAFB66182CC1910060C5EB /* MyCLController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAFB65182CC1910060C5EB /* MyCLController.m */; };
+		84BDEA3F1832427900538B5C /* AllMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BDEA3E1832427900538B5C /* AllMapViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1107,6 +1109,10 @@
 		6BF90A5A169B6AA2009486E7 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalytics.a; sourceTree = "<group>"; };
 		6BF90A5B169B6AA2009486E7 /* libGoogleAnalytics_debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalytics_debug.a; sourceTree = "<group>"; };
 		6BF90A5E169B79C5009486E7 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		84BAFB64182CC1910060C5EB /* MyCLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCLController.h; sourceTree = "<group>"; };
+		84BAFB65182CC1910060C5EB /* MyCLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCLController.m; sourceTree = "<group>"; };
+		84BDEA3D1832427900538B5C /* AllMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllMapViewController.h; sourceTree = "<group>"; };
+		84BDEA3E1832427900538B5C /* AllMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllMapViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1187,6 +1193,7 @@
 		6B1C157C16D4306000FBEFBB /* Custom Classes */ = {
 			isa = PBXGroup;
 			children = (
+				84BAFB63182CC17D0060C5EB /* location Tracker */,
 				01986BA117EAA7C900FE618E /* BCrypt */,
 				6B89275816DEA47A00F9100F /* FPPopover */,
 				6B72F0FD177C703B002A8D5F /* stats.h */,
@@ -1280,6 +1287,7 @@
 		6B30372B15FA3FF300056DAD /* Nooch */ = {
 			isa = PBXGroup;
 			children = (
+				84BDEA3C1832425E00538B5C /* Map */,
 				6B1C157C16D4306000FBEFBB /* Custom Classes */,
 				6B7BD27916D42320001666B2 /* Images */,
 				6B4DFC28161E39FE0086B3EB /* Roboto Fonts */,
@@ -2251,6 +2259,24 @@
 			path = Library;
 			sourceTree = "<group>";
 		};
+		84BAFB63182CC17D0060C5EB /* location Tracker */ = {
+			isa = PBXGroup;
+			children = (
+				84BAFB64182CC1910060C5EB /* MyCLController.h */,
+				84BAFB65182CC1910060C5EB /* MyCLController.m */,
+			);
+			name = "location Tracker";
+			sourceTree = "<group>";
+		};
+		84BDEA3C1832425E00538B5C /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				84BDEA3D1832427900538B5C /* AllMapViewController.h */,
+				84BDEA3E1832427900538B5C /* AllMapViewController.m */,
+			);
+			name = Map;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2705,6 +2731,7 @@
 				6B3037D215FA45BB00056DAD /* SBJsonBase.m in Sources */,
 				6B3037D415FA45BB00056DAD /* SBJsonParser.m in Sources */,
 				6B3037D615FA45BB00056DAD /* SBJsonWriter.m in Sources */,
+				84BDEA3F1832427900538B5C /* AllMapViewController.m in Sources */,
 				6B30373615FA3FF400056DAD /* AppDelegate.m in Sources */,
 				6B30376315FA417B00056DAD /* LoginViewController.m in Sources */,
 				6B75E9DB15FE6C9B00B091D8 /* NoochHelper.m in Sources */,
@@ -2742,6 +2769,7 @@
 				6B28DF971742DD300049AA55 /* addFunds.m in Sources */,
 				6B28DF9A1742DD440049AA55 /* withdrawFunds.m in Sources */,
 				6B8E84801753C4FB00B3D7B1 /* socialNetworks.m in Sources */,
+				84BAFB66182CC1910060C5EB /* MyCLController.m in Sources */,
 				6B8A4BEF1778BCEA000B13D2 /* limitsFees.m in Sources */,
 				6B72F0FF177C703B002A8D5F /* stats.m in Sources */,
 				6B72F102177C7065002A8D5F /* causeDetails.m in Sources */,
@@ -2870,6 +2898,7 @@
 				GCC_PREFIX_HEADER = "Nooch/Nooch-Prefix.pch";
 				HEADER_SEARCH_PATHS = "../Airship/**";
 				INFOPLIST_FILE = "Nooch/Nooch-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Nooch/CardIO\"",
@@ -2902,6 +2931,7 @@
 				GCC_PREFIX_HEADER = "Nooch/Nooch-Prefix.pch";
 				HEADER_SEARCH_PATHS = "../Airship/**";
 				INFOPLIST_FILE = "Nooch/Nooch-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Nooch/CardIO\"",

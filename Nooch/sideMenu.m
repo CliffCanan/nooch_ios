@@ -29,6 +29,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    menuTable.backgroundColor=[UIColor colorWithRed:102.0f/255.0f green:102.0f/255.0f blue:102.0f/255.0f alpha:1.0f];
 	// Do any additional setup after loading the view.
     storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
     //menuPopup.backgroundColor = [core hexColor:@"505761"];
@@ -261,6 +262,7 @@
         }
     }
     [cell.contentView addSubview:iv];
+    cell.backgroundColor=[UIColor colorWithRed:102.0f/255.0f green:102.0f/255.0f blue:102.0f/255.0f alpha:1.0f];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{ //72bf44
@@ -323,10 +325,12 @@
     }else if(indexPath.section == 2){
         if (indexPath.row == 0) {
             //invite
-            [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"refer"] animated:YES];
+            [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"refer"] animated:YES completion:nil];
+          //  [navCtrl presentModalViewController: animated:YES];
         }else if(indexPath.row == 1){
             //social networks
-            [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"social"] animated:YES];
+            [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"social"] animated:YES completion:nil];
+           // [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"social"] animated:YES];
         }else if(indexPath.row == 2){
             //rate
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Pending App Store" message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -376,7 +380,8 @@
             [UIView commitAnimations];
         }else if(indexPath.row == 2){
             //limits/fees
-            [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"limitsFees"] animated:YES];
+            [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"limitsFees"] animated:YES completion:nil];
+           // [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"limitsFees"] animated:YES];
         }else if(indexPath.row == 3) {
             CGRect frame = CGRectMake(0, 480, 320, 300);
             if([[UIScreen mainScreen] bounds].size.height > 480){
@@ -491,10 +496,12 @@
     [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
     [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
     [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-    [self presentModalViewController:mailComposer animated:YES];
+     [self presentViewController:mailComposer animated:YES completion:nil];
+    //[self presentModalViewController:mailComposer animated:YES];
 }
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
+ //   [self dismissModalViewControllerAnimated:YES];
     if (result == MFMailComposeResultSent) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Thanks for the Feedback" message:@"Our scientists will study and consider these comments or suggestions to better the app." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];

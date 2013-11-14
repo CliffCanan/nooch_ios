@@ -13,8 +13,7 @@
 #import "NoochHome.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface LoginViewController ()
-
+@interface LoginViewController ()<CLLocationManagerDelegate>
 @end
 
 @implementation LoginViewController
@@ -33,7 +32,17 @@
     [leftNavButton setImage:[UIImage imageNamed:@"BackArrow.png"] forState:UIControlStateNormal];
 }
 - (void)viewDidLoad{
+    //getting current Position lat lons
+    
+//    locationManager = [[CLLocationManager alloc] init];
+//    locationManager.delegate = self;
+//    locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
+//    locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
+//    [locationManager startUpdatingLocation];//
     [super viewDidLoad];
+    locationController = [[MyCLController alloc] init];
+	locationController.delegate = self;
+	[locationController.locationManager startUpdatingLocation];
     NSLog(@"login loaded");
     self.trackedViewName = @"Login";
     spinner.hidesWhenStopped = YES;
@@ -49,6 +58,56 @@
     loginTable.layer.borderWidth = 1;
     loginTable.layer.borderColor = [core hexColor:@"b3b3b3"].CGColor;
 }
+- (void)locationUpdate:(CLLocation *)location {
+	NSString*current = [location description];
+    lat=location.coordinate.latitude;
+    lon=location.coordinate.longitude;
+    NSLog(@"%@",current);
+}
+
+- (void)locationError:(NSError *)error {
+	//locationLabel.text = [error description];
+}
+//- (void)locationManager:(CLLocationManager *)manager
+//    didUpdateToLocation:(CLLocation *)newLocation
+//           fromLocation:(CLLocation *)oldLocation
+//{
+//    lat=newLocation.coordinate.latitude;
+//    lon=newLocation.coordinate.longitude;
+////    int degrees = newLocation.coordinate.latitude;
+////    double decimal = fabs(newLocation.coordinate.latitude - degrees);
+////    int minutes = decimal * 60;
+////    double seconds = decimal * 3600 - minutes * 60;
+////    NSString *lat = [NSString stringWithFormat:@"%d° %d' %1.4f\"",
+////                     degrees, minutes, seconds];
+////    NSLog(@" Current Latitude : %@",lat);
+////    //latLabel.text = lat;
+////    degrees = newLocation.coordinate.longitude;
+////    decimal = fabs(newLocation.coordinate.longitude - degrees);
+////    minutes = decimal * 60;
+////    seconds = decimal * 3600 - minutes * 60;
+////    NSString *longt = [NSString stringWithFormat:@"%d° %d' %1.4f\"",
+////                       degrees, minutes, seconds];
+////    NSLog(@" Current Longitude : %@",longt);
+//    //longLabel.text = longt;
+//}
+//- (void)locationManager:(CLLocationManager *)manager
+//       didFailWithError:(NSError *)error
+//{
+//    //NSlog(@"error");
+//    
+//    UIAlertView*alerterror=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Unable to Find the Location!Please Enable location in Settings " delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+//  
+//    //[activityView addSubview:alerterror];
+//    [alerterror show];
+//    //[self tabbarcall];
+//}
+//- (void)locationManager:(CLLocationManager *)manager
+//	 didUpdateLocations:(NSArray *)locations
+//
+//{
+//    [locationManager stopUpdatingLocation];
+//}
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
@@ -170,8 +229,8 @@
 }
 
 -(void)listen:(NSString *)result tagName:(NSString*)tagName{
-    NSLog(@"result %@",result);
-    NSDictionary *loginResult = [result JSONValue];
+    NSLog(@"result %@",[result JSONValue]);
+    loginResult = [NSDictionary dictionaryWithDictionary:[result JSONValue]];
     if([tagName isEqualToString:@"getMemberDetails"]){
         [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] setObject:emailAddress.text forKey:@"UserName"];
@@ -203,7 +262,9 @@
         [UIView commitAnimations];
         return;
     }
-    if([[loginResult objectForKey:@"Result"] isEqualToString:@"Success"] || [[loginResult objectForKey:@"Result"] isEqualToString:@"Logged in successfully."] )
+    
+#pragma mark LOGIN CHECK.
+    if([loginResult objectForKey:@"Result"] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid Login or Password"] && loginResult != nil)
     {
         serve *getDetails = [serve new];
         getDetails.Delegate = self;
@@ -212,12 +273,22 @@
     }
     else if([loginResult objectForKey:@"Status"])
     {
+        
         getEncryptedPasswordValue = [[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]];
 
         serve *login = [serve new];
         login.Delegate = self;
         login.tagName = @"loginRequest";
-        [login login:emailAddress.text password:getEncryptedPasswordValue];
+        //checkbox clicked
+    
+        if(checkBox.isHighlighted)
+        {
+           [login login:emailAddress.text password:getEncryptedPasswordValue remember:YES lat:lat lon:lon];
+        }
+        else
+        {
+        [login login:emailAddress.text password:getEncryptedPasswordValue remember:NO lat:lat lon:lon];
+        }
     } else if([tagName isEqualToString:@"ForgotPass"]){
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Check your email for a reset password link." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];

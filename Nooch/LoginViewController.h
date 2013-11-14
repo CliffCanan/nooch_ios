@@ -10,17 +10,25 @@
 #import "AppDelegate.h"
 #import "GAITrackedViewController.h"
 #import "core.h"
-
+#import "MyCLController.h"
 NSString *passwordEncrypted;
 NSString *pinEncrypted;
 
-@interface LoginViewController : GAITrackedViewController<UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,serveD>
+@interface LoginViewController : GAITrackedViewController<UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,serveD,MyCLControllerDelegate>
 {
+    //venturepact
+    MyCLController *locationController;
+    float lon;
+    float lat;
+
     __weak IBOutlet UINavigationBar *navBar;
     __weak IBOutlet UIButton *leftNavButton;
     UIAlertView *writeMemo;
     NSMutableData *responseData;
     NSString *getEncryptedPasswordValue;
+    NSDictionary * loginResult;
+    CLLocationManager *locationManager;
+   
 }
 @property (strong, nonatomic) IBOutlet UIView *inputAccessory;
 

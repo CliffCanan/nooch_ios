@@ -11,9 +11,13 @@
 #import "NoochHelper.h"
 #import "transfer.h"
 #import "UAPush.h"
-
+#import "AllMapViewController.h"
 @interface history ()
-
+{
+    NSMutableArray * mapArrays;
+    NSMutableArray*oldRecordsArray;
+    NSMutableDictionary *tableViewBind1;
+}
 @end
 
 @implementation history
@@ -41,6 +45,9 @@ NSString *curMemo;
 }
 -(void)viewDidAppear:(BOOL)animated{
     
+    //oldRecordsArray=[[NSMutableArray alloc]init];
+    load=0;
+    index=1;
     if([transactionId length] != 0){
         NSLog(@"checking for transaction to update");
         for (NSMutableDictionary *dict in [me histFilter:filterPick]) {
@@ -58,7 +65,7 @@ NSString *curMemo;
         [self.view addSubview:[me waitStat:@"Loading your history..."]];
         loadingCheck = YES;
         loadingHide = YES;
-        [me histMore:filterPick sPos:3 len:30];
+        [me histMore:filterPick sPos:index len:5];
     }else{
         loadingHide = NO;
         loadingCheck = NO;
@@ -79,7 +86,9 @@ NSString *curMemo;
     [UIView beginAnimations: nil context: nil];
     [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.view.window cache: YES];
     [UIView setAnimationDuration:1];
-    [self dismissModalViewControllerAnimated:NO];
+    [self dismissViewControllerAnimated:YES completion:nil];
+
+    //[self dismissModalViewControllerAnimated:NO];
     [UIView commitAnimations];
 }
 -(void)showMenu{
@@ -161,7 +170,27 @@ NSString *curMemo;
     historyTable.backgroundView = nil;
     if ([[me hist] count] > 0) [[me usr] setObject:[[[me hist] objectAtIndex:0] objectForKey:@"TransactionId"] forKey:@"lastSeen"];
 }
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	if (([scrollView contentOffset].y + scrollView.frame.size.height) == [scrollView contentSize].height) {
+        NSLog(@"scrolled to bottom");
+        
+//        [[self footerActivityIndicator] startAnimating];
+//        [self performSelector:@selector(stopAnimatingFooter) withObject:nil afterDelay:0.5];
+        return;
+	}
+	if ([scrollView contentOffset].y == scrollView.frame.origin.y) {
+//        NSLog(@"scrolled to top %@",[self activityIndicatorView]);
+//        [[self headerActivityIndicator] startAnimating];
+      //  [self performSelector:@selector(stopAnimatingHeader) withObject:nil afterDelay:0.5];
+	}
+    
+    
+}
+
+
 -(void)tableReload:(NSNotification *)notification{
+    
     historyTable.hidden = NO;
     [me endWaitStat];
     newTransfersDecrement = newTransfers;
@@ -181,7 +210,40 @@ NSString *curMemo;
     if ([[me hist] count] == 0 && !histSearch) {
         limit = YES;
     }
+    else
+    {
     [[me usr] setObject:[[[me hist] objectAtIndex:0] objectForKey:@"TransactionId"] forKey:@"lastSeen"];
+        
+        if (load==0) {
+            if ([[me arrRecordsCheck] count]==0) {
+                limit=YES;
+            }
+            else
+            {
+                oldRecordsArray=[[NSMutableArray alloc]init];
+                NSLog(@"Ginti %d",[[me histFilter:filterPick] count]);
+            for (NSDictionary*dict in [me histFilter:filterPick]) {
+                //making a locations array CHARANJIT
+                NSLog(@"DICT %@",[dict objectForKey:@"Longitude"]);
+                NSMutableDictionary * tempMapsDict = [[NSMutableDictionary alloc] init];
+                [tempMapsDict setObject:[dict objectForKey:@"FirstName"] forKey:@"fname"];
+                [tempMapsDict setObject:[dict objectForKey:@"LastName"] forKey:@"lname"];
+                [tempMapsDict setObject:[dict objectForKey:@"Latitude"] forKey:@"lat"];
+                [tempMapsDict setObject:[dict objectForKey:@"Longitude"] forKey:@"lng"];
+                
+                [mapArrays addObject:tempMapsDict];
+                //-------
+                [oldRecordsArray addObject:dict];
+                
+            }
+                limit=NO;
+            }
+            NSLog(@"%@",oldRecordsArray);
+            load=1;
+            
+        }
+            }
+    
 }
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -749,7 +811,8 @@ NSString *curMemo;
         suspended = YES;
         return;
     }
-    [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
+    [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES completion:nil];
+  //  [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
 }
 
 #pragma mark - request handling
@@ -822,7 +885,15 @@ NSString *curMemo;
         }
     }
     if([[me histFilter:filterPick] count] != 0)
-        return [[me histFilter:filterPick] count]+1;
+    {
+        //int recordsCount;
+//        for (int i=0; i<load; i++) {
+//            recordsCount=[[oldRecordsArray objectAtIndex:i] count];
+//        }
+       // recordsCount++;
+    
+        return [oldRecordsArray count]+1;
+    }
     else
         return 1;
 }
@@ -840,12 +911,15 @@ NSString *curMemo;
     
     if(indexPath.row == [[me histFilter:filterPick] count])
         return;
-    NSMutableDictionary *tableViewBind = [[NSMutableDictionary alloc] init];
-    tableViewBind = [[me histFilter:filterPick] objectAtIndex:indexPath.row];
+    if ([oldRecordsArray count]>indexPath.row) {
+        tableViewBind1 = [[NSMutableDictionary alloc] init];
+        tableViewBind1 = [oldRecordsArray  objectAtIndex:indexPath.row];
+    }
+
     
     //return;
-    if(newTransfersDecrement != 0 && ([[tableViewBind objectForKey:@"TransactionType"] isEqualToString:@"Received from"] || [[tableViewBind objectForKey:@"TransactionType"] isEqualToString:@"Received"] ||
-                                      ([[tableViewBind objectForKey:@"TransactionType"] isEqualToString:@"Request"] && ![[tableViewBind objectForKey:@"RecepientId"] isEqualToString:[[me usr] objectForKey:@"MemberId"]]))){
+    if(newTransfersDecrement != 0 && ([[tableViewBind1 objectForKey:@"TransactionType"] isEqualToString:@"Received from"] || [[tableViewBind1 objectForKey:@"TransactionType"] isEqualToString:@"Received"] ||
+                                      ([[tableViewBind1 objectForKey:@"TransactionType"] isEqualToString:@"Request"] && ![[tableViewBind1 objectForKey:@"RecepientId"] isEqualToString:[[me usr] objectForKey:@"MemberId"]]))){
         newTransfersDecrement--;
         cell.backgroundView.alpha = 0.2f;
         cell.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"TransferHighlight.png"]];
@@ -953,7 +1027,7 @@ NSString *curMemo;
     UIImageView *buble = [[UIImageView alloc] initWithFrame:CGRectMake(4, 6, 312, 77)];
     [buble setImage:[UIImage imageNamed:@"Table_Row_History.png"]];
     [cell.contentView addSubview:buble];
-    if ([[me histFilter:filterPick] count] == 0 && histSearch) {
+    if ([oldRecordsArray count] == 0 && histSearch) {
         UILabel *endLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 320, 30)];
         [endLabel setFont:[core nFont:@"Medium" size:16.0]];
         [endLabel setTextAlignment:NSTextAlignmentCenter];
@@ -962,22 +1036,26 @@ NSString *curMemo;
         cell.userInteractionEnabled = NO;
         return cell;
     }
-    if(indexPath.row == [[me histFilter:filterPick] count] && !loadingCheck && !limit && !histSearch && !loadingHide){
+    if(indexPath.row == [oldRecordsArray count] && !loadingCheck && !limit && !histSearch && !loadingHide){
         loadingIndex = indexPath.row;
         loadingCheck = YES;
         NSLog(@"loading more");
-        [me histMore:filterPick sPos:3 len:loadingIndex+10];
+        [self loadMoreRecords];
+        
     }
-    if(indexPath.row == [[me histFilter:filterPick] count] && !histSearch && !loadingHide){
+
+    if(indexPath.row == [oldRecordsArray count] && !histSearch && !loadingHide){
         cell.userInteractionEnabled = NO;
         cell.contentView.clearsContextBeforeDrawing = YES;
-        if(limit){
+        if(limit && [oldRecordsArray count]>0){
             UILabel *endLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 320, 30)];
             [endLabel setFont:[core nFont:@"Medium" size:16.0]];
             [endLabel setTextAlignment:NSTextAlignmentCenter];
             [endLabel setText:@"End of records."];
             [cell.contentView addSubview:endLabel];
-        }else{
+        }
+        else if (!limit)
+        {
             UIActivityIndicatorView *spinner2 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             spinner2.frame = CGRectMake(150,30,20,20);
             [cell.contentView addSubview:spinner2];
@@ -991,7 +1069,7 @@ NSString *curMemo;
         [endLabel setText:@"No history."];
         [cell.contentView addSubview:endLabel];
     }
-    if(indexPath.row == [[me histFilter:filterPick] count]){
+    if(indexPath.row == [oldRecordsArray count]){
         return cell;
     }
     cell.userInteractionEnabled = YES;
@@ -1013,7 +1091,7 @@ NSString *curMemo;
     //[cell.contentView addSubview:arrow];
     [cell.textLabel setFont:[core nFont:@"Medium" size:14.0]];
     NSMutableDictionary *tableViewBind = [NSMutableDictionary new];
-    tableViewBind = [[me histFilter:filterPick] objectAtIndex:indexPath.row];
+    tableViewBind = [oldRecordsArray  objectAtIndex:indexPath.row];
     NSString *stringFormattedDate = [NSString new];
     stringFormattedDate = @"";
     CGRect dateFrame = CGRectMake(80, 43, 180, 10);
@@ -1241,7 +1319,14 @@ NSString *curMemo;
 
     return cell;
 }
+-(void)loadMoreRecords
+{
+    load=0;
+    index++;
+    [me histMore:filterPick sPos:index len:5];
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    return;
     [navCtrl.view removeGestureRecognizer:self.slidingViewController.panGesture];
     if(tableView == detailsTable){
         [detailsTable deselectRowAtIndexPath:indexPath animated:YES];
@@ -1967,10 +2052,12 @@ NSString *curMemo;
     [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
     [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
     [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-    [self presentModalViewController:mailComposer animated:YES];
+    [self presentViewController:mailComposer animated:YES completion:nil];
+    //[self presentModalViewController:mailComposer animated:YES];
 }
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
+   // [self dismissModalViewControllerAnimated:YES];
     if (result == MFMailComposeResultSent) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Thanks for Contacting Us" message:@"Our detectives will get the case." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
@@ -1997,7 +2084,13 @@ NSString *curMemo;
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-memos.plist",[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"]]];
 
 }
-
+//edit by venturepact
+- (IBAction)ShowMap:(id)sender {
+    AllMapViewController * map = [self.storyboard instantiateViewControllerWithIdentifier:@"map"];
+    //sending the map View Controller the pointers to be placed
+    [map setPointsList:mapArrays];
+    [self.navigationController pushViewController:map animated:YES];
+}
 #pragma mark - unloading and memory
 - (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
