@@ -12,6 +12,9 @@
 @interface AllMapViewController ()
 {
     GMSMapView * mapView_;
+    GMSCameraPosition *camera;
+    GMSMarker *marker;
+    NSDictionary * tempDict;
 }
 @property (strong, nonatomic) IBOutlet GMSMapView *mapView;
 
@@ -37,21 +40,32 @@
 //    [self.navigationController setNavigationBarHidden:NO];
     
     //maps implementation
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:-33.86
-                                                           longitude:151.20
-                                                                zoom:6];
+    if (self.pointsList.count>0) {
+        NSDictionary*camposition=[self.pointsList objectAtIndex:0];
+        camera = [GMSCameraPosition cameraWithLatitude:[[camposition valueForKey:@"lat"] floatValue]
+                                             longitude:[[camposition valueForKey:@"lng"] floatValue]
+                                                  zoom:1];
+    }
+    
     mapView_ = [GMSMapView mapWithFrame:[self.mapView frame] camera:camera];
     mapView_.myLocationEnabled = YES;
-    self.mapView = mapView_;
+    [self.mapView addSubview:mapView_];
     
     // Creates a marker in the center of the map.
-    GMSMarker *marker = [[GMSMarker alloc] init];
-    marker.position = CLLocationCoordinate2DMake(-33.86, 151.20);
-    marker.title = @"Sydney";
-    marker.snippet = @"Australia";
-    marker.map = self.mapView;
 
+    NSLog(@"%@",self.pointsList);
+    
+    
+    for (int i=0; i<self.pointsList.count; i++) {
+        tempDict = [self.pointsList objectAtIndex:i];
+        marker = [[GMSMarker alloc] init];
+        marker.position = CLLocationCoordinate2DMake([[tempDict objectForKey:@"lat"] floatValue], [[tempDict objectForKey:@"lng"] floatValue]);
+        marker.title = [tempDict objectForKey:@"fname"];
+        marker.snippet = [tempDict objectForKey:@"lname"];
+        marker.animated=YES;
+        marker.map = mapView_;
 
+    }
     
     
     
@@ -75,4 +89,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)LeftBarbuttonPressed:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
 @end

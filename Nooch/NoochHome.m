@@ -14,7 +14,7 @@
 #import "transfer.h"
 #import "Reachability.h"
 #import "history.h"
-
+#import "AllMapViewController.h"
 @interface NoochHome ()
 {
     UIView*loader;
@@ -115,6 +115,8 @@ NSString *searchString;
     userPic.clipsToBounds = YES;
     userPic.layer.cornerRadius = 4;
     firstNameLabel.text=[[me usr] objectForKey:@"firstName"];
+    
+   
     lastNameLabel.text=[[me usr] objectForKey:@"lastName"];
     if(![[[me usr] objectForKey:@"Balance"] isKindOfClass:[NSNull class]] && [[me usr] objectForKey:@"Balance"] != NULL)
         balanceLabel.text =[@"$" stringByAppendingString:[[me usr] objectForKey:@"Balance"]];
@@ -554,6 +556,20 @@ NSString *searchString;
     balanceLabel.hidden=NO;
     NSLog(@"%@",[[me usr] objectForKey:@"firstName"]);
     firstNameLabel.text=[[me usr] objectForKey:@"firstName"];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    
+    [defaults setValue:[[me usr] objectForKey:@"firstName"]forKey:@"FullName"];
+    
+    NSLog(@"%@",[defaults valueForKey:@"ProfileComplete"]);
+    if ([[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"]) {
+        btnimgValidateNoti.hidden=YES;
+    }
+    else
+    {
+        btnimgValidateNoti.hidden=NO;
+    }
+    
+ [defaults synchronize];
     lastNameLabel.text=[[me usr] objectForKey:@"lastName"];
     if([[me usr] objectForKey:@"Balance"] != NULL)
     {
@@ -593,16 +609,7 @@ NSString *searchString;
     buttonView.frame=CGRectMake(0, 120, 320, 350);
     
 
-        NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    if ([[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"]) {
-        btnimgValidateNoti.hidden=YES;
-    }
-    else
-    {
-        btnimgValidateNoti.hidden=NO;
-    }
-
-    }
+           }
 - (IBAction)btnTappedToGOSettings:(id)sender {
     [self goSettings:nil];
 }
@@ -1404,6 +1411,8 @@ NSString *searchString;
     clearSearchButton.hidden = YES;
     [self.friendTable reloadData];
 }
+- (IBAction)LocationSearch:(id)sender {
+}
 - (BOOL) textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
     if([[searchField.text stringByAppendingString:string] length] == 0 || ([searchField.text length] == 1 && [string length] == 0) ){
         searching = NO;
@@ -1624,5 +1633,21 @@ NSString *searchString;
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
 }
+//Charan's edit 19 Nov 2013
+#pragma mark last Login Locations
+- (IBAction)ShowLastLoginLocationUser:(id)sender {
+    AllMapViewController * mapController = [self.storyboard instantiateViewControllerWithIdentifier:@"map"];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    //[defaults setObject:[Dictresponse objectForKey:@"LastLocationLat"] forKey:@"LastLat"];
+    //[defaults setObject:[Dictresponse objectForKey:@"LastLocationLng"] forKey:@"LastLng"];
+    NSDictionary * dict =[[ NSDictionary alloc]initWithObjectsAndKeys:[defaults valueForKey:@"LastLat"],@"lat",[defaults valueForKey:@"LastLng"],@"lng" ,[[me usr] objectForKey:@"firstName"],@"fname",[[me usr] objectForKey:@"lastName"],@"lname",nil];
+    NSLog(@"%@ lat lon",dict);
+    [mapController setPointsList:[@[dict] mutableCopy]];
+    [self.navigationController pushViewController:mapController animated:YES];
+
+    //dict setValue:<#(id)#> forKey:<#(NSString *)#>
+    //    mapController setPointsList:<#(NSMutableArray *)#>
+}
+
 
 @end

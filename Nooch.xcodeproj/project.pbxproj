@@ -480,6 +480,7 @@
 		6BF64D3E174D3A650068D188 /* WelcomeText.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BF64D2A174D3A650068D188 /* WelcomeText.png */; };
 		6BF90A5C169B6AA2009486E7 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF90A5A169B6AA2009486E7 /* libGoogleAnalytics.a */; };
 		6BF90A5F169B79C5009486E7 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF90A5E169B79C5009486E7 /* libsqlite3.0.dylib */; };
+		841022B2183609B000C4E24E /* LocationBasedSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841022B1183609B000C4E24E /* LocationBasedSearchViewController.m */; };
 		84BAFB66182CC1910060C5EB /* MyCLController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAFB65182CC1910060C5EB /* MyCLController.m */; };
 		84BDEA3F1832427900538B5C /* AllMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BDEA3E1832427900538B5C /* AllMapViewController.m */; };
 /* End PBXBuildFile section */
@@ -1109,6 +1110,8 @@
 		6BF90A5A169B6AA2009486E7 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalytics.a; sourceTree = "<group>"; };
 		6BF90A5B169B6AA2009486E7 /* libGoogleAnalytics_debug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalytics_debug.a; sourceTree = "<group>"; };
 		6BF90A5E169B79C5009486E7 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		841022B0183609B000C4E24E /* LocationBasedSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationBasedSearchViewController.h; sourceTree = "<group>"; };
+		841022B1183609B000C4E24E /* LocationBasedSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationBasedSearchViewController.m; sourceTree = "<group>"; };
 		84BAFB64182CC1910060C5EB /* MyCLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCLController.h; sourceTree = "<group>"; };
 		84BAFB65182CC1910060C5EB /* MyCLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCLController.m; sourceTree = "<group>"; };
 		84BDEA3D1832427900538B5C /* AllMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllMapViewController.h; sourceTree = "<group>"; };
@@ -1306,6 +1309,8 @@
 				6B75EA4515FE93B400B091D8 /* Core files */,
 				6B30385315FA5C5100056DAD /* Main */,
 				6B30372C15FA3FF300056DAD /* Supporting Files */,
+				841022B0183609B000C4E24E /* LocationBasedSearchViewController.h */,
+				841022B1183609B000C4E24E /* LocationBasedSearchViewController.m */,
 			);
 			path = Nooch;
 			sourceTree = "<group>";
@@ -2758,6 +2763,7 @@
 				6B89276016DEA49C00F9100F /* FPPopoverController.m in Sources */,
 				6B89276116DEA49C00F9100F /* FPPopoverView.m in Sources */,
 				6B89276216DEA49C00F9100F /* FPTouchView.m in Sources */,
+				841022B2183609B000C4E24E /* LocationBasedSearchViewController.m in Sources */,
 				6B89276516DEB10200F9100F /* popSelect.m in Sources */,
 				6B4A6E6D172F048F00A7CE73 /* ECSlidingViewController.m in Sources */,
 				6B4A6E6E172F048F00A7CE73 /* UIImage+ImageWithUIView.m in Sources */,

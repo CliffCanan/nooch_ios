@@ -76,7 +76,8 @@ bool pinCheck;
     NSMutableDictionary *loginResult = [result JSONValue];
     if([tagName isEqualToString:@"deposit"])
     {
-        NSDictionary *resultValue = [loginResult valueForKey:@"AddFundResultResult"];
+        
+        NSDictionary *resultValue = [loginResult valueForKey:@"AddFundResult"];
         NSLog(@"resultValue is : %@", loginResult);
         AppDelegate *appD = [UIApplication sharedApplication].delegate;
         [appD endWait];
@@ -91,7 +92,14 @@ bool pinCheck;
             [av setTag:9];
             updateHistory = YES;
             [navCtrl popViewControllerAnimated:YES];
-        }else{
+        }
+        else if([[resultValue valueForKey:@"Result"] isEqualToString:[NSString stringWithFormat:@"Your bank account is not verified. Please verify your bank account now."]])
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
+           //Your bank account is not verified. Please verify your bank account now.
+        }
+        else{
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
         }

@@ -416,11 +416,13 @@
 
 -(void)privacy{
     [self hideActionMenu];
-    [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"privacy"] animated:YES];
+    [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"privacy"] animated:YES completion:nil];
+    //[navCtrl presentModalViewController: animated:YES];
 }
 -(void)terms{
     [self hideActionMenu];
-    [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"terms"] animated:YES];
+    [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"terms"] animated:YES completion:nil];
+ //   [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"terms"] animated:YES];
 }
 
 -(void)hideActionMenu{
@@ -437,7 +439,8 @@
 }
 
 - (IBAction)settingsPush:(id)sender {
-    [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"settings"] animated:YES];
+    [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"settings"] animated:YES completion:nil];
+    //[navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"settings"] animated:YES];
     curpage = @"settings";
 }
 
@@ -457,7 +460,8 @@
 }
 
 - (IBAction)viewStats:(id)sender {
-    [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"stats"] animated:YES];
+    [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"stats"] animated:YES completion:nil];
+  //  [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"stats"] animated:YES];
 }
 
 - (void)viewFAQ {
@@ -479,7 +483,8 @@
     [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
     [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
     [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-    [self presentModalViewController:mailComposer animated:YES];
+    [self presentViewController:mailComposer animated:YES completion:nil];
+   // [self presentModalViewController:mailComposer animated:YES];
 }
 - (void)emailSupport {
     if (![MFMailComposeViewController canSendMail]){

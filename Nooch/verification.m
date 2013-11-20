@@ -25,7 +25,8 @@ int verifyAttempts;
 }
 - (IBAction)cancel:(id)sender {
     [[navCtrl.viewControllers objectAtIndex:0] performSelectorOnMainThread:@selector(showFundsMenu) withObject:nil waitUntilDone:YES];
-    [navCtrl dismissModalViewControllerAnimated:YES];
+    [navCtrl dismissViewControllerAnimated:YES completion:nil];
+   // [navCtrl dismissModalViewControllerAnimated:YES];
 }
 - (IBAction)submitButton:(id)sender {
     [amount1 resignFirstResponder];
@@ -65,15 +66,17 @@ int verifyAttempts;
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"The bank account details have been deleted." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView sizeToFit];
             [alertView show];
-
-            [navCtrl dismissModalViewControllerAnimated:YES];
+            [navCtrl dismissViewControllerAnimated:YES completion:nil];
+//            [navCtrl dismissViewControllerAnimated:YES anima
+//             ];
         }
     }else if([tagName isEqualToString:@"verification"]){
         if([[loginResult objectForKey:@"Result"] isEqualToString:@"Your bank account is verified successfully."]){
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Eureka!"message:@"Your bank account information all checks out, you’re free to go. Nooch forth."delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView sizeToFit];
             [alertView show];
-            [navCtrl dismissModalViewControllerAnimated:YES];
+            [navCtrl dismissViewControllerAnimated:YES completion:nil];
+            //[navCtrl dismissModalViewControllerAnimated:YES];
             verifyAttempts = 0;
         }else if(verifyAttempts == 2){
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Careful..."message:@"You've failed verification twice now. We're getting suspicious, one more failed verification attempt and this bank account will be deleted from our system."delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];

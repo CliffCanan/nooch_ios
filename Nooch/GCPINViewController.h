@@ -14,6 +14,7 @@
 
 @interface GCPINViewController : UIViewController <serveD,UIAlertViewDelegate,UITextFieldDelegate,MyCLControllerDelegate> {
 @private
+    IBOutlet UIBarButtonItem*leftBarButton;
     __weak IBOutlet UIButton *leftNavButton;
     __weak IBOutlet UINavigationBar *navBar;
     __weak IBOutlet UITextField *pinTextField;

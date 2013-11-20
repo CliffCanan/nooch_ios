@@ -146,7 +146,7 @@ int verifyAttempts;
             cell.textLabel.text = @"NOOCH BALANCE";
             cell.textLabel.font=[UIFont systemFontOfSize:15];
             iv.image = [UIImage imageNamed:@"n_Icon.png"];
-            UILabel *balance = [[UILabel alloc] initWithFrame:CGRectMake(220, 12, 100, 20)];
+            UILabel *balance = [[UILabel alloc] initWithFrame:CGRectMake(213, 12, 100, 20)];
             balance.backgroundColor = [UIColor clearColor];
             balance.textColor = [UIColor whiteColor];
             balance.text = [NSString stringWithFormat:@"$%@",[[me usr] objectForKey:@"Balance"]];
@@ -154,12 +154,39 @@ int verifyAttempts;
             [cell.contentView addSubview:balance];
         }else if(indexPath.row == 1){
             [cell.contentView addSubview:arrow];
+          ;
+            if ([[[me usr] objectForKey:@"banks"] count]==0) {
+                cell.userInteractionEnabled = NO;
+                cell.textLabel.enabled = NO;
+                cell.detailTextLabel.enabled = NO;
+                cell.selectionStyle=UITableViewCellEditingStyleNone;
+            }
+            else
+            {
+                cell.userInteractionEnabled = YES;
+                cell.textLabel.enabled = YES;
+                cell.detailTextLabel.enabled = YES;
+                //cell.selectionStyle=UITableViewCellEditingStyleNone;
+            }
             cell.textLabel.text = @"Add Funds";
             iv.image = [UIImage imageNamed:@"AddFunds.png"];
         }else if(indexPath.row == 2){
             [cell.contentView addSubview:arrow];
             cell.textLabel.text = @"Withdraw Funds";
             iv.image = [UIImage imageNamed:@"WithdrawFunds.png"];
+            if ([[[me usr] objectForKey:@"banks"] count]==0) {
+                cell.userInteractionEnabled = NO;
+                cell.textLabel.enabled = NO;
+                cell.detailTextLabel.enabled = NO;
+                cell.selectionStyle=UITableViewCellEditingStyleNone;
+            }
+            else
+            {
+                cell.userInteractionEnabled = YES;
+                cell.textLabel.enabled = YES;
+                cell.detailTextLabel.enabled = YES;
+                //cell.selectionStyle=UITableViewCellEditingStyleNone;
+            }
         }
     }else if(indexPath.section == 1){
         if (indexPath.row == 0) {
@@ -252,11 +279,14 @@ int verifyAttempts;
         if (indexPath.row == 1) {
             //[self hideActionMenu];
             if ([[[me usr] objectForKey:@"banks"] count] == 0) {
+               
                 UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can add funds you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
                 [set setTag:1];
                 [set show];
                 return;
+                
             }
+            
             [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"addFunds"] animated:YES completion:nil];
 //            [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"addFunds"] animated:YES];
         }else if(indexPath.row == 2){
@@ -561,6 +591,7 @@ int verifyAttempts;
 }
 
 - (IBAction)addSourceButton:(id)sender {
+    
     if (![[me usr] objectForKey:@"validated"] || ![[[me usr] objectForKey:@"validated"] boolValue]) {
         UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"One Last Step..." message:@"Before you can attach a funding source we must verify who you are. Please help us keep Nooch safe and complete your profile." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
         [set setTag:16];
@@ -595,7 +626,8 @@ int verifyAttempts;
 -(void)attachBank{
     [self hideActionMenu];
    // UIView*bankListView=[[UIView alloc]initWithFrame:CGRectMake(0, 50, 320, 420)];
-        [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"addBank"] animated:YES];
+    [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"addBank"] animated:YES completion:nil];
+   //     [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"addBank"] animated:YES];
 }
 -(void)attachCard{
     [self hideActionMenu];
@@ -653,6 +685,9 @@ int verifyAttempts;
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"The bank account details have been deleted." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView sizeToFit];
             [alertView show];
+            [me getBanks];
+            [menuTable reloadData];
+        
         }
     }else if ([tagName isEqualToString:@"cDelete"]) {
         NSLog(@"Delete card return: %@", loginResult);

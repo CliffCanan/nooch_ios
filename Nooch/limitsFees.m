@@ -38,7 +38,8 @@
 }
 
 -(void)goBack{
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
+    //[self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning

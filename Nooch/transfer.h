@@ -25,7 +25,7 @@ NSString *requestId;
 NSString *requestAmount;
 NSString *acceptOrDeny;
 
-@interface transfer : GAITrackedViewController<CLLocationManagerDelegate,UITextFieldDelegate,FPPopoverControllerDelegate,UIAlertViewDelegate,serveD>{
+@interface transfer : GAITrackedViewController<CLLocationManagerDelegate,UITextFieldDelegate,FPPopoverControllerDelegate,UIAlertViewDelegate,serveD,UIImagePickerControllerDelegate>{
     NSString *actualAmount;
     __weak IBOutlet UIImageView *memoBack;
     NSString *latlng;

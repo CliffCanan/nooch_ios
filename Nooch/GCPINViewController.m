@@ -249,6 +249,8 @@
 
 - (void)viewDidLoad {
     //venturepact
+    
+    leftNavButton.hidden=YES;
     locationController = [[MyCLController alloc] init];
 	locationController.delegate = self;
 	[locationController.locationManager startUpdatingLocation];
@@ -373,7 +375,7 @@
         NSLog(@"got encrypted reqImm %@",template);
         responseData = [NSMutableData data];
 //        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@", @"https://192.203.102.254/NoochService.svc", @"ValidatePinNumber", @"memberId",[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"pinNo",[loginResult objectForKey:@"Status"]]]];
-        NSString * urlString = [NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@", MyUrl, @"ValidatePinNumber", @"memberId",[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"pinNo",[loginResult objectForKey:@"Status"]];
+        NSString * urlString = [NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&accessToken=%@", MyUrl, @"ValidatePinNumber", @"memberId",[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"pinNo",[loginResult objectForKey:@"Status"],[[NSUserDefaults standardUserDefaults] objectForKey:@"OAuthToken"]];
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
 
         NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -426,9 +428,22 @@
         }
         else if([[template objectForKey:@"Result"] isEqualToString:@"Invite code used or does not exist."])
         {
-                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Sorry! Referral Code Expired" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                 [alert show];
-           [navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"tutorial"] animated:YES];
+//                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Sorry! Referral Code Expired" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//                 [alert show];
+//             [self performSegueWithIdentifier: @"wref" sender: self];
+            //UINavigationController*navc=[UINavigationController alloc]initWithNibName: bundle:<#(NSBundle *)#>
+//            [self.tabBarController setSelectedIndex:1];
+//
+//            UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"tutorial"];
+//            
+//            NSLog(@"vc - %@",NSStringFromClass([vc class]));
+//          
+//            UINavigationController *nvc1 = self.tabBarController.viewControllers[1];
+//           
+//            [nvc1 pushViewController:vc animated:NO];
+            //[self dismissViewControllerAnimated:YES completion:nil];
+           //[self presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"tutorial"] animated:YES completion:nil];
+            //[self pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"tutorial"] animated:YES];
             
         }else if([[template objectForKey:@"Result"] isEqualToString:@"You are already a nooch member."])
         {
@@ -515,7 +530,15 @@
         [self pinChanged:statusData];
     }
 }
-
+//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+//    // [navCtrl performSegueWithIdentifier: @"tutorial" sender: self];
+//    if ([segue.identifier isEqualToString:@"wref"]) {
+//        //NSIndexPath *indexPath = [self.tableView1 indexPathForSelectedRow];
+//        [segue destinationViewController];
+//        //destViewController.recipeName = [recipes objectAtIndex:indexPath.row];
+//    }
+//    
+//}
 -(void)pinChanged:(NSString*)status
 {
     if([status isEqualToString:@"Pin changed successfully."])

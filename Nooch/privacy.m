@@ -66,7 +66,8 @@
 
 -(void)goBack
 {
-    [navCtrl dismissModalViewControllerAnimated:YES];
+    [navCtrl dismissViewControllerAnimated:YES completion:nil];
+    //[navCtrl dismissModalViewControllerAnimated:YES];
 }
 
 
@@ -93,7 +94,9 @@
 
 - (IBAction)continueButtonAction
 {
-   [navCtrl dismissModalViewControllerAnimated:YES];
+   
+    [navCtrl dismissViewControllerAnimated:YES completion:nil];
+   //[navCtrl dismissModalViewControllerAnimated:YES];
 }
 
 

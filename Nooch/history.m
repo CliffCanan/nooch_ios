@@ -222,6 +222,8 @@ NSString *curMemo;
             {
                 oldRecordsArray=[[NSMutableArray alloc]init];
                 NSLog(@"Ginti %d",[[me histFilter:filterPick] count]);
+                mapArrays = [[NSMutableArray alloc] init];
+                
             for (NSDictionary*dict in [me histFilter:filterPick]) {
                 //making a locations array CHARANJIT
                 NSLog(@"DICT %@",[dict objectForKey:@"Longitude"]);
@@ -828,7 +830,8 @@ NSString *curMemo;
     requestId = transactionId;
     requestAmount = transerAmount.text;
     acceptOrDeny = @"DENY";
-    [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
+    [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES completion:nil];
+    //[navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
 }
 - (IBAction)fulfillRequest:(id)sender {
     if(suspended || [[[me usr] objectForKey:@"Status"] isEqualToString:@"Suspended"]){
@@ -842,7 +845,8 @@ NSString *curMemo;
     requestId = transactionId;
     requestAmount = transerAmount.text;
     acceptOrDeny = @"Success";
-    [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
+    [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES completion:nil];
+    //[navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
 }
 - (IBAction)cancelRequest:(id)sender {
     if(suspended || [[[me usr] objectForKey:@"Status"] isEqualToString:@"Suspended"]){
@@ -863,7 +867,8 @@ NSString *curMemo;
     }else{
         receiverId = recipId;
     }
-    [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
+    [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES completion:nil];
+    //[navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
 }
 
 #pragma Table view Delegate methods
@@ -2041,6 +2046,18 @@ NSString *curMemo;
         }
         [self emailSupport];
     }
+    else if (actionSheet.tag == 11)
+    {
+        if (buttonIndex == 0) {
+            NSLog(@"Cancelled");
+        }
+        else
+        {
+            NSString * email = [[actionSheet textFieldAtIndex:0] text];
+            serve * s = [[serve alloc] init];
+            [s sendCsvTrasactionHistory:email];
+        }
+    }
 }
 
 - (void)emailSupport {
@@ -2090,6 +2107,17 @@ NSString *curMemo;
     //sending the map View Controller the pointers to be placed
     [map setPointsList:mapArrays];
     [self.navigationController pushViewController:map animated:YES];
+}
+
+#pragma mark Exporting History
+- (IBAction)ExportHistory:(id)sender {
+    
+    
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Enter email ID" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil];
+    [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+    alert.tag = 11;
+    [alert show];
+    
 }
 #pragma mark - unloading and memory
 - (void)didReceiveMemoryWarning{
@@ -2142,4 +2170,9 @@ NSString *curMemo;
     filterButton = nil;
     [super viewDidUnload];
 }
+
+
+
+
+
 @end

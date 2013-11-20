@@ -44,8 +44,10 @@ UIPickerViewDelegate,UIPickerViewDataSource,UIActionSheetDelegate,DecryptionDele
     __weak IBOutlet UIButton *profileSettingsButton;
     __weak IBOutlet UINavigationBar *navBar;
     __weak IBOutlet UIButton *leftNavButton;
-    
+    assist* assistOBJ;
+    NSString*ServiceType;
 }
+@property(strong,nonatomic)NSString *decryptedPassword;
 @property (weak, nonatomic) IBOutlet UIImageView *validationBadge;
 @property (weak, nonatomic) IBOutlet UIPageControl *tutorialPage;
 @property (weak, nonatomic) IBOutlet UITextField *addressLine2;

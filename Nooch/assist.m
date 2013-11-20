@@ -20,7 +20,8 @@ NSURLConnection *connectionForHis;
 NSString *whichPing;
 NSString *endTransId;
 NSString *oldFilter;
-
+NSDictionary *objModel;
+NSMutableDictionary *dictsort;
 @synthesize fbAllowed,twitterAllowed,facebookAccount,accountStore,twitterAccount;
 -(void)birth{/*{{{*/
     limit = NO; oldFilter = @""; needsUpdating = YES;
@@ -362,10 +363,7 @@ NSString *oldFilter;
         }
         if(![[loginResult objectForKey:@"FirstName"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"FirstName"] != NULL)
         {
-            NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-            [defaults setValue:[NSString stringWithFormat:@"%@",[loginResult objectForKey:@"FirstName"]]forKey:@"FullName"];
-            [defaults synchronize];
-            [usr setObject:[loginResult objectForKey:@"FirstName"] forKey:@"firstName"];
+                    [usr setObject:[loginResult objectForKey:@"FirstName"] forKey:@"firstName"];
             [usr setObject:[loginResult objectForKey:@"LastName"] forKey:@"lastName"];
         }
         if(![[loginResult objectForKey:@"Status"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"Status"] != NULL){
@@ -478,14 +476,14 @@ NSString *oldFilter;
     for(int i=0;i<[unsortedArray count];i++)
     {
         NSDateFormatter *df=[[NSDateFormatter alloc]init];
-        NSDictionary *objModel=[unsortedArray objectAtIndex:i];
+        objModel=[unsortedArray objectAtIndex:i];
 
         [df setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
         NSDate *date1=[df dateFromString:[objModel objectForKey:@"TransactionDate"]];
-        NSMutableDictionary *dict=[NSMutableDictionary dictionary];
-        [dict setObject:objModel forKey:@"entity"];
-        [dict setObject:date1 forKey:@"date"];
-        [tempArray addObject:dict];
+        dictsort=[NSMutableDictionary dictionary];
+        [dictsort setObject:objModel forKey:@"entity"];
+        [dictsort setObject:date1 forKey:@"date"];
+        [tempArray addObject:dictsort];
     }
 
     NSInteger counter=[tempArray count];

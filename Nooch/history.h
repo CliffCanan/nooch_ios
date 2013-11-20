@@ -99,5 +99,6 @@ FPPopoverController *fp;
 @property (weak, nonatomic) IBOutlet UITableView *historyTable;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 - (IBAction)ShowMap:(id)sender;
+- (IBAction)ExportHistory:(id)sender;
 -(void)dismissFP:(NSNotification *)notification;
 @end

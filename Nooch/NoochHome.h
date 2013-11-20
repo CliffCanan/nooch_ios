@@ -93,5 +93,5 @@ UIViewController *nHome;
 @property (copy) NSMutableDictionary *sections;
 @property (nonatomic, retain) NSMutableDictionary *sectionsSearch;
 @property(nonatomic,retain) MFMailComposeViewController *mailComposer;
-
+- (IBAction)ShowLastLoginLocationUser:(id)sender;
 @end

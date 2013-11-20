@@ -829,10 +829,33 @@ bool allowSharingValue;
     }else if ([actionSheet tag] == 21 && buttonIndex == 1){
         [self dismissViewControllerAnimated:YES completion:nil];
         //[self dismissModalViewControllerAnimated:NO];
-        [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"addFunds"] animated:YES];
+        [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"addFunds"] animated:YES completion:nil];
     }else if([actionSheet tag] == 11){
         NSLog(@"hmph");
          [self performSelectorOnMainThread:@selector(finishedPosting) withObject:nil waitUntilDone:NO];
+    }
+    else if ([actionSheet tag] == 12) {
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        if (buttonIndex == 0) {
+            NSLog(@"Cancelled");
+        }
+        else if (buttonIndex == 1) {
+            if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+            {
+                [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+            }
+            else
+            {
+                [[[UIAlertView alloc] initWithTitle:@"Unsupported" message:@"Camera is not supported" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+            }
+        }
+        else if (buttonIndex == 2) {
+            [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        }
+        
+        [imagePicker setDelegate:self];
+        [self presentViewController:imagePicker animated:YES completion:nil];
+        
     }
 }
 -(void)post{
@@ -1205,6 +1228,12 @@ bool allowSharingValue;
         return;
     }
     [memoField becomeFirstResponder];
+}
+#pragma mark Taking image to be sent with transfers
+- (IBAction)sendImageForTransfer:(id)sender {
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Choose a Picture" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Take a Photo",@"Pick from photos", nil];
+    alert.tag = 12;
+    [alert show];
 }
 
 #pragma mark - file paths

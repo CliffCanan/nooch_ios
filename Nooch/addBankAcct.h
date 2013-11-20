@@ -12,6 +12,8 @@
 
 @interface addBankAcct : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,serveD,UIAlertViewDelegate>{
     
+    UIView*loader;
+   IBOutlet UIButton*btnAddBank;
     __weak IBOutlet UIButton *nextButton;
     __weak IBOutlet UIButton *previousButton;
     __weak IBOutlet UIButton *doneEntering;

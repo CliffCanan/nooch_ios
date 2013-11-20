@@ -32,5 +32,5 @@
 @property (nonatomic, retain) NSMutableData *responseData;
 
 -(void)getDecryptedValue:(NSString *) methodName pwdString:(NSString *) data;
-
+-(void)getDecryptionL:(NSString*)methodName textString:(NSString*)text;
 @end

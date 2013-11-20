@@ -21,6 +21,7 @@ bool fbCreate;
     __weak IBOutlet UITextField *emailField;
     __weak IBOutlet UITextField *inviteCodeField;
     UIView *v;
+    NSString*ServiceType;
 }
 @property (weak, nonatomic) IBOutlet UIButton *createAccountButton;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;

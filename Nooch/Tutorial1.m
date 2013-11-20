@@ -60,21 +60,36 @@
 -(void)listen:(NSString *)result tagName:(NSString*)tagName{
     
         dictResponse=[result JSONValue];
-            if ([[[dictResponse valueForKey:@"validateInvitationCodeResult"] stringValue]isEqualToString:@"1"])
-            {
-                
-                Signup*pNooch=[self.storyboard instantiateViewControllerWithIdentifier:@"signup"];
-                [self.navigationController pushViewController:pNooch animated:YES];
-
-
-            }
-            else
-            {
-                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Not a Valid Invite Code" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [alert show];
-                
-            }
-    
+    if ([ServiceType isEqualToString:@"invitecheck"]) {
+        
+        if ([[[dictResponse valueForKey:@"validateInvitationCodeResult"] stringValue]isEqualToString:@"1"])
+        {
+            ServiceType=@"validate";
+            serveOBJ=[serve new];
+            [serveOBJ setDelegate:self];
+            [serveOBJ getTotalReferralCode:checkCodeField.text];
+            
+        }
+        else if([[[dictResponse valueForKey:@"validateInvitationCodeResult"] stringValue]isEqualToString:@"0"])
+        {
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Not a Valid Invite Code" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            
+        }
+    }
+    else if ([ServiceType isEqualToString:@"validate"])
+    {
+        if ([[[dictResponse valueForKey:@"getTotalReferralCodeResult"] valueForKey:@"Result"] isEqualToString:@"True"]) {
+            Signup*pNooch=[self.storyboard instantiateViewControllerWithIdentifier:@"signup"];
+            [self.navigationController pushViewController:pNooch animated:YES];
+ 
+        }
+        else
+        {
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Sorry! Referral Code Expired" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+           }
     
 }
 
@@ -143,11 +158,18 @@
     [v setFrame:frame];
     [shadow setAlpha:1.0f];
     [UIView commitAnimations];
+    
 }
 
 - (IBAction)checkCode:(id)sender {
+    if ([checkCodeField.text length]==0) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Referral Code" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
     NSString*get4chr=[checkCodeField.text substringToIndex:3];
     if ([[get4chr uppercaseStringWithLocale:[NSLocale currentLocale]]isEqualToString:get4chr]) {
+        ServiceType=@"invitecheck";
         serveOBJ=[serve new];
         [serveOBJ setDelegate:self];
         [serveOBJ validateInviteCode:checkCodeField.text];
@@ -159,6 +181,7 @@
         [alert show];
         
     }
+    
  //   Boolean validateInvitationCode(string invitationCode);
     
     

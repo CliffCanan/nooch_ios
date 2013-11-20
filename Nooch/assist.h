@@ -59,6 +59,6 @@ NSString *histSearching;
 -(void)fetchPic;
 -(void)getCards;
 -(void)getBanks;
-
+-(void)getSettings;
 
 @end

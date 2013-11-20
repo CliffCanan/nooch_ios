@@ -18,7 +18,7 @@
 -(void)listen:(NSString *)result tagName:(NSString *)tagName;
 @end
 
-@interface serve : NSObject <CLLocationManagerDelegate,MyCLControllerDelegate>{
+@interface serve : NSObject <CLLocationManagerDelegate>{
     //venturepact modification
     
 
@@ -90,6 +90,10 @@
 -(void)getInvitedMemberList:(NSString*)memId;
 - (void)locationUpdate:(CLLocation *)location;
 - (void)locationError:(NSError *)error;
+-(void)sendCsvTrasactionHistory:(NSString *)emailaddress;
+-(void)ValidateBank:(NSString*)bankName routingNo:(NSString*)routingNumber;
+-(void)getTotalReferralCode:(NSString *)inviteCode;
+
 @end
 
 //392f9c86-1651-4459-a6a9-d362fcfc4366 - nooch team

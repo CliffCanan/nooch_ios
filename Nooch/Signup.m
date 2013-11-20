@@ -213,9 +213,7 @@
 }
 
 - (IBAction)createAccount:(id)sender {
-    firstNameTextField.text=[firstNameTextField.text lowercaseString];
-    lastNameTextField.text=[lastNameTextField.text lowercaseString];
-    emailTextField.text=[emailTextField.text lowercaseString];
+    
     if ([firstNameTextField.text length]<4) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please enter at least 4 Letter First Name" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -224,6 +222,9 @@
     [spinner startAnimating];
     if(checkBox.isHighlighted){
         [self validation];
+        firstNameTextField.text=[firstNameTextField.text lowercaseString];
+        lastNameTextField.text=[lastNameTextField.text lowercaseString];
+        emailTextField.text=[emailTextField.text lowercaseString];
     }else{
         [spinner stopAnimating];
         UIAlertView *notAgreed = [[UIAlertView alloc] initWithTitle:nil message:@"Please agree to our Terms of Service and Privacy Policy." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -307,7 +308,8 @@
         inviteCode = self.inviteCodeField.text;
         creatingAcct = YES;
         selectedPic = picture.image;
-        [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:YES];
+        [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:YES completion:nil];
+//        [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:YES];
     }
     else
     {

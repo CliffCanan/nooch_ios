@@ -15,20 +15,31 @@
 @implementation Decryption
 
 @synthesize Delegate, responseData, tag;
-
+NSMutableURLRequest *request1,*request2;
 
 # pragma mark - Custom Method
 
 -(void)getDecryptedValue:(NSString *) methodName pwdString:(NSString *) sources {
     
     self.responseData = [[NSMutableData data] retain]; 
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?data=%@", MyUrl, methodName, sources]]];
+   request1 = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?data=%@", MyUrl, methodName, sources]]];
     
     //Load the request in the UIWebView.
-    [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [[NSURLConnection alloc] initWithRequest:request1 delegate:self];
     
 }
-
+-(void)getDecryptionL:(NSString*)methodName textString:(NSString*)text
+{
+    self.responseData = [[NSMutableData data] retain];
+    NSURLRequest *requisicao = [NSURLRequest requestWithURL:
+                                [NSURL URLWithString:
+                                 [[NSString stringWithFormat:@"%@"@"/%@?data=%@", MyUrl, methodName, text] stringByAddingPercentEscapesUsingEncoding:
+                                  NSUTF8StringEncoding]]];
+    //request2 = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?data=%@", MyUrl, methodName, text]]];
+    
+    //Load the request in the UIWebView.
+    [[NSURLConnection alloc] initWithRequest:requisicao delegate:self];
+}
 # pragma mark - NSURL Connection Methods
 
 //response method for all request

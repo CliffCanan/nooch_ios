@@ -44,6 +44,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    btnAddBank.enabled=YES;
     ServiceType=@"list";
     if (![self.view.subviews containsObject:bankListView]) {
         [self.view addSubview:bankListView];
@@ -75,43 +76,90 @@
     detailsTable.layer.borderColor = [core hexColor:@"b3b3b3"].CGColor;
 }
 - (IBAction)addBank:(id)sender {
+    btnAddBank.enabled=NO;
+   
+    if (![self.view.subviews containsObject:loader]) {
+        loader=[me waitStat:@"Adding Bank Account Info..."];
+        [self.view addSubview:loader];
+    }
     firstLast.text=[firstLast.text lowercaseString];
     if ([accountNum.text length] < 3 || [accountNum.text length] > 17)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Account Number" message:@"Please double check your account number, it should ranges between 3 and 17 digits." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
+        btnAddBank.enabled=YES;
+        if ([self.view.subviews containsObject:loader]) {
+            [loader removeFromSuperview];
+            [me endWaitStat];
+        }
     }
 
     else if ([routingNumber.text length] < 9  )
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Routing Number" message:@"Please double check your routing number, it should be 9 digits." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
+        btnAddBank.enabled=YES;
+        if ([self.view.subviews containsObject:loader]) {
+            [loader removeFromSuperview];
+            [me endWaitStat];
+        }
     }
 
     else if(([firstLast.text isEqualToString:@""]) || ([firstLast.text isEqual:[NSNull null]]))
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"Please enter the name on the account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
+        btnAddBank.enabled=YES;
+        if ([self.view.subviews containsObject:loader]) {
+            [loader removeFromSuperview];
+            [me endWaitStat];
+        }
     }
     else
     {
-        array = [firstLast.text componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        first = [array objectAtIndex:0];
-         last = [array lastObject];
-         transactionInput  =[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId", SelectedBankName,@"BankName",accountNum.text,@"BankAcctNumber", routingNumber.text,@"BankAcctRoutingNumber",first,@"FirstName",last,@"LastName",nil];
+        ServiceType=@"vBank";
+        serve *vBank = [serve new];
+        vBank.tagName = @"validateBank";
+        vBank.Delegate = self;
+      //  NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
+      //  [f setNumberStyle:NSNumberFormatterDecimalStyle];
+       // NSNumber * myNumber = [f numberFromString:routingNumber.text];
+        [vBank ValidateBank:SelectedBankName routingNo:routingNumber.text];
 
-         transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"accountInput", nil];
-        ServiceType=@"SaveBank";
-        serve *addBank = [serve new];
-        addBank.tagName = @"addBank";
-        addBank.Delegate = self;
-        [addBank saveBank:transaction];
+        
     }
 }
 
 -(void)listen:(NSString *)result tagName:(NSString *)tagName{
     
-    
+    if ([ServiceType isEqualToString:@"vBank"]) {
+        NSMutableDictionary*dictResponse=[result JSONValue];
+        if ([[[dictResponse valueForKey:@"ValidateBankResult"] stringValue]isEqualToString:@"0"]) {
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Valid Bank Routing Number!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            btnAddBank.enabled=YES;
+            if ([self.view.subviews containsObject:loader]) {
+                [loader removeFromSuperview];
+                [me endWaitStat];
+            }
+
+        }
+        else
+        {
+            array = [firstLast.text componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            first = [array objectAtIndex:0];
+            last = [array lastObject];
+            transactionInput  =[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId", SelectedBankName,@"BankName",accountNum.text,@"BankAcctNumber", routingNumber.text,@"BankAcctRoutingNumber",first,@"FirstName",last,@"LastName",nil];
+            
+            transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"accountInput", nil];
+            ServiceType=@"SaveBank";
+            serve *addBank = [serve new];
+            addBank.tagName = @"addBank";
+            addBank.Delegate = self;
+            [addBank saveBank:transaction];
+        }
+    }
+
     if ([ServiceType isEqualToString:@"list"]) {
         arrBankList =[[NSMutableArray alloc]initWithArray:[result JSONValue]];
         NSLog(@"list %@",arrBankList);
@@ -140,6 +188,11 @@
             if ([[[Result valueForKey:@"SaveBankAccountDetailsResult"]valueForKey:@"Result"]isEqualToString:@"Your account details have been saved successfully."]) {
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:[[Result valueForKey:@"SaveBankAccountDetailsResult"]valueForKey:@"Result"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
+                if ([self.view.subviews containsObject:loader]) {
+                    [loader removeFromSuperview];
+                    [me endWaitStat];
+                }
+
             }
         }
         else
@@ -217,8 +270,17 @@
         if ([string rangeOfCharacterFromSet:charcter].location != NSNotFound) {
             return YES;
         }
-        return NO;
-    }
+        else
+        {
+            if ([string isEqualToString:@""]||[string isEqualToString:@" "]) {
+                return YES;
+
+            }
+            else
+            return NO;
+
+        }
+           }
 
     return YES;
 }

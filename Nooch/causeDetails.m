@@ -103,7 +103,8 @@
 }
 
 -(void)donate{
-    [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
+    [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES completion:nil];
+    //[navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
 }
 
 -(void)cancel{
