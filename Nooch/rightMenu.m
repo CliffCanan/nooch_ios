@@ -195,10 +195,13 @@ int verifyAttempts;
                 [cell.contentView addSubview:arrow];
                 NSLog(@"%@",[[[me usr] objectForKey:@"banks"] objectAtIndex:0]);
                 NSDictionary *bank = [[[me usr] objectForKey:@"banks"] objectAtIndex:0];
-                cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[bank objectForKey:@"BankName"],[bank objectForKey:@"BankAcctNumber"]];
+                NSLog(@"bankkk%@",[bank objectForKey:@"BankAcctNumber"]);
+                //[state substringFromIndex: [state length] - 2];
+                NSString*lastdigit=[NSString stringWithFormat:@"XXXX%@",[[bank objectForKey:@"BankAcctNumber"] substringFromIndex:[[bank objectForKey:@"BankAcctNumber"] length]-4]];
+                cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[bank objectForKey:@"BankName"],lastdigit];
                 cell.textLabel.font=[UIFont fontWithName:@"Arial" size:12.0f];
                 bytedata = [bank valueForKey:@"BankPicture"];
-                
+                //XXXXXXXX2222
                 unsigned c = bytedata.count;
                 uint8_t *bytes = malloc(sizeof(*bytes) * c);
                 
@@ -624,9 +627,21 @@ int verifyAttempts;
     [UIView commitAnimations];
 }
 -(void)attachBank{
+    if ([[[me usr] objectForKey:@"banks"] count]==2) {
+       [self hideActionMenu];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"NoochMoney" message:@"You can't add more than  2 Bank Accounts " delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        return;
+    }
+    else
+    {
     [self hideActionMenu];
    // UIView*bankListView=[[UIView alloc]initWithFrame:CGRectMake(0, 50, 320, 420)];
     [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"addBank"] animated:YES completion:nil];
+<<<<<<< HEAD
+    }
+=======
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
    //     [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"addBank"] animated:YES];
 }
 -(void)attachCard{

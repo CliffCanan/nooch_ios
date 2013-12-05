@@ -27,8 +27,12 @@ NSString *histSearching;
     NSMutableData *archivedData;
     NSMutableData *responseData;
     NSMutableArray *sortedHist;
+    //venturepact
+    NSTimer*timer;
+    BOOL islogout;
+    UIImage*imageOBJFortransfer;
 }
-
+//@property(nonatomic,retain)NSTimer*timer;
 @property (nonatomic, retain) ACAccountStore *accountStore;
 @property (nonatomic, retain) ACAccount *facebookAccount;
 @property (nonatomic, retain) ACAccount *twitterAccount;
@@ -61,4 +65,12 @@ NSString *histSearching;
 -(void)getBanks;
 -(void)getSettings;
 
+<<<<<<< HEAD
+-(void)setTranferImage:(UIImage*)image;
++(assist*)shared;
+-(UIImage*)getTranferImage;
+-(BOOL)isloggedout;
+-(void)setisloggedout:(BOOL)islog;
+=======
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 @end

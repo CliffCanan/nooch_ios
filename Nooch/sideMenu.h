@@ -13,7 +13,7 @@
 #import "history.h"
 #import <MessageUI/MessageUI.h>
 
-@interface sideMenu : UIViewController <UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate> {
+@interface sideMenu : UIViewController <UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate,serveD> {
     UIImageView *shadow;
     UIStoryboard *storyboard;
     UISwipeGestureRecognizer *close;
@@ -34,6 +34,21 @@
     __weak IBOutlet UIButton *privacyButton;
     IBOutlet UIView *legalInfoMenu;
     MFMailComposeViewController *mailComposer;
+    //venturepact
+    UISwitch *Switch;
+    NSMutableArray*arrWithrawalOptions;
+    int countsubRecords;
+    NSString*SelectedOption;
+    NSString*SelectedSubOption;
+    NSMutableDictionary*dictSelectedWithdrawal;
+    BOOL isWithdrawalSelected;
+    NSArray *temp;
+    NSArray*temp2;
+    NSDictionary*dictResult;
+    NSArray*arrAutoWithdrawalF;
+    NSArray*arrAutoWithdrawalT;
+    int tagForFrequency;
+    NSDictionary*dictResponse;
 }
 
 @end

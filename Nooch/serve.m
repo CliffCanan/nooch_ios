@@ -17,7 +17,22 @@
 //seconds for 9 days
 #define secondsFor9days 777600
 
+<<<<<<< HEAD
+NSMutableDictionary *transactionfund;
+//
+NSMutableDictionary *transactionInputW;
+NSMutableDictionary *transactionW;
+NSMutableURLRequest *requestRecent;
+//
+NSDictionary *transactionInputaddfund;
+NSMutableURLRequest *requestmemid;
+NSMutableURLRequest*requestList;
+NSURLConnection*connectionList;
+NSMutableURLRequest *requestS;
+NSMutableDictionary*dictValidate;
+=======
 
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 //
 NSDictionary *transactionInputaddfund;
 NSMutableURLRequest *requestmemid;
@@ -104,10 +119,17 @@ NSString *amnt;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     NSLog(@"oauthnd%@",[defaults valueForKey:@"OAuthToken"]);
+<<<<<<< HEAD
+     transactionInputaddfund = [NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"MemberId", [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"RecepientId", amount, @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction",  [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"], @"DeviceId", Latitude, @"Latitude", Longitude, @"Longitude", Altitude, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode", nil];
+    
+    transactionfund = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputaddfund, @"transactionInput",[defaults valueForKey:@"OAuthToken"],@"accessToken", nil];
+    NSString *post = [transactionfund JSONRepresentation];
+=======
      transactionInputaddfund = [NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"MemberId", @"", @"RecepientId", amount, @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction",  [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"], @"DeviceId", Latitude, @"Latitude", Longitude, @"Longitude", Altitude, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode", nil];
     
     NSMutableDictionary *transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputaddfund, @"transactionInput",[defaults valueForKey:@"OAuthToken"],@"accessToken", nil];
     NSString *post = [transaction JSONRepresentation];
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
 
@@ -132,7 +154,11 @@ NSString *amnt;
     self.responseData = [NSMutableData data];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
+<<<<<<< HEAD
+    requestS = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?id=%@&accessToken=%@", ServerUrl, @"GetMyDetails", [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], [defaults valueForKey:@"OAuthToken"] 
+=======
     requestS = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?id=%@&accessToken=%@", ServerUrl, @"GetMyDetails", [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], [defaults valueForKey:@"OAuthToken"]
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 ]]];
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestS delegate:self];
     if (!connection)
@@ -202,6 +228,7 @@ NSString *amnt;
 }
 -(void)getDetails:(NSString*)username{
     //self.tagName=@"memberDetail";
+        islogOutUnconditional=YES;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
 
     self.responseData = [[NSMutableData alloc] init];
@@ -267,8 +294,8 @@ NSString *amnt;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     self.responseData = [[NSMutableData alloc] init];
-    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetRecentMembers?id=%@&accessToken=%@",ServerUrl,[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],[defaults valueForKey:@"OAuthToken"]]]];
-    NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:request delegate:self];
+    requestRecent=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetRecentMembers?id=%@&accessToken=%@",ServerUrl,[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],[defaults valueForKey:@"OAuthToken"]]]];
+    NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestRecent delegate:self];
     if (!connection)
         NSLog(@"connect error");
 }
@@ -511,17 +538,19 @@ NSString *amnt;
     locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
     locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
     [locationManager startUpdatingLocation];
-    NSRunLoop *loop = [NSRunLoop currentRunLoop];
-    while ((!locationUpdate) &&
-           ([loop runMode:NSDefaultRunLoopMode beforeDate:[NSDate
-                                                           distantFuture]]))
-    {
-        
-    }
-    NSMutableDictionary *transactionInput = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"MemberId", [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"RecepientId", amount, @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction",  [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"], @"DeviceId", Latitude, @"Latitude", Longitude, @"Longitude", Altitude, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode", nil];
-    NSMutableDictionary *transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"transactionInput", nil];
-    NSString *post = [transaction JSONRepresentation];
-    NSLog(@"transaction input %@",transaction);
+//    NSRunLoop *loop = [NSRunLoop currentRunLoop];
+//    while ((!locationUpdate) &&
+//           ([loop runMode:NSDefaultRunLoopMode beforeDate:[NSDate
+//                                                           distantFuture]]))
+//    {
+//        
+//    }
+  
+   transactionInputW = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"MemberId", [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"RecepientId", amount, @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction",  [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"], @"DeviceId", Latitude, @"Latitude", Longitude, @"Longitude", Altitude, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode", nil];
+     transactionW = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputW, @"transactionInput",[[NSUserDefaults standardUserDefaults] objectForKey:@"OAuthToken"],@"accessToken"
+, nil];
+    NSString *post = [transactionW JSONRepresentation];
+    NSLog(@"transaction input %@",transactionW);
 
     
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -646,11 +675,62 @@ NSString *amnt;
    
     
     responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
+    
+    if ([responseString rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
+        // [self viewDidDisaislogOutUnconditionalppear:YES];
+        if ([[assist shared]isloggedout]) {
+            
+        }
+        else
+        {
+        if (islogOutUnconditional) {
+            UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil                , nil];
+            
+            [Alert show];
+            
+            [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+            
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+            
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+            
+            NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+            
+            sendingMoney = NO;
+            
+            [navCtrl dismissViewControllerAnimated:YES completion:nil];
+            
+            // [navCtrl dismissModalViewControllerAnimated:NO];
+            
+            [navCtrl performSelector:@selector(disable)];
+            
+            [navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"tutorial"] animated:YES];
+            
+            me = [core new];
+            
+            islogOutUnconditional=NO;
+
+        }
+        }
+    }
+    else if([responseString rangeOfString:@"Invalid OAuth 2 Access"].location==NSNotFound)
+    {
+        if ([tagName isEqualToString:@"logout"]) {
+            Dictresponse=[responseString JSONValue];
+            if ([[Dictresponse valueForKey:@"Result"]isEqualToString:@"Success."]) {
+                isloggedout=YES;
+            }
+        }
+
     if (![tagName isEqualToString:@"info"]) {
         NSLog(@"serve connected for %@",self.tagName);
         
     }
+<<<<<<< HEAD
+            //20ov
+=======
     //20ov
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
     if ([tagName isEqualToString:@"info"]) {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         
@@ -760,6 +840,7 @@ NSString *amnt;
         }
         else
         {
+             [[me usr] setObject:@"YES" forKey:@"validated"];
             [defaults setObject:@"YES"forKey:@"ProfileComplete"];
         }
         [defaults synchronize];
@@ -789,6 +870,19 @@ NSString *amnt;
     {
         NSLog(@"%@",responseString);
     }
+<<<<<<< HEAD
+    
+    }
+   
+[self.Delegate listen:responseString tagName:self.tagName];
+}
+#pragma mark - file paths
+- (NSString *)autoLogin{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+    
+=======
     [self.Delegate listen:responseString tagName:self.tagName];
     //
 //    if ([tagName isEqualToString:@"info"]) {
@@ -855,6 +949,7 @@ NSString *amnt;
 //        NSLog(@"%@",responseString);
 //    }
 //    [self.Delegate listen:responseString tagName:self.tagName];
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 }
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
     return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
@@ -1136,5 +1231,113 @@ NSString *amnt;
 
 }
 
+<<<<<<< HEAD
+//charanjit's edit 26/11
+-(void)getLocationBasedSearch:(NSString *)radius {
+    ServiceType = @"LocationSearch";
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSString * memId = [defaults objectForKey:@"MemberId"];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/GetLocationSearch?MemberId=%@&accessToken=%@&Radius=%@",ServerUrl,memId,[defaults valueForKey:@"OAuthToken"],radius];
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+}
+-(void)GetAllWithdrawalTrigger
+{
+   // ServiceType=@"GetBankList";
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/GetAllWithdrawalTrigger?accessToken=%@",ServerUrl, [defaults valueForKey:@"OAuthToken"]];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+}
+-(void) GetAllWithdrawalFrequency
+{
+    //ServiceType=@"GetBankList";
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/GetAllWithdrawalFrequency?accessToken=%@",ServerUrl, [defaults valueForKey:@"OAuthToken"]];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+}
+-(void) LogOutRequest:(NSString*) userName
+{
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/LogOutRequest?accessToken=%@&userName=%@",ServerUrl, [defaults valueForKey:@"OAuthToken"],userName];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+}
+-(void)SaveFrequency:(NSString*) withdrawalId type:(NSString*) type frequency: (float)withdrawalFrequency
+{
+ //accessToken
+    self.responseData = [[NSMutableData alloc] init];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/SaveFrequency",ServerUrl];
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    dictInv=[[NSMutableDictionary alloc]init];
+    
+    [dictInv setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"memberId"];
+    [dictInv setObject:withdrawalId forKey:@"withdrawalId"];
+     [dictInv setObject:type forKey:@"type"];
+    //withdrawalFrequency
+    [dictInv setObject:[NSString stringWithFormat:@"%f",withdrawalFrequency] forKey:@"withdrawalFrequency"];
+
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    
+    [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
+    // NSString *post = [dictSMS JSONRepresentation];
+    NSLog(@"dict %@",[dictInv JSONRepresentation]);
+    postDataInv = [[dictInv JSONRepresentation] dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    
+    postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
+    
+    requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [requestInv setHTTPMethod:@"POST"];
+    
+    [requestInv setValue:postLengthInv forHTTPHeaderField:@"Content-Length"];
+    
+    [requestInv setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    [requestInv setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
+    
+    [requestInv setHTTPBody:postDataInv];
+    
+    connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
+    
+    if (!connectionInv)
+        
+        NSLog(@"connect error");
+}
+=======
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 
 @end

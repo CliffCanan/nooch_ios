@@ -13,13 +13,20 @@ bool fbCreate;
 
 @interface Tutorial1 : UIViewController<UINavigationControllerDelegate,UITextFieldDelegate,serveD>{
     NSArray *backgroundArray;
-    __weak IBOutlet UITextField *checkCodeField;
-    __weak IBOutlet UITextField *reqInvField;
-    __weak IBOutlet UIView *shadow;
-    __weak IBOutlet UIView *requestInviteView;
-    __weak IBOutlet UIView *enterInviteView;
-    __weak IBOutlet UITextField *emailField;
-    __weak IBOutlet UITextField *inviteCodeField;
+//    __weak IBOutlet UITextField *checkCodeField;
+//    __weak IBOutlet UITextField *reqInvField;
+//    __weak IBOutlet UIView *shadow;
+//    __weak IBOutlet UIView *requestInviteView;
+//    __weak IBOutlet UIView *enterInviteView;
+//    __weak IBOutlet UITextField *emailField;
+//    __weak IBOutlet UITextField *inviteCodeField;
+    IBOutlet UITextField *checkCodeField;
+    IBOutlet UITextField *reqInvField;
+    IBOutlet UIView *shadow;
+    IBOutlet UIView *requestInviteView;
+    IBOutlet UIView *enterInviteView;
+    IBOutlet UITextField *emailField;
+    IBOutlet UITextField *inviteCodeField;
     UIView *v;
     NSString*ServiceType;
 }

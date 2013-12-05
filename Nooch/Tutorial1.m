@@ -34,6 +34,9 @@
 -(void)viewWillAppear:(BOOL)animated{
     rainbows = NO;
     fbCreate = NO;
+    NSLog(@"%@",v);
+    if (![self.view.subviews containsObject:v])
+    {
     v=[[UIView alloc]initWithFrame:CGRectMake(320, 0, 320, 600)];
     v.backgroundColor=[UIColor clearColor];
     //shadow.hidden = YES;
@@ -43,7 +46,21 @@
     [shadow addSubview:temp];
     UITapGestureRecognizer *touch = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(remPopup)];
     [v addGestureRecognizer:touch];
-    [self.view addSubview:v];
+    
+        [self.view addSubview:v];
+    }
+    else
+    {
+        [v setFrame:CGRectMake(320, 0, 320, 600)];
+        v.backgroundColor=[UIColor clearColor];
+        //shadow.hidden = YES;
+        [shadow setAlpha:0.0f];
+        UIImageView *temp = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 600)];
+        temp.userInteractionEnabled = YES;
+        [shadow addSubview:temp];
+        UITapGestureRecognizer *touch = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(remPopup)];
+        [v addGestureRecognizer:touch];
+    }
     CGRect frame = requestInviteView.frame;
     frame.origin.x = 10;
     frame.origin.y = 50;
@@ -80,6 +97,10 @@
     else if ([ServiceType isEqualToString:@"validate"])
     {
         if ([[[dictResponse valueForKey:@"getTotalReferralCodeResult"] valueForKey:@"Result"] isEqualToString:@"True"]) {
+<<<<<<< HEAD
+            checkCodeField.text=@"";
+=======
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
             Signup*pNooch=[self.storyboard instantiateViewControllerWithIdentifier:@"signup"];
             [self.navigationController pushViewController:pNooch animated:YES];
  
@@ -127,6 +148,7 @@
 }
 
 -(void)remPopup{
+    NSLog(@"%@",v);
     [UIView transitionFromView:enterInviteView toView:requestInviteView
                       duration:1.5
                        options:UIViewAnimationOptionTransitionFlipFromRight

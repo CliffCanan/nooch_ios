@@ -11,7 +11,7 @@
 #import "addBankAcct.h"
 #import "serve.h"
 #import <Foundation/Foundation.h>
-@interface addBankAcct ()
+@interface addBankAcct ()<UIAlertViewDelegate>
 {
     NSString*SelectedBankName;
     serve*serveOBJ;
@@ -76,6 +76,17 @@
     detailsTable.layer.borderColor = [core hexColor:@"b3b3b3"].CGColor;
 }
 - (IBAction)addBank:(id)sender {
+<<<<<<< HEAD
+    
+    
+    //charanjit's edit 26/11
+//    if (![self CheckRoutingNo:[routingNumber text]]) {
+//        [[[UIAlertView alloc] initWithTitle:@"Routing number not valid" message:@"Enter a valid Routing number" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+//        return;
+//    }
+//    
+=======
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
     btnAddBank.enabled=NO;
    
     if (![self.view.subviews containsObject:loader]) {
@@ -83,9 +94,9 @@
         [self.view addSubview:loader];
     }
     firstLast.text=[firstLast.text lowercaseString];
-    if ([accountNum.text length] < 3 || [accountNum.text length] > 17)
+    if ([accountNum.text length] < 5 || [accountNum.text length] > 17)
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Account Number" message:@"Please double check your account number, it should ranges between 3 and 17 digits." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Account Number" message:@"Please double check your account number, it should ranges between 5 and 17 digits." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         btnAddBank.enabled=YES;
         if ([self.view.subviews containsObject:loader]) {
@@ -129,9 +140,52 @@
         
     }
 }
+//check validate Routing number
+
+-(BOOL)CheckRoutingNo:(NSString *)routingNumber1 {
+    NSLog(@"Routing number is %@",routingNumber1);
+    //underlining formula used
+    //3 (d_1 + d_4 + d_7) + 7 (d_2 + d_5 + d_8) + (d_3 + d_6 + d_9) \mod 10 = 0
+    //3 (d_0 + d_3 + d_6) + 7 (d_1 + d_4 + d_7) + (d_2 + d_5 + d_8) \mod 10 = 0
+    //3 (7 + 5 + 5)
+    NSInteger num = [routingNumber1 integerValue];
+    //getting digits in array
+    NSMutableArray * arr_digits = [[NSMutableArray alloc] init];
+    for (int i=0; i<9; i++) {
+        [arr_digits addObject:[NSNumber numberWithInteger:num%10]];
+        num=num/10;
+    }
+    NSLog(@"all array %@",arr_digits);
+    
+    //reversing the array
+    NSArray *array2=[arr_digits mutableCopy];
+    NSArray* reversed = [[array2 reverseObjectEnumerator] allObjects];
+    [arr_digits removeAllObjects];
+    arr_digits =[reversed mutableCopy];
+    
+<<<<<<< HEAD
+    //performign the calculations
+    int first_part = (3*([arr_digits[0] intValue] + [arr_digits[3] intValue] + [arr_digits[6] intValue]));
+    
+    int second_part = (7*([arr_digits[1] intValue] + [arr_digits[4] intValue] + [arr_digits[7] intValue]));
+    
+    int third_part = (([arr_digits[2] intValue] + [arr_digits[5] intValue] + [arr_digits[8] intValue]));
+    
+    //peforming modulous
+    int modulous = fmod(first_part+second_part+third_part, 10);
+    //checking mod
+    if (modulous == 0) {
+        return YES;
+    }
+    
+    //returning negative
+    return NO;
+}
 
 -(void)listen:(NSString *)result tagName:(NSString *)tagName{
     
+=======
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
     if ([ServiceType isEqualToString:@"vBank"]) {
         NSMutableDictionary*dictResponse=[result JSONValue];
         if ([[[dictResponse valueForKey:@"ValidateBankResult"] stringValue]isEqualToString:@"0"]) {
@@ -219,6 +273,9 @@
 //        if([newString length] > 16)
 //            return NO;
 //    }
+    // self.searchText1=[NSString stringWithFormat:@"%@%@",textField.text, string] ;
+    
+
     if (textField == routingNumber || textField == accountNum )
     {
         if ([string isEqualToString:@""]) {
@@ -234,6 +291,19 @@
         if (textField==routingNumber) {
             if ([textField.text stringByReplacingCharactersInRange:range withString:string].length > 9) {
                 return NO;
+            }
+            else if ([textField.text stringByReplacingCharactersInRange:range withString:string].length == 9)
+            {
+                if (![self CheckRoutingNo:[NSString stringWithFormat:@"%@%@",textField.text, string]]) {
+                    [self.view setUserInteractionEnabled:NO];
+                   UIAlertView*alert= [[UIAlertView alloc] initWithTitle:@"Routing number not valid" message:@"Enter a valid Routing number" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] ;
+                    [alert setTag:2300];
+                    [alert show];
+                    
+                    return YES;
+                }
+                
+                //[self CheckRoutingNo:[NSString stringWithFormat:@"%@%@",textField.text, string]];
             }
         }
         else if (textField==accountNum)
@@ -386,7 +456,14 @@
     [[navCtrl.viewControllers objectAtIndex:0] performSelectorOnMainThread:@selector(showFundsMenu) withObject:nil waitUntilDone:YES];
     [navCtrl dismissViewControllerAnimated:YES completion:nil];
 }
-
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ([alertView tag]==2300) {
+        if (buttonIndex==0) {
+            [self.view setUserInteractionEnabled:YES];
+        }
+    }
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

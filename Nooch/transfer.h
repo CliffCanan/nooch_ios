@@ -14,6 +14,8 @@
 #import "FPPopoverController.h"
 #import "popSelect.h"
 #import "serve.h"
+#import "PhotoPicker.h"
+#import "assist.h"
 
 NSString *receiverId;
 NSData *receiverImgData;
@@ -24,8 +26,13 @@ bool cancelling;
 NSString *requestId;
 NSString *requestAmount;
 NSString *acceptOrDeny;
+<<<<<<< HEAD
+@class PhotoPicker;
+@interface transfer : GAITrackedViewController<CLLocationManagerDelegate,UITextFieldDelegate,FPPopoverControllerDelegate,UIAlertViewDelegate,serveD,UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
+=======
 
 @interface transfer : GAITrackedViewController<CLLocationManagerDelegate,UITextFieldDelegate,FPPopoverControllerDelegate,UIAlertViewDelegate,serveD,UIImagePickerControllerDelegate>{
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
     NSString *actualAmount;
     __weak IBOutlet UIImageView *memoBack;
     NSString *latlng;
@@ -62,7 +69,14 @@ NSString *acceptOrDeny;
     NSString *longitudeField;
     NSString *altitudeField;
     UIAlertView *writeMemo;
+    PhotoPicker*photoPickerOBJ;
+   IBOutlet UIButton*btn;
+   IBOutlet UIImageView*imageToshow;
+    
 }
+//added by venturepact
+@property(nonatomic,retain)UIImage*imagepickedOBJ;
+@property(nonatomic,retain)UIImageView*imageToshow;
 @property (weak, nonatomic) IBOutlet UIButton *decimal;
 @property (weak, nonatomic) IBOutlet UITextField *enterAmountField;
 @property (strong, nonatomic) IBOutlet UIView *inputAccess;

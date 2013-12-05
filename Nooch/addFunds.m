@@ -97,6 +97,10 @@ bool pinCheck;
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
+<<<<<<< HEAD
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+=======
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
            //Your bank account is not verified. Please verify your bank account now.
         }
         else{

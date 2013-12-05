@@ -40,6 +40,8 @@
     NSString *Latitude;
     NSString *Longitude;
     NSString *Altitude;
+    BOOL islogOutUnconditional;
+    BOOL isloggedout;
 }
 @property(nonatomic,strong) CLLocationManager *locationManager;
 @property (retain) id<serveD> Delegate;
@@ -93,7 +95,16 @@
 -(void)sendCsvTrasactionHistory:(NSString *)emailaddress;
 -(void)ValidateBank:(NSString*)bankName routingNo:(NSString*)routingNumber;
 -(void)getTotalReferralCode:(NSString *)inviteCode;
+<<<<<<< HEAD
+-(void) LogOutRequest:(NSString*) userName;
+//charanjit's edit 26/11
+-(void)getLocationBasedSearch:(NSString *)radius;
+-(void)GetAllWithdrawalTrigger;
+-(void) GetAllWithdrawalFrequency;
+-(void)SaveFrequency:(NSString*) withdrawalId type:(NSString*) type frequency: (float)withdrawalFrequency;
+=======
 
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 @end
 
 //392f9c86-1651-4459-a6a9-d362fcfc4366 - nooch team

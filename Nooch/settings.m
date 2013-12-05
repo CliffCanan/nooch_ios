@@ -1243,6 +1243,14 @@ bool firstTime;
 
     }
     
+    
+    
+    if ([name.text length]==0) {
+        UIAlertView *av =[ [UIAlertView alloc] initWithTitle:@"Nooch Money!" message:@"Please Enter Name" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [av show];
+        return;
+    }
+
     if (![self validateEmail:[email text]]) {
         email.text = @"";
         [email becomeFirstResponder];
@@ -1251,12 +1259,33 @@ bool firstTime;
         
         return;
     }
-    if ([name.text length]==0) {
-        UIAlertView *av =[ [UIAlertView alloc] initWithTitle:@"Nooch Money!" message:@"Please Enter Name" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-        [av show];
+    if ([address.text length]==0) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Address" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [address becomeFirstResponder];
+        
         return;
     }
+<<<<<<< HEAD
+    if ([city.text length]==0) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Your City" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [city becomeFirstResponder];
+        return;
+    }
+    if ([state.text length]==0) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter State" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [state becomeFirstResponder];
+        return;
 
+    }
+    
+    
+    
+=======
+
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
     UIAlertView *av =[ [UIAlertView alloc] initWithTitle:@"I don't see you!" message:@"You haven't set your profile picture, would you like to?" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
     [av setTag:20];
     if([[me pic] isKindOfClass:[NSNull class]]){
@@ -1323,7 +1352,26 @@ bool firstTime;
             [self getEncryptedPassword:password.text];
         }
     }
+    if ([contactPhone.text length]==0 ||[contactPhone.text length]<10)
+    {
+        [me endWaitStat];
+        UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"NoochMoney" message:@"Enter valid 10 digit Cell Number" delegate:nil cancelButtonTitle:@"OK"otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
     NSString *recoverMail = [[NSString alloc] init];
+    if([self.recoveryEmail.text length] > 0)
+    {
+    if (![self validateEmail:[recoveryEmail text]]) {
+        [me endWaitStat];
+        recoveryEmail.text = @"";
+        [recoveryEmail becomeFirstResponder];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Valid Recovery Email ID" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        
+        return;
+    }
+    }
     if([self.recoveryEmail.text length] > 0){
         recoverMail = self.recoveryEmail.text;
     }else
@@ -1380,11 +1428,25 @@ bool firstTime;
        //NSLog(@"transaction INput %@",transaction);
     [req setSets:transaction];
     firstTime = NO;
+    
+    //first letter uppercase
+    self.name.text=@"";
+    NSString* letterA=[[firstName.text substringToIndex:1] uppercaseString];
+    //NSLog(@"%@",firstName.text);
+    // NSLog(@"%@",lastName.text);
+    self.name.text=[NSString stringWithFormat:@"%@%@",letterA,[firstName.text  substringFromIndex:1]];
+    // NSLog(@"%@",name.text);
+    NSString* letterB=[[lastName.text substringToIndex:1] uppercaseString];
+    self.name.text=[NSString stringWithFormat:@"%@ %@%@",self.name.text,letterB,[lastName.text  substringFromIndex:1]];
+   //NSLog(@"%@",name.text);
 }
 
 #pragma mark - password encryption
 -(void)decryptionDidFinish:(NSMutableDictionary *) sourceData TValue:(NSNumber *) tagValue{
     
+<<<<<<< HEAD
+       //20nov
+=======
     /*if([ServiceType isEqualToString:@"Address"])
     {
         NSLog(@"address%@",[sourceData objectForKey:@"Status"]);
@@ -1516,6 +1578,7 @@ bool firstTime;
     }
 */
     //20nov
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
     if([ServiceType isEqualToString:@"Address"])
     {
         ServiceType=@"City";
@@ -1608,7 +1671,13 @@ bool firstTime;
     else  if ([ServiceType isEqualToString:@"name"])
     {
         ServiceType=@"lastname";
+<<<<<<< HEAD
+        NSString* letterA=[[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
+        
+        self.name.text=[NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
+=======
         self.name.text=[sourceData objectForKey:@"Status"];
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
         NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
         if (![[dictSettingsEncrypt objectForKey:@"LastName"] isKindOfClass:[NSNull class]]) {
             
@@ -1628,7 +1697,14 @@ bool firstTime;
     else  if ([ServiceType isEqualToString:@"lastname"])
     {
         ServiceType=@"email";
+<<<<<<< HEAD
+        NSString* letterA=[[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
+        
+       
+        self.name.text=[self.name.text stringByAppendingString:[NSString stringWithFormat:@" %@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]]];
+=======
         self.name.text=[self.name.text stringByAppendingString:[NSString stringWithFormat:@" %@",[sourceData objectForKey:@"Status"]]];
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
         // self.zip.text=[sourceData objectForKey:@"Status"];
         NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
         if (![[dictSettingsEncrypt objectForKey:@"UserName"] isKindOfClass:[NSNull class]]) {
@@ -2258,16 +2334,13 @@ bool firstTime;
     if(alertView.tag == 3 && buttonIndex == 1){
         [self startSupportCall];
     }else if(alertView.tag == 4 && buttonIndex == 1){
-        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
-        sendingMoney = NO;
-        [navCtrl dismissViewControllerAnimated:YES completion:nil];
-       // [navCtrl dismissModalViewControllerAnimated:NO];
-        [navCtrl performSelector:@selector(disable)];
-        [navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"tutorial"] animated:YES];
-        me = [core new];
+        [[assist shared]setisloggedout:YES];
+        serveOBJ=[serve new];
+        serveOBJ.Delegate=self;
+        ServiceType=@"logout";
+        serveOBJ.tagName=@"logout";
+        [serveOBJ LogOutRequest:[[NSUserDefaults standardUserDefaults ]valueForKey:@"UserName"]];
+        
     }else if(alertView.tag == 20){
         if(buttonIndex == 0){
             prompt = NO;
@@ -2338,7 +2411,32 @@ bool firstTime;
             NSString *validated = @"YES";
             [[me usr] setObject:validated forKey:@"validated"];
         }
-    }else if([tagName isEqualToString:@"resetPasswordDetails"]){
+    }
+    else if([tagName isEqualToString:@"logout"])
+    {
+        if([loginResult valueForKey:@"Result"])
+        {
+            if ([[loginResult valueForKey:@"Result"] isEqualToString:@"Success."]) {
+            
+                
+                [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+                NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+                sendingMoney = NO;
+                [navCtrl dismissViewControllerAnimated:YES completion:nil];
+                // [navCtrl dismissModalViewControllerAnimated:NO];
+                [navCtrl performSelector:@selector(disable)];
+                [navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"tutorial"] animated:YES];
+                me = [core new];
+            }
+            else
+            {
+                
+            }
+        }
+    }
+    else if([tagName isEqualToString:@"resetPasswordDetails"]){
         BOOL isResult = [result boolValue];
         if(isResult == 0)
         {

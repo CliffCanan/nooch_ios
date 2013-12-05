@@ -21,7 +21,7 @@
 
 
 @implementation GCPINViewController
-
+NSMutableURLRequest *requestPin;
 @synthesize secureTextEntry;
 @synthesize userInfo;
 @synthesize PINText, secondEntry, prompt, comparePIN;
@@ -374,11 +374,19 @@
     if([tagName isEqualToString:@"EncryptReqImm"]){
         NSLog(@"got encrypted reqImm %@",template);
         responseData = [NSMutableData data];
+        NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+        
+        NSLog(@"mymemberid%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]);
 //        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@", @"https://192.203.102.254/NoochService.svc", @"ValidatePinNumber", @"memberId",[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"pinNo",[loginResult objectForKey:@"Status"]]]];
+<<<<<<< HEAD
+        NSString * urlString = [NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&accessToken=%@", MyUrl, @"ValidatePinNumber", @"memberId",[defaults objectForKey:@"MemberId"], @"pinNo",[loginResult objectForKey:@"Status"],[[NSUserDefaults standardUserDefaults] objectForKey:@"OAuthToken"]];
+       requestPin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+=======
         NSString * urlString = [NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&accessToken=%@", MyUrl, @"ValidatePinNumber", @"memberId",[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"pinNo",[loginResult objectForKey:@"Status"],[[NSUserDefaults standardUserDefaults] objectForKey:@"OAuthToken"]];
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 
-        NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
+        NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:requestPin delegate:self];
         if (!connection) {
             NSLog(@"connection error");
         }

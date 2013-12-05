@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by Preston Hults on 9/14/12.
-//  Copyright (c) 2012 Nooch. All rights reserved.
+//  Copyright (c) 2012 Nooch. All rights reserved.er
 //
 
 #import "NoochHome.h"
@@ -14,11 +14,13 @@
 #import "transfer.h"
 #import "Reachability.h"
 #import "history.h"
+<<<<<<< HEAD
+#import "LocationBasedSearchViewController.h"
+=======
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 #import "AllMapViewController.h"
 @interface NoochHome ()
-{
-    UIView*loader;
-}
+
 @end
 //static NSString *pUnreservedCharsString = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~";
 static	const   char	*Base64Chars	=	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/0=";
@@ -115,9 +117,24 @@ NSString *searchString;
     userPic.clipsToBounds = YES;
     userPic.layer.cornerRadius = 4;
     firstNameLabel.text=[[me usr] objectForKey:@"firstName"];
+<<<<<<< HEAD
+    NSString* letterA=[[firstNameLabel.text substringToIndex:1] uppercaseString];
+    //NSLog(@"%@",firstName.text);
+    // NSLog(@"%@",lastName.text);
+    self.firstNameLabel.text=[NSString stringWithFormat:@"%@%@",letterA,[firstNameLabel.text  substringFromIndex:1]];
+
+=======
     
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
    
     lastNameLabel.text=[[me usr] objectForKey:@"lastName"];
+    NSString* letterB=[[lastNameLabel.text substringToIndex:1] uppercaseString];
+    //NSLog(@"%@",firstName.text);
+    // NSLog(@"%@",lastName.text);
+    self.lastNameLabel.text=[NSString stringWithFormat:@"%@%@",letterB,[lastNameLabel.text  substringFromIndex:1]];
+    
+    
+
     if(![[[me usr] objectForKey:@"Balance"] isKindOfClass:[NSNull class]] && [[me usr] objectForKey:@"Balance"] != NULL)
         balanceLabel.text =[@"$" stringByAppendingString:[[me usr] objectForKey:@"Balance"]];
     else
@@ -556,6 +573,15 @@ NSString *searchString;
     balanceLabel.hidden=NO;
     NSLog(@"%@",[[me usr] objectForKey:@"firstName"]);
     firstNameLabel.text=[[me usr] objectForKey:@"firstName"];
+<<<<<<< HEAD
+    NSString* letterA=[[firstNameLabel.text substringToIndex:1] uppercaseString];
+    //NSLog(@"%@",firstName.text);
+    // NSLog(@"%@",lastName.text);
+    self.firstNameLabel.text=[NSString stringWithFormat:@"%@%@",letterA,[firstNameLabel.text  substringFromIndex:1]];
+    
+
+=======
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     [defaults setValue:[[me usr] objectForKey:@"firstName"]forKey:@"FullName"];
@@ -571,6 +597,12 @@ NSString *searchString;
     
  [defaults synchronize];
     lastNameLabel.text=[[me usr] objectForKey:@"lastName"];
+    NSString* letterB=[[lastNameLabel.text substringToIndex:1] uppercaseString];
+    //NSLog(@"%@",firstName.text);
+    // NSLog(@"%@",lastName.text);
+    self.lastNameLabel.text=[NSString stringWithFormat:@"%@%@",letterB,[lastNameLabel.text  substringFromIndex:1]];
+    
+
     if([[me usr] objectForKey:@"Balance"] != NULL)
     {
         balanceLabel.text =[@"$" stringByAppendingString:[[me usr] objectForKey:@"Balance"]];
@@ -737,7 +769,11 @@ NSString *searchString;
             [self getRecentDetails];
             [self.friendTable reloadData];
         }else{
-            [self.view addSubview:[me waitStat:@"Loading your contacts..."]];
+            if (![self.view.subviews containsObject:loader]) {
+                loader= [me waitStat:@"Loading your contacts..."];
+                [self.view addSubview:loader];
+            }
+          
             [self syncAssos];
         }
         [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(hideHome) userInfo:nil repeats:NO];
@@ -945,7 +981,7 @@ NSString *searchString;
 
 #pragma mark - addressbook handling
 -(void)getAddressBookContacts{
-    addrBook = [NSMutableArray new];
+        addrBook = [NSMutableArray new];
     addrBookNooch = [NSMutableArray new];
     addrBookUsername = [NSMutableArray new];
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
@@ -1069,7 +1105,11 @@ NSString *searchString;
     }
     else
     {
-        [self.view addSubview:[me waitStat:@"Checking email address."]];
+        if (![self.view.subviews containsObject:loader]) {
+            loader=[me waitStat:@"Checking email address."];
+            [self.view addSubview:loader];
+        }
+        
         serve *emailCheck = [serve new];
         emailCheck.Delegate = self;
         emailCheck.tagName = @"emailCheck";
@@ -1079,7 +1119,11 @@ NSString *searchString;
 
 #pragma mark - table global updating and resources
 -(void)loadingView{
-    [self.view addSubview:[me waitStat:@"Loading your contacts..."]];
+    if (![self.view.subviews containsObject:loader]) {
+        loader=[me waitStat:@"Loading your contacts..."];
+         [self.view addSubview:loader];
+    }
+   
     [self syncAssos];
 }
 -(void)updateLists{
@@ -1307,7 +1351,11 @@ NSString *searchString;
         [cell.contentView addSubview:ab];
     }
     if (indexPath.row == [[[me assos] objectForKey:@"members"] count]-1) {
-        [me endWaitStat];
+        if ([self.view.subviews containsObject:loader]) {
+            [loader removeFromSuperview];
+             [me endWaitStat];
+        }
+       
     }
 
     return cell;
@@ -1380,6 +1428,7 @@ NSString *searchString;
 //            [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
 
             //changed by Charanjit
+            //[navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
             [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES completion:nil];
         }
     }
@@ -1412,6 +1461,11 @@ NSString *searchString;
     [self.friendTable reloadData];
 }
 - (IBAction)LocationSearch:(id)sender {
+<<<<<<< HEAD
+    LocationBasedSearchViewController * locationSearch = [self.storyboard instantiateViewControllerWithIdentifier:@"locSearch"];
+    [self.navigationController pushViewController:locationSearch animated:YES];
+=======
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 }
 - (BOOL) textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
     if([[searchField.text stringByAppendingString:string] length] == 0 || ([searchField.text length] == 1 && [string length] == 0) ){
@@ -1459,14 +1513,21 @@ NSString *searchString;
         
         if(emailSend){
             NSLog(@"email push");
-            [me endWaitStat];
+            if ([self.view.subviews containsObject:loader]) {
+                [loader removeFromSuperview];
+                 [me endWaitStat];
+            }
+           
             NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
             [dict setDictionary:[result JSONValue]];
             receiverFirst = [dict objectForKey:@"FirstName"];
             receiverLast = [dict objectForKey:@"LastName"];
             receiverId = [dict objectForKey:@"MemberId"];
-            NSURL *photoUrl=[[NSURL alloc]initWithString:[loginResult objectForKey:@"PhotoUrl"]];
-            receiverImgData = [NSData dataWithContentsOfURL:photoUrl];
+            //Commented becoz url is from other server which takes infinite time
+            
+            //NSURL *photoUrl=[[NSURL alloc]initWithString:[loginResult objectForKey:@"PhotoUrl"]];
+           // receiverImgData = [NSData dataWithContentsOfURL:photoUrl];
+            
             //commented by Charanjit
 //            [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
             [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES completion:nil];
@@ -1514,7 +1575,14 @@ NSString *searchString;
             //[me endWaitStat];
             UIAlertView *alertRedirectToProfileScreen=[[UIAlertView alloc]initWithTitle:@"Unknown" message:@"We at Nooch have no knowledge of this email address." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertRedirectToProfileScreen show];
-            [me endWaitStat];
+            if ([self.view.subviews containsObject:loader])
+            {
+                    [loader removeFromSuperview];
+                    [me endWaitStat];
+
+            }
+                
+            
         }
     }else if([tagName isEqualToString:@"GetMemberTargusScoresForBank"]){
         if(([loginResult objectForKey:@"Address"]==[NSNull null]) || ([loginResult objectForKey:@"EmailId"]==[NSNull null]) || ([loginResult objectForKey:@"ContactNumber"]==[NSNull null]))
@@ -1546,7 +1614,12 @@ NSString *searchString;
                     break;
                 }
             }
-            [me endWaitStat];
+            if ([self.view.subviews containsObject:loader]) {
+                [loader removeFromSuperview];
+                [me endWaitStat];
+            }
+
+            //[me endWaitStat];
         }
         NSLog(@"addrBook size %i and addrBookNooch %i",[addrBook count],[addrBookNooch count]);
         [me addAssos:addrBook];
@@ -1648,6 +1721,11 @@ NSString *searchString;
     //dict setValue:<#(id)#> forKey:<#(NSString *)#>
     //    mapController setPointsList:<#(NSMutableArray *)#>
 }
+<<<<<<< HEAD
+//charanjit's edit 26/11
+
+=======
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 
 
 @end

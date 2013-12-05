@@ -12,6 +12,7 @@
 
 @implementation assist
 @synthesize arrRecordsCheck;
+
 NSString *responseStringForHis;
 NSMutableArray *newHistForHis;
 NSString *urlForHis;
@@ -23,6 +24,36 @@ NSString *oldFilter;
 NSDictionary *objModel;
 NSMutableDictionary *dictsort;
 @synthesize fbAllowed,twitterAllowed,facebookAccount,accountStore,twitterAccount;
+static assist * _sharedInstance = nil;
+
++ (assist *)shared
+{
+    static dispatch_once_t pred = 0;
+    dispatch_once(&pred, ^{
+        _sharedInstance = [[self alloc] init];
+    });
+    
+    return _sharedInstance;
+}
+-(UIImage*)getTranferImage
+{
+    return imageOBJFortransfer;
+}
+-(void)setTranferImage:(UIImage*)image
+{
+    imageOBJFortransfer=image;
+}
+
+-(BOOL)isloggedout
+{
+    return islogout;
+}
+-(void)setisloggedout:(BOOL)islog
+{
+    islogout=islog;
+}
+
+
 -(void)birth{/*{{{*/
     limit = NO; oldFilter = @""; needsUpdating = YES;
     sortedHist = [NSMutableArray new];
@@ -111,7 +142,7 @@ NSMutableDictionary *dictsort;
         }];
     }
 
-    [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
+   timer= [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
     [self getBanks];
     [self getCards];
     [self getSettings];
@@ -330,12 +361,24 @@ NSMutableDictionary *dictsort;
     [sets getSettings];
 }
 -(void)getAcctInfo{
-    serve *info = [serve new];
-    info.Delegate = self;
-    info.tagName = @"info";
-    [info getDetails:[usr objectForKey:@"UserName"]];
+    if (!islogout) {
+        serve *info = [serve new];
+        info.Delegate = self;
+        info.tagName = @"info";
+        //
+        NSLog(@"UserName%@",[usr objectForKey:@"email"]);
+        [info getDetails:[usr objectForKey:@"email"]];
+    }
+    
 }
 -(void)listen:(NSString *)result tagName:(NSString *)tagName{
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
+        
+        if (timer!=nil) {
+           [timer invalidate];
+            timer=nil;
+        }
+    }
     if ([tagName isEqualToString:@"banks"]) {
         NSMutableArray *bankResult = [result JSONValue];
         if ([bankResult isKindOfClass:[NSNull class]] || bankResult == nil) {
@@ -381,7 +424,15 @@ NSMutableDictionary *dictsort;
         {
             if (![[loginResult objectForKey:@"MemberId"] isEqualToString:[usr objectForKey:@"MemberId"]]) {
                 [usr setObject:[loginResult objectForKey:@"MemberId"] forKey:@"MemberId"];
-                [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"MemberId"] forKey:@"MemberId"];
+                NSLog(@"gotmemid%@",[loginResult objectForKey:@"MemberId"]);
+                if (![[loginResult objectForKey:@"MemberId"] isEqualToString:@"00000000-0000-0000-0000-000000000000"]) {
+                    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+                    [defaults setObject:[loginResult objectForKey:@"MemberId"] forKey:@"MemberId"];
+                    [defaults synchronize];//00000000-0000-0000-0000-000000000000
+                }
+               
+               // [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"MemberId"] forKey:@"MemberId"];
+                
             }
         }
     }

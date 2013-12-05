@@ -53,7 +53,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    leftNavButton.hidden=YES;
+   // leftNavButton.hidden=YES;
 	// Do any additional setup after loading the view.
     NSLog(@"signup loaded");
     emailTextField.font = [core nFont:@"Medium" size:13];
@@ -321,6 +321,17 @@
 
 -(void) textFieldDidBeginEditing:(UITextField *)textField
 {
+    //4 Dec
+    if ([firstNameTextField.text length]>0) {
+        NSString*letterA=[firstNameTextField.text substringToIndex:1];
+        letterA=[letterA uppercaseString];
+        firstNameTextField.text=[NSString stringWithFormat:@"%@%@",letterA,[firstNameTextField.text substringFromIndex:1]];
+    }
+    if ([lastNameTextField.text length]>0) {
+        NSString*letterA=[lastNameTextField.text substringToIndex:1];
+        letterA=[letterA uppercaseString];
+        lastNameTextField.text=[NSString stringWithFormat:@"%@%@",letterA,[lastNameTextField.text substringFromIndex:1]];
+    }
     activeField = textField;
     if(textField.tag > 1)
         [scrollView setContentOffset:CGPointMake(0.0,textField.frame.size.height+100) animated:YES];
@@ -328,6 +339,7 @@
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField
 {
+    
     NSInteger nextTag = textField.tag +1;
     UIResponder *nextResponder = [textField.superview viewWithTag:nextTag];
     if(nextResponder){

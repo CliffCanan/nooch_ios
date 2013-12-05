@@ -481,6 +481,11 @@
 		6BF90A5C169B6AA2009486E7 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF90A5A169B6AA2009486E7 /* libGoogleAnalytics.a */; };
 		6BF90A5F169B79C5009486E7 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF90A5E169B79C5009486E7 /* libsqlite3.0.dylib */; };
 		841022B2183609B000C4E24E /* LocationBasedSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841022B1183609B000C4E24E /* LocationBasedSearchViewController.m */; };
+<<<<<<< HEAD
+		84140934183DCE100033A3B1 /* PhotoPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 84140933183DCE100033A3B1 /* PhotoPicker.m */; };
+		84308629184DC82B004443E9 /* camraoption.png in Resources */ = {isa = PBXBuildFile; fileRef = 84308628184DC82B004443E9 /* camraoption.png */; };
+=======
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 		84BAFB66182CC1910060C5EB /* MyCLController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BAFB65182CC1910060C5EB /* MyCLController.m */; };
 		84BDEA3F1832427900538B5C /* AllMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BDEA3E1832427900538B5C /* AllMapViewController.m */; };
 /* End PBXBuildFile section */
@@ -1112,6 +1117,12 @@
 		6BF90A5E169B79C5009486E7 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		841022B0183609B000C4E24E /* LocationBasedSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationBasedSearchViewController.h; sourceTree = "<group>"; };
 		841022B1183609B000C4E24E /* LocationBasedSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationBasedSearchViewController.m; sourceTree = "<group>"; };
+<<<<<<< HEAD
+		84140932183DCE100033A3B1 /* PhotoPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoPicker.h; sourceTree = "<group>"; };
+		84140933183DCE100033A3B1 /* PhotoPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoPicker.m; sourceTree = "<group>"; };
+		84308628184DC82B004443E9 /* camraoption.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camraoption.png; sourceTree = "<group>"; };
+=======
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 		84BAFB64182CC1910060C5EB /* MyCLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCLController.h; sourceTree = "<group>"; };
 		84BAFB65182CC1910060C5EB /* MyCLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCLController.m; sourceTree = "<group>"; };
 		84BDEA3D1832427900538B5C /* AllMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllMapViewController.h; sourceTree = "<group>"; };
@@ -1220,6 +1231,7 @@
 		6B30371615FA3FF200056DAD = {
 			isa = PBXGroup;
 			children = (
+				84308628184DC82B004443E9 /* camraoption.png */,
 				6BE13320176F65D8009763AC /* BackgroundMain-568h@2x.png */,
 				6BE13326176F65D8009763AC /* SplashPageBckgrnd-568h@2x.png */,
 				6B8E848817565A9D00B3D7B1 /* BackgroundMain@2x.png */,
@@ -2233,6 +2245,7 @@
 		6BC5FF2716261D5C007EAD7A /* NoochHome */ = {
 			isa = PBXGroup;
 			children = (
+				84140931183DCD8E0033A3B1 /* photo Picker */,
 				6B5BBBF8162783100055A606 /* Send Money Flow */,
 				6B1BB3F81603CA4C00E8AE59 /* NoochHome.h */,
 				6B1BB3F91603CA4C00E8AE59 /* NoochHome.m */,
@@ -2262,6 +2275,15 @@
 				6BF90A5B169B6AA2009486E7 /* libGoogleAnalytics_debug.a */,
 			);
 			path = Library;
+			sourceTree = "<group>";
+		};
+		84140931183DCD8E0033A3B1 /* photo Picker */ = {
+			isa = PBXGroup;
+			children = (
+				84140932183DCE100033A3B1 /* PhotoPicker.h */,
+				84140933183DCE100033A3B1 /* PhotoPicker.m */,
+			);
+			name = "photo Picker";
 			sourceTree = "<group>";
 		};
 		84BAFB63182CC17D0060C5EB /* location Tracker */ = {
@@ -2425,6 +2447,7 @@
 				6B33DC6F1634BA5600B8B8B6 /* GreyLineThin.png in Resources */,
 				6B33DC701634BA5600B8B8B6 /* ShadowHistory.png in Resources */,
 				6B33DC721634BA5600B8B8B6 /* UserBlankHistory.png in Resources */,
+				84308629184DC82B004443E9 /* camraoption.png in Resources */,
 				6B33DC801634BA7B00B8B8B6 /* AllowSharingLabel.png in Resources */,
 				6B33DC811634BA7B00B8B8B6 /* ChangePINlabel.png in Resources */,
 				6B33DC821634BA7B00B8B8B6 /* DisconnectFromFacebook.png in Resources */,
@@ -2779,6 +2802,7 @@
 				6B8A4BEF1778BCEA000B13D2 /* limitsFees.m in Sources */,
 				6B72F0FF177C703B002A8D5F /* stats.m in Sources */,
 				6B72F102177C7065002A8D5F /* causeDetails.m in Sources */,
+				84140934183DCE100033A3B1 /* PhotoPicker.m in Sources */,
 				6B8659DD17A189F80084A603 /* verification.m in Sources */,
 				6B0DFB1F17A1B2B6007DA8B0 /* refer.m in Sources */,
 				6B0DFB2217A2DF2E007DA8B0 /* popup.m in Sources */,
@@ -2919,6 +2943,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "E7C1B357-F591-46D6-BE42-0E64555B047E";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E7C1B357-F591-46D6-BE42-0E64555B047E";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2952,6 +2977,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "E7C1B357-F591-46D6-BE42-0E64555B047E";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E7C1B357-F591-46D6-BE42-0E64555B047E";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

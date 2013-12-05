@@ -223,6 +223,26 @@ NSString *curMemo;
                 oldRecordsArray=[[NSMutableArray alloc]init];
                 NSLog(@"Ginti %d",[[me histFilter:filterPick] count]);
                 mapArrays = [[NSMutableArray alloc] init];
+<<<<<<< HEAD
+                if ([me histFilter:filterPick]) {
+                    for (NSDictionary*dict in [me histFilter:filterPick]) {
+                        //making a locations array CHARANJIT
+                        NSLog(@"DICT %@",[dict objectForKey:@"Longitude"]);
+                        NSMutableDictionary * tempMapsDict = [[NSMutableDictionary alloc] init];
+                        [tempMapsDict setObject:[dict objectForKey:@"FirstName"] forKey:@"fname"];
+                        [tempMapsDict setObject:[dict objectForKey:@"LastName"] forKey:@"lname"];
+                        [tempMapsDict setObject:[dict objectForKey:@"Latitude"] forKey:@"lat"];
+                        [tempMapsDict setObject:[dict objectForKey:@"Longitude"] forKey:@"lng"];
+                        
+                        [mapArrays addObject:tempMapsDict];
+                        //-------
+                        [oldRecordsArray addObject:dict];
+                        
+                    }
+                    limit=NO;
+                }
+            
+=======
                 
             for (NSDictionary*dict in [me histFilter:filterPick]) {
                 //making a locations array CHARANJIT
@@ -239,6 +259,7 @@ NSString *curMemo;
                 
             }
                 limit=NO;
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
             }
             NSLog(@"%@",oldRecordsArray);
             load=1;

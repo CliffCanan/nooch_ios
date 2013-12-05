@@ -71,6 +71,8 @@ UIViewController *nHome;
     __weak IBOutlet UILabel *newRequests;
     __weak IBOutlet UIView *pendingRequestView;
     
+    //venturepact
+    UIView*loader;
 }
 @property (strong, nonatomic) IBOutlet UIButton *btnimgValidateNoti;
 

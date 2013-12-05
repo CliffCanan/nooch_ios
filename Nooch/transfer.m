@@ -20,7 +20,7 @@
 @interface transfer ()
 {
     NSMutableDictionary *transactionTransfer;
-    NSDictionary *transactionInputTransfer;
+    NSMutableDictionary *transactionInputTransfer;
     NSMutableURLRequest *requestTransfer;
     NSString *postTransfer;
     NSData *postDataTransfer;
@@ -37,7 +37,7 @@
 
 @implementation transfer
 
-@synthesize userPic,recipFirst,recipImage,receiveBack,recipLast,firstName,lastName,amountToSend,firstPIN,secondPIN,thirdPIN,fourthPIN,balance,prompt,dollarSign,confirm,PINText,respData,spinner,backImage;
+@synthesize userPic,recipFirst,recipImage,receiveBack,recipLast,firstName,lastName,amountToSend,firstPIN,secondPIN,thirdPIN,fourthPIN,balance,prompt,dollarSign,confirm,PINText,respData,spinner,backImage,imagepickedOBJ,imageToshow;
 @synthesize activityView,loadingView,loadingLabel,customKeyboard,inputAccess,enterAmountField,decimal,memoField;
 NSString *transactionId;
 NSString *processValue;
@@ -57,6 +57,9 @@ bool allowSharingValue;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    //if (imagepickedOBJ) {
+    
+   // }
      [navBar setBackgroundImage:[UIImage imageNamed:@"TopNavBarBackground.png"]  forBarMetrics:UIBarMetricsDefault];
     self.navigationItem.title = @"";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissFP:) name:@"dismissPopOver" object:nil];
@@ -116,11 +119,18 @@ bool allowSharingValue;
 }
 -(void)viewDidAppear:(BOOL)animated{
     
+    [super viewDidAppear:YES];
+    if ([[assist shared]getTranferImage]) {
+        imageToshow.image=[[assist shared]getTranferImage];
+        
+    }
+    
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
     locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
     locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
     [locationManager startUpdatingLocation];
+    
     
 }
 -(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
@@ -442,14 +452,56 @@ bool allowSharingValue;
             }
             return;
         }
-       
+        NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
         NSString *transMemo = [NSString stringWithFormat:@"%@%@",memoCat,memoField.text];
         if (!requestBar.hidden) {
-            transactionInputTransfer = [NSDictionary dictionaryWithObjectsAndKeys:[loginResult valueForKey:@"Status"], @"PinNumber", [[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"], @"MemberId", receiverId, @"SenderId", receiveName1, @"Name", [NSString stringWithFormat:@"%.02f", [actualAmount floatValue]], @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction", uid, @"DeviceId", latitudeField, @"Latitude", longitudeField, @"Longitude", altitudeField, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode",transMemo,@"Memo",@"Pending",@"Status", nil];
-            transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"requestInput", nil];
+            transactionInputTransfer = [NSMutableDictionary dictionaryWithObjectsAndKeys:[loginResult valueForKey:@"Status"], @"PinNumber", [[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"], @"MemberId", receiverId, @"SenderId", receiveName1, @"Name", [NSString stringWithFormat:@"%.02f", [actualAmount floatValue]], @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction", uid, @"DeviceId", latitudeField, @"Latitude", longitudeField, @"Longitude", altitudeField, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode",transMemo,@"Memo",@"Pending",@"Status", nil];
+            transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"requestInput",[defaults valueForKey:@"OAuthToken"],@"accessToken", nil];
         }else{
-            transactionInputTransfer = [NSDictionary dictionaryWithObjectsAndKeys:[loginResult valueForKey:@"Status"], @"PinNumber", [[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"], @"MemberId", receiverId, @"RecepientId", receiveName1, @"Name", [NSString stringWithFormat:@"%.02f", [actualAmount floatValue]], @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction", uid, @"DeviceId", latitudeField, @"Latitude", longitudeField, @"Longitude", altitudeField, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode",transMemo,@"Memo", nil];
-            transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput", nil];
+            transactionInputTransfer=[[NSMutableDictionary alloc]init];
+           // NSString*image64=[self encodeToBase64String:[[assist shared] getTranferImage]];
+            NSData *data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
+            NSUInteger len = data.length;
+            uint8_t *bytes = (uint8_t *)[data bytes];
+            NSMutableString *result1 = [NSMutableString stringWithCapacity:len * 3];
+            [result1 appendString:@"("];
+            for (NSUInteger i = 0; i < len; i++) {
+                if (i) {
+                    [result1 appendString:@","];
+                }
+                [result1 appendFormat:@"%d", bytes[i]];
+            }
+            [result1 appendString:@")"];
+           // NSLog(@"%@image",image64);
+            [transactionInputTransfer setValue:result1 forKey:@"Picture"];
+            
+            [transactionInputTransfer setValue:[loginResult valueForKey:@"Status"] forKey:@"PinNumber"];
+            [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
+
+            [transactionInputTransfer setValue:receiverId forKey:@"RecepientId"];
+
+            [transactionInputTransfer setValue:receiveName1 forKey:@"Name"];
+
+            [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f", [actualAmount floatValue]] forKey:@"Amount"];
+
+            [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
+
+            [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
+            [transactionInputTransfer setValue:uid forKey:@"DeviceId"];
+               [transactionInputTransfer setValue:latitudeField forKey:@"Latitude"];
+            
+             [transactionInputTransfer setValue:longitudeField forKey:@"Longitude"];
+             [transactionInputTransfer setValue:altitudeField forKey:@"Altitude"];
+             [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
+             [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
+             [transactionInputTransfer setValue:city forKey:@"City"];
+            [transactionInputTransfer setValue:state forKey:@"State"];
+            [transactionInputTransfer setValue:country forKey:@"Country"];
+            [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
+            [transactionInputTransfer setValue:transMemo forKey:@"Memo"];
+           //            transactionInputTransfer = [NSMutableDictionary dictionaryWithObjectsAndKeys:[loginResult valueForKey:@"Status"], @"PinNumber", [[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"], @"MemberId", receiverId, @"RecepientId", receiveName1, @"Name", [NSString stringWithFormat:@"%.02f", [actualAmount floatValue]], @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction", uid, @"DeviceId", latitudeField, @"Latitude", longitudeField, @"Longitude", altitudeField, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode",transMemo,@"Memo", nil];
+//            
+            transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[defaults valueForKey:@"OAuthToken"],@"accessToken", nil];
         }
 
         NSLog(@"Transaction %@", transactionTransfer);
@@ -512,7 +564,7 @@ bool allowSharingValue;
     
     NSLog(@"transactionId %@",transactionId);
     
-   resultValueTransfer = [loginResult valueForKey:@"TransferMoneyResult"];
+   resultValueTransfer = [loginResultTransfer valueForKey:@"TransferMoneyResult"];
     AppDelegate *appD = [UIApplication sharedApplication].delegate;
     [appD endWait];
     if ([[resultValueTransfer valueForKey:@"Result"] isEqualToString:@"Your cash was sent successfully"])
@@ -835,11 +887,68 @@ bool allowSharingValue;
          [self performSelectorOnMainThread:@selector(finishedPosting) withObject:nil waitUntilDone:NO];
     }
     else if ([actionSheet tag] == 12) {
+<<<<<<< HEAD
+  /*   //   UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+=======
         UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
         if (buttonIndex == 0) {
             NSLog(@"Cancelled");
         }
         else if (buttonIndex == 1) {
+<<<<<<< HEAD
+            
+           photoPickerOBJ = [self.storyboard instantiateViewControllerWithIdentifier:@"picker"];
+            //sending the map View Controller the pointers to be placed
+            photoPickerOBJ.isCamra=YES;
+           
+//            [self presentViewController:photoPickerOBJ animated:YES completion:nil];
+            [self.view addSubview:photoPickerOBJ.view];
+
+//            if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+//            {
+//                [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+//            }
+//            else
+//            {
+//                [[[UIAlertView alloc] initWithTitle:@"Unsupported" message:@"Camera is not supported" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+//            }
+        }
+        else if (buttonIndex == 2) {
+            //
+            
+            photoPickerOBJ = [self.storyboard instantiateViewControllerWithIdentifier:@"picker"];
+            //sending the map View Controller the pointers to be placed
+            photoPickerOBJ.isCamra=NO;
+//            [self dismissViewControllerAnimated:YES completion:^{
+//                [self presentViewController:photoPickerOBJ animated:YES completion:nil];
+//            }];
+           //  [self dismissViewControllerAnimated:YES completion:nil];
+     //21       [self presentViewController:photoPickerOBJ animated:YES completion:nil];
+           // SecondViewController *secondView = [self.storyboard instantiateViewControllerWithIdentifier:@"SecondViewController"];
+           // UIImage *blurryImage = [UIImage imageNamed:@"foo.jpeg"];
+           // secondView.imageView.image = blurryImage;
+          //  [navCtrl addChildViewController:photoPickerOBJ];
+           // photoPickerOBJ.view.frame = self.navigationController.view.frame;
+          //  [navCtrl.view addSubview:photoPickerOBJ.view];
+//            UIViewController*vc=[self.storyboard instantiateViewControllerWithIdentifier:@"picker"];
+//            
+//            [self addChildViewController:vc];
+            
+            
+           // [self.view addSubview:photoPickerOBJ.view];
+//             [self presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"picker"] animated:YES completion:nil];
+            //[navCtrl pushViewController:photoPickerOBJ animated:YES];
+            [self presentViewController:photoPickerOBJ animated:YES completion:nil];
+            
+
+          //  [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        }
+        
+       // [imagePicker setDelegate:self];
+       // [self presentViewController:imagePicker animated:YES completion:nil];
+        */
+=======
             if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
             {
                 [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
@@ -856,6 +965,7 @@ bool allowSharingValue;
         [imagePicker setDelegate:self];
         [self presentViewController:imagePicker animated:YES completion:nil];
         
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
     }
 }
 -(void)post{
@@ -885,6 +995,9 @@ bool allowSharingValue;
     };
     controller.completionHandler =myBlock;
     
+}
+- (NSString *)encodeToBase64String:(UIImage *)image {
+    return [UIImagePNGRepresentation(image) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
 }
 -(void)finishedPosting{
     if (causes) {
@@ -1231,9 +1344,17 @@ bool allowSharingValue;
 }
 #pragma mark Taking image to be sent with transfers
 - (IBAction)sendImageForTransfer:(id)sender {
+<<<<<<< HEAD
+    photoPickerOBJ = [self.storyboard instantiateViewControllerWithIdentifier:@"picker"];
+    [self presentViewController:photoPickerOBJ animated:YES completion:nil];
+//    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Choose a Picture" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Take a Photo",@"Pick from photos", nil];
+//    alert.tag = 12;
+//    [alert show];
+=======
     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Choose a Picture" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Take a Photo",@"Pick from photos", nil];
     alert.tag = 12;
     [alert show];
+>>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 }
 
 #pragma mark - file paths
