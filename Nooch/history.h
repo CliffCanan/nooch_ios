@@ -60,6 +60,10 @@ FPPopoverController *fp;
     __weak IBOutlet UIButton *leftNavBar;
     //venturpact
     int load,index;
+    BOOL isSearching;
+    NSMutableArray*arrSearchedRecords;
+    IBOutlet UISearchBar*searchBarObj;
+    
 }
 @property (weak, nonatomic) IBOutlet UILabel *statusOfTransfer;
 @property (weak, nonatomic) IBOutlet UIImageView *secondPartyImage;
@@ -93,8 +97,8 @@ FPPopoverController *fp;
 @property (nonatomic, retain) NSMutableData *responseData;
 @property (nonatomic) BOOL allTrans;
 @property (weak, nonatomic) IBOutlet UIImageView *userPic;
-@property (weak, nonatomic) IBOutlet UILabel *firstName;
-@property (weak, nonatomic) IBOutlet UILabel *lastName;
+@property (weak, nonatomic) IBOutlet UILabel *firstNamehist;
+@property (weak, nonatomic) IBOutlet UILabel *lastNamehist;
 @property (weak, nonatomic) IBOutlet UILabel *balance;
 @property (weak, nonatomic) IBOutlet UITableView *historyTable;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;

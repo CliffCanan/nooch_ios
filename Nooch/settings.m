@@ -222,7 +222,13 @@ bool firstTime;
     if([[[me usr] objectForKey:@"Balance"] length] != 0)
         balance.text =[@"$" stringByAppendingString:[[me usr] objectForKey:@"Balance"]];
     firstName.text=[[me usr] objectForKey:@"firstName"];
+     // NSString* letterA=[[firstName.text substringToIndex:1] uppercaseString];
+     // NSLog(@"%@",firstName.text);
+    firstName.text=[firstName.text capitalizedString];
+    
+   // NSLog(@"%@",firstName.text);
     lastName.text=[[me usr] objectForKey:@"lastName"];
+    lastName.text=[lastName.text capitalizedString];
     if([me pic] != NULL){
         userPic.image = [UIImage imageWithData:[me pic]];
         [editPicButton setTitle:@"EDIT" forState:UIControlStateNormal];
@@ -740,8 +746,9 @@ bool firstTime;
     if([[[me usr] objectForKey:@"Balance"] length] != 0)
         balance.text =[@"$" stringByAppendingString:[[me usr] objectForKey:@"Balance"]];
     firstName.text=[[me usr] objectForKey:@"firstName"];
-    
+     firstName.text=[firstName.text capitalizedString];
     lastName.text=[[me usr] objectForKey:@"lastName"];
+     lastName.text=[lastName.text capitalizedString];
     if([me pic] != NULL){
         userPic.image = [UIImage imageWithData:[me pic]];
         [editPicButton setTitle:@"EDIT" forState:UIControlStateNormal];
@@ -1222,26 +1229,6 @@ bool firstTime;
 }
 
 - (void)saveProfile {
-    if ([address.text length]==0) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Address" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        [address becomeFirstResponder];
-        
-        return;
-    }
-    if ([city.text length]==0) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Your City" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        [city becomeFirstResponder];
-        return;
-    }
-    if ([state.text length]==0) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter State" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        [state becomeFirstResponder];
-        return;
-
-    }
     
     
     
@@ -1266,7 +1253,6 @@ bool firstTime;
         
         return;
     }
-<<<<<<< HEAD
     if ([city.text length]==0) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Your City" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -1283,9 +1269,6 @@ bool firstTime;
     
     
     
-=======
-
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
     UIAlertView *av =[ [UIAlertView alloc] initWithTitle:@"I don't see you!" message:@"You haven't set your profile picture, would you like to?" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
     [av setTag:20];
     if([[me pic] isKindOfClass:[NSNull class]]){
@@ -1444,141 +1427,7 @@ bool firstTime;
 #pragma mark - password encryption
 -(void)decryptionDidFinish:(NSMutableDictionary *) sourceData TValue:(NSNumber *) tagValue{
     
-<<<<<<< HEAD
        //20nov
-=======
-    /*if([ServiceType isEqualToString:@"Address"])
-    {
-        NSLog(@"address%@",[sourceData objectForKey:@"Status"]);
-        self.address.text=[sourceData objectForKey:@"Status"];
-        ServiceType=@"City";
-        Decryption *decry = [[Decryption alloc] init];
-        decry.Delegate = self;
-        decry->tag = [NSNumber numberWithInteger:2];
-        [decry getDecryptionL:@"GetDecryptedData" textString:[dictSettingsEncrypt objectForKey:@"City"]];
-        
-        
-        
-//        password.text = decryptedPassword;
-//        [self getEncryptedPassword:password.text];
-//        NSLog(@"should be encrypting password");
-    }
-    else if([ServiceType isEqualToString:@"City"])
-    {
-        self.city.text=[sourceData objectForKey:@"Status"];
-        ServiceType=@"State";
-        Decryption *decry = [[Decryption alloc] init];
-        decry.Delegate = self;
-        decry->tag = [NSNumber numberWithInteger:2];
-        [decry getDecryptionL:@"GetDecryptedData" textString:[dictSettingsEncrypt objectForKey:@"State"]];
-        
-
-//        password.text = decryptedPassword;
-//        [self getEncryptedPassword:password.text];
-//        NSLog(@"should be encrypting password");
-    }
-    else if([ServiceType isEqualToString:@"State"])
-    {
-        self.state.text=[sourceData objectForKey:@"Status"];
-        ServiceType=@"zip";
-        
-        Decryption *decry = [[Decryption alloc] init];
-        decry.Delegate = self;
-        decry->tag = [NSNumber numberWithInteger:2];
-        [decry getDecryptedValue:@"GetDecryptedData" pwdString:[dictSettingsEncrypt objectForKey:@"Zipcode"]];
-
-//        password.text = decryptedPassword;
-//        [self getEncryptedPassword:password.text];
-//        NSLog(@"should be encrypting password");
-    }
-    else if ([ServiceType isEqualToString:@"zip"])
-    {
-        self.zip.text=[sourceData objectForKey:@"Status"];
-        NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
-        
-        
-            ServiceType=@"name";
-            Decryption *decry = [[Decryption alloc] init];
-            decry.Delegate = self;
-            decry->tag = [NSNumber numberWithInteger:2];
-            [decry getDecryptionL:@"GetDecryptedData" textString:[dictSettingsEncrypt objectForKey:@"FirstName"]];
-            //   zip.text=[sInfoDic objectForKey:@"UserName"];
-        
-    }
-    else if ([ServiceType isEqualToString:@"name"])
-    {
-       self.name.text=[sourceData objectForKey:@"Status"];
-        NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
-        
-        
-        ServiceType=@"lastname";
-        Decryption *decry = [[Decryption alloc] init];
-        decry.Delegate = self;
-        decry->tag = [NSNumber numberWithInteger:2];
-        [decry getDecryptionL:@"GetDecryptedData" textString:[dictSettingsEncrypt objectForKey:@"LastName"]];
-        //   zip.text=[sInfoDic objectForKey:@"UserName"];
-        
-    }
-    else if ([ServiceType isEqualToString:@"lastname"])
-    {
-       self.name.text=[self.name.text stringByAppendingString:[NSString stringWithFormat:@" %@",[sourceData objectForKey:@"Status"]]];
-        // self.zip.text=[sourceData objectForKey:@"Status"];
-        NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
-        
-        
-        ServiceType=@"email";
-        Decryption *decry = [[Decryption alloc] init];
-        decry.Delegate = self;
-        decry->tag = [NSNumber numberWithInteger:2];
-        [decry getDecryptionL:@"GetDecryptedData" textString:[dictSettingsEncrypt objectForKey:@"UserName"]];
-        //   zip.text=[sInfoDic objectForKey:@"UserName"];
-        
-    }
-    else if ([ServiceType isEqualToString:@"email"])
-    {
-       
-         self.email.text=[sourceData objectForKey:@"Status"];
-        NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
-        
-        
-        ServiceType=@"recovery";
-        Decryption *decry = [[Decryption alloc] init];
-        decry.Delegate = self;
-        decry->tag = [NSNumber numberWithInteger:2];
-        [decry getDecryptionL:@"GetDecryptedData" textString:[dictSettingsEncrypt objectForKey:@"RecoveryMail"]];
-        //   zip.text=[sInfoDic objectForKey:@"UserName"];
-        
-    }
-    //RecoveryMail
-    else if ([ServiceType isEqualToString:@"recovery"])
-    {
-        self.recoveryEmail.text=[NSString stringWithFormat:@"%@",[sourceData objectForKey:@"Status"]];
-        // self.zip.text=[sourceData objectForKey:@"Status"];
-        NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
-        
-        
-        ServiceType=@"pwd";
-        Decryption *decry = [[Decryption alloc] init];
-        decry.Delegate = self;
-        decry->tag = [NSNumber numberWithInteger:2];
-        [decry getDecryptionL:@"GetDecryptedData" textString:[dictSettingsEncrypt objectForKey:@"Password"]];
-        //   zip.text=[sInfoDic objectForKey:@"UserName"];
-        
-    }
-
-    //name.text =[[NSString alloc]initWithFormat:@"%@ %@",[[me usr] valueForKey:@"firstName"],[[me usr] valueForKey:@"lastName"]];
-    else if([ServiceType isEqualToString:@"pwd"])
-    {
-        
-        self.decryptedPassword=[sourceData objectForKey:@"Status"];
-        password.text = decryptedPassword;
-        
-        [self getEncryptedPassword:password.text];
-        NSLog(@"should be encrypting password");
-    }
-*/
-    //20nov
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
     if([ServiceType isEqualToString:@"Address"])
     {
         ServiceType=@"City";
@@ -1671,13 +1520,9 @@ bool firstTime;
     else  if ([ServiceType isEqualToString:@"name"])
     {
         ServiceType=@"lastname";
-<<<<<<< HEAD
         NSString* letterA=[[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
         
         self.name.text=[NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
-=======
-        self.name.text=[sourceData objectForKey:@"Status"];
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
         NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
         if (![[dictSettingsEncrypt objectForKey:@"LastName"] isKindOfClass:[NSNull class]]) {
             
@@ -1697,14 +1542,10 @@ bool firstTime;
     else  if ([ServiceType isEqualToString:@"lastname"])
     {
         ServiceType=@"email";
-<<<<<<< HEAD
         NSString* letterA=[[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
         
        
         self.name.text=[self.name.text stringByAppendingString:[NSString stringWithFormat:@" %@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]]];
-=======
-        self.name.text=[self.name.text stringByAppendingString:[NSString stringWithFormat:@" %@",[sourceData objectForKey:@"Status"]]];
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
         // self.zip.text=[sourceData objectForKey:@"Status"];
         NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
         if (![[dictSettingsEncrypt objectForKey:@"UserName"] isKindOfClass:[NSNull class]]) {
@@ -2339,7 +2180,7 @@ bool firstTime;
         serveOBJ.Delegate=self;
         ServiceType=@"logout";
         serveOBJ.tagName=@"logout";
-        [serveOBJ LogOutRequest:[[NSUserDefaults standardUserDefaults ]valueForKey:@"UserName"]];
+        [serveOBJ LogOutRequest:[[NSUserDefaults standardUserDefaults ]valueForKey:@"MemberId"]];
         
     }else if(alertView.tag == 20){
         if(buttonIndex == 0){

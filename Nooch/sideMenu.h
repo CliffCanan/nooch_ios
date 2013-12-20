@@ -34,21 +34,7 @@
     __weak IBOutlet UIButton *privacyButton;
     IBOutlet UIView *legalInfoMenu;
     MFMailComposeViewController *mailComposer;
-    //venturepact
-    UISwitch *Switch;
-    NSMutableArray*arrWithrawalOptions;
-    int countsubRecords;
-    NSString*SelectedOption;
-    NSString*SelectedSubOption;
-    NSMutableDictionary*dictSelectedWithdrawal;
-    BOOL isWithdrawalSelected;
-    NSArray *temp;
-    NSArray*temp2;
-    NSDictionary*dictResult;
-    NSArray*arrAutoWithdrawalF;
-    NSArray*arrAutoWithdrawalT;
-    int tagForFrequency;
-    NSDictionary*dictResponse;
+   
 }
 
 @end

@@ -55,6 +55,7 @@ UIViewController *nHome;
     __weak IBOutlet UIImageView *userBar;
     NSMutableArray *addrBookNooch;
     NSMutableArray *causesArr;
+     NSMutableArray *FeaturedcausesArr;
     __weak IBOutlet UIImageView *sendMoneyOverlay;
     NSMutableArray *addrBookInvited;
     __weak IBOutlet UITextField *searchField;
@@ -73,7 +74,24 @@ UIViewController *nHome;
     
     //venturepact
     UIView*loader;
+    NSMutableDictionary*dictGroup;
+    IBOutlet UIScrollView*scrollViewGroup;
+    int imgcount;
+    UIImageView*imgFeatureV;
+    UIButton *btnRight;
+    UIButton *btnLeft;
+    UIView*FeaturedView;
+    BOOL isSwipeLeft;
+    int swipeAtRowAtIndex;
+    BOOL iscauseDeSelected;
+    BOOL isSearching;
+    IBOutlet UIButton*btnX;
+    IBOutlet UIButton*btnRequestM;
+    BOOL isRequestmultiple;
+    NSMutableArray*arrSearchedRecords;
 }
+@property (strong, nonatomic)IBOutlet UIScrollView*scrollViewGroup;
+
 @property (strong, nonatomic) IBOutlet UIButton *btnimgValidateNoti;
 
 @property (weak, nonatomic) IBOutlet UIView *bannerView;

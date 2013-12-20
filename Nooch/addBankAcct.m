@@ -76,7 +76,6 @@
     detailsTable.layer.borderColor = [core hexColor:@"b3b3b3"].CGColor;
 }
 - (IBAction)addBank:(id)sender {
-<<<<<<< HEAD
     
     
     //charanjit's edit 26/11
@@ -85,8 +84,6 @@
 //        return;
 //    }
 //    
-=======
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
     btnAddBank.enabled=NO;
    
     if (![self.view.subviews containsObject:loader]) {
@@ -163,7 +160,6 @@
     [arr_digits removeAllObjects];
     arr_digits =[reversed mutableCopy];
     
-<<<<<<< HEAD
     //performign the calculations
     int first_part = (3*([arr_digits[0] intValue] + [arr_digits[3] intValue] + [arr_digits[6] intValue]));
     
@@ -184,8 +180,6 @@
 
 -(void)listen:(NSString *)result tagName:(NSString *)tagName{
     
-=======
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
     if ([ServiceType isEqualToString:@"vBank"]) {
         NSMutableDictionary*dictResponse=[result JSONValue];
         if ([[[dictResponse valueForKey:@"ValidateBankResult"] stringValue]isEqualToString:@"0"]) {
@@ -355,13 +349,36 @@
     return YES;
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [textField resignFirstResponder];
+    if ([textField isEqual:firstLast]) {
+        [firstLast resignFirstResponder];
+        [routingNumber becomeFirstResponder];
+    }
+    else if ([textField isEqual:routingNumber]){
+        [routingNumber resignFirstResponder];
+        [accountNum becomeFirstResponder];
+
+    }
+    else if ([textField isEqual:accountNum]){
+        [accountNum resignFirstResponder];
+        [bankName becomeFirstResponder];
+        
+    }
+    else if ([textField isEqual:bankName]){
+        [bankName resignFirstResponder];
+      
+        
+    }
+
     [scrollView setContentOffset:CGPointMake(0.0,0.0) animated:YES];
     return YES;
 }
 -(void)textFieldDidEndEditing:(UITextField *)textField{
     if(textField == accountNum)
         [scrollView setContentOffset:CGPointMake(0.0,0.0) animated:YES];
+    if (textField ==firstLast) {
+        firstLast.text=[firstLast.text capitalizedString];
+        
+    }
 }
 
 - (void)closeKeyboard{

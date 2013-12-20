@@ -43,6 +43,8 @@
     BOOL islogOutUnconditional;
     BOOL isloggedout;
 }
+@property(nonatomic,retain)NSString *Latitude;
+@property(nonatomic,retain) NSString *Longitude;
 @property(nonatomic,strong) CLLocationManager *locationManager;
 @property (retain) id<serveD> Delegate;
 @property (nonatomic, retain) NSMutableData *responseData;
@@ -95,16 +97,17 @@
 -(void)sendCsvTrasactionHistory:(NSString *)emailaddress;
 -(void)ValidateBank:(NSString*)bankName routingNo:(NSString*)routingNumber;
 -(void)getTotalReferralCode:(NSString *)inviteCode;
-<<<<<<< HEAD
--(void) LogOutRequest:(NSString*) userName;
+-(void) LogOutRequest:(NSString*) memberId;
 //charanjit's edit 26/11
+-(void)getAutoWithDrawalSelectedOption;
 -(void)getLocationBasedSearch:(NSString *)radius;
 -(void)GetAllWithdrawalTrigger;
 -(void) GetAllWithdrawalFrequency;
 -(void)SaveFrequency:(NSString*) withdrawalId type:(NSString*) type frequency: (float)withdrawalFrequency;
-=======
+-(void)GetFeaturedNonprofit;
+-(void)GetNonProfiltDetail:(NSString*)npId;
+-(void)GetNonProfiltList;
 
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 @end
 
 //392f9c86-1651-4459-a6a9-d362fcfc4366 - nooch team

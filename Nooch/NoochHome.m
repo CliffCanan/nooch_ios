@@ -14,11 +14,10 @@
 #import "transfer.h"
 #import "Reachability.h"
 #import "history.h"
-<<<<<<< HEAD
 #import "LocationBasedSearchViewController.h"
-=======
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 #import "AllMapViewController.h"
+#import "UIImageView+WebCache.h"
+#import "nonProfit.h"
 @interface NoochHome ()
 
 @end
@@ -34,10 +33,10 @@ int tutPos;
 @synthesize mailComposer,userPic,firstNameLabel,lastNameLabel,balanceLabel,sendMoneyView,friendTable,blankLabel,btnimgValidateNoti,
 spinner,display,emailSend,startButton,goSelectRecip,
 sorter,sections,sectionsSearch,buttonView,connectFbButton,bannerView;
-
+@synthesize scrollViewGroup;
 float progressTotal,progressPosition;
 NSString *searchString;
-
+static CGFloat const kPadding = 5.0;
 #pragma mark - inits
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -47,7 +46,26 @@ NSString *searchString;
     return self;
 }
 -(void)viewWillAppear:(BOOL)animated{
+    //Empty ScrollView
+    for (UIView *subview in self.scrollViewGroup.subviews)
+    {
+		if ([subview isKindOfClass:[UIButton class]])
+        {
+			[subview removeFromSuperview];
+		}
+	}
+    //Set Default Status
+    isRequestmultiple=NO;
+    btnRequestM.frame=CGRectMake(0, 48, 120, 30);
+    [btnRequestM setTitle:@"Request Multiple" forState:UIControlStateNormal];
+    [btnRequestM removeTarget:self action:@selector(DoneRequestMutiple) forControlEvents:UIControlEventTouchUpInside];
+    [btnRequestM addTarget:self action:@selector(requestMultiple:) forControlEvents:UIControlEventTouchUpInside];
+    
     //just a sanity check
+    [dictGroup removeAllObjects];
+    isRequestmultiple=NO;
+    NSLog(@"%d",causes);
+    
     NSLog(@"memberId from userDefaults %@ and from userObject %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"],[[me usr] objectForKey:@"MemberId"]);
     
     
@@ -86,7 +104,7 @@ NSString *searchString;
 
     if(sendingMoney){ //for when someone left the home screen on the Select Recipient 'screen'
         navBar.topItem.title = @"";
-        progressImage.hidden = NO;
+        //progressImage.hidden = NO;
         [leftNavButton removeTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
         [leftNavButton addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
         [leftNavButton setImage:[UIImage imageNamed:@"BackArrow.png"] forState:UIControlStateNormal];
@@ -117,15 +135,11 @@ NSString *searchString;
     userPic.clipsToBounds = YES;
     userPic.layer.cornerRadius = 4;
     firstNameLabel.text=[[me usr] objectForKey:@"firstName"];
-<<<<<<< HEAD
     NSString* letterA=[[firstNameLabel.text substringToIndex:1] uppercaseString];
     //NSLog(@"%@",firstName.text);
     // NSLog(@"%@",lastName.text);
     self.firstNameLabel.text=[NSString stringWithFormat:@"%@%@",letterA,[firstNameLabel.text  substringFromIndex:1]];
 
-=======
-    
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
    
     lastNameLabel.text=[[me usr] objectForKey:@"lastName"];
     NSString* letterB=[[lastNameLabel.text substringToIndex:1] uppercaseString];
@@ -185,6 +199,19 @@ NSString *searchString;
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"setPrompt"]) {
         [self showTutorial];
     }
+    if (causes) {
+        progressImage.hidden=YES;
+        navBar.topItem.title = @"Choose a Cause";
+        [self.navigationItem setTitle:@"Choose a Cause"];
+        btnX.hidden=NO;
+    }
+    else{
+       // progressImage.hidden=NO;
+    
+    btnX.hidden=YES;
+    }
+    [self.friendTable reloadData];
+    
     //[self getFB];
 }
 -(void)viewWillDisappear:(BOOL)animated{
@@ -198,7 +225,17 @@ NSString *searchString;
 }
 - (void)viewDidLoad{
     [super viewDidLoad];
-    
+    //venturepact
+    //group names
+     progressImage.hidden=YES;
+    dictGroup=[[NSMutableDictionary alloc]init];
+    for (UIView *subview in self.scrollViewGroup.subviews)
+    {
+		if ([subview isKindOfClass:[UIButton class]])
+        {
+			[subview removeFromSuperview];
+		}
+	}
     btnimgValidateNoti.hidden=YES;
     
     
@@ -250,8 +287,8 @@ NSString *searchString;
     nHome = self;
     
     
-    //causes are currently hardcoded in here
-    causesArr = [NSMutableArray new];
+       //causes are currently hardcoded in here
+ /*21   causesArr = [NSMutableArray new];
     NSMutableDictionary *cause = [NSMutableDictionary new];
     [cause setObject:@"4K for" forKey:@"firstName" ];
     [cause setObject:@"Cancer" forKey:@"lastName"];
@@ -300,7 +337,7 @@ NSString *searchString;
     [cause setObject:[UIImage imageNamed:@"RDDC_Logo.png"] forKey:@"image"];
     [cause setObject:@"692635B9-65CB-48A4-A87A-39DC7121F85A" forKey:@"MemberId"];
     [causesArr addObject:[cause mutableCopy]];
-
+*/
     //tutorial initialization
     [nextTut addTarget:self action:@selector(nextScreen) forControlEvents:UIControlEventTouchUpInside];
     [prevTut addTarget:self action:@selector(prevScreen) forControlEvents:UIControlEventTouchUpInside];
@@ -310,6 +347,7 @@ NSString *searchString;
     navCtrl = self.navigationController;
     storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
     sendMoneyView.hidden = YES;
+    [rightMenuButton setImage:[UIImage imageNamed:@"Bank_Icon.png"] forState:UIControlStateNormal];
     [rightMenuButton addTarget:self action:@selector(showFundsMenu) forControlEvents:UIControlEventTouchUpInside];
     causes = NO;
     searchString = [NSString new];
@@ -465,17 +503,6 @@ NSString *searchString;
     [sendMoneyOverlay setHidden:NO];
 }
 -(void)refreshBalance{
-//    if (![self.view.subviews containsObject:loader]) {
-//        loader=[[UIView alloc]initWithFrame:CGRectMake(110, 200, 100, 100)];
-//        UIActivityIndicatorView*activity=[[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(20, 20, 40, 50)];
-//        [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
-//        [activity startAnimating];
-//        
-//        [loader addSubview:activity];
-//        [loader setBackgroundColor:[UIColor blackColor]];
-//        
-//        [self.view addSubview:loader];
-//    }
 
     if (![self.view.subviews containsObject:loader]) {
         loader=[me waitStat:@"Loading Account info..."];
@@ -485,6 +512,16 @@ NSString *searchString;
     [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(updateBanner) userInfo:nil repeats:YES];
 }
 -(void)goBack{
+    
+    
+    for (UIView *subview in self.scrollViewGroup.subviews)
+    {
+		if ([subview isKindOfClass:[UIButton class]])
+        {
+			[subview removeFromSuperview];
+		}
+	}
+    [dictGroup removeAllObjects];
     progressImage.hidden = YES;
     navBar.topItem.title = @"Nooch";
     buttonView.hidden = NO;
@@ -517,7 +554,16 @@ NSString *searchString;
     [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(hideSelect) userInfo:nil repeats:NO];
     [searchField resignFirstResponder];
 
-
+    if (causes) {
+        //causes=NO;
+         [rightMenuButton removeTarget:self action:@selector(LocationSearch:) forControlEvents:UIControlEventTouchUpInside];
+        [rightMenuButton addTarget:self action:@selector(showFundsMenu) forControlEvents:UIControlEventTouchUpInside];
+        [rightMenuButton setImage:[UIImage imageNamed:@"Bank_Icon.png"] forState:UIControlStateNormal];
+        
+        self.friendTable.frame=CGRectMake(0, 88, 320, 400);
+        [FeaturedView removeFromSuperview];
+    }
+    else{
     int numReq = 0;
     if (!histSafe) {
         return;
@@ -559,6 +605,7 @@ NSString *searchString;
     }else{
         [pendingRequestView setHidden:YES];
     }
+    }
 }
 -(void)hideHome{
     buttonView.hidden = YES;
@@ -573,15 +620,15 @@ NSString *searchString;
     balanceLabel.hidden=NO;
     NSLog(@"%@",[[me usr] objectForKey:@"firstName"]);
     firstNameLabel.text=[[me usr] objectForKey:@"firstName"];
-<<<<<<< HEAD
-    NSString* letterA=[[firstNameLabel.text substringToIndex:1] uppercaseString];
-    //NSLog(@"%@",firstName.text);
-    // NSLog(@"%@",lastName.text);
-    self.firstNameLabel.text=[NSString stringWithFormat:@"%@%@",letterA,[firstNameLabel.text  substringFromIndex:1]];
-    
+    if ([firstNameLabel.text length]>0) {
+        NSString* letterA=[[firstNameLabel.text substringToIndex:1] uppercaseString];
+        //NSLog(@"%@",firstName.text);
+        // NSLog(@"%@",lastName.text);
+        self.firstNameLabel.text=[NSString stringWithFormat:@"%@%@",letterA,[firstNameLabel.text  substringFromIndex:1]];
+        
 
-=======
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
+    }
+    
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     [defaults setValue:[[me usr] objectForKey:@"firstName"]forKey:@"FullName"];
@@ -597,17 +644,21 @@ NSString *searchString;
     
  [defaults synchronize];
     lastNameLabel.text=[[me usr] objectForKey:@"lastName"];
-    NSString* letterB=[[lastNameLabel.text substringToIndex:1] uppercaseString];
-    //NSLog(@"%@",firstName.text);
-    // NSLog(@"%@",lastName.text);
-    self.lastNameLabel.text=[NSString stringWithFormat:@"%@%@",letterB,[lastNameLabel.text  substringFromIndex:1]];
-    
+    if ([lastNameLabel.text length]>0) {
+        NSString* letterB=[[lastNameLabel.text substringToIndex:1] uppercaseString];
+        //NSLog(@"%@",firstName.text);
+        // NSLog(@"%@",lastName.text);
+        self.lastNameLabel.text=[NSString stringWithFormat:@"%@%@",letterB,[lastNameLabel.text  substringFromIndex:1]];
+        
 
+    }
+  
     if([[me usr] objectForKey:@"Balance"] != NULL)
     {
         balanceLabel.text =[@"$" stringByAppendingString:[[me usr] objectForKey:@"Balance"]];
+        
         if ([self.view.subviews containsObject:loader]) {
-            [loader removeFromSuperview];
+        [loader removeFromSuperview];
             [me endWaitStat];
         }
               // UIView*loader=[self.view viewWithTag:20003];
@@ -636,7 +687,7 @@ NSString *searchString;
     }
     else if(result1.height==568)
     {
-        btnimgValidateNoti.frame=CGRectMake(0, 330, 320, 43);
+        btnimgValidateNoti.frame=CGRectMake(0, 40, 320, 43);
     }
     buttonView.frame=CGRectMake(0, 120, 320, 350);
     
@@ -692,16 +743,199 @@ NSString *searchString;
     [self.friendTable reloadData];
 }
 - (IBAction)causes:(id)sender {
+    progressImage.hidden=YES;
+   [navCtrl.view removeGestureRecognizer:self.slidingViewController.panGesture];
+    self.navigationItem.title=@"Choose a Cause";
     causes = YES;
     peepsOrCauses.highlighted = YES;
+    serve*serveOBJ=[serve new];
+    serveOBJ.tagName=@"featuredNp";
+    serveOBJ.Delegate=self;
+    [serveOBJ GetFeaturedNonprofit];
+   
+}
+-(void)oneFingerSwipeLeft:(UISwipeGestureRecognizer *)sender{
+    NSLog(@"%d",sender.view.tag);
+    swipeAtRowAtIndex=sender.view.tag;
+    isSwipeLeft=YES;
+    causes=YES;
     [self.friendTable reloadData];
 }
--(void)donate{
-    [self selectRecip:self];
+-(void)oneFingerSwipeRight:(id)sender{
+    isSwipeLeft=NO;
+    causes=YES;
+    [self.friendTable reloadData];
 }
+-(void)donateSelected:(id)sender{
+    
+}
+-(void)LearnMore:(id)sender{
+    //NonprofitId
+    isSwipeLeft=NO;
+    causes=YES;
+    NSString*strNonProfitid=[[causesArr objectAtIndex:[sender tag]] valueForKey:@"NonprofitId"];
+    nonProfit*np=[self.storyboard instantiateViewControllerWithIdentifier:@"nonprofit"];
+    NSDictionary*dict=[NSDictionary dictionaryWithObjectsAndKeys:strNonProfitid,@"id",[[causesArr objectAtIndex:[sender tag]] valueForKey:@"OrganizationName"],@"OrganizationName", nil];
+    np.dictnonprofitid=[dict mutableCopy];
+    [navCtrl pushViewController:np animated:YES];
+}
+-(void)FeaturedBannerView
+{
+    imgcount=0;
+    self.friendTable.frame=CGRectMake(0, 260, 320, 250);
+   FeaturedView=[[UIView alloc]initWithFrame:CGRectMake(0, 110, 320, 150)];
+    FeaturedView.backgroundColor=[UIColor clearColor];
+    imgFeatureV=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 150)];
+    [imgFeatureV setImageWithURL:[NSURL URLWithString:[[FeaturedcausesArr objectAtIndex:0] valueForKey:@"PhotoBanner"]]
+        placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+    [FeaturedView addSubview:imgFeatureV];
+    
+    
+    btnLeft=[UIButton buttonWithType:UIButtonTypeCustom];
+    [btnLeft setImage:[UIImage imageNamed:@"btnLeft.png"] forState:UIControlStateNormal];
+    btnLeft.frame=CGRectMake(10, 60, 50, 50);
+    btnLeft.tag=2101;
+    if ([FeaturedcausesArr count]==1) {
+        btnLeft.enabled=NO;
+    }
+    [btnLeft addTarget:self action:@selector(ArrowClicked:) forControlEvents:UIControlEventTouchUpInside];
+    btnLeft.enabled=NO;
+    [FeaturedView addSubview:btnLeft];
+   btnRight=[UIButton buttonWithType:UIButtonTypeCustom];
+    [btnRight setImage:[UIImage imageNamed:@"btnRight.png"] forState:UIControlStateNormal];
+    btnRight.frame=CGRectMake(250, 60, 50, 50);
+    [FeaturedView addSubview:btnRight];
+    btnRight.tag=2100;
+     btnRight.enabled=YES;
+    [btnRight addTarget:self action:@selector(ArrowClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+   
+    [self.view addSubview:FeaturedView];
+    if ([FeaturedcausesArr count]>1) {
+        //btnLeft.enabled=NO;
+        btnRight.enabled=YES;
+    }
+    UIView*opaqueV=[[UIView alloc]initWithFrame:CGRectMake(0, 150, 320, 30)];
+    opaqueV.backgroundColor=[UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:0.0/255.0f alpha:0.8f];
+    UILabel*lbl=[[UILabel alloc]initWithFrame:CGRectMake(5, 5, 200, 20)];
+    lbl.backgroundColor=[UIColor clearColor];
+    lbl.text=@"Featured NonProfit";
+    lbl.textColor=[UIColor whiteColor];
+    [opaqueV addSubview:lbl];
+    opaqueV.layer.zPosition=4;
+    [FeaturedView addSubview:opaqueV];
+}
+-(void)ArrowClicked:(id)sender{
+    NSLog(@"%d",[sender tag]);
+    if ([sender tag]==2100) {
+        imgcount++;
+        if ([FeaturedcausesArr count]>imgcount) {
+            
+            [imgFeatureV setImageWithURL:[NSURL URLWithString:[[FeaturedcausesArr objectAtIndex:imgcount] valueForKey:@"PhotoBanner"]]
+                        placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+            btnLeft.enabled=YES;
+            if ([FeaturedcausesArr count]-1>imgcount+1) {
+                btnRight.enabled=YES;
+            }
+            else
+                btnRight.enabled=NO;
+        }
+        else
+        {
+            btnRight.enabled=NO;
+        }
+    }
+    else{
+        
+        if (imgcount>0) {
+            if ([FeaturedcausesArr count]>imgcount) {
+                imgcount--;
+                [imgFeatureV setImageWithURL:[NSURL URLWithString:[[FeaturedcausesArr objectAtIndex:imgcount] valueForKey:@"PhotoBanner"]]
+                            placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+                if (imgcount-1>0) {
+                    btnLeft.enabled=YES;
+                }
+                else
+                {
+                    btnRight.enabled=YES;
+                    btnLeft.enabled=NO;
+                }
+ 
+            }
+        }
+    
+        
+    }
+}
+-(IBAction)requestMultiple:(id)sender{
+    isRequestmultiple=YES;
+    btnRequestM.frame=CGRectMake(260, 48, 70, 30);
+    [btnRequestM setTitle:@"Done" forState:UIControlStateNormal];
+     [btnRequestM removeTarget:self action:@selector(requestMultiple:) forControlEvents:UIControlEventTouchUpInside];
+    [btnRequestM addTarget:self action:@selector(DoneRequestMutiple) forControlEvents:UIControlEventTouchUpInside];
+}
+-(void)DoneRequestMutiple{
+    transfer*transferOBJ=[self.storyboard instantiateViewControllerWithIdentifier:@"transfer"];
+    transferOBJ.dictResp=dictGroup;
+    [navCtrl presentViewController:transferOBJ animated:YES completion:nil];
+}
+-(void)donate{
+    [self selectDonationRecip:self];
+    //[self selectRecip:self];
+    
+}
+-(void)selectDonationRecip:(id)sender{
+    btnX.hidden=NO;
+    btnRequestM.hidden=YES;
+    [navCtrl.view removeGestureRecognizer:self.slidingViewController.panGesture];
+    [rightMenuButton setImage:[UIImage imageNamed:@"green-pin.png"] forState:UIControlStateNormal];
+    [rightMenuButton removeTarget:self action:@selector(showFundsMenu) forControlEvents:UIControlEventTouchUpInside];
+    [rightMenuButton addTarget:self action:@selector(LocationSearch:) forControlEvents:UIControlEventTouchUpInside];
+    iscauseDeSelected=YES;
+    progressImage.hidden=NO;
+    NSLog(@"started send money process");
+    if(suspended || [[[me usr] objectForKey:@"Status"] isEqualToString:@"Suspended"]){
+        UIAlertView *susAV = [[UIAlertView alloc] initWithTitle:@"Account Suspended" message:@"For your protection your account has been temporarily suspended. Please contact us for more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
+        [susAV setTag:1];
+        [susAV show];
+        suspended = YES;
+    }else{
+        startButton.userInteractionEnabled = NO;
+        [self startSelectRecip];
+        return;
+        if( [[me usr] objectForKey:@"validated"] && [[[me usr] objectForKey:@"validated"] boolValue]){
+            [self startSelectRecip];
+        }else{
+            UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"One Last Step..." message:@"Before you can send money we must verify who you are. Please help us keep Nooch safe and complete your profile." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
+            [set setTag:16];
+            [set show];
+        }
+    }
 
+}
+#pragma mark-donation
+-(IBAction)MakeDonation:(id)sender{
+    isSwipeLeft=NO;
+    navBar.topItem.title = @"Choose a Cause";
+    causes=YES;
+    [self selectDonationRecip:Nil];
+}
 #pragma mark - start send process
 - (IBAction)selectRecip:(id)sender {
+    btnX.hidden=YES;
+    [rightMenuButton setImage:[UIImage imageNamed:@"Bank_Icon.png"] forState:UIControlStateNormal];
+    [rightMenuButton addTarget:self action:@selector(showFundsMenu) forControlEvents:UIControlEventTouchUpInside];
+    btnRequestM.hidden=NO;
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please valid your Profile and Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+
+        return;
+    }
+    
+    iscauseDeSelected=NO;
+    progressImage.hidden=NO;
     NSLog(@"started send money process");
     if(suspended || [[[me usr] objectForKey:@"Status"] isEqualToString:@"Suspended"]){
         UIAlertView *susAV = [[UIAlertView alloc] initWithTitle:@"Account Suspended" message:@"For your protection your account has been temporarily suspended. Please contact us for more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
@@ -762,20 +996,28 @@ NSString *searchString;
         startButton.userInteractionEnabled = YES;
         [self reallow];
         blankLabel.font = [core nFont:@"Medium" size:14];
-        if (causes) {
-            [self causes:self];
-        }
-        else if([[[me assos] objectForKey:@"members"] count] != 0){
-            [self getRecentDetails];
-            [self.friendTable reloadData];
-        }else{
-            if (![self.view.subviews containsObject:loader]) {
-                loader= [me waitStat:@"Loading your contacts..."];
-                [self.view addSubview:loader];
+        if(iscauseDeSelected){
+            if (causes) {
+                isSwipeLeft=NO;
+                navBar.topItem.title = @"Choose a Cause";
+                [self causes:self];
             }
-          
-            [self syncAssos];
         }
+        else{
+            causes=NO;
+             if([[[me assos] objectForKey:@"members"] count] != 0){
+                [self getRecentDetails];
+                [self.friendTable reloadData];
+            }else{
+                if (![self.view.subviews containsObject:loader]) {
+                    loader= [me waitStat:@"Loading your contacts..."];
+                    [self.view addSubview:loader];
+                }
+                
+                [self syncAssos];
+            }
+        }
+       
         [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(hideHome) userInfo:nil repeats:NO];
     }
 }
@@ -1217,8 +1459,18 @@ NSString *searchString;
     title = @"Recent";
     return 0;
 }
+-(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    if ([[me assos] objectForKey:@"members"]) {
+       return @"Recent";
+    }
+    return @"";
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (causes) {
+       // self.title=@"Choose a Cause";
+        if (isSearching) {
+          return [arrSearchedRecords count];
+        }
         return [causesArr count];
     }
     if(emailEntry){
@@ -1230,6 +1482,7 @@ NSString *searchString;
             return 1;
     }else{
         //NSLog(@"members %@",[[me assos] objectForKey:@"members"]);
+        NSLog(@"%d",[[[me assos] objectForKey:@"members"] count]);
         return [[[me assos] objectForKey:@"members"] count];
         if ([[[me assos] objectForKey:@"members"] count] < 20) {
             for (NSDictionary *dict in [[me assos] objectForKey:@"members"]) {
@@ -1268,16 +1521,139 @@ NSString *searchString;
     
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     if (causes) {
+        if (isSearching) {
+            cell.contentView.tag=indexPath.row;
+            UISwipeGestureRecognizer *oneFingerSwipeLeft = [[UISwipeGestureRecognizer alloc]
+                                                            initWithTarget:self
+                                                            action:@selector(oneFingerSwipeLeft:)] ;
+            
+            [oneFingerSwipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
+            [cell.contentView addGestureRecognizer:oneFingerSwipeLeft];
+            UISwipeGestureRecognizer *oneFingerSwipeRight = [[UISwipeGestureRecognizer alloc]
+                                                             initWithTarget:self
+                                                             action:@selector(oneFingerSwipeRight:)] ;
+            [oneFingerSwipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
+            [cell.contentView addGestureRecognizer:oneFingerSwipeRight];
+            
+            dict = [arrSearchedRecords objectAtIndex:indexPath.row];
+            cell.textLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
+           
+            if ([FeaturedcausesArr containsObject:dict]) {
+                cell.detailTextLabel.text=@"Featured";
+
+            }
+            else
+                cell.detailTextLabel.text=@"";
+            [iv setImageWithURL:[NSURL URLWithString:[dict valueForKey:@"PhotoIcon"]]
+               placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+            
+            //iv.image = [dict objectForKey:@"image"];
+            [cell.contentView addSubview:iv];
+            if (isSwipeLeft) {
+                if (swipeAtRowAtIndex==indexPath.row) {
+                    isSwipeLeft=NO;
+                    UIView*subContentV=[[UIView alloc]initWithFrame:CGRectMake(310, 5, 0, 40)];
+                    subContentV.backgroundColor=[UIColor clearColor];
+                    UIButton*donatebtn=[UIButton buttonWithType:UIButtonTypeCustom];
+                    donatebtn.frame=CGRectMake(2, 5, 100, 15);
+                    [donatebtn setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+                    [donatebtn setTitle:@"Donate" forState:UIControlStateNormal];
+                    donatebtn.tag=indexPath.row;
+                    [donatebtn addTarget:self action:@selector(donateSelected:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    [subContentV addSubview:donatebtn];
+                    UIButton*learnbtn=[UIButton buttonWithType:UIButtonTypeCustom];
+                    learnbtn.frame=CGRectMake(2, 25, 100, 15);
+                    [learnbtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+                    [learnbtn setTitle:@"Learn More" forState:UIControlStateNormal];
+                    learnbtn.tag=indexPath.row;
+                    [learnbtn addTarget:self action:@selector(LearnMore:) forControlEvents:UIControlEventTouchUpInside];
+                    [subContentV addSubview:learnbtn];
+                    [cell.contentView addSubview:subContentV];
+                    [UIView beginAnimations:@"bucketsOff" context:nil];
+                    [UIView setAnimationDuration:0.2];
+                    [UIView setAnimationDelegate:self];
+                    //position off screen
+                    subContentV.frame=CGRectMake(200, 5, 120, 40);
+                    //animate off screen
+                    [UIView commitAnimations];
+                }
+                
+                
+            }
+            else
+                isSwipeLeft=NO;
+            return cell;
+        }
+        cell.contentView.tag=indexPath.row;
+        UISwipeGestureRecognizer *oneFingerSwipeLeft = [[UISwipeGestureRecognizer alloc]
+                                                         initWithTarget:self
+                                                         action:@selector(oneFingerSwipeLeft:)] ;
+        
+        [oneFingerSwipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
+        [cell.contentView addGestureRecognizer:oneFingerSwipeLeft];
+        UISwipeGestureRecognizer *oneFingerSwipeRight = [[UISwipeGestureRecognizer alloc]
+                                                          initWithTarget:self
+                                                          action:@selector(oneFingerSwipeRight:)] ;
+        [oneFingerSwipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
+        [cell.contentView addGestureRecognizer:oneFingerSwipeRight];
+        
         dict = [causesArr objectAtIndex:indexPath.row];
-        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[dict objectForKey:@"firstName"],[dict objectForKey:@"lastName"]];
-        iv.image = [dict objectForKey:@"image"];
+        cell.textLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
+        if (indexPath.row<[FeaturedcausesArr count]) {
+            cell.detailTextLabel.text=@"Featured";
+        }
+        else
+            cell.detailTextLabel.text=@"";
+        if (![[dict valueForKey:@"PhotoIcon"] isKindOfClass:[NSNull class]]) {
+            [iv setImageWithURL:[NSURL URLWithString:[dict valueForKey:@"PhotoIcon"]]
+               placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+        }
+       
+        
+        //iv.image = [dict objectForKey:@"image"];
         [cell.contentView addSubview:iv];
+        if (isSwipeLeft) {
+            if (swipeAtRowAtIndex==indexPath.row) {
+                UIView*subContentV=[[UIView alloc]initWithFrame:CGRectMake(310, 5, 0, 40)];
+                subContentV.backgroundColor=[UIColor clearColor];
+                UIButton*donatebtn=[UIButton buttonWithType:UIButtonTypeCustom];
+                donatebtn.frame=CGRectMake(2, 5, 100, 15);
+                [donatebtn setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+                [donatebtn setTitle:@"Donate" forState:UIControlStateNormal];
+                donatebtn.tag=indexPath.row;
+                [donatebtn addTarget:self action:@selector(donateSelected:) forControlEvents:UIControlEventTouchUpInside];
+                
+                [subContentV addSubview:donatebtn];
+                UIButton*learnbtn=[UIButton buttonWithType:UIButtonTypeCustom];
+                learnbtn.frame=CGRectMake(2, 25, 100, 15);
+                [learnbtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+                [learnbtn setTitle:@"Learn More" forState:UIControlStateNormal];
+                learnbtn.tag=indexPath.row;
+                 [learnbtn addTarget:self action:@selector(LearnMore:) forControlEvents:UIControlEventTouchUpInside];
+                [subContentV addSubview:learnbtn];
+                [cell.contentView addSubview:subContentV];
+                [UIView beginAnimations:@"bucketsOff" context:nil];
+                [UIView setAnimationDuration:0.2];
+                [UIView setAnimationDelegate:self];
+                //position off screen
+                subContentV.frame=CGRectMake(200, 5, 120, 40);
+                //animate off screen
+                [UIView commitAnimations];
+            }
+            
+           
+        }
+        else
+            isSwipeLeft=NO;
         return cell;
     }
+    cell.detailTextLabel.text=@"";
     iv.layer.borderColor = [UIColor blackColor].CGColor;
     iv.layer.borderWidth = 1.3f;
     if(emailEntry){
         cell.indentationWidth = 10;
+        NSLog(@"%@",searchField.text);
         cell.textLabel.text = [NSString stringWithFormat:@"Send to %@",searchField.text];
         return cell;
     }
@@ -1302,7 +1678,11 @@ NSString *searchString;
             
         }
         
-    }else{
+    }else {
+       // NSLog(@"%@",[[me assos] objectForKey:@"members"]);
+         // NSLog(@"%@",[[[me assos] objectForKey:@"people"] objectForKey:[[[[me assos] objectForKey:@"members"] objectAtIndex:indexPath.row] objectForKey:@"MemberId"]]);
+        //NSLog(@"%@",[[[me assos] objectForKey:@"members"] objectAtIndex:indexPath.row]);
+        
         if ([[[me assos] objectForKey:@"members"] count] < 20 && indexPath.row == [[[me assos] objectForKey:@"members"] count] +1){
             [dict setObject:@"e9821324-08ac-43f6-ad9d-5b6aabe8e8c3" forKey:@"MemberId"];
             [dict setObject:@"Team" forKey:@"firstName"];
@@ -1328,7 +1708,7 @@ NSString *searchString;
         }
     }
     if([dict objectForKey:@"image"] != NULL){
-        iv.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
+ //21       iv.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
     }else{
         iv.image = [UIImage imageNamed:@"profile_picture.png"];
     }
@@ -1360,6 +1740,7 @@ NSString *searchString;
 
     return cell;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [friendTable deselectRowAtIndexPath:indexPath animated:YES];
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
@@ -1404,10 +1785,12 @@ NSString *searchString;
             }
         }
     }
-    
-    receiverFirst = [dict objectForKey:@"firstName"];
+      receiverFirst = [dict objectForKey:@"firstName"];
     receiverLast = [dict objectForKey:@"lastName"];
     receiverId = [dict objectForKey:@"MemberId"];
+    
+    
+    
     if (causes) {
         receiverImgData = UIImagePNGRepresentation([dict objectForKey:@"image"]);
     }else{
@@ -1415,6 +1798,7 @@ NSString *searchString;
     }
     if([dict objectForKey:@"image"] == NULL){
         receiverImgData = UIImagePNGRepresentation([UIImage imageNamed:@"profile_picture.png"]);
+        [dict setValue:@"profile_picture.png" forKey:@"image"];
     }
     if([receiverId length] == 0 || receiverId == NULL){
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Slow down" message:@"Since this is a private release, sending money to non-Noochers is not supported." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -1429,11 +1813,109 @@ NSString *searchString;
 
             //changed by Charanjit
             //[navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
-            [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES completion:nil];
+            if (!isRequestmultiple) {
+                [dictGroup setValue:dict forKey:[NSString stringWithFormat:@"%d",indexPath.row]];
+                [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES completion:nil];
+ 
+            }
         }
     }
+    if (isRequestmultiple) {
+        NSLog(@"dict  dsv%@",dictGroup);
+        if (![dictGroup.allKeys containsObject:[NSString stringWithFormat:@"%d",indexPath.row]]) {
+            
+            [dictGroup setValue:dict forKey:[NSString stringWithFormat:@"%d",indexPath.row]];
+            NSLog(@"dict  dsv%@",dictGroup);
+            [self layoutScrollView];
+        }
+    }
+    
+    
 }
+-(void)layoutScrollView
+{
+    // Remove existing buttons
+    scrollViewGroup.frame=CGRectMake(0, 45, 270, 48);
+	for (UIView *subview in self.scrollViewGroup.subviews)
+    {
+		if ([subview isKindOfClass:[UIButton class]])
+        {
+			[subview removeFromSuperview];
+		}
+	}
+    
+	CGFloat maxWidth = self.scrollViewGroup.frame.size.width - kPadding;
+	CGFloat xPosition = kPadding;
+	CGFloat yPosition = kPadding;
+    for (NSString *dictKey in dictGroup.allKeys)
+    {
+        NSLog(@"%@",dictKey);
+        NSDictionary*dict=[dictGroup valueForKey:dictKey];
+        NSLog(@"%@",dict);
+        
+        
+        UIFont *font = [UIFont systemFontOfSize:16.0];
+        NSString*name=[NSString stringWithFormat:@"%@ %@",[dict objectForKey:@"firstName"],
+                       [dict objectForKey:@"lastName"]];
+		// Create the custom button
+		UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+		[button setTitle:name forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor colorWithRed:66.0f/255.0f green:172.0f/255.0f blue:224.0f/255.0f alpha:1.0] forState:UIControlStateNormal];
+		[button.titleLabel setFont:font];
+        [button setTag:[dictKey intValue]];
+        
+        NSLog(@"%d",button.tag);
+//		[button setBackgroundImage:normalBackgroundImage forState:UIControlStateNormal];
+//		[button setBackgroundImage:selectedBackgroundImage forState:UIControlStateSelected];
+        UIButton *close = [UIButton buttonWithType:UIButtonTypeCustom];
+		//[close setBackgroundColor:[UIColor orangeColor]];
+        [close setTag:[dictKey intValue]];
+        
+		[close.titleLabel setFont:font];
+		[close setBackgroundImage:[UIImage imageNamed:@"crossblue.png"] forState:UIControlStateNormal];
+		//[close setBackgroundImage:selectedBackgroundImage forState:UIControlStateSelected];
+		[close addTarget:self action:@selector(CrossbuttonSelected:) forControlEvents:UIControlEventTouchUpInside];
+        
+		// Get the width and height of the name string given a font size
+        CGSize nameSize = [name sizeWithFont:font];
+        
+		if ((xPosition + nameSize.width + kPadding) > maxWidth)
+        {
+			// Reset horizontal position to left edge of superview's frame
+			xPosition = kPadding;
+			
+			// Set vertical position to a new 'line'
+			yPosition += nameSize.height + kPadding;
+		}
+		
+		// Create the button's frame
+		CGRect buttonFrame = CGRectMake(xPosition, yPosition, nameSize.width + (kPadding * 2), nameSize.height);
+        CGRect closeFrame=CGRectMake(xPosition+nameSize.width+(kPadding*2), yPosition+2, 20, nameSize.height);
+        xPosition+=15;
+		[button setFrame:buttonFrame];
+        [close setFrame:closeFrame];
+        // Add the button to its superview
+        [self.scrollViewGroup addSubview:close];
+		[self.scrollViewGroup addSubview:button];
+		
+		// Calculate xPosition for the next button in the loop
+		xPosition += button.frame.size.width + kPadding;
+		
 
+    }
+    // Set the content size so it can be scrollable
+    CGFloat height = yPosition + 30.0;
+	[self.scrollViewGroup setContentSize:CGSizeMake([self.scrollViewGroup bounds].size.width, height)];
+    
+	[searchField becomeFirstResponder];
+}
+-(void)CrossbuttonSelected:(id)sender{
+   // UIButton *btn=(UIButton *)[self.scrollViewGroup viewWithTag:<#(NSInteger)#>]
+    NSLog(@"%@",[NSString stringWithFormat:@"%d",[sender tag]]);
+    [dictGroup removeObjectForKey:[NSString stringWithFormat:@"%d",[sender tag]]];
+    NSLog(@"%@",self.scrollViewGroup.subviews);
+    [self layoutScrollView];
+}
 #pragma mark - connection handling
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	[responseData setLength:0];
@@ -1461,14 +1943,50 @@ NSString *searchString;
     [self.friendTable reloadData];
 }
 - (IBAction)LocationSearch:(id)sender {
-<<<<<<< HEAD
     LocationBasedSearchViewController * locationSearch = [self.storyboard instantiateViewControllerWithIdentifier:@"locSearch"];
     [self.navigationController pushViewController:locationSearch animated:YES];
-=======
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 }
+- (void) searchTableView
+{
+    
+    
+    arrSearchedRecords =[[NSMutableArray alloc]init];
+    for (NSMutableDictionary *tableViewBind in causesArr)
+    {
+        
+        NSComparisonResult result = [[tableViewBind valueForKey:@"OrganizationName"] compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
+        if (result == NSOrderedSame)
+        {
+            [arrSearchedRecords addObject:tableViewBind];
+        }
+    }
+}
+
 - (BOOL) textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-    if([[searchField.text stringByAppendingString:string] length] == 0 || ([searchField.text length] == 1 && [string length] == 0) ){
+    if(causes){
+        if ([string length]>0) {
+            
+           
+            
+            isSearching = YES;
+            searchString=[searchField.text stringByAppendingString:string];
+            [self searchTableView];
+            
+            [self.friendTable reloadData];
+            
+        }
+        
+        else{
+            
+            isSearching=NO;
+            isSwipeLeft=NO;
+            [self.friendTable reloadData];
+            
+        }
+        return YES;
+    }
+    else{
+           if([[searchField.text stringByAppendingString:string] length] == 0 || ([searchField.text length] == 1 && [string length] == 0) ){
         searching = NO;
         emailEntry = NO;
     }else if([string length] == 0){
@@ -1486,10 +2004,11 @@ NSString *searchString;
             emailEntry = NO;
 
         searchString = [searchField.text stringByAppendingString:string];
-    }
+            }
     
     [self.friendTable reloadData];
     return YES;
+    }
 }
 -(void)textFieldDidEndEditing:(UITextField *)textField{
     if([searchField.text length] == 0 ){
@@ -1505,10 +2024,33 @@ NSString *searchString;
 -(void) listen:(NSString *)result tagName:(NSString*)tagName{
 
     NSDictionary *loginResult = [result JSONValue];
-    if([tagName isEqualToString:@"SetDeviceToken"]){
+    if ([tagName isEqualToString:@"featuredNp"]) {
+         FeaturedcausesArr = [[NSMutableArray alloc]init];
+        
+        FeaturedcausesArr=[result JSONValue];
+              serve*serveOBJ=[serve new];
+        serveOBJ.tagName=@"NPList";
+        serveOBJ.Delegate=self;
+        [serveOBJ GetNonProfiltList];
+    }
+    else if ([tagName isEqualToString:@"NPList"]){
+        causesArr=[[NSMutableArray alloc]init];
+       // causesArr=[FeaturedcausesArr copy];
+        for (NSDictionary*dict in FeaturedcausesArr) {
+            [causesArr addObject:dict];
+        }
+        for (NSDictionary*dict in [result JSONValue]) {
+            [causesArr addObject:dict];
+        }
+        [self FeaturedBannerView];
+       
+       [self.friendTable reloadData];
+
+    }
+    else if([tagName isEqualToString:@"SetDeviceToken"]){
         return;
     }
-        if ((loginResult != NULL) && ([loginResult count] > 0) && ([tagName isEqualToString:@"getMemberDetails"]))
+    else if ((loginResult != NULL) && ([loginResult count] > 0) && ([tagName isEqualToString:@"getMemberDetails"]))
     {
         
         if(emailSend){
@@ -1721,11 +2263,8 @@ NSString *searchString;
     //dict setValue:<#(id)#> forKey:<#(NSString *)#>
     //    mapController setPointsList:<#(NSMutableArray *)#>
 }
-<<<<<<< HEAD
 //charanjit's edit 26/11
 
-=======
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 
 
 @end

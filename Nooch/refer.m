@@ -148,7 +148,7 @@
     [msgTextView setFont:[UIFont systemFontOfSize:16]];
     NSArray*arrReferCode=[referCode.text componentsSeparatedByString:@":"];
     msgTextView.textColor=[UIColor blackColor];
-    msgTextView.text=[NSString stringWithFormat:@"Hey,%@ has invited you to use Nooch, the simplest way to pay friends back. Use my referral code [%@] - download here: %@",[defaults valueForKey:@"FullName"], [arrReferCode objectAtIndex:1],@"ow.ly/nGocT"];
+    msgTextView.text=[NSString stringWithFormat:@"Hey,%@ has invited you to use Nooch, the simplest way to pay friends back. Use my referral code [%@] - download here: %@",[[defaults valueForKey:@"FullName"] capitalizedString], [arrReferCode objectAtIndex:1],@"ow.ly/nGocT"];
     [SMSView addSubview:msgTextView];
     
     btnToSend=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -229,7 +229,7 @@
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     NSString *messageBody; // Change the message body to HTML
-    messageBody=[NSString stringWithFormat:@"<h5>\"Hi, Your friend %@ has invited you to become a member of Nooch, the simplest way to pay back friends.<br />Accept this invitation by downloading Nooch and using this Referral Code: %@ <br /><br />To learn more about Nooch, check us out</h5> <a href=\"https://www.nooch.com/overview/\">here</a><br /><h6>-Team Nooch\"</h6>",[defaults valueForKey:@"FullName"],[arrReferCode objectAtIndex:1]];
+    messageBody=[NSString stringWithFormat:@"<h5>\"Hi, Your friend %@ has invited you to become a member of Nooch, the simplest way to pay back friends.<br />Accept this invitation by downloading Nooch and using this Referral Code: %@ <br /><br />To learn more about Nooch, check us out</h5> <a href=\"https://www.nooch.com/overview/\">here</a><br /><h6>-Team Nooch\"</h6>",[[defaults valueForKey:@"FullName"] capitalizedString],[arrReferCode objectAtIndex:1]];
     // To address
     //NSArray *toRecipents = [NSArray arrayWithObject:@"support@appcoda.com"];
     

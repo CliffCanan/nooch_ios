@@ -266,19 +266,21 @@
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Please choose a password." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         [av setTag:6];
-    }else if([passwordTextField.text length] < 8){
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain a minimum of 8 characters." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    }else if([passwordTextField.text length] < 8 || [passwordTextField.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound ||[passwordTextField.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound){
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain a minimum of 8 characters with atleast 1 numeric digit." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         [av setTag:6];
-    }else if([passwordTextField.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound){
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain at least one numeric character." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [av show];
-        [av setTag:6];
-    }else if([passwordTextField.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound){
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain at least one character." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [av show];
-        [av setTag:6];
-    }else{
+    }
+      //  else if([passwordTextField.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound ||[passwordTextField.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound ){
+//        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain at least one numeric character and one character." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//        [av show];
+//        [av setTag:6];
+//    }else if([passwordTextField.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound){
+//        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain at least one character." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//        [av show];
+//        [av setTag:6];
+//    }
+        else{
         [spinner startAnimating];
         [[NSUserDefaults standardUserDefaults] setObject:firstNameTextField.text forKey:@"firstName"];
         [[NSUserDefaults standardUserDefaults] setObject:lastNameTextField.text forKey:@"lastName"];

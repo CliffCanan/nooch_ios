@@ -22,7 +22,7 @@
 
 @implementation history
 
-@synthesize dipusteNote,firstName,lastName,balance,historyTable,userPic,responseData,
+@synthesize dipusteNote,firstNamehist,lastNamehist,balance,historyTable,userPic,responseData,
 spinner,blankLabel,transferDetails,transerAmount,sender,recipient,date,location,disputeStatus
 ,memo,dispDate,dispId,dispStatus,disputeDetailsView,resDate,reviewDate,disputeMessage,
 disputeRequest,disputeSubject,disputeDetailsButton,goDisputeButton,allTrans,detailsTable,
@@ -65,7 +65,7 @@ NSString *curMemo;
         [self.view addSubview:[me waitStat:@"Loading your history..."]];
         loadingCheck = YES;
         loadingHide = YES;
-        [me histMore:filterPick sPos:index len:5];
+        [me histMore:filterPick sPos:index len:20];
     }else{
         loadingHide = NO;
         loadingCheck = NO;
@@ -96,6 +96,7 @@ NSString *curMemo;
 }
 -(void)viewWillAppear:(BOOL)animated{
     //[self hideMenu];
+     isSearching = NO;
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [[UAPush shared] resetBadge];
 
@@ -108,7 +109,7 @@ NSString *curMemo;
     }else{
         [userBar setHighlighted:NO];
     }
-    firstName.textColor = lastName.textColor = balance.textColor = [UIColor whiteColor];
+    firstNamehist.textColor = lastNamehist.textColor = balance.textColor = [UIColor whiteColor];
     [filterButton addTarget:self action:@selector(showActionSheet:) forControlEvents:UIControlEventTouchUpInside];
     navBar.topItem.title = @"History";
     newTransfersDecrement = 0;
@@ -223,17 +224,62 @@ NSString *curMemo;
                 oldRecordsArray=[[NSMutableArray alloc]init];
                 NSLog(@"Ginti %d",[[me histFilter:filterPick] count]);
                 mapArrays = [[NSMutableArray alloc] init];
-<<<<<<< HEAD
                 if ([me histFilter:filterPick]) {
-                    for (NSDictionary*dict in [me histFilter:filterPick]) {
+                    for ( int i=0;i<[[me histFilter:filterPick] count];i++) {
+                        NSDictionary*dict=[[me histFilter:filterPick]objectAtIndex:i];
                         //making a locations array CHARANJIT
+                        NSLog(@"%@",dict);
                         NSLog(@"DICT %@",[dict objectForKey:@"Longitude"]);
                         NSMutableDictionary * tempMapsDict = [[NSMutableDictionary alloc] init];
-                        [tempMapsDict setObject:[dict objectForKey:@"FirstName"] forKey:@"fname"];
-                        [tempMapsDict setObject:[dict objectForKey:@"LastName"] forKey:@"lname"];
-                        [tempMapsDict setObject:[dict objectForKey:@"Latitude"] forKey:@"lat"];
-                        [tempMapsDict setObject:[dict objectForKey:@"Longitude"] forKey:@"lng"];
+                        if ([dict objectForKey:@"FirstName"]) {
+                             [tempMapsDict setObject:[dict objectForKey:@"FirstName"] forKey:@"fname"];
+                        }
+                        if ([dict objectForKey:@"LastName"]) {
+                             [tempMapsDict setObject:[dict objectForKey:@"LastName"] forKey:@"lname"];
+                        }
+                        if ([dict objectForKey:@"Latitude"]) {
+                            [tempMapsDict setObject:[dict objectForKey:@"Latitude"] forKey:@"lat"];
+                        }
+                        if ([dict objectForKey:@"Longitude"]) {
+                             [tempMapsDict setObject:[dict objectForKey:@"Longitude"] forKey:@"lng"];
+                        }
+                        if ([dict objectForKey:@"TransactionType"]) {
+                            [tempMapsDict setObject:[dict objectForKey:@"TransactionType"] forKey:@"TransactionType"];
+                        }
+                        if ([dict objectForKey:@"AddressLine1"]) {
+                             [tempMapsDict setObject:[dict objectForKey:@"AddressLine1"] forKey:@"AddressLine1"];
+                        }
+                        if ([dict objectForKey:@"AddressLine2"]) {
+                            [tempMapsDict setObject:[dict objectForKey:@"AddressLine2"] forKey:@"AddressLine2"];
+                        }
+                        if ([dict objectForKey:@"Amount"]) {
+                            [tempMapsDict setObject:[dict objectForKey:@"Amount"] forKey:@"Amount"];
+                        }
+                        if ([dict objectForKey:@"City"]) {
+                            [tempMapsDict setObject:[dict objectForKey:@"City"] forKey:@"City"];
+                        }
                         
+                        if ([dict objectForKey:@"TxnDate"]) {
+                            [tempMapsDict setObject:[dict objectForKey:@"TxnDate"] forKey:@"TxnDate"];
+                        }
+                        if ([dict objectForKey:@"Photo"]) {
+                            [tempMapsDict setObject:[dict objectForKey:@"Photo"] forKey:@"Photo"];
+                        }
+                        if ([dict objectForKey:@"Date"]) {
+                            [tempMapsDict setObject:[dict objectForKey:@"Date"] forKey:@"Date"];
+                        }
+                        if ([dict objectForKey:@"Country"]) {
+                            [tempMapsDict setObject:[dict objectForKey:@"Country"] forKey:@"Country"];
+                        }
+                        
+                        //
+                        
+                       
+//                                                [tempMapsDict setObject:[dict objectForKey:@"City"] forKey:@"City"];
+//                        [tempMapsDict setObject:[dict objectForKey:@"Country"] forKey:@"Country"];
+//                        [tempMapsDict setObject:[dict objectForKey:@"Date"] forKey:@"Date"];
+//                        [tempMapsDict setObject:[dict objectForKey:@"Photo"] forKey:@"Photo"];
+//                        [tempMapsDict setObject:[dict objectForKey:@"TxnDate"] forKey:@"TxnDate"];
                         [mapArrays addObject:tempMapsDict];
                         //-------
                         [oldRecordsArray addObject:dict];
@@ -242,31 +288,13 @@ NSString *curMemo;
                     limit=NO;
                 }
             
-=======
-                
-            for (NSDictionary*dict in [me histFilter:filterPick]) {
-                //making a locations array CHARANJIT
-                NSLog(@"DICT %@",[dict objectForKey:@"Longitude"]);
-                NSMutableDictionary * tempMapsDict = [[NSMutableDictionary alloc] init];
-                [tempMapsDict setObject:[dict objectForKey:@"FirstName"] forKey:@"fname"];
-                [tempMapsDict setObject:[dict objectForKey:@"LastName"] forKey:@"lname"];
-                [tempMapsDict setObject:[dict objectForKey:@"Latitude"] forKey:@"lat"];
-                [tempMapsDict setObject:[dict objectForKey:@"Longitude"] forKey:@"lng"];
-                
-                [mapArrays addObject:tempMapsDict];
-                //-------
-                [oldRecordsArray addObject:dict];
-                
             }
-                limit=NO;
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
-            }
-            NSLog(@"%@",oldRecordsArray);
+            NSLog(@"%d",oldRecordsArray.count);
             load=1;
             
         }
             }
-    
+    [historyTable reloadData];
 }
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -282,10 +310,10 @@ NSString *curMemo;
     self.trackedViewName = @"History";
     [self.detailsTable setScrollEnabled:NO];
     allTrans = YES;
-    firstName.font = sender.font = recipient.font = date.font = location.font = disputeStatus.font = memo.font = dispStatus.font = dispId.font = dispDate.font =
+    firstNamehist.font = sender.font = recipient.font = date.font = location.font = disputeStatus.font = memo.font = dispStatus.font = dispId.font = dispDate.font =
     reviewDate.font = resDate.font = [core nFont:@"Medium" size:16];
     date.font = [core nFont:@"Bold" size:10];
-    lastName.font =  [core nFont:@"Bold" size:17];
+    lastNamehist.font =  [core nFont:@"Bold" size:17];
     balance.font = [core nFont:@"Medium" size:20];
     transerAmount.font = [core nFont:@"Medium" size:26];
     statusOfTransfer.font = [core nFont:@"Medium" size:18];
@@ -293,10 +321,13 @@ NSString *curMemo;
     
     if([[[me usr] objectForKey:@"Balance"] length] != 0)
         balance.text =[@"$" stringByAppendingString:[[me usr] objectForKey:@"Balance"]];
-    firstName.text=[[me usr] objectForKey:@"firstName"];
-    lastName.text=[[me usr] objectForKey:@"lastName"];
-    firstName.text=[[me usr] objectForKey:@"firstName"];
-    lastName.text=[[me usr] objectForKey:@"lastName"];
+    firstNamehist.text=[[me usr] objectForKey:@"firstName"];
+    lastNamehist.text=[[me usr] objectForKey:@"lastName"];
+    firstNamehist.text=[firstNamehist.text capitalizedString];
+    NSLog(@"%@naam%@doja",firstNamehist.text,lastNamehist.text);
+    lastNamehist.text=[lastNamehist.text capitalizedString];
+    //firstName.text=[[me usr] objectForKey:@"firstName"];
+    //lastName.text=[[me usr] objectForKey:@"lastName"];
     requestBadgeName.font = [core nFont:@"Bold" size:14];
     requestBadgeName.text = @"";
     requestBadgeName.hidden = YES;
@@ -349,7 +380,7 @@ NSString *curMemo;
     
     if([[dict objectForKey:@"TransactionType"] isEqualToString:@"Sent"])
     {
-        sender.text = [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
+        sender.text = [NSString stringWithFormat:@"%@ \n%@",firstNamehist.text,lastNamehist.text];
         recipient.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"FirstName"] ,[dict objectForKey:@"LastName"] ];
         if([dict objectForKey:@"image"] != NULL) secondPartyImage.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
         else secondPartyImage.image = [UIImage imageNamed:@"profile_picture.png"];
@@ -358,7 +389,7 @@ NSString *curMemo;
 
     else if([[dict objectForKey:@"TransactionType"] isEqualToString:@"Received"])
     {
-        recipient.text = [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
+        recipient.text = [NSString stringWithFormat:@"%@ \n%@",firstNamehist.text,lastNamehist.text];
         sender.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"FirstName"] ,[dict objectForKey:@"LastName"] ];
         if([dict objectForKey:@"image"] != NULL) youImage.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
         else youImage.image = [UIImage imageNamed:@"profile_picture.png"];
@@ -439,7 +470,7 @@ NSString *curMemo;
             }else{
                 requestBadgeName.text = @"";
             }
-            sender.text = [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
+            sender.text = [NSString stringWithFormat:@"%@ \n%@",firstNamehist.text,lastNamehist.text];
             recipient.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"FirstName"] ,[dict objectForKey:@"LastName"] ];
             if([dict objectForKey:@"image"] != NULL) secondPartyImage.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
             else secondPartyImage.image = [UIImage imageNamed:@"profile_picture.png"];
@@ -463,7 +494,7 @@ NSString *curMemo;
                 ignoreButton.hidden = YES;
                 payButton.hidden = YES;
             }
-            recipient.text = [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
+            recipient.text = [NSString stringWithFormat:@"%@ \n%@",firstNamehist.text,lastNamehist.text];
             sender.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"FirstName"] ,[dict objectForKey:@"LastName"] ];
             if([dict objectForKey:@"image"] != NULL) youImage.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
             else youImage.image = [UIImage imageNamed:@"profile_picture.png"];
@@ -472,7 +503,7 @@ NSString *curMemo;
     }
     else if([[dict objectForKey:@"TransactionType"] isEqualToString:@"Deposit"])
     {
-        recipient.text =  [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
+        recipient.text =  [NSString stringWithFormat:@"%@ \n%@",firstNamehist.text,lastNamehist.text];
         sender.text = @"Bank\nAccount";
         secondPartyImage.image = userPic.image;
         youImage.image = [UIImage imageNamed:@"Blue_Bank_Icon.png"];
@@ -510,7 +541,7 @@ NSString *curMemo;
         youImage.image = userPic.image;
         secondPartyImage.image = [UIImage imageNamed:@"Blue_Bank_Icon.png"];
         recipient.text = @"Bank\nAccount";
-        sender.text =  [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
+        sender.text =  [NSString stringWithFormat:@"%@ \n%@",firstNamehist.text,lastNamehist.text];
         memo.text = @"Pending";
         memo.textColor = [core hexColor:@"99CC66"];
         statusOfTransfer.text = @"Pending";
@@ -544,7 +575,7 @@ NSString *curMemo;
     }
     else if([[dict objectForKey:@"TransactionType"] isEqualToString:@"Sent to"])
     {
-        sender.text =  [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
+        sender.text =  [NSString stringWithFormat:@"%@ \n%@",firstNamehist.text,lastNamehist.text];
         recipient.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"FirstName"] ,[dict objectForKey:@"LastName"] ];
         if([dict objectForKey:@"image"] != NULL) secondPartyImage.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
         youImage.image = userPic.image;
@@ -552,7 +583,7 @@ NSString *curMemo;
     else if([[dict objectForKey:@"TransactionType"] isEqualToString:@"Received from"])
     {
         sender.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"FirstName"] ,[dict objectForKey:@"LastName"] ];
-        recipient.text =  [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
+        recipient.text =  [NSString stringWithFormat:@"%@ \n%@",firstNamehist.text,lastNamehist.text];
         if([dict objectForKey:@"image"] != NULL) youImage.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
         else youImage.image = [UIImage imageNamed:@"profile_picture.png"];
         secondPartyImage.image = userPic.image;
@@ -732,7 +763,8 @@ NSString *curMemo;
         if ([UIScreen mainScreen].bounds.size.height==480) {
             CGRect frame = mapView_.frame;
             if (!isRequest || details4){
-                frame.origin.y = transferDetails.bounds.size.height-50;
+                //21
+                frame.origin.y = transferDetails.bounds.size.height-90;
                 frame.size.height = 100;
             }else{
                 frame.origin.y = transferDetails.bounds.size.height-100;
@@ -769,7 +801,7 @@ NSString *curMemo;
     //balance.textColor = [core hexColor:@"6c92a6"];
 }
 - (IBAction)nameDeHighlight:(id)sender {
-    firstName.textColor = lastName.textColor = [UIColor whiteColor];
+    firstNamehist.textColor = lastNamehist.textColor = [UIColor whiteColor];
 }
 - (IBAction)balanceDeHighlight:(id)sender {
     balance.textColor = [UIColor whiteColor];
@@ -778,8 +810,10 @@ NSString *curMemo;
 -(void)updateBanner{
     if([[[me usr] objectForKey:@"Balance"] length] != 0)
         balance.text =[@"$" stringByAppendingString:[[me usr] objectForKey:@"Balance"]];
-    firstName.text=[[me usr] objectForKey:@"firstName"];
-    lastName.text=[[me usr] objectForKey:@"lastName"];
+    firstNamehist.text=[[me usr] objectForKey:@"firstName"];
+    lastNamehist.text=[[me usr] objectForKey:@"lastName"];
+    firstNamehist.text=[firstNamehist.text capitalizedString];
+    lastNamehist.text=[lastNamehist.text capitalizedString];
     if([me pic] != NULL){
         userPic.image = [UIImage imageWithData:[me pic]];
     }else{
@@ -910,19 +944,34 @@ NSString *curMemo;
             return 2;
         }
     }
-    if([[me histFilter:filterPick] count] != 0)
-    {
-        //int recordsCount;
-//        for (int i=0; i<load; i++) {
-//            recordsCount=[[oldRecordsArray objectAtIndex:i] count];
-//        }
-       // recordsCount++;
+    //if([[me histFilter:filterPick] count] != 0)
+    if ([tableView isEqual:historyTable])    {
+        if (isSearching)
+            return [arrSearchedRecords count];
     
+        else
         return [oldRecordsArray count]+1;
     }
     else
         return 1;
 }
+
+- (void) searchTableView
+{
+   
+   
+    arrSearchedRecords =[[NSMutableArray alloc]init];
+    for (NSMutableDictionary *tableViewBind in oldRecordsArray)
+    {
+        
+        NSComparisonResult result = [[tableViewBind valueForKey:@"FirstName"] compare:histSearching options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [histSearching length])];
+        if (result == NSOrderedSame)
+        {
+            [arrSearchedRecords addObject:tableViewBind];
+        }
+    }
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(tableView == detailsTable)
         return 40;
@@ -931,7 +980,7 @@ NSString *curMemo;
 
 }
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(tableView == detailsTable){
+  /*  if(tableView == detailsTable){
         return;
     }
     
@@ -947,13 +996,14 @@ NSString *curMemo;
     if(newTransfersDecrement != 0 && ([[tableViewBind1 objectForKey:@"TransactionType"] isEqualToString:@"Received from"] || [[tableViewBind1 objectForKey:@"TransactionType"] isEqualToString:@"Received"] ||
                                       ([[tableViewBind1 objectForKey:@"TransactionType"] isEqualToString:@"Request"] && ![[tableViewBind1 objectForKey:@"RecepientId"] isEqualToString:[[me usr] objectForKey:@"MemberId"]]))){
         newTransfersDecrement--;
+        
         cell.backgroundView.alpha = 0.2f;
         cell.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"TransferHighlight.png"]];
     }else{
         cell.backgroundView.alpha = 0.0f;
         cell.backgroundColor = [UIColor clearColor];
         cell.contentView.backgroundColor = [UIColor clearColor];
-    }
+    }*/
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellIdentifier = @"Cell";
@@ -975,10 +1025,12 @@ NSString *curMemo;
         cell.indentationWidth = 10;
         //[cell.textLabel setFont:[core nFont:@"Medium" size:14.0]];
         UIImageView *arrow = [[UIImageView alloc] initWithFrame:CGRectMake(280,15,7,10)];
-        arrow.image = [UIImage imageNamed:@"PlusButton.png"];
+        arrow.image = [UIImage imageNamed:@"df.png"];
         [cell.textLabel setFont:[core nFont:@"Mediumr" size:16.0]];
         cell.detailTextLabel.textColor = [UIColor blackColor];
         if(indexPath.row == 0){
+            //21
+            cell.textLabel.text=@"Memo:";
             [cell.textLabel setTextColor:[core hexColor:@"003c5e"]];
             //[cell.textLabel setFont:[core nFont:@"Medium" size:24.0]];
             if(bankTransfer) [cell.textLabel setText:@"Status"];
@@ -1009,9 +1061,10 @@ NSString *curMemo;
                 iv.image = [UIImage imageWithData:partyTransferImage];
             }
         }else if(indexPath.row == 2){
-            UIImageView *hasLocation = [[UIImageView alloc] initWithFrame:CGRectMake(19, 7, 17, 23)];
-            [hasLocation setImage:[UIImage imageNamed:@"Map_Icon.png"]];
-            [cell.contentView addSubview:hasLocation];
+            cell.textLabel.text=@"Location:";
+//            UIImageView *hasLocation = [[UIImageView alloc] initWithFrame:CGRectMake(19, 7, 17, 23)];
+//            [hasLocation setImage:[UIImage imageNamed:@"Map_Icon.png"]];
+//            [cell.contentView addSubview:hasLocation];
             if(![recipient.text isEqualToString:@"You"]){
                 UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(265, 5, 30, 30)];
                 iv.clipsToBounds = YES;
@@ -1023,9 +1076,10 @@ NSString *curMemo;
         }else if(indexPath.row == 1){
             if (!isRequest || details4){
                 
+                cell.textLabel.text=@"Status:";
 
                 
-                [cell.textLabel setText:@"Dispute Status"];
+                //[cell.textLabel setText:@"Dispute Status"];
                 arrow.image = [UIImage imageNamed:@"ArrowGrey.png"];
                 if(![disputeStatus.text isEqualToString:@"Not in Dispute"] && goDisputeButton.isHidden && ![statusOfTransfer.text isEqualToString:@"Requested"]){
                     [cell.contentView addSubview:arrow];
@@ -1033,9 +1087,9 @@ NSString *curMemo;
                 }
             }else{
                 
-                UIImageView *hasLocation = [[UIImageView alloc] initWithFrame:CGRectMake(19, 7, 17, 23)];
-                [hasLocation setImage:[UIImage imageNamed:@"Map_Icon.png"]];
-                [cell.contentView addSubview:hasLocation];
+//                UIImageView *hasLocation = [[UIImageView alloc] initWithFrame:CGRectMake(19, 7, 17, 23)];
+//                [hasLocation setImage:[UIImage imageNamed:@"Map_Icon.png"]];
+//                [cell.contentView addSubview:hasLocation];
                 if(![recipient.text isEqualToString:@"You"]){
                     UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(265, 5, 30, 30)];
                     iv.clipsToBounds = YES;
@@ -1049,6 +1103,308 @@ NSString *curMemo;
         }
         return cell;
     }
+    //21 Added 13 Dec
+    
+    
+    if (isSearching) {
+        cell.textLabel.text = nil;
+        UIImageView *buble = [[UIImageView alloc] initWithFrame:CGRectMake(4, 6, 312, 77)];
+        [buble setImage:[UIImage imageNamed:@"Table_Row_History.png"]];
+        [cell.contentView addSubview:buble];
+        if ([arrSearchedRecords count] == 1 && isSearching && [[arrSearchedRecords objectAtIndex:[arrSearchedRecords count]-1]isEqualToString:@"No Records"]) {
+            UILabel *endLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 320, 30)];
+            [endLabel setFont:[core nFont:@"Medium" size:16.0]];
+            [endLabel setTextAlignment:NSTextAlignmentCenter];
+            [endLabel setText:@"No Results."];
+            [cell.contentView addSubview:endLabel];
+            cell.userInteractionEnabled = NO;
+            return cell;
+        }
+//        if(indexPath.row == [arrSearchedRecords count] && !loadingCheck && !limit && !histSearch && !loadingHide){
+//            loadingIndex = indexPath.row;
+//            loadingCheck = YES;
+//            NSLog(@"loading more");
+//            [self loadMoreRecords];
+//            
+//        }
+        
+        if(indexPath.row == [arrSearchedRecords count] && !histSearch && !loadingHide){
+            cell.userInteractionEnabled = NO;
+            cell.contentView.clearsContextBeforeDrawing = YES;
+            if(limit && [oldRecordsArray count]>0){
+                UILabel *endLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 320, 30)];
+                [endLabel setFont:[core nFont:@"Medium" size:16.0]];
+                [endLabel setTextAlignment:NSTextAlignmentCenter];
+                [endLabel setText:@"End of records."];
+                [cell.contentView addSubview:endLabel];
+            }
+            else if (!limit)
+            {
+                UIActivityIndicatorView *spinner2 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                spinner2.frame = CGRectMake(150,30,20,20);
+                [cell.contentView addSubview:spinner2];
+                [spinner2 startAnimating];
+            }
+        }
+        if (indexPath.row == 0 && [[me hist] count] == 0 && limit) {
+            UILabel *endLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 320, 30)];
+            [endLabel setFont:[core nFont:@"Medium" size:16.0]];
+            [endLabel setTextAlignment:NSTextAlignmentCenter];
+            [endLabel setText:@"No history."];
+            [cell.contentView addSubview:endLabel];
+        }
+        if(indexPath.row == [arrSearchedRecords count]){
+            return cell;
+        }
+        cell.userInteractionEnabled = YES;
+        //[cell.contentView addSubview:separator];
+        cell.contentView.clearsContextBeforeDrawing = NO;
+        cell.indentationLevel = 1;
+        cell.indentationWidth = 100;
+        UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(15, 20, 50, 50)];
+        UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 90)];
+        [v setBackgroundColor:[core hexColor:@"007fb7"]];
+        [v setAlpha:0.5f];
+        cell.selectedBackgroundView = v;
+        iv.clipsToBounds = YES;
+        iv.layer.cornerRadius = 6;
+        iv.layer.borderColor = [UIColor blackColor].CGColor;
+        iv.layer.borderWidth = 0.7f;
+        UIImageView *arrow = [[UIImageView alloc] initWithFrame:CGRectMake(290,40,10,15)];
+        arrow.image = [UIImage imageNamed:@"ArrowGrey.png"];
+        //[cell.contentView addSubview:arrow];
+        [cell.textLabel setFont:[core nFont:@"Medium" size:14.0]];
+        NSMutableDictionary *tableViewBind = [NSMutableDictionary new];
+        tableViewBind = [arrSearchedRecords  objectAtIndex:indexPath.row];
+        NSString *stringFormattedDate = [NSString new];
+        stringFormattedDate = @"";
+        CGRect dateFrame = CGRectMake(80, 43, 180, 10);
+        UILabel *dateLabel = [[UILabel alloc] initWithFrame:dateFrame];
+        dateLabel.font = [core nFont:@"Medium" size:10];
+        dateLabel.textColor = [UIColor grayColor];
+        dateLabel.clearsContextBeforeDrawing = YES;
+        UILabel *amountLabel = [[UILabel alloc] initWithFrame:CGRectMake(228, 15, 70, 30)];
+        [amountLabel setTextAlignment:NSTextAlignmentRight];
+        amountLabel.font = [core nFont:@"Regular" size:18];
+        NSString *amount = [NSString stringWithFormat:@"$%.02f", [[tableViewBind objectForKey:@"Amount"] floatValue]];
+        amountLabel.text = amount;
+        UILabel *action = [[UILabel alloc] initWithFrame:CGRectMake(70, 23, 180, 15)];
+        action.font = [core nFont:@"Medium" size:14.0];
+        if([tableViewBind objectForKey:@"image"] != NULL){
+            iv.image = [UIImage imageWithData:[tableViewBind objectForKey:@"image"]];
+        }else{
+            NSArray *keys = [[[[me assos] objectForKey:@"people"] allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+            bool found = NO;
+            for (NSString *key in keys) {
+                NSMutableDictionary *dict = [NSMutableDictionary new];
+                dict = [[[me assos] objectForKey:@"people"] objectForKey:key];
+                if ([[dict objectForKey:@"firstName"] isEqualToString:[tableViewBind objectForKey:@"FirstName"]] && [[dict objectForKey:@"lastName"] isEqualToString:[tableViewBind objectForKey:@"LastName"]]
+                    && [dict objectForKey:@"image"]) {
+                    iv.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
+                    found = YES;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTable" object:self userInfo:nil];
+                    break;
+                }
+                
+            }
+            if (!found)
+                iv.image = [UIImage imageNamed:@"profile_picture.png"];
+            
+        }
+        if([[tableViewBind objectForKey:@"TransactionType"] isEqualToString:@"Sent"])
+        {
+            NSString *strMessageToAppend = @"You paid ";
+            action.text = [strMessageToAppend stringByAppendingString:[tableViewBind objectForKey:@"FirstName"]];
+            stringFormattedDate=[NoochHelper dateTimeStamp:[tableViewBind objectForKey:@"TransactionDate"]];
+            amountLabel.textColor = [core hexColor:@"bf4444"];
+        }
+        else if([[tableViewBind objectForKey:@"TransactionType"] isEqualToString:@"Received"])
+        {
+            NSString *strMessageToAppend = @" paid you";
+            action.text = [[tableViewBind objectForKey:@"FirstName"] stringByAppendingString:strMessageToAppend];
+            stringFormattedDate=[NoochHelper dateTimeStamp:[tableViewBind objectForKey:@"TransactionDate"]];
+            amountLabel.textColor = [core hexColor:@"72bf44"];
+            
+        }
+        else if([[tableViewBind objectForKey:@"TransactionType"] isEqualToString:@"Request"])
+        {
+            if ([[tableViewBind objectForKey:@"RecepientId"] isEqualToString:[[me usr] objectForKey:@"MemberId"]]) { //I initiated request
+                NSString *strMessageToAppend = @"You requested from ";
+                action.text = [strMessageToAppend stringByAppendingString:[tableViewBind objectForKey:@"FirstName"]];
+                stringFormattedDate=[NoochHelper dateTimeStamp:[tableViewBind objectForKey:@"TransactionDate"]];
+                amountLabel.textColor = [core hexColor:@"007fb7"];
+                if (![[tableViewBind objectForKey:@"Status"] isKindOfClass:[NSNull class]]) {
+                    if ([[tableViewBind objectForKey:@"Status"] isEqualToString:@"Declined"]) {
+                        amountLabel.font = [core nFont:@"Medium" size:12];
+                        amountLabel.text = @"Ignored";
+                        amountLabel.textColor = [core hexColor:@"bf4444"];
+                        
+                    }else if([[tableViewBind objectForKey:@"Status"] isEqualToString:@"Cancelled"]){
+                        amountLabel.font = [core nFont:@"Medium" size:12];
+                        amountLabel.text = @"Cancelled";
+                        amountLabel.textColor = [core hexColor:@"bf4444"];
+                        
+                    }else if([[tableViewBind objectForKey:@"Status"] isEqualToString:@"Success"]){
+                        amountLabel.textColor = [core hexColor:@"72bf44"];
+                        
+                    }
+                }
+            }else{
+                NSString *strMessageToAppend = @" requested from you";
+                action.text = [[tableViewBind objectForKey:@"FirstName"] stringByAppendingString:strMessageToAppend];
+                stringFormattedDate=[NoochHelper dateTimeStamp:[tableViewBind objectForKey:@"TransactionDate"]];
+                amountLabel.textColor = [core hexColor:@"007fb7"];
+                if (![[tableViewBind objectForKey:@"Status"] isKindOfClass:[NSNull class]]) {
+                    if ([[tableViewBind objectForKey:@"Status"] isEqualToString:@"Declined"]) {
+                        amountLabel.font = [core nFont:@"Medium" size:12];
+                        amountLabel.text = @"Ignored";
+                        amountLabel.textColor = [core hexColor:@"bf4444"];
+                        
+                    }else if([[tableViewBind objectForKey:@"Status"] isEqualToString:@"Cancelled"]){
+                        amountLabel.font = [core nFont:@"Medium" size:12];
+                        amountLabel.text = @"Cancelled";
+                        amountLabel.textColor = [core hexColor:@"bf4444"];
+                        
+                    }else if([[tableViewBind objectForKey:@"Status"] isEqualToString:@"Success"]){
+                        amountLabel.textColor = [core hexColor:@"bf4444"];
+                        
+                    }
+                }
+            }
+        }
+        
+        else if([[tableViewBind objectForKey:@"TransactionType"] isEqualToString:@"Deposit"])
+        {
+            NSString *strMessageToAppend = @"Deposit into Nooch";
+            
+            stringFormattedDate=[NoochHelper dateTimeStamp:[tableViewBind objectForKey:@"TransactionDate"]];
+            NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+            [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+            NSDate *tranDate = [dateFormat dateFromString:[tableViewBind objectForKey:@"TransactionDate"]];
+            NSString *time = [NSString stringWithFormat:@"%ld",(long)[[NSDate date] timeIntervalSince1970]];
+            NSString *time2 = [NSString stringWithFormat:@"%ld",(long)[tranDate timeIntervalSince1970]];
+            double time1 = [time doubleValue];
+            double timeSecond = [time2 doubleValue];
+            double diff = time1 - timeSecond;
+            amountLabel.textColor = [core hexColor:@"72bf44"];
+            
+            [dateFormat setDateFormat:@"EEEE"];
+            NSString *day = [dateFormat stringFromDate:tranDate];
+            if([day isEqualToString:@"Friday"] || [day isEqualToString:@"Saturday"] || [day isEqualToString:@"Thursday"]){
+                diff = diff-172800;
+            }else if([day isEqualToString:@"Sunday"]){
+                diff = diff - 86400;
+            }
+            if(diff < 172800){
+                strMessageToAppend = @"Pending deposit into Nooch";
+                amountLabel.textColor = [core hexColor:@"DDDD2A"];
+                
+            }
+            action.text = strMessageToAppend;
+            iv.image = userPic.image;
+        }
+        
+        else if([[tableViewBind objectForKey:@"TransactionType"] isEqualToString:@"Withdraw"])
+        {
+            NSString *strMessageToAppend = @"Withdrawal from Nooch";
+            stringFormattedDate=[NoochHelper dateTimeStamp:[tableViewBind objectForKey:@"TransactionDate"]];
+            NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+            [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+            NSDate *tranDate = [dateFormat dateFromString:[tableViewBind objectForKey:@"TransactionDate"]];
+            NSString *time = [NSString stringWithFormat:@"%ld",(long)[[NSDate date] timeIntervalSince1970]];
+            NSString *time2 = [NSString stringWithFormat:@"%ld",(long)[tranDate timeIntervalSince1970]];
+            int time1 = [time intValue];
+            int  timeSecond = [time2 intValue];
+            int diff = time1 - timeSecond;
+            amountLabel.textColor = [core hexColor:@"bf4444"];
+            
+            if(diff < 172800){
+                //strMessageToAppend = @"Pending withdrawal from Nooch";
+                //amountLabel.textColor = [UIColor yellowColor];
+                //action.font = [core nFont:@"Medium" size:12.0];
+            }
+            action.text = strMessageToAppend;
+            iv.image = userPic.image;
+        }
+        else if([[tableViewBind objectForKey:@"TransactionType"] isEqualToString:@"Sent to"])
+        {
+            NSString *strMessageToAppend = @"You disputed ";
+            action.text = [strMessageToAppend stringByAppendingString:[tableViewBind objectForKey:@"FirstName"]];
+            stringFormattedDate=[NoochHelper dateTimeStamp:[tableViewBind objectForKey:@"TransactionDate"]];
+            amountLabel.textColor = [core hexColor:@"bf4444"];
+            
+        }
+        else if([[tableViewBind objectForKey:@"TransactionType"] isEqualToString:@"Received from"])
+        {
+            NSString *strMessageToAppend = @" disputed you";
+            action.text = [[tableViewBind objectForKey:@"FirstName"] stringByAppendingString:strMessageToAppend];
+            stringFormattedDate=[NoochHelper dateTimeStamp:[tableViewBind objectForKey:@"TransactionDate"]];
+            amountLabel.textColor = [core hexColor:@"72bf44"];
+            
+        }
+        else{
+            action.text = [tableViewBind objectForKey:@"Name"];
+        }
+        
+        dateLabel.text = stringFormattedDate;
+        [action setBackgroundColor:[UIColor clearColor]];
+        [amountLabel setBackgroundColor:[UIColor clearColor]];
+        [dateLabel setBackgroundColor:[UIColor clearColor]];
+        [cell.contentView addSubview:action];
+        [cell.contentView addSubview:amountLabel];
+        [cell.contentView addSubview:dateLabel];
+        [cell.contentView addSubview:iv];
+        if (![[tableViewBind objectForKey:@"Memo"] isKindOfClass:[NSNull class]]) {
+            if ([[tableViewBind objectForKey:@"Memo"] length] != 0) {
+                UILabel *tableMemo = [[UILabel alloc] initWithFrame:CGRectMake(72, 57, 210, 14)];
+                UIImageView *hasMemo = [[UIImageView alloc] initWithFrame:CGRectMake(260, 55, 15, 14)];
+                tableMemo.backgroundColor = [UIColor clearColor];
+                tableMemo.font = [core nFont:@"Medium" size:12];
+                if ([[tableViewBind objectForKey:@"Memo"] rangeOfString:@"0dm"].location != NSNotFound ) {
+                    if([[tableViewBind objectForKey:@"Memo"] length] !=3) tableMemo.text = [[tableViewBind objectForKey:@"Memo"] substringFromIndex:3];
+                    else tableMemo.text = @"";
+                    [hasMemo setImage:[UIImage imageNamed:@"Memo_Icon.png"]];
+                }else if ([[tableViewBind objectForKey:@"Memo"] rangeOfString:@"0fm"].location != NSNotFound ) {
+                    [hasMemo setImage:[UIImage imageNamed:@"MemoIconFoodSelected.png"]];
+                    if([[tableViewBind objectForKey:@"Memo"] length] !=3) tableMemo.text = [[tableViewBind objectForKey:@"Memo"] substringFromIndex:3];
+                    else tableMemo.text = @"";
+                }else if ([[tableViewBind objectForKey:@"Memo"] rangeOfString:@"0im"].location != NSNotFound ) {
+                    [hasMemo setImage:[UIImage imageNamed:@"MemoIconIOUselected.png"]];
+                    if([[tableViewBind objectForKey:@"Memo"] length] !=3) tableMemo.text = [[tableViewBind objectForKey:@"Memo"] substringFromIndex:3];
+                    else tableMemo.text = @"";
+                }else if ([[tableViewBind objectForKey:@"Memo"] rangeOfString:@"0tm"].location != NSNotFound ) {
+                    [hasMemo setImage:[UIImage imageNamed:@"MemoIconTixSelected.png"]];
+                    if([[tableViewBind objectForKey:@"Memo"] length] !=3) tableMemo.text = [[tableViewBind objectForKey:@"Memo"] substringFromIndex:3];
+                    else tableMemo.text = @"";
+                }else if ([[tableViewBind objectForKey:@"Memo"] rangeOfString:@"0um"].location != NSNotFound ) {
+                    [hasMemo setImage:[UIImage imageNamed:@"MemoIconUtilitiesSelected.png"]];
+                    if([[tableViewBind objectForKey:@"Memo"] length] !=3) tableMemo.text = [[tableViewBind objectForKey:@"Memo"] substringFromIndex:3];
+                    else tableMemo.text = @"";
+                }else{
+                    [hasMemo setImage:[UIImage imageNamed:@"Memo_Icon.png"]];
+                    tableMemo.text = [tableViewBind objectForKey:@"Memo"];
+                }
+                if([tableMemo.text length] != 0) tableMemo.text = [NSString stringWithFormat:@"for \"%@\"",tableMemo.text];
+                tableMemo.textColor = [UIColor grayColor];
+                [cell.contentView addSubview:tableMemo];
+                [cell.contentView addSubview:hasMemo];
+            }
+        }
+        NSMutableString *compare = [[NSMutableString alloc] init];
+        compare = [tableViewBind objectForKey:@"City"];
+        NSMutableString *compare2 = [[NSMutableString alloc] init];
+        compare2 = [tableViewBind objectForKey:@"State"];
+        if((NSNull *)compare != [NSNull null] && (NSNull *)compare2 != [NSNull null] && [compare length] != 0 && [compare2 length] != 0){
+            UIImageView *hasLocation = [[UIImageView alloc] initWithFrame:CGRectMake(280, 55, 12, 14)];
+            [hasLocation setImage:[UIImage imageNamed:@"Map_Icon.png"]];
+            [cell.contentView addSubview:hasLocation];
+        }
+        action.textColor = amountLabel.textColor;
+        
+        return cell;
+    }
+    
+    //
     cell.textLabel.text = nil;
     UIImageView *buble = [[UIImageView alloc] initWithFrame:CGRectMake(4, 6, 312, 77)];
     [buble setImage:[UIImage imageNamed:@"Table_Row_History.png"]];
@@ -1349,10 +1705,10 @@ NSString *curMemo;
 {
     load=0;
     index++;
-    [me histMore:filterPick sPos:index len:5];
+    [me histMore:filterPick sPos:index len:20];
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    return;
+    
     [navCtrl.view removeGestureRecognizer:self.slidingViewController.panGesture];
     if(tableView == detailsTable){
         [detailsTable deselectRowAtIndexPath:indexPath animated:YES];
@@ -1424,8 +1780,8 @@ NSString *curMemo;
     NSLog(@"hereFIRST");
     if([[dict objectForKey:@"TransactionType"] isEqualToString:@"Sent"])
     {
-        sender.text = [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
-        recipient.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"FirstName"] ,[dict objectForKey:@"LastName"] ];
+        sender.text = [NSString stringWithFormat:@"%@ \n%@",firstNamehist.text,lastNamehist.text];
+        recipient.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"firstName"] ,[dict objectForKey:@"LastName"] ];
         if([dict objectForKey:@"image"] != NULL) secondPartyImage.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
         else secondPartyImage.image = [UIImage imageNamed:@"profile_picture.png"];
         youImage.image = userPic.image;
@@ -1435,7 +1791,7 @@ NSString *curMemo;
 
     else if([[dict objectForKey:@"TransactionType"] isEqualToString:@"Received"])
     {
-        recipient.text = [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
+        recipient.text = [NSString stringWithFormat:@"%@ \n%@",firstNamehist.text,lastNamehist.text];
         sender.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"FirstName"] ,[dict objectForKey:@"LastName"] ];
         if([dict objectForKey:@"image"] != NULL) youImage.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
         else youImage.image = [UIImage imageNamed:@"profile_picture.png"];
@@ -1515,7 +1871,7 @@ NSString *curMemo;
             }else{
                 requestBadgeName.text = @"";
             }
-            sender.text = [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
+            sender.text = [NSString stringWithFormat:@"%@ \n%@",firstNamehist.text,lastNamehist.text];
             recipient.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"FirstName"] ,[dict objectForKey:@"LastName"] ];
             if([dict objectForKey:@"image"] != NULL) secondPartyImage.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
             else secondPartyImage.image = [UIImage imageNamed:@"profile_picture.png"];
@@ -1540,7 +1896,7 @@ NSString *curMemo;
             }else{
                 requestBadgeName.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"FirstName"]];
             }
-            recipient.text = [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
+            recipient.text = [NSString stringWithFormat:@"%@ \n%@",firstNamehist.text,lastNamehist.text];
             sender.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"FirstName"] ,[dict objectForKey:@"LastName"] ];
             if([dict objectForKey:@"image"] != NULL) youImage.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
             else youImage.image = [UIImage imageNamed:@"profile_picture.png"];
@@ -1549,7 +1905,7 @@ NSString *curMemo;
     }
     else if([[dict objectForKey:@"TransactionType"] isEqualToString:@"Deposit"])
     {
-        recipient.text =  [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
+        recipient.text =  [NSString stringWithFormat:@"%@ \n%@",firstNamehist.text,lastNamehist.text];
         sender.text = @"Bank\nAccount";
         secondPartyImage.image = userPic.image;
         youImage.image = [UIImage imageNamed:@"Blue_Bank_Icon.png"];
@@ -1587,7 +1943,7 @@ NSString *curMemo;
         youImage.image = userPic.image;
         secondPartyImage.image = [UIImage imageNamed:@"Blue_Bank_Icon.png"];
         recipient.text = @"Bank\nAccount";
-        sender.text =  [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
+        sender.text =  [NSString stringWithFormat:@"%@ \n%@",firstNamehist.text,lastNamehist.text];
         memo.text = @"Pending";
         memo.textColor = [core hexColor:@"99CC66"];
         statusOfTransfer.text = @"Pending";
@@ -1621,7 +1977,7 @@ NSString *curMemo;
     }
     else if([[dict objectForKey:@"TransactionType"] isEqualToString:@"Sent to"])
     {
-        sender.text =  [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
+        sender.text =  [NSString stringWithFormat:@"%@ \n%@",firstNamehist.text,lastNamehist.text];
         recipient.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"FirstName"] ,[dict objectForKey:@"LastName"] ];
         if([dict objectForKey:@"image"] != NULL) secondPartyImage.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
         youImage.image = userPic.image;
@@ -1629,7 +1985,7 @@ NSString *curMemo;
     else if([[dict objectForKey:@"TransactionType"] isEqualToString:@"Received from"])
     {
         sender.text =  [NSString stringWithFormat:@"%@ \n%@",[dict objectForKey:@"FirstName"] ,[dict objectForKey:@"LastName"] ];
-        recipient.text =  [NSString stringWithFormat:@"%@ \n%@",firstName.text,lastName.text];
+        recipient.text =  [NSString stringWithFormat:@"%@ \n%@",firstNamehist.text,lastNamehist.text];
         if([dict objectForKey:@"image"] != NULL) youImage.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
         else youImage.image = [UIImage imageNamed:@"profile_picture.png"];
         secondPartyImage.image = userPic.image;
@@ -1852,6 +2208,7 @@ NSString *curMemo;
 #pragma mark - searching
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
     histSearch = NO;
+    isSearching = NO;
     [searchBar resignFirstResponder];
     [searchBar setText:@""];
     [historyTable setContentOffset:CGPointMake(0, 44)];
@@ -1867,11 +2224,26 @@ NSString *curMemo;
 }
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
     histSearch = YES;
+    [searchBarObj becomeFirstResponder];
+   // [searchBar becomeFirstResponder];
     [searchBar setShowsCancelButton:YES];
 }
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
+    
+    return YES;
+}
+
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
-    histSearching = searchText;
+    if ([searchText length]>0) {
+        histSearching = searchText;
+        isSearching = YES;
+        [self searchTableView];
+        [self.historyTable reloadData];
+    }
+    else{
+        isSearching=NO;
     [self.historyTable reloadData];
+    }
 }
 
 #pragma mark - disputing
@@ -2005,8 +2377,29 @@ NSString *curMemo;
     [fp dismissPopoverAnimated:YES];
     needsUpdating = YES;
     newTransfers = 0;
+    isSearching=YES;
+    arrSearchedRecords=[[NSMutableArray alloc]init];
+    NSLog(@"%@",filterPick);
+    if ([filterPick isEqualToString:@"CANCEL"]) {
+        isSearching=NO;
+    }
+    else{
+    for (NSDictionary*dict in oldRecordsArray) {
+        if (![filterPick isEqualToString:@"ALL"] ) {
+            if ([[[dict valueForKey:@"TransactionType"] uppercaseString]isEqualToString:filterPick]) {
+                [arrSearchedRecords addObject:dict];
+            }
+        }
+        else
+            [arrSearchedRecords addObject:dict];
+    }
+        if ([arrSearchedRecords count]==0) {
+            [arrSearchedRecords addObject:@"No Records"];
+        }
+    }
     [self.historyTable reloadData];
     [me endWaitStat];
+    
 }
 
 #pragma mark - alert view delegation
@@ -2029,7 +2422,7 @@ NSString *curMemo;
 
             NSDictionary *disputInfo = [NSDictionary dictionaryWithObjectsAndKeys: sendId, @"MemberId", recipId, @"RecepientId", transactionId, @"TransactionId", type, @"ListType", @"", @"CcMailIds", @"", @"BccMailIds", subjectLine, @"Subject", bodyText, @"BodyText", nil];
 
-            NSDictionary *disputeInput = [NSDictionary dictionaryWithObjectsAndKeys: disputInfo, @"raiseDisputeInput", nil];
+            NSDictionary *disputeInput = [NSDictionary dictionaryWithObjectsAndKeys: disputInfo, @"raiseDisputeInput",@"accessToken",[[NSUserDefaults standardUserDefaults] stringForKey:@"OAuthToken"], nil];
 
             NSLog(@"DisputeInput %@", disputeInput);
 
@@ -2147,8 +2540,8 @@ NSString *curMemo;
 }
 - (void)viewDidUnload {
     [self setUserPic:nil];
-    [self setFirstName:nil];
-    [self setLastName:nil];
+    [self setFirstNamehist:nil];
+    [self setLastNamehist:nil];
     [self setBalance:nil];
     [self setHistoryTable:nil];
     [self setSpinner:nil];

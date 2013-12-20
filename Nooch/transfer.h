@@ -26,13 +26,8 @@ bool cancelling;
 NSString *requestId;
 NSString *requestAmount;
 NSString *acceptOrDeny;
-<<<<<<< HEAD
 @class PhotoPicker;
 @interface transfer : GAITrackedViewController<CLLocationManagerDelegate,UITextFieldDelegate,FPPopoverControllerDelegate,UIAlertViewDelegate,serveD,UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
-=======
-
-@interface transfer : GAITrackedViewController<CLLocationManagerDelegate,UITextFieldDelegate,FPPopoverControllerDelegate,UIAlertViewDelegate,serveD,UIImagePickerControllerDelegate>{
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
     NSString *actualAmount;
     __weak IBOutlet UIImageView *memoBack;
     NSString *latlng;
@@ -72,9 +67,14 @@ NSString *acceptOrDeny;
     PhotoPicker*photoPickerOBJ;
    IBOutlet UIButton*btn;
    IBOutlet UIImageView*imageToshow;
-    
+    IBOutlet UIButton*btnAttachImage;
+    IBOutlet UIScrollView*scrollViewResp;
+    IBOutlet UIView*RespView;
+    IBOutlet UIView*RespImageV;
 }
 //added by venturepact
+//Recipients
+@property(nonatomic,retain)NSDictionary*dictResp;
 @property(nonatomic,retain)UIImage*imagepickedOBJ;
 @property(nonatomic,retain)UIImageView*imageToshow;
 @property (weak, nonatomic) IBOutlet UIButton *decimal;

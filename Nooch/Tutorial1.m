@@ -97,10 +97,7 @@
     else if ([ServiceType isEqualToString:@"validate"])
     {
         if ([[[dictResponse valueForKey:@"getTotalReferralCodeResult"] valueForKey:@"Result"] isEqualToString:@"True"]) {
-<<<<<<< HEAD
             checkCodeField.text=@"";
-=======
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
             Signup*pNooch=[self.storyboard instantiateViewControllerWithIdentifier:@"signup"];
             [self.navigationController pushViewController:pNooch animated:YES];
  

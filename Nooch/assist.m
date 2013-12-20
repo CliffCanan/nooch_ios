@@ -21,7 +21,7 @@ NSURLConnection *connectionForHis;
 NSString *whichPing;
 NSString *endTransId;
 NSString *oldFilter;
-NSDictionary *objModel;
+NSMutableDictionary *objModel;
 NSMutableDictionary *dictsort;
 @synthesize fbAllowed,twitterAllowed,facebookAccount,accountStore,twitterAccount;
 static assist * _sharedInstance = nil;
@@ -338,7 +338,7 @@ static assist * _sharedInstance = nil;
         [tempHistArray setArray:temp];
     }
     [sortedHist setArray:[tempHistArray mutableCopy]];
-    [sortedHist setArray:[self sortByStringDate:sortedHist]];
+  //21  [sortedHist setArray:[self sortByStringDate:sortedHist]];
     needsUpdating = NO;
     return sortedHist;
 }
@@ -495,6 +495,7 @@ static assist * _sharedInstance = nil;
         }else{
             [histCache setArray:[hist mutableCopy]];
         }
+        
         [histCache setArray:[self sortByStringDate:histCache]];
     }else{
         [histCache setArray:newHist];
@@ -527,15 +528,30 @@ static assist * _sharedInstance = nil;
     for(int i=0;i<[unsortedArray count];i++)
     {
         NSDateFormatter *df=[[NSDateFormatter alloc]init];
-        objModel=[unsortedArray objectAtIndex:i];
+        objModel=[[NSMutableDictionary alloc]initWithDictionary:[unsortedArray objectAtIndex:i]];
 
         [df setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
-        NSDate *date1=[df dateFromString:[objModel objectForKey:@"TransactionDate"]];
-        dictsort=[NSMutableDictionary dictionary];
-        [dictsort setObject:objModel forKey:@"entity"];
-        [dictsort setObject:date1 forKey:@"date"];
+        NSDate *date1;
+       
+        if ([objModel valueForKey:@"TransactionDate"]) {
+             NSLog(@"objectIssue%@",objModel);
+            date1=[df dateFromString:[objModel objectForKey:@"TransactionDate"]];
+            NSLog(@"Date12Dec%@",date1);
+        }
+      
+       // NSLog(@"objmodel%@",objModel);
+        dictsort=[[NSMutableDictionary alloc]init];
+        if (objModel) {
+            [dictsort setObject:objModel forKey:@"entity"];
+        }
+        
+        if (date1) {
+              [dictsort setObject:date1 forKey:@"date"];
+        }
+      
         [tempArray addObject:dictsort];
     }
+    NSLog(@"%@",tempArray);
 
     NSInteger counter=[tempArray count];
     NSDate *compareDate;
@@ -543,28 +559,41 @@ static assist * _sharedInstance = nil;
     for(int i=0;i<counter;i++)
     {
         index=i;
-        compareDate=[[tempArray objectAtIndex:i] valueForKey:@"date"];
-        NSDate *compareDateSecond;
-        for(int j=i+1;j<counter;j++)
-        {
-            compareDateSecond=[[tempArray objectAtIndex:j] valueForKey:@"date"];
-            NSComparisonResult result = [compareDate compare:compareDateSecond];
-            if(result == NSOrderedAscending)
+        if ([[tempArray objectAtIndex:i] valueForKey:@"date"]) {
+             compareDate=[[tempArray objectAtIndex:i] valueForKey:@"date"];
+            NSDate *compareDateSecond;
+            for(int j=i+1;j<counter;j++)
             {
-                compareDate=compareDateSecond;
-                index=j;
+                if ([[tempArray objectAtIndex:j] valueForKey:@"date"]) {
+                    compareDateSecond=[[tempArray objectAtIndex:j] valueForKey:@"date"];
+                    NSComparisonResult result = [compareDate compare:compareDateSecond];
+                    if(result == NSOrderedAscending)
+                    {
+                        compareDate=compareDateSecond;
+                        index=j;
+                    }
+                    
+                }
             }
         }
+       
+       
         if(i!=index)
             [tempArray exchangeObjectAtIndex:i withObjectAtIndex:index];
     }
 
-
+    NSLog(@"%@",tempArray);
     [unsortedArray removeAllObjects];
-    for(int i=0;i<[tempArray count];i++)
-    {
-        [unsortedArray addObject:[[tempArray objectAtIndex:i] valueForKey:@"entity"]];
+    if ([tempArray count]>0) {
+        for(int i=0;i<[tempArray count];i++)
+        {
+            if ([[tempArray objectAtIndex:i] valueForKey:@"entity"]) {
+                [unsortedArray addObject:[[tempArray objectAtIndex:i] valueForKey:@"entity"]];
+            }
+            
+        }
     }
+    
     return unsortedArray;
 }
 #pragma mark - User objects

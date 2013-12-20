@@ -16,7 +16,8 @@
 #import "NoochHelper.h"
 #import <stdlib.h>
 #import "history.h"
-
+static CGFloat const kPadding = 5.0;
+static CGFloat const kPaddingimage = 2.0;
 @interface transfer ()
 {
     NSMutableDictionary *transactionTransfer;
@@ -38,7 +39,7 @@
 @implementation transfer
 
 @synthesize userPic,recipFirst,recipImage,receiveBack,recipLast,firstName,lastName,amountToSend,firstPIN,secondPIN,thirdPIN,fourthPIN,balance,prompt,dollarSign,confirm,PINText,respData,spinner,backImage,imagepickedOBJ,imageToshow;
-@synthesize activityView,loadingView,loadingLabel,customKeyboard,inputAccess,enterAmountField,decimal,memoField;
+@synthesize activityView,loadingView,loadingLabel,customKeyboard,inputAccess,enterAmountField,decimal,memoField,dictResp;
 NSString *transactionId;
 NSString *processValue;
 NSString *memoCat;
@@ -124,7 +125,7 @@ bool allowSharingValue;
         imageToshow.image=[[assist shared]getTranferImage];
         
     }
-    
+    [self layoutScrollView];
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
     locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
@@ -142,6 +143,7 @@ bool allowSharingValue;
 }
 -(void)viewDidLoad{
     [super viewDidLoad];
+    btnAttachImage.hidden=NO;
     sendToggle.showsTouchWhenHighlighted = NO;
     requestToggle.showsTouchWhenHighlighted = NO;
     memoCat = @"";
@@ -167,15 +169,16 @@ bool allowSharingValue;
     [self.memoField setInputAccessoryView:inputAccess];
     userPic.hidden = NO;
     recipFirst.text = receiverFirst;
+    
     recipLast.text = receiverLast;
     if (![receiverImgData isKindOfClass:[NSNull class]]) {
         if ([receiverImgData length] != 0) {
-            recipImage.image = [UIImage imageWithData:receiverImgData];
+      //      recipImage.image = [UIImage imageWithData:receiverImgData];
         }else{
-            recipImage.image = [UIImage imageNamed:@"profile_picture.png"];
+      //      recipImage.image = [UIImage imageNamed:@"profile_picture.png"];
         }
     }else{
-        recipImage.image = [UIImage imageNamed:@"profile_picture.png"];
+       // recipImage.image = [UIImage imageNamed:@"profile_picture.png"];
     }
 
     firstName.font = [core nFont:@"Medium" size:16];
@@ -222,6 +225,114 @@ bool allowSharingValue;
 
     prompt.text = [NSString stringWithFormat:@"How much do you want to send to %@?",receiverFirst];
     actualAmount = @"";
+}
+-(void)layoutScrollView
+{
+    // Remove existing buttons
+    scrollViewResp.frame=CGRectMake(40, 60, 234, 48);
+	for (UIView *subview in scrollViewResp.subviews)
+    {
+		if ([subview isKindOfClass:[UIButton class]])
+        {
+			[subview removeFromSuperview];
+		}
+	}
+    for (UIView *subview in RespImageV.subviews)
+    {
+		if ([subview isKindOfClass:[UIImageView class]])
+        {
+			[subview removeFromSuperview];
+		}
+	}
+	CGFloat maxWidth = scrollViewResp.frame.size.width - kPadding;
+	CGFloat xPosition = kPadding;
+	CGFloat yPosition = kPadding;
+    CGFloat maxWidthI = RespImageV.frame.size.width - kPaddingimage;
+	CGFloat xPositionI = kPaddingimage;
+	CGFloat yPositionI = kPaddingimage;
+    NSLog(@"erereer%@",dictResp);
+    for (NSString *dictKey in dictResp.allKeys)
+    {
+        NSLog(@"%@",dictKey);
+        NSDictionary*dict=[dictResp valueForKey:dictKey];
+        NSLog(@"%@",dict);
+        
+        NSLog(@"%f",xPositionI);
+          NSLog(@"%f",yPositionI);
+        UIImageView*img=[[UIImageView alloc]initWithFrame:CGRectMake(xPositionI, yPositionI, 20, 20)];
+        img.image=[UIImage imageNamed:[dict valueForKey:@"image"]];
+        
+      
+        
+		if ((xPositionI + img.frame.size.width + kPaddingimage) > maxWidthI)
+        {
+			// Reset horizontal position to left edge of superview's frame
+			xPositionI = kPaddingimage;
+			
+			// Set vertical position to a new 'line'
+			yPositionI += img.frame.size.height+ kPaddingimage;
+		}
+		
+		// Create the imageView frame
+		CGRect Frame = CGRectMake(xPositionI, yPositionI, img.frame.size.width + (kPaddingimage), img.frame.size.height);
+        NSLog(@"%@",NSStringFromCGRect(Frame));
+        img.frame=Frame;
+        [RespImageV addSubview:img];
+
+        UIFont *font = [UIFont systemFontOfSize:16.0];
+        NSString*name=[NSString stringWithFormat:@"%@ %@",[dict objectForKey:@"firstName"],
+                       [dict objectForKey:@"lastName"]];
+		// Create the custom button
+		UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+		[button setTitle:name forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+		[button.titleLabel setFont:font];
+        [button setTag:[dictKey intValue]];
+        
+        NSLog(@"%d",button.tag);
+        //		[button setBackgroundImage:normalBackgroundImage forState:UIControlStateNormal];
+        //		[button setBackgroundImage:selectedBackgroundImage forState:UIControlStateSelected];
+//        UIButton *close = [UIButton buttonWithType:UIButtonTypeCustom];
+//		//[close setBackgroundColor:[UIColor orangeColor]];
+//        [close setTag:[dictKey intValue]];
+//        
+//		[close.titleLabel setFont:font];
+//		[close setBackgroundImage:[UIImage imageNamed:@"crossblue.png"] forState:UIControlStateNormal];
+//		//[close setBackgroundImage:selectedBackgroundImage forState:UIControlStateSelected];
+//		[close addTarget:self action:@selector(CrossbuttonSelected:) forControlEvents:UIControlEventTouchUpInside];
+//        
+		// Get the width and height of the name string given a font size
+        CGSize nameSize = [name sizeWithFont:font];
+        
+		if ((xPosition + nameSize.width + kPadding) > maxWidth)
+        {
+			// Reset horizontal position to left edge of superview's frame
+			xPosition = kPadding;
+			
+			// Set vertical position to a new 'line'
+			yPosition += nameSize.height+ kPadding;
+		}
+		
+		// Create the button's frame
+		CGRect buttonFrame = CGRectMake(xPosition, yPosition, nameSize.width + (kPadding * 2), nameSize.height);
+       // CGRect closeFrame=CGRectMake(xPosition+nameSize.width+(kPadding*2), yPosition+2, 20, nameSize.height);
+        //xPosition+=15;
+		[button setFrame:buttonFrame];
+       // [close setFrame:closeFrame];
+        // Add the button to its superview
+       // [self.scrollViewGroup addSubview:close];
+		[scrollViewResp addSubview:button];
+		
+		// Calculate xPosition for the next button in the loop
+		xPosition += button.frame.size.width + kPadding;
+		
+        
+    }
+    // Set the content size so it can be scrollable
+    CGFloat height = yPosition + 30.0;
+	[scrollViewResp setContentSize:CGSizeMake([scrollViewResp bounds].size.width, height)];
+    
+	
 }
 
 #pragma mark - constants
@@ -288,6 +399,7 @@ bool allowSharingValue;
     [sendButton setImage:[UIImage imageNamed:@"RequestButtonLight.png"] forState:UIControlStateSelected];
 }
 - (IBAction)switchSend:(id)sender {
+  //  btnAttachImage.hidden=YES;
     [requestToggle setSelected:NO];
     [sendToggle setSelected:YES];
     [requestBar setHidden:YES];
@@ -313,6 +425,9 @@ bool allowSharingValue;
 
 }
 -(IBAction)okAmount:(id)sender {
+    RespView.hidden=YES;
+    btnAttachImage.hidden=YES;
+    imageToshow.hidden=YES;
     [enterAmountField becomeFirstResponder];
     [self validAmount];
     if(confirm){
@@ -421,7 +536,25 @@ bool allowSharingValue;
     if([tagName isEqualToString:@"ValidatePinNumber"] ){
         if (requestRespond) {
             //NSString *idToUse;
-           transactionInputTransfer = [NSMutableDictionary dictionaryWithObjectsAndKeys:[loginResult valueForKey:@"Status"], @"PinNumber", [[me usr] objectForKey:@"MemberId"], @"MemberId", requestId, @"TransactionId", TransactionDate, @"TransactionDate", uid, @"DeviceId", latitudeField, @"Latitude", longitudeField, @"Longitude", altitudeField, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode", acceptOrDeny, @"Status", nil];
+            transactionInputTransfer=[[NSMutableDictionary alloc]init];
+            [transactionInputTransfer setValue:[loginResult valueForKey:@"Status"] forKey:@"PinNumber"];
+             [transactionInputTransfer setValue:[[me usr] objectForKey:@"MemberId"] forKey:@"MemberId"];
+             [transactionInputTransfer setValue:requestId forKey:@"TransactionId"];
+            [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
+             [transactionInputTransfer setValue:uid forKey:@"DeviceId"];
+             [transactionInputTransfer setValue:latitudeField forKey:@"Latitude"];
+             [transactionInputTransfer setValue:longitudeField forKey:@"Longitude"];
+              [transactionInputTransfer setValue:altitudeField forKey:@"Altitude"];
+              [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
+              [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
+             [transactionInputTransfer setValue:city forKey:@"City"];
+             [transactionInputTransfer setValue:state forKey:@"State"];
+             [transactionInputTransfer setValue:country forKey:@"Country"];
+             [transactionInputTransfer setValue:zipcode forKey:@"ZipCode"];
+            
+             [transactionInputTransfer setValue:acceptOrDeny forKey:@"Status"];
+            
+//           transactionInputTransfer = [NSMutableDictionary dictionaryWithObjectsAndKeys:[loginResult valueForKey:@"Status"], @"PinNumber", [[me usr] objectForKey:@"MemberId"], @"MemberId", requestId, @"TransactionId", TransactionDate, @"TransactionDate", uid, @"DeviceId", latitudeField, @"Latitude", longitudeField, @"Longitude", altitudeField, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode", acceptOrDeny, @"Status", nil];
 
             transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"handleRequestInput", nil];
 
@@ -455,26 +588,65 @@ bool allowSharingValue;
         NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
         NSString *transMemo = [NSString stringWithFormat:@"%@%@",memoCat,memoField.text];
         if (!requestBar.hidden) {
-            transactionInputTransfer = [NSMutableDictionary dictionaryWithObjectsAndKeys:[loginResult valueForKey:@"Status"], @"PinNumber", [[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"], @"MemberId", receiverId, @"SenderId", receiveName1, @"Name", [NSString stringWithFormat:@"%.02f", [actualAmount floatValue]], @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction", uid, @"DeviceId", latitudeField, @"Latitude", longitudeField, @"Longitude", altitudeField, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode",transMemo,@"Memo",@"Pending",@"Status", nil];
+            
+            transactionInputTransfer=[[NSMutableDictionary alloc]init];
+            [transactionInputTransfer setValue:[loginResult valueForKey:@"Status"] forKey:@"PinNumber"];
+            [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
+            
+            [transactionInputTransfer setValue:receiverId forKey:@"SenderId"];
+            
+            [transactionInputTransfer setValue:receiveName1 forKey:@"Name"];
+            
+            [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f", [actualAmount floatValue]] forKey:@"Amount"];
+            
+            [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
+            
+            [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
+            [transactionInputTransfer setValue:uid forKey:@"DeviceId"];
+            [transactionInputTransfer setValue:latitudeField forKey:@"Latitude"];
+            
+            [transactionInputTransfer setValue:longitudeField forKey:@"Longitude"];
+            [transactionInputTransfer setValue:altitudeField forKey:@"Altitude"];
+            [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
+            [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
+            [transactionInputTransfer setValue:city forKey:@"City"];
+            [transactionInputTransfer setValue:state forKey:@"State"];
+            [transactionInputTransfer setValue:country forKey:@"Country"];
+            [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
+            [transactionInputTransfer setValue:transMemo forKey:@"Memo"];
+
+            [transactionInputTransfer setValue:@"Pending" forKey:@"Status"];
+            
+//            transactionInputTransfer = [NSMutableDictionary dictionaryWithObjectsAndKeys:[loginResult valueForKey:@"Status"], @"PinNumber", [[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"], @"MemberId", receiverId, @"SenderId", receiveName1, @"Name", [NSString stringWithFormat:@"%.02f", [actualAmount floatValue]], @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction", uid, @"DeviceId", latitudeField, @"Latitude", longitudeField, @"Longitude", altitudeField, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode",transMemo,@"Memo",@"Pending",@"Status", nil];
             transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"requestInput",[defaults valueForKey:@"OAuthToken"],@"accessToken", nil];
         }else{
             transactionInputTransfer=[[NSMutableDictionary alloc]init];
-           // NSString*image64=[self encodeToBase64String:[[assist shared] getTranferImage]];
-            NSData *data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
-            NSUInteger len = data.length;
-            uint8_t *bytes = (uint8_t *)[data bytes];
-            NSMutableString *result1 = [NSMutableString stringWithCapacity:len * 3];
-            [result1 appendString:@"("];
-            for (NSUInteger i = 0; i < len; i++) {
-                if (i) {
-                    [result1 appendString:@","];
+           // NSString *imageString;
+            if ([[assist shared] getTranferImage]) {
+                //NSData *dataObj = UIImagePNGRepresentation([[assist shared] getTranferImage]);
+                
+               //imageString = [dataObj base64Encoding];
+               // getTranferImage]];
+                NSData *data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
+                NSUInteger len = data.length;
+                uint8_t *bytes = (uint8_t *)[data bytes];
+                NSMutableString *result1 = [NSMutableString stringWithCapacity:len * 3];
+                //  [result1 appendString:@"["];
+                for (NSUInteger i = 0; i < len; i++) {
+                    if (i) {
+                        [result1 appendString:@","];
+                    }
+                    [result1 appendFormat:@"%d", bytes[i]];
                 }
-                [result1 appendFormat:@"%d", bytes[i]];
+                //[result1 appendString:@"]"];
+                NSArray*arr=[result1 componentsSeparatedByString:@","];
+                // NSLog(@"%@image",image64);
+                [transactionInputTransfer setValue:arr forKey:@"Picture"];
+                
+
             }
-            [result1 appendString:@")"];
-           // NSLog(@"%@image",image64);
-            [transactionInputTransfer setValue:result1 forKey:@"Picture"];
-            
+           
+           // NSString*image64=[self encodeToBase64String:[[assist shared]            // [transactionInputTransfer setValue:imageString forKey:@"Picture"];
             [transactionInputTransfer setValue:[loginResult valueForKey:@"Status"] forKey:@"PinNumber"];
             [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
 
@@ -887,16 +1059,11 @@ bool allowSharingValue;
          [self performSelectorOnMainThread:@selector(finishedPosting) withObject:nil waitUntilDone:NO];
     }
     else if ([actionSheet tag] == 12) {
-<<<<<<< HEAD
   /*   //   UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-=======
-        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
         if (buttonIndex == 0) {
             NSLog(@"Cancelled");
         }
         else if (buttonIndex == 1) {
-<<<<<<< HEAD
             
            photoPickerOBJ = [self.storyboard instantiateViewControllerWithIdentifier:@"picker"];
             //sending the map View Controller the pointers to be placed
@@ -948,24 +1115,6 @@ bool allowSharingValue;
        // [imagePicker setDelegate:self];
        // [self presentViewController:imagePicker animated:YES completion:nil];
         */
-=======
-            if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-            {
-                [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
-            }
-            else
-            {
-                [[[UIAlertView alloc] initWithTitle:@"Unsupported" message:@"Camera is not supported" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
-            }
-        }
-        else if (buttonIndex == 2) {
-            [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-        }
-        
-        [imagePicker setDelegate:self];
-        [self presentViewController:imagePicker animated:YES completion:nil];
-        
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
     }
 }
 -(void)post{
@@ -1344,17 +1493,11 @@ bool allowSharingValue;
 }
 #pragma mark Taking image to be sent with transfers
 - (IBAction)sendImageForTransfer:(id)sender {
-<<<<<<< HEAD
     photoPickerOBJ = [self.storyboard instantiateViewControllerWithIdentifier:@"picker"];
     [self presentViewController:photoPickerOBJ animated:YES completion:nil];
 //    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Choose a Picture" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Take a Photo",@"Pick from photos", nil];
 //    alert.tag = 12;
 //    [alert show];
-=======
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Choose a Picture" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Take a Photo",@"Pick from photos", nil];
-    alert.tag = 12;
-    [alert show];
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 }
 
 #pragma mark - file paths

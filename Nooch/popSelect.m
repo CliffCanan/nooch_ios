@@ -9,7 +9,7 @@
 #import "popSelect.h"
 #import "core.h"
 #import "history.h"
-
+#import "AllMapViewController.h"
 @interface popSelect ()
 
 @end
@@ -52,6 +52,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(memoList)
         return 6;
+    else if(mapfilter)
+        return 8;
     else
         return 8;
 }
@@ -84,7 +86,31 @@
             cell.textLabel.text = @"Cancel";
         }
         return cell;
-    }else{
+    }
+    else if (mapfilter){
+        [cell.textLabel setFont:[core nFont:@"Medium" size:14.0]];
+        [cell.textLabel setTextAlignment:NSTextAlignmentCenter];
+        if (indexPath.row == 0) {
+            cell.textLabel.text = @"ALL";
+        }else if(indexPath.row == 1){
+            cell.textLabel.text = @"Sent";
+        }else if(indexPath.row == 2){
+            cell.textLabel.text = @"Received";
+        }else if(indexPath.row == 3){
+            cell.textLabel.text = @"Requests";
+        }else if(indexPath.row == 4){
+            cell.textLabel.text = @"Deposits";
+        }else if(indexPath.row == 5){
+            cell.textLabel.text = @"Withdrawals";
+        }else if(indexPath.row == 6){
+            cell.textLabel.text = @"Disputes";
+        }else if(indexPath.row == 7){
+            cell.textLabel.text = @"Cancel";
+        }
+        return cell;
+
+    }
+        else{
         [cell.textLabel setFont:[core nFont:@"Medium" size:12.0]];
         UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(245, 7, 20, 20)];
         if (indexPath.row == 0) {
@@ -129,9 +155,35 @@
         }else if(indexPath.row == 6){
             filterPick = @"DISPUTED";
         }
+        else if(indexPath.row == 7){
+            filterPick = @"CANCEL";
+        }
         [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissPopOver" object:nil];
         return;
-    }else{
+    }
+    else if (mapfilter){
+    limit = NO;
+    loadingCheck = NO;
+    if (indexPath.row == 0) {
+        filterString = @"ALL";
+    }else if(indexPath.row == 1){
+        filterString = @"SENT";
+    }else if(indexPath.row == 2){
+        filterString = @"RECEIVED";
+    }else if(indexPath.row == 3){
+        filterString = @"REQUEST";
+    }else if(indexPath.row == 4){
+        filterString = @"DEPOSIT";
+    }else if(indexPath.row == 5){
+        filterString = @"WITHDRAW";
+    }else if(indexPath.row == 6){
+        filterString = @"DISPUTED";
+    }
+        
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissPopOver" object:nil];
+    return;
+    }
+    else{
         NSString *selectedImg = [NSString new];
         NSString *selectedCat = [NSString new];
         if (indexPath.row == 0) {

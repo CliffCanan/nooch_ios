@@ -7,19 +7,16 @@
 //
 
 #import "LocationBasedSearchViewController.h"
-<<<<<<< HEAD
 #import "serve.h"
-
+#import "core.h"
 @interface LocationBasedSearchViewController ()
 {
+    UIView*loader;
     NSArray * json;
+    core*me;
 }
 @property (strong, nonatomic) IBOutlet UITableView *mLocationtbl;
 
-=======
-
-@interface LocationBasedSearchViewController ()
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 
 @end
 
@@ -38,14 +35,18 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-<<<<<<< HEAD
     
     serve * ser = [serve new];
     [ser setDelegate:self];
-    [ser getLocationBasedSearch:@"200"];
+    [ser getLocationBasedSearch:@"2"];
+    if (![self.view.subviews containsObject:loader]) {
+        me=[core new];
+        loader=[me waitStat:@"Loading info..."];
+        
+        [self.view addSubview:loader];
+        [self.view bringSubviewToFront:loader];
+    }
     
-=======
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 }
 
 - (void)didReceiveMemoryWarning
@@ -54,11 +55,14 @@
     // Dispose of any resources that can be recreated.
 }
 
-<<<<<<< HEAD
 -(void)listen:(NSString *)result tagName:(NSString *)tagName {
     json = [result JSONValue];
     if (json.count !=0) {
         [self.mLocationtbl reloadData];
+    }
+    if ([self.view.subviews containsObject:loader]) {
+        [loader removeFromSuperview];
+        [me endWaitStat];
     }
     NSLog(@"JSON Is %@",json);
 }
@@ -173,6 +177,4 @@
 - (IBAction)GoBack:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
-=======
->>>>>>> 8fdd5080190ff4caefff31068f3a11d6bf166852
 @end

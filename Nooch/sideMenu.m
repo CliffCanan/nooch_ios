@@ -31,11 +31,7 @@
 {
     [super viewDidLoad];
     
-    arrWithrawalOptions=[[NSMutableArray alloc]init];
-    isWithdrawalSelected=NO;
-    [arrWithrawalOptions addObject:@"HOME"];
-    [arrWithrawalOptions addObject:@"Transaction History"];
-    [arrWithrawalOptions addObject:@"Auto Withdrawal"];
+    
     menuTable.backgroundColor=[UIColor colorWithRed:102.0f/255.0f green:102.0f/255.0f blue:102.0f/255.0f alpha:1.0f];
 	// Do any additional setup after loading the view.
     storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
@@ -44,57 +40,9 @@
     hist = [storyboard instantiateViewControllerWithIdentifier:@"history"];
     
 }
--(void)listen:(NSString *)result tagName:(NSString *)tagName
-{
-    
-       NSArray*arr=[result JSONValue];
-    NSLog(@"%@",dictResult);
-    if ([tagName isEqualToString:@"withdrawOptions"])
-    {
-       // NSLog(@"response %@",[dictResult valueForKey:@"Result"]);
-        arrAutoWithdrawalF=[arr copy];
-        NSLog(@"%@",arrAutoWithdrawalF);
-        
-        serve *serveOBJ=[serve new];
-        serveOBJ.Delegate=self;
-        serveOBJ.tagName=@"Triggers";
-        [serveOBJ GetAllWithdrawalTrigger];
-        
-    }
-    else if ([tagName isEqualToString:@"Triggers"])
-    {
-        arrAutoWithdrawalT=[arr copy];
-        NSLog(@"%@",arrAutoWithdrawalT);
-        
-
-    }
-    else if ([tagName isEqualToString:@"SaveWithdrawal"])
-    {
-        dictResponse=[result JSONValue];
-        NSLog(@"%@",[[dictResponse valueForKey:@"SaveFrequencyResult"] valueForKey:@"Result"]);
-        if ([[[dictResponse valueForKey:@"SaveFrequencyResult"] valueForKey:@"Result"]isEqualToString:@"Saved Successfully"]) {
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:[[dictResponse valueForKey:@"SaveFrequencyResult"] valueForKey:@"Result"] delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-            [alert show];
-        }
-        else if([[[dictResponse valueForKey:@"SaveTriggersResult"] valueForKey:@"Result"]isEqualToString:@"Saved Successfully"])
-        {
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:[[dictResponse valueForKey:@"SaveFrequencyResult"] valueForKey:@"Result"] delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-            [alert show];
-        }
-        else
-        {
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:[[dictResponse valueForKey:@"SaveFrequencyResult"] valueForKey:@"Result"] delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-            [alert show];
-        }
-    }
-}
 
 -(void)viewWillAppear:(BOOL)animated{
-    serve*serveOBJ=[serve new];
-    serveOBJ.tagName=@"withdrawOptions";
-    [serveOBJ GetAllWithdrawalFrequency];
-    serveOBJ.Delegate=self;
-    
+       
 
     [emailDisplay setFont:[core nFont:@"Regular" size:14]];
     [nameDisplay setFont:[core nFont:@"Medium" size:20]];
@@ -136,21 +84,7 @@
 
 
 -(void)viewWillDisappear:(BOOL)animated{
-    if ([Switch isOn]) {
-        
-        if ([dictSelectedWithdrawal count]==0) {
-            SelectedOption=@"None";
-            
-        }
-        if ([arrWithrawalOptions count]>3) {
-            for (int i=0; i<countsubRecords; i++) {
-                [arrWithrawalOptions removeLastObject];
-            }
-            
-            [menuTable reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-        }
-    }
-    //[[[navCtrl.viewControllers objectAtIndex:0] view] addGestureRecognizer:self.slidingViewController.panGesture];
+       //[[[navCtrl.viewControllers objectAtIndex:0] view] addGestureRecognizer:self.slidingViewController.panGesture];
 }
 
 -(void)hideMenu{
@@ -203,7 +137,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (section == 0) {
-        return [arrWithrawalOptions count];
+        return 2;
     }else if(section == 1){
         return 1;
     }else if(section == 2){
@@ -233,7 +167,8 @@
         cell.textLabel.font = [core nFont:@"Medium" size:18.0];
         if (indexPath.row == 0) {
             cell.detailTextLabel.text=@"";
-            cell.textLabel.text = [arrWithrawalOptions objectAtIndex:indexPath.row];
+           
+            cell.textLabel.text = @"HOME";
             iv.image = [UIImage imageNamed:@"n_Icon.png"];
         }else if(indexPath.row == 1){
            
@@ -293,98 +228,13 @@
                 }
             }
             cell.detailTextLabel.text=@"";
-            cell.textLabel.text = [arrWithrawalOptions objectAtIndex:indexPath.row];
+            cell.textLabel.text = @"Transaction History";
             iv.image = [UIImage imageNamed:@"Clock_Icon.png"];
            
         }
-        else if (indexPath.row==2)
-        {
-            
-            cell.textLabel.text = [arrWithrawalOptions objectAtIndex:indexPath.row];
-            cell.detailTextLabel.textColor=[UIColor whiteColor];
-            Switch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 5, 70, 30)];
-            Switch.tag=12000;
-            
-            if ([SelectedOption isEqualToString:@"Frequency"]||[SelectedOption isEqualToString:@"Triggers"])
-            {
-               [Switch setOn:YES];
-                if (dictSelectedWithdrawal) {
-                    NSString*option=[dictSelectedWithdrawal valueForKey:SelectedOption];
-                    NSArray*arrSeparate=[[dictSelectedWithdrawal valueForKey:option] componentsSeparatedByString:@" "];
-                    
-                    cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ $%@",[[dictSelectedWithdrawal valueForKey:option] substringToIndex:[[dictSelectedWithdrawal valueForKey:option]length]-2],[arrSeparate lastObject]];
-                    SelectedSubOption=[dictSelectedWithdrawal valueForKey:option];
-
-                }
-                else
-                {
-                     cell.detailTextLabel.text=@"";
-                }
-                               //[NSString stringWithFormat:@"%d",indexPath.row]
-            }
-            else
-            {
-                [Switch setOn:NO];
-                cell.detailTextLabel.text=@"";
-            }
-            [Switch addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
-            [cell.contentView addSubview:Switch];
-            
-        }
-        else{
-            
-           cell.textLabel.font = [core nFont:@"Medium" size:15.0];
-            if ([SelectedOption isEqualToString:@"Frequency"]) {
-                 cell.textLabel.text=[[arrWithrawalOptions objectAtIndex:indexPath.row] substringToIndex:[[arrWithrawalOptions objectAtIndex:indexPath.row] length]-3];
-            }
-            else{
-                cell.textLabel.text=[arrWithrawalOptions objectAtIndex:indexPath.row] ;
-//                UITextField*textMyWithdrawal=[[UITextField alloc]initWithFrame:CGRectMake(120, 5, 100, 35)];
-//                [textMyWithdrawal setPlaceholder:@"Enter Amount"];
-//                textMyWithdrawal.textColor = [UIColor blackColor];
-//                textMyWithdrawal.borderStyle = UITextBorderStyleRoundedRect;
-//                textMyWithdrawal.font = [UIFont systemFontOfSize:15.0];
-//                
-//                textMyWithdrawal.backgroundColor = [UIColor whiteColor];
-//                [cell.contentView addSubview:textMyWithdrawal];
-
-            }
-            cell.detailTextLabel.text=@"";
-            if (indexPath.row==7) {
-                
-                if([dictSelectedWithdrawal valueForKey:[NSString stringWithFormat:@"%d",indexPath.row]]){
-                    UILabel*lbl=[[UILabel alloc]initWithFrame:CGRectMake(200, 5, 100, 35)];
-                    lbl.textColor=[UIColor whiteColor];
-                    lbl.backgroundColor=[UIColor clearColor];
-                    lbl.text=[NSString stringWithFormat:@"%@",[dictSelectedWithdrawal valueForKey:[NSString stringWithFormat:@"%d",indexPath.row]]];
-                    [cell.contentView addSubview:lbl];
-                }
-           
-            
-            }
-            else
-            {
-                UIButton*check=[UIButton buttonWithType:UIButtonTypeCustom];
-                [check  setTag:indexPath.row];
-                
-                if([dictSelectedWithdrawal valueForKey:[NSString stringWithFormat:@"%d",indexPath.row]])
-                {
-                    [check setBackgroundColor:[UIColor greenColor]];
-                    [check setTitle:@"check" forState:UIControlStateNormal];
-                }
-                else
-                {
-                    [check setBackgroundColor:[UIColor orangeColor]];
-                    [check setTitle:@"uncheck" forState:UIControlStateNormal];
-                }
-                [check setFrame:CGRectMake(200, 5, 70, 30)];
-                
-                [check addTarget:self action:@selector(checkButtonCLicked:) forControlEvents:UIControlEventTouchUpInside];
-                [cell.contentView addSubview:check];
-            }
-            cell.detailTextLabel.text=@"";
-        }
-    }else if(indexPath.section == 1){
+        
+    }
+    else if(indexPath.section == 1){
         [cell.contentView addSubview:arrow];
         if (indexPath.row == 0) {
             cell.detailTextLabel.text=@"";
@@ -471,65 +321,7 @@
             //[navCtrl pushViewController:hist animated:NO];
             //[self.slidingViewController.topViewController presentViewController:hist animated:NO completion:nil];
         }
-        else if(indexPath.row==2)
-        {
-            if ([Switch isOn]) {
-                if (isWithdrawalSelected) {
-                    isWithdrawalSelected=NO;
-                    if ([arrWithrawalOptions count]>3) {
-                        for (int i=0; i<countsubRecords; i++) {
-                            [arrWithrawalOptions removeLastObject];
-                        }
-                    }
-                    if (![dictSelectedWithdrawal valueForKey:SelectedOption]) {
-                        SelectedOption=@"None";
-                    }
-                    //SelectedOption
-                  }
-                else if (!isWithdrawalSelected)
-                    
-                {
-                    isWithdrawalSelected=YES;
-                    temp = [dictSelectedWithdrawal allKeysForObject:SelectedSubOption];
-                    NSLog(@"%@",temp);
-                   // NSString *key = [temp objectAtIndex:0];
-                     temp2=[dictSelectedWithdrawal allKeysForObject:[temp objectAtIndex:0]];
-                    
-                    //SelectedSubOption
-                    if ([[temp2 objectAtIndex:0]isEqualToString:@"Frequency"]) {
-                        countsubRecords=0;
-                        for (NSDictionary*dict in arrAutoWithdrawalF) {
-                            countsubRecords++;
-                            [arrWithrawalOptions addObject:[NSString stringWithFormat:@"%@ at %@",[dict valueForKey:@"Name"],[dict valueForKey:@"Time"]]];
-                        }
-
-                    }
-                    else if ([[temp2 objectAtIndex:0]isEqualToString:@"Triggers"])
-                    {
-                        countsubRecords=0;
-                        for (NSDictionary*dict in arrAutoWithdrawalT) {
-                            countsubRecords++;
-                            [arrWithrawalOptions addObject:[NSString stringWithFormat:@"%@ at %@",[dict valueForKey:@"Name"],[dict valueForKey:@"Time"]]];
-                        }
-                        [arrWithrawalOptions addObject:@"Custom Withdrawal"];
-                        countsubRecords++;
-                        
-                    }
-                    
-                }
-                [tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-          //  [menuTable reloadData];
-            }
-        }
-        else if(indexPath.row==7)
-        {
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"NoochMoney" message:@"Custom Withdrawal Between $10-$100" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
-            [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-
-            [alert setTag:12002];
-            [alert show];
-        }
-    }else if(indexPath.section == 1){
+           }else if(indexPath.section == 1){
         if (indexPath.row == 0) {
             causes = YES;
             [self.slidingViewController resetTopView];
@@ -645,197 +437,6 @@
             [legalInfoMenu setFrame:frame];
             [shadow setAlpha:0.5f];
             [UIView commitAnimations];
-        }
-    }
-}
--(void)checkButtonCLicked:(UIButton*)sender
-{
-    
-    serve*serveOBJ=[serve new];
-    serveOBJ.tagName=@"SaveWithdrawal";
-    serveOBJ.Delegate=self;
-    
-    if ([SelectedOption isEqualToString:@"Triggers"]) {
-        if (!dictSelectedWithdrawal) {
-            dictSelectedWithdrawal=[[NSMutableDictionary alloc]init];
-        }
-        isWithdrawalSelected=YES;
-        [dictSelectedWithdrawal removeAllObjects];
-        [dictSelectedWithdrawal setValue:[arrWithrawalOptions objectAtIndex:[sender tag]] forKey:[NSString stringWithFormat:@"%d",[sender tag]]];
-        [dictSelectedWithdrawal setValue:[NSString stringWithFormat:@"%d",[sender tag]] forKey:SelectedOption];
-        NSLog(@"%@",dictSelectedWithdrawal);
-        int tag=[sender tag];
-        float value= [[[[arrAutoWithdrawalT objectAtIndex:tag-3] valueForKey:@"Name"] substringFromIndex:1] floatValue];
-        [serveOBJ SaveFrequency:[[arrAutoWithdrawalT objectAtIndex:tag-3] valueForKey:@"Id"] type:SelectedOption frequency:value];
-    }
-    else
-    {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"NoochMoney" message:@"Custom Withdrawal Between $10-$100" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
-        [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-        tagForFrequency=[sender tag];
-        [alert setTag:12045];
-        [alert show];
-    }
-    
-    [menuTable reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-}
-- (void)changeSwitch:(id)sender{
-    if ([sender tag]==12000) {
-        if([sender isOn]){
-             isWithdrawalSelected=YES;
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Withdrawal Options" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Frequency",@"Triggers", nil];
-            [alert setTag:12003];
-            
-            [alert show];
-            // Execute any code when the switch is ON
-            NSLog(@"Switch is ON");
-        }
-        else{
-            isWithdrawalSelected=NO;
-            SelectedOption=@"None";
-            if ([arrWithrawalOptions count]>3) {
-                for (int i=0; i<countsubRecords; i++) {
-                    [arrWithrawalOptions removeLastObject];
-                }
-            }
-            [menuTable reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-
-            [dictSelectedWithdrawal removeAllObjects];
-            // Execute any code when the switch is OFF
-            NSLog(@"Switch is OFF");
-        }
-
-    }
-    }
-// Called when a button is clicked. The view will be automatically dismissed after this call returns
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if ([alertView tag]==12003) {
-        if (buttonIndex==0) {
-            SelectedOption=@"None";
-            [Switch setOn:NO animated:YES];
-            [alertView dismissWithClickedButtonIndex:0 animated:YES];
-            
-        }
-        else if(buttonIndex==1)
-            
-        {
-            SelectedOption=@"Frequency";
-            //[Switch setOn:YES animated:YES];
-            //@"Daily at 5:00",@"Weekly at 5:00",@"Monthly at 5:00
-            if ([arrWithrawalOptions count]>3) {
-                for (int i=0; i<countsubRecords; i++) {
-                    [arrWithrawalOptions removeLastObject];
-                }
-            }
-            countsubRecords=0;
-            for (NSDictionary*dict in arrAutoWithdrawalF) {
-                countsubRecords++;
-                [arrWithrawalOptions addObject:[NSString stringWithFormat:@"%@ at %@",[dict valueForKey:@"Name"],[dict valueForKey:@"Time"]]];
-            }
-            
-            
-            
-            [menuTable reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-            
-
-           [alertView dismissWithClickedButtonIndex:1 animated:YES];
-            NSLog(@"Frequency");
-        }
-        else if (buttonIndex==2)
-        {
-             SelectedOption=@"Triggers";
-            // [Switch setOn:YES animated:YES];
-            if ([arrWithrawalOptions count]>3) {
-                for (int i=0; i<countsubRecords; i++) {
-                    [arrWithrawalOptions removeLastObject];
-                }
-            }
-            countsubRecords=0;
-            for (NSDictionary*dict in arrAutoWithdrawalT) {
-                countsubRecords++;
-                [arrWithrawalOptions addObject:[NSString stringWithFormat:@"At %@",[dict valueForKey:@"Name"]]];
-
-            }
-            [arrWithrawalOptions addObject:@"Custom Withdrawal"];
-            countsubRecords++;
-            [menuTable reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-            
-
-            [alertView dismissWithClickedButtonIndex:2 animated:YES];
-            NSLog(@"Trigger");
-
-        }
-    }
-    else if ([alertView tag]==12002)
-    {
-        if (buttonIndex==1) {
-             UITextField *value = [alertView textFieldAtIndex:0];
-            if ([value.text floatValue]<10 ||[value.text floatValue]>100 ) {
-                value.text=@"";
-                
-                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"NoochMoney" message:@"Custom Withdrawal Between $10-$100" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
-                [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-                
-                [alert setTag:12002];
-                [alert show];
-            }
-            else
-            {
-            if (!dictSelectedWithdrawal) {
-                dictSelectedWithdrawal=[[NSMutableDictionary alloc]init];
-            }
-            isWithdrawalSelected=YES;
-            [dictSelectedWithdrawal removeAllObjects];
-            [dictSelectedWithdrawal setValue:[NSString stringWithFormat:@"$%@",value.text] forKey:[NSString stringWithFormat:@"%d",7]];
-            [dictSelectedWithdrawal setValue:[NSString stringWithFormat:@"%d",7] forKey:SelectedOption];
-            NSLog(@"%@",dictSelectedWithdrawal);
-            serve*serveOBJ=[serve new];
-            serveOBJ.tagName=@"SaveWithdrawal";
-            serveOBJ.Delegate=self;
-            [serveOBJ SaveFrequency:@"0" type:@"Tiggers" frequency:[value.text floatValue]];
-            [menuTable reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-
-        }
-        }
-    }
-    else if ([alertView tag]==12045)
-    {
-        if (buttonIndex==1) {
-            UITextField *value = [alertView textFieldAtIndex:0];
-            if ([value.text floatValue]<10 ||[value.text floatValue]>100 ) {
-                //value.text=@"";
-                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"NoochMoney" message:@"Custom Withdrawal Between $10-$100" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
-                [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-                
-                [alert setTag:12045];
-                [alert show];
-                
-            }
-            else
-            {
-                NSLog(@"%@",value.text);
-            if (!dictSelectedWithdrawal) {
-                
-                dictSelectedWithdrawal=[[NSMutableDictionary alloc]init];
-                
-            }
-            
-            isWithdrawalSelected=YES;
-            
-            [dictSelectedWithdrawal removeAllObjects];
-            
-            [dictSelectedWithdrawal setValue:[NSString stringWithFormat:@"%@ %@",[arrWithrawalOptions objectAtIndex:tagForFrequency],value.text]  forKey:[NSString stringWithFormat:@"%d",tagForFrequency]];
-            
-            [dictSelectedWithdrawal setValue:[NSString stringWithFormat:@"%d",tagForFrequency] forKey:SelectedOption];
-            
-            NSLog(@"%@",dictSelectedWithdrawal);
-            serve*serveOBJ=[serve new];
-            serveOBJ.tagName=@"SaveWithdrawal";
-            serveOBJ.Delegate=self;
-            [serveOBJ SaveFrequency:[[arrAutoWithdrawalF objectAtIndex:tagForFrequency-3] valueForKey:@"Id"] type:@"Frequency" frequency:[value.text floatValue]];
-            [menuTable reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-        }
         }
     }
 }

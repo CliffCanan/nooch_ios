@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface AllMapViewController : UIViewController
-
-
+#import "popSelect.h"
+BOOL mapfilter;
+NSString *filterString;
+@interface AllMapViewController : UIViewController{
+    NSMutableArray*arrFiltered;
+}
 
 @property (nonatomic , retain) NSMutableArray * pointsList;
 - (IBAction)LeftBarbuttonPressed:(id)sender;
