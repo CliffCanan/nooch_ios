@@ -364,8 +364,10 @@ static assist * _sharedInstance = nil;
         info.Delegate = self;
         info.tagName = @"info";
         //
-        NSLog(@"UserName%@",[usr objectForKey:@"email"]);
-        [info getDetails:[usr objectForKey:@"email"]];
+        NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+                NSLog(@"UserName%@",[usr objectForKey:@"email"]);
+        [info getDetails:[defaults valueForKey:@"MemberId"]
+];
     }
     
 }
@@ -507,16 +509,19 @@ static assist * _sharedInstance = nil;
 }
 -(void)getImages{
     NSMutableArray *tempArry = [histCache mutableCopy];
+    NSLog(@"tempArray%d",tempArry.count);
     for (NSMutableDictionary *dict in tempArry) {
         if (![dict objectForKey:@"image"] && ![[dict objectForKey:@"Photo"] isKindOfClass:[NSNull class]] && [[dict objectForKey:@"Photo"] rangeOfString:@"gv_no_photo"].location == NSNotFound ) {
             NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[dict objectForKey:@"Photo"]]];
             if (![imageData isKindOfClass:[NSNull class]]) {
                 if ([imageData length] != 0) {
+                    
                     [dict setObject:imageData forKey:@"image"];
                 }
             }
         }
     }
+     NSLog(@"tempArray%d",tempArry.count);
     [histCache setArray:tempArry];
     needsUpdating = YES;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"tableReload" object:self userInfo:nil];

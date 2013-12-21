@@ -14,8 +14,8 @@
 //NSString * const MyUrl = @"https://192.203.102.254/NoochService.svc";
 //NSString * const MyUrl=@"https://noochweb.venturepact.com/noochservice/noochservice.svc";
 //NSString * const MyUrl =@"https://10.200.1.40/noochservice/NoochService.svc";
-NSString * const MyUrl = @"https://192.203.102.254/noochservice/NoochService.svc";
-//NSString * const MyUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
+//NSString * const MyUrl = @"https://192.203.102.254/noochservice/NoochService.svc";
+NSString * const MyUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
 //NSString * const MyUrl = @"http://noochweb.venturepact.com/NoochService.svc";
 
 //NSString * const MyUrl = @"http://74.117.228.120/NoochService.svc";

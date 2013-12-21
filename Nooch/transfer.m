@@ -278,10 +278,16 @@ bool allowSharingValue;
         NSLog(@"%@",NSStringFromCGRect(Frame));
         img.frame=Frame;
         [RespImageV addSubview:img];
-
+        NSString*name;
         UIFont *font = [UIFont systemFontOfSize:16.0];
-        NSString*name=[NSString stringWithFormat:@"%@ %@",[dict objectForKey:@"firstName"],
-                       [dict objectForKey:@"lastName"]];
+        if ([dict objectForKey:@"firstName"]) {
+           name =[NSString stringWithFormat:@"%@ %@",[dict objectForKey:@"firstName"],
+                           [dict objectForKey:@"lastName"]];
+
+        }
+        else if ([dict objectForKey:@"FirstName"])
+         name=[NSString stringWithFormat:@"%@ %@",[dict objectForKey:@"FirstName"],
+                       [dict objectForKey:@"LastName"]];
 		// Create the custom button
 		UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
 		[button setTitle:name forState:UIControlStateNormal];
@@ -1074,64 +1080,7 @@ bool allowSharingValue;
         NSLog(@"hmph");
          [self performSelectorOnMainThread:@selector(finishedPosting) withObject:nil waitUntilDone:NO];
     }
-    else if ([actionSheet tag] == 12) {
-  /*   //   UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-        if (buttonIndex == 0) {
-            NSLog(@"Cancelled");
-        }
-        else if (buttonIndex == 1) {
-            
-           photoPickerOBJ = [self.storyboard instantiateViewControllerWithIdentifier:@"picker"];
-            //sending the map View Controller the pointers to be placed
-            photoPickerOBJ.isCamra=YES;
-           
-//            [self presentViewController:photoPickerOBJ animated:YES completion:nil];
-            [self.view addSubview:photoPickerOBJ.view];
-
-//            if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-//            {
-//                [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
-//            }
-//            else
-//            {
-//                [[[UIAlertView alloc] initWithTitle:@"Unsupported" message:@"Camera is not supported" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
-//            }
-        }
-        else if (buttonIndex == 2) {
-            //
-            
-            photoPickerOBJ = [self.storyboard instantiateViewControllerWithIdentifier:@"picker"];
-            //sending the map View Controller the pointers to be placed
-            photoPickerOBJ.isCamra=NO;
-//            [self dismissViewControllerAnimated:YES completion:^{
-//                [self presentViewController:photoPickerOBJ animated:YES completion:nil];
-//            }];
-           //  [self dismissViewControllerAnimated:YES completion:nil];
-     //21       [self presentViewController:photoPickerOBJ animated:YES completion:nil];
-           // SecondViewController *secondView = [self.storyboard instantiateViewControllerWithIdentifier:@"SecondViewController"];
-           // UIImage *blurryImage = [UIImage imageNamed:@"foo.jpeg"];
-           // secondView.imageView.image = blurryImage;
-          //  [navCtrl addChildViewController:photoPickerOBJ];
-           // photoPickerOBJ.view.frame = self.navigationController.view.frame;
-          //  [navCtrl.view addSubview:photoPickerOBJ.view];
-//            UIViewController*vc=[self.storyboard instantiateViewControllerWithIdentifier:@"picker"];
-//            
-//            [self addChildViewController:vc];
-            
-            
-           // [self.view addSubview:photoPickerOBJ.view];
-//             [self presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"picker"] animated:YES completion:nil];
-            //[navCtrl pushViewController:photoPickerOBJ animated:YES];
-            [self presentViewController:photoPickerOBJ animated:YES completion:nil];
-            
-
-          //  [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-        }
-        
-       // [imagePicker setDelegate:self];
-       // [self presentViewController:imagePicker animated:YES completion:nil];
-        */
-    }
+       
 }
 -(void)post{
     SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];

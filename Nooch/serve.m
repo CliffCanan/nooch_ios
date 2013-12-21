@@ -84,9 +84,9 @@ NSString *responseString;
 //NSString * const ServerUrl = @"https://74.117.228.120/NoochService.svc"; //production server
 //NSString * const ServerUrl = @"https://192.203.102.254/NoochService.svc"; //development server
 //NSString * const ServerUrl =@"https://noochweb.venturepact.com/noochservice/noochservice.svc";
-//http://noochweb.venturepact.com/NoochService.svc
-NSString * const ServerUrl = @"https://192.203.102.254/noochservice/NoochService.svc";
-//NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
+//http://noochweb.venturepact.com/NoochService.svck
+//NSString * const ServerUrl = @"https://192.203.102.254/noochservice/NoochService.svc";
+NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
 //NSString * const ServerUrl = @"https://10.200.1.40/noochservice/NoochService.svc";
 //NSString * const ServerUrl = @"http://noochweb.venturepact.com/NoochService.svc"; //testing server Venturepact isCheckValidation;
 bool locationUpdate;
@@ -228,7 +228,7 @@ NSString *amnt;
 
     self.responseData = [[NSMutableData alloc] init];
    // requestMem=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?name=%@&accessToken=%@&memberId=%@",ServerUrl,@"GetMemberDetails",username,[defaults valueForKey:@"OAuthToken"],[defaults valueForKey:@"memberId"]]]];
-     requestMem=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&accessToken=%@",ServerUrl,@"GetMemberDetails",[defaults valueForKey:@"MemberId"],[defaults valueForKey:@"OAuthToken"]]]];
+     requestMem=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&accessToken=%@",ServerUrl,@"GetMemberDetails",username,[defaults valueForKey:@"OAuthToken"]]]];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestMem delegate:self];
     if (!connection)
         NSLog(@"connect error");

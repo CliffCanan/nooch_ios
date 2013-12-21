@@ -795,6 +795,9 @@ static CGFloat const kPadding = 5.0;
     [FeaturedView addSubview:btnRight];
     btnRight.tag=2100;
      btnRight.enabled=YES;
+    if ([FeaturedcausesArr count]==1) {
+        btnRight.enabled=NO;
+    }
     [btnRight addTarget:self action:@selector(ArrowClicked:) forControlEvents:UIControlEventTouchUpInside];
     
    
@@ -1977,6 +1980,10 @@ static CGFloat const kPadding = 5.0;
             receiverFirst = [dict objectForKey:@"FirstName"];
             receiverLast = [dict objectForKey:@"LastName"];
             receiverId = [dict objectForKey:@"MemberId"];
+            [dictGroup removeAllObjects];
+            [dictGroup setValue:dict forKey:@"1"];
+            transfer*transferOBJ=[storyboard instantiateViewControllerWithIdentifier:@"transfer"];
+            transferOBJ.dictResp=dictGroup;
             //Commented becoz url is from other server which takes infinite time
             
             //NSURL *photoUrl=[[NSURL alloc]initWithString:[loginResult objectForKey:@"PhotoUrl"]];
@@ -1984,7 +1991,7 @@ static CGFloat const kPadding = 5.0;
             
             //commented by Charanjit
 //            [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
-            [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES completion:nil];
+            [navCtrl presentViewController:transferOBJ animated:YES completion:nil];
             return;
         }
         else{
@@ -2018,11 +2025,12 @@ static CGFloat const kPadding = 5.0;
         NSMutableDictionary *loginResult = [result JSONValue];
         if([loginResult objectForKey:@"Result"] != [NSNull null])
         {
+            NSLog(@"%@",[loginResult objectForKey:@"Result"]);
             emailSend = YES;
             serve *getDetails = [serve new];
             getDetails.Delegate = self;
             getDetails.tagName = @"getMemberDetails";
-            [getDetails getDetails:searchField.text];
+            [getDetails getDetails:[loginResult objectForKey:@"Result"]];
         }
         else
         {
