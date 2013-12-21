@@ -13,6 +13,7 @@
 #import "Signup.h"
 #import "privacy.h"
 #import "JSON.h"
+
 @interface Tutorial1 ()
 { serve*serveOBJ;
     NSMutableDictionary*dictResponse;
@@ -245,11 +246,27 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
+    //venturepact
+    
+    
+    arrSignUpEntry=[[NSMutableArray alloc]init];
+    [arrSignUpEntry addObject:@"Name"];
+    [arrSignUpEntry addObject:@"Email"];
+    [arrSignUpEntry addObject:@"Password"];
+   // [btnfbSignup setStyleClass:@"button_blue"];
+   // [btnContinue setStyleClass:@"button_green"];
+   // [instruction_text setStyleClass:@"instruction_text"];
+    
+ //  [loginButton setStyleClass:@"label_small"];
     CGSize result = [[UIScreen mainScreen] bounds].size;
     if(result.height == 480){
         
-        loginButton.frame=CGRectMake(240, 443, 69, 34);
+        loginButton.frame=CGRectMake(200, 443, 70, 34);
     }
+    else
+        loginButton.frame=CGRectMake(200, 527, 70, 34);
+    
     
 	// Do any additional setup after loading the view.
     NSLog(@"Tutorial loaded");
@@ -439,6 +456,64 @@
     [info2 setFrame:inFrame];
     [UIView commitAnimations];
     pageControl.currentPage = position;
+}
+//Edit by Venturepact iOS7 Design
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    tableView.rowHeight=50.0f;
+    // Return the number of rows in the section.
+    return [arrSignUpEntry count];
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *CellIdentifier = [arrSignUpEntry objectAtIndex:indexPath.row];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    cell.backgroundColor=[UIColor clearColor];
+    //[cell setStyleClass:@"table_view_cell_1"];
+    
+    if ([CellIdentifier isEqualToString:@"Name"]) {
+        UILabel*lblName=(UILabel*)[cell.contentView.subviews objectAtIndex:1];
+       // [lblName setStyleClass:@"table_view_cell_textlabel_1"];
+        name = (UITextField*)[cell.contentView.subviews objectAtIndex:0];
+               name.tag = indexPath.row;
+        name.textAlignment=NSTextAlignmentLeft;
+        name.delegate=self;
+      //  [name setStyleClass:@"table_view_cell_detailtext_1"];
+        
+    }
+   
+    else if ([CellIdentifier isEqualToString:@"Password"]) {
+        UILabel*lblpwd=(UILabel*)[cell.contentView.subviews objectAtIndex:1];
+      //  [lblpwd setStyleClass:@"table_view_cell_textlabel_1"];
+        
+        password = (UITextField*)[cell.contentView.subviews objectAtIndex:0];
+         password.textAlignment=NSTextAlignmentLeft;
+       // [password setStyleClass:@"table_view_cell_detailtext_1"];
+
+    password.delegate=self;
+       
+        
+    }
+    else if ([CellIdentifier isEqualToString:@"Email"]) {
+        UILabel*lblemail=(UILabel*)[cell.contentView.subviews objectAtIndex:1];
+       // [lblemail setStyleClass:@"table_view_cell_textlabel_1"];
+        email = (UITextField*)[cell.contentView.subviews objectAtIndex:0];
+       email.tag = indexPath.row;
+        email.delegate=self;
+         email.textAlignment=NSTextAlignmentLeft;
+       // [email setStyleClass:@"table_view_cell_detailtext_1"];
+    
+    }
+    
+       return cell;
 }
 
 @end

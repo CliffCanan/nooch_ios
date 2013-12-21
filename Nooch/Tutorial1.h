@@ -11,7 +11,7 @@
 NSString *inviteCode;
 bool fbCreate;
 
-@interface Tutorial1 : UIViewController<UINavigationControllerDelegate,UITextFieldDelegate,serveD>{
+@interface Tutorial1 : UIViewController<UINavigationControllerDelegate,UITextFieldDelegate,serveD,UITableViewDataSource,UITableViewDelegate>{
     NSArray *backgroundArray;
 //    __weak IBOutlet UITextField *checkCodeField;
 //    __weak IBOutlet UITextField *reqInvField;
@@ -28,7 +28,19 @@ bool fbCreate;
     IBOutlet UITextField *emailField;
     IBOutlet UITextField *inviteCodeField;
     UIView *v;
+    
+    
+    //21
     NSString*ServiceType;
+    NSMutableArray*arrSignUpEntry;
+    IBOutlet UITableView*SignUpTable;
+    UITextField*name;
+    UITextField*email;
+    UITextField*password;
+    IBOutlet UIButton*btnfbSignup;
+    IBOutlet UIButton*btnContinue;
+   IBOutlet UILabel*instruction_text;
+    
 }
 @property (weak, nonatomic) IBOutlet UIButton *createAccountButton;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;

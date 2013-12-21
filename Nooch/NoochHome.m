@@ -687,7 +687,7 @@ static CGFloat const kPadding = 5.0;
     }
     else if(result1.height==568)
     {
-        btnimgValidateNoti.frame=CGRectMake(0, 40, 320, 43);
+        btnimgValidateNoti.frame=CGRectMake(0, 440, 320, 43);
     }
     buttonView.frame=CGRectMake(0, 120, 320, 350);
     
@@ -754,31 +754,19 @@ static CGFloat const kPadding = 5.0;
     [serveOBJ GetFeaturedNonprofit];
    
 }
--(void)oneFingerSwipeLeft:(UISwipeGestureRecognizer *)sender{
-    NSLog(@"%d",sender.view.tag);
-    swipeAtRowAtIndex=sender.view.tag;
-    isSwipeLeft=YES;
-    causes=YES;
-    [self.friendTable reloadData];
-}
--(void)oneFingerSwipeRight:(id)sender{
-    isSwipeLeft=NO;
-    causes=YES;
-    [self.friendTable reloadData];
-}
--(void)donateSelected:(id)sender{
-    
-}
--(void)LearnMore:(id)sender{
-    //NonprofitId
-    isSwipeLeft=NO;
-    causes=YES;
-    NSString*strNonProfitid=[[causesArr objectAtIndex:[sender tag]] valueForKey:@"NonprofitId"];
-    nonProfit*np=[self.storyboard instantiateViewControllerWithIdentifier:@"nonprofit"];
-    NSDictionary*dict=[NSDictionary dictionaryWithObjectsAndKeys:strNonProfitid,@"id",[[causesArr objectAtIndex:[sender tag]] valueForKey:@"OrganizationName"],@"OrganizationName", nil];
-    np.dictnonprofitid=[dict mutableCopy];
-    [navCtrl pushViewController:np animated:YES];
-}
+//-(void)oneFingerSwipeLeft:(UISwipeGestureRecognizer *)sender{
+//    NSLog(@"%d",sender.view.tag);
+//    swipeAtRowAtIndex=sender.view.tag;
+//    isSwipeLeft=YES;
+//    causes=YES;
+//    [self.friendTable reloadData];
+//}
+//-(void)oneFingerSwipeRight:(id)sender{
+//    isSwipeLeft=NO;
+//    causes=YES;
+//    [self.friendTable reloadData];
+//}
+
 -(void)FeaturedBannerView
 {
     imgcount=0;
@@ -1523,17 +1511,7 @@ static CGFloat const kPadding = 5.0;
     if (causes) {
         if (isSearching) {
             cell.contentView.tag=indexPath.row;
-            UISwipeGestureRecognizer *oneFingerSwipeLeft = [[UISwipeGestureRecognizer alloc]
-                                                            initWithTarget:self
-                                                            action:@selector(oneFingerSwipeLeft:)] ;
             
-            [oneFingerSwipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
-            [cell.contentView addGestureRecognizer:oneFingerSwipeLeft];
-            UISwipeGestureRecognizer *oneFingerSwipeRight = [[UISwipeGestureRecognizer alloc]
-                                                             initWithTarget:self
-                                                             action:@selector(oneFingerSwipeRight:)] ;
-            [oneFingerSwipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
-            [cell.contentView addGestureRecognizer:oneFingerSwipeRight];
             
             dict = [arrSearchedRecords objectAtIndex:indexPath.row];
             cell.textLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
@@ -1549,55 +1527,10 @@ static CGFloat const kPadding = 5.0;
             
             //iv.image = [dict objectForKey:@"image"];
             [cell.contentView addSubview:iv];
-            if (isSwipeLeft) {
-                if (swipeAtRowAtIndex==indexPath.row) {
-                    isSwipeLeft=NO;
-                    UIView*subContentV=[[UIView alloc]initWithFrame:CGRectMake(310, 5, 0, 40)];
-                    subContentV.backgroundColor=[UIColor clearColor];
-                    UIButton*donatebtn=[UIButton buttonWithType:UIButtonTypeCustom];
-                    donatebtn.frame=CGRectMake(2, 5, 100, 15);
-                    [donatebtn setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
-                    [donatebtn setTitle:@"Donate" forState:UIControlStateNormal];
-                    donatebtn.tag=indexPath.row;
-                    [donatebtn addTarget:self action:@selector(donateSelected:) forControlEvents:UIControlEventTouchUpInside];
-                    
-                    [subContentV addSubview:donatebtn];
-                    UIButton*learnbtn=[UIButton buttonWithType:UIButtonTypeCustom];
-                    learnbtn.frame=CGRectMake(2, 25, 100, 15);
-                    [learnbtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-                    [learnbtn setTitle:@"Learn More" forState:UIControlStateNormal];
-                    learnbtn.tag=indexPath.row;
-                    [learnbtn addTarget:self action:@selector(LearnMore:) forControlEvents:UIControlEventTouchUpInside];
-                    [subContentV addSubview:learnbtn];
-                    [cell.contentView addSubview:subContentV];
-                    [UIView beginAnimations:@"bucketsOff" context:nil];
-                    [UIView setAnimationDuration:0.2];
-                    [UIView setAnimationDelegate:self];
-                    //position off screen
-                    subContentV.frame=CGRectMake(200, 5, 120, 40);
-                    //animate off screen
-                    [UIView commitAnimations];
-                }
-                
-                
-            }
-            else
-                isSwipeLeft=NO;
+            
             return cell;
         }
         cell.contentView.tag=indexPath.row;
-        UISwipeGestureRecognizer *oneFingerSwipeLeft = [[UISwipeGestureRecognizer alloc]
-                                                         initWithTarget:self
-                                                         action:@selector(oneFingerSwipeLeft:)] ;
-        
-        [oneFingerSwipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
-        [cell.contentView addGestureRecognizer:oneFingerSwipeLeft];
-        UISwipeGestureRecognizer *oneFingerSwipeRight = [[UISwipeGestureRecognizer alloc]
-                                                          initWithTarget:self
-                                                          action:@selector(oneFingerSwipeRight:)] ;
-        [oneFingerSwipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
-        [cell.contentView addGestureRecognizer:oneFingerSwipeRight];
-        
         dict = [causesArr objectAtIndex:indexPath.row];
         cell.textLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
         if (indexPath.row<[FeaturedcausesArr count]) {
@@ -1613,39 +1546,7 @@ static CGFloat const kPadding = 5.0;
         
         //iv.image = [dict objectForKey:@"image"];
         [cell.contentView addSubview:iv];
-        if (isSwipeLeft) {
-            if (swipeAtRowAtIndex==indexPath.row) {
-                UIView*subContentV=[[UIView alloc]initWithFrame:CGRectMake(310, 5, 0, 40)];
-                subContentV.backgroundColor=[UIColor clearColor];
-                UIButton*donatebtn=[UIButton buttonWithType:UIButtonTypeCustom];
-                donatebtn.frame=CGRectMake(2, 5, 100, 15);
-                [donatebtn setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
-                [donatebtn setTitle:@"Donate" forState:UIControlStateNormal];
-                donatebtn.tag=indexPath.row;
-                [donatebtn addTarget:self action:@selector(donateSelected:) forControlEvents:UIControlEventTouchUpInside];
-                
-                [subContentV addSubview:donatebtn];
-                UIButton*learnbtn=[UIButton buttonWithType:UIButtonTypeCustom];
-                learnbtn.frame=CGRectMake(2, 25, 100, 15);
-                [learnbtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-                [learnbtn setTitle:@"Learn More" forState:UIControlStateNormal];
-                learnbtn.tag=indexPath.row;
-                 [learnbtn addTarget:self action:@selector(LearnMore:) forControlEvents:UIControlEventTouchUpInside];
-                [subContentV addSubview:learnbtn];
-                [cell.contentView addSubview:subContentV];
-                [UIView beginAnimations:@"bucketsOff" context:nil];
-                [UIView setAnimationDuration:0.2];
-                [UIView setAnimationDelegate:self];
-                //position off screen
-                subContentV.frame=CGRectMake(200, 5, 120, 40);
-                //animate off screen
-                [UIView commitAnimations];
-            }
-            
-           
-        }
-        else
-            isSwipeLeft=NO;
+       
         return cell;
     }
     cell.detailTextLabel.text=@"";
@@ -1708,7 +1609,8 @@ static CGFloat const kPadding = 5.0;
         }
     }
     if([dict objectForKey:@"image"] != NULL){
- //21       iv.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
+        NSLog(@"%@",[dict objectForKey:@"image"]);
+     iv.image = [UIImage imageWithData:[dict objectForKey:@"image"]];
     }else{
         iv.image = [UIImage imageNamed:@"profile_picture.png"];
     }
@@ -1746,8 +1648,15 @@ static CGFloat const kPadding = 5.0;
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     if (causes) {
         dict = [causesArr objectAtIndex:indexPath.row];
+        NSString*strNonProfitid=[[causesArr objectAtIndex:indexPath.row] valueForKey:@"NonprofitId"];
+        nonProfit*np=[self.storyboard instantiateViewControllerWithIdentifier:@"nonprofit"];
+        NSDictionary*dict=[NSDictionary dictionaryWithObjectsAndKeys:strNonProfitid,@"id",[[causesArr objectAtIndex:indexPath.row] valueForKey:@"OrganizationName"],@"OrganizationName", nil];
+        np.dictnonprofitid=[dict mutableCopy];
+        [navCtrl pushViewController:np animated:YES];
     }
-    else if (emailEntry){
+    else
+    {
+     if (emailEntry){
         [self getMemberIdByUsingUserName];
         return;
     }
@@ -1798,7 +1707,7 @@ static CGFloat const kPadding = 5.0;
     }
     if([dict objectForKey:@"image"] == NULL){
         receiverImgData = UIImagePNGRepresentation([UIImage imageNamed:@"profile_picture.png"]);
-        [dict setValue:@"profile_picture.png" forKey:@"image"];
+        //[dict setValue:@"profile_picture.png" forKey:@"image"];
     }
     if([receiverId length] == 0 || receiverId == NULL){
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Slow down" message:@"Since this is a private release, sending money to non-Noochers is not supported." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -1815,7 +1724,10 @@ static CGFloat const kPadding = 5.0;
             //[navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES];
             if (!isRequestmultiple) {
                 [dictGroup setValue:dict forKey:[NSString stringWithFormat:@"%d",indexPath.row]];
-                [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"transfer"] animated:YES completion:nil];
+                 NSLog(@"dict  dsv%@",dictGroup);
+                transfer*transferOBJ=[self.storyboard instantiateViewControllerWithIdentifier:@"transfer"];
+                transferOBJ.dictResp=dictGroup;
+                [navCtrl presentViewController:transferOBJ animated:YES completion:nil];
  
             }
         }
@@ -1830,7 +1742,7 @@ static CGFloat const kPadding = 5.0;
         }
     }
     
-    
+    }
 }
 -(void)layoutScrollView
 {

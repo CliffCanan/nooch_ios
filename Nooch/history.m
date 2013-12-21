@@ -1006,13 +1006,17 @@ NSString *curMemo;
     }*/
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier;
+    
+    CellIdentifier = [NSString stringWithFormat:@"%d_%d",indexPath.section,indexPath.row];
+    
     UIImageView *separator = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,320,7)];
     separator.image = [UIImage imageNamed:@"ShadowHistory.png"];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
+    
     for(UIView *subview in cell.contentView.subviews)
         [subview removeFromSuperview];
 
@@ -2380,25 +2384,14 @@ NSString *curMemo;
     isSearching=YES;
     arrSearchedRecords=[[NSMutableArray alloc]init];
     NSLog(@"%@",filterPick);
+    
     if ([filterPick isEqualToString:@"CANCEL"]) {
         isSearching=NO;
     }
     else{
-    for (NSDictionary*dict in oldRecordsArray) {
-        if (![filterPick isEqualToString:@"ALL"] ) {
-            if ([[[dict valueForKey:@"TransactionType"] uppercaseString]isEqualToString:filterPick]) {
-                [arrSearchedRecords addObject:dict];
-            }
-        }
-        else
-            [arrSearchedRecords addObject:dict];
+        
+        [me histMore:filterPick sPos:index len:20];
     }
-        if ([arrSearchedRecords count]==0) {
-            [arrSearchedRecords addObject:@"No Records"];
-        }
-    }
-    [self.historyTable reloadData];
-    [me endWaitStat];
     
 }
 

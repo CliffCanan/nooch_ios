@@ -227,8 +227,9 @@
             [showAlertMessage show];
             routingNumber.text = @"";
             firstLast.text = @"";
-            [self cancel];
             [detailsTable reloadData];
+            [self cancel];
+            
         }
         else if ([ServiceType isEqualToString:@"SaveBank"])
         {

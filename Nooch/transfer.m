@@ -592,7 +592,7 @@ bool allowSharingValue;
             transactionInputTransfer=[[NSMutableDictionary alloc]init];
             [transactionInputTransfer setValue:[loginResult valueForKey:@"Status"] forKey:@"PinNumber"];
             [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
-            
+           
             [transactionInputTransfer setValue:receiverId forKey:@"SenderId"];
             
             [transactionInputTransfer setValue:receiveName1 forKey:@"Name"];
@@ -649,7 +649,23 @@ bool allowSharingValue;
            // NSString*image64=[self encodeToBase64String:[[assist shared]            // [transactionInputTransfer setValue:imageString forKey:@"Picture"];
             [transactionInputTransfer setValue:[loginResult valueForKey:@"Status"] forKey:@"PinNumber"];
             [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
-
+            receiverId=@"";
+            NSLog(@"%@",dictResp);
+            for (NSString *dictKey in dictResp.allKeys)
+            {
+                NSLog(@"%@",dictKey);
+                NSDictionary*dict=[dictResp valueForKey:dictKey];
+                receiverId=[NSString stringWithFormat:@"%@,%@",receiverId,[dict valueForKey:@"MemberId"]];
+            }
+//            for (NSDictionary*dict in dictResp) {
+//                NSLog(@"%@",dict);
+//                for (NSDictionary*subdict in dict) {
+//                    receiverId=[NSString stringWithFormat:@"%@,%@",receiverId,[subdict valueForKey:@"MemberId"]];                }
+//                //   receiverId=[NSString stringWithFormat:@",%@"] [dict objectForKey:@"MemberId"]
+//                
+//            }
+            receiverId=[receiverId substringFromIndex:1];
+            NSLog(@"%@",receiverId);
             [transactionInputTransfer setValue:receiverId forKey:@"RecepientId"];
 
             [transactionInputTransfer setValue:receiveName1 forKey:@"Name"];
@@ -1221,10 +1237,21 @@ bool allowSharingValue;
     }else{
         addressLine1 = [addrParse objectAtIndex:0];
         addressLine2 = [addrParse objectAtIndex:1];
-        city = [addrParse objectAtIndex:2];
-        state = [[addrParse objectAtIndex:3] substringToIndex:3];
-        zipcode = [[addrParse objectAtIndex:3] substringFromIndex:3];
-        country = [addrParse objectAtIndex:4];
+        if ([addrParse count]>2) {
+            city = [addrParse objectAtIndex:2];
+        }
+        if ([addrParse count]>3) {
+             state = [[addrParse objectAtIndex:3] substringToIndex:3];
+        }
+        if ([addrParse count]>4) {
+           zipcode = [[addrParse objectAtIndex:3] substringFromIndex:3];
+        }
+        if ([addrParse count]>5) {
+            country = [addrParse objectAtIndex:4];
+        }
+       
+        
+        
     }
 }
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{

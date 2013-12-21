@@ -268,8 +268,6 @@ static assist * _sharedInstance = nil;
     histSafe=NO;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
-    
-
     responseData = [NSMutableData data];
     urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@&accessToken=%@", MyUrl, @"GetTransactionsList", [usr objectForKey:@"MemberId"], type, @"pSize", [NSString stringWithFormat:@"%d",len], @"pIndex", [NSString stringWithFormat:@"%d",sPos],[defaults valueForKey:@"OAuthToken"]];
     NSLog(@"more hist %@",type);

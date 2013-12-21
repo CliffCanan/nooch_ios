@@ -85,8 +85,8 @@ NSString *responseString;
 //NSString * const ServerUrl = @"https://192.203.102.254/NoochService.svc"; //development server
 //NSString * const ServerUrl =@"https://noochweb.venturepact.com/noochservice/noochservice.svc";
 //http://noochweb.venturepact.com/NoochService.svc
-//NSString * const ServerUrl = @"https://192.203.102.254/noochservice/NoochService.svc";
-NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
+NSString * const ServerUrl = @"https://192.203.102.254/noochservice/NoochService.svc";
+//NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
 //NSString * const ServerUrl = @"https://10.200.1.40/noochservice/NoochService.svc";
 //NSString * const ServerUrl = @"http://noochweb.venturepact.com/NoochService.svc"; //testing server Venturepact isCheckValidation;
 bool locationUpdate;

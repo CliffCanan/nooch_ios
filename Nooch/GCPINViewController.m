@@ -36,7 +36,9 @@ NSMutableURLRequest *requestPin;
 	pinFields = nil;
 	PINText = nil;
 }
-
+-(IBAction)goBackPin:(id)sender{
+    [self dismissViewControllerAnimated:YES completion:Nil];
+}
 -(void)viewWillAppear:(BOOL)animated{
     [navBar setBackgroundImage:[UIImage imageNamed:@"TopNavBarBackground.png"]  forBarMetrics:UIBarMetricsDefault];
     prompt.font = [core nFont:@"Medium" size:14];
@@ -167,7 +169,7 @@ NSMutableURLRequest *requestPin;
         comparePIN = PINText;
         secondEntry = YES;
         PINText = @"";
-        prompt.text = @"Please confirm your PIN.";
+        prompt.text = @"Please confirm your  PIN.";
     }else if([PINText length] == 4 && secondEntry && !self.resPin){
         fourthNumber.highlighted = YES;
         if([PINText isEqualToString:comparePIN]){
@@ -307,7 +309,7 @@ NSMutableURLRequest *requestPin;
     leftNavButton.frame = frame;
     leftNavButton.hidden = NO;
     leftNavButton.userInteractionEnabled = YES;
-    prompt.text = @"Please confirm your PIN.";
+    prompt.text = @"Please confirm your old PIN.";
     reqImm = NO;
     self.resPin = YES;
 }
@@ -491,11 +493,12 @@ NSMutableURLRequest *requestPin;
     
     else if(([[loginResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))            {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        
+        av.tag=2022;
         [av show];
         prompt.text=@"3 Failed Attempts";
         [backgroundImage setHighlighted:YES];
         [spinner stopAnimating];
+        
         return;
     }
     else if(([[loginResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))
@@ -570,8 +573,37 @@ NSMutableURLRequest *requestPin;
         [self dismissViewControllerAnimated:YES completion:nil];
         //[self dismissModalViewControllerAnimated:YES];
     }
-}
+    else if (alertView.tag==2022)
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        
+        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+        
+        sendingMoney = NO;
+        
+        [navCtrl dismissViewControllerAnimated:YES completion:nil];
+        
+        // [navCtrl dismissModalViewControllerAnimated:NO];
+        
+        [navCtrl performSelector:@selector(disable)];
+        
+        [navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"tutorial"] animated:YES];
+        
+        me = [core new];
 
+    }
+}
+#pragma mark - file paths
+- (NSString *)autoLogin{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+    
+}
 # pragma mark - NSURLConnection Delegate Methods
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {

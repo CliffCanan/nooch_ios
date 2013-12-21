@@ -374,11 +374,22 @@ int verifyAttempts;
                     [removeBtn setTintColor:[UIColor whiteColor]];
                     [removeBtn setBackgroundColor:[UIColor redColor]];
                     [removeBtn setTitle:@"Remove" forState:UIControlStateNormal];
-                    [removeBtn setFrame:CGRectMake(320, 5, 100, 35)];
-                
+                    [removeBtn setFrame:CGRectMake(320, 5, 70, 35)];
+                  [removeBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
                     [removeBtn addTarget:self action:@selector(RemoveFrequency:) forControlEvents:UIControlEventTouchUpInside];
                     
                     [cell.contentView addSubview:removeBtn];
+                    UIButton*cBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+                    
+                    [cBtn  setTag:indexPath.row];
+                    [cBtn setTintColor:[UIColor whiteColor]];
+                    [cBtn setBackgroundColor:[UIColor greenColor]];
+                    [cBtn setTitle:@"Cancel" forState:UIControlStateNormal];
+                    [cBtn setFrame:CGRectMake(395, 5, 70, 35)];
+                     [cBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
+                    [cBtn addTarget:self action:@selector(CancelEdit:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    [cell.contentView addSubview:cBtn];
 
                     [UIView beginAnimations:nil context:nil];
                     
@@ -386,8 +397,8 @@ int verifyAttempts;
                     [UIView setAnimationDuration:0.3];
                     subV.frame=CGRectMake(20, 5, 80, 35);
                     img.frame=CGRectMake(-40, 5, 40, 40);
-                    [removeBtn setFrame:CGRectMake(180, 2, 90, 35)];
-                   
+                    [removeBtn setFrame:CGRectMake(125, 5, 70, 35)];
+                   [cBtn setFrame:CGRectMake(200, 5, 70, 35)];
                     [UIView commitAnimations];
                     
                 
@@ -590,6 +601,7 @@ int verifyAttempts;
 
     return cell;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (self.view.frame.origin.y==-100) {
@@ -952,6 +964,12 @@ int verifyAttempts;
         isEditing=YES;
     }
     [menuTable reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+-(void)CancelEdit:(id)sender
+{
+    isEditing=NO;
+    [menuTable reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
 }
 -(void)RemoveFrequency:(id)sender{
     isEditing=NO;

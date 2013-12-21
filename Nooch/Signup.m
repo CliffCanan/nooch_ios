@@ -48,6 +48,7 @@
     }
 }
 - (IBAction)choosePicture:(id)sender {
+    
 }
 
 - (void)viewDidLoad

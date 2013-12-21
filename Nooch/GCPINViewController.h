@@ -53,7 +53,7 @@
 @property (nonatomic, retain) NSMutableDictionary *lastTransactionDictionary;
 @property (nonatomic) BOOL secondEntry;
 @property (nonatomic) BOOL confirmPIN;
-
+-(IBAction)goBackPin:(id)sender;
 -(void)resetPinFlag;
 
 @end

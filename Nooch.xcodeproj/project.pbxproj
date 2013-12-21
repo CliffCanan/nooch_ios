@@ -520,6 +520,8 @@
 		84BE1F131859798600C7BE5A /* green-pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 84BE1F0F1859798600C7BE5A /* green-pin.png */; };
 		84BE1F141859798600C7BE5A /* orange-pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 84BE1F101859798600C7BE5A /* orange-pin.png */; };
 		84BE1F151859798600C7BE5A /* red-pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 84BE1F111859798600C7BE5A /* red-pin.png */; };
+		84D2930E18645B1B00D13D53 /* blankImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 84D2930D18645B1B00D13D53 /* blankImage.png */; };
+		84D2931218645DE200D13D53 /* choosePicture.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D2931118645DE200D13D53 /* choosePicture.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1152,6 +1154,7 @@
 		841022B1183609B000C4E24E /* LocationBasedSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationBasedSearchViewController.m; sourceTree = "<group>"; };
 		84140932183DCE100033A3B1 /* PhotoPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoPicker.h; sourceTree = "<group>"; };
 		84140933183DCE100033A3B1 /* PhotoPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoPicker.m; sourceTree = "<group>"; };
+		84157CF31864166400D326C6 /* Pixate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pixate.framework; path = ../../Pixate/Framework/Pixate.framework; sourceTree = "<group>"; };
 		8417AC371856E8DA0053783D /* bottom-button-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bottom-button-bg.png"; sourceTree = "<group>"; };
 		8417AC381856E8DA0053783D /* ButtonCorners.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonCorners.png; sourceTree = "<group>"; };
 		8417AC391856E8DA0053783D /* ButtonCorners@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonCorners@2x.png"; sourceTree = "<group>"; };
@@ -1207,6 +1210,9 @@
 		84BE1F0F1859798600C7BE5A /* green-pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green-pin.png"; sourceTree = "<group>"; };
 		84BE1F101859798600C7BE5A /* orange-pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orange-pin.png"; sourceTree = "<group>"; };
 		84BE1F111859798600C7BE5A /* red-pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red-pin.png"; sourceTree = "<group>"; };
+		84D2930D18645B1B00D13D53 /* blankImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blankImage.png; sourceTree = "<group>"; };
+		84D2931018645DE200D13D53 /* choosePicture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = choosePicture.h; sourceTree = "<group>"; };
+		84D2931118645DE200D13D53 /* choosePicture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = choosePicture.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1267,6 +1273,7 @@
 		6B1BB3C116025EDC00E8AE59 /* Tutorial */ = {
 			isa = PBXGroup;
 			children = (
+				84D2930F18645DC000D13D53 /* choosePicture */,
 				6B1BB3D316026FE200E8AE59 /* Tutorial1.h */,
 				6B1BB3D416026FE200E8AE59 /* Tutorial1.m */,
 			);
@@ -1313,6 +1320,7 @@
 			children = (
 				84189F87185C463A00E826DC /* placeholder.jpg */,
 				84189F89185C474300E826DC /* btnLeft.png */,
+				84D2930D18645B1B00D13D53 /* blankImage.png */,
 				84189F8A185C474300E826DC /* btnRight.png */,
 				845EB2AB1859B56F00EC522D /* pink-pin.png */,
 				845EB2AC1859B57000EC522D /* Black-pin.png */,
@@ -1358,6 +1366,7 @@
 		6B30372415FA3FF300056DAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84157CF31864166400D326C6 /* Pixate.framework */,
 				84189F5B185C3AB200E826DC /* SDWebImage */,
 				6B01F1BD179DA8E800E34C49 /* GoogleMaps.bundle */,
 				6B01F1BB179DA7CA00E34C49 /* libicucore.dylib */,
@@ -2451,6 +2460,15 @@
 			name = Map;
 			sourceTree = "<group>";
 		};
+		84D2930F18645DC000D13D53 /* choosePicture */ = {
+			isa = PBXGroup;
+			children = (
+				84D2931018645DE200D13D53 /* choosePicture.h */,
+				84D2931118645DE200D13D53 /* choosePicture.m */,
+			);
+			name = choosePicture;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2740,6 +2758,7 @@
 				6BBDB46116DD69EA004DF055 /* Map_Icon.png in Resources */,
 				6B02722016E13EBB005562D3 /* Ignored banner.png in Resources */,
 				84A3C6261851AFEE005B953F /* tick.png in Resources */,
+				84D2930E18645B1B00D13D53 /* blankImage.png in Resources */,
 				840ADAD81853020700598BBE /* tickR.png in Resources */,
 				6B02722116E13EBB005562D3 /* Paid Banner.png in Resources */,
 				6B02722316E1598B005562D3 /* UserNameBarSuspended.png in Resources */,
@@ -2951,6 +2970,7 @@
 				6B11858A162E0717007531DE /* transfer.m in Sources */,
 				84189F7D185C3ACB00E826DC /* SDWebImageDecoder.m in Sources */,
 				6B33DC5F1634BA0600B8B8B6 /* history.m in Sources */,
+				84D2931218645DE200D13D53 /* choosePicture.m in Sources */,
 				6B33DC621634BA1C00B8B8B6 /* settings.m in Sources */,
 				6BD2CC371641D78100D266C7 /* GetEncryptionValue.m in Sources */,
 				6BD2CC3D1641DECD00D266C7 /* Base64Encoding.m in Sources */,
@@ -3107,8 +3127,9 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Baljeet Singh (EY7Z9L6HTE)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
-					"\"$(SRCROOT)\"",
+					"\\\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\\\"",
+					"$(SRCROOT)",
+					/Users/admin/Desktop/Pixate/Framework,
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3142,8 +3163,9 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Baljeet Singh (EY7Z9L6HTE)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
-					"\"$(SRCROOT)\"",
+					"\\\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\\\"",
+					"$(SRCROOT)",
+					/Users/admin/Desktop/Pixate/Framework,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Nooch/Nooch-Prefix.pch";
