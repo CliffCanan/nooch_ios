@@ -42,6 +42,7 @@
     NSString *Altitude;
     BOOL islogOutUnconditional;
     BOOL isloggedout;
+    NSArray*arrResponse;
 }
 @property(nonatomic,retain)NSString *Latitude;
 @property(nonatomic,retain) NSString *Longitude;

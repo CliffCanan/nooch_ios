@@ -222,14 +222,18 @@
 
         if([[resultValue valueForKey:@"Result"] isEqualToString:@"Your account details have been saved successfully."]){
 
-            UIAlertView *showAlertMessage = [[UIAlertView alloc] initWithTitle:@"Bank Account Submitted" message:@"Your bank information has been successfully submitted to Nooch. For security, we must verify that you own this account. In two business days, check your bank statement to find two deposits of less than $1 from Nooch Inc. Then return here, punch in the amounts, and tap 'Verify Account.'" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-            [showAlertMessage setTag:2];
+            UIAlertView *showAlertMessage = [[UIAlertView alloc] initWithTitle:@"Bank Account Submitted" message:@"Your bank information has been successfully submitted to Nooch. For security, we must verify that you own this account. In two business days, check your bank statement to find two deposits of less than $1 from Nooch Inc. Then return here, punch in the amounts, and tap 'Verify Account.'" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+           // [showAlertMessage setTag:2];
             [showAlertMessage show];
             routingNumber.text = @"";
             firstLast.text = @"";
             [detailsTable reloadData];
-            [self cancel];
             
+            [self cancel];
+            serveOBJ=[serve new];
+            NSLog(@"COntact number %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"ContactNumber"]);
+            
+            [ serveOBJ SendSMSApi:[[NSUserDefaults standardUserDefaults] valueForKey:@"ContactNumber"] msg:@"You have added New Bank Account.Please verify it."];
         }
         else if ([ServiceType isEqualToString:@"SaveBank"])
         {

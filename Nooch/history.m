@@ -59,21 +59,21 @@ NSString *curMemo;
             }
         }
     }
-    if([[me histFilter:filterPick] count] == 0){
+    //if([[me histFilter:filterPick] count] == 0){
         newTransfersDecrement = newTransfers;
         NSLog(@"getting initial");
         [self.view addSubview:[me waitStat:@"Loading your history..."]];
         loadingCheck = YES;
         loadingHide = YES;
         [me histMore:filterPick sPos:index len:20];
-    }else{
-        loadingHide = NO;
-        loadingCheck = NO;
-        NSLog(@"updating");
-        [me histPoll];
-        [me endWaitStat];
-    }
-    //[self hideMenu];
+   // }else{
+       // loadingHide = NO;
+       // loadingCheck = NO;
+       // NSLog(@"updating");
+       // [me histPoll];
+       // [me endWaitStat];
+   // }
+    
 }
 -(void)viewWillDisappear:(BOOL)animated{
     newTransfers = 0;

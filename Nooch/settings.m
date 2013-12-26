@@ -779,6 +779,7 @@ bool firstTime;
     name.enabled=NO;
     ServiceType=@"MySets";
     serveOBJ=[serve new ];
+    serveOBJ.tagName=@"myset";
     [serveOBJ setDelegate:self];
     [serveOBJ getSettings];
     
@@ -943,7 +944,10 @@ bool firstTime;
 }
 -(void)setSettingsInfoList:(NSMutableDictionary *) sInfoDic{
    // dictSettingsEncrypt=[NSMusicDirectory alloc]
-    dictSettingsEncrypt=[[NSMutableDictionary  alloc]initWithDictionary:sInfoDic];
+   // dictSettingsEncrypt=[[NSMutableDictionary  alloc]initWithDictionary:sInfoDic];
+   
+   
+   // NSLog(@"new phone %@",self.contactPhone.text);
 //       if ([sInfoDic objectForKey:@"Address"]) {
 //        ServiceType=@"Address";
 //        Decryption *decry = [[Decryption alloc] init];
@@ -955,7 +959,10 @@ bool firstTime;
 //    }
     //20nov
     dictSettingsEncrypt=[[NSMutableDictionary  alloc]initWithDictionary:sInfoDic];
-    
+    if (![[sInfoDic valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]]) {
+        self.SavePhoneNumber=[dictSettingsEncrypt valueForKey:@"ContactNumber"];
+        self.contactPhone.text=[dictSettingsEncrypt valueForKey:@"ContactNumber"];
+    }
     NSLog(@"%@",dictSettingsEncrypt);
     
     if (![[sInfoDic valueForKey:@"Address"] isKindOfClass:[NSNull class]]) {
@@ -1096,7 +1103,7 @@ bool firstTime;
     {
         self.contactPhone.text = [NSString stringWithFormat:@"(%@) %@-%@",[[sInfoDic objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(0, 3)],[[sInfoDic objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(3, 3)],[[sInfoDic objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(6, 4)]];
         //charanjit's modification
-        self.SavePhoneNumber = self.contactPhone.text;
+       // self.SavePhoneNumber = self.contactPhone.text;
     }
     if([sInfoDic objectForKey:@"Password"]!=[NSNull null])
     {
@@ -1274,14 +1281,16 @@ bool firstTime;
     if([[me pic] isKindOfClass:[NSNull class]]){
         [av show];
     }
-    
+    NSLog(@"%@",self.SavePhoneNumber);
+    NSLog(@"%@",self.contactPhone.text);
     if (![self.SavePhoneNumber isEqualToString:self.contactPhone.text]) {
         NSLog(@"Not Same");
+        
         //do Phone Validation
         
         
         serve *req = [[serve alloc] init];
-        [req SendSMSApi:@"+16108041572" msg:@"PLEASE RESPOND \"GO\" TO THE TEXT"];
+        [req SendSMSApi:self.contactPhone.text msg:@"PLEASE RESPOND \"GO\" TO THE TEXT"];
         
         // self.contactPhone.text
         
@@ -1389,6 +1398,7 @@ bool firstTime;
 {
     NSString *number = [NSString stringWithFormat:@"%@%@%@",[contactPhone.text substringWithRange:NSMakeRange(1, 3)],[contactPhone.text substringWithRange:NSMakeRange(6, 3)],[contactPhone.text substringWithRange:NSMakeRange(10, 4)]];
     [transactionInput setObject:number forKey:@"ContactNumber"];
+    
 
 }
 

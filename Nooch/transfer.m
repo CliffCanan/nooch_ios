@@ -15,6 +15,7 @@
 #import "CJSONDataSerializer.h"
 #import "NoochHelper.h"
 #import <stdlib.h>
+#import "nonProfit.h"
 #import "history.h"
 static CGFloat const kPadding = 5.0;
 static CGFloat const kPaddingimage = 2.0;
@@ -259,25 +260,28 @@ bool allowSharingValue;
         
         NSLog(@"%f",xPositionI);
           NSLog(@"%f",yPositionI);
-        UIImageView*img=[[UIImageView alloc]initWithFrame:CGRectMake(xPositionI, yPositionI, 20, 20)];
-        img.image=[UIImage imageNamed:[dict valueForKey:@"image"]];
-        
-      
-        
-		if ((xPositionI + img.frame.size.width + kPaddingimage) > maxWidthI)
-        {
-			// Reset horizontal position to left edge of superview's frame
-			xPositionI = kPaddingimage;
-			
-			// Set vertical position to a new 'line'
-			yPositionI += img.frame.size.height+ kPaddingimage;
-		}
-		
-		// Create the imageView frame
-		CGRect Frame = CGRectMake(xPositionI, yPositionI, img.frame.size.width + (kPaddingimage), img.frame.size.height);
-        NSLog(@"%@",NSStringFromCGRect(Frame));
-        img.frame=Frame;
-        [RespImageV addSubview:img];
+        if ([dict valueForKey:@"image"]) {
+            UIImageView*img=[[UIImageView alloc]initWithFrame:CGRectMake(xPositionI, yPositionI, 20, 20)];
+            img.image=[UIImage imageNamed:[dict valueForKey:@"image"]];
+            
+            
+            
+            if ((xPositionI + img.frame.size.width + kPaddingimage) > maxWidthI)
+            {
+                // Reset horizontal position to left edge of superview's frame
+                xPositionI = kPaddingimage;
+                
+                // Set vertical position to a new 'line'
+                yPositionI += img.frame.size.height+ kPaddingimage;
+            }
+            
+            // Create the imageView frame
+            CGRect Frame = CGRectMake(xPositionI, yPositionI, img.frame.size.width + (kPaddingimage), img.frame.size.height);
+            NSLog(@"%@",NSStringFromCGRect(Frame));
+            img.frame=Frame;
+            [RespImageV addSubview:img];
+
+        }
         NSString*name;
         UIFont *font = [UIFont systemFontOfSize:16.0];
         if ([dict objectForKey:@"firstName"]) {
@@ -593,12 +597,86 @@ bool allowSharingValue;
         }
         NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
         NSString *transMemo = [NSString stringWithFormat:@"%@%@",memoCat,memoField.text];
-        if (!requestBar.hidden) {
+        if (isDonationMade) {
+            
+            transactionInputTransfer=[[NSMutableDictionary alloc]init];
+            [transactionInputTransfer setValue:@"Donation" forKey:@"TransactionType"];
+            [transactionInputTransfer setValue:[loginResult valueForKey:@"Status"] forKey:@"PinNumber"];
+            [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
+            
+            [transactionInputTransfer setValue:[[dictResp valueForKey:@"donation"]valueForKey:@"ResMemberid"] forKey:@"RecepientId"];
+            
+            [transactionInputTransfer setValue:[NSString stringWithFormat:@"%@ %@",[[dictResp valueForKey:@"donation"]valueForKey:@"FirstName"],[[dictResp valueForKey:@"donation"]valueForKey:@"LastName"]] forKey:@"Name"];
+            
+            [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f", [actualAmount floatValue]] forKey:@"Amount"];
+            
+            [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
+            
+            [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
+            [transactionInputTransfer setValue:uid forKey:@"DeviceId"];
+            [transactionInputTransfer setValue:latitudeField forKey:@"Latitude"];
+            
+            [transactionInputTransfer setValue:longitudeField forKey:@"Longitude"];
+            [transactionInputTransfer setValue:altitudeField forKey:@"Altitude"];
+            [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
+            [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
+            [transactionInputTransfer setValue:city forKey:@"City"];
+            [transactionInputTransfer setValue:state forKey:@"State"];
+            [transactionInputTransfer setValue:country forKey:@"Country"];
+            [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
+            [transactionInputTransfer setValue:transMemo forKey:@"Memo"];
+            //            transactionInputTransfer = [NSMutableDictionary dictionaryWithObjectsAndKeys:[loginResult valueForKey:@"Status"], @"PinNumber", [[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"], @"MemberId", receiverId, @"RecepientId", receiveName1, @"Name", [NSString stringWithFormat:@"%.02f", [actualAmount floatValue]], @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction", uid, @"DeviceId", latitudeField, @"Latitude", longitudeField, @"Longitude", altitudeField, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode",transMemo,@"Memo", nil];
+            //
+            transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[defaults valueForKey:@"OAuthToken"],@"accessToken", nil];
+            NSLog(@"%@",transactionTransfer);
+            NSLog(@"Transaction %@", transactionTransfer);
+            
+            postTransfer = [transactionTransfer JSONRepresentation];
+            
+            postDataTransfer = [postTransfer dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+            postLengthTransfer = [NSString stringWithFormat:@"%d", [postDataTransfer length]];
+            
+            self.respData = [NSMutableData data];
+            urlStrTranfer = [[NSString alloc] initWithString:MyUrl];
+            
+            
+                urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoney"];
+        
+            
+            urlTransfer = [NSURL URLWithString:urlStrTranfer];
+            NSLog(@"transaction server call: %@",urlTransfer);
+            
+            requestTransfer = [[NSMutableURLRequest alloc] initWithURL:urlTransfer];
+            [requestTransfer setHTTPMethod:@"POST"];
+            [requestTransfer setValue:postLengthTransfer forHTTPHeaderField:@"Content-Length"];
+            [requestTransfer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+            [requestTransfer setHTTPBody:postDataTransfer];
+            
+            NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestTransfer delegate:self];
+            if (connection)
+            {
+                respData = [NSMutableData data];
+            }
+
+        }
+        else
+        {
+          if (!requestBar.hidden) {
             
             transactionInputTransfer=[[NSMutableDictionary alloc]init];
             [transactionInputTransfer setValue:[loginResult valueForKey:@"Status"] forKey:@"PinNumber"];
             [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
-           
+            receiverId=@"";
+            NSLog(@"%@",dictResp);
+            for (NSString *dictKey in dictResp.allKeys)
+            {
+                NSLog(@"%@",dictKey);
+                NSDictionary*dict=[dictResp valueForKey:dictKey];
+                receiverId=[NSString stringWithFormat:@"%@,%@",receiverId,[dict valueForKey:@"MemberId"]];
+            }
+            receiverId=[receiverId substringFromIndex:1];
+            NSLog(@"%@",receiverId);
+
             [transactionInputTransfer setValue:receiverId forKey:@"SenderId"];
             
             [transactionInputTransfer setValue:receiveName1 forKey:@"Name"];
@@ -655,24 +733,14 @@ bool allowSharingValue;
            // NSString*image64=[self encodeToBase64String:[[assist shared]            // [transactionInputTransfer setValue:imageString forKey:@"Picture"];
             [transactionInputTransfer setValue:[loginResult valueForKey:@"Status"] forKey:@"PinNumber"];
             [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
-            receiverId=@"";
-            NSLog(@"%@",dictResp);
-            for (NSString *dictKey in dictResp.allKeys)
-            {
-                NSLog(@"%@",dictKey);
-                NSDictionary*dict=[dictResp valueForKey:dictKey];
-                receiverId=[NSString stringWithFormat:@"%@,%@",receiverId,[dict valueForKey:@"MemberId"]];
-            }
-//            for (NSDictionary*dict in dictResp) {
+            //            for (NSDictionary*dict in dictResp) {
 //                NSLog(@"%@",dict);
 //                for (NSDictionary*subdict in dict) {
 //                    receiverId=[NSString stringWithFormat:@"%@,%@",receiverId,[subdict valueForKey:@"MemberId"]];                }
 //                //   receiverId=[NSString stringWithFormat:@",%@"] [dict objectForKey:@"MemberId"]
 //                
 //            }
-            receiverId=[receiverId substringFromIndex:1];
-            NSLog(@"%@",receiverId);
-            [transactionInputTransfer setValue:receiverId forKey:@"RecepientId"];
+                [transactionInputTransfer setValue:receiverId forKey:@"RecepientId"];
 
             [transactionInputTransfer setValue:receiveName1 forKey:@"Name"];
 
@@ -729,6 +797,7 @@ bool allowSharingValue;
             respData = [NSMutableData data];
         }
     }
+    }
 }
 
 #pragma mark - connection handling
@@ -744,15 +813,15 @@ bool allowSharingValue;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     responseString= [[NSString alloc] initWithData:respData encoding:NSASCIIStringEncoding];
    loginResultTransfer = [responseString JSONValue];
-    NSLog(@"Array is : %@", loginResult);
+    NSLog(@"Array is : %@", loginResultTransfer);
     if (requestRespond) {
         requestRespond = NO;
     }
     if (sendToggle.isSelected) {
-        if (![[loginResult objectForKey:@"trnsactionId"] isKindOfClass:[NSNull class]])
+        if (![[loginResultTransfer objectForKey:@"trnsactionId"] isKindOfClass:[NSNull class]])
             transactionId=[loginResult valueForKey:@"trnsactionId"];
     }else{
-        if (![[loginResult objectForKey:@"requestId"] isKindOfClass:[NSNull class]])
+        if (![[loginResultTransfer objectForKey:@"requestId"] isKindOfClass:[NSNull class]])
             transactionId=[loginResult valueForKey:@"requestId"];
     }
     
@@ -761,6 +830,7 @@ bool allowSharingValue;
    resultValueTransfer = [loginResultTransfer valueForKey:@"TransferMoneyResult"];
     AppDelegate *appD = [UIApplication sharedApplication].delegate;
     [appD endWait];
+    
     if ([[resultValueTransfer valueForKey:@"Result"] isEqualToString:@"Your cash was sent successfully"])
     {
         [me histUpdate];
@@ -816,23 +886,46 @@ bool allowSharingValue;
         transferFinished = YES;
         sendingMoney = NO;
         [av setTag:1];
-    }else if ([[[loginResult objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request processed successfully."]){
+    }else if ([[[loginResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request processed successfully."]){
         [me histUpdate];
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Fulfilled" message:[NSString stringWithFormat:@"You successfully fulfilled %@'s request for %@.",receiverFirst,amountToSend.text] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
         [av setTag:1];
         [av show];
-    }else if ([[[loginResult objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request successfully declined."]){
+    }else if ([[[loginResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request successfully declined."]){
         [me histUpdate];
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Denied" message:[NSString stringWithFormat:@"You successfully denied %@'s request for %@.",receiverFirst,amountToSend.text] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
         [av setTag:1];
         [av show];
-    }else if ([[[loginResult objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request successfully cancelled."]){
+    }else if ([[[loginResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request successfully cancelled."]){
         [me histUpdate];
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Cancelled" message:[NSString stringWithFormat:@"You successfully cancelled your request for %@ from %@.",amountToSend.text,receiverFirst] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
         [av setTag:1];
         [av show];
-    }else if ([[[loginResult objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request made successfully."]){
+    }else if ([[[loginResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request made successfully."]){
         [me histUpdate];
+        receiverFirst=@"";
+        
+        for (NSString *dictKey in dictResp.allKeys)
+        {
+              NSDictionary*dict=[dictResp valueForKey:dictKey];
+            if ([dict objectForKey:@"firstName"]) {
+                receiverFirst=[NSString stringWithFormat:@"%@,%@",receiverFirst,[NSString stringWithFormat:@"%@ %@",[dict objectForKey:@"firstName"],[dict objectForKey:@"lastName"]]];
+              //  name =[NSString stringWithFormat:@"%@ %@",[dict objectForKey:@"firstName"],
+                     //  [dict objectForKey:@"lastName"]];
+                
+            }
+            else if ([dict objectForKey:@"FirstName"])
+                               {
+                                     receiverFirst=[NSString stringWithFormat:@"%@,%@",receiverFirst,[NSString stringWithFormat:@"%@ %@",[dict objectForKey:@"FirstName"],[dict objectForKey:@"LastName"]]];
+                               }
+                                                    
+//                name=[NSString stringWithFormat:@"%@ %@",[dict objectForKey:@"FirstName"],
+//                      [dict objectForKey:@"LastName"]];
+            NSLog(@"%@",dictKey);
+          
+           
+        }
+        receiverFirst=[receiverFirst substringFromIndex:1];
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Pay Me" message:[NSString stringWithFormat:@"You requested %@ from %@ successfully.",amountToSend.text,receiverFirst] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",@"View Details",nil];
         [av setTag:1];
         [av show];
@@ -897,13 +990,13 @@ bool allowSharingValue;
         sendingMoney = NO;
         [self goBack];
     }else{
-        NSString *resultValue = [loginResult objectForKey:@"RaiseDisputeResult"];
+        NSString *resultValue = [loginResultTransfer objectForKey:@"RaiseDisputeResult"];
         if ([resultValue valueForKey:@"Result"]) {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
             return;
         }else{
-            NSString *resultValue = [loginResult objectForKey:@"HandleRequestMoneyResult"];
+            NSString *resultValue = [loginResultTransfer objectForKey:@"HandleRequestMoneyResult"];
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
             return;

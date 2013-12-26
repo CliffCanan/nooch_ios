@@ -47,6 +47,7 @@ static CGFloat const kPadding = 5.0;
 }
 -(void)viewWillAppear:(BOOL)animated{
     //Empty ScrollView
+    [FeaturedView removeFromSuperview];
     for (UIView *subview in self.scrollViewGroup.subviews)
     {
 		if ([subview isKindOfClass:[UIButton class]])
@@ -687,7 +688,7 @@ static CGFloat const kPadding = 5.0;
     }
     else if(result1.height==568)
     {
-        btnimgValidateNoti.frame=CGRectMake(0, 440, 320, 43);
+        btnimgValidateNoti.frame=CGRectMake(0, 400, 320, 43);
     }
     buttonView.frame=CGRectMake(0, 120, 320, 350);
     
@@ -918,8 +919,10 @@ static CGFloat const kPadding = 5.0;
     [rightMenuButton addTarget:self action:@selector(showFundsMenu) forControlEvents:UIControlEventTouchUpInside];
     btnRequestM.hidden=NO;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please valid your Profile and Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+    NSLog(@"%@",[defaults valueForKey:@"IsBankVerified"]);
+    
+    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] || ![[defaults valueForKey:@"IsBankVerified"]isEqualToString:@"YES"]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile and Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
 
         return;

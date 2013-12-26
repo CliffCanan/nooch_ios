@@ -85,8 +85,8 @@ NSString *responseString;
 //NSString * const ServerUrl = @"https://192.203.102.254/NoochService.svc"; //development server
 //NSString * const ServerUrl =@"https://noochweb.venturepact.com/noochservice/noochservice.svc";
 //http://noochweb.venturepact.com/NoochService.svck
-//NSString * const ServerUrl = @"https://192.203.102.254/noochservice/NoochService.svc";
-NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
+NSString * const ServerUrl = @"https://192.203.102.254/noochservice/NoochService.svc";
+//NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
 //NSString * const ServerUrl = @"https://10.200.1.40/noochservice/NoochService.svc";
 //NSString * const ServerUrl = @"http://noochweb.venturepact.com/NoochService.svc"; //testing server Venturepact isCheckValidation;
 bool locationUpdate;
@@ -845,18 +845,42 @@ NSString *amnt;
         if ([[Dictresponse valueForKey:@"ContactNumber"]isKindOfClass:[NSNull class]]||[[Dictresponse valueForKey:@"State"]isKindOfClass:[NSNull class]]||[[Dictresponse valueForKey:@"Address"]isKindOfClass:[NSNull class]]||[[Dictresponse valueForKey:@"City"]isKindOfClass:[NSNull class]]) {
             
             
-            
+          
             [defaults setObject:@"NO"forKey:@"ProfileComplete"];
             
         }
         else
         {
+              [defaults setObject:[Dictresponse valueForKey:@"ContactNumber"] forKey:@"ContactNumber"];
              [[me usr] setObject:@"YES" forKey:@"validated"];
             [defaults setObject:@"YES"forKey:@"ProfileComplete"];
         }
         [defaults synchronize];
         
     }
+        if ([tagName isEqualToString:@"banks"]) {
+              arrResponse=[responseString JSONValue];
+            NSLog(@"%@",arrResponse);
+              NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+           
+            if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]) {
+                if (![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue]) {
+                    [defaults setObject:@"YES" forKey:@"IsBankVerified"];
+                    [defaults synchronize];
+   
+                }
+                else {
+                    [defaults setObject:@"NO" forKey:@"IsBankVerified"];
+                    [defaults synchronize];
+                }
+            }
+            else {
+                [defaults setObject:@"NO" forKey:@"IsBankVerified"];
+                [defaults synchronize];
+            }
+            
+            
+        }
     //modification by charanjit starts
     if ([tagName isEqualToString:@"loginRequest"]) {
         
