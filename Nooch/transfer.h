@@ -16,7 +16,7 @@
 #import "serve.h"
 #import "PhotoPicker.h"
 #import "assist.h"
-
+NSString*nonNooch;
 NSString *receiverId;
 NSData *receiverImgData;
 NSString *receiverFirst;

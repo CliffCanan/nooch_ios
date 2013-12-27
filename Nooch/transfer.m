@@ -292,6 +292,10 @@ bool allowSharingValue;
         else if ([dict objectForKey:@"FirstName"])
          name=[NSString stringWithFormat:@"%@ %@",[dict objectForKey:@"FirstName"],
                        [dict objectForKey:@"LastName"]];
+        
+        if ([nonNooch isEqualToString:@"YES"] && [dict objectForKey:@"email"]) {
+            name=[dict objectForKey:@"email"];
+        }
 		// Create the custom button
 		UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
 		[button setTitle:name forState:UIControlStateNormal];
@@ -597,7 +601,72 @@ bool allowSharingValue;
         }
         NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
         NSString *transMemo = [NSString stringWithFormat:@"%@%@",memoCat,memoField.text];
-        if (isDonationMade) {
+        if ([nonNooch isEqualToString:@"YES"]) {
+            
+            transactionInputTransfer=[[NSMutableDictionary alloc]init];
+            [transactionInputTransfer setValue:@"personal" forKey:@"TransactionType"];
+            [transactionInputTransfer setValue:[loginResult valueForKey:@"Status"] forKey:@"PinNumber"];
+            [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
+            
+            [transactionInputTransfer setValue:@"" forKey:@"RecepientId"];
+            
+//            [transactionInputTransfer setValue:[NSString stringWithFormat:@"%@ %@",[[dictResp valueForKey:@"donation"]valueForKey:@"e"],[[dictResp valueForKey:@"donation"]valueForKey:@"LastName"]] forKey:@"Name"];
+//            
+            [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f", [actualAmount floatValue]] forKey:@"Amount"];
+            
+            [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
+            
+            [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
+            [transactionInputTransfer setValue:uid forKey:@"DeviceId"];
+            [transactionInputTransfer setValue:latitudeField forKey:@"Latitude"];
+            
+            [transactionInputTransfer setValue:longitudeField forKey:@"Longitude"];
+            [transactionInputTransfer setValue:altitudeField forKey:@"Altitude"];
+            [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
+            [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
+            [transactionInputTransfer setValue:city forKey:@"City"];
+            [transactionInputTransfer setValue:state forKey:@"State"];
+            [transactionInputTransfer setValue:country forKey:@"Country"];
+            [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
+            [transactionInputTransfer setValue:transMemo forKey:@"Memo"];
+            //            transactionInputTransfer = [NSMutableDictionary dictionaryWithObjectsAndKeys:[loginResult valueForKey:@"Status"], @"PinNumber", [[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"], @"MemberId", receiverId, @"RecepientId", receiveName1, @"Name", [NSString stringWithFormat:@"%.02f", [actualAmount floatValue]], @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction", uid, @"DeviceId", latitudeField, @"Latitude", longitudeField, @"Longitude", altitudeField, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode",transMemo,@"Memo", nil];
+            //
+            
+            transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[defaults valueForKey:@"OAuthToken"],@"accessToken",@"trnsactionId",@"",@"inviteType",@"personal",[[dictResp valueForKey:@"nonNooch"] valueForKey:@"email"],@"receiverEmailId", nil];
+            
+            NSLog(@"%@",transactionTransfer);
+            NSLog(@"Transaction %@", transactionTransfer);
+            
+            postTransfer = [transactionTransfer JSONRepresentation];
+            
+            postDataTransfer = [postTransfer dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+            postLengthTransfer = [NSString stringWithFormat:@"%d", [postDataTransfer length]];
+            
+            self.respData = [NSMutableData data];
+            urlStrTranfer = [[NSString alloc] initWithString:MyUrl];
+            
+            
+            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUser"];
+            
+            
+            urlTransfer = [NSURL URLWithString:urlStrTranfer];
+            NSLog(@"transaction server call: %@",urlTransfer);
+            
+            requestTransfer = [[NSMutableURLRequest alloc] initWithURL:urlTransfer];
+            [requestTransfer setHTTPMethod:@"POST"];
+            [requestTransfer setValue:postLengthTransfer forHTTPHeaderField:@"Content-Length"];
+            [requestTransfer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+            [requestTransfer setHTTPBody:postDataTransfer];
+            
+            NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestTransfer delegate:self];
+            if (connection)
+            {
+                respData = [NSMutableData data];
+            }
+            
+
+        }
+        else if (isDonationMade) {
             
             transactionInputTransfer=[[NSMutableDictionary alloc]init];
             [transactionInputTransfer setValue:@"Donation" forKey:@"TransactionType"];

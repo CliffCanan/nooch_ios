@@ -463,7 +463,7 @@ static assist * _sharedInstance = nil;
 }
 -(void)processNew:(NSMutableArray*)newHist{
     [newHist setArray:[self sortByStringDate:newHist]];
-    arrRecordsCheck=[[NSArray alloc]initWithArray:newHist];
+  //  arrRecordsCheck=[[NSArray alloc]initWithArray:newHist];
     if ([[[newHist lastObject] objectForKey:@"TransactionId"] isEqualToString:[[sortedHist lastObject] objectForKey:@"TransactionId"]] && loadingCheck) {
         limit = YES;
     }
@@ -499,6 +499,7 @@ static assist * _sharedInstance = nil;
         [histCache setArray:[self sortByStringDate:histCache]];
     }else{
         [histCache setArray:newHist];
+        arrRecordsCheck=[[NSArray alloc]initWithArray:newHist];
     }
     histSafe = YES;
     loadingCheck = NO;

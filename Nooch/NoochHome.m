@@ -47,6 +47,8 @@ static CGFloat const kPadding = 5.0;
 }
 -(void)viewWillAppear:(BOOL)animated{
     //Empty ScrollView
+    [dictGroup removeAllObjects];
+    [self.friendTable reloadData];
     [FeaturedView removeFromSuperview];
     for (UIView *subview in self.scrollViewGroup.subviews)
     {
@@ -55,6 +57,13 @@ static CGFloat const kPadding = 5.0;
 			[subview removeFromSuperview];
 		}
 	}
+    [rightMenuButton removeTarget:self action:@selector(LocationSearch:) forControlEvents:UIControlEventTouchUpInside];
+    [rightMenuButton addTarget:self action:@selector(showFundsMenu) forControlEvents:UIControlEventTouchUpInside];
+    [rightMenuButton setImage:[UIImage imageNamed:@"Bank_Icon.png"] forState:UIControlStateNormal];
+    
+    self.friendTable.frame=CGRectMake(0, 88, 320, 400);
+    
+
     //Set Default Status
     isRequestmultiple=NO;
     btnRequestM.frame=CGRectMake(0, 48, 120, 30);
@@ -861,7 +870,7 @@ static CGFloat const kPadding = 5.0;
 }
 -(IBAction)requestMultiple:(id)sender{
     isRequestmultiple=YES;
-    btnRequestM.frame=CGRectMake(260, 48, 70, 30);
+    btnRequestM.frame=CGRectMake(270, 48, 50, 30);
     [btnRequestM setTitle:@"Done" forState:UIControlStateNormal];
      [btnRequestM removeTarget:self action:@selector(requestMultiple:) forControlEvents:UIControlEventTouchUpInside];
     [btnRequestM addTarget:self action:@selector(DoneRequestMutiple) forControlEvents:UIControlEventTouchUpInside];
@@ -914,6 +923,11 @@ static CGFloat const kPadding = 5.0;
 }
 #pragma mark - start send process
 - (IBAction)selectRecip:(id)sender {
+    btnRequestM.frame=CGRectMake(0, 48, 120, 30);
+    [btnRequestM setTitle:@"Request Multiple" forState:UIControlStateNormal];
+    [btnRequestM removeTarget:self action:@selector(DoneRequestMutiple) forControlEvents:UIControlEventTouchUpInside];
+    [btnRequestM addTarget:self action:@selector(requestMultiple:) forControlEvents:UIControlEventTouchUpInside];
+
     btnX.hidden=YES;
     [rightMenuButton setImage:[UIImage imageNamed:@"Bank_Icon.png"] forState:UIControlStateNormal];
     [rightMenuButton addTarget:self action:@selector(showFundsMenu) forControlEvents:UIControlEventTouchUpInside];
@@ -927,7 +941,7 @@ static CGFloat const kPadding = 5.0;
 
         return;
     }
-    
+    [dictGroup removeAllObjects];
     iscauseDeSelected=NO;
     progressImage.hidden=NO;
     NSLog(@"started send money process");
@@ -1589,7 +1603,18 @@ static CGFloat const kPadding = 5.0;
        // NSLog(@"%@",[[me assos] objectForKey:@"members"]);
          // NSLog(@"%@",[[[me assos] objectForKey:@"people"] objectForKey:[[[[me assos] objectForKey:@"members"] objectAtIndex:indexPath.row] objectForKey:@"MemberId"]]);
         //NSLog(@"%@",[[[me assos] objectForKey:@"members"] objectAtIndex:indexPath.row]);
-        
+        if (isRequestmultiple) {
+            if ([dictGroup.allKeys containsObject:[NSString stringWithFormat:@"%d",indexPath.row]]) {
+                cell.accessoryType=UITableViewCellAccessoryCheckmark;
+            }
+            else{
+                cell.accessoryType=UITableViewCellAccessoryNone;
+            }
+        }
+        else
+        {
+            cell.accessoryType=UITableViewCellAccessoryNone;
+        }
         if ([[[me assos] objectForKey:@"members"] count] < 20 && indexPath.row == [[[me assos] objectForKey:@"members"] count] +1){
             [dict setObject:@"e9821324-08ac-43f6-ad9d-5b6aabe8e8c3" forKey:@"MemberId"];
             [dict setObject:@"Team" forKey:@"firstName"];
@@ -1716,11 +1741,14 @@ static CGFloat const kPadding = 5.0;
         //[dict setValue:@"profile_picture.png" forKey:@"image"];
     }
     if([receiverId length] == 0 || receiverId == NULL){
+      
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Slow down" message:@"Since this is a private release, sending money to non-Noochers is not supported." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [av show];
     }else{
         sendingMoney = YES;
         if (causes) {
+            nonNooch=@"NO";
+            isDonationMade=NO;
             [navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"causes"] animated:YES];
         }else{
             //commented by Charanjit due to deprication
@@ -1731,6 +1759,8 @@ static CGFloat const kPadding = 5.0;
             if (!isRequestmultiple) {
                 [dictGroup setValue:dict forKey:[NSString stringWithFormat:@"%d",indexPath.row]];
                  NSLog(@"dict  dsv%@",dictGroup);
+                 nonNooch=@"NO";
+                isDonationMade=NO;
                 transfer*transferOBJ=[self.storyboard instantiateViewControllerWithIdentifier:@"transfer"];
                 transferOBJ.dictResp=dictGroup;
                 [navCtrl presentViewController:transferOBJ animated:YES completion:nil];
@@ -1744,7 +1774,14 @@ static CGFloat const kPadding = 5.0;
             
             [dictGroup setValue:dict forKey:[NSString stringWithFormat:@"%d",indexPath.row]];
             NSLog(@"dict  dsv%@",dictGroup);
-            [self layoutScrollView];
+            [self.friendTable reloadData];
+            //[self layoutScrollView];
+        }
+        else
+        {
+            [dictGroup removeObjectForKey:[NSString stringWithFormat:@"%d",indexPath.row]];
+            [self.friendTable reloadData];
+
         }
     }
     
@@ -1832,7 +1869,7 @@ static CGFloat const kPadding = 5.0;
     NSLog(@"%@",[NSString stringWithFormat:@"%d",[sender tag]]);
     [dictGroup removeObjectForKey:[NSString stringWithFormat:@"%d",[sender tag]]];
     NSLog(@"%@",self.scrollViewGroup.subviews);
-    [self layoutScrollView];
+    //[self layoutScrollView];
 }
 #pragma mark - connection handling
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
@@ -2037,8 +2074,10 @@ static CGFloat const kPadding = 5.0;
         }
         else
         {
+           
             //[me endWaitStat];
             UIAlertView *alertRedirectToProfileScreen=[[UIAlertView alloc]initWithTitle:@"Unknown" message:@"We at Nooch have no knowledge of this email address." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertRedirectToProfileScreen setTag:20220];
             [alertRedirectToProfileScreen show];
             if ([self.view.subviews containsObject:loader])
             {
@@ -2107,6 +2146,17 @@ static CGFloat const kPadding = 5.0;
         //edit baljeet
         [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"settings"] animated:YES completion:nil];
             }
+    else if (alertView.tag==20220){
+        if (buttonIndex==0) {
+            nonNooch=@"YES";
+            transfer*transferOBJ=[self.storyboard instantiateViewControllerWithIdentifier:@"transfer"];
+            [dictGroup removeAllObjects];
+            NSDictionary*dict=[NSDictionary dictionaryWithObjectsAndKeys:searchField.text,@"email", nil];
+            [dictGroup setObject:dict forKey:@"nonNooch"];
+            transferOBJ.dictResp=dictGroup;
+            [navCtrl presentViewController:transferOBJ animated:YES completion:nil];
+        }
+    }
 }
 - (void)emailSupport {
     mailComposer = [[MFMailComposeViewController alloc] init];

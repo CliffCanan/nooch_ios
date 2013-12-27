@@ -85,8 +85,8 @@ NSString *responseString;
 //NSString * const ServerUrl = @"https://192.203.102.254/NoochService.svc"; //development server
 //NSString * const ServerUrl =@"https://noochweb.venturepact.com/noochservice/noochservice.svc";
 //http://noochweb.venturepact.com/NoochService.svck
-NSString * const ServerUrl = @"https://192.203.102.254/noochservice/NoochService.svc";
-//NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
+//NSString * const ServerUrl = @"https://192.203.102.254/noochservice/NoochService.svc";
+NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
 //NSString * const ServerUrl = @"https://10.200.1.40/noochservice/NoochService.svc";
 //NSString * const ServerUrl = @"http://noochweb.venturepact.com/NoochService.svc"; //testing server Venturepact isCheckValidation;
 bool locationUpdate;
@@ -523,7 +523,7 @@ NSString *amnt;
 -(void)verifyBank:(NSString *)bankAcctId microOne:(NSString *)microOne microTwo:(NSString *)microTwo{
 
     self.responseData = [NSMutableData data];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&bankAcctId=%@&microOne=%@&microTwo=%@", ServerUrl, @"VerifyBankAccount", [[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"], bankAcctId,microOne,microTwo]]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&bankAcctId=%@&microOne=%@&microTwo=%@&accessToken=%@", ServerUrl, @"VerifyBankAccount", [[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"], bankAcctId,microOne,microTwo,[[NSUserDefaults standardUserDefaults] objectForKey:@"OAuthToken"]]]];
     NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
     if (!connection)
         NSLog(@"connect error");
@@ -1359,4 +1359,52 @@ NSString *amnt;
     if (!connectionList)
         NSLog(@"connect error");
 }
+//-(void)SendEmailToNonNooch:(NSString*)email :(
+//    {
+//      //  TransactionDto transactionInput, out string trnsactionId, string accessToken, string inviteType, string receiverEmailId);
+//        
+//
+//    //accessToken
+//    self.responseData = [[NSMutableData alloc] init];
+//    
+//    NSString *urlString = [NSString stringWithFormat:@"%@/SaveFrequency",ServerUrl];
+//    
+//    NSURL *url = [NSURL URLWithString:urlString];
+//    
+//    dictInv=[[NSMutableDictionary alloc]init];
+//    
+//    [dictInv setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"memberId"];
+//    [dictInv setObject:withdrawalId forKey:@"withdrawalId"];
+//    [dictInv setObject:type forKey:@"type"];
+//    //withdrawalFrequency
+//    [dictInv setObject:[NSString stringWithFormat:@"%f",withdrawalFrequency] forKey:@"withdrawalFrequency"];
+//    
+//    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+//    
+//    [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
+//    // NSString *post = [dictSMS JSONRepresentation];
+//    NSLog(@"dict %@",[dictInv JSONRepresentation]);
+//    postDataInv = [[dictInv JSONRepresentation] dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+//    
+//    postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
+//    
+//    requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
+//    
+//    [requestInv setHTTPMethod:@"POST"];
+//    
+//    [requestInv setValue:postLengthInv forHTTPHeaderField:@"Content-Length"];
+//    
+//    [requestInv setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+//    
+//    [requestInv setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
+//    
+//    [requestInv setHTTPBody:postDataInv];
+//    
+//    connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
+//    
+//    if (!connectionInv)
+//        
+//        NSLog(@"connect error");
+//}
+//
 @end
