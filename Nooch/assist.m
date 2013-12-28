@@ -468,6 +468,10 @@ static assist * _sharedInstance = nil;
         limit = YES;
     }
     NSMutableArray *hist = [histCache mutableCopy];
+    //21   28/12
+  
+    [histCache removeAllObjects];
+    //
     NSMutableArray *toAddTrans = [NSMutableArray new];
     if([hist count] != 0){
         bool found = NO;
@@ -475,12 +479,46 @@ static assist * _sharedInstance = nil;
             for(NSMutableDictionary *tran in hist){
                 if([[nTran objectForKey:@"TransactionId"] isEqualToString:[tran objectForKey:@"TransactionId"]]){
                     found = YES;
-                    [tran setObject:[nTran objectForKey:@"Status"] forKey:@"Status"];
-                    [tran setObject:[nTran objectForKey:@"DisputeStatus"] forKey:@"DisputeStatus"];
-                    [tran setObject:[nTran objectForKey:@"DisputeId"] forKey:@"DisputeId"];
-                    [tran setObject:[nTran objectForKey:@"DisputeReportedDate"] forKey:@"DisputeReportedDate"];
-                    [tran setObject:[nTran objectForKey:@"DisputeResolvedDate"] forKey:@"DisputeResolvedDate"];
-                    [tran setObject:[nTran objectForKey:@"DisputeReviewDate"] forKey:@"DisputeReviewDate"];
+                    NSLog(@"%@",[nTran objectForKey:@"Status"]);
+                    
+                    if([nTran objectForKey:@"Status"] !=[NSNull null])
+                    {
+                        if ([nTran objectForKey:@"Status"]!= nil || ![[nTran objectForKey:@"Status"] isEqualToString:@"(null)"]) {
+                            [tran setObject:[nTran objectForKey:@"Status"] forKey:@"Status"];
+                            
+                        }
+                        //[tran setObject:[nTran objectForKey:@"Status"] forKey:@"Status"];
+
+                    }
+                    else
+                    {
+                        [tran setObject:@"" forKey:@"Status"];
+
+                    }
+//                    if ([nTran objectForKey:@"Status"] || ![[nTran objectForKey:@"Status"] isKindOfClass:[NSNull class]]) {
+//                        if ([nTran objectForKey:@"Status"]!= nil || ![[nTran objectForKey:@"Status"] isEqualToString:@"<null>"]) {
+//                            [tran setObject:[nTran objectForKey:@"Status"] forKey:@"Status"];
+//
+//                        }
+//                                            }
+                    if ([nTran objectForKey:@"DisputeStatus"] || ![[nTran objectForKey:@"DisputeStatus"] isKindOfClass:[NSNull class]]) {
+                          [tran setObject:[nTran objectForKey:@"DisputeStatus"] forKey:@"DisputeStatus"];
+                    }
+                    
+                    if ([nTran objectForKey:@"DisputeId"]|| ![[nTran objectForKey:@"DisputeId"] isKindOfClass:[NSNull class]]) {
+                        [tran setObject:[nTran objectForKey:@"DisputeId"] forKey:@"DisputeId"];
+                    }
+                    if ([nTran objectForKey:@"DisputeReportedDate"]||  ![[nTran objectForKey:@"DisputeReportedDate"] isKindOfClass:[NSNull class]]) {
+                         [tran setObject:[nTran objectForKey:@"DisputeReportedDate"] forKey:@"DisputeReportedDate"];
+                    }
+                    if ([nTran objectForKey:@"DisputeResolvedDate"]||  ![[nTran objectForKey:@"DisputeResolvedDate"] isKindOfClass:[NSNull class]]) {
+                        [tran setObject:[nTran objectForKey:@"DisputeResolvedDate"] forKey:@"DisputeResolvedDate"];
+
+                    }
+                    if ([nTran objectForKey:@"DisputeReviewDate"]||  ![[nTran objectForKey:@"DisputeReviewDate"] isKindOfClass:[NSNull class]]) {
+                          [tran setObject:[nTran objectForKey:@"DisputeReviewDate"] forKey:@"DisputeReviewDate"];
+                    }
+                    
                     break;
                 }
             }
@@ -494,6 +532,8 @@ static assist * _sharedInstance = nil;
             [histCache setArray:[toAddTrans mutableCopy]];
         }else{
             [histCache setArray:[hist mutableCopy]];
+        //28/12
+           
         }
         
         [histCache setArray:[self sortByStringDate:histCache]];
@@ -501,6 +541,7 @@ static assist * _sharedInstance = nil;
         [histCache setArray:newHist];
         arrRecordsCheck=[[NSArray alloc]initWithArray:newHist];
     }
+    
     histSafe = YES;
     loadingCheck = NO;
     needsUpdating = YES;

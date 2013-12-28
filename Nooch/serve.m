@@ -1,3 +1,5 @@
+
+
 //
 //  serve.m
 //  Nooch
@@ -11,7 +13,7 @@
 //
 //Charan's edit 19nov2013
 //seconds for 3 days
-#define secondsFor3days 259200
+#define secondsFor3days 60
 //seconds for 6 days
 #define secondsFor6days 518400
 //seconds for 9 days
@@ -85,8 +87,8 @@ NSString *responseString;
 //NSString * const ServerUrl = @"https://192.203.102.254/NoochService.svc"; //development server
 //NSString * const ServerUrl =@"https://noochweb.venturepact.com/noochservice/noochservice.svc";
 //http://noochweb.venturepact.com/NoochService.svck
-//NSString * const ServerUrl = @"https://192.203.102.254/noochservice/NoochService.svc";
-NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
+NSString * const ServerUrl = @"https://192.203.102.254/noochservice/NoochService.svc";
+//NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
 //NSString * const ServerUrl = @"https://10.200.1.40/noochservice/NoochService.svc";
 //NSString * const ServerUrl = @"http://noochweb.venturepact.com/NoochService.svc"; //testing server Venturepact isCheckValidation;
 bool locationUpdate;
@@ -98,13 +100,13 @@ NSString *amnt;
     locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
     locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
     [locationManager startUpdatingLocation];
-    NSRunLoop *loop = [NSRunLoop currentRunLoop];
-   while ((!locationUpdate) &&
-           ([loop runMode:NSDefaultRunLoopMode beforeDate:[NSDate
-                                                           distantFuture]]))
-    {
-
-    }
+   // NSRunLoop *loop = [NSRunLoop currentRunLoop];
+//   while ((!locationUpdate) &&
+//           ([loop runMode:NSDefaultRunLoopMode beforeDate:[NSDate
+//                                                           distantFuture]]))
+//    {
+//
+//    }
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     NSLog(@"latlon%@%@",self.Longitude,self.Latitude);
     NSLog(@"oauthnd%@",[defaults valueForKey:@"OAuthToken"]);
@@ -611,12 +613,15 @@ NSString *amnt;
         zipcode = [[addrParse objectAtIndex:2] substringFromIndex:3];
         country = [addrParse objectAtIndex:3];
     }else{
-        addressLine1 = [addrParse objectAtIndex:0];
-        addressLine2 = [addrParse objectAtIndex:1];
-        city = [addrParse objectAtIndex:2];
-        state = [[addrParse objectAtIndex:3] substringToIndex:3];
-        zipcode = [[addrParse objectAtIndex:3] substringFromIndex:3];
-        country = [addrParse objectAtIndex:4];
+        if ([arrResponse count]>4) {
+            addressLine1 = [addrParse objectAtIndex:0];
+            addressLine2 = [addrParse objectAtIndex:1];
+            city = [addrParse objectAtIndex:2];
+            state = [[addrParse objectAtIndex:3] substringToIndex:3];
+            zipcode = [[addrParse objectAtIndex:3] substringFromIndex:3];
+            country = [addrParse objectAtIndex:4];
+        }
+       
     }
     if ([city rangeOfString:@"null"].location != NSNotFound || city == NULL) {
         city = @"";
@@ -865,17 +870,17 @@ NSString *amnt;
            
             if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]) {
                 if (![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue]) {
-                    [defaults setObject:@"YES" forKey:@"IsBankVerified"];
+                    [defaults setObject:@"YES" forKey:@"IsPrimaryBankVerified"];
                     [defaults synchronize];
    
                 }
                 else {
-                    [defaults setObject:@"NO" forKey:@"IsBankVerified"];
+                    [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
                     [defaults synchronize];
                 }
             }
             else {
-                [defaults setObject:@"NO" forKey:@"IsBankVerified"];
+                [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
                 [defaults synchronize];
             }
             
@@ -1359,6 +1364,33 @@ NSString *amnt;
     if (!connectionList)
         NSLog(@"connect error");
 }
+-(void)SettingsTwoWayAuthontication:(NSString*)stateSetting
+{
+    if ([stateSetting isEqualToString:@"YES"]) {
+    state=@"1";
+    }
+    else
+    {
+        state=@"0";
+
+            }
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/SetTwoWayAuthentication?accessToken=%@&memberId=%@&SettingState=%@",ServerUrl, [defaults valueForKey:@"OAuthToken"],[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"],state ];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+   // StringResult SetTwoWayAuthentication(string accessToken, string MemberId, bool SettingState);
+    //accessToken
+   
+    
+    
+    }
 //-(void)SendEmailToNonNooch:(NSString*)email :(
 //    {
 //      //  TransactionDto transactionInput, out string trnsactionId, string accessToken, string inviteType, string receiverEmailId);

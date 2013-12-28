@@ -230,7 +230,9 @@ int verifyAttempts;
                 cell.userInteractionEnabled = YES;
                 cell.textLabel.enabled = YES;
                 cell.detailTextLabel.enabled = YES;
-                //cell.selectionStyle=UITableViewCellEditingStyleNone;
+
+            
+                                //cell.selectionStyle=UITableViewCellEditingStyleNone;
             }
             cell.textLabel.text = [arrWithrawalOptions objectAtIndex:indexPath.row];
             iv.image = [UIImage imageNamed:@"AddFunds.png"];
@@ -512,11 +514,28 @@ int verifyAttempts;
                 
                 //bank verified or Not
                 NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-                if ([[[me usr] objectForKey:@"banks"] objectAtIndex:0]&&[[[[[me usr] objectForKey:@"banks"] objectAtIndex:0] valueForKey:@"IsVerified"] intValue]==1 ) {
-                    [defaults setValue:@"1" forKey:@"BankVerified"];
-                    [defaults synchronize];
+                NSLog(@"%@",[[[me usr] objectForKey:@"banks"] objectAtIndex:0]);
+                if ([[[me usr] objectForKey:@"banks"] objectAtIndex:0]&&[[[[[me usr] objectForKey:@"banks"] objectAtIndex:0] valueForKey:@"IsVerified"] intValue]==1&& [[[[[me usr] objectForKey:@"banks"] objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]==1 ) {
+                    if ([[[[[me usr] objectForKey:@"banks"] objectAtIndex:0] valueForKey:@"IsDeleted"] intValue]==0) {
+                        [defaults setObject:@"YES" forKey:@"IsPrimaryBankVerified"];
+                        [defaults synchronize];
+                         }
+                        else {
+                            [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
+                            [defaults synchronize];
+                             }
+                    }
+                    else {
+                        [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
+                        [defaults synchronize];
+                    }
                     
-                }
+                NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
+//                    //
+//                    [defaults setValue:@"1" forKey:@"BankVerified"];
+//                    [defaults synchronize];
+                
+                
                 //[state substringFromIndex: [state length] - 2];
                 NSString*lastdigit=[NSString stringWithFormat:@"XXXX%@",[[bank objectForKey:@"BankAcctNumber"] substringFromIndex:[[bank objectForKey:@"BankAcctNumber"] length]-4]];
                 cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[bank objectForKey:@"BankName"],lastdigit];
@@ -623,7 +642,18 @@ int verifyAttempts;
                 return;
                 
             }
+            if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
+                
+                
+                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Verify Your Bank Account" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                
+                [alert show];
+                
+                return;
+            }
             
+            
+
             [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"addFunds"] animated:YES completion:nil];
 //            [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"addFunds"] animated:YES];
         }else if(indexPath.row == 2){
@@ -634,6 +664,17 @@ int verifyAttempts;
                 [set show];
                 return;
             }
+            
+            if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
+                
+                
+                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Verify Your Bank Account" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                
+                [alert show];
+                
+                return;
+            }
+
             [navCtrl presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"withdrawFunds"] animated:YES completion:nil];
            // [navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"withdrawFunds"] animated:YES];
         }
@@ -1146,8 +1187,15 @@ int verifyAttempts;
 - (void)changeSwitch:(id)sender{
     
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-   
-    if (![[defaults valueForKey:@"BankVerified"]isEqualToString:@"1"]) {
+   if ([[[me usr] objectForKey:@"banks"] count]==0)
+   {
+       UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Add and Verify Your Bank Account To Enable Auto Cash Out" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil] ;
+       [alert show];
+       [Switch setOn:NO];
+       return;
+       
+   }
+    if (![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Verify Your Bank Account To Enable Auto Cash Out" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil] ;
         [alert show];
         [Switch setOn:NO];

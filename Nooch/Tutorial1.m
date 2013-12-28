@@ -136,6 +136,7 @@
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
     [checkCodeField resignFirstResponder];
     [inviteCodeField resignFirstResponder];
     return YES;

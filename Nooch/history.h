@@ -63,7 +63,8 @@ FPPopoverController *fp;
     BOOL isSearching;
     NSMutableArray*arrSearchedRecords;
     IBOutlet UISearchBar*searchBarObj;
-    
+    IBOutlet UIImageView*imageDetail;
+
 }
 @property (weak, nonatomic) IBOutlet UILabel *statusOfTransfer;
 @property (weak, nonatomic) IBOutlet UIImageView *secondPartyImage;

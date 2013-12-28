@@ -228,8 +228,9 @@
             routingNumber.text = @"";
             firstLast.text = @"";
             [detailsTable reloadData];
-            
+             [me getBanks];
             [self cancel];
+            
             serveOBJ=[serve new];
             NSLog(@"COntact number %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"ContactNumber"]);
             

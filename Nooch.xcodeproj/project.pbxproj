@@ -3115,7 +3115,7 @@
 		6B30375815FA3FF600056DAD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Baljeet Singh (EY7Z9L6HTE)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Baljeet Singh (EY7Z9L6HTE)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3151,7 +3151,7 @@
 		6B30375915FA3FF600056DAD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Baljeet Singh (EY7Z9L6HTE)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Baljeet Singh (EY7Z9L6HTE)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

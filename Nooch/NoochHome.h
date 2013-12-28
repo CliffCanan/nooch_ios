@@ -19,7 +19,7 @@
 #import "AppSkel.h"
 #import <Social/Social.h>
 #import <Accounts/Accounts.h>
-
+BOOL isRequestmultiple;
 NSString *fbUID;
 NSMutableArray *addrBookUsername;
 BOOL Updating;
@@ -87,7 +87,7 @@ UIViewController *nHome;
     BOOL isSearching;
     IBOutlet UIButton*btnX;
     IBOutlet UIButton*btnRequestM;
-    BOOL isRequestmultiple;
+  
     NSMutableArray*arrSearchedRecords;
 }
 @property (strong, nonatomic)IBOutlet UIScrollView*scrollViewGroup;

@@ -137,7 +137,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (section == 0) {
-        return 2;
+        return 3;
     }else if(section == 1){
         return 1;
     }else if(section == 2){
@@ -232,7 +232,16 @@
             iv.image = [UIImage imageNamed:@"Clock_Icon.png"];
            
         }
-        
+        else if (indexPath.row==2){
+             cell.textLabel.text = @"2 Way Authentication";
+            SwitchEnable2WayAuth = [[UISwitch alloc] initWithFrame:CGRectMake(220, 5, 70, 30)];
+            
+            SwitchEnable2WayAuth.tag=12000;
+            [SwitchEnable2WayAuth addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
+            
+            [cell.contentView addSubview:SwitchEnable2WayAuth];
+
+        }
     }
     else if(indexPath.section == 1){
         [cell.contentView addSubview:arrow];
@@ -292,6 +301,29 @@
     [cell.contentView addSubview:iv];
     cell.backgroundColor=[UIColor colorWithRed:102.0f/255.0f green:102.0f/255.0f blue:102.0f/255.0f alpha:1.0f];
     return cell;
+}
+-(void)changeSwitch:(id)sender{
+    
+    if ([SwitchEnable2WayAuth isOn]) {
+        serve*serveOBJ=[serve new];
+        serveOBJ.tagName=@"enable2wayAuth";
+        [serveOBJ setDelegate:self];
+        [serveOBJ SettingsTwoWayAuthontication:@"YES"];
+
+           }
+    else
+    {
+        serve*serveOBJ=[serve new];
+        serveOBJ.tagName=@"enable2wayAuth";
+        [serveOBJ setDelegate:self];
+        [serveOBJ SettingsTwoWayAuthontication:@"NO"];
+
+    }
+}
+-(void)listen:(NSString *)result tagName:(NSString *)tagName{
+    if ([tagName isEqualToString:@"enable2wayAuth"]) {
+        
+    }
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{ //72bf44
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

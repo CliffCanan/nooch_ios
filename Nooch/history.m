@@ -692,6 +692,7 @@ NSString *curMemo;
         memo.textColor = [UIColor grayColor];
     }
     CGRect tranFrame;
+    NSLog(@"picturea%@",[dict objectForKey:@"Picture"]);
     receiverFirst = [dict objectForKey:@"FirstName"];
     receiverLast = [dict objectForKey:@"LastName"];
     receiverImgData = [dict objectForKey:@"image"];
@@ -1751,7 +1752,7 @@ NSString *curMemo;
     [leftNavBar addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     dict = [[me histFilter:filterPick] objectAtIndex:indexPath.row];
-
+    NSLog(@"%@",dict);
     /////////asdf
     
     if ([[dict objectForKey:@"Status"] isKindOfClass:[NSNull class]]) {
@@ -1761,6 +1762,38 @@ NSString *curMemo;
     transactionId = [dict objectForKey:@"TransactionId"];
     recipId = [dict objectForKey:@"RecepientId"];
     sendId = [dict objectForKey:@"MemberId"];
+    if ([dict objectForKey:@"Picture"]) {
+        NSArray* bytedata = [dict objectForKey:@"Picture"];
+        unsigned c = bytedata.count;
+        
+        
+        uint8_t *bytes = malloc(sizeof(*bytes) * c);
+        unsigned i;
+        
+        
+        for (i = 0; i < c; i++)
+            
+            
+        {
+            
+            
+            NSString *str = [bytedata objectAtIndex:i];
+            
+            
+            int byte = [str intValue];
+            
+            
+            bytes[i] = (uint8_t)byte;
+            
+            
+        }
+        
+        NSData *datos = [NSData dataWithBytes:bytes length:c];
+        imageDetail.image=[UIImage imageWithData:datos];
+    }
+    
+   // iv.image = [UIImage imageWithData:datos];
+   
     goDisputeButton.hidden = NO;
     dipusteNote.hidden = NO;
     disputeStatus.hidden = NO;

@@ -34,7 +34,7 @@
     __weak IBOutlet UIButton *privacyButton;
     IBOutlet UIView *legalInfoMenu;
     MFMailComposeViewController *mailComposer;
-   
+    UISwitch*SwitchEnable2WayAuth;
 }
 
 @end

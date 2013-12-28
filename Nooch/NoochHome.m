@@ -47,6 +47,7 @@ static CGFloat const kPadding = 5.0;
 }
 -(void)viewWillAppear:(BOOL)animated{
     //Empty ScrollView
+    
     [dictGroup removeAllObjects];
     [self.friendTable reloadData];
     [FeaturedView removeFromSuperview];
@@ -57,9 +58,11 @@ static CGFloat const kPadding = 5.0;
 			[subview removeFromSuperview];
 		}
 	}
-    [rightMenuButton removeTarget:self action:@selector(LocationSearch:) forControlEvents:UIControlEventTouchUpInside];
-    [rightMenuButton addTarget:self action:@selector(showFundsMenu) forControlEvents:UIControlEventTouchUpInside];
-    [rightMenuButton setImage:[UIImage imageNamed:@"Bank_Icon.png"] forState:UIControlStateNormal];
+    if (!isLocationSearch) {
+        [rightMenuButton removeTarget:self action:@selector(LocationSearch:) forControlEvents:UIControlEventTouchUpInside];
+        [rightMenuButton addTarget:self action:@selector(showFundsMenu) forControlEvents:UIControlEventTouchUpInside];
+        [rightMenuButton setImage:[UIImage imageNamed:@"Bank_Icon.png"] forState:UIControlStateNormal];
+    }
     
     self.friendTable.frame=CGRectMake(0, 88, 320, 400);
     
@@ -574,6 +577,13 @@ static CGFloat const kPadding = 5.0;
         [FeaturedView removeFromSuperview];
     }
     else{
+         [rightMenuButton setImage:[UIImage imageNamed:@"Bank_Icon.png"] forState:UIControlStateNormal];
+         [rightMenuButton addTarget:self action:@selector(showFundsMenu) forControlEvents:UIControlEventTouchUpInside];
+        [rightMenuButton removeTarget:self action:@selector(LocationSearch:) forControlEvents:UIControlEventTouchUpInside];
+        //[rightMenuButton addTarget:self action:@selector(LocationSearch:) forControlEvents:UIControlEventTouchUpInside];
+        //[rightMenuButton setImage:[UIImage imageNamed:@"green-pin.png"] forState:UIControlStateNormal];
+        
+
     int numReq = 0;
     if (!histSafe) {
         return;
@@ -876,6 +886,7 @@ static CGFloat const kPadding = 5.0;
     [btnRequestM addTarget:self action:@selector(DoneRequestMutiple) forControlEvents:UIControlEventTouchUpInside];
 }
 -(void)DoneRequestMutiple{
+    isRequestmultiple=YES;
     transfer*transferOBJ=[self.storyboard instantiateViewControllerWithIdentifier:@"transfer"];
     transferOBJ.dictResp=dictGroup;
     [navCtrl presentViewController:transferOBJ animated:YES completion:nil];
@@ -928,19 +939,25 @@ static CGFloat const kPadding = 5.0;
     [btnRequestM removeTarget:self action:@selector(DoneRequestMutiple) forControlEvents:UIControlEventTouchUpInside];
     [btnRequestM addTarget:self action:@selector(requestMultiple:) forControlEvents:UIControlEventTouchUpInside];
 
-    btnX.hidden=YES;
-    [rightMenuButton setImage:[UIImage imageNamed:@"Bank_Icon.png"] forState:UIControlStateNormal];
-    [rightMenuButton addTarget:self action:@selector(showFundsMenu) forControlEvents:UIControlEventTouchUpInside];
+    
+   // [rightMenuButton setImage:[UIImage imageNamed:@"Bank_Icon.png"] forState:UIControlStateNormal];
+   // [rightMenuButton addTarget:self action:@selector(showFundsMenu) forControlEvents:UIControlEventTouchUpInside];
     btnRequestM.hidden=NO;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    NSLog(@"%@",[defaults valueForKey:@"IsBankVerified"]);
+    NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
     
-    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] || ![[defaults valueForKey:@"IsBankVerified"]isEqualToString:@"YES"]) {
+    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] || ![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile and Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
 
         return;
     }
+    btnX.hidden=YES;
+    [rightMenuButton removeTarget:self action:@selector(showFundsMenu) forControlEvents:UIControlEventTouchUpInside];
+    [rightMenuButton addTarget:self action:@selector(LocationSearch:) forControlEvents:UIControlEventTouchUpInside];
+    [rightMenuButton setImage:[UIImage imageNamed:@"green-pin.png"] forState:UIControlStateNormal];
+    
+
     [dictGroup removeAllObjects];
     iscauseDeSelected=NO;
     progressImage.hidden=NO;

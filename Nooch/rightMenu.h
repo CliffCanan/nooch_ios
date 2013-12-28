@@ -62,6 +62,7 @@
     int tagSelectedRow;
     NSString*strTimeFrequency;
     UIButton*Savebtn;
+   // UISwitch*Switch;
 }
 
 @end

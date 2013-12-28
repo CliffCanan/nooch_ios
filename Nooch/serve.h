@@ -99,6 +99,7 @@
 -(void)ValidateBank:(NSString*)bankName routingNo:(NSString*)routingNumber;
 -(void)getTotalReferralCode:(NSString *)inviteCode;
 -(void) LogOutRequest:(NSString*) memberId;
+-(void)SettingsTwoWayAuthontication:(NSString*)stateSetting;
 //charanjit's edit 26/11
 -(void)getAutoWithDrawalSelectedOption;
 -(void)getLocationBasedSearch:(NSString *)radius;

@@ -59,9 +59,12 @@ bool allowSharingValue;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    //if (imagepickedOBJ) {
     
-   // }
+    if (isRequestmultiple) {
+        [self  switchRequest:Nil];
+    }
+    
+    
      [navBar setBackgroundImage:[UIImage imageNamed:@"TopNavBarBackground.png"]  forBarMetrics:UIBarMetricsDefault];
     self.navigationItem.title = @"";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissFP:) name:@"dismissPopOver" object:nil];
@@ -122,8 +125,15 @@ bool allowSharingValue;
 -(void)viewDidAppear:(BOOL)animated{
     
     [super viewDidAppear:YES];
+    
     if ([[assist shared]getTranferImage]) {
+      
         imageToshow.image=[[assist shared]getTranferImage];
+        UIImage*img=[UIImage imageNamed:@""];
+        [[assist shared]setTranferImage:img];
+        
+       //[[assist shared]setTranferImage]]=img;
+        
         
     }
     [self layoutScrollView];
@@ -144,6 +154,20 @@ bool allowSharingValue;
 }
 -(void)viewDidLoad{
     [super viewDidLoad];
+    imageToshow.image= [UIImage imageNamed:@""];
+    imageToshow.image = nil;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   
+                                   initWithTarget:self
+                                   
+                                   action:@selector(dismissKeyboard)];
+    
+    
+    
+    [RespView addGestureRecognizer:tap];
+    
+    
     btnAttachImage.hidden=NO;
     sendToggle.showsTouchWhenHighlighted = NO;
     requestToggle.showsTouchWhenHighlighted = NO;
@@ -226,6 +250,9 @@ bool allowSharingValue;
 
     prompt.text = [NSString stringWithFormat:@"How much do you want to send to %@?",receiverFirst];
     actualAmount = @"";
+}
+-(void)dismissKeyboard {
+    [enterAmountField resignFirstResponder];
 }
 -(void)layoutScrollView
 {
@@ -1587,6 +1614,9 @@ bool allowSharingValue;
         return YES;
     }
     [writeMemo dismissWithClickedButtonIndex:0 animated:YES];
+    if (textField== enterAmountField) {
+        [enterAmountField resignFirstResponder];
+    }
     [textField resignFirstResponder];
     return YES;
 }

@@ -175,6 +175,7 @@
 
 #pragma mark Navigation Controller back
 - (IBAction)GoBack:(id)sender {
+    isLocationSearch=YES;
     [self.navigationController popViewControllerAnimated:YES];
 }
 @end

@@ -71,6 +71,7 @@ NSString *acceptOrDeny;
     IBOutlet UIScrollView*scrollViewResp;
     IBOutlet UIView*RespView;
     IBOutlet UIView*RespImageV;
+    
 }
 //added by venturepact
 //Recipients
