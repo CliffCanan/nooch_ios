@@ -29,7 +29,6 @@ bool inBack;
 @property(nonatomic, retain) id<GAITracker> tracker;
 @property(nonatomic,retain) NSDate *inactiveDate;
 
-
 -(void)showWait:(NSString*)label;
 -(void)endWait;
 -(void)addRainbow;

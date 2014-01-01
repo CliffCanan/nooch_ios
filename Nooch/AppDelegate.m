@@ -7,12 +7,8 @@
 //
 
 #import "AppDelegate.h"
-#import "AppSkel.h"
-#import "Tutorial1.h"
-#import "splash.h"
 #import "UAirship.h"
 #import "UAPush.h"
-#import "NoochHome.h"
 #import <CoreTelephony/CTCallCenter.h>
 
 @implementation AppDelegate
@@ -25,12 +21,11 @@ bool modal;
 {
     inBack = NO;
     [GMSServices provideAPIKey:@"AIzaSyDC-JeglFaO1kbXc2Z3ztCgh1AnwfIla-8"];
-    initialLoad=YES;
     inactiveDate = [NSDate date];
     [NSUserDefaults resetStandardUserDefaults];
     [self.window setUserInteractionEnabled:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectCheck:) name:kReachabilityChangedNotification object:nil];
-    hostReach = [Reachability reachabilityWithHostName:MyUrl];
+    hostReach = [Reachability reachabilityWithHostName:@"www.google.com"];
     internetReach = [Reachability reachabilityForInternetConnection];
     [internetReach startNotifier];
     //google analytics
@@ -98,7 +93,7 @@ bool modal;
     loadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 60, 130, 50)];
     loadingLabel.backgroundColor = [UIColor clearColor];
     loadingLabel.textColor = [UIColor whiteColor];
-    [loadingLabel setFont:[core nFont:@"Medium" size:15]];
+    //[loadingLabel setFont:[core nFont:@"Medium" size:15]];
     [loadingLabel setNumberOfLines:2];
     loadingLabel.textAlignment = NSTextAlignmentCenter;
     loadingLabel.text = @"Loading...";
@@ -142,20 +137,6 @@ void exceptionHandler(NSException *exception){
     if ([[UIScreen mainScreen] bounds].size.height > 500) {
         splashView.image = [UIImage imageNamed:@"Default-568h@2x.png"];
     }
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]) {
-        [me stamp];
-    }
-    if ([[[me usr] objectForKey:@"requiredImmediately"] isKindOfClass:[NSNull class]] || [[me usr] objectForKey:@"requiredImmediately"] == NULL)
-        [self.window addSubview:splashView];
-    else if([[[me usr] objectForKey:@"requiredImmediately"] boolValue])
-        [self.window addSubview:splashView];
-
-    UIViewController *v = [navCtrl.viewControllers objectAtIndex:[navCtrl.viewControllers count]-1];
-    if (v.presentedViewController) {
-        modal = YES;
-    }else{
-        modal = NO;
-    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application{
@@ -167,22 +148,22 @@ void exceptionHandler(NSException *exception){
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] length] > 0) {
         if (timeAway > 30 || timeAway < -30) {
             //init requireImmediately
-            if (![[me usr] objectForKey:@"requiredImmediately"]) {
+            /*if (![[me usr] objectForKey:@"requiredImmediately"]) {
                 if (modal) {
-                    [navCtrl dismissViewControllerAnimated:NO completion:nil];
+                    [navCtrl dismissModalViewControllerAnimated:NO];
                 }
                 reqImm = YES;
-                [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO completion:nil];
+                [[UIApplication sharedApplication].keyWindow.rootViewController presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
                 //[[navCtrl.viewControllers objectAtIndex:[navCtrl.viewControllers count]-1] presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
                 
             }else if([[[me usr] objectForKey:@"requiredImmediately"] boolValue]){
                 if (modal) {
-                    [navCtrl dismissViewControllerAnimated:NO completion:nil];
+                    [navCtrl dismissModalViewControllerAnimated:NO];
                 }
                 reqImm = YES;
-                [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO completion:nil];
+                [[UIApplication sharedApplication].keyWindow.rootViewController presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
                 //[[navCtrl.viewControllers objectAtIndex:[navCtrl.viewControllers count]-1] presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
-            }
+            }*/
         }
     }
     inBack = NO;
@@ -197,7 +178,6 @@ void exceptionHandler(NSException *exception){
 - (void)applicationWillTerminate:(UIApplication *)application{
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     [UAirship land];
-    [me stamp];
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
@@ -221,7 +201,6 @@ void exceptionHandler(NSException *exception){
     [[UAPush shared] resetBadge]; // zero badge after push received
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [[UAPush shared] setBadgeNumber:0];
-    [me histMore:@"ALL" sPos:1 len:20];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url

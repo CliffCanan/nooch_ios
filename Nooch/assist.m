@@ -8,7 +8,7 @@
 
 #import "assist.h"
 #import <QuartzCore/QuartzCore.h>
-#import "JSON.h"
+
 
 @implementation assist
 @synthesize arrRecordsCheck;
@@ -380,13 +380,19 @@ static assist * _sharedInstance = nil;
         }
     }
     if ([tagName isEqualToString:@"banks"]) {
-        NSMutableArray *bankResult = [result JSONValue];
+         NSError *error;
+        
+         NSMutableArray *bankResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        
         if ([bankResult isKindOfClass:[NSNull class]] || bankResult == nil) {
             bankResult = [NSMutableArray new];
         }
         [usr setObject:bankResult forKey:@"banks"];
     }else if([tagName isEqualToString:@"cards"]){
-        NSMutableArray *cardResult = [result JSONValue];
+        NSError *error;
+        
+        NSMutableArray *cardResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+       // NSMutableArray *cardResult = [result JSONValue];
         
         if ([cardResult isKindOfClass:[NSNull class]] || cardResult == nil) {
             cardResult = [NSMutableArray new];
@@ -394,10 +400,17 @@ static assist * _sharedInstance = nil;
         
         [usr setObject:cardResult forKey:@"cards"];
     }else if([tagName isEqualToString:@"sets"]){
-        NSMutableDictionary *setsResult = [result JSONValue];
+        NSError *error;
+        NSMutableDictionary *setsResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        
+    //    NSLog(@"%@",usr);
+        strUrl=[setsResult valueForKey:@"Photo"];
         [usr setObject:setsResult forKey:@"sets"];
-    }else if([tagName isEqualToString:@"info"]){
-        NSDictionary *loginResult = [result JSONValue];
+            }else if([tagName isEqualToString:@"info"]){
+        NSError *error;
+
+         NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+//        NSDictionary *loginResult = [result JSONValue];
         //[usr setObject:@"YES" forKey:@"validated"];
         if(![[loginResult objectForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"BalanceAmount"] != NULL)
         {
@@ -450,7 +463,10 @@ static assist * _sharedInstance = nil;
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     responseStringForHis = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
-    newHistForHis = [responseStringForHis JSONValue];
+    //newHistForHis = [responseStringForHis JSONValue];
+    NSError *error;
+    
+   newHistForHis = [NSJSONSerialization JSONObjectWithData:[responseStringForHis dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
     [self performSelectorInBackground:@selector(processNew:) withObject:newHistForHis];
 }
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
@@ -463,15 +479,11 @@ static assist * _sharedInstance = nil;
 }
 -(void)processNew:(NSMutableArray*)newHist{
     [newHist setArray:[self sortByStringDate:newHist]];
-  //  arrRecordsCheck=[[NSArray alloc]initWithArray:newHist];
+    arrRecordsCheck=[[NSArray alloc]initWithArray:newHist];
     if ([[[newHist lastObject] objectForKey:@"TransactionId"] isEqualToString:[[sortedHist lastObject] objectForKey:@"TransactionId"]] && loadingCheck) {
         limit = YES;
     }
     NSMutableArray *hist = [histCache mutableCopy];
-    //21   28/12
-  
-    [histCache removeAllObjects];
-    //
     NSMutableArray *toAddTrans = [NSMutableArray new];
     if([hist count] != 0){
         bool found = NO;
@@ -479,46 +491,12 @@ static assist * _sharedInstance = nil;
             for(NSMutableDictionary *tran in hist){
                 if([[nTran objectForKey:@"TransactionId"] isEqualToString:[tran objectForKey:@"TransactionId"]]){
                     found = YES;
-                    NSLog(@"%@",[nTran objectForKey:@"Status"]);
-                    
-                    if([nTran objectForKey:@"Status"] !=[NSNull null])
-                    {
-                        if ([nTran objectForKey:@"Status"]!= nil || ![[nTran objectForKey:@"Status"] isEqualToString:@"(null)"]) {
-                            [tran setObject:[nTran objectForKey:@"Status"] forKey:@"Status"];
-                            
-                        }
-                        //[tran setObject:[nTran objectForKey:@"Status"] forKey:@"Status"];
-
-                    }
-                    else
-                    {
-                        [tran setObject:@"" forKey:@"Status"];
-
-                    }
-//                    if ([nTran objectForKey:@"Status"] || ![[nTran objectForKey:@"Status"] isKindOfClass:[NSNull class]]) {
-//                        if ([nTran objectForKey:@"Status"]!= nil || ![[nTran objectForKey:@"Status"] isEqualToString:@"<null>"]) {
-//                            [tran setObject:[nTran objectForKey:@"Status"] forKey:@"Status"];
-//
-//                        }
-//                                            }
-                    if ([nTran objectForKey:@"DisputeStatus"] || ![[nTran objectForKey:@"DisputeStatus"] isKindOfClass:[NSNull class]]) {
-                          [tran setObject:[nTran objectForKey:@"DisputeStatus"] forKey:@"DisputeStatus"];
-                    }
-                    
-                    if ([nTran objectForKey:@"DisputeId"]|| ![[nTran objectForKey:@"DisputeId"] isKindOfClass:[NSNull class]]) {
-                        [tran setObject:[nTran objectForKey:@"DisputeId"] forKey:@"DisputeId"];
-                    }
-                    if ([nTran objectForKey:@"DisputeReportedDate"]||  ![[nTran objectForKey:@"DisputeReportedDate"] isKindOfClass:[NSNull class]]) {
-                         [tran setObject:[nTran objectForKey:@"DisputeReportedDate"] forKey:@"DisputeReportedDate"];
-                    }
-                    if ([nTran objectForKey:@"DisputeResolvedDate"]||  ![[nTran objectForKey:@"DisputeResolvedDate"] isKindOfClass:[NSNull class]]) {
-                        [tran setObject:[nTran objectForKey:@"DisputeResolvedDate"] forKey:@"DisputeResolvedDate"];
-
-                    }
-                    if ([nTran objectForKey:@"DisputeReviewDate"]||  ![[nTran objectForKey:@"DisputeReviewDate"] isKindOfClass:[NSNull class]]) {
-                          [tran setObject:[nTran objectForKey:@"DisputeReviewDate"] forKey:@"DisputeReviewDate"];
-                    }
-                    
+                    [tran setObject:[nTran objectForKey:@"Status"] forKey:@"Status"];
+                    [tran setObject:[nTran objectForKey:@"DisputeStatus"] forKey:@"DisputeStatus"];
+                    [tran setObject:[nTran objectForKey:@"DisputeId"] forKey:@"DisputeId"];
+                    [tran setObject:[nTran objectForKey:@"DisputeReportedDate"] forKey:@"DisputeReportedDate"];
+                    [tran setObject:[nTran objectForKey:@"DisputeResolvedDate"] forKey:@"DisputeResolvedDate"];
+                    [tran setObject:[nTran objectForKey:@"DisputeReviewDate"] forKey:@"DisputeReviewDate"];
                     break;
                 }
             }
@@ -532,16 +510,12 @@ static assist * _sharedInstance = nil;
             [histCache setArray:[toAddTrans mutableCopy]];
         }else{
             [histCache setArray:[hist mutableCopy]];
-        //28/12
-           
         }
         
         [histCache setArray:[self sortByStringDate:histCache]];
     }else{
         [histCache setArray:newHist];
-        arrRecordsCheck=[[NSArray alloc]initWithArray:newHist];
     }
-    
     histSafe = YES;
     loadingCheck = NO;
     needsUpdating = YES;

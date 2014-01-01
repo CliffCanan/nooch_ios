@@ -7,9 +7,9 @@
 //
 
 #import "GetEncryptionValue.h"
-#import "CJSONSerializer.h"
-#import "CJSONDataSerializer.h"
-#import "JSON.h"
+//#import "CJSONSerializer.h"
+//#import "CJSONDataSerializer.h"
+//#import "JSON.h"
 
 
 @implementation GetEncryptionValue
@@ -27,8 +27,13 @@
 }
 
 -(void)listen:(NSString *)result tagName:(NSString*)tagName {
+    NSError* error;
     
-    NSDictionary *loginResult = [result JSONValue];
+
+    NSDictionary *loginResult = [NSJSONSerialization
+                                 JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                 options:kNilOptions
+                                 error:&error];;
     NSLog(@"Dictionary value is : %@", loginResult);
     
     NSString *resultStr = [[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]];

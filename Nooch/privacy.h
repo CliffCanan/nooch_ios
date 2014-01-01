@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "serve.h"
-#import "NoochHome.h"
 
 
 @interface privacy : UIViewController <serveD>

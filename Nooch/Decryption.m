@@ -8,9 +8,9 @@
 
 #import "Decryption.h"
 #import "Constant.h"
-#import "CJSONSerializer.h"
-#import "CJSONDataSerializer.h"
-#import "JSON.h"
+//#import "CJSONSerializer.h"
+//#import "CJSONDataSerializer.h"
+//#import "JSON.h"
 
 @implementation Decryption
 
@@ -59,18 +59,28 @@ NSMutableURLRequest *request1,*request2;
     
     NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
     
-    
-    SBJsonParser *parser = [[[SBJsonParser alloc] init] autorelease];
-    id object = [parser objectWithString:responseString];
+    NSError* error;
+   
+   // SBJsonParser *parser = [[[SBJsonParser alloc] init] autorelease];
+    id object = [NSJSONSerialization
+                 JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
+                 options:kNilOptions
+                 error:&error];;
     
     NSMutableArray *transResult;
     
     if (object != nil) {
         // Success!
-        transResult = [responseString JSONValue];
+        transResult = [NSJSONSerialization
+                       JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
+                       options:kNilOptions
+                       error:&error];;
     }
     
-    NSMutableDictionary *loginResult = [responseString JSONValue];
+    NSMutableDictionary *loginResult = [NSJSONSerialization
+                                        JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
+                                        options:kNilOptions
+                                        error:&error];;
     
     [self.Delegate decryptionDidFinish:loginResult TValue:self.tag];
     

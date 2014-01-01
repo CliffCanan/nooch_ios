@@ -7,7 +7,6 @@
 //
 
 #import "terms.h"
-#import "NSString+SBJSON.h"
 #import "NSData+AESCrypt.h"
 #import "NSString+AESCrypt.h"
 
@@ -67,19 +66,18 @@
 
 -(void)goBack
 {
-    [navCtrl dismissViewControllerAnimated:YES completion:nil];
-   // [navCtrl dismissModalViewControllerAnimated:YES];
+    //[navCtrl dismissModalViewControllerAnimated:YES];
 }
 
 - (IBAction) acceptButtonAction
 {
-    [navCtrl dismissViewControllerAnimated:YES completion:nil];
     //[navCtrl dismissModalViewControllerAnimated:YES];
 }
 
 -(void)listen:(NSString *)result tagName:(NSString*)tagName
 {
-    NSDictionary *template =[result JSONValue];
+    NSError *error;
+    NSDictionary *template = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
     [termsView loadHTMLString:[template objectForKey:@"Result"] baseURL:nil];
     [spinner stopAnimating];
     for (id subView in [termsView subviews]) {

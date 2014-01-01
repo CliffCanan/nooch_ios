@@ -1,0 +1,2389 @@
+ pixate-config {
+  parse-error-destination: console;
+  cache-styles: auto;
+}
+
+ /*******************************************
+  *******************************************
+  ********  	GENERAL STYLES	     ********
+  *******************************************
+  *******************************************/
+	/**  This should set the tint color throughout the entire app.	Includes things  **/
+	/**	 like color of Segmented Controls, Refresh Controls, & default iOS elements  **/
+	view { 
+		//-ios-tint-color	: #3fabe1;
+		font-family		: "Roboto";
+	}
+
+	#prelogin_logo {
+		background-image : url(Logo_with_line.png);
+		height : 120px;
+		width : 200px;
+		position : 60 15;
+	}
+
+	#loading {
+		style : small;
+		color : #41ABE1;
+		background-color : #2b2e31;
+		size : 70px 70px;
+		border-radius : 5px;
+		box-shadow : inset 0 1px 1px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.1);
+		position : 125 200;
+	}
+	
+	.light_gray_text { color: #bcbec0; }
+	.red_text { color		: #c72127; }
+	.orange_text { color		: #cc9933; }
+	.yellow_text { color		: #cccc33; }
+	.blue_text { color		: #3fabe1; }
+	.light_green_text {color	: #7ab259; }
+	.green_text	{color		: #72bf44; }	
+	
+    .italic_font {
+        font-style  : italic;
+    }
+
+	 /***************************/
+	 /****		NAV BAR		*****/
+	 /***************************/
+		navigation-bar title {
+			font-family		: "Roboto";
+			font-weight		: light;
+			font-size		: 20px;
+			color			: #ffffff;
+			text-align		: center;
+			width			: 190px;	
+			left			: 65px;
+		}
+		 
+		/****  NAV BAR:  User's Balance  ****/
+		 #navbar_balance {
+			font-family		: "Roboto";
+			font-weight		: light;
+			font-size		: 16px;
+			letter-spacing	: .25px;
+			color			: #ffffff;
+			text-align		: left;
+			width			: 60px;
+			left			: 255px;
+		}
+        
+        #navbar_hamburger {
+            background-image : url(HamburgerButton.png);
+            width       :  43px;
+            height      : 43px;
+            //left           : 10px;
+            //top          : 20px;
+        }
+
+	 /******************************/
+	 /******	 BUTTONS	********/
+	 /******************************/
+		:not(action-sheet) > button {
+			width				: 280px;
+			height				: 56px;
+			left                : 20px;
+			color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 22px;
+		}
+
+		/****  BLUE BUTTON GRADIENT ****/
+		.button_blue { background-image			: linear-gradient(#6dbee8, #41abe1); }
+
+		/****  GREEN BUTTON GRADIENT  ****/
+		.button_green:normal { background-image	: linear-gradient(#7fd034, #6ab029); }
+
+		/****  Disabled GREEN GRADIENT  ****/
+		.button_green:disabled { border-radius		: 3px;
+            background-image: linear-gradient(#c0c2c4, #b1b3b6); }
+
+		/****  GRAY BUTTON GRADIENT  ****/
+		.button_gray { background-image			: linear-gradient(#c0c2c4, #b1b3b6); }
+
+		/****  RED BUTTON GRADIENT  ****/
+		.gradient_red { background-image			: linear gradient(#e02d33, #d2232a); }
+		
+		.infobutton {
+			width			: 16px;
+			height			: 16px;
+			background-image: url(info-button.png);
+			background-size	: 16px;
+		}
+        
+         /****************************
+	  *****	  Fund Menu buttons 28/12 	 *****
+	  ****************************/
+        .rcheckmarkbutton {
+			width			    : 40px;
+			height			    : 40px;
+			left                : 200px;
+			color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 22px;
+		}
+
+         .rsavebutton {
+			width			: 70px;
+			height			: 40px;
+
+			left                : 180px;
+			color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 22px;
+            background-image			: linear-gradient(#6dbee8, #41abe1);
+		}
+               .reditbutton {
+			width			: 70px;
+			height			: 40px;
+
+			left                : 200px;
+			color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 22px;
+		}
+        .rcancelbutton {
+			width			: 65px;
+			height			: 40px;
+
+			left                : 200px;
+			color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 15px;
+            background-image			: linear-gradient(#6dbee8, #41abe1);
+		}
+         .rremovebutton {
+			width			: 65px;
+			height			: 40px;
+
+			left                : 125px;
+			color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 15px;
+            background-image			: linear-gradient(#6dbee8, #41abe1);
+		}
+.rtable_view_cell_textlabel_1 {
+             top                :10px;
+			font-family			: "Roboto";
+			font-weight         : regular;
+			font-size			: 18px;
+			text-align       	: left;
+			color 				: #FFFFFF;
+			width				: 260px;
+			left                : 45px;
+			height				: 30px;
+		}
+
+		/****  Table Detail Text  (right side of row)  ****/
+		.rtable_view_cell_detailtext_1 {
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 15px;
+			color 				: #6d6e71;
+			width				: 170px;
+			left                : 20px;
+			height				: 15px;
+			text-align       	: left;
+		}
+        /***Invite Friend***/
+        .smscrossbuttn-icon {
+		width			: 40px;
+		height			: 40px;
+		left			: 230px;
+        background-image	: url(cross_basic_yellow.png);
+	}
+    .invitesendbutton {
+			width			: 70px;
+			height			: 40px;
+			left                : 120px;
+			color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 22px;
+            background-image			: linear-gradient(#6dbee8, #41abe1);
+		}
+
+	 /****************************
+	  *****	  TABLE Styles 	 *****
+	  ****************************/
+		/***     	TABLE STYLE 1  				***/	
+		/***   SIGNUP Screen, ADD BANK Screen   ***/
+		/***  PROFILE Screen, SETTINGS Screens  ***/
+
+		 .table_view_1 {
+			row-height		: 45px;
+			separator-style : single-line;
+			separator-color : rgba(188,190,192,.65);
+			background-color: #ffffff;
+		}
+
+		 .table_view_cell_1 { text-overflow	: ellipsis; } 
+		 
+		  /****  Table Main Text  (left side of row)  ****/
+		 .table_view_cell_textlabel_1 {
+			font-family			: "Roboto";
+			font-weight         : regular;
+			font-size			: 16px;
+			text-align       	: left;
+			color 				: #41ABE1;
+			width				: 260px;
+			left                : 20px;
+			height				: 30px;
+		}
+
+		/****  Table Detail Text  (right side of row)  ****/
+		.table_view_cell_detailtext_1 {
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 17px;
+			color 				: #6d6e71;
+			width				: 170px;
+			left                : 120px;
+			height				: 30px;
+			text-align       	: right;
+		}
+		 
+		/****  		Sub-header Text (Outside of Table)     ****/
+		/****  Mostly Pre-Login Screens + Referral Screen  ****/
+		.header_label{
+			font-family			: "Roboto";
+			font-weight         : regular;
+			font-size			: 17px;
+			text-align       	: center;
+			color 				: #414042;
+			width				: 280px;
+			left                : 20px;
+			height				: 30px;
+		}
+
+		 /************************************/
+		 /*******     TABLE STYLE 2      ******   SELECT RECIPIENT screen; CHOOSE A CAUSE screen ****/
+		 /************************************/
+		 .table_view_2 {
+			row-height		: 45px;
+			separator-style : single-line;
+			separator-color	: rgba(188,190,192,.65);
+			background-color: #ffffff;
+		}
+
+		 .table_view_cell_2 {text-overflow	: ellipsis; } 
+		 
+		/****  Table Cell View Main Text Label (Left Side)  ****/
+		 .table_view_cell_textlabel_2 {
+			font-family			: "Roboto";
+			font-weight         : regular;
+			font-size			: 17px;
+			text-align       	: left;
+			color 				: #313233;
+			width				: 250px;
+			left                : 20px;
+			height				: 30px;
+		}
+
+		/****  Table text right side  ****/
+		.table_view_cell_detailtext_2 {
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 17px;
+			text-align       	: right;
+			color 				: #6d6e71;
+			width				: 280px;
+			left                : 20px;
+			height				: 30px;
+		}
+		/***********************/
+		/****  END TABLES   ****/
+		/***********************/
+
+	/*** 	 SIGNUP FLOW:  Instructional Text	***/
+	/***      FUNDS FLOW:  Instructional Text	***/
+	.instruction_text {
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 14px;
+		text-align       	: center;
+		color 				: #58595b;
+		width				: 280px;
+		left                : 20px;
+		height				: 90px;
+	}
+
+	/****  Raised Box - This adds a drop-shadow. ****/
+	.raised_view {
+		border-radius       : 0px;
+		box-shadow			: 0 2px 2px rgba(109,110,113,0.6);
+	}
+
+ /*******************************************
+  *******************************************
+  ********  	PRE-LOGIN FLOW	     ********
+  *******************************************
+  *******************************************/
+  
+	.header_signupflow  {
+		font-family			: "Roboto";
+		font-weight         : light;
+		font-size			: 28px;
+		font-stretch		: semi-expanded;
+		text-align       	: center;
+		color 				: #313233;
+		width				: 280px;
+		height				: 35px;
+		left                : 20px;
+	}
+	  
+	/**  Signup: "Already a member...",  Select a Picture Screen, Welcome Screen **/
+	.label_small {
+		font-family			: "Roboto";
+		font-weight         : light;
+		font-size			: 15px;
+		text-align       	: center;
+		color 				: #414042;
+		width				: 280px;
+		left                : 20px;
+		height				: 30px;
+	}
+
+	/**  Text entry field for inputting a referral code. **/
+	#referral_code_field {
+		width				: 210px;
+		height				: 60px;
+		border				: 4px solid #3fabe1;
+		border-radius		: 15px;
+		-ios-border-style	: rounded-rect;
+		background-color	: #fff;
+		font-family			: "Roboto";
+		font-weight			: light;
+		font-size			: 16px;
+		font-stretch		: expanded;
+		color				: #3fabe1;
+		text-align			: center;
+		text-transform		: uppercase;
+		padding				: 8px 4px;
+	}
+
+	/**  Text "Remember Me" **/
+	#label_rememberme {
+		font-family			: "Roboto";
+		font-weight			: light;
+		font-size			: 14px;
+		text-align			: left;
+		color				: #939598;
+		width				: 140px;
+		height				: 16px;
+		top					: 328px;
+		left				: 19px;
+	}
+
+	/**  Text "Forgot Password?" **/
+	#label_forgotpw {
+		font-family			: "Roboto";
+		font-weight			: light;
+		font-size			: 14px;
+		text-align			: right;
+		color				: #939598;
+		width				: 150px;
+		height				: 16px;
+		top					: 328px;
+		left				: 170px;
+	}
+	
+	#login_switch {
+		width				: 34px;
+		height				: 21px;
+		background-color 	: #939598;
+		border-radius   	: 14px;
+		left              	: 110px;
+		top              	: 321px;
+	}
+	
+	#login_switch thumb { color: white; }
+
+ /*******************************************
+  *******************************************
+  ********  	SEND MONEY FLOW	     ********
+  *******************************************
+  *******************************************/
+  
+	/****  NAV BAR:  Select Recipient, How Much?, PIN screens  ****/
+	.navbar_title_sendmoneyflow  { font-size: 18px; }
+
+	/*********************************/
+	/**   SELECT RECIPIENT Screen   **/
+	/*********************************/
+	
+	/**  Sets the overall table style, specifically the row-height and separator color. */
+	table-view#select_recipient {
+		width				: 320px;
+		background-color	: #ffffff;
+		row-height			: 60px;
+		separator-style 	: single-line;
+		separator-color		: rgba(188,190,192,.65);	
+	}
+    
+	/**  The "Search by Location" icon on the Top Nav Bar (top-right corner).  **/
+	#icon_location {
+		/*top					: 29px;
+		left				: 277px;*/
+		width				: 20px;
+		height				: 33px;
+		background-image	: url(map-icon.png);
+		background-size		: 20px 33px;
+	}
+
+	/**  Styles all the profile pictures of users that are returned in the Select Recipient Table.  **/
+	.list_userprofilepic {
+		width				: 46px;
+		height				: 46px;
+		border				: 1px solid #6d6e71;
+		top					: 7px;
+		left				: 20px;
+        shape       : ellipse;
+	}
+
+	.first_name { font-weight	: regular;}
+
+	/**  Very small FB icon next to Nooch user pics in the Select Recipient Screen. Designates the user is FB friends with the marked user.  **/  
+	.facebook-icons {
+		width			: 14px;
+		height			: 28px;
+		top				: 45px;
+		left			: 17px;
+		background		: url(facebook-icon.png);
+	}
+
+	/**  Very small address book icon next to Nooch user pics in the Select Recipient Screen. Designates the user has that person's email address in their address book. **/    
+	.addressbook-icons {
+		width			: 14px;
+		height			: 16px;
+		top				: 48px;
+		left			: 57px;
+		background		: url(address-book-icon.png);
+	}
+
+	/*************************/  
+	/**   HOW MUCH? Screen  **/
+	/*************************/
+
+	/**  Background box for all the content of the How Much? screen.  This element should also be assigned the ".raised_view" class. **/  
+	.how_much_mainbox {
+		width				: 302px;
+		height				: 250px;
+		top					: 10px;
+		left				: 9px;
+	}
+	
+	/**  Just the text "To:"  **/
+	#label_howmuch_to  {
+		width				: 28px;
+		height				: 38px;
+		top					: 10px;
+		left				: 20px;
+		font-size			: 20px;
+		font-weight			: light;
+        color               : white;
+	}
+  
+	/**  Styles the recipient's name in the bar at the top of the main box. **/
+	#label_howmuch_recipientname {
+		width				: 210px;
+		height				: 38px;
+		top					: 10px;
+		left				: 55px;
+		font-size			: 20px;
+		font-weight			: regular;
+        color                   : white;
+	}
+	
+    .barbackground {
+        top : 10px;
+        left : 9px;
+        width : 302px;
+        height  : 38px;
+    }
+
+	.barbackground_gray {	background-color :  #9fa1a4;} /** Default - before a user has entered an amount. **/
+
+	.barbackground_green {	background-image: linear-gradient(#76c22f, #66aa27);} /** For SENDING  **/
+
+	.barbackground_blue {	background-image: linear-gradient(#40a9de, #3b9cce);} /** For REQUESTS **/
+  
+	/**  Sets the recipient's profile pic in the middle (left side) of the main box. **/
+	#howmuch_recipientpic {
+		width				: 74px;
+		height				: 74px;
+		top					: 62px;
+		left				: 28px;
+		border				: 2px solid #939598;
+        border-radius   	: 37px;
+	}
+
+	/**  Main entry field for the Amount.  Starts as light gray, turns dark when a number is entered. **/  
+	#howmuch_amountfield {
+		font-family			: "Roboto";
+		font-size			: 52px;
+		font-weight         : medium;
+		font-stretch		: expanded;
+		text-align       	: right;
+		color 				: #58595B;
+		width				: 175px;
+		height				: 60px;
+		top					: 73px;
+		left                : 120px;
+	}
+ 
+	/**  Send and Request buttons. **/ 
+	.howmuch_buttons {
+		width				: 149px;
+		height				: 56px;
+		font-family			: "Roboto";
+		font-size			: 20px;
+		font-weight         : light;
+		font-stretch		: semi-expanded;
+		text-align       	: center;
+		color 				: #ffffff;
+		text-transform		: uppercase;
+	}
+
+	/**  Sets the position for the Request Button. **/
+	#howmuch_request {
+		left	: 9px;
+		top		: 204px;
+	}
+
+	/**  Sets the position for the Send Button. **/
+	#howmuch_send {
+		left	: 162px;
+		top		: 204px;
+	}
+ 
+	/**  The middle divider between the send/request buttons.  Includes the $ sign and white circle (but not the verticle white line, which is just empty space. **/ 
+	#howmuch_divider {
+		width			: 38px;
+		height			: 38px;
+		top				: 212px;
+		left			: 141px;
+		background-image: url(dollar-sign.png);
+		background-size	: 39px;
+	}
+    
+    #howmuch_send_expand {
+        width          : 302px;
+        left              : 9px;
+    }
+    
+    #howmuch_send_hide {
+        left          :311px;
+        width       :1px;
+    }
+    
+    #howmuch_request_expand {
+        width       : 302px;
+        left           : 9px;
+    }
+    
+    #howmuch_request_hide {
+        width       : 1px;
+    }
+    
+    #cancel_hidden {
+        width       : 1px;
+        height			: 56px;
+		top				: 204px;
+		left			: 141px;
+    }
+
+    #cancel_request {
+        width       : 40px;
+		left			: 9px;
+    }
+    
+    #cancel_send {
+        left        : 271px;
+        width     : 40px;
+    }
+	
+	.animate_roll_left {
+		animation-name				: howmuch_roll_left;
+		animation-duration			: 1.5s;
+		animation-fill-mode			: forwards;
+		animation-timing-function	: ease;
+		animation-iteration-count	: 1;
+	}
+    
+    .animate_roll_left_return {
+        animation-name				: howmuch_roll_left_return;
+		animation-duration			: 1.5s;
+		animation-fill-mode			: forwards;
+		animation-timing-function	: ease;
+		animation-iteration-count	: 1;
+    }
+ 
+	.animate_roll_right {
+		animation-name				: howmuch_roll_right;
+		animation-duration			: 1.5s;
+		animation-fill-mode			: forwards;
+		animation-timing-function	: ease;
+		animation-iteration-count	: 1;
+	}
+    
+    .animate_roll_right_return {
+        animation-name				: howmuch_roll_right_return;
+		animation-duration			: 1.5s;
+		animation-fill-mode			: forwards;
+		animation-timing-function	: ease;
+		animation-iteration-count	: 1;
+    }
+	
+	/**  Icon when a picture is NOT attached yet. **/ 
+	#howmuch_camera {
+		width 			: 30px;
+		height 			: 22px;
+		left 			: 265px;
+		top 			: 161px;
+		background-image: url(camera-unselected.png);
+		background-size	: 30px 22px;
+	}
+
+	/**  Icon when a picture has been attached. **/
+	#howmuch_camera_attached {
+		width 			: 40px;
+		height 			: 24px;
+		left 			: 256px;
+		top 			: 160px;
+		background-image: url(camera-attached.png);
+		background-size	: 40px 24px;
+	}
+
+	/**  Text entry field for inputting a memo. **/
+	#howmuch_memo {
+		width 			: 280px;
+		left    		: 19px;
+		top     		: 154px;
+		border 			: 1px solid;
+		border-color	: #939598;
+		border-radius	: 2px;
+        text-align      : center;
+		font-family 	: "Roboto";
+		font-weight 	: light;
+		font-size       : 16px;
+		color           : #414042px;
+	}
+	
+	/**  Full container (bottom layer) for the Attach a Picture stuff.  **/
+	#attachpic_container {
+		width			: 300px;
+		height			: 130px;
+		top				: 135px;
+		left			: 10px;
+		background-color: transparent;
+	}
+	
+	/**  The left half - blue box - for Taking a Photo.  **/
+	#attachpic_takephoto_box {
+		width			: 150px;
+		height			: 130px;
+		top				: 0px;
+		left			: 0px;
+		background-color: #3fabe1;
+	}
+  
+	/**  The right half - white box - for the choose from an album option. **/
+	#attachpic_choosefrom_box {
+		width			: 150px;
+		height			: 130px;
+		top				: 0px;
+		left			: 150px;
+		background-color: white;
+	}
+	
+	/**  Left side Camera icon. **/
+	#attachpic_takephoto_icon {
+		width			: 53px;
+		height			: 39px;
+		top				: 35px;
+		left			: 45px;
+		background-image: url(take-pic-icon.png);
+		}
+	
+	/**  Right side polaroid icon. **/
+	#attachpic_choosefrom_icon {
+		width			: 49px;
+		height			: 48px;
+		top				: 35px;
+		left			: 193px;
+		background-image: url(choose-pic-icon.png);
+	}
+	
+	/**  Left side text label. **/
+	#attachpic_takephoto_label {
+		width			: 145px;
+		height			: 20px;
+		top				: 85px;
+		left			: 0px;
+		color			: white;
+		font-family		: "Roboto";
+		font-size		: 13px;
+		font-weight		: regular;
+		text-align		: center;
+	}
+	
+	/**  Right side text label.  **/
+	#attachpic_choosefrom_label {
+		width			: 145px;
+		height			: 20px;
+		top				: 85px;
+		left			: 145px;
+		color			: #bcbec0;
+		font-family		: "Roboto";
+		font-size		: 13px;
+		font-weight		: regular;
+		text-align		: center;
+	}
+	
+	#attachpic_or {
+		width			: 40px;
+		height			: 40px;
+		top				: 42px;
+		left			: 124px;
+		background-color: #3fabe1;
+		border			: 4px solid #ffffff;
+        color           : #ffffff;
+		border-radius	: 18px;
+		font-family		: "Roboto";
+		font-size		: 13px;
+		font-weight		: regular;
+		text-align		: center;
+	}
+	
+	/********************/
+	/**   PIN Screen   **/
+	/********************/
+	
+	.pin_instructiontext {
+		width			: 300px;
+		left			: 10px;
+		top             : 16px;
+		height          : 20px;
+		font-family		: "Roboto";
+		font-weight		: medium;
+		font-size		: 16px;
+		text-align		: center;
+		color			: #14171a;
+	}
+  
+	/**  Making the word "transfer" green.  **/  
+	#pin_instructiontext_send { 
+		width	: 300px;
+		height	: 18px;
+		top		: 36px;
+		left	: 10px;
+        text-align : center;
+		color 	: #72bf44;
+	}
+
+    /**  Making the word "request" blue.  **/    
+	#pin_instructiontext_request { 
+		width	: 300px;
+		height	: 18px;
+		top		: 38px;
+		left	: 10px;
+        text-align : center;
+		color	: #3fabe1;
+	}
+
+	/**  Making the word "contribution" purple.  **/  
+	#pin_instructiontext_donate {
+		width	: 300px;
+		height	: 18px;
+		top		: 38px;
+		left	: 10px;
+        text-align : center;
+		color	: #5a538d;
+	}
+
+	/**  The Amount of the transfer displayed in the middle of the PIN screen.  **/  
+	.pin_amountfield {
+		font-family		: "Roboto";
+		font-size		: 45px;
+		font-weight     : medium;
+		font-stretch	: semi-expanded;
+		text-align      : center;
+		color 			: #313233;
+		width			: 150px;
+		height			: 60px;
+		left            : 85px;
+		top             : 116px;
+	}
+
+	/**  Background white box for the recipient info right above the number pad.  **/  
+	.pin_recipientbox {
+		top				: 196px;
+		left			: 9px;
+		width			: 302px;
+		height			: 71px;
+		background-color: white;
+	}
+
+	/** Profile pic of the recipient.  **/  
+	.pin_recipientpic {
+		width				: 52px;
+		height				: 52px;
+		left				: 20px;
+		top					: 204px;
+		border				: 2px solid #ffffff;
+		border-radius		: 26px;
+	}
+  
+	/**  The background bar of the top half of the recipient box.  **/
+	.pin_recipientname_bar {
+		top					: 196px;
+		left				: 9px;
+		width				: 302px;
+		height				: 38px;
+		background-image	: linear-gradient(#76c22f, #66aa27);
+	}
+
+	/**  The text of the recipient's name in the recipient box.  **/
+	.pin_recipientname_text {
+		top					: 196px;
+		left				: 81px;
+		width				: 226px;
+		height				: 38px;
+		font-family			: "Roboto";
+		font-size			: 20px;
+		font-weight			: regular;
+		text-align			: left;
+		color				: #ffffff;
+	}
+ 
+	/**  The text of the memo if one was attached.  **/ 
+	.pin_memotext {
+		top					: 234px;
+		left				: 81px;
+		width				: 226px;
+		height				: 33px;
+		font-family			: "Roboto";
+		font-size			: 15px;
+		font-weight			: light;
+		text-align			: left;
+		color				: #5a538d;
+	}
+  
+ /*******************************************
+  *******************************************
+  ********  	 DONATE FLOW         ********
+  *******************************************
+  *******************************************/
+  	/***********************************/  
+	/****  DONATE - Choose a Cause  ****/
+	/***********************************/
+
+	/**  This is for the filter button, which is just the blue ribbon icon with no label. Placed on far right of search bar. **/
+	#nonprofit_ribbon_blue {
+		width			: 16px;
+		height			: 25px;
+		top				: 7px;
+		left			: 282px;
+		background-image: url(ribbon-icon-blue.png);
+		background-size	: 16px 25px;
+	}
+	
+	/**  The large full-width banner image of the Featured Nonprofit on the 'Choose a Cause' screen. **/
+	.featured_nonprofit_banner {
+		width	: 320px;
+		height	: 163px;
+		top		: 40px;
+		left	: 0px;
+	}
+
+	/**  Just the semi-transparent black background of the "Featured Nonprofit" label.  **
+	**  This goes full-width and does NOT include the actual text label.  				**/
+	#featured_nonprofit_label_background {
+		width			: 320;
+		height			: 30px;
+		top				: 173px;
+		left			: 0px;
+		background-color: rgba(0,0,0,.65);
+	}
+
+	/**  The actual label with the words "Featured Nonprofit".  **/	
+	#featured_nonprofit_label {
+		width			: 160px;
+		height			: 18px;
+		left			: 10px;
+		top				: 179px;
+		font-family		: "Roboto";
+		font-size		: 15px;
+		font-weight		: medium;
+		text-align		: left;
+		color			: #ffffff;
+	}
+
+	/**  Name of each Nonprofit in the 'Choose a Cause' Table  **/	
+	.nonprofitlist_name {
+		width			: 240px;
+		height			: 22px;
+		top				: 20px;
+		left			: 77px;
+		font-family		: "Roboto";
+		font-size		: 18px;
+		font-weight		: regular;
+		text-align		: left;
+		color			: #313233;
+	}
+
+	/**  Profile Pics of each Nonprofit in the Choose a Cause Table  **/
+	.nonprofitlist_pic {
+		width			: 55px;
+		height			: 46px;
+		border			: none;
+		background		: transparent;
+	}
+	
+	/**************************************/  
+	/****       Nonprofit Details      ****/
+	/**************************************/
+	
+	/** Featured Nonprofit Banner - top adjusted b/c there is no search bar on the Nonprofit Details screen.  **/
+	.featured_nonprofit_banner_details {
+		width	: 320px;
+		height	: 163px;
+		top		: 0px;
+		left	: 0px;
+	}
+
+	/**  The paragraph description of the Nonprofit.  **/	
+	.nonprofit_details_desc {
+		width				: 300px;
+		height				: 165px;
+		top					: 259px;
+		left                : 10px;
+		font-family			: "Roboto";
+		font-weight         : light;
+		font-size			: 14px;
+		text-align       	: left;
+		color 				: #313233;
+	}
+	
+	/**  The Website, FB, Twitter & YouTube circle buttons.  **/
+	.nonprofit_details_buttons {
+		width				: 50px;
+		height				: 50px;
+		top					: 184px;
+		border-radius		: 25px;	
+		background-size		: 50px;
+	}
+	
+	.nonprofit_details_button_website {
+		background-image	: url(nonprofits-website.png);
+		left				: 15px;
+        width				: 50px;
+        height				: 50px;
+		top					: 184px;
+	}
+	
+	.nonprofit_details_button_fb {
+		background-image	: url(nonprofits-fb.png);
+		left				: 95px;
+        width				: 50px;
+        height				: 50px;
+		top					: 184px;
+	}
+	
+	.nonprofit_details_button_twitter {
+		background-image	: url(nonprofits-twitter.png);
+		left				: 175px;
+        width				: 50px;
+        height				: 50px;
+		top					: 184px;
+	}
+	
+	.nonprofit_details_button_youtube {
+		background-image	: url(nonprofits-youtube.png);
+		left				: 255px;
+        width				: 50px;
+        height				: 50px;
+		top					: 184px;
+	}
+	
+	/**  The labels under each social media button on each nonprofit's details screen. **/
+	.nonprofit_details_buttons_labels {
+		width				: 52px;
+		height				: 15px;
+		top					: 236px;
+		font-family			: "Roboto";
+		font-weight         : light;
+		font-size			: 12px;
+        text-align      : center;
+		color 				: #6d6e71;
+	}
+	
+	/**  Setting the correct position for each button label. **/
+	.nonprofit_details_buttons_label_website { 	left	: 14px;}
+	.nonprofit_details_buttons_label_fb 		 { 	left	: 94px;}
+	.nonprofit_details_buttons_label_twitter { 	left	: 174px;}
+	.nonprofit_details_buttons_label_youtube { 	left	: 254px;}
+
+	.nonprofit_details_donatebutton {
+		width			: 280px;
+		height			: 56px;
+		top				: 430px;
+		left			: 20px;
+		background-image: linear-gradient(#7fd034, #6ab029);
+	}
+	
+	/**************************************/  
+	/****   DONATE - How Much? Screen  ****/
+	/**************************************/
+	  
+	/**  Just the text of the Nonprofit's Name  **/
+	#nonprofit_howmuch_orgname {
+		width				: 176px;
+		height				: 38px;
+		top					: 10px;
+		left				: 72px;
+		font-family			: "Roboto";
+		font-size			: 19px;
+		font-weight			: regular;
+		text-align			: center;
+		color				: #ffffff;
+	}
+
+	/**  The background bar once an amount is entered (turns Purple) **/  
+	#barbackground_purp {		
+		width			: 302px;
+		height			: 38px;
+		top				: 10px;
+		left			: 9px;
+		background-image: linear-gradient(#595287, #413a70);
+	}
+
+	/**  Nonprofit's Profile Pic in the Purple Circle  **/  
+	#nonprofit_orgpic {
+		width				: 58px;
+		height				: 58px;
+		top					: 14px;
+		left				: 15px;
+		border				: 2px solid #514b80;
+		background-color	: #ffffff;
+        background-size		: 56px 56px;
+		border-radius   	: 24px;
+	}
+  
+	#nonprofit_amountfield {
+		font-family			: "Roboto";
+		font-size			: 52px;
+		font-weight         : medium;
+		font-stretch		: expanded;
+		text-align       	: right;
+		color 				: #313233;
+		width				: 210px;
+		height				: 60px;
+		top					: 60px;
+		left                : 80px;
+	}
+
+    .nonprofit_quicktapbuttons {
+		width				: 46px;
+		height				: 46px;
+		top					: 132px;
+		border-radius		: 22px;
+		background-size		: 46px;
+    }
+  
+	#nonprofit_quicktapbuttons_5 {
+		left			: 22px;
+		background-image: url(quicktap_5.png);
+	}
+
+	#nonprofit_quicktapbuttons_10 {
+		left			: 100px;
+		background-image: url(quicktap_10.png);
+	}
+  
+	#nonprofit_quicktapbuttons_25 {
+		left			: 178px;
+		background-image: url(quicktap_25.png);
+	}
+
+	#nonprofit_quicktapbuttons_50 {
+		left			: 256px;
+		background-image: url(quicktap_50.png);
+	}
+
+	#nonprofit_quicktapbuttons_5:highlighted { transform: scale(1.2) }
+	#nonprofit_quicktapbuttons_10:highlighted { transform: scale(1.2) }
+	#nonprofit_quicktapbuttons_25:highlighted { transform: scale(1.2); rotate(200deg); }
+	#nonprofit_quicktapbuttons_50:highlighted { transform: scale(1.2); rotate(100deg); }
+
+	/**  The Dedication icon only  **/  
+	#nonprofit_dedication_icon {
+		width			: 30px;
+		height			: 28;
+		top				: 214px;
+		left			: 23px;
+		background-image: url(memo-nonprofits.png);
+		background-size	: 30px 28px;
+	}
+
+	/**  The "+ Dedication" text label  **/  
+	#nonprofit_dedication_label {
+		width			: 85px;
+		height			: 15px;
+		top				: 223px;
+		left			: 59px;
+		font-family		: "Roboto";
+		font-size		: 13px;
+		font-weight     : light;
+		text-align      : left;
+		color 			: #6d6e71;
+	}
+  
+	/**  Main Donate Button - starts Gray, then turns Green when an amount is entered.  **/ 
+	#nonprofit_donatebutton {
+		width				: 152x;
+		height				: 56px;
+		top					: 204px;
+		left				: 159px;
+		font-family			: "Roboto";
+		font-size			: 22px;
+		font-weight         : light;
+		font-stretch		: expanded;
+		text-align       	: center;
+		text-transform		: uppercase;
+		color 				: #ffffff;
+		border-bottom-right-radius	: 0px;
+		border-bottom-left-radius	: 0px;
+		border-top-right-radius		: 0px;
+		border-top-left-radius		: 3px;
+	}
+  
+	#nonprofit_donatebutton:disabled {   }
+  
+	/**  Dedication Text Box  **/
+	#nonprofit_dedication_entrybox {
+		width 			: 286px;
+		height			: 84px;
+		left    		: 17px;
+		top     		: 111px;
+		border 			: 2px solid;
+		border-color	: #939598;
+		border-radius	: 6px;
+		font-family 	: "Roboto";
+		font-weight 	: light;
+		font-size       : 15px;
+		font-stretch	: semi-expanded;
+		color           : #414042px;
+	}
+  
+	/**  'In Honor Of'  or  'In Memory Of'  **/
+	segmented-control#donatededication { 
+		width			: 270px;
+		height			: 30px;
+		top				: 75px;
+		left			: 25px;
+		-ios-tint-color	: 5a538d;
+		font-family		: "Roboto";
+		font-weight		: light;
+	}
+  
+	/**  Sets the style for the 'Cancel' and '+ Add Dedication' buttons. **/
+	.dedication_buttons {
+		width			: 151px;
+		height			: 55px;
+		top				: 204px;
+		font-family		: "Roboto";
+		font-size		: 20px;
+		font-weight     : light;
+		text-align      : center;
+		color 			: #ffffff;
+	}
+  
+	/**  Sets the left location of the 'Cancel' button. **/
+	#dedication_buttons_cancel 	{ left	: 9px; }
+
+	/**  Sets the left location of the 'Add Dedication' (equivalent to 'Done') button. **/	
+	#dedication_buttons_done 	{ left	: 160x;}
+
+	/***************************/
+	/**   Donate PIN Screen   **/
+	/***************************/
+
+	#nonprofit_pin_orgname_bar {
+		width				: 302px;
+		height				: 38px;
+		top					: 196px;
+		left				: 9px;
+		background-image	: linear-gradient(#595287, #413a70);
+	}
+   
+	.nonprofit_pin_orgname_text {
+		width				: 228px;
+		height				: 38px;
+		top					: 196px;
+		left				: 81px;
+		font-family			: "Roboto";
+		font-size			: 20px;
+		font-weight			: regular;
+		text-align			: left;
+		color				: #ffffff;
+	}
+   
+	.pin_dedication_prefix {
+		top					: 234px;
+		left				: 81px;
+		width				: 95px;
+		height				: 33px;
+		font-family			: "Roboto";
+		font-size			: 15px;
+		font-weight			: Regular;
+		text-align			: center;
+		color				: #5a538d;
+	}
+   
+	.pin_dedication_text {
+		top					: 234px;
+		left				: 181px;
+		width				: 130px;
+		height				: 33px;
+		font-family			: "Roboto";
+		font-size			: 15px;
+		font-weight			: light;
+		text-align			: center;
+		color				: #5a538d;
+	}
+
+/* END NONPROFIT FLOW */
+
+ /*******************************************
+  *******************************************
+  *********       FUNDS FLOW        *********
+  *******************************************
+  *******************************************/
+  
+	/**************************/  
+	/****  RIGHT SIDEBAR   ****/
+	/**************************/
+	
+		#rside_tableview {
+			width				: 270px;
+			left				: 50px;
+			background-image	: #ffffff;
+			row-height			: 60px;
+			separator-style 	: single-line;
+			separator-color		: rgba(248,251,252,.6);
+		}
+	
+		/**  Right Sidebar Table: Main Text  (left side of row) **/
+		#rside_table_cell_left {
+			width				: 180px;
+			height				: 58px;
+			top					: 0px;
+			left                : 107px;
+			font-family			: "Roboto";
+			font-weight         : regular;
+			font-size			: 17px;
+			text-align       	: left;
+			color 				: #ffffff;
+		}
+
+		/**  Table Detail Text  (right side of row NOT USED YET) **/
+		#rside_table_cell_detailtext {
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 17px;
+			color 				: #6d6e71;
+			width				: 170px;
+			left                : 120px;
+			height				: 30px;
+			text-align       	: right;
+		}
+	
+	    /**  Background only of the blue section headers of the right sidebar Table. */
+		.rside_sectionheader_bckgrnd {
+			width				: 270px;
+			height				: 23px;
+			background-image	: linear-gradient(#6dbee8, #41abe1);
+			box-shadow			: 0px 1px 0px rgba(36,37,38,1),  /* Effect of a "border-top" attribute, which Pixate doesn't support. */
+								  0px -1px 0px rgba(36,37,38,1); /* Effect of a "border-top" attribute, which Pixate doesn't support. */
+		}
+	
+		/**  Text of the blue section headers of the right sidebar Table. */
+		.rside_section_header_text{
+			width				: 250px;
+			height				: 24px;
+			left				: 15px;
+            color           : white;
+			font-family			: "Varela Round";
+			font-size			: 14px;
+			text-transform		: uppercase;
+		}
+	
+		#rside_icon_n {
+			width			: 29px;
+			height			: 33px;
+			top				: 24px;
+			left			: 100px;
+			background-image: url(n_Icon_58x66.png);
+		}
+		
+		#rside_balance {
+			width			: 100px;
+			height			: 25px;
+			top				: 30px;
+			left			: 154px;
+			font-family		: "Roboto";
+			font-size		: 24px;
+			font-weight		: light;
+            color                  : #ffffff;
+			text-align		: left;
+		}
+		
+		#rside_icon_addfunds {
+			width			: 32px;
+			height			: 32px;
+			top				: 12px;
+			left			: 5px;
+			background-image: url(AddFunds.png);
+		}
+
+		#rside_icon_wdfunds {
+			width			: 32px;
+			height			: 32px;
+			top				: 12px;
+			left			: 5px;
+			background-image: url(WithdrawFunds.png);
+		}
+		
+		/**  Should(!) set the background of the switch to a dark gray. **/
+		#autowithdrawal_switch {
+			-ios-tint-color	: #939598;
+			background-color : #939598;
+			border-radius   : 14px;
+			left              : 207px;
+			top              : 13px;
+		}
+		
+		switch on
+		{
+			-ios-tint-color	: red;
+			background-color : red;
+			color   : red;
+		}
+			
+		/**  Sets the color of the "thumb" (the circle part that moves) of the Switch. **/
+		#autowithdrawal_switch thumb { color	: #dcddde;}
+				
+		#buttons_addfundsource {
+			width			: 270px;
+			height			: 60px;
+			top				: 512px;  /* is this value right? */
+			left			: 50px;
+			font-size		: 20px;
+			font-weight		: light;	
+		}
+
+		/*********************************/	
+		/**  Add a Bank Account Screen  **/
+		/*********************************/
+
+		#addbank_instruction { 
+			width	: 240px;
+			height	: 52px;
+			top		: 10px;
+			left	: 40px;	
+		}
+
+		#addbank_button {top		: 246px; }
+
+		#addbank_disclaimer_text {
+			width				: 300px;
+			height				: 65px;
+			top					: 316px;
+			left				: 10px;
+			font-family			: "Roboto";
+			font-weight			: light;
+			font-size			: 12px;
+			text-align			: center;
+			color				: #939598;
+		}
+
+		#addbank_infobutton1 {
+			top				: 130px;
+			left			: 115px;
+		}
+
+		#addbank_infobutton2 {
+			top				: 178px;
+			left			: 115px;
+		}
+
+		/**  The text "Sent using a 196-bit encryption." **/
+		.label_encryption  {
+			font-family			: "Roboto";
+			font-weight			: regular;
+			font-size			: 12px;
+			text-align			: center;
+			color				: #5a538d;
+			width				: 215px;
+			height				: 15px;
+			left				: 70px;
+			top              : 470px;
+		}
+
+		/**  The Lock icon **/
+		.icon_encryption {
+			width 				: 18px;
+			height 				: 22px;
+			top 				: 465px;
+			left 				: 39px;
+			background-image 	: url(encryption-lock.png);
+			//background-size		: 18px 22px;
+		}
+		
+		/**********************************/	
+		/**  Verify Bank Account Screen  **/
+		/**********************************/
+
+		#verifybank_instruction { 
+			width	: 310px;
+			height	: 100px;
+			top		: 10px;
+			left	: 5px;	
+		}
+
+		#verifybank_infobutton {
+			top				: 68px;
+			left			: 290px;
+		}
+
+		#verifybank_button {top		: 210px; }
+
+		.verifybank_centfields {
+			width			: 74px;
+			height			: 46px;
+			top				: 135px;
+			border			: 1px solid #6d6e71;
+			border-radius	: 8px;
+			text-align		: center;
+			font-family		: "Roboto";
+			font-size		: 31px;
+			font-weight		: regular;
+			font-stretch	: expanded;
+			color			: #313233;
+		}
+
+		#verifybank_centfield1 { left: 66px;}
+		#verifybank_centfield2 { left: 226px;}
+
+		.verifybank_textlabels {
+			width			: 40px;
+			height			: 46px;
+			top				: 135px;
+			font-family		: "Roboto";
+			font-size		: 30px;
+			font-weight		: light;
+			font-stretch	: semi-expanded;
+			text-align		: left;
+		}
+
+		#verifybank_label1 { left: 20px;}
+		#verifybank_label2 { left: 181px;}
+
+		 /***********************************/
+		 /**  Withdrawal & Deposit Screen  **/
+		 /***********************************/
+		 
+		/**  "Enter the amount you'd like to..."  **/
+		 .wd_dep_instruction {
+			width	: 280px;
+			height	: 20px;
+			top		: 19px;
+			left	: 20px;
+			color	: #313233;
+            font-size			: 18px;
+		 }
+         
+        .dep_instruction_account {
+            width	: 280px;
+			height	: 20px;
+			top		: 40px;
+			left	: 130px;
+			color	: #313233;
+            font-size			: 18px;
+        }
+        
+        .wd_instruction_account {
+            width	: 280px;
+			height	: 20px;
+			top		: 40px;
+			left	: 140px;
+			color	: #313233;
+            font-size			: 18px;
+        }
+
+		/**  Sets the color and position of just the word "deposit".  **/  
+		 #wd_dep_deposittext {
+			width		: 112px;
+			height		: 20px;
+			top			: 40px;
+			left		: 34px;
+			color		: #72bf44;
+            font-size			: 18px;
+		 }
+
+		/**  Sets the color and position of just the word "withdraw".  **/
+		 #wd_dep_withdrawtext {
+			width		: 120px;
+			height		: 20px;
+			top			: 40px;
+			left		: 23px;
+			color		: #3fabe1;
+            font-size			: 18px;
+		 }
+		 
+		/**  Amount entry field  **/
+		 .wd_dep_amountfield {
+			width				: 180px;
+			height				: 50px;
+			top					: 68px;
+			left                : 70px;
+			font-family			: "Roboto";
+			font-weight         : regular;
+			font-size			: 30px;
+			text-align       	: center;
+			color 				: #313233;
+			border-radius       : 6px;
+            border			: 1px solid #6d6e71;
+		}
+
+		/**  Header text for Bank Accounts Table - "Your Bank Accounts"  **/
+		.wd_dep_tableheader {
+			width				: 200px;
+			height				: 15px;
+			top					: 138px;
+			left				: 20px;
+			font-family			: "Roboto";
+			font-size			: 13px;
+			font-weight			: regular;
+			text-align			: left;
+			text-transform		: uppercase;
+		}
+
+		/**  For the TABLE VIEW for 'Bank Accounts' Table  **/
+		table-view.wd_dep_tableview {
+			width			: 300;
+            height          : 60px;
+			row-height		: 45px;
+			top				: 158px;
+			left			: 10px;
+			border			: 1px solid #939598;
+			border-radius	: 8px;
+            background-color	: #ffffff;
+            separator-style 	: single-line;
+            separator-color		: rgba(188,190,192,.65);
+		}
+
+		/**  The bank icon in the 'Bank Accounts' table - indicates which bank account will be used for the deposit/withdrawal. **/	
+		.wd_dep_bankicon {
+			width		: 56px;
+			height		: 43px;
+			top			: 1px;
+			left		: 3px;
+		}
+
+		/**  The bank icon in the 'Bank Accounts' table - indicates which bank account will be used for the deposit/withdrawal. **/
+		.wd_dep_banklabel {
+			width		: 230px;
+			height		: 16px;
+			top			: 14px;
+			left		: 65px;
+			font-family	: "Roboto";
+			font-size	: 15px;
+			font-weight	: light;
+			text-align	: left;
+		}
+
+		/**  Blue '+' icon  **/
+		.wd_dep_addicon {
+			width			: 18px;
+			height			: 18px;
+			top				: 136px;
+			left			: 282px;
+			background-image: url(add-icon-blue.png);
+			background-size	: 18px;
+		}
+
+		/**  Sets the location of the main green deposit/withdrawal buttons.  **/
+		.wd_dep_button {top: 219px;}
+
+
+ /*******************************************
+  *******************************************
+  ********* 	 Left SIDEBAR	    *********
+  *******************************************
+  *******************************************/
+	
+	#lside_topbar_background {
+		width			: 270px;
+		height			: 90px;
+		top				: 0px;
+		left			: 0px;
+		background-image: linear-gradient(#505257, #454647);
+	}
+	
+	#lside_userpic {
+		width			: 59px;
+		height			: 59px;
+		top				: 21px;
+		left			: 20px;
+		border			: 2px solid white;
+		border-radius	: 29px;
+		box-shadow		: 0px 2px 6px rgba(29,30,31,.75)
+	}
+	
+	#lside_firstname {
+		width			: 170px;
+		height			: 26px;
+		top				: 28px;
+		left			: 92px;
+		color			: white;
+		font-family		: "Roboto";
+		font-size		: 23px;
+		font-stretch	: semi-expanded;
+		font-weight		: regular;
+		text-align		: left;
+	}
+	
+	#lside_balance {
+		width			: 150px;
+		height			: 19px;
+		top				: 52px;
+		left			: 92px;
+		color			: white;
+		font-family		: "Roboto";
+		font-size		: 18px;
+		font-stretch	: semi-expanded;
+		font-weight		: light;
+		text-align		: left;
+	}
+	
+	/**  Blue Bottom Bar Background **/
+	#lside_bottombar_background {
+		width			: 270px;
+		height			: 55px;
+		top				: 513px;  /* is this value right? */
+		left			: 0px;
+		background-image: linear-gradient(#69b9e0, #3fa5d9);
+	}
+
+	#settings_icon {
+		width			: 31px;
+		height			: 30px;
+		top				: 524px;
+		left			: 15px;
+		background-image: url(settings-icon2.png);
+	}
+	
+	#nooch_whitelogo {
+		width			: 80px;
+		height			: 26px;
+		top				: 521px;
+		left			: 96px;
+		background-image: url(nooch-logo-white.svg);
+	}
+	
+	#version_label {
+		width			: 80px;
+		height			: 12px;
+		top				: 551px;
+		left			: 96px;
+		color			: white;
+		font-family		: "Roboto";
+		font-size		: 10px;
+		font-weight		: regular;
+		text-align		: center;
+		letter-spacing	: expanded;
+	}
+	
+
+ /*******************************************
+  *******************************************
+  ********* 	 HISTORY FLOW	    *********
+  *******************************************
+  *******************************************/
+	
+	/**************************/  
+	/****  HISTORY - MAIN  ****/
+	/**************************/
+
+	.label_filter  {
+		width				: 38px;
+		height				: 17px;
+		/*top					: 14px;*/
+		left                : 266px;
+		font-family			: "Roboto";
+		font-weight         : light;
+		font-size			: 16px;
+		text-align       	: right;
+		color 				: #ffffff;
+	}
+		
+	#history_segcontrol {
+		width				: 306px;
+		height				: 30px;
+		left				: 7px;
+		top					: 6px;
+		-ios-tint-color		: #3fabe1;
+		background-color	: #3fabe1;
+		border-color		: #3fabe1;
+		font-family			: "Roboto";
+		font-weight			: light;
+	}
+    
+    #history_search {
+        background-color : #d1d3d4;
+    }
+
+	/**  Table View for the entire main history table - for row-height & separator-color)  **/
+	table-view#history {
+		width				: 320px;
+		background-color	: #ffffff;
+		row-height			: 60px;
+		separator-style 	: single-line;
+		separator-color		: rgba(188,190,192,.65);	
+	}
+
+	/**  Profile Pic of other user  **/
+	.history_userpics {
+		width				: 45px;
+		height				: 45px;
+		border				: 1px solid #6d6e71;
+		top					: 7px;
+		left				: 16px;
+	}
+	  
+	/**  Left Side Main Text ("You Paid/Requested/Donated...")  **/
+	.history_cell_textlabel { 
+		width				: 180px;
+		height				: 15px;
+		top					: 16px;
+		left				: 75px;
+		font-size			: 16px;
+	}
+
+	/**  Date of the transfer ("2 days ago")  **/
+	.history_datetext {
+		width				: 150px;
+		height				: 14px;
+		top					: 36px;
+		left                : 80px;
+		font-family			: "Roboto";
+		font-weight         : light;
+		font-size			: 11px;
+		text-align       	: left;
+		color 				: #58595b;
+	}
+	 
+	/**  Amount of the Transfer on the right side of the row  **/
+	.history_transferamount {
+		width				: 70px;
+		height				: 19px;
+		top					: 14px;
+		left				: 245px;
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 17px;
+		text-align       	: right;
+	}
+	
+	 /**  Amount of the PENDING Transfer on the right side of the row (Only on the Pending Tab)  **/
+	.history_pending_transferamount {
+		width				: 61px;
+		height				: 19px;
+		top					: 14px;
+		left				: 254px;
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 17px;
+		text-align       	: right;
+	}
+
+	/**  Next 3 classes set the color the amount depending if the transfer increased/decreased the user's balance  **/
+	.history_transferamount_pos {color		: #72bf44;}
+	.history_transferamount_neg {color		: #d2232a;}
+	.history_transferamount_neutral {color	: #3fabe1;}
+
+	/**  The small running tally of the user's balance directly beneath the transfer amount for each row.  **/
+	 .history_updatedbalance {
+		width				: 50px;
+		height				: 13px;
+		top					: 35px;
+		left                : 260px;
+		font-family			: "Roboto";
+		font-weight         : light;
+		font-size			: 11px;
+		text-align       	: right;
+		color 				: #58595b;
+	}	
+
+	 /**  Sets the other user's name to be bold for each row.  **/
+	.history_recipientname { 
+        font-weight	: regular;
+        color               : #313233;
+    }
+	
+	.history_sidecolor {
+		top				: 1px;
+		left			: 0px;
+		height			: 67px;
+		width			: 6px;
+	}
+	
+	/**  Next 4 classes set the color of .history_sidecolor depending on the type of transfer.  **/
+	.history_sidecolor_pos {background-color		: #72bf44;}
+	.history_sidecolor_neg {background-color		: #d2232a;}
+	.history_sidecolor_neutral {background-color	: #3fabe1;}
+	.history_sidecolor_donate {background-color		: #5a538d;}
+
+	
+	/*********************************/
+	/*****    TRANSFER DETAILS   *****/
+	/*********************************/
+
+	/***** Intro Text - "Payment from"  or  "Request From"  etc.  ****/
+	.details_intro {
+		width				: 180px;
+		height				: 22px;
+		top					: 7px;
+		left                : 70px;
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 17px;
+		text-align       	: center;
+	}
+
+	.details_intro_blue { color: #3fabe1; }     	/**  For REQUESTS	**/
+	.details_intro_green { color: #72bf44; }    	/**   For SENDS		**/
+	.details_intro_purple { color: #5a538d; } 	/**  For DONATIONS	**/
+	
+	/*****  Other Person's Name  ****/
+	.details_othername {
+		width				: 180px;
+		height				: 28px;
+		top					: 37px;
+		left                : 70px;
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 22px;
+		text-align       	: center;
+		color 				: #313233;
+	}
+
+	/**  Profile Picture of the other user  **/
+	.details_userpic {
+		width				: 65px;
+		height				: 65px;
+		top					: 17px;
+		left				: 16px;
+		border				: 2px solid #6d6e71;
+	}
+
+	/**  Amount of the transfer  **/
+	.details_amount {
+		width				: 170px;
+		height				: 40px;
+		top					: 71px;
+		left                : 75px;
+		font-family			: "Roboto";
+		font-weight         : medium;
+		font-size			: 34px;
+		text-align       	: center;
+		color 				: #3fabe1;
+	}
+	
+	.details_amount_donation { }
+
+	/**  Memo & Location Text **/
+	.details_label {
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 18px;
+		text-align          : center;
+		color 				: #6d6e71;
+		width				: 280px;
+		left                : 20px;
+		height				: 30px;
+	}
+
+	.details_button_left {
+		width			: 152px;
+		top				: 425px;
+		left			: 5px;
+		font-size		: 22px;
+		box-shadow		: inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 1px rgba(0,0,0,0.5);	
+	}
+	
+	.details_button_right {
+		width			: 152px;
+		top				: 425px;
+		left			: 153px;
+		font-size		: 22px;
+	}
+	
+	/**  Circle Buttons at the bottom ('Pay Back'  FB  Twitter  'Dispute' **/
+	.details_buttons {
+		width				: 50px;
+		height				: 50px;
+		top					: 420px;
+	}
+
+	/**  Text labels immediately below each round button at the bottom of Transfer Details. **/
+	.details_buttons_labels {
+		//width				: 60px;
+        text-align      : center;
+		height				: 14px;
+		top					: 480px;
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 12px;
+		color 				: #6d6e71;
+	}
+    
+    #details_payback {
+        left : 15px;
+    }
+    
+    #details_fb {
+        left : 95px;
+    }
+    
+    #details_twit {
+        left : 175px;
+    }
+    
+    #details_disp {
+        left : 255px;
+    }
+	
+ /*******************************************
+  *******************************************
+  ********* 	 SETTINGS FLOW	    *********
+  *******************************************
+  *******************************************/
+	
+	/**************************/
+	/****   Main Settings  ****/
+	/**************************/
+	
+	.background_gray { background-color: #efeff4; }
+	
+	table-view#settings {
+		width				: 320px;
+        height             : 150px;
+		top					: 25px;
+		left				: 0px;
+		background-color	: white;
+		row-height			: 50px;
+		separator-style 	: single-line;
+		separator-color		: rgba(188,190,192,0.9);
+	}
+	
+	/**  Left side text label. **/
+	.settings_table_label {
+		width				: 250px;
+		height				: 50px;
+		top					: 0px;
+		left				: 50px;
+		color				: #313233;
+		font-family			: "Roboto";
+		font-weight			: regular;
+		font-size			: 18px;
+		text-align			: left;
+	}
+    
+    .settings_resetpass_labels {
+    color       : #3fabe1;
+    width				: 250px;
+		height				: 50px;
+		top					: 0px;
+		left				: 20px;
+		font-family			: "Roboto";
+		font-weight			: regular;
+		font-size			: 18px;
+		text-align			: left;
+    }
+	
+	/**  Gray Signout Button. **/
+	#button_signout {
+		width				: 250px;
+		height				: 50px;
+		top					: 390px;
+		left				: 35px;
+		font-size			: 20px;
+	}
+	
+	/**************************/
+	/****  Reset Password  ****/
+	/**************************/
+	
+	.resetpw_left_label	{ 
+		width			: 170px;
+		left			: 15px;
+		font-size		: 16px;
+	}
+	
+	.resetpw_right_label {
+		width			: 140px;
+		height			: 45px;
+		left			: 171px;
+		top				: 0px;
+		color			: #3fabe1;
+		font-family		: "Roboto";
+		font-size		: 16px;
+		font-weight		: light;
+		text-align		: right;
+	}
+	
+	.password_strength_label {
+		width			: 125px;
+		height			: 15px;
+		left			: 55px;
+		top				: 170px;
+		color			: #939598;
+		font-family		: "Roboto";
+		font-size		: 14px;
+		font-weight		: regular;
+		text-align		: left;
+	}
+	
+	.password_strength_feedback {
+		width			: 120px;
+		height			: 15px;
+		left			: 185px;
+		top				: 170px;
+		color			: #c72127;
+		font-family		: "Roboto";
+		font-size		: 14px;
+		font-weight		: regular;
+		text-align		: left;
+	}
+	
+	.resetpw_match {
+		width			: 125px;
+		height			: 10px;
+		left			: 186px;
+		top				: 33px;
+		font-family		: "Roboto";
+		font-size		: 16px;
+		font-weight		: regular;
+		text-align		: center;
+		text-transform	: uppercase;
+	}
+	
+	#resetpw_check_icon {
+		width			: 12px;
+		height			: 8px;
+		top				: 32px;
+		left			: 270px;
+		background-image: url(check-icon-small.png);
+	}
+	
+	/**************************/  
+	/****  Refer a Friend  ****/
+	/**************************/
+	
+	#refer_introtext {
+		width			: 300px;
+		height			: 30px;
+		top				: 15px;
+		left			: 10px;
+		color			: #313233;
+		font-family		: "Roboto";
+		font-weight		: regular;
+		font-size		: 22px;
+		text-align		: center;
+	}
+	
+	#refer_invitecode {
+		width			: 300px;
+		height			: 45px;
+		top				: 65px;
+		left			: 10px;
+		color			: #3fabe1;
+		font-family		: "Roboto";
+		font-weight		: medium;
+		font-size		: 40px;
+		text-align		: center;
+		text-transform	: uppercase;
+	}
+	
+	.refer_header {
+		width			: 250px;
+		height			: 25px;
+		left			: 15px;
+		color			: #313233;
+		font-family		: "Roboto";
+		font-weight		: regular;
+		font-size		: 17px;
+		text-align		: left;
+	}
+	
+	/**  Circle Buttons at the bottom ('Pay Back'  FB  Twitter  'Dispute' **/
+	.refer_buttons {
+		width				: 50px;
+		height				: 50px;
+		top					: 170px;
+	}
+    
+    #refer_sms {
+        left        : 24px;
+        background-image : url(sms-icon.png);
+    }
+    
+    #refer_fb {
+        left        : 98px;
+        background-image : url(fb-icon100x100.png);
+    }
+	
+    #refer_twit {
+        left        : 172px;
+        background-image : url(twitter-icon.png);
+    }
+    
+    #refer_email {
+        left        : 246px;
+        background-image : url(email-icon.png);
+    }
+
+	/**  Text labels immediately below each referral method (SMS, FB, Twitter, Email) button. **/
+	.refer_buttons_labels {
+		width				: 60px;
+		height				: 17px;
+		top					: 224px;
+		font-family			: "Roboto";
+		font-weight         : light;
+		font-size			: 13px;
+        text-align      : center;
+		color 				: #6d6e71;
+	}
+
+	/**  Sets the Table styling for the list of users a person has referred. **/
+	table-view#refer {
+		width				: 306px;
+        height             : 120px;
+		left				: 7px;
+        top              : 302px;
+		row-height			: 60px;
+		separator-style 	: single-line;
+		separator-color		: rgba(188,190,192,.35);	
+	}
+	
+	/****  Table text right side of the Refera A Friend screen.  ****/
+	.refer_datetext {
+		width				: 90px;
+		left                : 205px;
+		height				: 30px;
+        top                  : 15px;
+		font-family			: "Roboto";
+		font-weight         : light;
+		font-size			: 16px;
+		text-align       	: right;
+		color 				: #3fabe1;
+	}
+    
+    .refer_name {
+            font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 17px;
+			text-align       	: left;
+			color 				: #313233;
+			width				: 250px;
+			left                : 75px;
+			height				: 30px;
+            top                  : 15px;
+    }
+
+/**************************/  
+/****  Refer a Friend  ****/
+/**************************/
+	table-view.stats {
+		height			: 300px;
+		width			: 300px;
+		top				: 100px;
+		left			: 0px;
+		background-color: white;
+		row-height		: 40px;
+		separator-style : none;
+	}
+
+	.stats_header {
+		width			: 300px;
+		height			: 25px;
+		top				: 103px;
+		left			: 0px;
+		color			: #414042;
+		font-family		: "Roboto";
+		font-weight		: regular;
+		font-size		: 22px;
+		text-align		: center;
+	}
+
+	.stats_table_left_lable {
+		width			: 190px;
+		height			: 50px;
+		top				: 0px;
+		left			: 10px;
+		color			: #3fabe1;
+		font-family		: "Roboto";
+		font-weight		: regular;
+		font-size		: 17px;
+		text-align		: left;
+	}
+
+	.stats_table_right_lable {
+		width			: 75px;
+		height			: 50px;
+		top				: 0px;
+		left			: 230px;
+		color			: #3fabe1;
+		font-family		: "Roboto";
+		font-weight		: regular;
+		font-size		: 17px;
+		text-align		: left;
+	}
+
+	.stats_circle {
+		shape		: ellipse;
+		width		: 55px;
+		height		: 55px;
+		top			: 12px;
+	}
+
+	#stats_circle_profile_active 		{ 
+        left : 33px;
+        background-image: url(stats-profile-active.png );
+    }
+	#stats_circle_profile_inactive 		{ 
+        background-image: url(stats-profile-inactive.png);
+        left  : 33px;
+    }
+
+	#stats_circle_transfers_active 		{ 
+        background-image: url(stats-transfers-active.png);
+        left : 121px;
+    }
+	#stats_circle_transfers_inactive 	{ 
+        background-image: url(stats-transfers-inactive.png);
+        left : 121px;
+    }
+
+	#stats_circle_donations_active 		{
+        background-image: url(stats-donations-active.png);
+        left :  209px;
+    }
+	#stats_circle_donations_inactive 	{ 
+        background-image: url(stats-donations-inactive.png);
+        left : 209px;
+    }
+		
+
+ /*******************************************
+  *******************************************
+  ********* 	  ANIMATIONS 	    *********
+  *******************************************
+  *******************************************/
+
+	@keyframes howmuch_roll_left {
+        0% {
+			left: 141px;
+            rotation    : 0;
+			scale: 1;
+            opacity : 1;
+		}
+		100% {
+			left: -40px;
+            rotation  : -5;
+			scale: .4;
+            opacity : 0;
+		}
+	}
+    
+    @keyframes howmuch_roll_left_return {
+        0% {
+            left: -40px;
+            rotation  : 0;
+			scale: .4;
+        }
+        100% {
+            left: 141px;
+            rotation    : 5;
+			scale: 1;
+        }
+    }
+    
+    @keyframes howmuch_roll_right {
+		0% {
+			left: 141px;
+            rotation    : 0;
+			scale: 1;
+            opacity : 1;
+		}
+		100% {
+			left: 340px;
+            rotation  : 5;
+			scale: .4;
+            opacity : 0;
+		}
+    }
+    
+    @keyframes howmuch_roll_right_return {
+		0% {
+			left: 340px;
+            rotation  : 0;
+			scale: .4;
+		}
+		100% {
+			left: 141px;
+            rotation    : -5;
+			scale: 1;
+		}
+	}
+	
+	@keyframes bubble {
+		from {
+			opacity: .5;
+			scale: .2;
+		}
+		50% {
+			scale: 1.1;
+		}
+		65% {
+			scale: .9;
+		}
+		75% {
+			scale: 1.1;
+		}
+		85% {
+			scale: .95;
+		}
+		to {
+			opacity: 1;
+			scale: 1;
+		}
+	}

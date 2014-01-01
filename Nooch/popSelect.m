@@ -7,9 +7,7 @@
 //
 
 #import "popSelect.h"
-#import "core.h"
-#import "history.h"
-#import "AllMapViewController.h"
+#import "HistoryFlat.h"
 @interface popSelect ()
 
 @end
@@ -52,8 +50,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(memoList)
         return 6;
-    else if(mapfilter)
-        return 8;
     else
         return 8;
 }
@@ -65,8 +61,29 @@
     }
     for(UIView *subview in cell.contentView.subviews)
         [subview removeFromSuperview];
+    if (isHistFilter) {
+        [cell.textLabel setTextAlignment:NSTextAlignmentCenter];
+        if (indexPath.row == 0) {
+            cell.textLabel.text = @"ALL";
+        }else if(indexPath.row == 1){
+            cell.textLabel.text = @"Sent";
+        }else if(indexPath.row == 2){
+            cell.textLabel.text = @"Received";
+        }else if(indexPath.row == 3){
+            cell.textLabel.text = @"Requests";
+        }else if(indexPath.row == 4){
+            cell.textLabel.text = @"Deposits";
+        }else if(indexPath.row == 5){
+            cell.textLabel.text = @"Withdrawals";
+        }else if(indexPath.row == 6){
+            cell.textLabel.text = @"Disputes";
+        }else if(indexPath.row == 7){
+            cell.textLabel.text = @"Cancel";
+        }
+        return cell;
+    }
     if (!memoList) {
-        [cell.textLabel setFont:[core nFont:@"Medium" size:14.0]];
+        //[cell.textLabel setFont:[core nFont:@"Medium" size:14.0]];
         [cell.textLabel setTextAlignment:NSTextAlignmentCenter];
         if (indexPath.row == 0) {
             cell.textLabel.text = @"ALL";
@@ -86,32 +103,8 @@
             cell.textLabel.text = @"Cancel";
         }
         return cell;
-    }
-    else if (mapfilter){
-        [cell.textLabel setFont:[core nFont:@"Medium" size:14.0]];
-        [cell.textLabel setTextAlignment:NSTextAlignmentCenter];
-        if (indexPath.row == 0) {
-            cell.textLabel.text = @"ALL";
-        }else if(indexPath.row == 1){
-            cell.textLabel.text = @"Sent";
-        }else if(indexPath.row == 2){
-            cell.textLabel.text = @"Received";
-        }else if(indexPath.row == 3){
-            cell.textLabel.text = @"Requests";
-        }else if(indexPath.row == 4){
-            cell.textLabel.text = @"Deposits";
-        }else if(indexPath.row == 5){
-            cell.textLabel.text = @"Withdrawals";
-        }else if(indexPath.row == 6){
-            cell.textLabel.text = @"Disputes";
-        }else if(indexPath.row == 7){
-            cell.textLabel.text = @"Cancel";
-        }
-        return cell;
-
-    }
-        else{
-        [cell.textLabel setFont:[core nFont:@"Medium" size:12.0]];
+    }else{
+        //[cell.textLabel setFont:[core nFont:@"Medium" size:12.0]];
         UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(245, 7, 20, 20)];
         if (indexPath.row == 0) {
             [iv setImage:[UIImage imageNamed:@"Memo_Icon.png"]];
@@ -137,10 +130,30 @@
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (!memoList) {
-        limit = NO;
-        loadingCheck = NO;
+    if (isHistFilter) {
         if (indexPath.row == 0) {
+         listType = @"ALL";
+         }else if(indexPath.row == 1){
+         listType = @"SENT";
+         }else if(indexPath.row == 2){
+         listType = @"RECEIVED";
+         }else if(indexPath.row == 3){
+         listType = @"REQUEST";
+         }else if(indexPath.row == 4){
+         listType = @"DEPOSIT";
+         }else if(indexPath.row == 5){
+         listType = @"WITHDRAW";
+         }else if(indexPath.row == 6){
+             listType = @"DISPUTED";}
+        else if(indexPath.row == 7){
+        listType = @"CANCEL";
+         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissPopOver" object:nil];
+  return;
+    }
+    if (!memoList) {
+        
+        /*if (indexPath.row == 0) {
             filterPick = @"ALL";
         }else if(indexPath.row == 1){
             filterPick = @"SENT";
@@ -154,36 +167,10 @@
             filterPick = @"WITHDRAW";
         }else if(indexPath.row == 6){
             filterPick = @"DISPUTED";
-        }
-        else if(indexPath.row == 7){
-            filterPick = @"CANCEL";
-        }
+        }*/
         [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissPopOver" object:nil];
         return;
-    }
-    else if (mapfilter){
-    limit = NO;
-    loadingCheck = NO;
-    if (indexPath.row == 0) {
-        filterString = @"ALL";
-    }else if(indexPath.row == 1){
-        filterString = @"SENT";
-    }else if(indexPath.row == 2){
-        filterString = @"RECEIVED";
-    }else if(indexPath.row == 3){
-        filterString = @"REQUEST";
-    }else if(indexPath.row == 4){
-        filterString = @"DEPOSIT";
-    }else if(indexPath.row == 5){
-        filterString = @"WITHDRAW";
-    }else if(indexPath.row == 6){
-        filterString = @"DISPUTED";
-    }
-        
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissPopOver" object:nil];
-    return;
-    }
-    else{
+    }else{
         NSString *selectedImg = [NSString new];
         NSString *selectedCat = [NSString new];
         if (indexPath.row == 0) {

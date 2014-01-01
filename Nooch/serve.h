@@ -7,26 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CJSONSerializer.h"
-#import "CJSONDataSerializer.h"
-#import "JSON.h"
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
-#import "MyCLController.h"
 @protocol serveD
 @required
 -(void)listen:(NSString *)result tagName:(NSString *)tagName;
 @end
 
-@interface serve : NSObject <CLLocationManagerDelegate>{
+@interface serve : NSObject {
     //venturepact modification
     
-
+    
     NSMutableData *responseData;
     //NSMutableURLRequest *request;
     id<serveD> Delegate;
     NSString *tagName;
-
+    
     NSString *latlng;
     CLLocationManager *locationManager;
     MKPlacemark *placeMarker;
@@ -40,12 +36,7 @@
     NSString *Latitude;
     NSString *Longitude;
     NSString *Altitude;
-    BOOL islogOutUnconditional;
-    BOOL isloggedout;
-    NSArray*arrResponse;
 }
-@property(nonatomic,retain)NSString *Latitude;
-@property(nonatomic,retain) NSString *Longitude;
 @property(nonatomic,strong) CLLocationManager *locationManager;
 @property (retain) id<serveD> Delegate;
 @property (nonatomic, retain) NSMutableData *responseData;
@@ -75,7 +66,7 @@
 -(void)memberDevice:(NSString *)deviceToken;
 -(void)setEmailSets:(NSDictionary*)notificationDictionary;
 -(void)setPushSets:(NSDictionary*)notificationDictionary;
--(void)newUser:(NSString *)email first:(NSString *)fName last:(NSString *)lName password:(NSString *)password pin:(NSString*)pin invCode:(NSString*)inv;
+-(void)newUser:(NSString *)email first:(NSString *)fName last:(NSString *)lName password:(NSString *)password pin:(NSString*)pin invCode:(NSString*)inv fbId:(NSString*)fbId;
 -(void)setSets:(NSDictionary*)settingsDictionary;
 -(void)resetPassword:(NSString*)old new:(NSString*)new;
 -(void)resetPIN:(NSString*)old new:(NSString*)new;
@@ -93,23 +84,18 @@
 -(void)SendSMSApi:(NSString*)phoneNo msg:(NSString*)msgText;
 -(void)GetReferralCode:(NSString*)memberid;
 -(void)getInvitedMemberList:(NSString*)memId;
-- (void)locationUpdate:(CLLocation *)location;
-- (void)locationError:(NSError *)error;
 -(void)sendCsvTrasactionHistory:(NSString *)emailaddress;
 -(void)ValidateBank:(NSString*)bankName routingNo:(NSString*)routingNumber;
 -(void)getTotalReferralCode:(NSString *)inviteCode;
--(void) LogOutRequest:(NSString*) memberId;
--(void)SettingsTwoWayAuthontication:(NSString*)stateSetting;
-//charanjit's edit 26/11
--(void)getAutoWithDrawalSelectedOption;
--(void)getLocationBasedSearch:(NSString *)radius;
--(void)GetAllWithdrawalTrigger;
--(void) GetAllWithdrawalFrequency;
--(void)SaveFrequency:(NSString*) withdrawalId type:(NSString*) type frequency: (float)withdrawalFrequency;
 -(void)GetFeaturedNonprofit;
--(void)GetNonProfiltDetail:(NSString*)npId;
 -(void)GetNonProfiltList;
-
+-(void) GetAllWithdrawalFrequency;
+-(void)getAutoWithDrawalSelectedOption;
+-(void)GetAllWithdrawalTrigger;
+-(void)SaveFrequency:(NSString*) withdrawalId type:(NSString*) type frequency: (float)withdrawalFrequency;
+-(void)GetNonProfiltDetail:(NSString*)npId;
+-(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len;
+-(void)histMoreSerachbyName:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len name:(NSString*)name;
 @end
 
 //392f9c86-1651-4459-a6a9-d362fcfc4366 - nooch team

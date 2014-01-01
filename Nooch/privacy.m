@@ -8,7 +8,6 @@
 
 #import "privacy.h"
 #import "terms.h"
-#import "NSString+SBJSON.h"
 
 @implementation privacy
 
@@ -66,7 +65,6 @@
 
 -(void)goBack
 {
-    [navCtrl dismissViewControllerAnimated:YES completion:nil];
     //[navCtrl dismissModalViewControllerAnimated:YES];
 }
 
@@ -76,7 +74,8 @@
 
 -(void)listen:(NSString *)result tagName:(NSString*)tagName
 {
-    NSDictionary *template =[result JSONValue];
+    NSError *error;
+    NSDictionary *template = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
     
     if([template objectForKey:@"Result"])
     {
@@ -94,8 +93,6 @@
 
 - (IBAction)continueButtonAction
 {
-   
-    [navCtrl dismissViewControllerAnimated:YES completion:nil];
    //[navCtrl dismissModalViewControllerAnimated:YES];
 }
 
