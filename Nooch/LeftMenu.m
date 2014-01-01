@@ -54,7 +54,8 @@
     
     UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(65, 40, 150, 20)];
     [name setStyleId:@"lside_firstname"];
-     [name setText:@"Preston"];
+    [name setText:[user objectForKey:@"firstName"]];
+     //[name setText:@"Preston"];
      [user_bar addSubview:name];
     
     
@@ -286,6 +287,10 @@
         else if(indexPath.row == 1)
         {
             //contact support
+            UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Report a Bug", @"Email Nooch Support", @"Go to Support Center", nil];
+            actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
+            [actionSheetObject setTag:1];
+            [actionSheetObject showInView:self.view];
         }
         else if(indexPath.row == 2)
         {
@@ -295,12 +300,66 @@
         }
         else if(indexPath.row == 3)
         {
-            Legal *leg = [Legal new];
-            [nav_ctrl pushViewController:leg animated:NO];
-            [self.slidingViewController resetTopView];
+            UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"User Agreement", @"Privacy Policy", nil];
+            actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
+            [actionSheetObject setTag:2];
+            [actionSheetObject showInView:self.view];
         }
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark actionsheet delegation
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if ([actionSheet tag] == 1) {
+        if(buttonIndex == 0)
+        {
+            //report bug
+            if (![MFMailComposeViewController canSendMail]){
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [av show];
+                return;
+            }
+            MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+            mailComposer.mailComposeDelegate = self;
+            [mailComposer setSubject:[NSString stringWithFormat:@"Bug Report: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+            [mailComposer setMessageBody:@"" isHTML:NO];
+            [mailComposer setToRecipients:[NSArray arrayWithObjects:@"bugs@nooch.com",nil]];
+            [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+            [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+            [self presentViewController:mailComposer animated:YES completion:nil];
+        }
+        else if(buttonIndex == 1)
+        {
+            //email support
+            if (![MFMailComposeViewController canSendMail]){
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [av show];
+                return;
+            }
+            MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+            mailComposer.mailComposeDelegate = self;
+            [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+            [mailComposer setMessageBody:@"" isHTML:NO];
+            [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+            [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+            [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+            [self presentViewController:mailComposer animated:YES completion:nil];
+        }
+        
+        else if(buttonIndex == 2)
+        {
+            //support center
+            
+        }
+    } else if ([actionSheet tag] == 2)
+    {
+        
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning

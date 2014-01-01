@@ -729,7 +729,7 @@ NSString *amnt;
         [defaults synchronize];
         
     }
-    NSLog(@"RS%@",responseString);
+    //NSLog(@"RS%@",responseString);
     NSLog(@"TAG%@",tagName);
     if ([tagName isEqualToString:@"sets"]) {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
@@ -807,8 +807,6 @@ NSString *amnt;
 
     //modification by charanjit starts
     if ([tagName isEqualToString:@"login"]) {
-        
-        NSLog(@"Response Login %@",responseString);
         //converting the result into Dictionary
         NSError* error;
         NSDictionary *result = [NSJSONSerialization

@@ -60,7 +60,8 @@
     self.picture.layer.cornerRadius = 30; self.picture.layer.borderColor = kNoochBlue.CGColor; self.picture.layer.borderWidth = 1;
     self.picture.clipsToBounds = YES;
     [self.picture addTarget:self action:@selector(change_pic) forControlEvents:UIControlEventTouchUpInside];
-    [self.picture setBackgroundImage:[UIImage imageNamed:@"Preston.png"] forState:UIControlStateNormal];
+    [self.picture setStyleId:@"lside_userpic"];
+    [self.picture setStyleCSS:@"background-image : url(Preston.png)"];
     [self.view addSubview:self.picture];
     
     self.name = [[UITextField alloc] initWithFrame:CGRectMake(20, 70, 280, 30)];

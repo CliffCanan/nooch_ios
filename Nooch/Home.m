@@ -122,11 +122,16 @@
     }else{
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        [nav_ctrl performSelector:@selector(disable)];
+        //[nav_ctrl performSelector:@selector(disable)];
         Register*reg=[Register new];
         [nav_ctrl pushViewController:reg animated:NO];
         return;
     }
+    
+    serve *details = [serve new];
+    [details setTagName:@"details"];
+    [details setDelegate:self];
+    [details getDetails:[[me usr] objectForKey:@"MemberId"]];
     
     //if they have required immediately turned on or haven't selected the option yet, redirect them to PIN screen
     if (![[me usr] objectForKey:@"requiredImmediately"]) {
@@ -136,14 +141,14 @@
         
         //new addition by Charanjit
         
-        [self presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:YES completion:nil];
+        //[self presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:YES completion:nil];
         
     }else if([[[me usr] objectForKey:@"requiredImmediately"] boolValue]){
         //reqImm = YES;
         //commented by Charanjit
         //        [self presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
         //new addition which does the same work
-        [self presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:YES completion:nil];
+        //[self presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:YES completion:nil];
     }
     
     //
@@ -211,7 +216,9 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    
+    if ([tagName isEqualToString:@"details"]) {
+        NSLog(@"deets: %@",result);
+    }
 }
 
 - (void)didReceiveMemoryWarning
