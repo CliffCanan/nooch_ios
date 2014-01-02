@@ -216,7 +216,8 @@
         [log setDelegate:self];
         [log setTagName:@"login"];
         //[log validateInvitation:@"pilot"];
-        [log login:self.email.text password:self.encrypted_pass remember:[self.stay_logged_in isOn] lat:lat lon:lon];
+         NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+        [log login:self.email.text password:self.encrypted_pass remember:[self.stay_logged_in isOn] lat:lat lon:lon uid:udid];
     }
     if ([tagName isEqualToString:@"login"])
     {

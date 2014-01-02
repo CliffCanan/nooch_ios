@@ -752,12 +752,15 @@
     else  if ([ServiceType isEqualToString:@"name"])
     {
         ServiceType=@"lastname";
-        NSString* letterA=[[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
-        
-        self.name.text=[NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
-        NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
-        if (![[dictProfileinfo objectForKey:@"LastName"] isKindOfClass:[NSNull class]]) {
+        if ([[sourceData objectForKey:@"Status"] length]>0) {
+            NSString* letterA=[[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
             
+            self.name.text=[NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
+            NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
+            if (![[dictProfileinfo objectForKey:@"LastName"] isKindOfClass:[NSNull class]]) {
+                
+        }
+       
             
             
             
@@ -774,13 +777,16 @@
     else  if ([ServiceType isEqualToString:@"lastname"])
     {
         ServiceType=@"email";
-        NSString* letterA=[[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
-        
-        
-        self.name.text=[self.name.text stringByAppendingString:[NSString stringWithFormat:@" %@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]]];
-        // self.zip.text=[sourceData objectForKey:@"Status"];
-        NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
-        if (![[dictProfileinfo objectForKey:@"UserName"] isKindOfClass:[NSNull class]]) {
+        if ([[sourceData objectForKey:@"Status"] length]>0) {
+            NSString* letterA=[[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
+            
+            
+            self.name.text=[self.name.text stringByAppendingString:[NSString stringWithFormat:@" %@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]]];
+            // self.zip.text=[sourceData objectForKey:@"Status"];
+            NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
+
+        }
+                if (![[dictProfileinfo objectForKey:@"UserName"] isKindOfClass:[NSNull class]]) {
             
             
             

@@ -320,13 +320,58 @@
 }
 - (void) take_photo
 {
-    [self.amount becomeFirstResponder];
-    [self cancel_photo];
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        
+        UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                              message:@"Device has no camera"
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles: nil];
+        
+        [myAlertView show];
+        return;
+        
+    }
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    
+    [self presentViewController:picker animated:YES completion:NULL];
+    //[self.amount becomeFirstResponder];
+    
+    //[self cancel_photo];
 }
 - (void) from_album
 {
-    [self.amount becomeFirstResponder];
-    [self cancel_photo];
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    
+    [self presentViewController:picker animated:YES completion:NULL];
+   }
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    //  transferOBJ = [self.storyboard instantiateViewControllerWithIdentifier:@"transfer"];
+    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+    [[assist shared]setTranferImage:chosenImage];
+    
+    //imagetoShow.image=chosenImage;
+    [picker dismissViewControllerAnimated:YES completion:^{
+       // [self close:nil];
+    }];
+    
+       
+    
+}
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    
+    [picker dismissViewControllerAnimated:YES completion:^{
+       // [self close:nil];
+    }];
+    // [self dismissViewControllerAnimated:YES completion:nil];
+    
 }
 
 #pragma mark - UITextField delegation

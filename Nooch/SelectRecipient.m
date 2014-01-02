@@ -174,9 +174,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    NSDictionary *receiver = @{@"FirstName": @"Preston",
-                               @"LastName": @"Hults"};//[self.recents objectAtIndex:indexPath.row];
-    
+    NSDictionary *receiver = [self.recents objectAtIndex:indexPath.row];//[self.recents objectAtIndex:indexPath.row];
+    NSLog(@"%@",[self.recents objectAtIndex:indexPath.row]);
     
     HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
     

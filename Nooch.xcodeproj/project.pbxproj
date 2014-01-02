@@ -232,6 +232,7 @@
 		6BF90A5F169B79C5009486E7 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF90A5E169B79C5009486E7 /* libsqlite3.0.dylib */; };
 		84172D15186D416D0041929F /* core.m in Sources */ = {isa = PBXBuildFile; fileRef = 84172D14186D416D0041929F /* core.m */; };
 		84172D18186D42200041929F /* assist.m in Sources */ = {isa = PBXBuildFile; fileRef = 84172D17186D42200041929F /* assist.m */; };
+		84193343187537A800D85FC4 /* GetLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84193342187537A800D85FC4 /* GetLocation.m */; };
 		842E3313187413490057EAFB /* Decryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 842E3312187413490057EAFB /* Decryption.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		842E3316187424440057EAFB /* GetEncryptionValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 842E3315187424440057EAFB /* GetEncryptionValue.m */; };
 		842E3318187431E40057EAFB /* RoundLoading.png in Resources */ = {isa = PBXBuildFile; fileRef = 842E3317187431E40057EAFB /* RoundLoading.png */; };
@@ -614,6 +615,8 @@
 		84172D14186D416D0041929F /* core.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = core.m; sourceTree = "<group>"; };
 		84172D16186D42200041929F /* assist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = assist.h; sourceTree = "<group>"; };
 		84172D17186D42200041929F /* assist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = assist.m; sourceTree = "<group>"; };
+		84193341187537A800D85FC4 /* GetLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetLocation.h; sourceTree = "<group>"; };
+		84193342187537A800D85FC4 /* GetLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetLocation.m; sourceTree = "<group>"; };
 		842E3311187413490057EAFB /* Decryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Decryption.h; sourceTree = "<group>"; };
 		842E3312187413490057EAFB /* Decryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Decryption.m; sourceTree = "<group>"; };
 		842E3314187424440057EAFB /* GetEncryptionValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetEncryptionValue.h; sourceTree = "<group>"; };
@@ -735,6 +738,7 @@
 		01085FE0180335AC00A31F63 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				841933401875374000D85FC4 /* Location Tracker */,
 				842E3314187424440057EAFB /* GetEncryptionValue.h */,
 				842E3315187424440057EAFB /* GetEncryptionValue.m */,
 				842E3311187413490057EAFB /* Decryption.h */,
@@ -1411,6 +1415,15 @@
 			path = Library;
 			sourceTree = "<group>";
 		};
+		841933401875374000D85FC4 /* Location Tracker */ = {
+			isa = PBXGroup;
+			children = (
+				84193341187537A800D85FC4 /* GetLocation.h */,
+				84193342187537A800D85FC4 /* GetLocation.m */,
+			);
+			name = "Location Tracker";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1602,6 +1615,7 @@
 				01085FC317FDE5C700A31F63 /* LeftMenu.m in Sources */,
 				6B3037AD15FA45BB00056DAD /* NSData+AESCrypt.m in Sources */,
 				6B3037AF15FA45BB00056DAD /* NSString+AESCrypt.m in Sources */,
+				84193343187537A800D85FC4 /* GetLocation.m in Sources */,
 				0179E9F917F35AA30027526C /* Home.m in Sources */,
 				16E4B1BA187053F20099D075 /* UIImage+MultiFormat.m in Sources */,
 				01085FB717FB6ABE00A31F63 /* ReferralCode.m in Sources */,

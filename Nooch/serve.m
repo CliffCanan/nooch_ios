@@ -301,7 +301,7 @@ NSString *amnt;
     if (!connection)
         NSLog(@"connect error");
 }
--(void)login:(NSString*)email password:(NSString*)pass remember:(BOOL)isRem lat:(float)lat lon:(float)lng {
+-(void)login:(NSString*)email password:(NSString*)pass remember:(BOOL)isRem lat:(float)lat lon:(float)lng uid:(NSString*)strId {
     
     //    locationManager = [[CLLocationManager alloc] init];
     //    locationManager.delegate = self;
@@ -311,12 +311,12 @@ NSString *amnt;
     ServiceType=@"Login";
     self.responseData = [[NSMutableData alloc] init];
     if (isRem) {
-        requestLogin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&rememberMeEnabled=true&lat=%f&lng=%f", ServerUrl, @"LoginRequest", @"name", email, @"pwd", pass,lat,lng]]];
+        requestLogin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&rememberMeEnabled=true&lat=%f&lng=%f&udid=%@", ServerUrl, @"LoginRequest", @"name", email, @"pwd", pass,lat,lng,strId]]];
         
     }
     else
     {
-        requestLogin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&rememberMeEnabled=false&lat=%f&lng=%f", ServerUrl, @"LoginRequest", @"name", email, @"pwd", pass,lat,lng]]];
+        requestLogin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&rememberMeEnabled=false&lat=%f&lng=%f&udid=%@", ServerUrl, @"LoginRequest", @"name", email, @"pwd", pass,lat,lng,strId]]];
     }
     [requestLogin setTimeoutInterval:10000];
     connectionLogin = [[NSURLConnection alloc] initWithRequest:requestLogin delegate:self];

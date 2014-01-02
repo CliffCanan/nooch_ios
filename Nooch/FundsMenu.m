@@ -1180,7 +1180,7 @@
 }
 - (void)changeSwitch:(id)sender{
     
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+   // NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
    /* if ([[[me usr] objectForKey:@"banks"] count]==0)
     {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Add and Verify Your Bank Account To Enable Auto Cash Out" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil] ;

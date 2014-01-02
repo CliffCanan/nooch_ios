@@ -10,7 +10,7 @@
 #import "Home.h"
 #import "serve.h"
 
-@interface HowMuch : UIViewController<UITextFieldDelegate,serveD>
+@interface HowMuch : UIViewController<UITextFieldDelegate,serveD,UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 - (id)initWithReceiver:(NSDictionary *)receiver;
 

@@ -35,6 +35,7 @@ NSMutableURLRequest *request1,*request2;
                                 [NSURL URLWithString:
                                  [[NSString stringWithFormat:@"%@"@"/%@?data=%@", MyUrl, methodName, text] stringByAddingPercentEscapesUsingEncoding:
                                   NSUTF8StringEncoding]]];
+    NSLog(@"%@",requisicao);
     //request2 = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?data=%@", MyUrl, methodName, text]]];
     
     //Load the request in the UIWebView.
