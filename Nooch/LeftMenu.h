@@ -10,8 +10,8 @@
 #import "Home.h"
 #import "ECSlidingViewController.h"
 
-@interface LeftMenu : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface LeftMenu : UIViewController<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>
 {
     UIImageView *user_pic;
-    }
+}
 @end

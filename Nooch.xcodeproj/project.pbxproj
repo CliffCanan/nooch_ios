@@ -1452,6 +1452,11 @@
 			attributes = {
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = Nooch;
+				TargetAttributes = {
+					6B30372015FA3FF200056DAD = {
+						DevelopmentTeam = 3GDWQ778SF;
+					};
+				};
 			};
 			buildConfigurationList = 6B30371B15FA3FF200056DAD /* Build configuration list for PBXProject "Nooch" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1772,8 +1777,8 @@
 		6B30375815FA3FF600056DAD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: charanjit singh (R2K5CMQ773)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: charanjit singh (R2K5CMQ773)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Nooch Inc (3GDWQ778SF)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Nooch Inc (3GDWQ778SF)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1800,8 +1805,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
+				PROVISIONING_PROFILE = "0B728BEF-1149-4D10-A675-233B9A3A089A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0B728BEF-1149-4D10-A675-233B9A3A089A";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1809,8 +1814,8 @@
 		6B30375915FA3FF600056DAD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: charanjit singh (R2K5CMQ773)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: charanjit singh (R2K5CMQ773)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Nooch Inc (3GDWQ778SF)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Nooch Inc (3GDWQ778SF)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1836,8 +1841,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
+				PROVISIONING_PROFILE = "0B728BEF-1149-4D10-A675-233B9A3A089A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0B728BEF-1149-4D10-A675-233B9A3A089A";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

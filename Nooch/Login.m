@@ -106,7 +106,7 @@
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
     
-    self.email = [[UITextField alloc] initWithFrame:CGRectMake(30, 160, 260, 40)];
+    self.email = [[UITextField alloc] initWithFrame:CGRectMake(30, 160, 300, 40)];
     [self.email setBackgroundColor:[UIColor clearColor]]; [self.email setPlaceholder:@"Email"];
     [self.email setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     [self.email setKeyboardType:UIKeyboardTypeEmailAddress];
@@ -125,6 +125,7 @@
     
     UILabel *em = [UILabel new]; [em setStyleClass:@"table_view_cell_textlabel_1"];
     CGRect frame = em.frame; frame.origin.y = 160; //frame = CGRectMake(10, 100, 300, 30);
+    [em setBackgroundColor:[UIColor clearColor]];
     [em setFrame:frame];
     [em setText:@"Email"];
     [self.view addSubview:em];
@@ -250,7 +251,7 @@
         
         
     }
-    
+
     
     if([tagName isEqualToString:@"getMemberDetails"]){
         NSError *error;

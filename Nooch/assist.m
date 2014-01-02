@@ -356,7 +356,7 @@ static assist * _sharedInstance = nil;
     serve *sets = [serve new];
     sets.Delegate = self;
     sets.tagName = @"sets";
-    [sets getSettings];
+    //[sets getSettings];
 }
 -(void)getAcctInfo{
     if (!islogout) {
