@@ -142,10 +142,10 @@ static assist * _sharedInstance = nil;
         }];
     }
 
-   timer= [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
-    [self getBanks];
-    [self getCards];
-    [self getSettings];
+   //timer= [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
+    //[self getBanks];
+    //[self getCards];
+    //[self getSettings];
 }/*}}}*/
 -(void)renewFb{
     [accountStore renewCredentialsForAccount:(ACAccount *)facebookAccount completion:^(ACAccountCredentialRenewResult renewResult, NSError *error){

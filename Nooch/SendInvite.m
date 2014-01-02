@@ -29,6 +29,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    [self.navigationItem setTitle:@"Refer a Friend"];
     
     self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 42, 320, [[UIScreen mainScreen] bounds].size.height-90)];
     [self.contacts setDataSource:self]; [self.contacts setDelegate:self];

@@ -58,16 +58,15 @@
      //[name setText:@"Preston"];
      [user_bar addSubview:name];
     
-    
-    
     UILabel *email = [[UILabel alloc] initWithFrame:CGRectMake(60, 48, 150, 10)];
     [email setStyleId:@"lside_balance"];
      [email setText:@"$ -20.00"];
      [self.view addSubview:email];
     
-    user_pic = [[UIImageView alloc] initWithFrame:CGRectMake(100, 20, 60, 60)];
-    [user_pic setStyleId:@"lside_userpic"];
-    [user_pic setStyleCSS:@"background-image : url(Preston.png)"];
+    user_pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 20, 60, 60)];
+    user_pic.clipsToBounds = YES;
+    user_pic.layer.cornerRadius = 30;
+    user_pic.layer.borderWidth = 2; user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
     [user_pic setUserInteractionEnabled:YES];
     [user_bar addSubview:user_pic];
     

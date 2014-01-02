@@ -30,6 +30,8 @@
 {
     [super viewDidLoad];
     
+    [self.navigationItem setTitle:@"Select Cause"];
+    
     serve*serveOBJ=[serve new];
     serveOBJ.tagName=@"featuredNp";
     serveOBJ.Delegate=self;

@@ -27,6 +27,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self.navigationItem setTitle:@"PIN Settings"];
+    
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     UIButton *change_pin = [UIButton buttonWithType:UIButtonTypeRoundedRect];

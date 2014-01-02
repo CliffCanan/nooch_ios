@@ -15,7 +15,7 @@
 
 @interface ProfileInfo ()
 
-@property(nonatomic,strong) UIButton *picture;
+@property(nonatomic,strong) UIImageView *picture;
 @property(nonatomic,strong) UITextField *name;
 @property(nonatomic,strong) UITextField *email;
 @property(nonatomic,strong) UITextField *recovery_email;
@@ -45,7 +45,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-   
+    [self.navigationItem setTitle:@"Profile Info"];
 
     serve *serveOBJ=[serve new ];
     serveOBJ.tagName=@"myset";
@@ -55,13 +55,12 @@
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
-    self.picture = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.picture setFrame:CGRectMake(30, 5, 60, 60)];
+    self.picture = [UIImageView new];
+    [self.picture setFrame:CGRectMake(20, 10, 60, 60)];
     self.picture.layer.cornerRadius = 30; self.picture.layer.borderColor = kNoochBlue.CGColor; self.picture.layer.borderWidth = 1;
     self.picture.clipsToBounds = YES;
-    [self.picture addTarget:self action:@selector(change_pic) forControlEvents:UIControlEventTouchUpInside];
-    [self.picture setStyleId:@"lside_userpic"];
-    [self.picture setStyleCSS:@"background-image : url(Preston.png)"];
+    [self.picture addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(change_pic)]];
+    [self.picture setUserInteractionEnabled:YES];
     [self.view addSubview:self.picture];
     
     self.name = [[UITextField alloc] initWithFrame:CGRectMake(20, 70, 280, 30)];

@@ -31,6 +31,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.navigationItem setTitle:@"Add Bank"];
+    
     UITapGestureRecognizer *tap =
     [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(Tapped:)];
     [self.view addGestureRecognizer: tap];

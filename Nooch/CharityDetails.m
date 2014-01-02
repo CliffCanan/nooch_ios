@@ -30,6 +30,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    [self.navigationItem setTitle:@"Cause Details"];
     
     UIImageView *image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 150)];
     [image setImage:[UIImage imageNamed:@"4k_image.png"]];

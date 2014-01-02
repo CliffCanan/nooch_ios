@@ -40,6 +40,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self.navigationItem setTitle:@"Notification Settings"];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     

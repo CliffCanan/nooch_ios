@@ -31,6 +31,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self.navigationItem setTitle:@"Settings"];
+    
     [self.view setStyleClass:@"background_gray"];
     
     UITableView *menu = [UITableView new];

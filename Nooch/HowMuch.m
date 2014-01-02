@@ -66,9 +66,10 @@
     [self.view addSubview:to_label];
     
     UIImageView *user_pic = [UIImageView new];
-    [user_pic setStyleId:@"howmuch_recipientpic"];
-    [user_pic setStyleCSS:@"background-image : url(Preston.png)"];
-    //[user_pic setImage:[UIImage imageNamed:@"Preston.png"]];
+    [user_pic setFrame:CGRectMake(28, 62, 74, 74)];
+    user_pic.layer.borderColor = [Helpers hexColor:@"939598"].CGColor;
+    user_pic.layer.borderWidth = 2; user_pic.clipsToBounds = YES;
+    user_pic.layer.cornerRadius = 37;
     [self.view addSubview:user_pic];
     
     self.amount = [[UITextField alloc] initWithFrame:CGRectMake(30, 40, 260, 80)];

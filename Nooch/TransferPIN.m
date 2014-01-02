@@ -97,8 +97,10 @@
     [self.view addSubview:memo_label];
     
     UIImageView *user_pic = [UIImageView new];
-    [user_pic setStyleClass:@"pin_recipientpic"];
-    [user_pic setStyleCSS:@"background-image : url(Preston.png)"];
+    [user_pic setFrame:CGRectMake(20, 204, 52, 52)];
+    user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
+    user_pic.layer.borderWidth = 2; user_pic.clipsToBounds = YES;
+    user_pic.layer.cornerRadius = 26;
     [self.view addSubview:user_pic];
     
     UILabel *total = [[UILabel alloc] initWithFrame:CGRectMake(10, 200, 290, 30)];

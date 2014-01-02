@@ -27,6 +27,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self.navigationItem setTitle:@"Limits and Fees"];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
 }

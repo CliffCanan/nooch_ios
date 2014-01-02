@@ -29,6 +29,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self.navigationItem setTitle:@"Statistics"];
     
     self.back = [UIView new];
     [self.back setBackgroundColor:[UIColor whiteColor]];
