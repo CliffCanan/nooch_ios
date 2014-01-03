@@ -419,19 +419,27 @@ static assist * _sharedInstance = nil;
         {
             [usr setObject:[loginResult objectForKey:@"BalanceAmount"] forKey:@"Balance"];
             
+            [user setObject:[loginResult objectForKey:@"BalanceAmount"] forKey:@"Balance"];
         }
         if(![[loginResult objectForKey:@"FirstName"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"FirstName"] != NULL)
         {
-                    [usr setObject:[loginResult objectForKey:@"FirstName"] forKey:@"firstName"];
+            [usr setObject:[loginResult objectForKey:@"FirstName"] forKey:@"firstName"];
             [usr setObject:[loginResult objectForKey:@"LastName"] forKey:@"lastName"];
+            
+            [user setObject:[loginResult objectForKey:@"FirstName"] forKey:@"firstName"];
+            [user setObject:[loginResult objectForKey:@"LastName"] forKey:@"lastName"];
         }
         if(![[loginResult objectForKey:@"Status"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"Status"] != NULL){
             [usr setObject:[loginResult objectForKey:@"Status"] forKey:@"Status"];
+            
+            [user setObject:[loginResult objectForKey:@"Status"] forKey:@"Status"];
         }
         if(![[loginResult objectForKey:@"PhotoUrl"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"PhotoUrl"] != NULL){
            // [usr setObject:[loginResult objectForKey:@"PhotoUrl"] forKey:@"PhotoUrl"];
             [usr setObject:@"http://172.17.60.150/NoochService/Photos/gv_no_photo.jpg" forKey:@"PhotoUrl"];
 
+             [user setObject:@"http://172.17.60.150/NoochService/Photos/gv_no_photo.jpg" forKey:@"PhotoUrl"];
+            
             if ([pic isEqualToData:UIImagePNGRepresentation([UIImage imageNamed:@"profile_picture.png"])] || [pic isKindOfClass:[NSNull class]] || [pic length] == 0) {
                 [self fetchPic];
             }

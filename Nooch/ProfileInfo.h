@@ -21,5 +21,6 @@
     NSMutableDictionary*dictProfileinfo;
      NSString*ServiceType;
     NSDictionary*GMTTimezonesDictionary;
+    UIImageView *picture;
 }
 @end

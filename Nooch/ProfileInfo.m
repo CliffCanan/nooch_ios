@@ -13,10 +13,9 @@
 #import "Decryption.h"
 #import "NSString+AESCrypt.h"
 #import "ResetPassword.h"
+#import "UIImageView+WebCache.h"
 
 @interface ProfileInfo ()
-
-@property(nonatomic,strong) UIImageView *picture;
 @property(nonatomic,strong) UITextField *name;
 @property(nonatomic,strong) UITextField *email;
 @property(nonatomic,strong) UITextField *recovery_email;
@@ -48,6 +47,11 @@
     if ([newchangedPass length]>0 && isPasswordChanged) {
         self.password.text=newchangedPass;
     }
+    
+    if ([strUrl length]>0 && strUrl!=nil) {
+        [picture setImageWithURL:[NSURL URLWithString:strUrl]
+                 placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+    }
 }
 - (void)viewDidLoad
 {
@@ -70,13 +74,13 @@
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
-    self.picture = [UIImageView new];
-    [self.picture setFrame:CGRectMake(20, 10, 60, 60)];
-    self.picture.layer.cornerRadius = 30; self.picture.layer.borderColor = kNoochBlue.CGColor; self.picture.layer.borderWidth = 1;
-    self.picture.clipsToBounds = YES;
-    [self.picture addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(change_pic)]];
-    [self.picture setUserInteractionEnabled:YES];
-    [self.view addSubview:self.picture];
+    picture = [UIImageView new];
+    [picture setFrame:CGRectMake(20, 10, 60, 60)];
+    picture.layer.cornerRadius = 30; picture.layer.borderColor = kNoochBlue.CGColor; picture.layer.borderWidth = 1;
+    picture.clipsToBounds = YES;
+    [picture addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(change_pic)]];
+    [picture setUserInteractionEnabled:YES];
+    [self.view addSubview:picture];
     
     self.name = [[UITextField alloc] initWithFrame:CGRectMake(20, 70, 280, 30)];
     [self.name setTextAlignment:NSTextAlignmentRight]; [self.name setBackgroundColor:[UIColor clearColor]];

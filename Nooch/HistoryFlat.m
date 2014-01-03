@@ -394,17 +394,8 @@
                     pic.layer.cornerRadius = 25;
                     pic.clipsToBounds = YES;
                     [cell.contentView addSubview:pic];
-                    UILabel *updated_balance = [UILabel new];
-                    [updated_balance setText:@"$50.00"];
-                    [updated_balance setStyleClass:@"history_updatedbalance"];
-                    [cell.contentView addSubview:updated_balance];
-                    
-                    
                    
                 }
-            
-           
-            
         }
         else if (indexPath.row==[histShowArrayPending count]) {
            

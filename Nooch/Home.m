@@ -63,8 +63,7 @@
     
     self.balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.balance setFrame:CGRectMake(0, 0, 60, 30)];
-    [[NSUserDefaults standardUserDefaults] setObject:@"100.00" forKey:@"balance"];
-    [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
+    [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"0.00"] forState:UIControlStateNormal];
     [self.balance.titleLabel setFont:kNoochFontMed];
     [self.balance addTarget:self action:@selector(showFunds) forControlEvents:UIControlEventTouchUpInside];
     [self.balance setStyleId:@"navbar_balance"];
@@ -169,6 +168,12 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    if ([[me usr] objectForKey:@"Balance"]) {
+        [self.balance setTitle:[NSString stringWithFormat:@"$%@",[[me usr] objectForKey:@"Balance"]] forState:UIControlStateNormal];
+    } else {
+        [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"0.00"] forState:UIControlStateNormal];
+    }
+    
     
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
   //  [nav_ctrl performSelector:@selector(reenable)];

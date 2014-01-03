@@ -21,8 +21,8 @@
 @interface LeftMenu ()
 @property(nonatomic,strong) UITableView *menu;
 @property(nonatomic) NSIndexPath *selected;
-
-
+@property(nonatomic,strong) UILabel *name;
+@property(nonatomic,strong) UILabel *balance;
 @end
 
 @implementation LeftMenu
@@ -53,16 +53,15 @@
     [user_bar setStyleId:@"lside_topbar_background"];
     [self.view addSubview:user_bar];
     
-    UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(65, 40, 150, 20)];
-    [name setStyleId:@"lside_firstname"];
-    [name setText:[user objectForKey:@"firstName"]];
+    self.name = [[UILabel alloc] initWithFrame:CGRectMake(65, 40, 150, 20)];
+    [self.name setStyleId:@"lside_firstname"];
+    [self.name setText:[[me usr] objectForKey:@"FirstName"]];
      //[name setText:@"Preston"];
-     [user_bar addSubview:name];
+     [user_bar addSubview:self.name];
     
-    UILabel *email = [[UILabel alloc] initWithFrame:CGRectMake(60, 48, 150, 10)];
-    [email setStyleId:@"lside_balance"];
-     [email setText:@"$ -20.00"];
-     [self.view addSubview:email];
+    self.balance = [[UILabel alloc] initWithFrame:CGRectMake(60, 48, 150, 10)];
+    [self.balance setStyleId:@"lside_balance"];
+     [self.view addSubview:self.balance];
     
     user_pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 20, 60, 60)];
     user_pic.clipsToBounds = YES;
@@ -95,9 +94,14 @@
     [super viewWillAppear:animated];
     //me=[core new];
    // assist*assistOBJ=[assist new];
-    NSLog(@"%@",[me usr]);
+    [self.name setText:[user objectForKey:@"firstName"]];
     
-    NSLog(@"%@",strUrl);
+    if ([user objectForKey:@"Balance"]) {
+        [self.balance setText:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]]];
+    } else {
+        [self.balance setText:[NSString stringWithFormat:@"$%@",@"0.00"]];
+    }
+    
     if ([strUrl length]>0 && strUrl!=nil) {
         [user_pic setStyleId:@"lside_userpic"];
         [user_pic setImageWithURL:[NSURL URLWithString:strUrl]

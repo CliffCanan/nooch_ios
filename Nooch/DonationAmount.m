@@ -97,6 +97,7 @@
     [self.send addTarget:self action:@selector(donate) forControlEvents:UIControlEventTouchUpInside];
     [self.send setStyleId:@"nonprofit_donatebutton"];
     [self.view addSubview:self.send];
+    [self.send setEnabled:NO];
     
     UIButton *dedicaiton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [dedicaiton setBackgroundImage:[UIImage imageNamed:@"memo-nonprofits"] forState:UIControlStateNormal];
@@ -118,12 +119,45 @@
     [twentyfive setStyleId:@"nonprofit_quicktapbuttons_25"];
     [fifty setStyleId:@"nonprofit_quicktapbuttons_50"];
     
+    [five addTarget:self action:@selector(five_dollars) forControlEvents:UIControlEventTouchUpInside];
+    [ten addTarget:self action:@selector(ten_dolalrs) forControlEvents:UIControlEventTouchUpInside];
+    [twentyfive addTarget:self action:@selector(twentyfive_dollars) forControlEvents:UIControlEventTouchUpInside];
+    [fifty addTarget:self action:@selector(fifty_dollars) forControlEvents:UIControlEventTouchUpInside];
+    
     [self.view addSubview:five];
     [self.view addSubview:ten];
     [self.view addSubview:twentyfive];
     [self.view addSubview:fifty];
     
     [self.amount becomeFirstResponder];
+}
+
+- (void) five_dollars
+{
+    [self.send setEnabled:YES];
+    self.amount.text = @"$5.00";
+    self.amnt = [@"500" mutableCopy];
+}
+
+- (void) ten_dolalrs
+{
+    [self.send setEnabled:YES];
+    self.amount.text = @"$10.00";
+    self.amnt = [@"1000" mutableCopy];
+}
+
+- (void) twentyfive_dollars
+{
+    [self.send setEnabled:YES];
+    self.amount.text = @"$25.00";
+    self.amnt = [@"2500" mutableCopy];
+}
+
+- (void) fifty_dollars
+{
+    [self.send setEnabled:YES];
+    self.amount.text = @"$50.00";
+    self.amnt = [@"5000" mutableCopy];
 }
 
 - (void) dedicate
