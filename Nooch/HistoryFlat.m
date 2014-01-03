@@ -34,6 +34,8 @@
 {
     [super viewDidLoad];
     
+    [self.navigationItem setTitle:@"History"];
+    
 	// Do any additional setup after loading the view.
     //30/12
     histArray=[[NSMutableArray alloc]init];
@@ -297,17 +299,12 @@
                     pic.layer.borderWidth = 1;
                     pic.layer.cornerRadius = 25;
                     pic.clipsToBounds = YES;
-                    // [pic setStyleClass:@"history_userpics"];
-                    [pic setStyleCSS:@"background-image : url(Preston.png)"];
-                    [pic setImage:[UIImage imageNamed:@"Preston.png"]];
                     [cell.contentView addSubview:pic];
                     UILabel *updated_balance = [UILabel new];
                     [updated_balance setText:@"$50.00"];
                     [updated_balance setStyleClass:@"history_updatedbalance"];
                     [cell.contentView addSubview:updated_balance];
                 }
-            
-            
         }
      else if (indexPath.row==[histShowArrayCompleted count]) {
          
@@ -396,9 +393,6 @@
                     pic.layer.borderWidth = 1;
                     pic.layer.cornerRadius = 25;
                     pic.clipsToBounds = YES;
-                    // [pic setStyleClass:@"history_userpics"];
-                    [pic setStyleCSS:@"background-image : url(Preston.png)"];
-                    [pic setImage:[UIImage imageNamed:@"Preston.png"]];
                     [cell.contentView addSubview:pic];
                     UILabel *updated_balance = [UILabel new];
                     [updated_balance setText:@"$50.00"];

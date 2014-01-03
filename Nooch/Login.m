@@ -229,7 +229,7 @@
         {
             serve *getDetails = [serve new];
             getDetails.Delegate = self;
-            getDetails.tagName = @"getMemberDetails";
+            getDetails.tagName = @"getMemberId";
             [getDetails getMemIdFromuUsername:self.email.text];
         }
         
@@ -253,12 +253,13 @@
     }
 
     
-    if([tagName isEqualToString:@"getMemberDetails"]){
+    if([tagName isEqualToString:@"getMemberId"]){
         NSError *error;
 
           NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] setObject:self.email.text forKey:@"UserName"];
+        user = [NSUserDefaults standardUserDefaults];
         if (![self.stay_logged_in isOn]) {
             [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
         }else{
@@ -272,8 +273,31 @@
        
         [[me usr] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
         [[me usr] setObject:self.email.text forKey:@"UserName"];
+        
+        serve *enc_user = [serve new];
+        [enc_user setDelegate:self];
+        [enc_user setTagName:@"username"];
+        [enc_user getEncrypt:self.email.text];
+    } else if ([tagName isEqualToString:@"username"])
+    {
+        NSError *error;
+        NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSLog(@"test: %@",loginResult);
+        serve *details = [serve new];
+        [details setDelegate:self];
+        [details setTagName:@"info"];
+        [details getDetails:[user objectForKey:@"MemberId"]];
+    }
+    else if ([tagName isEqualToString:@"info"])
+    {
+        NSError *error;
+        NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSLog(@"User response: %@",loginResult);
+        
         [nav_ctrl setNavigationBarHidden:NO];
+
       
+
         [spinner stopAnimating];
         [UIView beginAnimations:nil context:NULL];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];

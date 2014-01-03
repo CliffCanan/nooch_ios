@@ -39,6 +39,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    [self.navigationItem setTitle:@"How Much"];
+    
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     self.amnt = [@"" mutableCopy];

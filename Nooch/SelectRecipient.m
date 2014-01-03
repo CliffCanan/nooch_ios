@@ -132,12 +132,10 @@
     [cell.textLabel setStyleClass:@"select_recipient_name"];
     if ([self.recents count] == 0) {
         UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 50, 50)];
-        /*pic.layer.borderColor = kNoochGrayDark.CGColor;
+        pic.layer.borderColor = kNoochGrayDark.CGColor;
         pic.layer.borderWidth = 1;
-        pic.layer.cornerRadius = 25;*/
+        pic.layer.cornerRadius = 25;
         pic.clipsToBounds = YES;
-        [pic setStyleClass:@"list_userprofilepic"];
-        [pic setStyleCSS:@"background-image : url(Preston.png)"];
         [cell addSubview:pic];
         
         cell.textLabel.text = @"Preston Hults";
@@ -148,14 +146,14 @@
     NSDictionary *info = [self.recents objectAtIndex:indexPath.row];
 
     UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 50, 50)];
+    pic.layer.borderColor = kNoochGrayDark.CGColor;
+    pic.layer.borderWidth = 1;
+    pic.layer.cornerRadius = 25;
     pic.clipsToBounds = YES;
     // remove comment if photo url is valid
     //[pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
     //  placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
     
-
-    [pic setStyleClass:@"list_userprofilepic"];
-    [pic setStyleCSS:@"background-image : url(Preston.png)"];
     [cell addSubview:pic];
 
     [cell setIndentationLevel:1]; [cell setIndentationWidth:40];

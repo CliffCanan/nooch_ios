@@ -29,6 +29,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    [self.navigationItem setTitle:@"Add Funds"];
+    
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     UILabel *info = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 0, 0)];

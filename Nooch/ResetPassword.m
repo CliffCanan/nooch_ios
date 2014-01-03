@@ -30,6 +30,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self.navigationItem setTitle:@"Reset Password"];
+    
     [self.view setStyleClass:@"background_gray"];
     
     UITableView *menu = [UITableView new];

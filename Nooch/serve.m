@@ -212,6 +212,8 @@ NSString *amnt;
     self.responseData = [[NSMutableData alloc] init];
     requestMem=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&accessToken=%@",ServerUrl,@"GetMemberDetails",username,[defaults valueForKey:@"OAuthToken"]]]];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestMem delegate:self];
+    
+    NSLog(@"url %@",[NSString stringWithFormat:@"%@"@"/%@?name=%@&accessToken=%@",ServerUrl,@"GetMemberDetails",username,[defaults valueForKey:@"OAuthToken"]]);
     if (!connection)
         NSLog(@"connect error");
     
@@ -740,8 +742,6 @@ NSString *amnt;
                         options:kNilOptions
                         error:&error];
         
-        
-        
         //Charan's Edit 19Nov 2013
         if ([Dictresponse valueForKey:@"IsValidProfile"]
             &&
@@ -759,11 +759,7 @@ NSString *amnt;
         
         
         if ([[Dictresponse valueForKey:@"ContactNumber"]isKindOfClass:[NSNull class]]||[[Dictresponse valueForKey:@"State"]isKindOfClass:[NSNull class]]||[[Dictresponse valueForKey:@"Address"]isKindOfClass:[NSNull class]]||[[Dictresponse valueForKey:@"City"]isKindOfClass:[NSNull class]]) {
-            
-            
-            
             [defaults setObject:@"NO"forKey:@"ProfileComplete"];
-            
         }
         else
         {

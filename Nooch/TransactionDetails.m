@@ -29,6 +29,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self.navigationItem setTitle:@"Transfer Details"];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
@@ -36,7 +37,6 @@
     user_picture.layer.borderWidth = 1; user_picture.layer.borderColor = kNoochGrayDark.CGColor;
     user_picture.layer.cornerRadius = 38;
     user_picture.clipsToBounds = YES;
-    [user_picture setImage:[UIImage imageNamed:@"Preston.png"]];
     [self.view addSubview:user_picture];
     
     UILabel *payment = [UILabel new];

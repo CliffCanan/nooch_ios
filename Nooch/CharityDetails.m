@@ -38,7 +38,13 @@
     //dict=[[NSMutableDictionary alloc]init];
    // dictToSend=[[NSMutableDictionary alloc]init];
     
+
     image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 150)];
+
+    [self.navigationItem setTitle:@"Cause Details"];
+    
+    
+
     [image setImage:[UIImage imageNamed:@"4k_image.png"]];
     [image setStyleClass:@"featured_nonprofit_banner_details"];
     [image setStyleCSS:@"background-image : url(4k_image.png)"];

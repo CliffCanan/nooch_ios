@@ -412,7 +412,7 @@ static assist * _sharedInstance = nil;
 
          NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
          usersets=loginResult;
-        // NSLog(@"%@",usersets);
+         NSLog(@"%@",usersets);
 //        NSDictionary *loginResult = [result JSONValue];
         //[usr setObject:@"YES" forKey:@"validated"];
         if(![[loginResult objectForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"BalanceAmount"] != NULL)
