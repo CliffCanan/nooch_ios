@@ -60,11 +60,102 @@
     [self.save setFrame:CGRectMake(0, 200, 0, 0)];
     [self.save setStyleClass:@"button_green"];
     [self.save setTitle:@"Change Password" forState:UIControlStateNormal];
-    [self.save setEnabled:NO];
+    [self.save addTarget:self action:@selector(finishResetPassword:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.save setEnabled:YES];
     [self.view addSubview:self.save];
     
     [self.old becomeFirstResponder];
 }
+- (IBAction)finishResetPassword:(id)sender {
+    NSCharacterSet* digitsCharSet = [NSCharacterSet decimalDigitCharacterSet];
+    NSCharacterSet* lettercaseCharSet = [NSCharacterSet letterCharacterSet];
+    NSLog(@"sahi%@",self.old.text);
+    NSLog(@"new%@",userPass);
+    
+    if ([self.old.text length]==0) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Enter Old Password!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [self.old becomeFirstResponder];
+        
+        return;
+    }
+    if ([self.pass.text length]==0) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Enter New Password" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [self.pass becomeFirstResponder];
+        
+        return;
+    }
+    if ([self.confirm.text length]==0) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Enter Confirm Password" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [self.confirm becomeFirstResponder];
+        
+        return;
+    }
+ 
+   if (![userPass isEqualToString:self.old.text]) {
+       UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Password incorrect!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+       [alert show];
+       return;
+   }
+ if([self.pass.text isEqualToString:self.confirm.text]){
+        if([self.pass.text length] < 8){
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain minimum of 8 characters." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
+        }else if([self.pass.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound){
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain atleast one numeric character." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
+        }
+        else if([self.pass.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound){
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain atleast one character." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
+        }else{
+            passwordReset = self.pass.text;
+            [self resetPassword:self.pass.text];
+        }
+    }else{
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Passwords do not match." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av show];
+        passwordReset = @"";
+    }
+}
+-(void) resetPassword:(NSString *)newPassword{
+    
+    if([newPassword length]!=0){
+        newchangedPass=newPassword;
+        GetEncryptionValue *encryPassword = [[GetEncryptionValue alloc] init];
+        [encryPassword getEncryptionData:newPassword];
+        encryPassword.Delegate = self;
+        encryPassword->tag = [NSNumber numberWithInteger:3];
+    }
+    NSLog(@"ecrypting password");
+}
+-(void)setEncryptedPassword:(NSString *) encryptedPwd{
+    getEncryptedPasswordValue = [[NSString alloc] initWithString:encryptedPwd];
+}
+-(void)encryptionDidFinish:(NSString *) encryptedData TValue:(NSNumber *) tagValue{
+    NSInteger value = [tagValue integerValue];
+//    [self setEncryptedPassword:encryptedData];
+    if(value ==3)
+    {
+        getEncryptionNewPassword=encryptedData;
+        [self resetNewPassword:(NSString *)getEncryptionNewPassword];
+    }
+    
+}
+-(void) resetNewPassword:(NSString *)encryptedNewPassword{
+    [self.view addSubview:[me waitStat:@"Attempting password reset..."]];
+  //  getEncryptionOldPassword=password.text;
+    
+    serve *respass = [[serve alloc] init];
+    respass.Delegate = self;
+    respass.tagName = @"resetPasswordDetails";
+    [respass resetPassword:getEncryptionOldPassword new:getEncryptionNewPassword];
+    
+}
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 3;
@@ -111,7 +202,25 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    
+     if([tagName isEqualToString:@"resetPasswordDetails"]){
+        BOOL isResult = [result boolValue];
+        if(isResult == 0)
+        {
+            isPasswordChanged=YES;
+            UIAlertView *showAlertMessage = [[UIAlertView alloc] initWithTitle:nil message:@"Your password has been changed successfully" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            [showAlertMessage show];
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        }
+        else
+        {
+            isPasswordChanged=NO;
+            newchangedPass=@"";
+            UIAlertView *showAlertMessage = [[UIAlertView alloc] initWithTitle:nil message:@"Incorrect password. Please check your current password." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            [showAlertMessage show];
+        }
+     }
+
 }
 
 - (void)didReceiveMemoryWarning

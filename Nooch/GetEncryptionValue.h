@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "serve.h"
+
 
 @protocol GetEncryptionValueDelegate <NSObject>
 
@@ -16,8 +16,9 @@
 
 @end
 
-@interface GetEncryptionValue : NSObject <serveD>{
+@interface GetEncryptionValue : NSObject {
     
+    NSMutableData *responseData;
     id <GetEncryptionValueDelegate> Delegate;
     
     @public

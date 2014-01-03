@@ -12,6 +12,7 @@
 #import "ResetPassword.h"
 #import "Decryption.h"
 #import "NSString+AESCrypt.h"
+#import "ResetPassword.h"
 
 @interface ProfileInfo ()
 
@@ -42,10 +43,20 @@
     }
     return self;
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if ([newchangedPass length]>0 && isPasswordChanged) {
+        self.password.text=newchangedPass;
+    }
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
    
+     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [self.view addSubview:spinner];
+    spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+    [spinner startAnimating];
 
     serve *serveOBJ=[serve new ];
     serveOBJ.tagName=@"myset";
@@ -285,16 +296,13 @@
     }
     
     [self.view addSubview:[me waitStat:@"Saving your profile..."]];
-     [self getEncryptedPassword:self.password.text];
-    NSString *timezoneStandard;
+   //  [self getEncryptedPassword:self.password.text];
+   
     if([self.recovery_email.text length]==0)
     {
         self.recovery_email.text=@"";
     }
-//    if([self.state.text length]==0)
-//    {
-//        self.state.text=@"";
-//    }
+
    timezoneStandard = [NSString stringWithFormat:@"%@",[NSTimeZone localTimeZone]];
     timezoneStandard = [[timezoneStandard componentsSeparatedByString:@", "] objectAtIndex:0];
     timezoneStandard = [GMTTimezonesDictionary objectForKey:timezoneStandard];
@@ -309,27 +317,6 @@
   //  NSMutableDictionary *imageDic = [[NSMutableDictionary alloc] init];
    // NSString *imageLen = [NSString stringWithFormat:@"%d",imageData.length];
    // imageDic = [NSMutableDictionary dictionaryWithObjectsAndKeys: encodedString, @"FileContent", imageLen, @"ContentLength", @".png", @"FileExtension", nil];
-    NSCharacterSet* digitsCharSet = [NSCharacterSet decimalDigitCharacterSet];
-    NSCharacterSet* lettercaseCharSet = [NSCharacterSet letterCharacterSet];
-    if([self.password.text length] != 0)
-    {
-        if([self.password.text length] < 8){
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain minimum of 8 characters." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [av show];
-        }else if([self.password.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound){
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain at least one numeric character." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [av show];
-        }
-        
-        else if([self.password.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound){
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain at least one character." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [av show];
-        }
-        
-        else {
-            [self getEncryptedPassword:self.password.text];
-        }
-    }
     if ([self.phone.text length]==0 ||[self.phone.text length]<10)
     {
         
@@ -337,7 +324,7 @@
         [alert show];
         return;
     }
-    NSString *recoverMail = [[NSString alloc] init];
+   recoverMail = [[NSString alloc] init];
     if([self.recovery_email.text length] > 0)
     {
         if (![self validateEmail:[self.recovery_email text]]) {
@@ -362,6 +349,35 @@
     }else{
         [[me usr] removeObjectForKey:@"Addr2"];
     }
+
+    NSCharacterSet* digitsCharSet = [NSCharacterSet decimalDigitCharacterSet];
+    NSCharacterSet* lettercaseCharSet = [NSCharacterSet letterCharacterSet];
+    if([self.password.text length] != 0)
+    {
+        if([self.password.text length] < 8){
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain minimum of 8 characters." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
+        }else if([self.password.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound){
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain at least one numeric character." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
+        }
+        
+        else if([self.password.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound){
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain at least one character." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
+        }
+        
+        else {
+            [self getEncryptedPassword:self.password.text];
+        }
+    }
+   
+    
+}
+
+-(void)setEncryptedPassword:(NSString *) encryptedPwd{
+    NSLog(@"%@",encryptedPwd);
+    getEncryptedPasswordValue = [[NSString alloc] initWithString:encryptedPwd];
     self.name.text=[self.name.text lowercaseString];
     transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",self.name.text,@"FirstName",self.email.text,@"UserName",nil];
     [transactionInput setObject:getEncryptedPasswordValue forKey:@"Password"];
@@ -369,7 +385,7 @@
     //[transactionInput setObject:[NSString stringWithFormat:@"%@ %@",self.address.text,self.addressLine2.text] forKey:@"Address"];
     [transactionInput setObject:self.city.text forKey:@"City"];
     NSLog(@"%d",[self.phone.text length]);
-    if ([self.phone.text length]==0 ||[self.phone.text length]<10)
+    if ([self.phone.text length]==0 ||[self.phone.text length]<11)
     {
         //[me endWaitStat];
         UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"NoochMoney" message:@"Enter valid 10 digit Cell Number" delegate:nil cancelButtonTitle:@"OK"otherButtonTitles:nil, nil];
@@ -378,61 +394,57 @@
     }
     else
     {
-        NSString *number = [NSString stringWithFormat:@"%@%@%@",[self.phone.text substringWithRange:NSMakeRange(1, 3)],[self.phone.text substringWithRange:NSMakeRange(6, 3)],[self.phone.text substringWithRange:NSMakeRange(10, 4)]];
-        [transactionInput setObject:number forKey:@"ContactNumber"];
+        //NSString *number = [NSString stringWithFormat:@"%@%@%@",[self.phone.text substringWithRange:NSMakeRange(1, 3)],[self.phone.text substringWithRange:NSMakeRange(6, 3)],[self.phone.text substringWithRange:NSMakeRange(10, 4)]];
+        [transactionInput setObject:self.phone.text forKey:@"ContactNumber"];
         
         
     }
     
     [transactionInput setObject:self.zip.text forKey:@"Zipcode"];
     [transactionInput setObject:@"false" forKey:@"UseFacebookPicture"];
-  //  [transactionInput setObject:imageLen forKey:@"contentLength"];
+    //  [transactionInput setObject:imageLen forKey:@"contentLength"];
     [transactionInput setObject:@".png" forKey:@"fileExtension"];
-//    [transactionInput setObject:encodedString forKey:@"fileContent"];
+    //    [transactionInput setObject:encodedString forKey:@"fileContent"];
     // [transactionInput setObject:imageDic forKey:@"AttachmentFile"];
     [transactionInput setObject:recoverMail forKey:@"RecoveryMail"];
-   // [transactionInput setObject:self.state.text forKey:@"State"];
+    // [transactionInput setObject:self.state.text forKey:@"State"];
     [transactionInput setObject:timezoneStandard forKey:@"TimeZoneKey"];
     [transactionInput setObject:getEncryptedPasswordValue forKey:@"Password"];
     
-    
+    [spinner startAnimating];
+    [spinner setHidden:NO];
     transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"mySettings", nil];
     serve *req=[serve new];
     req.Delegate = self;
     req.tagName=@"MySettingsResult";
     //NSLog(@"transaction INput %@",transaction);
     [req setSets:transaction];
-   // firstTime = NO;
+    // firstTime = NO;
     
     //first letter uppercase
-    self.name.text=@"";
+   // self.name.text=@"";
     NSArray*arr=[self.name.text componentsSeparatedByString:@" "];
-    self.name.text=[NSString stringWithFormat:@"%@ %@",[[arr objectAtIndex:0] capitalizedString],[[arr objectAtIndex:1] capitalizedString]];
-    //[self.navigationController popViewControllerAnimated:YES];
+    if ([arr count]==2) {
+        self.name.text=[NSString stringWithFormat:@"%@ %@",[[arr objectAtIndex:0] capitalizedString],[[arr objectAtIndex:1] capitalizedString]];
+    }
     
-}
+    //[self.navigationController popViewControllerAnimated:YES];
 
--(void)setEncryptedPassword:(NSString *) encryptedPwd{
-    getEncryptedPasswordValue = [[NSString alloc] initWithString:encryptedPwd];
 }
 -(void) getEncryptedPassword:(NSString *)newPassword{
     
     if([newPassword length]!=0){
         GetEncryptionValue *encryPassword = [[GetEncryptionValue alloc] init];
-        [encryPassword getEncryptionData:newPassword];
         encryPassword.Delegate = self;
         encryPassword->tag = [NSNumber numberWithInteger:2];
+        [encryPassword getEncryptionData:newPassword];
+       
     }
     NSLog(@"encrypting password");
 }
 -(void)encryptionDidFinish:(NSString *) encryptedData TValue:(NSNumber *) tagValue{
    // NSInteger value = [tagValue integerValue];
     [self setEncryptedPassword:encryptedData];
-//    if(value ==3)
-//    {
-//        getEncryptionNewPassword=encryptedData;
-//        [self resetNewPassword:(NSString *)getEncryptionNewPassword];
-//    }
     
 }
 - (void)change_pic
@@ -497,6 +509,8 @@
 {
     if (textField == self.password) {
         [self.view endEditing:YES];
+        userPass=self.password.text;
+        NSLog(@"%@",userPass);
         ResetPassword *pass_res = [ResetPassword new];
         [self.navigationController pushViewController:pass_res animated:YES];
     }
@@ -525,7 +539,47 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {      NSError* error;
-    if ([tagName isEqualToString:@"myset"]) {
+    [spinner stopAnimating];
+    [spinner setHidden:YES];
+    if([tagName isEqualToString:@"MySettingsResult"])
+    {
+        dictProfileinfo=[NSJSONSerialization
+                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                         options:kNilOptions
+                         error:&error];
+
+        NSDictionary *resultValue = [dictProfileinfo valueForKey:@"MySettingsResult"];
+        NSLog(@"resultValue is : %@", result);
+       getEncryptionOldPassword= [dictProfileinfo objectForKey:@"Password"];
+        if([[resultValue valueForKey:@"Result"] isEqualToString:@"Your details have been updated successfully."]){ //&& imageData.length != 0
+           // [imageData writeToFile:[core path:@"image"] atomically:YES];
+          //  NSString *validated = @"YES";
+            //[[me usr] setObject:validated forKey:@"validated"];
+           // validationBadge.highlighted = YES;
+            
+            NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+            [defaults setObject:@"YES" forKey:@"ProfileComplete"];
+            [defaults synchronize];
+        }else{
+            NSString *validated = @"YES"; //
+            if ([[resultValue valueForKey:@"Result"] isEqualToString:@"Profile Validation Failed! Please provide valid contact informations such as address, city, state and contact number details."]) {
+                [[me usr] setObject:validated forKey:@"validated"];
+              //  validationBadge.highlighted = NO;
+            }
+        }
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av show];
+        [av setTag:9];
+        
+        //prompt = NO;
+       // serve *targ = [serve new];
+        //targ.Delegate = self;
+        //targ.tagName = @"GetMemberTargusScoresForBank";
+        //[targ getTargus];
+        
+    }
+   else if ([tagName isEqualToString:@"myset"]) {
+       
         dictProfileinfo=[NSJSONSerialization
          JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
          options:kNilOptions
@@ -821,10 +875,6 @@
         else
         {
             ServiceType=@"pwd";
-            //self.recoveryEmail.text=[NSString stringWithFormat:@"%@",[sourceData objectForKey:@"Status"]];
-            // self.zip.text=[sourceData objectForKey:@"Status"];
-            // NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
-            
             
             if (![[dictProfileinfo objectForKey:@"Password"] isKindOfClass:[NSNull class]]) {
                 
@@ -846,6 +896,9 @@
     {
         ServiceType=@"pwd";
         self.recovery_email.text=[NSString stringWithFormat:@"%@",[sourceData objectForKey:@"Status"]];
+        if ([self.recovery_email.text isKindOfClass:[NSNull class]]) {
+            self.recovery_email.text=@"";
+        }
         // self.zip.text=[sourceData objectForKey:@"Status"];
         NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
         

@@ -273,12 +273,7 @@
         [[me usr] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
         [[me usr] setObject:self.email.text forKey:@"UserName"];
         [nav_ctrl setNavigationBarHidden:NO];
-       // Home*homeOBJ=[Home new];
-      //  NavControl *nav;
-       // nav.navigationController=homeOBJ.navigationController;
-       // NSLog(@"%@",homeOBJ);
-      //   [self.navigationController pushViewController:homeOBJ animated:YES];
-        //nav_ctrl=homeOBJ.navigationController;
+      
         [spinner stopAnimating];
         [UIView beginAnimations:nil context:NULL];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];

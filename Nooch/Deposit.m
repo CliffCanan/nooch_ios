@@ -8,7 +8,7 @@
 
 #import "Deposit.h"
 #import "Home.h"
-
+#import "TransferPIN.h"
 @interface Deposit ()
 @property (nonatomic,strong) UIButton *deposit;
 @property (nonatomic,strong) UITextField *amount;
@@ -59,10 +59,18 @@
     [self.view addSubview:accnts];
     
     UIButton *add_icon = [UIButton new];
-    [add_icon setTitle:@"" forState:UIControlStateNormal];
+    [add_icon setTitle:@"ADD Fund" forState:UIControlStateNormal];
     [add_icon setStyleClass:@"wd_dep_addicon"];
+    
     [self.view addSubview:add_icon];
     
+    self.deposit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.deposit setFrame:CGRectMake(0, 300, 300, 50)];
+    [self.deposit setTitle:@"Submit" forState:UIControlStateNormal];
+    [self.deposit setStyleClass:@"button_green"];
+    [self.deposit setStyleClass:@"wd_dep_button"];
+    [self.deposit addTarget:self action:@selector(deposit_amount) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.deposit];
     UITableView *banks = [UITableView new];
     [banks setStyleClass:@"wd_dep_tableview"];
     [banks setDelegate:self]; [banks setDataSource:self];
@@ -71,18 +79,18 @@
     //class: wd_dep_bankicon
     //class wd_dep_banklabel
     
-    self.deposit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.deposit setFrame:CGRectMake(0, 200, 0, 0)];
-    [self.deposit setTitle:@"Submit" forState:UIControlStateNormal];
-    [self.deposit setStyleClass:@"button_green"];
-    [self.deposit setStyleClass:@"wd_dep_button"];
-    [self.deposit addTarget:self action:@selector(deposit_amount) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.deposit];
+    
 }
 
 - (void) deposit_amount
 {
     
+    NSMutableDictionary *transaction = [[NSMutableDictionary alloc] init];
+    [transaction setObject:@"type" forKey:@"addfund"];
+  //  float input_amount = [[[self.amount text] substringFromIndex:2] floatValue];
+    TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"addfund" amount: [self.amount.text floatValue]];
+    [self.navigationController pushViewController:pin animated:YES];
+
 }
 
 #pragma mark - UITableViewDataSource

@@ -48,7 +48,7 @@
 -(void)getBanks;
 -(void)getCards;
 -(void)getSettings;
--(void)getEncrypt:(NSString *)in;
+-(void)getEncrypt:(NSString *)input;
 -(void)getDetails:(NSString*)username;
 //-(void)getLatestTrans
 -(void)getMemIdFromuUsername:(NSString*)username;
@@ -93,9 +93,10 @@
 -(void)getAutoWithDrawalSelectedOption;
 -(void)GetAllWithdrawalTrigger;
 -(void)SaveFrequency:(NSString*) withdrawalId type:(NSString*) type frequency: (float)withdrawalFrequency;
--(void)GetNonProfiltDetail:(NSString*)npId;
+-(void)GetNonProfiltDetail:(NSString*)npId memberId:(NSString*)memberId;
 -(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len;
 -(void)histMoreSerachbyName:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len name:(NSString*)name;
+-(void) LogOutRequest:(NSString*) memberId;
 @end
 
 //392f9c86-1651-4459-a6a9-d362fcfc4366 - nooch team

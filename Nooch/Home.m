@@ -64,7 +64,7 @@
     self.balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.balance setFrame:CGRectMake(0, 0, 60, 30)];
     [[NSUserDefaults standardUserDefaults] setObject:@"100.00" forKey:@"balance"];
-    [self.balance setTitle:[NSString stringWithFormat:@"$%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"balance"]] forState:UIControlStateNormal];
+    [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
     [self.balance.titleLabel setFont:kNoochFontMed];
     [self.balance addTarget:self action:@selector(showFunds) forControlEvents:UIControlEventTouchUpInside];
     [self.balance setStyleId:@"navbar_balance"];
@@ -150,8 +150,16 @@
         //new addition which does the same work
         //[self presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:YES completion:nil];
     }
-    
-    //
+      //
+}
+-(void)updateLoader{
+       if ([usersets objectForKey:@"BalanceAmount"] && ![[usersets objectForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]]&& [usersets objectForKey:@"BalanceAmount"]!=NULL) {
+        [self.balance setTitle:[NSString stringWithFormat:@"$%@",[usersets objectForKey:@"BalanceAmount"]] forState:UIControlStateNormal];
+        
+    }
+    else
+    {
+        [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];    }
 }
 - (NSString *)autoLogin{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -168,8 +176,11 @@
     //Register *reg = [[Register alloc] init];
     //[self.navigationController pushViewController:reg animated:YES];
     //return;
-    me=[core new];
-    NSLog(@"%@",me);
+   // me=[core new];
+   // NSLog(@"%@",me);
+    
+    [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(updateLoader) userInfo:nil repeats:YES];
+    
 
     if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]]) {
         //push login

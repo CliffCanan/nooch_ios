@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface SettingsOptions : UIViewController<UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate>
+#import "serve.h"
+@interface SettingsOptions : UIViewController<UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate,serveD>
 
 @end

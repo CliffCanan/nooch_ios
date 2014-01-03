@@ -170,11 +170,12 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *cause = [NSDictionary new];
+    NSDictionary *cause = [[causesArr objectAtIndex:indexPath.row] copy];
+    
     CharityDetails *charity = [[CharityDetails alloc] initWithReceiver:cause];
-    NSString*strNonProfitid=[[causesArr objectAtIndex:indexPath.row] valueForKey:@"NonprofitId"];
-    NSDictionary*dict=[NSDictionary dictionaryWithObjectsAndKeys:strNonProfitid,@"id",[[causesArr objectAtIndex:indexPath.row] valueForKey:@"OrganizationName"],@"OrganizationName", nil];
-     dictnonprofitid=[dict mutableCopy];
+   // NSString*strNonProfitid=[[causesArr objectAtIndex:indexPath.row] valueForKey:@"NonprofitId"];
+    //NSDictionary*dict=[NSDictionary dictionaryWithObjectsAndKeys:strNonProfitid,@"id",[[causesArr objectAtIndex:indexPath.row] valueForKey:@"OrganizationName"],@"OrganizationName", nil];
+    // dictnonprofitid=[dict mutableCopy];
     [self.navigationController pushViewController:charity animated:YES];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

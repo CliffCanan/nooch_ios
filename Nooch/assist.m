@@ -8,7 +8,7 @@
 
 #import "assist.h"
 #import <QuartzCore/QuartzCore.h>
-
+#import "Home.h"
 
 @implementation assist
 @synthesize arrRecordsCheck;
@@ -356,7 +356,7 @@ static assist * _sharedInstance = nil;
     serve *sets = [serve new];
     sets.Delegate = self;
     sets.tagName = @"sets";
-    //[sets getSettings];
+    [sets getSettings];
 }
 -(void)getAcctInfo{
     if (!islogout) {
@@ -402,14 +402,17 @@ static assist * _sharedInstance = nil;
     }else if([tagName isEqualToString:@"sets"]){
         NSError *error;
         NSMutableDictionary *setsResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        
-    //    NSLog(@"%@",usr);
+       
+        //NSLog(@"%@",usr);
         strUrl=[setsResult valueForKey:@"Photo"];
         [usr setObject:setsResult forKey:@"sets"];
-            }else if([tagName isEqualToString:@"info"]){
+            }
+    else if([tagName isEqualToString:@"info"]){
         NSError *error;
 
          NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+         usersets=loginResult;
+        // NSLog(@"%@",usersets);
 //        NSDictionary *loginResult = [result JSONValue];
         //[usr setObject:@"YES" forKey:@"validated"];
         if(![[loginResult objectForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"BalanceAmount"] != NULL)

@@ -109,15 +109,58 @@
 
 - (void)sign_out
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Sign Out" message:@"Are you sure you want to sign out?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"I'm Sure", nil];
+      UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Sign Out" message:@"Are you sure you want to sign out?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"I'm Sure", nil];
     [av show];
 }
-
+-(void)listen:(NSString *)result tagName:(NSString *)tagName{
+    
+    NSError* error;
+    NSMutableDictionary*dictResponse = [NSJSONSerialization
+                                        JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                        options:kNilOptions
+                                        error:&error];
+     if([tagName isEqualToString:@"logout"])
+    {
+        if([dictResponse valueForKey:@"Result"])
+        {
+            if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"Success."]) {
+                
+                
+                [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+                NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+                //sendingMoney = NO;
+                Register *reg = [Register new];
+                [self.navigationController pushViewController:reg animated:YES];
+            
+                me = [core new];
+                
+            }
+            else
+            {
+                
+            }
+        }
+    }
+  
+}
+#pragma mark - file paths
+- (NSString *)autoLogin{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+    
+}
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) {
-        Register *reg = [Register new];
-        [self.navigationController pushViewController:reg animated:YES];
+        serve*  serveOBJ=[serve new];
+        serveOBJ.Delegate=self;
+        
+        serveOBJ.tagName=@"logout";
+        [serveOBJ LogOutRequest:[[NSUserDefaults standardUserDefaults ]valueForKey:@"MemberId"]];
+
     }
 }
 

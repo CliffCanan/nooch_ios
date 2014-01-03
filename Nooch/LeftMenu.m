@@ -17,6 +17,7 @@
 #import "Legal.h"
 #import "ProfileInfo.h"
 #import "UIImageView+WebCache.h"
+#import "assist.h"
 @interface LeftMenu ()
 @property(nonatomic,strong) UITableView *menu;
 @property(nonatomic) NSIndexPath *selected;
@@ -94,6 +95,9 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     //me=[core new];
+   // assist*assistOBJ=[assist new];
+    NSLog(@"%@",[me usr]);
+    
     NSLog(@"%@",strUrl);
     if ([strUrl length]>0 && strUrl!=nil) {
         [user_pic setStyleId:@"lside_userpic"];

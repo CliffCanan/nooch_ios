@@ -8,13 +8,21 @@
 
 #import <UIKit/UIKit.h>
 #import "serve.h"
+#import "Decryption.h"
 NSMutableDictionary*dictnonprofitid;
-@interface CharityDetails : UIViewController<serveD>
-{
-
-    NSMutableDictionary*dictToSend;
-    NSMutableDictionary*dict;
+@interface CharityDetails : UIViewController<serveD,DecryptionDelegate>
+    {
+        UIImageView *image;
+        UILabel *info;
+        NSString* ServiceType;
+        NSMutableDictionary*detaildict;
+        NSMutableDictionary*dict;
+        NSString*weburl;
+        NSString*youurl;
+        NSString*fburl;
+        NSString*twurl;
 }
+
 - (id)initWithReceiver:(NSDictionary *)charity;
 
 @end

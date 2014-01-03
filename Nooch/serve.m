@@ -196,11 +196,11 @@ NSString *amnt;
         NSLog(@"connect error");
     
 }
--(void)getEncrypt:(NSString *)in {
+-(void)getEncrypt:(NSString *)input {
     self.responseData = [[NSMutableData alloc] init];
-    requestEncryption = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@", ServerUrl,@"GetEncryptedData",@"data",in]]];
+    requestEncryption = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@", ServerUrl,@"GetEncryptedData",@"data",input]]];
     [requestEncryption setHTTPMethod:@"GET"];
-    [requestEncryption setTimeoutInterval:20.0f];
+    [requestEncryption setTimeoutInterval:500.0f];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestEncryption delegate:self];
     if (!connection)
         NSLog(@"connect error");
@@ -210,7 +210,7 @@ NSString *amnt;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     self.responseData = [[NSMutableData alloc] init];
-    requestMem=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?name=%@&accessToken=%@",ServerUrl,@"GetMemberDetails",username,[defaults valueForKey:@"OAuthToken"]]]];
+    requestMem=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&accessToken=%@",ServerUrl,@"GetMemberDetails",username,[defaults valueForKey:@"OAuthToken"]]]];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestMem delegate:self];
     if (!connection)
         NSLog(@"connect error");
@@ -1307,11 +1307,11 @@ NSString *amnt;
         
         NSLog(@"connect error");
 }
--(void)GetNonProfiltDetail:(NSString*)npId{
+-(void)GetNonProfiltDetail:(NSString*)npId memberId:(NSString*)memberId{
     self.responseData = [[NSMutableData alloc] init];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
-    NSString *urlString = [NSString stringWithFormat:@"%@/GetNonprofitDetails?accessToken=%@&nonProfitMemberId=%@",ServerUrl, [defaults valueForKey:@"OAuthToken"],npId];
+    NSString *urlString = [NSString stringWithFormat:@"%@/GetNonprofitDetails?accessToken=%@&nonProfitMemberId=%@&memberId=%@",ServerUrl, [defaults valueForKey:@"OAuthToken"],npId,memberId];
     NSURL *url = [NSURL URLWithString:urlString];
     
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -1349,6 +1349,19 @@ NSString *amnt;
         NSLog(@"connect error");
     
 }
-
+-(void) LogOutRequest:(NSString*) memberId
+{
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/LogOutRequest?accessToken=%@&memberId=%@",ServerUrl, [defaults valueForKey:@"OAuthToken"],memberId];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+}
 // GetTransactionsSearchList(string memberId, string friendName, string listType, int pageSize, int pageIndex)
 @end

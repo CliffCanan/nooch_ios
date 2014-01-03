@@ -9,6 +9,7 @@
 #import "DonationAmount.h"
 #import "Home.h"
 #import "TransferPIN.h"
+#import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface DonationAmount ()
@@ -62,7 +63,12 @@
     UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 60, 60)];
     [pic setImage:[UIImage imageNamed:@"4KforCancer.png"]];
     [pic setStyleId:@"nonprofit_orgpic"];
-    [pic setStyleCSS:@"background-image : url(4KforCancer.png)"];
+    NSLog(@"%@",self.receiver);
+    [pic setImageWithURL:[NSURL URLWithString:[self.receiver valueForKey:@"PhotoIcon"]]
+         placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+    
+
+   // [pic setStyleCSS:@"background-image : url(4KforCancer.png)"];
     [self.view addSubview:pic];
     
     self.amount = [[UITextField alloc] initWithFrame:CGRectMake(30, 40, 260, 80)];
@@ -132,8 +138,9 @@
     }
     NSMutableDictionary *transaction = [self.receiver mutableCopy];
     [transaction setObject:[self.memo text] forKey:@"memo"];
-    float input_amount = [[[self.amount text] substringFromIndex:2] floatValue];
-    TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"send" amount:input_amount];
+    float input_amount = [[self.amount text]  floatValue];
+    //21 check tomorrow
+    TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"donation" amount:input_amount];
     [self.navigationController pushViewController:pin animated:YES];
 }
 

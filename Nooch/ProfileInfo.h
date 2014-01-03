@@ -12,6 +12,9 @@
 #import "GetEncryptionValue.h"
 @interface ProfileInfo : UIViewController<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,GetEncryptionValueDelegate>
 {
+    UIActivityIndicatorView*spinner;
+    NSString *recoverMail;
+    NSString *timezoneStandard;
     NSString*getEncryptedPasswordValue;
     NSMutableDictionary*transaction;
     NSMutableDictionary*transactionInput;
