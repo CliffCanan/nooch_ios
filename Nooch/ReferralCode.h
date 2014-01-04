@@ -10,5 +10,9 @@
 #import "serve.h"
 
 @interface ReferralCode : UIViewController<serveD,UITextFieldDelegate,serveD>
+{
+    NSString*getEncryptedPassword;
+    float lat,lon;
+}
 - (id)initWithData:(NSDictionary *)usr;
 @end

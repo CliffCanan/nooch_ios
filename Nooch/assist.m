@@ -404,15 +404,22 @@ static assist * _sharedInstance = nil;
         NSMutableDictionary *setsResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
        
         //NSLog(@"%@",usr);
-        strUrl=[setsResult valueForKey:@"Photo"];
+       
+        // [user setObject:[setsResult valueForKey:@"Photo"] forKey:@"Photo"];
         [usr setObject:setsResult forKey:@"sets"];
             }
     else if([tagName isEqualToString:@"info"]){
         NSError *error;
-
+//PhotoUrl
          NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-         usersets=loginResult;
-         NSLog(@"%@",usersets);
+        NSString*url=[loginResult valueForKey:@"PhotoUrl"];
+        NSLog(@"%@",url);
+
+      //  url=[url stringByReplacingOccurrencesOfString:@"//" withString:@"/"];
+        NSLog(@"%@",url);
+         [user setObject:url forKey:@"Photo"];
+       //  usersets=loginResult;
+       //  NSLog(@"%@",usersets);
 //        NSDictionary *loginResult = [result JSONValue];
         //[usr setObject:@"YES" forKey:@"validated"];
         if(![[loginResult objectForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"BalanceAmount"] != NULL)
@@ -438,7 +445,7 @@ static assist * _sharedInstance = nil;
            // [usr setObject:[loginResult objectForKey:@"PhotoUrl"] forKey:@"PhotoUrl"];
             [usr setObject:@"http://172.17.60.150/NoochService/Photos/gv_no_photo.jpg" forKey:@"PhotoUrl"];
 
-             [user setObject:@"http://172.17.60.150/NoochService/Photos/gv_no_photo.jpg" forKey:@"PhotoUrl"];
+            
             
             if ([pic isEqualToData:UIImagePNGRepresentation([UIImage imageNamed:@"profile_picture.png"])] || [pic isKindOfClass:[NSNull class]] || [pic length] == 0) {
                 [self fetchPic];

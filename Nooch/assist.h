@@ -12,7 +12,7 @@
 #import "serve.h"
 #import <Social/Social.h>
 #import <Accounts/Accounts.h>
-NSString*strUrl;
+
 BOOL profileGO;
 bool histSafe;
 bool limit;

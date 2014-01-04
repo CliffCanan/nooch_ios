@@ -10,5 +10,6 @@
 #import "serve.h"
 
 @interface Deposit : UIViewController<UITextFieldDelegate,serveD,UITableViewDataSource,UITableViewDelegate>
+- (id)initWithData:(NSArray *)bankinfo;
 
 @end

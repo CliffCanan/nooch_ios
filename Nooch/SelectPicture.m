@@ -9,7 +9,7 @@
 #import "SelectPicture.h"
 #import <QuartzCore/QuartzCore.h>
 #import "CreatePIN.h"
-
+#import "assist.h"
 @interface SelectPicture ()
 @property(nonatomic,strong) NSMutableDictionary *user;
 @property(nonatomic,strong) UIImageView *pic;
@@ -88,6 +88,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info{
     UIImage *image=[info objectForKey:UIImagePickerControllerOriginalImage];
     [self.pic setImage:[self imageWithImage:image scaledToSize:CGSizeMake(40, 40)]];
+    [[assist shared]setTranferImage:[self imageWithImage:image scaledToSize:CGSizeMake(40, 40)]];
     [self dismissViewControllerAnimated:YES completion:Nil];
    // 29/12
     //[self dismissModalViewControllerAnimated:YES];

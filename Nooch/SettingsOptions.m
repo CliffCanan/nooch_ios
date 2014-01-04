@@ -133,6 +133,7 @@
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
                 NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
                 //sendingMoney = NO;
+                 [nav_ctrl performSelector:@selector(disable)];
                 Register *reg = [Register new];
                 [self.navigationController pushViewController:reg animated:YES];
             
@@ -157,6 +158,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) {
+        [[assist shared]setisloggedout:YES];
         serve*  serveOBJ=[serve new];
         serveOBJ.Delegate=self;
         

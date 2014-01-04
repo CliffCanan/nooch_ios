@@ -8,6 +8,7 @@
 
 #import "serve.h"
 #import "Home.h"
+#import "Register.h"
 //
 //Charan's edit 19nov2013
 //seconds for 3 days
@@ -384,15 +385,75 @@ NSString *amnt;
     if (!connection)
         NSLog(@"connect error");
 }
--(void)newUser:(NSString *)email first:(NSString *)fName last:(NSString *)lName password:(NSString *)password pin:(NSString*)pin invCode:(NSString*)inv fbId:(NSString *)fbId{
+-(void)newUser:(NSString *)email first:(NSString *)fName last:(NSString *)lName password:(NSString *)password pin:(NSString*)pin invCode:(NSString*)inv fbId:(NSString *)fbId {
+    self.responseData = [NSMutableData data];
+   // NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSMutableDictionary*dictnew=[[NSMutableDictionary alloc]init];
+    [dictnew setObject:email forKey:@"UserName"];
+    [dictnew setObject:fName forKey:@"FirstName"];
+    [dictnew setObject:lName forKey:@"LastName"];
+    [dictnew setObject:email forKey:@"SecondaryMail"];
+    [dictnew setObject:email forKey:@"RecoveryMail"];
+    [dictnew setObject:password forKey:@"Password"];
+    [dictnew setObject:pin forKey:@"PinNumber"];
+    //inviteCode
+    [dictnew setObject:inv forKey:@"inviteCode"];
+    [dictnew setObject:@"1234560" forKey:@"deviceTokenId"];
+//    [dictnew setObject:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"udId"];
+    [dictnew setObject:@"" forKey:@"friendRequestId"];
+    [dictnew setObject:@"" forKey:@"invitedFriendFacebookId"];
+    [dictnew setObject:@"" forKey:@"facebookAccountLogin"];
+   
+    if ([[assist shared]getTranferImage]) {
+        
+        NSData *data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
+        NSUInteger len = data.length;
+        uint8_t *bytes = (uint8_t *)[data bytes];
+        NSMutableString *result1 = [NSMutableString stringWithCapacity:len * 3];
+        //  [result1 appendString:@"["];
+        for (NSUInteger i = 0; i < len; i++) {
+            if (i) {
+                [result1 appendString:@","];
+            }
+            [result1 appendFormat:@"%d", bytes[i]];
+        }
+        
+        NSArray*arr=[result1 componentsSeparatedByString:@","];
+        [dictnew setObject:arr forKey:@"Picture"];
+    }
+     NSDictionary*memDetails=[NSDictionary dictionaryWithObjectsAndKeys:dictnew,@"MemberDetails", nil];
+    UIImage*img=[UIImage imageNamed:@""];
+    [[assist shared]setTranferImage:img];
+     [[assist shared]setTranferImage:nil];
+    NSLog(@"%@",dictnew);
+    //  [settingsDictionary setValue:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
+    NSError *error;
+    postDataSet = [NSJSONSerialization dataWithJSONObject:memDetails
+                                                  options:NSJSONWritingPrettyPrinted error:&error];
     
-    self.responseData = [[NSMutableData alloc] init];
-    //NSString *deviceToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"DeviceToken"];
-    requestnewUser = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?uName=%@&fName=%@&lName=%@&secMail=%@&rEmail=%@&pwd=%@&pinNo=%@&deviceToken=%@&udId=&friendReqId=&invitedFriendFacebookId=&inviteCode=%@&facebookAccountLogin=", ServerUrl,@"MemberRegistration", email, fName, lName,email,email,password, pin, fbId,inv]]];
+    postLengthSet = [NSString stringWithFormat:@"%d", [postDataSet length]];
+    urlStrSet = [[NSString alloc] initWithString:ServerUrl];
+    urlStrSet = [urlStrSet stringByAppendingFormat:@"/%@", @"MemberRegistration"];
+    NSURL *url = [NSURL URLWithString:urlStrSet];
+    requestSet = [[NSMutableURLRequest alloc] initWithURL:url];
+    [requestSet setHTTPMethod:@"POST"];
+    [requestSet setValue:postLengthSet forHTTPHeaderField:@"Content-Length"];
+    [requestSet setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [requestSet setHTTPBody:postDataSet];
+    [requestSet setTimeoutInterval:5000];
     
-    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestnewUser delegate:self];
+    
+
+    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestSet delegate:self];
     if (!connection)
         NSLog(@"connect error");
+//       self.responseData = [[NSMutableData alloc] init];
+//    //NSString *deviceToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"DeviceToken"];
+//    requestnewUser = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?uName=%@&fName=%@&lName=%@&secMail=%@&rEmail=%@&pwd=%@&pinNo=%@&deviceToken=%@&udId=&friendReqId=&invitedFriendFacebookId=&inviteCode=%@&facebookAccountLogin=", ServerUrl,@"MemberRegistration", email, fName, lName,email,email,password, pin, fbId,inv]]];
+//    
+//    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestnewUser delegate:self];
+//    if (!connection)
+//        NSLog(@"connect error");
 }
 -(void)setSets:(NSDictionary*)settingsDictionary{
     
@@ -652,6 +713,45 @@ NSString *amnt;
     
     
     responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
+    if ([responseString rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
+        // [self viewDidDisaislogOutUnconditionalppear:YES];
+        if ([[assist shared]isloggedout]) {
+            
+        }
+        else
+        {
+            
+                UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil                , nil];
+                
+                [Alert show];
+                
+                
+                [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+                
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+                
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+                
+                NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+                
+               // sendingMoney = NO;
+                
+               // [navCtrl dismissViewControllerAnimated:YES completion:nil];
+                
+                // [navCtrl dismissModalViewControllerAnimated:NO];
+                
+                [nav_ctrl performSelector:@selector(disable)];
+                
+                Register *reg = [Register new];
+                [nav_ctrl pushViewController:reg animated:YES];
+                me = [core new];
+                
+            //    islogOutUnconditional=NO;
+                
+            
+        }
+    }
+
     if (![tagName isEqualToString:@"info"]) {
         NSLog(@"serve connected for %@",self.tagName);
         
@@ -897,7 +997,13 @@ NSString *amnt;
     //    }
     //    [self.Delegate listen:responseString tagName:self.tagName];
 }
-
+#pragma mark - file paths
+- (NSString *)autoLogin{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+    
+}
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
     return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 }
@@ -1359,5 +1465,69 @@ NSString *amnt;
     if (!connectionList)
         NSLog(@"connect error");
 }
-// GetTransactionsSearchList(string memberId, string friendName, string listType, int pageSize, int pageIndex)
+-(void)getLocationBasedSearch:(NSString *)radius {
+    ServiceType = @"LocationSearch";
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSString * memId = [defaults objectForKey:@"MemberId"];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/GetLocationSearch?memberId=%@&accessToken=%@&Radius=%@",ServerUrl,memId,[defaults valueForKey:@"OAuthToken"],radius];
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+}
+//-(void)SendEmailToNonNooch:(NSString*)email
+//    {
+//      //  TransactionDto transactionInput, out string trnsactionId, string accessToken, string inviteType, string receiverEmailId);
+//
+//
+//    //accessToken
+//    self.responseData = [[NSMutableData alloc] init];
+//
+//    NSString *urlString = [NSString stringWithFormat:@"%@/SaveFrequency",ServerUrl];
+//
+//    NSURL *url = [NSURL URLWithString:urlString];
+//
+//    dictInv=[[NSMutableDictionary alloc]init];
+//
+//    [dictInv setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"memberId"];
+//    [dictInv setObject:withdrawalId forKey:@"withdrawalId"];
+//    [dictInv setObject:type forKey:@"type"];
+//    //withdrawalFrequency
+//    [dictInv setObject:[NSString stringWithFormat:@"%f",withdrawalFrequency] forKey:@"withdrawalFrequency"];
+//
+//    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+//
+//    [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
+//    // NSString *post = [dictSMS JSONRepresentation];
+//    NSLog(@"dict %@",[dictInv JSONRepresentation]);
+//    postDataInv = [[dictInv JSONRepresentation] dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+//
+//    postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
+//
+//    requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
+//
+//    [requestInv setHTTPMethod:@"POST"];
+//
+//    [requestInv setValue:postLengthInv forHTTPHeaderField:@"Content-Length"];
+//
+//    [requestInv setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+//
+//    [requestInv setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
+//
+//    [requestInv setHTTPBody:postDataInv];
+//
+//    connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
+//
+//    if (!connectionInv)
+//
+//        NSLog(@"connect error");
+//}
+//
+
 @end

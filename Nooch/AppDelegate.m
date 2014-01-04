@@ -48,7 +48,7 @@ bool modal;
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 
     NSSetUncaughtExceptionHandler(&exceptionHandler);
-
+   // [[UIApplication sharedApplication]registerForRemoteNotificationTypes:UIRemoteNotificationTypeNone];
     NSLog(@"finished launching");
     return YES;
 }

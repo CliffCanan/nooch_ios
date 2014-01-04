@@ -13,7 +13,7 @@
 #import "NewCard.h"
 #import "Deposit.h"
 #import "Withdraw.h"
-
+#import "BankVerification.h"
 @interface FundsMenu ()
 @property(nonatomic,strong)UITableView *menu;
 @end
@@ -48,7 +48,12 @@
     
     UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(40, 20, 280, 40)];
     [name setStyleId:@"rside_balance"];
-    [name setText:@"$ 100.00"];
+    if ([user objectForKey:@"Balance"]) {
+        [name setText:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]]];
+    } else {
+        [name setText:[NSString stringWithFormat:@"$%@",@"0.00"]];
+    }
+   // [name setText:@"$ 100.00"];
     [user_bar addSubview:name];
     
     UIButton *add_source = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -606,7 +611,7 @@
     }
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            Deposit *dep = [Deposit new];
+            Deposit *dep = [[Deposit alloc]initWithData:ArrBankAccountCollection];
             [nav_ctrl pushViewController:dep animated:YES];
             [self.slidingViewController resetTopView];
             //[self hideActionMenu];
@@ -622,7 +627,8 @@
             }*/
             //[navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"addFunds"] animated:YES];
         }else if(indexPath.row == 1){
-            Withdraw *wd = [Withdraw new];
+             Withdraw *wd = [[Withdraw alloc]initWithData:ArrBankAccountCollection];
+           
             [nav_ctrl pushViewController:wd animated:YES];
             [self.slidingViewController resetTopView];
             //[self hideActionMenu];
@@ -701,9 +707,15 @@
         }
     
           else if(indexPath.section == 1){
-        /*if (indexPath.row == 0) {
-            if ([[[me usr] objectForKey:@"banks"] count] > 0) {
+        if (indexPath.row == 0) {
+            if ([ArrBankAccountCollection count] > 0) {
+               // Deposit *dep = [Deposit new];
+               
+                [self.slidingViewController resetTopView];
+                BankVerification *bv=[BankVerification new];
+                 [nav_ctrl pushViewController:bv animated:YES];
                 
+                //[self.navigationController pushViewController:bv animated:YES];
                 
             }
         }else if(indexPath.row == 1){
@@ -721,7 +733,7 @@
             if ([[[me usr] objectForKey:@"cards"] count] == 2 && [[[me usr] objectForKey:@"banks"] count] == 2){
                 
             }
-        }*/
+        }
     }
 }
 

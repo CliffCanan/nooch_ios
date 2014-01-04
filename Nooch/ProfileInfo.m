@@ -16,6 +16,7 @@
 #import "UIImageView+WebCache.h"
 
 @interface ProfileInfo ()
+@property(nonatomic) UIImagePickerController *picker;
 @property(nonatomic,strong) UITextField *name;
 @property(nonatomic,strong) UITextField *email;
 @property(nonatomic,strong) UITextField *recovery_email;
@@ -48,15 +49,15 @@
         self.password.text=newchangedPass;
     }
     
-    if ([strUrl length]>0 && strUrl!=nil) {
-        [picture setImageWithURL:[NSURL URLWithString:strUrl]
+    if ([[user objectForKey:@"Photo"] length]>0 && [user objectForKey:@"Photo"]!=nil && !isPhotoUpdate) {
+        [picture setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
                  placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
     }
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    isPhotoUpdate=NO;
    
      spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [self.view addSubview:spinner];
@@ -314,17 +315,9 @@
     timezoneStandard = [[timezoneStandard componentsSeparatedByString:@", "] objectAtIndex:0];
     timezoneStandard = [GMTTimezonesDictionary objectForKey:timezoneStandard];
     timezoneStandard = @"";
-    //imageData = [me pic];
     
-   // if(imageData.length != 0){
-     //   encodedString =  [NSString base64StringFromData:imageData length:imageData.length];
-    //}else{
-      //  encodedString=@"";
-    //}
-  //  NSMutableDictionary *imageDic = [[NSMutableDictionary alloc] init];
-   // NSString *imageLen = [NSString stringWithFormat:@"%d",imageData.length];
-   // imageDic = [NSMutableDictionary dictionaryWithObjectsAndKeys: encodedString, @"FileContent", imageLen, @"ContentLength", @".png", @"FileExtension", nil];
-    if ([self.phone.text length]==0 ||[self.phone.text length]<10)
+
+    if ([self.phone.text length]!=10)
     {
         
         UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"NoochMoney" message:@"Enter valid 10 digit Cell Number" delegate:nil cancelButtonTitle:@"OK"otherButtonTitles:nil, nil];
@@ -392,7 +385,7 @@
     //[transactionInput setObject:[NSString stringWithFormat:@"%@ %@",self.address.text,self.addressLine2.text] forKey:@"Address"];
     [transactionInput setObject:self.city.text forKey:@"City"];
     NSLog(@"%d",[self.phone.text length]);
-    if ([self.phone.text length]==0 ||[self.phone.text length]<11)
+    if ([self.phone.text length]!=10)
     {
         //[me endWaitStat];
         UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"NoochMoney" message:@"Enter valid 10 digit Cell Number" delegate:nil cancelButtonTitle:@"OK"otherButtonTitles:nil, nil];
@@ -409,15 +402,35 @@
     
     [transactionInput setObject:self.zip.text forKey:@"Zipcode"];
     [transactionInput setObject:@"false" forKey:@"UseFacebookPicture"];
-    //  [transactionInput setObject:imageLen forKey:@"contentLength"];
+    
     [transactionInput setObject:@".png" forKey:@"fileExtension"];
-    //    [transactionInput setObject:encodedString forKey:@"fileContent"];
-    // [transactionInput setObject:imageDic forKey:@"AttachmentFile"];
+
     [transactionInput setObject:recoverMail forKey:@"RecoveryMail"];
     // [transactionInput setObject:self.state.text forKey:@"State"];
     [transactionInput setObject:timezoneStandard forKey:@"TimeZoneKey"];
     [transactionInput setObject:getEncryptedPasswordValue forKey:@"Password"];
-    
+    if ([[assist shared] getTranferImage]) {
+        
+        NSData *data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
+        NSUInteger len = data.length;
+        uint8_t *bytes = (uint8_t *)[data bytes];
+        NSMutableString *result1 = [NSMutableString stringWithCapacity:len * 3];
+        //  [result1 appendString:@"["];
+        for (NSUInteger i = 0; i < len; i++) {
+            if (i) {
+                [result1 appendString:@","];
+            }
+            [result1 appendFormat:@"%d", bytes[i]];
+        }
+        //[result1 appendString:@"]"];
+        NSArray*arr=[result1 componentsSeparatedByString:@","];
+        // NSLog(@"%@image",image64);
+        //[transactionInputTransfer setValue:arr forKey:@"Picture"];
+        [transactionInput setObject:arr forKey:@"Picture"];
+
+        
+    }
+    NSLog(@"%@",transactionInput);
     [spinner startAnimating];
     [spinner setHidden:NO];
     transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"mySettings", nil];
@@ -456,7 +469,105 @@
 }
 - (void)change_pic
 {
+    UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Use Facebook Picture", @"Use Camera", @"From iPhone Library", nil];
+    actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
+    [actionSheetObject showInView:self.view];
     
+    
+}
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    
+    if(buttonIndex == 0)
+    {
+        
+        //self.pic.layer.borderColor = kNoochBlue.CGColor;
+        //[self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
+    }
+    else if(buttonIndex == 1)
+    {
+        if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+            
+            UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                  message:@"Device has no camera"
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles: nil];
+            
+            [myAlertView show];
+            return;
+            
+        }
+        self.picker=[UIImagePickerController new];
+        self.picker.delegate = self;
+        self.picker.allowsEditing = YES;
+        self.picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        
+        
+        self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self presentViewController:self.picker animated:YES completion:Nil];
+        
+
+       
+                // [self presentModalViewController:self.picker animated:YES];
+    }
+    
+    else if(buttonIndex == 2)
+    {
+        self.picker=[UIImagePickerController new];
+        self.picker.delegate = self;
+        self.picker.allowsEditing = YES;
+        self.picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        
+        
+        self.picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+       // UIView*sview=[[UIView alloc]initWithFrame:CGRectMake(10, 10, 300, 480)];
+       // [self.view addSubview:sview];
+        //sview.subviews=self.picker.view;
+        [self presentViewController:self.picker animated:YES completion:Nil];
+        
+        //   [self presentModalViewController:self.picker animated:YES];
+    }
+}
+-(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size{
+    float actualHeight = image.size.height;
+    float actualWidth = image.size.width;
+    float imgRatio = actualWidth/actualHeight;
+    float maxRatio = 75.0/115.0;
+    
+    if(imgRatio!=maxRatio){
+        if(imgRatio < maxRatio){
+            imgRatio = 75.0 / actualHeight;
+            actualWidth = imgRatio * actualWidth;
+            actualHeight = 115.0;
+        }
+        else{
+            imgRatio = 75.0 / actualWidth;
+            actualHeight = imgRatio * actualHeight;
+            actualWidth = 75.0;
+        }
+    }
+    CGRect rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight);
+    UIGraphicsBeginImageContext(rect.size);
+    [image drawInRect:rect];
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return img;
+}
+#pragma mark-ImagePicker
+- (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    UIImage *image=[info objectForKey:UIImagePickerControllerOriginalImage];
+    isPhotoUpdate=YES;
+    [picture setImage:[self imageWithImage:image scaledToSize:CGSizeMake(40, 40)]];
+    [[assist shared]setTranferImage:[self imageWithImage:image scaledToSize:CGSizeMake(40, 40)]];
+    [self dismissViewControllerAnimated:YES completion:Nil];
+    
+}
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker1{
+    [self dismissViewControllerAnimated:YES completion:Nil];
+    // 29/12
+	//[self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark - UITableViewDataSource
@@ -515,6 +626,7 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     if (textField == self.password) {
+        
         [self.view endEditing:YES];
         userPass=self.password.text;
         NSLog(@"%@",userPass);

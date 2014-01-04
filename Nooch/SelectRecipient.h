@@ -11,8 +11,13 @@
 #import "serve.h"
 #import "HowMuch.h"
 
-@interface SelectRecipient : UIViewController<UITableViewDelegate,UITableViewDataSource,serveD>
+@interface SelectRecipient : UIViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate>
 {
     UIView*loader;
+    NSString*searchString;
+    BOOL searching;
+    BOOL emailEntry;
+    NSMutableArray*arrSearchedRecords;
+    UISearchBar *search;
 }
 @end

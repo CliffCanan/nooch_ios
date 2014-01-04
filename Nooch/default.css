@@ -448,8 +448,8 @@
     
 	/**  The "Search by Location" icon on the Top Nav Bar (top-right corner).  **/
 	#icon_location {
-		/*top					: 29px;
-		left				: 277px;*/
+		/*top					: 29px;*/
+		left				: 277px;
 		width				: 20px;
 		height				: 33px;
 		background-image	: url(map-icon.png);

@@ -237,7 +237,9 @@
     }
     NSMutableDictionary *transaction = [self.receiver mutableCopy];
     [transaction setObject:[self.memo text] forKey:@"memo"];
-    float input_amount = [[[self.amount text] substringFromIndex:2] floatValue];
+    //float input_amount = [[[self.amount text] substringFromIndex:2] floatValue];
+    float input_amount = [[self.amount text]  floatValue];
+
     TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"send" amount:input_amount];
     [self.navigationController pushViewController:pin animated:YES];
 }

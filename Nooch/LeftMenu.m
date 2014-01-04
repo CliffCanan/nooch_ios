@@ -101,10 +101,10 @@
     } else {
         [self.balance setText:[NSString stringWithFormat:@"$%@",@"0.00"]];
     }
-    
-    if ([strUrl length]>0 && strUrl!=nil) {
+    NSLog(@"%@",[user objectForKey:@"Photo"]);
+    if ([[user objectForKey:@"Photo"] length]>0 && [user objectForKey:@"Photo"]!=nil) {
         [user_pic setStyleId:@"lside_userpic"];
-        [user_pic setImageWithURL:[NSURL URLWithString:strUrl]
+        [user_pic setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
             placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
         
     }
@@ -328,6 +328,7 @@
                 [av show];
                 return;
             }
+            
             MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
             mailComposer.mailComposeDelegate = self;
             [mailComposer setSubject:[NSString stringWithFormat:@"Bug Report: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];

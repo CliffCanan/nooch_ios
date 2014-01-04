@@ -10,7 +10,7 @@
 #import "serve.h"
 #import "Decryption.h"
 #import "GetEncryptionValue.h"
-@interface ProfileInfo : UIViewController<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,GetEncryptionValueDelegate>
+@interface ProfileInfo : UIViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,GetEncryptionValueDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate>
 {
     UIActivityIndicatorView*spinner;
     NSString *recoverMail;
@@ -22,5 +22,6 @@
      NSString*ServiceType;
     NSDictionary*GMTTimezonesDictionary;
     UIImageView *picture;
+    BOOL isPhotoUpdate;
 }
 @end

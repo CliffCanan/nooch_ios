@@ -224,8 +224,9 @@
     if (self.completed_selected) {
         
         if ([histShowArrayCompleted count]>indexPath.row) {
-            
                 NSDictionary*dictRecord=[histShowArrayCompleted objectAtIndex:indexPath.row];
+            NSLog(@"%@",dictRecord);
+
                 if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]) {
                     UIView *indicator = [UIView new];
                     [indicator setStyleClass:@"history_sidecolor"];
@@ -288,7 +289,16 @@
                     UILabel *name = [UILabel new];
                     [name setStyleClass:@"history_cell_textlabel"];
                     [name setStyleClass:@"history_recipientname"];
-                    [name setText:[dictRecord valueForKey:@"FirstName"]];
+                     //if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
+                         [name setText:[NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"FirstName"]]];
+                         
+  
+                   // }
+                   // else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]){
+                     //   [name setText:[NSString stringWithFormat:@"%@You Paid",[dictRecord valueForKey:@"FirstName"]]];
+                        
+
+                    //}
                     [cell.contentView addSubview:name];
                     UILabel *date = [UILabel new];
                     [date setStyleClass:@"history_datetext"];

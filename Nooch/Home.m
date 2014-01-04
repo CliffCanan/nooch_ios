@@ -63,7 +63,15 @@
     
     self.balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.balance setFrame:CGRectMake(0, 0, 60, 30)];
-    [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"0.00"] forState:UIControlStateNormal];
+   // [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
+    if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
+        [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+        
+    }
+    else
+    {
+        [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
+    }
     [self.balance.titleLabel setFont:kNoochFontMed];
     [self.balance addTarget:self action:@selector(showFunds) forControlEvents:UIControlEventTouchUpInside];
     [self.balance setStyleId:@"navbar_balance"];
@@ -121,7 +129,7 @@
     }else{
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        //[nav_ctrl performSelector:@selector(disable)];
+        [nav_ctrl performSelector:@selector(disable)];
         Register*reg=[Register new];
         [nav_ctrl pushViewController:reg animated:NO];
         return;
@@ -152,8 +160,8 @@
       //
 }
 -(void)updateLoader{
-       if ([usersets objectForKey:@"BalanceAmount"] && ![[usersets objectForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]]&& [usersets objectForKey:@"BalanceAmount"]!=NULL) {
-        [self.balance setTitle:[NSString stringWithFormat:@"$%@",[usersets objectForKey:@"BalanceAmount"]] forState:UIControlStateNormal];
+       if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
+        [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
         
     }
     else

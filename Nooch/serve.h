@@ -66,7 +66,7 @@
 -(void)memberDevice:(NSString *)deviceToken;
 -(void)setEmailSets:(NSDictionary*)notificationDictionary;
 -(void)setPushSets:(NSDictionary*)notificationDictionary;
--(void)newUser:(NSString *)email first:(NSString *)fName last:(NSString *)lName password:(NSString *)password pin:(NSString*)pin invCode:(NSString*)inv fbId:(NSString*)fbId;
+-(void)newUser:(NSString *)email first:(NSString *)fName last:(NSString *)lName password:(NSString *)password pin:(NSString*)pin invCode:(NSString*)inv fbId:(NSString *)fbId ;
 -(void)setSets:(NSDictionary*)settingsDictionary;
 -(void)resetPassword:(NSString*)old new:(NSString*)new;
 -(void)resetPIN:(NSString*)old new:(NSString*)new;
@@ -97,6 +97,8 @@
 -(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len;
 -(void)histMoreSerachbyName:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len name:(NSString*)name;
 -(void) LogOutRequest:(NSString*) memberId;
+//-(void)SendEmailToNonNooch:(NSString*)emai;
+-(void)getLocationBasedSearch:(NSString *)radius;
 @end
 
 //392f9c86-1651-4459-a6a9-d362fcfc4366 - nooch team

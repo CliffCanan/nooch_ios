@@ -236,6 +236,7 @@
 		842E3313187413490057EAFB /* Decryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 842E3312187413490057EAFB /* Decryption.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		842E3316187424440057EAFB /* GetEncryptionValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 842E3315187424440057EAFB /* GetEncryptionValue.m */; };
 		842E3318187431E40057EAFB /* RoundLoading.png in Resources */ = {isa = PBXBuildFile; fileRef = 842E3317187431E40057EAFB /* RoundLoading.png */; };
+		84BD98721877F6E9008B6131 /* userlocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BD98711877F6E9008B6131 /* userlocation.m */; };
 		84BFD930187122DD001C0AAC /* Pixate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84BFD92F187122DD001C0AAC /* Pixate.framework */; };
 		84BFD9321871270C001C0AAC /* cross_basic_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 84BFD9311871270C001C0AAC /* cross_basic_yellow.png */; };
 /* End PBXBuildFile section */
@@ -622,6 +623,8 @@
 		842E3314187424440057EAFB /* GetEncryptionValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetEncryptionValue.h; sourceTree = "<group>"; };
 		842E3315187424440057EAFB /* GetEncryptionValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetEncryptionValue.m; sourceTree = "<group>"; };
 		842E3317187431E40057EAFB /* RoundLoading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoundLoading.png; sourceTree = "<group>"; };
+		84BD98701877F6E9008B6131 /* userlocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = userlocation.h; sourceTree = "<group>"; };
+		84BD98711877F6E9008B6131 /* userlocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = userlocation.m; sourceTree = "<group>"; };
 		84BFD92F187122DD001C0AAC /* Pixate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Pixate.framework; sourceTree = "<group>"; };
 		84BFD9311871270C001C0AAC /* cross_basic_yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cross_basic_yellow.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1076,6 +1079,7 @@
 				01085FE1180335C500A31F63 /* Initial Controllers */,
 				01085FDF1803359700A31F63 /* Sliding Menus */,
 				01085FDD1803356300A31F63 /* Registration and Login Controllers */,
+				84BD986F1877F695008B6131 /* Location Search */,
 				01085FE2180335DC00A31F63 /* Transfer Flow Controllers */,
 				01085FF9180346E000A31F63 /* Donation Controllers */,
 				01085FDE1803358600A31F63 /* History Controllers */,
@@ -1424,6 +1428,15 @@
 			name = "Location Tracker";
 			sourceTree = "<group>";
 		};
+		84BD986F1877F695008B6131 /* Location Search */ = {
+			isa = PBXGroup;
+			children = (
+				84BD98701877F6E9008B6131 /* userlocation.h */,
+				84BD98711877F6E9008B6131 /* userlocation.m */,
+			);
+			name = "Location Search";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1626,6 +1639,7 @@
 				01085FB717FB6ABE00A31F63 /* ReferralCode.m in Sources */,
 				01085FF5180345D200A31F63 /* ResetPassword.m in Sources */,
 				16E4B1B0187053F20099D075 /* NSData+GIF.m in Sources */,
+				84BD98721877F6E9008B6131 /* userlocation.m in Sources */,
 				16E4B1B9187053F20099D075 /* UIImage+GIF.m in Sources */,
 				0179E9FC17F36C4C0027526C /* Helpers.m in Sources */,
 				01085FFF1803490500A31F63 /* CharityDetails.m in Sources */,
@@ -1777,15 +1791,12 @@
 		6B30375815FA3FF600056DAD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Nooch Inc (3GDWQ778SF)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Nooch Inc (3GDWQ778SF)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: charanjit singh (R2K5CMQ773)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: charanjit singh (R2K5CMQ773)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					/Users/Er_Vicky/Desktop/Pixate/Framework,
 					"\\\\\\\\\\\\\\\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\\\\\\\\\\\\\\\"",
-					/Users/Er_Vicky/Desktop/new/nooch_ios,
-					/Users/admin/Music/new/nooch_ios,
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1805,8 +1816,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0B728BEF-1149-4D10-A675-233B9A3A089A";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0B728BEF-1149-4D10-A675-233B9A3A089A";
+				PROVISIONING_PROFILE = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1814,15 +1825,12 @@
 		6B30375915FA3FF600056DAD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Nooch Inc (3GDWQ778SF)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Nooch Inc (3GDWQ778SF)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: charanjit singh (R2K5CMQ773)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: charanjit singh (R2K5CMQ773)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					/Users/Er_Vicky/Desktop/Pixate/Framework,
 					"\\\\\\\\\\\\\\\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\\\\\\\\\\\\\\\"",
-					/Users/Er_Vicky/Desktop/new/nooch_ios,
-					/Users/admin/Music/new/nooch_ios,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Nooch/Nooch-Prefix.pch";
@@ -1841,8 +1849,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0B728BEF-1149-4D10-A675-233B9A3A089A";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0B728BEF-1149-4D10-A675-233B9A3A089A";
+				PROVISIONING_PROFILE = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

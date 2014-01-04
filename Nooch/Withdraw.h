@@ -10,5 +10,6 @@
 #import "serve.h"
 
 @interface Withdraw : UIViewController<UITextFieldDelegate,serveD,UITableViewDataSource,UITableViewDelegate>
+- (id)initWithData:(NSArray *)bankinfo;
 
 @end

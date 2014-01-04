@@ -8,14 +8,24 @@
 
 #import "Withdraw.h"
 #import "Home.h"
-
+#import "TransferPIN.h"
 @interface Withdraw ()
+@property(nonatomic,strong)NSArray*banks;
 @property(nonatomic,strong) UIButton *withdraw;
 @property(nonatomic,strong) UITextField *amount;
 @end
 
 @implementation Withdraw
 
+- (id)initWithData:(NSArray *)bankinfo
+{
+    self = [super initWithNibName:nil bundle:nil];
+    if (self) {
+        // Custom initialization
+        self.banks = [bankinfo mutableCopy];
+    }
+    return self;
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -83,7 +93,18 @@
 
 - (void) withdraw_amount
 {
+    NSMutableDictionary *transaction = [[NSMutableDictionary alloc] init];
+    [transaction setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
+    [transaction setObject:@"charan" forKey:@"FirstName"];
+    [transaction setObject:@"jeet"forKey:@"LastName"];
+    // [transaction setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"FirstName"];
+    //[transaction setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"FirstName"];
     
+    //  float input_amount = [[[self.amount text] substringFromIndex:2] floatValue];
+    TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"withdrawfund" amount: [self.amount.text floatValue]];
+    [self.navigationController pushViewController:pin animated:YES];
+    
+ 
 }
 
 #pragma mark - UITableViewDataSource
@@ -103,11 +124,34 @@
         cell.selectedBackgroundView = selectionColor;
     }
     
-    UILabel *bank = [UILabel new];
-    [bank setStyleClass:@"wd_dep_banklabel"];
-    [bank setText:@"Account ending in 3456"];
-    [cell.contentView addSubview:bank];
+    UILabel *banktxt = [UILabel new];
+    [banktxt setStyleClass:@"wd_dep_banklabel"];
+    [banktxt setText:@"Account ending in 3456"];
+    [cell.contentView addSubview:banktxt];
+    NSDictionary *bank = [self.banks objectAtIndex:0];
+   // NSString*lastdigit=[NSString stringWithFormat:@"XXXX%@",[[bank objectForKey:@"BankAcctNumber"] substringFromIndex:[[bank objectForKey:@"BankAcctNumber"] length]-4]];
+   // cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",[bank objectForKey:@"BankName"],lastdigit];
+    //cell.textLabel.font=[UIFont fontWithName:@"Arial" size:12.0f];
+    NSArray* bytedata = [bank valueForKey:@"BankPicture"];
+    //XXXXXXXX2222
+    unsigned c = bytedata.count;
+    uint8_t *bytes = malloc(sizeof(*bytes) * c);
     
+    unsigned i;
+    for (i = 0; i < c; i++)
+    {
+        NSString *str = [bytedata objectAtIndex:i];
+        int byte = [str intValue];
+        bytes[i] = (uint8_t)byte;
+    }
+    
+    NSData *datos = [NSData dataWithBytes:bytes length:c];
+    UIImageView*img=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"tickR.png"]];
+    img.frame=CGRectMake(10, 10, 40 , 40);
+    [cell.contentView addSubview:img];
+    
+    img.image = [UIImage imageWithData:datos];
+
     return cell;
 }
 

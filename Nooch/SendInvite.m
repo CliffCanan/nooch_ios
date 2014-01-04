@@ -310,7 +310,7 @@
     [msgTextView setFont:[UIFont systemFontOfSize:16]];
     //NSArray*arrReferCode=[referCode.text componentsSeparatedByString:@":"];
     msgTextView.textColor=[UIColor blackColor];
-    msgTextView.text=[NSString stringWithFormat:@"Hey,%@ has invited you to use Nooch, the simplest way to pay friends back. Use my referral code [%@] - download here: %@",@"Noochuser" , code.text,@"ow.ly/nGocT"];
+    msgTextView.text=[NSString stringWithFormat:@"Hey,%@ has invited you to use Nooch, the simplest way to pay friends back. Use my referral code [%@] - download here: %@",[user objectForKey:@"firstName"] , code.text,@"ow.ly/nGocT"];
     [SMSView addSubview:msgTextView];
     
     btnToSend=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -337,12 +337,12 @@
 -(void)sendSMS:(id)sender
 
 {
-    if ([textPhoneto.text length]!=13) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter 13 digit Cell number to send Message" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    if ([textPhoneto.text length]!=10) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter 10 digit Cell number to send Message" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         return;
     }
-    if([textPhoneto.text length]>=13)
+    if([textPhoneto.text length]>=10)
     {
        
         serve*serveOBJ=[serve new];
@@ -398,7 +398,7 @@
    // NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     NSString *messageBody; // Change the message body to HTML
-    messageBody=[NSString stringWithFormat:@"<h5>\"Hi, Your friend %@ has invited you to become a member of Nooch, the simplest way to pay back friends.<br />Accept this invitation by downloading Nooch and using this Referral Code: %@ <br /><br />To learn more about Nooch, check us out</h5> <a href=\"https://www.nooch.com/overview/\">here</a><br /><h6>-Team Nooch\"</h6>",@"Noochuser",code.text];
+    messageBody=[NSString stringWithFormat:@"<h5>\"Hi, Your friend %@ has invited you to become a member of Nooch, the simplest way to pay back friends.<br />Accept this invitation by downloading Nooch and using this Referral Code: %@ <br /><br />To learn more about Nooch, check us out</h5> <a href=\"https://www.nooch.com/overview/\">here</a><br /><h6>-Team Nooch\"</h6>",[user objectForKey:@"firstName"],code.text];
     // To address
     //NSArray *toRecipents = [NSArray arrayWithObject:@"support@appcoda.com"];
     

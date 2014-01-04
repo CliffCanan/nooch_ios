@@ -23,7 +23,7 @@ core *me;
 #define kNoochFontMed [UIFont fontWithName:@"BrandonGrotesque-Medium" size:16]
 #define kNoochFontLt [UIFont fontWithName:@"BrandonGrotesque-Light" size:18]
 UINavigationController *nav_ctrl;
-NSDictionary*usersets;
+
 NSUserDefaults *user;
 @interface Home : UIViewController<serveD>
 
