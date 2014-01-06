@@ -99,8 +99,9 @@
     
     NSMutableDictionary *transaction = [[NSMutableDictionary alloc] init];
     [transaction setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
-    [transaction setObject:@"charan" forKey:@"FirstName"];
-    [transaction setObject:@"jeet"forKey:@"LastName"];
+    
+    [transaction setObject:[user objectForKey:@"firstName"]forKey:@"FirstName"];
+    [transaction setObject:[user objectForKey:@"lastName"]forKey:@"LastName"];
     // [transaction setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"FirstName"];
     //[transaction setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"FirstName"];
     

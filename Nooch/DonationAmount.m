@@ -58,7 +58,7 @@
     
     UILabel *to_label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
     [to_label setTextAlignment:NSTextAlignmentCenter];
-    [to_label setText:[NSString stringWithFormat:@"4K for Cancer"]];
+    [to_label setText:[NSString stringWithFormat:@"%@",[self.receiver valueForKey:@"OrganizationName"]]];
     [to_label setStyleId:@"nonprofit_howmuch_orgname"];
     [self.view addSubview:to_label];
     
@@ -97,7 +97,7 @@
     [self.send addTarget:self action:@selector(donate) forControlEvents:UIControlEventTouchUpInside];
     [self.send setStyleId:@"nonprofit_donatebutton"];
     [self.view addSubview:self.send];
-    [self.send setEnabled:NO];
+    [self.send setEnabled:YES];
     
     UIButton *dedicaiton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [dedicaiton setBackgroundImage:[UIImage imageNamed:@"memo-nonprofits"] forState:UIControlStateNormal];
@@ -174,8 +174,7 @@
     }
     NSMutableDictionary *transaction = [self.receiver mutableCopy];
     [transaction setObject:[self.memo text] forKey:@"memo"];
-    float input_amount = [[self.amount text]  floatValue];
-    //21 check tomorrow
+    float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
     TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"donation" amount:input_amount];
     [self.navigationController pushViewController:pin animated:YES];
 }

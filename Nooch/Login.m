@@ -39,25 +39,7 @@
 
 - (void)check_credentials
 {
-    //delete after server communication established
-    /*[self.navigationController setNavigationBarHidden:NO];
-    [UIView animateWithDuration:0.75
-                     animations:^{
-                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                         [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
-                     }];
-    [self.navigationController popToRootViewControllerAnimated:NO];
-    [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
-    return;*/
-    //end delete
-    
-    /*serve *log = [serve new];
-    [log setDelegate:self];
-    [log setTagName:@"login"];*/
-    //[log validateInvitation:@"pilot"];
-    //[log login:self.email.text password:self.password.text];
-    
-    //28/12
+        //28/12
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [self.view addSubview:spinner];
     spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
@@ -218,7 +200,13 @@
         [log setTagName:@"login"];
         //[log validateInvitation:@"pilot"];
          NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-        [log login:self.email.text password:self.encrypted_pass remember:[self.stay_logged_in isOn] lat:lat lon:lon uid:udid];
+        if ([self.stay_logged_in isOn]) {
+           [log login:self.email.text password:self.encrypted_pass remember:YES lat:lat lon:lon uid:udid];
+        }
+        else{
+             [log login:self.email.text password:self.encrypted_pass remember:NO lat:lat lon:lon uid:udid];
+        }
+        
     }
     if ([tagName isEqualToString:@"login"])
     {
@@ -296,7 +284,7 @@
         
         [nav_ctrl setNavigationBarHidden:NO];
 
-      
+      [user removeObjectForKey:@"Balance"];
 
         [spinner stopAnimating];
         [UIView beginAnimations:nil context:NULL];

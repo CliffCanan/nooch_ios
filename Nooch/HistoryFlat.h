@@ -26,5 +26,8 @@ NSString*listType;
     FPPopoverController*fp;
     NSString*SearchStirng;
     UIActivityIndicatorView *spinner;
+    UIView*mapArea;
+    float firstX,firstY;
+    BOOL isMapOpen;
 }
 @end

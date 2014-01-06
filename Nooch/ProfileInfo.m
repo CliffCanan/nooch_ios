@@ -14,7 +14,7 @@
 #import "NSString+AESCrypt.h"
 #import "ResetPassword.h"
 #import "UIImageView+WebCache.h"
-
+#import "Welcome.h"
 @interface ProfileInfo ()
 @property(nonatomic) UIImagePickerController *picker;
 @property(nonatomic,strong) UITextField *name;
@@ -54,12 +54,15 @@
                  placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
     }
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     isPhotoUpdate=NO;
    
-     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [self.view addSubview:spinner];
     spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
     [spinner startAnimating];
@@ -242,7 +245,11 @@
 }
 - (void) save_changes
 {
-    
+    [UIView beginAnimations:@"bucketsOff" context:nil];
+    [UIView setAnimationDuration:0.4];
+    [UIView setAnimationDelegate:self];
+    [self.view setFrame:CGRectMake(0,64, 320, 600)];
+    [UIView commitAnimations];
     if ([self.name.text length]==0) {
         UIAlertView *av =[ [UIAlertView alloc] initWithTitle:@"Nooch Money!" message:@"Please Enter Name" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [av show];
@@ -303,7 +310,7 @@
         
     }
     
-    [self.view addSubview:[me waitStat:@"Saving your profile..."]];
+    //[self.view addSubview:[me waitStat:@"Saving your profile..."]];
    //  [self getEncryptedPassword:self.password.text];
    
     if([self.recovery_email.text length]==0)
@@ -448,7 +455,7 @@
         self.name.text=[NSString stringWithFormat:@"%@ %@",[[arr objectAtIndex:0] capitalizedString],[[arr objectAtIndex:1] capitalizedString]];
     }
     
-    //[self.navigationController popViewControllerAnimated:YES];
+    
 
 }
 -(void) getEncryptedPassword:(NSString *)newPassword{
@@ -658,8 +665,7 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {      NSError* error;
-    [spinner stopAnimating];
-    [spinner setHidden:YES];
+    
     if([tagName isEqualToString:@"MySettingsResult"])
     {
         dictProfileinfo=[NSJSONSerialization
@@ -671,10 +677,7 @@
         NSLog(@"resultValue is : %@", result);
        getEncryptionOldPassword= [dictProfileinfo objectForKey:@"Password"];
         if([[resultValue valueForKey:@"Result"] isEqualToString:@"Your details have been updated successfully."]){ //&& imageData.length != 0
-           // [imageData writeToFile:[core path:@"image"] atomically:YES];
-          //  NSString *validated = @"YES";
-            //[[me usr] setObject:validated forKey:@"validated"];
-           // validationBadge.highlighted = YES;
+           
             
             NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
             [defaults setObject:@"YES" forKey:@"ProfileComplete"];
@@ -695,7 +698,11 @@
         //targ.Delegate = self;
         //targ.tagName = @"GetMemberTargusScoresForBank";
         //[targ getTargus];
-        
+        [spinner stopAnimating];
+        [spinner setHidden:YES];
+        if (isSignup) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
     }
    else if ([tagName isEqualToString:@"myset"]) {
        
@@ -813,7 +820,7 @@
         }
         if([dictProfileinfo objectForKey:@"ContactNumber"]!=[NSNull null] && [[dictProfileinfo objectForKey:@"ContactNumber"] length] == 10)
         {
-            self.phone.text = [NSString stringWithFormat:@"(%@) %@-%@",[[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(0, 3)],[[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(3, 3)],[[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(6, 4)]];
+            //self.phone.text = [NSString stringWithFormat:@"(%@) %@-%@",[[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(0, 3)],[[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(3, 3)],[[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(6, 4)]];
             //charanjit's modification
             // self.SavePhoneNumber = self.contactPhone.text;
         }
@@ -982,7 +989,7 @@
         NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
         
         
-        if (![[dictProfileinfo objectForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]]) {
+        if (![[dictProfileinfo objectForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]]&& [dictProfileinfo objectForKey:@"RecoveryMail"]!=NULL) {
              ServiceType=@"recovery";
             
             Decryption *decry = [[Decryption alloc] init];
@@ -1041,10 +1048,9 @@
     {
         NSLog(@"%@",[sourceData objectForKey:@"Status"]);
         self.password.text=[sourceData objectForKey:@"Status"];
-      // [self getEncryptedPassword:self.password.text];
-        NSLog(@"should be encrypting password");
-        
-        
+    
+        [spinner stopAnimating];
+        [spinner setHidden:YES];
     }
     
     

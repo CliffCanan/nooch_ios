@@ -106,6 +106,11 @@
         [user_pic setStyleId:@"lside_userpic"];
         [user_pic setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
             placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+        user_pic.clipsToBounds = YES;
+        user_pic.layer.cornerRadius = 30;
+        user_pic.layer.borderWidth = 2; user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
+        [user_pic setUserInteractionEnabled:YES];
+
         
     }
    }

@@ -40,13 +40,17 @@
         self.type = type;
         self.receiver = receiver;
         self.amnt = amount;
-        
+        NSLog(@"%f",self.amnt);
         if ([type isEqualToString:@"donation"]) {
             receiverFirst=[receiver valueForKey:@"OrganizationName"];
         }
         else if ([type isEqualToString:@"addfund"]|| [type isEqualToString:@"withdrawfund"] ){
              receiverFirst=type;
              self.memo=[receiver valueForKey:@"memo"];
+        }
+        else if ([type isEqualToString:@"remember_me"]){
+            self.memo=@"";
+            
         }
         
     }
@@ -285,6 +289,11 @@
     }
     
     if (len==4) {
+        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [self.view addSubview:spinner];
+        spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+        [spinner startAnimating];
+
         serve *pin = [serve new];
         pin.Delegate = self;
         pin.tagName = @"ValidatePinNumber";
@@ -351,7 +360,10 @@
      
      [transactionInputTransfer setValue:arr forKey:@"Picture"];
     }
-     
+         [[assist shared] setTranferImage:nil];
+         UIImage*imgempty=[UIImage imageNamed:@""];
+         [[assist shared] setTranferImage:imgempty];
+         
      NSString *uid = [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"];
      
      
@@ -721,22 +733,93 @@
             
             if([[dictResult objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]){
                self.prompt.text=@"1 failed attempt. Please try again.";
+                [spinner stopAnimating];
+                [spinner setHidden:YES];
             }else if([[dictResult objectForKey:@"Result"]isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]){
+                [spinner stopAnimating];
+                [spinner setHidden:YES];
                self.prompt.text=@"2 Failed Attempts";
             }else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))            {
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [av show];
+                [spinner stopAnimating];
+                [spinner setHidden:YES];
                  self.prompt.text=@"Account suspended.";
             }else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])){
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [av show];
+                [spinner stopAnimating];
+                [spinner setHidden:YES];
                 self.prompt.text=@"Account suspended.";
                }
  
         }
             }
-     }
+    else if ([self.type isEqualToString:@"remember_me"]){
+        if ([tagName isEqualToString:@"ValidatePinNumber"]) {
+            NSString *encryptedPIN=[dictResult valueForKey:@"Status"];
+            
+            serve *checkValid = [serve new];
+            checkValid.tagName = @"checkValid";
+            checkValid.Delegate = self;
+            [checkValid pinCheck:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] pin:encryptedPIN];
+        }
+        else if ([tagName isEqualToString:@"checkValid"]){
+            if([[dictResult objectForKey:@"Result"] isEqualToString:@"Success"]){
+                if ([[me usr] objectForKey:@"requiredImmediately"] == NULL || [[[me usr] objectForKey:@"requiredImmediately"] isKindOfClass:[NSNull class]]) {
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"FYI" message:@"The Require Immediately function is an added security feature to prompt you for your PIN whenever you enter Nooch. Would you like to keep this on or turn it off? You can change this setting later in the PIN Settings page." delegate:self cancelButtonTitle:@"Turn Off" otherButtonTitles:@"Keep On", nil];
+                    [av setTag:1];
+                    [av show];
+                    return;
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
+            else
+            {
+                [self.fourth_num setBackgroundColor:[UIColor clearColor]];
+                [self.third_num setBackgroundColor:[UIColor clearColor]];
+                [self.second_num setBackgroundColor:[UIColor clearColor]];
+                [self.first_num setBackgroundColor:[UIColor clearColor]];
+                self.pin.text=@"";
+            }
+            if([[dictResult objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]){
+                self.prompt.text=@"1 failed attempt. Please try again.";
+                [spinner stopAnimating];
+                [spinner setHidden:YES];
+            }else if([[dictResult objectForKey:@"Result"]isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]){
+                [spinner stopAnimating];
+                [spinner setHidden:YES];
+                self.prompt.text=@"2 Failed Attempts";
+            }else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))            {
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [av show];
+                [spinner stopAnimating];
+                [spinner setHidden:YES];
+                self.prompt.text=@"Account suspended.";
+            }else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])){
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [av show];
+                [spinner stopAnimating];
+                [spinner setHidden:YES];
+                self.prompt.text=@"Account suspended.";
+            }
 
+        }
+    }
+    }
+}
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (alertView.tag == 1) {
+        if (buttonIndex == 0) {
+            [[me usr] setObject:@"NO" forKey:@"requiredImmediately"];
+        }else{
+            [[me usr] setObject:@"YES" forKey:@"requiredImmediately"];
+        }
+        
+        
+      //  [navCtrl popToRootViewControllerAnimated:NO];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
 #pragma mark - connection handling
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	[self.respData setLength:0];
@@ -748,6 +831,8 @@
 	NSLog(@"Connection failed: %@", [error description]);
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    [spinner stopAnimating];
+    [spinner setHidden:YES];
     responseString= [[NSString alloc] initWithData:self.respData encoding:NSASCIIStringEncoding];
     NSError* error;
     dictResultTransfer= [NSJSONSerialization

@@ -567,7 +567,7 @@ NSString *amnt;
 -(void)verifyBank:(NSString *)bankAcctId microOne:(NSString *)microOne microTwo:(NSString *)microTwo{
     
     self.responseData = [NSMutableData data];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&bankAcctId=%@&microOne=%@&microTwo=%@", ServerUrl, @"VerifyBankAccount", [[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"], bankAcctId,microOne,microTwo]]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&bankAcctId=%@&microOne=%@&microTwo=%@&accessToken=%@", ServerUrl, @"VerifyBankAccount", [[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"], bankAcctId,microOne,microTwo,[[NSUserDefaults standardUserDefaults] objectForKey:@"OAuthToken"]]]];
     NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
     if (!connection)
         NSLog(@"connect error");
@@ -922,80 +922,10 @@ NSString *amnt;
         }
         
     }
-    //modification by charanjit ends.
+   
     
+       [self.Delegate listen:responseString tagName:self.tagName];
     
-    
-    if ([ServiceType isEqualToString:@"SMS"])
-    {
-        NSLog(@"%@",responseString);
-    }
-    [self.Delegate listen:responseString tagName:self.tagName];
-    //
-    //    if ([tagName isEqualToString:@"info"]) {
-    //        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    //             Dictresponse=[responseString JSONValue]; //setting the token in the user defaults
-    //        if ([Dictresponse valueForKey:@"PhotoUrl"]!=NULL || ![[Dictresponse valueForKey:@"PhotoUrl"] isKindOfClass:[NSNull class]]) {
-    //            [defaults setObject:[Dictresponse valueForKey:@"PhotoUrl"] forKey:@"PhotoUrlRef"];
-    //
-    //        }
-    //        if ([Dictresponse valueForKey:@"BalanceAmount"]!=NULL || ![[Dictresponse valueForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]])
-    //
-    //            {
-    //                [defaults setObject:[NSString stringWithFormat:@"%@",[Dictresponse valueForKey:@"BalanceAmount"]] forKey:@"BalanceAmountRef"];
-    //
-    //        }
-    //                [defaults synchronize];
-    //
-    //    }
-    //    NSLog(@"RS%@",responseString);
-    //    NSLog(@"TAG%@",tagName);
-    //    if ([tagName isEqualToString:@"sets"]) {
-    //        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    //
-    //       Dictresponse=[responseString JSONValue];
-    //
-    //
-    //        if ([[Dictresponse valueForKey:@"ContactNumber"]isKindOfClass:[NSNull class]]||[[Dictresponse valueForKey:@"State"]isKindOfClass:[NSNull class]]||[[Dictresponse valueForKey:@"Address"]isKindOfClass:[NSNull class]]||[[Dictresponse valueForKey:@"City"]isKindOfClass:[NSNull class]]) {
-    //            [defaults setObject:@"NO"forKey:@"ProfileComplete"];
-    //            NSString *validated = @"NO";
-    //            [[me usr] setObject:validated forKey:@"validated"];
-    //
-    //        }
-    //        else
-    //        {
-    //            NSString *validated = @"YES";
-    //            [[me usr] setObject:validated forKey:@"validated"];
-    //            [defaults setObject:@"YES"forKey:@"ProfileComplete"];
-    //        }
-    //        [defaults synchronize];
-    //
-    //        }
-    //    //modification by charanjit starts
-    //    if ([tagName isEqualToString:@"loginRequest"]) {
-    //
-    //        NSLog(@"Response Login %@",responseString);
-    //        //converting the result into Dictionary
-    //        NSDictionary * result = [responseString JSONValue];
-    //        NSLog(@"dict object %@",[result objectForKey:@"Result"]);
-    //        //getting the token
-    //        NSString * token = [result objectForKey:@"Result"];
-    //        //storing the token
-    //        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    //        //setting the token in the user defaults
-    //        [defaults setObject:token forKey:@"OAuthToken"];
-    //        //syncing the defaults
-    //        [defaults synchronize];
-    //    }
-    //    //modification by charanjit ends.
-    //
-    //
-    //
-    //    if ([ServiceType isEqualToString:@"SMS"])
-    //    {
-    //        NSLog(@"%@",responseString);
-    //    }
-    //    [self.Delegate listen:responseString tagName:self.tagName];
 }
 #pragma mark - file paths
 - (NSString *)autoLogin{

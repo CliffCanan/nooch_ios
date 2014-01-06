@@ -10,5 +10,7 @@
 #import "serve.h"
 
 @interface BankVerification : UIViewController<UITextFieldDelegate,serveD>
-
+{
+    int verifyAttempts;
+}
 @end

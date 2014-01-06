@@ -146,11 +146,31 @@
 }
 - (void)donate
 {
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
+    
+    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        
+        return;
+    }
+    if ( ![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your  Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        
+        return;
+    }
+
+
     NSLog(@"%@",self.charity);
     NSMutableDictionary*dict_donate=[self.charity mutableCopy];
-    [dict_donate setValue:[dict valueForKey:@"FirstName"] forKey:@"FirstName"];
-    [dict_donate setValue:[dict valueForKey:@"LastName"] forKey:@"LastName"];
+    if ([dict valueForKey:@"FirstName"]!=NULL && [dict valueForKey:@"LastName"]!=NULL) {
+        [dict_donate setValue:[dict valueForKey:@"FirstName"] forKey:@"FirstName"];
+        [dict_donate setValue:[dict valueForKey:@"LastName"] forKey:@"LastName"];
+    }
     
+    NSLog(@"%@",dict_donate);
     DonationAmount *da = [[DonationAmount alloc] initWithReceiver:dict_donate];
     [self.navigationController pushViewController:da animated:YES];
 }
@@ -191,7 +211,7 @@
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     detaildict=[[NSMutableDictionary alloc] init];
-    dict=[[NSMutableDictionary alloc]init];
+    
     NSError* error;
     detaildict=[NSJSONSerialization
                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
@@ -206,9 +226,9 @@
         
 
     }
-    if ([detaildict valueForKey:@"MemberId"]) {
-        [dict setValue:[detaildict valueForKey:@"MemberId"] forKey:@"ResMemberid"];
-    }
+//    if ([detaildict valueForKey:@"MemberId"]) {
+//        //[dict setValue:[detaildict valueForKey:@"MemberId"] forKey:@"ResMemberid"];
+//    }
     
     if (![[detaildict valueForKey:@"WebsiteUrl"]isKindOfClass:[NSNull class]]&& [detaildict valueForKey:@"WebsiteUrl"]!=nil && [detaildict valueForKey:@"WebsiteUrl"]!=NULL) {
         weburl=[detaildict valueForKey:@"WebsiteUrl"];
@@ -221,30 +241,36 @@
     }
     if (![[detaildict valueForKey:@"WebsiteUrl"]isKindOfClass:[NSNull class]]&& [detaildict valueForKey:@"WebsiteUrl"]!=nil && [detaildict valueForKey:@"WebsiteUrl"]!=NULL) {
     }
-    //dict =[[NSMutableDictionary alloc] init];
-    ServiceType=@"Fname";
-    Decryption *decry = [[Decryption alloc] init];
-    decry.Delegate = self;
-    decry->tag = [NSNumber numberWithInteger:2];
-    [decry getDecryptionL:@"GetDecryptedData" textString:[detaildict valueForKey:@"FirstName"]];
+    NSLog(@"%@",[detaildict valueForKey:@"FirstName"]);
+    
+    dict=[[NSMutableDictionary alloc]init];
+    if (![[self.charity valueForKey:@"FirstName"] isKindOfClass:[NSNull class]]&& [self.charity valueForKey:@"FirstName"] != NULL) {
+        ServiceType=@"Fname";
+        Decryption *decry = [[Decryption alloc] init];
+        decry.Delegate = self;
+        decry->tag = [NSNumber numberWithInteger:2];
+        [decry getDecryptionL:@"GetDecryptedData" textString:[self.charity valueForKey:@"FirstName"]];
+    }
+   
 }
 -(void)decryptionDidFinish:(NSMutableDictionary *) sourceData TValue:(NSNumber *) tagValue{
     
     if ([ServiceType isEqualToString:@"Fname"]) {
-        [dict setValue:[sourceData valueForKey:@"Status"] forKey:@"FirstName"];
-        NSLog(@"%@",dict);
+        [dict setObject:[sourceData valueForKey:@"Status"] forKey:@"FirstName"];
+       // [dict setobject:[sourceData valueForKey:@"Status"] forKey:@"FirstName"];
+        NSLog(@"%@  %@",dict,[sourceData valueForKey:@"Status"]);
         ServiceType=@"Lname";
         Decryption *decry = [[Decryption alloc] init];
         decry.Delegate = self;
         decry->tag = [NSNumber numberWithInteger:2];
-        [decry getDecryptionL:@"GetDecryptedData" textString:[detaildict valueForKey:@"LastName"]];
+        [decry getDecryptionL:@"GetDecryptedData" textString:[self.charity valueForKey:@"LastName"]];
         
         
     }
     else
     {
         [dict setValue:[sourceData valueForKey:@"Status"] forKey:@"LastName"];
-        NSLog(@"%@",dict);
+        NSLog(@"%@  %@",dict,[sourceData valueForKey:@"Status"]);
 
     }
 }

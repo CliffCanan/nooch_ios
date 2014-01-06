@@ -611,6 +611,25 @@
     }
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
+            if ([ArrBankAccountCollection count] == 0) {
+                
+                UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can add funds you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
+                [set setTag:1];
+                [set show];
+                return;
+                
+            }
+            if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
+                
+                
+                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Verify Your Bank Account" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                
+                [alert show];
+                
+                return;
+            }
+
+           // selectedId = [bank objectForKey:@"BankAccountId"];
             Deposit *dep = [[Deposit alloc]initWithData:ArrBankAccountCollection];
             [nav_ctrl pushViewController:dep animated:YES];
             [self.slidingViewController resetTopView];
@@ -627,6 +646,23 @@
             }*/
             //[navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"addFunds"] animated:YES];
         }else if(indexPath.row == 1){
+            if ([[[me usr] objectForKey:@"banks"] count] == 0) {
+                UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can withdraw funds you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
+                [set setTag:1];
+                [set show];
+                return;
+            }
+            
+            if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
+                
+                
+                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Verify Your Bank Account" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                
+                [alert show];
+                
+                return;
+            }
+
              Withdraw *wd = [[Withdraw alloc]initWithData:ArrBankAccountCollection];
            
             [nav_ctrl pushViewController:wd animated:YES];
@@ -710,7 +746,9 @@
         if (indexPath.row == 0) {
             if ([ArrBankAccountCollection count] > 0) {
                // Deposit *dep = [Deposit new];
-               
+                NSDictionary *bank = [ArrBankAccountCollection objectAtIndex:0];
+                [[NSUserDefaults standardUserDefaults] setObject:[bank objectForKey:@"BankAccountId"] forKey:@"choice"];
+
                 [self.slidingViewController resetTopView];
                 BankVerification *bv=[BankVerification new];
                  [nav_ctrl pushViewController:bv animated:YES];
@@ -1192,8 +1230,8 @@
 }
 - (void)changeSwitch:(id)sender{
     
-   // NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-   /* if ([[[me usr] objectForKey:@"banks"] count]==0)
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    if ([[[me usr] objectForKey:@"banks"] count]==0)
     {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Add and Verify Your Bank Account To Enable Auto Cash Out" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil] ;
         [alert show];
@@ -1213,7 +1251,7 @@
         [on_off setOn:NO];
         return;
     }
-    */
+    
     if ([sender tag]==12000) {
         
         if([sender isOn]){

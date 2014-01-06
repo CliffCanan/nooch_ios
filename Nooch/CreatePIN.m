@@ -118,6 +118,7 @@
                     if ([self.pin_check isEqualToString:[NSString stringWithFormat:@"%@%@",textField.text,string]]) {
                         [self.user setObject:[NSString stringWithFormat:@"%@%@",textField.text,string] forKey:@"pin_number"];
                         //push invite code
+                        
                         ReferralCode *code_entry = [[ReferralCode alloc] initWithData:self.user];
                         [self.navigationController pushViewController:code_entry animated:YES]; 
                     }else{

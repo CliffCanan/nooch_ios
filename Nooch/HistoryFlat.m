@@ -12,7 +12,14 @@
 #import <QuartzCore/QuartzCore.h>
 #import "TransactionDetails.h"
 
-@interface HistoryFlat ()
+@interface HistoryFlat ()<GMSMapViewDelegate>
+{
+    GMSMapView * mapView_;
+    GMSCameraPosition *camera;
+    GMSMarker *markerOBJ;
+    
+}
+@property (strong, nonatomic) GMSMapView *mapView;
 @property(nonatomic,strong) UISearchBar *search;
 @property(nonatomic,strong) UITableView *list;
 @property(nonatomic,strong) UIButton *completed;
@@ -29,6 +36,20 @@
         // Custom initialization
     }
     return self;
+}
+-(void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    if (isMapOpen) {
+        [UIView beginAnimations:nil context:nil];
+        
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDuration:0.1];
+        self.list.frame=CGRectMake(-276, 84, 320, self.view.frame.size.height);
+        mapArea.frame=CGRectMake(0, 84,320,self.view.frame.size.height);
+        
+        // mapArea.frame=CGRectMake(0, 84,320,self.view.frame.size.height);
+        [UIView commitAnimations];
+    }
 }
 - (void)viewDidLoad
 {
@@ -60,12 +81,42 @@
     [self.list setDataSource:self]; [self.list setDelegate:self]; [self.list setSectionHeaderHeight:0];
     [self.view addSubview:self.list]; [self.list reloadData];
     
+    UISwipeGestureRecognizer * recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideright:)];
+    [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
+    [self.list addGestureRecognizer:recognizer];
+    
+    UISwipeGestureRecognizer * recognizer2 = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideleft:)];
+    [recognizer2 setDirection:(UISwipeGestureRecognizerDirectionLeft)];
+    [self.list addGestureRecognizer:recognizer2];
+    
+
+//    UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
+//    [panRecognizer setMinimumNumberOfTouches:1];
+//    [panRecognizer setMaximumNumberOfTouches:100];
+//    [self.list addGestureRecognizer:panRecognizer];
+    
     self.search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 40, 320, 40)];
     [self.search setStyleId:@"history_search"];
     [self.search setDelegate:self];
     self.search.searchBarStyle=UISearchBarIconClear;
     [self.view addSubview:self.search];
     
+    mapArea=[[UIView alloc]initWithFrame:CGRectMake(0, 84, 320, self.view.frame.size.height)];
+    [mapArea setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:mapArea];
+    //[mapArea addSubview:self.mapView];
+    [self.view bringSubviewToFront:self.list];
+   // NSDictionary*camposition=[self.pointsList objectAtIndex:0];
+    camera = [GMSCameraPosition cameraWithLatitude:[@"0" floatValue]
+                                         longitude:[@"0" floatValue]
+                                              zoom:1];
+//
+      mapView_=[GMSMapView mapWithFrame:self.view.frame camera:camera];
+//
+////    mapView_ = [GMSMapView mapWithFrame:[self.mapView frame] camera:camera];
+     mapView_.myLocationEnabled = YES;
+      mapView_.delegate=self;
+       [mapArea addSubview:mapView_];
     /*self.completed =  [UIButton buttonWithType:UIButtonTypeRoundedRect]; self.pending = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.completed setFrame:CGRectMake(0, 0, 160, 40)]; [self.pending setFrame:CGRectMake(160, 0, 160, 40)];
     [self.completed setBackgroundColor:kNoochBlue]; [self.pending setBackgroundColor:kNoochGrayLight];
@@ -92,6 +143,184 @@
     [self loadHist:@"ALL" index:index len:20];
     
    
+}
+
+-(void)sideright:(id)sender
+{
+    
+    [UIView beginAnimations:nil context:nil];
+    
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDuration:0.5];
+    self.list.frame=CGRectMake(0, 84, 320, self.view.frame.size.height);
+    [self.view bringSubviewToFront:self.list];
+    mapArea.frame=CGRectMake(0, 84,320,self.view.frame.size.height);
+    isMapOpen=NO;
+    [UIView commitAnimations];
+    
+}
+-(void)sideleft:(id)sender
+{
+    
+    [UIView beginAnimations:nil context:nil];
+    
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDuration:0.5];
+    self.list.frame=CGRectMake(-276, 84, 320, self.view.frame.size.height);
+    mapArea.frame=CGRectMake(0, 84,320,self.view.frame.size.height);
+
+   // mapArea.frame=CGRectMake(0, 84,320,self.view.frame.size.height);
+    [UIView commitAnimations];
+    isMapOpen=YES;
+    [self mapPoints];
+    
+}
+-(void)mapPoints{
+     NSArray*histArrayCommon;
+    if (self.completed_selected) {
+        if ([histShowArrayCompleted count]==0) {
+            for (GMSMarker*marker in mapView_.markers ) {
+                marker.map=nil;
+            }
+            return;
+        }
+        histArrayCommon=[histShowArrayCompleted copy];
+    }
+    else
+    {
+        
+            if ([histShowArrayPending count]==0) {
+                for (GMSMarker*marker in mapView_.markers ) {
+                    marker.map=nil;
+                }
+                return;
+            }
+        histArrayCommon=[histShowArrayPending copy];
+        
+    }
+    for (int i=0; i<histArrayCommon.count; i++) {
+        //Latitude = 0;
+        
+        NSDictionary* tempDict = [histArrayCommon objectAtIndex:i];
+        markerOBJ = [[GMSMarker alloc] init];
+        markerOBJ.position = CLLocationCoordinate2DMake([[tempDict objectForKey:@"Latitude"] floatValue], [[tempDict objectForKey:@"Longitude"] floatValue]);
+        [markerOBJ setTitle:[NSString stringWithFormat:@"%d",i]];
+        
+        if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Received"]) {
+            markerOBJ.icon=[UIImage imageNamed:@"blue-pin.png"];
+        }
+        else if ([[[histShowArrayCompleted objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Sent"]) {
+            markerOBJ.icon=[UIImage imageNamed:@"orange-pin.png"];
+            
+        }
+        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Requested"]) {
+            markerOBJ.icon=[UIImage imageNamed:@"green-pin.png"];
+            
+        }
+        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]) {
+            markerOBJ.icon=[UIImage imageNamed:@"pink-pin.png"];
+            
+        }
+        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]) {
+            markerOBJ.icon=[UIImage imageNamed:@"Black-pin.png"];
+            
+        }
+        else
+        {
+            markerOBJ.icon=[UIImage imageNamed:@"red-pin.png"];
+            
+        }
+        //        marker.title = [tempDict objectForKey:@"fname"];
+        //        marker.snippet = [tempDict objectForKey:@"lname"];
+        //        marker.icon=[UIImage imageNamed:@"crossblue.png"];
+        //        marker.userData = [tempDict objectForKey:@"lname"];
+        //        marker.infoWindowAnchor = CGPointMake(0.5, 0.25);
+        //        marker.groundAnchor = CGPointMake(0.5, 1.0);
+        markerOBJ.animated=YES;
+        markerOBJ.map = mapView_;
+    }
+    
+
+}
+-(void)move:(id)sender {
+    [self.view bringSubviewToFront:mapArea];
+    CGPoint translatedPoint = [(UIPanGestureRecognizer*)sender translationInView:self.view];
+       if ([(UIPanGestureRecognizer*)sender state] == UIGestureRecognizerStateBegan) {
+        firstX = [[sender view] center].x;
+        firstY = [[sender view] center].y;
+    }
+    if (firstX+translatedPoint.x==150.500000) {
+        
+        return;
+    }
+    if (firstX+translatedPoint.x==572.500000) {
+        
+        return;
+    }
+    translatedPoint = CGPointMake(firstX+translatedPoint.x, firstY);
+    NSLog(@"float  %f",firstX+translatedPoint.x);
+     CGFloat animationDuration = 0.2;
+    CGFloat velocityX = (0.0*[(UIPanGestureRecognizer*)sender velocityInView:self.view].x);
+    
+    
+    CGFloat finalX = translatedPoint.x + velocityX;
+    NSLog(@"%f",finalX);
+    CGFloat finalY = firstY;
+    [[sender view] setCenter:translatedPoint];
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:animationDuration];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    [UIView setAnimationDelegate:self];
+    //  [UIView setAnimationDidStopSelector:@selector(animationDidFinish)];
+    [[sender view] setCenter:CGPointMake(finalX, finalY)];
+    [UIView commitAnimations];
+/*
+  if ([(UIPanGestureRecognizer*)sender state] == UIGestureRecognizerStateEnded) {
+      CGFloat velocityX = (0.0*[(UIPanGestureRecognizer*)sender velocityInView:self.view].x);
+      
+      
+      CGFloat finalX = translatedPoint.x + velocityX;
+      NSLog(@"%f",finalX);
+      CGFloat finalY = firstY;// translatedPoint.y + (.35*[(UIPanGestureRecognizer*)sender velocityInView:self.view].y);
+      
+//      if (UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
+//          if (finalX < 0) {
+//              //finalX = 0;
+//          } else if (finalX > 768) {
+//              //finalX = 768;
+//          }
+//          
+//          if (finalY < 0) {
+//              finalY = 0;
+//          } else if (finalY > 1024) {
+//              finalY = 1024;
+//          }
+//      } else {
+//          if (finalX < 0) {
+//              //finalX = 0;
+//          } else if (finalX > 1024) {
+//              //finalX = 768;
+//          }
+//          
+//          if (finalY < 0) {
+//              finalY = 0;
+//          } else if (finalY > 768) {
+//              finalY = 1024;
+//          }
+//      }
+      
+      CGFloat animationDuration = (ABS(velocityX)*.0002)+.2;
+      
+      NSLog(@"the duration is: %f", animationDuration);
+
+      [UIView beginAnimations:nil context:NULL];
+      [UIView setAnimationDuration:animationDuration];
+      [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+      [UIView setAnimationDelegate:self];
+    //  [UIView setAnimationDidStopSelector:@selector(animationDidFinish)];
+      [[sender view] setCenter:CGPointMake(finalX, finalY)];
+      [UIView commitAnimations];
+  }*/
 }
 -(void)FilterHistory:(id)sender{
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissFP:) name:@"dismissPopOver" object:nil];
@@ -120,19 +349,6 @@
     }
     else
         isFilter=NO;
-   // needsUpdating = YES;
-   // newTransfers = 0;
-    //isSearching=YES;
-   // arrSearchedRecords=[[NSMutableArray alloc]init];
-    //NSLog(@"%@",filterPick);
-    
-//    if ([filterPick isEqualToString:@"CANCEL"]) {
-//        isSearching=NO;
-//    }
-//    else{
-//        
-//        [me histMore:filterPick sPos:index len:20];
-//    }
     
 }
 
@@ -155,11 +371,15 @@
 {
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     if ([segmentedControl selectedSegmentIndex] == 0) {
+        
         self.completed_selected = YES;
     }
     else
     {
         self.completed_selected = NO;
+    }
+    if (isMapOpen) {
+        [self mapPoints];
     }
     [self.list removeFromSuperview];
     [self.view addSubview:self.list];
@@ -466,10 +686,26 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    NSDictionary *transaction = [NSDictionary new];
-    TransactionDetails *details = [[TransactionDetails alloc] initWithData:transaction];
-    [self.navigationController pushViewController:details animated:YES];
+    if (self.completed_selected) {
+        
+        if ([histShowArrayCompleted count]>indexPath.row) {
+            NSDictionary*dictRecord=[histShowArrayCompleted objectAtIndex:indexPath.row];
+            //NSDictionary *transaction = [NSDictionary new];
+            TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
+            [self.navigationController pushViewController:details animated:YES];
+        }
+    }
+    else
+    {
+        if ([histShowArrayPending count]>indexPath.row) {
+            NSDictionary*dictRecord=[histShowArrayPending objectAtIndex:indexPath.row];
+            //NSDictionary *transaction = [NSDictionary new];
+            TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
+            [self.navigationController pushViewController:details animated:YES];
+        }
+    }
+
+   
 }
 #pragma mark - searching
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
@@ -557,6 +793,9 @@
         {
             isEnd=YES;
         }
+        if (isMapOpen) {
+            [self mapPoints];
+        }
         [self.list reloadData];
     }
     else if([tagName isEqualToString:@"search"]){
@@ -585,6 +824,9 @@
         else
         {
             isEnd=YES;
+        }
+        if (isMapOpen) {
+            [self mapPoints];
         }
         [self.list reloadData];
     }

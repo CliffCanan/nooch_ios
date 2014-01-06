@@ -11,7 +11,7 @@
 #import "InitSliding.h"
 #import "ECSlidingViewController.h"
 #import "SelectCause.h"
-
+#import "TransferPIN.h"
 #define kButtonType     @"transaction_type"
 #define kButtonTitle    @"button_title"
 #define kButtonColor    @"button_background_color"
@@ -60,10 +60,9 @@
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
-    
     self.balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.balance setFrame:CGRectMake(0, 0, 60, 30)];
-   // [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
+    // [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
     if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
         [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
         
@@ -75,10 +74,7 @@
     [self.balance.titleLabel setFont:kNoochFontMed];
     [self.balance addTarget:self action:@selector(showFunds) forControlEvents:UIControlEventTouchUpInside];
     [self.balance setStyleId:@"navbar_balance"];
-    UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
-    [self.navigationItem setRightBarButtonItem:funds];
-    
-    UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
     [hamburger setStyleId:@"navbar_hamburger"];
@@ -119,10 +115,13 @@
     }*/
     
     //29/12
+    NSMutableDictionary *loadInfo;
     //if user has autologin set bring up their data, otherwise redirect to the tutorial/login/signup flow
     if ([core isAlive:[self autoLogin]]) {
         me = [core new];
-        NSMutableDictionary *loadInfo = [[NSMutableDictionary alloc] initWithContentsOfFile:[self autoLogin]];
+        [user removeObjectForKey:@"Balance"];
+        loadInfo = [[NSMutableDictionary alloc] initWithContentsOfFile:[self autoLogin]];
+        NSLog(@"%@",loadInfo);
         [[NSUserDefaults standardUserDefaults] setValue:[loadInfo valueForKey:@"MemberId"] forKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] setValue:[loadInfo valueForKey:@"UserName"] forKey:@"UserName"];
         [me birth];
@@ -130,43 +129,56 @@
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [nav_ctrl performSelector:@selector(disable)];
+        [user removeObjectForKey:@"Balance"];
         Register*reg=[Register new];
         [nav_ctrl pushViewController:reg animated:NO];
         return;
     }
     
-    serve *details = [serve new];
-    [details setTagName:@"details"];
-    [details setDelegate:self];
-    [details getDetails:[[me usr] objectForKey:@"MemberId"]];
+   // serve *details = [serve new];
+    //[details setTagName:@"details"];
+    //[details setDelegate:self];
+    //[details getDetails:[[me usr] objectForKey:@"MemberId"]];
     
     //if they have required immediately turned on or haven't selected the option yet, redirect them to PIN screen
     if (![[me usr] objectForKey:@"requiredImmediately"]) {
-        // reqImm = YES;
-        //Commented by Charanjit as the method has been depricated
-        //        [self presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
-        
-        //new addition by Charanjit
-        
+         //(id)initWithReceiver:(NSMutableDictionary *)receiver type:(NSString *)type amount:(float)amount;
+        //TransferPIN*pin=[[TransferPIN alloc]initWithReceiver:loadInfo type:@"remember_me" amount:0.0];
+       // [self presentViewController:pin animated:YES completion:nil];
         //[self presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:YES completion:nil];
         
     }else if([[[me usr] objectForKey:@"requiredImmediately"] boolValue]){
-        //reqImm = YES;
-        //commented by Charanjit
-        //        [self presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
-        //new addition which does the same work
-        //[self presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:YES completion:nil];
+        //TransferPIN*pin=[[TransferPIN alloc]initWithReceiver:loadInfo type:@"remember_me" amount:0.0];
+        //[self presentViewController:pin animated:YES completion:nil];
+        
     }
       //
 }
 -(void)updateLoader{
        if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
-        [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+           [self.navigationItem setRightBarButtonItem:Nil];
+              [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+           UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
+           [self.navigationItem setRightBarButtonItem:funds];
+           
+     
         
     }
     else
     {
         [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];    }
+    
+   // NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    
+   
+//     if ([[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"]) {
+//         btnimgValidateNoti.hidden=YES;
+//     }
+//     else
+//     {
+//         btnimgValidateNoti.hidden=NO;
+//     }
+//     
 }
 - (NSString *)autoLogin{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -176,22 +188,24 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    if ([[me usr] objectForKey:@"Balance"]) {
-        [self.balance setTitle:[NSString stringWithFormat:@"$%@",[[me usr] objectForKey:@"Balance"]] forState:UIControlStateNormal];
-    } else {
-        [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"0.00"] forState:UIControlStateNormal];
-    }
     
+   
+    UIActivityIndicatorView*act=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [act setFrame:CGRectMake(14, 5, 20, 20)];
+    [act startAnimating];
+    
+    UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:act];
+    [self.navigationItem setRightBarButtonItem:funds];
+    
+
+//       if ([user objectForKey:@"Balance"]) {
+//        [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+//    } else {
+//        [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"0.00"] forState:UIControlStateNormal];
+//    }
+//    
     
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-  //  [nav_ctrl performSelector:@selector(reenable)];
-
-    //Register *reg = [[Register alloc] init];
-    //[self.navigationController pushViewController:reg animated:YES];
-    //return;
-   // me=[core new];
-   // NSLog(@"%@",me);
-    
     [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(updateLoader) userInfo:nil repeats:YES];
     
 
@@ -213,6 +227,21 @@
 
 - (void)send_request
 {
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
+ 
+   if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
+       UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+       [alert show];
+       
+       return;
+   }
+   if ( ![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your  Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        
+        return;
+    }
     if (NSClassFromString(@"SelectRecipient")) {
         
         Class aClass = NSClassFromString(@"SelectRecipient");

@@ -8,7 +8,7 @@
 
 #import "HowMuch.h"
 #import "TransferPIN.h"
-
+#import "UIImageView+WebCache.h"
 @interface HowMuch ()
 @property(nonatomic,strong) NSDictionary *receiver;
 @property(nonatomic,strong) UITextField *amount;
@@ -35,6 +35,10 @@
         self.receiver = [receiver copy];
     }
     return self;
+}
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self.amount becomeFirstResponder];
 }
 - (void)viewDidLoad
 {
@@ -70,6 +74,16 @@
     user_pic.layer.borderColor = [Helpers hexColor:@"939598"].CGColor;
     user_pic.layer.borderWidth = 2; user_pic.clipsToBounds = YES;
     user_pic.layer.cornerRadius = 37;
+    if (self.receiver[@"Photo"]) {
+        [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
+                 placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+    }
+    else
+    {
+    [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
+        placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+    }
+    NSLog(@"%@",self.receiver);
     [self.view addSubview:user_pic];
     
     self.amount = [[UITextField alloc] initWithFrame:CGRectMake(30, 40, 260, 80)];
@@ -78,7 +92,7 @@
     [self.amount setKeyboardType:UIKeyboardTypeNumberPad];
     [self.amount setStyleId:@"howmuch_amountfield"];
     [self.view addSubview:self.amount];
-    
+    [self.amount becomeFirstResponder];
     self.memo = [[UITextField alloc] initWithFrame:CGRectMake(10, 120, 260, 40)];
     [self.memo setPlaceholder:@"Enter a memo"];
     [self.memo setDelegate:self]; [self.memo setTag:2];
@@ -238,9 +252,10 @@
     NSMutableDictionary *transaction = [self.receiver mutableCopy];
     [transaction setObject:[self.memo text] forKey:@"memo"];
     //float input_amount = [[[self.amount text] substringFromIndex:2] floatValue];
-    float input_amount = [[self.amount text]  floatValue];
-
-    TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"send" amount:input_amount];
+    float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
+    // NSLog(@"%@",[self.amount text]);
+    //NSLog(@"%f",input_amount);
+    TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"send" amount: input_amount];
     [self.navigationController pushViewController:pin animated:YES];
 }
 - (void) confirm_request
@@ -252,7 +267,7 @@
     }
     NSMutableDictionary *transaction = [self.receiver mutableCopy];
     [transaction setObject:[self.memo text] forKey:@"memo"];
-    float input_amount = [[[self.amount text] substringFromIndex:2] floatValue];
+    float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
     TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"request" amount:input_amount];
     [self.navigationController pushViewController:pin animated:YES];
 }
@@ -310,7 +325,7 @@
     [self.amount resignFirstResponder];
     [UIView commitAnimations];
     
-    [self.camera setStyleId:@"howmuch_camera_attached"];
+    
 }
 - (void) cancel_photo
 {
@@ -356,11 +371,11 @@
    }
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
-    //  transferOBJ = [self.storyboard instantiateViewControllerWithIdentifier:@"transfer"];
+    
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
     [[assist shared]setTranferImage:chosenImage];
+    [self.camera setStyleId:@"howmuch_camera_attached"];
     
-    //imagetoShow.image=chosenImage;
     [picker dismissViewControllerAnimated:YES completion:^{
        // [self close:nil];
     }];

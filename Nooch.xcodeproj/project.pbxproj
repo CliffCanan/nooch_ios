@@ -233,6 +233,13 @@
 		84172D15186D416D0041929F /* core.m in Sources */ = {isa = PBXBuildFile; fileRef = 84172D14186D416D0041929F /* core.m */; };
 		84172D18186D42200041929F /* assist.m in Sources */ = {isa = PBXBuildFile; fileRef = 84172D17186D42200041929F /* assist.m */; };
 		84193343187537A800D85FC4 /* GetLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84193342187537A800D85FC4 /* GetLocation.m */; };
+		8420B390187A69CC00A77E2D /* profile_picture.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420B38F187A69CC00A77E2D /* profile_picture.png */; };
+		8420B39B187AC4BF00A77E2D /* Black-pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420B395187AC4BF00A77E2D /* Black-pin.png */; };
+		8420B39C187AC4BF00A77E2D /* blue-pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420B396187AC4BF00A77E2D /* blue-pin.png */; };
+		8420B39D187AC4BF00A77E2D /* green-pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420B397187AC4BF00A77E2D /* green-pin.png */; };
+		8420B39E187AC4BF00A77E2D /* orange-pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420B398187AC4BF00A77E2D /* orange-pin.png */; };
+		8420B39F187AC4BF00A77E2D /* pink-pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420B399187AC4BF00A77E2D /* pink-pin.png */; };
+		8420B3A0187AC4BF00A77E2D /* red-pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420B39A187AC4BF00A77E2D /* red-pin.png */; };
 		842E3313187413490057EAFB /* Decryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 842E3312187413490057EAFB /* Decryption.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		842E3316187424440057EAFB /* GetEncryptionValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 842E3315187424440057EAFB /* GetEncryptionValue.m */; };
 		842E3318187431E40057EAFB /* RoundLoading.png in Resources */ = {isa = PBXBuildFile; fileRef = 842E3317187431E40057EAFB /* RoundLoading.png */; };
@@ -618,6 +625,13 @@
 		84172D17186D42200041929F /* assist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = assist.m; sourceTree = "<group>"; };
 		84193341187537A800D85FC4 /* GetLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetLocation.h; sourceTree = "<group>"; };
 		84193342187537A800D85FC4 /* GetLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetLocation.m; sourceTree = "<group>"; };
+		8420B38F187A69CC00A77E2D /* profile_picture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_picture.png; sourceTree = "<group>"; };
+		8420B395187AC4BF00A77E2D /* Black-pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Black-pin.png"; sourceTree = "<group>"; };
+		8420B396187AC4BF00A77E2D /* blue-pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-pin.png"; sourceTree = "<group>"; };
+		8420B397187AC4BF00A77E2D /* green-pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green-pin.png"; sourceTree = "<group>"; };
+		8420B398187AC4BF00A77E2D /* orange-pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orange-pin.png"; sourceTree = "<group>"; };
+		8420B399187AC4BF00A77E2D /* pink-pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pink-pin.png"; sourceTree = "<group>"; };
+		8420B39A187AC4BF00A77E2D /* red-pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red-pin.png"; sourceTree = "<group>"; };
 		842E3311187413490057EAFB /* Decryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Decryption.h; sourceTree = "<group>"; };
 		842E3312187413490057EAFB /* Decryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Decryption.m; sourceTree = "<group>"; };
 		842E3314187424440057EAFB /* GetEncryptionValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetEncryptionValue.h; sourceTree = "<group>"; };
@@ -975,6 +989,13 @@
 		16E4B1C0187054A80099D075 /* venturepact  */ = {
 			isa = PBXGroup;
 			children = (
+				8420B395187AC4BF00A77E2D /* Black-pin.png */,
+				8420B396187AC4BF00A77E2D /* blue-pin.png */,
+				8420B397187AC4BF00A77E2D /* green-pin.png */,
+				8420B398187AC4BF00A77E2D /* orange-pin.png */,
+				8420B399187AC4BF00A77E2D /* pink-pin.png */,
+				8420B39A187AC4BF00A77E2D /* red-pin.png */,
+				8420B38F187A69CC00A77E2D /* profile_picture.png */,
 				842E3317187431E40057EAFB /* RoundLoading.png */,
 				84BFD9311871270C001C0AAC /* cross_basic_yellow.png */,
 				16E4B1C51870832B0099D075 /* untick.png */,
@@ -1506,6 +1527,7 @@
 				01C26DF31843C56C005179B7 /* Ribbon_Icon.png in Resources */,
 				6BC5FED11625F1B0007EAD7A /* Roboto-BoldCondensed.ttf in Resources */,
 				01C26DE91843C56C005179B7 /* HamburgerButtonSelected.png in Resources */,
+				8420B39D187AC4BF00A77E2D /* green-pin.png in Resources */,
 				6BC5FED31625F1B0007EAD7A /* Roboto-BoldCondensedItalic.ttf in Resources */,
 				014C4338185B9A4C00956A84 /* ribbon-icon-blue.png in Resources */,
 				6BC5FED51625F1B0007EAD7A /* Roboto-BoldItalic.ttf in Resources */,
@@ -1520,6 +1542,7 @@
 				014C4333185B9A4C00956A84 /* nonprofits-youtube.png in Resources */,
 				6BC5FEDF1625F1B0007EAD7A /* Roboto-LightItalic.ttf in Resources */,
 				0106773A1860F67A00E11F3D /* settings-icon2.png in Resources */,
+				8420B39F187AC4BF00A77E2D /* pink-pin.png in Resources */,
 				6BC5FEE11625F1B0007EAD7A /* Roboto-Medium.ttf in Resources */,
 				6BC5FEE31625F1B0007EAD7A /* Roboto-MediumItalic.ttf in Resources */,
 				16E4B1C3187078880099D075 /* tick.png in Resources */,
@@ -1536,6 +1559,7 @@
 				6B33DCA11639AE1D00B8B8B6 /* Default-568h@2x.png in Resources */,
 				010A993B185FA99F001DCE6B /* n_Icon_58x66.png in Resources */,
 				01C26DC11843BB22005179B7 /* stats-transfers-inactive.png in Resources */,
+				8420B3A0187AC4BF00A77E2D /* red-pin.png in Resources */,
 				014C432C185B9A4C00956A84 /* facebook-icon.png in Resources */,
 				0179E9EB17F355310027526C /* flat_storyboard.storyboard in Resources */,
 				01C26DF21843C56C005179B7 /* ReferAFriend_Icon.png in Resources */,
@@ -1575,7 +1599,9 @@
 				014C4326185B9A4C00956A84 /* add-icon-blue.png in Resources */,
 				014C433D185BC7EF00956A84 /* VarelaRound-Regular.ttf in Resources */,
 				6B8E848A17565A9E00B3D7B1 /* BackgroundMain@2x.png in Resources */,
+				8420B390187A69CC00A77E2D /* profile_picture.png in Resources */,
 				014C433B185BB9EE00956A84 /* default.css in Resources */,
+				8420B39E187AC4BF00A77E2D /* orange-pin.png in Resources */,
 				014C4331185B9A4C00956A84 /* nonprofits-twitter.png in Resources */,
 				014C4339185B9A4C00956A84 /* withdrawfunds.png in Resources */,
 				01C26DEE1843C56C005179B7 /* NoFundingSource_Arrow.png in Resources */,
@@ -1586,6 +1612,7 @@
 				01C26DF71843C56C005179B7 /* TopSideBar.png in Resources */,
 				014C4330185B9A4C00956A84 /* nonprofits-fb.png in Resources */,
 				6BE1332D176F65D8009763AC /* SplashPageBckgrnd-568h@2x.png in Resources */,
+				8420B39B187AC4BF00A77E2D /* Black-pin.png in Resources */,
 				6B01F1BE179DA8E800E34C49 /* GoogleMaps.bundle in Resources */,
 				0106773C1860F68400E11F3D /* take-pic-icon.png in Resources */,
 				01C26DFD1843E85C005179B7 /* Preston.png in Resources */,
@@ -1598,6 +1625,7 @@
 				0129D8E71815B10D00BEAC30 /* Brandon_bld.otf in Resources */,
 				01C26DEF1843C56C005179B7 /* nooch_Logo.png in Resources */,
 				010A993A185FA99F001DCE6B /* choose-pic-icon.png in Resources */,
+				8420B39C187AC4BF00A77E2D /* blue-pin.png in Resources */,
 				01C26DE51843C56C005179B7 /* CreditCard_Icon.png in Resources */,
 				01C26DC31843BB22005179B7 /* Twitter.png in Resources */,
 				84BFD9321871270C001C0AAC /* cross_basic_yellow.png in Resources */,
@@ -1796,7 +1824,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"\\\\\\\\\\\\\\\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\\\\\\\\\\\\\\\"",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1830,7 +1857,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"\\\\\\\\\\\\\\\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\\\\\\\\\\\\\\\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Nooch/Nooch-Prefix.pch";

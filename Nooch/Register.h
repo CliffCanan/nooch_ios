@@ -14,6 +14,7 @@
 @interface Register : UIViewController<UITextFieldDelegate,serveD,CLLocationManagerDelegate>
 {
     CLLocationManager *locationManager;
+    UIActivityIndicatorView*spinner;
 }
 
 @end

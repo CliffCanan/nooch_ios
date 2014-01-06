@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+BOOL isSignup;
 @interface Welcome : UIViewController
 
 @end

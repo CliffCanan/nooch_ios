@@ -42,6 +42,7 @@
     float lat;
     NSDictionary*dictLocation;
     NSDictionary*dictResultTransfer;
+    UIActivityIndicatorView*spinner;
 }
 
 - (id)initWithReceiver:(NSMutableDictionary *)receiver type:(NSString *)type amount:(float)amount;

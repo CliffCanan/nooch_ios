@@ -9,7 +9,7 @@
 #import "TransactionDetails.h"
 #import <QuartzCore/QuartzCore.h>
 #import "Home.h"
-
+#import "UIImageView+WebCache.h"
 @interface TransactionDetails ()
 @property (nonatomic,strong) NSDictionary *trans;
 @end
@@ -22,6 +22,7 @@
     if (self) {
         // Custom initialization
         self.trans = trans;
+        NSLog(@"%@",self.trans);
     }
     return self;
 }
@@ -37,6 +38,8 @@
     user_picture.layer.borderWidth = 1; user_picture.layer.borderColor = kNoochGrayDark.CGColor;
     user_picture.layer.cornerRadius = 38;
     user_picture.clipsToBounds = YES;
+    [user_picture setImageWithURL:[NSURL URLWithString:[self.trans objectForKey:@"Photo"]]
+             placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
     [self.view addSubview:user_picture];
     
     UILabel *payment = [UILabel new];
@@ -47,7 +50,7 @@
     
     UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];
     [other_party setStyleClass:@"details_othername"];
-    [other_party setText:@"Preston Hults"];
+    [other_party setText:[self.trans objectForKey:@"Name"]];
     [self.view addSubview:other_party];
     /*
     if ([other_party respondsToSelector:@selector(setAttributedText:)]) {
@@ -75,9 +78,15 @@
         [self.view addSubview:other_party];
     }
      */
+    // City = "";
     
+    
+   
     UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 60, 320, 60)];
-    [amount setText:@"$ 50.\u00B0\u00B0"];
+    if ([self.trans objectForKey:@"Amount"]!=NULL) {
+    [amount setText:[NSString stringWithFormat:@"$%@",[[self.trans objectForKey:@"Amount"] stringValue]]];
+    }
+  
     [amount setStyleClass:@"details_amount"];
     //[amount setFont:kNoochFontBold];
     [amount setTextAlignment:NSTextAlignmentCenter];
@@ -91,18 +100,25 @@
     [self.view addSubview:memo];
     
     UILabel *location = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 320, 60)];
-    [location setText:@"Philadelphia, PA"];
+    if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"Country"]!=NULL) {
+        [location setText:[NSString stringWithFormat:@"%@ %@",[self.trans objectForKey:@"AddressLine1"],[self.trans objectForKey:@"Country"]]];
+    }
+
+    
     [location setStyleClass:@"details_label"];
     [self.view addSubview:location];
     
     UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 190, 320, 30)];
     [status setStyleClass:@"details_label"];
-    [status setText:@"Completed on 11/12/13"];
+    if ([self.trans objectForKey:@"TransactionType"]!=NULL && [self.trans objectForKey:@"TransactionDate"]!=NULL) {
+        [location setText:[NSString stringWithFormat:@"%@ %@",[self.trans objectForKey:@"TransactionType"],[self.trans objectForKey:@"TransactionDate"]]];
+    }
+    //[status setText:[NSString stringWithFormat:@"%@ on %@",[self.trans objectForKey:@"TransactionType"],[self.trans objectForKey:@"TransactionDate"]]];
     [status setStyleClass:@"green_text"];
     [self.view addSubview:status];
     
-    double lat = 10.000;
-    double lon = 10.000;
+    double lat = [[self.trans objectForKey:@"Latitude"] floatValue];
+    double lon = [[self.trans objectForKey:@"Longitude"] floatValue];
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:lat
                                                             longitude:lon
                                                                  zoom:11];
@@ -157,7 +173,7 @@
     UILabel *fb_text = [UILabel new];
     [fb_text setFrame:fb.frame];
     [fb_text setStyleClass:@"details_buttons_labels"];
-    [fb_text setText:@"Facebok"];
+    [fb_text setText:@"Facebook"];
     [self.view addSubview:fb_text];
     
     UIButton *twit = [UIButton buttonWithType:UIButtonTypeRoundedRect];

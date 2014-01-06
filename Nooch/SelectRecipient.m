@@ -39,15 +39,18 @@
     
     UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
     [self.navigationItem setRightBarButtonItem:loc];
-    
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [self.view addSubview:spinner];
+    spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+    [spinner startAnimating];
     serve *recents = [serve new];
     [recents setTagName:@"recents"];
     [recents setDelegate:self];
     [recents getRecents];
-    if (![self.view.subviews containsObject:loader]) {
-        loader=[me waitStat:@"Loading Recent List..."];
-        [self.view addSubview:loader];
-    }
+//    if (![self.view.subviews containsObject:loader]) {
+//        loader=[me waitStat:@"Loading Recent List..."];
+//        [self.view addSubview:loader];
+//    }
     
     self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 42, 320, [[UIScreen mainScreen] bounds].size.height-90)];
     [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
@@ -148,10 +151,16 @@
     }
     else
     {
-        //            if (![self.view.subviews containsObject:loader]) {
-        //                loader=[me waitStat:@"Checking email address."];
-        //                [self.view addSubview:loader];
-        //            }
+        
+        if ([self.view.subviews containsObject:spinner]) {
+            [spinner removeFromSuperview];
+        }
+        // NSLog(@"%@",[dictResult objectForKey:@"Result"]);
+        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [self.view addSubview:spinner];
+        [spinner setHidden:NO];
+        spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+        [spinner startAnimating];
         
         serve *emailCheck = [serve new];
         emailCheck.Delegate = self;
@@ -164,17 +173,15 @@
 #pragma mark - server Delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName{
     NSError* error;
+   
     if ([tagName isEqualToString:@"recents"]) {
-        
+        [spinner stopAnimating];
+        [spinner setHidden:YES];
         self.recents = [NSJSONSerialization
                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
         [self.contacts reloadData];
-        //        if ([self.view.subviews containsObject:loader]) {
-        //            [loader removeFromSuperview];
-        //            [me endWaitStat];
-        //        }
         
     }
     else if([tagName isEqualToString:@"emailCheck"])
@@ -185,8 +192,15 @@
                                            error:&error];
         if([dictResult objectForKey:@"Result"] != [NSNull null])
         {
-            NSLog(@"%@",[dictResult objectForKey:@"Result"]);
-            //emailSend = YES;
+            if ([self.view.subviews containsObject:spinner]) {
+                [spinner removeFromSuperview];
+            }
+           // NSLog(@"%@",[dictResult objectForKey:@"Result"]);
+            spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [self.view addSubview:spinner];
+            [spinner setHidden:NO];
+            spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+            [spinner startAnimating];
             serve *getDetails = [serve new];
             getDetails.Delegate = self;
             getDetails.tagName = @"getMemberDetails";
@@ -199,37 +213,25 @@
             UIAlertView *alertRedirectToProfileScreen=[[UIAlertView alloc]initWithTitle:@"Unknown" message:@"We at Nooch have no knowledge of this email address." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertRedirectToProfileScreen setTag:20220];
             [alertRedirectToProfileScreen show];
-            //            if ([self.view.subviews containsObject:loader])
-            //            {
-            //                [loader removeFromSuperview];
-            //                [me endWaitStat];
-            //
-            //            }
-            
+            [spinner stopAnimating];
+            [spinner setHidden:YES];
             
         }
     }
     else if([tagName isEqualToString:@"getMemberDetails"])
     {
+        [spinner stopAnimating];
+        [spinner setHidden:YES];
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
         [dict setDictionary:[NSJSONSerialization
                              JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                              options:kNilOptions
                              error:&error]];
-        NSLog(@"%@",dict);
-        // NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];;
+       
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
         
         [self.navigationController pushViewController:how_much animated:YES];
         
-        
-        //            receiverFirst = [dict objectForKey:@"FirstName"];
-        //            receiverLast = [dict objectForKey:@"LastName"];
-        //            receiverId = [dict objectForKey:@"MemberId"];
-        //            [dictGroup removeAllObjects];
-        //            [dictGroup setValue:dict forKey:@"1"];
-        //            transfer*transferOBJ=[storyboard instantiateViewControllerWithIdentifier:@"transfer"];
-        //            transferOBJ.dictResp=dictGroup;
     }
     
     
@@ -266,8 +268,6 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    
-    //3
     if (searching) {
         return [arrSearchedRecords count];
     }
@@ -276,12 +276,7 @@
         return 1;
     }
     return [self.recents count];
-    //29/12
-    
-//    if ([self.recents count] == 0) {
-//        return 1;
-//    }
-    //return [self.recents count];
+   
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -295,52 +290,64 @@
                                       reuseIdentifier:CellIdentifier];
         
         [cell.textLabel setTextColor:kNoochGrayLight];
-         cell.indentationLevel = 1; cell.indentationWidth = 60;
-        //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        /*cell.textLabel.textColor = [UIColor colorWithRed:51./255.
-                                                   green:153./255.
-                                                    blue:204./255.
-                                                   alpha:1.0];*/
+         cell.indentationLevel = 1;
+        
     }
     for (UIView*subview in cell.contentView.subviews) {
         [subview removeFromSuperview];
     }
     [cell.textLabel setStyleClass:@"select_recipient_name"];
-    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 50, 50)];
+    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
     pic.clipsToBounds = YES;
-    // remove comment if photo url is valid
-    //[pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
-    //  placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
-    
-    
-    
     [cell addSubview:pic];
-    
+    UIImageView *npic = [UIImageView new];
+    npic.clipsToBounds = YES;
+    [cell addSubview:npic];
     if(emailEntry){
         cell.indentationWidth = 10;
-        
+         npic.hidden=YES;
         pic.hidden=YES;
-        NSLog(@"%@",search.text);
+       // NSLog(@"%@",search.text);
         cell.textLabel.text = [NSString stringWithFormat:@"Send to %@",search.text];
         return cell;
     }
-    pic.hidden=NO;
-    //[pic setStyleClass:@"list_userprofilepic"];
-    //[pic setStyleCSS:@"background-image : url(Preston.png)"];
+      pic.hidden=NO;
+      cell.indentationWidth = 60;
+     // [pic setStyleClass:@"list_userprofilepic"];
+     //[pic setStyleCSS:@"background-image : url(Preston.png)"];
+    
+      [pic setFrame:CGRectMake(20, 5, 60, 60)];
+      pic.layer.cornerRadius = 30; pic.layer.borderColor = kNoochBlue.CGColor; pic.layer.borderWidth = 1;
+      pic.clipsToBounds = YES;
+    
     if (searching) {
         
+        //Nooch User
+        npic.hidden=NO;
+        [npic setFrame:CGRectMake(250,15, 34, 40)];
+        [npic setImage:[UIImage imageNamed:@"n_Icon.png"]];
+        
+        
         NSDictionary *info = [arrSearchedRecords objectAtIndex:indexPath.row];
-        
-        
-        [cell setIndentationLevel:1]; [cell setIndentationWidth:40];
+        [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
+            placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+                [cell setIndentationLevel:1];
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",info[@"FirstName"],info[@"LastName"]];
     }
     else{
+        //Nooch User
+        npic.hidden=NO;
+        [npic setFrame:CGRectMake(250,15, 34, 40)];
+        [npic setImage:[UIImage imageNamed:@"n_Icon.png"]];
         
+
         NSDictionary *info = [self.recents objectAtIndex:indexPath.row];
-        //kaNSLog(@"%@",info);
+        NSLog(@"%@",info);
         
-        [cell setIndentationLevel:1]; [cell setIndentationWidth:40];
+        [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
+        placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+        
+        [cell setIndentationLevel:1];
         cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",info[@"FirstName"],info[@"LastName"]];
         
         

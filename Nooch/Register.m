@@ -237,11 +237,23 @@
 #pragma mark - navigation
 - (void)continue_to_signup
 {
+    [UIView beginAnimations:@"bucketsOff" context:nil];
+    [UIView setAnimationDuration:0.4];
+    [UIView setAnimationDelegate:self];
+    [self.view setFrame:CGRectMake(0,0, 320, 600)];
+    [UIView commitAnimations];
+
     if (([self.password_field.text length] == 0) || ([self.name_field.text length] == 0) || ([self.email_field.text length] == 0)) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:@"You have not filled out the sign up form!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         return;
     }else{
+        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [self.view addSubview:spinner];
+        spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+        [spinner startAnimating];
+        
+
         serve *check_duplicate = [serve new];
         [check_duplicate setTagName:@"check_dup"];
         [check_duplicate setDelegate:self];
@@ -265,6 +277,8 @@
         if (![[loginResult objectForKey:@"Result"] isEqualToString:@"Not a nooch member."]) {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Email in Use" message:@"The email address you are attempting to sign up with is already in use." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
+              [spinner stopAnimating];
+            [spinner setHidden:YES];
             return;
         }
         
@@ -286,6 +300,8 @@
                      @"facebook_id":[self.facebook_info objectForKey:@"id"],
                      @"image":[self.facebook_info objectForKey:@"image"]};
         }
+        [spinner stopAnimating];
+        [spinner setHidden:YES];
         SelectPicture *picture = [[SelectPicture alloc] initWithData:user];
         [self.navigationController pushViewController:picture animated:YES];
     }

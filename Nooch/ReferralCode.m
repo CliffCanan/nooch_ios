@@ -109,6 +109,12 @@
     NSString*get4chr=[self.code_field.text substringToIndex:3];
     if ([[get4chr uppercaseStringWithLocale:[NSLocale currentLocale]]isEqualToString:get4chr]) {
         //ServiceType=@"invitecheck";
+        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [self.view addSubview:spinner];
+        spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+        [spinner startAnimating];
+        
+
         serve *inv_code = [serve new];
         [inv_code setDelegate:self];
         [inv_code setTagName:@"inv_check"];
@@ -153,6 +159,8 @@
         } else {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Code" message:@"The referall code you entered is invalid. Please try again or request a code if you do not have one." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
+            [spinner stopAnimating];
+            [spinner setHidden:YES];
         }
     }
     if ([tagName isEqualToString:@"validate"]) {
@@ -172,6 +180,8 @@
         {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Sorry! Referral Code Expired" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
+            [spinner stopAnimating];
+            [spinner setHidden:YES];
         }
         
     }
@@ -217,7 +227,9 @@
             UIAlertView *decline= [[UIAlertView alloc] initWithTitle:@"Well..." message:@"This address already exists in our system, we do not support cloning you."delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [decline show];
             [decline setTag:1];
-           // [spinner stopAnimating];
+            [spinner stopAnimating];
+            [spinner setHidden:YES];
+          
             return;
         }
             //keyboard.userInteractionEnabled = NO;
@@ -229,9 +241,6 @@
         serve *req = [[serve alloc] init];
         req.Delegate = self;
         req.tagName = @"getMemId";
-      // NSLog(@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]);
-       // NSLog(@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]);
-
         [req getMemIdFromuUsername:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]];
        
     }
@@ -242,15 +251,9 @@
       //  [spinner stopAnimating];
         me = [core new];
         [me birth];
-        [[me usr] setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"firstName"] forKey:@"firstName"];
-        [[me usr] setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"lastName"] forKey:@"lastName"];
-        [[me usr] setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"MemberId"];
-        [[me usr] setObject:@"0.00" forKey:@"Balance"];
-        //tempImg = UIImagePNGRepresentation(selectedPic);
         [me stamp];
-       // [navCtrl popToRootViewControllerAnimated:NO];
-        //[self dismissViewControllerAnimated:YES completion:nil];
-        //[self dismissModalViewControllerAnimated:YES];
+        [spinner stopAnimating];
+        [spinner setHidden:YES];
         Welcome *welc = [Welcome new];
         [self.navigationController pushViewController:welc animated:YES];
         UIAlertView *decline= [[UIAlertView alloc] initWithTitle:@"Welcome" message:@"Thanks for joining us here at Nooch!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -264,11 +267,9 @@
         }else{
             [[me usr] setObject:@"YES" forKey:@"requiredImmediately"];
         }
-       // reqImm = NO;
-        
-      //  [navCtrl popToRootViewControllerAnimated:NO];
+      
         [self dismissViewControllerAnimated:YES completion:nil];
-        //  [self dismissModalViewControllerAnimated:YES];
+        
     }else if(alertView.tag == 2){
         [self dismissViewControllerAnimated:YES completion:nil];
         //[self dismissModalViewControllerAnimated:YES];

@@ -228,6 +228,31 @@
 			font-size			: 12px;
             background-image			: linear-gradient(#6dbee8, #41abe1);
 		}
+        #micro1_amountfield {
+		font-family			: "Roboto";
+		font-size			: 32px;
+		font-weight         : medium;
+
+		text-align       	: right;
+		color 				: #58595B;
+		width				: 100px;
+		height				: 40px;
+		top					: 105px;
+		left                : 60px;
+	}
+    #micro2_amountfield {
+		font-family			: "Roboto";
+		font-size			: 32px;
+		font-weight         : medium;
+
+		text-align       	: right;
+		color 				: #58595B;
+		width				: 100px;
+		height				: 40px;
+		top					: 105px;
+		left                : 170px;
+	}
+
 	 /****************************
 	  *****	  TABLE Styles 	 *****
 	  ****************************/
@@ -1483,8 +1508,10 @@
 			left			: 290px;
 		}
 
-		#verifybank_button {top		: 210px; }
+		#verifybank_button {top		: 170px; }
 
+       #removebank_button {top		: 230px; }
+       .button_red { background-image	: linear-gradient(#F5003D, #D21937); }
 		.verifybank_centfields {
 			width			: 74px;
 			height			: 46px;

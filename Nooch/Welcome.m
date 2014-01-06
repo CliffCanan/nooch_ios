@@ -31,6 +31,9 @@
     //navigate to settings
     [self.navigationController setNavigationBarHidden:NO];
     ProfileInfo *profile = [ProfileInfo new];
+    isSignup=YES;
+    //[nav_ctrl performSelector:@selector(reenable)];
+  //  [nav_ctrl performSelector:@selector(ENABLE:) withObject:<#(id)#>]
    // [self.navigationController presentModalViewController:profile animated:YES];
     [self.navigationController presentViewController:profile animated:YES completion:Nil];
     [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
