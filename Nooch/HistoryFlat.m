@@ -58,14 +58,14 @@
     [self.navigationItem setTitle:@"History"];
     
 	// Do any additional setup after loading the view.
-    //30/12
+   
     histArray=[[NSMutableArray alloc]init];
     histShowArrayCompleted=[[NSMutableArray alloc]init];
     histShowArrayPending=[[NSMutableArray alloc]init];
     listType=@"ALL";
     index=1;
     isStart=YES;
-    //
+
     self.completed_selected = YES;
     
     UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -106,14 +106,14 @@
     [self.view addSubview:mapArea];
     //[mapArea addSubview:self.mapView];
     [self.view bringSubviewToFront:self.list];
-   // NSDictionary*camposition=[self.pointsList objectAtIndex:0];
+  
+    // Google map
     camera = [GMSCameraPosition cameraWithLatitude:[@"0" floatValue]
                                          longitude:[@"0" floatValue]
                                               zoom:1];
-//
+
       mapView_=[GMSMapView mapWithFrame:self.view.frame camera:camera];
-//
-////    mapView_ = [GMSMapView mapWithFrame:[self.mapView frame] camera:camera];
+
      mapView_.myLocationEnabled = YES;
       mapView_.delegate=self;
        [mapArea addSubview:mapView_];
