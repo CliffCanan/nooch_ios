@@ -49,6 +49,7 @@
     
     self.ri = [[UISwitch alloc] initWithFrame:CGRectMake(260, 155, 40, 40)];
     [self.ri setTintColor:kNoochGrayLight];
+    [self.ri addTarget:self action:@selector(req) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.ri];
     
     UILabel *info = [UILabel new];
@@ -59,6 +60,18 @@
     [info setTextColor:[Helpers hexColor:@"939598"]];
     [info setText:@"Require a passcode even when switching apps for a short time"];
     [self.view addSubview:info];
+}
+
+- (void) req
+{
+    if ([self.ri isOn])
+    {
+        [user setObject:@"YES" forKey:@"requiredImmediately"];
+    }
+    else
+    {
+        [user setObject:@"NO" forKey:@"requiredImmediately"];
+    }
 }
 
 #pragma mark - server delegation

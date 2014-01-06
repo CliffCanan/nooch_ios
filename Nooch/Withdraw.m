@@ -76,6 +76,7 @@
     
     UITableView *banks = [UITableView new];
     [banks setStyleClass:@"wd_dep_tableview"];
+    [banks setStyleClass:@"raised_view"];
     [banks setDataSource:self]; [banks setDelegate:self];
     [self.view addSubview:banks];
     [banks reloadData];
@@ -89,6 +90,8 @@
     [self.withdraw setStyleClass:@"wd_dep_button"];
     [self.withdraw addTarget:self action:@selector(withdraw_amount) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.withdraw];
+    
+    [self.amount becomeFirstResponder];
 }
 
 - (void) withdraw_amount

@@ -99,6 +99,7 @@
     [self.search setStyleId:@"history_search"];
     [self.search setDelegate:self];
     self.search.searchBarStyle=UISearchBarIconClear;
+    [self.search setPlaceholder:@"Search Transaction History"];
     [self.view addSubview:self.search];
     
     mapArea=[[UIView alloc]initWithFrame:CGRectMake(0, 84, 320, self.view.frame.size.height)];
@@ -459,37 +460,37 @@
                     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]) {
                          [amount setStyleClass:@"history_transferamount_neg"];
                          [indicator setStyleClass:@"history_sidecolor_neg"];
-                        [amount setText:[NSString stringWithFormat:@"-$%@.00",[dictRecord valueForKey:@"Amount"] ]];
+                        [amount setText:[NSString stringWithFormat:@"-$%@",[dictRecord valueForKey:@"Amount"] ]];
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"])
                     {
                         [amount setStyleClass:@"history_transferamount_pos"];
                          [indicator setStyleClass:@"history_sidecolor_pos"];
-                        [amount setText:[NSString stringWithFormat:@"+$%@.00",[dictRecord valueForKey:@"Amount"] ]];
+                        [amount setText:[NSString stringWithFormat:@"+$%@",[dictRecord valueForKey:@"Amount"] ]];
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"])
                     {
-                        [amount setStyleClass:@"history_transferamount_neg"];
-                      [indicator setStyleClass:@"history_sidecolor_neg"];
-                        [amount setText:[NSString stringWithFormat:@"-$%@.00",[dictRecord valueForKey:@"Amount"] ]];
+                        [amount setStyleClass:@"history_transferamount_neutral"];
+                        [indicator setStyleClass:@"history_sidecolor_neutral"];
+                        [amount setText:[NSString stringWithFormat:@"-$%@",[dictRecord valueForKey:@"Amount"] ]];
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Received"])
                     {
                         [amount setStyleClass:@"history_transferamount_pos"];
                          [indicator setStyleClass:@"history_sidecolor_pos"];
-                        [amount setText:[NSString stringWithFormat:@"+$%@.00",[dictRecord valueForKey:@"Amount"] ]];
+                        [amount setText:[NSString stringWithFormat:@"+$%@",[dictRecord valueForKey:@"Amount"] ]];
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Sent"])
                     {
                         [amount setStyleClass:@"history_transferamount_neg"];
                        [indicator setStyleClass:@"history_sidecolor_neg"];
-                        [amount setText:[NSString stringWithFormat:@"-$%@.00",[dictRecord valueForKey:@"Amount"] ]];
+                        [amount setText:[NSString stringWithFormat:@"-$%@",[dictRecord valueForKey:@"Amount"] ]];
                     }
                     else
                     {
                         [amount setStyleClass:@"history_transferamount_pos"];
                          [indicator setStyleClass:@"history_sidecolor_pos"];
-                        [amount setText:[NSString stringWithFormat:@"$%@.00",[dictRecord valueForKey:@"Amount"] ]];
+                        [amount setText:[NSString stringWithFormat:@"$%@",[dictRecord valueForKey:@"Amount"] ]];
                     }
 //                    //if (indexPath.row == 0) {
 //                       
@@ -600,7 +601,7 @@
                     [amount setStyleClass:@"history_transferamount_neutral"];
                     
                     
-                    [amount setText:[NSString stringWithFormat:@"$%@.00",[dictRecord valueForKey:@"Amount"] ]];
+                    [amount setText:[NSString stringWithFormat:@"$%@",[dictRecord valueForKey:@"Amount"] ]];
                     [cell.contentView addSubview:amount];
                     [cell.contentView addSubview:indicator];
                     

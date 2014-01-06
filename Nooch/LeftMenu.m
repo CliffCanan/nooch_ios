@@ -18,6 +18,8 @@
 #import "ProfileInfo.h"
 #import "UIImageView+WebCache.h"
 #import "assist.h"
+#import "privacy.h"
+#import "terms.h"
 @interface LeftMenu ()
 @property(nonatomic,strong) UITableView *menu;
 @property(nonatomic) NSIndexPath *selected;
@@ -366,11 +368,22 @@
         else if(buttonIndex == 2)
         {
             //support center
-            
+            NSURL *webURL = [NSURL URLWithString:@"http://support.nooch.com"];
+            [[UIApplication sharedApplication] openURL: webURL];
         }
     } else if ([actionSheet tag] == 2)
     {
-        
+        if (buttonIndex == 0)
+        {
+            terms *term = [terms new];
+            [nav_ctrl pushViewController:term animated:NO];
+            [self.slidingViewController resetTopView];
+        } else if (buttonIndex == 1)
+        {
+            privacy *priv = [privacy new];
+            [nav_ctrl pushViewController:priv animated:NO];
+            [self.slidingViewController resetTopView];
+        }
     }
     
 }

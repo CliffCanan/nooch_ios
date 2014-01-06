@@ -204,8 +204,11 @@
 //        imageName=[dict valueForKey:@"Photo"];
 //    }
     UIImageView *user_pic = [UIImageView new];
-    [user_pic setStyleClass:@"list_userprofilepic"];
-    [user_pic setStyleCSS:@"background-image : url(Preston.png)"];
+    user_pic.clipsToBounds = YES;
+    [user_pic setFrame:CGRectMake(20, 7, 46, 46)];
+    user_pic.layer.cornerRadius = 23;
+    user_pic.layer.borderWidth = 1;
+    user_pic.layer.borderColor = [Helpers hexColor:@"6d6e71"].CGColor;
     [cell.contentView addSubview:user_pic];
     
     UILabel *name = [UILabel new];

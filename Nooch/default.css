@@ -1395,7 +1395,7 @@
 			height			: 32px;
 			top				: 12px;
 			left			: 5px;
-			background-image: url(AddFunds.png);
+			background-image: url(addfunds.png);
 		}
 
 		#rside_icon_wdfunds {
@@ -1403,7 +1403,7 @@
 			height			: 32px;
 			top				: 12px;
 			left			: 5px;
-			background-image: url(WithdrawFunds.png);
+			background-image: url(withdrawfunds.png);
 		}
 		
 		/**  Should(!) set the background of the switch to a dark gray. **/

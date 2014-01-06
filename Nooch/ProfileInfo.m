@@ -90,6 +90,8 @@
     [self.name setTextAlignment:NSTextAlignmentRight]; [self.name setBackgroundColor:[UIColor clearColor]];
     [self.name setPlaceholder:@"First & Last Name"]; [self.name setDelegate:self];
     [self.name setStyleClass:@"table_view_cell_detailtext_1"];
+    [self.name setText:[NSString stringWithFormat:@"%@ %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"FirstName"],[[NSUserDefaults standardUserDefaults] objectForKey:@"LastName"]]];
+    [self.name setUserInteractionEnabled:NO];
     [self.view addSubview:self.name];
     
     UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(20, 70, 280, 30)];
@@ -106,6 +108,8 @@
     [self.email setPlaceholder:@"email@email.com"]; [self.email setDelegate:self];
     [self.email setKeyboardType:UIKeyboardTypeEmailAddress];
     [self.email setStyleClass:@"table_view_cell_detailtext_1"];
+    [self.name setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]];
+    [self.email setUserInteractionEnabled:NO];
     [self.view addSubview:self.email];
     UILabel *mail = [[UILabel alloc] initWithFrame:CGRectMake(20, 110, 280, 30)];
     [mail setBackgroundColor:[UIColor clearColor]]; [mail setText:@"Email:"];
