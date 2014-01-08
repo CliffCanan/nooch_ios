@@ -39,14 +39,7 @@
     
     UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
     [self.navigationItem setRightBarButtonItem:loc];
-    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [self.view addSubview:spinner];
-    spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-    [spinner startAnimating];
-    serve *recents = [serve new];
-    [recents setTagName:@"recents"];
-    [recents setDelegate:self];
-    [recents getRecents];
+    
 //    if (![self.view.subviews containsObject:loader]) {
 //        loader=[me waitStat:@"Loading Recent List..."];
 //        [self.view addSubview:loader];
@@ -63,6 +56,15 @@
     [search setDelegate:self];
     [search setTintColor:kNoochGrayDark];
     [self.view addSubview:search];
+    
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [self.view addSubview:spinner];
+    spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+    [spinner startAnimating];
+    serve *recents = [serve new];
+    [recents setTagName:@"recents"];
+    [recents setDelegate:self];
+    [recents getRecents];
 }
 #pragma mark-Location Search
 -(void)locationSearch:(id)sender{
@@ -113,6 +115,7 @@
         if(isRange.location != NSNotFound){
             emailEntry = YES;
             searching = NO;
+              searchString = searchBar.text;
         }
         else{
             emailEntry = NO;
@@ -144,7 +147,7 @@
 #pragma mark - email handling
 -(void)getMemberIdByUsingUserName{
     [search resignFirstResponder];
-    if ([search.text isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]]){
+    if ([search.text isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]]){
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Denied" message:@"You are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av setTag:4];
         [av show];
@@ -210,7 +213,7 @@
         {
             
             //[me endWaitStat];
-            UIAlertView *alertRedirectToProfileScreen=[[UIAlertView alloc]initWithTitle:@"Unknown" message:@"We at Nooch have no knowledge of this email address." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *alertRedirectToProfileScreen=[[UIAlertView alloc]initWithTitle:@"Unknown" message:@"We at Nooch have no knowledge of this email address. Are You sure?" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES",nil];
             [alertRedirectToProfileScreen setTag:20220];
             [alertRedirectToProfileScreen show];
             [spinner stopAnimating];
@@ -236,7 +239,24 @@
     
     
 }
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag==20220) {
+        if (buttonIndex==1) {
+              NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+            [dict setObject:searchString forKey:@"email"];
+            [dict setObject:@"nonuser" forKey:@"nonuser"];
+            HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
+            
+            [self.navigationController pushViewController:how_much animated:YES];
 
+//            serve*serveOBJ=[serve new];
+//            [serveOBJ setDelegate:self];
+//            serveOBJ.tagName=@"sendNonNooch";
+//            serveOBJ TransferMoneyToNonNoochUser:<#(NSDictionary *)#> email:<#(NSString *)#>
+        }
+    }
+}
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -296,32 +316,20 @@
     for (UIView*subview in cell.contentView.subviews) {
         [subview removeFromSuperview];
     }
-    [cell.textLabel setStyleClass:@"select_recipient_name"];
+   // [cell.textLabel setStyleClass:@"select_recipient_name"];
+    
     UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
     pic.clipsToBounds = YES;
+    [pic setTag:indexPath.row];
     [cell addSubview:pic];
+    
     UIImageView *npic = [UIImageView new];
     npic.clipsToBounds = YES;
+    [npic setTag:indexPath.row];
     [cell addSubview:npic];
-    if(emailEntry){
-        cell.indentationWidth = 10;
-         npic.hidden=YES;
-        pic.hidden=YES;
-       // NSLog(@"%@",search.text);
-        cell.textLabel.text = [NSString stringWithFormat:@"Send to %@",search.text];
-        return cell;
-    }
-      pic.hidden=NO;
-      cell.indentationWidth = 60;
-     // [pic setStyleClass:@"list_userprofilepic"];
-     //[pic setStyleCSS:@"background-image : url(Preston.png)"];
-    
-      [pic setFrame:CGRectMake(20, 5, 60, 60)];
-      pic.layer.cornerRadius = 30; pic.layer.borderColor = kNoochBlue.CGColor; pic.layer.borderWidth = 1;
-      pic.clipsToBounds = YES;
-    
+
     if (searching) {
-        
+       
         //Nooch User
         npic.hidden=NO;
         [npic setFrame:CGRectMake(250,15, 34, 40)];
@@ -332,9 +340,18 @@
         [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
             placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
                 [cell setIndentationLevel:1];
+        pic.hidden=NO;
+        cell.indentationWidth = 70;
+        // [pic setStyleClass:@"list_userprofilepic"];
+        //[pic setStyleCSS:@"background-image : url(Preston.png)"];
+        
+        [pic setFrame:CGRectMake(20, 5, 60, 60)];
+        pic.layer.cornerRadius = 30; pic.layer.borderColor = kNoochBlue.CGColor; pic.layer.borderWidth = 1;
+        pic.clipsToBounds = YES;
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",info[@"FirstName"],info[@"LastName"]];
     }
     else{
+    
         //Nooch User
         npic.hidden=NO;
         [npic setFrame:CGRectMake(250,15, 34, 40)];
@@ -346,13 +363,35 @@
         
         [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
         placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+        pic.hidden=NO;
+        cell.indentationWidth = 70;
+        // [pic setStyleClass:@"list_userprofilepic"];
+        //[pic setStyleCSS:@"background-image : url(Preston.png)"];
         
+        [pic setFrame:CGRectMake(20, 5, 60, 60)];
+        pic.layer.cornerRadius = 30; pic.layer.borderColor = kNoochBlue.CGColor; pic.layer.borderWidth = 1;
+        pic.clipsToBounds = YES;
         [cell setIndentationLevel:1];
         cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",info[@"FirstName"],info[@"LastName"]];
         
         
     }
-    
+    if(emailEntry){
+        for (UIView*subview in cell.contentView.subviews) {
+            [subview removeFromSuperview];
+        }
+        SDImageCache *imageCache = [SDImageCache sharedImageCache];
+        [imageCache clearMemory];
+        [imageCache clearDisk];
+        [imageCache cleanDisk];
+        cell.indentationWidth = 10;
+         npic.hidden=YES;
+                pic.hidden=YES;
+        // [pic setFrame:CGRectMake(0, 0, 0, 0)];
+        //  [npic setFrame:CGRectMake(0, 0, 0, 0)];
+        cell.textLabel.text = [NSString stringWithFormat:@"Send to %@",search.text];
+        return cell;
+    }
     return cell;
 }
 

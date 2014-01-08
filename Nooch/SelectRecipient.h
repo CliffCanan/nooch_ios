@@ -20,5 +20,6 @@
     NSMutableArray*arrSearchedRecords;
     UISearchBar *search;
     UIActivityIndicatorView*spinner;
+    
 }
 @end

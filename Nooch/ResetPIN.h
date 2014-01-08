@@ -8,7 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "serve.h"
+#import "Helpers.h"
+#import "Home.h"
 
 @interface ResetPIN : UIViewController<serveD>
-
+{
+    UIActivityIndicatorView*spinner;
+    NSDictionary*dictResult;
+    UILabel *title;
+    int pinchangeProgress;
+    NSString*newPinString;
+    NSString *encryptedPIN;
+    NSString*newEncryptedPIN;
+}
 @end

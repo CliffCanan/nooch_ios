@@ -246,6 +246,9 @@
 		84BD98721877F6E9008B6131 /* userlocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BD98711877F6E9008B6131 /* userlocation.m */; };
 		84BFD930187122DD001C0AAC /* Pixate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84BFD92F187122DD001C0AAC /* Pixate.framework */; };
 		84BFD9321871270C001C0AAC /* cross_basic_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 84BFD9311871270C001C0AAC /* cross_basic_yellow.png */; };
+		84C3EF18187D0E82004687F6 /* mapBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C3EF17187D0E82004687F6 /* mapBack.png */; };
+		84C3EF1B187D101E004687F6 /* ReEnterPin.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C3EF1A187D101E004687F6 /* ReEnterPin.m */; };
+		84C3EF1D187D74C6004687F6 /* whitebg.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C3EF1C187D74C6004687F6 /* whitebg.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -269,7 +272,7 @@
 		01085FC417FDE5F800A31F63 /* FundsMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FundsMenu.h; sourceTree = "<group>"; };
 		01085FC517FDE5F800A31F63 /* FundsMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FundsMenu.m; sourceTree = "<group>"; };
 		01085FC717FDFDB300A31F63 /* HistoryFlat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryFlat.h; sourceTree = "<group>"; };
-		01085FC817FDFDB300A31F63 /* HistoryFlat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryFlat.m; sourceTree = "<group>"; };
+		01085FC817FDFDB300A31F63 /* HistoryFlat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryFlat.m; sourceTree = "<group>"; wrapsLines = 0; };
 		01085FCA17FF3DE500A31F63 /* TransactionDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionDetails.h; sourceTree = "<group>"; };
 		01085FCB17FF3DE600A31F63 /* TransactionDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionDetails.m; sourceTree = "<group>"; };
 		01085FCD18030B6800A31F63 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Login.h; sourceTree = "<group>"; };
@@ -641,6 +644,10 @@
 		84BD98711877F6E9008B6131 /* userlocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = userlocation.m; sourceTree = "<group>"; };
 		84BFD92F187122DD001C0AAC /* Pixate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Pixate.framework; sourceTree = "<group>"; };
 		84BFD9311871270C001C0AAC /* cross_basic_yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cross_basic_yellow.png; sourceTree = "<group>"; };
+		84C3EF17187D0E82004687F6 /* mapBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapBack.png; sourceTree = "<group>"; };
+		84C3EF19187D101E004687F6 /* ReEnterPin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReEnterPin.h; sourceTree = "<group>"; };
+		84C3EF1A187D101E004687F6 /* ReEnterPin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReEnterPin.m; sourceTree = "<group>"; };
+		84C3EF1C187D74C6004687F6 /* whitebg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whitebg.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -726,6 +733,8 @@
 				01085FB617FB6ABE00A31F63 /* ReferralCode.m */,
 				01085FA617FB2D2100A31F63 /* Register.h */,
 				01085FA717FB2D2100A31F63 /* Register.m */,
+				84C3EF19187D101E004687F6 /* ReEnterPin.h */,
+				84C3EF1A187D101E004687F6 /* ReEnterPin.m */,
 			);
 			name = "Registration and Login Controllers";
 			sourceTree = "<group>";
@@ -989,6 +998,7 @@
 		16E4B1C0187054A80099D075 /* venturepact  */ = {
 			isa = PBXGroup;
 			children = (
+				84C3EF17187D0E82004687F6 /* mapBack.png */,
 				8420B395187AC4BF00A77E2D /* Black-pin.png */,
 				8420B396187AC4BF00A77E2D /* blue-pin.png */,
 				8420B397187AC4BF00A77E2D /* green-pin.png */,
@@ -1001,6 +1011,7 @@
 				16E4B1C51870832B0099D075 /* untick.png */,
 				16E4B1C718708C1D0099D075 /* tickR.png */,
 				16E4B1BE187054A50099D075 /* placeholder.jpg */,
+				84C3EF1C187D74C6004687F6 /* whitebg.png */,
 				16E4B1C1187078880099D075 /* tick.png */,
 			);
 			name = "venturepact ";
@@ -1542,6 +1553,7 @@
 				014C4333185B9A4C00956A84 /* nonprofits-youtube.png in Resources */,
 				6BC5FEDF1625F1B0007EAD7A /* Roboto-LightItalic.ttf in Resources */,
 				0106773A1860F67A00E11F3D /* settings-icon2.png in Resources */,
+				84C3EF1D187D74C6004687F6 /* whitebg.png in Resources */,
 				8420B39F187AC4BF00A77E2D /* pink-pin.png in Resources */,
 				6BC5FEE11625F1B0007EAD7A /* Roboto-Medium.ttf in Resources */,
 				6BC5FEE31625F1B0007EAD7A /* Roboto-MediumItalic.ttf in Resources */,
@@ -1616,6 +1628,7 @@
 				6B01F1BE179DA8E800E34C49 /* GoogleMaps.bundle in Resources */,
 				0106773C1860F68400E11F3D /* take-pic-icon.png in Resources */,
 				01C26DFD1843E85C005179B7 /* Preston.png in Resources */,
+				84C3EF18187D0E82004687F6 /* mapBack.png in Resources */,
 				01C26DE41843C56C005179B7 /* Clock_Icon.png in Resources */,
 				010677391860F67A00E11F3D /* check-icon-small.png in Resources */,
 				014C4336185B9A4C00956A84 /* quicktap_25.png in Resources */,
@@ -1681,6 +1694,7 @@
 				6B75E9F415FE74CA00B091D8 /* terms.m in Sources */,
 				01085FCC17FF3DE600A31F63 /* TransactionDetails.m in Sources */,
 				6B75E9FB15FE7EE300B091D8 /* main 2.m in Sources */,
+				84C3EF1B187D101E004687F6 /* ReEnterPin.m in Sources */,
 				01085FAE17FB4BFA00A31F63 /* SelectPicture.m in Sources */,
 				01085FC017FCB13100A31F63 /* InitSliding.m in Sources */,
 				01086006180349E100A31F63 /* Statistics.m in Sources */,

@@ -56,7 +56,7 @@
     [super viewDidLoad];
     
     [self.navigationItem setTitle:@"History"];
-    
+     [nav_ctrl performSelector:@selector(disable)];
 	// Do any additional setup after loading the view.
    
     histArray=[[NSMutableArray alloc]init];
@@ -81,6 +81,14 @@
     [self.list setDataSource:self]; [self.list setDelegate:self]; [self.list setSectionHeaderHeight:0];
     [self.view addSubview:self.list]; [self.list reloadData];
     
+    
+//    //Export History
+//    exportHistory=[UIButton buttonWithType:UIButtonTypeCustom];
+//    [exportHistory setTitle:@"Export History" forState:UIControlStateNormal];
+//    [exportHistory setFrame:CGRectMake(10, 420, 70, 20)];
+//    [exportHistory setStyleClass:@"exportHistorybutton"];
+//    [exportHistory addTarget:self action:@selector(ExportHistory:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:exportHistory];
     UISwipeGestureRecognizer * recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideright:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self.list addGestureRecognizer:recognizer];
@@ -175,8 +183,56 @@
     [self mapPoints];
     
 }
+- (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(GMSMarker *)marker{
+    UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 100)];
+    customView.layer.borderColor=[[UIColor blackColor]CGColor];
+    customView.layer.borderWidth=1.0f;
+    
+    customView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mapBack.png"]];
+    UIImageView*imgV=[[UIImageView alloc]initWithFrame:CGRectMake(5, 15, 50, 50)];
+    
+    imgV.layer.cornerRadius = 25; imgV.layer.borderColor = kNoochBlue.CGColor; imgV.layer.borderWidth = 1;
+    imgV.clipsToBounds = YES;
+    
+    imgV.image=[UIImage imageNamed:@"RoundLoading.png"];
+    
+    [customView addSubview:imgV];
+    
+    UILabel*lblName=[[UILabel alloc]initWithFrame:CGRectMake(5, 70, 250, 17)];
+    NSLog(@"%d",[[marker title]intValue]);
+    lblName.text=[NSString stringWithFormat:@"%@ %@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"FirstName"],[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"LastName"]];
+    lblName.font=[UIFont systemFontOfSize:15];
+    lblName.textColor=[UIColor whiteColor];
+    [customView addSubview:lblName];
+    
+    
+    //
+    UILabel*lblTitle=[[UILabel alloc]initWithFrame:CGRectMake(90, 10, 150, 17)];
+    lblTitle.text=[NSString stringWithFormat:@"%@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]];
+    lblTitle.textColor=[UIColor whiteColor];
+    lblTitle.font=[UIFont systemFontOfSize:17];
+    [customView addSubview:lblTitle];
+    //
+    UILabel*lblAmt=[[UILabel alloc]initWithFrame:CGRectMake(100, 25, 100, 20)];
+    lblAmt.text=[NSString stringWithFormat:@"$%@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Amount"]];
+    lblAmt.textColor=[UIColor greenColor];
+    lblAmt.font=[UIFont systemFontOfSize:18];
+    [customView addSubview:lblAmt];
+    //
+    UILabel*lblmemo=[[UILabel alloc]initWithFrame:CGRectMake(85, 55, 150, 15)];
+    lblmemo.text=[NSString stringWithFormat:@"%@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Memo"]];
+    lblmemo.textColor=[UIColor whiteColor];
+    [customView addSubview:lblmemo];
+    //
+    UILabel*lblloc=[[UILabel alloc]initWithFrame:CGRectMake(85, 65, 200, 15)];
+    lblloc.text=[NSString stringWithFormat:@"%@ %@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"City"],[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Country"]];
+    lblloc.textColor=[UIColor whiteColor];
+    [customView addSubview:lblloc];
+    return customView;
+    
+}
 -(void)mapPoints{
-     NSArray*histArrayCommon;
+    
     if (self.completed_selected) {
         if ([histShowArrayCompleted count]==0) {
             for (GMSMarker*marker in mapView_.markers ) {
@@ -189,15 +245,21 @@
     else
     {
         
-            if ([histShowArrayPending count]==0) {
-                for (GMSMarker*marker in mapView_.markers ) {
-                    marker.map=nil;
-                }
-                return;
+        if ([histShowArrayPending count]==0) {
+            for (GMSMarker*marker in mapView_.markers ) {
+                marker.map=nil;
             }
+            return;
+        }
         histArrayCommon=[histShowArrayPending copy];
         
     }
+    for (GMSMarker*marker in mapView_.markers ) {
+        marker.map=nil;
+    }
+    
+    
+    
     for (int i=0; i<histArrayCommon.count; i++) {
         //Latitude = 0;
         
@@ -240,7 +302,7 @@
         markerOBJ.map = mapView_;
     }
     
-
+    
 }
 -(void)move:(id)sender {
     [self.view bringSubviewToFront:mapArea];
@@ -832,7 +894,33 @@
     }
     
 }
+#pragma mark Exporting History
+- (IBAction)ExportHistory:(id)sender {
+    
+    
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Enter email ID" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil];
+    [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+    alert.tag = 11;
+    [alert show];
+    
+}
+#pragma mark - alert view delegation
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet.tag == 11)
+    {
+        if (buttonIndex == 0) {
+            NSLog(@"Cancelled");
+        }
+        else
+        {
+            NSString * email = [[actionSheet textFieldAtIndex:0] text];
+            serve * s = [[serve alloc] init];
+            [s sendCsvTrasactionHistory:email];
+        }
+    }
 
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

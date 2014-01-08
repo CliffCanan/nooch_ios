@@ -224,6 +224,17 @@
     [self.save setStyleClass:@"button_green"];
     [self.save setEnabled:YES];
     [self.view addSubview:self.save];
+    
+    self.name.text=@"";
+     self.email.text=@"";
+     self.recovery_email.text=@"";
+     self.password.text=@"";
+     self.phone.text=@"";
+     self.address_one.text=@"";
+     self.address_two.text=@"";
+     self.city.text=@"";
+     self.zip.text=@"";
+    
     GMTTimezonesDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:@"Samoa Standard Time",@"GMT-11:00",
                               @"Hawaiian Standard Time",@"GMT-10:00",
                               @"Alaskan Standard Time",@"GMT-09:00",
@@ -882,6 +893,19 @@
             
             
         }
+        else if (![[dictProfileinfo objectForKey:@"Zipcode"] isKindOfClass:[NSNull class]]) {
+                
+                 ServiceType=@"zip";
+                
+                Decryption *decry = [[Decryption alloc] init];
+                decry.Delegate = self;
+                decry->tag = [NSNumber numberWithInteger:2];
+                [decry getDecryptedValue:@"GetDecryptedData" pwdString:[dictProfileinfo objectForKey:@"Zipcode"]];
+                
+                
+            }
+
+        
         
         //        password.text = decryptedPassword;
         //        [self getEncryptedPassword:password.text];
@@ -903,7 +927,21 @@
             
             
         }
-        
+        else
+        {
+            ServiceType=@"name";
+            if (![[dictProfileinfo objectForKey:@"FirstName"] isKindOfClass:[NSNull class]]) {
+                
+                
+                
+                Decryption *decry = [[Decryption alloc] init];
+                decry.Delegate = self;
+                
+                decry->tag = [NSNumber numberWithInteger:2];
+                [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"FirstName"]];
+            }
+
+        }
         //        password.text = decryptedPassword;
         //        [self getEncryptedPassword:password.text];
         //        NSLog(@"should be encrypting password");
@@ -938,22 +976,31 @@
             
             self.name.text=[NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
             NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
-            if (![[dictProfileinfo objectForKey:@"LastName"] isKindOfClass:[NSNull class]]) {
-                
-        }
+           
        
-            
-            
-            
+              if (![[dictProfileinfo objectForKey:@"LastName"] isKindOfClass:[NSNull class]])
+                  {
+                ServiceType=@"lastname";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"LastName"]];
+                  }
+        else if (![[dictProfileinfo objectForKey:@"UserName"] isKindOfClass:[NSNull class]]) {
+                ServiceType=@"email";
+                Decryption *decry = [[Decryption alloc] init];
+                decry.Delegate = self;
+                decry->tag = [NSNumber numberWithInteger:2];
+                [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"UserName"]];
+                
+            
+            
         }
         
         
         //   zip.text=[sInfoDic objectForKey:@"UserName"];
         
+    }
     }
     else  if ([ServiceType isEqualToString:@"lastname"])
     {
@@ -967,11 +1014,7 @@
             NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
 
         }
-                if (![[dictProfileinfo objectForKey:@"UserName"] isKindOfClass:[NSNull class]]) {
-            
-            
-            
-            
+        if (![[dictProfileinfo objectForKey:@"UserName"] isKindOfClass:[NSNull class]]) {
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];

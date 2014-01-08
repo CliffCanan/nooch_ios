@@ -8,7 +8,7 @@
 
 #import "PINSettings.h"
 #import "Home.h"
-
+#import "ResetPIN.h"
 @interface PINSettings ()
 @property(nonatomic,strong)UISwitch *ri;
 @end
@@ -36,6 +36,7 @@
     [change_pin setTitle:@"Change PIN" forState:UIControlStateNormal];
     [change_pin setTitleColor:kNoochLight forState:UIControlStateNormal];
     [change_pin.titleLabel setFont:kNoochFontBold];
+    [change_pin addTarget:self action:@selector(changepin) forControlEvents:UIControlEventTouchUpInside];
     [change_pin setStyleClass:@"button_green"];
     [self.view addSubview:change_pin];
     
@@ -60,7 +61,11 @@
     [info setText:@"Require a passcode even when switching apps for a short time"];
     [self.view addSubview:info];
 }
-
+-(void)changepin{
+    ResetPIN*reset=[ResetPIN new];
+    [self.navigationController presentViewController:reset animated:YES completion:nil];
+    
+}
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {

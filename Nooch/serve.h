@@ -98,7 +98,11 @@
 -(void)histMoreSerachbyName:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len name:(NSString*)name;
 -(void) LogOutRequest:(NSString*) memberId;
 //-(void)SendEmailToNonNooch:(NSString*)emai;
+-(void)MemberNotificationSettings:(NSDictionary*) memberNotificationSettings type:(NSString*)type;
+-(void)MemberNotificationSettingsInput;
+-(void)GetMemberStats:(NSString*)query;
 -(void)getLocationBasedSearch:(NSString *)radius;
+-(void)TransferMoneyToNonNoochUser:(NSDictionary*)transactionInput email:(NSString*)email;
 @end
 
 //392f9c86-1651-4459-a6a9-d362fcfc4366 - nooch team

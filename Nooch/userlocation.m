@@ -9,6 +9,7 @@
 #import "userlocation.h"
 #import <Pixate/Pixate.h>
 #import "serve.h"
+#import "UIImageView+WebCache.h"
 @interface userlocation ()<serveD>
 @property(nonatomic,strong) UITableView *usersTable;
 @property(nonatomic,strong) NSMutableArray *users;
@@ -96,7 +97,14 @@
     [cell.textLabel setStyleClass:@"select_recipient_name"];
     
     NSDictionary * temp = [self.users objectAtIndex:indexPath.row];
-    
+    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
+    pic.clipsToBounds = YES;
+    [cell addSubview:pic];
+    [pic setFrame:CGRectMake(20, 10, 60, 60)];
+    pic.layer.cornerRadius = 30; pic.layer.borderColor = kNoochBlue.CGColor; pic.layer.borderWidth = 1;
+    pic.clipsToBounds = YES;
+    [pic setImageWithURL:[NSURL URLWithString:temp[@"Photo"]]
+        placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
     NSString * name = [NSString stringWithFormat:@"%@ %@",[temp objectForKey:@"FirstName"],[temp objectForKey:@"LastName"]];
     [cell.textLabel setText:name];
     

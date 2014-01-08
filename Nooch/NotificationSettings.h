@@ -10,5 +10,10 @@
 #import "serve.h"
 
 @interface NotificationSettings : UIViewController<UITableViewDataSource,UITableViewDelegate,serveD>
-
+{
+    NSString*serviceType;
+    NSDictionary*dictInput;
+    NSDictionary*dictSettings;
+    NSString*servicePath;
+}
 @end

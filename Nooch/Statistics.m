@@ -28,6 +28,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    serve*serveOBJ=[serve new];
+    [serveOBJ setDelegate:self];
+    serveOBJ.tagName=@"getStats";
+    [serveOBJ GetMemberStats:@"Total_P2P_transfers"];
 	// Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"Statistics"];
     
@@ -126,7 +130,21 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
+    NSError* error;
     
+    dictResult= [NSJSONSerialization
+                 
+                 JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                 
+                 options:kNilOptions
+                 
+                 error:&error];
+    
+    NSLog(@"%@",dictResult);
+
+    if ([tagName isEqualToString:@"getStats"]) {
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning

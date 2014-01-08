@@ -43,6 +43,8 @@
     NSDictionary*dictLocation;
     NSDictionary*dictResultTransfer;
     UIActivityIndicatorView*spinner;
+    NSDictionary*jsonDictionary;
+    NSString*encryptedPINNonUser;
 }
 
 - (id)initWithReceiver:(NSMutableDictionary *)receiver type:(NSString *)type amount:(float)amount;

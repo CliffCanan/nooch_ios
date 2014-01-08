@@ -65,7 +65,13 @@
     [self.view addSubview:to];
     
     UILabel *to_label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
+    if ([self.receiver valueForKey:@"nonuser"]) {
+         [to_label setText:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"email"]]];
+    }
+    else
+    {
     [to_label setText:[NSString stringWithFormat:@"%@ %@",[self.receiver objectForKey:@"FirstName"],[self.receiver objectForKey:@"LastName"]]];
+    }
     [to_label setStyleId:@"label_howmuch_recipientname"];
     [self.view addSubview:to_label];
     
@@ -74,6 +80,11 @@
     user_pic.layer.borderColor = [Helpers hexColor:@"939598"].CGColor;
     user_pic.layer.borderWidth = 2; user_pic.clipsToBounds = YES;
     user_pic.layer.cornerRadius = 37;
+    if ([self.receiver valueForKey:@"nonuser"]) {
+        [user_pic setHidden:YES];
+    }
+    else{
+        [user_pic setHidden:NO];
     if (self.receiver[@"Photo"]) {
         [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
                  placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
@@ -82,6 +93,7 @@
     {
     [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
         placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+    }
     }
     NSLog(@"%@",self.receiver);
     [self.view addSubview:user_pic];
@@ -253,10 +265,15 @@
     [transaction setObject:[self.memo text] forKey:@"memo"];
     //float input_amount = [[[self.amount text] substringFromIndex:2] floatValue];
     float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
-    // NSLog(@"%@",[self.amount text]);
-    //NSLog(@"%f",input_amount);
+    if ([self.receiver valueForKey:@"nonuser"]) {
+        TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"nonuser" amount: input_amount];
+        [self.navigationController pushViewController:pin animated:YES];
+    }
+    else
+    {
     TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"send" amount: input_amount];
     [self.navigationController pushViewController:pin animated:YES];
+    }
 }
 - (void) confirm_request
 {

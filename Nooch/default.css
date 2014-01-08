@@ -252,6 +252,28 @@
 		top					: 105px;
 		left                : 170px;
 	}
+.Repin_instructiontext {
+		width			: 300px;
+		left			: 10px;
+		top             : 80px;
+		height          : 20px;
+		font-family		: "Roboto";
+		font-weight		: medium;
+		font-size		: 16px;
+		text-align		: center;
+		color			: #14171a;
+	}
+  .backbutton {
+		width			: 70px;
+		left			: 5px;
+		top             : 25px;
+		height          : 25px;
+		font-family		: "Roboto";
+		font-weight		: medium;
+		font-size		: 22px;
+		text-align		: left;
+
+	}
 
 	 /****************************
 	  *****	  TABLE Styles 	 *****
@@ -826,12 +848,19 @@
 	#pin_instructiontext_send { 
 		width	: 300px;
 		height	: 18px;
+		top		: 66px;
+		left	: 10px;
+        text-align : center;
+		color 	: #72bf44;
+	}
+#Transferpin_instructiontext_send { 
+		width	: 300px;
+		height	: 18px;
 		top		: 36px;
 		left	: 10px;
         text-align : center;
 		color 	: #72bf44;
 	}
-
     /**  Making the word "request" blue.  **/    
 	#pin_instructiontext_request { 
 		width	: 300px;

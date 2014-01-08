@@ -1,14 +1,14 @@
 //
-//  ResetPIN.m
+//  ReEnterPin.m
 //  Nooch
 //
-//  Created by crks on 10/7/13.
-//  Copyright (c) 2013 Nooch. All rights reserved.
+//  Created by Vicky Mathneja on 08/01/14.
+//  Copyright (c) 2014 Nooch. All rights reserved.
 //
 
-#import "ResetPIN.h"
+#import "ReEnterPin.h"
 #import <Pixate/Pixate.h>
-@interface ResetPIN ()<UITextFieldDelegate>
+@interface ReEnterPin ()<UITextFieldDelegate>
 @property(nonatomic,retain) UIView *first_num;
 @property(nonatomic,retain) UIView *second_num;
 @property(nonatomic,retain) UIView *third_num;
@@ -17,7 +17,7 @@
 @property(nonatomic,strong) UITextField *pin;
 @end
 
-@implementation ResetPIN
+@implementation ReEnterPin
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -27,29 +27,21 @@
     }
     return self;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+   // [nav_ctrl setNavigationBarHidden:NO];
 	// Do any additional setup after loading the view.
-    
-    [self.navigationItem setTitle:@"Reset PIN"];
-    
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    pinchangeProgress=1;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIView*navBar=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundColor:[UIColor colorWithRed:82.0f/255.0f green:176.0f/255.0f blue:235.0f/255.0f alpha:1.0f]];
     [self.view addSubview:navBar];
-    UIButton*back=[UIButton buttonWithType:UIButtonTypeCustom];
-    [back setStyleClass:@"backbutton"];
-    [back setTitle:@"Close" forState:UIControlStateNormal];
-    [back addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
-    [back setFrame:CGRectMake(0,5, 70, 30)];
-    [navBar addSubview:back];
-    UILabel*lbl=[[UILabel alloc]initWithFrame:CGRectMake(105, 20, 200, 30)];
-    [lbl setText:@"Reset PIN"];
+    UILabel*lbl=[[UILabel alloc]initWithFrame:CGRectMake(75, 20, 200, 30)];
+    [lbl setText:@"PIN Confirmation"];
     [lbl setFont:[UIFont systemFontOfSize:22]];
     [lbl setTextColor:[UIColor whiteColor]];
     [navBar addSubview:lbl];
@@ -59,26 +51,26 @@
     [self.pin setDelegate:self]; [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
     [self.view addSubview:self.pin]; [self.pin becomeFirstResponder];
     
-    [self.navigationItem setTitle:@"Reset PIN "];
-  title = [[UILabel alloc] initWithFrame:CGRectMake(10, 104, 300, 60)];
-    [title setText:@"Please enter your old PIN."]; [title setTextAlignment:NSTextAlignmentCenter];
+    [self.navigationItem setTitle:@"PIN Confirmation"];
+    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 104, 300, 60)];
+    [title setText:@"Please confirm your PIN."]; [title setTextAlignment:NSTextAlignmentCenter];
     [title setNumberOfLines:2];
     [title setStyleClass:@"Repin_instructiontext"];
     [self.view addSubview:title];
     
-    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 220, 300, 30)];
+    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 194, 300, 30)];
     [self.prompt setText:@""]; [self.prompt setTextAlignment:NSTextAlignmentCenter];
     [self.prompt setStyleId:@"pin_instructiontext_send"];
     [self.view addSubview:self.prompt];
     
-    //    UIView *back = [UIView new];
-    //    [back setStyleClass:@"raised_view"];
-    //    [back setStyleClass:@"pin_recipientbox"];
-    //    [self.view addSubview:back];
-    //
-    //    UIView *bar = [UIView new];
-    //    [bar setStyleClass:@"pin_recipientname_bar"];
-    //    [self.view addSubview:bar];
+//    UIView *back = [UIView new];
+//    [back setStyleClass:@"raised_view"];
+//    [back setStyleClass:@"pin_recipientbox"];
+//    [self.view addSubview:back];
+//    
+//    UIView *bar = [UIView new];
+//    [bar setStyleClass:@"pin_recipientname_bar"];
+//    [self.view addSubview:bar];
     
     //    UILabel *to_label = [[UILabel alloc] initWithFrame:CGRectMake(10, 200, 300, 30)];
     //    if ([[self.receiver objectForKey:@"FirstName"] length] == 0) {
@@ -129,18 +121,9 @@
     [self.view addSubview:self.third_num];
     [self.view addSubview:self.fourth_num];
 }
--(void)goBack{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     int len = [textField.text length] + [string length];
-    NSLog(@"%@",[NSString stringWithFormat:@"%@%@",textField.text,string]);
-//    if ([self.pin.text isEqualToString:@""]) {
-//        len=1;
-//       // pinchangeProgress=0;
-//    }
-     UIColor *which;
     if([string length] == 0) //deleting
     {
         switch (len) {
@@ -162,10 +145,10 @@
                 break;
         }
     }else{
-       
+        UIColor *which;
         
-        which = kNoochGreen;
-        switch (len) {
+            which = kNoochGreen;
+               switch (len) {
             case 5:
                 return NO;
                 break;
@@ -189,7 +172,7 @@
         }
     }
     
-    if (len==4 && pinchangeProgress==1) {
+    if (len==4) {
         spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [self.view addSubview:spinner];
         spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
@@ -200,90 +183,8 @@
         pin.tagName = @"ValidatePinNumber";
         [pin getEncrypt:[NSString stringWithFormat:@"%@%@",textField.text,string]];
     }
-    else if (len==4 && pinchangeProgress==2) {
-        
-        [self.fourth_num setBackgroundColor:which];
-        if ([newPinString length] != 4) {
-            pinchangeProgress=3;
-             self.prompt.text=@"";
-            newPinString = [NSString stringWithFormat:@"%@%@",textField.text,string];
-            [title setText:@"Confirm your PIN"];
-            [self.pin setText:@""];
-            [self.first_num setBackgroundColor:[UIColor clearColor]];
-            [self.second_num setBackgroundColor:[UIColor clearColor]];
-            [self.third_num setBackgroundColor:[UIColor clearColor]];
-            [self.fourth_num setBackgroundColor:[UIColor clearColor]];
-            return NO;
-        }
-//        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-//        [self.view addSubview:spinner];
-//        spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-//        [spinner startAnimating];
-       /* newPinString=[NSString stringWithFormat:@"%@%@",textField.text,string];
-        [self.fourth_num setBackgroundColor:[UIColor clearColor]];
-        [self.third_num setBackgroundColor:[UIColor clearColor]];
-        [self.second_num setBackgroundColor:[UIColor clearColor]];
-        [self.first_num setBackgroundColor:[UIColor clearColor]];
-        self.pin.text=@"";
-        self.prompt.text=@"";
-        pinchangeProgress=3;
-        self.pin.text=nil;
-        if ([self.pin.text length]!=0) {
-            self.pin.text=@"";
-        }
-        title.text=@"Confirm your Pin";*/
-//        serve *pin = [serve new];
-//        pin.Delegate = self;
-//        pin.tagName = @"ValidatePinNumber";
-//        [pin getEncrypt:[NSString stringWithFormat:@"%@%@",textField.text,string]];
-    }
-    else if (len==4 && pinchangeProgress==3) {
-        if (![newPinString isEqualToString:[NSString stringWithFormat:@"%@%@",textField.text,string]]) {
-            [self.fourth_num setBackgroundColor:[UIColor clearColor]];
-            [self.third_num setBackgroundColor:[UIColor clearColor]];
-            [self.second_num setBackgroundColor:[UIColor clearColor]];
-            [self.first_num setBackgroundColor:[UIColor clearColor]];
-            self.pin.text=@"";
-            newPinString=@"";
-            self.prompt.text=@"Pin doesn't matched.";
-            pinchangeProgress=2;
-            title.text=@"Enter new Pin";
-            return NO;
-        }
-        else
-        {
-            serve *req = [[serve alloc] init];
-            req.Delegate = self;
-            req.tagName=@"GetEncryptedData";
-            [req getEncrypt:[NSString stringWithFormat:@"%@%@",textField.text,string]];
-        }
-//        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-//        [self.view addSubview:spinner];
-//        spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-//        [spinner startAnimating];
-//        
-//        serve *pin = [serve new];
-//        pin.Delegate = self;
-//        pin.tagName = @"ValidatePinNumber";
-//        [pin getEncrypt:[NSString stringWithFormat:@"%@%@",textField.text,string]];
-    }
     return YES;
 }
--(void)pinChanged:(NSString*)status
-{
-    if([status isEqualToString:@"Pin changed successfully."])
-    {
-        
-        UIAlertView *showAlertMessage = [[UIAlertView alloc] initWithTitle:nil message:@"Your PIN number has been changed successfully!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-      //  [showAlertMessage setTag:2];
-       // [showAlertMessage setDelegate:self];
-        [showAlertMessage show];
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    
-}
-
-
 -(void)listen:(NSString *)result tagName:(NSString *)tagName
 {
     
@@ -298,24 +199,8 @@
                  error:&error];
     
     NSLog(@"%@",dictResult);
-    if ([tagName isEqualToString:@"GetEncryptedData"]) {
-        newEncryptedPIN=[dictResult objectForKey:@"Status"];
-        serve *resPin = [[serve alloc] init];
-        resPin.Delegate = self;
-        resPin.tagName = @"resetpin";
-        [resPin resetPIN:encryptedPIN new:newEncryptedPIN];
-    }
-    else if ([tagName isEqualToString:@"resetpin"]) {
-       
-           // NSDictionary *loginResult = [result JSONValue];
-            NSString *statusData= (NSString *)[dictResult objectForKey:@"Result"];
-            NSLog(@"Status %@", statusData);
-            [self pinChanged:statusData];
-        
-
-    }
-    else if ([tagName isEqualToString:@"ValidatePinNumber"]) {
-        encryptedPIN=[dictResult valueForKey:@"Status"];
+    if ([tagName isEqualToString:@"ValidatePinNumber"]) {
+        NSString *encryptedPIN=[dictResult valueForKey:@"Status"];
         
         serve *checkValid = [serve new];
         checkValid.tagName = @"checkValid";
@@ -324,19 +209,25 @@
     }
     else if ([tagName isEqualToString:@"checkValid"]){
         if([[dictResult objectForKey:@"Result"] isEqualToString:@"Success"]){
-            [spinner stopAnimating];
-            [spinner setHidden:YES];
-            pinchangeProgress=2;
-            [self.fourth_num setBackgroundColor:[UIColor clearColor]];
-            [self.third_num setBackgroundColor:[UIColor clearColor]];
-            [self.second_num setBackgroundColor:[UIColor clearColor]];
-            [self.first_num setBackgroundColor:[UIColor clearColor]];
-            self.pin.text=@"";
-            
-            title.text=@"Enter New Pin";
+            NSLog(@"%@",[me usr]);
+            if ([[me usr] objectForKey:@"requiredImmediately"] == NULL || [[[me usr] objectForKey:@"requiredImmediately"] isKindOfClass:[NSNull class]]) {
+                [spinner stopAnimating];
+                [spinner setHidden:YES];
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"FYI" message:@"The Require Immediately function is an added security feature to prompt you for your PIN whenever you enter Nooch. Would you like to keep this on or turn it off? You can change this setting later in the PIN Settings page." delegate:self cancelButtonTitle:@"Turn Off" otherButtonTitles:@"Keep On", nil];
+                [av setTag:1];
+                [av show];
+                return;
+            }else{
+                [spinner stopAnimating];
+                [spinner setHidden:YES];
+                NSLog(@"yuppppp");
+               // reqImm = NO;
+                [self dismissViewControllerAnimated:YES completion:nil];
+                //[self dismissModalViewControllerAnimated:YES];
+                return;
             }
-        
-        
+        }
+
         else{
             
             [self.fourth_num setBackgroundColor:[UIColor clearColor]];
@@ -367,25 +258,23 @@
             [spinner setHidden:YES];
             self.prompt.text=@"Account suspended.";
         }
-   }
-    
+}
 }
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (alertView.tag == 1) {
-        if (buttonIndex == 0) {
-            [[me usr] setObject:@"NO" forKey:@"requiredImmediately"];
-        }else{
-            [[me usr] setObject:@"YES" forKey:@"requiredImmediately"];
-        }
-        NSLog(@"%@",[me usr]);
-        //reqImm = NO;
-        
-        // [navCtrl popToRootViewControllerAnimated:NO];
-        [self dismissViewControllerAnimated:YES completion:nil];
-        //  [self dismissModalViewControllerAnimated:YES];
+        if (alertView.tag == 1) {
+            if (buttonIndex == 0) {
+                [[me usr] setObject:@"NO" forKey:@"requiredImmediately"];
+            }else{
+                [[me usr] setObject:@"YES" forKey:@"requiredImmediately"];
+            }
+             NSLog(@"%@",[me usr]);
+            //reqImm = NO;
+            
+           // [navCtrl popToRootViewControllerAnimated:NO];
+    [self dismissViewControllerAnimated:YES completion:nil];
+            //  [self dismissModalViewControllerAnimated:YES];
     }
-}
-
+    }
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

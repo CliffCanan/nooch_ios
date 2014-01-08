@@ -150,15 +150,28 @@
     else
     {
         
-        serve *vBank = [serve new];
-        vBank.tagName = @"validateBank";
-        vBank.Delegate = self;
-       
-        [vBank ValidateBank:@"" routingNo:self.routing_number.text];
+        NSArray* array = [self.name.text componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if ([array count]==2) {
+            transactionInput  =[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId", @"",@"BankName",self.account_number.text,@"BankAcctNumber", self.routing_number.text,@"BankAcctRoutingNumber",[array objectAtIndex:0],@"FirstName",[array objectAtIndex:1],@"LastName",nil];
+            
+            
+        }
+        transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"accountInput", nil];
+        serve *addBank = [serve new];
+        addBank.tagName = @"addBank";
+        addBank.Delegate = self;
+        [addBank saveBank:transaction];
         
         
     }
  
+}
+-(void)checkRoutingNumberService:(NSString*)RoutingString{
+    serve *vBank = [serve new];
+    vBank.tagName = @"validateBank";
+    vBank.Delegate = self;
+    
+    [vBank ValidateBank:@"" routingNo:RoutingString];
 }
 // UITapGestureRecognizer
 -(void) Tapped:(UITapGestureRecognizer *)gestureRecognizer
@@ -187,17 +200,21 @@
         }
         else if ([textField.text stringByReplacingCharactersInRange:range withString:string].length == 9)
         {
-            if (![self CheckRoutingNo:[NSString stringWithFormat:@"%@%@",textField.text, string]]) {
-                //[self.view setUserInteractionEnabled:NO];
-                UIAlertView*alert= [[UIAlertView alloc] initWithTitle:@"Routing number not valid" message:@"Enter a valid Routing number" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] ;
-                [alert setTag:2300];
-                [alert show];
-                
-                return YES;
-            }
-            
-            //[self CheckRoutingNo:[NSString stringWithFormat:@"%@%@",textField.text, string]];
-        }
+       
+          if (![self CheckRoutingNo:[NSString stringWithFormat:@"%@%@",textField.text, string]]) {
+              //[self.view setUserInteractionEnabled:NO];
+              
+              UIAlertView*alert= [[UIAlertView alloc] initWithTitle:@"Routing number not valid" message:@"Enter a valid Routing number" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] ;
+              [alert setTag:2300];
+              [alert show];
+              
+              return YES;
+          }
+          else{
+               [self checkRoutingNumberService:[NSString stringWithFormat:@"%@%@",self.routing_number.text,string]];
+          }
+        //[self CheckRoutingNo:[NSString stringWithFormat:@"%@%@",textField.text, string]];
+    }
     }
     else if (textField==self.account_number)
     {
@@ -330,17 +347,7 @@
         }
         else
         {
-            NSArray* array = [self.name.text componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            if ([array count]==2) {
-                transactionInput  =[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId", @"",@"BankName",self.account_number.text,@"BankAcctNumber", self.routing_number.text,@"BankAcctRoutingNumber",[array objectAtIndex:0],@"FirstName",[array objectAtIndex:1],@"LastName",nil];
-                
-
-            }
-            transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"accountInput", nil];
-            serve *addBank = [serve new];
-            addBank.tagName = @"addBank";
-            addBank.Delegate = self;
-            [addBank saveBank:transaction];
+           
         }
     }
     else if([tagName isEqualToString:@"addBank"])

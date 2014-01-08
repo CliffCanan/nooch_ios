@@ -50,40 +50,233 @@
     [self.view addSubview:self.nooch_transfers]; [self.nooch_transfers reloadData];
     
     self.email_received = [[UISwitch alloc] initWithFrame:CGRectMake(180, 30, 40, 30)];
-    
+    self.email_received.tag=12000;
+   
+    [self.email_received addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.push_received = [[UISwitch alloc] initWithFrame:CGRectMake(260, 30, 40, 30)];
-    
+    self.push_received.tag=12001;
+  
+    [self.push_received addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.email_sent = [[UISwitch alloc] initWithFrame:CGRectMake(180, 80, 40, 30)];
-    
+    self.email_sent.tag=12002;
+ 
+    [self.email_sent addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.email_unclaimed = [[UISwitch alloc] initWithFrame:CGRectMake(180, 130, 40, 30)];
-    
+     self.email_unclaimed.tag=12003;
+ 
+    [ self.email_unclaimed addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.bank_transfers = [[UITableView alloc] initWithFrame:CGRectMake(0, 200, 320, 250)];
     [self.bank_transfers setDataSource:self]; [self.bank_transfers setDelegate:self];
     [self.bank_transfers setUserInteractionEnabled:NO];
     [self.view addSubview:self.bank_transfers]; [self.bank_transfers reloadData];
     
     self.email_withdraw_requested = [[UISwitch alloc] initWithFrame:CGRectMake(180, 210, 40, 30)];
-    
+    self.email_withdraw_requested.tag=12004;
+  
+    [self.email_withdraw_requested addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.email_withdraw_submitted = [[UISwitch alloc] initWithFrame:CGRectMake(180, 260, 40, 30)];
-    
+    self.email_withdraw_submitted.tag=12005;
+  
+
+    [self.email_withdraw_submitted addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.push_withdraw_submitted = [[UISwitch alloc] initWithFrame:CGRectMake(260, 260, 40, 30)];
-    
+    self.push_withdraw_submitted.tag=12006;
+       [self.push_withdraw_submitted addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.email_deposit_requested = [[UISwitch alloc] initWithFrame:CGRectMake(180, 310, 40, 30)];
-    
+    self.email_deposit_requested.tag=12007;
+   
+    [self.email_deposit_requested addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.email_deposit_completed = [[UISwitch alloc] initWithFrame:CGRectMake(180, 360, 40, 30)];
+     self.email_deposit_completed.tag=12008;
     
+    [ self.email_deposit_completed addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.push_deposit_completed = [[UISwitch alloc] initWithFrame:CGRectMake(260, 360, 40, 30)];
+    self.push_deposit_completed.tag=12009;
     
+    [self.push_deposit_completed addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.email_failure = [[UISwitch alloc] initWithFrame:CGRectMake(180, 410, 40, 30)];
-    
+    self.email_failure.tag=12010;
+   
+    [self.email_failure addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.push_failure = [[UISwitch alloc] initWithFrame:CGRectMake(260, 410, 40, 30)];
+    self.push_failure.tag=12011;
     
+    [self.push_failure addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.email_received]; [self.view addSubview:self.push_received]; [self.view addSubview:self.email_sent]; [self.view addSubview:self.email_unclaimed];
     [self.view addSubview:self.email_withdraw_requested]; [self.view addSubview:self.email_withdraw_submitted]; [self.view addSubview:self.push_withdraw_submitted];
     [self.view addSubview:self.email_deposit_requested]; [self.view addSubview:self.email_deposit_completed]; [self.view addSubview:self.push_deposit_completed];
     [self.view addSubview:self.email_failure]; [self.view addSubview:self.push_failure];
+    serve*serveOBJ=[serve new];
+    [serveOBJ setDelegate:self];
+    serveOBJ.tagName=@"getSettings";
+    [serveOBJ MemberNotificationSettingsInput];
+    
 }
+-(void)changeSwitch:(UISwitch*)switchRef{
+   
+       int tag=switchRef.tag;
+    switch (tag) {
+        case 12000:
+            servicePath=@"email";
+             serviceType=@"email_received";
+            [self setService];
+            break;
+        case 12001:
+             servicePath=@"push";
+         serviceType=@"push_received";
+            [self setService];
+            break;
+        case 12002:
+             servicePath=@"email";
+            serviceType=@"email_sent";
 
+            [self setService];
+            break;
+        case 12003:
+             servicePath=@"email";
+            serviceType=@"email_unclaimed";
+            [self setService];
+            break;
+        case 12004:
+             servicePath=@"email";
+            serviceType=@"email_withdraw_requested";
+
+            [self setService];
+            break;
+        case 12005:
+             servicePath=@"email";
+             serviceType=@"email_withdraw_submitted";
+            [self setService];
+            break;
+        case 12006:
+             servicePath=@"push";
+           serviceType=@"push_withdraw_submitted";
+            [self setService];
+            break;
+        case 12007:
+             servicePath=@"email";
+            serviceType=@"email_deposit_requested";
+
+            [self setService];
+            break;
+        case 12008:
+             servicePath=@"email";
+             serviceType=@"email_deposit_completed";
+            [self setService];
+            break;
+        case 12009:
+             servicePath=@"push";
+            serviceType=@"push_deposit_completed";
+            [self setService];
+            break;
+        case 12010:
+             servicePath=@"email";
+            serviceType=@"email_failure";
+            [self setService];
+            break;
+        case 12011:
+             servicePath=@"push";
+            serviceType=@"push_failure";
+            [self setService];
+            break;
+           
+            
+
+        default:
+            break;
+    }
+}
+-(void)setService
+{
+    NSMutableDictionary*dictInputNotification=[[NSMutableDictionary alloc]init];
+    NSDictionary *transactionInput1;
+    if ([servicePath isEqualToString:@"push"]) {
+        [dictInputNotification setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"MemberId"];
+    
+      transactionInput1=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[self.push_withdraw_submitted isOn]?@"true":@"false",@"EmailTransferReceived",[self.push_deposit_completed isOn]?@"true":@"false",@"EmailTransferSent",[self.push_deposit_completed isOn]?@"true":@"false",@"TransferUnclaimed",[self.push_deposit_completed isOn]?@"true":@"false",@"BankToNoochRequested",[self.push_deposit_completed isOn]?@"true":@"false",@"BankToNoochCompleted",[self.push_deposit_completed isOn]?@"true":@"false",@"NoochToBankRequested",[self.push_deposit_completed isOn]?@"true":@"false",@"NoochToBankCompleted",[self.push_deposit_completed isOn]?@"true":@"false",@"EmailTransferAttemptFailure",[self.push_deposit_completed isOn]?@"true":@"false",@"EmailFriendRequest",[self.push_deposit_completed isOn]?@"true":@"false",@"EmailInviteRequestAccept",@"true",@"InviteReminder",[self.push_deposit_completed isOn]?@"true":@"false",@"LowBalance",[self.push_deposit_completed isOn]?@"true":@"false",@"ValidationRemainder",[self.push_deposit_completed isOn]?@"true":@"false",@"ProductUpdates",[self.push_deposit_completed isOn]?@"true":@"false",@"NewAndUpdate", nil];
+        
+    }
+    else
+    {
+        [dictInputNotification setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"MemberId"];
+        // [dictInputNotification setObject:[dictInput objectForKey:@"NotificationId"]forKey:@"NotificationId"];
+        if ([self.email_received isOn]) {
+            
+            [dictInputNotification setObject:@"true"forKey:@"EmailTransferReceived"];
+        }
+        else
+        {
+            [dictInputNotification setObject:@"false"forKey:@"EmailTransferReceived"];
+        }
+
+        if ([self.email_sent isOn]) {
+            
+            [dictInputNotification setObject:@"true"forKey:@"EmailTransferSent"];
+        }
+        else
+        {
+            [dictInputNotification setObject:@"false"forKey:@"EmailTransferSent"];
+        }
+        if ([self.email_failure isOn]) {
+            
+            [dictInputNotification setObject:@"true"forKey:@"EmailTransferAttemptFailure"];
+        }
+        else
+        {
+            [dictInputNotification setObject:@"false"forKey:@"EmailTransferAttemptFailure"];
+        }
+        if ([self.email_unclaimed isOn]) {
+            
+            [dictInputNotification setObject:@"true"forKey:@"TransferUnclaimed"];
+        }
+        else
+        {
+            [dictInputNotification setObject:@"false"forKey:@"TransferUnclaimed"];
+        }
+        if ([self.email_unclaimed isOn]) {
+            
+            [dictInputNotification setObject:@"true"forKey:@"BankToNoochRequested"];
+        }
+        else
+        {
+            [dictInputNotification setObject:@"false"forKey:@"BankToNoochRequested"];
+        }
+        if ([self.email_unclaimed isOn]) {
+            
+            [dictInputNotification setObject:@"true"forKey:@"BankToNoochCompleted"];
+        }
+        else
+        {
+            [dictInputNotification setObject:@"false"forKey:@"BankToNoochCompleted"];
+        }
+       
+        if ([self.email_unclaimed isOn]) {
+            
+            [dictInputNotification setObject:@"true" forKey:@"NoochToBankRequested"];
+        }
+        else
+        {
+            [dictInputNotification setObject:@"false"forKey:@"NoochToBankRequested"];
+        }
+        if ([self.email_unclaimed isOn]) {
+            
+            [dictInputNotification setObject:@"true"forKey:@"NoochToBankCompleted"];
+        }
+        else
+        {
+            [dictInputNotification setObject:@"false"forKey:@"NoochToBankCompleted"];
+        }
+         NSLog(@"%@",dictInputNotification);
+    
+      
+    }
+    serve*serveOBJ=[serve new];
+    [serveOBJ setDelegate:self];
+    serveOBJ.tagName=@"setSettings";
+    [serveOBJ MemberNotificationSettings:transactionInput1 type:servicePath];
+
+    
+      }
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -163,7 +356,69 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    
+    if ([tagName isEqualToString:@"getSettings"]) {
+        NSError* error;
+        dictInput=[NSJSONSerialization
+                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                         options:kNilOptions
+                         error:&error];
+        NSLog(@"%@",dictInput);
+        //BankToNooch":true,"BankToNoochCompleted":true,"BankToNoochRequested":true,"EmailFriendRequest":true,"EmailInviteRequestAccept":true,"EmailTransferAttemptFailure":true,"EmailTransferReceived":true,"EmailTransferSent":true,"FriendRequest":true,"InviteReminder":true,"InviteRequestAccept":true,"LowBalance":true,"MemberId":"e5251a62-6fc7-4446-8caf-74f9915196fa","NewAndUpdate":true,"NoochToBank":true,"NoochToBankCompleted":true,"NoochToBankRequested":true,"NotificationId":"e7c3e89c-699b-4b32-813c-f6ca67a462a2","ProductUpdates":true,"TransferAttemptFailure":true,"TransferReceived":true,"TransferSent":true,"TransferUnclaimed":true,"ValidationRemainder":true}
+        
+        if ([[dictInput objectForKey:@"BankToNooch"]boolValue]) {
+            [self.push_deposit_completed setOn:YES];
+        }
+        if ([[dictInput objectForKey:@"TransferUnclaimed"]boolValue]) {
+            [self.email_unclaimed setOn:YES];
+        }
+        if ([[dictInput objectForKey:@"TransferReceived"]boolValue]) {
+            [self.push_received setOn:YES];
+        }
+        if ([[dictInput objectForKey:@"TransferSent"]boolValue]) {
+          //  [self.push setOn:YES];
+
+            
+        }if ([[dictInput objectForKey:@"TransferAttemptFailure"]boolValue]) {
+            [self.push_failure setOn:YES];
+        }
+        if ([[dictInput objectForKey:@"EmailTransferAttemptFailure"]boolValue]) {
+            [self.email_failure setOn:YES];
+            
+        }
+
+        if ([[dictInput objectForKey:@"NoochToBankRequested"]boolValue]) {
+            [self.email_withdraw_requested setOn:YES];
+        }
+        if ([[dictInput objectForKey:@"NoochToBankCompleted"]boolValue]) {
+            [self.email_withdraw_submitted setOn:YES];
+        }
+        if ([[dictInput objectForKey:@"NoochToBank"]boolValue]) {
+            [self.push_withdraw_submitted setOn:YES];
+            
+        }if ([[dictInput objectForKey:@"BankToNoochCompleted"]boolValue]) {
+            [self.email_deposit_completed setOn:YES];
+            
+        }if ([[dictInput objectForKey:@"BankToNoochRequested"]boolValue]) {
+             [self.email_deposit_requested setOn:YES];
+        }
+            if ([[dictInput objectForKey:@"EmailTransferReceived"]boolValue]) {
+             [self.email_received setOn:YES];
+        }
+        if ([[dictInput objectForKey:@"EmailTransferSent"]boolValue]) {
+            [self.email_sent setOn:YES];
+
+        }
+           }
+    else if ([tagName isEqualToString:@"setSettings"])
+    {
+        NSError* error;
+        dictSettings=[NSJSONSerialization
+                   JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                   options:kNilOptions
+                   error:&error];
+        NSLog(@"%@",dictSettings);
+
+    }
 }
 
 - (void)didReceiveMemoryWarning

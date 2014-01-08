@@ -10,5 +10,7 @@
 #import "serve.h"
 
 @interface Statistics : UIViewController<serveD,UITableViewDataSource,UITableViewDelegate>
-
+{
+    NSDictionary*dictResult;
+}
 @end

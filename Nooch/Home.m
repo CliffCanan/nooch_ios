@@ -12,6 +12,7 @@
 #import "ECSlidingViewController.h"
 #import "SelectCause.h"
 #import "TransferPIN.h"
+#import "ReEnterPin.h"
 #define kButtonType     @"transaction_type"
 #define kButtonTitle    @"button_title"
 #define kButtonColor    @"button_background_color"
@@ -142,9 +143,11 @@
     
     //if they have required immediately turned on or haven't selected the option yet, redirect them to PIN screen
     if (![[me usr] objectForKey:@"requiredImmediately"]) {
+        //[nav_ctrl setNavigationBarHidden:NO];
+        //[self.navigationController setNavigationBarHidden:NO];
          //(id)initWithReceiver:(NSMutableDictionary *)receiver type:(NSString *)type amount:(float)amount;
-        //TransferPIN*pin=[[TransferPIN alloc]initWithReceiver:loadInfo type:@"remember_me" amount:0.0];
-       // [self presentViewController:pin animated:YES completion:nil];
+        ReEnterPin*pin=[ReEnterPin new];
+        [self presentViewController:pin animated:YES completion:nil];
         //[self presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:YES completion:nil];
         
     }else if([[[me usr] objectForKey:@"requiredImmediately"] boolValue]){
