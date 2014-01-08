@@ -74,6 +74,7 @@
 		018DA86318048309007B24FB /* SendInvite.m in Sources */ = {isa = PBXBuildFile; fileRef = 018DA86218048309007B24FB /* SendInvite.m */; };
 		0190CBDF1863890D00CDEDE1 /* nooch-logo-white.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0190CBDD1863890C00CDEDE1 /* nooch-logo-white.svg */; };
 		0190CBE01863890D00CDEDE1 /* nooch-logo.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0190CBDE1863890D00CDEDE1 /* nooch-logo.svg */; };
+		01B63435187B33F900596D32 /* CheckPIN.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B63434187B33F900596D32 /* CheckPIN.m */; };
 		01BD43D8181F096300062315 /* Legal.m in Sources */ = {isa = PBXBuildFile; fileRef = 01BD43D7181F096300062315 /* Legal.m */; };
 		01C26DAA1843BB22005179B7 /* address-book-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26D8F1843BB22005179B7 /* address-book-icon.png */; };
 		01C26DAC1843BB22005179B7 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26D911843BB22005179B7 /* check.png */; };
@@ -350,6 +351,8 @@
 		018DA86218048309007B24FB /* SendInvite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendInvite.m; sourceTree = "<group>"; };
 		0190CBDD1863890C00CDEDE1 /* nooch-logo-white.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "nooch-logo-white.svg"; sourceTree = "<group>"; };
 		0190CBDE1863890D00CDEDE1 /* nooch-logo.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "nooch-logo.svg"; sourceTree = "<group>"; };
+		01B63433187B33F900596D32 /* CheckPIN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckPIN.h; sourceTree = "<group>"; };
+		01B63434187B33F900596D32 /* CheckPIN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckPIN.m; sourceTree = "<group>"; };
 		01BD43D6181F096300062315 /* Legal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Legal.h; sourceTree = "<group>"; };
 		01BD43D7181F096300062315 /* Legal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Legal.m; sourceTree = "<group>"; };
 		01C26D8F1843BB22005179B7 /* address-book-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "address-book-icon.png"; sourceTree = "<group>"; };
@@ -842,6 +845,8 @@
 				01086008180349F600A31F63 /* LimitsAndFees.m */,
 				018DA86118048309007B24FB /* SendInvite.h */,
 				018DA86218048309007B24FB /* SendInvite.m */,
+				01B63433187B33F900596D32 /* CheckPIN.h */,
+				01B63434187B33F900596D32 /* CheckPIN.m */,
 			);
 			name = Misc;
 			sourceTree = "<group>";
@@ -1714,6 +1719,7 @@
 				6B83649B16C314370034655F /* serve.m in Sources */,
 				6B89276016DEA49C00F9100F /* FPPopoverController.m in Sources */,
 				01085FB317FB59AB00A31F63 /* CreatePIN.m in Sources */,
+				01B63435187B33F900596D32 /* CheckPIN.m in Sources */,
 				6B89276116DEA49C00F9100F /* FPPopoverView.m in Sources */,
 				16E4B1BB187053F20099D075 /* UIImage+WebP.m in Sources */,
 				01085FF1180345B000A31F63 /* Withdraw.m in Sources */,

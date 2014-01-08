@@ -10,6 +10,7 @@
 #import "UAirship.h"
 #import "UAPush.h"
 #import <CoreTelephony/CTCallCenter.h>
+#import "CheckPIN.h"
 
 @implementation AppDelegate
 
@@ -141,29 +142,24 @@ void exceptionHandler(NSException *exception){
 
 - (void)applicationWillEnterForeground:(UIApplication *)application{
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    //[self.window setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]]];
-    NSLog(@"ummm %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]);
     NSTimeInterval timeAway = [inactiveDate timeIntervalSinceNow];
     [splashView removeFromSuperview];
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] length] > 0) {
         if (timeAway > 30 || timeAway < -30) {
             //init requireImmediately
-            /*if (![[me usr] objectForKey:@"requiredImmediately"]) {
-                if (modal) {
-                    [navCtrl dismissModalViewControllerAnimated:NO];
-                }
-                reqImm = YES;
-                [[UIApplication sharedApplication].keyWindow.rootViewController presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
+            if (![[NSUserDefaults standardUserDefaults] objectForKey:@"requiredImmediately"]) {
+                CheckPIN *pin = [CheckPIN new];
+                [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:pin animated:YES completion:^{
+                    
+                }];
                 //[[navCtrl.viewControllers objectAtIndex:[navCtrl.viewControllers count]-1] presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
                 
-            }else if([[[me usr] objectForKey:@"requiredImmediately"] boolValue]){
-                if (modal) {
-                    [navCtrl dismissModalViewControllerAnimated:NO];
-                }
-                reqImm = YES;
-                [[UIApplication sharedApplication].keyWindow.rootViewController presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
-                //[[navCtrl.viewControllers objectAtIndex:[navCtrl.viewControllers count]-1] presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
-            }*/
+            }else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"requiredImmediately"] boolValue]){
+                CheckPIN *pin = [CheckPIN new];
+                [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:pin animated:YES completion:^{
+                    
+                }];
+            }
         }
     }
     inBack = NO;

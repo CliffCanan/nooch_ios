@@ -436,8 +436,12 @@
             self.amnt = [[self.amnt substringToIndex:[self.amnt length]-1] mutableCopy];
             return NO;
         }
+        if (maths != 0) {
+            [textField setText:[formatter stringFromNumber:[NSNumber numberWithFloat:maths]]];
+        } else {
+            [textField setText:@""];
+        }
         
-        [textField setText:[formatter stringFromNumber:[NSNumber numberWithFloat:maths]]];
         
         return NO;
     }

@@ -50,6 +50,7 @@
     
     self.ri = [[UISwitch alloc] initWithFrame:CGRectMake(260, 155, 40, 40)];
     [self.ri setTintColor:kNoochGrayLight];
+    [self.ri addTarget:self action:@selector(req) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.ri];
     
     UILabel *info = [UILabel new];
@@ -61,11 +62,27 @@
     [info setText:@"Require a passcode even when switching apps for a short time"];
     [self.view addSubview:info];
 }
+
 -(void)changepin{
     ResetPIN*reset=[ResetPIN new];
     [self.navigationController presentViewController:reset animated:YES completion:nil];
     
 }
+
+
+- (void) req
+{
+    if ([self.ri isOn])
+    {
+        [user setObject:@"YES" forKey:@"requiredImmediately"];
+    }
+    else
+    {
+        [user setObject:@"NO" forKey:@"requiredImmediately"];
+    }
+}
+
+
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {

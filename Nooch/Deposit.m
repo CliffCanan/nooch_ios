@@ -85,13 +85,14 @@
     [self.view addSubview:self.deposit];
     UITableView *banks = [UITableView new];
     [banks setStyleClass:@"wd_dep_tableview"];
+    [banks setStyleClass:@"raised_view"];
     [banks setDelegate:self]; [banks setDataSource:self];
     [self.view addSubview:banks];
     [banks reloadData];
     //class: wd_dep_bankicon
     //class wd_dep_banklabel
     
-    
+    [self.amount becomeFirstResponder];
 }
 
 - (void) deposit_amount
