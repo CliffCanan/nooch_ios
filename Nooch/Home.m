@@ -141,15 +141,17 @@
     //[details getDetails:[[me usr] objectForKey:@"MemberId"]];
     
     //if they have required immediately turned on or haven't selected the option yet, redirect them to PIN screen
-    if (![[me usr] objectForKey:@"requiredImmediately"]) {
+    if (![[user objectForKey:@"requiredImmediately"] isEqualToString:@"YES"]) {
         //[nav_ctrl setNavigationBarHidden:NO];
         //[self.navigationController setNavigationBarHidden:NO];
          //(id)initWithReceiver:(NSMutableDictionary *)receiver type:(NSString *)type amount:(float)amount;
         ReEnterPin*pin=[ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
         //[self presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:YES completion:nil];
-        
-    }else if([[[me usr] objectForKey:@"requiredImmediately"] boolValue]){
+       // [user setObject:@"YES" forKey:@"requiredImmediately"];
+    }else if([[user objectForKey:@"requiredImmediately"] isEqualToString:@"YES"]){
+        ReEnterPin*pin=[ReEnterPin new];
+        [self presentViewController:pin animated:YES completion:nil];
         //TransferPIN*pin=[[TransferPIN alloc]initWithReceiver:loadInfo type:@"remember_me" amount:0.0];
         //[self presentViewController:pin animated:YES completion:nil];
         

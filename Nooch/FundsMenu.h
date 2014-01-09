@@ -17,7 +17,7 @@
     //venturepact
     BOOL isEditing;
     UISwitch *on_off;
-    
+    UIActivityIndicatorView *spinner;
    
     
     int countsubRecords;

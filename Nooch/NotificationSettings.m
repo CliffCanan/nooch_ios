@@ -202,84 +202,113 @@
     NSDictionary *transactionInput1;
     if ([servicePath isEqualToString:@"push"]) {
         [dictInputNotification setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"MemberId"];
-    
-      transactionInput1=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[self.push_withdraw_submitted isOn]?@"true":@"false",@"EmailTransferReceived",[self.push_deposit_completed isOn]?@"true":@"false",@"EmailTransferSent",[self.push_deposit_completed isOn]?@"true":@"false",@"TransferUnclaimed",[self.push_deposit_completed isOn]?@"true":@"false",@"BankToNoochRequested",[self.push_deposit_completed isOn]?@"true":@"false",@"BankToNoochCompleted",[self.push_deposit_completed isOn]?@"true":@"false",@"NoochToBankRequested",[self.push_deposit_completed isOn]?@"true":@"false",@"NoochToBankCompleted",[self.push_deposit_completed isOn]?@"true":@"false",@"EmailTransferAttemptFailure",[self.push_deposit_completed isOn]?@"true":@"false",@"EmailFriendRequest",[self.push_deposit_completed isOn]?@"true":@"false",@"EmailInviteRequestAccept",@"true",@"InviteReminder",[self.push_deposit_completed isOn]?@"true":@"false",@"LowBalance",[self.push_deposit_completed isOn]?@"true":@"false",@"ValidationRemainder",[self.push_deposit_completed isOn]?@"true":@"false",@"ProductUpdates",[self.push_deposit_completed isOn]?@"true":@"false",@"NewAndUpdate", nil];
+    /*
+     [DataMember]
+     public string MemberId { get; set; }
+     
+     [DataMember]
+     public string NotificationId { get; set; }
+     
+     
+     // Push Notification
+     [DataMember]
+     public bool NoochToBank { get; set; } // Withdraw
+     
+     [DataMember]
+     public bool BankToNooch { get; set; } // Deposit
+     
+     [DataMember]
+     public bool TransferReceived { get; set; }
+     
+     [DataMember]
+     public bool TransferSent { get; set; }
+     [DataMember]
+     
+     public bool TransferAttemptFailure { get; set; }
+     
+     [DataMember]
+     public bool FriendRequest { get; set; }
+     
+     [DataMember]
+     public bool InviteRequestAccept { get; set; }
+     
+     
+     
+     // Email Notification
+     
+     [DataMember]
+     public bool EmailTransferReceived { get; set; }
+     
+     [DataMember]
+     public bool EmailTransferSent { get; set; }
+     [DataMember]
+     
+     public bool EmailTransferAttemptFailure { get; set; }
+     
+     [DataMember]
+     public bool EmailFriendRequest { get; set; }
+     
+     [DataMember]
+     public bool EmailInviteRequestAccept { get; set; }
+     
+     [DataMember]
+     public bool TransferUnclaimed { get; set; }
+     
+     [DataMember]
+     public bool BankToNoochRequested { get; set; }
+     
+     [DataMember]
+     public bool BankToNoochCompleted { get; set; }
+     
+     [DataMember]
+     public bool NoochToBankRequested { get; set; }
+     
+     [DataMember]
+     public bool NoochToBankCompleted { get; set; }
+     
+     [DataMember]
+     public bool InviteReminder { get; set; }
+     
+     [DataMember]
+     public bool LowBalance { get; set; }
+     
+     [DataMember]
+     public bool ValidationRemainder { get; set; }
+     
+     [DataMember]
+     public bool ProductUpdates { get; set; }
+     
+     [DataMember]
+     public bool NewAndUpdate { get; set; }
+     */
+//        NoochToBank { get; set
+//            ]
+//            BankToNooch { get; set
+//                ]
+//                TransferReceived { get
+//                    ]
+//                    TransferSent { get; se
+//                        ]
+//                        TransferAttemptFailure
+        NSLog(@"%hhd",[self.push_withdraw_submitted isOn]);
+//      transactionInput1=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[self.push_withdraw_submitted isOn]?@"1":@"0",@"NoochToBank",[self.push_deposit_completed isOn]?@"1":@"0",@"BankToNooch",[self.push_received isOn]?@"1":@"0",@"TransferReceived",[self.push_failure isOn]?@"1":@"0",@"TransferAttemptFailure", nil];
+        transactionInput1=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[self.push_withdraw_submitted isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"NoochToBank",[self.push_deposit_completed isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"BankToNooch",[self.push_received isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"TransferReceived",[self.push_failure isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"TransferAttemptFailure", nil];
         
     }
     else
     {
-        [dictInputNotification setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"MemberId"];
-        // [dictInputNotification setObject:[dictInput objectForKey:@"NotificationId"]forKey:@"NotificationId"];
-        if ([self.email_received isOn]) {
-            
-            [dictInputNotification setObject:@"true"forKey:@"EmailTransferReceived"];
-        }
-        else
-        {
-            [dictInputNotification setObject:@"false"forKey:@"EmailTransferReceived"];
-        }
+        
+      //  transactionInput1=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[self.email_received isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"EmailTransferReceived",[self.email_sent isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"EmailTransferSent",[self.email_failure isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"EmailTransferAttemptFailure",[self.email_unclaimed isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"TransferUnclaimed", [self.email_withdraw_requested isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"TransferUnclaimed",[self.email_withdraw_submitted isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"NoochToBankCompleted",[self.email_deposit_completed isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"BankToNoochCompleted",[self.email_deposit_requested isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"BankToNoochRequested",nil];
 
-        if ([self.email_sent isOn]) {
-            
-            [dictInputNotification setObject:@"true"forKey:@"EmailTransferSent"];
-        }
-        else
-        {
-            [dictInputNotification setObject:@"false"forKey:@"EmailTransferSent"];
-        }
-        if ([self.email_failure isOn]) {
-            
-            [dictInputNotification setObject:@"true"forKey:@"EmailTransferAttemptFailure"];
-        }
-        else
-        {
-            [dictInputNotification setObject:@"false"forKey:@"EmailTransferAttemptFailure"];
-        }
-        if ([self.email_unclaimed isOn]) {
-            
-            [dictInputNotification setObject:@"true"forKey:@"TransferUnclaimed"];
-        }
-        else
-        {
-            [dictInputNotification setObject:@"false"forKey:@"TransferUnclaimed"];
-        }
-        if ([self.email_unclaimed isOn]) {
-            
-            [dictInputNotification setObject:@"true"forKey:@"BankToNoochRequested"];
-        }
-        else
-        {
-            [dictInputNotification setObject:@"false"forKey:@"BankToNoochRequested"];
-        }
-        if ([self.email_unclaimed isOn]) {
-            
-            [dictInputNotification setObject:@"true"forKey:@"BankToNoochCompleted"];
-        }
-        else
-        {
-            [dictInputNotification setObject:@"false"forKey:@"BankToNoochCompleted"];
-        }
-       
-        if ([self.email_unclaimed isOn]) {
-            
-            [dictInputNotification setObject:@"true" forKey:@"NoochToBankRequested"];
-        }
-        else
-        {
-            [dictInputNotification setObject:@"false"forKey:@"NoochToBankRequested"];
-        }
-        if ([self.email_unclaimed isOn]) {
-            
-            [dictInputNotification setObject:@"true"forKey:@"NoochToBankCompleted"];
-        }
-        else
-        {
-            [dictInputNotification setObject:@"false"forKey:@"NoochToBankCompleted"];
-        }
-         NSLog(@"%@",dictInputNotification);
     
-      
-    }
+        
+        transactionInput1=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[self.email_received isOn]?1:0,@"EmailTransferReceived",[self.email_sent isOn]?1:0,@"EmailTransferSent",[self.email_failure isOn]?1:0,@"EmailTransferAttemptFailure",[self.email_unclaimed isOn]?1:0,@"TransferUnclaimed", [self.email_withdraw_requested isOn]?@"true":@"false",@"TransferUnclaimed",[self.email_withdraw_submitted isOn]?1:0,@"NoochToBankCompleted",[self.email_deposit_completed isOn]?1:0,@"BankToNoochCompleted",[self.email_deposit_requested isOn]?@"true":@"false",@"BankToNoochRequested",nil];
+    
+        
+             //   transactionInput1=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[self.email_received isOn],@"EmailTransferReceived",[self.email_sent isOn],@"EmailTransferSent",[self.email_failure isOn],@"EmailTransferAttemptFailure",[self.email_unclaimed isOn],@"TransferUnclaimed", [self.email_withdraw_requested isOn],@"TransferUnclaimed",[self.email_withdraw_submitted isOn],@"NoochToBankCompleted",[self.email_deposit_completed isOn],@"BankToNoochCompleted",[self.email_deposit_requested isOn],@"BankToNoochRequested",nil];
+        
+        
+            }
     serve*serveOBJ=[serve new];
     [serveOBJ setDelegate:self];
     serveOBJ.tagName=@"setSettings";

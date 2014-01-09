@@ -67,7 +67,12 @@
     [self.view addSubview:add_source];
     //29/12
     isEditing=NO;
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [self.view addSubview:spinner];
+    spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+    [spinner startAnimating];
     
+
     serve*serveOBJ=[serve new];
     
     serveOBJ.tagName=@"banks";
@@ -538,7 +543,7 @@
                 
                 
             }else{
-                cell.userInteractionEnabled = NO;
+               // cell.userInteractionEnabled = NO;
                 cell.textLabel.textColor = [core hexColor:@"adb1b3"];
                 cell.textLabel.text = @"No Bank Accounts";
                 iv.image = [UIImage imageNamed:@"Bank_Icon.png"];
@@ -556,7 +561,7 @@
                 cell.textLabel.text = [NSString stringWithFormat:@"Card **** %@",[[card objectForKey:@"CardNumber"] substringFromIndex:[[card objectForKey:@"CardNumber"] length] -4]];
                 iv.image = [UIImage imageNamed:@"CreditCard_Icon.png"];
             }else{
-                cell.userInteractionEnabled = NO;
+               // cell.userInteractionEnabled = NO;
                 cell.textLabel.textColor = [core hexColor:@"adb1b3"];
                 cell.textLabel.text = @"No Credit Cards";
                 iv.image = [UIImage imageNamed:@"CreditCard_Icon.png"];
@@ -573,13 +578,13 @@
                 cell.textLabel.text = [NSString stringWithFormat:@"Card **** %@",[[card objectForKey:@"CardNumber"] substringFromIndex:[[card objectForKey:@"CardNumber"] length] -4]];
                 iv.image = [UIImage imageNamed:@"CreditCard_Icon.png"];
             }else if([[[me usr] objectForKey:@"banks"] count] == 2 && [[[me usr] objectForKey:@"cards"] count] == 0){
-                cell.userInteractionEnabled = NO;
+                //cell.userInteractionEnabled = NO;
                 cell.textLabel.textColor = [core hexColor:@"adb1b3"];
                 cell.textLabel.text = @"No Credit Cards";
                 iv.image = [UIImage imageNamed:@"CreditCard_Icon.png"];
             }else{
                 cell.textLabel.text = @"";
-                cell.userInteractionEnabled = NO;
+               // cell.userInteractionEnabled = NO;
             }
         }else if(indexPath.row == 3){
             if ([[[me usr] objectForKey:@"cards"] count] == 2 && [[[me usr] objectForKey:@"banks"] count] == 2){
@@ -589,7 +594,7 @@
                 iv.image = [UIImage imageNamed:@"CreditCard_Icon.png"];
             }else{
                 cell.textLabel.text = @"";
-                cell.userInteractionEnabled = NO;
+                //cell.userInteractionEnabled = NO;
             }
             
         }
@@ -614,7 +619,7 @@
             if ([ArrBankAccountCollection count] == 0) {
                 
                 UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can add funds you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
-                [set setTag:1];
+                [set setTag:201];
                 [set show];
                 return;
                 
@@ -646,12 +651,15 @@
             }*/
             //[navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"addFunds"] animated:YES];
         }else if(indexPath.row == 1){
-            if ([[[me usr] objectForKey:@"banks"] count] == 0) {
-                UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can withdraw funds you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
-                [set setTag:1];
+            if ([ArrBankAccountCollection count] == 0) {
+                
+                UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can add funds you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
+                [set setTag:201];
                 [set show];
                 return;
+                
             }
+
             
             if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
                 
@@ -777,17 +785,24 @@
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag == 1 && buttonIndex == 1) {
-        if ([ArrBankAccountCollection count]==2) {
-            
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"NoochMoney" message:@"You can't add more than  2 Bank Accounts " delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-            [alert show];
-            return;
-        }
-        NewBank *add_bank = [NewBank new];
-        [nav_ctrl pushViewController:add_bank animated:NO];
-    } else if (alertView.tag == 2){
+    NSLog(@"%d %d",[ArrBankAccountCollection count],buttonIndex);
+    if (alertView.tag == 201){
         if (buttonIndex == 1) {
+            
+            NewBank *add_bank = [NewBank new];
+            [nav_ctrl pushViewController:add_bank animated:NO];
+            [self.slidingViewController resetTopView];
+        }
+    }
+
+        else if (alertView.tag == 2){
+        if (buttonIndex == 1) {
+            if ([ArrBankAccountCollection count]==2) {
+                
+                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"NoochMoney" message:@"You can't add more than  2 Bank Accounts " delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                [alert show];
+                return;
+            }
             NewBank *add_bank = [NewBank new];
             [nav_ctrl pushViewController:add_bank animated:NO];
             [self.slidingViewController resetTopView];
@@ -927,7 +942,9 @@
                 [dictSelectedWithdrawal setValue:[NSString stringWithFormat:@"%d",tagForFrequency] forKey:SelectedOption];
                 
                 NSLog(@"%@",dictSelectedWithdrawal);
-                
+                [spinner startAnimating];
+                [spinner setHidden:NO];
+
                 serve*serveOBJ=[serve new];
                 
                 serveOBJ.tagName=@"SaveWithdrawal";
@@ -950,7 +967,9 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    [me endWaitStat];
+    [spinner stopAnimating];
+    [spinner setHidden:YES];
+   // [me endWaitStat];
     NSLog(@"%@",arrWithrawalOptions);
     NSError* error;
      NSDictionary * DictResponse = [NSJSONSerialization
@@ -964,10 +983,16 @@
                  error:&error];
 
     if ([tagName isEqualToString:@"banks"]) {
-        ArrBankAccountCollection=[[NSMutableArray alloc]init];
+      
+        [spinner stopAnimating];
+        [spinner setHidden:YES];
+       ArrBankAccountCollection=[[NSMutableArray alloc]init];
         ArrBankAccountCollection=[arr mutableCopy];
-[self.menu reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+      [self.menu reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
         NSLog(@"Banks%@",ArrBankAccountCollection);
+        [spinner startAnimating];
+        [spinner setHidden:NO];
+
         serve*serveOBJ=[serve new];
         
         serveOBJ.tagName=@"withdrawOptions";
@@ -1069,14 +1094,18 @@
     else if ([tagName isEqualToString:@"withdrawOptions"])
         
     {
-        
+        [spinner stopAnimating];
+        [spinner setHidden:YES];
+
         // NSLog(@"response %@",[dictResult valueForKey:@"Result"]);
         arrAutoWithdrawalF=[[NSMutableArray alloc]init];
         arrAutoWithdrawalF=[arr mutableCopy];
         
         NSLog(@"%@",arrAutoWithdrawalF);
         
-        
+        [spinner startAnimating];
+        [spinner setHidden:NO];
+
         
         serve *serveOBJ=[serve new];
         
@@ -1093,12 +1122,15 @@
     else if ([tagName isEqualToString:@"Triggers"])
         
     {
+        [spinner stopAnimating];
+        [spinner setHidden:YES];
+
         arrAutoWithdrawalT=[[NSMutableArray alloc]init];
         arrAutoWithdrawalT=[arr mutableCopy];
-        
-        
-        
         NSLog(@"%@",arrAutoWithdrawalT);
+        [spinner startAnimating];
+        [spinner setHidden:NO];
+
         serve*serveOBJ=[serve new];
         [serveOBJ setDelegate:self];
         serveOBJ.tagName=@"selectedWithdrawal";
@@ -1113,7 +1145,9 @@
     else if ([tagName isEqualToString:@"SaveWithdrawal"])
         
     {
-        
+        [spinner stopAnimating];
+        [spinner setHidden:YES];
+
          NSError* error;
         dictResponse = [NSJSONSerialization
                              JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
@@ -1164,6 +1198,9 @@
     [on_off setOn:NO animated:YES];
     [arrWithrawalOptions removeLastObject];
     [dictSelectedWithdrawal removeAllObjects];
+    [spinner startAnimating];
+    [spinner setHidden:NO];
+
     serve*serveOBJ=[serve new];
     serveOBJ.tagName=@"AutoWithdrawalCancel";
     [serveOBJ SaveFrequency:@"" type:@"" frequency:0];
@@ -1216,7 +1253,9 @@
     
     
     NSLog(@"%@",dictSelectedWithdrawal);
-    
+    [spinner startAnimating];
+    [spinner setHidden:NO];
+
     serve*serveOBJ=[serve new];
     
     serveOBJ.tagName=@"SaveWithdrawal";
@@ -1303,7 +1342,9 @@
             [self.menu reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
             
             //[self.menu reloadData];
-            
+            [spinner startAnimating];
+            [spinner setHidden:NO];
+
             serve*serveOBJ=[serve new];
             serveOBJ.tagName=@"AutoWithdrawalCancel";
             [serveOBJ SaveFrequency:@"" type:@"" frequency:0];
@@ -1357,6 +1398,9 @@
         countsubRecords++;
         [arrWithrawalOptions addObject:[[arrAutoWithdrawalF objectAtIndex:buttonIndex] valueForKey:@"Name"]];
 #pragma mark- update service 21
+        [spinner startAnimating];
+        [spinner setHidden:NO];
+
         serve*serveOBJ=[serve new];
         
         serveOBJ.tagName=@"SaveWithdrawal";
@@ -1399,6 +1443,9 @@
         int tag=[sender tag];
         
         float value= [[[[arrAutoWithdrawalT objectAtIndex:tag-3] valueForKey:@"Name"] substringFromIndex:1] floatValue];
+        [spinner startAnimating];
+        [spinner setHidden:NO];
+
         serve*serveOBJ=[serve new];
         
         serveOBJ.tagName=@"SaveWithdrawal";

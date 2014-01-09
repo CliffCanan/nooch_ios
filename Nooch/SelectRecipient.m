@@ -380,6 +380,10 @@
         for (UIView*subview in cell.contentView.subviews) {
             [subview removeFromSuperview];
         }
+        [pic setImage:NULL];
+        [npic setImage:NULL];
+         //pic.clipsToBounds = NO;
+       // npic.clipsToBounds = NO;
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         [imageCache clearMemory];
         [imageCache clearDisk];

@@ -15,6 +15,7 @@
 #import "ResetPassword.h"
 #import "UIImageView+WebCache.h"
 #import "Welcome.h"
+#import "ECSlidingViewController.h"
 @interface ProfileInfo ()
 @property(nonatomic) UIImagePickerController *picker;
 @property(nonatomic,strong) UITextField *name;
@@ -716,8 +717,21 @@
         [spinner stopAnimating];
         [spinner setHidden:YES];
         if (isSignup) {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
+            [self dismissViewControllerAnimated:NO completion:nil];
+//                [self.navigationController setNavigationBarHidden:NO];
+//                [UIView animateWithDuration:0.75
+//                                 animations:^{
+//                                     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//                                     [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
+//                                     
+//                                 }];
+//                
+//                
+//                [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
+//                
+// 
+//            }];
+                                }
     }
    else if ([tagName isEqualToString:@"myset"]) {
        
@@ -996,10 +1010,7 @@
                 decry.Delegate = self;
                 decry->tag = [NSNumber numberWithInteger:2];
                 [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"UserName"]];
-                
-            
-            
-        }
+                }
         
         
         //   zip.text=[sInfoDic objectForKey:@"UserName"];
@@ -1036,7 +1047,7 @@
         NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
         
         
-        if (![[dictProfileinfo objectForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]]&& [dictProfileinfo objectForKey:@"RecoveryMail"]!=NULL) {
+        if (![[dictProfileinfo objectForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]]&& [dictProfileinfo objectForKey:@"RecoveryMail"]!=NULL && ![[dictProfileinfo objectForKey:@"RecoveryMail"] isEqualToString:@""]) {
              ServiceType=@"recovery";
             
             Decryption *decry = [[Decryption alloc] init];
@@ -1047,6 +1058,7 @@
         
         else
         {
+             self.recovery_email.text=@"";
             ServiceType=@"pwd";
             
             if (![[dictProfileinfo objectForKey:@"Password"] isKindOfClass:[NSNull class]]) {

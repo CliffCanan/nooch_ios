@@ -12,5 +12,6 @@
 @interface Statistics : UIViewController<serveD,UITableViewDataSource,UITableViewDelegate>
 {
     NSDictionary*dictResult;
+    NSMutableDictionary*dictAllStats;
 }
 @end

@@ -572,9 +572,16 @@
                     UILabel *name = [UILabel new];
                     [name setStyleClass:@"history_cell_textlabel"];
                     [name setStyleClass:@"history_recipientname"];
-                     //if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
-                         [name setText:[NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"FirstName"]]];
-                         
+                     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
+                         if ([[dictRecord valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
+                               [name setText:[NSString stringWithFormat:@"You Paid %@",[dictRecord valueForKey:@"FirstName"]]];
+                         }
+                       else
+                       {
+                           [name setText:[NSString stringWithFormat:@"%@ Paid You",[dictRecord valueForKey:@"FirstName"]]];
+
+                       }
+                     }
   
                    // }
                    // else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]){
@@ -593,10 +600,10 @@
                     pic.layer.cornerRadius = 25;
                     pic.clipsToBounds = YES;
                     [cell.contentView addSubview:pic];
-                    UILabel *updated_balance = [UILabel new];
-                    [updated_balance setText:@"$50.00"];
-                    [updated_balance setStyleClass:@"history_updatedbalance"];
-                    [cell.contentView addSubview:updated_balance];
+//                    UILabel *updated_balance = [UILabel new];
+//                    [updated_balance setText:@"$50.00"];
+//                    [updated_balance setStyleClass:@"history_updatedbalance"];
+//                    [cell.contentView addSubview:updated_balance];
                 }
         }
      else if (indexPath.row==[histShowArrayCompleted count]) {

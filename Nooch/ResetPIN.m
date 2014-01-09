@@ -172,27 +172,7 @@
             [self.fourth_num setBackgroundColor:[UIColor clearColor]];
             return NO;
         }
-//        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-//        [self.view addSubview:spinner];
-//        spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-//        [spinner startAnimating];
-       /* newPinString=[NSString stringWithFormat:@"%@%@",textField.text,string];
-        [self.fourth_num setBackgroundColor:[UIColor clearColor]];
-        [self.third_num setBackgroundColor:[UIColor clearColor]];
-        [self.second_num setBackgroundColor:[UIColor clearColor]];
-        [self.first_num setBackgroundColor:[UIColor clearColor]];
-        self.pin.text=@"";
-        self.prompt.text=@"";
-        pinchangeProgress=3;
-        self.pin.text=nil;
-        if ([self.pin.text length]!=0) {
-            self.pin.text=@"";
-        }
-        title.text=@"Confirm your Pin";*/
-//        serve *pin = [serve new];
-//        pin.Delegate = self;
-//        pin.tagName = @"ValidatePinNumber";
-//        [pin getEncrypt:[NSString stringWithFormat:@"%@%@",textField.text,string]];
+
     }
     else if (len==4 && pinchangeProgress==3) {
         if (![newPinString isEqualToString:[NSString stringWithFormat:@"%@%@",textField.text,string]]) {
@@ -214,15 +194,7 @@
             req.tagName=@"GetEncryptedData";
             [req getEncrypt:[NSString stringWithFormat:@"%@%@",textField.text,string]];
         }
-//        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-//        [self.view addSubview:spinner];
-//        spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-//        [spinner startAnimating];
-//        
-//        serve *pin = [serve new];
-//        pin.Delegate = self;
-//        pin.tagName = @"ValidatePinNumber";
-//        [pin getEncrypt:[NSString stringWithFormat:@"%@%@",textField.text,string]];
+
     }
     return YES;
 }
@@ -330,9 +302,11 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (alertView.tag == 1) {
         if (buttonIndex == 0) {
-            [[me usr] setObject:@"NO" forKey:@"requiredImmediately"];
+            [user setObject:@"YES" forKey:@"requiredImmediately"];
+           // [[me usr] setObject:@"NO" forKey:@"requiredImmediately"];
         }else{
-            [[me usr] setObject:@"YES" forKey:@"requiredImmediately"];
+            [user setObject:@"YES" forKey:@"requiredImmediately"];
+            //[[me usr] setObject:@"YES" forKey:@"requiredImmediately"];
         }
         NSLog(@"%@",[me usr]);
         //reqImm = NO;

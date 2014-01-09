@@ -103,6 +103,7 @@
     [self.add setFrame:CGRectMake(0, 310, 0, 0)];
     [self.add setStyleClass:@"button_green"];
     [self.add setStyleId:@"addbank_button"];
+    [self.add setEnabled:NO];
     [self.add addTarget:self action:@selector(addBank:) forControlEvents:UIControlEventTouchUpInside];
     [self.add setTitle:@"Add Bank Account" forState:UIControlStateNormal];
     [self.view addSubview:self.add];
@@ -207,6 +208,7 @@
               UIAlertView*alert= [[UIAlertView alloc] initWithTitle:@"Routing number not valid" message:@"Enter a valid Routing number" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] ;
               [alert setTag:2300];
               [alert show];
+              self.routing_number.text=@"";
               
               return YES;
           }
@@ -338,17 +340,14 @@
         if ([[[dictResponse valueForKey:@"ValidateBankResult"] stringValue]isEqualToString:@"0"]) {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Valid Bank Routing Number!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
-            //btnAddBank.enabled=YES;
-//            if ([self.view.subviews containsObject:loader]) {
-//                [loader removeFromSuperview];
-//                [me endWaitStat];
-//            }
+            self.routing_number.text=@"";
             
         }
         else
         {
-           
+           [self.add setEnabled:YES];
         }
+        
     }
     else if([tagName isEqualToString:@"addBank"])
     {

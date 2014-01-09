@@ -129,11 +129,11 @@
                 
                 
                 [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"email"];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
                 NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
-                //sendingMoney = NO;
-                 [nav_ctrl performSelector:@selector(disable)];
+                [nav_ctrl performSelector:@selector(disable)];
                 Register *reg = [Register new];
                 [self.navigationController pushViewController:reg animated:YES];
             

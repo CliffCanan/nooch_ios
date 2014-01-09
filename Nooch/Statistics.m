@@ -28,6 +28,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    dictAllStats=[[NSMutableDictionary alloc]init];
     serve*serveOBJ=[serve new];
     [serveOBJ setDelegate:self];
     serveOBJ.tagName=@"getStats";
@@ -141,10 +142,109 @@
                  error:&error];
     
     NSLog(@"%@",dictResult);
+   [ dictAllStats setObject:dictResult forKey:tagName];/*
+ Get_Member_Signup_Date
+ Malkit Says
+ Total_P2P_transfers
+ Malkit Says
+ Total_$_Sent
+ Malkit Says
+ Total_#_of_transfer Sent
+ Malkit Says
+ Total_$_Received
+ Malkit Says
+ Total_#_of_transfer_Received
+ Malkit Says
+ Smallest_sent_transfer
 
+ */
+    
     if ([tagName isEqualToString:@"getStats"]) {
+        serve*serveOBJ=[serve new];
         
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"getStats1";
+        
+        [serveOBJ GetMemberStats:@"Get_Member_Signup_Date"];
     }
+    else if ([tagName isEqualToString:@"getStats1"]) {
+        serve*serveOBJ=[serve new];
+        
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"getStats2";
+        
+        [serveOBJ GetMemberStats:@"Total_$_Sent"];
+    }
+    else if ([tagName isEqualToString:@"getStats2"]) {
+        serve*serveOBJ=[serve new];
+        
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"getStats3";
+        
+        [serveOBJ GetMemberStats:@"Total_#_of_transfer Sent"];
+    }
+    else if ([tagName isEqualToString:@"getStats3"]) {
+        serve*serveOBJ=[serve new];
+        
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"getStats4";
+        
+        [serveOBJ GetMemberStats:@"Total_$_Received"];
+    }
+    else if ([tagName isEqualToString:@"getStats4"]) {
+        serve*serveOBJ=[serve new];
+        
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"getStats5";
+        
+        [serveOBJ GetMemberStats:@"Total_#_of_transfer_Received"];
+    }
+   else if ([tagName isEqualToString:@"getStats5"]) {
+        serve*serveOBJ=[serve new];
+        
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"getStats6";
+        
+        [serveOBJ GetMemberStats:@"Smallest_sent_transfer"];
+    }
+    else if ([tagName isEqualToString:@"getStats6"]) {
+        serve*serveOBJ=[serve new];
+        
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"getStats7";
+        
+        [serveOBJ GetMemberStats:@"Smallest_received_transfer"];
+    }
+    else if ([tagName isEqualToString:@"getStats7"]) {
+        serve*serveOBJ=[serve new];
+        
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"getStats8";
+        
+        [serveOBJ GetMemberStats:@"Largest_sent_transfer"];
+    }
+    
+   else if ([tagName isEqualToString:@"getStats8"]) {
+        serve*serveOBJ=[serve new];
+        
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"getStats10";
+        
+        [serveOBJ GetMemberStats:@"Largest_received_transfer"];
+    }
+
+    
+
+    
 }
 
 - (void)didReceiveMemoryWarning
