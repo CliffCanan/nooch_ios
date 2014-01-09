@@ -11,6 +11,7 @@
 #import "UAPush.h"
 #import <CoreTelephony/CTCallCenter.h>
 #import "CheckPIN.h"
+#import "ReEnterPin.h"
 
 @implementation AppDelegate
 
@@ -148,14 +149,13 @@ void exceptionHandler(NSException *exception){
         if (timeAway > 30 || timeAway < -30) {
             //init requireImmediately
             if (![[NSUserDefaults standardUserDefaults] objectForKey:@"requiredImmediately"]) {
-                CheckPIN *pin = [CheckPIN new];
+                ReEnterPin *pin = [ReEnterPin new];
                 [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:pin animated:YES completion:^{
                     
                 }];
-                //[[navCtrl.viewControllers objectAtIndex:[navCtrl.viewControllers count]-1] presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:NO];
                 
             }else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"requiredImmediately"] boolValue]){
-                CheckPIN *pin = [CheckPIN new];
+                ReEnterPin *pin = [ReEnterPin new];
                 [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:pin animated:YES completion:^{
                     
                 }];

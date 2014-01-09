@@ -44,10 +44,20 @@
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
-    self.nooch_transfers = [[UITableView alloc] initWithFrame:CGRectMake(0, 22, 320, 145)];
+    self.nooch_transfers = [[UITableView alloc] initWithFrame:CGRectMake(0, 18, 320, 145)];
     [self.nooch_transfers setDataSource:self]; [self.nooch_transfers setDelegate:self];
     [self.nooch_transfers setUserInteractionEnabled:NO];
     [self.view addSubview:self.nooch_transfers]; [self.nooch_transfers reloadData];
+    
+    UILabel *email = [[UILabel alloc] initWithFrame:CGRectMake(180, 10, 50, 20)];
+    [email setText:@"Email"]; [email setFont:[UIFont fontWithName:@"Roboto-Thin" size:14]];
+    [email setTextAlignment:NSTextAlignmentCenter];
+    [self.view addSubview:email];
+    
+    UILabel *push = [[UILabel alloc] initWithFrame:CGRectMake(260, 10, 50, 20)];
+    [push setTextAlignment:NSTextAlignmentCenter]; [push setText:@"Push"];
+    [push setFont:[UIFont fontWithName:@"Roboto-Thin" size:14]];
+    [self.view addSubview:push];
     
     self.email_received = [[UISwitch alloc] initWithFrame:CGRectMake(180, 30, 40, 30)];
     self.email_received.tag=12000;
@@ -63,9 +73,9 @@
     [self.email_sent addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.email_unclaimed = [[UISwitch alloc] initWithFrame:CGRectMake(180, 130, 40, 30)];
      self.email_unclaimed.tag=12003;
- 
     [ self.email_unclaimed addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
-    self.bank_transfers = [[UITableView alloc] initWithFrame:CGRectMake(0, 200, 320, 250)];
+    
+    self.bank_transfers = [[UITableView alloc] initWithFrame:CGRectMake(0, 196, 320, 250)];
     [self.bank_transfers setDataSource:self]; [self.bank_transfers setDelegate:self];
     [self.bank_transfers setUserInteractionEnabled:NO];
     [self.view addSubview:self.bank_transfers]; [self.bank_transfers reloadData];

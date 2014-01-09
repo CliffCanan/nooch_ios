@@ -46,75 +46,31 @@
     [lbl setTextColor:[UIColor whiteColor]];
     [navBar addSubview:lbl];
     
-    // Do any additional setup after loading the view from its nib.
+    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 140, 300, 40)];
+    [title setText:@"Enter your PIN"];
+    [title setStyleClass:@"header_signupflow"];
+    [self.view addSubview:title];
+    
+    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 280, 50)];
+    [self.prompt setNumberOfLines:2];
+    [self.prompt setText:@"Require Immediately is enabled, please enter your PIN to continue."];
+    [self.prompt setStyleClass:@"instruction_text"];
+    [self.view addSubview:self.prompt];
+    
     self.pin = [UITextField new]; [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
     [self.pin setDelegate:self]; [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
     [self.view addSubview:self.pin]; [self.pin becomeFirstResponder];
     
-    [self.navigationItem setTitle:@"PIN Confirmation"];
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 104, 300, 60)];
-    [title setText:@"Please confirm your PIN."]; [title setTextAlignment:NSTextAlignmentCenter];
-    [title setNumberOfLines:2];
-    [title setStyleClass:@"Repin_instructiontext"];
-    [self.view addSubview:title];
-    
-    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 194, 300, 30)];
-    [self.prompt setText:@""]; [self.prompt setTextAlignment:NSTextAlignmentCenter];
-    [self.prompt setStyleId:@"pin_instructiontext_send"];
-    [self.view addSubview:self.prompt];
-    
-//    UIView *back = [UIView new];
-//    [back setStyleClass:@"raised_view"];
-//    [back setStyleClass:@"pin_recipientbox"];
-//    [self.view addSubview:back];
-//    
-//    UIView *bar = [UIView new];
-//    [bar setStyleClass:@"pin_recipientname_bar"];
-//    [self.view addSubview:bar];
-    
-    //    UILabel *to_label = [[UILabel alloc] initWithFrame:CGRectMake(10, 200, 300, 30)];
-    //    if ([[self.receiver objectForKey:@"FirstName"] length] == 0) {
-    //        [to_label setText:@"   4K For Cancer"];
-    //        [to_label setBackgroundColor:kNoochPurple];
-    //    } else {
-    //        [to_label setText:[NSString stringWithFormat:@" %@ %@",[self.receiver objectForKey:@"FirstName"],[self.receiver objectForKey:@"LastName"]]];
-    //    }
-    //    [to_label setStyleClass:@"pin_recipientname_text"];
-    //    [self.view addSubview:to_label];
-    
-    //    UILabel *memo_label = [[UILabel alloc] initWithFrame:CGRectMake(10, 230, 300, 30)];
-    //    if ([[self.receiver objectForKey:@"memo"] length] > 0) {
-    //        [memo_label setText:[self.receiver objectForKey:@"memo"]];
-    //    }else{
-    //        [memo_label setText:@"No memo attached"];
-    //    }
-    //    [memo_label setTextAlignment:NSTextAlignmentCenter];
-    //    [memo_label setStyleClass:@"pin_memotext"];
-    //    [self.view addSubview:memo_label];
-    //
-    //    UIImageView *user_pic = [UIImageView new];
-    //    [user_pic setFrame:CGRectMake(20, 204, 52, 52)];
-    //    user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
-    //    user_pic.layer.borderWidth = 2; user_pic.clipsToBounds = YES;
-    //    user_pic.layer.cornerRadius = 26;
-    //    [self.view addSubview:user_pic];
-    //
-    //    UILabel *total = [[UILabel alloc] initWithFrame:CGRectMake(10, 200, 290, 30)];
-    //    [total setBackgroundColor:[UIColor clearColor]];
-    //    [total setTextColor:[UIColor whiteColor]]; [total setTextAlignment:NSTextAlignmentRight];
-    //    [total setText:[NSString stringWithFormat:@"$ %.02f",self.amnt]];
-    //    [total setStyleClass:@"pin_amountfield"];
-    //    [self.view addSubview:total];
-    
-    self.first_num = [[UIView alloc] initWithFrame:CGRectMake(44,134,32,32)];
-    self.second_num = [[UIView alloc] initWithFrame:CGRectMake(107,134,32,32)];
-    self.third_num = [[UIView alloc] initWithFrame:CGRectMake(170,134,32,32)];
-    self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(233,134,32,32)];
+    self.first_num = [[UIView alloc] initWithFrame:CGRectMake(85,240,30,30)];
+    self.second_num = [[UIView alloc] initWithFrame:CGRectMake(125,240,30,30)];
+    self.third_num = [[UIView alloc] initWithFrame:CGRectMake(165,240,30,30)];
+    self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(205,240,30,30)];
     
     //self.first_num.alpha = self.second_num.alpha = self.third_num.alpha = self.fourth_num.alpha = 0.5;
     self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 16;
     self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor clearColor];
     self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
+    self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
     
     [self.view addSubview:self.first_num];
     [self.view addSubview:self.second_num];

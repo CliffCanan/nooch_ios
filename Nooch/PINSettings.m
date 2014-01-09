@@ -61,6 +61,10 @@
     [info setTextColor:[Helpers hexColor:@"939598"]];
     [info setText:@"Require a passcode even when switching apps for a short time"];
     [self.view addSubview:info];
+    
+    if ([[user objectForKey:@"requiredImmediately"] boolValue]) {
+        [self.ri setOn:YES];
+    }
 }
 
 -(void)changepin{
