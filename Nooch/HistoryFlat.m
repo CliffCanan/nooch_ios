@@ -11,6 +11,7 @@
 #import "Helpers.h"
 #import <QuartzCore/QuartzCore.h>
 #import "TransactionDetails.h"
+#import "UIImageView+WebCache.h"
 
 @interface HistoryFlat ()<GMSMapViewDelegate>
 {
@@ -149,6 +150,11 @@
     [self.view addSubview:spinner];
     [spinner stopAnimating];
     [spinner setHidden:YES];
+    //clear Image cache
+    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    [imageCache clearMemory];
+    [imageCache clearDisk];
+    [imageCache cleanDisk];
     [self loadHist:@"ALL" index:index len:20];
     
    
@@ -582,13 +588,18 @@
 
                        }
                      }
-  
+            
                    // }
-                   // else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]){
-                     //   [name setText:[NSString stringWithFormat:@"%@You Paid",[dictRecord valueForKey:@"FirstName"]]];
+                    else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]){
+                        [name setText:@"Deposit into Nooch"];
+                        
+                    }
+                    else
+                    {
+                        [name setText:[dictRecord valueForKey:@"FirstName"]];
                         
 
-                    //}
+                    }
                     [cell.contentView addSubview:name];
                     UILabel *date = [UILabel new];
                     [date setStyleClass:@"history_datetext"];
@@ -600,6 +611,8 @@
                     pic.layer.cornerRadius = 25;
                     pic.clipsToBounds = YES;
                     [cell.contentView addSubview:pic];
+                    [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                                 placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
 //                    UILabel *updated_balance = [UILabel new];
 //                    [updated_balance setText:@"$50.00"];
 //                    [updated_balance setStyleClass:@"history_updatedbalance"];
@@ -678,7 +691,35 @@
                     UILabel *name = [UILabel new];
                     [name setStyleClass:@"history_cell_textlabel"];
                     [name setStyleClass:@"history_recipientname"];
-                    [name setText:[dictRecord valueForKey:@"FirstName"]];
+                    if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"]) {
+                        if ([[dictRecord valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
+                            [name setText:[NSString stringWithFormat:@"Donate to %@",[dictRecord valueForKey:@"FirstName"]]];
+                        }
+                        else
+                        {
+                           [name setText:[NSString stringWithFormat:@"Donation From %@",[dictRecord valueForKey:@"FirstName"]]];
+                            
+                        }
+                        
+                    }
+                    else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
+                    {
+                        if ([[dictRecord valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
+                            [name setText:[NSString stringWithFormat:@"Requested to %@",[dictRecord valueForKey:@"FirstName"]]];
+                            
+                        }
+                        else
+                        {
+                             [name setText:[NSString stringWithFormat:@"You Requested From %@",[dictRecord valueForKey:@"FirstName"]]];
+                           
+                            
+                        }
+                   
+                    }
+                    else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"])
+                    {
+                        [name setText:[NSString stringWithFormat:@"Deposit into Nooch%@",[dictRecord valueForKey:@"FirstName"]]];
+                    }
                     [cell.contentView addSubview:name];
                     
                     
@@ -694,7 +735,8 @@
                     pic.layer.cornerRadius = 25;
                     pic.clipsToBounds = YES;
                     [cell.contentView addSubview:pic];
-                   
+                    [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                        placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                 }
         }
         else if (indexPath.row==[histShowArrayPending count]) {

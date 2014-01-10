@@ -445,6 +445,7 @@
          }
          
      }
+        NSLog(@"%@",transactionTransfer);
     postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
           
                                                     options:NSJSONWritingPrettyPrinted error:&error];;

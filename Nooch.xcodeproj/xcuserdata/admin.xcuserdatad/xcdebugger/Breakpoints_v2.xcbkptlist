@@ -9,28 +9,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Nooch/serve.m"
-            timestampString = "410953246.271453"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1620"
-            endingLineNumber = "1620"
-            landmarkName = "@implementation serve"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Nooch/HistoryFlat.m"
-            timestampString = "410958591.423255"
+            timestampString = "411039522.193244"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "631"
-            endingLineNumber = "631"
+            startingLineNumber = "644"
+            endingLineNumber = "644"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
             <Locations>
@@ -41,12 +25,12 @@
                   symbolName = "-[HistoryFlat tableView:cellForRowAtIndexPath:]"
                   moduleName = "Nooch"
                   urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/HistoryFlat.m"
-                  timestampString = "410960063.375489"
+                  timestampString = "411046061.344715"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "631"
-                  endingLineNumber = "631"
-                  offsetFromSymbolStart = "4476">
+                  startingLineNumber = "644"
+                  endingLineNumber = "644"
+                  offsetFromSymbolStart = "4172">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -55,12 +39,12 @@
                   symbolName = "-[HistoryFlat tableView:cellForRowAtIndexPath:]"
                   moduleName = "Nooch"
                   urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/HistoryFlat.m"
-                  timestampString = "410960063.375704"
+                  timestampString = "411046061.344926"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "631"
-                  endingLineNumber = "631"
-                  offsetFromSymbolStart = "6806">
+                  startingLineNumber = "644"
+                  endingLineNumber = "644"
+                  offsetFromSymbolStart = "6312">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -69,12 +53,12 @@
                   symbolName = "-[HistoryFlat tableView:cellForRowAtIndexPath:]"
                   moduleName = "Nooch"
                   urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/HistoryFlat.m"
-                  timestampString = "410960063.375894"
+                  timestampString = "411046061.345104"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "631"
-                  endingLineNumber = "631"
-                  offsetFromSymbolStart = "7147">
+                  startingLineNumber = "644"
+                  endingLineNumber = "644"
+                  offsetFromSymbolStart = "6653">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -83,12 +67,12 @@
                   symbolName = "-[HistoryFlat tableView:cellForRowAtIndexPath:]"
                   moduleName = "Nooch"
                   urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/HistoryFlat.m"
-                  timestampString = "410960063.376069"
+                  timestampString = "411046061.34528"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "631"
-                  endingLineNumber = "631"
-                  offsetFromSymbolStart = "7408">
+                  startingLineNumber = "644"
+                  endingLineNumber = "644"
+                  offsetFromSymbolStart = "6914">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -100,11 +84,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/FundsMenu.m"
-            timestampString = "410941564.115586"
+            timestampString = "411046060.989824"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
             landmarkName = "-viewWillAppear:"
             landmarkType = "5">
          </BreakpointContent>
@@ -132,11 +116,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/serve.m"
-            timestampString = "410953246.271453"
+            timestampString = "411044319.045918"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1127"
-            endingLineNumber = "1127"
+            startingLineNumber = "1137"
+            endingLineNumber = "1137"
             landmarkName = "-getBankList"
             landmarkType = "5">
          </BreakpointContent>
@@ -148,27 +132,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/FundsMenu.m"
-            timestampString = "410959482.098801"
+            timestampString = "411047177.023448"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1290"
-            endingLineNumber = "1290"
-            landmarkName = "-changeSwitch:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nooch/FundsMenu.m"
-            timestampString = "410947916.514982"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "689"
-            endingLineNumber = "689"
+            startingLineNumber = "703"
+            endingLineNumber = "703"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -228,11 +196,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/TransferPIN.m"
-            timestampString = "410873444.113545"
+            timestampString = "411036557.071588"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "336"
-            endingLineNumber = "336"
+            startingLineNumber = "338"
+            endingLineNumber = "338"
             landmarkName = "-listen:tagName:"
             landmarkType = "5">
          </BreakpointContent>
@@ -244,11 +212,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/TransferPIN.m"
-            timestampString = "410873444.113545"
+            timestampString = "411036633.749989"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "907"
-            endingLineNumber = "907"
+            startingLineNumber = "908"
+            endingLineNumber = "908"
             landmarkName = "-connection:didFailWithError:"
             landmarkType = "5">
          </BreakpointContent>
@@ -260,11 +228,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/TransferPIN.m"
-            timestampString = "410876347.310844"
+            timestampString = "411036633.749989"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "969"
-            endingLineNumber = "969"
+            startingLineNumber = "970"
+            endingLineNumber = "970"
             landmarkName = "-connectionDidFinishLoading:"
             landmarkType = "5">
          </BreakpointContent>
@@ -420,11 +388,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/TransferPIN.m"
-            timestampString = "410873444.113545"
+            timestampString = "411036633.749989"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "542"
-            endingLineNumber = "542"
+            startingLineNumber = "543"
+            endingLineNumber = "543"
             landmarkName = "-listen:tagName:"
             landmarkType = "5">
          </BreakpointContent>
@@ -468,11 +436,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/TransferPIN.m"
-            timestampString = "410873444.113545"
+            timestampString = "411036633.749989"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "477"
-            endingLineNumber = "477"
+            startingLineNumber = "478"
+            endingLineNumber = "478"
             landmarkName = "-listen:tagName:"
             landmarkType = "5">
          </BreakpointContent>
@@ -500,11 +468,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/CharityDetails.m"
-            timestampString = "410690750.537122"
+            timestampString = "411045233.359325"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "204"
-            endingLineNumber = "204"
+            startingLineNumber = "219"
+            endingLineNumber = "219"
             landmarkName = "-close:"
             landmarkType = "5">
          </BreakpointContent>
@@ -532,11 +500,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/SelectRecipient.m"
-            timestampString = "410872304.345655"
+            timestampString = "411030802.20721"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149"
+            startingLineNumber = "153"
+            endingLineNumber = "153"
             landmarkName = "-getMemberIdByUsingUserName"
             landmarkType = "5">
          </BreakpointContent>
@@ -611,7 +579,7 @@
                   symbolName = "-[ReferralCode listen:tagName:]"
                   moduleName = "Nooch"
                   urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/ReferralCode.m"
-                  timestampString = "410960063.386167"
+                  timestampString = "411046061.35324"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "200"
@@ -625,7 +593,7 @@
                   symbolName = "-[ReferralCode listen:tagName:]"
                   moduleName = "Nooch"
                   urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/ReferralCode.m"
-                  timestampString = "410960063.386458"
+                  timestampString = "411046061.353698"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "200"
@@ -658,11 +626,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/TransferPIN.m"
-            timestampString = "410873444.113545"
+            timestampString = "411036633.749989"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "574"
-            endingLineNumber = "574"
+            startingLineNumber = "575"
+            endingLineNumber = "575"
             landmarkName = "-listen:tagName:"
             landmarkType = "5">
          </BreakpointContent>
@@ -706,11 +674,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/AppDelegate.m"
-            timestampString = "410521834.612217"
+            timestampString = "411031438.335916"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "184"
-            endingLineNumber = "184"
+            startingLineNumber = "186"
+            endingLineNumber = "186"
             landmarkName = "-application:didRegisterForRemoteNotificationsWithDeviceToken:"
             landmarkType = "5">
          </BreakpointContent>
@@ -722,11 +690,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/FundsMenu.m"
-            timestampString = "410947916.514982"
+            timestampString = "411047177.023448"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "752"
-            endingLineNumber = "752"
+            startingLineNumber = "766"
+            endingLineNumber = "766"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -753,7 +721,7 @@
                   symbolName = "-[ProfileInfo setEncryptedPassword:]"
                   moduleName = "Nooch"
                   urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/ProfileInfo.m"
-                  timestampString = "410960063.388573"
+                  timestampString = "411046061.360572"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "444"
@@ -767,7 +735,7 @@
                   symbolName = "-[ProfileInfo setEncryptedPassword:]"
                   moduleName = "Nooch"
                   urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/ProfileInfo.m"
-                  timestampString = "410960063.388863"
+                  timestampString = "411046061.360771"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "444"
@@ -781,7 +749,7 @@
                   symbolName = "-[ProfileInfo setEncryptedPassword:]"
                   moduleName = "Nooch"
                   urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/ProfileInfo.m"
-                  timestampString = "410960063.38908"
+                  timestampString = "411046061.360993"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "444"
@@ -803,7 +771,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "120"
             endingLineNumber = "120"
-            landmarkName = "-alertView:clickedButtonAtIndex:"
+            landmarkName = "-verify_amounts"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -820,22 +788,6 @@
             startingLineNumber = "148"
             endingLineNumber = "148"
             landmarkName = "-deleteBank:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nooch/HowMuch.m"
-            timestampString = "410872389.48324"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "95"
-            endingLineNumber = "95"
-            landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -974,11 +926,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/SelectRecipient.m"
-            timestampString = "410872304.345655"
+            timestampString = "411030802.20721"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "216"
-            endingLineNumber = "216"
+            startingLineNumber = "220"
+            endingLineNumber = "220"
             landmarkName = "-listen:tagName:"
             landmarkType = "5">
          </BreakpointContent>
@@ -990,75 +942,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/SelectRecipient.m"
-            timestampString = "410872304.345655"
+            timestampString = "411030802.20721"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "244"
-            endingLineNumber = "244"
+            startingLineNumber = "248"
+            endingLineNumber = "248"
             landmarkName = "-alertView:clickedButtonAtIndex:"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nooch/HowMuch.m"
-            timestampString = "410872389.48324"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nooch/HowMuch.m"
-            timestampString = "410872493.393321"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "69"
-            endingLineNumber = "69"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[HowMuch viewDidLoad]"
-                  moduleName = "Nooch"
-                  urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/HowMuch.m"
-                  timestampString = "410960063.393397"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "69"
-                  endingLineNumber = "69"
-                  offsetFromSymbolStart = "1180">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[HowMuch viewDidLoad]"
-                  moduleName = "Nooch"
-                  urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/HowMuch.m"
-                  timestampString = "410960063.393679"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "69"
-                  endingLineNumber = "69"
-                  offsetFromSymbolStart = "1238">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1084,11 +974,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/TransferPIN.m"
-            timestampString = "410873444.113545"
+            timestampString = "411036633.749989"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "815"
-            endingLineNumber = "815"
+            startingLineNumber = "816"
+            endingLineNumber = "816"
             landmarkName = "-listen:tagName:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1100,11 +990,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/TransferPIN.m"
-            timestampString = "410873987.770287"
+            timestampString = "411036633.749989"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "916"
-            endingLineNumber = "916"
+            startingLineNumber = "917"
+            endingLineNumber = "917"
             landmarkName = "-connectionDidFinishLoading:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1116,11 +1006,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/HistoryFlat.m"
-            timestampString = "410958591.423255"
+            timestampString = "411039522.193244"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "866"
-            endingLineNumber = "866"
+            startingLineNumber = "908"
+            endingLineNumber = "908"
             landmarkName = "-listen:tagName:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1132,11 +1022,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/serve.m"
-            timestampString = "410953246.271453"
+            timestampString = "411044319.045918"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1478"
-            endingLineNumber = "1478"
+            startingLineNumber = "1488"
+            endingLineNumber = "1488"
             landmarkName = "-MemberNotificationSettings:type:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1180,57 +1070,41 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/FundsMenu.m"
-            timestampString = "410947916.514982"
+            timestampString = "411047177.023448"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "788"
-            endingLineNumber = "788"
+            startingLineNumber = "808"
+            endingLineNumber = "808"
             landmarkName = "-alertView:clickedButtonAtIndex:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nooch/SelectRecipient.m"
-            timestampString = "410935214.335478"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "380"
-            endingLineNumber = "380"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "-[SelectRecipient tableView:cellForRowAtIndexPath:]"
+                  symbolName = "-[FundsMenu alertView:clickedButtonAtIndex:]"
                   moduleName = "Nooch"
-                  urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/SelectRecipient.m"
-                  timestampString = "410960063.396384"
+                  urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/FundsMenu.m"
+                  timestampString = "411046061.366213"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "380"
-                  endingLineNumber = "380"
-                  offsetFromSymbolStart = "3425">
+                  startingLineNumber = "815"
+                  endingLineNumber = "815"
+                  offsetFromSymbolStart = "255">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "-[SelectRecipient tableView:cellForRowAtIndexPath:]"
+                  symbolName = "-[FundsMenu alertView:clickedButtonAtIndex:]"
                   moduleName = "Nooch"
-                  urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/SelectRecipient.m"
-                  timestampString = "410960063.396643"
+                  urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/FundsMenu.m"
+                  timestampString = "411046061.366382"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "380"
-                  endingLineNumber = "380"
-                  offsetFromSymbolStart = "3593">
+                  startingLineNumber = "815"
+                  endingLineNumber = "815"
+                  offsetFromSymbolStart = "304">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -1242,11 +1116,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/Home.m"
-            timestampString = "410936749.99023"
+            timestampString = "411041984.716598"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
+            startingLineNumber = "145"
+            endingLineNumber = "145"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -1321,12 +1195,12 @@
                   symbolName = "-[NotificationSettings setService]"
                   moduleName = "Nooch"
                   urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/NotificationSettings.m"
-                  timestampString = "410960063.398045"
+                  timestampString = "411046061.367807"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "295"
                   endingLineNumber = "295"
-                  offsetFromSymbolStart = "321">
+                  offsetFromSymbolStart = "154">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -1335,40 +1209,12 @@
                   symbolName = "-[NotificationSettings setService]"
                   moduleName = "Nooch"
                   urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/NotificationSettings.m"
-                  timestampString = "410960063.398301"
+                  timestampString = "411046061.368064"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "295"
                   endingLineNumber = "295"
-                  offsetFromSymbolStart = "374">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[NotificationSettings setService]"
-                  moduleName = "Nooch"
-                  urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/NotificationSettings.m"
-                  timestampString = "410960063.398572"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "295"
-                  endingLineNumber = "295"
-                  offsetFromSymbolStart = "1293">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[NotificationSettings setService]"
-                  moduleName = "Nooch"
-                  urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/NotificationSettings.m"
-                  timestampString = "410960063.398809"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "295"
-                  endingLineNumber = "295"
-                  offsetFromSymbolStart = "1811">
+                  offsetFromSymbolStart = "1143">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -1396,11 +1242,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/FundsMenu.m"
-            timestampString = "410946770.52085"
+            timestampString = "411046060.989824"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
+            startingLineNumber = "77"
+            endingLineNumber = "77"
             landmarkName = "-viewWillAppear:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1412,55 +1258,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/FundsMenu.m"
-            timestampString = "410959482.098801"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "986"
-            endingLineNumber = "986"
-            landmarkName = "-listen:tagName:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nooch/FundsMenu.m"
-            timestampString = "410959482.098801"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1094"
-            endingLineNumber = "1094"
-            landmarkName = "-listen:tagName:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nooch/FundsMenu.m"
-            timestampString = "410959482.098801"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1123"
-            endingLineNumber = "1123"
-            landmarkName = "-listen:tagName:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nooch/FundsMenu.m"
-            timestampString = "410959482.098801"
+            timestampString = "411047177.023448"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1006"
@@ -1476,12 +1274,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/FundsMenu.m"
-            timestampString = "410947024.408847"
+            timestampString = "411047177.023448"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "606"
-            endingLineNumber = "606"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            startingLineNumber = "1114"
+            endingLineNumber = "1114"
+            landmarkName = "-listen:tagName:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1491,13 +1289,45 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Nooch/serve.m"
-            timestampString = "410953246.271453"
+            filePath = "Nooch/FundsMenu.m"
+            timestampString = "411047177.023448"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "915"
-            endingLineNumber = "915"
-            landmarkName = "-connectionDidFinishLoading:"
+            startingLineNumber = "1143"
+            endingLineNumber = "1143"
+            landmarkName = "-listen:tagName:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/FundsMenu.m"
+            timestampString = "411047177.023448"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1026"
+            endingLineNumber = "1026"
+            landmarkName = "-listen:tagName:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/FundsMenu.m"
+            timestampString = "411046060.989824"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "607"
+            endingLineNumber = "607"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1531,100 +1361,6 @@
             endingLineNumber = "301"
             landmarkName = "-setService"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[NotificationSettings setService]"
-                  moduleName = "Nooch"
-                  urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/NotificationSettings.m"
-                  timestampString = "410960063.401883"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "305"
-                  endingLineNumber = "305"
-                  offsetFromSymbolStart = "506">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[NotificationSettings setService]"
-                  moduleName = "Nooch"
-                  urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/NotificationSettings.m"
-                  timestampString = "410960063.402118"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "305"
-                  endingLineNumber = "305"
-                  offsetFromSymbolStart = "2038">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nooch/serve.m"
-            timestampString = "410954756.817133"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1472"
-            endingLineNumber = "1472"
-            landmarkName = "-MemberNotificationSettings:type:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nooch/serve.m"
-            timestampString = "410954757.254996"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1468"
-            endingLineNumber = "1468"
-            landmarkName = "-MemberNotificationSettings:type:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nooch/serve.m"
-            timestampString = "410954757.560979"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1462"
-            endingLineNumber = "1462"
-            landmarkName = "-MemberNotificationSettings:type:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nooch/HistoryFlat.m"
-            timestampString = "410958136.177277"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "511"
-            endingLineNumber = "511"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
-            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1640,6 +1376,288 @@
             startingLineNumber = "144"
             endingLineNumber = "144"
             landmarkName = "-listen:tagName:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/Register.m"
+            timestampString = "411030802.20721"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "377"
+            endingLineNumber = "377"
+            landmarkName = "-textFieldDidBeginEditing:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/Register.m"
+            timestampString = "411030802.20721"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "392"
+            endingLineNumber = "392"
+            landmarkName = "-textFieldDidEndEditing:"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[Register textFieldDidEndEditing:]"
+                  moduleName = "Nooch"
+                  urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/Register.m"
+                  timestampString = "411046061.371459"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "392"
+                  endingLineNumber = "392"
+                  offsetFromSymbolStart = "73">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[Register textFieldDidEndEditing:]"
+                  moduleName = "Nooch"
+                  urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/Register.m"
+                  timestampString = "411046061.371734"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "392"
+                  endingLineNumber = "392"
+                  offsetFromSymbolStart = "346">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/serve.m"
+            timestampString = "411030692.678341"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "162"
+            endingLineNumber = "162"
+            landmarkName = "-forgotPass:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/serve.m"
+            timestampString = "411030940.090122"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "715"
+            endingLineNumber = "715"
+            landmarkName = "-connectionDidFinishLoading:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/AppDelegate.m"
+            timestampString = "411031525.031801"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "145"
+            endingLineNumber = "145"
+            landmarkName = "-applicationWillEnterForeground:"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AppDelegate applicationWillEnterForeground:]"
+                  moduleName = "Nooch"
+                  urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/AppDelegate.m"
+                  timestampString = "411046061.372406"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "146"
+                  endingLineNumber = "146"
+                  offsetFromSymbolStart = "3">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AppDelegate applicationWillEnterForeground:]"
+                  moduleName = "Nooch"
+                  urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/AppDelegate.m"
+                  timestampString = "411046061.372636"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "146"
+                  endingLineNumber = "146"
+                  offsetFromSymbolStart = "187">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AppDelegate applicationWillEnterForeground:]"
+                  moduleName = "Nooch"
+                  urlString = "file:///Users/admin/Documents/nooch_ios/Nooch/AppDelegate.m"
+                  timestampString = "411046061.373044"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "146"
+                  endingLineNumber = "146"
+                  offsetFromSymbolStart = "212">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/TransferPIN.m"
+            timestampString = "411036633.749989"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "493"
+            endingLineNumber = "493"
+            landmarkName = "-listen:tagName:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/TransferPIN.m"
+            timestampString = "411036633.749989"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "588"
+            endingLineNumber = "588"
+            landmarkName = "-listen:tagName:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/TransferPIN.m"
+            timestampString = "411036633.749989"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "669"
+            endingLineNumber = "669"
+            landmarkName = "-listen:tagName:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/TransactionDetails.m"
+            timestampString = "411034935.473373"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "-initWithData:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/TransferPIN.m"
+            timestampString = "411036629.979138"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "448"
+            endingLineNumber = "448"
+            landmarkName = "-listen:tagName:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/serve.m"
+            timestampString = "411044319.045918"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "898"
+            endingLineNumber = "898"
+            landmarkName = "-connectionDidFinishLoading:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/serve.m"
+            timestampString = "411044626.816895"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "855"
+            endingLineNumber = "855"
+            landmarkName = "-connectionDidFinishLoading:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/FundsMenu.m"
+            timestampString = "411047177.023448"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1288"
+            endingLineNumber = "1288"
+            landmarkName = "-changeSwitch:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

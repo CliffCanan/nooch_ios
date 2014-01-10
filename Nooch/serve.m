@@ -770,12 +770,12 @@ NSString *amnt;
                 NSLog(@"Fully Verified");
                 //removing further notifications as the account is verified
                 for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
-                    if ([localnoti.alertBody rangeOfString:@"Team Nooch"].location!=NSNotFound) {
-                        [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+                    if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile"]) {
+                         [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
                     }
+                    
                 }
-               // [[UIApplication sharedApplication] cancelAllLocalNotifications];
-                //setting notifications to 0 as the notifications are placed
+                
                 [defaults setObject:@"0" forKey:@"NotifPlaced"];
                 [defaults synchronize];
             }
@@ -785,6 +785,7 @@ NSString *amnt;
                 UILocalNotification* localNotification = [[UILocalNotification alloc] init];
                 localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor3days];
                 localNotification.alertBody = @"Hey! Just a reminder that your Nooch account is almost ready. Open Nooch to complete your profile and start sending money!- Team Nooch";
+                localNotification.userInfo=@{@"notificationId": @"Profile"};
                 localNotification.timeZone = [NSTimeZone defaultTimeZone];
                 [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
                 
@@ -792,6 +793,7 @@ NSString *amnt;
                 localNotification = [[UILocalNotification alloc] init];
                 localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor6days];
                 localNotification.alertBody = @"Hey! Just a reminder that your Nooch account is almost ready. Open Nooch to complete your profile and start sending money!- Team Nooch";
+                 localNotification.userInfo=@{@"notificationId": @"Profile"};
                 localNotification.timeZone = [NSTimeZone defaultTimeZone];
                 [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
                 
@@ -799,6 +801,7 @@ NSString *amnt;
                 localNotification = [[UILocalNotification alloc] init];
                 localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor9days];
                 localNotification.alertBody = @"Hey! Just a reminder that your Nooch account is almost ready. Open Nooch to complete your profile and start sending money!- Team Nooch";
+                 localNotification.userInfo=@{@"notificationId": @"Profile"};
                 localNotification.timeZone = [NSTimeZone defaultTimeZone];
                 [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
                 
@@ -849,24 +852,30 @@ NSString *amnt;
                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
-        
+        NSLog(@"%@",Dictresponse);
         //Charan's Edit 19Nov 2013
-        if ([Dictresponse valueForKey:@"IsValidProfile"]
-            &&
-            [Dictresponse valueForKey:@"IsVerifiedPhone"]) {
-            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+        if ([[Dictresponse valueForKey:@"IsValidProfile"] intValue]) {
+            
             [defaults setObject:@"1" forKey:@"FullyVerified"];
-            [defaults synchronize];
-        }
+                    }
         else
         {
             [defaults setObject:@"0" forKey:@"FullyVerified"];
-            [defaults synchronize];
+            
         }
+        if ([[Dictresponse valueForKey:@"IsVerifiedPhone"] intValue]) {
+            [defaults setObject:@"YES" forKey:@"IsVerifiedPhone"];
+        }
+        else
+        {
+            [defaults setObject:@"NO" forKey:@"IsVerifiedPhone"];
+        }
+        [defaults synchronize];
+
         //--
         
         
-        if ([[Dictresponse valueForKey:@"ContactNumber"]isKindOfClass:[NSNull class]]||[[Dictresponse valueForKey:@"State"]isKindOfClass:[NSNull class]]||[[Dictresponse valueForKey:@"Address"]isKindOfClass:[NSNull class]]||[[Dictresponse valueForKey:@"City"]isKindOfClass:[NSNull class]]) {
+        if ([[Dictresponse valueForKey:@"ContactNumber"]isKindOfClass:[NSNull class]]||[[Dictresponse valueForKey:@"Address"]isKindOfClass:[NSNull class]]||[[Dictresponse valueForKey:@"City"]isKindOfClass:[NSNull class]]) {
             [defaults setObject:@"NO"forKey:@"ProfileComplete"];
         }
         else
@@ -880,68 +889,72 @@ NSString *amnt;
     }
     if ([tagName isEqualToString:@"banks"]) {
         NSError* error;
-       
-        
-
-       NSArray* arrResponse=[NSJSONSerialization
+        NSArray* arrResponse=[NSJSONSerialization
                      JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                      options:kNilOptions
                      error:&error];
         NSLog(@"%@",arrResponse);
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-        
-        if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]) {
-            if (![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue]) {
-                for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
-                    if ([localnoti.alertBody rangeOfString:@"bank"].location!=NSNotFound) {
-                        [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+        if ([arrResponse count]>0) {
+            if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]) {
+                if (![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue]) {
+                    for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
+                        if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank"]) {
+                            [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+                        }
+                        
                     }
+                    [defaults setObject:@"0" forKey:@"NotifPlaced2"];
+                    [defaults setObject:@"YES" forKey:@"IsPrimaryBankVerified"];
+                    [defaults synchronize];
+                    
                 }
-
-                [defaults setObject:@"YES" forKey:@"IsPrimaryBankVerified"];
-                [defaults synchronize];
-                
+                else {
+                    [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
+                    [defaults synchronize];
+                }
             }
-            else {
+            else
+            {
+                if ([[[NSUserDefaults standardUserDefaults]objectForKey:@"NotifPlaced2"]intValue]!=1) {
+                    NSLog(@"%@",[user objectForKey:@"firstName"]);
+                    NSLog(@"%@",[user objectForKey:@"Firstname"]);
+                    
+                    UILocalNotification* localNotification = [[UILocalNotification alloc] init];
+                    localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor3days];
+                    localNotification.userInfo=@{@"notificationId": @"Bank"};
+                    localNotification.alertBody = [NSString stringWithFormat:@"Hi %@ Check your bank account for 2 small deposits from Nooch that should have arrived on . Enter the amounts in the Nooch App to confirm your bank account.",[user objectForKey:@"firstName"]];
+                    localNotification.timeZone = [NSTimeZone defaultTimeZone];
+                    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+                    
+                    //adding local notification for 6 days
+                    localNotification = [[UILocalNotification alloc] init];
+                    localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor7days];
+                    localNotification.alertBody = [NSString stringWithFormat:@"Hi %@ Check your bank account for 2 small deposits from Nooch that should have arrived on . Enter the amounts in the Nooch App to confirm your bank account.",[user objectForKey:@"firstName"]];
+                    localNotification.timeZone = [NSTimeZone defaultTimeZone];
+                    localNotification.userInfo=@{@"notificationId": @"Bank"};
+                    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+                    
+                    //adding local notification for 9 days
+                    localNotification = [[UILocalNotification alloc] init];
+                    localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor14days];
+                    localNotification.userInfo=@{@"notificationId": @"Bank"};
+                    localNotification.alertBody = [NSString stringWithFormat:@"Hi %@ Check your bank account for 2 small deposits from Nooch that should have arrived on . Enter the amounts in the Nooch App to confirm your bank account.",[user objectForKey:@"firstName"]];
+                    
+                    localNotification.timeZone = [NSTimeZone defaultTimeZone];
+                    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+                    
+                    [defaults setObject:@"1" forKey:@"NotifPlaced2"];
+                    [defaults synchronize];
+ 
+                }
+                
                 [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
                 [defaults synchronize];
+ 
             }
         }
-        else {
-            /*
-             Hi [FIRSTNAME] Check your bank account for 2 small deposits from Nooch that should have arrived on [DATE]. Enter the amounts in the Nooch App to confirm your bank account.
-             */
-             //adding local notification for 3 days
-            NSLog(@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"firstname"]);
-         NSLog(@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"Firstname"]);
-
-            UILocalNotification* localNotification = [[UILocalNotification alloc] init];
-            localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor3days];
-            localNotification.alertBody = [NSString stringWithFormat:@"Hi %@ Check your bank account for 2 small deposits from Nooch that should have arrived on . Enter the amounts in the Nooch App to confirm your bank account.",[[NSUserDefaults standardUserDefaults] objectForKey:@"firstname"]];
-            localNotification.timeZone = [NSTimeZone defaultTimeZone];
-            [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-            
-             //adding local notification for 6 days
-             localNotification = [[UILocalNotification alloc] init];
-             localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor7days];
-             localNotification.alertBody = [NSString stringWithFormat:@"Hi %@ Check your bank account for 2 small deposits from Nooch that should have arrived on . Enter the amounts in the Nooch App to confirm your bank account.",[[NSUserDefaults standardUserDefaults] objectForKey:@"firstname"]];
-             localNotification.timeZone = [NSTimeZone defaultTimeZone];
-             [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-             
-             //adding local notification for 9 days
-             localNotification = [[UILocalNotification alloc] init];
-             localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor14days];
-             localNotification.alertBody = [NSString stringWithFormat:@"Hi %@ Check your bank account for 2 small deposits from Nooch that should have arrived on . Enter the amounts in the Nooch App to confirm your bank account.",[[NSUserDefaults standardUserDefaults] objectForKey:@"firstname"]];
-            
-             localNotification.timeZone = [NSTimeZone defaultTimeZone];
-             [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-             
-             [defaults setObject:@"1" forKey:@"NotifPlaced"];
-             [defaults synchronize];
-            
-            [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
-            [defaults synchronize];
-        }
+        
         
         
     }
@@ -1581,53 +1594,5 @@ NSString *amnt;
 
 }
 
-//-(void)SendEmailToNonNooch:(NSString*)email
-//    {
-//      //  TransactionDto transactionInput, out string trnsactionId, string accessToken, string inviteType, string receiverEmailId);
-//
-//
-//    //accessToken
-//    self.responseData = [[NSMutableData alloc] init];
-//
-//    NSString *urlString = [NSString stringWithFormat:@"%@/SaveFrequency",ServerUrl];
-//
-//    NSURL *url = [NSURL URLWithString:urlString];
-//
-//    dictInv=[[NSMutableDictionary alloc]init];
-//
-//    [dictInv setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"memberId"];
-//    [dictInv setObject:withdrawalId forKey:@"withdrawalId"];
-//    [dictInv setObject:type forKey:@"type"];
-//    //withdrawalFrequency
-//    [dictInv setObject:[NSString stringWithFormat:@"%f",withdrawalFrequency] forKey:@"withdrawalFrequency"];
-//
-//    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-//
-//    [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
-//    // NSString *post = [dictSMS JSONRepresentation];
-//    NSLog(@"dict %@",[dictInv JSONRepresentation]);
-//    postDataInv = [[dictInv JSONRepresentation] dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-//
-//    postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
-//
-//    requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
-//
-//    [requestInv setHTTPMethod:@"POST"];
-//
-//    [requestInv setValue:postLengthInv forHTTPHeaderField:@"Content-Length"];
-//
-//    [requestInv setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-//
-//    [requestInv setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
-//
-//    [requestInv setHTTPBody:postDataInv];
-//
-//    connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
-//
-//    if (!connectionInv)
-//
-//        NSLog(@"connect error");
-//}
-//
 
 @end

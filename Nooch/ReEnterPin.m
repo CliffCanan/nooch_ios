@@ -163,10 +163,11 @@
         checkValid.Delegate = self;
         [checkValid pinCheck:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] pin:encryptedPIN];
     }
+#pragma mark 9jan
     else if ([tagName isEqualToString:@"checkValid"]){
         if([[dictResult objectForKey:@"Result"] isEqualToString:@"Success"]){
-            NSLog(@"%@",[me usr]);
-            if ([[me usr] objectForKey:@"requiredImmediately"] == NULL || [[[me usr] objectForKey:@"requiredImmediately"] isKindOfClass:[NSNull class]]) {
+            NSLog(@"%@",user);
+            if ([user objectForKey:@"requiredImmediately"] == NULL || [[user objectForKey:@"requiredImmediately"] isKindOfClass:[NSNull class]]) {
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"FYI" message:@"The Require Immediately function is an added security feature to prompt you for your PIN whenever you enter Nooch. Would you like to keep this on or turn it off? You can change this setting later in the PIN Settings page." delegate:self cancelButtonTitle:@"Turn Off" otherButtonTitles:@"Keep On", nil];
@@ -219,11 +220,11 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
         if (alertView.tag == 1) {
             if (buttonIndex == 0) {
-                [[me usr] setObject:@"NO" forKey:@"requiredImmediately"];
+                [user setObject:@"NO" forKey:@"requiredImmediately"];
             }else{
-                [[me usr] setObject:@"YES" forKey:@"requiredImmediately"];
+                [user setObject:@"YES" forKey:@"requiredImmediately"];
             }
-             NSLog(@"%@",[me usr]);
+             NSLog(@"%@",user);
             //reqImm = NO;
             
            // [navCtrl popToRootViewControllerAnimated:NO];

@@ -149,20 +149,35 @@
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
     
+    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
+        
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user Please check your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        return;
+        
+        
+    }
+    
     if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+        [alert setTag:147];
         [alert show];
-        
         return;
     }
+    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
+        
+        [alert show];
+        return;
+    }
+    //IsVerifiedPhone
+    //[user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"]
     if ( ![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your  Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         
         return;
     }
-
-
     NSLog(@"%@",self.charity);
     NSMutableDictionary*dict_donate=[self.charity mutableCopy];
     if ([dict valueForKey:@"FirstName"]!=NULL && [dict valueForKey:@"LastName"]!=NULL) {

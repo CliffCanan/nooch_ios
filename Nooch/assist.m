@@ -143,9 +143,11 @@ static assist * _sharedInstance = nil;
     }
 
    timer= [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
-    [self getBanks];
-    [self getCards];
+#pragma mark 9jan
     [self getSettings];
+    [self getBanks];
+    //[self getCards];
+    
 }/*}}}*/
 -(void)renewFb{
     [accountStore renewCredentialsForAccount:(ACAccount *)facebookAccount completion:^(ACAccountCredentialRenewResult renewResult, NSError *error){
@@ -410,18 +412,16 @@ static assist * _sharedInstance = nil;
             }
     else if([tagName isEqualToString:@"info"]){
         NSError *error;
-//PhotoUrl
+ 
          NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        [user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"];
         NSString*url=[loginResult valueForKey:@"PhotoUrl"];
         NSLog(@"%@",url);
 
       //  url=[url stringByReplacingOccurrencesOfString:@"//" withString:@"/"];
         NSLog(@"%@",url);
          [user setObject:url forKey:@"Photo"];
-       //  usersets=loginResult;
-       //  NSLog(@"%@",usersets);
-//        NSDictionary *loginResult = [result JSONValue];
-        //[usr setObject:@"YES" forKey:@"validated"];
+       
         if(![[loginResult objectForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"BalanceAmount"] != NULL)
         {
             [usr setObject:[loginResult objectForKey:@"BalanceAmount"] forKey:@"Balance"];

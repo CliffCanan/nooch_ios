@@ -45,7 +45,20 @@
     UILabel *payment = [UILabel new];
     [payment setStyleClass:@"details_intro"];
     [payment setStyleClass:@"details_intro_green"];
-    [payment setText:@"Payment From:"];
+    if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
+        if ([[self.trans  valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
+             [payment setText:@"Paid to:"];
+            //[name setText:[NSString stringWithFormat:@"You Paid %@",[dictRecord valueForKey:@"FirstName"]]];
+        }
+        else
+        {
+             [payment setText:@"Received From:"];
+           // [name setText:[NSString stringWithFormat:@"%@ Paid You",[dictRecord valueForKey:@"FirstName"]]];
+            
+        }
+    }
+
+   
     [self.view addSubview:payment];
     
     UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];
@@ -91,38 +104,63 @@
     //[amount setFont:kNoochFontBold];
     [amount setTextAlignment:NSTextAlignmentCenter];
     [self.view addSubview:amount];
-    
+  
     UILabel *memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 110, 320, 60)];
-    [memo setText:@"\"for lunch and a soda\""];
+    [memo setText:[self.trans valueForKey:@"memo"]];
     [memo setStyleClass:@"details_label"];
     [memo setStyleClass:@"blue_text"];
     [memo setStyleClass:@"italic_font"];
     [self.view addSubview:memo];
     
     UILabel *location = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 320, 60)];
-    if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"Country"]!=NULL) {
-        [location setText:[NSString stringWithFormat:@"%@ %@",[self.trans objectForKey:@"AddressLine1"],[self.trans objectForKey:@"Country"]]];
+    location.numberOfLines=2;
+     [location setStyleClass:@"details_label"];
+    if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"City"]!=NULL) {
+        [location setText:[NSString stringWithFormat:@"%@ %@ %@ %@",[self.trans objectForKey:@"AddressLine1"],[self.trans objectForKey:@"AddressLine2"],[self.trans objectForKey:@"City"],[self.trans objectForKey:@"Country"]]];
     }
 
     
-    [location setStyleClass:@"details_label"];
     [self.view addSubview:location];
     
     UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 190, 320, 30)];
     [status setStyleClass:@"details_label"];
     if ([self.trans objectForKey:@"TransactionType"]!=NULL && [self.trans objectForKey:@"TransactionDate"]!=NULL) {
-        [location setText:[NSString stringWithFormat:@"%@ %@",[self.trans objectForKey:@"TransactionType"],[self.trans objectForKey:@"TransactionDate"]]];
+        [status setText:[NSString stringWithFormat:@"%@ %@",[self.trans objectForKey:@"TransactionType"],[self.trans objectForKey:@"TransactionDate"]]];
     }
     //[status setText:[NSString stringWithFormat:@"%@ on %@",[self.trans objectForKey:@"TransactionType"],[self.trans objectForKey:@"TransactionDate"]]];
     [status setStyleClass:@"green_text"];
     [self.view addSubview:status];
-    
     double lat = [[self.trans objectForKey:@"Latitude"] floatValue];
     double lon = [[self.trans objectForKey:@"Longitude"] floatValue];
+    
+
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:lat
                                                             longitude:lon
                                                                  zoom:11];
-    mapView_ = [GMSMapView mapWithFrame:CGRectMake(-1, 240, 322, 160) camera:camera];
+    if (![[self.trans valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Picture"]!=NULL) {
+        NSArray* bytedata = [self.trans valueForKey:@"Picture"];
+        //XXXXXXXX2222
+        unsigned c = bytedata.count;
+        uint8_t *bytes = malloc(sizeof(*bytes) * c);
+        
+        unsigned i;
+        for (i = 0; i < c; i++)
+        {
+            NSString *str = [bytedata objectAtIndex:i];
+            int byte = [str intValue];
+            bytes[i] = (uint8_t)byte;
+        }
+        
+        NSData *datos = [NSData dataWithBytes:bytes length:c];
+       
+        UIImageView*imgTran=[[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
+        [imgTran setImage:[UIImage imageWithData:datos]];
+        [self.view addSubview:imgTran];
+        mapView_ = [GMSMapView mapWithFrame:CGRectMake(165, 240, 150, 160) camera:camera];
+    }
+    else
+      mapView_ = [GMSMapView mapWithFrame:CGRectMake(-1, 240, 322, 160) camera:camera];
+    
     mapView_.myLocationEnabled = YES;
     //mapView_.layer.borderWidth = 1;
     [self.view addSubview:mapView_];

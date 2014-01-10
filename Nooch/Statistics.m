@@ -31,7 +31,7 @@
     dictAllStats=[[NSMutableDictionary alloc]init];
     serve*serveOBJ=[serve new];
     [serveOBJ setDelegate:self];
-    serveOBJ.tagName=@"getStats";
+    serveOBJ.tagName=@"Total_P2P_transfers";
     [serveOBJ GetMemberStats:@"Total_P2P_transfers"];
 	// Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"Statistics"];
@@ -142,102 +142,86 @@
                  error:&error];
     
     NSLog(@"%@",dictResult);
-   [ dictAllStats setObject:dictResult forKey:tagName];/*
- Get_Member_Signup_Date
- Malkit Says
- Total_P2P_transfers
- Malkit Says
- Total_$_Sent
- Malkit Says
- Total_#_of_transfer Sent
- Malkit Says
- Total_$_Received
- Malkit Says
- Total_#_of_transfer_Received
- Malkit Says
- Smallest_sent_transfer
-
- */
-    
-    if ([tagName isEqualToString:@"getStats"]) {
+   [ dictAllStats setObject:dictResult forKey:tagName];    
+    if ([tagName isEqualToString:@"Total_P2P_transfers"]) {
         serve*serveOBJ=[serve new];
         
         [serveOBJ setDelegate:self];
         
-        serveOBJ.tagName=@"getStats1";
+        serveOBJ.tagName=@"Get_Member_Signup_Date";
         
         [serveOBJ GetMemberStats:@"Get_Member_Signup_Date"];
     }
-    else if ([tagName isEqualToString:@"getStats1"]) {
+    else if ([tagName isEqualToString:@"Get_Member_Signup_Date"]) {
         serve*serveOBJ=[serve new];
         
         [serveOBJ setDelegate:self];
         
-        serveOBJ.tagName=@"getStats2";
+        serveOBJ.tagName=@"Total_$_Sent";
         
         [serveOBJ GetMemberStats:@"Total_$_Sent"];
     }
-    else if ([tagName isEqualToString:@"getStats2"]) {
+    else if ([tagName isEqualToString:@"Total_$_Sent"]) {
         serve*serveOBJ=[serve new];
         
         [serveOBJ setDelegate:self];
         
-        serveOBJ.tagName=@"getStats3";
+        serveOBJ.tagName=@"Total_#_of_transfer_Sent";
         
-        [serveOBJ GetMemberStats:@"Total_#_of_transfer Sent"];
+        [serveOBJ GetMemberStats:@"Total_#_of_transfer_Sent"];
     }
     else if ([tagName isEqualToString:@"getStats3"]) {
         serve*serveOBJ=[serve new];
         
         [serveOBJ setDelegate:self];
         
-        serveOBJ.tagName=@"getStats4";
+        serveOBJ.tagName=@"Total_$_Received";
         
         [serveOBJ GetMemberStats:@"Total_$_Received"];
     }
-    else if ([tagName isEqualToString:@"getStats4"]) {
+    else if ([tagName isEqualToString:@"Total_$_Received"]) {
         serve*serveOBJ=[serve new];
         
         [serveOBJ setDelegate:self];
         
-        serveOBJ.tagName=@"getStats5";
+        serveOBJ.tagName=@"Total_#_of_transfer_Received";
         
         [serveOBJ GetMemberStats:@"Total_#_of_transfer_Received"];
     }
-   else if ([tagName isEqualToString:@"getStats5"]) {
+   else if ([tagName isEqualToString:@"Total_#_of_transfer_Received"]) {
         serve*serveOBJ=[serve new];
         
         [serveOBJ setDelegate:self];
         
-        serveOBJ.tagName=@"getStats6";
+        serveOBJ.tagName=@"Smallest_sent_transfer";
         
         [serveOBJ GetMemberStats:@"Smallest_sent_transfer"];
     }
-    else if ([tagName isEqualToString:@"getStats6"]) {
+    else if ([tagName isEqualToString:@"Smallest_sent_transfer"]) {
         serve*serveOBJ=[serve new];
         
         [serveOBJ setDelegate:self];
         
-        serveOBJ.tagName=@"getStats7";
+        serveOBJ.tagName=@"Smallest_received_transfer";
         
         [serveOBJ GetMemberStats:@"Smallest_received_transfer"];
     }
-    else if ([tagName isEqualToString:@"getStats7"]) {
+    else if ([tagName isEqualToString:@"Smallest_received_transfer"]) {
         serve*serveOBJ=[serve new];
         
         [serveOBJ setDelegate:self];
         
-        serveOBJ.tagName=@"getStats8";
+        serveOBJ.tagName=@"Largest_sent_transfer";
         
         [serveOBJ GetMemberStats:@"Largest_sent_transfer"];
     }
     
-   else if ([tagName isEqualToString:@"getStats8"]) {
+   else if ([tagName isEqualToString:@"Largest_sent_transfer"]) {
         serve*serveOBJ=[serve new];
         
         [serveOBJ setDelegate:self];
         
-        serveOBJ.tagName=@"getStats10";
+        serveOBJ.tagName=@"Largest_received_transfer";
         
         [serveOBJ GetMemberStats:@"Largest_received_transfer"];
     }

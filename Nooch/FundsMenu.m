@@ -14,6 +14,7 @@
 #import "Deposit.h"
 #import "Withdraw.h"
 #import "BankVerification.h"
+#import "ProfileInfo.h"
 @interface FundsMenu ()
 @property(nonatomic,strong)UITableView *menu;
 @end
@@ -495,10 +496,7 @@
             if ([ArrBankAccountCollection count] > 0) {
                 [cell.contentView addSubview:arrow];
                 NSDictionary *bank = [ArrBankAccountCollection objectAtIndex:0];
-              //  cell.textLabel.text = [NSString stringWithFormat:@"Account **** %@",[[bank objectForKey:@"BankAcctNumber"] substringFromIndex:[[bank objectForKey:@"BankAcctNumber"] length] -4]];
-              //  iv.image = [UIImage imageNamed:@"Bank_Icon.png"];
-                
-                 //bank verified or Not
+                    //bank verified or Not
                  NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
                 // NSLog(@"%@",[[[me usr] objectForKey:@"banks"] objectAtIndex:0]);
                  if ([ArrBankAccountCollection objectAtIndex:0]&&[[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsVerified"] intValue]==1&& [[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]==1 ) {
@@ -633,23 +631,30 @@
                 
                 return;
             }
+            NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+            NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
 
+            if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
+                
+                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user Please check your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                [alert show];
+                return;
+              
+            }
+            
+            if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
+                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+                [alert setTag:147];
+                [alert show];
+                return;
+            }
+           
+           
            // selectedId = [bank objectForKey:@"BankAccountId"];
             Deposit *dep = [[Deposit alloc]initWithData:ArrBankAccountCollection];
             [nav_ctrl pushViewController:dep animated:YES];
             [self.slidingViewController resetTopView];
-            //[self hideActionMenu];
-            /*if ([[[me usr] objectForKey:@"banks"] count] == 0) {
-                Deposit *dep = [Deposit new];
-                [nav_ctrl pushViewController:dep animated:NO];
-                [self.slidingViewController resetTopView];
-                return;
-                UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can add funds you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
-                [set setTag:1];
-                [set show];
-                return;
-            }*/
-            //[navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"addFunds"] animated:YES];
+            
         }else if(indexPath.row == 1){
             if ([ArrBankAccountCollection count] == 0) {
                 
@@ -670,23 +675,29 @@
                 
                 return;
             }
+            NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+            NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
+            
+            if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
+                
+                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user Please check your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                [alert show];
+                return;
+                
+            }
+            
+            if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
+                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+                [alert setTag:147];
+                [alert show];
+                return;
+            }
 
              Withdraw *wd = [[Withdraw alloc]initWithData:ArrBankAccountCollection];
            
             [nav_ctrl pushViewController:wd animated:YES];
             [self.slidingViewController resetTopView];
-            //[self hideActionMenu];
-            /*if ([[[me usr] objectForKey:@"banks"] count] == 0) {
-                Withdraw *with = [Withdraw new];
-                [nav_ctrl pushViewController:with animated:NO];
-                [self.slidingViewController resetTopView];
-                return;
-                UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can withdraw funds you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
-                [set setTag:1];
-                [set show];
-                return;
-            }*/
-            //[navCtrl presentModalViewController:[storyboard instantiateViewControllerWithIdentifier:@"withdrawFunds"] animated:YES];
+            
         }
         else if(indexPath.row==2){
             if ([on_off isOn]&& [SelectedOption isEqualToString:@"Triggers"]) {
@@ -786,7 +797,13 @@
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSLog(@"%d %d",[ArrBankAccountCollection count],buttonIndex);
-    if (alertView.tag == 201){
+    if (alertView.tag==147 && buttonIndex==1) {
+        ProfileInfo *prof = [ProfileInfo new];
+        [nav_ctrl pushViewController:prof animated:YES];
+        [self.slidingViewController resetTopView];
+        
+    }
+    else if (alertView.tag == 201){
         if (buttonIndex == 1) {
             
             NewBank *add_bank = [NewBank new];
@@ -1267,8 +1284,8 @@
     [self.menu reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     
 }
-- (void)changeSwitch:(id)sender{
-    
+- (void)changeSwitch:(UISwitch*)on_off1{
+    int switchtag=[on_off1 tag];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     if ([[[me usr] objectForKey:@"banks"] count]==0)
     {
@@ -1284,16 +1301,25 @@
         [on_off setOn:NO];
         return;
     }
+    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
+        
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user Please check your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        [on_off setOn:NO];
+        return;
+        
+    }
+
     if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"]) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Complete Your Profile To Enable Auto Cash Out" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil] ;
         [alert show];
         [on_off setOn:NO];
         return;
     }
-    
-    if ([sender tag]==12000) {
+   
+    if (switchtag==12000) {
         
-        if([sender isOn]){
+        if([on_off1 isOn]){
             
             isWithdrawalSelected=YES;
             NSLog(@"%@",arrWithrawalOptions);

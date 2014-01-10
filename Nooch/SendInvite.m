@@ -44,7 +44,7 @@
     
     code = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, 320, 100)];
     [code setStyleId:@"refer_invitecode"];
-    [code setText:@"MIKE123"];
+    //[code setText:@"MIKE123"];
     [self.view addSubview:code];
     
     UILabel *with = [[UILabel alloc] initWithFrame:CGRectMake(20, 130, 170, 40)];

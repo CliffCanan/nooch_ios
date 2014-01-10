@@ -198,10 +198,10 @@
 }
 -(void)setService
 {
-    NSMutableDictionary*dictInputNotification=[[NSMutableDictionary alloc]init];
+   
     NSDictionary *transactionInput1;
     if ([servicePath isEqualToString:@"push"]) {
-        [dictInputNotification setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"MemberId"];
+       // [dictInputNotification setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"MemberId"];
     /*
      [DataMember]
      public string MemberId { get; set; }

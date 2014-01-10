@@ -243,11 +243,30 @@
     [self.view setFrame:CGRectMake(0,0, 320, 600)];
     [UIView commitAnimations];
 
+    if ([[[self.name_field.text componentsSeparatedByString:@" "] objectAtIndex:0]length]<4) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please enter at least 4 Letter First Name" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
     if (([self.password_field.text length] == 0) || ([self.name_field.text length] == 0) || ([self.email_field.text length] == 0)) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:@"You have not filled out the sign up form!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         return;
-    }else{
+    }
+    NSCharacterSet* digitsCharSet = [NSCharacterSet decimalDigitCharacterSet];
+    NSCharacterSet* lettercaseCharSet = [NSCharacterSet letterCharacterSet];
+    if([self.password_field.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound){
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain at least one numeric character." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av show];
+        return;
+    }
+    
+    else if([self.password_field.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound){
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain at least one character." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av show];
+        return;
+    }
+    else{
         spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [self.view addSubview:spinner];
         spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
@@ -281,10 +300,18 @@
             [spinner setHidden:YES];
             return;
         }
-        
+        NSString *first_name;
+        NSString *last_name;
         NSArray *arr = [self.name_field.text componentsSeparatedByString:@" "];
-        NSString *first_name = [arr objectAtIndex:0];
-        NSString *last_name = [arr objectAtIndex:1];
+        if ([arr count]>1) {
+            first_name = [arr objectAtIndex:0];
+            last_name = [arr objectAtIndex:1];
+        }
+       else
+       {
+            first_name = [arr objectAtIndex:0];
+             last_name = @"";
+       }
         NSDictionary *user;
         
         if (![self.facebook_info objectForKey:@"id"]) {
@@ -351,6 +378,17 @@
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+    if (textField== self.password_field) {
+        [UIView beginAnimations:@"bucketsOff" context:nil];
+        [UIView setAnimationDuration:0.4];
+        [UIView setAnimationDelegate:self];
+        [self.view setFrame:CGRectMake(0,0, 320, 600)];
+        [UIView commitAnimations];
+        
+
+        return;
+    }
+
     [self animateTextField:textField up:NO];
 }
 

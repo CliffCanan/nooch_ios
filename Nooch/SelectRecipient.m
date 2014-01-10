@@ -30,7 +30,11 @@
 {
     [super viewDidLoad];
     [self.navigationItem setTitle:@"Select Recipient"];
-
+    //clear Image cache
+    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    [imageCache clearMemory];
+    [imageCache clearDisk];
+    [imageCache cleanDisk];
     // Do any additional setup after loading the view from its nib.
     
     UIButton *location = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -318,18 +322,18 @@
     }
    // [cell.textLabel setStyleClass:@"select_recipient_name"];
     
-    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
-    pic.clipsToBounds = YES;
-    [pic setTag:indexPath.row];
-    [cell addSubview:pic];
-    
-    UIImageView *npic = [UIImageView new];
-    npic.clipsToBounds = YES;
-    [npic setTag:indexPath.row];
-    [cell addSubview:npic];
+        if (searching) {
+            UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
+            pic.clipsToBounds = YES;
+            [pic setTag:indexPath.row];
+            [cell addSubview:pic];
+            
+            UIImageView *npic = [UIImageView new];
+            npic.clipsToBounds = YES;
+            [npic setTag:indexPath.row];
+            [cell addSubview:npic];
+            
 
-    if (searching) {
-       
         //Nooch User
         npic.hidden=NO;
         [npic setFrame:CGRectMake(250,15, 34, 40)];
@@ -351,7 +355,17 @@
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",info[@"FirstName"],info[@"LastName"]];
     }
     else{
-    
+        UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
+        pic.clipsToBounds = YES;
+        [pic setTag:indexPath.row];
+        [cell addSubview:pic];
+        
+        UIImageView *npic = [UIImageView new];
+        npic.clipsToBounds = YES;
+        [npic setTag:indexPath.row];
+        [cell addSubview:npic];
+        
+
         //Nooch User
         npic.hidden=NO;
         [npic setFrame:CGRectMake(250,15, 34, 40)];
@@ -377,20 +391,17 @@
         
     }
     if(emailEntry){
-        for (UIView*subview in cell.contentView.subviews) {
-            [subview removeFromSuperview];
-        }
-        [pic setImage:NULL];
-        [npic setImage:NULL];
+//        for (UIView*subview in cell.contentView.subviews) {
+//            [subview removeFromSuperview];
+//        }
+        //[pic setImage:NULL];
+        //[npic setImage:NULL];
          //pic.clipsToBounds = NO;
        // npic.clipsToBounds = NO;
-        SDImageCache *imageCache = [SDImageCache sharedImageCache];
-        [imageCache clearMemory];
-        [imageCache clearDisk];
-        [imageCache cleanDisk];
+        
         cell.indentationWidth = 10;
-         npic.hidden=YES;
-                pic.hidden=YES;
+        // npic.hidden=YES;
+          //      pic.hidden=YES;
         // [pic setFrame:CGRectMake(0, 0, 0, 0)];
         //  [npic setFrame:CGRectMake(0, 0, 0, 0)];
         cell.textLabel.text = [NSString stringWithFormat:@"Send to %@",search.text];

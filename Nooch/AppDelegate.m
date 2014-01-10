@@ -148,13 +148,15 @@ void exceptionHandler(NSException *exception){
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] length] > 0) {
         if (timeAway > 30 || timeAway < -30) {
             //init requireImmediately
+            NSLog(@"%d",[[[NSUserDefaults standardUserDefaults] objectForKey:@"requiredImmediately"] boolValue]);
             if (![[NSUserDefaults standardUserDefaults] objectForKey:@"requiredImmediately"]) {
                 ReEnterPin *pin = [ReEnterPin new];
                 [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:pin animated:YES completion:^{
                     
                 }];
                 
-            }else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"requiredImmediately"] boolValue]){
+            }
+            else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"requiredImmediately"] boolValue]){
                 ReEnterPin *pin = [ReEnterPin new];
                 [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:pin animated:YES completion:^{
                     

@@ -13,6 +13,7 @@
 #import "SelectCause.h"
 #import "TransferPIN.h"
 #import "ReEnterPin.h"
+#import "ProfileInfo.h"
 #define kButtonType     @"transaction_type"
 #define kButtonTitle    @"button_title"
 #define kButtonColor    @"button_background_color"
@@ -135,54 +136,30 @@
         return;
     }
     
-   // serve *details = [serve new];
-    //[details setTagName:@"details"];
-    //[details setDelegate:self];
-    //[details getDetails:[[me usr] objectForKey:@"MemberId"]];
-    
-    //if they have required immediately turned on or haven't selected the option yet, redirect them to PIN screen
+      //if they have required immediately turned on or haven't selected the option yet, redirect them to PIN screen
     if (![[user objectForKey:@"requiredImmediately"] isEqualToString:@"YES"]) {
-        //[nav_ctrl setNavigationBarHidden:NO];
-        //[self.navigationController setNavigationBarHidden:NO];
-         //(id)initWithReceiver:(NSMutableDictionary *)receiver type:(NSString *)type amount:(float)amount;
+        
         ReEnterPin*pin=[ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
-        //[self presentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"pin"] animated:YES completion:nil];
-       // [user setObject:@"YES" forKey:@"requiredImmediately"];
+       
     }else if([[user objectForKey:@"requiredImmediately"] isEqualToString:@"YES"]){
         ReEnterPin*pin=[ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
-        //TransferPIN*pin=[[TransferPIN alloc]initWithReceiver:loadInfo type:@"remember_me" amount:0.0];
-        //[self presentViewController:pin animated:YES completion:nil];
-        
+      
     }
-      //
-}
+      }
 -(void)updateLoader{
        if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
            [self.navigationItem setRightBarButtonItem:Nil];
               [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
            UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
            [self.navigationItem setRightBarButtonItem:funds];
-           
-     
-        
-    }
+             }
     else
     {
         [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];    }
     
-   // NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
-   
-//     if ([[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"]) {
-//         btnimgValidateNoti.hidden=YES;
-//     }
-//     else
-//     {
-//         btnimgValidateNoti.hidden=NO;
-//     }
-//     
+  
 }
 - (NSString *)autoLogin{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -192,22 +169,15 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self.navigationItem setTitle:@"Nooch"];
     
-   
     UIActivityIndicatorView*act=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [act setFrame:CGRectMake(14, 5, 20, 20)];
     [act startAnimating];
     
     UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:act];
     [self.navigationItem setRightBarButtonItem:funds];
-    
-
-//       if ([user objectForKey:@"Balance"]) {
-//        [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
-//    } else {
-//        [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"0.00"] forState:UIControlStateNormal];
-//    }
-//    
+ 
     
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(updateLoader) userInfo:nil repeats:YES];
@@ -228,18 +198,43 @@
 {
     [self.slidingViewController anchorTopViewTo:ECLeft];
 }
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag==147 && buttonIndex==1) {
+        ProfileInfo *prof = [ProfileInfo new];
+        [nav_ctrl pushViewController:prof animated:YES];
+        [self.slidingViewController resetTopView];
 
+    }
+}
 - (void)send_request
 {
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
- 
-   if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
-       UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-       [alert show];
+#pragma mark-9jan
+   if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
        
+       UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user Please check your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+       [alert show];
        return;
+       
+     
    }
+  
+    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+        [alert setTag:147];
+        [alert show];
+       return;
+    }
+    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
+       
+        [alert show];
+        return;
+    }
+    //IsVerifiedPhone
+    //[user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"]
    if ( ![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];

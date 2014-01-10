@@ -70,6 +70,15 @@
     [self.verify setTitle:@"Verify Bank Account" forState:UIControlStateNormal];
     [self.verify setStyleClass:@"button_green"];
     [self.verify setStyleId:@"verifybank_button"];
+    if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
+        [self.verify setTitle:@"Your bank is already Verified" forState:UIControlStateNormal];
+        [self.verify setEnabled:NO];
+        
+    }
+    else
+    {
+         [self.verify setEnabled:YES];
+    }
     [self.verify addTarget:self action:@selector(verify_amounts) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.verify];
     
@@ -78,6 +87,7 @@
     [self.removeBank setTitle:@"Remove Bank Account" forState:UIControlStateNormal];
     [self.removeBank setStyleClass:@"button_red"];
     [self.removeBank setStyleId:@"removebank_button"];
+    
     [self.removeBank addTarget:self action:@selector(Remove_Bank) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.removeBank];
 

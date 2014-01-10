@@ -16,6 +16,7 @@
     float lon;
     CLLocationManager *locationManager;
     UIActivityIndicatorView*spinner;
+    UIAlertView *writeMemo;
 }
-
+@property (strong, nonatomic) IBOutlet UIView *inputAccessory;
 @end

@@ -27,7 +27,7 @@
 @end
 
 @implementation Login
-
+@synthesize inputAccessory;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -183,13 +183,55 @@
 
 - (void) forgot_pass
 {
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Are you sure you wish to reset your password?" message:@"An email will be sent to your address with a link for resetting your password." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+    [av setTag:3];
+    [av show];
+
+  
+}
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(actionSheet.tag == 3){
+        if(buttonIndex == 1){
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Enter Email ID" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+            alert.alertViewStyle=UIAlertViewStylePlainTextInput;
+            [alert setTag:220011];
+            [alert show];
+            }
+    }
+    else if(actionSheet.tag==220011&& buttonIndex==1){
+        UITextField *emailField = [actionSheet textFieldAtIndex:0];
+        if ([emailField.text length] > 0 && [emailField.text  rangeOfString:@"@"].location != NSNotFound && [emailField.text  rangeOfString:@"."].location != NSNotFound){
+            [spinner startAnimating];
+            [spinner setHidden:NO];
+            serve *forgetful = [serve new];
+            forgetful.Delegate = self; forgetful.tagName = @"ForgotPass";
+            [forgetful forgotPass:emailField.text];
+           
+        }
+        else
+        {
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Enter Valid Email ID" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+            alert.alertViewStyle=UIAlertViewStylePlainTextInput;
+            [alert setTag:220011];
+            [alert show];
+        }
+           
+        }
+    
     
 }
 
 -(void)listen:(NSString *)result tagName:(NSString *)tagName{
     NSLog(@"response %@", result);
    
-    if ([tagName isEqualToString:@"encrypt"]) {
+    if([tagName isEqualToString:@"ForgotPass"]){
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Check your email for a reset password link." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av show];
+        [spinner stopAnimating];
+        [spinner setHidden:YES];
+    }
+
+    else if ([tagName isEqualToString:@"encrypt"]) {
         NSError *error;
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         NSLog(@"json test %@",loginResult);
@@ -199,6 +241,7 @@
         [log setDelegate:self];
         [log setTagName:@"login"];
         //[log validateInvitation:@"pilot"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"IsPrimaryBankVerified"];
          NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
         if ([self.stay_logged_in isOn]) {
            [log login:self.email.text password:self.encrypted_pass remember:YES lat:lat lon:lon uid:udid];
