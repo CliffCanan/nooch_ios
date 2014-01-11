@@ -59,7 +59,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    [self.view addGestureRecognizer:tap];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     isPhotoUpdate=NO;
    
@@ -252,6 +253,18 @@
                               @"West Pacific Standard Time",@"GMT+10:00",
                               nil];
 }
+-(void)handleTap:(UIGestureRecognizer *)gestureRecognizer{
+    [self.name resignFirstResponder];
+    [self.email  resignFirstResponder];
+    [self.recovery_email resignFirstResponder];
+    [self.password resignFirstResponder];
+    [self.phone resignFirstResponder];
+    [self.address_one resignFirstResponder];
+    [self.address_two resignFirstResponder];
+    [self.city resignFirstResponder];
+    [self.zip resignFirstResponder];
+    
+}
 -(BOOL)validateEmail:(NSString*)emailStr;
 {
     NSString *emailCheck = @"[A-Z0-9a-z._%+]+@[A-Za-z0-9.]+\\.[A-Za-z]{2,3}";
@@ -310,7 +323,7 @@
     }
     NSLog(@"%@",self.SavePhoneNumber);
     NSLog(@"%@",self.phone.text);
-    if (![self.SavePhoneNumber isEqualToString:self.phone.text]) {
+    //if (![self.SavePhoneNumber isEqualToString:self.phone.text]) {
         NSLog(@"Not Same");
         
         //do Phone Validation
@@ -324,7 +337,7 @@
         
         
         
-    }
+    //}
     
     //[self.view addSubview:[me waitStat:@"Saving your profile..."]];
    //  [self getEncryptedPassword:self.password.text];
@@ -340,13 +353,13 @@
     timezoneStandard = @"";
     
 
-    if ([self.phone.text length]!=10)
-    {
-        
-        UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"NoochMoney" message:@"Enter valid 10 digit Cell Number" delegate:nil cancelButtonTitle:@"OK"otherButtonTitles:nil, nil];
-        [alert show];
-        return;
-    }
+//    if ([self.phone.text length]!=10)
+//    {
+//        
+//        UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"NoochMoney" message:@"Enter valid 10 digit Cell Number" delegate:nil cancelButtonTitle:@"OK"otherButtonTitles:nil, nil];
+//        [alert show];
+//        return;
+//    }
    recoverMail = [[NSString alloc] init];
     if([self.recovery_email.text length] > 0)
     {
@@ -408,20 +421,20 @@
     //[transactionInput setObject:[NSString stringWithFormat:@"%@ %@",self.address.text,self.addressLine2.text] forKey:@"Address"];
     [transactionInput setObject:self.city.text forKey:@"City"];
     NSLog(@"%d",[self.phone.text length]);
-    if ([self.phone.text length]!=10)
-    {
-        //[me endWaitStat];
-        UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"NoochMoney" message:@"Enter valid 10 digit Cell Number" delegate:nil cancelButtonTitle:@"OK"otherButtonTitles:nil, nil];
-        [alert show];
-        return;
-    }
-    else
-    {
+//    if ([self.phone.text length]!=10)
+//    {
+//        //[me endWaitStat];
+//        UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"NoochMoney" message:@"Enter valid 10 digit Cell Number" delegate:nil cancelButtonTitle:@"OK"otherButtonTitles:nil, nil];
+//        [alert show];
+//        return;
+//    }
+//    else
+//    {
         //NSString *number = [NSString stringWithFormat:@"%@%@%@",[self.phone.text substringWithRange:NSMakeRange(1, 3)],[self.phone.text substringWithRange:NSMakeRange(6, 3)],[self.phone.text substringWithRange:NSMakeRange(10, 4)]];
         [transactionInput setObject:self.phone.text forKey:@"ContactNumber"];
         
         
-    }
+    //}
     
     [transactionInput setObject:self.zip.text forKey:@"Zipcode"];
     [transactionInput setObject:@"false" forKey:@"UseFacebookPicture"];
@@ -716,21 +729,9 @@
         //[targ getTargus];
         [spinner stopAnimating];
         [spinner setHidden:YES];
-        if (isSignup) {
+        if (isSignup || [[[NSUserDefaults standardUserDefaults] objectForKey:@"NotificationPush"]intValue]==1) {
             [self dismissViewControllerAnimated:NO completion:nil];
-//                [self.navigationController setNavigationBarHidden:NO];
-//                [UIView animateWithDuration:0.75
-//                                 animations:^{
-//                                     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-//                                     [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
-//                                     
-//                                 }];
-//                
-//                
-//                [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
-//                
-// 
-//            }];
+
                                 }
     }
    else if ([tagName isEqualToString:@"myset"]) {
@@ -847,22 +848,9 @@
             //   zip.text=[dictProfileinfo objectForKey:@"UserName"];
             
         }
-        if([dictProfileinfo objectForKey:@"ContactNumber"]!=[NSNull null] && [[dictProfileinfo objectForKey:@"ContactNumber"] length] == 10)
-        {
-            //self.phone.text = [NSString stringWithFormat:@"(%@) %@-%@",[[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(0, 3)],[[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(3, 3)],[[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(6, 4)]];
-            //charanjit's modification
-            // self.SavePhoneNumber = self.contactPhone.text;
-        }
-        if([[[me usr] objectForKey:@"validated"] boolValue]){
-            //set validated badge
-          //  [validationBadge setHighlighted:YES];
-        }else{
-            //[validationBadge setHighlighted:NO];
-        }
-//        if(([self.phone.text isEqualToString:@""] || [self.address_one.text isEqualToString:@""]) && profileScroll.frame.origin.x == 0){
-//            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Don't fret" message:@"We at Nooch are concerned with your privacy too! Any information you enter here is strictly for security and validation purposes. We will never disclose your personal information to anyone." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//            [av show];
-//        }
+       
+       
+
 
     }
 }

@@ -41,6 +41,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
      NSLog(@"%@",nav_ctrl.view);
+    [ self.navigationItem setLeftBarButtonItem:Nil];
     nav_ctrl = self.navigationController;
      NSLog(@"%d",[nav_ctrl.viewControllers count]);
     user = [NSUserDefaults standardUserDefaults];
@@ -119,6 +120,12 @@
     NSMutableDictionary *loadInfo;
     //if user has autologin set bring up their data, otherwise redirect to the tutorial/login/signup flow
     if ([core isAlive:[self autoLogin]]) {
+        if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"NotificationPush"]intValue]==1) {
+            ProfileInfo *prof = [ProfileInfo new];
+            [nav_ctrl pushViewController:prof animated:YES];
+            [self.slidingViewController resetTopView];
+          
+        }
         me = [core new];
         [user removeObjectForKey:@"Balance"];
         loadInfo = [[NSMutableDictionary alloc] initWithContentsOfFile:[self autoLogin]];
@@ -151,7 +158,11 @@
 -(void)updateLoader{
        if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
            [self.navigationItem setRightBarButtonItem:Nil];
-              [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+           if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound) {
+               [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+           }
+           else
+               [self.balance setTitle:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
            UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
            [self.navigationItem setRightBarButtonItem:funds];
              }
@@ -214,7 +225,7 @@
 #pragma mark-9jan
    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
        
-       UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user Please check your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+       UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
        [alert show];
        return;
        
@@ -233,6 +244,7 @@
         [alert show];
         return;
     }
+   
     //IsVerifiedPhone
     //[user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"]
    if ( ![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {

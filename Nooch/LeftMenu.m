@@ -99,7 +99,11 @@
     [self.name setText:[user objectForKey:@"firstName"]];
     
     if ([user objectForKey:@"Balance"]) {
-        [self.balance setText:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]]];
+        if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound)
+           [self.balance setText:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]]];
+        else
+            [self.balance setText:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]]];
+        
     } else {
         [self.balance setText:[NSString stringWithFormat:@"$%@",@"0.00"]];
     }

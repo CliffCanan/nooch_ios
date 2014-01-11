@@ -28,13 +28,20 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+         [self.navigationController setNavigationBarHidden:YES];
         // Custom initialization
     }
     return self;
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+     [self.navigationController setNavigationBarHidden:YES];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+   
     /*NSArray *familyNames = [[NSArray alloc] initWithArray:[UIFont familyNames]];
     NSArray *fontNames;
     NSInteger indFamily, indFont;
@@ -281,6 +288,7 @@
 }
 - (void)login
 {
+    [self.navigationController setNavigationBarHidden:NO];
     Login *signin = [Login new];
     [self.navigationController pushViewController:signin animated:YES];
 }

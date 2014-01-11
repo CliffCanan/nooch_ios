@@ -11,7 +11,7 @@
 #import "Register.h"
 //
 //Charan's edit 19nov2013
-//seconds for 3 days
+//seconds for 3 days259200
 #define secondsFor3days 259200
 //seconds for 6 days
 #define secondsFor6days 518400
@@ -720,8 +720,7 @@ NSString *amnt;
         }
         else
         {
-            
-                UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil                , nil];
+            UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil                , nil];
                 
                 [Alert show];
                 

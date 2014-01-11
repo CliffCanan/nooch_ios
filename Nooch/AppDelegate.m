@@ -12,7 +12,8 @@
 #import <CoreTelephony/CTCallCenter.h>
 #import "CheckPIN.h"
 #import "ReEnterPin.h"
-
+#import "ProfileInfo.h"
+#import "ECSlidingViewController.h"
 @implementation AppDelegate
 
 static NSString *const kTrackingId = @"UA-36976317-2";
@@ -190,7 +191,25 @@ void exceptionHandler(NSException *exception){
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
     NSLog(@"Error in registration. Error: %@", error);
 }
-
+-(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
+   
+    if ([notification.userInfo valueForKey:@"Profile"]) {
+        [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"NotificationPush"];
+        [nav_ctrl popToRootViewControllerAnimated:YES];
+//        [UIView animateWithDuration:0.75
+//                         animations:^{
+//                             [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//                             [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:nav_ctrl.view cache:NO];
+//                         }];
+//        
+//        [nav_ctrl.view addGestureRecognizer:nav_ctrl.slidingViewController.panGesture];
+//        
+       // [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:profile animated:YES completion:^{
+            
+       // }];
+        
+    }
+}
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
     NSLog(@"userInfo%@", userInfo);
     [[UAPush shared] handleNotification:userInfo

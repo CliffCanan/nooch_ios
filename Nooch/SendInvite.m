@@ -7,11 +7,15 @@
 //
 
 #import "SendInvite.h"
+#import <AddressBook/AddressBook.h>
+#import <AddressBookUI/AddressBookUI.h>
 #import "Home.h"
 
-@interface SendInvite ()
+@interface SendInvite ()<ABPeoplePickerNavigationControllerDelegate>
 @property(nonatomic,strong) UITableView *contacts;
 @property(nonatomic,strong) NSMutableArray *recents;
+
+@property (nonatomic, strong) ABPeoplePickerNavigationController *addressBookController;
 @end
 
 @implementation SendInvite
@@ -165,6 +169,12 @@
     }
     else if ([tagName isEqualToString:@"SMS"])
     {
+         [self.navigationController setNavigationBarHidden:NO];
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDuration:0.5];
+        SMSView.frame= CGRectMake(0, 568, 320, 568);
+        [UIView commitAnimations];
         [SMSView removeFromSuperview];
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Message Sent Successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -282,68 +292,228 @@
 }
 - (IBAction)SMSClicked:(id)sender {
     
-    
+    [self.navigationController setNavigationBarHidden:YES];
     [SMSView removeFromSuperview];
-    SMSView=[[UIView alloc]initWithFrame:CGRectMake(20, 50, 280, 350)];
-    SMSView.backgroundColor=[UIColor grayColor];
-    SMSView.alpha=0.0f;
+    SMSView=[[UIView alloc]initWithFrame:CGRectMake(0, 568, 320, 568)];
+    SMSView.backgroundColor=[UIColor whiteColor];
+   // SMSView.alpha=0.0f;
     [self.view addSubview:SMSView];
-    UIButton*crossbtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    crossbtn.frame=CGRectMake(220, 0, 40, 40);
-    [crossbtn setStyleClass:@"smscrossbuttn-icon"];
+    UIView*navBar=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
+    [navBar setBackgroundColor:[UIColor colorWithRed:82.0f/255.0f green:176.0f/255.0f blue:235.0f/255.0f alpha:1.0f]];
+    [SMSView addSubview:navBar];
+    UILabel*lbl=[[UILabel alloc]initWithFrame:CGRectMake(135, 20,70, 30)];
+    [lbl setText:@"SMS"];
+    [lbl setFont:[UIFont systemFontOfSize:22]];
+    [lbl setTextColor:[UIColor whiteColor]];
+    [SMSView addSubview:lbl];
     
-   // [crossbtn setTitle:@"X" forState:UIControlStateNormal];
+    
+    UIButton*crossbtn=[UIButton buttonWithType:UIButtonTypeCustom];
+    crossbtn.frame=CGRectMake(10,20, 70,30);
+    [crossbtn setStyleClass:@"smscrossbuttn-icon"];
+    [crossbtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
+    [crossbtn setTitle:@"Cancel" forState:UIControlStateNormal];
    // [crossbtn setBackgroundColor:[UIColor orangeColor]];
     [crossbtn addTarget:self action:@selector(crossClicked) forControlEvents:UIControlEventTouchUpInside];
-    [SMSView addSubview:crossbtn];
+    [navBar addSubview:crossbtn];
     
+    btnToSend=[UIButton buttonWithType:UIButtonTypeCustom];
+    btnToSend.frame=CGRectMake(245,20 , 70, 30);
+    // [btnToSend setBackgroundColor:[UIColor blueColor]];
+    [btnToSend setStyleClass:@"sendInvitebuttn-icon"];
+    [btnToSend setTitle:@"Send" forState:UIControlStateNormal];
+    [btnToSend setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [navBar addSubview:btnToSend];
+    [btnToSend addTarget:self action:@selector(sendSMS:) forControlEvents:UIControlEventTouchUpInside];
     
-    textPhoneto=[[UITextField alloc]initWithFrame:CGRectMake(10, 60, 260, 30)];
+    UIButton*phonebookbtn=[UIButton buttonWithType:UIButtonTypeCustom];
+    phonebookbtn.frame=CGRectMake(245,75, 50,50);
+    [phonebookbtn setStyleClass:@"plusbutton"];
+    [phonebookbtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    
+    [phonebookbtn setTitle:@"+" forState:UIControlStateNormal];
+    // [crossbtn setBackgroundColor:[UIColor orangeColor]];
+    [phonebookbtn addTarget:self action:@selector(showcontacts) forControlEvents:UIControlEventTouchUpInside];
+    [SMSView addSubview:phonebookbtn];
+
+    
+    textPhoneto=[[UITextField alloc]initWithFrame:CGRectMake(10, 74, 240, 40)];
     
     textPhoneto.textColor = [UIColor blackColor];
     textPhoneto.borderStyle = UITextBorderStyleRoundedRect;
-    textPhoneto.font = [UIFont systemFontOfSize:17.0];
+    textPhoneto.font = [UIFont systemFontOfSize:30.0];
     textPhoneto.placeholder = @"Phone Number";
     textPhoneto.backgroundColor = [UIColor whiteColor];
     [SMSView addSubview:textPhoneto];
+    [textPhoneto becomeFirstResponder];
     [textPhoneto setDelegate:self];
     //NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
-    msgTextView = [[UITextView alloc] initWithFrame:CGRectMake(10, 100, 260, 150)];
-    [msgTextView setFont:[UIFont systemFontOfSize:16]];
+    msgTextView = [[UITextView alloc] initWithFrame:CGRectMake(10, 125, 300, 200)];
+    [msgTextView setFont:[UIFont systemFontOfSize:18]];
     //NSArray*arrReferCode=[referCode.text componentsSeparatedByString:@":"];
     msgTextView.textColor=[UIColor blackColor];
     msgTextView.text=[NSString stringWithFormat:@"Hey,%@ has invited you to use Nooch, the simplest way to pay friends back. Use my referral code [%@] - download here: %@",[user objectForKey:@"firstName"] , code.text,@"ow.ly/nGocT"];
     [SMSView addSubview:msgTextView];
     
-    btnToSend=[UIButton buttonWithType:UIButtonTypeCustom];
-    btnToSend.frame=CGRectMake(80,260 , 70, 30);
-   // [btnToSend setBackgroundColor:[UIColor blueColor]];
-    [btnToSend setStyleClass:@"invitesendbutton"];
-    [btnToSend setTitle:@"Send" forState:UIControlStateNormal];
-    [SMSView addSubview:btnToSend];
-    [btnToSend addTarget:self action:@selector(sendSMS:) forControlEvents:UIControlEventTouchUpInside];
-    
     [UIView beginAnimations:nil context:nil];
-    
     [UIView setAnimationDelegate:self];
-    [UIView setAnimationDuration:0.3];
-    SMSView.alpha=1.0f;
+    [UIView setAnimationDuration:0.5];
+      SMSView.frame= CGRectMake(0, 0, 320, 568);
        [UIView commitAnimations];
+}
+-(void)showcontacts{
+    _addressBookController = [[ABPeoplePickerNavigationController alloc] init];
+    [_addressBookController setPeoplePickerDelegate:self];
+    [self presentViewController:_addressBookController animated:YES completion:nil];
+}
+
+#pragma mark - ABPeoplePickerNavigationController Delegate method implementation
+
+-(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person{
+    
+    // Initialize a mutable dictionary and give it initial values.
+    NSMutableDictionary *contactInfoDict = [[NSMutableDictionary alloc]
+                                            initWithObjects:@[@"", @"", @"", @"", @"", @"", @"", @"", @""]
+                                            forKeys:@[@"firstName", @"lastName", @"mobileNumber", @"homeNumber", @"homeEmail", @"workEmail", @"address", @"zipCode", @"city"]];
+    
+    // Use a general Core Foundation object.
+    CFTypeRef generalCFObject = ABRecordCopyValue(person, kABPersonFirstNameProperty);
+    
+    // Get the first name.
+    if (generalCFObject) {
+        [contactInfoDict setObject:(__bridge NSString *)generalCFObject forKey:@"firstName"];
+        CFRelease(generalCFObject);
+    }
+    
+    // Get the last name.
+    generalCFObject = ABRecordCopyValue(person, kABPersonLastNameProperty);
+    if (generalCFObject) {
+        [contactInfoDict setObject:(__bridge NSString *)generalCFObject forKey:@"lastName"];
+        CFRelease(generalCFObject);
+    }
+    
+    // Get the phone numbers as a multi-value property.
+    ABMultiValueRef phonesRef = ABRecordCopyValue(person, kABPersonPhoneProperty);
+    for (int i=0; i<ABMultiValueGetCount(phonesRef); i++) {
+        CFStringRef currentPhoneLabel = ABMultiValueCopyLabelAtIndex(phonesRef, i);
+        CFStringRef currentPhoneValue = ABMultiValueCopyValueAtIndex(phonesRef, i);
+        
+        if (CFStringCompare(currentPhoneLabel, kABPersonPhoneMobileLabel, 0) == kCFCompareEqualTo) {
+            [contactInfoDict setObject:(__bridge NSString *)currentPhoneValue forKey:@"mobileNumber"];
+        }
+        
+        if (CFStringCompare(currentPhoneLabel, kABHomeLabel, 0) == kCFCompareEqualTo) {
+            [contactInfoDict setObject:(__bridge NSString *)currentPhoneValue forKey:@"homeNumber"];
+        }
+        
+        CFRelease(currentPhoneLabel);
+        CFRelease(currentPhoneValue);
+    }
+    CFRelease(phonesRef);
+    
+    
+    // Get the e-mail addresses as a multi-value property.
+    ABMultiValueRef emailsRef = ABRecordCopyValue(person, kABPersonEmailProperty);
+    for (int i=0; i<ABMultiValueGetCount(emailsRef); i++) {
+        CFStringRef currentEmailLabel = ABMultiValueCopyLabelAtIndex(emailsRef, i);
+        CFStringRef currentEmailValue = ABMultiValueCopyValueAtIndex(emailsRef, i);
+        
+        if (CFStringCompare(currentEmailLabel, kABHomeLabel, 0) == kCFCompareEqualTo) {
+            [contactInfoDict setObject:(__bridge NSString *)currentEmailValue forKey:@"homeEmail"];
+        }
+        
+        if (CFStringCompare(currentEmailLabel, kABWorkLabel, 0) == kCFCompareEqualTo) {
+            [contactInfoDict setObject:(__bridge NSString *)currentEmailValue forKey:@"workEmail"];
+        }
+        
+        CFRelease(currentEmailLabel);
+        CFRelease(currentEmailValue);
+    }
+    CFRelease(emailsRef);
+    
+    
+    // Get the first street address among all addresses of the selected contact.
+    ABMultiValueRef addressRef = ABRecordCopyValue(person, kABPersonAddressProperty);
+    if (ABMultiValueGetCount(addressRef) > 0) {
+        NSDictionary *addressDict = (__bridge NSDictionary *)ABMultiValueCopyValueAtIndex(addressRef, 0);
+        
+        [contactInfoDict setObject:[addressDict objectForKey:(NSString *)kABPersonAddressStreetKey] forKey:@"address"];
+        [contactInfoDict setObject:[addressDict objectForKey:(NSString *)kABPersonAddressZIPKey] forKey:@"zipCode"];
+        [contactInfoDict setObject:[addressDict objectForKey:(NSString *)kABPersonAddressCityKey] forKey:@"city"];
+    }
+    CFRelease(addressRef);
+    
+    
+    // If the contact has an image then get it too.
+    if (ABPersonHasImageData(person)) {
+        NSData *contactImageData = (__bridge NSData *)ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
+        
+        [contactInfoDict setObject:contactImageData forKey:@"image"];
+    }
+    
+    // Initialize the array if it's not yet initialized.
+   
+    // Add the dictionary to the array.
+   // [_arrContactsData addObject:contactInfoDict];
+    if (![[contactInfoDict valueForKey:@"mobileNumber"] isEqualToString:@""]) {
+        textPhoneto.text= [contactInfoDict  valueForKey:@"mobileNumber"];
+  
+    }
+    else
+        textPhoneto.text= [contactInfoDict valueForKey:@"homeNumber"];
+
+    NSLog(@"%@",contactInfoDict );
+    // Reload the table view data.
+   // [self.tableView reloadData];
+    
+    // Dismiss the address book view controller.
+    [_addressBookController dismissViewControllerAnimated:YES completion:nil];
+    
+    return NO;
+}
+
+
+-(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier{
+    return NO;
+}
+
+
+-(void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker{
+    [_addressBookController dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)crossClicked
 {
-    SMSView.alpha=0.0f;
+     [self.navigationController setNavigationBarHidden:NO];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDuration:0.5];
+    SMSView.frame= CGRectMake(0, 568, 320, 568);
+    [UIView commitAnimations];
+
     [SMSView removeFromSuperview];
     
 }
 -(void)sendSMS:(id)sender
 
 {
-    if ([textPhoneto.text length]!=10) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter 10 digit Cell number to send Message" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        return;
+//    if ([textPhoneto.text length]!=10) {
+//        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter 10 digit Cell number to send Message" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//        [alert show];
+//        return;
+//    }
+    if ([textPhoneto.text rangeOfString:@"("].location !=NSNotFound) {
+        [textPhoneto.text stringByReplacingOccurrencesOfString:@"(" withString:@""];
+        
+    }
+    if ([textPhoneto.text rangeOfString:@")"].location !=NSNotFound) {
+        [textPhoneto.text stringByReplacingOccurrencesOfString:@")" withString:@""];
+        
+    }
+    if ([textPhoneto.text rangeOfString:@"-"].location !=NSNotFound) {
+        [textPhoneto.text stringByReplacingOccurrencesOfString:@"-" withString:@""];
+        
     }
     if([textPhoneto.text length]>=10)
     {

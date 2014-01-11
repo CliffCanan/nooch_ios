@@ -50,8 +50,12 @@
     UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(40, 20, 280, 40)];
     [name setStyleId:@"rside_balance"];
     if ([user objectForKey:@"Balance"]) {
-        [name setText:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]]];
-    } else {
+        if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound)
+            [name setText:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]]];
+        else
+           [name setText:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]]];
+    }
+    else {
         [name setText:[NSString stringWithFormat:@"$%@",@"0.00"]];
     }
    // [name setText:@"$ 100.00"];
@@ -636,11 +640,13 @@
 
             if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
                 
-                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user Please check your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
                 [alert show];
                 return;
-              
+                
+                
             }
+
             
             if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
@@ -680,11 +686,13 @@
             
             if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
                 
-                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user Please check your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
                 [alert show];
                 return;
                 
+                
             }
+
             
             if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
