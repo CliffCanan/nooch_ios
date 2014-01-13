@@ -40,6 +40,7 @@
     
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
      NSLog(@"%@",nav_ctrl.view);
     [ self.navigationItem setLeftBarButtonItem:Nil];
     nav_ctrl = self.navigationController;
@@ -211,11 +212,10 @@
 }
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag==147 && buttonIndex==1) {
+    if ((alertView.tag==147 || alertView.tag==148) && buttonIndex==1) {
         ProfileInfo *prof = [ProfileInfo new];
         [nav_ctrl pushViewController:prof animated:YES];
         [self.slidingViewController resetTopView];
-
     }
 }
 - (void)send_request
@@ -239,8 +239,8 @@
        return;
     }
     if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
-       
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+        [alert setTag:148];
         [alert show];
         return;
     }

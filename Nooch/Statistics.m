@@ -8,10 +8,16 @@
 
 #import "Statistics.h"
 #import "Home.h"
+#import "ECSlidingViewController.h"
 
 @interface Statistics ()
 @property(nonatomic,retain) UIView *back;
 @property(nonatomic,retain) UITableView *stats;
+@property(nonatomic) int selected;
+@property(nonatomic,retain) UIImageView *profile;
+@property(nonatomic,retain) UIImageView *transfers;
+@property(nonatomic,retain) UIImageView *donations;
+@property(nonatomic,retain) UILabel *header;
 @end
 
 @implementation Statistics
@@ -28,6 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.navigationController.view removeGestureRecognizer:self.navigationController.slidingViewController.panGesture];
     dictAllStats=[[NSMutableDictionary alloc]init];
     serve*serveOBJ=[serve new];
     [serveOBJ setDelegate:self];
@@ -36,37 +43,76 @@
 	// Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"Statistics"];
     
+    self.selected = 0;
+    UISwipeGestureRecognizer *left = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(change_stats:)];
+    [left setDirection:UISwipeGestureRecognizerDirectionLeft];
+    [self.view addGestureRecognizer:left];
+    
+    UISwipeGestureRecognizer *right = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(change_stats:)];
+    [right setDirection:UISwipeGestureRecognizerDirectionRight];
+    [self.view addGestureRecognizer:right];
+    
     self.back = [UIView new];
     [self.back setBackgroundColor:[UIColor whiteColor]];
     [self.back setFrame:CGRectMake(10, 10, 300, 425)];
     [self.back setStyleClass:@"raised_view"];
     [self.view addSubview:self.back];
     
-    UIImageView *profile = [UIImageView new];
-    [profile setStyleClass:@"stats_circle"];
-    [profile setStyleId:@"stats_circle_profile_active"];
-    [self.back addSubview:profile];
+    self.profile = [UIImageView new];
+    [self.profile setStyleClass:@"stats_circle"];
+    [self.profile setStyleId:@"stats_circle_profile_active"];
+    [self.back addSubview:self.profile];
     
-    UIImageView *transfers = [UIImageView new];
-    [transfers setStyleClass:@"stats_circle"];
-    [transfers setStyleId:@"stats_circle_transfers_inactive"];
-    [self.back addSubview:transfers];
+    self.transfers = [UIImageView new];
+    [self.transfers setStyleClass:@"stats_circle"];
+    [self.transfers setStyleId:@"stats_circle_transfers_inactive"];
+    [self.back addSubview:self.transfers];
     
-    UIImageView *donations = [UIImageView new];
-    [donations setStyleClass:@"stats_circle"];
-    [donations setStyleId:@"stats_circle_donations_inactive"];
-    [self.back addSubview:donations];
+    self.donations = [UIImageView new];
+    [self.donations setStyleClass:@"stats_circle"];
+    [self.donations setStyleId:@"stats_circle_donations_inactive"];
+    [self.back addSubview:self.donations];
     
-    UILabel *header = [UILabel new];
-    [header setText:@"Profile Stats"];
-    [header setStyleClass:@"stats_header"];
-    [self.back addSubview:header];
+    self.header = [UILabel new];
+    [self.header setText:@"Profile Stats"];
+    [self.header setStyleClass:@"stats_header"];
+    [self.back addSubview:self.header];
     
     self.stats = [UITableView new];
     [self.stats setDelegate:self]; [self.stats setDataSource:self];
     [self.stats setStyleClass:@"stats"];
     [self.back addSubview:self.stats];
     [self.stats setUserInteractionEnabled:NO];
+    [self.stats reloadData];
+}
+
+- (void) change_stats:(UISwipeGestureRecognizer *)slide
+{
+    if (slide.direction == UISwipeGestureRecognizerDirectionLeft) {
+        if (self.selected == 0) {
+            self.selected++;
+            [self.profile setStyleId:@"stats_circle_profile_inactive"];
+            [self.transfers setStyleId:@"stats_circle_transfers_active"];
+            [self.donations setStyleId:@"stats_circle_donations_inactive"];
+        } else if (self.selected == 1) {
+            self.selected++;
+            [self.profile setStyleId:@"stats_circle_profile_inactive"];
+            [self.transfers setStyleId:@"stats_circle_transfers_inactive"];
+            [self.donations setStyleId:@"stats_circle_donations_active"];
+        }
+    } else if (slide.direction == UISwipeGestureRecognizerDirectionRight) {
+        if (self.selected == 1) {
+            self.selected--;
+            [self.profile setStyleId:@"stats_circle_profile_active"];
+            [self.transfers setStyleId:@"stats_circle_transfers_inactive"];
+            [self.donations setStyleId:@"stats_circle_donations_inactive"];
+        } else if (self.selected == 2) {
+            self.selected--;
+            [self.profile setStyleId:@"stats_circle_profile_inactive"];
+            [self.transfers setStyleId:@"stats_circle_transfers_active"];
+            [self.donations setStyleId:@"stats_circle_donations_inactive"];
+        }
+    }
     [self.stats reloadData];
 }
 
@@ -90,39 +136,100 @@
         [cell.textLabel setTextColor:kNoochGrayLight];
     }
     
+    if ([cell.contentView subviews]){
+        for (UIView *subview in [cell.contentView subviews]) {
+            [subview removeFromSuperview];
+        }
+    }
+    
     UILabel *title = [UILabel new];
     UILabel *statistic = [UILabel new];
     [title setStyleClass:@"stats_table_left_lable"];
     [statistic setStyleClass:@"stats_table_right_lable"];
     
-    if (indexPath.row == 0) {
-        [title setText:@"$ Added to Nooch"];
-        [statistic setText:@"$105.00"];
+    if (self.selected == 0) { //profile
+        
+        
+        if (indexPath.row == 0) {
+            [title setText:@"$ Added to Nooch"];
+            [statistic setText:@"$ 105.00"];
+        }
+        else if (indexPath.row == 1) {
+            [title setText:@"$ Cashed out of Nooch"];
+            [statistic setText:@"$ 200.00"];
+        }
+        else if (indexPath.row == 2) {
+            [title setText:@"Friends Invited"];
+            [statistic setText:@"4"];
+        }
+        else if (indexPath.row == 3) {
+            [title setText:@"Invites Accepted"];
+            [statistic setText:@"7"];
+        }
+        else if (indexPath.row == 4) {
+            [title setText:@"$ Earned from Invites"];
+            [statistic setText:@"$ 25.00"];
+        }
+        else if (indexPath.row == 5) {
+            [title setText:@"Posts to Twitter"];
+            [statistic setText:@"0"];
+        }
+        else if (indexPath.row == 6) {
+            [title setText:@"Posts to Facebook"];
+            [statistic setText:@"3"];
+        }
+    } else if (self.selected == 1) { //transfers
+        
+        
+        if (indexPath.row == 0) {
+            [title setText:@"Total # of Transfers"];
+            [statistic setText:@"27"];
+        }
+        else if (indexPath.row == 1) {
+            [title setText:@"Transfers Sent"];
+            [statistic setText:@"17"];
+        }
+        else if (indexPath.row == 2) {
+            [title setText:@"Transfers Received"];
+            [statistic setText:@"4"];
+        }
+        else if (indexPath.row == 3) {
+            [title setText:@"$ Amount Sent"];
+            [statistic setText:@"$ 256.75"];
+        }
+        else if (indexPath.row == 4) {
+            [title setText:@"$ Amount Received"];
+            [statistic setText:@"$ 123.00"];
+        }
+        else if (indexPath.row == 5) {
+            [title setText:@"Largest Transfer Sent"];
+            [statistic setText:@"$ 75.00"];
+        }
+        else if (indexPath.row == 6) {
+            [title setText:@"Largest Transfer Received"];
+            [statistic setText:@"$ 70.03"];
+        }
+    } else if (self.selected == 2) { //donations
+        
+        
+        if (indexPath.row == 0) {
+            [title setText:@"Total $ Donated"];
+            [statistic setText:@"$ 105.00"];
+        }
+        else if (indexPath.row == 1) {
+            [title setText:@"Total Donations"];
+            [statistic setText:@"3"];
+        }
+        else if (indexPath.row == 2) {
+            [title setText:@"Causes Donated to"];
+            [statistic setText:@"4"];
+        }
+        else if (indexPath.row == 3) {
+            [title setText:@"Largest Donation"];
+            [statistic setText:@"$ 125.00"];
+        }
     }
-    else if (indexPath.row == 1) {
-        [title setText:@"$ Cashed out of Nooch"];
-        [statistic setText:@"$200.00"];
-    }
-    else if (indexPath.row == 2) {
-        [title setText:@"Friends Invited"];
-        [statistic setText:@"4"];
-    }
-    else if (indexPath.row == 3) {
-        [title setText:@"Invites Accepted"];
-        [statistic setText:@"7"];
-    }
-    else if (indexPath.row == 4) {
-        [title setText:@"$ Earned from Invites"];
-        [statistic setText:@"$25.00"];
-    }
-    else if (indexPath.row == 5) {
-        [title setText:@"Posts to Twitter"];
-        [statistic setText:@"0"];
-    }
-    else if (indexPath.row == 6) {
-        [title setText:@"Posts to Facebook"];
-        [statistic setText:@"3"];
-    }
+    
     [cell.contentView addSubview:title];
     [cell.contentView addSubview:statistic];
     return cell;
@@ -225,10 +332,11 @@
         
         [serveOBJ GetMemberStats:@"Largest_received_transfer"];
     }
+}
 
-    
-
-    
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
 }
 
 - (void)didReceiveMemoryWarning

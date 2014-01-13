@@ -485,9 +485,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    
     if (self.completed_selected) {
-        
         return [histShowArrayCompleted count]+1;
     } else {
                 return [histShowArrayPending count]+1;
