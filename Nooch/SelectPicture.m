@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "CreatePIN.h"
 #import "assist.h"
+#import "ECSlidingViewController.h"
 @interface SelectPicture ()
 @property(nonatomic,strong) NSMutableDictionary *user;
 @property(nonatomic,strong) UIImageView *pic;
@@ -39,6 +40,7 @@
 }
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
     if(buttonIndex == 0)
     {
         
@@ -98,22 +100,27 @@
     return img;
 }
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info{
+
+
     UIImage *image=[info objectForKey:UIImagePickerControllerOriginalImage];
     [self.pic setImage:[self imageWithImage:image scaledToSize:CGSizeMake(40, 40)]];
     [[assist shared]setTranferImage:[self imageWithImage:image scaledToSize:CGSizeMake(40, 40)]];
-    [self dismissViewControllerAnimated:YES completion:Nil];
-   // 29/12
-    //[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:^{
+        self.slidingViewController.panGesture.enabled=NO;
+        [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
+
+    }];
+   
     [self.next_button setTitle:@"Continue" forState:UIControlStateNormal];
     [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.next_button addTarget:self action:@selector(cont) forControlEvents:UIControlEventTouchUpInside];
     [self.next_button setStyleClass:@"button_green"];
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker1{
+    [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
+ self.slidingViewController.panGesture.enabled=NO;
      [self dismissViewControllerAnimated:YES completion:Nil];
-    // 29/12
-	//[self dismissModalViewControllerAnimated:YES];
-}
+  }
 
 - (void)next
 {
@@ -133,12 +140,17 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
+    [nav_ctrl performSelector:@selector(disable)];
+ self.slidingViewController.panGesture.enabled=NO;
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    UIView*subview=[[UIView alloc]init];
+    subview.frame=self.view.frame;
+    subview.backgroundColor=[UIColor clearColor];
+    [self.view addSubview:subview];
     
     UIImageView *logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
-    [self.view addSubview:logo];
+    [subview addSubview:logo];
     
     NSArray *array = [[self.user objectForKey:@"name"] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     array = [array filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF != ''"]];
@@ -146,7 +158,7 @@
     UILabel *welcome = [[UILabel alloc] initWithFrame:CGRectMake(0, 135, 320, 25)];
     [welcome setText:[NSString stringWithFormat:@"Hey %@!",[self.user objectForKey:@"first_name" ]]]; [welcome setBackgroundColor:[UIColor clearColor]];
     [welcome setStyleClass:@"header_signupflow"];
-    [self.view addSubview:welcome];
+    [subview addSubview:welcome];
     
     self.pic = [[UIImageView alloc] initWithFrame:CGRectMake(89, 170, 144, 144)];
     self.pic.layer.borderColor = kNoochLight.CGColor;
@@ -159,7 +171,7 @@
     } else {
         [self.pic setImage:[UIImage imageNamed:@"silhouette.png"]];
     }
-    [self.view addSubview:self.pic];
+    [subview addSubview:self.pic];
     
     self.message = [[UILabel alloc] initWithFrame:CGRectMake(20, 310, 280, 70)];
     [self.message setBackgroundColor:[UIColor clearColor]];
@@ -172,7 +184,7 @@
     }
     [self.message setStyleClass:@"instruction_text"];
     [self.message setNumberOfLines:0];
-    [self.view addSubview:self.message];
+    [subview addSubview:self.message];
     
     self.choose_pic = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.choose_pic setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -187,7 +199,7 @@
     [self.choose_pic addTarget:self action:@selector(change_pic) forControlEvents:UIControlEventTouchUpInside];
     [self.choose_pic setFrame:CGRectMake(10, 390, 300, 60)];
     [self.choose_pic setStyleClass:@"button_gray"];
-    [self.view addSubview:self.choose_pic];
+    [subview addSubview:self.choose_pic];
     
     self.next_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.next_button setFrame:CGRectMake(10, 460, 300, 60)];
@@ -206,7 +218,7 @@
         [self.next_button setStyleClass:@"label_small"];
     }
     
-    [self.view addSubview:self.next_button];
+    [subview addSubview:self.next_button];
     
     self.picker = [UIImagePickerController new];
     self.picker.delegate = self;

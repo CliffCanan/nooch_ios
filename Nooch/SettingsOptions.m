@@ -159,6 +159,8 @@
 {
     if (buttonIndex == 1) {
         [[assist shared]setisloggedout:YES];
+        [timer invalidate];
+        timer=nil;
         serve*  serveOBJ=[serve new];
         serveOBJ.Delegate=self;
         

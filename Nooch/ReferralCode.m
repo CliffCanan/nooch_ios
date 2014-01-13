@@ -59,7 +59,7 @@
     [prompt setStyleClass:@"instruction_text"];
     [self.view addSubview:prompt];
     
-    UIButton *enter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+   enter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [enter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [enter setBackgroundColor:kNoochGreen];
     [enter setTitle:@"Continue" forState:UIControlStateNormal];
@@ -104,11 +104,14 @@
     if ([self.code_field.text length]==0) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Referral Code" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        [enter setEnabled:YES];
         return;
     }
+    
     NSString*get4chr=[self.code_field.text substringToIndex:3];
     if ([[get4chr uppercaseStringWithLocale:[NSLocale currentLocale]]isEqualToString:get4chr]) {
         //ServiceType=@"invitecheck";
+         [enter setEnabled:NO];
         spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [self.view addSubview:spinner];
         spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
@@ -125,6 +128,7 @@
         
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Check Your Referral Code" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+         [enter setEnabled:YES];
         
     }
 
@@ -159,6 +163,7 @@
         } else {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Code" message:@"The referall code you entered is invalid. Please try again or request a code if you do not have one." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
+            [enter setEnabled:YES];
             [spinner stopAnimating];
             [spinner setHidden:YES];
         }
@@ -180,6 +185,7 @@
         {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Sorry! Referral Code Expired" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
+             [enter setEnabled:YES];
             [spinner stopAnimating];
             [spinner setHidden:YES];
         }
@@ -227,6 +233,7 @@
             UIAlertView *decline= [[UIAlertView alloc] initWithTitle:@"Well..." message:@"This address already exists in our system, we do not support cloning you."delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [decline show];
             [decline setTag:1];
+             [enter setEnabled:YES];
             [spinner stopAnimating];
             [spinner setHidden:YES];
           

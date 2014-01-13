@@ -14,6 +14,7 @@
     NSString*getEncryptedPassword;
     float lat,lon;
     UIActivityIndicatorView*spinner;
+    UIButton *enter;
 }
 - (id)initWithData:(NSDictionary *)usr;
 @end

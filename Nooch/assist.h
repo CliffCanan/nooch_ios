@@ -12,7 +12,7 @@
 #import "serve.h"
 #import <Social/Social.h>
 #import <Accounts/Accounts.h>
-
+NSTimer*timer;
 BOOL profileGO;
 bool histSafe;
 bool limit;
@@ -28,7 +28,7 @@ NSString *histSearching;
     NSMutableData *responseData;
     NSMutableArray *sortedHist;
     //venturepact
-    NSTimer*timer;
+    
     BOOL islogout;
     UIImage*imageOBJFortransfer;
 }
