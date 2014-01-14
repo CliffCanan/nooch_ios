@@ -11,9 +11,8 @@
 #import <Social/Social.h>
 #import "serve.h"
 
-@interface Register : UIViewController<UITextFieldDelegate,serveD,CLLocationManagerDelegate>
+@interface Register : UIViewController<UITextFieldDelegate,serveD>
 {
-    CLLocationManager *locationManager;
     UIActivityIndicatorView*spinner;
 }
 

@@ -59,10 +59,6 @@
     
     // Do any additional setup after loading the view from its nib.
     
-    locationManager = [[CLLocationManager alloc] init];
-    [locationManager setDelegate:self];
-    [locationManager startUpdatingLocation];
-    
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self.navigationController setNavigationBarHidden:YES];
     self.facebook_info = [NSMutableDictionary new];
@@ -413,19 +409,6 @@
     [UIView setAnimationDuration: movementDuration];
     self.view.frame = CGRectOffset(self.view.frame, 0, movement);
     [UIView commitAnimations];
-}
-
-# pragma mark - CLLocationManager Delegate Methods
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
-{
-    NSLog(@"Error : %@",error);
-    if ([error code] == kCLErrorDenied){
-        NSLog(@"Error : %@",error);
-    }
-}
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
-{
-    [manager stopUpdatingLocation];
 }
 
 - (void)didReceiveMemoryWarning
