@@ -9,6 +9,7 @@
 #import "serve.h"
 #import "Home.h"
 #import "Register.h"
+#import "NSString+ASBase64.h"
 //
 //Charan's edit 19nov2013
 //seconds for 3 days259200
@@ -83,8 +84,8 @@ NSString *responseString;
 //NSString * const ServerUrl =@"https://noochweb.venturepact.com/noochservice/noochservice.svc";
 //http://noochweb.venturepact.com/NoochService.svc
 //NSString * const ServerUrl = @"https://192.203.102.254/noochservice/NoochService.svc";
-NSString * const ServerUrl = @"https://192.203.102.254/NoochService/NoochService.svc";
-//NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
+//NSString * const ServerUrl = @"https://192.203.102.254/NoochService/NoochService.svc";
+NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
 //NSString * const ServerUrl = @"https://10.200.1.40/noochservice/NoochService.svc";
 //NSString * const ServerUrl = @"http://noochweb.venturepact.com/NoochService.svc"; //testing server Venturepact isCheckValidation;
 bool locationUpdate;
@@ -198,6 +199,9 @@ NSString *amnt;
     
 }
 -(void)getEncrypt:(NSString *)input {
+    NSString *encodedString = [NSString encodeBase64String:input];
+    
+    NSLog(@"%@",encodedString);
     self.responseData = [[NSMutableData alloc] init];
     requestEncryption = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@", ServerUrl,@"GetEncryptedData",@"data",input]]];
     [requestEncryption setHTTPMethod:@"GET"];

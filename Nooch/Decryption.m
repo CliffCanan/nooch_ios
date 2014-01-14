@@ -8,6 +8,7 @@
 
 #import "Decryption.h"
 #import "Constant.h"
+#import "NSString+ASBase64.h"
 //#import "CJSONSerializer.h"
 //#import "CJSONDataSerializer.h"
 //#import "JSON.h"
@@ -21,6 +22,10 @@ NSMutableURLRequest *request1,*request2;
 
 -(void)getDecryptedValue:(NSString *) methodName pwdString:(NSString *) sources {
     
+    NSString *encodedString = [NSString decodeBase64String:sources];;
+    
+    NSLog(@"%@",encodedString);
+
     self.responseData = [[NSMutableData data] retain]; 
    request1 = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?data=%@", MyUrl, methodName, sources]]];
     
@@ -30,6 +35,10 @@ NSMutableURLRequest *request1,*request2;
 }
 -(void)getDecryptionL:(NSString*)methodName textString:(NSString*)text
 {
+    NSString *encodedString = [NSString decodeBase64String:text];;
+    
+    NSLog(@"%@",encodedString);
+    
     self.responseData = [[NSMutableData data] retain];
     NSURLRequest *requisicao = [NSURLRequest requestWithURL:
                                 [NSURL URLWithString:

@@ -75,35 +75,11 @@
     lon = [[[NSString alloc] initWithFormat:@"%f",loc.longitude] floatValue];
     [locationManager stopUpdatingLocation];
 }
-//-(void) BackClicked:(id) sender
-//
-//{
-//    [self.navigationController setNavigationBarHidden:YES];
-//
-//    [self.navigationController popViewControllerAnimated:YES];
-//    
-//}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    UIButton* btnback=[UIButton buttonWithType:UIButtonTypeCustom];
-//    //[btnback setTitle:@"< Back" forState:UIControlStateNormal];
-//// Do any additional setup after loading the ;view.
-//   // [btnback setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
-//    //[btnback setImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
-//
-//    [btnback setStyleCSS:@"backbuttn-icon"];
-//    [btnback setStyleId:@"refer_back"];
-//    btnback.frame=CGRectMake(0,18, 70, 40);
-//    
-//    [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    
-//    
-//    UIBarButtonItem *addButton=[[UIBarButtonItem alloc]initWithCustomView:btnback];
-//    
-//    self.navigationItem.leftBarButtonItem = addButton;
-//    
+
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
@@ -350,9 +326,9 @@
         NSError *error;
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         NSLog(@"User response: %@",loginResult);
-        
+        [self.navigationItem setHidesBackButton:YES];
         [nav_ctrl setNavigationBarHidden:NO];
-
+      [nav_ctrl.navigationItem setLeftBarButtonItem:nil];
       [user removeObjectForKey:@"Balance"];
         [self.navigationItem setBackBarButtonItem:Nil];
         [spinner stopAnimating];

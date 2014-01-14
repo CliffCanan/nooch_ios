@@ -77,6 +77,7 @@
     [self.balance.titleLabel setFont:kNoochFontMed];
     [self.balance addTarget:self action:@selector(showFunds) forControlEvents:UIControlEventTouchUpInside];
     [self.balance setStyleId:@"navbar_balance"];
+    [self.navigationItem setLeftBarButtonItem:nil];
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];

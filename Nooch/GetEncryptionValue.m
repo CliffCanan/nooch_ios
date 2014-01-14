@@ -21,6 +21,7 @@ NSMutableURLRequest*requestEncryption;
 
 -(void)getEncryptionData:(NSString *) stringtoEncry {
 
+    
     responseData = [[NSMutableData alloc] init];
     requestEncryption = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@", MyUrl,@"GetEncryptedData",@"data",stringtoEncry]]];
     [requestEncryption setHTTPMethod:@"GET"];
