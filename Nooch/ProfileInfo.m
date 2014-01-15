@@ -538,7 +538,7 @@
         self.picker=[UIImagePickerController new];
         self.picker.delegate = self;
         self.picker.allowsEditing = YES;
-        self.picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        self.picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
         
         
         self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
@@ -555,15 +555,9 @@
         self.picker.delegate = self;
         self.picker.allowsEditing = YES;
         self.picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        
-        
-        self.picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-       // UIView*sview=[[UIView alloc]initWithFrame:CGRectMake(10, 10, 300, 480)];
-       // [self.view addSubview:sview];
-        //sview.subviews=self.picker.view;
+       
         [self presentViewController:self.picker animated:YES completion:Nil];
         
-        //   [self presentModalViewController:self.picker animated:YES];
     }
 }
 -(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size{

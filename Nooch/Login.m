@@ -43,6 +43,12 @@
 - (void)check_credentials
 {
         //28/12
+    locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
+    locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
+    [locationManager startUpdatingLocation];
+    
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [self.view addSubview:spinner];
     spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
@@ -52,11 +58,7 @@
     [log setTagName:@"encrypt"];
     [log getEncrypt:self.password.text];
     
-    locationManager = [[CLLocationManager alloc] init];
-    locationManager.delegate = self;
-    locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
-    locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
-    [locationManager startUpdatingLocation];
+   
 }
 
 # pragma mark - CLLocationManager Delegate Methods
@@ -82,7 +84,7 @@
 
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    
+   [self.navigationItem setTitle:@"LogIn"];
     self.loading = [UIActivityIndicatorView new];
     [self.loading setStyleId:@"loading"];
     
@@ -185,22 +187,16 @@
 
 - (void) forgot_pass
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Are you sure you wish to reset your password?" message:@"An email will be sent to your address with a link for resetting your password." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
-    [av setTag:3];
-    [av show];
-
+    
+    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Enter Email ID" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+    alert.alertViewStyle=UIAlertViewStylePlainTextInput;
+    [alert setTag:220011];
+    [alert show];
   
 }
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if(actionSheet.tag == 3){
-        if(buttonIndex == 1){
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Enter Email ID" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
-            alert.alertViewStyle=UIAlertViewStylePlainTextInput;
-            [alert setTag:220011];
-            [alert show];
-            }
-    }
-    else if(actionSheet.tag==220011&& buttonIndex==1){
+    
+    if(actionSheet.tag==220011&& buttonIndex==1){
         UITextField *emailField = [actionSheet textFieldAtIndex:0];
         if ([emailField.text length] > 0 && [emailField.text  rangeOfString:@"@"].location != NSNotFound && [emailField.text  rangeOfString:@"."].location != NSNotFound){
             [spinner startAnimating];

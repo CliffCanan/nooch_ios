@@ -24,7 +24,7 @@
     NSString *tagName;
     
     NSString *latlng;
-    CLLocationManager *locationManager;
+   // CLLocationManager *locationManager;
     MKPlacemark *placeMarker;
     NSString *country;
     NSString *city;
@@ -37,7 +37,7 @@
     NSString *Longitude;
     NSString *Altitude;
 }
-@property(nonatomic,strong) CLLocationManager *locationManager;
+//@property(nonatomic,strong) CLLocationManager *locationManager;
 @property (retain) id<serveD> Delegate;
 @property (nonatomic, retain) NSMutableData *responseData;
 @property (nonatomic, retain) NSString *tagName;

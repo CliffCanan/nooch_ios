@@ -435,6 +435,7 @@ static assist * _sharedInstance = nil;
             
             [user setObject:[loginResult objectForKey:@"FirstName"] forKey:@"firstName"];
             [user setObject:[loginResult objectForKey:@"LastName"] forKey:@"lastName"];
+            NSLog(@"%@",[user valueForKey:@"firstName"]);
         }
         if(![[loginResult objectForKey:@"Status"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"Status"] != NULL){
             [usr setObject:[loginResult objectForKey:@"Status"] forKey:@"Status"];

@@ -63,13 +63,18 @@
         }
 
         self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        
         [self presentViewController:self.picker animated:YES completion:Nil];
        // [self presentModalViewController:self.picker animated:YES];
     }
     
     else if(buttonIndex == 2)
     {
-        self.picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        self.picker.allowsEditing = YES;
+        [self.picker.view setStyleClass:@"pickerstyle"];
+       
+      //  [self.picker setModalInPopover:YES];
+        self.picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
         [self presentViewController:self.picker animated:YES completion:Nil];
      //   [self presentModalViewController:self.picker animated:YES];
     }
@@ -220,7 +225,7 @@
     
     [subview addSubview:self.next_button];
     
-    self.picker = [UIImagePickerController new];
+    self.picker = [[UIImagePickerController alloc]init];
     self.picker.delegate = self;
 }
 

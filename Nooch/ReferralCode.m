@@ -206,7 +206,7 @@
          if (![[loginResult objectForKey:@"Status"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"Status"]!=NULL) {
                getEncryptedPassword=[loginResult objectForKey:@"Status"];
          }
-       
+          [user setObject:[self.user objectForKey:@"first_name"] forKey:@"firstName"];
          [create newUser:[self.user objectForKey:@"email"] first:[self.user objectForKey:@"first_name" ] last:[self.user objectForKey:@"last_name"] password:[[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]] pin:[self.user objectForKey:@"pin_number"] invCode:self.code_field.text fbId:[self.user objectForKey:@"facebook_id"] ? [self.user objectForKey:@"facebook_id"] : @"" ];
          self.code_field.text=@"";
      }
