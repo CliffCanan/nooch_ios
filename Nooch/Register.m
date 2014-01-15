@@ -67,7 +67,7 @@
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
     
-    UILabel *signup = [[UILabel alloc] initWithFrame:CGRectMake(0, 145, 320, 15)];
+    UILabel *signup = [[UILabel alloc] initWithFrame:CGRectMake(0, 115, 320, 15)];
     [signup setText:@"Sign Up Below With"]; //[signup setBackgroundColor:[UIColor clearColor]];
     [signup setStyleClass:@"instruction_text"];
     [self.view addSubview:signup];
