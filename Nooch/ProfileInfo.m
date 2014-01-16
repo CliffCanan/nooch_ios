@@ -188,7 +188,7 @@
     
     self.address_two = [[UITextField alloc] initWithFrame:CGRectMake(20, 310, 280, 30)];
     [self.address_two setTextAlignment:NSTextAlignmentRight]; [self.address_two setBackgroundColor:[UIColor clearColor]];
-    [self.address_two setPlaceholder:@"Baida Way"]; [self.address_two setDelegate:self];
+    [self.address_two setPlaceholder:@"(Optional)"]; [self.address_two setDelegate:self];
     [self.address_two setKeyboardType:UIKeyboardTypeDefault];
     [self.address_two setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.address_two];
@@ -203,7 +203,7 @@
     
     self.city = [[UITextField alloc] initWithFrame:CGRectMake(20, 350, 280, 30)];
     [self.city setTextAlignment:NSTextAlignmentRight]; [self.city setBackgroundColor:[UIColor clearColor]];
-    [self.city setPlaceholder:@"Philadelphia"]; [self.city setDelegate:self];
+    [self.city setPlaceholder:@"City"]; [self.city setDelegate:self];
     [self.city setKeyboardType:UIKeyboardTypeDefault];
     [self.city setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.city];
@@ -218,7 +218,7 @@
     
     self.zip = [[UITextField alloc] initWithFrame:CGRectMake(20, 390, 280, 30)];
     [self.zip setTextAlignment:NSTextAlignmentRight]; [self.zip setBackgroundColor:[UIColor clearColor]];
-    [self.zip setPlaceholder:@"19104"]; [self.zip setDelegate:self];
+    [self.zip setPlaceholder:@"12345"]; [self.zip setDelegate:self];
     [self.zip setKeyboardType:UIKeyboardTypeNumberPad];
     [self.zip setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.zip];

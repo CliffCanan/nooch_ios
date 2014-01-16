@@ -284,7 +284,6 @@
 }
 - (void)login
 {
-    [self.navigationController setNavigationBarHidden:NO];
     Login *signin = [Login new];
     [self.navigationController pushViewController:signin animated:YES];
 }

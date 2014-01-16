@@ -66,14 +66,11 @@
 		014C4339185B9A4C00956A84 /* withdrawfunds.png in Resources */ = {isa = PBXBuildFile; fileRef = 014C4325185B9A4C00956A84 /* withdrawfunds.png */; };
 		014C433B185BB9EE00956A84 /* default.css in Resources */ = {isa = PBXBuildFile; fileRef = 014C433A185BB9EE00956A84 /* default.css */; };
 		014C433D185BC7EF00956A84 /* VarelaRound-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 014C433C185BC7EF00956A84 /* VarelaRound-Regular.ttf */; };
-		016905DF1864FB6C0065750B /* nooch-icon.svg in Resources */ = {isa = PBXBuildFile; fileRef = 016905DE1864FB6B0065750B /* nooch-icon.svg */; };
 		0179E9EB17F355310027526C /* flat_storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0179E9EA17F355310027526C /* flat_storyboard.storyboard */; };
 		0179E9F017F35A740027526C /* SelectRecipient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0179E9EE17F35A740027526C /* SelectRecipient.m */; };
 		0179E9F917F35AA30027526C /* Home.m in Sources */ = {isa = PBXBuildFile; fileRef = 0179E9F817F35AA30027526C /* Home.m */; };
 		0179E9FC17F36C4C0027526C /* Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 0179E9FB17F36C4C0027526C /* Helpers.m */; };
 		018DA86318048309007B24FB /* SendInvite.m in Sources */ = {isa = PBXBuildFile; fileRef = 018DA86218048309007B24FB /* SendInvite.m */; };
-		0190CBDF1863890D00CDEDE1 /* nooch-logo-white.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0190CBDD1863890C00CDEDE1 /* nooch-logo-white.svg */; };
-		0190CBE01863890D00CDEDE1 /* nooch-logo.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0190CBDE1863890D00CDEDE1 /* nooch-logo.svg */; };
 		01B63435187B33F900596D32 /* CheckPIN.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B63434187B33F900596D32 /* CheckPIN.m */; };
 		01BD43D8181F096300062315 /* Legal.m in Sources */ = {isa = PBXBuildFile; fileRef = 01BD43D7181F096300062315 /* Legal.m */; };
 		01C26DAA1843BB22005179B7 /* address-book-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26D8F1843BB22005179B7 /* address-book-icon.png */; };
@@ -128,6 +125,7 @@
 		01C83E7B17F4D726009CABBF /* HowMuch.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C83E7917F4D726009CABBF /* HowMuch.m */; };
 		01C83E8017F9FF9E009CABBF /* TransferPIN.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C83E7E17F9FF9E009CABBF /* TransferPIN.m */; };
 		01C83E8417FB1606009CABBF /* NavControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C83E8317FB1606009CABBF /* NavControl.m */; };
+		01C949DB1888852A000FC11E /* nooch-icon.svg in Resources */ = {isa = PBXBuildFile; fileRef = 01C949DA1888852A000FC11E /* nooch-icon.svg */; };
 		16E4B1B0187053F20099D075 /* NSData+GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E4B194187053F20099D075 /* NSData+GIF.m */; };
 		16E4B1B1187053F20099D075 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E4B196187053F20099D075 /* SDImageCache.m */; };
 		16E4B1B2187053F20099D075 /* SDWebImageCompat.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E4B198187053F20099D075 /* SDWebImageCompat.m */; };
@@ -340,7 +338,6 @@
 		014C4325185B9A4C00956A84 /* withdrawfunds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = withdrawfunds.png; sourceTree = "<group>"; };
 		014C433A185BB9EE00956A84 /* default.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = default.css; sourceTree = "<group>"; };
 		014C433C185BC7EF00956A84 /* VarelaRound-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "VarelaRound-Regular.ttf"; sourceTree = "<group>"; };
-		016905DE1864FB6B0065750B /* nooch-icon.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "nooch-icon.svg"; sourceTree = "<group>"; };
 		0179E9EA17F355310027526C /* flat_storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = flat_storyboard.storyboard; sourceTree = "<group>"; };
 		0179E9ED17F35A740027526C /* SelectRecipient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectRecipient.h; sourceTree = "<group>"; };
 		0179E9EE17F35A740027526C /* SelectRecipient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectRecipient.m; sourceTree = "<group>"; };
@@ -350,8 +347,6 @@
 		0179E9FB17F36C4C0027526C /* Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Helpers.m; sourceTree = "<group>"; };
 		018DA86118048309007B24FB /* SendInvite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendInvite.h; sourceTree = "<group>"; };
 		018DA86218048309007B24FB /* SendInvite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendInvite.m; sourceTree = "<group>"; };
-		0190CBDD1863890C00CDEDE1 /* nooch-logo-white.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "nooch-logo-white.svg"; sourceTree = "<group>"; };
-		0190CBDE1863890D00CDEDE1 /* nooch-logo.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "nooch-logo.svg"; sourceTree = "<group>"; };
 		01B63433187B33F900596D32 /* CheckPIN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckPIN.h; sourceTree = "<group>"; };
 		01B63434187B33F900596D32 /* CheckPIN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckPIN.m; sourceTree = "<group>"; };
 		01BD43D6181F096300062315 /* Legal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Legal.h; sourceTree = "<group>"; };
@@ -412,6 +407,7 @@
 		01C83E7E17F9FF9E009CABBF /* TransferPIN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferPIN.m; sourceTree = "<group>"; };
 		01C83E8217FB1606009CABBF /* NavControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavControl.h; sourceTree = "<group>"; };
 		01C83E8317FB1606009CABBF /* NavControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavControl.m; sourceTree = "<group>"; };
+		01C949DA1888852A000FC11E /* nooch-icon.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "nooch-icon.svg"; sourceTree = "<group>"; };
 		16E4B193187053F20099D075 /* NSData+GIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+GIF.h"; sourceTree = "<group>"; };
 		16E4B194187053F20099D075 /* NSData+GIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GIF.m"; sourceTree = "<group>"; };
 		16E4B195187053F20099D075 /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
@@ -870,9 +866,7 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
-				016905DE1864FB6B0065750B /* nooch-icon.svg */,
-				0190CBDD1863890C00CDEDE1 /* nooch-logo-white.svg */,
-				0190CBDE1863890D00CDEDE1 /* nooch-logo.svg */,
+				01C949DA1888852A000FC11E /* nooch-icon.svg */,
 				0106773B1860F68400E11F3D /* take-pic-icon.png */,
 				010677371860F67A00E11F3D /* check-icon-small.png */,
 				010677381860F67A00E11F3D /* settings-icon2.png */,
@@ -1564,7 +1558,6 @@
 				01C26E001843E88A005179B7 /* 4k_image.png in Resources */,
 				6BC5FED91625F1B0007EAD7A /* Roboto-CondensedItalic.ttf in Resources */,
 				6BC5FEDB1625F1B0007EAD7A /* Roboto-Italic.ttf in Resources */,
-				016905DF1864FB6C0065750B /* nooch-icon.svg in Resources */,
 				01C26DBF1843BB22005179B7 /* stats-profile-inactive.png in Resources */,
 				01C26DB81843BB22005179B7 /* nooch-logo.png in Resources */,
 				6BC5FEDD1625F1B0007EAD7A /* Roboto-Light.ttf in Resources */,
@@ -1617,7 +1610,6 @@
 				01C26DC21843BB22005179B7 /* twitter-icon.png in Resources */,
 				01C26DBE1843BB22005179B7 /* stats-profile-active.png in Resources */,
 				01C26DBD1843BB22005179B7 /* stats-donations-inactive.png in Resources */,
-				0190CBE01863890D00CDEDE1 /* nooch-logo.svg in Resources */,
 				842E3318187431E40057EAFB /* RoundLoading.png in Resources */,
 				01C26DEC1843C56C005179B7 /* LimitsAndFees_Icon.png in Resources */,
 				014C4335185B9A4C00956A84 /* quicktap_10.png in Resources */,
@@ -1637,7 +1629,6 @@
 				01C26DEE1843C56C005179B7 /* NoFundingSource_Arrow.png in Resources */,
 				01C26DF51843C56C005179B7 /* Star_Icon.png in Resources */,
 				6BE13327176F65D8009763AC /* BackgroundMain-568h@2x.png in Resources */,
-				0190CBDF1863890D00CDEDE1 /* nooch-logo-white.svg in Resources */,
 				014C4327185B9A4C00956A84 /* addfunds.png in Resources */,
 				01C26DF71843C56C005179B7 /* TopSideBar.png in Resources */,
 				014C4330185B9A4C00956A84 /* nonprofits-fb.png in Resources */,
@@ -1667,6 +1658,7 @@
 				16E4B1C61870832B0099D075 /* untick.png in Resources */,
 				0129D8EA1815B10D00BEAC30 /* Brandon_med.otf in Resources */,
 				01C26DAE1843BB22005179B7 /* Dollar_Symbol.png in Resources */,
+				01C949DB1888852A000FC11E /* nooch-icon.svg in Resources */,
 				014C432F185B9A4C00956A84 /* n_Icon.png in Resources */,
 				01C26DB31843BB22005179B7 /* fb-icon100x100.png in Resources */,
 				01C26DB91843BB22005179B7 /* pay-back-icon.png in Resources */,
@@ -1853,8 +1845,8 @@
 		6B30375815FA3FF600056DAD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: charanjit singh (R2K5CMQ773)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: charanjit singh (R2K5CMQ773)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Preston Hults (LK8B7LGXK6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Preston Hults (LK8B7LGXK6)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1877,8 +1869,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
+				PROVISIONING_PROFILE = "0B728BEF-1149-4D10-A675-233B9A3A089A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0B728BEF-1149-4D10-A675-233B9A3A089A";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1886,8 +1878,8 @@
 		6B30375915FA3FF600056DAD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: charanjit singh (R2K5CMQ773)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: charanjit singh (R2K5CMQ773)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Preston Hults (LK8B7LGXK6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Preston Hults (LK8B7LGXK6)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1909,8 +1901,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
+				PROVISIONING_PROFILE = "0B728BEF-1149-4D10-A675-233B9A3A089A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0B728BEF-1149-4D10-A675-233B9A3A089A";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
