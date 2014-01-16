@@ -57,7 +57,7 @@
     
     self.name = [[UILabel alloc] initWithFrame:CGRectMake(65, 40, 150, 20)];
     [self.name setStyleId:@"lside_firstname"];
-    [self.name setText:[[me usr] objectForKey:@"FirstName"]];
+    [self.name setText:[[user objectForKey:@"firstName"] capitalizedString]];
      //[name setText:@"Preston"];
      [user_bar addSubview:self.name];
     
@@ -96,7 +96,7 @@
     [super viewWillAppear:animated];
     //me=[core new];
    // assist*assistOBJ=[assist new];
-    [self.name setText:[user objectForKey:@"firstName"]];
+    [self.name setText:[[user objectForKey:@"firstName"] capitalizedString]];
     
     if ([user objectForKey:@"Balance"]) {
         if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound)

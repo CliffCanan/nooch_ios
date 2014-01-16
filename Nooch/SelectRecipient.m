@@ -10,7 +10,7 @@
 #import "UIImageView+WebCache.h"
 #import "Helpers.h"
 #import "userlocation.h"
-
+#import "ECSlidingViewController.h"
 @interface SelectRecipient ()
 @property(nonatomic,strong) UITableView *contacts;
 @property(nonatomic,strong) NSMutableArray *recents;
@@ -30,6 +30,10 @@
 {
     [super viewDidLoad];
     [self.navigationItem setTitle:@"Select Recipient"];
+    [self.slidingViewController.panGesture setEnabled:YES];
+    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+    
+
     //clear Image cache
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     [imageCache clearMemory];

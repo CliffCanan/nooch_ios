@@ -9,6 +9,7 @@
 #import "Withdraw.h"
 #import "Home.h"
 #import "TransferPIN.h"
+#import "ECSlidingViewController.h"
 @interface Withdraw ()
 @property(nonatomic,strong)NSArray*banks;
 @property(nonatomic,strong) UIButton *withdraw;
@@ -39,7 +40,10 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"Withdraw Funds"];
+    [self.slidingViewController.panGesture setEnabled:YES];
+    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
+
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     UILabel *info = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 0, 0)];

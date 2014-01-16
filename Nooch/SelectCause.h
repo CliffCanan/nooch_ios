@@ -19,5 +19,6 @@
     NSMutableArray *causesArr;
     NSMutableArray *FeaturedcausesArr;
     UIImageView *feat;
+     UILabel*textLabel;
 }
 @end

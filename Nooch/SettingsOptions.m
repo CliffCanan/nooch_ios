@@ -12,7 +12,7 @@
 #import "ProfileInfo.h"
 #import "PINSettings.h"
 #import "NotificationSettings.h"
-
+#import "ECSlidingViewController.h"
 @interface SettingsOptions ()
 @property(atomic,weak)UIButton *logout;
 @end
@@ -32,7 +32,10 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"Settings"];
+    [self.slidingViewController.panGesture setEnabled:YES];
+    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
+
     [self.view setStyleClass:@"background_gray"];
     
     UITableView *menu = [UITableView new];

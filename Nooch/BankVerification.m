@@ -9,6 +9,7 @@
 #import "BankVerification.h"
 #import "Home.h"
 #import "assist.h"
+#import "ECSlidingViewController.h"
 @interface BankVerification ()
 
 
@@ -31,6 +32,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.slidingViewController.panGesture setEnabled:YES];
+    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+    
+
 	// Do any additional setup after loading the view.
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];

@@ -9,6 +9,7 @@
 #import "Deposit.h"
 #import "Home.h"
 #import "TransferPIN.h"
+#import "ECSlidingViewController.h"
 @interface Deposit ()
 @property (nonatomic,strong) UIButton *deposit;
 @property(nonatomic,strong)NSArray*banks;
@@ -38,7 +39,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self.slidingViewController.panGesture setEnabled:YES];
+    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
+
     [self.navigationItem setTitle:@"Add Funds"];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];

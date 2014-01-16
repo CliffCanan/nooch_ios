@@ -2,7 +2,7 @@
 //  NSString+ASBase64.h
 //  ASBaseExample
 //
-//  Created by Arthur Sabintsev on 9/7/13.
+//  Created by
 //  Copyright (c) 2013 ID.me. All rights reserved.
 //
 

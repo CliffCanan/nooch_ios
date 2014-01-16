@@ -10,6 +10,7 @@
 #import "Home.h"
 #import "DonationAmount.h"
 #import "UIImageView+WebCache.h"
+#import "ECSlidingViewController.h"
 @interface CharityDetails ()
 @property (nonatomic,strong) NSDictionary *charity;
 @end
@@ -25,15 +26,25 @@
     }
     return self;
 }
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:YES];
-    self.navigationItem.title=[self.charity valueForKey:@"OrganizationName"];
- 
-}
+//-(void)viewDidAppear:(BOOL)animated{
+//    [super viewDidAppear:YES];
+//    self.navigationItem.title=[self.charity valueForKey:@"OrganizationName"];
+// 
+//}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.slidingViewController.panGesture setEnabled:YES];
+    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+    
+
+    //clear Image cache
+    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    [imageCache clearMemory];
+    [imageCache clearDisk];
+    [imageCache cleanDisk];
+    self.navigationItem.title=[self.charity valueForKey:@"OrganizationName"];
 	// Do any additional setup after loading the view.
     //dict=[[NSMutableDictionary alloc]init];
    // dictToSend=[[NSMutableDictionary alloc]init];

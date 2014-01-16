@@ -10,7 +10,7 @@
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
 #import "Home.h"
-
+#import "ECSlidingViewController.h"
 @interface SendInvite ()<ABPeoplePickerNavigationControllerDelegate>
 @property(nonatomic,strong) UITableView *contacts;
 @property(nonatomic,strong) NSMutableArray *recents;
@@ -32,6 +32,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.slidingViewController.panGesture setEnabled:YES];
+    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     // Do any additional setup after loading the view from its nib.
     [self.navigationItem setTitle:@"Refer a Friend"];
     

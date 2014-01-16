@@ -12,7 +12,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "TransactionDetails.h"
 #import "UIImageView+WebCache.h"
-
+#import "ECSlidingViewController.h"
 @interface HistoryFlat ()<GMSMapViewDelegate>
 {
     GMSMapView * mapView_;
@@ -57,9 +57,10 @@
     [super viewDidLoad];
     
     [self.navigationItem setTitle:@"History"];
-     [nav_ctrl performSelector:@selector(disable)];
+    // [nav_ctrl performSelector:@selector(disable)];
 	// Do any additional setup after loading the view.
-   
+    [self.slidingViewController.panGesture setEnabled:YES];
+    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     histArray=[[NSMutableArray alloc]init];
     histShowArrayCompleted=[[NSMutableArray alloc]init];
     histShowArrayPending=[[NSMutableArray alloc]init];

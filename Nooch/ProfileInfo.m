@@ -61,6 +61,10 @@
     [super viewDidLoad];
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     [self.view addGestureRecognizer:tap];
+    if (!isSignup) {
+        [self.slidingViewController.panGesture setEnabled:YES];
+        [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+    }
     [self.view setBackgroundColor:[UIColor whiteColor]];
     isPhotoUpdate=NO;
    

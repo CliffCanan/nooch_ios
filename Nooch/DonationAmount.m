@@ -11,7 +11,7 @@
 #import "TransferPIN.h"
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
-
+#import "ECSlidingViewController.h"
 @interface DonationAmount ()
 @property(nonatomic,strong) NSDictionary *receiver;
 @property(nonatomic,strong) UITextField *amount;
@@ -38,7 +38,10 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    [self.slidingViewController.panGesture setEnabled:YES];
+    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
+
     [self.navigationItem setTitle:@"How Much"];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];

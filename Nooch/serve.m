@@ -199,6 +199,8 @@ NSString *amnt;
     
 }
 -(void)getEncrypt:(NSString *)input {
+   // NSString*key=@"kiddamalkit";
+   // input=[input stringByAppendingString:key];
     NSString *encodedString = [NSString encodeBase64String:input];
     
     NSLog(@"%@",encodedString);

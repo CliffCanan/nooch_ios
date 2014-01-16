@@ -7,6 +7,7 @@
 //
 
 #import "NewBank.h"
+#import "ECSlidingViewController.h"
 #import "Home.h"
 #define NUMBER @"1234567890"
 #define ALPHA               @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
@@ -37,7 +38,8 @@
     UITapGestureRecognizer *tap =
     [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(Tapped:)];
     [self.view addGestureRecognizer: tap];
-    
+    [self.slidingViewController.panGesture setEnabled:YES];
+    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
    
 	// Do any additional setup after loading the view.
     [self.view setBackgroundColor:[UIColor whiteColor]];

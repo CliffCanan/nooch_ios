@@ -10,7 +10,7 @@
 #import "Home.h"
 #import "UIImageView+WebCache.h"
 #import "CharityDetails.h"
-
+#import "ECSlidingViewController.h"
 @interface SelectCause ()
 @property(nonatomic,strong) UITableView *list;
 @property(nonatomic,strong) UISearchBar *search;
@@ -26,12 +26,17 @@
     }
     return self;
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.list reloadData];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     [self.navigationItem setTitle:@"Select Cause"];
-    
+    [self.slidingViewController.panGesture setEnabled:YES];
+    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     serve*serveOBJ=[serve new];
     serveOBJ.tagName=@"featuredNp";
     serveOBJ.Delegate=self;
@@ -98,9 +103,18 @@
          blue:204./255.
          alpha:1.0];*/
     }
+    for (UIView*subview in cell.contentView.subviews) {
+        [subview removeFromSuperview];
+    }
     //29/12
     cell.contentView.tag=indexPath.row;
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    textLabel=[[UILabel alloc] initWithFrame:CGRectMake(55, 15, 250, 30)];
+    textLabel.backgroundColor=[UIColor clearColor];
+    textLabel.textColor=[UIColor blackColor];
+    textLabel.tag=indexPath.row;
+    [cell.contentView addSubview:textLabel];
+    
     UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
     [pic setImage:[UIImage imageNamed:@"4KforCancer.png"]];
     [pic setStyleClass:@"nonprofitlist_pic"];
@@ -112,14 +126,15 @@
         
         
         dict = [arrSearchedRecords objectAtIndex:indexPath.row];
-        cell.textLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
+        textLabel.text=[NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
+       // cell.textLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
         
         if ([FeaturedcausesArr containsObject:dict]) {
-            cell.detailTextLabel.text=@"Featured";
+            //cell.detailTextLabel.text=@"Featured";
             
         }
         else
-            cell.detailTextLabel.text=@"";
+         //   cell.detailTextLabel.text=@"";
         [pic setImageWithURL:[NSURL URLWithString:[dict valueForKey:@"PhotoIcon"]]
            placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
         
@@ -131,17 +146,18 @@
 
     
     dict = [causesArr objectAtIndex:indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
+    textLabel.text=[NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
+    //cell.textLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
     if (indexPath.row<[FeaturedcausesArr count]) {
-        cell.detailTextLabel.textColor=[UIColor blackColor];
-        cell.detailTextLabel.text=@"Featured";
+       // cell.detailTextLabel.textColor=[UIColor blackColor];
+       // cell.detailTextLabel.text=@"Featured";
     }
     else
         cell.detailTextLabel.text=@"";
     
    
-    
-    [cell.textLabel setStyleClass:@"nonprofitlist_name"];
+    [textLabel setStyleClass:@"nonprofitlist_name"];
+    //[cell.textLabel setStyleClass:@"nonprofitlist_name"];
     if (![[dict valueForKey:@"PhotoIcon"] isKindOfClass:[NSNull class]]) {
         [pic setImageWithURL:[NSURL URLWithString:[dict valueForKey:@"PhotoIcon"]]
            placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
@@ -172,15 +188,29 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+// UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+// for (UIView*subview in cell.contentView.subviews) {
+//     [subview removeFromSuperview];
+// }
+//    textLabel.text=@"";
+// [textLabel removeFromSuperview];
+
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    //clear Image cache
+    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    [imageCache clearMemory];
+    [imageCache clearDisk];
+    [imageCache cleanDisk];
     NSDictionary *cause = [[causesArr objectAtIndex:indexPath.row] copy];
     
     CharityDetails *charity = [[CharityDetails alloc] initWithReceiver:cause];
+    
    // NSString*strNonProfitid=[[causesArr objectAtIndex:indexPath.row] valueForKey:@"NonprofitId"];
     //NSDictionary*dict=[NSDictionary dictionaryWithObjectsAndKeys:strNonProfitid,@"id",[[causesArr objectAtIndex:indexPath.row] valueForKey:@"OrganizationName"],@"OrganizationName", nil];
     // dictnonprofitid=[dict mutableCopy];
     [self.navigationController pushViewController:charity animated:YES];
     
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
 }
 
 #pragma mark - server delegation
