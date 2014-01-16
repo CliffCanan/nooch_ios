@@ -279,7 +279,7 @@
         serve *check_duplicate = [serve new];
         [check_duplicate setTagName:@"check_dup"];
         [check_duplicate setDelegate:self];
-        [check_duplicate dupCheck:self.email_field.text];
+        [check_duplicate dupCheck:[self.email_field.text lowercaseString]];
     }
 }
 - (void)login
@@ -304,9 +304,10 @@
             [spinner setHidden:YES];
             return;
         }
+        
         NSString *first_name;
         NSString *last_name;
-        NSArray *arr = [self.name_field.text componentsSeparatedByString:@" "];
+        NSArray *arr = [[self.name_field.text lowercaseString]componentsSeparatedByString:@" "];
         if ([arr count]>1) {
             first_name = [arr objectAtIndex:0];
             last_name = [arr objectAtIndex:1];
@@ -321,7 +322,7 @@
         if (![self.facebook_info objectForKey:@"id"]) {
             user = @{@"first_name":first_name,
                      @"last_name":last_name,
-                     @"email":self.email_field.text,
+                     @"email":[self.email_field.text lowercaseString],
                      @"password":self.password_field.text};
         }else{
             user = @{@"first_name":first_name,

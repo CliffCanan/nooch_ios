@@ -240,12 +240,13 @@
         [log setTagName:@"login"];
         //[log validateInvitation:@"pilot"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"IsPrimaryBankVerified"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"firstName"];
          NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
         if ([self.stay_logged_in isOn]) {
-           [log login:self.email.text password:self.encrypted_pass remember:YES lat:lat lon:lon uid:udid];
+           [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:YES lat:lat lon:lon uid:udid];
         }
         else{
-             [log login:self.email.text password:self.encrypted_pass remember:NO lat:lat lon:lon uid:udid];
+             [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:NO lat:lat lon:lon uid:udid];
         }
         
     }
@@ -259,7 +260,7 @@
             serve *getDetails = [serve new];
             getDetails.Delegate = self;
             getDetails.tagName = @"getMemberId";
-            [getDetails getMemIdFromuUsername:self.email.text];
+            [getDetails getMemIdFromuUsername:[self.email.text lowercaseString]];
         }
         
         else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] && loginResult != nil){
@@ -287,7 +288,7 @@
 
           NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
-        [[NSUserDefaults standardUserDefaults] setObject:self.email.text forKey:@"UserName"];
+        [[NSUserDefaults standardUserDefaults] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
         user = [NSUserDefaults standardUserDefaults];
         if (![self.stay_logged_in isOn]) {
             [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
@@ -301,12 +302,12 @@
         [me birth];
        
         [[me usr] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
-        [[me usr] setObject:self.email.text forKey:@"UserName"];
+        [[me usr] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
         
         serve *enc_user = [serve new];
         [enc_user setDelegate:self];
         [enc_user setTagName:@"username"];
-        [enc_user getEncrypt:self.email.text];
+        [enc_user getEncrypt:[self.email.text lowercaseString]];
     } else if ([tagName isEqualToString:@"username"])
     {
         NSError *error;
