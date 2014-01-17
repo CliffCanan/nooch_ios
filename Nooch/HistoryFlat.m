@@ -108,7 +108,7 @@
     self.search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 40, 320, 40)];
     [self.search setStyleId:@"history_search"];
     [self.search setDelegate:self];
-    self.search.searchBarStyle=UISearchBarIconClear;
+    self.search.searchBarStyle=UISearchBarIconSearch;
     [self.search setPlaceholder:@"Search Transaction History"];
     [self.view addSubview:self.search];
     
@@ -866,7 +866,9 @@
     [searchBar becomeFirstResponder];
     [searchBar setShowsCancelButton:YES];
 }
-
+-(BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    return YES;
+}
 
  - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
     

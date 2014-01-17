@@ -140,18 +140,36 @@
     CreatePIN *create_pin = [[CreatePIN alloc] initWithData:self.user];
     [self.navigationController pushViewController:create_pin animated:YES];
 }
+-(void) BackClicked1:(id) sender
 
+{
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [nav_ctrl performSelector:@selector(disable)];
+   
+    
  self.slidingViewController.panGesture.enabled=NO;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIView*subview=[[UIView alloc]init];
     subview.frame=self.view.frame;
     subview.backgroundColor=[UIColor clearColor];
     [self.view addSubview:subview];
+    
+    //back button
+    UIButton* btnback=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [btnback setImage:[UIImage imageNamed:@"back-arrow-blue.png"] forState:UIControlStateNormal];
+    [btnback setStyleClass:@"back_button-icon"];
+    btnback.frame=CGRectMake(0, 7, 50, 30);
+    
+    [btnback addTarget:self action:@selector(BackClicked1:) forControlEvents:UIControlEventTouchUpInside];
+    [subview addSubview:btnback];
     
     UIImageView *logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];

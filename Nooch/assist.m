@@ -145,6 +145,7 @@ static assist * _sharedInstance = nil;
    timer= [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
 #pragma mark 9jan
     [self getSettings];
+    [self getAcctInfo];
     [self getBanks];
     //[self getCards];
     
@@ -358,7 +359,7 @@ static assist * _sharedInstance = nil;
     serve *sets = [serve new];
     sets.Delegate = self;
     sets.tagName = @"sets";
-    //[sets getSettings];
+    [sets getSettings];
 }
 -(void)getAcctInfo{
     if (!islogout) {
@@ -381,7 +382,12 @@ static assist * _sharedInstance = nil;
             timer=nil;
         }
     }
-    if ([tagName isEqualToString:@"banks"]) {
+    if ([tagName isEqualToString:@"bDelete"]) {
+        
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your Bank Account was not verified for 21 days.\nNooch has deleted your bank Account." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+    }
+    else if ([tagName isEqualToString:@"banks"]) {
          NSError *error;
         
          NSMutableArray *bankResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
@@ -389,6 +395,41 @@ static assist * _sharedInstance = nil;
         if ([bankResult isKindOfClass:[NSNull class]] || bankResult == nil) {
             bankResult = [NSMutableArray new];
         }
+        if ([bankResult count]>0) {
+            if ([[[bankResult objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[bankResult objectAtIndex:0] valueForKey:@"IsVerified"] intValue]) {
+                
+               
+            }
+            else
+            {
+                if ([[[NSUserDefaults standardUserDefaults]objectForKey:@"NotifPlaced2"]intValue]==1) {
+                    NSLog(@"%@",bankResult);
+                    NSLog(@"%@",[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
+                    NSString*datestr=[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0];
+                  
+                 
+                    NSDate *addeddate = [self dateFromString:datestr];
+                   
+                    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+                    NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
+                                                                        fromDate:addeddate
+                                                                          toDate:[NSDate date]
+                                                                         options:0];
+                    
+                    NSLog(@"%ld", (long)[components day]);
+                    if ([components day]>21) {
+                        serve *bank = [serve new];
+                        bank.tagName = @"bDelete";
+                        bank.Delegate = self;
+                        [bank deleteBank:[[bankResult objectAtIndex:0] valueForKey:@"BankAccountId"]];
+                    }
+                    
+                    
+                    
+                }
+        }
+        }
+        //banksZXc
         [usr setObject:bankResult forKey:@"banks"];
     }else if([tagName isEqualToString:@"cards"]){
         NSError *error;
@@ -405,7 +446,7 @@ static assist * _sharedInstance = nil;
         NSError *error;
         NSMutableDictionary *setsResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
        
-        //NSLog(@"%@",usr);
+        NSLog(@"%@",setsResult);
        
         // [user setObject:[setsResult valueForKey:@"Photo"] forKey:@"Photo"];
         [usr setObject:setsResult forKey:@"sets"];
@@ -416,7 +457,7 @@ static assist * _sharedInstance = nil;
          NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         [user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"];
         NSString*url=[loginResult valueForKey:@"PhotoUrl"];
-        NSLog(@"%@",url);
+        NSLog(@"%@",loginResult);
 
       //  url=[url stringByReplacingOccurrencesOfString:@"//" withString:@"/"];
         NSLog(@"%@",url);
@@ -444,7 +485,7 @@ static assist * _sharedInstance = nil;
         }
         if(![[loginResult objectForKey:@"PhotoUrl"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"PhotoUrl"] != NULL){
            // [usr setObject:[loginResult objectForKey:@"PhotoUrl"] forKey:@"PhotoUrl"];
-            [usr setObject:@"http://172.17.60.150/NoochService/Photos/gv_no_photo.jpg" forKey:@"PhotoUrl"];
+           // [usr setObject:@"http://172.17.60.150/NoochService/Photos/gv_no_photo.jpg" forKey:@"PhotoUrl"];
 
             
             
@@ -468,6 +509,20 @@ static assist * _sharedInstance = nil;
             }
         }
     }
+}
+- (NSDate*) dateFromString:(NSString*)aStr
+{
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+    //[dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss a"];
+    [dateFormatter setDateFormat:@"MM/dd/yyyy"];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    
+    NSLog(@"%@", aStr);
+    NSDate   *aDate = [dateFormatter dateFromString:aStr];
+   
+    return aDate;
 }
 # pragma mark - NSURLConnection Delegate Methods
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {

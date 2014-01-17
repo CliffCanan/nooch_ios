@@ -42,12 +42,6 @@
 
 - (void)check_credentials
 {
-        //28/12
-    locationManager = [[CLLocationManager alloc] init];
-    locationManager.delegate = self;
-    locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
-    locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
-    [locationManager startUpdatingLocation];
     
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [self.view addSubview:spinner];
@@ -78,12 +72,34 @@
     [locationManager stopUpdatingLocation];
 }
 
+-(void) BackClicked:(id) sender
+
+{
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    [self.navigationController setNavigationBarHidden:NO];
+    [self.navigationController setNavigationBarHidden:YES];
+    
+   
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    
+    UIButton* btnback=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [btnback setImage:[UIImage imageNamed:@"back-arrow-blue.png"] forState:UIControlStateNormal];
+    [btnback setStyleClass:@"back_button-icon"];
+    btnback.frame=CGRectMake(0, 7, 50, 30);
+    
+    [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btnback];
+    
+
    [self.navigationItem setTitle:@"LogIn"];
     self.loading = [UIActivityIndicatorView new];
     [self.loading setStyleId:@"loading"];
@@ -238,7 +254,15 @@
         serve *log = [serve new];
         [log setDelegate:self];
         [log setTagName:@"login"];
+        [[UIApplication sharedApplication]setStatusBarHidden:NO];
         //[log validateInvitation:@"pilot"];
+        //28/12
+        locationManager = [[CLLocationManager alloc] init];
+        locationManager.delegate = self;
+        locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
+        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
+        [locationManager startUpdatingLocation];
+
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"IsPrimaryBankVerified"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"firstName"];
          NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];

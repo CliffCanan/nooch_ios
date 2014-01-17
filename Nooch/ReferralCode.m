@@ -29,10 +29,27 @@
     }
     return self;
 }
+-(void) BackClicked:(id) sender
 
+{
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIButton* btnback=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [btnback setImage:[UIImage imageNamed:@"back-arrow-blue.png"] forState:UIControlStateNormal];
+    [btnback setStyleClass:@"back_button-icon"];
+    btnback.frame=CGRectMake(0, 7, 50, 30);
+    
+    [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btnback];
+    
+
     getLocation = [[GetLocation alloc] init];
 	getLocation.delegate = self;
 	[getLocation.locationManager startUpdatingLocation];

@@ -15,6 +15,7 @@
 @property(nonatomic,retain) UIView *fourth_num;
 @property(nonatomic,strong) UILabel *prompt;
 @property(nonatomic,strong) UITextField *pin;
+@property(nonatomic,strong)NSString*pinNumber;
 @end
 
 @implementation ReEnterPin
@@ -133,11 +134,13 @@
         [self.view addSubview:spinner];
         spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
         [spinner startAnimating];
-        
+        self.pinNumber=[NSString stringWithFormat:@"%@%@",textField.text,string];
         serve *pin = [serve new];
         pin.Delegate = self;
-        pin.tagName = @"ValidatePinNumber";
-        [pin getEncrypt:[NSString stringWithFormat:@"%@%@",textField.text,string]];
+        pin.tagName = @"status";
+        //[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]
+       [pin getDetails:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]];
+       
     }
     return YES;
 }
@@ -155,7 +158,32 @@
                  error:&error];
     
     NSLog(@"%@",dictResult);
-    if ([tagName isEqualToString:@"ValidatePinNumber"]) {
+    if ([tagName isEqualToString:@"status"]) {
+        if ([[dictResult valueForKey:@"Status"]isEqualToString:@"Suspended"]) {
+            [spinner stopAnimating];
+            [spinner setHidden:YES];
+            [self.fourth_num setBackgroundColor:[UIColor clearColor]];
+            [self.third_num setBackgroundColor:[UIColor clearColor]];
+            [self.second_num setBackgroundColor:[UIColor clearColor]];
+            [self.first_num setBackgroundColor:[UIColor clearColor]];
+            self.pin.text=@"";
+
+            UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"You account has been suspended." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            [alert show];
+            return;
+        }
+        else
+        {
+            serve *pin = [serve new];
+            
+            pin.Delegate = self;
+            
+            pin.tagName = @"ValidatePinNumber";
+            
+            [pin getEncrypt:[NSString stringWithFormat:@"%@",self.pinNumber]];
+        }
+    }
+    else if ([tagName isEqualToString:@"ValidatePinNumber"]) {
         NSString *encryptedPIN=[dictResult valueForKey:@"Status"];
         
         serve *checkValid = [serve new];

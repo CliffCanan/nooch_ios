@@ -37,13 +37,7 @@
     // Do any additional setup after loading the view from its nib.
     [self.navigationItem setTitle:@"Refer a Friend"];
     
-    self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 42, 320, [[UIScreen mainScreen] bounds].size.height-90)];
-    [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
-    [self.contacts setStyleId:@"refer"];
-    [self.contacts setStyleClass:@"raised_view"];
-    [self.view addSubview:self.contacts]; [self.contacts reloadData];
-    
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 320, 40)];
+       UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 320, 40)];
     [title setText:@"Your referral code:"];
     [title setStyleId:@"refer_introtext"];
     [self.view addSubview:title];
@@ -115,17 +109,15 @@
     [email_label setText:@"Email"];
     [self.view addSubview:email_label];
     
-    UILabel *invited = [[UILabel alloc] initWithFrame:CGRectMake(20, 265, 170, 40)];
-    [invited setStyleClass:@"refer_header"];
-    [invited setText:@"Friends you referred:"];
-    [self.view addSubview:invited];
+   
     
     serve*serveOBJ=[serve new];
-    serveOBJ.tagName=@"ReferralCode";
-    [serveOBJ setDelegate:self];
-    [serveOBJ GetReferralCode:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]];
+    serveOBJ.tagName=@"GetReffereduser";
     
-
+    [serveOBJ setDelegate:self];
+    [serveOBJ getInvitedMemberList:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]];
+    
+   
 }
 
 #pragma mark - server Delegation
@@ -152,11 +144,7 @@
         [defaults synchronize];
         code.text=[NSString stringWithFormat:@"%@",[[dictResponse valueForKey:@"getReferralCodeResult"] valueForKey:@"Result"]];
         NSLog(@"%@",dictResponse);
-        serve*serveOBJ=[serve new];
-       serveOBJ.tagName=@"GetReffereduser";
        
-        [serveOBJ setDelegate:self];
-        [serveOBJ getInvitedMemberList:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]];
     }
     else if ([tagName isEqualToString:@"GetReffereduser"])
     {
@@ -165,9 +153,30 @@
                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                             options:kNilOptions
                             error:&error];;
-        [self.contacts reloadData];
+        if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"]count]>0) {
+            self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 42, 320, [[UIScreen mainScreen] bounds].size.height-90)];
+            [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
+            [self.contacts setStyleId:@"refer"];
+            [self.contacts setStyleClass:@"raised_view"];
+            [self.view addSubview:self.contacts]; [self.contacts reloadData];
+            
+            UILabel *invited = [[UILabel alloc] initWithFrame:CGRectMake(20, 265, 170, 40)];
+            [invited setStyleClass:@"refer_header"];
+            [invited setText:@"Friends you referred:"];
+            [self.view addSubview:invited];
+           [self.contacts  setHidden:NO];
+           [self.contacts reloadData];
+            
+        }
+        else
+            [self.contacts  setHidden:YES];
         
+        serve*serveOBJ=[serve new];
+        serveOBJ.tagName=@"ReferralCode";
+        [serveOBJ setDelegate:self];
+        [serveOBJ GetReferralCode:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]];
         
+
     }
     else if ([tagName isEqualToString:@"SMS"])
     {

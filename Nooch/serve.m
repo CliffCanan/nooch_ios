@@ -12,7 +12,7 @@
 #import "NSString+ASBase64.h"
 //
 //Charan's edit 19nov2013
-//seconds for 3 days259200
+//seconds for 3 days259200 518400 777600 604800 1209600
 #define secondsFor3days 259200
 //seconds for 6 days
 #define secondsFor6days 518400
@@ -774,10 +774,15 @@ NSString *amnt;
                 NSLog(@"Fully Verified");
                 //removing further notifications as the account is verified
                 for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
-                    if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile"]) {
+                    if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile1"]) {
                          [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
                     }
-                    
+                    if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile2"]) {
+                        [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+                    }
+                    if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile3"]) {
+                        [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+                    }
                 }
                 
                 [defaults setObject:@"0" forKey:@"NotifPlaced"];
@@ -789,7 +794,7 @@ NSString *amnt;
                 UILocalNotification* localNotification1 = [[UILocalNotification alloc] init];
                 localNotification1.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor3days];
                 localNotification1.alertBody = @"Hey! Just a reminder that your Nooch account is almost ready. Open Nooch to complete your profile and start sending money!- Team Nooch";
-                localNotification1.userInfo=@{@"notificationId": @"Profile"};
+                localNotification1.userInfo=@{@"notificationId": @"Profile1"};
                 localNotification1.timeZone = [NSTimeZone defaultTimeZone];
                 [[UIApplication sharedApplication] scheduleLocalNotification:localNotification1];
                 
@@ -797,7 +802,7 @@ NSString *amnt;
                 UILocalNotification*localNotification2 = [[UILocalNotification alloc] init];
                 localNotification2.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor6days];
                 localNotification2.alertBody = @"Hey! Just a reminder that your Nooch account is almost ready. Open Nooch to complete your profile and start sending money!- Team Nooch";
-                 localNotification2.userInfo=@{@"notificationId": @"Profile"};
+                 localNotification2.userInfo=@{@"notificationId": @"Profile2"};
                 localNotification2.timeZone = [NSTimeZone defaultTimeZone];
                 [[UIApplication sharedApplication] scheduleLocalNotification:localNotification2];
                 
@@ -805,7 +810,7 @@ NSString *amnt;
                 UILocalNotification*localNotification3 = [[UILocalNotification alloc] init];
                 localNotification3.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor9days];
                 localNotification3.alertBody = @"Hey! Just a reminder that your Nooch account is almost ready. Open Nooch to complete your profile and start sending money!- Team Nooch";
-                 localNotification3.userInfo=@{@"notificationId": @"Profile"};
+                 localNotification3.userInfo=@{@"notificationId": @"Profile3"};
                 localNotification3.timeZone = [NSTimeZone defaultTimeZone];
                 [[UIApplication sharedApplication] scheduleLocalNotification:localNotification3];
                 
@@ -905,7 +910,13 @@ NSString *amnt;
             if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]) {
                 if (![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue]) {
                     for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
-                        if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank"]) {
+                        if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
+                            [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+                        }
+                        if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
+                            [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+                        }
+                        if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
                             [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
                         }
                         
@@ -928,7 +939,7 @@ NSString *amnt;
                     
                     UILocalNotification* localNotification1 = [[UILocalNotification alloc] init];
                     localNotification1.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor3days];
-                    localNotification1.userInfo=@{@"notificationId": @"Bank"};
+                    localNotification1.userInfo=@{@"notificationId": @"Bank1"};
                     localNotification1.alertBody = [NSString stringWithFormat:@"Hi %@ Check your bank account for 2 small deposits from Nooch that should have arrived on %@. Enter the amounts in the Nooch App to confirm your bank account.",[user objectForKey:@"firstName"],[[[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]];
                     localNotification1.timeZone = [NSTimeZone defaultTimeZone];
                     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification1];
@@ -938,13 +949,14 @@ NSString *amnt;
                     localNotification2.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor7days];
                     localNotification2.alertBody = [NSString stringWithFormat:@"Hi %@ Check your bank account for 2 small deposits from Nooch that should have arrived on %@. Enter the amounts in the Nooch App to confirm your bank account.",[user objectForKey:@"firstName"],[[[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]];
                     localNotification2.timeZone = [NSTimeZone defaultTimeZone];
-                    localNotification2.userInfo=@{@"notificationId": @"Bank"};
+                
+                    localNotification2.userInfo=@{@"notificationId": @"Bank2"};
                     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification2];
                     
                     //adding local notification for 9 days
                     UILocalNotification* localNotification3 = [[UILocalNotification alloc] init];
                     localNotification3.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor14days];
-                    localNotification3.userInfo=@{@"notificationId": @"Bank"};
+                    localNotification3.userInfo=@{@"notificationId": @"Bank3"};
                     localNotification3.alertBody = [NSString stringWithFormat:@"Hi %@ Check your bank account for 2 small deposits from Nooch that should have arrived on %@. Enter the amounts in the Nooch App to confirm your bank account.",[user objectForKey:@"firstName"],[[[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]];
                     
                     localNotification3.timeZone = [NSTimeZone defaultTimeZone];
@@ -957,6 +969,8 @@ NSString *amnt;
                 
                 [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
                 [defaults synchronize];
+                
+                
  
             }
         }

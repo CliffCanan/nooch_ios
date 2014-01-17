@@ -41,7 +41,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-   
+    [[UIApplication sharedApplication]setStatusBarHidden:YES];
     /*NSArray *familyNames = [[NSArray alloc] initWithArray:[UIFont familyNames]];
     NSArray *fontNames;
     NSInteger indFamily, indFont;
@@ -284,6 +284,7 @@
 }
 - (void)login
 {
+     [[UIApplication sharedApplication]setStatusBarHidden:YES];
     Login *signin = [Login new];
     [self.navigationController pushViewController:signin animated:YES];
 }

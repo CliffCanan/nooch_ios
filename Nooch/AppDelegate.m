@@ -192,8 +192,8 @@ void exceptionHandler(NSException *exception){
     NSLog(@"Error in registration. Error: %@", error);
 }
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
-   
-    if ([notification.userInfo valueForKey:@"Profile"]) {
+    NSLog(@"%@",notification.userInfo);
+    if ([notification.userInfo valueForKey:@"Profile1"]|| [notification.userInfo valueForKey:@"Profile2"]||[notification.userInfo valueForKey:@"Profile3"]) {
         [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"NotificationPush"];
         [nav_ctrl popToRootViewControllerAnimated:YES];
 //        [UIView animateWithDuration:0.75
