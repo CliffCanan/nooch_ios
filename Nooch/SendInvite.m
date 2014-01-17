@@ -37,6 +37,8 @@
     // Do any additional setup after loading the view from its nib.
     [self.navigationItem setTitle:@"Refer a Friend"];
     
+    [self.view setStyleClass:@"background_gray"];
+    
        UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 320, 40)];
     [title setText:@"Your referral code:"];
     [title setStyleId:@"refer_introtext"];

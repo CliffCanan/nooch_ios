@@ -36,6 +36,8 @@
     [super viewDidLoad];
     [self.navigationItem setHidesBackButton:YES];
     [self.navigationController.view removeGestureRecognizer:self.navigationController.slidingViewController.panGesture];
+    [self.view setStyleClass:@"background_gray"];
+    
     dictAllStats=[[NSMutableDictionary alloc]init];
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
@@ -97,6 +99,9 @@
 
 - (void) change_stats:(UISwipeGestureRecognizer *)slide
 {
+    [UIView beginAnimations:nil context:nil];
+    CGRect frame = self.back.frame;
+    [UIView setAnimationDuration:0.5];
     if (slide.direction == UISwipeGestureRecognizerDirectionLeft) {
         if (self.selected == 0) {
             self.selected++;
@@ -126,9 +131,6 @@
             return;
         }
     }
-    [UIView beginAnimations:nil context:nil];
-    CGRect frame = self.back.frame;
-    [UIView setAnimationDuration:0.5];
     if (slide.direction == UISwipeGestureRecognizerDirectionLeft) {
         frame.origin.x = -320;
     } else {

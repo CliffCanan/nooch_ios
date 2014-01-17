@@ -154,7 +154,7 @@
     [nav_ctrl performSelector:@selector(disable)];
    
     
- self.slidingViewController.panGesture.enabled=NO;
+    self.slidingViewController.panGesture.enabled=NO;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIView*subview=[[UIView alloc]init];
     subview.frame=self.view.frame;
@@ -179,7 +179,7 @@
     array = [array filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF != ''"]];
     
     UILabel *welcome = [[UILabel alloc] initWithFrame:CGRectMake(0, 135, 320, 25)];
-    [welcome setText:[NSString stringWithFormat:@"Hey %@!",[self.user objectForKey:@"first_name" ]]]; [welcome setBackgroundColor:[UIColor clearColor]];
+    [welcome setText:[NSString stringWithFormat:@"Hey %@!",[[self.user objectForKey:@"first_name" ] capitalizedString]]]; [welcome setBackgroundColor:[UIColor clearColor]];
     [welcome setStyleClass:@"header_signupflow"];
     [subview addSubview:welcome];
     
