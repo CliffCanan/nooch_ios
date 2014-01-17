@@ -108,6 +108,8 @@
             [self.profile setStyleId:@"stats_circle_profile_inactive"];
             [self.transfers setStyleId:@"stats_circle_transfers_inactive"];
             [self.donations setStyleId:@"stats_circle_donations_active"];
+        } else {
+            return;
         }
     } else if (slide.direction == UISwipeGestureRecognizerDirectionRight) {
         if (self.selected == 1) {
@@ -120,9 +122,38 @@
             [self.profile setStyleId:@"stats_circle_profile_inactive"];
             [self.transfers setStyleId:@"stats_circle_transfers_active"];
             [self.donations setStyleId:@"stats_circle_donations_inactive"];
+        } else {
+            return;
         }
     }
+    [UIView beginAnimations:nil context:nil];
+    CGRect frame = self.back.frame;
+    [UIView setAnimationDuration:0.5];
+    if (slide.direction == UISwipeGestureRecognizerDirectionLeft) {
+        frame.origin.x = -320;
+    } else {
+        frame.origin.x = 320;
+    }
+    [self.back setFrame:frame];
+    [UIView commitAnimations];
+    [NSTimer scheduledTimerWithTimeInterval:0.5
+                                     target:self
+                                   selector:@selector(refocus)
+                                   userInfo:nil
+                                    repeats:NO];
     [self.stats reloadData];
+}
+
+- (void) refocus
+{
+    CGRect frame = self.back.frame;
+    frame.origin.x = frame.origin.x * -1;
+    self.back.frame = frame;
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.5];
+    frame.origin.x = 10;
+    [self.back setFrame:frame];
+    [UIView commitAnimations];
 }
 
 #pragma mark - UITableViewDataSource

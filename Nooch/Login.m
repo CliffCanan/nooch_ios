@@ -82,7 +82,7 @@
 {
     [super viewDidLoad];
 
-    
+    [self.navigationController setNavigationBarHidden:NO];
     [self.view setBackgroundColor:[UIColor whiteColor]];
    [self.navigationItem setTitle:@"LogIn"];
     self.loading = [UIActivityIndicatorView new];
@@ -163,14 +163,14 @@
     [forgot setStyleId:@"label_forgotpw"];
     [self.view addSubview:forgot];
     
-    UIButton *back = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    /*UIButton *back = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [back addTarget:self action:@selector(go_back) forControlEvents:UIControlEventTouchUpInside];
     [back setBackgroundColor:[UIColor clearColor]];
     [back setTitle:@"<" forState:UIControlStateNormal];
     [back setTitleColor:kNoochBlue forState:UIControlStateNormal];
     [back.titleLabel setFont:[UIFont fontWithName:@"Roboto-Bold" size:40]];
     [back setFrame:CGRectMake(10, 20, 40, 40)];
-    [self.view addSubview:back];
+    [self.view addSubview:back];*/
     
     UILabel *encryption; [encryption setStyleId:@"label_encryption"];
     [self.view addSubview:encryption];

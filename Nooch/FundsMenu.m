@@ -151,7 +151,8 @@
 
 - (void) add_source
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Add Funding Source" message:@"Which type of account would you like to add?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Bank Account",@"Credit Card", nil];
+    //credit cards are disabled, but if ever readded the button is after Bank Account
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Add Funding Source" message:@"Which type of account would you like to add?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Bank Account", nil];
     [av setTag:2];
     [av show];
 }

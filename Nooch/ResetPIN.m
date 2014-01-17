@@ -44,7 +44,7 @@
     [self.view addSubview:navBar];
     UIButton*back=[UIButton buttonWithType:UIButtonTypeCustom];
     [back setStyleClass:@"backbutton"];
-    [back setTitle:@"Close" forState:UIControlStateNormal];
+    [back setTitle:@"Cancel" forState:UIControlStateNormal];
     [back addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
     [back setFrame:CGRectMake(0,5, 70, 30)];
     [navBar addSubview:back];
