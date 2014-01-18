@@ -28,10 +28,23 @@
     }
     return self;
 }
-
+-(void)showMenu
+{
+    [self.slidingViewController anchorTopViewTo:ECRight];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    [self.navigationItem setHidesBackButton:YES];
+    UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
+    [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+    [hamburger setStyleId:@"navbar_hamburger"];
+    UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+    [self.navigationItem setLeftBarButtonItem:menu];
+    
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     // Do any additional setup after loading the view from its nib.

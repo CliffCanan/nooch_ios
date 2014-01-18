@@ -38,27 +38,27 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    UIView*navBar=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
-    [navBar setBackgroundColor:[UIColor colorWithRed:82.0f/255.0f green:176.0f/255.0f blue:235.0f/255.0f alpha:1.0f]];
-    [self.view addSubview:navBar];
-    UILabel*lbl=[[UILabel alloc]initWithFrame:CGRectMake(75, 20, 200, 30)];
-    [lbl setText:@"PIN Confirmation"];
-    [lbl setFont:[UIFont systemFontOfSize:22]];
-    [lbl setTextColor:[UIColor whiteColor]];
-    [navBar addSubview:lbl];
+//    UIView*navBar=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
+//    [navBar setBackgroundColor:[UIColor colorWithRed:82.0f/255.0f green:176.0f/255.0f blue:235.0f/255.0f alpha:1.0f]];
+//    [self.view addSubview:navBar];
+//    UILabel*lbl=[[UILabel alloc]initWithFrame:CGRectMake(75, 20, 200, 30)];
+//    [lbl setText:@"PIN Confirmation"];
+//    [lbl setFont:[UIFont systemFontOfSize:22]];
+//    [lbl setTextColor:[UIColor whiteColor]];
+//    [navBar addSubview:lbl];
     
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 140, 300, 40)];
     [title setText:@"Enter your PIN"];
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
-    
-    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 280, 50)];
-    [self.prompt setNumberOfLines:2];
-    [self.prompt setText:@"Require Immediately is enabled, please enter your PIN to continue."];
-    [self.prompt setStyleClass:@"instruction_text"];
-    [self.view addSubview:self.prompt];
-    
-    self.pin = [UITextField new]; [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
+ 
+   self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 280, 50)];
+   [self.prompt setNumberOfLines:2];
+   [self.prompt setText:@"Require Immediately is enabled, please enter your PIN to continue."];
+   [self.prompt setStyleClass:@"instruction_text"];
+   [self.view addSubview:self.prompt];
+ 
+ self.pin = [UITextField new]; [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
     [self.pin setDelegate:self]; [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
     [self.view addSubview:self.pin]; [self.pin becomeFirstResponder];
     

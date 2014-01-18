@@ -29,6 +29,7 @@
 @property(nonatomic,strong) UITextField *zip;
 @property(nonatomic,strong) UITableView *list;
 @property(nonatomic,strong) UIButton *save;
+@property(nonatomic,strong) NSString *ServiceType;
 @property (nonatomic , retain) NSString * SavePhoneNumber;
 
 
@@ -55,10 +56,23 @@
                  placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
     }
 }
-
+-(void)showMenu
+{
+    [self.slidingViewController anchorTopViewTo:ECRight];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    if (isProfileOpenFromSideBar) {
+        [self.navigationItem setHidesBackButton:YES];
+        UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
+        [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+        [hamburger setStyleId:@"navbar_hamburger"];
+        UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+        [self.navigationItem setLeftBarButtonItem:menu];
+    }
+    
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     [self.view addGestureRecognizer:tap];
     if (!isSignup) {
@@ -91,6 +105,27 @@
     [picture addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(change_pic)]];
     [picture setUserInteractionEnabled:YES];
     [self.view addSubview:picture];
+    
+    memSincelbl = [[UILabel alloc] initWithFrame:CGRectMake(100, 20, 110, 30)];
+    start = [[user valueForKey:@"DateCreated"] rangeOfString:@"("];
+    end = [[user valueForKey:@"DateCreated"] rangeOfString:@")"];
+    if (start.location != NSNotFound && end.location != NSNotFound && end.location > start.location)
+    {
+        betweenBraces = [[user valueForKey:@"DateCreated"] substringWithRange:NSMakeRange(start.location+1, end.location-(start.location+1))];
+    }
+    newString = [betweenBraces substringToIndex:[betweenBraces length]-8];
+    
+    NSTimeInterval _interval=[newString doubleValue];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:_interval];
+    NSDateFormatter *_formatter=[[NSDateFormatter alloc]init];
+    [_formatter setDateFormat:@"dd/MM/yyyy"];
+    NSString *_date=[_formatter stringFromDate:date];
+    
+    
+    
+    [memSincelbl setBackgroundColor:[UIColor clearColor]]; [memSincelbl setText:[NSString stringWithFormat:@"Member Since :%@",_date]];
+    [memSincelbl setStyleClass:@"memtable_view_cell_textlabel_1"];
+    [self.view addSubview:memSincelbl];
     
     self.name = [[UITextField alloc] initWithFrame:CGRectMake(20, 70, 280, 30)];
     [self.name setTextAlignment:NSTextAlignmentRight]; [self.name setBackgroundColor:[UIColor clearColor]];
@@ -747,7 +782,7 @@
         //NSLog(@"%@",dictProfileinfo);
         
         if (![[dictProfileinfo valueForKey:@"Address"] isKindOfClass:[NSNull class]]) {
-            ServiceType=@"Address";
+            self.ServiceType=@"Address";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -758,7 +793,7 @@
         else if(![[dictProfileinfo valueForKey:@"City"] isKindOfClass:[NSNull class]])
         {
             //NSLog(@"address%@",[sourceData objectForKey:@"Status"]);
-            ServiceType=@"City";
+            self.ServiceType=@"City";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -767,7 +802,7 @@
         }
         else if(![[dictProfileinfo valueForKey:@"State"] isKindOfClass:[NSNull class]])
         {
-            ServiceType=@"State";
+            self.ServiceType=@"State";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -779,7 +814,7 @@
         else if(![[dictProfileinfo valueForKey:@"Zipcode"] isKindOfClass:[NSNull class]])
         {
             
-            ServiceType=@"zip";
+            self.ServiceType=@"zip";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -791,7 +826,7 @@
         {
             
             
-            ServiceType=@"name";
+            self.ServiceType=@"name";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -803,7 +838,7 @@
         {
             
             
-            ServiceType=@"lastname";
+            self.ServiceType=@"lastname";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -814,7 +849,7 @@
         else if (![[dictProfileinfo valueForKey:@"UserName"] isKindOfClass:[NSNull class]])
         {
             
-            ServiceType=@"email";
+            self.ServiceType=@"email";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -826,7 +861,7 @@
         {
             
             
-            ServiceType=@"recovery";
+            self.ServiceType=@"recovery";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -838,7 +873,7 @@
         else if (![[dictProfileinfo valueForKey:@"Password"] isKindOfClass:[NSNull class]])
         {
             
-            ServiceType=@"pwd";
+            self.ServiceType=@"pwd";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -856,9 +891,9 @@
 -(void)decryptionDidFinish:(NSMutableDictionary *) sourceData TValue:(NSNumber *) tagValue{
     
     //20nov
-    if([ServiceType isEqualToString:@"Address"])
+    if([self.ServiceType isEqualToString:@"Address"])
     {
-        ServiceType=@"City";
+        self.ServiceType=@"City";
         NSLog(@"address%@",[sourceData objectForKey:@"Status"]);
         
         NSArray*arr=[[sourceData objectForKey:@"Status"] componentsSeparatedByString:@"/"];
@@ -882,9 +917,9 @@
         
         
     }
-    else if([ServiceType isEqualToString:@"City"])
+    else if([self.ServiceType isEqualToString:@"City"])
     {
-        ServiceType=@"State";
+        self.ServiceType=@"State";
         self.city.text=[sourceData objectForKey:@"Status"];
         
         if (![[dictProfileinfo objectForKey:@"State"] isKindOfClass:[NSNull class]]) {
@@ -899,7 +934,7 @@
         }
         else if (![[dictProfileinfo objectForKey:@"Zipcode"] isKindOfClass:[NSNull class]]) {
                 
-                 ServiceType=@"zip";
+                 self.ServiceType=@"zip";
                 
                 Decryption *decry = [[Decryption alloc] init];
                 decry.Delegate = self;
@@ -915,9 +950,9 @@
         //        [self getEncryptedPassword:password.text];
         //        NSLog(@"should be encrypting password");
     }
-    else if([ServiceType isEqualToString:@"State"])
+    else if([self.ServiceType isEqualToString:@"State"])
     {
-        ServiceType=@"zip";
+        self.ServiceType=@"zip";
               //  self.state.text=[sourceData objectForKey:@"Status"];
         
         if (![[dictProfileinfo objectForKey:@"Zipcode"] isKindOfClass:[NSNull class]]) {
@@ -933,7 +968,7 @@
         }
         else
         {
-            ServiceType=@"name";
+            self.ServiceType=@"name";
             if (![[dictProfileinfo objectForKey:@"FirstName"] isKindOfClass:[NSNull class]]) {
                 
                 
@@ -950,17 +985,15 @@
         //        [self getEncryptedPassword:password.text];
         //        NSLog(@"should be encrypting password");
     }
-    else  if ([ServiceType isEqualToString:@"zip"])
+    else  if ([self.ServiceType isEqualToString:@"zip"])
     {
-        ServiceType=@"name";
+        self.ServiceType=@"name";
         
         self.zip.text=[sourceData objectForKey:@"Status"];
        // NSLog(@"%@",self.zip.text);
         //NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
         
         if (![[dictProfileinfo objectForKey:@"FirstName"] isKindOfClass:[NSNull class]]) {
-            
-            
             
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
@@ -972,9 +1005,9 @@
         //   zip.text=[sInfoDic objectForKey:@"UserName"];
         
     }
-    else  if ([ServiceType isEqualToString:@"name"])
+    else  if ([self.ServiceType isEqualToString:@"name"])
     {
-        ServiceType=@"lastname";
+        self.ServiceType=@"lastname";
         if ([[sourceData objectForKey:@"Status"] length]>0) {
             NSString* letterA=[[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
             
@@ -984,14 +1017,14 @@
        
               if (![[dictProfileinfo objectForKey:@"LastName"] isKindOfClass:[NSNull class]])
                   {
-                ServiceType=@"lastname";
+                self.ServiceType=@"lastname";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"LastName"]];
                   }
         else if (![[dictProfileinfo objectForKey:@"UserName"] isKindOfClass:[NSNull class]]) {
-                ServiceType=@"email";
+                self.ServiceType=@"email";
                 Decryption *decry = [[Decryption alloc] init];
                 decry.Delegate = self;
                 decry->tag = [NSNumber numberWithInteger:2];
@@ -1003,9 +1036,9 @@
         
     }
     }
-    else  if ([ServiceType isEqualToString:@"lastname"])
+    else  if ([self.ServiceType isEqualToString:@"lastname"])
     {
-        ServiceType=@"email";
+        self.ServiceType=@"email";
         if ([[sourceData objectForKey:@"Status"] length]>0) {
             NSString* letterA=[[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
             
@@ -1026,7 +1059,7 @@
         //   zip.text=[sInfoDic objectForKey:@"UserName"];
         
     }
-    else  if ([ServiceType isEqualToString:@"email"])
+    else  if ([self.ServiceType isEqualToString:@"email"])
     {
        
         self.email.text=[sourceData objectForKey:@"Status"];
@@ -1034,7 +1067,7 @@
         
         
         if (![[dictProfileinfo objectForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]]&& [dictProfileinfo objectForKey:@"RecoveryMail"]!=NULL && ![[dictProfileinfo objectForKey:@"RecoveryMail"] isEqualToString:@""]) {
-             ServiceType=@"recovery";
+             self.ServiceType=@"recovery";
             
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
@@ -1045,14 +1078,14 @@
         else
         {
              self.recovery_email.text=@"";
-            ServiceType=@"pwd";
+            self.ServiceType=@"pwd";
             
             if (![[dictProfileinfo objectForKey:@"Password"] isKindOfClass:[NSNull class]]) {
                 
                 
                 Decryption *decry = [[Decryption alloc] init];
                 decry.Delegate = self;
-                ServiceType=@"pwd";
+                self.ServiceType=@"pwd";
                 decry->tag = [NSNumber numberWithInteger:2];
                 [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Password"]];
             }
@@ -1063,9 +1096,9 @@
         
     }
     //RecoveryMail
-    else if ([ServiceType isEqualToString:@"recovery"])
+    else if ([self.ServiceType isEqualToString:@"recovery"])
     {
-        ServiceType=@"pwd";
+        self.ServiceType=@"pwd";
         self.recovery_email.text=[NSString stringWithFormat:@"%@",[sourceData objectForKey:@"Status"]];
         if ([self.recovery_email.text isKindOfClass:[NSNull class]]) {
             self.recovery_email.text=@"";
@@ -1089,7 +1122,7 @@
     }
     
     //name.text =[[NSString alloc]initWithFormat:@"%@ %@",[[me usr] valueForKey:@"firstName"],[[me usr] valueForKey:@"lastName"]];
-    else if([ServiceType isEqualToString:@"pwd"])
+    else if([self.ServiceType isEqualToString:@"pwd"])
     {
         NSLog(@"%@",[sourceData objectForKey:@"Status"]);
         self.password.text=[sourceData objectForKey:@"Status"];

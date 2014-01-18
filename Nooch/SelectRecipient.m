@@ -69,6 +69,8 @@
     [self.view addSubview:spinner];
     spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
     [spinner startAnimating];
+    isRecentList=YES;
+    searching=NO;
     serve *recents = [serve new];
     [recents setTagName:@"recents"];
     [recents setDelegate:self];
@@ -84,6 +86,7 @@
     // histSearch = NO;
     searching = NO;
     emailEntry=NO;
+    isRecentList=YES;
     [searchBar resignFirstResponder];
     [searchBar setText:@""];
     
@@ -114,6 +117,8 @@
     if ([searchBar.text length]==0) {
         searching=NO;
         emailEntry=NO;
+        isRecentList=YES;
+        
         [self.contacts reloadData];
         return;
     }
@@ -123,11 +128,13 @@
         if(isRange.location != NSNotFound){
             emailEntry = YES;
             searching = NO;
+            isRecentList=NO;
               searchString = searchBar.text;
         }
         else{
             emailEntry = NO;
             searching = YES;
+            isRecentList=NO;
             searchString = searchBar.text;
             [self searchTableView];
         }
@@ -325,19 +332,20 @@
         [subview removeFromSuperview];
     }
    // [cell.textLabel setStyleClass:@"select_recipient_name"];
+    pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
+    pic.clipsToBounds = YES;
+    //[pic setTag:indexPath.row];
     
-        if (searching) {
-            UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
-            pic.clipsToBounds = YES;
-            [pic setTag:indexPath.row];
-            [cell addSubview:pic];
-            
-            UIImageView *npic = [UIImageView new];
-            npic.clipsToBounds = YES;
-            [npic setTag:indexPath.row];
-            [cell addSubview:npic];
-            
+    
+    npic = [UIImageView new];
+    npic.clipsToBounds = YES;
+   // [npic setTag:indexPath.row];
+   
 
+        if (searching) {
+           
+            [cell addSubview:pic];
+            [cell addSubview:npic];
         //Nooch User
         npic.hidden=NO;
         [npic setFrame:CGRectMake(250,15, 34, 40)];
@@ -358,18 +366,10 @@
         pic.clipsToBounds = YES;
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",info[@"FirstName"],info[@"LastName"]];
     }
-    else{
-        UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
-        pic.clipsToBounds = YES;
-        [pic setTag:indexPath.row];
+    else if(isRecentList){
+        
         [cell addSubview:pic];
-        
-        UIImageView *npic = [UIImageView new];
-        npic.clipsToBounds = YES;
-        [npic setTag:indexPath.row];
         [cell addSubview:npic];
-        
-
         //Nooch User
         npic.hidden=NO;
         [npic setFrame:CGRectMake(250,15, 34, 40)];
@@ -394,10 +394,12 @@
         
         
     }
-    if(emailEntry){
-//        for (UIView*subview in cell.contentView.subviews) {
-//            [subview removeFromSuperview];
-//        }
+   else if(emailEntry){
+        [pic removeFromSuperview];
+        [npic removeFromSuperview];
+        for (UIView*subview in cell.contentView.subviews) {
+            [subview removeFromSuperview];
+        }
         //[pic setImage:NULL];
         //[npic setImage:NULL];
          //pic.clipsToBounds = NO;

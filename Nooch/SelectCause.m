@@ -30,10 +30,25 @@
     [super viewWillAppear:animated];
     [self.list reloadData];
 }
+-(void)showMenu
+{
+    [self.slidingViewController anchorTopViewTo:ECRight];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    if (isOpenLeftSideBar) {
+        [self.navigationItem setHidesBackButton:YES];
+        UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
+        [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+        [hamburger setStyleId:@"navbar_hamburger"];
+        UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+        [self.navigationItem setLeftBarButtonItem:menu];
+    }
     
+    
+
     [self.navigationItem setTitle:@"Select Cause"];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];

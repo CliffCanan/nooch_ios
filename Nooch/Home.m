@@ -254,6 +254,7 @@
         
         return;
     }
+    
     if (NSClassFromString(@"SelectRecipient")) {
         
         Class aClass = NSClassFromString(@"SelectRecipient");
@@ -274,6 +275,7 @@
 }
 - (void)donate
 {
+    isOpenLeftSideBar=NO;
     SelectCause *donate = [SelectCause new];
     [self.navigationController pushViewController:donate animated:YES];
 }

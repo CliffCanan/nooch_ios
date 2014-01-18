@@ -27,9 +27,22 @@
     }
     return self;
 }
+-(void)showMenu
+{
+    [self.slidingViewController anchorTopViewTo:ECRight];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+        [self.navigationItem setHidesBackButton:YES];
+    UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
+    [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+    [hamburger setStyleId:@"navbar_hamburger"];
+    UIBarButtonItem *menu1 = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+    [self.navigationItem setLeftBarButtonItem:menu1];
+    
 	// Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"Settings"];
     [self.slidingViewController.panGesture setEnabled:YES];
@@ -94,6 +107,7 @@
 
 - (void)profile
 {
+    isProfileOpenFromSideBar=NO;
     ProfileInfo *info = [ProfileInfo new];
     [self performSelector:@selector(navigate_to:) withObject:info afterDelay:0.1];
 }

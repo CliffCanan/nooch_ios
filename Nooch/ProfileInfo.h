@@ -10,6 +10,7 @@
 #import "serve.h"
 #import "Decryption.h"
 #import "GetEncryptionValue.h"
+BOOL isProfileOpenFromSideBar;
 @interface ProfileInfo : UIViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,GetEncryptionValueDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate>
 {
     UIActivityIndicatorView*spinner;
@@ -19,9 +20,13 @@
     NSMutableDictionary*transaction;
     NSMutableDictionary*transactionInput;
     NSMutableDictionary*dictProfileinfo;
-     NSString*ServiceType;
+   
     NSDictionary*GMTTimezonesDictionary;
     UIImageView *picture;
     BOOL isPhotoUpdate;
+    UILabel *memSincelbl;
+    NSRange start,end;
+    NSString*newString;
+     NSString *betweenBraces;
 }
 @end

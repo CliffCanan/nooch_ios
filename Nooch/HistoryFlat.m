@@ -52,10 +52,20 @@
         [UIView commitAnimations];
     }
 }
+-(void)showMenu
+{
+    [self.slidingViewController anchorTopViewTo:ECRight];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self.navigationItem setHidesBackButton:YES];
+    UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
+    [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+    [hamburger setStyleId:@"navbar_hamburger"];
+    UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+    [self.navigationItem setLeftBarButtonItem:menu];
     [self.navigationItem setTitle:@"History"];
     // [nav_ctrl performSelector:@selector(disable)];
 	// Do any additional setup after loading the view.
@@ -573,33 +583,6 @@
                     
                     [cell.contentView addSubview:amount];
                     [cell.contentView addSubview:indicator];
-                    
-                    UILabel *name = [UILabel new];
-                    [name setStyleClass:@"history_cell_textlabel"];
-                    [name setStyleClass:@"history_recipientname"];
-                     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
-                         if ([[dictRecord valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
-                               [name setText:[NSString stringWithFormat:@"You Paid %@",[dictRecord valueForKey:@"FirstName"]]];
-                         }
-                       else
-                       {
-                           [name setText:[NSString stringWithFormat:@"%@ Paid You",[dictRecord valueForKey:@"FirstName"]]];
-
-                       }
-                     }
-            
-                   // }
-                    else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]){
-                        [name setText:@"Deposit into Nooch"];
-                        
-                    }
-                    else
-                    {
-                        [name setText:[dictRecord valueForKey:@"FirstName"]];
-                        
-
-                    }
-                    [cell.contentView addSubview:name];
                     UILabel *date = [UILabel new];
                     [date setStyleClass:@"history_datetext"];
                     [date setText:[dictRecord valueForKey:@"TransactionDate"]];
@@ -610,8 +593,39 @@
                     pic.layer.cornerRadius = 25;
                     pic.clipsToBounds = YES;
                     [cell.contentView addSubview:pic];
-                    [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                   
+                    UILabel *name = [UILabel new];
+                    [name setStyleClass:@"history_cell_textlabel"];
+                    [name setStyleClass:@"history_recipientname"];
+                     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
+                         if ([[dictRecord valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
+                               [name setText:[NSString stringWithFormat:@"You Paid %@",[dictRecord valueForKey:@"FirstName"]]];
+                             [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                                  placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                         }
+                       else
+                       {
+                           [name setText:[NSString stringWithFormat:@"%@ Paid You",[dictRecord valueForKey:@"FirstName"]]];
+                           [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                               placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+
+                       }
+                     }
+            
+                   // }
+                    else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]){
+                        [name setText:@"Deposit into Nooch"];
+                        [pic setImage:[UIImage imageNamed:@"Icon.png"]];
+                        
+                    }
+                    else
+                    {
+                        [name setText:[dictRecord valueForKey:@"FirstName"]];
+                        
+
+                    }
+                    [cell.contentView addSubview:name];
+                   
 //                    UILabel *updated_balance = [UILabel new];
 //                    [updated_balance setText:@"$50.00"];
 //                    [updated_balance setStyleClass:@"history_updatedbalance"];

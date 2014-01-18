@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "serve.h"
-
+BOOL isOpenLeftSideBar;
 @interface SelectCause : UIViewController<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,serveD>
 {
     BOOL isSearching;

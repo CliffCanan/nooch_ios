@@ -458,7 +458,7 @@ static assist * _sharedInstance = nil;
         [user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"];
         NSString*url=[loginResult valueForKey:@"PhotoUrl"];
         NSLog(@"%@",loginResult);
-
+        [user setObject:[loginResult valueForKey:@"DateCreated"] forKey:@"DateCreated"];
       //  url=[url stringByReplacingOccurrencesOfString:@"//" withString:@"/"];
         NSLog(@"%@",url);
          [user setObject:url forKey:@"Photo"];

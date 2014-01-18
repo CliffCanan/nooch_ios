@@ -331,7 +331,17 @@
 			left                : 20px;
 			height				: 30px;
 		}
-
+.memtable_view_cell_textlabel_1 {
+            top                 :10px;
+			font-family			: "Roboto";
+			font-weight         : regular;
+			font-size			: 15px;
+			text-align       	: left;
+			color 				: #41ABE1;
+			width				: 260px;
+			left                : 90px;
+			height				: 20px;
+		}
 		/****  Table Detail Text  (right side of row)  ****/
 		.table_view_cell_detailtext_1 {
 			font-family			: "Roboto";

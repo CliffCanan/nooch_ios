@@ -20,6 +20,8 @@
     NSMutableArray*arrSearchedRecords;
     UISearchBar *search;
     UIActivityIndicatorView*spinner;
-    
+    UIImageView *pic;
+    UIImageView *npic;
+    BOOL isRecentList;
 }
 @end

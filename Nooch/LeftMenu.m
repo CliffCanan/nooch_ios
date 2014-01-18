@@ -121,6 +121,7 @@
     }
    }
 -(void) go_profile {
+    isProfileOpenFromSideBar=YES;
     ProfileInfo *prof = [ProfileInfo new];
     [nav_ctrl pushViewController:prof animated:YES];
     [self.slidingViewController resetTopView];
@@ -281,6 +282,7 @@
     }
     else if(indexPath.section == 1)
     {
+        isOpenLeftSideBar=YES;
         SelectCause *donate = [SelectCause new];
         [nav_ctrl pushViewController:donate animated:NO];
         [self.slidingViewController resetTopView];
