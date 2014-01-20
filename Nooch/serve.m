@@ -984,7 +984,7 @@ NSString *amnt;
            }
        }
        NSLog(@"%@",strNotifPlaced);
-        
+         NSLog(@"%@",dictUsers);
         if ([arrResponse count]>0) {
             if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]&& [strNotifPlaced isEqualToString:@"1"]) {
                 if (![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue]) {
@@ -1005,7 +1005,7 @@ NSString *amnt;
                         dictUsers=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
                         
                     }
-                    
+                    NSLog(@"%@",dictUsers);
                     for (id key in dictUsers) {
                         if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
                             [dictUsers setValue:@"0" forKey:key];
