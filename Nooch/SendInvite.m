@@ -280,7 +280,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 - (IBAction)fbClicked:(id)sender {
-    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
     {
         SLComposeViewController *fbSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
        

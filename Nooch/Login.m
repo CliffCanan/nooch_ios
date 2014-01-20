@@ -265,6 +265,9 @@
 
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"IsPrimaryBankVerified"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"firstName"];
+        //[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"NotifPlaced2"];
+       // [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"NotifPlaced"];
+        
          NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
         if ([self.stay_logged_in isOn]) {
            [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:YES lat:lat lon:lon uid:udid];

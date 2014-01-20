@@ -362,7 +362,12 @@
     }
     NSLog(@"%@",self.SavePhoneNumber);
     NSLog(@"%@",self.phone.text);
-    //if (![self.SavePhoneNumber isEqualToString:self.phone.text]) {
+    strPhoneNumber=self.phone.text;
+    strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@"(" withString:@""];
+    strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@")" withString:@""];
+    strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (![self.SavePhoneNumber isEqualToString:strPhoneNumber]) {
         NSLog(@"Not Same");
         
         //do Phone Validation
@@ -376,7 +381,7 @@
         
         
         
-    //}
+    }
     
     //[self.view addSubview:[me waitStat:@"Saving your profile..."]];
    //  [self getEncryptedPassword:self.password.text];
@@ -403,7 +408,7 @@
     if([self.recovery_email.text length] > 0)
     {
         if (![self validateEmail:[self.recovery_email text]]) {
-            [me endWaitStat];
+           // [me endWaitStat];
             self.recovery_email.text = @"";
             [self.recovery_email becomeFirstResponder];
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Valid Recovery Email ID" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -454,8 +459,17 @@
     NSLog(@"%@",encryptedPwd);
     getEncryptedPasswordValue = [[NSString alloc] initWithString:encryptedPwd];
     self.name.text=[self.name.text lowercaseString];
-    transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",self.name.text,@"FirstName",self.email.text,@"UserName",nil];
-    [transactionInput setObject:getEncryptedPasswordValue forKey:@"Password"];
+    NSArray*arrdivide=[self.name.text componentsSeparatedByString:@" "];
+    if ([arrdivide count]==2) {
+        transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[arrdivide objectAtIndex:0],@"FirstName",[arrdivide objectAtIndex:1],@"LastName",self.email.text,@"UserName",nil];
+  
+    }
+    else
+    {
+            transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",self.name.text,@"FirstName",@" ",@"LastName",self.email.text,@"UserName",nil];
+
+    }
+        [transactionInput setObject:getEncryptedPasswordValue forKey:@"Password"];
     [transactionInput setObject:[NSString stringWithFormat:@"%@/%@",self.address_one.text,self.address_two.text] forKey:@"Address"];
     //[transactionInput setObject:[NSString stringWithFormat:@"%@ %@",self.address.text,self.addressLine2.text] forKey:@"Address"];
     [transactionInput setObject:self.city.text forKey:@"City"];
@@ -470,7 +484,7 @@
 //    else
 //    {
         //NSString *number = [NSString stringWithFormat:@"%@%@%@",[self.phone.text substringWithRange:NSMakeRange(1, 3)],[self.phone.text substringWithRange:NSMakeRange(6, 3)],[self.phone.text substringWithRange:NSMakeRange(10, 4)]];
-        [transactionInput setObject:self.phone.text forKey:@"ContactNumber"];
+        [transactionInput setObject:strPhoneNumber forKey:@"ContactNumber"];
         
         
     //}
@@ -706,6 +720,12 @@
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+    if (textField==self.phone) {
+        if ([self.phone.text length]==10) {
+            self.phone.text = [NSString stringWithFormat:@"(%@) %@-%@",[self.phone.text substringWithRange:NSMakeRange(0, 3)],[self.phone.text substringWithRange:NSMakeRange(3, 3)],[self.phone.text substringWithRange:NSMakeRange(6, 4)]];
+        }
+        
+    }
     [self animateTextField:textField up:NO];
 }
 
@@ -777,6 +797,10 @@
         NSLog(@"%@",dictProfileinfo);
         if (![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]]) {
             self.SavePhoneNumber=[dictProfileinfo valueForKey:@"ContactNumber"];
+            if ([[dictProfileinfo valueForKey:@"ContactNumber"] length]==10) {
+                self.phone.text = [NSString stringWithFormat:@"(%@) %@-%@",[[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(0, 3)],[[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(3, 3)],[[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(6, 4)]];
+            }
+            else
             self.phone.text=[dictProfileinfo valueForKey:@"ContactNumber"];
         }
         //NSLog(@"%@",dictProfileinfo);

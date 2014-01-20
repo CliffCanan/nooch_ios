@@ -27,6 +27,7 @@ BOOL isProfileOpenFromSideBar;
     UILabel *memSincelbl;
     NSRange start,end;
     NSString*newString;
-     NSString *betweenBraces;
+    NSString *betweenBraces;
+    NSString*strPhoneNumber;
 }
 @end
