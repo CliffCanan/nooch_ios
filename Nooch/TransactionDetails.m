@@ -11,8 +11,10 @@
 #import "Home.h"
 #import "UIImageView+WebCache.h"
 #import "ECSlidingViewController.h"
+#import "HowMuch.h"
 @interface TransactionDetails ()
 @property (nonatomic,strong) NSDictionary *trans;
+@property(nonatomic,strong) NSMutableData *responseData;
 @end
 
 @implementation TransactionDetails
@@ -196,6 +198,7 @@
     [pay_back setStyleClass:@"details_buttons"];
     [pay_back setStyleCSS:@"background-image : url(pay-back-icon.png)"];
     [pay_back setStyleId:@"details_payback"];
+    [pay_back addTarget:self action:@selector(pay_back) forControlEvents:UIControlEventTouchUpInside];
     [pay_back setFrame:CGRectMake(15, 410, 60, 60)];
     [self.view addSubview:pay_back];
     
@@ -210,6 +213,7 @@
     [fb setStyleClass:@"details_buttons"];
     [fb setStyleCSS:@"background-image : url(fb-icon-90x90.png)"];
     [fb setStyleId:@"details_fb"];
+    [fb addTarget:self action:@selector(post_to_fb) forControlEvents:UIControlEventTouchUpInside];
     [fb setFrame:CGRectMake(95, 410, 60, 60)];
     [self.view addSubview:fb];
     
@@ -224,6 +228,7 @@
     [twit setStyleClass:@"details_buttons"];
     [twit setStyleCSS:@"background-image : url(twitter-icon.png)"];
     [twit setStyleId:@"details_twit"];
+    [twit addTarget:self action:@selector(post_to_twitter) forControlEvents:UIControlEventTouchUpInside];
     [twit setFrame:CGRectMake(175, 410, 60, 60)];
     [self.view addSubview:twit];
     
@@ -238,6 +243,7 @@
     [disp setStyleClass:@"details_buttons"];
     [disp setStyleCSS:@"background-image : url(dispute-icon.png)"];
     [disp setStyleId:@"details_disp"];
+    [disp addTarget:self action:@selector(dispute) forControlEvents:UIControlEventTouchUpInside];
     [disp setFrame:CGRectMake(255, 410, 60, 60)];
     [self.view addSubview:disp];
     
@@ -246,6 +252,134 @@
     [disp_text setStyleClass:@"details_buttons_labels"];
     [disp_text setText:@"Dispute"];
     [self.view addSubview:disp_text];
+}
+
+- (void) pay_back
+{
+    NSDictionary *receiver = @{@"receiver": @"their id",
+                               @"amount": @"the amount"};
+    HowMuch *payback = [[HowMuch alloc] initWithReceiver:receiver];
+    [self.navigationController pushViewController:payback animated:YES];
+}
+
+- (void) post_to_fb
+{
+    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]){
+        me.accountStore = [[ACAccountStore alloc] init];
+        ACAccountType *facebookAccountType = [me.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+        me.facebookAccount = nil;
+        
+        NSDictionary *options = @{
+                                  ACFacebookAppIdKey: @"198279616971457",
+                                  ACFacebookPermissionsKey: @[@"publish_stream"],
+                                  ACFacebookAudienceKey: ACFacebookAudienceFriends
+                                  };
+        
+        [me.accountStore requestAccessToAccountsWithType:facebookAccountType
+                                                 options:options completion:^(BOOL granted, NSError *e)
+         {
+             
+             if (granted)
+             {
+                 NSArray *accounts = [me.accountStore accountsWithAccountType:facebookAccountType];
+                 
+                 me.facebookAccount = [accounts lastObject];
+                 [self performSelectorOnMainThread:@selector(post) withObject:nil waitUntilDone:NO];
+             }
+             else
+             {
+                 // Handle Failure
+                 NSLog(@"fbposting not allowed");
+                 [self performSelectorOnMainThread:@selector(goBack) withObject:nil waitUntilDone:NO];
+             }
+             
+         }];
+    }
+}
+
+- (void) post_to_twitter
+{
+    SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+    [controller setInitialText:[NSString stringWithFormat:@"I just Nooch'ed %@!",[self.trans objectForKey:@"Name"]]];
+    [controller addURL:[NSURL URLWithString:@"http://www.nooch.com"]];
+    [self presentViewController:controller animated:YES completion:Nil];
+    
+    SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result){
+        NSString *output= nil;
+        switch (result) {
+            case SLComposeViewControllerResultCancelled:
+                [self performSelectorOnMainThread:@selector(goBack) withObject:nil waitUntilDone:NO];
+                NSLog (@"cancelled");
+                break;
+            case SLComposeViewControllerResultDone:
+                output= @"Post Succesfull";
+                NSLog (@"success");
+                break;
+            default:
+                break;
+        }
+        if ([output isEqualToString:@"Post Succesfull"]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Twitter" message:output delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+            [alert setTag:11];
+        }
+        
+        [controller dismissViewControllerAnimated:YES completion:Nil];
+    };
+    controller.completionHandler =myBlock;
+}
+
+-(void)post
+{
+    SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+    [controller setInitialText:[NSString stringWithFormat:@"I just Nooch'ed %@!",[self.trans objectForKey:@"Name"]]];
+    [controller addURL:[NSURL URLWithString:@"http://www.nooch.com"]];
+    [self presentViewController:controller animated:YES completion:Nil];
+    
+    SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result){
+        NSString *output= nil;
+        switch (result) {
+            case SLComposeViewControllerResultCancelled:
+                output= @"Action Cancelled";
+                NSLog (@"cancelled");
+                break;
+            case SLComposeViewControllerResultDone:
+                output= @"Post Succesfull";
+                NSLog (@"success");
+                break;
+            default:
+                break;
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Facebook" message:output delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alert show];
+        [controller dismissViewControllerAnimated:YES completion:Nil];
+        [self performSelectorOnMainThread:@selector(finishedPosting) withObject:nil waitUntilDone:NO];
+    };
+    controller.completionHandler =myBlock;
+    
+}
+
+-(void)finishedPosting
+{
+   [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) dispute
+{
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to dispute this transfer? Your account will be suspended while we investigate." delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    [av show];
+    [av setTag:1];
+}
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 1) {
+        if (buttonIndex == 1) {
+            self.responseData = [NSMutableData data];
+            //NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&%@=%@&%@=%@", MyUrl, raiseDispute, idvalue, MemID, recepientId, recepientIdValue, txnId, txnIdValue, listType, listTypeValue]]];
+            //[NSURLConnection connectionWithRequest:request delegate:self];
+        }
+    }
 }
 
 #pragma mark - server delegation

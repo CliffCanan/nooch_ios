@@ -10,7 +10,7 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import "serve.h"
 
-@interface TransactionDetails : UIViewController<serveD>{
+@interface TransactionDetails : UIViewController<serveD,UIAlertViewDelegate>{
     GMSMapView *mapView_;
 }
 - (id)initWithData:(NSDictionary *)trans;

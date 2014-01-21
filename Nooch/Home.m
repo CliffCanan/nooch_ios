@@ -239,12 +239,12 @@
         [alert show];
        return;
     }
-    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+    /*if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
         [alert setTag:148];
         [alert show];
         return;
-    }
+    }*/
    
     //IsVerifiedPhone
     //[user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"]
