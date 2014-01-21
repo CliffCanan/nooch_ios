@@ -137,7 +137,7 @@
         self.pinNumber=[NSString stringWithFormat:@"%@%@",textField.text,string];
         serve *pin = [serve new];
         pin.Delegate = self;
-        pin.tagName = @"status";
+        pin.tagName = @"info";
         //[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]
        [pin getDetails:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]];
        

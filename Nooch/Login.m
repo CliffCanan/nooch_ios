@@ -50,6 +50,7 @@
     serve *log = [serve new];
     [log setDelegate:self];
     [log setTagName:@"encrypt"];
+    NSLog(@"%@",self.password.text);
     [log getEncrypt:self.password.text];
     
    

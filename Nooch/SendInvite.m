@@ -11,6 +11,7 @@
 #import <AddressBookUI/AddressBookUI.h>
 #import "Home.h"
 #import "ECSlidingViewController.h"
+#import "UIImageView+WebCache.h"
 @interface SendInvite ()<ABPeoplePickerNavigationControllerDelegate>
 @property(nonatomic,strong) UITableView *contacts;
 @property(nonatomic,strong) NSMutableArray *recents;
@@ -172,7 +173,9 @@
             self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 42, 320, [[UIScreen mainScreen] bounds].size.height-90)];
             [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
             [self.contacts setStyleId:@"refer"];
-            [self.contacts setStyleClass:@"raised_view"];
+            [self.contacts setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+            self.contacts.separatorColor = [UIColor clearColor];
+            //[self.contacts setStyleClass:@"raised_view"];
             [self.view addSubview:self.contacts]; [self.contacts reloadData];
             
             UILabel *invited = [[UILabel alloc] initWithFrame:CGRectMake(20, 265, 170, 40)];
@@ -231,6 +234,7 @@
     for(UIView *subview in cell.contentView.subviews)
         [subview removeFromSuperview];
     NSDictionary*dict=[[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] objectAtIndex:indexPath.row];
+    NSLog(@"%@",dict);
     //commented till url is valid
 //    if ([[dict valueForKey:@"Photo"] isKindOfClass:[NSNull class]]) {
 //        imageName=@"profile_picture.png";
@@ -245,6 +249,8 @@
     user_pic.layer.cornerRadius = 23;
     user_pic.layer.borderWidth = 1;
     user_pic.layer.borderColor = [Helpers hexColor:@"6d6e71"].CGColor;
+    [user_pic setImageWithURL:[NSURL URLWithString:[dict objectForKey:@"Photo"]]
+             placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
     [cell.contentView addSubview:user_pic];
     
     UILabel *name = [UILabel new];

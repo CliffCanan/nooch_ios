@@ -155,6 +155,20 @@
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"The bank account details have been deleted." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView sizeToFit];
             [alertView show];
+            for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
+                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
+                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+                }
+                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
+                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+                }
+                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
+                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+                }
+                
+            }
+            
+            
             [self.navigationController popViewControllerAnimated:YES];
             //            [navCtrl dismissViewControllerAnimated:YES anima
             //             ];

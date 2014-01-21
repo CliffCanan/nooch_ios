@@ -2293,7 +2293,12 @@
         text-align      : center;
 		color 				: #6d6e71;
 	}
-
+.refer_text
+{
+        width				: 280px;
+		height				: 1px;
+		color 				:#d3d3d3;
+}
 	/**  Sets the Table styling for the list of users a person has referred. **/
 	table-view#refer {
 		width				: 306px;
