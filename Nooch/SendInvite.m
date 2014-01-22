@@ -172,7 +172,12 @@
         if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"]count]>0) {
             self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 42, 320, [[UIScreen mainScreen] bounds].size.height-90)];
             [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
+            
             [self.contacts setStyleId:@"refer"];
+            if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] count]==1) {
+                [self.contacts setStyleCSS:@"height : 60px"];
+            }
+          
             [self.contacts setSeparatorStyle:UITableViewCellSeparatorStyleNone];
             self.contacts.separatorColor = [UIColor clearColor];
             //[self.contacts setStyleClass:@"raised_view"];
@@ -216,7 +221,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] count];
+    return 1;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -282,7 +287,7 @@
     [datelbl setStyleClass:@"refer_datetext"];
     [cell.contentView addSubview:datelbl];
   
-    UILabel *seperatorlbl = [UILabel new];//#c9cacc
+    UILabel *seperatorlbl = [UILabel new];
     [seperatorlbl setBackgroundColor:[UIColor colorWithRed:234.0f/255.0f green:234.0f/255.0f blue:244.0f/255.0f alpha:1.0f]];
     [seperatorlbl setStyleClass:@"refer_seperator"];
     [cell.contentView addSubview:seperatorlbl];

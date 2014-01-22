@@ -367,7 +367,7 @@
     strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
     strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@")" withString:@""];
     strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@" " withString:@""];
-    if (![self.SavePhoneNumber isEqualToString:strPhoneNumber]) {
+    //if (![self.SavePhoneNumber isEqualToString:strPhoneNumber]) {
         NSLog(@"Not Same");
         
         //do Phone Validation
@@ -381,7 +381,7 @@
         
         
         
-    }
+   // }
     
     //[self.view addSubview:[me waitStat:@"Saving your profile..."]];
    //  [self getEncryptedPassword:self.password.text];

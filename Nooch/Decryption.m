@@ -25,8 +25,14 @@ NSMutableURLRequest *request1,*request2;
     NSString *encodedString = [NSString decodeBase64String:sources];;
     
     NSLog(@"%@",encodedString);
-
-    self.responseData = [[NSMutableData data] retain]; 
+    if ([encodedString rangeOfString:kAESKey].location!=NSNotFound) {
+        encodedString=[encodedString stringByReplacingOccurrencesOfString:kAESKey withString:@""];
+        encodedString=[encodedString stringByReplacingOccurrencesOfString:@" " withString:@""];
+    }
+//    if ([encodedString rangeOfString:kAESKey]) {
+//        
+//    }
+    self.responseData = [[NSMutableData data] retain];
    request1 = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?data=%@", MyUrl, methodName, sources]]];
     
     //Load the request in the UIWebView.
@@ -38,7 +44,10 @@ NSMutableURLRequest *request1,*request2;
     NSString *encodedString = [NSString decodeBase64String:text];;
     
     NSLog(@"%@",encodedString);
-    
+    if ([encodedString rangeOfString:kAESKey].location!=NSNotFound) {
+        encodedString=[encodedString stringByReplacingOccurrencesOfString:kAESKey withString:@""];
+        encodedString=[encodedString stringByReplacingOccurrencesOfString:@" " withString:@""];
+    }
     self.responseData = [[NSMutableData data] retain];
     NSURLRequest *requisicao = [NSURLRequest requestWithURL:
                                 [NSURL URLWithString:
