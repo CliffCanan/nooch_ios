@@ -60,13 +60,13 @@
     [self.view addSubview:self.pin]; [self.pin becomeFirstResponder];
     
     [self.navigationItem setTitle:@"Reset PIN "];
-  title = [[UILabel alloc] initWithFrame:CGRectMake(10, 104, 300, 60)];
+    title = [[UILabel alloc] initWithFrame:CGRectMake(10, 104, 300, 60)];
     [title setText:@"Please enter your old PIN."]; [title setTextAlignment:NSTextAlignmentCenter];
     [title setNumberOfLines:2];
     [title setStyleClass:@"Repin_instructiontext"];
     [self.view addSubview:title];
     
-    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 220, 300, 30)];
+    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 245, 300, 30)];
     [self.prompt setText:@""]; [self.prompt setTextAlignment:NSTextAlignmentCenter];
     [self.prompt setStyleId:@"pin_instructiontext_send"];
     [self.view addSubview:self.prompt];
@@ -80,7 +80,7 @@
     self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 16;
     self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor clearColor];
     self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
-    
+     self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
     [self.view addSubview:self.first_num];
     [self.view addSubview:self.second_num];
     [self.view addSubview:self.third_num];

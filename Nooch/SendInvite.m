@@ -249,14 +249,19 @@
     user_pic.layer.cornerRadius = 23;
     user_pic.layer.borderWidth = 1;
     user_pic.layer.borderColor = [Helpers hexColor:@"6d6e71"].CGColor;
-    [user_pic setImageWithURL:[NSURL URLWithString:[dict objectForKey:@"Photo"]]
-             placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+    if ([dict objectForKey:@"Photo"]!=NULL && ![[dict objectForKey:@"Photo"] isKindOfClass:[NSNull class]]) {
+        [user_pic setImageWithURL:[NSURL URLWithString:[dict objectForKey:@"Photo"]]
+                 placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+    }
+   else
+       [user_pic setImage:[UIImage imageNamed:@"RoundLoading.png"]];
     [cell.contentView addSubview:user_pic];
     
     UILabel *name = [UILabel new];
     [name setText:[NSString stringWithFormat:@"%@ %@",[dict valueForKey:@"FirstName"],[dict valueForKey:@"LastName"]]];
     [name setStyleClass:@"refer_name"];
     [cell.contentView addSubview:name];
+    //Date from Time stamp
     start = [[dict valueForKey:@"DateCreated"] rangeOfString:@"("];
     end = [[dict valueForKey:@"DateCreated"] rangeOfString:@")"];
     if (start.location != NSNotFound && end.location != NSNotFound && end.location > start.location)
@@ -276,6 +281,11 @@
     [datelbl setText:_date];
     [datelbl setStyleClass:@"refer_datetext"];
     [cell.contentView addSubview:datelbl];
+  
+    UILabel *seperatorlbl = [UILabel new];//#c9cacc
+    [seperatorlbl setBackgroundColor:[UIColor colorWithRed:234.0f/255.0f green:234.0f/255.0f blue:244.0f/255.0f alpha:1.0f]];
+    [seperatorlbl setStyleClass:@"refer_seperator"];
+    [cell.contentView addSubview:seperatorlbl];
     
     return cell;
 }

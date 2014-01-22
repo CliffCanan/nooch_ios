@@ -153,6 +153,7 @@
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.login setBackgroundColor:kNoochGreen]; [self.login setTitle:@"Log In" forState:UIControlStateNormal];
     [self.login setFrame:CGRectMake(10, 260, 300, 60)];
+     self.login.layer.cornerRadius=5.0f;
     [self.login addTarget:self action:@selector(check_credentials) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"button_green"];
     [self.view addSubview:self.login];

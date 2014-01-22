@@ -36,6 +36,8 @@
     [change_pin setTitle:@"Change PIN" forState:UIControlStateNormal];
     [change_pin setTitleColor:kNoochLight forState:UIControlStateNormal];
     [change_pin.titleLabel setFont:kNoochFontBold];
+    change_pin.layer.cornerRadius=5.0f;
+    
     [change_pin addTarget:self action:@selector(changepin) forControlEvents:UIControlEventTouchUpInside];
     [change_pin setStyleClass:@"button_green"];
     [self.view addSubview:change_pin];

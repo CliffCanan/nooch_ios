@@ -54,6 +54,7 @@
 }
 -(void)showMenu
 {
+    [self.search resignFirstResponder];
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
 - (void)viewDidLoad
@@ -110,15 +111,14 @@
     [self.list addGestureRecognizer:recognizer2];
     
 
-//    UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
-//    [panRecognizer setMinimumNumberOfTouches:1];
-//    [panRecognizer setMaximumNumberOfTouches:100];
-//    [self.list addGestureRecognizer:panRecognizer];
-    
+
     self.search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 40, 320, 40)];
     [self.search setStyleId:@"history_search"];
+  
     [self.search setDelegate:self];
     self.search.searchBarStyle=UISearchBarIconSearch;
+    NSLog(@"%@",[self.search subviews]);
+  //  [[[self.search subviews] objectAtIndex:0] removeFromSuperview];
     [self.search setPlaceholder:@"Search Transaction History"];
     [self.view addSubview:self.search];
     

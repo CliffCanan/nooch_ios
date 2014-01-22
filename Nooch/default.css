@@ -887,7 +887,7 @@
 	#pin_instructiontext_send { 
 		width	: 300px;
 		height	: 18px;
-		top		: 66px;
+		top		: 106px;
 		left	: 10px;
         text-align : center;
 		color 	: #72bf44;
@@ -1868,7 +1868,7 @@
 	}
     
     #history_search {
-        background-color : #d1d3d4;
+            background-color : #d1d3d4;
     }
 
 	/**  Table View for the entire main history table - for row-height & separator-color)  **/
@@ -2306,10 +2306,15 @@
 		left				: 7px;
         top              : 302px;
 		row-height			: 60px;
-		separator-style 	: single-line;
-		separator-color		: rgba(188,190,192,.35);	
+		
+
 	}
-	
+	.refer_seperator{
+        width				: 295px;
+        height             : 1px;
+		left				: 5px;
+        top              : 59px;
+    }
 	/****  Table text right side of the Refera A Friend screen.  ****/
 	.refer_datetext {
 		width				: 90px;
