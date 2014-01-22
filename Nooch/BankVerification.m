@@ -54,7 +54,7 @@
     self.micro1.layer.borderWidth=1.0f;
 
     [self.micro1 setDelegate:self]; [self.micro1 setTag:1];
-    [self.micro1 setKeyboardType:UIKeyboardTypeNumberPad];
+    [self.micro1 setKeyboardType:UIKeyboardTypeDecimalPad];
     [self.micro1 setStyleId:@"micro1_amountfield"];
     [self.view addSubview:self.micro1];
     
@@ -65,7 +65,7 @@
     self.micro2.layer.borderWidth=1.0f;
     [self.micro2 setTextAlignment:NSTextAlignmentRight]; [self.micro2 setPlaceholder:@"$ 0.00"];
     [self.micro2 setDelegate:self]; [self.micro2 setTag:1];
-    [self.micro2 setKeyboardType:UIKeyboardTypeNumberPad];
+    [self.micro2 setKeyboardType:UIKeyboardTypeDecimalPad];
     [self.micro2 setStyleId:@"micro2_amountfield"];
     [self.view addSubview:self.micro2];
    // [self.micro2 becomeFirstResponder];
@@ -150,7 +150,7 @@
    // NSDictionary *loginResult = [result JSONValue];
     if ([tagName isEqualToString:@"bDelete"]) {
        // [me getBanks];
-        if([(NSString *)[dictResponse valueForKey:@"Result"] isEqualToString:@"Your bank account details has been deleted successfully."])
+        if([(NSString *)[dictResponse valueForKey:@"Result"] isEqualToString:@"Your bank account details have been deleted successfully."])
         {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"The bank account details have been deleted." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView sizeToFit];

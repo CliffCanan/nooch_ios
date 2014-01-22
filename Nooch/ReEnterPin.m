@@ -137,7 +137,7 @@
         self.pinNumber=[NSString stringWithFormat:@"%@%@",textField.text,string];
         serve *pin = [serve new];
         pin.Delegate = self;
-        pin.tagName = @"info";
+        pin.tagName = @"status";
         //[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]
        [pin getDetails:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]];
        
@@ -156,8 +156,6 @@
                  options:kNilOptions
                  
                  error:&error];
-    
-    NSLog(@"%@",dictResult);
     if ([tagName isEqualToString:@"status"]) {
         if ([[dictResult valueForKey:@"Status"]isEqualToString:@"Suspended"]) {
             [spinner stopAnimating];
@@ -194,7 +192,6 @@
 #pragma mark 9jan
     else if ([tagName isEqualToString:@"checkValid"]){
         if([[dictResult objectForKey:@"Result"] isEqualToString:@"Success"]){
-            NSLog(@"%@",user);
             if ([user objectForKey:@"requiredImmediately"] == NULL || [[user objectForKey:@"requiredImmediately"] isKindOfClass:[NSNull class]]) {
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
@@ -205,7 +202,6 @@
             }else{
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
-                NSLog(@"yuppppp");
                // reqImm = NO;
                 [self dismissViewControllerAnimated:YES completion:nil];
                 //[self dismissModalViewControllerAnimated:YES];
@@ -252,7 +248,6 @@
             }else{
                 [user setObject:@"YES" forKey:@"requiredImmediately"];
             }
-             NSLog(@"%@",user);
             //reqImm = NO;
             
            // [navCtrl popToRootViewControllerAnimated:NO];

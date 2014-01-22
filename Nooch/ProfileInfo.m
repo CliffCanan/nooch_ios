@@ -106,7 +106,7 @@
     [picture setUserInteractionEnabled:YES];
     [self.view addSubview:picture];
     
-    memSincelbl = [[UILabel alloc] initWithFrame:CGRectMake(100, 20, 110, 30)];
+    memSincelbl = [[UILabel alloc] initWithFrame:CGRectMake(100, 40, 110, 30)];
     start = [[user valueForKey:@"DateCreated"] rangeOfString:@"("];
     end = [[user valueForKey:@"DateCreated"] rangeOfString:@")"];
     if (start.location != NSNotFound && end.location != NSNotFound && end.location > start.location)
@@ -118,7 +118,7 @@
     NSTimeInterval _interval=[newString doubleValue];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:_interval];
     NSDateFormatter *_formatter=[[NSDateFormatter alloc]init];
-    [_formatter setDateFormat:@"dd/MM/yyyy"];
+    [_formatter setDateFormat:@"MM/dd/yyyy"];
     NSString *_date=[_formatter stringFromDate:date];
     
     
