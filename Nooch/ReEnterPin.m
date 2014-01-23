@@ -8,6 +8,8 @@
 
 #import "ReEnterPin.h"
 #import <Pixate/Pixate.h>
+#import "Register.h"
+#import "assist.h"
 @interface ReEnterPin ()<UITextFieldDelegate>
 @property(nonatomic,retain) UIView *first_num;
 @property(nonatomic,retain) UIView *second_num;
@@ -137,7 +139,7 @@
         self.pinNumber=[NSString stringWithFormat:@"%@%@",textField.text,string];
         serve *pin = [serve new];
         pin.Delegate = self;
-        pin.tagName = @"status";
+        pin.tagName = @"infopin";
         //[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]
        [pin getDetails:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]];
        
@@ -156,8 +158,36 @@
                  options:kNilOptions
                  
                  error:&error];
-    if ([tagName isEqualToString:@"status"]) {
-        if ([[dictResult valueForKey:@"Status"]isEqualToString:@"Suspended"]) {
+    
+    NSLog(@"%@",dictResult);
+    if ([tagName isEqualToString:@"infopin"]) {
+        [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"pincheck"];
+        if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
+           
+            UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil                , nil];
+            
+            [Alert show];
+            
+            
+            [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+            
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+            
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+            
+            NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+            [timer invalidate];
+            
+            [self dismissViewControllerAnimated:YES completion:^{
+                [nav_ctrl performSelector:@selector(disable)];
+                Register *reg = [Register new];
+                [nav_ctrl pushViewController:reg animated:YES];
+                me = [core new];
+            }];
+            
+        }
+        
+        else if ([[dictResult valueForKey:@"Status"]isEqualToString:@"Suspended"]) {
             [spinner stopAnimating];
             [spinner setHidden:YES];
             [self.fourth_num setBackgroundColor:[UIColor clearColor]];
@@ -192,6 +222,7 @@
 #pragma mark 9jan
     else if ([tagName isEqualToString:@"checkValid"]){
         if([[dictResult objectForKey:@"Result"] isEqualToString:@"Success"]){
+            NSLog(@"%@",user);
             if ([user objectForKey:@"requiredImmediately"] == NULL || [[user objectForKey:@"requiredImmediately"] isKindOfClass:[NSNull class]]) {
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
@@ -202,6 +233,7 @@
             }else{
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
+                NSLog(@"yuppppp");
                // reqImm = NO;
                 [self dismissViewControllerAnimated:YES completion:nil];
                 //[self dismissModalViewControllerAnimated:YES];
@@ -241,6 +273,13 @@
         }
 }
 }
+#pragma mark - file paths
+- (NSString *)autoLogin{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+    
+}
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
         if (alertView.tag == 1) {
             if (buttonIndex == 0) {
@@ -248,6 +287,7 @@
             }else{
                 [user setObject:@"YES" forKey:@"requiredImmediately"];
             }
+             NSLog(@"%@",user);
             //reqImm = NO;
             
            // [navCtrl popToRootViewControllerAnimated:NO];

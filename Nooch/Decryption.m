@@ -22,13 +22,13 @@ NSMutableURLRequest *request1,*request2;
 
 -(void)getDecryptedValue:(NSString *) methodName pwdString:(NSString *) sources {
     
-    NSString *encodedString = [NSString decodeBase64String:sources];;
-    
-    NSLog(@"%@",encodedString);
-    if ([encodedString rangeOfString:kAESKey].location!=NSNotFound) {
-        encodedString=[encodedString stringByReplacingOccurrencesOfString:kAESKey withString:@""];
-        encodedString=[encodedString stringByReplacingOccurrencesOfString:@" " withString:@""];
-    }
+//    NSString *decodeString = [NSString decodeBase64String:sources];;
+//    
+//    NSLog(@"%@",decodeString);
+//    if ([encodedString rangeOfString:kAESKey].location!=NSNotFound) {
+//        encodedString=[encodedString stringByReplacingOccurrencesOfString:kAESKey withString:@""];
+//        encodedString=[encodedString stringByReplacingOccurrencesOfString:@" " withString:@""];
+//    }
 //    if ([encodedString rangeOfString:kAESKey]) {
 //        
 //    }
@@ -41,13 +41,13 @@ NSMutableURLRequest *request1,*request2;
 }
 -(void)getDecryptionL:(NSString*)methodName textString:(NSString*)text
 {
-    NSString *encodedString = [NSString decodeBase64String:text];;
-    
-    NSLog(@"%@",encodedString);
-    if ([encodedString rangeOfString:kAESKey].location!=NSNotFound) {
-        encodedString=[encodedString stringByReplacingOccurrencesOfString:kAESKey withString:@""];
-        encodedString=[encodedString stringByReplacingOccurrencesOfString:@" " withString:@""];
-    }
+//    NSString *decodeString = [NSString decodeBase64String:text];;
+//    
+//    NSLog(@"%@",decodeString);
+//    if ([encodedString rangeOfString:kAESKey].location!=NSNotFound) {
+//        encodedString=[encodedString stringByReplacingOccurrencesOfString:kAESKey withString:@""];
+//        encodedString=[encodedString stringByReplacingOccurrencesOfString:@" " withString:@""];
+//    }
     self.responseData = [[NSMutableData data] retain];
     NSURLRequest *requisicao = [NSURLRequest requestWithURL:
                                 [NSURL URLWithString:
@@ -93,15 +93,28 @@ NSMutableURLRequest *request1,*request2;
         transResult = [NSJSONSerialization
                        JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                        options:kNilOptions
-                       error:&error];;
+                       error:&error];
     }
-    
-    NSMutableDictionary *loginResult = [NSJSONSerialization
+    NSMutableDictionary *loginResult=[[NSMutableDictionary alloc]init];
+      loginResult = [NSJSONSerialization
                                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                                         options:kNilOptions
                                         error:&error];;
+    NSString *decodeString = [NSString decodeBase64String:[loginResult valueForKey:@"Status"]];
     
-    [self.Delegate decryptionDidFinish:loginResult TValue:self.tag];
+    NSLog(@"%@",decodeString);
+    NSMutableDictionary *loginResult2=[[NSMutableDictionary alloc]init];
+    for (id key  in loginResult) {
+        if ([key isEqualToString:@"Status"]) {
+            [loginResult2 setObject:decodeString forKey:key];
+        }
+        else
+        [loginResult2 setObject:[loginResult valueForKey:key] forKey:key];
+    }
+    
+     //NSLog(@"%@",loginResult);
+   
+    [self.Delegate decryptionDidFinish:loginResult2 TValue:self.tag];
     
     [responseData release];
     

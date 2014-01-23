@@ -368,6 +368,7 @@ static assist * _sharedInstance = nil;
         info.tagName = @"info";
         //
         NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+                NSLog(@"UserName%@",[usr objectForKey:@"email"]);
         [info getDetails:[defaults valueForKey:@"MemberId"]
 ];
     }
@@ -407,6 +408,7 @@ static assist * _sharedInstance = nil;
                     dictUsers2=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
                     
                 }
+                NSLog(@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
                 NSString*strNotifPlaced;
                 for (id key in dictUsers2) {
                     if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
@@ -414,7 +416,10 @@ static assist * _sharedInstance = nil;
                         break;
                     }
                 }
+                NSLog(@"%@",strNotifPlaced);
                 if ([strNotifPlaced isEqualToString:@"1"]) {
+                    NSLog(@"%@",bankResult);
+                    NSLog(@"%@",[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
                     NSString*datestr=[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0];
                   
                  
@@ -426,6 +431,7 @@ static assist * _sharedInstance = nil;
                                                                           toDate:[NSDate date]
                                                                          options:0];
                     
+                    NSLog(@"%ld", (long)[components day]);
                     if ([components day]>21) {
                         
                         for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
@@ -445,6 +451,7 @@ static assist * _sharedInstance = nil;
                             dictUsers2=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
                             
                         }
+                        NSLog(@"%@",dictUsers2);
                         for (id key in dictUsers2) {
                             if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
                                 [dictUsers2 setValue:@"0" forKey:key];
@@ -495,8 +502,10 @@ static assist * _sharedInstance = nil;
          NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         [user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"];
         NSString*url=[loginResult valueForKey:@"PhotoUrl"];
+        NSLog(@"%@",loginResult);
         [user setObject:[loginResult valueForKey:@"DateCreated"] forKey:@"DateCreated"];
       //  url=[url stringByReplacingOccurrencesOfString:@"//" withString:@"/"];
+        NSLog(@"%@",url);
          [user setObject:url forKey:@"Photo"];
        
         if(![[loginResult objectForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"BalanceAmount"] != NULL)
@@ -512,6 +521,7 @@ static assist * _sharedInstance = nil;
             
             [user setObject:[loginResult objectForKey:@"FirstName"] forKey:@"firstName"];
             [user setObject:[loginResult objectForKey:@"LastName"] forKey:@"lastName"];
+            NSLog(@"%@",[user valueForKey:@"firstName"]);
         }
         if(![[loginResult objectForKey:@"Status"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"Status"] != NULL){
             [usr setObject:[loginResult objectForKey:@"Status"] forKey:@"Status"];
@@ -532,6 +542,7 @@ static assist * _sharedInstance = nil;
         {
             if (![[loginResult objectForKey:@"MemberId"] isEqualToString:[usr objectForKey:@"MemberId"]]) {
                 [usr setObject:[loginResult objectForKey:@"MemberId"] forKey:@"MemberId"];
+                NSLog(@"gotmemid%@",[loginResult objectForKey:@"MemberId"]);
                 if (![[loginResult objectForKey:@"MemberId"] isEqualToString:@"00000000-0000-0000-0000-000000000000"]) {
                     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
                     [defaults setObject:[loginResult objectForKey:@"MemberId"] forKey:@"MemberId"];
@@ -553,6 +564,7 @@ static assist * _sharedInstance = nil;
     [dateFormatter setDateFormat:@"MM/dd/yyyy"];
     [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
     
+    NSLog(@"%@", aStr);
     NSDate   *aDate = [dateFormatter dateFromString:aStr];
    
     return aDate;
@@ -632,6 +644,7 @@ static assist * _sharedInstance = nil;
 }
 -(void)getImages{
     NSMutableArray *tempArry = [histCache mutableCopy];
+    NSLog(@"tempArray%d",tempArry.count);
     for (NSMutableDictionary *dict in tempArry) {
         if (![dict objectForKey:@"image"] && ![[dict objectForKey:@"Photo"] isKindOfClass:[NSNull class]] && [[dict objectForKey:@"Photo"] rangeOfString:@"gv_no_photo"].location == NSNotFound ) {
             NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[dict objectForKey:@"Photo"]]];
@@ -643,6 +656,7 @@ static assist * _sharedInstance = nil;
             }
         }
     }
+     NSLog(@"tempArray%d",tempArry.count);
     [histCache setArray:tempArry];
     needsUpdating = YES;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"tableReload" object:self userInfo:nil];
@@ -658,7 +672,9 @@ static assist * _sharedInstance = nil;
         NSDate *date1;
        
         if ([objModel valueForKey:@"TransactionDate"]) {
+             NSLog(@"objectIssue%@",objModel);
             date1=[df dateFromString:[objModel objectForKey:@"TransactionDate"]];
+            NSLog(@"Date12Dec%@",date1);
         }
       
        // NSLog(@"objmodel%@",objModel);
@@ -673,6 +689,7 @@ static assist * _sharedInstance = nil;
       
         [tempArray addObject:dictsort];
     }
+    NSLog(@"%@",tempArray);
 
     NSInteger counter=[tempArray count];
     NSDate *compareDate;
@@ -703,6 +720,7 @@ static assist * _sharedInstance = nil;
             [tempArray exchangeObjectAtIndex:i withObjectAtIndex:index];
     }
 
+    NSLog(@"%@",tempArray);
     [unsortedArray removeAllObjects];
     if ([tempArray count]>0) {
         for(int i=0;i<[tempArray count];i++)

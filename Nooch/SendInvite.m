@@ -343,7 +343,7 @@
     [SMSView removeFromSuperview];
     SMSView=[[UIView alloc]initWithFrame:CGRectMake(0, 568, 320, 568)];
     SMSView.backgroundColor=[UIColor whiteColor];
-   // SMSView.alpha=0.0f;
+   
     [self.view addSubview:SMSView];
     UIView*navBar=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundColor:[UIColor colorWithRed:82.0f/255.0f green:176.0f/255.0f blue:235.0f/255.0f alpha:1.0f]];

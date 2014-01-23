@@ -148,6 +148,7 @@ void exceptionHandler(NSException *exception){
     [splashView removeFromSuperview];
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] length] > 0) {
         if (timeAway > 30 || timeAway < -30) {
+            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"pincheck"];
             //init requireImmediately
             NSLog(@"%d",[[[NSUserDefaults standardUserDefaults] objectForKey:@"requiredImmediately"] boolValue]);
             if (![[NSUserDefaults standardUserDefaults] objectForKey:@"requiredImmediately"]) {
@@ -155,9 +156,10 @@ void exceptionHandler(NSException *exception){
                 [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:pin animated:YES completion:^{
                     
                 }];
-                
+               
             }
             else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"requiredImmediately"] boolValue]){
+                [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"pincheck"];
                 ReEnterPin *pin = [ReEnterPin new];
                 [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:pin animated:YES completion:^{
                     

@@ -1015,7 +1015,7 @@
        ArrBankAccountCollection=[[NSMutableArray alloc]init];
         ArrBankAccountCollection=[arr mutableCopy];
       [self.menu reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
-        //NSLog(@"Banks%@",ArrBankAccountCollection);
+        NSLog(@"Banks%@",ArrBankAccountCollection);
         [spinner startAnimating];
         [spinner setHidden:NO];
 

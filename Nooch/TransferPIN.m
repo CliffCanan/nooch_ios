@@ -9,7 +9,6 @@
 #import "TransferPIN.h"
 #import <QuartzCore/QuartzCore.h>
 #import "GetLocation.h"
-#import "UIImageView+WebCache.h"
 
 @interface TransferPIN ()<GetLocationDelegate>
 {
@@ -71,8 +70,6 @@
     [self.pin setDelegate:self]; [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
     [self.view addSubview:self.pin]; [self.pin becomeFirstResponder];
     
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    
     [self.navigationItem setTitle:@"PIN Confirmation"];
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, 300, 60)];
     [title setText:@"Enter Your PIN to confirm your"]; [title setTextAlignment:NSTextAlignmentCenter];
@@ -126,15 +123,6 @@
     user_pic.layer.borderWidth = 2; user_pic.clipsToBounds = YES;
     user_pic.layer.cornerRadius = 26;
     [self.view addSubview:user_pic];
-    if (self.receiver[@"Photo"]) {
-        [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
-                 placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
-    }
-    else
-    {
-        [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
-                 placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
-    }
     
     UILabel *total = [[UILabel alloc] initWithFrame:CGRectMake(10, 200, 290, 30)];
     [total setBackgroundColor:[UIColor clearColor]];
@@ -156,8 +144,6 @@
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
     }else if([self.type isEqualToString:@"request"]){
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochBlue.CGColor;
-        [self.prompt setStyleId:@"Transferpin_instructiontext_request"];
-        [self.prompt setText:@"request"];
     }
     [self.view addSubview:self.first_num];
     [self.view addSubview:self.second_num];
@@ -902,10 +888,14 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (alertView.tag == 1) {
         if (buttonIndex == 0) {
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            [[me usr] setObject:@"NO" forKey:@"requiredImmediately"];
         }else{
-            //go to view details
+            [[me usr] setObject:@"YES" forKey:@"requiredImmediately"];
         }
+        
+        
+      //  [navCtrl popToRootViewControllerAnimated:NO];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 #pragma mark - connection handling
@@ -1014,7 +1004,6 @@
         int randNum = arc4random() % 12;
         NSString * sentMessage =[NSString stringWithFormat:@"You just sent money to %@, and you did it with style… and class.",receiverFirst] ;
         UIAlertView *av;
-        [av setDelegate:self];
         switch (randNum) {
             case 0:
                 av = [[UIAlertView alloc] initWithTitle:@"Nice Work" message:sentMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",@"Post to Facebook",@"Share on Twitter",nil];
