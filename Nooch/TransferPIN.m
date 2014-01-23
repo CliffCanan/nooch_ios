@@ -9,6 +9,7 @@
 #import "TransferPIN.h"
 #import <QuartzCore/QuartzCore.h>
 #import "GetLocation.h"
+#import "TransactionDetails.h"
 
 @interface TransferPIN ()<GetLocationDelegate>
 {
@@ -25,6 +26,7 @@
 @property(nonatomic,retain) UIView *fourth_num;
 @property(nonatomic,strong) UILabel *prompt;
 @property(nonatomic,strong) UITextField *pin;
+@property(nonatomic,strong) NSDictionary *trans;
 @end
 
 @implementation TransferPIN
@@ -883,19 +885,17 @@
 
         }
     }
-    
+    self.trans = [transactionInputTransfer copy];
 }
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (alertView.tag == 1) {
         if (buttonIndex == 0) {
-            [[me usr] setObject:@"NO" forKey:@"requiredImmediately"];
-        }else{
-            [[me usr] setObject:@"YES" forKey:@"requiredImmediately"];
+            [nav_ctrl popToRootViewControllerAnimated:YES];
+        }else if (buttonIndex == 1){
+            [nav_ctrl popToRootViewControllerAnimated:NO];
+            TransactionDetails *td = [[TransactionDetails alloc] initWithData:self.trans];
+            [nav_ctrl pushViewController:td animated:YES];
         }
-        
-        
-      //  [navCtrl popToRootViewControllerAnimated:NO];
-        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 #pragma mark - connection handling

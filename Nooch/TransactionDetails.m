@@ -35,7 +35,8 @@
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
-
+    NSLog(@"trans details: %@",self.trans);
+    
 	// Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"Transfer Details"];
     
@@ -53,7 +54,7 @@
     [payment setStyleClass:@"details_intro"];
     [payment setStyleClass:@"details_intro_green"];
     if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
-        if ([[self.trans  valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
+        if (![[self.trans  valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
              [payment setText:@"Paid to:"];
             //[name setText:[NSString stringWithFormat:@"You Paid %@",[dictRecord valueForKey:@"FirstName"]]];
         }
@@ -104,7 +105,7 @@
    
     UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 60, 320, 60)];
     if ([self.trans objectForKey:@"Amount"]!=NULL) {
-    [amount setText:[NSString stringWithFormat:@"$%@",[[self.trans objectForKey:@"Amount"] stringValue]]];
+    [amount setText:[NSString stringWithFormat:@"$%.02f",[[self.trans valueForKey:@"Amount"] floatValue]]];
     }
   
     [amount setStyleClass:@"details_amount"];
@@ -256,9 +257,7 @@
 
 - (void) pay_back
 {
-    NSDictionary *receiver = @{@"receiver": @"their id",
-                               @"amount": @"the amount"};
-    HowMuch *payback = [[HowMuch alloc] initWithReceiver:receiver];
+    HowMuch *payback = [[HowMuch alloc] initWithReceiver:self.trans];
     [self.navigationController pushViewController:payback animated:YES];
 }
 

@@ -220,7 +220,7 @@
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             cell.textLabel.text = @"Home";
-            iv.image = [UIImage imageNamed:@"nooch-icon.svg"];
+            iv.image = [UIImage imageNamed:@"n_Icon_58x66.png"];
         }else if(indexPath.row == 1){
             cell.textLabel.text = @"Transaction History";
             iv.image = [UIImage imageNamed:@"Clock_Icon.png"];

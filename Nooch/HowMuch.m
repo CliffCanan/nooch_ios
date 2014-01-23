@@ -85,6 +85,7 @@
     }
     else{
         [user_pic setHidden:NO];
+        
     if (self.receiver[@"Photo"]) {
         [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
                  placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];

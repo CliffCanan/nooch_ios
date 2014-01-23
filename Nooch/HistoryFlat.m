@@ -537,37 +537,44 @@
                     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]) {
                          [amount setStyleClass:@"history_transferamount_neg"];
                          [indicator setStyleClass:@"history_sidecolor_neg"];
-                        [amount setText:[NSString stringWithFormat:@"-$%@",[dictRecord valueForKey:@"Amount"] ]];
+                        [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue] ]];
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"])
                     {
                         [amount setStyleClass:@"history_transferamount_pos"];
                          [indicator setStyleClass:@"history_sidecolor_pos"];
-                        [amount setText:[NSString stringWithFormat:@"+$%@",[dictRecord valueForKey:@"Amount"] ]];
+                        [amount setText:[NSString stringWithFormat:@"+$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"])
                     {
                         [amount setStyleClass:@"history_transferamount_neutral"];
                         [indicator setStyleClass:@"history_sidecolor_neutral"];
-                        [amount setText:[NSString stringWithFormat:@"-$%@",[dictRecord valueForKey:@"Amount"] ]];
+                        [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue] ]];
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Received"])
                     {
                         [amount setStyleClass:@"history_transferamount_pos"];
                          [indicator setStyleClass:@"history_sidecolor_pos"];
-                        [amount setText:[NSString stringWithFormat:@"+$%@",[dictRecord valueForKey:@"Amount"] ]];
+                        [amount setText:[NSString stringWithFormat:@"+$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Sent"])
                     {
                         [amount setStyleClass:@"history_transferamount_neg"];
                        [indicator setStyleClass:@"history_sidecolor_neg"];
-                        [amount setText:[NSString stringWithFormat:@"-$%@",[dictRecord valueForKey:@"Amount"] ]];
+                        [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                     }
                     else
                     {
-                        [amount setStyleClass:@"history_transferamount_pos"];
-                         [indicator setStyleClass:@"history_sidecolor_pos"];
-                        [amount setText:[NSString stringWithFormat:@"$%@",[dictRecord valueForKey:@"Amount"] ]];
+                        if (![[dictRecord valueForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
+                            [amount setStyleClass:@"history_transferamount_pos"];
+                            [indicator setStyleClass:@"history_sidecolor_pos"];
+                            [amount setText:[NSString stringWithFormat:@"+$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                        } else {
+                            [amount setStyleClass:@"history_transferamount_neg"];
+                            [indicator setStyleClass:@"history_sidecolor_neg"];
+                            [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                        }
+                        
                     }
 //                    //if (indexPath.row == 0) {
 //                       
@@ -598,7 +605,7 @@
                     [name setStyleClass:@"history_cell_textlabel"];
                     [name setStyleClass:@"history_recipientname"];
                      if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
-                         if ([[dictRecord valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
+                         if (![[dictRecord valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
                                [name setText:[NSString stringWithFormat:@"You Paid %@",[dictRecord valueForKey:@"FirstName"]]];
                              [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                                  placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
@@ -639,7 +646,11 @@
              UILabel *name = [UILabel new];
              [name setStyleClass:@"history_cell_textlabel"];
              [name setStyleClass:@"history_recipientname"];
-             [name setText:@"No Records"];
+             if (indexPath.row == 0) {
+                 [name setText:@"No Records"];
+             } else {
+                 [name setText:@"End of Records"];
+             }
              [cell.contentView addSubview:name];
                       }
          else if(isStart==YES)
@@ -696,7 +707,7 @@
                     [amount setStyleClass:@"history_transferamount_neutral"];
                     
                     
-                    [amount setText:[NSString stringWithFormat:@"$%@",[dictRecord valueForKey:@"Amount"] ]];
+                    [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                     [cell.contentView addSubview:amount];
                     [cell.contentView addSubview:indicator];
                     
@@ -718,7 +729,7 @@
                     else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                     {
                         if ([[dictRecord valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
-                            [name setText:[NSString stringWithFormat:@"Requested to %@",[dictRecord valueForKey:@"FirstName"]]];
+                            [name setText:[NSString stringWithFormat:@"%@ Requested From You",[dictRecord valueForKey:@"FirstName"]]];
                             
                         }
                         else
@@ -760,7 +771,12 @@
                 [name setStyleClass:@"history_cell_textlabel"];
                 [name setStyleClass:@"history_recipientname"];
 
-                [name setText:@"No Records"];
+                if (indexPath.row == 0) {
+                    [name setText:@"No Records"];
+                } else {
+                    [name setText:@"End of Records"];
+                }
+                
                 [cell.contentView addSubview:name];
                 return cell;
             }

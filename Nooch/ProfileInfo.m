@@ -242,18 +242,11 @@
     
     NSString *_date=[_formatter stringFromDate:date];
     
-    
-    
-    
-    
-    
-    
     [memSincelbl setBackgroundColor:[UIColor clearColor]]; [memSincelbl setText:[NSString stringWithFormat:@"Member Since :%@",_date]];
     
     [memSincelbl setStyleClass:@"memtable_view_cell_textlabel_1"];
     
     [self.view addSubview:memSincelbl];
-    
     
     
     self.name = [[UITextField alloc] initWithFrame:CGRectMake(20, 70, 280, 30)];
@@ -271,7 +264,6 @@
     [self.view addSubview:self.name];
     
     
-    
     UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(20, 70, 280, 30)];
     
     [name setBackgroundColor:[UIColor clearColor]]; [name setText:@"Name:"];
@@ -281,13 +273,11 @@
     [self.view addSubview:name];
     
     
-    
     UIView *div = [[UIView alloc] initWithFrame:CGRectMake(0, 105, 0, 0)];
     
     [div setStyleId:@"divider"];
     
     [self.view addSubview:div];
-    
     
     
     self.email = [[UITextField alloc] initWithFrame:CGRectMake(20, 110, 280, 30)];
