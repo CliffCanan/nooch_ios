@@ -100,21 +100,21 @@ NSMutableURLRequest *request1,*request2;
                                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                                         options:kNilOptions
                                         error:&error];;
-    NSString *decodeString = [NSString decodeBase64String:[loginResult valueForKey:@"Status"]];
-    
-    NSLog(@"%@",decodeString);
-    NSMutableDictionary *loginResult2=[[NSMutableDictionary alloc]init];
-    for (id key  in loginResult) {
-        if ([key isEqualToString:@"Status"]) {
-            [loginResult2 setObject:decodeString forKey:key];
-        }
-        else
-        [loginResult2 setObject:[loginResult valueForKey:key] forKey:key];
-    }
+//    NSString *decodeString = [NSString decodeBase64String:[loginResult valueForKey:@"Status"]];
+//    
+//    NSLog(@"%@",decodeString);
+//    NSMutableDictionary *loginResult2=[[NSMutableDictionary alloc]init];
+//    for (id key  in loginResult) {
+//        if ([key isEqualToString:@"Status"]) {
+//            [loginResult2 setObject:decodeString forKey:key];
+//        }
+//        else
+//        [loginResult2 setObject:[loginResult valueForKey:key] forKey:key];
+//    }
     
      //NSLog(@"%@",loginResult);
    
-    [self.Delegate decryptionDidFinish:loginResult2 TValue:self.tag];
+    [self.Delegate decryptionDidFinish:loginResult TValue:self.tag];
     
     [responseData release];
     
