@@ -34,7 +34,14 @@
     [super viewDidLoad];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-    
+//    serve *serveOBJ=[serve new ];
+//    
+//    serveOBJ.tagName=@"tranDetail";
+//    
+//    [serveOBJ setDelegate:self];
+//    
+//    [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"transactionId"]];
+
     NSLog(@"trans details: %@",self.trans);
     
 	// Do any additional setup after loading the view.
@@ -133,7 +140,14 @@
     UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 190, 320, 30)];
     [status setStyleClass:@"details_label"];
     if ([self.trans objectForKey:@"TransactionType"]!=NULL && [self.trans objectForKey:@"TransactionDate"]!=NULL) {
-        [status setText:[NSString stringWithFormat:@"%@ %@",[self.trans objectForKey:@"TransactionType"],[self.trans objectForKey:@"TransactionDate"]]];
+        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateFormat = @"dd/MM/yyyy HH:mm:ss";
+        NSDate *yourDate = [dateFormatter dateFromString:[self.trans valueForKey:@"TransactionDate"]];
+        dateFormatter.dateFormat = @"dd-MMMM-yyyy";
+        [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+        NSLog(@"%@",[dateFormatter stringFromDate:yourDate]);
+        NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
+        [status setText:[NSString stringWithFormat:@"%@ %@ %@,%@",[self.trans objectForKey:@"TransactionType"],[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]]];
     }
     //[status setText:[NSString stringWithFormat:@"%@ on %@",[self.trans objectForKey:@"TransactionType"],[self.trans objectForKey:@"TransactionDate"]]];
     [status setStyleClass:@"green_text"];

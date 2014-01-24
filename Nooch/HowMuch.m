@@ -388,7 +388,7 @@
     [self presentViewController:picker animated:YES completion:NULL];
    }
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    
+    [self cancel_photo];
     
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
     [[assist shared]setTranferImage:chosenImage];
@@ -402,7 +402,8 @@
     
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    
+    [self cancel_photo];
+     [self.camera setStyleId:@"howmuch_camera"];
     [picker dismissViewControllerAnimated:YES completion:^{
        // [self close:nil];
     }];

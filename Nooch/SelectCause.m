@@ -70,9 +70,9 @@
     [self.search setDelegate:self];
     [self.view addSubview:self.search];
     
-    UIButton *ribbon = [UIButton new];
-    [ribbon setStyleId:@"nonprofit_ribbon_blue"];
-    [self.view addSubview:ribbon];
+//    UIButton *ribbon = [UIButton new];
+//    [ribbon setStyleId:@"nonprofit_ribbon_blue"];
+//    [self.view addSubview:ribbon];
     
    feat = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 130)];
     [feat setStyleClass:@"featured_nonprofit_banner"];

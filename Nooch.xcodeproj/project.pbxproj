@@ -736,7 +736,6 @@
 				01085FB517FB6ABE00A31F63 /* ReferralCode.h */,
 				01085FB617FB6ABE00A31F63 /* ReferralCode.m */,
 				01085FA617FB2D2100A31F63 /* Register.h */,
-				01085FA717FB2D2100A31F63 /* Register.m */,
 				84C3EF19187D101E004687F6 /* ReEnterPin.h */,
 				84C3EF1A187D101E004687F6 /* ReEnterPin.m */,
 			);
@@ -831,6 +830,7 @@
 				01085FFE1803490500A31F63 /* CharityDetails.m */,
 				010860001803492C00A31F63 /* DonationAmount.h */,
 				010860011803492C00A31F63 /* DonationAmount.m */,
+				01085FA717FB2D2100A31F63 /* Register.m */,
 			);
 			name = "Donation Controllers";
 			sourceTree = "<group>";

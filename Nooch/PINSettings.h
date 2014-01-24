@@ -10,5 +10,7 @@
 #import "serve.h"
 
 @interface PINSettings : UIViewController<serveD>
-
+{
+    NSDictionary*Dictresponse;
+}
 @end

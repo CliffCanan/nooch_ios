@@ -14,6 +14,7 @@
 @interface SelectRecipient ()
 @property(nonatomic,strong) UITableView *contacts;
 @property(nonatomic,strong) NSMutableArray *recents;
+@property (nonatomic, strong) ABPeoplePickerNavigationController *addressBookController;
 @end
 
 @implementation SelectRecipient
@@ -59,12 +60,16 @@
     [self.contacts setStyleId:@"select_recipient"];
     [self.view addSubview:self.contacts]; [self.contacts reloadData];
     
-    search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
+    search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 280, 40)];
     [search setBackgroundColor:kNoochGrayDark];
     [search setDelegate:self];
     [search setTintColor:kNoochGrayDark];
     [self.view addSubview:search];
     
+    UIButton *phonebook = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [phonebook setStyleId:@"icon_phonebook"];
+    [phonebook addTarget:self action:@selector(phonebook:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:phonebook];
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [self.view addSubview:spinner];
     spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
@@ -76,6 +81,165 @@
     [recents setDelegate:self];
     [recents getRecents];
 }
+-(void)phonebook:(id)sender
+{
+    _addressBookController = [[ABPeoplePickerNavigationController alloc] init];
+    [_addressBookController setPeoplePickerDelegate:self];
+    [self presentViewController:_addressBookController animated:YES completion:nil];
+}
+#pragma mark - ABPeoplePickerNavigationController Delegate method implementation
+
+-(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person{
+    
+    // Initialize a mutable dictionary and give it initial values.
+    NSMutableDictionary *contactInfoDict = [[NSMutableDictionary alloc]
+                                            initWithObjects:@[@"", @"", @"", @"", @"", @"", @"", @"", @""]
+                                            forKeys:@[@"firstName", @"lastName", @"mobileNumber", @"homeNumber", @"homeEmail", @"workEmail", @"address", @"zipCode", @"city"]];
+    
+    // Use a general Core Foundation object.
+    CFTypeRef generalCFObject = ABRecordCopyValue(person, kABPersonFirstNameProperty);
+    
+    // Get the first name.
+    if (generalCFObject) {
+        [contactInfoDict setObject:(__bridge NSString *)generalCFObject forKey:@"firstName"];
+        CFRelease(generalCFObject);
+    }
+    
+    // Get the last name.
+    generalCFObject = ABRecordCopyValue(person, kABPersonLastNameProperty);
+    if (generalCFObject) {
+        [contactInfoDict setObject:(__bridge NSString *)generalCFObject forKey:@"lastName"];
+        CFRelease(generalCFObject);
+    }
+    
+    // Get the phone numbers as a multi-value property.
+    ABMultiValueRef phonesRef = ABRecordCopyValue(person, kABPersonPhoneProperty);
+    for (int i=0; i<ABMultiValueGetCount(phonesRef); i++) {
+        CFStringRef currentPhoneLabel = ABMultiValueCopyLabelAtIndex(phonesRef, i);
+        CFStringRef currentPhoneValue = ABMultiValueCopyValueAtIndex(phonesRef, i);
+        
+        if (CFStringCompare(currentPhoneLabel, kABPersonPhoneMobileLabel, 0) == kCFCompareEqualTo) {
+            [contactInfoDict setObject:(__bridge NSString *)currentPhoneValue forKey:@"mobileNumber"];
+        }
+        
+        if (CFStringCompare(currentPhoneLabel, kABHomeLabel, 0) == kCFCompareEqualTo) {
+            [contactInfoDict setObject:(__bridge NSString *)currentPhoneValue forKey:@"homeNumber"];
+        }
+        
+        CFRelease(currentPhoneLabel);
+        CFRelease(currentPhoneValue);
+    }
+    CFRelease(phonesRef);
+    
+    
+    // Get the e-mail addresses as a multi-value property.
+    ABMultiValueRef emailsRef = ABRecordCopyValue(person, kABPersonEmailProperty);
+    for (int i=0; i<ABMultiValueGetCount(emailsRef); i++) {
+        CFStringRef currentEmailLabel = ABMultiValueCopyLabelAtIndex(emailsRef, i);
+        CFStringRef currentEmailValue = ABMultiValueCopyValueAtIndex(emailsRef, i);
+        
+        if (CFStringCompare(currentEmailLabel, kABHomeLabel, 0) == kCFCompareEqualTo) {
+            [contactInfoDict setObject:(__bridge NSString *)currentEmailValue forKey:@"homeEmail"];
+        }
+        
+        if (CFStringCompare(currentEmailLabel, kABWorkLabel, 0) == kCFCompareEqualTo) {
+            [contactInfoDict setObject:(__bridge NSString *)currentEmailValue forKey:@"workEmail"];
+        }
+        
+        CFRelease(currentEmailLabel);
+        CFRelease(currentEmailValue);
+    }
+    CFRelease(emailsRef);
+    
+    
+    // Get the first street address among all addresses of the selected contact.
+    ABMultiValueRef addressRef = ABRecordCopyValue(person, kABPersonAddressProperty);
+    if (ABMultiValueGetCount(addressRef) > 0) {
+        NSDictionary *addressDict = (__bridge NSDictionary *)ABMultiValueCopyValueAtIndex(addressRef, 0);
+        
+        [contactInfoDict setObject:[addressDict objectForKey:(NSString *)kABPersonAddressStreetKey] forKey:@"address"];
+        [contactInfoDict setObject:[addressDict objectForKey:(NSString *)kABPersonAddressZIPKey] forKey:@"zipCode"];
+        [contactInfoDict setObject:[addressDict objectForKey:(NSString *)kABPersonAddressCityKey] forKey:@"city"];
+    }
+    CFRelease(addressRef);
+    
+    
+    // If the contact has an image then get it too.
+    if (ABPersonHasImageData(person)) {
+        NSData *contactImageData = (__bridge NSData *)ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
+        
+        [contactInfoDict setObject:contactImageData forKey:@"image"];
+    }
+    
+    // Initialize the array if it's not yet initialized.
+    
+    // Add the dictionary to the array.
+    // [_arrContactsData addObject:contactInfoDict];
+    isphoneBook=YES;
+    if (![[contactInfoDict valueForKey:@"homeEmail"] isEqualToString:@""]) {
+        emailphoneBook= [contactInfoDict  valueForKey:@"homeEmail"];
+        [self getMemberIdByUsingUserNameFromPhoneBook];
+    }
+    else if(![[contactInfoDict valueForKey:@"homeEmail"] isEqualToString:@""])
+    {
+        emailphoneBook= [contactInfoDict valueForKey:@"workEmail"];
+    [self getMemberIdByUsingUserNameFromPhoneBook];
+    }
+    else
+    {
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Email ID is not available." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        
+    }
+    NSLog(@"%@",contactInfoDict );
+    // Reload the table view data.
+    // [self.tableView reloadData];
+    
+    // Dismiss the address book view controller.
+    [_addressBookController dismissViewControllerAnimated:YES completion:nil];
+    
+    return NO;
+}
+
+
+-(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier{
+    return NO;
+}
+
+
+-(void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker{
+    isphoneBook=NO;
+    [_addressBookController dismissViewControllerAnimated:YES completion:nil];
+}
+#pragma mark - email handling
+-(void)getMemberIdByUsingUserNameFromPhoneBook{
+    //[search resignFirstResponder];
+    if ([emailphoneBook isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]]){
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Denied" message:@"You are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av setTag:4];
+        [av show];
+    }
+    else
+    {
+        
+        if ([self.view.subviews containsObject:spinner]) {
+            [spinner removeFromSuperview];
+        }
+        // NSLog(@"%@",[dictResult objectForKey:@"Result"]);
+        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [self.view addSubview:spinner];
+        [spinner setHidden:NO];
+        spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+        [spinner startAnimating];
+        
+        serve *emailCheck = [serve new];
+        emailCheck.Delegate = self;
+        emailCheck.tagName = @"emailCheck";
+        [emailCheck getMemIdFromuUsername:emailphoneBook];
+    }
+}
+
+
 #pragma mark-Location Search
 -(void)locationSearch:(id)sender{
     userlocation*loc=[userlocation new];
@@ -199,6 +363,7 @@
                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
+        NSLog(@"%@",self.recents);
         [self.contacts reloadData];
         
     }
@@ -228,7 +393,7 @@
         {
             
             //[me endWaitStat];
-            UIAlertView *alertRedirectToProfileScreen=[[UIAlertView alloc]initWithTitle:@"Unknown" message:@"We at Nooch have no knowledge of this email address. Are You sure?" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES",nil];
+            UIAlertView *alertRedirectToProfileScreen=[[UIAlertView alloc]initWithTitle:@"Unknown" message:@"We at Nooch have no knowledge of this email address. Do you still want to Transfer to this mail address?" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES",nil];
             [alertRedirectToProfileScreen setTag:20220];
             [alertRedirectToProfileScreen show];
             [spinner stopAnimating];
@@ -259,7 +424,12 @@
     if (alertView.tag==20220) {
         if (buttonIndex==1) {
               NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+            if (isphoneBook) {
+                [dict setObject:emailphoneBook forKey:@"email"];
+            }
+            else
             [dict setObject:searchString forKey:@"email"];
+            
             [dict setObject:@"nonuser" forKey:@"nonuser"];
             HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
             
@@ -329,23 +499,19 @@
         
     }
     for (UIView*subview in cell.contentView.subviews) {
+        NSLog(@"%@",subview);
         [subview removeFromSuperview];
     }
-   // [cell.textLabel setStyleClass:@"select_recipient_name"];
-    pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
+  
+    UIImageView*pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
     pic.clipsToBounds = YES;
-    //[pic setTag:indexPath.row];
-    
-    
-    npic = [UIImageView new];
+    UIImageView* npic = [UIImageView new];
     npic.clipsToBounds = YES;
-   // [npic setTag:indexPath.row];
-   
+  
+    [cell.contentView addSubview:pic];
+    [cell.contentView addSubview:npic];
 
         if (searching) {
-           
-            [cell addSubview:pic];
-            [cell addSubview:npic];
         //Nooch User
         npic.hidden=NO;
         [npic setFrame:CGRectMake(250,15, 34, 40)];
@@ -358,58 +524,36 @@
                 [cell setIndentationLevel:1];
         pic.hidden=NO;
         cell.indentationWidth = 70;
-        // [pic setStyleClass:@"list_userprofilepic"];
-        //[pic setStyleCSS:@"background-image : url(Preston.png)"];
-        
         [pic setFrame:CGRectMake(20, 5, 60, 60)];
         pic.layer.cornerRadius = 30; pic.layer.borderColor = kNoochBlue.CGColor; pic.layer.borderWidth = 1;
-        pic.clipsToBounds = YES;
+        
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",info[@"FirstName"],info[@"LastName"]];
     }
     else if(isRecentList){
         
-        [cell addSubview:pic];
-        [cell addSubview:npic];
-        //Nooch User
-        npic.hidden=NO;
+       //Recent List
+       
         [npic setFrame:CGRectMake(250,15, 34, 40)];
         [npic setImage:[UIImage imageNamed:@"n_Icon.png"]];
-        
-
         NSDictionary *info = [self.recents objectAtIndex:indexPath.row];
         NSLog(@"%@",info);
-        
         [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
         placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
         pic.hidden=NO;
         cell.indentationWidth = 70;
-        // [pic setStyleClass:@"list_userprofilepic"];
-        //[pic setStyleCSS:@"background-image : url(Preston.png)"];
-        
         [pic setFrame:CGRectMake(20, 5, 60, 60)];
         pic.layer.cornerRadius = 30; pic.layer.borderColor = kNoochBlue.CGColor; pic.layer.borderWidth = 1;
-        pic.clipsToBounds = YES;
         [cell setIndentationLevel:1];
         cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",info[@"FirstName"],info[@"LastName"]];
         
         
     }
    else if(emailEntry){
+       //Email
         [pic removeFromSuperview];
         [npic removeFromSuperview];
-        for (UIView*subview in cell.contentView.subviews) {
-            [subview removeFromSuperview];
-        }
-        //[pic setImage:NULL];
-        //[npic setImage:NULL];
-         //pic.clipsToBounds = NO;
-       // npic.clipsToBounds = NO;
-        
         cell.indentationWidth = 10;
-        // npic.hidden=YES;
-          //      pic.hidden=YES;
-        // [pic setFrame:CGRectMake(0, 0, 0, 0)];
-        //  [npic setFrame:CGRectMake(0, 0, 0, 0)];
+    
         cell.textLabel.text = [NSString stringWithFormat:@"Send to %@",search.text];
         return cell;
     }

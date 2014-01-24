@@ -70,8 +70,8 @@
     [self.navigationItem setTitle:@"History"];
     // [nav_ctrl performSelector:@selector(disable)];
 	// Do any additional setup after loading the view.
-    [self.slidingViewController.panGesture setEnabled:YES];
-    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+//    [self.slidingViewController.panGesture setEnabled:YES];
+//    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     histArray=[[NSMutableArray alloc]init];
     histShowArrayCompleted=[[NSMutableArray alloc]init];
     histShowArrayPending=[[NSMutableArray alloc]init];
@@ -95,13 +95,7 @@
     [self.view addSubview:self.list]; [self.list reloadData];
     
     
-//    //Export History
-//    exportHistory=[UIButton buttonWithType:UIButtonTypeCustom];
-//    [exportHistory setTitle:@"Export History" forState:UIControlStateNormal];
-//    [exportHistory setFrame:CGRectMake(10, 420, 70, 20)];
-//    [exportHistory setStyleClass:@"exportHistorybutton"];
-//    [exportHistory addTarget:self action:@selector(ExportHistory:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:exportHistory];
+
     UISwipeGestureRecognizer * recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideright:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self.list addGestureRecognizer:recognizer];
@@ -167,7 +161,14 @@
     [imageCache clearDisk];
     [imageCache cleanDisk];
     [self loadHist:@"ALL" index:index len:20];
-    
+    //    //Export History
+    exportHistory=[UIButton buttonWithType:UIButtonTypeCustom];
+    [exportHistory setTitle:@"Export History" forState:UIControlStateNormal];
+    [exportHistory setFrame:CGRectMake(10, 420, 70, 20)];
+    [exportHistory setStyleClass:@"exportHistorybutton"];
+    [exportHistory addTarget:self action:@selector(ExportHistory:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:exportHistory];
+    [self.view bringSubviewToFront:exportHistory];
    
 }
 
@@ -592,8 +593,72 @@
                     [cell.contentView addSubview:indicator];
                     UILabel *date = [UILabel new];
                     [date setStyleClass:@"history_datetext"];
-                    [date setText:[dictRecord valueForKey:@"TransactionDate"]];
-                    [cell.contentView addSubview:date];
+                    
+               
+                    
+                    NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
+                    
+                    
+                    
+                    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+                    
+                    NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
+                                                    
+                                                                        fromDate:addeddate
+                                                    
+                                                                          toDate:[NSDate date]
+                                                    
+                                                                         options:0];
+                    
+                    
+                    
+                    NSLog(@"%ld", (long)[components day]);
+                    if ((long)[components day]>3) {
+                        
+                        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+                        dateFormatter.dateFormat = @"dd/MM/yyyy HH:mm:ss";
+                        NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
+                        dateFormatter.dateFormat = @"dd-MMMM-yyyy";
+                        [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+                        NSLog(@"%@",[dateFormatter stringFromDate:yourDate]);
+                        NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
+                        [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
+                        [cell.contentView addSubview:date];
+                       
+
+  
+                 }
+                   else if ((long)[components day]==0)
+                   {
+                       NSDateComponents *components = [gregorianCalendar components:NSHourCalendarUnit
+                                                       
+                                                                           fromDate:addeddate
+                                                       
+                                                                             toDate:[NSDate date]
+                                                       
+                                                                            options:0];
+                         NSLog(@"%ld", (long)[components hour]);
+                       [date setText:[NSString stringWithFormat:@"%ld hours ago",(long)[components hour]]];
+                        [cell.contentView addSubview:date];
+
+                       
+                   }
+                   else
+                   {
+                       NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
+                                                       
+                                                                           fromDate:addeddate
+                                                       
+                                                                             toDate:[NSDate date]
+                                                       
+                                                                            options:0];
+                       NSLog(@"%ld", (long)[components day]);
+                       [date setText:[NSString stringWithFormat:@"%ld days ago",(long)[components day]]];
+                        [cell.contentView addSubview:date];
+
+                   }
+                   
+                    
                     UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 50, 50)];
                     pic.layer.borderColor = kNoochGrayDark.CGColor;
                     pic.layer.borderWidth = 1;
@@ -604,7 +669,7 @@
                     UILabel *name = [UILabel new];
                     [name setStyleClass:@"history_cell_textlabel"];
                     [name setStyleClass:@"history_recipientname"];
-                     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
+                     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Received"]) {
                          if (![[dictRecord valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
                                [name setText:[NSString stringWithFormat:@"You Paid %@",[dictRecord valueForKey:@"FirstName"]]];
                              [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
@@ -618,7 +683,22 @@
 
                        }
                      }
-            
+                   else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Sent"]) {
+                        if (![[dictRecord valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
+                            [name setText:[NSString stringWithFormat:@"You Paid %@",[dictRecord valueForKey:@"FirstName"]]];
+                            [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                                placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                        }
+                        else
+                        {
+                            [name setText:[NSString stringWithFormat:@"%@ Paid You",[dictRecord valueForKey:@"FirstName"]]];
+                            [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                                placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                            
+                        }
+                    }
+                    
+
                    // }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]){
                         [name setText:@"Deposit into Nooch"];
@@ -749,9 +829,72 @@
                     
                     UILabel *date = [UILabel new];
                     [date setStyleClass:@"history_datetext"];
-                    [date setText:[dictRecord valueForKey:@"TransactionDate"]];
-                    [cell.contentView addSubview:date];
+                    //[date setText:[dictRecord valueForKey:@"TransactionDate"]];
+                   // [cell.contentView addSubview:date];
+                    NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                     
+                    
+                    
+                    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+                    
+                    NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
+                                                    
+                                                                        fromDate:addeddate
+                                                    
+                                                                          toDate:[NSDate date]
+                                                    
+                                                                         options:0];
+                    
+                    
+                    
+                    NSLog(@"%ld", (long)[components day]);
+                    if ((long)[components day]>3) {
+                        
+                        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+                        dateFormatter.dateFormat = @"dd/MM/yyyy HH:mm:ss";
+                        NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
+                        dateFormatter.dateFormat = @"dd-MMMM-yyyy";
+                        [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+                        NSLog(@"%@",[dateFormatter stringFromDate:yourDate]);
+                        NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
+                        [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
+                        [cell.contentView addSubview:date];
+                        
+                        
+                        
+                    }
+                    else if ((long)[components day]==0)
+                    {
+                        NSDateComponents *components = [gregorianCalendar components:NSHourCalendarUnit
+                                                        
+                                                                            fromDate:addeddate
+                                                        
+                                                                              toDate:[NSDate date]
+                                                        
+                                                                             options:0];
+                        NSLog(@"%ld", (long)[components hour]);
+                        [date setText:[NSString stringWithFormat:@"%ld hours ago",(long)[components hour]]];
+                        [cell.contentView addSubview:date];
+                        
+                        
+                    }
+                    else
+                    {
+                        NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
+                                                        
+                                                                            fromDate:addeddate
+                                                        
+                                                                              toDate:[NSDate date]
+                                                        
+                                                                             options:0];
+                        NSLog(@"%ld", (long)[components day]);
+                        [date setText:[NSString stringWithFormat:@"%ld days ago",(long)[components day]]];
+                        [cell.contentView addSubview:date];
+                        
+                    }
+                    
+                    
+
                     
                     UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 50, 50)];
                     pic.layer.borderColor = kNoochGrayDark.CGColor;
@@ -817,7 +960,20 @@
     
        return cell;
 }
-
+- (NSDate*) dateFromString:(NSString*)aStr
+{
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+    //[dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss a"];
+    [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    
+    NSLog(@"%@", aStr);
+    NSDate   *aDate = [dateFormatter dateFromString:aStr];
+    
+    return aDate;
+}
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -909,7 +1065,18 @@
 {  NSError *error;
     [spinner setHidden:YES];
     [spinner stopAnimating];
-    if ([tagName isEqualToString:@"hist"]) {
+    
+    
+    if ([tagName isEqualToString:@"csv"]) {
+        NSDictionary*dictResponse=[NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        if ([[[dictResponse valueForKey:@"sendTransactionInCSVResult"]valueForKey:@"Result"]isEqualToString:@"1"]) {
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Success!" message:@"Email is in queue.Please check the mail" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            [alert show];
+            
+        }
+        //   {"sendTransactionInCSVResult":{"Result":"1"}}
+    }
+    else if ([tagName isEqualToString:@"hist"]) {
         //[histArray removeAllObjects];
         NSLog(@"%@",result);
        histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
@@ -997,6 +1164,8 @@
         {
             NSString * email = [[actionSheet textFieldAtIndex:0] text];
             serve * s = [[serve alloc] init];
+            [s setTagName:@"csv"];
+            [s setDelegate:self];
             [s sendCsvTrasactionHistory:email];
         }
     }

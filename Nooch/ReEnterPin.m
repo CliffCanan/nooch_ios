@@ -283,8 +283,16 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
         if (alertView.tag == 1) {
             if (buttonIndex == 0) {
+                serve*serveOBJ=[serve new];
+                [serveOBJ setTagName:@"requiredImmediately"];
+                [serveOBJ setDelegate:self];
+                [serveOBJ SaveImmediateRequire:NO];
                 [user setObject:@"NO" forKey:@"requiredImmediately"];
             }else{
+                serve*serveOBJ=[serve new];
+                [serveOBJ setTagName:@"requiredImmediately"];
+                [serveOBJ setDelegate:self];
+                [serveOBJ SaveImmediateRequire:YES];
                 [user setObject:@"YES" forKey:@"requiredImmediately"];
             }
              NSLog(@"%@",user);

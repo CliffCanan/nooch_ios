@@ -25,6 +25,9 @@ core *me;
 UINavigationController *nav_ctrl;
 
 NSUserDefaults *user;
-@interface Home : UIViewController<serveD>
-
+@interface Home : UIViewController<serveD,CLLocationManagerDelegate>
+{
+    CLLocationManager*locationManager;
+    float lat,lon;
+}
 @end

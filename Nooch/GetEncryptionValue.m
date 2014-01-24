@@ -8,6 +8,7 @@
 
 #import "GetEncryptionValue.h"
 #import "Constant.h"
+#import "NSString+ASBase64.h"
 //#import "CJSONSerializer.h"
 //#import "CJSONDataSerializer.h"
 //#import "JSON.h"
@@ -21,9 +22,11 @@ NSMutableURLRequest*requestEncryption;
 
 -(void)getEncryptionData:(NSString *) stringtoEncry {
 
+    NSString *encodedString = [NSString encodeBase64String:stringtoEncry];
     
+    NSLog(@"%@",encodedString);
     responseData = [[NSMutableData alloc] init];
-    requestEncryption = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@", MyUrl,@"GetEncryptedData",@"data",stringtoEncry]]];
+    requestEncryption = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@", MyUrl,@"GetEncryptedData",@"data",encodedString]]];
     [requestEncryption setHTTPMethod:@"GET"];
     [requestEncryption setTimeoutInterval:500.0f];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestEncryption delegate:self];

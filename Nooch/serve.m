@@ -208,7 +208,7 @@ NSString *amnt;
     
     NSLog(@"%@",encodedString);
     self.responseData = [[NSMutableData alloc] init];
-    requestEncryption = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@", ServerUrl,@"GetEncryptedData",@"data",input]]];
+    requestEncryption = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@", ServerUrl,@"GetEncryptedData",@"data",encodedString]]];
     [requestEncryption setHTTPMethod:@"GET"];
     [requestEncryption setTimeoutInterval:500.0f];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestEncryption delegate:self];
@@ -720,7 +720,7 @@ NSString *amnt;
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     
-    
+
     responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
     if ([responseString rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
         
@@ -903,7 +903,16 @@ NSString *amnt;
         }
         
         //--
-        
+       if ([Dictresponse valueForKey:@"IsRequiredImmediatley"]!=NULL || ![[Dictresponse valueForKey:@"IsRequiredImmediatley"] isKindOfClass:[NSNull class]]) {
+           if ([[Dictresponse valueForKey:@"IsRequiredImmediatley"]boolValue]) {
+               [user setObject:@"YES" forKey:@"requiredImmediately"];
+           }
+           else
+           {
+               [user setObject:@"NO" forKey:@"requiredImmediately"];
+           }
+           
+       }
         
         if ([Dictresponse valueForKey:@"PhotoUrl"]!=NULL || ![[Dictresponse valueForKey:@"PhotoUrl"] isKindOfClass:[NSNull class]]) {
             [defaults setObject:[Dictresponse valueForKey:@"PhotoUrl"] forKey:@"PhotoUrlRef"];
@@ -1775,5 +1784,44 @@ NSString *amnt;
 
 }
 
-
+// public StringResult SaveImmediateRequire(string userName, Boolean IsRequiredImmediatley, string accesstoken)
+-(void)SaveImmediateRequire:(BOOL)IsRequiredImmediatley
+{
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSString * memId = [defaults objectForKey:@"MemberId"];
+    NSString*rm;
+    if (IsRequiredImmediatley) {
+        rm=@"true";
+    }
+    else
+        rm=@"false";
+    NSString *urlString = [NSString stringWithFormat:@"%@/SaveImmediateRequire?memberId=%@&IsRequiredImmediatley=%@&accessToken=%@",ServerUrl,memId,rm,[defaults valueForKey:@"OAuthToken"]];
+    NSLog(@"%@",urlString);
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+}
+//GetTransactionDetail?MemberId={MemberId}&accesstoken={accesstoken}&transactionId={transactionId}", BodyStyle = WebMessageBodyStyle.Bare,
+-(void)GetTransactionDetail:(NSString*)transactionId
+{
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSString * memId = [defaults objectForKey:@"MemberId"];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/GetsingleTransactionDetail?MemberId=%@&transactionId=%@&accessToken=%@",ServerUrl,memId,transactionId,[defaults valueForKey:@"OAuthToken"]];
+    NSLog(@"%@",urlString);
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+ 
+}
 @end

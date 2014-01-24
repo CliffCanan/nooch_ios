@@ -179,7 +179,15 @@
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
 }
-
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    //location
+    locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
+    locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
+    [locationManager startUpdatingLocation];
+}
 - (void)viewWillAppear:(BOOL)animated
 {
     [self.navigationItem setTitle:@"Nooch"];
@@ -200,7 +208,14 @@
         //push login
         return;
     }
-   
+    if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
+        serve *serveOBJ=[serve new ];
+        
+        [serveOBJ setTagName:@"sets"];
+        [serveOBJ getSettings];
+    }
+
+    
 }
 
 -(void)showMenu
@@ -224,7 +239,7 @@
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
 #pragma mark-9jan
-   if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
+ /*  if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
        
        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
        [alert show];
@@ -239,12 +254,12 @@
         [alert show];
        return;
     }
-    /*if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
         [alert setTag:148];
         [alert show];
         return;
-    }*/
+    }
    
     //IsVerifiedPhone
     //[user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"]
@@ -254,7 +269,7 @@
         
         return;
     }
-    
+    */
     if (NSClassFromString(@"SelectRecipient")) {
         
         Class aClass = NSClassFromString(@"SelectRecipient");
@@ -279,7 +294,22 @@
     SelectCause *donate = [SelectCause new];
     [self.navigationController pushViewController:donate animated:YES];
 }
+# pragma mark - CLLocationManager Delegate Methods
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
+    NSLog(@"Error : %@",error);
+    if ([error code] == kCLErrorDenied){
+        NSLog(@"Error : %@",error);
+    }
+}
 
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{
+    [manager stopUpdatingLocation];
+    
+    CLLocationCoordinate2D loc = [newLocation coordinate];
+    lat = [[[NSString alloc] initWithFormat:@"%f",loc.latitude] floatValue];
+    lon = [[[NSString alloc] initWithFormat:@"%f",loc.longitude] floatValue];
+    [locationManager stopUpdatingLocation];
+}
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {

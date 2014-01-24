@@ -93,7 +93,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     [cell.textLabel setTextColor:kNoochGrayLight];
-    cell.indentationLevel = 1; cell.indentationWidth = 60;
+    cell.indentationLevel = 1; cell.indentationWidth = 70;
     [cell.textLabel setStyleClass:@"select_recipient_name"];
     
     NSDictionary * temp = [self.users objectAtIndex:indexPath.row];
@@ -105,16 +105,16 @@
     pic.clipsToBounds = YES;
     [pic setImageWithURL:[NSURL URLWithString:temp[@"Photo"]]
         placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
-    NSString * name = [NSString stringWithFormat:@"%@ %@",[temp objectForKey:@"FirstName"],[temp objectForKey:@"LastName"]];
+    NSString * name = [NSString stringWithFormat:@"   %@ %@",[temp objectForKey:@"FirstName"],[temp objectForKey:@"LastName"]];
     [cell.textLabel setText:name];
     
     NSString * miles;
     if ([[temp objectForKey:@"Miles"] intValue]<1) {
-        miles = [NSString stringWithFormat:@"%d feet",([[temp objectForKey:@"Miles"] intValue] * 100)];
+        miles = [NSString stringWithFormat:@"    %d feet",([[temp objectForKey:@"Miles"] intValue] * 100)];
     }
     else
     {
-        miles = [NSString stringWithFormat:@"%d miles",[[temp objectForKey:@"Miles"] intValue]];
+        miles = [NSString stringWithFormat:@"    %d miles",[[temp objectForKey:@"Miles"] intValue]];
         
     }
     

@@ -258,19 +258,11 @@
         [log setTagName:@"login"];
         [[UIApplication sharedApplication]setStatusBarHidden:NO];
         //[log validateInvitation:@"pilot"];
-        //28/12
-        locationManager = [[CLLocationManager alloc] init];
-        locationManager.delegate = self;
-        locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
-        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
-        [locationManager startUpdatingLocation];
+        
 
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"IsPrimaryBankVerified"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"firstName"];
-        //[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"NotifPlaced2"];
-       // [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"NotifPlaced"];
-        
-         NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+        NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
         if ([self.stay_logged_in isOn]) {
            [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:YES lat:lat lon:lon uid:udid];
         }
@@ -339,6 +331,7 @@
         [enc_user getEncrypt:[self.email.text lowercaseString]];
     } else if ([tagName isEqualToString:@"username"])
     {
+        
         NSError *error;
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         NSLog(@"test: %@",loginResult);
@@ -349,13 +342,14 @@
     }
     else if ([tagName isEqualToString:@"info"])
     {
+        
         NSError *error;
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         NSLog(@"User response: %@",loginResult);
         [self.navigationItem setHidesBackButton:YES];
         [nav_ctrl setNavigationBarHidden:NO];
-      [nav_ctrl.navigationItem setLeftBarButtonItem:nil];
-      [user removeObjectForKey:@"Balance"];
+        [nav_ctrl.navigationItem setLeftBarButtonItem:nil];
+        [user removeObjectForKey:@"Balance"];
         [self.navigationItem setBackBarButtonItem:Nil];
         [spinner stopAnimating];
         [UIView beginAnimations:nil context:NULL];

@@ -212,9 +212,25 @@
     
     [self.view addSubview:picture];
     
+   // UIView*view=[[UIView alloc] initWithFrame:CGRectMake(170, 40, 200, 35)];
+   // [view setStyleCSS:@"memsince"];
+   
+    //[self.view addSubview:view];
+    // [self.view bringSubviewToFront:view];
     
     
-    memSincelbl = [[UILabel alloc] initWithFrame:CGRectMake(100, 40, 110, 30)];
+    //[memSincelbl setTextAlignment:NSTextAlignmentRight];
+   // [self.name setBackgroundColor:[UIColor ]];
+    
+    
+    
+   // [memSincelbl setStyleClass:@"table_view_cell_detailtext_1"];
+    
+   
+    //[self.view addSubview:self.name];
+    
+
+   // memSincelbl = [[UILabel alloc] initWithFrame:CGRectMake(100, 40, 110, 30)];
     
     start = [[user valueForKey:@"DateCreated"] rangeOfString:@"("];
     
@@ -241,12 +257,23 @@
     [_formatter setDateFormat:@"MM/dd/yyyy"];
     
     NSString *_date=[_formatter stringFromDate:date];
-    
-    [memSincelbl setBackgroundColor:[UIColor clearColor]]; [memSincelbl setText:[NSString stringWithFormat:@"Member Since :%@",_date]];
-    
+    memSincelbl = [[UITextView alloc] initWithFrame:CGRectMake(20, 20, 200, 30)];
+    [memSincelbl setText:[NSString stringWithFormat:@"Member Since %@",_date]];
+    memSincelbl.userInteractionEnabled=NO;
+    memSincelbl.selectable=NO;
+    [memSincelbl setUserInteractionEnabled:NO];
     [memSincelbl setStyleClass:@"memtable_view_cell_textlabel_1"];
     
     [self.view addSubview:memSincelbl];
+    
+    
+    
+    
+    
+    
+   // [memSincelbl setBackgroundColor:[UIColor clearColor]]; [memSincelbl setText:[NSString stringWithFormat:@"Member Since :%@",_date]];
+    
+   
     
     
     self.name = [[UITextField alloc] initWithFrame:CGRectMake(20, 70, 280, 30)];

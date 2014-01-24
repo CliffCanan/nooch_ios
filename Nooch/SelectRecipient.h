@@ -10,8 +10,9 @@
 #import "Home.h"
 #import "serve.h"
 #import "HowMuch.h"
-
-@interface SelectRecipient : UIViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate>
+#import <AddressBook/AddressBook.h>
+#import <AddressBookUI/AddressBookUI.h>
+@interface SelectRecipient : UIViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate,ABPeoplePickerNavigationControllerDelegate>
 {
     UIView*loader;
     NSString*searchString;
@@ -20,8 +21,9 @@
     NSMutableArray*arrSearchedRecords;
     UISearchBar *search;
     UIActivityIndicatorView*spinner;
-    UIImageView *pic;
-    UIImageView *npic;
+    
     BOOL isRecentList;
+    NSString*emailphoneBook;
+    BOOL isphoneBook;
 }
 @end

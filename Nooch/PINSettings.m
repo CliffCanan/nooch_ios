@@ -80,10 +80,19 @@
 {
     if ([self.ri isOn])
     {
+        serve*serveOBJ=[serve new];
+        [serveOBJ setTagName:@"requiredImmediately"];
+        [serveOBJ setDelegate:self];
+        [serveOBJ SaveImmediateRequire:[self.ri isOn]];
+        //SaveImmediateRequire
         [user setObject:@"YES" forKey:@"requiredImmediately"];
     }
     else
     {
+        serve*serveOBJ=[serve new];
+        [serveOBJ setTagName:@"requiredImmediately"];
+        [serveOBJ setDelegate:self];
+        [serveOBJ SaveImmediateRequire:[self.ri isOn]];
         [user setObject:@"NO" forKey:@"requiredImmediately"];
     }
 }
@@ -92,7 +101,16 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    
+    if ([tagName isEqualToString:@"requiredImmediately"]) {
+        NSError* error;
+        Dictresponse = [NSJSONSerialization
+                        JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                        options:kNilOptions
+                        error:&error];
+        if ([[Dictresponse valueForKey:@"Result"] isEqualToString:@"success"]) {
+            
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning

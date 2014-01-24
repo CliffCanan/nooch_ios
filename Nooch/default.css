@@ -332,17 +332,20 @@
 			height				: 30px;
 		}
 .memtable_view_cell_textlabel_1 {
-            top                 :20px;
+            background-color: #3FABE1 ;
+            transparency    :0.3;
+
+
+            top                 :10px;
 			font-family			: "Roboto";
 			font-weight         : regular;
-			font-size			: 15px;
-			text-align       	: left;
-			color 				: #41ABE1;
-			width				: 260px;
-			left                : 100px;
-			height				: 20px;
-		}
-		/****  Table Detail Text  (right side of row)  ****/
+			font-size			: 13px;
+			text-align       	: center;
+			color 				: white;
+			width				: 110px;
+			left                : 190px;
+			height				: 40px;
+		}		/****  Table Detail Text  (right side of row)  ****/
 		.table_view_cell_detailtext_1 {
 			font-family			: "Roboto";
 			font-weight         : light;
@@ -353,7 +356,18 @@
 			height				: 30px;
 			text-align       	: right;
 		}
-		 
+		 .exportHistorybutton{
+            background-color: #3FABE1 ;
+            top                 :450px;
+			font-family			: "Roboto";
+			font-weight         : regular;
+			font-size			: 12px;
+			text-align       	: center;
+			color 				: white;
+			width				: 100px;
+			left                : 10px;
+			height				: 30px;
+         }
 		/****  		Sub-header Text (Outside of Table)     ****/
 		/****  Mostly Pre-Login Screens + Referral Screen  ****/
 		.header_label{
@@ -540,6 +554,14 @@
 		height				: 33px;
 		background-image	: url(map-icon.png);
 		background-size		: 20px 33px;
+	}
+#icon_phonebook {
+        top					: 2px
+		left				: 282px;
+		width				: 38px;
+		height				: 38px;
+		background-image	: url(address-book-icon.png);
+
 	}
 
 	/**  Styles all the profile pictures of users that are returned in the Select Recipient Table.  **/
@@ -2327,7 +2349,14 @@
 		text-align       	: right;
 		color 				: #3fabe1;
 	}
+    .memsince{
+        background-color: 	: #3FABE1;
+        width				: 200px;
+		left                : 175px;
+		height				: 30px;
+        top                 : 35px;
     
+    }
     .refer_name {
             font-family			: "Roboto";
 			font-weight         : light;

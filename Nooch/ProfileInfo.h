@@ -24,7 +24,7 @@ BOOL isProfileOpenFromSideBar;
     NSDictionary*GMTTimezonesDictionary;
     UIImageView *picture;
     BOOL isPhotoUpdate;
-    UILabel *memSincelbl;
+    UITextView *memSincelbl;
     NSRange start,end;
     NSString*newString;
     NSString *betweenBraces;
