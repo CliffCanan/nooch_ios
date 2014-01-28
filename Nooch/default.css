@@ -80,8 +80,10 @@
 	 /******************************/
 	 /******	 BUTTONS	********/
 	 /******************************/
-		:not(action-sheet) > button {
-			width				: 280px;
+
+		/****  BLUE BUTTON GRADIENT ****/
+		.button_blue { background-image			: linear-gradient(#6dbee8, #41abe1);
+                                width				: 280px;
 			height				: 56px;
 			left                : 20px;
 			color 				: white;
@@ -89,23 +91,57 @@
 			font-family			: "Roboto";
 			font-weight         : light;
 			font-size			: 22px;
-		}
-
-		/****  BLUE BUTTON GRADIENT ****/
-		.button_blue { background-image			: linear-gradient(#6dbee8, #41abe1); }
+        }
 
 		/****  GREEN BUTTON GRADIENT  ****/
-		.button_green:normal { background-image	: linear-gradient(#7fd034, #6ab029); }
+		.button_green:normal {
+        width				: 280px;
+			height				: 56px;
+			left                : 20px;
+			color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 22px;
+            background-image	: linear-gradient(#7fd034, #6ab029);
+            }
 
 		/****  Disabled GREEN GRADIENT  ****/
 		.button_green:disabled { border-radius		: 3px;
-            background-image: linear-gradient(#c0c2c4, #b1b3b6); }
+            background-image: linear-gradient(#c0c2c4, #b1b3b6);
+            width				: 280px;
+			height				: 56px;
+			left                : 20px;
+			color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 22px;
+            }
 
 		/****  GRAY BUTTON GRADIENT  ****/
-		.button_gray { background-image			: linear-gradient(#c0c2c4, #b1b3b6); }
+		.button_gray { background-image			: linear-gradient(#c0c2c4, #b1b3b6); 
+        width				: 280px;
+			height				: 56px;
+			left                : 20px;
+			color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 22px;
+            }
 
 		/****  RED BUTTON GRADIENT  ****/
-		.gradient_red { background-image			: linear gradient(#e02d33, #d2232a); }
+		.gradient_red { background-image			: linear gradient(#e02d33, #d2232a); 
+        width				: 280px;
+			height				: 56px;
+			left                : 20px;
+			color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 22px;
+            }
 		
 		.infobutton {
 			width			: 16px;
@@ -2066,17 +2102,28 @@
 
 	.details_button_left {
 		width			: 152px;
-		top				: 425px;
+		top				: 430px;
 		left			: 5px;
 		font-size		: 22px;
-		box-shadow		: inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 1px rgba(0,0,0,0.5);	
+        color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+            height				: 50px;
+        background-image	: linear-gradient(#7fd034, #6ab029);
 	}
 	
 	.details_button_right {
+    height				: 50px;
 		width			: 152px;
-		top				: 425px;
-		left			: 153px;
-		font-size		: 22px;
+		top				: 430px;
+		left			: 165px;
+        color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 22px;
+        background-image	: linear-gradient(#F5003D, #D21937);
 	}
 	
 	/**  Circle Buttons at the bottom ('Pay Back'  FB  Twitter  'Dispute' **/

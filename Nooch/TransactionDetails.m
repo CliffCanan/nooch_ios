@@ -12,6 +12,7 @@
 #import "UIImageView+WebCache.h"
 #import "ECSlidingViewController.h"
 #import "HowMuch.h"
+#import "TransferPIN.h"
 @interface TransactionDetails ()
 @property (nonatomic,strong) NSDictionary *trans;
 @property(nonatomic,strong) NSMutableData *responseData;
@@ -64,6 +65,10 @@
         if (![[self.trans  valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
              [payment setText:@"Paid to:"];
             //[name setText:[NSString stringWithFormat:@"You Paid %@",[dictRecord valueForKey:@"FirstName"]]];
+        }
+        else if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Request"])
+        {
+            
         }
         else
         {
@@ -215,13 +220,13 @@
     [pay_back setStyleId:@"details_payback"];
     [pay_back addTarget:self action:@selector(pay_back) forControlEvents:UIControlEventTouchUpInside];
     [pay_back setFrame:CGRectMake(15, 410, 60, 60)];
-    [self.view addSubview:pay_back];
+    
     
     UILabel *pay_text = [UILabel new];
     [pay_text setFrame:pay_back.frame];
     [pay_text setStyleClass:@"details_buttons_labels"];
     [pay_text setText:@"Pay Back"];
-    [self.view addSubview:pay_text];
+   
     
     UIButton *fb = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [fb setTitle:@"" forState:UIControlStateNormal];
@@ -230,13 +235,13 @@
     [fb setStyleId:@"details_fb"];
     [fb addTarget:self action:@selector(post_to_fb) forControlEvents:UIControlEventTouchUpInside];
     [fb setFrame:CGRectMake(95, 410, 60, 60)];
-    [self.view addSubview:fb];
+    
     
     UILabel *fb_text = [UILabel new];
     [fb_text setFrame:fb.frame];
     [fb_text setStyleClass:@"details_buttons_labels"];
     [fb_text setText:@"Facebook"];
-    [self.view addSubview:fb_text];
+    
     
     UIButton *twit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [twit setTitle:@"" forState:UIControlStateNormal];
@@ -245,13 +250,12 @@
     [twit setStyleId:@"details_twit"];
     [twit addTarget:self action:@selector(post_to_twitter) forControlEvents:UIControlEventTouchUpInside];
     [twit setFrame:CGRectMake(175, 410, 60, 60)];
-    [self.view addSubview:twit];
+    
     
     UILabel *twit_text = [UILabel new];
     [twit_text setFrame:twit.frame];
     [twit_text setStyleClass:@"details_buttons_labels"];
     [twit_text setText:@"Twitter"];
-    [self.view addSubview:twit_text];
     
     UIButton *disp = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [disp setTitle:@"" forState:UIControlStateNormal];
@@ -260,13 +264,72 @@
     [disp setStyleId:@"details_disp"];
     [disp addTarget:self action:@selector(dispute) forControlEvents:UIControlEventTouchUpInside];
     [disp setFrame:CGRectMake(255, 410, 60, 60)];
-    [self.view addSubview:disp];
+   
     
     UILabel *disp_text = [UILabel new];
     [disp_text setFrame:disp.frame];
     [disp_text setStyleClass:@"details_buttons_labels"];
     [disp_text setText:@"Dispute"];
-    [self.view addSubview:disp_text];
+   
+    
+    if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Request"]) {
+        //pay/cancel buttons
+        UIButton *pay = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [pay setStyleClass:@"details_button_left"];
+        
+        UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [cancel setStyleClass:@"details_button_right"];
+        
+        if ([[self.trans objectForKey:@"MemberId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
+            [pay setTitle:@"Pay" forState:UIControlStateNormal];
+            [pay addTarget:self action:@selector(fulfill_request) forControlEvents:UIControlEventTouchUpInside];
+            [cancel setTitle:@"Decline" forState:UIControlStateNormal];
+            [cancel addTarget:self action:@selector(decline_request) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:pay]; [self.view addSubview:cancel];
+        } else {
+            [self.view addSubview:pay_back];
+            [self.view addSubview:pay_text];
+            [self.view addSubview:fb];
+            [self.view addSubview:fb_text];
+            [self.view addSubview:twit];
+            [self.view addSubview:twit_text];
+            [self.view addSubview:disp];
+            [self.view addSubview:disp_text];
+        }
+    }
+    else
+    {
+        [self.view addSubview:pay_back];
+        [self.view addSubview:pay_text];
+        [self.view addSubview:fb];
+        [self.view addSubview:fb_text];
+        [self.view addSubview:twit];
+        [self.view addSubview:twit_text];
+        [self.view addSubview:disp];
+        [self.view addSubview:disp_text];
+    }
+    
+}
+
+- (void) fulfill_request
+{
+    NSMutableDictionary *input = [self.trans mutableCopy];
+    [input setValue:@"accept" forKey:@"response"];
+    TransferPIN *trans = [[TransferPIN alloc] initWithReceiver:input type:@"requestRespond" amount:[[self.trans objectForKey:@"Amount"] floatValue]];
+    [nav_ctrl pushViewController:trans animated:YES];
+}
+
+- (void) decline_request
+{
+    NSMutableDictionary *input = [self.trans mutableCopy];
+    [input setValue:@"deny" forKey:@"response"];
+    TransferPIN *trans = [[TransferPIN alloc] initWithReceiver:input type:@"requestRespond" amount:[[self.trans objectForKey:@"Amount"] floatValue]];
+    [nav_ctrl pushViewController:trans animated:YES];
+}
+
+- (void) cancel_request
+{
+    
 }
 
 - (void) pay_back
