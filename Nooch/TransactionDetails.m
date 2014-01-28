@@ -366,7 +366,6 @@
              {
                  // Handle Failure
                  NSLog(@"fbposting not allowed");
-                 [self performSelectorOnMainThread:@selector(goBack) withObject:nil waitUntilDone:NO];
              }
              
          }];
@@ -384,7 +383,6 @@
         NSString *output= nil;
         switch (result) {
             case SLComposeViewControllerResultCancelled:
-                [self performSelectorOnMainThread:@selector(goBack) withObject:nil waitUntilDone:NO];
                 NSLog (@"cancelled");
                 break;
             case SLComposeViewControllerResultDone:

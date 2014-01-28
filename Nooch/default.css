@@ -1017,8 +1017,19 @@
 		left				: 9px;
 		width				: 302px;
 		height				: 38px;
-		background-image	: linear-gradient(#76c22f, #66aa27);
 	}
+    
+    #pin_recipientname_send {
+        background-image	: linear-gradient(#76c22f, #66aa27);
+    }
+    
+    #pin_recipientname_request {
+        background-image			: linear-gradient(#6dbee8, #41abe1);
+    }
+    
+    #pin_recipientname_donate {
+        background-image: linear-gradient(#595287, #413a70);
+    }
 
 	/**  The text of the recipient's name in the recipient box.  **/
 	.pin_recipientname_text {
