@@ -50,7 +50,7 @@
                       options:kNilOptions
                       error:&error];
         
-        
+        NSLog(@"%@", self.users);
         if ([self.users count]!=0) {
             [self.usersTable reloadData];
         }
@@ -99,7 +99,7 @@
     NSDictionary * temp = [self.users objectAtIndex:indexPath.row];
     UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
     pic.clipsToBounds = YES;
-    [cell addSubview:pic];
+    [cell.contentView addSubview:pic];
     [pic setFrame:CGRectMake(20, 10, 60, 60)];
     pic.layer.cornerRadius = 30; pic.layer.borderColor = kNoochBlue.CGColor; pic.layer.borderWidth = 1;
     pic.clipsToBounds = YES;

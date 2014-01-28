@@ -345,6 +345,21 @@
 			width				: 110px;
 			left                : 190px;
 			height				: 40px;
+		}
+        .memtable_view_cell_textlabel_1_64 {
+            background-color: #3FABE1 ;
+            transparency    :0.3;
+
+
+            top                 :74px;
+			font-family			: "Roboto";
+			font-weight         : regular;
+			font-size			: 13px;
+			text-align       	: center;
+			color 				: white;
+			width				: 110px;
+			left                : 190px;
+			height				: 40px;
 		}		/****  Table Detail Text  (right side of row)  ****/
 		.table_view_cell_detailtext_1 {
 			font-family			: "Roboto";
@@ -950,7 +965,7 @@
 		font-stretch	: semi-expanded;
 		text-align      : center;
 		color 			: #313233;
-		width			: 150px;
+		width			: 200px;
 		height			: 60px;
 		left            : 85px;
 		top             : 116px;
@@ -2020,7 +2035,7 @@
 		width				: 180px;
 		height				: 28px;
 		top					: 37px;
-		left                : 70px;
+		left                : 80px;
 		font-family			: "Roboto";
 		font-weight         : regular;
 		font-size			: 22px;

@@ -10,7 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "GetLocation.h"
 #import "TransactionDetails.h"
-
+#import "UIImageView+WebCache.h"
 @interface TransferPIN ()<GetLocationDelegate>
 {
     GetLocation*getlocation;
@@ -63,7 +63,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-   getlocation = [[GetLocation alloc] init];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    getlocation = [[GetLocation alloc] init];
 	getlocation.delegate = self;
 	[getlocation.locationManager startUpdatingLocation];
 
@@ -72,7 +73,7 @@
     [self.pin setDelegate:self]; [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
     [self.view addSubview:self.pin]; [self.pin becomeFirstResponder];
     
-    [self.navigationItem setTitle:@"PIN Confirmation"];
+    [self.navigationItem setTitle:@"Enter PIN"];
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, 300, 60)];
     [title setText:@"Enter Your PIN to confirm your"]; [title setTextAlignment:NSTextAlignmentCenter];
     [title setNumberOfLines:2];
@@ -121,6 +122,22 @@
     
     UIImageView *user_pic = [UIImageView new];
     [user_pic setFrame:CGRectMake(20, 204, 52, 52)];
+    if ([self.receiver valueForKey:@"nonuser"]) {
+        [user_pic setHidden:YES];
+    }
+    else{
+        [user_pic setHidden:NO];
+        
+        if (self.receiver[@"Photo"]) {
+            [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
+                     placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+        }
+        else
+        {
+            [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
+                     placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+        }
+    }
     user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
     user_pic.layer.borderWidth = 2; user_pic.clipsToBounds = YES;
     user_pic.layer.cornerRadius = 26;
@@ -129,6 +146,9 @@
     UILabel *total = [[UILabel alloc] initWithFrame:CGRectMake(10, 200, 290, 30)];
     [total setBackgroundColor:[UIColor clearColor]];
     [total setTextColor:[UIColor whiteColor]]; [total setTextAlignment:NSTextAlignmentRight];
+    NSLog(@"%f",self.amnt);
+  //  int rounded = (self.amnt + 0.5);
+    NSLog(@"%@",[NSString stringWithFormat:@"$ %.02f",self.amnt]);
     [total setText:[NSString stringWithFormat:@"$ %.02f",self.amnt]];
     [total setStyleClass:@"pin_amountfield"];
     [self.view addSubview:total];
@@ -151,6 +171,26 @@
     [self.view addSubview:self.second_num];
     [self.view addSubview:self.third_num];
     [self.view addSubview:self.fourth_num];
+    self.balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.balance setFrame:CGRectMake(0, 0, 60, 30)];
+    [self.balance.titleLabel setFont:kNoochFontMed];
+    [self.balance setStyleId:@"navbar_balance"];
+    
+    if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
+        [self.navigationItem setRightBarButtonItem:Nil];
+        if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound) {
+            [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+        }
+        else
+            [self.balance setTitle:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+        UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
+        [self.navigationItem setRightBarButtonItem:funds];
+    }
+    else
+    {
+        [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
+    }
+
 }
 #pragma mark-Location Tracker Delegates
 
@@ -171,12 +211,12 @@
     NSURL *url = [NSURL URLWithString:fetchURL];
     
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
-   __block NSArray *jsonArray;
+   //__block NSArray *jsonArray;
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse * response, NSData *data, NSError *err) {
         //NSString *responseBody = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         NSError * e;
-        jsonArray = [NSJSONSerialization JSONObjectWithData:data options: NSJSONReadingMutableContainers error: &e];
-        NSLog(@"RESPONSE %@",jsonArray);
+        jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options: NSJSONReadingMutableContainers error: &e];
+        NSLog(@"RESPONSE %@",jsonDictionary);
         [self setLocation];
     }];
 
@@ -188,7 +228,7 @@
     NSLog(@"RESPONSE %@",jsonDictionary);
     NSArray *placemark = [NSArray new];
     placemark = [jsonDictionary  objectForKey:@"results"];
-    if ([placemark count]>1) {
+    if ([placemark count]>0) {
         NSString *addr = [[placemark  objectAtIndex:1]objectForKey:@"formatted_address"];
         
         NSArray *addrParse = [addr componentsSeparatedByString:@" "];
@@ -392,11 +432,15 @@
      
      
       if ([self.type isEqualToString:@"request"]) {
+           [transactionInputTransfer setValue:@"Request" forKey:@"TransactionType"];
             [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"SenderId"];
           [transactionInputTransfer setValue:@"Pending" forKey:@"Status"];
       }
-     [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
-     
+      else
+         {
+        [transactionInputTransfer setValue:@"Sent" forKey:@"TransactionType"];
+        [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
+         }
      NSString *receiveName = [[self.receiver valueForKey:@"FirstName"] stringByAppendingString:[NSString stringWithFormat:@" %@",[self.receiver valueForKey:@"LastName"]]];
           [transactionInputTransfer setValue:receiveName forKey:@"Name"];
      
@@ -404,9 +448,14 @@
      
      [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
      
-    NSString *TransactionDate = [NSDateFormatter localizedStringFromDate:[NSDate date]
-                                                               dateStyle:NSDateFormatterShortStyle
-                                                               timeStyle:NSDateFormatterFullStyle];
+//    NSString *TransactionDate = [NSDateFormatter localizedStringFromDate:[NSDate date]
+//                                                               dateStyle:NSDateFormatterShortStyle
+//                                                               timeStyle:NSDateFormatterFullStyle];
+         NSDate *date = [NSDate date];
+         NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+         [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+         NSString *TransactionDate = [dateFormat stringFromDate:date];
+
     [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
     [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
      
@@ -508,9 +557,16 @@
             
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
             
-            NSString *TransactionDate = [NSDateFormatter localizedStringFromDate:[NSDate date]
-                                                                       dateStyle:NSDateFormatterShortStyle
-                                                                       timeStyle:NSDateFormatterFullStyle];
+//            NSString *TransactionDate = [NSDateFormatter localizedStringFromDate:[NSDate date]
+//                                                                       dateStyle:NSDateFormatterShortStyle
+//                                                                       timeStyle:NSDateFormatter];
+            
+            NSDate *date = [NSDate date];
+            NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+            [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+            NSString *TransactionDate = [dateFormat stringFromDate:date];
+           
+            //dd/MM/yyyy HH:mm:ss
             [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
             [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
             
@@ -598,16 +654,24 @@
         else if ([tagName isEqualToString:@"checkValid"]){
             if([[dictResult objectForKey:@"Result"] isEqualToString:@"Success"]){
                 if ([self.type isEqualToString:@"withdrawfund"]) {
+                    
+
                     transactionInputTransfer=[[NSMutableDictionary alloc]init];
+                    [transactionInputTransfer setValue:@"Withdraw" forKey:@"TransactionType"];
                     [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"MemberId"];
                     [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"RecepientId"];
                     [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
                     
 
                    // [transactionInputTransfer setValue:amount forKey:@"Amount"];
-                    NSString *TransactionDate = [NSDateFormatter localizedStringFromDate:[NSDate date]
-                                                                               dateStyle:NSDateFormatterShortStyle
-                                                                               timeStyle:NSDateFormatterFullStyle];
+//                    NSString *TransactionDate = [NSDateFormatter localizedStringFromDate:[NSDate date]
+//                                                                               dateStyle:NSDateFormatterShortStyle
+//                                                                               timeStyle:NSDateFormatterFullStyle];
+                    NSDate *date = [NSDate date];
+                    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+                    [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+                    NSString *TransactionDate = [dateFormat stringFromDate:date];
+
                     [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
                     [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
                     [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"] forKey:@"DeviceId"];
@@ -673,6 +737,7 @@
                     //NSLog(@"latlon%@%@",self.Longitude,self.Latitude);
                     NSLog(@"oauthnd%@",[defaults valueForKey:@"OAuthToken"]);
                     transactionInputTransfer=[[NSMutableDictionary alloc]init];
+                    [transactionInputTransfer setValue:@"Deposit" forKey:@"TransactionType"];
                     [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
                     [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
                     [transactionInputTransfer setValue:[dictResult valueForKey:@"Status"] forKey:@"PinNumber"];
@@ -680,9 +745,14 @@
                     [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
                     
                     
-                    NSString *TransactionDate = [NSDateFormatter localizedStringFromDate:[NSDate date]
-                                                                               dateStyle:NSDateFormatterShortStyle
-                                                                               timeStyle:NSDateFormatterFullStyle];
+//                    NSString *TransactionDate = [NSDateFormatter localizedStringFromDate:[NSDate date]
+//                                                                               dateStyle:NSDateFormatterShortStyle
+//                                                                               timeStyle:NSDateFormatterFullStyle];
+                    NSDate *date = [NSDate date];
+                    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+                    [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+                    NSString *TransactionDate = [dateFormat stringFromDate:date];
+
                     [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
                     [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
                     [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"] forKey:@"DeviceId"];
@@ -794,9 +864,14 @@
                 [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
                 
                 
-                NSString *TransactionDate = [NSDateFormatter localizedStringFromDate:[NSDate date]
-                                                                           dateStyle:NSDateFormatterShortStyle
-                                                                           timeStyle:NSDateFormatterFullStyle];
+//                NSString *TransactionDate = [NSDateFormatter localizedStringFromDate:[NSDate date]
+//                                                                           dateStyle:NSDateFormatterShortStyle
+//                                                                           timeStyle:NSDateFormatterFullStyle];
+                NSDate *date = [NSDate date];
+                NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+                [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+                NSString *TransactionDate = [dateFormat stringFromDate:date];
+
                 [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
                 [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
                 [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"] forKey:@"DeviceId"];
@@ -893,6 +968,7 @@
             [nav_ctrl popToRootViewControllerAnimated:YES];
         }else if (buttonIndex == 1){
             [nav_ctrl popToRootViewControllerAnimated:NO];
+            NSLog(@"%@",self.trans);
             TransactionDetails *td = [[TransactionDetails alloc] initWithData:self.trans];
             [nav_ctrl pushViewController:td animated:YES];
         }
@@ -1006,46 +1082,46 @@
         UIAlertView *av;
         switch (randNum) {
             case 0:
-                av = [[UIAlertView alloc] initWithTitle:@"Nice Work" message:sentMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",@"Post to Facebook",@"Share on Twitter",nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Nice Work" message:sentMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",nil];
                 break;
             case 1:
-                av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Your money has successfully been digitalized into pixie dust and is currently floating over our heads in a million pieces." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",@"Post to Facebook",@"Share on Twitter",nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Your money has successfully been digitalized into pixie dust and is currently floating over our heads in a million pieces." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
                 break;
             case 2:
-                av = [[UIAlertView alloc] initWithTitle:@"Success" message:[NSString stringWithFormat:@"You have officially 'Nooched' %@. That's right, it's a verb.",receiverFirst] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",@"Post to Facebook",@"Share on Twitter",nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Success" message:[NSString stringWithFormat:@"You have officially 'Nooched' %@. That's right, it's a verb.",receiverFirst] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
                 break;
             case 3:
-                av = [[UIAlertView alloc] initWithTitle:@"Congratulations" message:@"You now have less money." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",@"Post to Facebook",@"Share on Twitter",nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Congratulations" message:@"You now have less money." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
                 break;
             case 4:
-                av = [[UIAlertView alloc] initWithTitle:@"Congratulations" message:@"Your debt burden has been lifted." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",@"Post to Facebook",@"Share on Twitter",nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Congratulations" message:@"Your debt burden has been lifted." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
                 break;
             case 5:
-                av = [[UIAlertView alloc] initWithTitle:@"Money Sent" message:@"No need to thank us, it's our job." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",@"Post to Facebook",@"Share on Twitter",nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Money Sent" message:@"No need to thank us, it's our job." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
                 break;
             case 6:
-                av = [[UIAlertView alloc] initWithTitle:@"Money Sent" message:@"You can close the app now. You're done." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",@"Post to Facebook",@"Share on Twitter",nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Money Sent" message:@"You can close the app now. You're done." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
                 break;
             case 7:
-                av = [[UIAlertView alloc] initWithTitle:@"You're Welcome" message:@"We did all the work here. Money sent." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",@"Post to Facebook",@"Share on Twitter",nil];
+                av = [[UIAlertView alloc] initWithTitle:@"You're Welcome" message:@"We did all the work here. Money sent." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
                 break;
             case 8:
-                av = [[UIAlertView alloc] initWithTitle:@"Great Scott!" message:@"This sucker generated 1.21 gigawatts and sent your money, even without plutonium." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",@"Post to Facebook",@"Share on Twitter",nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Great Scott!" message:@"This sucker generated 1.21 gigawatts and sent your money, even without plutonium." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
                 break;
             case 9:
-                av = [[UIAlertView alloc] initWithTitle:@"Knowledge Is Power" message:@"You know how easy Nooch is. But with great power, comes great responsibility..." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",@"Post to Facebook",@"Share on Twitter",nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Knowledge Is Power" message:@"You know how easy Nooch is. But with great power, comes great responsibility..." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
                 break;
             case 10:
-                av = [[UIAlertView alloc] initWithTitle:@"Humpty Dumpty Sat on a Wall" message:@"And processed Nooch transfers." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",@"Post to Facebook",@"Share on Twitter",nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Humpty Dumpty Sat on a Wall" message:@"And processed Nooch transfers." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
                 break;
             case 11:
-                av = [[UIAlertView alloc] initWithTitle:@"Nooch Haiku" message:@"Nooch application. \nEasy, Simple, Convenient. \nGetting the job done." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",@"Post to Facebook",@"Share on Twitter",nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Nooch Haiku" message:@"Nooch application. \nEasy, Simple, Convenient. \nGetting the job done." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
                 break;
             case 12:
-                av = [[UIAlertView alloc] initWithTitle:@"Nooch Loves You" message:@"That is all." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",@"Post to Facebook",@"Share on Twitter",nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Nooch Loves You" message:@"That is all." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
                 break;
             default:
-                av = [[UIAlertView alloc] initWithTitle:@"Nice Work" message:sentMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",@"Post to Facebook",@"Share on Twitter",nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Nice Work" message:sentMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
                 break;
         }
         [av show];

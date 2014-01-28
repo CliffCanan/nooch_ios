@@ -21,6 +21,7 @@
 #define secondsFor9days 777600
 #define secondsFor7days 604800
 #define secondsFor14days 1209600
+#define secondsFor28days 2419200
 //
 NSDictionary *transactionInputaddfund;
 NSMutableURLRequest *requestmemid;
@@ -801,6 +802,9 @@ NSString *amnt;
                     if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile3"]) {
                         [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
                     }
+                    if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile4"]) {
+                        [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+                    }
                 }
                dictUsers=[[NSMutableDictionary alloc]init];
                 if (![[defaults objectForKey:@"NotifPlaced"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced"]!=NULL) {
@@ -846,6 +850,10 @@ NSString *amnt;
                         if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile3"]) {
                             [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
                         }
+                        if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile4"]) {
+                            [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+                        }
+
                     }
                     //adding local notification for 3 days
                     UILocalNotification* localNotification1 = [[UILocalNotification alloc] init];
@@ -857,7 +865,7 @@ NSString *amnt;
                     
                     //adding local notification for 6 days
                     UILocalNotification*localNotification2 = [[UILocalNotification alloc] init];
-                    localNotification2.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor6days];
+                    localNotification2.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor7days];
                     localNotification2.alertBody = @"Hey! Just a reminder that your Nooch account is almost ready. Open Nooch to complete your profile and start sending money!- Team Nooch";
                     localNotification2.userInfo=@{@"notificationId": @"Profile2"};
                     localNotification2.timeZone = [NSTimeZone defaultTimeZone];
@@ -865,11 +873,20 @@ NSString *amnt;
                     
                     //adding local notification for 9 days
                     UILocalNotification*localNotification3 = [[UILocalNotification alloc] init];
-                    localNotification3.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor9days];
+                    localNotification3.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor14days];
                     localNotification3.alertBody = @"Hey! Just a reminder that your Nooch account is almost ready. Open Nooch to complete your profile and start sending money!- Team Nooch";
                     localNotification3.userInfo=@{@"notificationId": @"Profile3"};
                     localNotification3.timeZone = [NSTimeZone defaultTimeZone];
                     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification3];
+                    
+                    //adding local notification for 9 days
+                    UILocalNotification*localNotification4 = [[UILocalNotification alloc] init];
+                    localNotification4.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor28days];
+                    localNotification4.alertBody = @"Hey! Just a reminder that your Nooch account is almost ready. Open Nooch to complete your profile and start sending money!- Team Nooch";
+                    localNotification4.userInfo=@{@"notificationId": @"Profile4"};
+                    localNotification4.timeZone = [NSTimeZone defaultTimeZone];
+                    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification4];
+                    
                     dictUsers=[[NSMutableDictionary alloc]init];
                     if (![[defaults objectForKey:@"NotifPlaced"]isKindOfClass:[NSNull class]] && [defaults objectForKey:@"NotifPlaced"]!=NULL) {
                         dictUsers=[[defaults objectForKey:@"NotifPlaced"] mutableCopy];

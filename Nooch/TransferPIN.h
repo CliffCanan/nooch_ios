@@ -46,7 +46,7 @@
     NSDictionary*jsonDictionary;
     NSString*encryptedPINNonUser;
 }
-
+@property(nonatomic,strong)UIButton*balance;
 - (id)initWithReceiver:(NSMutableDictionary *)receiver type:(NSString *)type amount:(float)amount;
 
 @end

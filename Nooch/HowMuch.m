@@ -148,6 +148,25 @@
     [self.reset_type setAlpha:0];
     [self.view addSubview:self.reset_type];
     
+    self.balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.balance setFrame:CGRectMake(0, 0, 60, 30)];
+    [self.balance.titleLabel setFont:kNoochFontMed];
+    [self.balance setStyleId:@"navbar_balance"];
+
+    if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
+        [self.navigationItem setRightBarButtonItem:Nil];
+        if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound) {
+            [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+        }
+        else
+            [self.balance setTitle:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+        UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
+        [self.navigationItem setRightBarButtonItem:funds];
+    }
+    else
+    {
+        [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
+    }
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -265,9 +284,10 @@
     NSMutableDictionary *transaction = [self.receiver mutableCopy];
     [transaction setObject:[self.memo text] forKey:@"memo"];
     //float input_amount = [[[self.amount text] substringFromIndex:2] floatValue];
+    NSLog(@"%@",self.amount.text);
     float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
     if ([self.receiver valueForKey:@"nonuser"]) {
-        TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"nonuser" amount: input_amount];
+        TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"nonuser" amount:input_amount];
         [self.navigationController pushViewController:pin animated:YES];
     }
     else
@@ -391,8 +411,9 @@
     [self cancel_photo];
     
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
-    [[assist shared]setTranferImage:chosenImage];
     [self.camera setStyleId:@"howmuch_camera_attached"];
+    [[assist shared]setTranferImage:[self imageWithImage:chosenImage scaledToSize:CGSizeMake(100,100)]];
+    
     
     [picker dismissViewControllerAnimated:YES completion:^{
        // [self close:nil];
@@ -401,6 +422,32 @@
        
     
 }
+-(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size{
+    float actualHeight = image.size.height;
+    float actualWidth = image.size.width;
+    float imgRatio = actualWidth/actualHeight;
+    float maxRatio = 75.0/115.0;
+    
+    if(imgRatio!=maxRatio){
+        if(imgRatio < maxRatio){
+            imgRatio = 75.0 / actualHeight;
+            actualWidth = imgRatio * actualWidth;
+            actualHeight = 115.0;
+        }
+        else{
+            imgRatio = 75.0 / actualWidth;
+            actualHeight = imgRatio * actualHeight;
+            actualWidth = 75.0;
+        }
+    }
+    CGRect rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight);
+    UIGraphicsBeginImageContext(rect.size);
+    [image drawInRect:rect];
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return img;
+}
+
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [self cancel_photo];
      [self.camera setStyleId:@"howmuch_camera"];

@@ -13,5 +13,5 @@
 @interface HowMuch : UIViewController<UITextFieldDelegate,serveD,UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 - (id)initWithReceiver:(NSDictionary *)receiver;
-
+@property(nonatomic,strong)UIButton*balance;
 @end

@@ -44,6 +44,7 @@
 - (void)validate
 {
     //navigate to settings
+    
     [self.navigationController setNavigationBarHidden:NO];
     ProfileInfo *profile = [ProfileInfo new];
     isSignup=YES;
@@ -99,7 +100,7 @@
     UIButton *enter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [enter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [enter setBackgroundColor:kNoochGreen];
-    [enter setTitle:@"Validate" forState:UIControlStateNormal];
+    [enter setTitle:@"Validate Profile" forState:UIControlStateNormal];
     [enter addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
     [enter setFrame:CGRectMake(10, 390, 300, 60)];
     [enter setStyleClass:@"button_green"];

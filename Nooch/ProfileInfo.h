@@ -13,6 +13,7 @@
 BOOL isProfileOpenFromSideBar;
 @interface ProfileInfo : UIViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,GetEncryptionValueDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate>
 {
+    int down;
     UIActivityIndicatorView*spinner;
     NSString *recoverMail;
     NSString *timezoneStandard;
@@ -29,5 +30,8 @@ BOOL isProfileOpenFromSideBar;
     NSString*newString;
     NSString *betweenBraces;
     NSString*strPhoneNumber;
+    UIView*navBar;
+    UILabel*lbl;
+    UIButton*crossbtn;
 }
 @end

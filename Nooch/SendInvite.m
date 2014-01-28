@@ -240,14 +240,8 @@
         [subview removeFromSuperview];
     NSDictionary*dict=[[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] objectAtIndex:indexPath.row];
     NSLog(@"%@",dict);
-    //commented till url is valid
-//    if ([[dict valueForKey:@"Photo"] isKindOfClass:[NSNull class]]) {
-//        imageName=@"profile_picture.png";
-//    }
-//    else
-//    {
-//        imageName=[dict valueForKey:@"Photo"];
-//    }
+
+\
     UIImageView *user_pic = [UIImageView new];
     user_pic.clipsToBounds = YES;
     [user_pic setFrame:CGRectMake(20, 7, 46, 46)];
@@ -278,7 +272,7 @@
     NSTimeInterval _interval=[newString doubleValue];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:_interval];
     NSDateFormatter *_formatter=[[NSDateFormatter alloc]init];
-    [_formatter setDateFormat:@"dd/MM/yyyy"];
+    [_formatter setDateFormat:@"MM/dd/yyyy"];
     NSString *_date=[_formatter stringFromDate:date];
     
 

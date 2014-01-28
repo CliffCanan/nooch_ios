@@ -195,12 +195,38 @@
     
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    down=0;
     
-    
-    
+    if (isSignup) {
+        down=64;
+        navBar=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
+        [navBar setBackgroundColor:[UIColor colorWithRed:82.0f/255.0f green:176.0f/255.0f blue:235.0f/255.0f alpha:1.0f]];
+        [self.view addSubview:navBar];
+        lbl=[[UILabel alloc]initWithFrame:CGRectMake(120, 20,150, 30)];
+        [lbl setText:@"Profile Info"];
+        [lbl setFont:[UIFont systemFontOfSize:22]];
+        [lbl setTextColor:[UIColor whiteColor]];
+        [self.view addSubview:lbl];
+       crossbtn=[UIButton buttonWithType:UIButtonTypeCustom];
+        crossbtn.frame=CGRectMake(10,20, 70,30);
+        [crossbtn setStyleClass:@"smscrossbuttn-icon"];
+        [crossbtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        [crossbtn setTitle:@"Cancel" forState:UIControlStateNormal];
+        [crossbtn addTarget:self action:@selector(crossClicked) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:crossbtn];
+
+    }
+    else
+    {
+    [crossbtn removeFromSuperview];
+    [navBar removeFromSuperview];
+    [lbl removeFromSuperview];
+    }
+
     picture = [UIImageView new];
     
-    [picture setFrame:CGRectMake(20, 10, 60, 60)];
+    [picture setFrame:CGRectMake(20, 10+down, 60, 60)];
     
     picture.layer.cornerRadius = 30; picture.layer.borderColor = kNoochBlue.CGColor; picture.layer.borderWidth = 1;
     
@@ -212,25 +238,7 @@
     
     [self.view addSubview:picture];
     
-   // UIView*view=[[UIView alloc] initWithFrame:CGRectMake(170, 40, 200, 35)];
-   // [view setStyleCSS:@"memsince"];
-   
-    //[self.view addSubview:view];
-    // [self.view bringSubviewToFront:view];
-    
-    
-    //[memSincelbl setTextAlignment:NSTextAlignmentRight];
-   // [self.name setBackgroundColor:[UIColor ]];
-    
-    
-    
-   // [memSincelbl setStyleClass:@"table_view_cell_detailtext_1"];
-    
-   
-    //[self.view addSubview:self.name];
-    
-
-   // memSincelbl = [[UILabel alloc] initWithFrame:CGRectMake(100, 40, 110, 30)];
+  
     
     start = [[user valueForKey:@"DateCreated"] rangeOfString:@"("];
     
@@ -257,26 +265,21 @@
     [_formatter setDateFormat:@"MM/dd/yyyy"];
     
     NSString *_date=[_formatter stringFromDate:date];
-    memSincelbl = [[UITextView alloc] initWithFrame:CGRectMake(20, 20, 200, 30)];
+    memSincelbl = [[UITextView alloc] initWithFrame:CGRectMake(20, 20+down, 200, 30)];
     [memSincelbl setText:[NSString stringWithFormat:@"Member Since %@",_date]];
     memSincelbl.userInteractionEnabled=NO;
     memSincelbl.selectable=NO;
     [memSincelbl setUserInteractionEnabled:NO];
-    [memSincelbl setStyleClass:@"memtable_view_cell_textlabel_1"];
+    if (isSignup) {
+         [memSincelbl setStyleClass:@"memtable_view_cell_textlabel_1_64"];
+    }
+    else
+        [memSincelbl setStyleClass:@"memtable_view_cell_textlabel_1"];
+   
     
     [self.view addSubview:memSincelbl];
     
-    
-    
-    
-    
-    
-   // [memSincelbl setBackgroundColor:[UIColor clearColor]]; [memSincelbl setText:[NSString stringWithFormat:@"Member Since :%@",_date]];
-    
-   
-    
-    
-    self.name = [[UITextField alloc] initWithFrame:CGRectMake(20, 70, 280, 30)];
+        self.name = [[UITextField alloc] initWithFrame:CGRectMake(20, 70+down, 280, 30)];
     
     [self.name setTextAlignment:NSTextAlignmentRight]; [self.name setBackgroundColor:[UIColor clearColor]];
     
@@ -291,7 +294,7 @@
     [self.view addSubview:self.name];
     
     
-    UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(20, 70, 280, 30)];
+    UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(20, 70+down, 280, 30)];
     
     [name setBackgroundColor:[UIColor clearColor]]; [name setText:@"Name:"];
     
@@ -300,14 +303,14 @@
     [self.view addSubview:name];
     
     
-    UIView *div = [[UIView alloc] initWithFrame:CGRectMake(0, 105, 0, 0)];
+    UIView *div = [[UIView alloc] initWithFrame:CGRectMake(0, 105+down, 0, 0)];
     
     [div setStyleId:@"divider"];
     
     [self.view addSubview:div];
     
     
-    self.email = [[UITextField alloc] initWithFrame:CGRectMake(20, 110, 280, 30)];
+    self.email = [[UITextField alloc] initWithFrame:CGRectMake(20, 110+down, 280, 30)];
     
     [self.email setTextAlignment:NSTextAlignmentRight]; [self.email setBackgroundColor:[UIColor clearColor]];
     
@@ -323,7 +326,7 @@
     
     [self.view addSubview:self.email];
     
-    UILabel *mail = [[UILabel alloc] initWithFrame:CGRectMake(20, 110, 280, 30)];
+    UILabel *mail = [[UILabel alloc] initWithFrame:CGRectMake(20, 110+down, 280, 30)];
     
     [mail setBackgroundColor:[UIColor clearColor]]; [mail setText:@"Email:"];
     
@@ -333,7 +336,7 @@
     
     
     
-    UIView *div2 = [[UIView alloc] initWithFrame:CGRectMake(0, 145, 0, 0)];
+    UIView *div2 = [[UIView alloc] initWithFrame:CGRectMake(0, 145+down, 0, 0)];
     
     [div2 setStyleId:@"divider"];
     
@@ -341,7 +344,7 @@
     
     
     
-    self.recovery_email = [[UITextField alloc] initWithFrame:CGRectMake(20, 150, 280, 30)];
+    self.recovery_email = [[UITextField alloc] initWithFrame:CGRectMake(20, 150+down, 280, 30)];
     
     [self.recovery_email setTextAlignment:NSTextAlignmentRight]; [self.recovery_email setBackgroundColor:[UIColor clearColor]];
     
@@ -353,7 +356,7 @@
     
     [self.view addSubview:self.recovery_email];
     
-    UILabel *recover = [[UILabel alloc] initWithFrame:CGRectMake(20, 150, 280, 30)];
+    UILabel *recover = [[UILabel alloc] initWithFrame:CGRectMake(20, 150+down, 280, 30)];
     
     [recover setBackgroundColor:[UIColor clearColor]]; [recover setText:@"Recovery Email:"];
     
@@ -363,7 +366,7 @@
     
     
     
-    UIView *div3= [[UIView alloc] initWithFrame:CGRectMake(0, 185, 0, 0)];
+    UIView *div3= [[UIView alloc] initWithFrame:CGRectMake(0, 185+down, 0, 0)];
     
     [div3 setStyleId:@"divider"];
     
@@ -371,7 +374,7 @@
     
     
     
-    self.password = [[UITextField alloc] initWithFrame:CGRectMake(20, 190, 280, 30)];
+    self.password = [[UITextField alloc] initWithFrame:CGRectMake(20, 190+down, 280, 30)];
     
     [self.password setTextAlignment:NSTextAlignmentRight]; [self.password setBackgroundColor:[UIColor clearColor]];
     
@@ -383,7 +386,7 @@
     
     [self.view addSubview:self.password];
     
-    UILabel *pass = [[UILabel alloc] initWithFrame:CGRectMake(20, 190, 280, 30)];
+    UILabel *pass = [[UILabel alloc] initWithFrame:CGRectMake(20, 190+down, 280, 30)];
     
     [pass setBackgroundColor:[UIColor clearColor]]; [pass setText:@"Password:"];
     
@@ -393,7 +396,7 @@
     
     
     
-    UIView *div4 = [[UIView alloc] initWithFrame:CGRectMake(0, 225, 0, 0)];
+    UIView *div4 = [[UIView alloc] initWithFrame:CGRectMake(0, 225+down, 0, 0)];
     
     [div4 setStyleId:@"divider"];
     
@@ -401,7 +404,7 @@
     
     
     
-    self.phone = [[UITextField alloc] initWithFrame:CGRectMake(20,230,280,30)];
+    self.phone = [[UITextField alloc] initWithFrame:CGRectMake(20,230+down,280,30)];
     
     [self.phone setTextAlignment:NSTextAlignmentRight]; [self.phone setBackgroundColor:[UIColor clearColor]];
     
@@ -413,7 +416,7 @@
     
     [self.view addSubview:self.phone];
     
-    UILabel *num = [[UILabel alloc] initWithFrame:CGRectMake(20, 230, 280, 30)];
+    UILabel *num = [[UILabel alloc] initWithFrame:CGRectMake(20, 230+down, 280, 30)];
     
     [num setBackgroundColor:[UIColor clearColor]]; [num setText:@"Phone:"];
     
@@ -423,7 +426,7 @@
     
     
     
-    UIView *div5 = [[UIView alloc] initWithFrame:CGRectMake(0, 265, 0, 0)];
+    UIView *div5 = [[UIView alloc] initWithFrame:CGRectMake(0, 265+down, 0, 0)];
     
     [div5 setStyleId:@"divider"];
     
@@ -431,7 +434,7 @@
     
     
     
-    self.address_one = [[UITextField alloc] initWithFrame:CGRectMake(20, 270, 280, 30)];
+    self.address_one = [[UITextField alloc] initWithFrame:CGRectMake(20, 270+down, 280, 30)];
     
     [self.address_one setTextAlignment:NSTextAlignmentRight]; [self.address_one setBackgroundColor:[UIColor clearColor]];
     
@@ -443,7 +446,7 @@
     
     [self.view addSubview:self.address_one];
     
-    UILabel *addr1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 270, 280, 30)];
+    UILabel *addr1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 270+down, 280, 30)];
     
     [addr1 setBackgroundColor:[UIColor clearColor]]; [addr1 setText:@"Address One:"];
     
@@ -453,7 +456,7 @@
     
     
     
-    UIView *div6 = [[UIView alloc] initWithFrame:CGRectMake(0, 305, 0, 0)];
+    UIView *div6 = [[UIView alloc] initWithFrame:CGRectMake(0, 305+down, 0, 0)];
     
     [div6 setStyleId:@"divider"];
     
@@ -461,7 +464,7 @@
     
     
     
-    self.address_two = [[UITextField alloc] initWithFrame:CGRectMake(20, 310, 280, 30)];
+    self.address_two = [[UITextField alloc] initWithFrame:CGRectMake(20, 310+down, 280, 30)];
     
     [self.address_two setTextAlignment:NSTextAlignmentRight]; [self.address_two setBackgroundColor:[UIColor clearColor]];
     
@@ -473,7 +476,7 @@
     
     [self.view addSubview:self.address_two];
     
-    UILabel *addr2 = [[UILabel alloc] initWithFrame:CGRectMake(20, 310, 280, 30)];
+    UILabel *addr2 = [[UILabel alloc] initWithFrame:CGRectMake(20, 310+down, 280, 30)];
     
     [addr2 setBackgroundColor:[UIColor clearColor]]; [addr2 setText:@"Address Two:"];
     
@@ -483,7 +486,7 @@
     
     
     
-    UIView *div7 = [[UIView alloc] initWithFrame:CGRectMake(0, 345, 0, 0)];
+    UIView *div7 = [[UIView alloc] initWithFrame:CGRectMake(0, 345+down, 0, 0)];
     
     [div7 setStyleId:@"divider"];
     
@@ -491,7 +494,7 @@
     
     
     
-    self.city = [[UITextField alloc] initWithFrame:CGRectMake(20, 350, 280, 30)];
+    self.city = [[UITextField alloc] initWithFrame:CGRectMake(20, 350+down, 280, 30)];
     
     [self.city setTextAlignment:NSTextAlignmentRight]; [self.city setBackgroundColor:[UIColor clearColor]];
     
@@ -503,7 +506,7 @@
     
     [self.view addSubview:self.city];
     
-    UILabel *cit = [[UILabel alloc] initWithFrame:CGRectMake(20, 350, 280, 30)];
+    UILabel *cit = [[UILabel alloc] initWithFrame:CGRectMake(20, 350+down, 280, 30)];
     
     [cit setBackgroundColor:[UIColor clearColor]]; [cit setText:@"City:"];
     
@@ -513,7 +516,7 @@
     
     
     
-    UIView *div8 = [[UIView alloc] initWithFrame:CGRectMake(0, 385, 0, 0)];
+    UIView *div8 = [[UIView alloc] initWithFrame:CGRectMake(0, 385+down, 0, 0)];
     
     [div8 setStyleId:@"divider"];
     
@@ -521,7 +524,7 @@
     
     
     
-    self.zip = [[UITextField alloc] initWithFrame:CGRectMake(20, 390, 280, 30)];
+    self.zip = [[UITextField alloc] initWithFrame:CGRectMake(20, 390+down, 280, 30)];
     
     [self.zip setTextAlignment:NSTextAlignmentRight]; [self.zip setBackgroundColor:[UIColor clearColor]];
     
@@ -533,7 +536,7 @@
     
     [self.view addSubview:self.zip];
     
-    UILabel *z = [[UILabel alloc] initWithFrame:CGRectMake(20, 390, 280, 30)];
+    UILabel *z = [[UILabel alloc] initWithFrame:CGRectMake(20, 390+down, 280, 30)];
     
     [z setBackgroundColor:[UIColor clearColor]]; [z setText:@"ZIP:"];
     
@@ -549,7 +552,7 @@
     
     [self.save setTitle:@"Save Profile" forState:UIControlStateNormal];
     
-    [self.save setFrame:CGRectMake(0, 440, 0, 0)];
+    [self.save setFrame:CGRectMake(0, 440+down, 0, 0)];
     
     [self.save setStyleClass:@"button_green"];
     
@@ -602,7 +605,9 @@
                               nil];
     
 }
-
+-(void)crossClicked{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 -(void)handleTap:(UIGestureRecognizer *)gestureRecognizer{
     
     [self.name resignFirstResponder];
@@ -1492,7 +1497,7 @@
         
         getEncryptionOldPassword= [dictProfileinfo objectForKey:@"Password"];
         
-        if([[resultValue valueForKey:@"Result"] isEqualToString:@"Your details have been updated successfully."]){ //&& imageData.length != 0
+        if([[resultValue valueForKey:@"Result"] isEqualToString:@"Your details have been updated successfully."]){
             
             
             

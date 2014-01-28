@@ -60,20 +60,39 @@
     UILabel *payment = [UILabel new];
     [payment setStyleClass:@"details_intro"];
     [payment setStyleClass:@"details_intro_green"];
-    if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
-        if (![[self.trans  valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
+    NSLog(@"%@",self.trans);
+    if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Sent"]) {
+       
              [payment setText:@"Paid to:"];
             //[name setText:[NSString stringWithFormat:@"You Paid %@",[dictRecord valueForKey:@"FirstName"]]];
-        }
-        else
-        {
-             [payment setText:@"Received From:"];
-           // [name setText:[NSString stringWithFormat:@"%@ Paid You",[dictRecord valueForKey:@"FirstName"]]];
-            
-        }
+        
     }
-
-   
+   else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Received"]) {
+        
+            [payment setText:@"Received From:"];
+            
+        
+        
+    }
+    else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
+       
+            [payment setText:@"Requested From:"];
+            
+        
+        
+    }
+    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"])
+    {
+       [payment setText:@"Withdraw From:"];
+    }
+    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Donation"])
+    {
+        [payment setText:@"Donation To:"];
+    }
+    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"])
+    {
+        [payment setText:@"Withdraw From:"];
+    }
     [self.view addSubview:payment];
     
     UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];
@@ -121,7 +140,7 @@
     [self.view addSubview:amount];
   
     UILabel *memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 110, 320, 60)];
-    [memo setText:[self.trans valueForKey:@"memo"]];
+    [memo setText:[self.trans valueForKey:@"Memo"]];
     [memo setStyleClass:@"details_label"];
     [memo setStyleClass:@"blue_text"];
     [memo setStyleClass:@"italic_font"];
@@ -146,8 +165,21 @@
         dateFormatter.dateFormat = @"dd-MMMM-yyyy";
         [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
         NSLog(@"%@",[dateFormatter stringFromDate:yourDate]);
+        NSString*statusstr;
+        if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
+           statusstr=@"Pending...sent on :";
+        }
+        else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Donation"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Received"])
+        {
+            statusstr=@"Completed on :";
+        }
+        else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"])
+        {
+            statusstr=@"Submitted on :";
+        }
+        
         NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
-        [status setText:[NSString stringWithFormat:@"%@ %@ %@,%@",[self.trans objectForKey:@"TransactionType"],[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]]];
+        [status setText:[NSString stringWithFormat:@"%@ %@ %@,%@",statusstr,[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]]];
     }
     //[status setText:[NSString stringWithFormat:@"%@ on %@",[self.trans objectForKey:@"TransactionType"],[self.trans objectForKey:@"TransactionDate"]]];
     [status setStyleClass:@"green_text"];

@@ -141,9 +141,7 @@
     [self.navigationController pushViewController:create_pin animated:YES];
 }
 -(void) BackClicked1:(id) sender
-
 {
-    
     [self.navigationController popViewControllerAnimated:YES];
     
 }
@@ -151,9 +149,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [nav_ctrl performSelector:@selector(disable)];
-   
-    
+    //[nav_ctrl performSelector:@selector(disable)];
+    [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
     self.slidingViewController.panGesture.enabled=NO;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIView*subview=[[UIView alloc]init];

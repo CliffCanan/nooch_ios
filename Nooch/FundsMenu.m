@@ -166,13 +166,13 @@
         [alert show];
         return;
     }
-    if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+   /* if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
         [alert setTag:148];
         [alert show];
         return;
     }
-
+*/
     //credit cards are disabled, but if ever readded the button is after Bank Account
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Add Funding Source" message:@"Which type of account would you like to add?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Bank Account", nil];
     [av setTag:2];
@@ -656,7 +656,12 @@
                 [alert show];
                 return;
             }
-
+           /* if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+                [alert setTag:147];
+                [alert show];
+                return;
+            }*/
             if ([ArrBankAccountCollection count] == 0) {
                 
                 UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can add funds you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
@@ -707,7 +712,12 @@
                 return;
             }
             
-
+         /*   if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+                [alert setTag:147];
+                [alert show];
+                return;
+            }*/
             if ([ArrBankAccountCollection count] == 0) {
                 
                 UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can add funds you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
@@ -835,6 +845,12 @@
 {
     NSLog(@"%d %d",[ArrBankAccountCollection count],buttonIndex);
     if (alertView.tag==147 && buttonIndex==1) {
+        ProfileInfo *prof = [ProfileInfo new];
+        [nav_ctrl pushViewController:prof animated:YES];
+        [self.slidingViewController resetTopView];
+        
+    }
+    else if (alertView.tag==148 && buttonIndex==1) {
         ProfileInfo *prof = [ProfileInfo new];
         [nav_ctrl pushViewController:prof animated:YES];
         [self.slidingViewController resetTopView];

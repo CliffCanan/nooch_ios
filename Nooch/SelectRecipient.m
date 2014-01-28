@@ -49,11 +49,7 @@
     UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
     [self.navigationItem setRightBarButtonItem:loc];
     
-//    if (![self.view.subviews containsObject:loader]) {
-//        loader=[me waitStat:@"Loading Recent List..."];
-//        [self.view addSubview:loader];
-//    }
-    
+
     self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 42, 320, [[UIScreen mainScreen] bounds].size.height-90)];
     [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
     [self.contacts setSectionHeaderHeight:30];
@@ -62,6 +58,7 @@
     
     search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 280, 40)];
     [search setBackgroundColor:kNoochGrayDark];
+    search.placeholder=@"Search by Name or Email";
     [search setDelegate:self];
     [search setTintColor:kNoochGrayDark];
     [self.view addSubview:search];
@@ -95,7 +92,7 @@
     NSMutableDictionary *contactInfoDict = [[NSMutableDictionary alloc]
                                             initWithObjects:@[@"", @"", @"", @"", @"", @"", @"", @"", @""]
                                             forKeys:@[@"firstName", @"lastName", @"mobileNumber", @"homeNumber", @"homeEmail", @"workEmail", @"address", @"zipCode", @"city"]];
-    
+   
     // Use a general Core Foundation object.
     CFTypeRef generalCFObject = ABRecordCopyValue(person, kABPersonFirstNameProperty);
     
@@ -134,10 +131,33 @@
     
     // Get the e-mail addresses as a multi-value property.
     ABMultiValueRef emailsRef = ABRecordCopyValue(person, kABPersonEmailProperty);
+     NSString *emailAddress = CFBridgingRelease(emailsRef);
+    
+     //if ([emailAddress rangeOfString:@"@"].location!=NSNotFound && [emailAddress rangeOfString:@"."].location!=NSNotFound) {
+    NSLog(@"%@",emailAddress);
+        // NSArray*arr=[emailAddress componentsSeparatedByString:@" "];
+         //NSLog(@"%@",arr);
+    // }
+    
+    
     for (int i=0; i<ABMultiValueGetCount(emailsRef); i++) {
         CFStringRef currentEmailLabel = ABMultiValueCopyLabelAtIndex(emailsRef, i);
         CFStringRef currentEmailValue = ABMultiValueCopyValueAtIndex(emailsRef, i);
+       
+        NSString *emailAddresslbl = CFBridgingRelease(currentEmailLabel);
         
+        //if ([emailAddress rangeOfString:@"@"].location!=NSNotFound && [emailAddress rangeOfString:@"."].location!=NSNotFound) {
+        NSLog(@"%@",emailAddresslbl);
+//        if ([emailAddresslbl isKindOfClass:[NSNull class]] || emailAddresslbl==NULL || [emailAddresslbl isEqualToString:@"(null)"]|| emailAddresslbl==nil
+//) {
+//            
+//            NSLog(@"%@",emailAddresslbl);
+//            emailAddresslbl=[self stringBetweenString:@"- " andString:@" " fullText:emailAddress];
+//             NSLog(@"%@",emailAddresslbl);
+//        }
+//      
+        // }
+
         if (CFStringCompare(currentEmailLabel, kABHomeLabel, 0) == kCFCompareEqualTo) {
             [contactInfoDict setObject:(__bridge NSString *)currentEmailValue forKey:@"homeEmail"];
         }
@@ -201,8 +221,18 @@
     return NO;
 }
 
-
--(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier{
+-(NSString*)stringBetweenString:(NSString*)start andString:(NSString*)end fullText:(NSString*)text {
+    NSScanner* scanner = [NSScanner scannerWithString:text];
+    [scanner setCharactersToBeSkipped:nil];
+    [scanner scanUpToString:start intoString:NULL];
+    if ([scanner scanString:start intoString:NULL]) {
+        NSString* result = nil;
+        if ([scanner scanUpToString:end intoString:&result]) {
+            return result;
+        }
+    }
+    return nil;
+}-(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier{
     return NO;
 }
 
@@ -326,7 +356,7 @@
 #pragma mark - email handling
 -(void)getMemberIdByUsingUserName{
     [search resignFirstResponder];
-    if ([search.text isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]]){
+    if ([[search.text lowercaseString] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]]){
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Denied" message:@"You are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av setTag:4];
         [av show];
@@ -347,7 +377,7 @@
         serve *emailCheck = [serve new];
         emailCheck.Delegate = self;
         emailCheck.tagName = @"emailCheck";
-        [emailCheck getMemIdFromuUsername:search.text];
+        [emailCheck getMemIdFromuUsername:[search.text lowercaseString]];
     }
 }
 
@@ -499,7 +529,7 @@
         
     }
     for (UIView*subview in cell.contentView.subviews) {
-        NSLog(@"%@",subview);
+       
         [subview removeFromSuperview];
     }
   

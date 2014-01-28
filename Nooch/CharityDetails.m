@@ -11,6 +11,7 @@
 #import "DonationAmount.h"
 #import "UIImageView+WebCache.h"
 #import "ECSlidingViewController.h"
+#import "ProfileInfo.h"
 @interface CharityDetails ()
 @property (nonatomic,strong) NSDictionary *charity;
 @end
@@ -156,6 +157,14 @@
     [self webView:youurl];
     }
 }
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ((alertView.tag==147 || alertView.tag==148) && buttonIndex==1) {
+        ProfileInfo *prof = [ProfileInfo new];
+        [nav_ctrl pushViewController:prof animated:YES];
+        [self.slidingViewController resetTopView];
+    }
+}
 - (void)donate
 {
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
@@ -177,12 +186,12 @@
         [alert show];
         return;
     }
-    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+   /* if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
         
         [alert show];
         return;
-    }
+    }*/
     //IsVerifiedPhone
     //[user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"]
     if ( ![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
@@ -191,6 +200,7 @@
         
         return;
     }
+   
     NSLog(@"%@",self.charity);
     NSMutableDictionary*dict_donate=[self.charity mutableCopy];
     if ([dict valueForKey:@"FirstName"]!=NULL && [dict valueForKey:@"LastName"]!=NULL) {
