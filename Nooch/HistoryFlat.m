@@ -1008,8 +1008,8 @@
 -(void)loadSearchByName
 {
     
-        [spinner setHidden:NO];
-        [spinner startAnimating];
+    [spinner setHidden:NO];
+    [spinner startAnimating];
     
     
     listType=@"ALL";
@@ -1080,7 +1080,6 @@
         [self.list reloadData];
     }
     else if([tagName isEqualToString:@"search"]){
-        //[histArray removeAllObjects];
         NSLog(@"%@",result);
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         NSLog(@"%d",[histArray count]);
