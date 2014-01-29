@@ -12,6 +12,7 @@
 #import "UIImageView+WebCache.h"
 #import "ECSlidingViewController.h"
 #import "ProfileInfo.h"
+#import "NewBank.h"
 @interface CharityDetails ()
 @property (nonatomic,strong) NSDictionary *charity;
 @end
@@ -164,6 +165,14 @@
         [nav_ctrl pushViewController:prof animated:YES];
         [self.slidingViewController resetTopView];
     }
+    else if (alertView.tag == 201){
+        if (buttonIndex == 1) {
+            
+            NewBank *add_bank = [NewBank new];
+            [nav_ctrl pushViewController:add_bank animated:NO];
+            [self.slidingViewController resetTopView];
+        }
+    }
 }
 - (void)donate
 {
@@ -178,7 +187,6 @@
         
         
     }
-
     
     if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
@@ -194,6 +202,18 @@
     }*/
     //IsVerifiedPhone
     //[user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"]
+    
+    
+    
+    if ( ![[[NSUserDefaults standardUserDefaults]
+            objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
+        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
+        [set setTag:201];
+        [set show];
+        return;
+    }
+    
+
     if ( ![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];

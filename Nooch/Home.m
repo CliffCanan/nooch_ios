@@ -14,6 +14,7 @@
 #import "TransferPIN.h"
 #import "ReEnterPin.h"
 #import "ProfileInfo.h"
+#import "NewBank.h"
 #define kButtonType     @"transaction_type"
 #define kButtonTitle    @"button_title"
 #define kButtonColor    @"button_background_color"
@@ -138,7 +139,8 @@
     }else{
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        [nav_ctrl performSelector:@selector(disable)];
+        [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
+        //[nav_ctrl performSelector:@selector(disable)];
         [user removeObjectForKey:@"Balance"];
         Register*reg=[Register new];
         [nav_ctrl pushViewController:reg animated:NO];
@@ -214,6 +216,8 @@
         [serveOBJ setTagName:@"sets"];
         [serveOBJ getSettings];
     }
+    
+     [me getBanks];
 
     
 }
@@ -232,6 +236,15 @@
         ProfileInfo *prof = [ProfileInfo new];
         [nav_ctrl pushViewController:prof animated:YES];
         [self.slidingViewController resetTopView];
+    }
+    
+    else if (alertView.tag == 201){
+        if (buttonIndex == 1) {
+            
+            NewBank *add_bank = [NewBank new];
+            [nav_ctrl pushViewController:add_bank animated:NO];
+            [self.slidingViewController resetTopView];
+        }
     }
 }
 - (void)send_request
@@ -261,15 +274,23 @@
         [alert show];
         return;
     }
-   
-   
+   */
+    ;
+    if ( ![[[NSUserDefaults standardUserDefaults]
+           objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
+        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
+        [set setTag:201];
+        [set show];
+        return;
+    }
+
    if ( ![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         
         return;
     }
-    */
+    
     if (NSClassFromString(@"SelectRecipient")) {
         
         Class aClass = NSClassFromString(@"SelectRecipient");

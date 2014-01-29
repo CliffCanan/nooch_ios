@@ -13,5 +13,5 @@
 
 -(void)disable;
 -(void)reenable;
-
+-(void)reset;
 @end

@@ -121,6 +121,14 @@
 }
 -(void)addBank:(id)sender{
        self.name.text=[self.name.text lowercaseString];
+    NSArray*arr=[self.name.text componentsSeparatedByString:@" "];
+    if ([arr count]!=2) {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Enter First Name and Last Name in Account Name" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [self.name becomeFirstResponder];
+        [av show];
+        return;
+    }
+    
     if ([self.account_number.text length] < 5 || [self.account_number.text length] > 17)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Account Number" message:@"Please double check your account number, it should ranges between 5 and 17 digits." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];

@@ -11,6 +11,7 @@
 #import "Register.h"
 #import "NSString+ASBase64.h"
 #import "Constant.h"
+#import "ECSlidingViewController.h"
 //
 //Charan's edit 19nov2013
 //seconds for 3 days259200 518400 777600 604800 1209600
@@ -96,19 +97,7 @@ NSString *amnt;
 
 
 -(void)addFund:(NSString*)amount{
-    /*locationManager = [[CLLocationManager alloc] init];
-    locationManager.delegate = self;
-    locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
-    locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
-    [locationManager startUpdatingLocation];*/
-    // NSRunLoop *loop = [NSRunLoop currentRunLoop];
-    //    while ((!locationUpdate) &&
-    //           ([loop runMode:NSDefaultRunLoopMode beforeDate:[NSDate
-    //                                                           distantFuture]]))
-    //    {
-    
-    // }
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+        NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     NSLog(@"oauthnd%@",[defaults valueForKey:@"OAuthToken"]);
     transactionInputaddfund = [NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"MemberId", @"", @"RecepientId", amount, @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction",  [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"], @"DeviceId", Latitude, @"Latitude", Longitude, @"Longitude", Altitude, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode", nil];
@@ -725,13 +714,9 @@ NSString *amnt;
     responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
     if ([responseString rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
         
-        if ([[assist shared]isloggedout]) {
-            
-        }
-        else
-        {
+        
             //logout in case of invalid OAuth
-            if ([tagName isEqualToString:@"info"] && ![[[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"]isEqualToString:@"1"]) {
+            if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"]isEqualToString:@"1"]) {
                 UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 
                 [Alert show];
@@ -747,7 +732,7 @@ NSString *amnt;
                 [timer invalidate];
                // timer=nil;
                 [nav_ctrl performSelector:@selector(disable)];
-               
+               [nav_ctrl performSelector:@selector(reset)];
                 Register *reg = [Register new];
                 [nav_ctrl pushViewController:reg animated:YES];
                 me = [core new];
@@ -763,7 +748,7 @@ NSString *amnt;
            
                 
             
-        }
+        
     }
 
   
@@ -993,9 +978,11 @@ NSString *amnt;
                      JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                      options:kNilOptions
                      error:&error];
-        
+       [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"IsBankAvailable"];
       
         if ([arrResponse count]>0) {
+            
+             [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
              NSLog(@"%@",[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"]);
             if (![[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] isKindOfClass:[NSNull class]] && [[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"]!=NULL) {
                 NSLog(@"%@",[[[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
@@ -1148,6 +1135,7 @@ NSString *amnt;
         }
         else
         {
+            [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
             for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
                 if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
                     [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
@@ -1841,4 +1829,19 @@ NSString *amnt;
         NSLog(@"connect error");
  
 }
+-(void)ReferalCodeRequest:(NSString*)email{
+    self.responseData = [[NSMutableData alloc] init];
+    
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/ReferalCodeRequest?userName=%@",ServerUrl,email];
+    NSLog(@"%@",urlString);
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+}
+
 @end

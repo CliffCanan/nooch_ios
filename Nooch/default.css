@@ -239,10 +239,10 @@
 
 		text-align       	: right;
 		color 				: #58595B;
-		width				: 100px;
+		width				: 50px;
 		height				: 40px;
 		top					: 105px;
-		left                : 60px;
+		left                : 90px;
 	}
     #micro2_amountfield {
 		font-family			: "Roboto";
@@ -251,10 +251,10 @@
 
 		text-align       	: right;
 		color 				: #58595B;
-		width				: 100px;
+		width				: 50px;
 		height				: 40px;
 		top					: 105px;
-		left                : 170px;
+		left                : 210px;
 	}
 .Repin_instructiontext {
 		width			: 300px;
@@ -631,18 +631,39 @@
 		font-weight			: light;
         color               : white;
 	}
-  
-	/**  Styles the recipient's name in the bar at the top of the main box. **/
-	#label_howmuch_recipientname {
-		width				: 210px;
+  #label_howmuch_to  {
+		width				: 28px;
 		height				: 38px;
 		top					: 10px;
-		left				: 55px;
+		left				: 20px;
 		font-size			: 20px;
-		font-weight			: regular;
-        color                   : white;
+		font-weight			: light;
+        color               : white;
 	}
-	
+	/**  Styles the recipient's name in the bar at the top of the main box. **/
+	#label_micro1 {
+		width				: 70px;
+		height				: 40px;
+		left				: 30px;
+		font-size			: 32px;
+		font-weight			: medium;
+        color               : black;
+        font-family			: "Roboto";
+		top					: 105px;
+
+	}
+	#label_micro2 {
+		width				: 70px;
+		height				: 40px;
+		left				: 155px;
+		font-size			: 32px;
+		font-weight			: medium;
+        color               : black;
+        font-family			: "Roboto";
+		top					: 105px;
+
+	}
+
     .barbackground {
         top : 10px;
         left : 9px;

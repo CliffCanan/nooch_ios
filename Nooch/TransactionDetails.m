@@ -140,7 +140,10 @@
     [self.view addSubview:amount];
   
     UILabel *memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 110, 320, 60)];
-    [memo setText:[self.trans valueForKey:@"Memo"]];
+    if (![[self.trans valueForKey:@"Memo"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Memo"]!=NULL) {
+        [memo setText:[NSString stringWithFormat:@"%@",[self.trans valueForKey:@"Memo"]]];
+    }
+    
     [memo setStyleClass:@"details_label"];
     [memo setStyleClass:@"blue_text"];
     [memo setStyleClass:@"italic_font"];

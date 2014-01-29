@@ -10,6 +10,7 @@
 #import <Pixate/Pixate.h>
 #import "Register.h"
 #import "assist.h"
+#import "ECSlidingViewController.h"
 @interface ReEnterPin ()<UITextFieldDelegate>
 @property(nonatomic,retain) UIView *first_num;
 @property(nonatomic,retain) UIView *second_num;
@@ -198,7 +199,24 @@
 
             UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"You account has been suspended." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
             [alert show];
+            
+            [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+            
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+            
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+            
+            NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+            [timer invalidate];
+            // timer=nil;
+             [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
+           // [nav_ctrl performSelector:@selector(disable)];
+            [nav_ctrl performSelector:@selector(reset)];
+            Register *reg = [Register new];
+            [nav_ctrl pushViewController:reg animated:YES];
+            me = [core new];
             return;
+
         }
         else
         {

@@ -67,7 +67,10 @@
 -(void)reenable{
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
 }
-
+-(void)reset
+{
+     [self.slidingViewController resetTopView];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

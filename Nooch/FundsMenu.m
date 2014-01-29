@@ -720,7 +720,7 @@
             }*/
             if ([ArrBankAccountCollection count] == 0) {
                 
-                UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can add funds you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
+                UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can withdraw funds you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
                 [set setTag:201];
                 [set show];
                 return;
@@ -1056,8 +1056,20 @@
       
         [spinner stopAnimating];
         [spinner setHidden:YES];
+        if ([arr count]>0) {
+            [[NSUserDefaults standardUserDefaults]
+              setObject:@"1" forKey:@"IsBankAvailable"];
+        }
+        else
+        {
+            [[NSUserDefaults standardUserDefaults]
+             setObject:@"0" forKey:@"IsBankAvailable"];
+
+        }
        ArrBankAccountCollection=[[NSMutableArray alloc]init];
         ArrBankAccountCollection=[arr mutableCopy];
+        
+        
       [self.menu reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
         NSLog(@"Banks%@",ArrBankAccountCollection);
         [spinner startAnimating];
@@ -1338,7 +1350,7 @@
     
 }
 - (void)changeSwitch:(UISwitch*)on_off1{
-    int switchtag=[on_off1 tag];
+    int switch_tag=[on_off1 tag];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     if ([[[me usr] objectForKey:@"banks"] count]==0)
     {
@@ -1370,7 +1382,7 @@
         return;
     }
    
-    if (switchtag==12000) {
+    if (switch_tag==12000) {
         
         if([on_off1 isOn]){
             

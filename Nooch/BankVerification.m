@@ -46,9 +46,17 @@
     [info setText:@"Check your most recent bank statement and enter the amounts deposited by Nooch into your account into the boxes below."];
     [self.view addSubview:info];
     //Bank verifivation
+    UILabel *micro1_lbl = [UILabel new]; [micro1_lbl setText:@"$ 0."];
+    [micro1_lbl setStyleId:@"label_micro1"];
+    [self.view addSubview:micro1_lbl];
+    
+    UILabel *micro2_lbl = [UILabel new]; [micro2_lbl setText:@"$ 0."];
+    [micro2_lbl setStyleId:@"label_micro2"];
+    [self.view addSubview:micro2_lbl];
+    
     
     self.micro1 = [UITextField new];
-    [self.micro1 setTextAlignment:NSTextAlignmentRight]; [self.micro1 setPlaceholder:@"$ 0.00"];
+    [self.micro1 setTextAlignment:NSTextAlignmentRight]; [self.micro1 setPlaceholder:@"00"];
     self.micro1.layer.cornerRadius=5.0f;
     self.micro1.layer.borderColor=[[UIColor grayColor]CGColor];
     self.micro1.layer.borderWidth=1.0f;
@@ -63,7 +71,7 @@
     self.micro2.layer.cornerRadius=5.0f;
     self.micro2.layer.borderColor=[[UIColor grayColor]CGColor];
     self.micro2.layer.borderWidth=1.0f;
-    [self.micro2 setTextAlignment:NSTextAlignmentRight]; [self.micro2 setPlaceholder:@"$ 0.00"];
+    [self.micro2 setTextAlignment:NSTextAlignmentRight]; [self.micro2 setPlaceholder:@"00"];
     [self.micro2 setDelegate:self]; [self.micro2 setTag:1];
     [self.micro2 setKeyboardType:UIKeyboardTypeNumberPad];
     [self.micro2 setStyleId:@"micro2_amountfield"];
@@ -105,8 +113,8 @@
 {
    [self.micro1 resignFirstResponder];
     [self.micro2 resignFirstResponder];
-    NSString *amountOne=self.micro1.text;
-    NSString *amountTwo=self.micro2.text;
+    NSString *amountOne=[NSString stringWithFormat:@".%@", self.micro1.text];
+    NSString *amountTwo=[NSString stringWithFormat:@".%@", self.micro2.text];
 //    if((([amountOne intValue] < 100) && ([amountOne intValue] > 0)) && (([amountTwo intValue] < 100) && ([amountTwo intValue] > 0)))
 //    {
         verifyAttempts++;
@@ -155,7 +163,8 @@
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"The bank account details have been deleted." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView sizeToFit];
             [alertView show];
-            for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
+            [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"IsPrimaryBankVerified"];
+              for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
                 if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
                     [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
                 }
