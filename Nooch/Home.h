@@ -29,5 +29,6 @@ NSUserDefaults *user;
 {
     CLLocationManager*locationManager;
     float lat,lon;
+    UIView*blankView;
 }
 @end

@@ -43,7 +43,14 @@ static assist * _sharedInstance = nil;
 {
     imageOBJFortransfer=image;
 }
-
+-(BOOL)isBankVerified
+{
+    return isPrimaryBankVerified;
+}
+-(void)setBankVerified:(BOOL)istrue
+{
+    isPrimaryBankVerified=istrue;
+}
 -(BOOL)isloggedout
 {
     return islogout;
@@ -146,7 +153,7 @@ static assist * _sharedInstance = nil;
 #pragma mark 9jan
     [self getSettings];
     [self getAcctInfo];
-    [self getBanks];
+   // [self getBanks];
     //[self getCards];
     
 }/*}}}*/

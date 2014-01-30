@@ -462,11 +462,14 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     if (textField.tag == 1) {
-        
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-        [formatter setGeneratesDecimalNumbers:YES];
-        [formatter setUsesGroupingSeparator:YES];
+        [formatter setNumberStyle:NSNumberFormatterNoStyle];
+        [formatter setPositiveFormat:@"$ ##.##"];
+        [formatter setLenient:YES];
+//        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+//        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+//        [formatter setGeneratesDecimalNumbers:YES];
+//        [formatter setUsesGroupingSeparator:YES];
         NSString *groupingSeparator = [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
         [formatter setGroupingSeparator:groupingSeparator];
         [formatter setGroupingSize:3];

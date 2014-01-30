@@ -259,8 +259,8 @@
         [[UIApplication sharedApplication]setStatusBarHidden:NO];
         //[log validateInvitation:@"pilot"];
         
-
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"IsPrimaryBankVerified"];
+        [[assist shared]setBankVerified:NO];
+        //[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"IsPrimaryBankVerified"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"firstName"];
         NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
         if ([self.stay_logged_in isOn]) {

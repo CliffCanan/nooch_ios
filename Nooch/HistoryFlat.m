@@ -155,11 +155,11 @@
     [self.view addSubview:spinner];
     [spinner stopAnimating];
     [spinner setHidden:YES];
-    //clear Image cache
-    SDImageCache *imageCache = [SDImageCache sharedImageCache];
-    [imageCache clearMemory];
-    [imageCache clearDisk];
-    [imageCache cleanDisk];
+//    //clear Image cache
+//    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+//    [imageCache clearMemory];
+//    [imageCache clearDisk];
+//    [imageCache cleanDisk];
     [self loadHist:@"ALL" index:index len:20];
     //    //Export History
     exportHistory=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -1008,8 +1008,8 @@
 -(void)loadSearchByName
 {
     
-    [spinner setHidden:NO];
-    [spinner startAnimating];
+        [spinner setHidden:NO];
+        [spinner startAnimating];
     
     
     listType=@"ALL";
@@ -1080,6 +1080,7 @@
         [self.list reloadData];
     }
     else if([tagName isEqualToString:@"search"]){
+        //[histArray removeAllObjects];
         NSLog(@"%@",result);
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         NSLog(@"%d",[histArray count]);

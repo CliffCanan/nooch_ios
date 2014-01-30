@@ -42,6 +42,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    
      NSLog(@"%@",nav_ctrl.view);
     [ self.navigationItem setLeftBarButtonItem:Nil];
     nav_ctrl = self.navigationController;
@@ -112,7 +113,7 @@
     [mid_button setTitle:[[self.transaction_types objectAtIndex:1] objectForKey:kButtonTitle] forState:UIControlStateNormal];
     [bot_button setTitle:[[self.transaction_types objectAtIndex:2] objectForKey:kButtonTitle] forState:UIControlStateNormal];
     
-    [self.view addSubview:top_button]; [self.view addSubview:bot_button];
+    [self.view addSubview:top_button]; [self.view addSubview:mid_button]; [self.view addSubview:bot_button];
     /*if (![user objectForKey:@"member_id"]) {
         Register *reg = [Register new];
         [self.navigationController pushViewController:reg animated:NO];
@@ -210,6 +211,14 @@
         //push login
         return;
     }
+    blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
+    [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
+    UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
+    [actv startAnimating];
+    [blankView addSubview:actv];
+    [self .view addSubview:blankView];
+    [self.view bringSubviewToFront:blankView];
     if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
         serve *serveOBJ=[serve new ];
         
@@ -217,7 +226,10 @@
         [serveOBJ getSettings];
     }
     
-     [me getBanks];
+    serve *banks = [serve new];
+    banks.Delegate = self;
+    banks.tagName = @"banks";
+    [banks getBanks];
 
     
 }
@@ -250,7 +262,7 @@
 - (void)send_request
 {
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
+    NSLog(@"%d",[[assist shared]isBankVerified]);
 #pragma mark-9jan
    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
        
@@ -284,12 +296,15 @@
         return;
     }
 
-   if ( ![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-        [alert show];
-        
-        return;
-    }
+   //if ( ![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
+       if (![[assist shared]isBankVerified]) {
+           UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+           [alert show];
+           
+           return;
+       }
+       
+   // }
     
     if (NSClassFromString(@"SelectRecipient")) {
         
@@ -334,7 +349,9 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    if ([tagName isEqualToString:@"details"]) {
+    
+    if ([tagName isEqualToString:@"banks"]) {
+        [blankView removeFromSuperview];
         NSLog(@"deets: %@",result);
     }
 }

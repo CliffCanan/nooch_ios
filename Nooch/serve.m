@@ -708,6 +708,7 @@ NSString *amnt;
      if (!connect)
      NSLog(@"connect error");*/
 }
+
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     
 
@@ -717,8 +718,8 @@ NSString *amnt;
         
             //logout in case of invalid OAuth
             if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"]isEqualToString:@"1"]) {
-                UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                
+                UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                Alert.tag=3214;
                 [Alert show];
                 
                 
@@ -988,7 +989,7 @@ NSString *amnt;
                 NSLog(@"%@",[[[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
  
             }
-                       NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
             NSLog(@"%@",[user objectForKey:@"firstName"]);
             
             
@@ -1007,7 +1008,22 @@ NSString *amnt;
                 }
             }
             NSLog(@"%@",strNotifPlaced);
-            NSLog(@"%@",dictUsers);
+            NSLog(@"%@ %@",dictUsers,[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"]);
+             if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]&& ![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue] )
+             {
+                [[assist shared]setBankVerified:YES];//                 if (![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
+//                     [defaults setObject:@"YES" forKey:@"IsPrimaryBankVerified"];
+//                 }
+                 
+                
+                // [defaults synchronize];
+             }
+           else
+           {
+               [[assist shared]setBankVerified:NO];
+               //[defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
+               //[defaults synchronize];
+           }
             if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]&& [strNotifPlaced isEqualToString:@"1"]) {
                 if (![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue]) {
                     for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
@@ -1036,14 +1052,13 @@ NSString *amnt;
                         }
                     }
                     [defaults setValue:dictUsers forKey:@"NotifPlaced2"];
-                    [defaults setObject:@"YES" forKey:@"IsPrimaryBankVerified"];
-                    [defaults synchronize];
+                   
                     
                 }
-                else {
-                    [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
-                    [defaults synchronize];
-                }
+//                else {
+//                    [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
+//                    [defaults synchronize];
+//                }
             }
             else
             {
@@ -1121,13 +1136,10 @@ NSString *amnt;
                     [defaults synchronize];
                 }
 
-//                if ([[[NSUserDefaults standardUserDefaults]objectForKey:@"NotifPlaced2"]intValue]!=1) {
-//                    
-// 
-//                }
-                
-                [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
-                [defaults synchronize];
+
+               
+                //[defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
+                //[defaults synchronize];
                 
                 
  
@@ -1135,6 +1147,7 @@ NSString *amnt;
         }
         else
         {
+             [[assist shared]setBankVerified:NO];
             [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
             for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
                 if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {

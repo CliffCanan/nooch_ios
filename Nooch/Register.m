@@ -42,6 +42,7 @@
 {
     [super viewDidLoad];
     [[UIApplication sharedApplication]setStatusBarHidden:YES];
+     [nav_ctrl performSelector:@selector(disable)];
     /*NSArray *familyNames = [[NSArray alloc] initWithArray:[UIFont familyNames]];
     NSArray *fontNames;
     NSInteger indFamily, indFont;

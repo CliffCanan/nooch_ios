@@ -72,7 +72,7 @@
     [self.view addSubview:add_source];
     //29/12
     isEditing=NO;
-    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self.view addSubview:spinner];
     spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
     [spinner startAnimating];
@@ -166,6 +166,15 @@
         [alert show];
         return;
     }
+    if ([ArrBankAccountCollection count]==2) {
+        
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"NoochMoney" message:@"You can't add more than  2 Bank Accounts " delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        return;
+    }
+    NewBank *add_bank = [NewBank new];
+    [nav_ctrl pushViewController:add_bank animated:NO];
+    [self.slidingViewController resetTopView];
    /* if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
         [alert setTag:148];
@@ -174,9 +183,9 @@
     }
 */
     //credit cards are disabled, but if ever readded the button is after Bank Account
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Add Funding Source" message:@"Which type of account would you like to add?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Bank Account", nil];
-    [av setTag:2];
-    [av show];
+    //UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Add Funding Source" message:@"Which type of account would you like to add?" //delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Bank Account", nil];
+    //[av setTag:2];
+    //[av show];
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -528,20 +537,23 @@
                 // NSLog(@"%@",[[[me usr] objectForKey:@"banks"] objectAtIndex:0]);
                  if ([ArrBankAccountCollection objectAtIndex:0]&&[[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsVerified"] intValue]==1&& [[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]==1 ) {
                  if ([[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsDeleted"] intValue]==0) {
-                 [defaults setObject:@"YES" forKey:@"IsPrimaryBankVerified"];
-                 [defaults synchronize];
+                    [[assist shared]setBankVerified:YES];
+                 //[defaults setObject:@"YES" forKey:@"IsPrimaryBankVerified"];
+                 //[defaults synchronize];
                  }
                  else {
-                 [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
-                 [defaults synchronize];
+                     [[assist shared]setBankVerified:NO];
+                // [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
+                // [defaults synchronize];
                  }
                  }
                  else {
-                 [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
-                 [defaults synchronize];
+                    [[assist shared]setBankVerified:NO];
+                // [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
+                // [defaults synchronize];
                  }
                  
-                 NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
+               //  NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
                 
                  NSString*lastdigit=[NSString stringWithFormat:@"XXXX%@",[[bank objectForKey:@"BankAcctNumber"] substringFromIndex:[[bank objectForKey:@"BankAcctNumber"] length]-4]];
                  cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",[bank objectForKey:@"BankName"],lastdigit];
@@ -671,7 +683,7 @@
                 
             }
             
-            if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
+            if (![[assist shared]isBankVerified]) {
                 
                 
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Verify Your Bank Account" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
@@ -681,7 +693,7 @@
                 return;
             }
            
-            NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
+          //  NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
 
            
 
@@ -728,7 +740,7 @@
             }
 
             
-            if (![[[NSUserDefaults standardUserDefaults]valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
+             if (![[assist shared]isBankVerified]) {
                 
                 
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Verify Your Bank Account" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
@@ -738,7 +750,7 @@
                 return;
             }
            
-            NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
+            NSLog(@"%d",[[assist shared]isBankVerified]);
             
             Withdraw *wd = [[Withdraw alloc]initWithData:ArrBankAccountCollection];
            
@@ -1057,6 +1069,7 @@
         [spinner stopAnimating];
         [spinner setHidden:YES];
         if ([arr count]>0) {
+            
             [[NSUserDefaults standardUserDefaults]
               setObject:@"1" forKey:@"IsBankAvailable"];
         }
@@ -1360,7 +1373,7 @@
         return;
         
     }
-    if (![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
+    if (![[assist shared]isBankVerified]) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Verify Your Bank Account To Enable Auto Cash Out" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil] ;
         [alert show];
         [on_off setOn:NO];

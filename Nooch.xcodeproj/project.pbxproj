@@ -736,6 +736,7 @@
 				01085FB517FB6ABE00A31F63 /* ReferralCode.h */,
 				01085FB617FB6ABE00A31F63 /* ReferralCode.m */,
 				01085FA617FB2D2100A31F63 /* Register.h */,
+				01085FA717FB2D2100A31F63 /* Register.m */,
 				84C3EF19187D101E004687F6 /* ReEnterPin.h */,
 				84C3EF1A187D101E004687F6 /* ReEnterPin.m */,
 			);
@@ -830,7 +831,6 @@
 				01085FFE1803490500A31F63 /* CharityDetails.m */,
 				010860001803492C00A31F63 /* DonationAmount.h */,
 				010860011803492C00A31F63 /* DonationAmount.m */,
-				01085FA717FB2D2100A31F63 /* Register.m */,
 			);
 			name = "Donation Controllers";
 			sourceTree = "<group>";
@@ -1849,8 +1849,8 @@
 		6B30375815FA3FF600056DAD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Preston Hults (LK8B7LGXK6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Preston Hults (LK8B7LGXK6)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: charanjit singh (R2K5CMQ773)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: charanjit singh (R2K5CMQ773)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1873,8 +1873,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0B728BEF-1149-4D10-A675-233B9A3A089A";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0B728BEF-1149-4D10-A675-233B9A3A089A";
+				PROVISIONING_PROFILE = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1882,8 +1882,8 @@
 		6B30375915FA3FF600056DAD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Preston Hults (LK8B7LGXK6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Preston Hults (LK8B7LGXK6)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: charanjit singh (R2K5CMQ773)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: charanjit singh (R2K5CMQ773)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1905,8 +1905,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0B728BEF-1149-4D10-A675-233B9A3A089A";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0B728BEF-1149-4D10-A675-233B9A3A089A";
+				PROVISIONING_PROFILE = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

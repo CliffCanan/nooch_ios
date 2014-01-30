@@ -28,7 +28,7 @@ NSString *histSearching;
     NSMutableData *responseData;
     NSMutableArray *sortedHist;
     //venturepact
-    
+    BOOL isPrimaryBankVerified;
     BOOL islogout;
     UIImage*imageOBJFortransfer;
 }
@@ -70,4 +70,6 @@ NSString *histSearching;
 -(UIImage*)getTranferImage;
 -(BOOL)isloggedout;
 -(void)setisloggedout:(BOOL)islog;
+-(BOOL)isBankVerified;
+-(void)setBankVerified:(BOOL)istrue;
 @end

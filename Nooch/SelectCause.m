@@ -212,10 +212,10 @@
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     //clear Image cache
-    SDImageCache *imageCache = [SDImageCache sharedImageCache];
-    [imageCache clearMemory];
-    [imageCache clearDisk];
-    [imageCache cleanDisk];
+//    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+//    [imageCache clearMemory];
+//    [imageCache clearDisk];
+//    [imageCache cleanDisk];
     NSDictionary *cause = [[causesArr objectAtIndex:indexPath.row] copy];
     
     CharityDetails *charity = [[CharityDetails alloc] initWithReceiver:cause];

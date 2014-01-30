@@ -35,11 +35,11 @@
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
 
-    //clear Image cache
-    SDImageCache *imageCache = [SDImageCache sharedImageCache];
-    [imageCache clearMemory];
-    [imageCache clearDisk];
-    [imageCache cleanDisk];
+//    //clear Image cache
+//    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+//    [imageCache clearMemory];
+//    [imageCache clearDisk];
+//    [imageCache cleanDisk];
     // Do any additional setup after loading the view from its nib.
     
     UIButton *location = [UIButton buttonWithType:UIButtonTypeRoundedRect];

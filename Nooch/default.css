@@ -80,68 +80,32 @@
 	 /******************************/
 	 /******	 BUTTONS	********/
 	 /******************************/
+		:not(action-sheet) > button {
+			width				: 280px;
+			height				: 56px;
+			left                : 20px;
+			color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 22px;
+		}
 
 		/****  BLUE BUTTON GRADIENT ****/
-		.button_blue { background-image			: linear-gradient(#6dbee8, #41abe1);
-                                width				: 280px;
-			height				: 56px;
-			left                : 20px;
-			color 				: white;
-			border-radius		: 3px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 22px;
-        }
+		.button_blue { background-image			: linear-gradient(#6dbee8, #41abe1); }
 
 		/****  GREEN BUTTON GRADIENT  ****/
-		.button_green:normal {
-        width				: 280px;
-			height				: 56px;
-			left                : 20px;
-			color 				: white;
-			border-radius		: 3px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 22px;
-            background-image	: linear-gradient(#7fd034, #6ab029);
-            }
+		.button_green:normal { background-image	: linear-gradient(#7fd034, #6ab029); }
 
 		/****  Disabled GREEN GRADIENT  ****/
 		.button_green:disabled { border-radius		: 3px;
-            background-image: linear-gradient(#c0c2c4, #b1b3b6);
-            width				: 280px;
-			height				: 56px;
-			left                : 20px;
-			color 				: white;
-			border-radius		: 3px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 22px;
-            }
+            background-image: linear-gradient(#c0c2c4, #b1b3b6); }
 
 		/****  GRAY BUTTON GRADIENT  ****/
-		.button_gray { background-image			: linear-gradient(#c0c2c4, #b1b3b6); 
-        width				: 280px;
-			height				: 56px;
-			left                : 20px;
-			color 				: white;
-			border-radius		: 3px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 22px;
-            }
+		.button_gray { background-image			: linear-gradient(#c0c2c4, #b1b3b6); }
 
 		/****  RED BUTTON GRADIENT  ****/
-		.gradient_red { background-image			: linear gradient(#e02d33, #d2232a); 
-        width				: 280px;
-			height				: 56px;
-			left                : 20px;
-			color 				: white;
-			border-radius		: 3px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 22px;
-            }
+		.gradient_red { background-image			: linear gradient(#e02d33, #d2232a); }
 		
 		.infobutton {
 			width			: 16px;
@@ -667,15 +631,7 @@
 		font-weight			: light;
         color               : white;
 	}
-  #label_howmuch_to  {
-		width				: 28px;
-		height				: 38px;
-		top					: 10px;
-		left				: 20px;
-		font-size			: 20px;
-		font-weight			: light;
-        color               : white;
-	}
+
 	/**  Styles the recipient's name in the bar at the top of the main box. **/
 	#label_micro1 {
 		width				: 70px;
@@ -688,6 +644,15 @@
 		top					: 105px;
 
 	}
+    #label_howmuch_recipientname{
+        width				: 200px;
+		height				: 38px;
+		top					: 10px;
+		left				: 50px;
+		font-size			: 20px;
+		font-weight			: light;
+        color               : white; 
+           }
 	#label_micro2 {
 		width				: 70px;
 		height				: 40px;
@@ -1053,20 +1018,19 @@
 		left				: 9px;
 		width				: 302px;
 		height				: 38px;
-	}
-    
-    #pin_recipientname_send {
-        background-image	: linear-gradient(#76c22f, #66aa27);
-    }
-    
-    #pin_recipientname_request {
-        background-image			: linear-gradient(#6dbee8, #41abe1);
-    }
-    
-    #pin_recipientname_donate {
-        background-image: linear-gradient(#595287, #413a70);
-    }
 
+	}
+#pin_recipientname_send {
+         background-image  : linear-gradient(#76c22f, #66aa27);
+     }
+
+     #pin_recipientname_request {
+         background-image      : linear-gradient(#6dbee8, #41abe1);
+     }
+
+     #pin_recipientname_donate {
+         background-image: linear-gradient(#595287, #413a70);
+     }
 	/**  The text of the recipient's name in the recipient box.  **/
 	.pin_recipientname_text {
 		top					: 196px;
@@ -2149,28 +2113,17 @@
 
 	.details_button_left {
 		width			: 152px;
-		top				: 430px;
+		top				: 425px;
 		left			: 5px;
 		font-size		: 22px;
-        color 				: white;
-			border-radius		: 3px;
-			font-family			: "Roboto";
-			font-weight         : light;
-            height				: 50px;
-        background-image	: linear-gradient(#7fd034, #6ab029);
+		box-shadow		: inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 1px rgba(0,0,0,0.5);	
 	}
 	
 	.details_button_right {
-    height				: 50px;
 		width			: 152px;
-		top				: 430px;
-		left			: 165px;
-        color 				: white;
-			border-radius		: 3px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 22px;
-        background-image	: linear-gradient(#F5003D, #D21937);
+		top				: 425px;
+		left			: 153px;
+		font-size		: 22px;
 	}
 	
 	/**  Circle Buttons at the bottom ('Pay Back'  FB  Twitter  'Dispute' **/

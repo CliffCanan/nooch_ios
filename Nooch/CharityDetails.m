@@ -43,10 +43,10 @@
     
 
     //clear Image cache
-    SDImageCache *imageCache = [SDImageCache sharedImageCache];
-    [imageCache clearMemory];
-    [imageCache clearDisk];
-    [imageCache cleanDisk];
+//    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+//    [imageCache clearMemory];
+//    [imageCache clearDisk];
+//    [imageCache cleanDisk];
     self.navigationItem.title=[self.charity valueForKey:@"OrganizationName"];
 	// Do any additional setup after loading the view.
     //dict=[[NSMutableDictionary alloc]init];
@@ -177,7 +177,7 @@
 - (void)donate
 {
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
+    //NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
     
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
         
@@ -214,7 +214,7 @@
     }
     
 
-    if ( ![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
+    if ( ![[assist shared]isBankVerified]) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         

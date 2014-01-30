@@ -10,6 +10,8 @@
 #import "Home.h"
 #import "Welcome.h"
 #import "GetLocation.h"
+#import "Register.h"
+#import "ECSlidingViewController.h"
 @interface ReferralCode ()<GetLocationDelegate>
 {
     GetLocation*getLocation;
@@ -160,13 +162,29 @@
 
 - (void)request_code
 {
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"Thank you! We will be in touch with an invite code soon." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [av show];
+    serve*serveobj=[serve new];
+    [serveobj setDelegate:self];
+    serveobj.tagName=@"requestcode";
+    [serveobj ReferalCodeRequest:[self.user valueForKey:@"email"]];
     
 }
 
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
      NSError *error;
-    if ([tagName isEqualToString:@"inv_check"]) {
+    if ([tagName isEqualToString:@"requestcode"]) {
+        self.slidingViewController.panGesture.enabled=NO;
+        
+        [nav_ctrl performSelector:@selector(reset)];
+        
+        Register *reg = [Register new];
+        
+        
+        [nav_ctrl pushViewController:reg animated:YES];
+    }
+    else if ([tagName isEqualToString:@"inv_check"]) {
        
         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         if ([[response objectForKey:@"validateInvitationCodeResult"] boolValue]) {
