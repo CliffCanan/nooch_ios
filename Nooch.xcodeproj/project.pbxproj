@@ -242,6 +242,7 @@
 		842E3313187413490057EAFB /* Decryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 842E3312187413490057EAFB /* Decryption.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		842E3316187424440057EAFB /* GetEncryptionValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 842E3315187424440057EAFB /* GetEncryptionValue.m */; };
 		842E3318187431E40057EAFB /* RoundLoading.png in Resources */ = {isa = PBXBuildFile; fileRef = 842E3317187431E40057EAFB /* RoundLoading.png */; };
+		84374938189A3961004D83B5 /* empty-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 84374937189A3961004D83B5 /* empty-arrow.png */; };
 		843B29D41888EC3B00DA04C8 /* back-arrow-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 843B29D31888EC3B00DA04C8 /* back-arrow-blue.png */; };
 		84B65A73188542E9009A5205 /* NSString+ASBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B65A72188542E9009A5205 /* NSString+ASBase64.m */; };
 		84BD98721877F6E9008B6131 /* userlocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BD98711877F6E9008B6131 /* userlocation.m */; };
@@ -641,6 +642,7 @@
 		842E3314187424440057EAFB /* GetEncryptionValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetEncryptionValue.h; sourceTree = "<group>"; };
 		842E3315187424440057EAFB /* GetEncryptionValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetEncryptionValue.m; sourceTree = "<group>"; };
 		842E3317187431E40057EAFB /* RoundLoading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoundLoading.png; sourceTree = "<group>"; };
+		84374937189A3961004D83B5 /* empty-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "empty-arrow.png"; sourceTree = "<group>"; };
 		843B29D31888EC3B00DA04C8 /* back-arrow-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-arrow-blue.png"; sourceTree = "<group>"; };
 		84B65A71188542E9009A5205 /* NSString+ASBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ASBase64.h"; sourceTree = "<group>"; };
 		84B65A72188542E9009A5205 /* NSString+ASBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ASBase64.m"; sourceTree = "<group>"; };
@@ -1003,6 +1005,7 @@
 		16E4B1C0187054A80099D075 /* venturepact  */ = {
 			isa = PBXGroup;
 			children = (
+				84374937189A3961004D83B5 /* empty-arrow.png */,
 				84C3EF17187D0E82004687F6 /* mapBack.png */,
 				8420B395187AC4BF00A77E2D /* Black-pin.png */,
 				8420B396187AC4BF00A77E2D /* blue-pin.png */,
@@ -1559,6 +1562,7 @@
 				6BC5FED51625F1B0007EAD7A /* Roboto-BoldItalic.ttf in Resources */,
 				6BC5FED71625F1B0007EAD7A /* Roboto-Condensed.ttf in Resources */,
 				01C26E001843E88A005179B7 /* 4k_image.png in Resources */,
+				84374938189A3961004D83B5 /* empty-arrow.png in Resources */,
 				6BC5FED91625F1B0007EAD7A /* Roboto-CondensedItalic.ttf in Resources */,
 				6BC5FEDB1625F1B0007EAD7A /* Roboto-Italic.ttf in Resources */,
 				01C26DBF1843BB22005179B7 /* stats-profile-inactive.png in Resources */,

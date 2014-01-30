@@ -714,12 +714,10 @@ NSString *amnt;
 
     responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
     if ([responseString rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
-        
-        
             //logout in case of invalid OAuth
             if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"]isEqualToString:@"1"]) {
-                UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                Alert.tag=3214;
+                UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                
                 [Alert show];
                 
                 
@@ -733,7 +731,7 @@ NSString *amnt;
                 [timer invalidate];
                // timer=nil;
                 [nav_ctrl performSelector:@selector(disable)];
-               [nav_ctrl performSelector:@selector(reset)];
+                [nav_ctrl performSelector:@selector(reset)];
                 Register *reg = [Register new];
                 [nav_ctrl pushViewController:reg animated:YES];
                 me = [core new];
@@ -1055,10 +1053,8 @@ NSString *amnt;
                    
                     
                 }
-//                else {
-//                    [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
-//                    [defaults synchronize];
-//                }
+
+
             }
             else
             {
@@ -1127,8 +1123,10 @@ NSString *amnt;
                         
                     }
                     NSLog(@"%@",dictUsers);
+                    if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]  isKindOfClass:[NSNull class]] && [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]!=NULL) {
+                        [dictUsers setValue:@"1" forKey:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]];
+                    }
                     
-                    [dictUsers setValue:@"1" forKey:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]];
                     NSLog(@"%@",dictUsers);
                     
                     [defaults setObject:dictUsers forKey:@"NotifPlaced2"];
@@ -1138,10 +1136,7 @@ NSString *amnt;
 
 
                
-                //[defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
-                //[defaults synchronize];
-                
-                
+                              
  
             }
         }

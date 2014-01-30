@@ -11,6 +11,7 @@
 #import "UIImageView+WebCache.h"
 #import "CharityDetails.h"
 #import "ECSlidingViewController.h"
+#import "Register.h"
 @interface SelectCause ()
 @property(nonatomic,strong) UITableView *list;
 @property(nonatomic,strong) UISearchBar *search;
@@ -227,12 +228,42 @@
     
     
 }
-
+#pragma mark - file paths
+- (NSString *)autoLogin{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+    
+}
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     //29/12
-    
+
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
+        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        
+        [Alert show];
+        
+        
+        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        
+        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+        [timer invalidate];
+        // timer=nil;
+        [nav_ctrl performSelector:@selector(disable)];
+        [nav_ctrl performSelector:@selector(reset)];
+        [self.navigationController popViewControllerAnimated:YES];
+        Register *reg = [Register new];
+        [nav_ctrl pushViewController:reg animated:YES];
+        me = [core new];
+        return;
+    }
+
     if ([tagName isEqualToString:@"featuredNp"]) {
         FeaturedcausesArr = [[NSMutableArray alloc]init];
         

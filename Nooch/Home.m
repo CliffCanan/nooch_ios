@@ -211,17 +211,19 @@
         //push login
         return;
     }
-    blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
-    [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
-    UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
-    [actv startAnimating];
-    [blankView addSubview:actv];
-    [self .view addSubview:blankView];
-    [self.view bringSubviewToFront:blankView];
-    if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
+    if (![self.view.subviews containsObject:blankView]) {
+        blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
+        [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
+        UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
+        [actv startAnimating];
+        [blankView addSubview:actv];
+        [self .view addSubview:blankView];
+        [self.view bringSubviewToFront:blankView];
+
+    }
+       if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
         serve *serveOBJ=[serve new ];
-        
         [serveOBJ setTagName:@"sets"];
         [serveOBJ getSettings];
     }
@@ -332,6 +334,8 @@
 }
 # pragma mark - CLLocationManager Delegate Methods
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
+    
+    [[assist shared]setlocationAllowed:NO];
     NSLog(@"Error : %@",error);
     if ([error code] == kCLErrorDenied){
         NSLog(@"Error : %@",error);
@@ -344,11 +348,39 @@
     CLLocationCoordinate2D loc = [newLocation coordinate];
     lat = [[[NSString alloc] initWithFormat:@"%f",loc.latitude] floatValue];
     lon = [[[NSString alloc] initWithFormat:@"%f",loc.longitude] floatValue];
+    [[assist shared]setlocationAllowed:YES];
     [locationManager stopUpdatingLocation];
 }
+
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
+
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
+        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        
+        [Alert show];
+        
+        
+        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        
+        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+        [timer invalidate];
+        [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
+       
+        [nav_ctrl performSelector:@selector(reset)];
+        //[self.navigationController popViewControllerAnimated:YES];
+        Register *reg = [Register new];
+        [nav_ctrl pushViewController:reg animated:YES];
+        me = [core new];
+        return;
+    }
+    
+
     
     if ([tagName isEqualToString:@"banks"]) {
         [blankView removeFromSuperview];

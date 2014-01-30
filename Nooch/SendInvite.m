@@ -12,6 +12,7 @@
 #import "Home.h"
 #import "ECSlidingViewController.h"
 #import "UIImageView+WebCache.h"
+#import "Register.h"
 @interface SendInvite ()<ABPeoplePickerNavigationControllerDelegate>
 @property(nonatomic,strong) UITableView *contacts;
 @property(nonatomic,strong) NSMutableArray *recents;
@@ -135,11 +136,45 @@
     
    
 }
-
+#pragma mark - file paths
+- (NSString *)autoLogin{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+    
+}
 #pragma mark - server Delegation
 
 -(void) listen:(NSString *)result tagName:(NSString *)tagName{
      NSError* error;
+
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
+        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+       
+        [Alert show];
+        
+        
+        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        
+        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+        [timer invalidate];
+        // timer=nil;
+        
+        
+        [nav_ctrl performSelector:@selector(disable)];
+        [nav_ctrl performSelector:@selector(reset)];
+        [nav_ctrl popViewControllerAnimated:YES];
+        Register *reg = [Register new];
+        [nav_ctrl pushViewController:reg animated:YES];
+        me = [core new];
+        return;
+    }
+    
+
     if ([tagName isEqualToString:@"recents"]) {
        
         self.recents = [NSJSONSerialization

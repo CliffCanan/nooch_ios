@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Home.h"
 @interface userlocation : UIViewController<UITableViewDataSource,UITableViewDelegate>
-
+{
+    UIActivityIndicatorView*spinner;
+}
 @end

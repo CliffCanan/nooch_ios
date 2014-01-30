@@ -64,15 +64,11 @@
     if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Sent"]) {
        
              [payment setText:@"Paid to:"];
-            //[name setText:[NSString stringWithFormat:@"You Paid %@",[dictRecord valueForKey:@"FirstName"]]];
-        
-    }
+          }
    else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Received"]) {
         
             [payment setText:@"Received From:"];
-            
-        
-        
+    
     }
     else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
        
@@ -89,10 +85,7 @@
     {
         [payment setText:@"Donation To:"];
     }
-    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"])
-    {
-        [payment setText:@"Withdraw From:"];
-    }
+   
     [self.view addSubview:payment];
     
     UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];
@@ -141,27 +134,41 @@
   
     UILabel *memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 110, 320, 60)];
     if (![[self.trans valueForKey:@"Memo"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Memo"]!=NULL) {
-        [memo setText:[NSString stringWithFormat:@"%@",[self.trans valueForKey:@"Memo"]]];
+        [memo setText:[NSString stringWithFormat:@"\"%@\"",[self.trans valueForKey:@"Memo"]]];
+            }
+    else
+    {
+        memo.text=@"";
     }
     
     [memo setStyleClass:@"details_label"];
     [memo setStyleClass:@"blue_text"];
     [memo setStyleClass:@"italic_font"];
     [self.view addSubview:memo];
+
     
     UILabel *location = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 320, 60)];
     location.numberOfLines=2;
      [location setStyleClass:@"details_label"];
-    if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"City"]!=NULL) {
+    if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"City"]!=NULL && [[assist shared]islocationAllowed] ) {
         [location setText:[NSString stringWithFormat:@"%@ %@ %@ %@",[self.trans objectForKey:@"AddressLine1"],[self.trans objectForKey:@"AddressLine2"],[self.trans objectForKey:@"City"],[self.trans objectForKey:@"Country"]]];
+        if ([[self.trans objectForKey:@"AddressLine1"]length]==0 && [[self.trans objectForKey:@"City"]length]==0) {
+            [location setText:@""];
+        }
+         [self.view addSubview:location];
     }
 
-    
-    [self.view addSubview:location];
+    else
+    {
+        [location setText:@""];
+        [self.view addSubview:location];
+
+    }
+   
     
     UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 190, 320, 30)];
     [status setStyleClass:@"details_label"];
-    if ([self.trans objectForKey:@"TransactionType"]!=NULL && [self.trans objectForKey:@"TransactionDate"]!=NULL) {
+    if ([self.trans objectForKey:@"TransactionDate"]!=NULL) {
         NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.dateFormat = @"dd/MM/yyyy HH:mm:ss";
         NSDate *yourDate = [dateFormatter dateFromString:[self.trans valueForKey:@"TransactionDate"]];
@@ -170,7 +177,8 @@
         NSLog(@"%@",[dateFormatter stringFromDate:yourDate]);
         NSString*statusstr;
         if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
-           statusstr=@"Pending...sent on :";
+            [status setStyleClass:@"details_label1"];
+           statusstr=@"Pending...:";
         }
         else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Donation"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Received"])
         {
@@ -180,9 +188,14 @@
         {
             statusstr=@"Submitted on :";
         }
-        
-        NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
+          NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
+        if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
+            [status setText:[NSString stringWithFormat:@"%@ (Sent on %@ %@,%@)",statusstr,[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]]];
+        }
+      else
+      {
         [status setText:[NSString stringWithFormat:@"%@ %@ %@,%@",statusstr,[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]]];
+      }
     }
     //[status setText:[NSString stringWithFormat:@"%@ on %@",[self.trans objectForKey:@"TransactionType"],[self.trans objectForKey:@"TransactionDate"]]];
     [status setStyleClass:@"green_text"];
@@ -194,6 +207,7 @@
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:lat
                                                             longitude:lon
                                                                  zoom:11];
+    UIImageView*imgTran;
     if (![[self.trans valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Picture"]!=NULL) {
         NSArray* bytedata = [self.trans valueForKey:@"Picture"];
         //XXXXXXXX2222
@@ -210,9 +224,9 @@
         
         NSData *datos = [NSData dataWithBytes:bytes length:c];
        
-        UIImageView*imgTran=[[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
+        imgTran=[[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
         [imgTran setImage:[UIImage imageWithData:datos]];
-        [self.view addSubview:imgTran];
+        
         mapView_ = [GMSMapView mapWithFrame:CGRectMake(165, 240, 150, 160) camera:camera];
     }
     else
@@ -220,13 +234,26 @@
     
     mapView_.myLocationEnabled = YES;
     //mapView_.layer.borderWidth = 1;
-    [self.view addSubview:mapView_];
-    
+    if ([[assist shared]islocationAllowed]) {
+        
+         [self.view addSubview:mapView_];
+        if (![[self.trans valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Picture"]!=NULL) {
+            
+            [self.view addSubview:imgTran];
+        }
+    }
+    else
+    {
+        if (![[self.trans valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Picture"]!=NULL) {
+            imgTran.frame=CGRectMake(5, 240, 310, 160);
+
+            [self.view addSubview:imgTran];
+        }
+    }
     // Creates a marker in the center of the map.
     GMSMarker *marker = [[GMSMarker alloc] init];
     marker.position = CLLocationCoordinate2DMake(lat, lon);
-    //marker.title = @"Sydney";
-    //marker.snippet = @"Australia";
+   
     marker.map = mapView_;
     
     if (false) {

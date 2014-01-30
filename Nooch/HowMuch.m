@@ -9,6 +9,7 @@
 #import "HowMuch.h"
 #import "TransferPIN.h"
 #import "UIImageView+WebCache.h"
+#import "Deposit.h"
 @interface HowMuch ()
 @property(nonatomic,strong) NSDictionary *receiver;
 @property(nonatomic,strong) UITextField *amount;
@@ -276,11 +277,33 @@
 }
 - (void) confirm_send
 {
+    
+    if ([[self.amount text] doubleValue] == 0)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!" message:@"Minimum amount that can be transferred is any amount." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+        [alert show];
+        return;
+    }
     if ([[self.amount text] length] < 3) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Amount" message:@"Please enter a valid amount" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         return;
     }
+    else if ([[self.amount text] doubleValue] > 100)
+    {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Now" message:[NSString stringWithFormat:@"Sorry I’m not sorry, but don’t %@ more than $100. It’s against the rules (and protects the account from abuse.)", @"send"] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+        [alert show];
+        return;
+        
+    }
+    if ([[self.amount text] floatValue]>[[user objectForKey:@"Balance"] floatValue]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!" message:@"Thanks for testing this impossibility, but you can't transfer more than you have in your Nooch account." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Add Funds", nil];
+        [alert setTag:2122];
+        [alert show];
+        return;
+    }
+    //[user objectForKey:@"Balance"]
     NSMutableDictionary *transaction = [self.receiver mutableCopy];
     [transaction setObject:[self.memo text] forKey:@"memo"];
     //float input_amount = [[[self.amount text] substringFromIndex:2] floatValue];
@@ -294,6 +317,16 @@
     {
     TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"send" amount: input_amount];
     [self.navigationController pushViewController:pin animated:YES];
+    }
+}
+#pragma mark  - alert view delegation
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    if([actionSheet tag] == 2122 && buttonIndex==1)
+    {
+            Deposit *dp=[Deposit new];
+            [self.navigationController pushViewController:dp animated:YES];
+        
     }
 }
 - (void) confirm_request

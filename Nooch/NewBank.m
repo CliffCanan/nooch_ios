@@ -122,7 +122,7 @@
 -(void)addBank:(id)sender{
        self.name.text=[self.name.text lowercaseString];
     NSArray*arr=[self.name.text componentsSeparatedByString:@" "];
-    if ([arr count]!=2) {
+    if ([arr count]==1) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Enter First Name and Last Name in Account Name" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [self.name becomeFirstResponder];
         [av show];
@@ -141,12 +141,7 @@
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Routing Number" message:@"Please double check your routing number, it should be 9 digits." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
-        //btnAddBank.enabled=YES;
-//        if ([self.view.subviews containsObject:loader]) {
-//            [loader removeFromSuperview];
-//            [me endWaitStat];
-//        }
-    }
+            }
     
     else if(([self.name.text isEqualToString:@""]) || ([self.name.text isEqual:[NSNull null]]))
     {
@@ -251,6 +246,11 @@
                 return NO;
         }
         
+        if ([string isEqualToString:@" "]) {
+            if ([textField.text rangeOfString:@" "].location!=NSNotFound) {
+                return NO;
+            }
+        }
         if ([textField.text stringByReplacingCharactersInRange:range withString:string].length < textField.text.length) {
             return YES;
         }

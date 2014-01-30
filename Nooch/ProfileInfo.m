@@ -31,7 +31,7 @@
 #import "UIImageView+WebCache.h"
 
 #import "Welcome.h"
-
+#import "Register.h"
 #import "ECSlidingViewController.h"
 
 @interface ProfileInfo ()
@@ -111,6 +111,9 @@
                 placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
         
     }
+   
+
+    return;
     
 }
 
@@ -174,14 +177,8 @@
     
     [spinner startAnimating];
     
-    
-    
+
     [self.navigationItem setTitle:@"Profile Info"];
-    
-    
-    
-    
-    
     serve *serveOBJ=[serve new ];
     
     serveOBJ.tagName=@"myset";
@@ -905,8 +902,6 @@
         
         transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[arrdivide objectAtIndex:0],@"FirstName",[arrdivide objectAtIndex:1],@"LastName",self.email.text,@"UserName",nil];
         
-        
-        
     }
     
     else
@@ -950,14 +945,6 @@
     //NSString *number = [NSString stringWithFormat:@"%@%@%@",[self.phone.text substringWithRange:NSMakeRange(1, 3)],[self.phone.text substringWithRange:NSMakeRange(6, 3)],[self.phone.text substringWithRange:NSMakeRange(10, 4)]];
     
     [transactionInput setObject:strPhoneNumber forKey:@"ContactNumber"];
-    
-    
-    
-    
-    
-    //}
-    
-    
     
     [transactionInput setObject:self.zip.text forKey:@"Zipcode"];
     
@@ -1112,17 +1099,10 @@
 
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    
-    
-    
-    
-    
-    if(buttonIndex == 0)
+       if(buttonIndex == 0)
         
     {
-        
-        
-        
+   
         //self.pic.layer.borderColor = kNoochBlue.CGColor;
         
         //[self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
@@ -1153,9 +1133,7 @@
             
             return;
             
-            
-            
-        }
+                 }
         
         self.picker=[UIImagePickerController new];
         
@@ -1164,22 +1142,10 @@
         self.picker.allowsEditing = YES;
         
         self.picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-        
-        
-        
-        
-        
         self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         
         [self presentViewController:self.picker animated:YES completion:Nil];
-        
-        
-        
-        
-        
-        
-        
-        // [self presentModalViewController:self.picker animated:YES];
+    
         
     }
     
@@ -1429,10 +1395,7 @@
             
         }
         
-        
-        
     }
-    
     [self animateTextField:textField up:NO];
     
 }
@@ -1467,21 +1430,47 @@
     
 }
 
-
+#pragma mark - file paths
+- (NSString *)autoLogin{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+    
+}
 
 #pragma mark - server delegation
 
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 
 {      NSError* error;
+     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
+     UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+   
+     [Alert show];
     
     
+    [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+    
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+    
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+    
+    NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+    [timer invalidate];
+    // timer=nil;
+      [nav_ctrl performSelector:@selector(disable)];
+      [nav_ctrl performSelector:@selector(reset)];
+      [nav_ctrl popViewControllerAnimated:YES];
+      Register *reg = [Register new];
+      [nav_ctrl pushViewController:reg animated:YES];
+       me = [core new];
+    return;
+     }
     
     if([tagName isEqualToString:@"MySettingsResult"])
         
     {
-        
-        dictProfileinfo=[NSJSONSerialization
+                dictProfileinfo=[NSJSONSerialization
                          
                          JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                          

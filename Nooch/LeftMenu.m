@@ -116,8 +116,7 @@
         user_pic.layer.cornerRadius = 30;
         user_pic.layer.borderWidth = 2; user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
         [user_pic setUserInteractionEnabled:YES];
-
-        
+  
     }
    }
 -(void) go_profile {

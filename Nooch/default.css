@@ -21,7 +21,13 @@
 		width : 200px;
 		position : 60 15;
 	}
-
+     #empltyRecentList {
+		background-image : url(empty-arrow.png);
+		height : 70px;
+		width : 122px;
+		left   : 40px;
+        top    :5px;
+	}
 	#loading {
 		style : small;
 		color : #41ABE1;
@@ -2110,7 +2116,16 @@
 		left                : 20px;
 		height				: 30px;
 	}
-
+.details_label1 {
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 18px;
+		text-align          : center;
+		color 				: #6d6e71;
+		width				: 310px;
+		left                : 10px;
+		height				: 30px;
+	}
 	.details_button_left {
 		width			: 152px;
 		top				: 425px;

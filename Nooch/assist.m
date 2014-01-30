@@ -9,7 +9,7 @@
 #import "assist.h"
 #import <QuartzCore/QuartzCore.h>
 #import "Home.h"
-
+#import "Register.h"
 @implementation assist
 @synthesize arrRecordsCheck;
 
@@ -59,7 +59,14 @@ static assist * _sharedInstance = nil;
 {
     islogout=islog;
 }
-
+-(BOOL)islocationAllowed
+{
+    return islocationAllowed;
+}
+-(void)setlocationAllowed:(BOOL)istrue
+{
+    islocationAllowed=istrue;
+}
 
 -(void)birth{/*{{{*/
     limit = NO; oldFilter = @""; needsUpdating = YES;
@@ -381,6 +388,14 @@ static assist * _sharedInstance = nil;
     }
     
 }
+#pragma mark - file paths
+- (NSString *)autoLogin{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+    
+}
+
 -(void)listen:(NSString *)result tagName:(NSString *)tagName{
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
         
@@ -388,6 +403,28 @@ static assist * _sharedInstance = nil;
            [timer invalidate];
             timer=nil;
         }
+//        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//        
+//        [Alert show];
+//        
+//        
+//        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+//        
+//        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+//        
+//        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+//        
+//        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+//        
+//        // timer=nil;
+//        [nav_ctrl performSelector:@selector(disable)];
+//        [nav_ctrl performSelector:@selector(reset)];
+//        [nav_ctrl popViewControllerAnimated:YES];
+//        Register *reg = [Register new];
+//        [nav_ctrl pushViewController:reg animated:YES];
+//        me = [core new];
+//        return;
+
     }
     if ([tagName isEqualToString:@"bDelete"]) {
         
@@ -507,14 +544,18 @@ static assist * _sharedInstance = nil;
         NSError *error;
  
          NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        [user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"];
-        NSString*url=[loginResult valueForKey:@"PhotoUrl"];
-        NSLog(@"%@",loginResult);
-        [user setObject:[loginResult valueForKey:@"DateCreated"] forKey:@"DateCreated"];
-      //  url=[url stringByReplacingOccurrencesOfString:@"//" withString:@"/"];
-        NSLog(@"%@",url);
-         [user setObject:url forKey:@"Photo"];
-       
+         NSLog(@"%@",loginResult);
+        if ([loginResult valueForKey:@"Status"]!=Nil  && ![[loginResult valueForKey:@"Status"] isKindOfClass:[NSNull class]]&& [loginResult valueForKey:@"Status"] !=NULL) {
+            [user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"];
+            NSString*url=[loginResult valueForKey:@"PhotoUrl"];
+            
+            [user setObject:[loginResult valueForKey:@"DateCreated"] forKey:@"DateCreated"];
+            //  url=[url stringByReplacingOccurrencesOfString:@"//" withString:@"/"];
+            NSLog(@"%@",url);
+            [user setObject:url forKey:@"Photo"];
+
+        }
+        
         if(![[loginResult objectForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"BalanceAmount"] != NULL)
         {
             [usr setObject:[loginResult objectForKey:@"BalanceAmount"] forKey:@"Balance"];

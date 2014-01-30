@@ -533,7 +533,7 @@
                 [cell.contentView addSubview:arrow];
                 NSDictionary *bank = [ArrBankAccountCollection objectAtIndex:0];
                     //bank verified or Not
-                 NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+               //  NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
                 // NSLog(@"%@",[[[me usr] objectForKey:@"banks"] objectAtIndex:0]);
                  if ([ArrBankAccountCollection objectAtIndex:0]&&[[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsVerified"] intValue]==1&& [[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]==1 ) {
                  if ([[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsDeleted"] intValue]==0) {
@@ -592,16 +592,6 @@
                 cell.textLabel.text = [NSString stringWithFormat:@"Account **** %@",[[bank objectForKey:@"BankAcctNumber"] substringFromIndex:[[bank objectForKey:@"BankAcctNumber"] length] -4]];
                 iv.image = [UIImage imageNamed:@"Bank_Icon.png"];
                 
-            }else if([[[me usr] objectForKey:@"cards"] count] > 0) {
-                [cell.contentView addSubview:arrow];
-                NSDictionary *card = [[[me usr] objectForKey:@"cards"] objectAtIndex:0];
-                cell.textLabel.text = [NSString stringWithFormat:@"Card **** %@",[[card objectForKey:@"CardNumber"] substringFromIndex:[[card objectForKey:@"CardNumber"] length] -4]];
-                iv.image = [UIImage imageNamed:@"CreditCard_Icon.png"];
-            }else{
-               // cell.userInteractionEnabled = NO;
-                cell.textLabel.textColor = [core hexColor:@"adb1b3"];
-                cell.textLabel.text = @"No Credit Cards";
-                iv.image = [UIImage imageNamed:@"CreditCard_Icon.png"];
             }
         }else if(indexPath.row == 2){
             if ([[[me usr] objectForKey:@"banks"] count] == 2 && [[[me usr] objectForKey:@"cards"] count] > 0) {
@@ -835,10 +825,16 @@
                 
             }
         }else if(indexPath.row == 1){
-            if ([[[me usr] objectForKey:@"banks"] count] == 2) {
+            if ([ArrBankAccountCollection count]==2) {
+                // Deposit *dep = [Deposit new];
+                NSDictionary *bank = [ArrBankAccountCollection objectAtIndex:1];
+                [[NSUserDefaults standardUserDefaults] setObject:[bank objectForKey:@"BankAccountId"] forKey:@"choice"];
                 
-            }else if([[[me usr] objectForKey:@"cards"] count] > 0) {
-                            }
+                [self.slidingViewController resetTopView];
+                BankVerification *bv=[BankVerification new];
+                [nav_ctrl pushViewController:bv animated:YES];
+                }
+
         }else if(indexPath.row == 2){
             if ([[[me usr] objectForKey:@"banks"] count] == 2 && [[[me usr] objectForKey:@"cards"] count] > 0) {
                 

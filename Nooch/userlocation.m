@@ -35,7 +35,11 @@
     [self.usersTable setSectionHeaderHeight:30];
     [self.usersTable setStyleId:@"select_recipient"];
     [self.view addSubview:self.usersTable]; [self.usersTable reloadData];
-    
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [self.view addSubview:spinner];
+    spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+    [spinner startAnimating];
+    [spinner setHidden:NO];
     serve * ser = [serve new];
     ser.tagName=@"search";
     [ser setDelegate:self];
@@ -43,6 +47,9 @@
 	// Do any additional setup after loading the view.
 }
 -(void)listen:(NSString *)result tagName:(NSString *)tagName {
+    [spinner stopAnimating];
+    [spinner setHidden:YES];
+    
     if ([tagName isEqualToString:@"search"]) {
         NSError* error;
         self.users = [NSJSONSerialization

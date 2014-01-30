@@ -394,8 +394,26 @@
                         options:kNilOptions
                         error:&error];
         NSLog(@"%@",self.recents);
-        [self.contacts reloadData];
-        
+        if ([self.recents count]>0) {
+            [self.contacts setHidden:NO];
+            [self.contacts reloadData];
+        }
+        else
+        {
+            [self.contacts setHidden:YES];
+            
+            UIImageView *logo = [UIImageView new];
+            [logo setStyleId:@"empltyRecentList"];
+            [self.view addSubview:logo];
+            UILabel *em = [UILabel new]; [em setStyleClass:@"table_view_cell_textlabel_1"];
+            CGRect frame = em.frame; frame.origin.y = 160; //frame = CGRectMake(10, 100, 300, 30);
+            [em setBackgroundColor:[UIColor clearColor]];
+            [em setFrame:frame];
+            [em setText:@"Email"];
+            [self.view addSubview:em];
+
+        }
+    
     }
     else if([tagName isEqualToString:@"emailCheck"])
     {

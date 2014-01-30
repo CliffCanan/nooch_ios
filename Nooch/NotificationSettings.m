@@ -204,24 +204,14 @@
        
     
         NSLog(@"%hhd",[self.push_withdraw_submitted isOn]);
-//      transactionInput1=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[self.push_withdraw_submitted isOn]?@"1":@"0",@"NoochToBank",[self.push_deposit_completed isOn]?@"1":@"0",@"BankToNooch",[self.push_received isOn]?@"1":@"0",@"TransferReceived",[self.push_failure isOn]?@"1":@"0",@"TransferAttemptFailure", nil];
-        transactionInput1=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[self.push_withdraw_submitted isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"NoochToBank",[self.push_deposit_completed isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"BankToNooch",[self.push_received isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"TransferReceived",[self.push_failure isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"TransferAttemptFailure", nil];
+        transactionInput1=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[self.push_withdraw_submitted isOn]?@"1":@"0",@"NoochToBank",[self.push_deposit_completed isOn]?@"1":@"0",@"BankToNooch",[self.push_received isOn]?@"1":@"0",@"TransferReceived",[self.push_failure isOn]?@"1":@"0",@"TransferAttemptFailure", nil];
         
     }
     else
     {
         
-        transactionInput1=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[self.email_received isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"EmailTransferReceived",[self.email_sent isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"EmailTransferSent",[self.email_failure isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"EmailTransferAttemptFailure",[self.email_unclaimed isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"TransferUnclaimed", [self.email_withdraw_requested isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"TransferUnclaimed",[self.email_withdraw_submitted isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"NoochToBankCompleted",[self.email_deposit_completed isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"BankToNoochCompleted",[self.email_deposit_requested isOn]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO],@"BankToNoochRequested",nil];
-
-    
-        
-//        transactionInput1=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[self.email_received isOn]?1:0,@"EmailTransferReceived",[self.email_sent isOn]?1:0,@"EmailTransferSent",[self.email_failure isOn]?1:0,@"EmailTransferAttemptFailure",[self.email_unclaimed isOn]?1:0,@"TransferUnclaimed", [self.email_withdraw_requested isOn]?@"true":@"false",@"TransferUnclaimed",[self.email_withdraw_submitted isOn]?1:0,@"NoochToBankCompleted",[self.email_deposit_completed isOn]?1:0,@"BankToNoochCompleted",[self.email_deposit_requested isOn]?@"true":@"false",@"BankToNoochRequested",nil];
-//    
-        
-             //   transactionInput1=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[self.email_received isOn],@"EmailTransferReceived",[self.email_sent isOn],@"EmailTransferSent",[self.email_failure isOn],@"EmailTransferAttemptFailure",[self.email_unclaimed isOn],@"TransferUnclaimed", [self.email_withdraw_requested isOn],@"TransferUnclaimed",[self.email_withdraw_submitted isOn],@"NoochToBankCompleted",[self.email_deposit_completed isOn],@"BankToNoochCompleted",[self.email_deposit_requested isOn],@"BankToNoochRequested",nil];
-        
-        
-            }
+        transactionInput1=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[self.email_received isOn]?@"1":@"0",@"EmailTransferReceived",[self.email_sent isOn]?@"1":@"0",@"EmailTransferSent",[self.email_failure isOn]?@"1":@"0",@"EmailTransferAttemptFailure",[self.email_unclaimed isOn]?@"1":@"0",@"TransferUnclaimed", [self.email_withdraw_requested isOn]?@"1":@"0",@"TransferUnclaimed",[self.email_withdraw_submitted isOn]?@"1":@"0",@"NoochToBankCompleted",[self.email_deposit_completed isOn]?@"1":@"0",@"BankToNoochCompleted",[self.email_deposit_requested isOn]?@"1":@"0",@"BankToNoochRequested",nil];
+    }
     serve*serveOBJ=[serve new];
     [serveOBJ setDelegate:self];
     serveOBJ.tagName=@"setSettings";

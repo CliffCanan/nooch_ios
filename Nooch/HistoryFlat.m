@@ -13,6 +13,7 @@
 #import "TransactionDetails.h"
 #import "UIImageView+WebCache.h"
 #import "ECSlidingViewController.h"
+#import "Register.h"
 @interface HistoryFlat ()<GMSMapViewDelegate>
 {
     GMSMapView * mapView_;
@@ -212,8 +213,8 @@
     
     imgV.layer.cornerRadius = 25; imgV.layer.borderColor = kNoochBlue.CGColor; imgV.layer.borderWidth = 1;
     imgV.clipsToBounds = YES;
-    
-    imgV.image=[UIImage imageNamed:@"RoundLoading.png"];
+    NSString*urlImage=[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Photo"];
+    [imgV setImageWithURL:[NSURL URLWithString:urlImage] placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
     
     [customView addSubview:imgV];
     
@@ -239,13 +240,22 @@
     [customView addSubview:lblAmt];
     //
     UILabel*lblmemo=[[UILabel alloc]initWithFrame:CGRectMake(85, 55, 150, 15)];
-    lblmemo.text=[NSString stringWithFormat:@"%@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Memo"]];
+    if ([[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Memo"]!=NULL && ![[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Memo"] isKindOfClass:[NSNull class]]) {
+        lblmemo.text=[NSString stringWithFormat:@"%@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Memo"]];
+        
+    }
+    else
+    {
+        lblmemo.text=@"";
+    }
     lblmemo.textColor=[UIColor whiteColor];
     [customView addSubview:lblmemo];
     //
-    UILabel*lblloc=[[UILabel alloc]initWithFrame:CGRectMake(85, 65, 200, 15)];
+    UILabel*lblloc=[[UILabel alloc]initWithFrame:CGRectMake(80, 65, 200, 30)];
     lblloc.text=[NSString stringWithFormat:@"%@ %@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"City"],[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Country"]];
     lblloc.textColor=[UIColor whiteColor];
+    lblloc.font=[UIFont systemFontOfSize:12.0f];
+    lblloc.numberOfLines=2;
     [customView addSubview:lblloc];
     return customView;
     
@@ -1031,12 +1041,43 @@
     
     return YES;
     }
+#pragma mark - file paths
+- (NSString *)autoLogin{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+    
+}
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {  NSError *error;
     [spinner setHidden:YES];
     [spinner stopAnimating];
+
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
+        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [Alert show];
+        
+        
+        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        
+        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+        [timer invalidate];
+        [nav_ctrl performSelector:@selector(disable)];
+        [nav_ctrl performSelector:@selector(reset)];
+        [nav_ctrl popViewControllerAnimated:YES];
+        Register *reg = [Register new];
+        [nav_ctrl pushViewController:reg animated:YES];
+        me = [core new];
+        return;
+    }
     
+    
+
     
     if ([tagName isEqualToString:@"csv"]) {
         NSDictionary*dictResponse=[NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];

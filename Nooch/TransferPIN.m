@@ -11,6 +11,8 @@
 #import "GetLocation.h"
 #import "TransactionDetails.h"
 #import "UIImageView+WebCache.h"
+#import "ECSlidingViewController.h"
+#import "Register.h"
 @interface TransferPIN ()<GetLocationDelegate>
 {
     GetLocation*getlocation;
@@ -258,17 +260,22 @@
             state = [[addrParse objectAtIndex:2] substringToIndex:3];
             zipcode = [[addrParse objectAtIndex:2] substringFromIndex:3];
             country = [addrParse objectAtIndex:3];
-        }else{
-            if ([addrParse count]>4) {
+        }else if ([addrParse count]>4)
+        {
                 addressLine1 = [addrParse objectAtIndex:0];
                 addressLine2 = [addrParse objectAtIndex:1];
                 city = [addrParse objectAtIndex:2];
                 state = [[addrParse objectAtIndex:3] substringToIndex:3];
                 zipcode = [[addrParse objectAtIndex:3] substringFromIndex:3];
                 country = [addrParse objectAtIndex:4];
-            }
-            
+        
         }
+    else
+    {
+        addressLine1 = [addrParse objectAtIndex:0];
+    
+        country = [addrParse objectAtIndex:2];
+    }
         
     }
     if ([city rangeOfString:@"null"].location != NSNotFound || city == NULL) {
@@ -411,10 +418,16 @@
                      [transactionInputTransfer setValue:[dictResult valueForKey:@"Status"] forKey:@"PinNumber"];
                      [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
                      if ([self.type isEqualToString:@"request"]) {
+                         [transactionInputTransfer setValue:@"Request" forKey:@"TransactionType"];
                              [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"SenderId"];
                              [transactionInputTransfer setValue:@"Pending" forKey:@"Status"];
                          }
-                     [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
+                    else
+                    {
+                      [transactionInputTransfer setValue:@"Sent" forKey:@"TransactionType"];
+                       [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
+                    }
+                    
                       NSString *receiveName = [[self.receiver valueForKey:@"FirstName"] stringByAppendingString:[NSString stringWithFormat:@" %@",[self.receiver valueForKey:@"LastName"]]];
                         [transactionInputTransfer setValue:receiveName forKey:@"Name"];
                         [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
@@ -884,6 +897,7 @@
 
         }
     }
+      [transactionInputTransfer setObject:self.receiver[@"Photo"]forKey:@"Photo"];
     self.trans = [transactionInputTransfer copy];
 }
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
@@ -1104,6 +1118,26 @@
         UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [suspendedAlert show];
         [suspendedAlert setTag:3];
+        UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"You account has been suspended." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        
+        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        
+        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+        [timer invalidate];
+        [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
+        [nav_ctrl performSelector:@selector(reset)];
+        Register *reg = [Register new];
+        [nav_ctrl pushViewController:reg animated:YES];
+        me = [core new];
+        return;
+
+        
+        
     }else if([[resultValueTransfer valueForKey:@"Result"]isEqual:@"Receiver does not exist."]
              || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Receiver does not exist."]
              || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Receiver does not exist."]){
@@ -1139,6 +1173,14 @@
     
     }
 }
+#pragma mark - file paths
+- (NSString *)autoLogin{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+    
+}
+
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
     return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 }
