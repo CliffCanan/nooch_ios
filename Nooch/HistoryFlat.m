@@ -708,8 +708,6 @@
              [name setStyleClass:@"history_recipientname"];
              if (indexPath.row == 0) {
                  [name setText:@"No Records"];
-             } else {
-                 [name setText:@"End of Records"];
              }
              [cell.contentView addSubview:name];
                       }
@@ -897,8 +895,6 @@
 
                 if (indexPath.row == 0) {
                     [name setText:@"No Records"];
-                } else {
-                    [name setText:@"End of Records"];
                 }
                 
                 [cell.contentView addSubview:name];

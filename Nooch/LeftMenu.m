@@ -164,7 +164,7 @@
     
     [headerView addSubview:title];
     [headerView setBackgroundColor:kNoochBlue];
-    [headerView setStyleClass:@"button_blue"];
+    //[headerView setStyleClass:@"button_blue"];
     [title setBackgroundColor:[UIColor clearColor]];
     return headerView;
 }

@@ -38,7 +38,7 @@
     [self.menu setStyleId:@"rside_tableview"];
     [self.view addSubview:self.menu];
     [self.menu reloadData];
-     self.menu.scrollEnabled = YES;
+    self.menu.scrollEnabled = YES;
     UIView *user_bar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 64)];
     [user_bar setBackgroundColor:kNoochMenu];
     [self.view addSubview:user_bar];
@@ -53,12 +53,12 @@
         if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound)
             [name setText:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]]];
         else
-           [name setText:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]]];
+            [name setText:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]]];
     }
     else {
         [name setText:[NSString stringWithFormat:@"$%@",@"0.00"]];
     }
-   // [name setText:@"$ 100.00"];
+    // [name setText:@"$ 100.00"];
     [user_bar addSubview:name];
     
     UIButton *add_source = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -77,7 +77,7 @@
     spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
     [spinner startAnimating];
     
-
+    
     serve*serveOBJ=[serve new];
     
     serveOBJ.tagName=@"banks";
@@ -87,7 +87,7 @@
     serveOBJ.Delegate=self;
     
     
-
+    
 }
 - (void)viewDidLoad
 {
@@ -104,7 +104,7 @@
     [arrWithrawalOptions addObject:@"Auto Cash Out"];
     
     self.menu.scrollEnabled = YES;
-   
+    
 	// Do any additional setup after loading the view.
 }
 -(void)viewDidDisappear:(BOOL)animated{
@@ -175,13 +175,13 @@
     NewBank *add_bank = [NewBank new];
     [nav_ctrl pushViewController:add_bank animated:NO];
     [self.slidingViewController resetTopView];
-   /* if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
-        [alert setTag:148];
-        [alert show];
-        return;
-    }
-*/
+    /* if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+     UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+     [alert setTag:148];
+     [alert show];
+     return;
+     }
+     */
     //credit cards are disabled, but if ever readded the button is after Bank Account
     //UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Add Funding Source" message:@"Which type of account would you like to add?" //delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Bank Account", nil];
     //[av setTag:2];
@@ -274,15 +274,15 @@
         if(indexPath.row == 0){
             [cell.contentView addSubview:arrow];
             cell.textLabel.text = @"Add Funds";
-             [cell.textLabel setStyleClass:@"rtable_view_cell_textlabel_1"];
+            [cell.textLabel setStyleClass:@"rtable_view_cell_textlabel_1"];
             [iv setStyleId:@"rside_icon_addfunds"];
-             [cell.contentView addSubview:iv];
+            [cell.contentView addSubview:iv];
         }else if(indexPath.row == 1){
             [cell.contentView addSubview:arrow];
             cell.textLabel.text = @"Withdraw Funds";
-             [cell.textLabel setStyleClass:@"rtable_view_cell_textlabel_1"];
+            [cell.textLabel setStyleClass:@"rtable_view_cell_textlabel_1"];
             [iv setStyleId:@"rside_icon_wdfunds"];
-             [cell.contentView addSubview:iv];
+            [cell.contentView addSubview:iv];
         }else if(indexPath.row == 2){
             cell.textLabel.text = [arrWithrawalOptions objectAtIndex:indexPath.row];
             [cell.textLabel setStyleClass:@"rtable_view_cell_textlabel_1"];
@@ -291,7 +291,7 @@
             
             on_off = [[UISwitch alloc] initWithFrame:CGRectMake(220, 5, 70, 30)];
             [on_off setStyleId:@"autowithdrawal_switch"];
-             [cell.contentView addSubview:iv];
+            [cell.contentView addSubview:iv];
             on_off.tag=12000;
             if ([SelectedOption isEqualToString:@"Triggers"])
                 
@@ -309,14 +309,14 @@
                         lbldetail.font=[UIFont systemFontOfSize:12.0f];
                         [cell.contentView addSubview:lbldetail];
                         
-
+                        
                         [cell.textLabel setStyleClass:@"rtable_view_cell_textlabel_1"];
                         //[cell.detailTextLabel setStyleClass:@"rtable_view_cell_detailtext_1"];
-                     //   cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[dictSelectedWithdrawal valueForKey:option]];
+                        //   cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[dictSelectedWithdrawal valueForKey:option]];
                         
                         SelectedSubOption=[dictSelectedWithdrawal valueForKey:option];
                     }
-                    }
+                }
                 else{
                     cell.detailTextLabel.text=@"";
                     
@@ -396,7 +396,7 @@
                         [removeBtn  setTag:indexPath.row];
                         [removeBtn setTintColor:[UIColor whiteColor]];
                         //[removeBtn setBackgroundColor:[UIColor redColor]];
-                       
+                        
                         [removeBtn setTitle:@"Remove" forState:UIControlStateNormal];
                         [removeBtn setFrame:CGRectMake(320, 5, 70, 35)];
                         [removeBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
@@ -407,7 +407,7 @@
                         
                         [cBtn  setTag:indexPath.row];
                         [cBtn setTintColor:[UIColor whiteColor]];
-                       // [cBtn setBackgroundColor:[UIColor greenColor]];
+                        // [cBtn setBackgroundColor:[UIColor greenColor]];
                         [cBtn setTitle:@"Cancel" forState:UIControlStateNormal];
                         
                         [cBtn setFrame:CGRectMake(395, 5, 70, 35)];
@@ -422,8 +422,8 @@
                         [UIView setAnimationDuration:0.3];
                         subV.frame=CGRectMake(20, 5, 80, 35);
                         img.frame=CGRectMake(-40, 5, 40, 40);
-                          [removeBtn setStyleClass:@"rremovebutton"];
-                         [cBtn setStyleClass:@"rcancelbutton"];
+                        [removeBtn setStyleClass:@"rremovebutton"];
+                        [cBtn setStyleClass:@"rcancelbutton"];
                         [removeBtn setFrame:CGRectMake(125, 5, 70, 35)];
                         [cBtn setFrame:CGRectMake(200, 5, 70, 35)];
                         [UIView commitAnimations];
@@ -519,68 +519,68 @@
             [cell.textLabel setStyleClass:@"rtable_view_cell_textlabel_1"];
             [cell.detailTextLabel setStyleClass:@"rtable_view_cell_detailtext_1"];
         }
-            //[cell.textLabel setStyleId:@"rside_table_cell_left"];
+        //[cell.textLabel setStyleId:@"rside_table_cell_left"];
         
         //[cell.contentView addSubview:iv];
         
-        }
+    }
     
     
-      else if(indexPath.section == 1){
+    else if(indexPath.section == 1){
         if (indexPath.row == 0) {
             NSLog(@"%d",[ArrBankAccountCollection count]);
             if ([ArrBankAccountCollection count] > 0) {
                 [cell.contentView addSubview:arrow];
                 NSDictionary *bank = [ArrBankAccountCollection objectAtIndex:0];
-                    //bank verified or Not
-               //  NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+                //bank verified or Not
+                //  NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
                 // NSLog(@"%@",[[[me usr] objectForKey:@"banks"] objectAtIndex:0]);
-                 if ([ArrBankAccountCollection objectAtIndex:0]&&[[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsVerified"] intValue]==1&& [[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]==1 ) {
-                 if ([[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsDeleted"] intValue]==0) {
-                    [[assist shared]setBankVerified:YES];
-                 //[defaults setObject:@"YES" forKey:@"IsPrimaryBankVerified"];
-                 //[defaults synchronize];
-                 }
-                 else {
-                     [[assist shared]setBankVerified:NO];
-                // [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
-                // [defaults synchronize];
-                 }
-                 }
-                 else {
+                if ([ArrBankAccountCollection objectAtIndex:0]&&[[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsVerified"] intValue]==1&& [[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]==1 ) {
+                    if ([[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsDeleted"] intValue]==0) {
+                        [[assist shared]setBankVerified:YES];
+                        //[defaults setObject:@"YES" forKey:@"IsPrimaryBankVerified"];
+                        //[defaults synchronize];
+                    }
+                    else {
+                        [[assist shared]setBankVerified:NO];
+                        // [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
+                        // [defaults synchronize];
+                    }
+                }
+                else {
                     [[assist shared]setBankVerified:NO];
-                // [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
-                // [defaults synchronize];
-                 }
-                 
-               //  NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
+                    // [defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
+                    // [defaults synchronize];
+                }
                 
-                 NSString*lastdigit=[NSString stringWithFormat:@"XXXX%@",[[bank objectForKey:@"BankAcctNumber"] substringFromIndex:[[bank objectForKey:@"BankAcctNumber"] length]-4]];
-                 cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",[bank objectForKey:@"BankName"],lastdigit];
-                 cell.textLabel.font=[UIFont fontWithName:@"Arial" size:12.0f];
+                //  NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
+                
+                NSString*lastdigit=[NSString stringWithFormat:@"XXXX%@",[[bank objectForKey:@"BankAcctNumber"] substringFromIndex:[[bank objectForKey:@"BankAcctNumber"] length]-4]];
+                cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",[bank objectForKey:@"BankName"],lastdigit];
+                cell.textLabel.font=[UIFont fontWithName:@"Arial" size:12.0f];
                 NSArray* bytedata = [bank valueForKey:@"BankPicture"];
-                 //XXXXXXXX2222
-                 unsigned c = bytedata.count;
-                 uint8_t *bytes = malloc(sizeof(*bytes) * c);
-                 
-                 unsigned i;
-                 for (i = 0; i < c; i++)
-                 {
-                 NSString *str = [bytedata objectAtIndex:i];
-                 int byte = [str intValue];
-                 bytes[i] = (uint8_t)byte;
-                 }
-                 
-                 NSData *datos = [NSData dataWithBytes:bytes length:c];
+                //XXXXXXXX2222
+                unsigned c = bytedata.count;
+                uint8_t *bytes = malloc(sizeof(*bytes) * c);
+                
+                unsigned i;
+                for (i = 0; i < c; i++)
+                {
+                    NSString *str = [bytedata objectAtIndex:i];
+                    int byte = [str intValue];
+                    bytes[i] = (uint8_t)byte;
+                }
+                
+                NSData *datos = [NSData dataWithBytes:bytes length:c];
                 UIImageView*img=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"tickR.png"]];
-               img.frame=CGRectMake(10, 10, 40 , 40);
-               [cell.contentView addSubview:img];
-               
+                img.frame=CGRectMake(10, 10, 40 , 40);
+                [cell.contentView addSubview:img];
+                
                 img.image = [UIImage imageWithData:datos];
                 
                 
             }else{
-               // cell.userInteractionEnabled = NO;
+                // cell.userInteractionEnabled = NO;
                 cell.textLabel.textColor = [core hexColor:@"adb1b3"];
                 cell.textLabel.text = @"No Bank Accounts";
                 iv.image = [UIImage imageNamed:@"Bank_Icon.png"];
@@ -611,7 +611,7 @@
                 iv.image = [UIImage imageNamed:@"CreditCard_Icon.png"];
             }else{
                 cell.textLabel.text = @"";
-               // cell.userInteractionEnabled = NO;
+                // cell.userInteractionEnabled = NO;
             }
         }else if(indexPath.row == 3){
             if ([[[me usr] objectForKey:@"cards"] count] == 2 && [[[me usr] objectForKey:@"banks"] count] == 2){
@@ -625,7 +625,7 @@
             }
             
         }
-          //cell.textLabel.text=@"";
+        //cell.textLabel.text=@"";
     }
     //[cell.contentView addSubview:iv];
     return cell;
@@ -658,12 +658,12 @@
                 [alert show];
                 return;
             }
-           /* if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
-                [alert setTag:147];
-                [alert show];
-                return;
-            }*/
+            /* if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+             [alert setTag:147];
+             [alert show];
+             return;
+             }*/
             if ([ArrBankAccountCollection count] == 0) {
                 
                 UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can add funds you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
@@ -682,15 +682,15 @@
                 
                 return;
             }
-           
-          //  NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
-
-           
-
+            
+            //  NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
             
             
-           
-           // selectedId = [bank objectForKey:@"BankAccountId"];
+            
+            
+            
+            
+            // selectedId = [bank objectForKey:@"BankAccountId"];
             Deposit *dep = [[Deposit alloc]initWithData:ArrBankAccountCollection];
             [nav_ctrl pushViewController:dep animated:YES];
             [self.slidingViewController resetTopView];
@@ -705,7 +705,7 @@
                 
                 
             }
-             NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+            NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
             
             if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
@@ -714,12 +714,12 @@
                 return;
             }
             
-         /*   if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
-                [alert setTag:147];
-                [alert show];
-                return;
-            }*/
+            /*   if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+             [alert setTag:147];
+             [alert show];
+             return;
+             }*/
             if ([ArrBankAccountCollection count] == 0) {
                 
                 UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can withdraw funds you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
@@ -728,9 +728,9 @@
                 return;
                 
             }
-
             
-             if (![[assist shared]isBankVerified]) {
+            
+            if (![[assist shared]isBankVerified]) {
                 
                 
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Verify Your Bank Account" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
@@ -739,11 +739,11 @@
                 
                 return;
             }
-           
+            
             NSLog(@"%d",[[assist shared]isBankVerified]);
             
             Withdraw *wd = [[Withdraw alloc]initWithData:ArrBankAccountCollection];
-           
+            
             [nav_ctrl pushViewController:wd animated:YES];
             [self.slidingViewController resetTopView];
             
@@ -778,12 +778,12 @@
                     
                     temp = [dictSelectedWithdrawal allKeysForObject:SelectedSubOption];
                     
-                temp2=[dictSelectedWithdrawal allKeysForObject:[temp objectAtIndex:0]];
-                
-                if ([[temp2 objectAtIndex:0]isEqualToString:@"Triggers"])
+                    temp2=[dictSelectedWithdrawal allKeysForObject:[temp objectAtIndex:0]];
+                    
+                    if ([[temp2 objectAtIndex:0]isEqualToString:@"Triggers"])
                         
                     {
-                    countsubRecords=0;
+                        countsubRecords=0;
                         
                         for (NSDictionary*dict in arrAutoWithdrawalT) {
                             
@@ -797,29 +797,29 @@
                         [arrWithrawalOptions addObject:@"$"];
                         
                         countsubRecords++;
-                        }
-                  
+                    }
+                    
                 }
                 [tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
                 
-               // [tableView reloadData];
-
+                // [tableView reloadData];
+                
             }
             
         }
         
-        }
+    }
     
-          else if(indexPath.section == 1){
+    else if(indexPath.section == 1){
         if (indexPath.row == 0) {
             if ([ArrBankAccountCollection count] > 0) {
-               // Deposit *dep = [Deposit new];
+                // Deposit *dep = [Deposit new];
                 NSDictionary *bank = [ArrBankAccountCollection objectAtIndex:0];
                 [[NSUserDefaults standardUserDefaults] setObject:[bank objectForKey:@"BankAccountId"] forKey:@"choice"];
-
+                
                 [self.slidingViewController resetTopView];
                 BankVerification *bv=[BankVerification new];
-                 [nav_ctrl pushViewController:bv animated:YES];
+                [nav_ctrl pushViewController:bv animated:YES];
                 
                 //[self.navigationController pushViewController:bv animated:YES];
                 
@@ -833,8 +833,8 @@
                 [self.slidingViewController resetTopView];
                 BankVerification *bv=[BankVerification new];
                 [nav_ctrl pushViewController:bv animated:YES];
-                }
-
+            }
+            
         }else if(indexPath.row == 2){
             if ([[[me usr] objectForKey:@"banks"] count] == 2 && [[[me usr] objectForKey:@"cards"] count] > 0) {
                 
@@ -872,8 +872,8 @@
             [self.slidingViewController resetTopView];
         }
     }
-
-        else if (alertView.tag == 2){
+    
+    else if (alertView.tag == 2){
         if (buttonIndex == 1) {
             if ([ArrBankAccountCollection count]==2) {
                 
@@ -904,7 +904,7 @@
             
         }
         
-       else if(buttonIndex==1)
+        else if(buttonIndex==1)
             
         {
             
@@ -1022,7 +1022,7 @@
                 NSLog(@"%@",dictSelectedWithdrawal);
                 [spinner startAnimating];
                 [spinner setHidden:NO];
-
+                
                 serve*serveOBJ=[serve new];
                 
                 serveOBJ.tagName=@"SaveWithdrawal";
@@ -1039,7 +1039,7 @@
         
     }
     
-
+    
 }
 
 #pragma mark - server delegation
@@ -1047,43 +1047,43 @@
 {
     [spinner stopAnimating];
     [spinner setHidden:YES];
-   // [me endWaitStat];
+    // [me endWaitStat];
     NSLog(@"%@",arrWithrawalOptions);
     NSError* error;
-     NSDictionary * DictResponse = [NSJSONSerialization
-                    JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                    options:kNilOptions
-                    error:&error];
-
+    NSDictionary * DictResponse = [NSJSONSerialization
+                                   JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                   options:kNilOptions
+                                   error:&error];
+    
     NSArray*arr=[NSJSONSerialization
                  JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                  options:kNilOptions
                  error:&error];
-
+    
     if ([tagName isEqualToString:@"banks"]) {
-      
+        
         [spinner stopAnimating];
         [spinner setHidden:YES];
         if ([arr count]>0) {
             
             [[NSUserDefaults standardUserDefaults]
-              setObject:@"1" forKey:@"IsBankAvailable"];
+             setObject:@"1" forKey:@"IsBankAvailable"];
         }
         else
         {
             [[NSUserDefaults standardUserDefaults]
              setObject:@"0" forKey:@"IsBankAvailable"];
-
+            
         }
-       ArrBankAccountCollection=[[NSMutableArray alloc]init];
+        ArrBankAccountCollection=[[NSMutableArray alloc]init];
         ArrBankAccountCollection=[arr mutableCopy];
         
         
-      [self.menu reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.menu reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
         NSLog(@"Banks%@",ArrBankAccountCollection);
         [spinner startAnimating];
         [spinner setHidden:NO];
-
+        
         serve*serveOBJ=[serve new];
         
         serveOBJ.tagName=@"withdrawOptions";
@@ -1092,9 +1092,9 @@
         
         serveOBJ.Delegate=self;
     }
-   // NSLog(@"%@",dictResult);
+    // NSLog(@"%@",dictResult);
     if ([tagName isEqualToString:@"selectedWithdrawal"]) {
-       
+        
         if ([DictResponse valueForKey:@"Result"]) {
             NSArray*arr=[[DictResponse valueForKey:@"Result"] componentsSeparatedByString:@","];
             NSLog(@"%@",arr);
@@ -1133,7 +1133,7 @@
                         
                         [arrWithrawalOptions addObject:[NSString stringWithFormat:@"%@",[dict valueForKey:@"Name"]]];
                         [self.menu reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-                       // [self.menu reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+                        // [self.menu reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
                         
                     }
                 }
@@ -1187,7 +1187,7 @@
     {
         [spinner stopAnimating];
         [spinner setHidden:YES];
-
+        
         // NSLog(@"response %@",[dictResult valueForKey:@"Result"]);
         arrAutoWithdrawalF=[[NSMutableArray alloc]init];
         arrAutoWithdrawalF=[arr mutableCopy];
@@ -1196,7 +1196,7 @@
         
         [spinner startAnimating];
         [spinner setHidden:NO];
-
+        
         
         serve *serveOBJ=[serve new];
         
@@ -1215,13 +1215,13 @@
     {
         [spinner stopAnimating];
         [spinner setHidden:YES];
-
+        
         arrAutoWithdrawalT=[[NSMutableArray alloc]init];
         arrAutoWithdrawalT=[arr mutableCopy];
         NSLog(@"%@",arrAutoWithdrawalT);
         [spinner startAnimating];
         [spinner setHidden:NO];
-
+        
         serve*serveOBJ=[serve new];
         [serveOBJ setDelegate:self];
         serveOBJ.tagName=@"selectedWithdrawal";
@@ -1238,12 +1238,12 @@
     {
         [spinner stopAnimating];
         [spinner setHidden:YES];
-
-         NSError* error;
+        
+        NSError* error;
         dictResponse = [NSJSONSerialization
-                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                             options:kNilOptions
-                             error:&error];
+                        JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                        options:kNilOptions
+                        error:&error];
         
         NSLog(@"%@",[[dictResponse valueForKey:@"SaveFrequencyResult"] valueForKey:@"Result"]);
         
@@ -1263,14 +1263,14 @@
         
         else
         {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:[[dictResponse valueForKey:@"SaveFrequencyResult"] valueForKey:@"Result"] delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:[[dictResponse valueForKey:@"SaveFrequencyResult"] valueForKey:@"Result"] delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
             
             [alert show];
             
         }
         
     }
- 
+    
 }
 -(void)editFrequency:(id)sender{
     if (!isEditing) {
@@ -1291,7 +1291,7 @@
     [dictSelectedWithdrawal removeAllObjects];
     [spinner startAnimating];
     [spinner setHidden:NO];
-
+    
     serve*serveOBJ=[serve new];
     serveOBJ.tagName=@"AutoWithdrawalCancel";
     [serveOBJ SaveFrequency:@"" type:@"" frequency:0];
@@ -1346,7 +1346,7 @@
     NSLog(@"%@",dictSelectedWithdrawal);
     [spinner startAnimating];
     [spinner setHidden:NO];
-
+    
     serve*serveOBJ=[serve new];
     
     serveOBJ.tagName=@"SaveWithdrawal";
@@ -1383,14 +1383,14 @@
         return;
         
     }
-
+    
     if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"]) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Complete Your Profile To Enable Auto Cash Out" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil] ;
         [alert show];
         [on_off setOn:NO];
         return;
     }
-   
+    
     if (switch_tag==12000) {
         
         if([on_off1 isOn]){
@@ -1444,7 +1444,7 @@
             //[self.menu reloadData];
             [spinner startAnimating];
             [spinner setHidden:NO];
-
+            
             serve*serveOBJ=[serve new];
             serveOBJ.tagName=@"AutoWithdrawalCancel";
             [serveOBJ SaveFrequency:@"" type:@"" frequency:0];
@@ -1456,7 +1456,7 @@
             NSLog(@"Switch is OFF");
             
         }
-      
+        
     }
     
     
@@ -1500,7 +1500,7 @@
 #pragma mark- update service 21
         [spinner startAnimating];
         [spinner setHidden:NO];
-
+        
         serve*serveOBJ=[serve new];
         
         serveOBJ.tagName=@"SaveWithdrawal";
@@ -1545,7 +1545,7 @@
         float value= [[[[arrAutoWithdrawalT objectAtIndex:tag-3] valueForKey:@"Name"] substringFromIndex:1] floatValue];
         [spinner startAnimating];
         [spinner setHidden:NO];
-
+        
         serve*serveOBJ=[serve new];
         
         serveOBJ.tagName=@"SaveWithdrawal";
