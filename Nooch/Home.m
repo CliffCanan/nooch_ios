@@ -185,6 +185,7 @@
 }
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    
     //location
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
