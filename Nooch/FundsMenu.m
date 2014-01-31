@@ -643,6 +643,7 @@
     }
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
+            
             if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
                 
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
@@ -658,12 +659,12 @@
                 [alert show];
                 return;
             }
-           /* if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+            if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
                 [alert setTag:147];
                 [alert show];
                 return;
-            }*/
+            }
             if ([ArrBankAccountCollection count] == 0) {
                 
                 UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can add funds you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
@@ -683,14 +684,7 @@
                 return;
             }
            
-          //  NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
-
-           
-
-            
-            
-           
-           // selectedId = [bank objectForKey:@"BankAccountId"];
+        
             Deposit *dep = [[Deposit alloc]initWithData:ArrBankAccountCollection];
             [nav_ctrl pushViewController:dep animated:YES];
             [self.slidingViewController resetTopView];
@@ -714,12 +708,12 @@
                 return;
             }
             
-         /*   if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+            if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
                 [alert setTag:147];
                 [alert show];
                 return;
-            }*/
+            }
             if ([ArrBankAccountCollection count] == 0) {
                 
                 UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can withdraw funds you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
@@ -740,6 +734,7 @@
                 return;
             }
            
+            
             NSLog(@"%d",[[assist shared]isBankVerified]);
             
             Withdraw *wd = [[Withdraw alloc]initWithData:ArrBankAccountCollection];

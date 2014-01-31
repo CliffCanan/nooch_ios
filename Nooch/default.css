@@ -24,9 +24,9 @@
      #empltyRecentList {
 		background-image : url(empty-arrow.png);
 		height : 70px;
-		width : 122px;
-		left   : 40px;
-        top    :5px;
+		width : 80px;
+		left   : 20px;
+        top    :50px;
 	}
 	#loading {
 		style : small;
@@ -192,17 +192,28 @@
 			left                : 45px;
 			height				: 30px;
 		}
-
+.rtable_view_cell_textlabel_1 {
+             top                :10px;
+			font-family			: "Roboto";
+			font-weight         : regular;
+			font-size			: 18px;
+			text-align       	: left;
+			color 				: #FFFFFF;
+			width				: 260px;
+			left                : 45px;
+			height				: 30px;
+		}
 		/****  Table Detail Text  (right side of row)  ****/
-		.rtable_view_cell_detailtext_1 {
+		.recentEmptytable_view_cell_detailtext_1 {
 			font-family			: "Roboto";
 			font-weight         : light;
 			font-size			: 15px;
-			color 				: #6d6e71;
-			width				: 170px;
-			left                : 20px;
-			height				: 15px;
+			color 				: #696969;
+			width				: 300px;
+			left                : 10px;
+			height				: 300px;
 			text-align       	: left;
+            top                 : 40
 		}
         /***Invite Friend***/
         .smscrossbuttn-icon {
@@ -697,12 +708,12 @@
 	/**  Main entry field for the Amount.  Starts as light gray, turns dark when a number is entered. **/  
 	#howmuch_amountfield {
 		font-family			: "Roboto";
-		font-size			: 52px;
+		font-size			: 40px;
 		font-weight         : medium;
 		font-stretch		: expanded;
 		text-align       	: right;
 		color 				: #58595B;
-		width				: 175px;
+		width				: 180px;
 		height				: 60px;
 		top					: 73px;
 		left                : 120px;
@@ -995,7 +1006,7 @@
 		color 			: #313233;
 		width			: 200px;
 		height			: 60px;
-		left            : 85px;
+		left            : 60px;
 		top             : 116px;
 	}
 
@@ -1769,7 +1780,7 @@
 		/**  For the TABLE VIEW for 'Bank Accounts' Table  **/
 		table-view.wd_dep_tableview {
 			width			: 300;
-            height          : 60px;
+            height          : 40px;
 			row-height		: 45px;
 			top				: 158px;
 			left			: 10px;

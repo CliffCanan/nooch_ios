@@ -277,6 +277,12 @@
 }
 #pragma mark - searching
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
+    
+    if ([self.recents count]==0) {
+        [arrow setHidden:NO];
+        [em setHidden:NO];
+        [self.contacts setHidden:YES];
+    }
     // histSearch = NO;
     searching = NO;
     emailEntry=NO;
@@ -324,6 +330,9 @@
             searching = NO;
             isRecentList=NO;
               searchString = searchBar.text;
+            [arrow setHidden:YES];
+            [em setHidden:YES];
+            [self.contacts setHidden:NO];
         }
         else{
             emailEntry = NO;
@@ -402,14 +411,15 @@
         {
             [self.contacts setHidden:YES];
             
-            UIImageView *logo = [UIImageView new];
-            [logo setStyleId:@"empltyRecentList"];
-            [self.view addSubview:logo];
-            UILabel *em = [UILabel new]; [em setStyleClass:@"table_view_cell_textlabel_1"];
-            CGRect frame = em.frame; frame.origin.y = 160; //frame = CGRectMake(10, 100, 300, 30);
+            arrow = [UIImageView new];
+            [arrow setStyleId:@"empltyRecentList"];
+            [self.view addSubview:arrow];
+            
+            em = [UILabel new]; [em setStyleClass:@"recentEmptytable_view_cell_detailtext_1"];
+            
+            [em setTextAlignment:NSTextAlignmentCenter];
             [em setBackgroundColor:[UIColor clearColor]];
-            [em setFrame:frame];
-            [em setText:@"Email"];
+            em.numberOfLines=10;             [em setText:@"Hey There!\nUse this handy dandy search bar to easily find contacts to send or request money with.\n\n\nThe next time you come here, your most recent contacts will automatically appear "];
             [self.view addSubview:em];
 
         }
@@ -568,7 +578,7 @@
         
         NSDictionary *info = [arrSearchedRecords objectAtIndex:indexPath.row];
         [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
-            placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+            placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
                 [cell setIndentationLevel:1];
         pic.hidden=NO;
         cell.indentationWidth = 70;
@@ -586,7 +596,7 @@
         NSDictionary *info = [self.recents objectAtIndex:indexPath.row];
         NSLog(@"%@",info);
         [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
-        placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+        placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
         pic.hidden=NO;
         cell.indentationWidth = 70;
         [pic setFrame:CGRectMake(20, 5, 60, 60)];

@@ -241,9 +241,11 @@
 		8420B3A0187AC4BF00A77E2D /* red-pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420B39A187AC4BF00A77E2D /* red-pin.png */; };
 		842E3313187413490057EAFB /* Decryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 842E3312187413490057EAFB /* Decryption.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		842E3316187424440057EAFB /* GetEncryptionValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 842E3315187424440057EAFB /* GetEncryptionValue.m */; };
-		842E3318187431E40057EAFB /* RoundLoading.png in Resources */ = {isa = PBXBuildFile; fileRef = 842E3317187431E40057EAFB /* RoundLoading.png */; };
 		84374938189A3961004D83B5 /* empty-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 84374937189A3961004D83B5 /* empty-arrow.png */; };
 		843B29D41888EC3B00DA04C8 /* back-arrow-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 843B29D31888EC3B00DA04C8 /* back-arrow-blue.png */; };
+		8441442F189B793200AD447D /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 8441442C189B793200AD447D /* NSString+MD5Addition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		84414430189B793200AD447D /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 8441442E189B793200AD447D /* UIDevice+IdentifierAddition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		84414432189BB88700AD447D /* RoundLoading.png in Resources */ = {isa = PBXBuildFile; fileRef = 84414431189BB88700AD447D /* RoundLoading.png */; };
 		84B65A73188542E9009A5205 /* NSString+ASBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B65A72188542E9009A5205 /* NSString+ASBase64.m */; };
 		84BD98721877F6E9008B6131 /* userlocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BD98711877F6E9008B6131 /* userlocation.m */; };
 		84BFD930187122DD001C0AAC /* Pixate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84BFD92F187122DD001C0AAC /* Pixate.framework */; };
@@ -641,9 +643,13 @@
 		842E3312187413490057EAFB /* Decryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Decryption.m; sourceTree = "<group>"; };
 		842E3314187424440057EAFB /* GetEncryptionValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetEncryptionValue.h; sourceTree = "<group>"; };
 		842E3315187424440057EAFB /* GetEncryptionValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetEncryptionValue.m; sourceTree = "<group>"; };
-		842E3317187431E40057EAFB /* RoundLoading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoundLoading.png; sourceTree = "<group>"; };
 		84374937189A3961004D83B5 /* empty-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "empty-arrow.png"; sourceTree = "<group>"; };
 		843B29D31888EC3B00DA04C8 /* back-arrow-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-arrow-blue.png"; sourceTree = "<group>"; };
+		8441442B189B793200AD447D /* NSString+MD5Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5Addition.h"; sourceTree = "<group>"; };
+		8441442C189B793200AD447D /* NSString+MD5Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5Addition.m"; sourceTree = "<group>"; };
+		8441442D189B793200AD447D /* UIDevice+IdentifierAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IdentifierAddition.h"; sourceTree = "<group>"; };
+		8441442E189B793200AD447D /* UIDevice+IdentifierAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IdentifierAddition.m"; sourceTree = "<group>"; };
+		84414431189BB88700AD447D /* RoundLoading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RoundLoading.png; path = ../RoundLoading.png; sourceTree = "<group>"; };
 		84B65A71188542E9009A5205 /* NSString+ASBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ASBase64.h"; sourceTree = "<group>"; };
 		84B65A72188542E9009A5205 /* NSString+ASBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ASBase64.m"; sourceTree = "<group>"; };
 		84BD98701877F6E9008B6131 /* userlocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = userlocation.h; sourceTree = "<group>"; };
@@ -870,6 +876,7 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				84414431189BB88700AD447D /* RoundLoading.png */,
 				843B29D31888EC3B00DA04C8 /* back-arrow-blue.png */,
 				01C949DA1888852A000FC11E /* nooch-icon.svg */,
 				0106773B1860F68400E11F3D /* take-pic-icon.png */,
@@ -1005,6 +1012,10 @@
 		16E4B1C0187054A80099D075 /* venturepact  */ = {
 			isa = PBXGroup;
 			children = (
+				8441442B189B793200AD447D /* NSString+MD5Addition.h */,
+				8441442C189B793200AD447D /* NSString+MD5Addition.m */,
+				8441442D189B793200AD447D /* UIDevice+IdentifierAddition.h */,
+				8441442E189B793200AD447D /* UIDevice+IdentifierAddition.m */,
 				84374937189A3961004D83B5 /* empty-arrow.png */,
 				84C3EF17187D0E82004687F6 /* mapBack.png */,
 				8420B395187AC4BF00A77E2D /* Black-pin.png */,
@@ -1014,7 +1025,6 @@
 				8420B399187AC4BF00A77E2D /* pink-pin.png */,
 				8420B39A187AC4BF00A77E2D /* red-pin.png */,
 				8420B38F187A69CC00A77E2D /* profile_picture.png */,
-				842E3317187431E40057EAFB /* RoundLoading.png */,
 				84BFD9311871270C001C0AAC /* cross_basic_yellow.png */,
 				16E4B1C51870832B0099D075 /* untick.png */,
 				16E4B1C718708C1D0099D075 /* tickR.png */,
@@ -1617,7 +1627,6 @@
 				01C26DC21843BB22005179B7 /* twitter-icon.png in Resources */,
 				01C26DBE1843BB22005179B7 /* stats-profile-active.png in Resources */,
 				01C26DBD1843BB22005179B7 /* stats-donations-inactive.png in Resources */,
-				842E3318187431E40057EAFB /* RoundLoading.png in Resources */,
 				01C26DEC1843C56C005179B7 /* LimitsAndFees_Icon.png in Resources */,
 				014C4335185B9A4C00956A84 /* quicktap_10.png in Resources */,
 				01C26DF11843C56C005179B7 /* Notification_2.png in Resources */,
@@ -1625,6 +1634,7 @@
 				01C26DBA1843BB22005179B7 /* silhouette.png in Resources */,
 				6BC04B9D1677DE0E005C68D6 /* README.rst in Resources */,
 				6BC04C031677E25D005C68D6 /* AirshipConfig.plist in Resources */,
+				84414432189BB88700AD447D /* RoundLoading.png in Resources */,
 				014C4326185B9A4C00956A84 /* add-icon-blue.png in Resources */,
 				014C433D185BC7EF00956A84 /* VarelaRound-Regular.ttf in Resources */,
 				6B8E848A17565A9E00B3D7B1 /* BackgroundMain@2x.png in Resources */,
@@ -1684,6 +1694,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				01085FEE180345AA00A31F63 /* Deposit.m in Sources */,
+				8441442F189B793200AD447D /* NSString+MD5Addition.m in Sources */,
 				01085FBD17FC9C8B00A31F63 /* Welcome.m in Sources */,
 				01085FDB1803338700A31F63 /* NotificationSettings.m in Sources */,
 				01085FCF18030B6900A31F63 /* Login.m in Sources */,
@@ -1714,6 +1725,7 @@
 				6B75E9FB15FE7EE300B091D8 /* main 2.m in Sources */,
 				84C3EF1B187D101E004687F6 /* ReEnterPin.m in Sources */,
 				01085FAE17FB4BFA00A31F63 /* SelectPicture.m in Sources */,
+				84414430189B793200AD447D /* UIDevice+IdentifierAddition.m in Sources */,
 				01085FC017FCB13100A31F63 /* InitSliding.m in Sources */,
 				01086006180349E100A31F63 /* Statistics.m in Sources */,
 				842E3313187413490057EAFB /* Decryption.m in Sources */,

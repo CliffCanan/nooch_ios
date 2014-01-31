@@ -10,10 +10,12 @@
 #import "Home.h"
 #import "TransferPIN.h"
 #import "ECSlidingViewController.h"
+#import "NewBank.h"
 @interface Withdraw ()
 @property(nonatomic,strong)NSArray*banks;
 @property(nonatomic,strong) UIButton *withdraw;
 @property(nonatomic,strong) UITextField *amount;
+@property(nonatomic) NSMutableString *amnt;
 @end
 
 @implementation Withdraw
@@ -43,6 +45,7 @@
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
+    self.amnt = [@"" mutableCopy];
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
@@ -65,6 +68,8 @@
     self.amount = [[UITextField alloc] initWithFrame:CGRectMake(60, 100, 200, 60)];
     [self.amount setDelegate:self]; [self.amount setPlaceholder:@"$ 0.00"];
     [self.amount setKeyboardType:UIKeyboardTypeNumberPad];
+    self.amount.tag=1;
+    [self.amount setDelegate:self];
     [self.amount setStyleClass:@"wd_dep_amountfield"];
     [self.view addSubview:self.amount];
     
@@ -75,7 +80,9 @@
     
     UIButton *add_icon = [UIButton new];
     [add_icon setTitle:@"" forState:UIControlStateNormal];
+    [add_icon addTarget:self action:@selector(addFundCall:) forControlEvents:UIControlEventTouchUpInside];
     [add_icon setStyleClass:@"wd_dep_addicon"];
+    
     [self.view addSubview:add_icon];
     
     UITableView *banks = [UITableView new];
@@ -84,12 +91,10 @@
     [banks setDataSource:self]; [banks setDelegate:self];
     [self.view addSubview:banks];
     [banks reloadData];
-    //class: wd_dep_bankicon
-    //class wd_dep_banklabel
-    
+        
     self.withdraw = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.withdraw setFrame:CGRectMake(0, 200, 0, 0)];
-    [self.withdraw setTitle:@"Submit" forState:UIControlStateNormal];
+    [self.withdraw setTitle:@"Withdraw Funds" forState:UIControlStateNormal];
     [self.withdraw setStyleClass:@"button_green"];
     [self.withdraw setStyleClass:@"wd_dep_button"];
     [self.withdraw addTarget:self action:@selector(withdraw_amount) forControlEvents:UIControlEventTouchUpInside];
@@ -107,12 +112,59 @@
     [transaction setObject:[user objectForKey:@"lastName"]forKey:@"LastName"];
     // [transaction setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"FirstName"];
     //[transaction setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"FirstName"];
-    
+     float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
     //  float input_amount = [[[self.amount text] substringFromIndex:2] floatValue];
-    TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"withdrawfund" amount: [self.amount.text floatValue]];
+    TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"withdrawfund" amount: input_amount];
     [self.navigationController pushViewController:pin animated:YES];
     
  
+}
+#pragma mark - UITextField delegation
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (textField.tag == 1) {
+        //        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        //        [formatter setNumberStyle:NSNumberFormatterNoStyle];
+        //        [formatter setPositiveFormat:@"$ ##.##"];
+        //        [formatter setLenient:YES];
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+        [formatter setGeneratesDecimalNumbers:YES];
+        [formatter setUsesGroupingSeparator:YES];
+        NSString *groupingSeparator = [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
+        [formatter setGroupingSeparator:groupingSeparator];
+        [formatter setGroupingSize:3];
+        
+        if([string length] == 0){ //backspace
+            if ([self.amnt length] > 0) {
+                self.amnt = [[self.amnt substringToIndex:[self.amnt length]-1] mutableCopy];
+            }
+        }else{
+            NSString *temp = [self.amnt stringByAppendingString:string];
+            self.amnt = [temp mutableCopy];
+        }
+        float maths = [self.amnt floatValue];
+        maths /= 100;
+        if (maths > 1000) {
+            self.amnt = [[self.amnt substringToIndex:[self.amnt length]-1] mutableCopy];
+            return NO;
+        }
+        if (maths != 0) {
+            [textField setText:[formatter stringFromNumber:[NSNumber numberWithFloat:maths]]];
+        } else {
+            [textField setText:@""];
+        }
+        
+        
+        return NO;
+    }
+    return YES;
+}
+-(void)addFundCall:(id)sender
+{
+    NewBank *add_bank = [NewBank new];
+    [self.navigationController pushViewController:add_bank animated:NO];
+    
 }
 
 #pragma mark - UITableViewDataSource
@@ -132,11 +184,18 @@
         cell.selectedBackgroundView = selectionColor;
     }
     
+//    UILabel *banktxt = [UILabel new];
+//    [banktxt setStyleClass:@"wd_dep_banklabel"];
+//    [banktxt setText:@"Account ending in 3456"];
+//    [cell.contentView addSubview:banktxt];
+    
+    NSDictionary *bank = [self.banks objectAtIndex:0];
     UILabel *banktxt = [UILabel new];
     [banktxt setStyleClass:@"wd_dep_banklabel"];
-    [banktxt setText:@"Account ending in 3456"];
+    [banktxt setText:[NSString stringWithFormat:@"Account ending in %@",[bank valueForKey:@"BankAcctNumber"]]];
     [cell.contentView addSubview:banktxt];
-    NSDictionary *bank = [self.banks objectAtIndex:0];
+
+    
    // NSString*lastdigit=[NSString stringWithFormat:@"XXXX%@",[[bank objectForKey:@"BankAcctNumber"] substringFromIndex:[[bank objectForKey:@"BankAcctNumber"] length]-4]];
    // cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",[bank objectForKey:@"BankName"],lastdigit];
     //cell.textLabel.font=[UIFont fontWithName:@"Arial" size:12.0f];
@@ -166,8 +225,8 @@
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    return 70.0;
+   
+    return 50.0;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

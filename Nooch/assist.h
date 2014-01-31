@@ -32,6 +32,7 @@ NSString *histSearching;
     BOOL islogout;
     UIImage*imageOBJFortransfer;
     BOOL islocationAllowed;
+    BOOL isNeed;
 }
 //@property(nonatomic,retain)NSTimer*timer;
 @property (nonatomic, retain) ACAccountStore *accountStore;
@@ -75,5 +76,7 @@ NSString *histSearching;
 -(void)setBankVerified:(BOOL)istrue;
 -(BOOL)islocationAllowed;
 -(void)setlocationAllowed:(BOOL)istrue;
+-(BOOL)needsReload;
+-(void)setneedsReload:(BOOL)istrue;
 
 @end

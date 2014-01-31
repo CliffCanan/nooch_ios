@@ -12,7 +12,8 @@
 #import "NSString+ASBase64.h"
 #import "Constant.h"
 #import "ECSlidingViewController.h"
-//
+#import "NSString+MD5Addition.h"
+#import "UIDevice+IdentifierAddition.h"
 //Charan's edit 19nov2013
 //seconds for 3 days259200 518400 777600 604800 1209600
 #define secondsFor3days 259200
@@ -397,7 +398,8 @@ NSString *amnt;
     [dictnew setObject:pin forKey:@"PinNumber"];
     //inviteCode
     [dictnew setObject:inv forKey:@"inviteCode"];
-    [dictnew setObject:@"1234560" forKey:@"deviceTokenId"];
+     NSString *udid=[[UIDevice currentDevice] uniqueDeviceIdentifier];
+    [dictnew setObject:udid forKey:@"deviceTokenId"];
 //    [dictnew setObject:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"udId"];
     [dictnew setObject:@"" forKey:@"friendRequestId"];
     [dictnew setObject:@"" forKey:@"invitedFriendFacebookId"];
@@ -1851,5 +1853,51 @@ NSString *amnt;
     if (!connectionList)
         NSLog(@"connect error");
 }
+-(void)RaiseDispute:(NSDictionary*)Input
+
+{
+    self.responseData = [[NSMutableData alloc] init];
+    
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/RaiseDispute",ServerUrl];
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    //
+    dictInv=[[NSMutableDictionary alloc]init];
+    //
+    [dictInv setObject:Input forKey:@"raiseDisputeInput"];
+    
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+
+    [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
+    
+    NSError *error;
+    postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
+                                                  options:NSJSONWritingPrettyPrinted error:&error];
+    
+    
+    
+    postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
+    
+    requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [requestInv setHTTPMethod:@"POST"];
+    
+    [requestInv setValue:postLengthInv forHTTPHeaderField:@"Content-Length"];
+    
+    [requestInv setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    [requestInv setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
+    
+    [requestInv setHTTPBody:postDataInv];
+    
+    connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
+    
+    if (!connectionInv)
+        
+        NSLog(@"connect error");
+    
+}
+
 
 @end

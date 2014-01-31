@@ -178,7 +178,7 @@
                 }
                 
             }
-            
+            [[assist shared]setneedsReload:YES];
             
             [self.navigationController popViewControllerAnimated:YES];
             //            [navCtrl dismissViewControllerAnimated:YES anima
@@ -189,7 +189,8 @@
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Eureka!"message:@"Your bank account information all checks out, you’re free to go. Nooch forth."delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView sizeToFit];
             [alertView show];
-            [me getBanks];
+            //[me getBanks];
+            [[assist shared]setneedsReload:YES];
             [self.navigationController popViewControllerAnimated:YES];
             //[navCtrl dismissModalViewControllerAnimated:YES];
             verifyAttempts = 0;

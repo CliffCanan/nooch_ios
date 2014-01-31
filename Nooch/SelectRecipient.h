@@ -25,5 +25,7 @@
     BOOL isRecentList;
     NSString*emailphoneBook;
     BOOL isphoneBook;
+    UIImageView *arrow;
+    UILabel *em;
 }
 @end

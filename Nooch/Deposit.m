@@ -10,10 +10,13 @@
 #import "Home.h"
 #import "TransferPIN.h"
 #import "ECSlidingViewController.h"
+#import "NewBank.h"
 @interface Deposit ()
 @property (nonatomic,strong) UIButton *deposit;
 @property(nonatomic,strong)NSArray*banks;
 @property (nonatomic,strong) UITextField *amount;
+@property(nonatomic) NSMutableString *amnt;
+
 
 @end
 
@@ -39,6 +42,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.amnt = [@"" mutableCopy];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
@@ -66,6 +70,8 @@
     self.amount = [[UITextField alloc] initWithFrame:CGRectMake(60, 100, 200, 60)];
     [self.amount setDelegate:self]; [self.amount setPlaceholder:@"$ 0.00"];
     [self.amount setKeyboardType:UIKeyboardTypeNumberPad];
+    self.amount.tag=1;
+    [self.amount setDelegate:self];
     [self.amount setStyleClass:@"wd_dep_amountfield"];
     [self.view addSubview:self.amount];
     
@@ -76,17 +82,19 @@
     
     UIButton *add_icon = [UIButton new];
     [add_icon setTitle:@"ADD Fund" forState:UIControlStateNormal];
+    [add_icon addTarget:self action:@selector(addFundCall:) forControlEvents:UIControlEventTouchUpInside];
     [add_icon setStyleClass:@"wd_dep_addicon"];
     
     [self.view addSubview:add_icon];
     
     self.deposit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.deposit setFrame:CGRectMake(0, 300, 300, 50)];
-    [self.deposit setTitle:@"Submit" forState:UIControlStateNormal];
+    [self.deposit setTitle:@"Submit Deposit" forState:UIControlStateNormal];
     [self.deposit setStyleClass:@"button_green"];
     [self.deposit setStyleClass:@"wd_dep_button"];
     [self.deposit addTarget:self action:@selector(deposit_amount) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.deposit];
+    
     UITableView *banks = [UITableView new];
     [banks setStyleClass:@"wd_dep_tableview"];
     [banks setStyleClass:@"raised_view"];
@@ -98,9 +106,56 @@
     
     [self.amount becomeFirstResponder];
 }
+#pragma mark - UITextField delegation
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (textField.tag == 1) {
+        //        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        //        [formatter setNumberStyle:NSNumberFormatterNoStyle];
+        //        [formatter setPositiveFormat:@"$ ##.##"];
+        //        [formatter setLenient:YES];
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+        [formatter setGeneratesDecimalNumbers:YES];
+        [formatter setUsesGroupingSeparator:YES];
+        NSString *groupingSeparator = [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
+        [formatter setGroupingSeparator:groupingSeparator];
+        [formatter setGroupingSize:3];
+        
+        if([string length] == 0){ //backspace
+            if ([self.amnt length] > 0) {
+                self.amnt = [[self.amnt substringToIndex:[self.amnt length]-1] mutableCopy];
+            }
+        }else{
+            NSString *temp = [self.amnt stringByAppendingString:string];
+            self.amnt = [temp mutableCopy];
+        }
+        float maths = [self.amnt floatValue];
+        maths /= 100;
+        if (maths > 1000) {
+            self.amnt = [[self.amnt substringToIndex:[self.amnt length]-1] mutableCopy];
+            return NO;
+        }
+        if (maths != 0) {
+            [textField setText:[formatter stringFromNumber:[NSNumber numberWithFloat:maths]]];
+        } else {
+            [textField setText:@""];
+        }
+        
+        
+        return NO;
+    }
+    return YES;
+}
+-(void)addFundCall:(id)sender
+{
+    NewBank *add_bank = [NewBank new];
+    [self.navigationController pushViewController:add_bank animated:NO];
 
+}
 - (void) deposit_amount
 {
+     float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
     
     NSMutableDictionary *transaction = [[NSMutableDictionary alloc] init];
     [transaction setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
@@ -111,7 +166,7 @@
     //[transaction setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"FirstName"];
     
   //  float input_amount = [[[self.amount text] substringFromIndex:2] floatValue];
-    TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"addfund" amount: [self.amount.text floatValue]];
+    TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"addfund" amount:input_amount];
     [self.navigationController pushViewController:pin animated:YES];
 
 }
@@ -119,6 +174,7 @@
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    tableView.rowHeight=40.0f;
     return 1;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -132,12 +188,13 @@
         selectionColor.backgroundColor = kNoochGrayLight;
         cell.selectedBackgroundView = selectionColor;
     }
-    UILabel *banktxt = [UILabel new];
-    [banktxt setStyleClass:@"wd_dep_banklabel"];
-    [banktxt setText:@"Account ending in 3456"];
-    [cell.contentView addSubview:banktxt];
     
      NSDictionary *bank = [self.banks objectAtIndex:0];
+    UILabel *banktxt = [UILabel new];
+    [banktxt setStyleClass:@"wd_dep_banklabel"];
+    [banktxt setText:[NSString stringWithFormat:@"Account ending in %@",[bank valueForKey:@"BankAcctNumber"]]];
+                      [cell.contentView addSubview:banktxt];
+
     // NSString*lastdigit=[NSString stringWithFormat:@"XXXX%@",[[bank objectForKey:@"BankAcctNumber"] substringFromIndex:[[bank objectForKey:@"BankAcctNumber"] length]-4]];
     // cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",[bank objectForKey:@"BankName"],lastdigit];
     // cell.textLabel.font=[UIFont fontWithName:@"Arial" size:12.0f];

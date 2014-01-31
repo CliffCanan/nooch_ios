@@ -449,8 +449,20 @@
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag == 1) {
-        if (buttonIndex == 1) {
+        if (buttonIndex == 0) {
             self.responseData = [NSMutableData data];
+            NSMutableDictionary*dict=[[NSMutableDictionary alloc] init];
+            
+             NSString * memId = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
+            [dict setObject :memId forKey:@"MemberId"];
+            [ dict setObject:[self.trans valueForKey:@"RecepientId"] forKey:@"RecepientId"];
+           [ dict setObject:[self.trans valueForKey:@"TransactionId"] forKey:@"TransactionId"];
+            [ dict setObject:[self.trans valueForKey:@"TransactionType"] forKey:@"ListType"];
+            NSLog(@"%@",dict);
+            serve*serveobj=[serve new];
+            [serveobj setDelegate:self];
+            serveobj.tagName=@"dispute";
+            [serveobj RaiseDispute:dict];
             //NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&%@=%@&%@=%@", MyUrl, raiseDispute, idvalue, MemID, recepientId, recepientIdValue, txnId, txnIdValue, listType, listTypeValue]]];
             //[NSURLConnection connectionWithRequest:request delegate:self];
         }
@@ -460,7 +472,9 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    
+    if ([tagName isEqualToString:@"dispute"]) {
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning

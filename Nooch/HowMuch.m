@@ -89,12 +89,12 @@
         
     if (self.receiver[@"Photo"]) {
         [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
-                 placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+                 placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
     }
     else
     {
     [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
-        placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+        placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
     }
     }
     NSLog(@"%@",self.receiver);
@@ -277,8 +277,8 @@
 }
 - (void) confirm_send
 {
-    
-    if ([[self.amount text] doubleValue] == 0)
+    NSLog(@"%f",[[[self.amount text] substringFromIndex:1] doubleValue]);
+    if ([[[self.amount text] substringFromIndex:1] doubleValue] == 0)
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!" message:@"Minimum amount that can be transferred is any amount." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
         [alert show];
@@ -289,7 +289,7 @@
         [av show];
         return;
     }
-    else if ([[self.amount text] doubleValue] > 100)
+    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100)
     {
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Now" message:[NSString stringWithFormat:@"Sorry I’m not sorry, but don’t %@ more than $100. It’s against the rules (and protects the account from abuse.)", @"send"] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
@@ -297,7 +297,7 @@
         return;
         
     }
-    if ([[self.amount text] floatValue]>[[user objectForKey:@"Balance"] floatValue]) {
+    if ([[[self.amount text] substringFromIndex:1] floatValue]>[[user objectForKey:@"Balance"] floatValue]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!" message:@"Thanks for testing this impossibility, but you can't transfer more than you have in your Nooch account." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Add Funds", nil];
         [alert setTag:2122];
         [alert show];
@@ -306,7 +306,7 @@
     //[user objectForKey:@"Balance"]
     NSMutableDictionary *transaction = [self.receiver mutableCopy];
     [transaction setObject:[self.memo text] forKey:@"memo"];
-    //float input_amount = [[[self.amount text] substringFromIndex:2] floatValue];
+    
     NSLog(@"%@",self.amount.text);
     float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
     if ([self.receiver valueForKey:@"nonuser"]) {
@@ -495,14 +495,14 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     if (textField.tag == 1) {
-        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        [formatter setNumberStyle:NSNumberFormatterNoStyle];
-        [formatter setPositiveFormat:@"$ ##.##"];
-        [formatter setLenient:YES];
 //        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-//        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-//        [formatter setGeneratesDecimalNumbers:YES];
-//        [formatter setUsesGroupingSeparator:YES];
+//        [formatter setNumberStyle:NSNumberFormatterNoStyle];
+//        [formatter setPositiveFormat:@"$ ##.##"];
+//        [formatter setLenient:YES];
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+        [formatter setGeneratesDecimalNumbers:YES];
+        [formatter setUsesGroupingSeparator:YES];
         NSString *groupingSeparator = [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
         [formatter setGroupingSeparator:groupingSeparator];
         [formatter setGroupingSize:3];

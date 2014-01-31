@@ -111,7 +111,7 @@
     pic.layer.cornerRadius = 30; pic.layer.borderColor = kNoochBlue.CGColor; pic.layer.borderWidth = 1;
     pic.clipsToBounds = YES;
     [pic setImageWithURL:[NSURL URLWithString:temp[@"Photo"]]
-        placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+        placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
     NSString * name = [NSString stringWithFormat:@"   %@ %@",[temp objectForKey:@"FirstName"],[temp objectForKey:@"LastName"]];
     [cell.textLabel setText:name];
     

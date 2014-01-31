@@ -205,7 +205,7 @@
 }
 - (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(GMSMarker *)marker{
     UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 100)];
-    customView.layer.borderColor=[[UIColor blackColor]CGColor];
+    customView.layer.borderColor=[[UIColor whiteColor]CGColor];
     customView.layer.borderWidth=1.0f;
     
     customView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mapBack.png"]];
@@ -251,7 +251,7 @@
     lblmemo.textColor=[UIColor whiteColor];
     [customView addSubview:lblmemo];
     //
-    UILabel*lblloc=[[UILabel alloc]initWithFrame:CGRectMake(80, 65, 200, 30)];
+    UILabel*lblloc=[[UILabel alloc]initWithFrame:CGRectMake(80, 50, 200, 30)];
     lblloc.text=[NSString stringWithFormat:@"%@ %@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"City"],[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Country"]];
     lblloc.textColor=[UIColor whiteColor];
     lblloc.font=[UIFont systemFontOfSize:12.0f];

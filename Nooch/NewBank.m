@@ -387,6 +387,7 @@
                 
                 [ serveOBJ SendSMSApi:[[NSUserDefaults standardUserDefaults] valueForKey:@"ContactNumber"] msg:@"You have added New Bank Account.Please verify it."];
             }
+            [[assist shared]setneedsReload:YES];
             [self.navigationController popViewControllerAnimated:YES];
             
         }

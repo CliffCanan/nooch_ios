@@ -21,6 +21,8 @@ NSMutableDictionary*dictnonprofitid;
         NSString*youurl;
         NSString*fburl;
         NSString*twurl;
+        UIActivityIndicatorView*spinner;
+        UIView*blankView;
 }
 
 - (id)initWithReceiver:(NSDictionary *)charity;

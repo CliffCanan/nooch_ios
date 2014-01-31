@@ -92,7 +92,6 @@
     
     self.camera = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.camera setFrame:CGRectMake(270, 120, 40, 40)]; [self.camera setBackgroundColor:kNoochGrayDark];
-    //[self.view addSubview:self.camera];
     
     self.send = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.send setFrame:CGRectMake(160, 160, 150, 50)]; [self.send setBackgroundColor:kNoochGreen];
@@ -186,7 +185,6 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     if (textField.tag == 1) {
-        
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
         [formatter setGeneratesDecimalNumbers:YES];
@@ -194,6 +192,13 @@
         NSString *groupingSeparator = [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
         [formatter setGroupingSeparator:groupingSeparator];
         [formatter setGroupingSize:3];
+        //        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+//        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+//        [formatter setGeneratesDecimalNumbers:YES];
+//        [formatter setUsesGroupingSeparator:YES];
+//        NSString *groupingSeparator = [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
+//        [formatter setGroupingSeparator:groupingSeparator];
+//        [formatter setGroupingSize:3];
         
         if([string length] == 0){ //backspace
             if ([self.amnt length] > 0) {

@@ -211,7 +211,7 @@
         //push login
         return;
     }
-    if (![self.view.subviews containsObject:blankView]) {
+    if (![self.view.subviews containsObject:blankView] && [[assist shared]needsReload]) {
         blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
         [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
         UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -227,17 +227,22 @@
         [serveOBJ setTagName:@"sets"];
         [serveOBJ getSettings];
     }
-    
-    serve *banks = [serve new];
-    banks.Delegate = self;
-    banks.tagName = @"banks";
-    [banks getBanks];
+    if ([[assist shared]needsReload]) {
+        [[assist shared]setneedsReload:NO];
+        serve *banks = [serve new];
+        banks.Delegate = self;
+        banks.tagName = @"banks";
+        [banks getBanks];
+        
+    }
+   
 
     
 }
 
 -(void)showMenu
 {
+    [[assist shared]setneedsReload:NO];
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
 -(void)showFunds
@@ -288,8 +293,8 @@
         [alert show];
         return;
     }
-   */
-    ;
+   
+    */
     if ( ![[[NSUserDefaults standardUserDefaults]
            objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
         UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
@@ -298,7 +303,7 @@
         return;
     }
 
-   //if ( ![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
+  
        if (![[assist shared]isBankVerified]) {
            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
            [alert show];
@@ -306,8 +311,7 @@
            return;
        }
        
-   // }
-    
+     
     if (NSClassFromString(@"SelectRecipient")) {
         
         Class aClass = NSClassFromString(@"SelectRecipient");

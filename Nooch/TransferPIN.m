@@ -89,7 +89,20 @@
     } else if ([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"]) {
                     [self.prompt setText:@"request"];
                     [self.prompt setStyleId:@"pin_instructiontext_request"];
-    } else {
+    }
+    else if ([self.type isEqualToString:@"addfund"])
+             {
+                 [self.prompt setText:@"Deposit"];
+                 [self.prompt setStyleId:@"Transferpin_instructiontext_send"];
+             }
+    else if ([self.type isEqualToString:@"withdrawfund"])
+    {
+        [self.prompt setText:@"withdraw"];
+        [self.prompt setStyleId:@"Transferpin_instructiontext_send"];
+    }
+
+    //addfund
+    else {
                 [self.prompt setText:@"donatation"];
                 [self.prompt setStyleId:@"pin_instructiontext_donate"];
         }
@@ -103,7 +116,7 @@
     
     UIView *bar = [UIView new];
     [bar setStyleClass:@"pin_recipientname_bar"];
-    if ([self.type isEqualToString:@"send"]) {
+    if ([self.type isEqualToString:@"send"]|| [self.type isEqualToString:@"addfund"]|| [self.type isEqualToString:@"withdrawfund"]) {
                 [bar setStyleId:@"pin_recipientname_send"];
             } else if ([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"]) {
                     [bar setStyleId:@"pin_recipientname_request"];
@@ -148,12 +161,12 @@
         
         if (self.receiver[@"Photo"]) {
             [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
-                     placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+                     placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
         }
         else
         {
             [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
-                     placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+                     placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
         }
     }
     user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -180,7 +193,8 @@
     self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 16;
     self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor clearColor];
     self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
-    if ([self.type isEqualToString:@"send"]) {
+   
+    if ([self.type isEqualToString:@"send"]||[self.type isEqualToString:@"donation"]||[self.type isEqualToString:@"addfund"]||[self.type isEqualToString:@"withdrawfund"]) {
         
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
     }else if([self.type isEqualToString:@"request"]|| [self.type isEqualToString:@"requestRespond"]){
@@ -604,7 +618,7 @@
             }
 
     }
-    if ([self.type isEqualToString:@"addfund"] || [self.type isEqualToString:@"withdrawfund"]) {
+    else if ([self.type isEqualToString:@"addfund"] || [self.type isEqualToString:@"withdrawfund"]) {
         if ([tagName isEqualToString:@"ValidatePinNumber"]) {
             NSString *encryptedPIN=[dictResult valueForKey:@"Status"];
             
@@ -897,8 +911,11 @@
 
         }
     }
-      [transactionInputTransfer setObject:self.receiver[@"Photo"]forKey:@"Photo"];
-    self.trans = [transactionInputTransfer copy];
+    NSLog(@"%@",self.receiver[@"Photo"]);
+    if (self.receiver[@"Photo"] !=NULL && ![self.receiver[@"Photo"] isKindOfClass:[NSNull class]]) {
+        [transactionInputTransfer setObject:self.receiver[@"Photo"]forKey:@"Photo"];
+    }
+    
 }
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (alertView.tag == 1) {
@@ -997,7 +1014,12 @@
     }
     
     NSLog(@"transactionId %@",transactionId);
+    //TransactionId
+    if (![transactionId isKindOfClass:[NSNull class]] && transactionId!=NULL) {
+        [transactionInputTransfer setObject:transactionId forKey:@"TransactionId"];
+    }
     
+    self.trans = [transactionInputTransfer copy];
     resultValueTransfer = [dictResultTransfer valueForKey:@"TransferMoneyResult"];
     
     if ([[resultValueTransfer valueForKey:@"Result"] isEqualToString:@"Your cash was sent successfully"])

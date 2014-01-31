@@ -28,11 +28,7 @@
     }
     return self;
 }
-//-(void)viewDidAppear:(BOOL)animated{
-//    [super viewDidAppear:YES];
-//    self.navigationItem.title=[self.charity valueForKey:@"OrganizationName"];
-// 
-//}
+
 
 - (void)viewDidLoad
 {
@@ -42,17 +38,9 @@
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
 
-    //clear Image cache
-//    SDImageCache *imageCache = [SDImageCache sharedImageCache];
-//    [imageCache clearMemory];
-//    [imageCache clearDisk];
-//    [imageCache cleanDisk];
+   
     self.navigationItem.title=[self.charity valueForKey:@"OrganizationName"];
-	// Do any additional setup after loading the view.
-    //dict=[[NSMutableDictionary alloc]init];
-   // dictToSend=[[NSMutableDictionary alloc]init];
-    
-
+	
     image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 150)];
 
     [self.navigationItem setTitle:@"Cause Details"];
@@ -130,8 +118,16 @@
     [donate setStyleClass:@"nonprofit_details_donatebutton"];
     [donate addTarget:self action:@selector(donate) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:donate];
-    //dict=[[NSMutableDictionary alloc]init];
-    //dictToSend=[[NSMutableDictionary alloc]init];
+    
+    blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
+    [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
+    UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
+    [actv startAnimating];
+    [blankView addSubview:actv];
+    [self .view addSubview:blankView];
+    [self.view bringSubviewToFront:blankView];
+
     serve*serveOBJ=[serve new];
     serveOBJ.Delegate=self;
     serveOBJ.tagName=@"npDetail";
@@ -252,12 +248,7 @@
     button.frame = CGRectMake(250,0,70,30);
     [button addTarget:self action:@selector(close:) forControlEvents:UIControlEventTouchUpInside];
     [webView addSubview:button];
-    
-    
-    
-    
-  
-}
+    }
 
 - (IBAction)close:(id)sender {
     
@@ -284,9 +275,7 @@
         
 
     }
-//    if ([detaildict valueForKey:@"MemberId"]) {
-//        //[dict setValue:[detaildict valueForKey:@"MemberId"] forKey:@"ResMemberid"];
-//    }
+
     
     if (![[detaildict valueForKey:@"WebsiteUrl"]isKindOfClass:[NSNull class]]&& [detaildict valueForKey:@"WebsiteUrl"]!=nil && [detaildict valueForKey:@"WebsiteUrl"]!=NULL) {
         weburl=[detaildict valueForKey:@"WebsiteUrl"];
@@ -329,6 +318,7 @@
     {
         [dict setValue:[sourceData valueForKey:@"Status"] forKey:@"LastName"];
         NSLog(@"%@  %@",dict,[sourceData valueForKey:@"Status"]);
+        [blankView removeFromSuperview];
 
     }
 }

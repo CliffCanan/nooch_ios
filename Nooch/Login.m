@@ -15,6 +15,8 @@
 #import "ECSlidingViewController.h"
 #import "InitSliding.h"
 #import "NavControl.h"
+#import "NSString+MD5Addition.h"
+#import "UIDevice+IdentifierAddition.h"
 @interface Login (){
     core*me;
 }
@@ -262,7 +264,8 @@
         [[assist shared]setBankVerified:NO];
         //[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"IsPrimaryBankVerified"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"firstName"];
-        NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+       // NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+        NSString *udid=[[UIDevice currentDevice] uniqueDeviceIdentifier];
         if ([self.stay_logged_in isOn]) {
            [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:YES lat:lat lon:lon uid:udid];
         }
@@ -276,7 +279,7 @@
         NSError *error;
 
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        if([loginResult objectForKey:@"Result"] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && loginResult != nil)
+        if([loginResult objectForKey:@"Result"] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil)
         {
             serve *getDetails = [serve new];
             getDetails.Delegate = self;
@@ -291,6 +294,11 @@
         }
         else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && loginResult != nil){
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"NoochMoney" message:[loginResult objectForKey:@"Result"] delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            [spinner stopAnimating];
+        }
+        else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil){
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"NoochMoney" message:@"You are Suspended User." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             [spinner stopAnimating];
         }
