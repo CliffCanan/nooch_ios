@@ -113,7 +113,8 @@
     [mid_button setTitle:[[self.transaction_types objectAtIndex:1] objectForKey:kButtonTitle] forState:UIControlStateNormal];
     [bot_button setTitle:[[self.transaction_types objectAtIndex:2] objectForKey:kButtonTitle] forState:UIControlStateNormal];
     
-    [self.view addSubview:top_button]; [self.view addSubview:mid_button]; [self.view addSubview:bot_button];
+    [self.view addSubview:top_button]; [self.view addSubview:bot_button];
+    
     /*if (![user objectForKey:@"member_id"]) {
         Register *reg = [Register new];
         [self.navigationController pushViewController:reg animated:NO];
@@ -184,6 +185,7 @@
 }
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    
     //location
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;

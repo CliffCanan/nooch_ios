@@ -269,16 +269,16 @@
     
     [self.send setStyleId:@"howmuch_send"];
     [self.request setStyleId:@"howmuch_request"];
-    /*if (self.reset_type.frame.origin.x < 160) {
-        [self.divider setStyleId:@"animate_roll_left_return"];
-    } else {
-        [self.divider setStyleId:@"animate_roll_right_return"];
-    }*/
 }
+
 - (void) confirm_send
 {
+
     NSLog(@"%f",[[[self.amount text] substringFromIndex:1] doubleValue]);
     if ([[[self.amount text] substringFromIndex:1] doubleValue] == 0)
+
+    if ([self.amnt floatValue] == 0)
+
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!" message:@"Minimum amount that can be transferred is any amount." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
         [alert show];
@@ -289,7 +289,11 @@
         [av show];
         return;
     }
+
     else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100)
+
+    else if ([[self.amount text] floatValue] > 100)
+
     {
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Now" message:[NSString stringWithFormat:@"Sorry I’m not sorry, but don’t %@ more than $100. It’s against the rules (and protects the account from abuse.)", @"send"] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];

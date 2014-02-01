@@ -131,6 +131,12 @@
     
     [super viewDidLoad];
     
+    UIView *member_since_back = [UIView new];
+    [member_since_back setFrame:CGRectMake(0, 0, 320, 70)];
+    [member_since_back setBackgroundColor:[Helpers hexColor:@"3fabe1"]];
+    [member_since_back setAlpha:0.3];
+    [self.view addSubview:member_since_back];
+    
     if (isProfileOpenFromSideBar) {
         
         [self.navigationItem setHidesBackButton:YES];
@@ -223,7 +229,7 @@
 
     picture = [UIImageView new];
     
-    [picture setFrame:CGRectMake(20, 10+down, 60, 60)];
+    [picture setFrame:CGRectMake(20, 5+down, 60, 60)];
     
     picture.layer.cornerRadius = 30; picture.layer.borderColor = kNoochBlue.CGColor; picture.layer.borderWidth = 1;
     
@@ -267,6 +273,7 @@
     memSincelbl.userInteractionEnabled=NO;
     memSincelbl.selectable=NO;
     [memSincelbl setUserInteractionEnabled:NO];
+    [memSincelbl setBackgroundColor:[UIColor clearColor]];
     if (isSignup) {
          [memSincelbl setStyleClass:@"memtable_view_cell_textlabel_1_64"];
     }

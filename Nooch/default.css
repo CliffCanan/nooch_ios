@@ -21,6 +21,7 @@
 		width : 200px;
 		position : 60 15;
 	}
+
      #empltyRecentList {
 		background-image : url(empty-arrow.png);
 		height : 70px;
@@ -28,6 +29,9 @@
 		left   : 20px;
         top    :50px;
 	}
+
+
+
 	#loading {
 		style : small;
 		color : #41ABE1;
@@ -86,8 +90,10 @@
 	 /******************************/
 	 /******	 BUTTONS	********/
 	 /******************************/
-		:not(action-sheet) > button {
-			width				: 280px;
+
+		/****  BLUE BUTTON GRADIENT ****/
+		.button_blue { background-image			: linear-gradient(#6dbee8, #41abe1);
+                                width				: 280px;
 			height				: 56px;
 			left                : 20px;
 			color 				: white;
@@ -95,23 +101,57 @@
 			font-family			: "Roboto";
 			font-weight         : light;
 			font-size			: 22px;
-		}
-
-		/****  BLUE BUTTON GRADIENT ****/
-		.button_blue { background-image			: linear-gradient(#6dbee8, #41abe1); }
+        }
 
 		/****  GREEN BUTTON GRADIENT  ****/
-		.button_green:normal { background-image	: linear-gradient(#7fd034, #6ab029); }
+		.button_green:normal {
+        width				: 280px;
+			height				: 56px;
+			left                : 20px;
+			color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 22px;
+            background-image	: linear-gradient(#7fd034, #6ab029);
+            }
 
 		/****  Disabled GREEN GRADIENT  ****/
 		.button_green:disabled { border-radius		: 3px;
-            background-image: linear-gradient(#c0c2c4, #b1b3b6); }
+            background-image: linear-gradient(#c0c2c4, #b1b3b6);
+            width				: 280px;
+			height				: 56px;
+			left                : 20px;
+			color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 22px;
+            }
 
 		/****  GRAY BUTTON GRADIENT  ****/
-		.button_gray { background-image			: linear-gradient(#c0c2c4, #b1b3b6); }
+		.button_gray { background-image			: linear-gradient(#c0c2c4, #b1b3b6); 
+        width				: 280px;
+			height				: 56px;
+			left                : 20px;
+			color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 22px;
+            }
 
 		/****  RED BUTTON GRADIENT  ****/
-		.gradient_red { background-image			: linear gradient(#e02d33, #d2232a); }
+		.gradient_red { background-image			: linear gradient(#e02d33, #d2232a); 
+        width				: 280px;
+			height				: 56px;
+			left                : 20px;
+			color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 22px;
+            }
 		
 		.infobutton {
 			width			: 16px;
@@ -256,10 +296,10 @@
 
 		text-align       	: right;
 		color 				: #58595B;
-		width				: 50px;
+		width				: 100px;
 		height				: 40px;
 		top					: 105px;
-		left                : 90px;
+		left                : 60px;
 	}
     #micro2_amountfield {
 		font-family			: "Roboto";
@@ -268,10 +308,10 @@
 
 		text-align       	: right;
 		color 				: #58595B;
-		width				: 50px;
+		width				: 100px;
 		height				: 40px;
 		top					: 105px;
-		left                : 210px;
+		left                : 170px;
 	}
 .Repin_instructiontext {
 		width			: 300px;
@@ -349,34 +389,15 @@
 			height				: 30px;
 		}
 .memtable_view_cell_textlabel_1 {
-            background-color: #3FABE1 ;
-            transparency    :0.3;
-
-
             top                 :10px;
 			font-family			: "Roboto";
 			font-weight         : regular;
-			font-size			: 13px;
+			font-size			: 16px;
 			text-align       	: center;
-			color 				: white;
-			width				: 110px;
-			left                : 190px;
-			height				: 40px;
-		}
-        .memtable_view_cell_textlabel_1_64 {
-            background-color: #3FABE1 ;
-            transparency    :0.3;
-
-
-            top                 :74px;
-			font-family			: "Roboto";
-			font-weight         : regular;
-			font-size			: 13px;
-			text-align       	: center;
-			color 				: white;
-			width				: 110px;
-			left                : 190px;
-			height				: 40px;
+			color 				: gray;
+			width				: 200px;
+			left                : 110px;
+			height				: 60px;
 		}		/****  Table Detail Text  (right side of row)  ****/
 		.table_view_cell_detailtext_1 {
 			font-family			: "Roboto";
@@ -648,40 +669,18 @@
 		font-weight			: light;
         color               : white;
 	}
-
+  
 	/**  Styles the recipient's name in the bar at the top of the main box. **/
-	#label_micro1 {
-		width				: 70px;
-		height				: 40px;
-		left				: 30px;
-		font-size			: 32px;
-		font-weight			: medium;
-        color               : black;
-        font-family			: "Roboto";
-		top					: 105px;
-
-	}
-    #label_howmuch_recipientname{
-        width				: 200px;
+	#label_howmuch_recipientname {
+		width				: 210px;
 		height				: 38px;
 		top					: 10px;
-		left				: 50px;
+		left				: 55px;
 		font-size			: 20px;
-		font-weight			: light;
-        color               : white; 
-           }
-	#label_micro2 {
-		width				: 70px;
-		height				: 40px;
-		left				: 155px;
-		font-size			: 32px;
-		font-weight			: medium;
-        color               : black;
-        font-family			: "Roboto";
-		top					: 105px;
-
+		font-weight			: regular;
+        color                   : white;
 	}
-
+	
     .barbackground {
         top : 10px;
         left : 9px;
@@ -1004,7 +1003,7 @@
 		font-stretch	: semi-expanded;
 		text-align      : center;
 		color 			: #313233;
-		width			: 200px;
+		width			: 150px;
 		height			: 60px;
 		left            : 60px;
 		top             : 116px;
@@ -1035,19 +1034,20 @@
 		left				: 9px;
 		width				: 302px;
 		height				: 38px;
-
 	}
-#pin_recipientname_send {
-         background-image  : linear-gradient(#76c22f, #66aa27);
-     }
+    
+    #pin_recipientname_send {
+        background-image	: linear-gradient(#76c22f, #66aa27);
+    }
+    
+    #pin_recipientname_request {
+        background-image			: linear-gradient(#6dbee8, #41abe1);
+    }
+    
+    #pin_recipientname_donate {
+        background-image: linear-gradient(#595287, #413a70);
+    }
 
-     #pin_recipientname_request {
-         background-image      : linear-gradient(#6dbee8, #41abe1);
-     }
-
-     #pin_recipientname_donate {
-         background-image: linear-gradient(#595287, #413a70);
-     }
 	/**  The text of the recipient's name in the recipient box.  **/
 	.pin_recipientname_text {
 		top					: 196px;
@@ -2084,7 +2084,7 @@
 		width				: 180px;
 		height				: 28px;
 		top					: 37px;
-		left                : 80px;
+		left                : 70px;
 		font-family			: "Roboto";
 		font-weight         : regular;
 		font-size			: 22px;
@@ -2127,29 +2127,31 @@
 		left                : 20px;
 		height				: 30px;
 	}
-.details_label1 {
-		font-family			: "Roboto";
-		font-weight         : regular;
-		font-size			: 18px;
-		text-align          : center;
-		color 				: #6d6e71;
-		width				: 310px;
-		left                : 10px;
-		height				: 30px;
-	}
+
 	.details_button_left {
 		width			: 152px;
-		top				: 425px;
+		top				: 430px;
 		left			: 5px;
 		font-size		: 22px;
-		box-shadow		: inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 1px rgba(0,0,0,0.5);	
+        color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+            height				: 50px;
+        background-image	: linear-gradient(#7fd034, #6ab029);
 	}
 	
 	.details_button_right {
+    height				: 50px;
 		width			: 152px;
-		top				: 425px;
-		left			: 153px;
-		font-size		: 22px;
+		top				: 430px;
+		left			: 165px;
+        color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 22px;
+        background-image	: linear-gradient(#F5003D, #D21937);
 	}
 	
 	/**  Circle Buttons at the bottom ('Pay Back'  FB  Twitter  'Dispute' **/
