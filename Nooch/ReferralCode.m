@@ -274,11 +274,7 @@
           
             return;
         }
-            //keyboard.userInteractionEnabled = NO;
-            //leftNavButton.userInteractionEnabled = NO;
-            
-       
-    }
+              }
     else if ([tagName isEqualToString:@"login"]) {
         serve *req = [[serve alloc] init];
         req.Delegate = self;

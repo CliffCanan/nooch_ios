@@ -220,8 +220,8 @@
     NSLog(@"%@",self.charity);
     NSMutableDictionary*dict_donate=[self.charity mutableCopy];
     if ([dict valueForKey:@"FirstName"]!=NULL && [dict valueForKey:@"LastName"]!=NULL) {
-        [dict_donate setValue:[dict valueForKey:@"FirstName"] forKey:@"FirstName"];
-        [dict_donate setValue:[dict valueForKey:@"LastName"] forKey:@"LastName"];
+        [dict_donate setValue:[[dict valueForKey:@"FirstName"] capitalizedString] forKey:@"FirstName"];
+        [dict_donate setValue:[[dict valueForKey:@"LastName"] capitalizedString] forKey:@"LastName"];
     }
     
     NSLog(@"%@",dict_donate);

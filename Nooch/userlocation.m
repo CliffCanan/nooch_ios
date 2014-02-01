@@ -112,7 +112,7 @@
     pic.clipsToBounds = YES;
     [pic setImageWithURL:[NSURL URLWithString:temp[@"Photo"]]
         placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
-    NSString * name = [NSString stringWithFormat:@"   %@ %@",[temp objectForKey:@"FirstName"],[temp objectForKey:@"LastName"]];
+    NSString * name = [NSString stringWithFormat:@"   %@ %@",[[temp objectForKey:@"FirstName"] capitalizedString],[[temp objectForKey:@"LastName"] capitalizedString]];
     [cell.textLabel setText:name];
     
     NSString * miles;

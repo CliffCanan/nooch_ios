@@ -292,7 +292,7 @@
     [cell.contentView addSubview:user_pic];
     
     UILabel *name = [UILabel new];
-    [name setText:[NSString stringWithFormat:@"%@ %@",[dict valueForKey:@"FirstName"],[dict valueForKey:@"LastName"]]];
+    [name setText:[NSString stringWithFormat:@"%@ %@",[[dict valueForKey:@"FirstName"] capitalizedString],[[dict valueForKey:@"LastName"] capitalizedString]]];
     [name setStyleClass:@"refer_name"];
     [cell.contentView addSubview:name];
     //Date from Time stamp
@@ -430,7 +430,7 @@
     [msgTextView setFont:[UIFont systemFontOfSize:18]];
     //NSArray*arrReferCode=[referCode.text componentsSeparatedByString:@":"];
     msgTextView.textColor=[UIColor blackColor];
-    msgTextView.text=[NSString stringWithFormat:@"Hey,%@ has invited you to use Nooch, the simplest way to pay friends back. Use my referral code [%@] - download here: %@",[user objectForKey:@"firstName"] , code.text,@"ow.ly/nGocT"];
+    msgTextView.text=[NSString stringWithFormat:@"Hey,%@ has invited you to use Nooch, the simplest way to pay friends back. Use my referral code [%@] - download here: %@",[[user objectForKey:@"firstName"] capitalizedString] , code.text,@"ow.ly/nGocT"];
     [SMSView addSubview:msgTextView];
     
     [UIView beginAnimations:nil context:nil];

@@ -112,9 +112,6 @@
         
     }
    
-
-    return;
-    
 }
 
 -(void)showMenu
@@ -291,7 +288,7 @@
     
     [self.name setStyleClass:@"table_view_cell_detailtext_1"];
     
-    [self.name setText:[NSString stringWithFormat:@"%@ %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"FirstName"],[[NSUserDefaults standardUserDefaults] objectForKey:@"LastName"]]];
+    [self.name setText:[NSString stringWithFormat:@"%@ %@",[[[NSUserDefaults standardUserDefaults] objectForKey:@"FirstName"] capitalizedString],[[[NSUserDefaults standardUserDefaults] objectForKey:@"LastName"] capitalizedString]]];
     
     [self.name setUserInteractionEnabled:NO];
     
@@ -916,8 +913,6 @@
     {
         
         transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",self.name.text,@"FirstName",@" ",@"LastName",self.email.text,@"UserName",nil];
-        
-        
         
     }
     
@@ -1675,11 +1670,7 @@
         else if (![[dictProfileinfo valueForKey:@"FirstName"] isKindOfClass:[NSNull class]])
             
         {
-            
-            
-            
-            
-            
+          
             self.ServiceType=@"name";
             
             Decryption *decry = [[Decryption alloc] init];
@@ -1690,20 +1681,13 @@
             
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"FirstName"]];
             
-            //   zip.text=[dictProfileinfo objectForKey:@"UserName"];
-            
-            
-            
+          
         }
         
         else if (![[dictProfileinfo valueForKey:@"LastName"] isKindOfClass:[NSNull class]])
             
         {
-            
-            
-            
-            
-            
+          
             self.ServiceType=@"lastname";
             
             Decryption *decry = [[Decryption alloc] init];
@@ -1713,19 +1697,12 @@
             decry->tag = [NSNumber numberWithInteger:2];
             
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"LastName"]];
-            
-            //   zip.text=[dictProfileinfo objectForKey:@"UserName"];
-            
-            
-            
+           
         }
         
         else if (![[dictProfileinfo valueForKey:@"UserName"] isKindOfClass:[NSNull class]])
             
         {
-            
-            
-            
             self.ServiceType=@"email";
             
             Decryption *decry = [[Decryption alloc] init];
@@ -1967,34 +1944,19 @@
             self.ServiceType=@"name";
             
             if (![[dictProfileinfo objectForKey:@"FirstName"] isKindOfClass:[NSNull class]]) {
-                
-                
-                
-                
-                
-                
-                
+               
                 Decryption *decry = [[Decryption alloc] init];
                 
                 decry.Delegate = self;
-                
-                
                 
                 decry->tag = [NSNumber numberWithInteger:2];
                 
                 [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"FirstName"]];
                 
             }
-            
-            
-            
+         
         }
-        
-        //        password.text = decryptedPassword;
-        
-        //        [self getEncryptedPassword:password.text];
-        
-        //        NSLog(@"should be encrypting password");
+       
         
     }
     
@@ -2003,45 +1965,23 @@
     {
         
         self.ServiceType=@"name";
-        
-        
-        
         self.zip.text=[sourceData objectForKey:@"Status"];
-        
-        // NSLog(@"%@",self.zip.text);
-        
-        //NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
-        
-        
-        
         if (![[dictProfileinfo objectForKey:@"FirstName"] isKindOfClass:[NSNull class]]) {
-            
-            
-            
+           
             Decryption *decry = [[Decryption alloc] init];
             
             decry.Delegate = self;
-            
-            
-            
             decry->tag = [NSNumber numberWithInteger:2];
             
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"FirstName"]];
             
         }
         
-        
-        
-        //   zip.text=[sInfoDic objectForKey:@"UserName"];
-        
-        
-        
     }
     
     else  if ([self.ServiceType isEqualToString:@"name"])
         
     {
-        
         self.ServiceType=@"lastname";
         
         if ([[sourceData objectForKey:@"Status"] length]>0) {
@@ -2052,12 +1992,7 @@
             
             self.name.text=[NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
             
-            NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
-            
-            
-            
-            
-            
+           // NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
             if (![[dictProfileinfo objectForKey:@"LastName"] isKindOfClass:[NSNull class]])
                 
             {
@@ -2087,15 +2022,7 @@
                 [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"UserName"]];
                 
             }
-            
-            
-            
-            
-            
-            //   zip.text=[sInfoDic objectForKey:@"UserName"];
-            
-            
-            
+           
         }
         
     }
@@ -2109,20 +2036,8 @@
         if ([[sourceData objectForKey:@"Status"] length]>0) {
             
             NSString* letterA=[[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
-            
-            
-            
-            
-            
             self.name.text=[self.name.text stringByAppendingString:[NSString stringWithFormat:@" %@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]]];
-            
-            // self.zip.text=[sourceData objectForKey:@"Status"];
-            
-            NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
-            
-            
-            
-        }
+                }
         
         if (![[dictProfileinfo objectForKey:@"UserName"] isKindOfClass:[NSNull class]]) {
             
@@ -2133,39 +2048,20 @@
             decry->tag = [NSNumber numberWithInteger:2];
             
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"UserName"]];
-            
-            
-            
+          
         }
-        
-        
-        
-        //   zip.text=[sInfoDic objectForKey:@"UserName"];
-        
-        
         
     }
     
     else  if ([self.ServiceType isEqualToString:@"email"])
         
     {
-        
-        
-        
+      
         self.email.text=[sourceData objectForKey:@"Status"];
-        
-        NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
-        
-        
-        
-        
-        
+       
         if (![[dictProfileinfo objectForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]]&& [dictProfileinfo objectForKey:@"RecoveryMail"]!=NULL && ![[dictProfileinfo objectForKey:@"RecoveryMail"] isEqualToString:@""]) {
             
             self.ServiceType=@"recovery";
-            
-            
-            
             Decryption *decry = [[Decryption alloc] init];
             
             decry.Delegate = self;
@@ -2176,8 +2072,6 @@
             
         }
         
-        
-        
         else
             
         {
@@ -2185,15 +2079,8 @@
             self.recovery_email.text=@"";
             
             self.ServiceType=@"pwd";
-            
-            
-            
             if (![[dictProfileinfo objectForKey:@"Password"] isKindOfClass:[NSNull class]]) {
-                
-                
-                
-                
-                
+            
                 Decryption *decry = [[Decryption alloc] init];
                 
                 decry.Delegate = self;
@@ -2205,16 +2092,8 @@
                 [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Password"]];
                 
             }
-            
-            
-            
+           
         }
-        
-        
-        
-        //   zip.text=[sInfoDic objectForKey:@"UserName"];
-        
-        
         
     }
     
@@ -2233,21 +2112,7 @@
             self.recovery_email.text=@"";
             
         }
-        
-        // self.zip.text=[sourceData objectForKey:@"Status"];
-        
-        NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
-        
-        
-        
-        
-        
         if (![[dictProfileinfo objectForKey:@"Password"] isKindOfClass:[NSNull class]]) {
-            
-            
-            
-            
-            
             Decryption *decry = [[Decryption alloc] init];
             
             decry.Delegate = self;
@@ -2257,21 +2122,7 @@
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Password"]];
             
         }
-        
-        
-        
-        
-        
-        //   zip.text=[sInfoDic objectForKey:@"UserName"];
-        
-        
-        
     }
-    
-    
-    
-    //name.text =[[NSString alloc]initWithFormat:@"%@ %@",[[me usr] valueForKey:@"firstName"],[[me usr] valueForKey:@"lastName"]];
-    
     else if([self.ServiceType isEqualToString:@"pwd"])
         
     {
@@ -2279,23 +2130,12 @@
         NSLog(@"%@",[sourceData objectForKey:@"Status"]);
         
         self.password.text=[sourceData objectForKey:@"Status"];
-        
-        
-        
         [spinner stopAnimating];
         
         [spinner setHidden:YES];
         
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
+   
 }
 
 - (void)didReceiveMemoryWarning

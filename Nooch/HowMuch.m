@@ -67,13 +67,16 @@
     
     UILabel *to_label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
     if ([self.receiver valueForKey:@"nonuser"]) {
+        //
+         [to_label setStyleId:@"label_howmuch_recipientnamenonuser"];
          [to_label setText:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"email"]]];
     }
     else
     {
-    [to_label setText:[NSString stringWithFormat:@"%@ %@",[self.receiver objectForKey:@"FirstName"],[self.receiver objectForKey:@"LastName"]]];
+         [to_label setStyleId:@"label_howmuch_recipientname"];
+    [to_label setText:[NSString stringWithFormat:@"%@ %@",[[self.receiver objectForKey:@"FirstName"] capitalizedString],[[self.receiver objectForKey:@"LastName"] capitalizedString]]];
     }
-    [to_label setStyleId:@"label_howmuch_recipientname"];
+   
     [self.view addSubview:to_label];
     
     UIImageView *user_pic = [UIImageView new];
@@ -291,8 +294,6 @@
     }
 
     else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100)
-
-    else if ([[self.amount text] floatValue] > 100)
 
     {
         

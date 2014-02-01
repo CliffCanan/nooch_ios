@@ -62,6 +62,13 @@
 {
     [super viewDidLoad];
     [self.navigationItem setHidesBackButton:YES];
+     //NSLog(@"%@",nav_ctrl.viewControllers);
+//    [nav_ctrl popViewControllerAnimated:YES];
+//     NSLog(@"%@",nav_ctrl.viewControllers);
+//     Register *reg = [Register new];
+//     [nav_ctrl pushViewController:reg animated:YES];
+//     NSLog(@"%@",nav_ctrl.viewControllers);
+    
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
@@ -220,7 +227,7 @@
     
     UILabel*lblName=[[UILabel alloc]initWithFrame:CGRectMake(5, 70, 250, 17)];
     NSLog(@"%d",[[marker title]intValue]);
-    lblName.text=[NSString stringWithFormat:@"%@ %@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"FirstName"],[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"LastName"]];
+    lblName.text=[NSString stringWithFormat:@"%@ %@",[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"FirstName"] capitalizedString],[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"LastName"]];
     lblName.font=[UIFont systemFontOfSize:15];
     lblName.textColor=[UIColor whiteColor];
     [customView addSubview:lblName];
@@ -657,7 +664,7 @@
                     [name setStyleClass:@"history_recipientname"];
                      if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Received"]) {
 
-                           [name setText:[NSString stringWithFormat:@"%@ Paid You",[dictRecord valueForKey:@"FirstName"]]];
+                           [name setText:[NSString stringWithFormat:@"%@ Paid You",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                            [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                                placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
 
@@ -665,7 +672,7 @@
                      }
                    else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Sent"]) {
                        
-                            [name setText:[NSString stringWithFormat:@"You Paid %@",[dictRecord valueForKey:@"FirstName"]]];
+                            [name setText:[NSString stringWithFormat:@"You Paid %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                             [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                                 placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                      
@@ -684,7 +691,7 @@
                         
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"]){
-                        [name setText:[NSString stringWithFormat:@"%@ Donate to",[dictRecord valueForKey:@"FirstName"]]];
+                        [name setText:[NSString stringWithFormat:@"%@ Donate to",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                             placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                         
@@ -776,11 +783,11 @@
                     [name setStyleClass:@"history_recipientname"];
                     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"]) {
                         if ([[dictRecord valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
-                            [name setText:[NSString stringWithFormat:@"Donate to %@",[dictRecord valueForKey:@"FirstName"]]];
+                            [name setText:[NSString stringWithFormat:@"Donate to %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                         }
                         else
                         {
-                           [name setText:[NSString stringWithFormat:@"Donation From %@",[dictRecord valueForKey:@"FirstName"]]];
+                           [name setText:[NSString stringWithFormat:@"Donation From %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                             
                         }
                         
@@ -788,12 +795,12 @@
                     else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]|| [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@""])
                     {
                         if ([[dictRecord valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
-                            [name setText:[NSString stringWithFormat:@"%@ Requested From You",[dictRecord valueForKey:@"FirstName"]]];
+                            [name setText:[NSString stringWithFormat:@"%@ Requested From You",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                             
                         }
                         else
                         {
-                             [name setText:[NSString stringWithFormat:@"You Requested From %@",[dictRecord valueForKey:@"FirstName"]]];
+                             [name setText:[NSString stringWithFormat:@"You Requested From %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                            
                             
                         }
@@ -801,7 +808,7 @@
                     }
                     else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"])
                     {
-                        [name setText:[NSString stringWithFormat:@"Deposit into Nooch%@",[dictRecord valueForKey:@"FirstName"]]];
+                        [name setText:[NSString stringWithFormat:@"Deposit into Nooch%@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                     }
                     [cell.contentView addSubview:name];
                     

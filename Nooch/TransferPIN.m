@@ -82,7 +82,7 @@
     [self.view addSubview:title];
     
     self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 70, 300, 30)];
-    if ([self.type isEqualToString:@"send"]) {
+    if ([self.type isEqualToString:@"send"]||[self.receiver valueForKey:@"nonuser"]) {
         [self.prompt setText:@"transfer"];
         [self.prompt setStyleId:@"Transferpin_instructiontext_send"];
     } else if ([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"]) {
@@ -119,7 +119,7 @@
     
     UIView *bar = [UIView new];
     [bar setStyleClass:@"pin_recipientname_bar"];
-    if ([self.type isEqualToString:@"send"]|| [self.type isEqualToString:@"addfund"]|| [self.type isEqualToString:@"withdrawfund"]) {
+    if ([self.type isEqualToString:@"send"]|| [self.type isEqualToString:@"addfund"]|| [self.type isEqualToString:@"withdrawfund"]||[self.receiver valueForKey:@"nonuser"]) {
                 [bar setStyleId:@"pin_recipientname_send"];
             }
     else if ([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"]) {
@@ -150,7 +150,7 @@
             //[to_label setText:@"   4K For Cancer"];
             [to_label setBackgroundColor:kNoochPurple];
         } else {
-            [to_label setText:[NSString stringWithFormat:@" %@ %@",[self.receiver objectForKey:@"FirstName"],[self.receiver objectForKey:@"LastName"]]];
+            [to_label setText:[NSString stringWithFormat:@" %@ %@",[[self.receiver objectForKey:@"FirstName"] capitalizedString],[[self.receiver objectForKey:@"LastName"] capitalizedString]]];
         }
     }
     [to_label setStyleClass:@"pin_recipientname_text"];
@@ -218,7 +218,7 @@
     self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
 
    
-    if ([self.type isEqualToString:@"send"]||[self.type isEqualToString:@"donation"]||[self.type isEqualToString:@"addfund"]||[self.type isEqualToString:@"withdrawfund"]) {
+    if ([self.type isEqualToString:@"send"]||[self.type isEqualToString:@"donation"]||[self.type isEqualToString:@"addfund"]||[self.type isEqualToString:@"withdrawfund"]||[self.receiver valueForKey:@"nonuser"]) {
 
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
         
@@ -405,6 +405,12 @@
                  error:&error];
     
     if ([self.type isEqualToString:@"send"]|| [self.type isEqualToString:@"request"]) {
+        
+        
+        
+        
+        
+        
         if ([tagName isEqualToString:@"ValidatePinNumber"]) {
             transactionInputTransfer=[[NSMutableDictionary alloc]init];
             if ([[assist shared] getTranferImage]) {
@@ -436,9 +442,11 @@
             NSString *receiveName = [[self.receiver valueForKey:@"FirstName"] stringByAppendingString:[NSString stringWithFormat:@" %@",[self.receiver valueForKey:@"LastName"]]];
             [transactionInputTransfer setValue:receiveName forKey:@"Name"];
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
-            NSString *TransactionDate = [NSDateFormatter localizedStringFromDate:[NSDate date]
-                                                                       dateStyle:NSDateFormatterShortStyle
-                                                                       timeStyle:NSDateFormatterFullStyle];
+            NSDate *date = [NSDate date];
+            NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+            [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+            NSString *TransactionDate = [dateFormat stringFromDate:date];
+            
             [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
             [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
             [transactionInputTransfer setValue:uid forKey:@"DeviceId"];
@@ -486,9 +494,10 @@
         [transactionInputTransfer setValue:[dictResult valueForKey:@"Status"] forKey:@"PinNumber"];
         [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
         [transactionInputTransfer setValue:[self.trans objectForKey:@"TransactionId"] forKey:@"TransactionId"];
-        NSString *TransactionDate = [NSDateFormatter localizedStringFromDate:[NSDate date]
-                                                                   dateStyle:NSDateFormatterShortStyle
-                                                                   timeStyle:NSDateFormatterFullStyle];
+        NSDate *date = [NSDate date];
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+        NSString *TransactionDate = [dateFormat stringFromDate:date];
         [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
         if ([[self.trans objectForKey:@"Response"] isEqualToString:@"accept"]) {
             [transactionInputTransfer setValue:@"ACCEPT" forKey:@"Status"];
@@ -542,9 +551,10 @@
             NSString *receiveName = [[self.receiver valueForKey:@"FirstName"] stringByAppendingString:[NSString stringWithFormat:@" %@",[self.receiver valueForKey:@"LastName"]]];
             [transactionInputTransfer setValue:receiveName forKey:@"Name"];
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
-            NSString *TransactionDate = [NSDateFormatter localizedStringFromDate:[NSDate date]
-                                                                       dateStyle:NSDateFormatterShortStyle
-                                                                       timeStyle:NSDateFormatterFullStyle];
+            NSDate *date = [NSDate date];
+            NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+            [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+            NSString *TransactionDate = [dateFormat stringFromDate:date];
             [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
             [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
             [transactionInputTransfer setValue:uid forKey:@"DeviceId"];
@@ -596,9 +606,10 @@
                     [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"RecepientId"];
                     [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
                     
-                    NSString *TransactionDate = [NSDateFormatter localizedStringFromDate:[NSDate date]
-                                                                               dateStyle:NSDateFormatterShortStyle
-                                                                               timeStyle:NSDateFormatterFullStyle];
+                    NSDate *date = [NSDate date];
+                    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+                    [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+                    NSString *TransactionDate = [dateFormat stringFromDate:date];
                     [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
                     [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
                     [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"] forKey:@"DeviceId"];
@@ -664,9 +675,11 @@
                     [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
                     
                     
-                    NSString *TransactionDate = [NSDateFormatter localizedStringFromDate:[NSDate date]
-                                                                               dateStyle:NSDateFormatterShortStyle
-                                                                               timeStyle:NSDateFormatterFullStyle];
+                    NSDate *date = [NSDate date];
+                    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+                    [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+                    NSString *TransactionDate = [dateFormat stringFromDate:date];
+                    
                     [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
                     [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
                     [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"] forKey:@"DeviceId"];
@@ -778,9 +791,11 @@
                 [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
                 
                 
-                NSString *TransactionDate = [NSDateFormatter localizedStringFromDate:[NSDate date]
-                                                                           dateStyle:NSDateFormatterShortStyle
-                                                                           timeStyle:NSDateFormatterFullStyle];
+                NSDate *date = [NSDate date];
+                NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+                [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+                NSString *TransactionDate = [dateFormat stringFromDate:date];
+                
                 [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
                 [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
                 [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"] forKey:@"DeviceId"];
@@ -1035,21 +1050,21 @@
         sendingMoney = NO;
         [av setTag:1];
     }else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request processed successfully."]){
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Fulfilled" message:[NSString stringWithFormat:@"You successfully fulfilled %@'s request for %f.",receiverFirst,self.amnt] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Fulfilled" message:[NSString stringWithFormat:@"You successfully fulfilled %@'s request for $%.02f.",[receiverFirst capitalizedString],self.amnt] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
         [av setTag:1];
         [av show];
     }else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request successfully declined."]){
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Denied" message:[NSString stringWithFormat:@"You successfully denied %@'s request for %f.",receiverFirst,self.amnt] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Denied" message:[NSString stringWithFormat:@"You successfully denied %@'s request for $%.02f.",[receiverFirst capitalizedString],self.amnt] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
         [av setTag:1];
         [av show];
     }else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request successfully cancelled."]){
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Cancelled" message:[NSString stringWithFormat:@"You successfully cancelled your request for %f from %@.",self.amnt,receiverFirst] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Cancelled" message:[NSString stringWithFormat:@"You successfully cancelled your request for $%.02f from %@.",self.amnt,[receiverFirst capitalizedString]] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
         [av setTag:1];
         [av show];
     }
     else if ([[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request made successfully."]){
         
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Pay Me" message:[NSString stringWithFormat:@"You requested %f from %@ successfully.",self.amnt,receiverFirst] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",@"View Details",nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Pay Me" message:[NSString stringWithFormat:@"You requested $%.02f from %@ successfully.",self.amnt,[receiverFirst capitalizedString]] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",@"View Details",nil];
         [av setTag:1];
         [av show];
     }else if([[[dictResultTransfer objectForKey:@"TransferMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]||[[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]||[[dictResultTransfer valueForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]
@@ -1088,9 +1103,12 @@
         [self.second_num setBackgroundColor:[UIColor clearColor]];
         [self.first_num setBackgroundColor:[UIColor clearColor]];
         self.pin.text=@"";
+        
+        
         UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [suspendedAlert show];
         [suspendedAlert setTag:3];
+        
     }else if([[resultValueTransfer valueForKey:@"Result"]isEqual:@"Receiver does not exist."]
              || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Receiver does not exist."]
              || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Receiver does not exist."]){

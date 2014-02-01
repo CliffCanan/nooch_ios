@@ -680,7 +680,16 @@
 		font-weight			: regular;
         color                   : white;
 	}
-	
+	#label_howmuch_recipientnamenonuser {
+		width				: 220px;
+		height				: 38px;
+		top					: 10px;
+		left				: 55px;
+		font-size			: 15px;
+		font-weight			: regular;
+        color                   : white;
+	}
+
     .barbackground {
         top : 10px;
         left : 9px;
@@ -1003,7 +1012,7 @@
 		font-stretch	: semi-expanded;
 		text-align      : center;
 		color 			: #313233;
-		width			: 150px;
+		width			: 200px;
 		height			: 60px;
 		left            : 60px;
 		top             : 116px;
