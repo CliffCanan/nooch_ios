@@ -298,7 +298,7 @@
             [spinner stopAnimating];
         }
         else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil){
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"NoochMoney" message:@"You are Suspended User." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"NoochMoney" message:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             [spinner stopAnimating];
         }

@@ -96,7 +96,8 @@
     [super viewWillAppear:animated];
     //me=[core new];
    // assist*assistOBJ=[assist new];
-    [self.name setText:[[user objectForKey:@"firstName"] capitalizedString]];
+    //clear Image cache
+           [self.name setText:[[user objectForKey:@"firstName"] capitalizedString]];
     
     if ([user objectForKey:@"Balance"]) {
         if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound)

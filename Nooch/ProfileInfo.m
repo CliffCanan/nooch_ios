@@ -989,20 +989,10 @@
             [result1 appendFormat:@"%d", bytes[i]];
             
         }
-        
-        //[result1 appendString:@"]"];
-        
         NSArray*arr=[result1 componentsSeparatedByString:@","];
         
-        // NSLog(@"%@image",image64);
-        
-        //[transactionInputTransfer setValue:arr forKey:@"Picture"];
         
         [transactionInput setObject:arr forKey:@"Picture"];
-        
-        
-        
-        
         
     }
     
@@ -1020,17 +1010,9 @@
     
     req.tagName=@"MySettingsResult";
     
-    //NSLog(@"transaction INput %@",transaction);
     
     [req setSets:transaction];
     
-    // firstTime = NO;
-    
-    
-    
-    //first letter uppercase
-    
-    // self.name.text=@"";
     
     NSArray*arr=[self.name.text componentsSeparatedByString:@" "];
     
@@ -1039,13 +1021,7 @@
         self.name.text=[NSString stringWithFormat:@"%@ %@",[[arr objectAtIndex:0] capitalizedString],[[arr objectAtIndex:1] capitalizedString]];
         
     }
-    
-    
-    
-    
-    
-    
-    
+   
 }
 
 -(void) getEncryptedPassword:(NSString *)newPassword{
@@ -1089,11 +1065,7 @@
     actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
     
     [actionSheetObject showInView:self.view];
-    
-    
-    
-    
-    
+   
 }
 
 
@@ -1470,7 +1442,7 @@
     if([tagName isEqualToString:@"MySettingsResult"])
         
     {
-                dictProfileinfo=[NSJSONSerialization
+    dictProfileinfo=[NSJSONSerialization
                          
                          JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                          
@@ -1487,16 +1459,25 @@
         getEncryptionOldPassword= [dictProfileinfo objectForKey:@"Password"];
         
         if([[resultValue valueForKey:@"Result"] isEqualToString:@"Your details have been updated successfully."]){
-            
-            
-            
-            
-            
+          
             NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
             
             [defaults setObject:@"YES" forKey:@"ProfileComplete"];
             
             [defaults synchronize];
+            SDImageCache *imageCache = [SDImageCache sharedImageCache];
+            [imageCache clearMemory];
+            [imageCache clearDisk];
+            [imageCache cleanDisk];
+            if ([[user objectForKey:@"Photo"] length]>0 && [user objectForKey:@"Photo"]!=nil && !isPhotoUpdate) {
+                
+                [picture setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
+                 
+                        placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                
+            }
+            
+
             
         }else{
             
@@ -1506,7 +1487,7 @@
                 
                 [[me usr] setObject:validated forKey:@"validated"];
                 
-                //  validationBadge.highlighted = NO;
+              
                 
             }
             
