@@ -310,45 +310,113 @@
         if ([[dictInput objectForKey:@"BankToNooch"]boolValue]) {
             [self.push_deposit_completed setOn:YES];
         }
+        else
+        {
+            [self.push_deposit_completed setOn:NO];
+            
+        }
         if ([[dictInput objectForKey:@"TransferUnclaimed"]boolValue]) {
             [self.email_unclaimed setOn:YES];
         }
+        else
+        {
+            [self.email_unclaimed setOn:NO];
+            
+        }
         if ([[dictInput objectForKey:@"TransferReceived"]boolValue]) {
             [self.push_received setOn:YES];
+        }
+        else
+        {
+            [self.push_received setOn:NO];
+            
         }
         if ([[dictInput objectForKey:@"TransferSent"]boolValue]) {
           //  [self.push setOn:YES];
 
             
-        }if ([[dictInput objectForKey:@"TransferAttemptFailure"]boolValue]) {
+        }
+        else
+        {
+            //[self.push_deposit_completed setOn:NO];
+            
+        }
+
+        if ([[dictInput objectForKey:@"TransferAttemptFailure"]boolValue]) {
             [self.push_failure setOn:YES];
         }
+        else
+        {
+            [self.push_failure setOn:NO];
+            
+        }
+
         if ([[dictInput objectForKey:@"EmailTransferAttemptFailure"]boolValue]) {
             [self.email_failure setOn:YES];
             
         }
-
+        else
+        {
+            [self.push_failure setOn:NO];
+            
+        }
         if ([[dictInput objectForKey:@"NoochToBankRequested"]boolValue]) {
             [self.email_withdraw_requested setOn:YES];
+        }
+        else
+        {
+            [self.email_withdraw_requested setOn:NO];
+            
         }
         if ([[dictInput objectForKey:@"NoochToBankCompleted"]boolValue]) {
             [self.email_withdraw_submitted setOn:YES];
         }
+        else
+        {
+            [self.email_withdraw_submitted setOn:NO];
+            
+        }
         if ([[dictInput objectForKey:@"NoochToBank"]boolValue]) {
             [self.push_withdraw_submitted setOn:YES];
             
-        }if ([[dictInput objectForKey:@"BankToNoochCompleted"]boolValue]) {
+        }
+        else
+        {
+            [self.push_withdraw_submitted setOn:NO];
+            
+        }
+        if ([[dictInput objectForKey:@"BankToNoochCompleted"]boolValue]) {
             [self.email_deposit_completed setOn:YES];
+            
+        }
+        else
+        {
+            [self.email_deposit_completed setOn:NO];
             
         }if ([[dictInput objectForKey:@"BankToNoochRequested"]boolValue]) {
              [self.email_deposit_requested setOn:YES];
         }
+        else
+        {
+            [self.email_deposit_requested setOn:NO];
+            
+        }
             if ([[dictInput objectForKey:@"EmailTransferReceived"]boolValue]) {
              [self.email_received setOn:YES];
         }
+            else
+            {
+                [self.email_received setOn:NO];
+                
+            }
         if ([[dictInput objectForKey:@"EmailTransferSent"]boolValue]) {
             [self.email_sent setOn:YES];
 
+        }
+        else
+        {
+            [self.email_sent setOn:NO];
+            
         }
            }
     else if ([tagName isEqualToString:@"setSettings"])

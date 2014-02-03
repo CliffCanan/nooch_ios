@@ -396,13 +396,7 @@
                  error:&error];
     
     if ([self.type isEqualToString:@"send"]|| [self.type isEqualToString:@"request"]) {
-        
-        
-        
-        
-        
-        
-        if ([tagName isEqualToString:@"ValidatePinNumber"]) {
+              if ([tagName isEqualToString:@"ValidatePinNumber"]) {
             transactionInputTransfer=[[NSMutableDictionary alloc]init];
             if ([[assist shared] getTranferImage]) {
                 NSData *data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
@@ -423,13 +417,21 @@
             [[assist shared] setTranferImage:imgempty];
             
             NSString *uid = [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"];
+                  
             [transactionInputTransfer setValue:[dictResult valueForKey:@"Status"] forKey:@"PinNumber"];
             [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
             if ([self.type isEqualToString:@"request"]) {
+                [transactionInputTransfer setValue:@"Request" forKey:@"TransactionType"];
+
                 [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"SenderId"];
                 [transactionInputTransfer setValue:@"Pending" forKey:@"Status"];
             }
-            [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
+            else
+                {
+                      [transactionInputTransfer setValue:@"Send" forKey:@"TransactionType"];
+                      [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
+                }
+            
             NSString *receiveName = [[self.receiver valueForKey:@"FirstName"] stringByAppendingString:[NSString stringWithFormat:@" %@",[self.receiver valueForKey:@"LastName"]]];
             [transactionInputTransfer setValue:receiveName forKey:@"Name"];
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
@@ -498,6 +500,7 @@
             //cancel
         }
         NSString *uid = [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"];
+        [transactionInputTransfer setValue:@"RequestRespond" forKey:@"TransactionType"];
         [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
         [transactionInputTransfer setValue:uid forKey:@"DeviceId"];
         [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
@@ -604,6 +607,7 @@
                     [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
                     [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
                     [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"] forKey:@"DeviceId"];
+                    [transactionInputTransfer setValue:@"Withdraw" forKey:@"TransactionType"];
                     [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
                     [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lon] forKey:@"Longitude"];
                     [transactionInputTransfer setValue:Altitude forKey:@"Altitude"];
@@ -665,7 +669,7 @@
                     
                     [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
                     
-                    
+                     [transactionInputTransfer setValue:@"Deposit" forKey:@"TransactionType"];
                     NSDate *date = [NSDate date];
                     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
                     [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
@@ -726,8 +730,7 @@
                         self.respData = [NSMutableData data];
                         
                     }
-                    
-                }
+                                   }
                 
             }else{
                 
@@ -897,6 +900,12 @@
             [nav_ctrl pushViewController:td animated:YES];
         }
     }
+    else if (alertView.tag==2500)
+    {
+        if (buttonIndex == 0) {
+            [nav_ctrl popToRootViewControllerAnimated:YES];
+        }
+    }
 }
 #pragma mark - connection handling
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
@@ -925,6 +934,7 @@
     if ([self.type isEqualToString:@"nonuser"]) {
         if ([[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserResult"] valueForKey:@"Result"]isEqualToString:@"Your cash was sent successfully"]) {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserResult"] valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            av.tag=2500;
             [av show];
             return;
         }

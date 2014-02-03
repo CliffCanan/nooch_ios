@@ -2171,7 +2171,7 @@
 	.details_amount_donation { }
 
 	/**  Memo & Location Text **/
-	.details_label {
+    .details_label_memo {
 		font-family			: "Roboto";
 		font-weight         : regular;
 		font-size			: 18px;
@@ -2181,7 +2181,26 @@
 		left                : 20px;
 		height				: 30px;
 	}
-
+	.details_label {
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 18px;
+		text-align          : left;
+		color 				: #6d6e71;
+		width				: 280px;
+		left                : 20px;
+		height				: 30px;
+	}
+    .details_label1 {
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 15px;
+		text-align          : center;
+		color 				: #d3d3d3;
+		width				: 280px;
+		left                : 20px;
+		height				: 30px;
+	}
 	.details_button_left {
 		width			: 152px;
 		top				: 430px;

@@ -298,6 +298,7 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
   
   if (side == ECLeft) {
     newCenter = self.anchorLeftTopViewCenter;
+      NSLog(@"%f",newCenter);
   } else if (side == ECRight) {
     newCenter = self.anchorRightTopViewCenter;
   }

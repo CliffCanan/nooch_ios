@@ -346,7 +346,9 @@
              {
                  case SLComposeViewControllerResultCancelled: output = @"Action Cancelled";
                      break;
-                 case SLComposeViewControllerResultDone: output = @" Report Shared Successfully"; [self dismissViewControllerAnimated:YES completion:nil]; break;
+                 case SLComposeViewControllerResultDone: output = @" Report Shared Successfully"; [self dismissViewControllerAnimated:YES completion:nil];
+                     [self callService:@"FB"];
+                     break;
                  default: break;
              }
              UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Facebook Message" message:output delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
@@ -618,7 +620,9 @@
              {
                  case SLComposeViewControllerResultCancelled: output = @"Action Cancelled";
                      break;
-                 case SLComposeViewControllerResultDone: output = @" Tweet  Successfully"; [self dismissViewControllerAnimated:YES completion:nil]; break;
+                 case SLComposeViewControllerResultDone: output = @" Tweet  Successfully"; [self dismissViewControllerAnimated:YES completion:nil];
+                     [self callService:@"TW"];
+                     break;
                  default: break;
              }
              UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Twitter Message" message:output delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
@@ -639,6 +643,12 @@
     }
     
     
+}
+-(void)callService:(NSString*)shareTo{
+    serve*serveOBJ=[serve new];
+    [serveOBJ setDelegate:self];
+    [serveOBJ setTagName:@"ShareCount"];
+    [serveOBJ saveShareToFB_Twiitter:shareTo];
 }
 - (IBAction)EmailCLicked:(id)sender {
     NSString *emailTitle = @"NoochMoney";

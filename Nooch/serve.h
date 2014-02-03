@@ -108,6 +108,7 @@
 -(void)SaveImmediateRequire:(BOOL)IsRequiredImmediatley;
 -(void)ReferalCodeRequest:(NSString*)email;
 -(void)RaiseDispute:(NSDictionary*)Input;
+-(void)saveShareToFB_Twiitter:(NSString*)PostTo;
 @end
 
 //392f9c86-1651-4459-a6a9-d362fcfc4366 - nooch team

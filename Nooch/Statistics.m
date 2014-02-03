@@ -206,10 +206,17 @@
         }
         else if (indexPath.row == 2) {
             [title setText:@"Friends Invited"];
-           // [statistic setText:@"4"];
+            if ([dictAllStats valueForKey:@"Total_Friends_Invited"]) {
+                [statistic setText:[[dictAllStats valueForKey:@"Total_Friends_Invited"]  valueForKey:@"Result"]];
+            }
+            //"
+            // [statistic setText:@"4"];
         }
         else if (indexPath.row == 3) {
             [title setText:@"Invites Accepted"];
+            if ([dictAllStats valueForKey:@"Total_Friends_Joined"]) {
+                [statistic setText:[[dictAllStats valueForKey:@"Total_Friends_Joined"]  valueForKey:@"Result"]];
+            }
            // [statistic setText:@"7"];
         }
         else if (indexPath.row == 4) {
@@ -217,10 +224,18 @@
             //[statistic setText:@"$ 25.00"];
         }
         else if (indexPath.row == 5) {
+            if ([dictAllStats valueForKey:@"Total_Posts_To_TW"]) {
+                [statistic setText:[[dictAllStats valueForKey:@"Total_Posts_To_TW"]  valueForKey:@"Result"]];
+            }
+
             [title setText:@"Posts to Twitter"];
            // [statistic setText:@"0"];
         }
         else if (indexPath.row == 6) {
+            if ([dictAllStats valueForKey:@"Total_Posts_To_FB"]) {
+                [statistic setText:[[dictAllStats valueForKey:@"Total_Posts_To_FB"]  valueForKey:@"Result"]];
+            }
+
             [title setText:@"Posts to Facebook"];
            // [statistic setText:@"3"];
         }
@@ -233,7 +248,7 @@
             if ([dictAllStats valueForKey:@"Total_P2P_transfers"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_P2P_transfers"]  valueForKey:@"Result"]];
             }
-            ;
+            
 
             //
         }
@@ -417,6 +432,42 @@
        
        [serveOBJ GetMemberStats:@"Total_$_withdraw_from_Nooch"];
    }
+   else if ([tagName isEqualToString:@"Total_$_withdraw_from_Nooch"]) {
+       serve*serveOBJ=[serve new];
+       
+       [serveOBJ setDelegate:self];
+       
+       serveOBJ.tagName=@"Total_Friends_Invited";
+       
+       [serveOBJ GetMemberStats:@"Total_Friends_Invited"];
+   }
+   else if ([tagName isEqualToString:@"Total_Friends_Invited"]) {
+       serve*serveOBJ=[serve new];
+       
+       [serveOBJ setDelegate:self];
+       
+       serveOBJ.tagName=@"Total_Friends_Joined";
+       
+       [serveOBJ GetMemberStats:@"Total_Friends_Joined"];
+   }
+   else if ([tagName isEqualToString:@"Total_Friends_Joined"]) {
+       serve*serveOBJ=[serve new];
+       
+       [serveOBJ setDelegate:self];
+       
+       serveOBJ.tagName=@"Total_Posts_To_FB";
+       
+       [serveOBJ GetMemberStats:@"Total_Posts_To_FB"];
+   }
+   else if ([tagName isEqualToString:@"Total_Posts_To_FB"]) {
+       serve*serveOBJ=[serve new];
+       
+       [serveOBJ setDelegate:self];
+       
+       serveOBJ.tagName=@"Total_Posts_To_TW";
+       
+       [serveOBJ GetMemberStats:@"Total_Posts_To_TW"];
+   }//Total_Posts_To_FB
     //Total_$_Added_to_Nooch
 }
 

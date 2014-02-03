@@ -132,8 +132,7 @@
     [self.view addSubview:fifty];
     
     [self.amount becomeFirstResponder];
-    //set default string memo
-    Donation_memo=@"In Honor Of ";
+    Donation_memo=@"";
 }
 
 - (void) five_dollars
@@ -173,7 +172,8 @@
     }
 }
 -(void)add_Dedication{
-    if ([txtDedicate.text length]>0) {
+    
+    if ([txtDedicate.text length]>0 && ![txtDedicate.text isEqualToString:@"Type your dedication here..."]) {
         [self.amount becomeFirstResponder];
         Donation_memo=[Donation_memo stringByAppendingString:txtDedicate.text];
         [UIView beginAnimations:@"bucketsOff" context:nil];
@@ -183,6 +183,10 @@
         [UIView commitAnimations];
         
         [dedicateView removeFromSuperview];
+    }
+    else{
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Enter Dedication" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
     }
    
 }
@@ -200,6 +204,7 @@
 - (void) dedicate
 {
     [self.amount resignFirstResponder];
+    
     [dedicateView removeFromSuperview];
     dedicateView=[[UIView alloc] initWithFrame:CGRectMake(10, 64, 300, 220)];
     dedicateView.backgroundColor=[UIColor whiteColor];
@@ -209,12 +214,14 @@
     
     //Segment control
     NSArray *seg_items = @[@"In Honor Of",@"In Memory Of"];
-    UISegmentedControl *completed_pending = [[UISegmentedControl alloc] initWithItems:seg_items];
-    [completed_pending setStyleId:@"dedicate_segcontrol"];
-    [completed_pending addTarget:self action:@selector(completed_or_pending:) forControlEvents:UIControlEventValueChanged];
-    [dedicateView addSubview:completed_pending];
-    [completed_pending setSelectedSegmentIndex:0];
-    
+    UISegmentedControl *Honor_Memory= [[UISegmentedControl alloc] initWithItems:seg_items];
+    [Honor_Memory setStyleId:@"dedicate_segcontrol"];
+    [Honor_Memory addTarget:self action:@selector(completed_or_pending:) forControlEvents:UIControlEventValueChanged];
+    [dedicateView addSubview:Honor_Memory];
+    [Honor_Memory setSelectedSegmentIndex:0];
+    Donation_memo=@"In Honor Of ";
+   
+
     //Textbox
     txtDedicate = [[UITextView alloc] initWithFrame:CGRectMake(10,45, 280, 100)];
     [txtDedicate setText:[NSString stringWithFormat:@"%@",@"Type your dedication here..."]];

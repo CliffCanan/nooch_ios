@@ -180,7 +180,6 @@
 		6B33DCA11639AE1D00B8B8B6 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B33DCA01639AE0C00B8B8B6 /* Default-568h@2x.png */; };
 		6B425A63165568420092B16A /* OBShapedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B425A5F165568420092B16A /* OBShapedButton.m */; };
 		6B425A64165568420092B16A /* UIImage+ColorAtPixel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B425A62165568420092B16A /* UIImage+ColorAtPixel.m */; };
-		6B4A6E6D172F048F00A7CE73 /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B4A6E6A172F048F00A7CE73 /* ECSlidingViewController.m */; };
 		6B4A6E6E172F048F00A7CE73 /* UIImage+ImageWithUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B4A6E6C172F048F00A7CE73 /* UIImage+ImageWithUIView.m */; };
 		6B5265F616680C0F00E5341F /* libCardIO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B5265F516680C0F00E5341F /* libCardIO.a */; };
 		6B5265F816680D2400E5341F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B5265F716680D2400E5341F /* AVFoundation.framework */; };
@@ -232,6 +231,7 @@
 		84172D15186D416D0041929F /* core.m in Sources */ = {isa = PBXBuildFile; fileRef = 84172D14186D416D0041929F /* core.m */; };
 		84172D18186D42200041929F /* assist.m in Sources */ = {isa = PBXBuildFile; fileRef = 84172D17186D42200041929F /* assist.m */; };
 		84193343187537A800D85FC4 /* GetLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84193342187537A800D85FC4 /* GetLocation.m */; };
+		841AB069189FA63600D0A34B /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841AB068189FA63600D0A34B /* ECSlidingViewController.m */; };
 		8420B390187A69CC00A77E2D /* profile_picture.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420B38F187A69CC00A77E2D /* profile_picture.png */; };
 		8420B39B187AC4BF00A77E2D /* Black-pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420B395187AC4BF00A77E2D /* Black-pin.png */; };
 		8420B39C187AC4BF00A77E2D /* blue-pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420B396187AC4BF00A77E2D /* blue-pin.png */; };
@@ -491,8 +491,6 @@
 		6B425A5F165568420092B16A /* OBShapedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBShapedButton.m; sourceTree = "<group>"; };
 		6B425A61165568420092B16A /* UIImage+ColorAtPixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ColorAtPixel.h"; sourceTree = "<group>"; };
 		6B425A62165568420092B16A /* UIImage+ColorAtPixel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ColorAtPixel.m"; sourceTree = "<group>"; };
-		6B4A6E69172F048F00A7CE73 /* ECSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECSlidingViewController.h; sourceTree = "<group>"; };
-		6B4A6E6A172F048F00A7CE73 /* ECSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECSlidingViewController.m; sourceTree = "<group>"; };
 		6B4A6E6B172F048F00A7CE73 /* UIImage+ImageWithUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageWithUIView.h"; sourceTree = "<group>"; };
 		6B4A6E6C172F048F00A7CE73 /* UIImage+ImageWithUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageWithUIView.m"; sourceTree = "<group>"; };
 		6B5265F116680C0F00E5341F /* CardIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardIO.h; sourceTree = "<group>"; };
@@ -632,6 +630,8 @@
 		84172D17186D42200041929F /* assist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = assist.m; sourceTree = "<group>"; };
 		84193341187537A800D85FC4 /* GetLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetLocation.h; sourceTree = "<group>"; };
 		84193342187537A800D85FC4 /* GetLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetLocation.m; sourceTree = "<group>"; };
+		841AB067189FA63600D0A34B /* ECSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECSlidingViewController.h; sourceTree = "<group>"; };
+		841AB068189FA63600D0A34B /* ECSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECSlidingViewController.m; sourceTree = "<group>"; };
 		8420B38F187A69CC00A77E2D /* profile_picture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_picture.png; sourceTree = "<group>"; };
 		8420B395187AC4BF00A77E2D /* Black-pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Black-pin.png"; sourceTree = "<group>"; };
 		8420B396187AC4BF00A77E2D /* blue-pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-pin.png"; sourceTree = "<group>"; };
@@ -1209,8 +1209,8 @@
 		6B4A6E68172F048F00A7CE73 /* ECSlidingViewController */ = {
 			isa = PBXGroup;
 			children = (
-				6B4A6E69172F048F00A7CE73 /* ECSlidingViewController.h */,
-				6B4A6E6A172F048F00A7CE73 /* ECSlidingViewController.m */,
+				841AB067189FA63600D0A34B /* ECSlidingViewController.h */,
+				841AB068189FA63600D0A34B /* ECSlidingViewController.m */,
 				6B4A6E6B172F048F00A7CE73 /* UIImage+ImageWithUIView.h */,
 				6B4A6E6C172F048F00A7CE73 /* UIImage+ImageWithUIView.m */,
 			);
@@ -1710,6 +1710,7 @@
 				01085FF5180345D200A31F63 /* ResetPassword.m in Sources */,
 				16E4B1B0187053F20099D075 /* NSData+GIF.m in Sources */,
 				84BD98721877F6E9008B6131 /* userlocation.m in Sources */,
+				841AB069189FA63600D0A34B /* ECSlidingViewController.m in Sources */,
 				16E4B1B9187053F20099D075 /* UIImage+GIF.m in Sources */,
 				0179E9FC17F36C4C0027526C /* Helpers.m in Sources */,
 				01085FFF1803490500A31F63 /* CharityDetails.m in Sources */,
@@ -1752,7 +1753,6 @@
 				6B89276216DEA49C00F9100F /* FPTouchView.m in Sources */,
 				6B89276516DEB10200F9100F /* popSelect.m in Sources */,
 				842E3316187424440057EAFB /* GetEncryptionValue.m in Sources */,
-				6B4A6E6D172F048F00A7CE73 /* ECSlidingViewController.m in Sources */,
 				6B4A6E6E172F048F00A7CE73 /* UIImage+ImageWithUIView.m in Sources */,
 				01085FE81803459000A31F63 /* NewCard.m in Sources */,
 				01085FE51803458800A31F63 /* NewBank.m in Sources */,

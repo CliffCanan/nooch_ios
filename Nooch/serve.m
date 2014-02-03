@@ -209,7 +209,7 @@ NSString *amnt;
 -(void)getDetails:(NSString*)username{
     //self.tagName=@"memberDetail";
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     requestMem=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&accessToken=%@",ServerUrl,@"GetMemberDetails",username,[defaults valueForKey:@"OAuthToken"]]]];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestMem delegate:self];
@@ -1690,12 +1690,12 @@ NSString *amnt;
     NSURL *url = [NSURL URLWithString:urlString];
     dictInv=[[NSMutableDictionary alloc]init];
     
-    [dictInv setObject:memberNotificationSettings forKey:@"notificationSettings"];
+    [dictInv setObject:memberNotificationSettings forKey:@"memberNotificationSettings"];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
     NSError *error;
-    postDataInv = [NSJSONSerialization dataWithJSONObject:memberNotificationSettings
+    postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
     
     
@@ -1898,6 +1898,23 @@ NSString *amnt;
         NSLog(@"connect error");
     
 }
+-(void)saveShareToFB_Twiitter:(NSString*)PostTo{
+    //
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSString * memId = [defaults objectForKey:@"MemberId"];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/SaveSocialMediaPost?MemberId=%@&PostTo=%@&PostContent=%@&accessToken=%@",ServerUrl,memId,PostTo,PostTo,[defaults valueForKey:@"OAuthToken"]];
+    NSLog(@"%@",urlString);
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+    
 
+}
 
 @end

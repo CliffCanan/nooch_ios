@@ -142,7 +142,7 @@
         memo.text=@"";
     }
     
-    [memo setStyleClass:@"details_label"];
+    [memo setStyleClass:@"details_label_memo"];
     [memo setStyleClass:@"blue_text"];
     [memo setStyleClass:@"italic_font"];
     [self.view addSubview:memo];
@@ -158,7 +158,6 @@
         }
          [self.view addSubview:location];
     }
-
     else
     {
         [location setText:@""];
@@ -178,8 +177,8 @@
         NSLog(@"%@",[dateFormatter stringFromDate:yourDate]);
         NSString*statusstr;
         if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
-            [status setStyleClass:@"details_label1"];
-           statusstr=@"Pending...:";
+            //[status setStyleClass:@"details_label1"];
+           statusstr=@"Pending... :";
         }
         else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Donation"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Received"])
         {
@@ -191,7 +190,14 @@
         }
           NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
         if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
-            [status setText:[NSString stringWithFormat:@"%@ (Sent on %@ %@,%@)",statusstr,[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]]];
+            //details_label1
+            [status setText:[NSString stringWithFormat:@"%@",statusstr]];
+            UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(110, 190, 320, 30)];
+            [datelbl setTextColor:[UIColor grayColor]];
+            [self.view addSubview:datelbl];
+            datelbl.text=[NSString stringWithFormat:@"(Sent on %@ %@,%@)",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]];
+            //[status setText:[NSString stringWithFormat:@"(Sent on %@ %@,%@)",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]]];
+            
         }
       else
       {
@@ -359,6 +365,7 @@
     }
     
 }
+
 
 - (void) fulfill_request
 {
