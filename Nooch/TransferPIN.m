@@ -189,15 +189,6 @@
     user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
     user_pic.layer.borderWidth = 2; user_pic.clipsToBounds = YES;
     user_pic.layer.cornerRadius = 26;
-    if (self.receiver[@"Photo"]) {
-        [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
-                 placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
-    }
-    else
-    {
-        [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
-                 placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
-    }
     [self.view addSubview:user_pic];
     
     UILabel *total = [[UILabel alloc] initWithFrame:CGRectMake(10, 200, 290, 30)];
@@ -898,6 +889,8 @@
     if (alertView.tag == 1) {
         if (buttonIndex == 0) {
             [nav_ctrl popToRootViewControllerAnimated:YES];
+            
+            
         }else if (buttonIndex == 1){
             [nav_ctrl popToRootViewControllerAnimated:NO];
             TransactionDetails *td = [[TransactionDetails alloc] initWithData:self.trans];

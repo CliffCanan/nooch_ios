@@ -9,8 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "serve.h"
 
-@interface DonationAmount : UIViewController<UITextFieldDelegate,serveD>
-
+@interface DonationAmount : UIViewController<UITextFieldDelegate,serveD,UITextViewDelegate>
+{
+    UIView*dedicateView;
+    NSString*Donation_memo;
+    UITextView* txtDedicate;
+}
 - (id)initWithReceiver:(NSDictionary *)receiver;
 
 @end

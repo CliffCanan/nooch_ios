@@ -1403,16 +1403,40 @@
   
 	/**  Sets the style for the 'Cancel' and '+ Add Dedication' buttons. **/
 	.dedication_buttons {
-		width			: 151px;
-		height			: 55px;
-		top				: 204px;
+		width			: 135px;
+		height			: 50px;
+		top				: 155px;
 		font-family		: "Roboto";
 		font-size		: 20px;
 		font-weight     : light;
 		text-align      : center;
 		color 			: #ffffff;
 	}
-  
+  .dedication_buttons_add {
+		width			: 152px;
+		height			: 55px;
+		top				: 155px;
+		font-family		: "Roboto";
+		font-size		: 20px;
+		font-weight     : light;
+		text-align      : center;
+		color 			: #ffffff;
+         left             :150px;
+        background-image	: linear-gradient(#7fd034, #6ab029);
+	}
+    .dedication_buttons_cancel_dedication{
+        width			: 152px;
+		height			: 55px;
+		top				: 155px;
+		font-family		: "Roboto";
+		font-size		: 20px;
+		font-weight     : light;
+		text-align      : center;
+		color 			: #ffffff;
+        left             :-2px;
+        background-image			: linear-gradient(#c0c2c4, #b1b3b6);
+
+    }
 	/**  Sets the left location of the 'Cancel' button. **/
 	#dedication_buttons_cancel 	{ left	: 9px; }
 
@@ -1961,7 +1985,28 @@
 		font-family			: "Roboto";
 		font-weight			: light;
 	}
-    
+    #dedicate_segcontrol {
+		width				: 270px;
+		height				: 30px;
+		left				: 15px;
+		top					: 6px;
+		-ios-tint-color		: #494475;
+		background-color	: #494475;
+		border-color		: #494475;
+		font-family			: "Roboto";
+		font-weight			: light;
+	}
+     #dedicate_textview {
+		width				: 280px;
+		height				: 30px;
+		left				: 10px;
+		top					: 55px;
+		background-color	: white;
+		border-color		: #7e7e7e;
+		font-family			: "Roboto";
+		font-weight			: light;
+
+	}
     #history_search {
             background-color : #d1d3d4;
     }

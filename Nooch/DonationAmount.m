@@ -132,6 +132,8 @@
     [self.view addSubview:fifty];
     
     [self.amount becomeFirstResponder];
+    //set default string memo
+    Donation_memo=@"In Honor Of ";
 }
 
 - (void) five_dollars
@@ -161,12 +163,102 @@
     self.amount.text = @"$50.00";
     self.amnt = [@"5000" mutableCopy];
 }
+-(void)completed_or_pending:(UISegmentedControl*)segment{
+    if ([segment selectedSegmentIndex]==0) {
+        Donation_memo=@"In Honor Of ";
+    }
+    else
+    {
+        Donation_memo=@"In Memory Of ";
+    }
+}
+-(void)add_Dedication{
+    if ([txtDedicate.text length]>0) {
+        [self.amount becomeFirstResponder];
+        Donation_memo=[Donation_memo stringByAppendingString:txtDedicate.text];
+        [UIView beginAnimations:@"bucketsOff" context:nil];
+        [UIView setAnimationDuration:0.3];
+        [UIView setAnimationDelegate:self];
+        dedicateView.alpha=0;
+        [UIView commitAnimations];
+        
+        [dedicateView removeFromSuperview];
+    }
+   
+}
+-(void)cancel_dedication{
+    Donation_memo=@"";
+    [UIView beginAnimations:@"bucketsOff" context:nil];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    dedicateView.alpha=0;
+    [UIView commitAnimations];
 
+    [dedicateView removeFromSuperview];
+    [self.amount becomeFirstResponder];
+}
 - (void) dedicate
 {
+    [self.amount resignFirstResponder];
+    [dedicateView removeFromSuperview];
+    dedicateView=[[UIView alloc] initWithFrame:CGRectMake(10, 64, 300, 220)];
+    dedicateView.backgroundColor=[UIColor whiteColor];
+    dedicateView.alpha=0;
+    [self.view addSubview:dedicateView];
     
+    
+    //Segment control
+    NSArray *seg_items = @[@"In Honor Of",@"In Memory Of"];
+    UISegmentedControl *completed_pending = [[UISegmentedControl alloc] initWithItems:seg_items];
+    [completed_pending setStyleId:@"dedicate_segcontrol"];
+    [completed_pending addTarget:self action:@selector(completed_or_pending:) forControlEvents:UIControlEventValueChanged];
+    [dedicateView addSubview:completed_pending];
+    [completed_pending setSelectedSegmentIndex:0];
+    
+    //Textbox
+    txtDedicate = [[UITextView alloc] initWithFrame:CGRectMake(10,45, 280, 100)];
+    [txtDedicate setText:[NSString stringWithFormat:@"%@",@"Type your dedication here..."]];
+    [txtDedicate setBackgroundColor:[UIColor clearColor]];
+    txtDedicate.textColor=[UIColor grayColor];
+    //[txtDedicate becomeFirstResponder];
+    txtDedicate.layer.borderColor=[[UIColor grayColor]CGColor];
+    txtDedicate.layer.borderWidth=2.0f;
+    txtDedicate.font=[UIFont systemFontOfSize:15.0f];
+    txtDedicate.layer.cornerRadius=5.0f;
+    txtDedicate.delegate=self;
+    [txtDedicate setStyleClass:@"dedicate_textview"];
+    [dedicateView addSubview:txtDedicate];
+    
+    //Cancel Button
+    UIButton *cancel = [UIButton buttonWithType:UIButtonTypeCustom];
+    [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
+    [cancel setFrame:CGRectMake(0, 170, 40, 40)];
+    [cancel setStyleClass:@"dedication_buttons_cancel_dedication"];
+    [cancel addTarget:self action:@selector(cancel_dedication) forControlEvents:UIControlEventTouchUpInside];
+    [dedicateView addSubview:cancel];
+    
+    //Add Dedication
+    UIButton *dedicaiton = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [dedicaiton setTitle:@"Add Dedication" forState:UIControlStateNormal];
+    [dedicaiton setFrame:CGRectMake(150, 170, 40, 40)];
+    [dedicaiton setStyleClass:@"dedication_buttons_add"];
+    
+    [dedicaiton addTarget:self action:@selector(add_Dedication) forControlEvents:UIControlEventTouchUpInside];
+    [dedicateView addSubview:dedicaiton];
+    
+    [UIView beginAnimations:@"bucketsOff" context:nil];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+     dedicateView.alpha=1;
+  
+    [UIView commitAnimations];
+    
+    
+   }
+- (void)textViewDidBeginEditing:(UITextView *)textView{
+    textView.text=@"";
 }
-
 - (void) donate
 {
     if ([[self.amount text] length] < 3) {
@@ -175,7 +267,7 @@
         return;
     }
     NSMutableDictionary *transaction = [self.receiver mutableCopy];
-    [transaction setObject:[self.memo text] forKey:@"memo"];
+    [transaction setObject:Donation_memo forKey:@"memo"];
     float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
     TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"donation" amount:input_amount];
     [self.navigationController pushViewController:pin animated:YES];

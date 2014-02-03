@@ -62,12 +62,6 @@
 {
     [super viewDidLoad];
     [self.navigationItem setHidesBackButton:YES];
-     //NSLog(@"%@",nav_ctrl.viewControllers);
-//    [nav_ctrl popViewControllerAnimated:YES];
-//     NSLog(@"%@",nav_ctrl.viewControllers);
-//     Register *reg = [Register new];
-//     [nav_ctrl pushViewController:reg animated:YES];
-//     NSLog(@"%@",nav_ctrl.viewControllers);
     
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
@@ -182,9 +176,7 @@
 
 -(void)sideright:(id)sender
 {
-    
     [UIView beginAnimations:nil context:nil];
-    
     [UIView setAnimationDelegate:self];
     [UIView setAnimationDuration:0.5];
     self.list.frame=CGRectMake(0, 84, 320, self.view.frame.size.height);
@@ -203,8 +195,6 @@
     [UIView setAnimationDuration:0.5];
     self.list.frame=CGRectMake(-276, 84, 320, self.view.frame.size.height);
     mapArea.frame=CGRectMake(0, 84,320,self.view.frame.size.height);
-
-   // mapArea.frame=CGRectMake(0, 84,320,self.view.frame.size.height);
     [UIView commitAnimations];
     isMapOpen=YES;
     [self mapPoints];
