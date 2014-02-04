@@ -41,9 +41,27 @@
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
-
-    [self.navigationItem setTitle:@"How Much"];
     
+    [self.navigationItem setTitle:@"How Much"];
+    UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    
+    [balance setFrame:CGRectMake(0, 0, 60, 30)];
+    
+    if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
+        
+        [balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+        
+    }
+    
+    [balance.titleLabel setFont:kNoochFontMed];
+    
+    [balance setStyleId:@"navbar_balance"];
+    
+    [self.navigationItem setRightBarButtonItem:Nil];
+    
+    UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:balance];
+    
+    [self.navigationItem setRightBarButtonItem:funds];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     self.amnt = [@"" mutableCopy];
@@ -59,7 +77,7 @@
     [bar setStyleId:@"barbackground_purp"];
     [self.view addSubview:bar];
     
-    UILabel *to_label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
+     to_label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
     [to_label setTextAlignment:NSTextAlignmentCenter];
     [to_label setText:[NSString stringWithFormat:@"%@",[self.receiver valueForKey:@"OrganizationName"]]];
     [to_label setStyleId:@"nonprofit_howmuch_orgname"];
@@ -70,10 +88,10 @@
     [pic setStyleId:@"nonprofit_orgpic"];
     NSLog(@"%@",self.receiver);
     [pic setImageWithURL:[NSURL URLWithString:[self.receiver valueForKey:@"PhotoIcon"]]
-         placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+        placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
     
-
-   // [pic setStyleCSS:@"background-image : url(4KforCancer.png)"];
+    
+    // [pic setStyleCSS:@"background-image : url(4KforCancer.png)"];
     [self.view addSubview:pic];
     
     self.amount = [[UITextField alloc] initWithFrame:CGRectMake(30, 40, 260, 80)];
@@ -96,6 +114,7 @@
     self.send = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.send setFrame:CGRectMake(160, 160, 150, 50)]; [self.send setBackgroundColor:kNoochGreen];
     [self.send setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal]; [self.send setTitle:@"Donate" forState:UIControlStateNormal];
+    [self.send setEnabled:NO];
     [self.send addTarget:self action:@selector(donate) forControlEvents:UIControlEventTouchUpInside];
     [self.send setStyleId:@"nonprofit_donatebutton"];
     [self.view addSubview:self.send];
@@ -106,6 +125,7 @@
     [dedicaiton setTitle:@"" forState:UIControlStateNormal];
     [dedicaiton setFrame:CGRectMake(30, 170, 40, 40)];
     [dedicaiton setStyleId:@"nonprofit_dedication_icon"];
+    
     [dedicaiton addTarget:self action:@selector(dedicate) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:dedicaiton];
     
@@ -183,21 +203,23 @@
         [UIView commitAnimations];
         
         [dedicateView removeFromSuperview];
+         [to_label setText:[NSString stringWithFormat:@"%@",[self.receiver valueForKey:@"OrganizationName"]]];
     }
     else{
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Enter Dedication" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
     }
-   
+    
 }
 -(void)cancel_dedication{
+    [to_label setText:[NSString stringWithFormat:@"%@",[self.receiver valueForKey:@"OrganizationName"]]];
     Donation_memo=@"";
     [UIView beginAnimations:@"bucketsOff" context:nil];
     [UIView setAnimationDuration:0.3];
     [UIView setAnimationDelegate:self];
     dedicateView.alpha=0;
     [UIView commitAnimations];
-
+    
     [dedicateView removeFromSuperview];
     [self.amount becomeFirstResponder];
 }
@@ -210,7 +232,7 @@
     dedicateView.backgroundColor=[UIColor whiteColor];
     dedicateView.alpha=0;
     [self.view addSubview:dedicateView];
-    
+    to_label.text=@"Enter your Dedication";
     
     //Segment control
     NSArray *seg_items = @[@"In Honor Of",@"In Memory Of"];
@@ -220,8 +242,8 @@
     [dedicateView addSubview:Honor_Memory];
     [Honor_Memory setSelectedSegmentIndex:0];
     Donation_memo=@"In Honor Of ";
-   
-
+    
+    
     //Textbox
     txtDedicate = [[UITextView alloc] initWithFrame:CGRectMake(10,45, 280, 100)];
     [txtDedicate setText:[NSString stringWithFormat:@"%@",@"Type your dedication here..."]];
@@ -257,12 +279,12 @@
     [UIView beginAnimations:@"bucketsOff" context:nil];
     [UIView setAnimationDuration:0.3];
     [UIView setAnimationDelegate:self];
-     dedicateView.alpha=1;
-  
+    dedicateView.alpha=1;
+    
     [UIView commitAnimations];
     
     
-   }
+}
 - (void)textViewDidBeginEditing:(UITextView *)textView{
     textView.text=@"";
 }
@@ -291,13 +313,6 @@
         NSString *groupingSeparator = [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
         [formatter setGroupingSeparator:groupingSeparator];
         [formatter setGroupingSize:3];
-        //        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-//        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-//        [formatter setGeneratesDecimalNumbers:YES];
-//        [formatter setUsesGroupingSeparator:YES];
-//        NSString *groupingSeparator = [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
-//        [formatter setGroupingSeparator:groupingSeparator];
-//        [formatter setGroupingSize:3];
         
         if([string length] == 0){ //backspace
             if ([self.amnt length] > 0) {
@@ -307,6 +322,12 @@
             NSString *temp = [self.amnt stringByAppendingString:string];
             self.amnt = [temp mutableCopy];
         }
+        
+        if ([self.amnt length]==0) {
+            [self.send setEnabled:NO];
+        }
+        else
+            [self.send setEnabled:YES];
         float maths = [self.amnt floatValue];
         maths /= 100;
         if (maths > 1000) {

@@ -111,7 +111,7 @@
                 placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
         
     }
-   
+    
 }
 
 -(void)showMenu
@@ -180,7 +180,7 @@
     
     [spinner startAnimating];
     
-
+    
     [self.navigationItem setTitle:@"Profile Info"];
     serve *serveOBJ=[serve new ];
     
@@ -207,7 +207,7 @@
         [lbl setFont:[UIFont systemFontOfSize:22]];
         [lbl setTextColor:[UIColor whiteColor]];
         [self.view addSubview:lbl];
-       crossbtn=[UIButton buttonWithType:UIButtonTypeCustom];
+        crossbtn=[UIButton buttonWithType:UIButtonTypeCustom];
         crossbtn.frame=CGRectMake(10,20, 70,30);
         [crossbtn setStyleClass:@"smscrossbuttn-icon"];
         [crossbtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -215,15 +215,15 @@
         [crossbtn setTitle:@"Cancel" forState:UIControlStateNormal];
         [crossbtn addTarget:self action:@selector(crossClicked) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:crossbtn];
-
+        
     }
     else
     {
-    [crossbtn removeFromSuperview];
-    [navBar removeFromSuperview];
-    [lbl removeFromSuperview];
+        [crossbtn removeFromSuperview];
+        [navBar removeFromSuperview];
+        [lbl removeFromSuperview];
     }
-
+    
     picture = [UIImageView new];
     
     [picture setFrame:CGRectMake(20, 5+down, 60, 60)];
@@ -238,7 +238,7 @@
     
     [self.view addSubview:picture];
     
-  
+    
     
     start = [[user valueForKey:@"DateCreated"] rangeOfString:@"("];
     
@@ -272,15 +272,15 @@
     [memSincelbl setUserInteractionEnabled:NO];
     [memSincelbl setBackgroundColor:[UIColor clearColor]];
     if (isSignup) {
-         [memSincelbl setStyleClass:@"memtable_view_cell_textlabel_1_64"];
+        [memSincelbl setStyleClass:@"memtable_view_cell_textlabel_1_64"];
     }
     else
         [memSincelbl setStyleClass:@"memtable_view_cell_textlabel_1"];
-   
+    
     
     [self.view addSubview:memSincelbl];
     
-        self.name = [[UITextField alloc] initWithFrame:CGRectMake(20, 70+down, 280, 30)];
+    self.name = [[UITextField alloc] initWithFrame:CGRectMake(20, 70+down, 280, 30)];
     
     [self.name setTextAlignment:NSTextAlignmentRight]; [self.name setBackgroundColor:[UIColor clearColor]];
     
@@ -745,11 +745,11 @@
         
         NSLog(@"Not Same");
         
-                serve *req = [serve new];
+        serve *req = [serve new];
         
         [req SendSMSApi:strPhoneNumber msg:@"PLEASE RESPOND \"GO\" TO THE TEXT"];
         
-      
+        
     }
     
     
@@ -945,7 +945,12 @@
     //    {
     
     //NSString *number = [NSString stringWithFormat:@"%@%@%@",[self.phone.text substringWithRange:NSMakeRange(1, 3)],[self.phone.text substringWithRange:NSMakeRange(6, 3)],[self.phone.text substringWithRange:NSMakeRange(10, 4)]];
-    
+    if ( [[assist shared]islocationAllowed]) {
+        [transactionInput setObject:[[assist shared]islocationAllowed]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO] forKey:@"ShowInSearch"];
+
+    }
+    else
+         [transactionInput setObject:[[assist shared]islocationAllowed]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO] forKey:@"ShowInSearch"];
     [transactionInput setObject:strPhoneNumber forKey:@"ContactNumber"];
     
     [transactionInput setObject:self.zip.text forKey:@"Zipcode"];
@@ -1023,7 +1028,7 @@
         self.name.text=[NSString stringWithFormat:@"%@ %@",[[arr objectAtIndex:0] capitalizedString],[[arr objectAtIndex:1] capitalizedString]];
         
     }
-   
+    
 }
 
 -(void) getEncryptedPassword:(NSString *)newPassword{
@@ -1067,16 +1072,16 @@
     actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
     
     [actionSheetObject showInView:self.view];
-   
+    
 }
 
 
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-       if(buttonIndex == 0)
+    if(buttonIndex == 0)
         
     {
-   
+        
         //self.pic.layer.borderColor = kNoochBlue.CGColor;
         
         //[self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
@@ -1107,7 +1112,7 @@
             
             return;
             
-                 }
+        }
         
         self.picker=[UIImagePickerController new];
         
@@ -1119,7 +1124,7 @@
         self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         
         [self presentViewController:self.picker animated:YES completion:Nil];
-    
+        
         
     }
     
@@ -1417,34 +1422,34 @@
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 
 {      NSError* error;
-     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
-     UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-   
-     [Alert show];
-    
-    
-    [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-    
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-    
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-    
-    NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
-    [timer invalidate];
-    // timer=nil;
-      [nav_ctrl performSelector:@selector(disable)];
-      [nav_ctrl performSelector:@selector(reset)];
-      [nav_ctrl popViewControllerAnimated:YES];
-      Register *reg = [Register new];
-      [nav_ctrl pushViewController:reg animated:YES];
-       me = [core new];
-    return;
-     }
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
+        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        
+        [Alert show];
+        
+        
+        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        
+        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+        [timer invalidate];
+        // timer=nil;
+        [nav_ctrl performSelector:@selector(disable)];
+        [nav_ctrl performSelector:@selector(reset)];
+        [nav_ctrl popViewControllerAnimated:YES];
+        Register *reg = [Register new];
+        [nav_ctrl pushViewController:reg animated:YES];
+        me = [core new];
+        return;
+    }
     
     if([tagName isEqualToString:@"MySettingsResult"])
         
     {
-    dictProfileinfo=[NSJSONSerialization
+        dictProfileinfo=[NSJSONSerialization
                          
                          JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                          
@@ -1461,7 +1466,7 @@
         getEncryptionOldPassword= [dictProfileinfo objectForKey:@"Password"];
         
         if([[resultValue valueForKey:@"Result"] isEqualToString:@"Your details have been updated successfully."]){
-          
+            
             NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
             
             [defaults setObject:@"YES" forKey:@"ProfileComplete"];
@@ -1479,7 +1484,7 @@
                 
             }
             
-
+            
             
         }else{
             
@@ -1489,7 +1494,7 @@
                 
                 [[me usr] setObject:validated forKey:@"validated"];
                 
-              
+                
                 
             }
             
@@ -1670,7 +1675,7 @@
         else if (![[dictProfileinfo valueForKey:@"FirstName"] isKindOfClass:[NSNull class]])
             
         {
-          
+            
             self.ServiceType=@"name";
             
             Decryption *decry = [[Decryption alloc] init];
@@ -1681,13 +1686,13 @@
             
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"FirstName"]];
             
-          
+            
         }
         
         else if (![[dictProfileinfo valueForKey:@"LastName"] isKindOfClass:[NSNull class]])
             
         {
-          
+            
             self.ServiceType=@"lastname";
             
             Decryption *decry = [[Decryption alloc] init];
@@ -1697,7 +1702,7 @@
             decry->tag = [NSNumber numberWithInteger:2];
             
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"LastName"]];
-           
+            
         }
         
         else if (![[dictProfileinfo valueForKey:@"UserName"] isKindOfClass:[NSNull class]])
@@ -1944,7 +1949,7 @@
             self.ServiceType=@"name";
             
             if (![[dictProfileinfo objectForKey:@"FirstName"] isKindOfClass:[NSNull class]]) {
-               
+                
                 Decryption *decry = [[Decryption alloc] init];
                 
                 decry.Delegate = self;
@@ -1954,9 +1959,9 @@
                 [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"FirstName"]];
                 
             }
-         
+            
         }
-       
+        
         
     }
     
@@ -1967,7 +1972,7 @@
         self.ServiceType=@"name";
         self.zip.text=[sourceData objectForKey:@"Status"];
         if (![[dictProfileinfo objectForKey:@"FirstName"] isKindOfClass:[NSNull class]]) {
-           
+            
             Decryption *decry = [[Decryption alloc] init];
             
             decry.Delegate = self;
@@ -1992,7 +1997,7 @@
             
             self.name.text=[NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
             
-           // NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
+            // NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
             if (![[dictProfileinfo objectForKey:@"LastName"] isKindOfClass:[NSNull class]])
                 
             {
@@ -2022,7 +2027,7 @@
                 [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"UserName"]];
                 
             }
-           
+            
         }
         
     }
@@ -2037,7 +2042,7 @@
             
             NSString* letterA=[[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
             self.name.text=[self.name.text stringByAppendingString:[NSString stringWithFormat:@" %@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]]];
-                }
+        }
         
         if (![[dictProfileinfo objectForKey:@"UserName"] isKindOfClass:[NSNull class]]) {
             
@@ -2048,7 +2053,7 @@
             decry->tag = [NSNumber numberWithInteger:2];
             
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"UserName"]];
-          
+            
         }
         
     }
@@ -2056,9 +2061,9 @@
     else  if ([self.ServiceType isEqualToString:@"email"])
         
     {
-      
+        
         self.email.text=[sourceData objectForKey:@"Status"];
-       
+        
         if (![[dictProfileinfo objectForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]]&& [dictProfileinfo objectForKey:@"RecoveryMail"]!=NULL && ![[dictProfileinfo objectForKey:@"RecoveryMail"] isEqualToString:@""]) {
             
             self.ServiceType=@"recovery";
@@ -2080,7 +2085,7 @@
             
             self.ServiceType=@"pwd";
             if (![[dictProfileinfo objectForKey:@"Password"] isKindOfClass:[NSNull class]]) {
-            
+                
                 Decryption *decry = [[Decryption alloc] init];
                 
                 decry.Delegate = self;
@@ -2092,7 +2097,7 @@
                 [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Password"]];
                 
             }
-           
+            
         }
         
     }
@@ -2135,7 +2140,7 @@
         [spinner setHidden:YES];
         
     }
-   
+    
 }
 
 - (void)didReceiveMemoryWarning

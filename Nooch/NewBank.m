@@ -40,7 +40,7 @@
     [self.view addGestureRecognizer: tap];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-   
+    
 	// Do any additional setup after loading the view.
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
@@ -120,7 +120,7 @@
     [self.view addSubview:encrypt_icon];
 }
 -(void)addBank:(id)sender{
-       self.name.text=[self.name.text lowercaseString];
+    self.name.text=[self.name.text lowercaseString];
     NSArray*arr=[self.name.text componentsSeparatedByString:@" "];
     if ([arr count]==1) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Enter First Name and Last Name in Account Name" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -133,7 +133,7 @@
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Account Number" message:@"Please double check your account number, it should ranges between 5 and 17 digits." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
-       
+        
         
     }
     
@@ -141,17 +141,17 @@
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Routing Number" message:@"Please double check your routing number, it should be 9 digits." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
-            }
+    }
     
     else if(([self.name.text isEqualToString:@""]) || ([self.name.text isEqual:[NSNull null]]))
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"Please enter the name on the account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
-//        btnAddBank.enabled=YES;
-//        if ([self.view.subviews containsObject:loader]) {
-//            [loader removeFromSuperview];
-//            [me endWaitStat];
-//        }
+        //        btnAddBank.enabled=YES;
+        //        if ([self.view.subviews containsObject:loader]) {
+        //            [loader removeFromSuperview];
+        //            [me endWaitStat];
+        //        }
     }
     else
     {
@@ -170,7 +170,7 @@
         
         
     }
- 
+    
 }
 -(void)checkRoutingNumberService:(NSString*)RoutingString{
     serve *vBank = [serve new];
@@ -206,22 +206,22 @@
         }
         else if ([textField.text stringByReplacingCharactersInRange:range withString:string].length == 9)
         {
-       
-          if (![self CheckRoutingNo:[NSString stringWithFormat:@"%@%@",textField.text, string]]) {
-              //[self.view setUserInteractionEnabled:NO];
-              
-              UIAlertView*alert= [[UIAlertView alloc] initWithTitle:@"Routing number not valid" message:@"Enter a valid Routing number" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] ;
-              [alert setTag:2300];
-              [alert show];
-              self.routing_number.text=@"";
-              
-              return YES;
-          }
-          else{
-               [self checkRoutingNumberService:[NSString stringWithFormat:@"%@%@",self.routing_number.text,string]];
-          }
-        //[self CheckRoutingNo:[NSString stringWithFormat:@"%@%@",textField.text, string]];
-    }
+            
+            if (![self CheckRoutingNo:[NSString stringWithFormat:@"%@%@",textField.text, string]]) {
+                //[self.view setUserInteractionEnabled:NO];
+                
+                UIAlertView*alert= [[UIAlertView alloc] initWithTitle:@"Routing number not valid" message:@"Enter a valid Routing number" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] ;
+                [alert setTag:2300];
+                [alert show];
+                self.routing_number.text=@"";
+                
+                return YES;
+            }
+            else{
+                [self checkRoutingNumberService:[NSString stringWithFormat:@"%@%@",self.routing_number.text,string]];
+            }
+            //[self CheckRoutingNo:[NSString stringWithFormat:@"%@%@",textField.text, string]];
+        }
     }
     else if (textField==self.account_number)
     {
@@ -333,20 +333,20 @@
             self.name.text=[[arr objectAtIndex:0] capitalizedString];
             self.name.text=[self.name.text stringByAppendingString:[NSString stringWithFormat:@" %@",[[arr objectAtIndex:1] capitalizedString]]];
         }
-       
+        
     }
 }
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-     NSError* error;
+    NSError* error;
     if ([tagName isEqualToString:@"validateBank"]) {
-       
+        
         NSMutableDictionary*dictResponse = [NSJSONSerialization
-                        JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                        options:kNilOptions
-                        error:&error];
-       
+                                            JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                            options:kNilOptions
+                                            error:&error];
+        
         if ([[[dictResponse valueForKey:@"ValidateBankResult"] stringValue]isEqualToString:@"0"]) {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Valid Bank Routing Number!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
@@ -355,7 +355,7 @@
         }
         else
         {
-           [self.add setEnabled:YES];
+            [self.add setEnabled:YES];
         }
         
     }
@@ -365,7 +365,7 @@
                                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                             options:kNilOptions
                                             error:&error];
-;
+        ;
         NSDictionary *resultValue = [loginResult valueForKey:@"SaveBankAccountDetailsResult"];
         
         if([[resultValue valueForKey:@"Result"] isEqualToString:@"Your account details have been saved successfully."]){
@@ -377,7 +377,7 @@
             self.name .text = @"";
             self.account_number.text=@"";
             
-         //   [self reloadData];
+            //   [self reloadData];
             //[me getBanks];
             //[self cancel];
             
@@ -391,14 +391,14 @@
             [self.navigationController popViewControllerAnimated:YES];
             
         }
-    else
+        else
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
         }
+        
+    }
     
-}
-
 }
 
 - (void)didReceiveMemoryWarning

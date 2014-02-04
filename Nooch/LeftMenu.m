@@ -58,12 +58,12 @@
     self.name = [[UILabel alloc] initWithFrame:CGRectMake(65, 40, 150, 20)];
     [self.name setStyleId:@"lside_firstname"];
     [self.name setText:[[user objectForKey:@"firstName"] capitalizedString]];
-     //[name setText:@"Preston"];
-     [user_bar addSubview:self.name];
+    //[name setText:@"Preston"];
+    [user_bar addSubview:self.name];
     
     self.balance = [[UILabel alloc] initWithFrame:CGRectMake(60, 48, 150, 10)];
     [self.balance setStyleId:@"lside_balance"];
-     [self.view addSubview:self.balance];
+    [self.view addSubview:self.balance];
     
     user_pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 20, 60, 60)];
     user_pic.clipsToBounds = YES;
@@ -95,13 +95,13 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     //me=[core new];
-   // assist*assistOBJ=[assist new];
+    // assist*assistOBJ=[assist new];
     //clear Image cache
-           [self.name setText:[[user objectForKey:@"firstName"] capitalizedString]];
+    [self.name setText:[[user objectForKey:@"firstName"] capitalizedString]];
     
     if ([user objectForKey:@"Balance"]) {
         if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound)
-           [self.balance setText:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]]];
+            [self.balance setText:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]]];
         else
             [self.balance setText:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]]];
         
@@ -112,14 +112,14 @@
     if ([[user objectForKey:@"Photo"] length]>0 && [user objectForKey:@"Photo"]!=nil) {
         [user_pic setStyleId:@"lside_userpic"];
         [user_pic setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
-            placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                 placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
         user_pic.clipsToBounds = YES;
         user_pic.layer.cornerRadius = 30;
         user_pic.layer.borderWidth = 2; user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
         [user_pic setUserInteractionEnabled:YES];
-  
+        
     }
-   }
+}
 -(void) go_profile {
     isProfileOpenFromSideBar=YES;
     ProfileInfo *prof = [ProfileInfo new];

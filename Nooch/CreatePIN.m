@@ -90,7 +90,7 @@
                         //push invite code
                         
                         ReferralCode *code_entry = [[ReferralCode alloc] initWithData:self.user];
-                        [self.navigationController pushViewController:code_entry animated:YES]; 
+                        [self.navigationController pushViewController:code_entry animated:YES];
                     }else{
                         self.pin_check = @"";
                         [self.pin setText:@""];
@@ -135,7 +135,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-   
+    
     UIButton* btnback=[UIButton buttonWithType:UIButtonTypeCustom];
     
     [btnback setImage:[UIImage imageNamed:@"back-arrow-blue.png"] forState:UIControlStateNormal];

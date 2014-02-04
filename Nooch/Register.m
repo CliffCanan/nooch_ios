@@ -28,7 +28,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-         [self.navigationController setNavigationBarHidden:YES];
+        [self.navigationController setNavigationBarHidden:YES];
         // Custom initialization
     }
     return self;
@@ -36,27 +36,27 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-     [self.navigationController setNavigationBarHidden:YES];
+    [self.navigationController setNavigationBarHidden:YES];
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [[UIApplication sharedApplication]setStatusBarHidden:YES];
-     [nav_ctrl performSelector:@selector(disable)];
+    [nav_ctrl performSelector:@selector(disable)];
     /*NSArray *familyNames = [[NSArray alloc] initWithArray:[UIFont familyNames]];
-    NSArray *fontNames;
-    NSInteger indFamily, indFont;
-    for (indFamily=0; indFamily<[familyNames count]; ++indFamily)
-    {
-        NSLog(@"Family name: %@", [familyNames objectAtIndex:indFamily]);
-        fontNames = [[NSArray alloc] initWithArray:
-                     [UIFont fontNamesForFamilyName:
-                      [familyNames objectAtIndex:indFamily]]];
-        for (indFont=0; indFont<[fontNames count]; ++indFont)
-        {
-            NSLog(@"    Font name: %@", [fontNames objectAtIndex:indFont]);
-        }
-    }*/
+     NSArray *fontNames;
+     NSInteger indFamily, indFont;
+     for (indFamily=0; indFamily<[familyNames count]; ++indFamily)
+     {
+     NSLog(@"Family name: %@", [familyNames objectAtIndex:indFamily]);
+     fontNames = [[NSArray alloc] initWithArray:
+     [UIFont fontNamesForFamilyName:
+     [familyNames objectAtIndex:indFamily]]];
+     for (indFont=0; indFont<[fontNames count]; ++indFont)
+     {
+     NSLog(@"    Font name: %@", [fontNames objectAtIndex:indFont]);
+     }
+     }*/
     
     // Do any additional setup after loading the view from its nib.
     
@@ -221,10 +221,10 @@
                                              NSHTTPURLResponse *urlResponse, NSError *error)
      {
          self.facebook_info = [NSJSONSerialization
-              JSONObjectWithData:respData //1
-              
-              options:kNilOptions
-              error:&error];
+                               JSONObjectWithData:respData //1
+                               
+                               options:kNilOptions
+                               error:&error];
          self.name_field.text = [NSString stringWithFormat:@"%@ %@",[self.facebook_info objectForKey:@"first_name"],[self.facebook_info objectForKey:@"last_name"]];
          self.email_field.text = [self.facebook_info objectForKey:@"email"];
          NSString *imageURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", [self.facebook_info objectForKey:@"id"]];
@@ -246,7 +246,7 @@
     [UIView setAnimationDelegate:self];
     [self.view setFrame:CGRectMake(0,0, 320, 600)];
     [UIView commitAnimations];
-
+    
     if ([[[self.name_field.text componentsSeparatedByString:@" "] objectAtIndex:0]length]<4) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please enter at least 4 Letter First Name" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -276,7 +276,7 @@
         spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
         [spinner startAnimating];
         
-
+        
         serve *check_duplicate = [serve new];
         [check_duplicate setTagName:@"check_dup"];
         [check_duplicate setDelegate:self];
@@ -285,7 +285,7 @@
 }
 - (void)login
 {
-     [[UIApplication sharedApplication]setStatusBarHidden:YES];
+    [[UIApplication sharedApplication]setStatusBarHidden:YES];
     Login *signin = [Login new];
     [self.navigationController pushViewController:signin animated:YES];
 }
@@ -301,7 +301,7 @@
         if (![[loginResult objectForKey:@"Result"] isEqualToString:@"Not a nooch member."]) {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Email in Use" message:@"The email address you are attempting to sign up with is already in use." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
-              [spinner stopAnimating];
+            [spinner stopAnimating];
             [spinner setHidden:YES];
             return;
         }
@@ -313,11 +313,11 @@
             first_name = [arr objectAtIndex:0];
             last_name = [arr objectAtIndex:1];
         }
-       else
-       {
+        else
+        {
             first_name = [arr objectAtIndex:0];
-             last_name = @"";
-       }
+            last_name = @"";
+        }
         NSDictionary *user;
         
         if (![self.facebook_info objectForKey:@"id"]) {
@@ -352,7 +352,7 @@
     }else{
         
     }
-    if ([self.name_field.text length] > 0 && [self.email_field.text length] > 0 && [self.email_field.text  rangeOfString:@"@"].location != NSNotFound && [self.email_field.text  rangeOfString:@"."].location != NSNotFound 
+    if ([self.name_field.text length] > 0 && [self.email_field.text length] > 0 && [self.email_field.text  rangeOfString:@"@"].location != NSNotFound && [self.email_field.text  rangeOfString:@"."].location != NSNotFound
         && [self.password_field.text length] > 6) {
         [self.cont setEnabled:YES];
     }else {
@@ -391,10 +391,10 @@
         [self.view setFrame:CGRectMake(0,0, 320, 600)];
         [UIView commitAnimations];
         
-
+        
         return;
     }
-
+    
     [self animateTextField:textField up:NO];
 }
 

@@ -47,6 +47,7 @@
     // Do any additional setup after loading the view from its nib.
     [self.navigationItem setTitle:@"How Much?"];
     
+
     self.amnt = [@"" mutableCopy];
     self.decimals = YES;
     
@@ -68,15 +69,15 @@
     UILabel *to_label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
     if ([self.receiver valueForKey:@"nonuser"]) {
         //
-         [to_label setStyleId:@"label_howmuch_recipientnamenonuser"];
-         [to_label setText:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"email"]]];
+        [to_label setStyleId:@"label_howmuch_recipientnamenonuser"];
+        [to_label setText:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"email"]]];
     }
     else
     {
-         [to_label setStyleId:@"label_howmuch_recipientname"];
-    [to_label setText:[NSString stringWithFormat:@"%@ %@",[[self.receiver objectForKey:@"FirstName"] capitalizedString],[[self.receiver objectForKey:@"LastName"] capitalizedString]]];
+        [to_label setStyleId:@"label_howmuch_recipientname"];
+        [to_label setText:[NSString stringWithFormat:@"%@ %@",[[self.receiver objectForKey:@"FirstName"] capitalizedString],[[self.receiver objectForKey:@"LastName"] capitalizedString]]];
     }
-   
+    
     [self.view addSubview:to_label];
     
     UIImageView *user_pic = [UIImageView new];
@@ -90,15 +91,15 @@
     else{
         [user_pic setHidden:NO];
         
-    if (self.receiver[@"Photo"]) {
-        [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
-                 placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
-    }
-    else
-    {
-    [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
-        placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
-    }
+        if (self.receiver[@"Photo"]) {
+            [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
+                     placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+        }
+        else
+        {
+            [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
+                     placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+        }
     }
     NSLog(@"%@",self.receiver);
     [self.view addSubview:user_pic];
@@ -152,11 +153,12 @@
     [self.reset_type setAlpha:0];
     [self.view addSubview:self.reset_type];
     
+    [self.navigationItem setRightBarButtonItem:Nil];
     self.balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.balance setFrame:CGRectMake(0, 0, 60, 30)];
     [self.balance.titleLabel setFont:kNoochFontMed];
     [self.balance setStyleId:@"navbar_balance"];
-
+    
     if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
         [self.navigationItem setRightBarButtonItem:Nil];
         if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound) {
@@ -276,25 +278,25 @@
 
 - (void) confirm_send
 {
-
+    
     NSLog(@"%f",[[[self.amount text] substringFromIndex:1] doubleValue]);
     if ([[[self.amount text] substringFromIndex:1] doubleValue] == 0)
-
-    if ([self.amnt floatValue] == 0)
-
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!" message:@"Minimum amount that can be transferred is any amount." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
-        [alert show];
-        return;
-    }
+        
+        if ([self.amnt floatValue] == 0)
+            
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!" message:@"Minimum amount that can be transferred is any amount." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+            [alert show];
+            return;
+        }
     if ([[self.amount text] length] < 3) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Amount" message:@"Please enter a valid amount" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         return;
     }
-
+    
     else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100)
-
+        
     {
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Now" message:[NSString stringWithFormat:@"Sorry I’m not sorry, but don’t %@ more than $100. It’s against the rules (and protects the account from abuse.)", @"send"] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
@@ -320,8 +322,8 @@
     }
     else
     {
-    TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"send" amount: input_amount];
-    [self.navigationController pushViewController:pin animated:YES];
+        TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"send" amount: input_amount];
+        [self.navigationController pushViewController:pin animated:YES];
     }
 }
 #pragma mark  - alert view delegation
@@ -329,8 +331,8 @@
     
     if([actionSheet tag] == 2122 && buttonIndex==1)
     {
-            Deposit *dp=[Deposit new];
-            [self.navigationController pushViewController:dp animated:YES];
+        Deposit *dp=[Deposit new];
+        [self.navigationController pushViewController:dp animated:YES];
         
     }
 }
@@ -444,7 +446,7 @@
     picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
     
     [self presentViewController:picker animated:YES completion:NULL];
-   }
+}
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [self cancel_photo];
     
@@ -454,10 +456,10 @@
     
     
     [picker dismissViewControllerAnimated:YES completion:^{
-       // [self close:nil];
+        // [self close:nil];
     }];
     
-       
+    
     
 }
 -(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size{
@@ -488,9 +490,9 @@
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [self cancel_photo];
-     [self.camera setStyleId:@"howmuch_camera"];
+    [self.camera setStyleId:@"howmuch_camera"];
     [picker dismissViewControllerAnimated:YES completion:^{
-       // [self close:nil];
+        // [self close:nil];
     }];
     // [self dismissViewControllerAnimated:YES completion:nil];
     
@@ -500,10 +502,10 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     if (textField.tag == 1) {
-//        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-//        [formatter setNumberStyle:NSNumberFormatterNoStyle];
-//        [formatter setPositiveFormat:@"$ ##.##"];
-//        [formatter setLenient:YES];
+        //        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        //        [formatter setNumberStyle:NSNumberFormatterNoStyle];
+        //        [formatter setPositiveFormat:@"$ ##.##"];
+        //        [formatter setLenient:YES];
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
         [formatter setGeneratesDecimalNumbers:YES];

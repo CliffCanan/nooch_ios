@@ -137,9 +137,9 @@
     {
         NSError* error;
         NSDictionary *dictResult= [NSJSONSerialization
-                     JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                     options:kNilOptions
-                     error:&error];
+                                   JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                   options:kNilOptions
+                                   error:&error];
         
         NSString *encryptedPIN=[dictResult valueForKey:@"Status"];
         serve *checkValid = [serve new];

@@ -63,6 +63,23 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    //set right bar buton
+    UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    
+    [balance setFrame:CGRectMake(0, 0, 60, 30)];
+    if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
+        
+        [balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+        
+    }
+    
+    [balance.titleLabel setFont:kNoochFontMed];
+    
+    [balance setStyleId:@"navbar_balance"];
+    [self.navigationItem setRightBarButtonItem:Nil];
+    UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:balance];
+    [self.navigationItem setRightBarButtonItem:funds];
+    
     getlocation = [[GetLocation alloc] init];
 	getlocation.delegate = self;
 	[getlocation.locationManager startUpdatingLocation];
@@ -74,7 +91,7 @@
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
-    [self.navigationItem setTitle:@"PIN Confirmation"];
+    [self.navigationItem setTitle:@"Enter PIN"];
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, 300, 60)];
     [title setText:@"Enter Your PIN to confirm your"]; [title setTextAlignment:NSTextAlignmentCenter];
     [title setNumberOfLines:2];
@@ -86,31 +103,31 @@
         [self.prompt setText:@"transfer"];
         [self.prompt setStyleId:@"Transferpin_instructiontext_send"];
     } else if ([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"]) {
-
-                    [self.prompt setText:@"request"];
-                    [self.prompt setStyleId:@"pin_instructiontext_request"];
+        
+        [self.prompt setText:@"request"];
+        [self.prompt setStyleId:@"pin_instructiontext_request"];
     }
     else if ([self.type isEqualToString:@"addfund"])
-             {
-                 [self.prompt setText:@"Deposit"];
-                 [self.prompt setStyleId:@"Transferpin_instructiontext_send"];
-             }
+    {
+        [self.prompt setText:@"Deposit"];
+        [self.prompt setStyleId:@"Transferpin_instructiontext_send"];
+    }
     else if ([self.type isEqualToString:@"withdrawfund"])
     {
         [self.prompt setText:@"withdraw"];
         [self.prompt setStyleId:@"Transferpin_instructiontext_send"];
     }
-
+    
     //addfund
     else {
-                [self.prompt setText:@"donatation"];
-                [self.prompt setStyleId:@"pin_instructiontext_donate"];
-        }
+        [self.prompt setText:@"contribution"];
+        [self.prompt setStyleId:@"pin_instructiontext_donate"];
+    }
     [self.prompt setTextAlignment:NSTextAlignmentCenter];
     [self.view addSubview:self.prompt];
-
-
-
+    
+    
+    
     
     UIView *back = [UIView new];
     [back setStyleClass:@"raised_view"];
@@ -120,24 +137,24 @@
     UIView *bar = [UIView new];
     [bar setStyleClass:@"pin_recipientname_bar"];
     if ([self.type isEqualToString:@"send"]|| [self.type isEqualToString:@"addfund"]|| [self.type isEqualToString:@"withdrawfund"]||[self.receiver valueForKey:@"nonuser"]) {
-                [bar setStyleId:@"pin_recipientname_send"];
-            }
+        [bar setStyleId:@"pin_recipientname_send"];
+    }
     else if ([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"]) {
-                    [bar setStyleId:@"pin_recipientname_request"];
-                }
+        [bar setStyleId:@"pin_recipientname_request"];
+    }
     else {
         
         [bar setStyleId:@"pin_recipientname_donate"];
-      
+        
     }
-
-//    if ([self.type isEqualToString:@"send"]) {
-//        [bar setStyleId:@"pin_recipientname_send"];
-//    } else if ([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"]) {
-//        [bar setStyleId:@"pin_recipientname_request"];
-//    } else {
-//        [bar setStyleId:@"pin_recipientname_donate"];
-//    }
+    
+    //    if ([self.type isEqualToString:@"send"]) {
+    //        [bar setStyleId:@"pin_recipientname_send"];
+    //    } else if ([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"]) {
+    //        [bar setStyleId:@"pin_recipientname_request"];
+    //    } else {
+    //        [bar setStyleId:@"pin_recipientname_donate"];
+    //    }
     [self.view addSubview:bar];
     
     UILabel *to_label = [[UILabel alloc] initWithFrame:CGRectMake(10, 200, 300, 30)];
@@ -168,7 +185,7 @@
     
     UIImageView *user_pic = [UIImageView new];
     [user_pic setFrame:CGRectMake(20, 204, 52, 52)];
-
+    
     if ([self.receiver valueForKey:@"nonuser"]) {
         [user_pic setHidden:YES];
     }
@@ -185,7 +202,7 @@
                      placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
         }
     }
-
+    
     user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
     user_pic.layer.borderWidth = 2; user_pic.clipsToBounds = YES;
     user_pic.layer.cornerRadius = 26;
@@ -207,10 +224,10 @@
     self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 16;
     self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor clearColor];
     self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
-
-   
+    
+    
     if ([self.type isEqualToString:@"send"]||[self.type isEqualToString:@"donation"]||[self.type isEqualToString:@"addfund"]||[self.type isEqualToString:@"withdrawfund"]||[self.receiver valueForKey:@"nonuser"]) {
-
+        
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
         
     }else if([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"]){
@@ -396,7 +413,7 @@
                  error:&error];
     
     if ([self.type isEqualToString:@"send"]|| [self.type isEqualToString:@"request"]) {
-              if ([tagName isEqualToString:@"ValidatePinNumber"]) {
+        if ([tagName isEqualToString:@"ValidatePinNumber"]) {
             transactionInputTransfer=[[NSMutableDictionary alloc]init];
             if ([[assist shared] getTranferImage]) {
                 NSData *data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
@@ -417,25 +434,27 @@
             [[assist shared] setTranferImage:imgempty];
             
             NSString *uid = [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"];
-                  
+            
             [transactionInputTransfer setValue:[dictResult valueForKey:@"Status"] forKey:@"PinNumber"];
             [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
             if ([self.type isEqualToString:@"request"]) {
                 [transactionInputTransfer setValue:@"Request" forKey:@"TransactionType"];
-
+                
                 [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"SenderId"];
                 [transactionInputTransfer setValue:@"Pending" forKey:@"Status"];
             }
             else
-                {
-                      [transactionInputTransfer setValue:@"Send" forKey:@"TransactionType"];
-                      [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
-                }
+            {
+                [transactionInputTransfer setValue:@"Sent" forKey:@"TransactionType"];
+                [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
+            }
             
             NSString *receiveName = [[self.receiver valueForKey:@"FirstName"] stringByAppendingString:[NSString stringWithFormat:@" %@",[self.receiver valueForKey:@"LastName"]]];
             [transactionInputTransfer setValue:receiveName forKey:@"Name"];
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
             NSDate *date = [NSDate date];
+            NSLog(@"%@",date);
+            
             NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
             [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
             NSString *TransactionDate = [dateFormat stringFromDate:date];
@@ -669,7 +688,7 @@
                     
                     [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
                     
-                     [transactionInputTransfer setValue:@"Deposit" forKey:@"TransactionType"];
+                    [transactionInputTransfer setValue:@"Deposit" forKey:@"TransactionType"];
                     NSDate *date = [NSDate date];
                     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
                     [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
@@ -730,7 +749,7 @@
                         self.respData = [NSMutableData data];
                         
                     }
-                                   }
+                }
                 
             }else{
                 
@@ -878,15 +897,15 @@
             
         }
     }
-
+    
     NSLog(@"%@",self.receiver[@"Photo"]);
     if (self.receiver[@"Photo"] !=NULL && ![self.receiver[@"Photo"] isKindOfClass:[NSNull class]]) {
         [transactionInputTransfer setObject:self.receiver[@"Photo"]forKey:@"Photo"];
     }
     
-
+    
     self.trans = [transactionInputTransfer copy];
-
+    
 }
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (alertView.tag == 1) {
@@ -989,15 +1008,15 @@
     }
     
     NSLog(@"transactionId %@",transactionId);
-
+    
     //TransactionId
     if (![transactionId isKindOfClass:[NSNull class]] && transactionId!=NULL) {
         [transactionInputTransfer setObject:transactionId forKey:@"TransactionId"];
     }
     
     self.trans = [transactionInputTransfer copy];
-
-
+    
+    
     resultValueTransfer = [dictResultTransfer valueForKey:@"TransferMoneyResult"];
     if ([[resultValueTransfer valueForKey:@"Result"] isEqualToString:@"Your cash was sent successfully"])
     {

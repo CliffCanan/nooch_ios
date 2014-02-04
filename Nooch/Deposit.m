@@ -46,7 +46,7 @@
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
-
+    
     [self.navigationItem setTitle:@"Add Funds"];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -151,11 +151,11 @@
 {
     NewBank *add_bank = [NewBank new];
     [self.navigationController pushViewController:add_bank animated:NO];
-
+    
 }
 - (void) deposit_amount
 {
-     float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
+    float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
     
     NSMutableDictionary *transaction = [[NSMutableDictionary alloc] init];
     [transaction setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
@@ -165,10 +165,10 @@
     // [transaction setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"FirstName"];
     //[transaction setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"FirstName"];
     
-  //  float input_amount = [[[self.amount text] substringFromIndex:2] floatValue];
+    //  float input_amount = [[[self.amount text] substringFromIndex:2] floatValue];
     TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"addfund" amount:input_amount];
     [self.navigationController pushViewController:pin animated:YES];
-
+    
 }
 
 #pragma mark - UITableViewDataSource
@@ -189,34 +189,34 @@
         cell.selectedBackgroundView = selectionColor;
     }
     
-     NSDictionary *bank = [self.banks objectAtIndex:0];
+    NSDictionary *bank = [self.banks objectAtIndex:0];
     UILabel *banktxt = [UILabel new];
     [banktxt setStyleClass:@"wd_dep_banklabel"];
     [banktxt setText:[NSString stringWithFormat:@"Account ending in %@",[bank valueForKey:@"BankAcctNumber"]]];
-                      [cell.contentView addSubview:banktxt];
-
+    [cell.contentView addSubview:banktxt];
+    
     // NSString*lastdigit=[NSString stringWithFormat:@"XXXX%@",[[bank objectForKey:@"BankAcctNumber"] substringFromIndex:[[bank objectForKey:@"BankAcctNumber"] length]-4]];
     // cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",[bank objectForKey:@"BankName"],lastdigit];
     // cell.textLabel.font=[UIFont fontWithName:@"Arial" size:12.0f];
-     NSArray* bytedata = [bank valueForKey:@"BankPicture"];
-     //XXXXXXXX2222
-     unsigned c = bytedata.count;
-     uint8_t *bytes = malloc(sizeof(*bytes) * c);
-     
-     unsigned i;
-     for (i = 0; i < c; i++)
-     {
-     NSString *str = [bytedata objectAtIndex:i];
-     int byte = [str intValue];
-     bytes[i] = (uint8_t)byte;
-     }
-     
-     NSData *datos = [NSData dataWithBytes:bytes length:c];
-     UIImageView*img=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"tickR.png"]];
-     img.frame=CGRectMake(10, 10, 40 , 40);
-     [cell.contentView addSubview:img];
-     
-     img.image = [UIImage imageWithData:datos];
+    NSArray* bytedata = [bank valueForKey:@"BankPicture"];
+    //XXXXXXXX2222
+    unsigned c = bytedata.count;
+    uint8_t *bytes = malloc(sizeof(*bytes) * c);
+    
+    unsigned i;
+    for (i = 0; i < c; i++)
+    {
+        NSString *str = [bytedata objectAtIndex:i];
+        int byte = [str intValue];
+        bytes[i] = (uint8_t)byte;
+    }
+    
+    NSData *datos = [NSData dataWithBytes:bytes length:c];
+    UIImageView*img=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"tickR.png"]];
+    img.frame=CGRectMake(10, 10, 40 , 40);
+    [cell.contentView addSubview:img];
+    
+    img.image = [UIImage imageWithData:datos];
     
     return cell;
 }

@@ -46,7 +46,7 @@
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
     self.amnt = [@"" mutableCopy];
-
+    
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     UILabel *info = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 0, 0)];
@@ -91,7 +91,7 @@
     [banks setDataSource:self]; [banks setDelegate:self];
     [self.view addSubview:banks];
     [banks reloadData];
-        
+    
     self.withdraw = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.withdraw setFrame:CGRectMake(0, 200, 0, 0)];
     [self.withdraw setTitle:@"Withdraw Funds" forState:UIControlStateNormal];
@@ -112,12 +112,12 @@
     [transaction setObject:[user objectForKey:@"lastName"]forKey:@"LastName"];
     // [transaction setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"FirstName"];
     //[transaction setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"FirstName"];
-     float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
+    float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
     //  float input_amount = [[[self.amount text] substringFromIndex:2] floatValue];
     TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"withdrawfund" amount: input_amount];
     [self.navigationController pushViewController:pin animated:YES];
     
- 
+    
 }
 #pragma mark - UITextField delegation
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -184,20 +184,20 @@
         cell.selectedBackgroundView = selectionColor;
     }
     
-//    UILabel *banktxt = [UILabel new];
-//    [banktxt setStyleClass:@"wd_dep_banklabel"];
-//    [banktxt setText:@"Account ending in 3456"];
-//    [cell.contentView addSubview:banktxt];
+    //    UILabel *banktxt = [UILabel new];
+    //    [banktxt setStyleClass:@"wd_dep_banklabel"];
+    //    [banktxt setText:@"Account ending in 3456"];
+    //    [cell.contentView addSubview:banktxt];
     
     NSDictionary *bank = [self.banks objectAtIndex:0];
     UILabel *banktxt = [UILabel new];
     [banktxt setStyleClass:@"wd_dep_banklabel"];
     [banktxt setText:[NSString stringWithFormat:@"Account ending in %@",[bank valueForKey:@"BankAcctNumber"]]];
     [cell.contentView addSubview:banktxt];
-
     
-   // NSString*lastdigit=[NSString stringWithFormat:@"XXXX%@",[[bank objectForKey:@"BankAcctNumber"] substringFromIndex:[[bank objectForKey:@"BankAcctNumber"] length]-4]];
-   // cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",[bank objectForKey:@"BankName"],lastdigit];
+    
+    // NSString*lastdigit=[NSString stringWithFormat:@"XXXX%@",[[bank objectForKey:@"BankAcctNumber"] substringFromIndex:[[bank objectForKey:@"BankAcctNumber"] length]-4]];
+    // cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",[bank objectForKey:@"BankName"],lastdigit];
     //cell.textLabel.font=[UIFont fontWithName:@"Arial" size:12.0f];
     NSArray* bytedata = [bank valueForKey:@"BankPicture"];
     //XXXXXXXX2222
@@ -218,14 +218,14 @@
     [cell.contentView addSubview:img];
     
     img.image = [UIImage imageWithData:datos];
-
+    
     return cell;
 }
 
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   
+    
     return 50.0;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

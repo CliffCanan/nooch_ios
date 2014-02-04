@@ -21,7 +21,7 @@ NSMutableURLRequest*requestEncryption;
 # pragma mark - Custom Method
 
 -(void)getEncryptionData:(NSString *) stringtoEncry {
-
+    
     NSString *encodedString = [NSString encodeBase64String:stringtoEncry];
     
     NSLog(@"%@",encodedString);
@@ -36,10 +36,10 @@ NSMutableURLRequest*requestEncryption;
 }
 
 //    serve *enc = [serve new];
-//    
+//
 //    enc.Delegate = self;
 //    [enc getEncrypt:stringtoEncry];
-//    
+//
 //}
 # pragma mark - NSURL Connection Methods
 
@@ -82,9 +82,9 @@ NSMutableURLRequest*requestEncryption;
                                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                                         options:kNilOptions
                                         error:&error];;
-     NSString *resultStr = [[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]];
-     [self.Delegate encryptionDidFinish:resultStr TValue:self.tag];
-   // [self.Delegate decryptionDidFinish:loginResult TValue:self.tag];
+    NSString *resultStr = [[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]];
+    [self.Delegate encryptionDidFinish:resultStr TValue:self.tag];
+    // [self.Delegate decryptionDidFinish:loginResult TValue:self.tag];
     
     //[responseData release];
     
@@ -92,18 +92,18 @@ NSMutableURLRequest*requestEncryption;
 
 //-(void)listen:(NSString *)result tagName:(NSString*)tagName {
 //    NSError* error;
-//    
+//
 //
 //    NSDictionary *loginResult = [NSJSONSerialization
 //                                 JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
 //                                 options:kNilOptions
 //                                 error:&error];;
 //    NSLog(@"Dictionary value is : %@", loginResult);
-//    
+//
 //    NSString *resultStr = [[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]];
-//    
+//
 //    [self.Delegate encryptionDidFinish:resultStr TValue:self.tag];
-//    
+//
 //}
 
 

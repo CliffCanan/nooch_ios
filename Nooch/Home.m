@@ -43,26 +43,26 @@
 	// Do any additional setup after loading the view.
     
     
-     NSLog(@"%@",nav_ctrl.view);
+    NSLog(@"%@",nav_ctrl.view);
     [ self.navigationItem setLeftBarButtonItem:Nil];
     nav_ctrl = self.navigationController;
-     NSLog(@"%d",[nav_ctrl.viewControllers count]);
+    NSLog(@"%d",[nav_ctrl.viewControllers count]);
     user = [NSUserDefaults standardUserDefaults];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     
     self.transaction_types = @[
-                                   @{kButtonType: @"send_request",
-                                     kButtonTitle: @"Send or Request",
-                                     kButtonColor: [UIColor clearColor]},
-                                   
-                                   @{kButtonType: @"pay_in_person",
-                                     kButtonTitle: @"Pay in Person",
-                                     kButtonColor: [UIColor clearColor]},
-                                   
-                                   @{kButtonType: @"donate",
-                                     kButtonTitle: @"Donate to a Cause",
-                                     kButtonColor: [UIColor clearColor]}
-                                   ];
+                               @{kButtonType: @"send_request",
+                                 kButtonTitle: @"Send or Request",
+                                 kButtonColor: [UIColor clearColor]},
+                               
+                               @{kButtonType: @"pay_in_person",
+                                 kButtonTitle: @"Pay in Person",
+                                 kButtonColor: [UIColor clearColor]},
+                               
+                               @{kButtonType: @"donate",
+                                 kButtonTitle: @"Donate to a Cause",
+                                 kButtonColor: [UIColor clearColor]}
+                               ];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
@@ -116,10 +116,10 @@
     [self.view addSubview:top_button]; [self.view addSubview:bot_button];
     
     /*if (![user objectForKey:@"member_id"]) {
-        Register *reg = [Register new];
-        [self.navigationController pushViewController:reg animated:NO];
-        [self.navigationController.view removeGestureRecognizer:self.slidingViewController.panGesture];
-    }*/
+     Register *reg = [Register new];
+     [self.navigationController pushViewController:reg animated:NO];
+     [self.navigationController.view removeGestureRecognizer:self.slidingViewController.panGesture];
+     }*/
     
     //29/12
     NSMutableDictionary *loadInfo;
@@ -129,7 +129,7 @@
             ProfileInfo *prof = [ProfileInfo new];
             [nav_ctrl pushViewController:prof animated:YES];
             [self.slidingViewController resetTopView];
-          
+            
         }
         me = [core new];
         [user removeObjectForKey:@"Balance"];
@@ -149,34 +149,34 @@
         return;
     }
     
-      //if they have required immediately turned on or haven't selected the option yet, redirect them to PIN screen
+    //if they have required immediately turned on or haven't selected the option yet, redirect them to PIN screen
     if (![[user objectForKey:@"requiredImmediately"] isEqualToString:@"YES"]) {
         
         ReEnterPin*pin=[ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
-       
+        
     }else if([[user objectForKey:@"requiredImmediately"] isEqualToString:@"YES"]){
         ReEnterPin*pin=[ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
-      
+        
     }
-      }
+}
 -(void)updateLoader{
-       if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
-           [self.navigationItem setRightBarButtonItem:Nil];
-           if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound) {
-               [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
-           }
-           else
-               [self.balance setTitle:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
-           UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
-           [self.navigationItem setRightBarButtonItem:funds];
-             }
+    if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
+        [self.navigationItem setRightBarButtonItem:Nil];
+        if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound) {
+            [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+        }
+        else
+            [self.balance setTitle:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+        UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
+        [self.navigationItem setRightBarButtonItem:funds];
+    }
     else
     {
         [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];    }
     
-  
+    
 }
 - (NSString *)autoLogin{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -185,6 +185,8 @@
 }
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    self.slidingViewController.panGesture.enabled=YES;
+    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
     //location
     locationManager = [[CLLocationManager alloc] init];
@@ -192,6 +194,8 @@
     locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
     locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
     [locationManager startUpdatingLocation];
+    
+    
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -203,12 +207,12 @@
     
     UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:act];
     [self.navigationItem setRightBarButtonItem:funds];
- 
+    
     
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(updateLoader) userInfo:nil repeats:YES];
     
-
+    
     if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]]) {
         //push login
         return;
@@ -222,9 +226,9 @@
         [blankView addSubview:actv];
         [self .view addSubview:blankView];
         [self.view bringSubviewToFront:blankView];
-
+        
     }
-       if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
+    if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
         serve *serveOBJ=[serve new ];
         [serveOBJ setTagName:@"sets"];
         [serveOBJ getSettings];
@@ -237,12 +241,12 @@
         [banks getBanks];
         
     }
-   
+    
 }
 
 -(void)showMenu
 {
-    [[assist shared]setneedsReload:NO];
+    //[[assist shared]setneedsReload:NO];
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
 -(void)showFunds
@@ -271,47 +275,47 @@
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     NSLog(@"%d",[[assist shared]isBankVerified]);
 #pragma mark-9jan
-   if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
-       
-       UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-       [alert show];
-       return;
-       
-     
-   }
-  
+    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
+        
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        return;
+        
+        
+    }
+    
     if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
         [alert setTag:147];
         [alert show];
-       return;
-    }
-    /*
-    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
-        [alert setTag:148];
-        [alert show];
         return;
     }
-   
-    */
+    /*
+     if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+     UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+     [alert setTag:148];
+     [alert show];
+     return;
+     }
+     
+     */
     if ( ![[[NSUserDefaults standardUserDefaults]
-           objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
+            objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
         UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
         [set setTag:201];
         [set show];
         return;
     }
-
-  
-       if (![[assist shared]isBankVerified]) {
-           UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-           [alert show];
-           
-           return;
-       }
-       
-     
+    
+    
+    if (![[assist shared]isBankVerified]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        
+        return;
+    }
+    
+    
     if (NSClassFromString(@"SelectRecipient")) {
         
         Class aClass = NSClassFromString(@"SelectRecipient");
@@ -340,6 +344,7 @@
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
     
     [[assist shared]setlocationAllowed:NO];
+    
     NSLog(@"Error : %@",error);
     if ([error code] == kCLErrorDenied){
         NSLog(@"Error : %@",error);
@@ -353,13 +358,15 @@
     lat = [[[NSString alloc] initWithFormat:@"%f",loc.latitude] floatValue];
     lon = [[[NSString alloc] initWithFormat:@"%f",loc.longitude] floatValue];
     [[assist shared]setlocationAllowed:YES];
+    serve*serveOBJ=[serve new];
+    [serveOBJ UpDateLatLongOfUser:[[NSString alloc] initWithFormat:@"%f",loc.latitude] lng:[[NSString alloc] initWithFormat:@"%f",loc.longitude]];
     [locationManager stopUpdatingLocation];
 }
 
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-
+    
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
         UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
@@ -375,7 +382,7 @@
         NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
         [timer invalidate];
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
-       
+        
         [nav_ctrl performSelector:@selector(reset)];
         //[self.navigationController popViewControllerAnimated:YES];
         Register *reg = [Register new];
@@ -384,7 +391,7 @@
         return;
     }
     
-
+    
     
     if ([tagName isEqualToString:@"banks"]) {
         [blankView removeFromSuperview];

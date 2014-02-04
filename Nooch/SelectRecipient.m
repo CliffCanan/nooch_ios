@@ -34,12 +34,12 @@
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
-
-//    //clear Image cache
-//    SDImageCache *imageCache = [SDImageCache sharedImageCache];
-//    [imageCache clearMemory];
-//    [imageCache clearDisk];
-//    [imageCache cleanDisk];
+    
+    //    //clear Image cache
+    //    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    //    [imageCache clearMemory];
+    //    [imageCache clearDisk];
+    //    [imageCache cleanDisk];
     // Do any additional setup after loading the view from its nib.
     
     UIButton *location = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -49,7 +49,7 @@
     UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
     [self.navigationItem setRightBarButtonItem:loc];
     
-
+    
     self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 42, 320, [[UIScreen mainScreen] bounds].size.height-90)];
     [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
     [self.contacts setSectionHeaderHeight:30];
@@ -92,7 +92,7 @@
     NSMutableDictionary *contactInfoDict = [[NSMutableDictionary alloc]
                                             initWithObjects:@[@"", @"", @"", @"", @"", @"", @"", @"", @""]
                                             forKeys:@[@"firstName", @"lastName", @"mobileNumber", @"homeNumber", @"homeEmail", @"workEmail", @"address", @"zipCode", @"city"]];
-   
+    
     // Use a general Core Foundation object.
     CFTypeRef generalCFObject = ABRecordCopyValue(person, kABPersonFirstNameProperty);
     
@@ -131,33 +131,33 @@
     
     // Get the e-mail addresses as a multi-value property.
     ABMultiValueRef emailsRef = ABRecordCopyValue(person, kABPersonEmailProperty);
-     NSString *emailAddress = CFBridgingRelease(emailsRef);
+    NSString *emailAddress = CFBridgingRelease(emailsRef);
     
-     //if ([emailAddress rangeOfString:@"@"].location!=NSNotFound && [emailAddress rangeOfString:@"."].location!=NSNotFound) {
+    //if ([emailAddress rangeOfString:@"@"].location!=NSNotFound && [emailAddress rangeOfString:@"."].location!=NSNotFound) {
     NSLog(@"%@",emailAddress);
-        // NSArray*arr=[emailAddress componentsSeparatedByString:@" "];
-         //NSLog(@"%@",arr);
+    // NSArray*arr=[emailAddress componentsSeparatedByString:@" "];
+    //NSLog(@"%@",arr);
     // }
     
     
     for (int i=0; i<ABMultiValueGetCount(emailsRef); i++) {
         CFStringRef currentEmailLabel = ABMultiValueCopyLabelAtIndex(emailsRef, i);
         CFStringRef currentEmailValue = ABMultiValueCopyValueAtIndex(emailsRef, i);
-       
+        
         NSString *emailAddresslbl = CFBridgingRelease(currentEmailLabel);
         
         //if ([emailAddress rangeOfString:@"@"].location!=NSNotFound && [emailAddress rangeOfString:@"."].location!=NSNotFound) {
         NSLog(@"%@",emailAddresslbl);
-//        if ([emailAddresslbl isKindOfClass:[NSNull class]] || emailAddresslbl==NULL || [emailAddresslbl isEqualToString:@"(null)"]|| emailAddresslbl==nil
-//) {
-//            
-//            NSLog(@"%@",emailAddresslbl);
-//            emailAddresslbl=[self stringBetweenString:@"- " andString:@" " fullText:emailAddress];
-//             NSLog(@"%@",emailAddresslbl);
-//        }
-//      
+        //        if ([emailAddresslbl isKindOfClass:[NSNull class]] || emailAddresslbl==NULL || [emailAddresslbl isEqualToString:@"(null)"]|| emailAddresslbl==nil
+        //) {
+        //
+        //            NSLog(@"%@",emailAddresslbl);
+        //            emailAddresslbl=[self stringBetweenString:@"- " andString:@" " fullText:emailAddress];
+        //             NSLog(@"%@",emailAddresslbl);
+        //        }
+        //
         // }
-
+        
         if (CFStringCompare(currentEmailLabel, kABHomeLabel, 0) == kCFCompareEqualTo) {
             [contactInfoDict setObject:(__bridge NSString *)currentEmailValue forKey:@"homeEmail"];
         }
@@ -203,7 +203,7 @@
     else if(![[contactInfoDict valueForKey:@"homeEmail"] isEqualToString:@""])
     {
         emailphoneBook= [contactInfoDict valueForKey:@"workEmail"];
-    [self getMemberIdByUsingUserNameFromPhoneBook];
+        [self getMemberIdByUsingUserNameFromPhoneBook];
     }
     else
     {
@@ -313,7 +313,7 @@
 
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
     
-  //  NSLog(@"%@",searchText);
+    //  NSLog(@"%@",searchText);
     if ([searchBar.text length]==0) {
         searching=NO;
         emailEntry=NO;
@@ -329,7 +329,7 @@
             emailEntry = YES;
             searching = NO;
             isRecentList=NO;
-              searchString = searchBar.text;
+            searchString = searchBar.text;
             [arrow setHidden:YES];
             [em setHidden:YES];
             [self.contacts setHidden:NO];
@@ -394,7 +394,7 @@
 #pragma mark - server Delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName{
     NSError* error;
-   
+    
     if ([tagName isEqualToString:@"recents"]) {
         [spinner stopAnimating];
         [spinner setHidden:YES];
@@ -421,9 +421,9 @@
             [em setBackgroundColor:[UIColor clearColor]];
             em.numberOfLines=10;             [em setText:@"Hey There!\nUse this handy dandy search bar to easily find contacts to send or request money with.\n\n\nThe next time you come here, your most recent contacts will automatically appear "];
             [self.view addSubview:em];
-
+            
         }
-    
+        
     }
     else if([tagName isEqualToString:@"emailCheck"])
     {
@@ -436,7 +436,7 @@
             if ([self.view.subviews containsObject:spinner]) {
                 [spinner removeFromSuperview];
             }
-           // NSLog(@"%@",[dictResult objectForKey:@"Result"]);
+            // NSLog(@"%@",[dictResult objectForKey:@"Result"]);
             spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             [self.view addSubview:spinner];
             [spinner setHidden:NO];
@@ -468,7 +468,7 @@
                              JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                              options:kNilOptions
                              error:&error]];
-       
+        
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
         
         [self.navigationController pushViewController:how_much animated:YES];
@@ -481,22 +481,22 @@
 {
     if (alertView.tag==20220) {
         if (buttonIndex==1) {
-              NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
             if (isphoneBook) {
                 [dict setObject:emailphoneBook forKey:@"email"];
             }
             else
-            [dict setObject:searchString forKey:@"email"];
+                [dict setObject:searchString forKey:@"email"];
             
             [dict setObject:@"nonuser" forKey:@"nonuser"];
             HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
             
             [self.navigationController pushViewController:how_much animated:YES];
-
-//            serve*serveOBJ=[serve new];
-//            [serveOBJ setDelegate:self];
-//            serveOBJ.tagName=@"sendNonNooch";
-//            serveOBJ TransferMoneyToNonNoochUser:<#(NSDictionary *)#> email:<#(NSString *)#>
+            
+            //            serve*serveOBJ=[serve new];
+            //            [serveOBJ setDelegate:self];
+            //            serveOBJ.tagName=@"sendNonNooch";
+            //            serveOBJ TransferMoneyToNonNoochUser:<#(NSDictionary *)#> email:<#(NSString *)#>
         }
     }
 }
@@ -539,7 +539,7 @@
         return 1;
     }
     return [self.recents count];
-   
+    
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -553,23 +553,23 @@
                                       reuseIdentifier:CellIdentifier];
         
         [cell.textLabel setTextColor:kNoochGrayLight];
-         cell.indentationLevel = 1;
+        cell.indentationLevel = 1;
         
     }
     for (UIView*subview in cell.contentView.subviews) {
-       
+        
         [subview removeFromSuperview];
     }
-  
+    
     UIImageView*pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
     pic.clipsToBounds = YES;
     UIImageView* npic = [UIImageView new];
     npic.clipsToBounds = YES;
-  
+    
     [cell.contentView addSubview:pic];
     [cell.contentView addSubview:npic];
-
-        if (searching) {
+    
+    if (searching) {
         //Nooch User
         npic.hidden=NO;
         [npic setFrame:CGRectMake(250,15, 34, 40)];
@@ -579,7 +579,7 @@
         NSDictionary *info = [arrSearchedRecords objectAtIndex:indexPath.row];
         [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
             placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
-                [cell setIndentationLevel:1];
+        [cell setIndentationLevel:1];
         pic.hidden=NO;
         cell.indentationWidth = 70;
         [pic setFrame:CGRectMake(20, 5, 60, 60)];
@@ -589,14 +589,14 @@
     }
     else if(isRecentList){
         
-       //Recent List
-       
+        //Recent List
+        
         [npic setFrame:CGRectMake(250,15, 34, 40)];
         [npic setImage:[UIImage imageNamed:@"n_Icon.png"]];
         NSDictionary *info = [self.recents objectAtIndex:indexPath.row];
         NSLog(@"%@",info);
         [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
-        placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+            placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
         pic.hidden=NO;
         cell.indentationWidth = 70;
         [pic setFrame:CGRectMake(20, 5, 60, 60)];
@@ -606,12 +606,12 @@
         
         
     }
-   else if(emailEntry){
-       //Email
+    else if(emailEntry){
+        //Email
         [pic removeFromSuperview];
         [npic removeFromSuperview];
         cell.indentationWidth = 10;
-    
+        
         cell.textLabel.text = [NSString stringWithFormat:@"Send to %@",search.text];
         return cell;
     }
@@ -650,7 +650,7 @@
     
     
     
-
+    
 }
 
 - (void)didReceiveMemoryWarning

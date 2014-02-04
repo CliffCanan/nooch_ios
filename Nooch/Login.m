@@ -35,7 +35,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         //[self.navigationItem setHidesBackButton:YES];
-
+        
         // Custom initialization
     }
     return self;
@@ -55,7 +55,7 @@
     NSLog(@"%@",self.password.text);
     [log getEncrypt:self.password.text];
     
-   
+    
 }
 
 # pragma mark - CLLocationManager Delegate Methods
@@ -87,10 +87,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     [self.navigationController setNavigationBarHidden:YES];
     
-   
+    
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     UIButton* btnback=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -102,8 +102,8 @@
     [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnback];
     
-
-   [self.navigationItem setTitle:@"LogIn"];
+    
+    [self.navigationItem setTitle:@"LogIn"];
     self.loading = [UIActivityIndicatorView new];
     [self.loading setStyleId:@"loading"];
     
@@ -155,7 +155,7 @@
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.login setBackgroundColor:kNoochGreen]; [self.login setTitle:@"Log In" forState:UIControlStateNormal];
     [self.login setFrame:CGRectMake(10, 260, 300, 60)];
-     self.login.layer.cornerRadius=5.0f;
+    self.login.layer.cornerRadius=5.0f;
     [self.login addTarget:self action:@selector(check_credentials) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"button_green"];
     [self.view addSubview:self.login];
@@ -184,13 +184,13 @@
     [self.view addSubview:forgot];
     
     /*UIButton *back = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [back addTarget:self action:@selector(go_back) forControlEvents:UIControlEventTouchUpInside];
-    [back setBackgroundColor:[UIColor clearColor]];
-    [back setTitle:@"<" forState:UIControlStateNormal];
-    [back setTitleColor:kNoochBlue forState:UIControlStateNormal];
-    [back.titleLabel setFont:[UIFont fontWithName:@"Roboto-Bold" size:40]];
-    [back setFrame:CGRectMake(10, 20, 40, 40)];
-    [self.view addSubview:back];*/
+     [back addTarget:self action:@selector(go_back) forControlEvents:UIControlEventTouchUpInside];
+     [back setBackgroundColor:[UIColor clearColor]];
+     [back setTitle:@"<" forState:UIControlStateNormal];
+     [back setTitleColor:kNoochBlue forState:UIControlStateNormal];
+     [back.titleLabel setFont:[UIFont fontWithName:@"Roboto-Bold" size:40]];
+     [back setFrame:CGRectMake(10, 20, 40, 40)];
+     [self.view addSubview:back];*/
     
     UILabel *encryption; [encryption setStyleId:@"label_encryption"];
     [self.view addSubview:encryption];
@@ -212,7 +212,7 @@
     alert.alertViewStyle=UIAlertViewStylePlainTextInput;
     [alert setTag:220011];
     [alert show];
-  
+    
 }
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     
@@ -224,7 +224,7 @@
             serve *forgetful = [serve new];
             forgetful.Delegate = self; forgetful.tagName = @"ForgotPass";
             [forgetful forgotPass:emailField.text];
-           
+            
         }
         else
         {
@@ -233,22 +233,22 @@
             [alert setTag:220011];
             [alert show];
         }
-           
-        }
+        
+    }
     
     
 }
 
 -(void)listen:(NSString *)result tagName:(NSString *)tagName{
     NSLog(@"response %@", result);
-   
+    
     if([tagName isEqualToString:@"ForgotPass"]){
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Check your email for a reset password link." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         [spinner stopAnimating];
         [spinner setHidden:YES];
     }
-
+    
     else if ([tagName isEqualToString:@"encrypt"]) {
         NSError *error;
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
@@ -264,20 +264,20 @@
         [[assist shared]setBankVerified:NO];
         //[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"IsPrimaryBankVerified"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"firstName"];
-       // NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+        // NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
         NSString *udid=[[UIDevice currentDevice] uniqueDeviceIdentifier];
         if ([self.stay_logged_in isOn]) {
-           [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:YES lat:lat lon:lon uid:udid];
+            [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:YES lat:lat lon:lon uid:udid];
         }
         else{
-             [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:NO lat:lat lon:lon uid:udid];
+            [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:NO lat:lat lon:lon uid:udid];
         }
         
     }
     if ([tagName isEqualToString:@"login"])
     {
         NSError *error;
-
+        
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         if([loginResult objectForKey:@"Result"] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil)
         {
@@ -310,12 +310,12 @@
         
         
     }
-
+    
     
     if([tagName isEqualToString:@"getMemberId"]){
         NSError *error;
-
-          NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        
+        NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
         user = [NSUserDefaults standardUserDefaults];
@@ -329,7 +329,7 @@
         }
         me = [core new];
         [me birth];
-       
+        
         [[me usr] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
         [[me usr] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
         
@@ -376,7 +376,7 @@
     
 #pragma mark LOGIN CHECK.
     
-
+    
 }
 #pragma mark - file paths
 - (NSString *)autoLogin{

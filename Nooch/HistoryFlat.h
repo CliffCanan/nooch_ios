@@ -29,7 +29,7 @@ NSString*listType;
     UIView*mapArea;
     float firstX,firstY;
     BOOL isMapOpen;
-     NSArray*histArrayCommon;
+    NSArray*histArrayCommon;
     UIButton*exportHistory;
 }
 @end

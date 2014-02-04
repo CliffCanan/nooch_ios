@@ -14,6 +14,8 @@
     UIView*dedicateView;
     NSString*Donation_memo;
     UITextView* txtDedicate;
+    
+    UILabel *to_label;
 }
 - (id)initWithReceiver:(NSDictionary *)receiver;
 

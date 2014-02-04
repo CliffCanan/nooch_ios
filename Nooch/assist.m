@@ -97,7 +97,7 @@ static assist * _sharedInstance = nil;
         NSLog(@"got an error... %@",exception);
     }
     @finally {
-
+        
     }
     if (![usr objectForKey:@"firstName"]) {
         [usr setObject:@" " forKey:@"firstName"];
@@ -113,60 +113,60 @@ static assist * _sharedInstance = nil;
     [usr setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"] forKey:@"email"];
     NSLog(@"user object: %@",usr);
     /*
-    accountStore = [[ACAccountStore alloc] init];
-    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]){
-        ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-        facebookAccount = nil;
-        NSDictionary *options = @{
-                                  ACFacebookAppIdKey: @"198279616971457",
-                                  ACFacebookPermissionsKey: @[@"email",@"user_about_me"],
-                                  ACFacebookAudienceKey: ACFacebookAudienceFriends
-                                  };
-
-        [accountStore requestAccessToAccountsWithType:facebookAccountType
-                                              options:options completion:^(BOOL granted, NSError *e)
-         {
-             if (granted)
-             {
-                 NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
-                 
-                 facebookAccount = [accounts lastObject];
-                 fbAllowed = YES;
-                 [self renewFb];
-                 NSLog(@"fb connected");
-             }
-             else
-             {
-                 // Handle Failure
-                 fbAllowed = NO;
-                 NSLog(@"fb not connected");
-             }
-         }];
-
-        
-    }else{
-        fbAllowed = NO;
-    }
-
-    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]){
-        ACAccountType *twitterAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-        twitterAccount = nil;
-        [accountStore requestAccessToAccountsWithType:twitterAccountType options:nil completion:^(BOOL granted, NSError *e){
-            if (granted) {
-                NSArray *accounts = [accountStore accountsWithAccountType:twitterAccountType];
-                twitterAccount = [accounts lastObject];
-                twitterAllowed = YES;
-                NSLog(@"twitter granted");
-            }else{
-                twitterAllowed = NO;
-                NSLog(@"twitter not granted");
-            }
-        }];
-    }
-*/
-   timer= [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
+     accountStore = [[ACAccountStore alloc] init];
+     if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]){
+     ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+     facebookAccount = nil;
+     NSDictionary *options = @{
+     ACFacebookAppIdKey: @"198279616971457",
+     ACFacebookPermissionsKey: @[@"email",@"user_about_me"],
+     ACFacebookAudienceKey: ACFacebookAudienceFriends
+     };
+     
+     [accountStore requestAccessToAccountsWithType:facebookAccountType
+     options:options completion:^(BOOL granted, NSError *e)
+     {
+     if (granted)
+     {
+     NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
+     
+     facebookAccount = [accounts lastObject];
+     fbAllowed = YES;
+     [self renewFb];
+     NSLog(@"fb connected");
+     }
+     else
+     {
+     // Handle Failure
+     fbAllowed = NO;
+     NSLog(@"fb not connected");
+     }
+     }];
+     
+     
+     }else{
+     fbAllowed = NO;
+     }
+     
+     if([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]){
+     ACAccountType *twitterAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+     twitterAccount = nil;
+     [accountStore requestAccessToAccountsWithType:twitterAccountType options:nil completion:^(BOOL granted, NSError *e){
+     if (granted) {
+     NSArray *accounts = [accountStore accountsWithAccountType:twitterAccountType];
+     twitterAccount = [accounts lastObject];
+     twitterAllowed = YES;
+     NSLog(@"twitter granted");
+     }else{
+     twitterAllowed = NO;
+     NSLog(@"twitter not granted");
+     }
+     }];
+     }
+     */
+    timer= [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
 #pragma mark 9jan
-     [[assist shared]setneedsReload:YES];
+    [[assist shared]setneedsReload:YES];
     [self getSettings];
     [self getAcctInfo];
     //[self getBanks];
@@ -275,20 +275,20 @@ static assist * _sharedInstance = nil;
 }/*}}}*/
 -(void)histPoll{
     histSafe=NO;
-  responseData = [NSMutableData data];
+    responseData = [NSMutableData data];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     
     
-  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@&accessToken=%@", MyUrl, @"GetTransactionsList", [usr objectForKey:@"MemberId"], @"ALL", @"pSize", [NSString stringWithFormat:@"%d",[histCache count]], @"pIndex", @"1",[defaults valueForKey:@"OAuthToken"]]]];
-  [NSURLConnection connectionWithRequest:request delegate:self];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@&accessToken=%@", MyUrl, @"GetTransactionsList", [usr objectForKey:@"MemberId"], @"ALL", @"pSize", [NSString stringWithFormat:@"%d",[histCache count]], @"pIndex", @"1",[defaults valueForKey:@"OAuthToken"]]]];
+    [NSURLConnection connectionWithRequest:request delegate:self];
 }
 -(void)histUpdate{
     histSafe=NO;
-     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-   responseData = [NSMutableData data];
-  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@&accessToken=%@", MyUrl, @"GetTransactionsList", [usr objectForKey:@"MemberId"], @"ALL", @"pSize", @"20", @"pIndex", @"1",[defaults valueForKey:@"OAuthToken"]]]];
-  [NSURLConnection connectionWithRequest:request delegate:self];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    responseData = [NSMutableData data];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@&accessToken=%@", MyUrl, @"GetTransactionsList", [usr objectForKey:@"MemberId"], @"ALL", @"pSize", @"20", @"pIndex", @"1",[defaults valueForKey:@"OAuthToken"]]]];
+    [NSURLConnection connectionWithRequest:request delegate:self];
 }
 -(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len{
     histSafe=NO;
@@ -298,14 +298,14 @@ static assist * _sharedInstance = nil;
     urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@&accessToken=%@", MyUrl, @"GetTransactionsList", [usr objectForKey:@"MemberId"], type, @"pSize", [NSString stringWithFormat:@"%d",len], @"pIndex", [NSString stringWithFormat:@"%d",sPos],[defaults valueForKey:@"OAuthToken"]];
     NSLog(@"more hist %@",type);
     requestForHis = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlForHis]];
-  connectionForHis=[[NSURLConnection alloc] initWithRequest:requestForHis delegate:self];
+    connectionForHis=[[NSURLConnection alloc] initWithRequest:requestForHis delegate:self];
     if (!connectionForHis) {
         NSLog(@"failed to connect for history");
     }
 }
 -(NSMutableArray*)histFilter:(NSString*)filterPick{
     if (!histSafe) {
-        return sortedHist; 
+        return sortedHist;
     }
     if (!needsUpdating && [histSearching isEqualToString:@""]) {
         return sortedHist;
@@ -362,7 +362,7 @@ static assist * _sharedInstance = nil;
         [tempHistArray setArray:temp];
     }
     [sortedHist setArray:[tempHistArray mutableCopy]];
-  //21  [sortedHist setArray:[self sortByStringDate:sortedHist]];
+    //21  [sortedHist setArray:[self sortByStringDate:sortedHist]];
     needsUpdating = NO;
     return sortedHist;
 }
@@ -391,9 +391,9 @@ static assist * _sharedInstance = nil;
         info.tagName = @"info";
         //
         NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-                NSLog(@"UserName%@",[usr objectForKey:@"email"]);
+        NSLog(@"UserName%@",[usr objectForKey:@"email"]);
         [info getDetails:[defaults valueForKey:@"MemberId"]
-];
+         ];
     }
     
 }
@@ -409,31 +409,31 @@ static assist * _sharedInstance = nil;
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
         
         if (timer!=nil) {
-           [timer invalidate];
+            [timer invalidate];
             timer=nil;
         }
-//        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//        
-//        [Alert show];
-//        
-//        
-//        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-//        
-//        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-//        
-//        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-//        
-//        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
-//        
-//        // timer=nil;
-//        [nav_ctrl performSelector:@selector(disable)];
-//        [nav_ctrl performSelector:@selector(reset)];
-//        [nav_ctrl popViewControllerAnimated:YES];
-//        Register *reg = [Register new];
-//        [nav_ctrl pushViewController:reg animated:YES];
-//        me = [core new];
-//        return;
-
+        //        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        //
+        //        [Alert show];
+        //
+        //
+        //        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+        //
+        //        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+        //
+        //        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        //
+        //        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+        //
+        //        // timer=nil;
+        //        [nav_ctrl performSelector:@selector(disable)];
+        //        [nav_ctrl performSelector:@selector(reset)];
+        //        [nav_ctrl popViewControllerAnimated:YES];
+        //        Register *reg = [Register new];
+        //        [nav_ctrl pushViewController:reg animated:YES];
+        //        me = [core new];
+        //        return;
+        
     }
     if ([tagName isEqualToString:@"bDelete"]) {
         
@@ -441,9 +441,9 @@ static assist * _sharedInstance = nil;
         [alert show];
     }
     else if ([tagName isEqualToString:@"banks"]) {
-         NSError *error;
+        NSError *error;
         
-         NSMutableArray *bankResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSMutableArray *bankResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         
         if ([bankResult isKindOfClass:[NSNull class]] || bankResult == nil) {
             bankResult = [NSMutableArray new];
@@ -451,7 +451,7 @@ static assist * _sharedInstance = nil;
         if ([bankResult count]>0) {
             if ([[[bankResult objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[bankResult objectAtIndex:0] valueForKey:@"IsVerified"] intValue]) {
                 
-               
+                
             }
             else
             {
@@ -474,10 +474,10 @@ static assist * _sharedInstance = nil;
                     NSLog(@"%@",bankResult);
                     NSLog(@"%@",[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
                     NSString*datestr=[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0];
-                  
-                 
+                    
+                    
                     NSDate *addeddate = [self dateFromString:datestr];
-                   
+                    
                     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
                     NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
                                                                         fromDate:addeddate
@@ -499,7 +499,7 @@ static assist * _sharedInstance = nil;
                             }
                             
                         }
-                       NSMutableDictionary* dictUsers2=[[NSMutableDictionary alloc]init];
+                        NSMutableDictionary* dictUsers2=[[NSMutableDictionary alloc]init];
                         if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
                             dictUsers2=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
                             
@@ -514,7 +514,7 @@ static assist * _sharedInstance = nil;
                         }
                         [defaults setValue:dictUsers2 forKey:@"NotifPlaced2"];
                         [defaults synchronize];
-
+                        
                         
                         serve *bank = [serve new];
                         bank.tagName = @"bDelete";
@@ -525,7 +525,7 @@ static assist * _sharedInstance = nil;
                     
                     
                 }
-        }
+            }
         }
         //banksZXc
         [usr setObject:bankResult forKey:@"banks"];
@@ -533,7 +533,7 @@ static assist * _sharedInstance = nil;
         NSError *error;
         
         NSMutableArray *cardResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-       // NSMutableArray *cardResult = [result JSONValue];
+        // NSMutableArray *cardResult = [result JSONValue];
         
         if ([cardResult isKindOfClass:[NSNull class]] || cardResult == nil) {
             cardResult = [NSMutableArray new];
@@ -543,17 +543,17 @@ static assist * _sharedInstance = nil;
     }else if([tagName isEqualToString:@"sets"]){
         NSError *error;
         NSMutableDictionary *setsResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-       
+        
         NSLog(@"%@",setsResult);
-       
+        
         // [user setObject:[setsResult valueForKey:@"Photo"] forKey:@"Photo"];
         [usr setObject:setsResult forKey:@"sets"];
-            }
+    }
     else if([tagName isEqualToString:@"info"]){
         NSError *error;
- 
-         NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-         NSLog(@"%@",loginResult);
+        
+        NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSLog(@"%@",loginResult);
         if ([loginResult valueForKey:@"Status"]!=Nil  && ![[loginResult valueForKey:@"Status"] isKindOfClass:[NSNull class]]&& [loginResult valueForKey:@"Status"] !=NULL) {
             [user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"];
             NSString*url=[loginResult valueForKey:@"PhotoUrl"];
@@ -562,7 +562,7 @@ static assist * _sharedInstance = nil;
             //  url=[url stringByReplacingOccurrencesOfString:@"//" withString:@"/"];
             NSLog(@"%@",url);
             [user setObject:url forKey:@"Photo"];
-
+            
         }
         
         if(![[loginResult objectForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"BalanceAmount"] != NULL)
@@ -586,9 +586,9 @@ static assist * _sharedInstance = nil;
             [user setObject:[loginResult objectForKey:@"Status"] forKey:@"Status"];
         }
         if(![[loginResult objectForKey:@"PhotoUrl"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"PhotoUrl"] != NULL){
-           // [usr setObject:[loginResult objectForKey:@"PhotoUrl"] forKey:@"PhotoUrl"];
-           // [usr setObject:@"http://172.17.60.150/NoochService/Photos/gv_no_photo.jpg" forKey:@"PhotoUrl"];
-
+            // [usr setObject:[loginResult objectForKey:@"PhotoUrl"] forKey:@"PhotoUrl"];
+            // [usr setObject:@"http://172.17.60.150/NoochService/Photos/gv_no_photo.jpg" forKey:@"PhotoUrl"];
+            
             
             
             if ([pic isEqualToData:UIImagePNGRepresentation([UIImage imageNamed:@"profile_picture.png"])] || [pic isKindOfClass:[NSNull class]] || [pic length] == 0) {
@@ -605,8 +605,8 @@ static assist * _sharedInstance = nil;
                     [defaults setObject:[loginResult objectForKey:@"MemberId"] forKey:@"MemberId"];
                     [defaults synchronize];//00000000-0000-0000-0000-000000000000
                 }
-               
-               // [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"MemberId"] forKey:@"MemberId"];
+                
+                // [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"MemberId"] forKey:@"MemberId"];
                 
             }
         }
@@ -623,12 +623,12 @@ static assist * _sharedInstance = nil;
     
     NSLog(@"%@", aStr);
     NSDate   *aDate = [dateFormatter dateFromString:aStr];
-   
+    
     return aDate;
 }
 # pragma mark - NSURLConnection Delegate Methods
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-  [responseData setLength:0];
+    [responseData setLength:0];
 }
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     [responseData appendData:data];
@@ -642,7 +642,7 @@ static assist * _sharedInstance = nil;
     //newHistForHis = [responseStringForHis JSONValue];
     NSError *error;
     
-   newHistForHis = [NSJSONSerialization JSONObjectWithData:[responseStringForHis dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+    newHistForHis = [NSJSONSerialization JSONObjectWithData:[responseStringForHis dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
     [self performSelectorInBackground:@selector(processNew:) withObject:newHistForHis];
 }
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
@@ -713,7 +713,7 @@ static assist * _sharedInstance = nil;
             }
         }
     }
-     NSLog(@"tempArray%d",tempArry.count);
+    NSLog(@"tempArray%d",tempArry.count);
     [histCache setArray:tempArry];
     needsUpdating = YES;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"tableReload" object:self userInfo:nil];
@@ -724,30 +724,30 @@ static assist * _sharedInstance = nil;
     {
         NSDateFormatter *df=[[NSDateFormatter alloc]init];
         objModel=[[NSMutableDictionary alloc]initWithDictionary:[unsortedArray objectAtIndex:i]];
-
+        
         [df setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
         NSDate *date1;
-       
+        
         if ([objModel valueForKey:@"TransactionDate"]) {
-             NSLog(@"objectIssue%@",objModel);
+            NSLog(@"objectIssue%@",objModel);
             date1=[df dateFromString:[objModel objectForKey:@"TransactionDate"]];
             NSLog(@"Date12Dec%@",date1);
         }
-      
-       // NSLog(@"objmodel%@",objModel);
+        
+        // NSLog(@"objmodel%@",objModel);
         dictsort=[[NSMutableDictionary alloc]init];
         if (objModel) {
             [dictsort setObject:objModel forKey:@"entity"];
         }
         
         if (date1) {
-              [dictsort setObject:date1 forKey:@"date"];
+            [dictsort setObject:date1 forKey:@"date"];
         }
-      
+        
         [tempArray addObject:dictsort];
     }
     NSLog(@"%@",tempArray);
-
+    
     NSInteger counter=[tempArray count];
     NSDate *compareDate;
     NSInteger index;
@@ -755,7 +755,7 @@ static assist * _sharedInstance = nil;
     {
         index=i;
         if ([[tempArray objectAtIndex:i] valueForKey:@"date"]) {
-             compareDate=[[tempArray objectAtIndex:i] valueForKey:@"date"];
+            compareDate=[[tempArray objectAtIndex:i] valueForKey:@"date"];
             NSDate *compareDateSecond;
             for(int j=i+1;j<counter;j++)
             {
@@ -771,12 +771,12 @@ static assist * _sharedInstance = nil;
                 }
             }
         }
-       
-       
+        
+        
         if(i!=index)
             [tempArray exchangeObjectAtIndex:i withObjectAtIndex:index];
     }
-
+    
     NSLog(@"%@",tempArray);
     [unsortedArray removeAllObjects];
     if ([tempArray count]>0) {
@@ -811,12 +811,12 @@ static assist * _sharedInstance = nil;
         if ([assosciateCache objectForKey:@"members"]) {
             members = [[assosciateCache objectForKey:@"members"] mutableCopy];
         }
-
+        
         NSMutableArray *nonmembers = [[NSMutableArray alloc] init];
         if ([assosciateCache objectForKey:@"nonmembers"]) {
             nonmembers = [[assosciateCache objectForKey:@"nonmembers"] mutableCopy];
         }
-
+        
         NSMutableDictionary *people = [[NSMutableDictionary alloc] init];
         if ([assosciateCache objectForKey:@"people"]) {
             people = [[assosciateCache objectForKey:@"people"] mutableCopy];
@@ -922,10 +922,10 @@ static assist * _sharedInstance = nil;
                 if (![nonmembers containsObject:arrayEntry]) {
                     [nonmembers addObject:arrayEntry];
                 }
-
+                
                 
             }
-
+            
         }
         //NSLog(@"recents %@",members);
         NSSortDescriptor *sortDescriptor;
@@ -948,7 +948,7 @@ static assist * _sharedInstance = nil;
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTable" object:self userInfo:nil];
-
+    
     [self performSelectorInBackground:@selector(getAssosPics) withObject:nil];
 }
 -(NSMutableArray*)assosSearch:(NSString*)searchText{
@@ -971,7 +971,7 @@ static assist * _sharedInstance = nil;
         //isRange = [[NSString stringWithFormat:@"%@ %@",[[dict objectForKey:@"firstName"] substringToIndex:[searchText length]-1],[[dict objectForKey:@"lastName"] substringToIndex:[searchText length]-1]] rangeOfString:searchText options:NSCaseInsensitiveSearch];
         //if(isRange.location != NSNotFound)
         //    [responseArray addObject:dict];
-    }   
+    }
     NSSortDescriptor *sortDescriptor;
     sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"firstName" ascending:YES];
     NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
@@ -1028,33 +1028,33 @@ static assist * _sharedInstance = nil;
 }/*}}}*/
 -(UIColor*)hexColor:(NSString*)hex{
     NSString *cString = [[hex stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
-
+    
     // String should be 6 or 8 characters
     if ([cString length] < 6) return [UIColor grayColor];
-
+    
     // strip 0X if it appears
     if ([cString hasPrefix:@"0X"]) cString = [cString substringFromIndex:2];
-
+    
     if ([cString length] != 6) return  [UIColor grayColor];
-
+    
     // Separate into r, g, b substrings
     NSRange range;
     range.location = 0;
     range.length = 2;
     NSString *rString = [cString substringWithRange:range];
-
+    
     range.location = 2;
     NSString *gString = [cString substringWithRange:range];
-
+    
     range.location = 4;
     NSString *bString = [cString substringWithRange:range];
-
+    
     // Scan values
     unsigned int r, g, b;
     [[NSScanner scannerWithString:rString] scanHexInt:&r];
     [[NSScanner scannerWithString:gString] scanHexInt:&g];
     [[NSScanner scannerWithString:bString] scanHexInt:&b];
-
+    
     return [UIColor colorWithRed:((float) r / 255.0f)
                            green:((float) g / 255.0f)
                             blue:((float) b / 255.0f)

@@ -35,7 +35,7 @@
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
-
+    
 	// Do any additional setup after loading the view.
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
@@ -60,7 +60,7 @@
     self.micro1.layer.cornerRadius=5.0f;
     self.micro1.layer.borderColor=[[UIColor grayColor]CGColor];
     self.micro1.layer.borderWidth=1.0f;
-
+    
     [self.micro1 setDelegate:self]; [self.micro1 setTag:1];
     [self.micro1 setKeyboardType:UIKeyboardTypeNumberPad];
     [self.micro1 setStyleId:@"micro1_amountfield"];
@@ -76,7 +76,7 @@
     [self.micro2 setKeyboardType:UIKeyboardTypeNumberPad];
     [self.micro2 setStyleId:@"micro2_amountfield"];
     [self.view addSubview:self.micro2];
-   // [self.micro2 becomeFirstResponder];
+    // [self.micro2 becomeFirstResponder];
     
     self.verify = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.verify setFrame:CGRectMake(0, 200, 0, 0)];
@@ -92,7 +92,7 @@
     }
     else
     {
-         [self.verify setEnabled:YES];
+        [self.verify setEnabled:YES];
     }
     [self.verify addTarget:self action:@selector(verify_amounts) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.verify];
@@ -105,7 +105,7 @@
     
     [self.removeBank addTarget:self action:@selector(Remove_Bank) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.removeBank];
-
+    
 }
 -(void)dismissKeyboard{
     [self.micro1 resignFirstResponder];
@@ -113,28 +113,28 @@
 }
 - (void) verify_amounts
 {
-   [self.micro1 resignFirstResponder];
+    [self.micro1 resignFirstResponder];
     [self.micro2 resignFirstResponder];
     NSString *amountOne=[NSString stringWithFormat:@".%@", self.micro1.text];
     NSString *amountTwo=[NSString stringWithFormat:@".%@", self.micro2.text];
-//    if((([amountOne intValue] < 100) && ([amountOne intValue] > 0)) && (([amountTwo intValue] < 100) && ([amountTwo intValue] > 0)))
-//    {
-        verifyAttempts++;
-        serve *ver  = [serve new];
-        ver.tagName = @"verification";
-        ver.Delegate = self;
-        [ver verifyBank:[[NSUserDefaults standardUserDefaults] objectForKey:@"choice"] microOne:amountOne microTwo:amountTwo];
-        [me waitStat:@"Attempting to verify your account..."];
-//    }
-//    else
-//    {
-//        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Please enter valid amounts." delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil];
-//        [alertView sizeToFit];
-//        [alertView show];
-//        self.micro1.text=@"";
-//        self.micro1.text=@"";
-//    }
-
+    //    if((([amountOne intValue] < 100) && ([amountOne intValue] > 0)) && (([amountTwo intValue] < 100) && ([amountTwo intValue] > 0)))
+    //    {
+    verifyAttempts++;
+    serve *ver  = [serve new];
+    ver.tagName = @"verification";
+    ver.Delegate = self;
+    [ver verifyBank:[[NSUserDefaults standardUserDefaults] objectForKey:@"choice"] microOne:amountOne microTwo:amountTwo];
+    [me waitStat:@"Attempting to verify your account..."];
+    //    }
+    //    else
+    //    {
+    //        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Please enter valid amounts." delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil];
+    //        [alertView sizeToFit];
+    //        [alertView show];
+    //        self.micro1.text=@"";
+    //        self.micro1.text=@"";
+    //    }
+    
 }
 -(void)Remove_Bank{
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"You are attempting to remove this bank account from Nooch." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Continue", nil];
@@ -157,16 +157,16 @@
                                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                         options:kNilOptions
                                         error:&error];
-   // NSDictionary *loginResult = [result JSONValue];
+    // NSDictionary *loginResult = [result JSONValue];
     if ([tagName isEqualToString:@"bDelete"]) {
-       // [me getBanks];
+        // [me getBanks];
         if([(NSString *)[dictResponse valueForKey:@"Result"] isEqualToString:@"Your bank account details has been deleted successfully."])
         {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"The bank account details have been deleted." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView sizeToFit];
             [alertView show];
             [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"IsPrimaryBankVerified"];
-              for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
+            for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
                 if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
                     [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
                 }
@@ -214,7 +214,7 @@
             [alertView show];
         }
     }
-     
+    
 }
 
 

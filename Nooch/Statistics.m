@@ -46,7 +46,7 @@
     UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
     
-
+    
     serve*serveOBJ=[serve new];
     [serveOBJ setDelegate:self];
     serveOBJ.tagName=@"Total_P2P_transfers";
@@ -194,14 +194,14 @@
         
         if (indexPath.row == 0) {
             [title setText:@"$ Added to Nooch"];
-            [statistic setText:@"$ 105.00"];
-             [statistic setText:[[dictAllStats valueForKey:@"Total_$_Added_to_Nooch"]  valueForKey:@"Result"]];
+            //[statistic setText:@"$ 105.00"];
+            [statistic setText:[[dictAllStats valueForKey:@"Total_$_Added_to_Nooch"]  valueForKey:@"Result"]];
             //Total_$_Added_to_Nooch
         }
         else if (indexPath.row == 1) {
             [title setText:@"$ Cashed out of Nooch"];
             //[statistic setText:@"$ 200.00"];
-             [statistic setText:[[dictAllStats valueForKey:@"Total_$_withdraw_from_Nooch"]  valueForKey:@"Result"]];
+            [statistic setText:[[dictAllStats valueForKey:@"Total_$_withdraw_from_Nooch"]  valueForKey:@"Result"]];
             //Total_$_withdraw_from_Nooch
         }
         else if (indexPath.row == 2) {
@@ -217,7 +217,7 @@
             if ([dictAllStats valueForKey:@"Total_Friends_Joined"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Friends_Joined"]  valueForKey:@"Result"]];
             }
-           // [statistic setText:@"7"];
+            // [statistic setText:@"7"];
         }
         else if (indexPath.row == 4) {
             [title setText:@"$ Earned from Invites"];
@@ -227,17 +227,17 @@
             if ([dictAllStats valueForKey:@"Total_Posts_To_TW"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Posts_To_TW"]  valueForKey:@"Result"]];
             }
-
+            
             [title setText:@"Posts to Twitter"];
-           // [statistic setText:@"0"];
+            // [statistic setText:@"0"];
         }
         else if (indexPath.row == 6) {
             if ([dictAllStats valueForKey:@"Total_Posts_To_FB"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Posts_To_FB"]  valueForKey:@"Result"]];
             }
-
+            
             [title setText:@"Posts to Facebook"];
-           // [statistic setText:@"3"];
+            // [statistic setText:@"3"];
         }
     } else if (self.selected == 1) { //transfers
         
@@ -249,61 +249,64 @@
                 [statistic setText:[[dictAllStats valueForKey:@"Total_P2P_transfers"]  valueForKey:@"Result"]];
             }
             
-
+            
             //
         }
         else if (indexPath.row == 1) {
             [title setText:@"Transfers Sent"];
-             [statistic setText:[[dictAllStats valueForKey:@"Total_no_of_transfer_Sent"]  valueForKey:@"Result"]];
-           // [statistic setText:@"17"];
+            [statistic setText:[[dictAllStats valueForKey:@"Total_no_of_transfer_Sent"]  valueForKey:@"Result"]];
+            // [statistic setText:@"17"];
         }
         else if (indexPath.row == 2) {
             [title setText:@"Transfers Received"];
-             [statistic setText:[[dictAllStats valueForKey:@"Total_no_of_transfer_Received"]  valueForKey:@"Result"]];
+            [statistic setText:[[dictAllStats valueForKey:@"Total_no_of_transfer_Received"]  valueForKey:@"Result"]];
             //[statistic setText:@"4"];
         }
         else if (indexPath.row == 3) {
             [title setText:@"$ Amount Sent"];
-             [statistic setText:[[dictAllStats valueForKey:@"Total_$_Sent"]  valueForKey:@"Result"]];
-           // [statistic setText:@"$ 256.75"];
+            [statistic setText:[[dictAllStats valueForKey:@"Total_$_Sent"]  valueForKey:@"Result"]];
+            // [statistic setText:@"$ 256.75"];
         }
         else if (indexPath.row == 4) {
             [title setText:@"$ Amount Received"];
             //Total_$_Received
-           // [statistic setText:@"$ 123.00"];
-             [statistic setText:[[dictAllStats valueForKey:@"Total_$_Received"] valueForKey:@"Result"]];
+            // [statistic setText:@"$ 123.00"];
+            [statistic setText:[[dictAllStats valueForKey:@"Total_$_Received"] valueForKey:@"Result"]];
         }
         else if (indexPath.row == 5) {
             [title setText:@"Largest Transfer Sent"];
             //Largest_sent_transfer
             [statistic setText:[[dictAllStats valueForKey:@"Largest_sent_transfer"]  valueForKey:@"Result"]];
-           // [statistic setText:@"$ 75.00"];
+            // [statistic setText:@"$ 75.00"];
         }
         else if (indexPath.row == 6) {
-          
+            
             
             [title setText:@"Largest Transfer Received"];
-             [statistic setText:[[dictAllStats valueForKey:@"Largest_received_transfer"]  valueForKey:@"Result"]];
-          //  [statistic setText:@"$ 70.03"];
+            [statistic setText:[[dictAllStats valueForKey:@"Largest_received_transfer"]  valueForKey:@"Result"]];
+            //  [statistic setText:@"$ 70.03"];
         }
     } else if (self.selected == 2) { //donations
         
         
         if (indexPath.row == 0) {
             [title setText:@"Total $ Donated"];
+            [statistic setText:[[dictAllStats valueForKey:@"Total_$_Donated"]  valueForKey:@"Result"]];
             //[statistic setText:@"$ 105.00"];
         }
         else if (indexPath.row == 1) {
             [title setText:@"Total Donations"];
+            [statistic setText:[[dictAllStats valueForKey:@"Total_Donations_Count"]  valueForKey:@"Result"]];
             //[statistic setText:@"3"];
         }
         else if (indexPath.row == 2) {
             [title setText:@"Causes Donated to"];
-            [statistic setText:@"4"];
+            //  [statistic setText:@"4"];
         }
         else if (indexPath.row == 3) {
             [title setText:@"Largest Donation"];
-           // [statistic setText:@"$ 125.00"];
+            [statistic setText:[[dictAllStats valueForKey:@"Largest_Donation_Made"]  valueForKey:@"Result"]];
+            // [statistic setText:@"$ 125.00"];
         }
     }
     
@@ -329,9 +332,9 @@
                  error:&error];
     
     NSLog(@"%@",dictResult);
-   [ dictAllStats setObject:dictResult forKey:tagName];
+    [ dictAllStats setObject:dictResult forKey:tagName];
     NSLog(@"%@",dictAllStats);
-
+    
     if ([tagName isEqualToString:@"Total_P2P_transfers"]) {
         serve*serveOBJ=[serve new];
         
@@ -377,7 +380,7 @@
         
         [serveOBJ GetMemberStats:@"Total_no_of_transfer_Received"];
     }
-   else if ([tagName isEqualToString:@"Total_no_of_transfer_Received"]) {
+    else if ([tagName isEqualToString:@"Total_no_of_transfer_Received"]) {
         serve*serveOBJ=[serve new];
         
         [serveOBJ setDelegate:self];
@@ -405,7 +408,7 @@
         [serveOBJ GetMemberStats:@"Largest_sent_transfer"];
     }
     
-   else if ([tagName isEqualToString:@"Largest_sent_transfer"]) {
+    else if ([tagName isEqualToString:@"Largest_sent_transfer"]) {
         serve*serveOBJ=[serve new];
         
         [serveOBJ setDelegate:self];
@@ -414,60 +417,89 @@
         
         [serveOBJ GetMemberStats:@"Largest_received_transfer"];
     }
-   else if ([tagName isEqualToString:@"Largest_received_transfer"]) {
-       serve*serveOBJ=[serve new];
-       
-       [serveOBJ setDelegate:self];
-       
-       serveOBJ.tagName=@"Total_$_Added_to_Nooch";
-       
-       [serveOBJ GetMemberStats:@"Total_$_Added_to_Nooch"];
-   }
-   else if ([tagName isEqualToString:@"Total_$_Added_to_Nooch"]) {
-       serve*serveOBJ=[serve new];
-       
-       [serveOBJ setDelegate:self];
-       
-       serveOBJ.tagName=@"Total_$_withdraw_from_Nooch";
-       
-       [serveOBJ GetMemberStats:@"Total_$_withdraw_from_Nooch"];
-   }
-   else if ([tagName isEqualToString:@"Total_$_withdraw_from_Nooch"]) {
-       serve*serveOBJ=[serve new];
-       
-       [serveOBJ setDelegate:self];
-       
-       serveOBJ.tagName=@"Total_Friends_Invited";
-       
-       [serveOBJ GetMemberStats:@"Total_Friends_Invited"];
-   }
-   else if ([tagName isEqualToString:@"Total_Friends_Invited"]) {
-       serve*serveOBJ=[serve new];
-       
-       [serveOBJ setDelegate:self];
-       
-       serveOBJ.tagName=@"Total_Friends_Joined";
-       
-       [serveOBJ GetMemberStats:@"Total_Friends_Joined"];
-   }
-   else if ([tagName isEqualToString:@"Total_Friends_Joined"]) {
-       serve*serveOBJ=[serve new];
-       
-       [serveOBJ setDelegate:self];
-       
-       serveOBJ.tagName=@"Total_Posts_To_FB";
-       
-       [serveOBJ GetMemberStats:@"Total_Posts_To_FB"];
-   }
-   else if ([tagName isEqualToString:@"Total_Posts_To_FB"]) {
-       serve*serveOBJ=[serve new];
-       
-       [serveOBJ setDelegate:self];
-       
-       serveOBJ.tagName=@"Total_Posts_To_TW";
-       
-       [serveOBJ GetMemberStats:@"Total_Posts_To_TW"];
-   }//Total_Posts_To_FB
+    else if ([tagName isEqualToString:@"Largest_received_transfer"]) {
+        serve*serveOBJ=[serve new];
+        
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"Total_$_Added_to_Nooch";
+        
+        [serveOBJ GetMemberStats:@"Total_$_Added_to_Nooch"];
+    }
+    else if ([tagName isEqualToString:@"Total_$_Added_to_Nooch"]) {
+        serve*serveOBJ=[serve new];
+        
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"Total_$_withdraw_from_Nooch";
+        
+        [serveOBJ GetMemberStats:@"Total_$_withdraw_from_Nooch"];
+    }
+    
+    else if ([tagName isEqualToString:@"Total_$_withdraw_from_Nooch"]) {
+        serve*serveOBJ=[serve new];
+        
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"Total_Friends_Invited";
+        
+        [serveOBJ GetMemberStats:@"Total_Friends_Invited"];
+    }
+    else if ([tagName isEqualToString:@"Total_Friends_Invited"]) {
+        serve*serveOBJ=[serve new];
+        
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"Total_Friends_Joined";
+        
+        [serveOBJ GetMemberStats:@"Total_Friends_Joined"];
+    }
+    else if ([tagName isEqualToString:@"Total_Friends_Joined"]) {
+        serve*serveOBJ=[serve new];
+        
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"Total_Posts_To_FB";
+        
+        [serveOBJ GetMemberStats:@"Total_Posts_To_FB"];
+    }
+    else if ([tagName isEqualToString:@"Total_Posts_To_FB"]) {
+        serve*serveOBJ=[serve new];
+        
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"Total_Posts_To_TW";
+        
+        [serveOBJ GetMemberStats:@"Total_Posts_To_TW"];
+    }
+    else if ([tagName isEqualToString:@"Total_Posts_To_TW"]) {
+        serve*serveOBJ=[serve new];
+        
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"Largest_Donation_Made";
+        
+        [serveOBJ GetMemberStats:@"Largest_Donation_Made"];
+    }
+    else if ([tagName isEqualToString:@"Largest_Donation_Made"]) {
+        serve*serveOBJ=[serve new];
+        
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"Total_Donations_Count";
+        
+        [serveOBJ GetMemberStats:@"Total_Donations_Count"];
+    }
+    else if ([tagName isEqualToString:@"Total_Donations_Count"]) {
+        serve*serveOBJ=[serve new];
+        
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"Total_$_Donated";
+        
+        [serveOBJ GetMemberStats:@"Total_$_Donated"];
+    }//Total_$_Donated
+    // Largest_Donation_Made //Total_Posts_To_FB
     //Total_$_Added_to_Nooch
 }
 

@@ -36,17 +36,39 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+     self.navigationItem.title=[self.charity valueForKey:@"OrganizationName"];
     
-
+    UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [balance setFrame:CGRectMake(0, 0, 60, 30)];
+    if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
+        
+        [balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+    }
+    else
+        
+    {
+        [balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
+    }
+    
+    [balance.titleLabel setFont:kNoochFontMed];
+    [balance setStyleId:@"navbar_balance"];
+    
+    [self.navigationItem setRightBarButtonItem:Nil];
+    
+    UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:balance];
+    
+    [self.navigationItem setRightBarButtonItem:funds];
+    
+    
+    
    
-    self.navigationItem.title=[self.charity valueForKey:@"OrganizationName"];
 	
     image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 150)];
-
+    
     [self.navigationItem setTitle:@"Cause Details"];
     
     
-
+    
     [image setImage:[UIImage imageNamed:@"4k_image.png"]];
     [image setStyleClass:@"featured_nonprofit_banner_details"];
     [image setStyleCSS:@"background-image : url(4k_image.png)"];
@@ -60,7 +82,7 @@
     
     UIButton *web = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [web setTitle:@"" forState:UIControlStateNormal];
-     [web addTarget:self action:@selector(webRef) forControlEvents:UIControlEventTouchUpInside];
+    [web addTarget:self action:@selector(webRef) forControlEvents:UIControlEventTouchUpInside];
     [web setStyleClass:@"nonprofit_details_buttons"];
     [web setStyleClass:@"nonprofit_details_button_website"];
     [self.view addSubview:web];
@@ -127,7 +149,7 @@
     [blankView addSubview:actv];
     [self .view addSubview:blankView];
     [self.view bringSubviewToFront:blankView];
-
+    
     serve*serveOBJ=[serve new];
     serveOBJ.Delegate=self;
     serveOBJ.tagName=@"npDetail";
@@ -135,23 +157,23 @@
 }
 -(void)webRef{
     if ([weburl length]>0) {
-   [self webView:weburl];
+        [self webView:weburl];
     }
 }
 -(void)fbRef{
     if ([fburl length]>0) {
-   [self webView:fburl];
+        [self webView:fburl];
     }
 }
 -(void)twRef{
     if ([twurl length]>0) {
         [self webView:twurl];
     }
- 
+    
 }
 -(void)youRef{
     if ([youurl length]>0) {
-    [self webView:youurl];
+        [self webView:youurl];
     }
 }
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -190,12 +212,12 @@
         [alert show];
         return;
     }
-   /* if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
-        
-        [alert show];
-        return;
-    }*/
+    /* if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+     UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
+     
+     [alert show];
+     return;
+     }*/
     //IsVerifiedPhone
     //[user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"]
     
@@ -209,14 +231,14 @@
         return;
     }
     
-
+    
     if ( ![[assist shared]isBankVerified]) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         
         return;
     }
-   
+    
     NSLog(@"%@",self.charity);
     NSMutableDictionary*dict_donate=[self.charity mutableCopy];
     if ([dict valueForKey:@"FirstName"]!=NULL && [dict valueForKey:@"LastName"]!=NULL) {
@@ -248,7 +270,7 @@
     button.frame = CGRectMake(250,0,70,30);
     [button addTarget:self action:@selector(close:) forControlEvents:UIControlEventTouchUpInside];
     [webView addSubview:button];
-    }
+}
 
 - (IBAction)close:(id)sender {
     
@@ -263,9 +285,9 @@
     
     NSError* error;
     detaildict=[NSJSONSerialization
-                     JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                     options:kNilOptions
-                     error:&error];
+                JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                options:kNilOptions
+                error:&error];
     if (![[detaildict valueForKey:@"Description"]isKindOfClass:[NSNull class]]&& [detaildict valueForKey:@"Description"]!=nil && [detaildict valueForKey:@"Description"]!=NULL) {
         info.text=[detaildict valueForKey:@"Description"];
     }
@@ -273,9 +295,9 @@
         [image setImageWithURL:[NSURL URLWithString:[detaildict valueForKey:@"BannerImage"]]
               placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
         
-
+        
     }
-
+    
     
     if (![[detaildict valueForKey:@"WebsiteUrl"]isKindOfClass:[NSNull class]]&& [detaildict valueForKey:@"WebsiteUrl"]!=nil && [detaildict valueForKey:@"WebsiteUrl"]!=NULL) {
         weburl=[detaildict valueForKey:@"WebsiteUrl"];
@@ -298,13 +320,13 @@
         decry->tag = [NSNumber numberWithInteger:2];
         [decry getDecryptionL:@"GetDecryptedData" textString:[self.charity valueForKey:@"FirstName"]];
     }
-   
+    
 }
 -(void)decryptionDidFinish:(NSMutableDictionary *) sourceData TValue:(NSNumber *) tagValue{
     
     if ([ServiceType isEqualToString:@"Fname"]) {
         [dict setObject:[sourceData valueForKey:@"Status"] forKey:@"FirstName"];
-       // [dict setobject:[sourceData valueForKey:@"Status"] forKey:@"FirstName"];
+        // [dict setobject:[sourceData valueForKey:@"Status"] forKey:@"FirstName"];
         NSLog(@"%@  %@",dict,[sourceData valueForKey:@"Status"]);
         ServiceType=@"Lname";
         Decryption *decry = [[Decryption alloc] init];
@@ -319,7 +341,7 @@
         [dict setValue:[sourceData valueForKey:@"Status"] forKey:@"LastName"];
         NSLog(@"%@  %@",dict,[sourceData valueForKey:@"Status"]);
         [blankView removeFromSuperview];
-
+        
     }
 }
 

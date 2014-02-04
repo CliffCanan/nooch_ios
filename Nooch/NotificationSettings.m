@@ -61,18 +61,18 @@
     
     self.email_received = [[UISwitch alloc] initWithFrame:CGRectMake(180, 30, 40, 30)];
     self.email_received.tag=12000;
-   
+    
     [self.email_received addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.push_received = [[UISwitch alloc] initWithFrame:CGRectMake(260, 30, 40, 30)];
     self.push_received.tag=12001;
-  
+    
     [self.push_received addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.email_sent = [[UISwitch alloc] initWithFrame:CGRectMake(180, 80, 40, 30)];
     self.email_sent.tag=12002;
- 
+    
     [self.email_sent addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.email_unclaimed = [[UISwitch alloc] initWithFrame:CGRectMake(180, 130, 40, 30)];
-     self.email_unclaimed.tag=12003;
+    self.email_unclaimed.tag=12003;
     [ self.email_unclaimed addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     
     self.bank_transfers = [[UITableView alloc] initWithFrame:CGRectMake(0, 196, 320, 250)];
@@ -82,22 +82,22 @@
     
     self.email_withdraw_requested = [[UISwitch alloc] initWithFrame:CGRectMake(180, 210, 40, 30)];
     self.email_withdraw_requested.tag=12004;
-  
+    
     [self.email_withdraw_requested addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.email_withdraw_submitted = [[UISwitch alloc] initWithFrame:CGRectMake(180, 260, 40, 30)];
     self.email_withdraw_submitted.tag=12005;
-  
-
+    
+    
     [self.email_withdraw_submitted addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.push_withdraw_submitted = [[UISwitch alloc] initWithFrame:CGRectMake(260, 260, 40, 30)];
     self.push_withdraw_submitted.tag=12006;
-       [self.push_withdraw_submitted addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
+    [self.push_withdraw_submitted addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.email_deposit_requested = [[UISwitch alloc] initWithFrame:CGRectMake(180, 310, 40, 30)];
     self.email_deposit_requested.tag=12007;
-   
+    
     [self.email_deposit_requested addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.email_deposit_completed = [[UISwitch alloc] initWithFrame:CGRectMake(180, 360, 40, 30)];
-     self.email_deposit_completed.tag=12008;
+    self.email_deposit_completed.tag=12008;
     
     [ self.email_deposit_completed addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.push_deposit_completed = [[UISwitch alloc] initWithFrame:CGRectMake(260, 360, 40, 30)];
@@ -106,7 +106,7 @@
     [self.push_deposit_completed addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.email_failure = [[UISwitch alloc] initWithFrame:CGRectMake(180, 410, 40, 30)];
     self.email_failure.tag=12010;
-   
+    
     [self.email_failure addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.push_failure = [[UISwitch alloc] initWithFrame:CGRectMake(260, 410, 40, 30)];
     self.push_failure.tag=12011;
@@ -123,86 +123,86 @@
     
 }
 -(void)changeSwitch:(UISwitch*)switchRef{
-   
-       int tag=switchRef.tag;
+    
+    int tag=switchRef.tag;
     switch (tag) {
         case 12000:
             servicePath=@"email";
-             serviceType=@"email_received";
+            serviceType=@"email_received";
             [self setService];
             break;
         case 12001:
-             servicePath=@"push";
-         serviceType=@"push_received";
+            servicePath=@"push";
+            serviceType=@"push_received";
             [self setService];
             break;
         case 12002:
-             servicePath=@"email";
+            servicePath=@"email";
             serviceType=@"email_sent";
-
+            
             [self setService];
             break;
         case 12003:
-             servicePath=@"email";
+            servicePath=@"email";
             serviceType=@"email_unclaimed";
             [self setService];
             break;
         case 12004:
-             servicePath=@"email";
+            servicePath=@"email";
             serviceType=@"email_withdraw_requested";
-
+            
             [self setService];
             break;
         case 12005:
-             servicePath=@"email";
-             serviceType=@"email_withdraw_submitted";
+            servicePath=@"email";
+            serviceType=@"email_withdraw_submitted";
             [self setService];
             break;
         case 12006:
-             servicePath=@"push";
-           serviceType=@"push_withdraw_submitted";
+            servicePath=@"push";
+            serviceType=@"push_withdraw_submitted";
             [self setService];
             break;
         case 12007:
-             servicePath=@"email";
+            servicePath=@"email";
             serviceType=@"email_deposit_requested";
-
+            
             [self setService];
             break;
         case 12008:
-             servicePath=@"email";
-             serviceType=@"email_deposit_completed";
+            servicePath=@"email";
+            serviceType=@"email_deposit_completed";
             [self setService];
             break;
         case 12009:
-             servicePath=@"push";
+            servicePath=@"push";
             serviceType=@"push_deposit_completed";
             [self setService];
             break;
         case 12010:
-             servicePath=@"email";
+            servicePath=@"email";
             serviceType=@"email_failure";
             [self setService];
             break;
         case 12011:
-             servicePath=@"push";
+            servicePath=@"push";
             serviceType=@"push_failure";
             [self setService];
             break;
-           
             
-
+            
+            
         default:
             break;
     }
 }
 -(void)setService
 {
-   
+    
     NSDictionary *transactionInput1;
     if ([servicePath isEqualToString:@"push"]) {
-       
-    
+        
+        
         NSLog(@"%hhd",[self.push_withdraw_submitted isOn]);
         transactionInput1=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[self.push_withdraw_submitted isOn]?@"1":@"0",@"NoochToBank",[self.push_deposit_completed isOn]?@"1":@"0",@"BankToNooch",[self.push_received isOn]?@"1":@"0",@"TransferReceived",[self.push_failure isOn]?@"1":@"0",@"TransferAttemptFailure", nil];
         
@@ -216,9 +216,9 @@
     [serveOBJ setDelegate:self];
     serveOBJ.tagName=@"setSettings";
     [serveOBJ MemberNotificationSettings:transactionInput1 type:servicePath];
-
     
-      }
+    
+}
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -301,9 +301,9 @@
     if ([tagName isEqualToString:@"getSettings"]) {
         NSError* error;
         dictInput=[NSJSONSerialization
-                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                         options:kNilOptions
-                         error:&error];
+                   JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                   options:kNilOptions
+                   error:&error];
         NSLog(@"%@",dictInput);
         
         
@@ -332,8 +332,8 @@
             
         }
         if ([[dictInput objectForKey:@"TransferSent"]boolValue]) {
-          //  [self.push setOn:YES];
-
+            //  [self.push setOn:YES];
+            
             
         }
         else
@@ -341,7 +341,7 @@
             //[self.push_deposit_completed setOn:NO];
             
         }
-
+        
         if ([[dictInput objectForKey:@"TransferAttemptFailure"]boolValue]) {
             [self.push_failure setOn:YES];
         }
@@ -350,14 +350,14 @@
             [self.push_failure setOn:NO];
             
         }
-
+        
         if ([[dictInput objectForKey:@"EmailTransferAttemptFailure"]boolValue]) {
             [self.email_failure setOn:YES];
             
         }
         else
         {
-            [self.push_failure setOn:NO];
+            [self.email_failure setOn:NO];
             
         }
         if ([[dictInput objectForKey:@"NoochToBankRequested"]boolValue]) {
@@ -394,40 +394,40 @@
             [self.email_deposit_completed setOn:NO];
             
         }if ([[dictInput objectForKey:@"BankToNoochRequested"]boolValue]) {
-             [self.email_deposit_requested setOn:YES];
+            [self.email_deposit_requested setOn:YES];
         }
         else
         {
             [self.email_deposit_requested setOn:NO];
             
         }
-            if ([[dictInput objectForKey:@"EmailTransferReceived"]boolValue]) {
-             [self.email_received setOn:YES];
+        if ([[dictInput objectForKey:@"EmailTransferReceived"]boolValue]) {
+            [self.email_received setOn:YES];
         }
-            else
-            {
-                [self.email_received setOn:NO];
-                
-            }
+        else
+        {
+            [self.email_received setOn:NO];
+            
+        }
         if ([[dictInput objectForKey:@"EmailTransferSent"]boolValue]) {
             [self.email_sent setOn:YES];
-
+            
         }
         else
         {
             [self.email_sent setOn:NO];
             
         }
-           }
+    }
     else if ([tagName isEqualToString:@"setSettings"])
     {
         NSError* error;
         dictSettings=[NSJSONSerialization
-                   JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                   options:kNilOptions
-                   error:&error];
+                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                      options:kNilOptions
+                      error:&error];
         NSLog(@"%@",dictSettings);
-
+        
     }
 }
 

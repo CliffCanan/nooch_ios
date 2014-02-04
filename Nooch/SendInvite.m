@@ -54,7 +54,7 @@
     
     [self.view setStyleClass:@"background_gray"];
     
-       UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 320, 40)];
+    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 320, 40)];
     [title setText:@"Your referral code:"];
     [title setStyleId:@"refer_introtext"];
     [self.view addSubview:title];
@@ -75,7 +75,7 @@
     [sms setStyleClass:@"refer_buttons"];
     [sms setStyleId:@"refer_sms"];
     [sms addTarget:self action:@selector(SMSClicked:) forControlEvents:UIControlEventTouchUpInside];
-
+    
     [self.view addSubview:sms];
     UILabel *sms_label = [UILabel new];
     frame = sms.frame;
@@ -89,7 +89,7 @@
     [fb setStyleClass:@"refer_buttons"];
     [fb setStyleId:@"refer_fb"];
     [fb addTarget:self action:@selector(fbClicked:) forControlEvents:UIControlEventTouchUpInside];
-
+    
     [self.view addSubview:fb];
     UILabel *fb_label = [UILabel new];
     frame = fb.frame;
@@ -103,7 +103,7 @@
     [twit setStyleClass:@"refer_buttons"];
     [twit setStyleId:@"refer_twit"];
     [twit addTarget:self action:@selector(TwitterClicked:) forControlEvents:UIControlEventTouchUpInside];
-
+    
     [self.view addSubview:twit];
     UILabel *twit_label = [UILabel new];
     frame = twit.frame;
@@ -126,7 +126,7 @@
     [email_label setText:@"Email"];
     [self.view addSubview:email_label];
     
-   
+    
     
     serve*serveOBJ=[serve new];
     serveOBJ.tagName=@"GetReffereduser";
@@ -134,7 +134,7 @@
     [serveOBJ setDelegate:self];
     [serveOBJ getInvitedMemberList:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]];
     
-   
+    
 }
 #pragma mark - file paths
 - (NSString *)autoLogin{
@@ -146,11 +146,11 @@
 #pragma mark - server Delegation
 
 -(void) listen:(NSString *)result tagName:(NSString *)tagName{
-     NSError* error;
-
+    NSError* error;
+    
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
         UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-       
+        
         [Alert show];
         
         
@@ -174,9 +174,9 @@
         return;
     }
     
-
+    
     if ([tagName isEqualToString:@"recents"]) {
-       
+        
         self.recents = [NSJSONSerialization
                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
@@ -184,18 +184,18 @@
         [self.contacts reloadData];
     }
     
-   else if ([tagName isEqualToString:@"ReferralCode"]) {
-       dictResponse=[NSJSONSerialization
-                     JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                     options:kNilOptions
-                     error:&error];
+    else if ([tagName isEqualToString:@"ReferralCode"]) {
+        dictResponse=[NSJSONSerialization
+                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                      options:kNilOptions
+                      error:&error];
         //edit
         NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
         [defaults setValue:[[dictResponse valueForKey:@"getReferralCodeResult"] valueForKey:@"Result"] forKey:@"ReferralCode"];
         [defaults synchronize];
         code.text=[NSString stringWithFormat:@"%@",[[dictResponse valueForKey:@"getReferralCodeResult"] valueForKey:@"Result"]];
         NSLog(@"%@",dictResponse);
-       
+        
     }
     else if ([tagName isEqualToString:@"GetReffereduser"])
     {
@@ -212,7 +212,7 @@
             if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] count]==1) {
                 [self.contacts setStyleCSS:@"height : 60px"];
             }
-          
+            
             [self.contacts setSeparatorStyle:UITableViewCellSeparatorStyleNone];
             self.contacts.separatorColor = [UIColor clearColor];
             //[self.contacts setStyleClass:@"raised_view"];
@@ -222,8 +222,8 @@
             [invited setStyleClass:@"refer_header"];
             [invited setText:@"Friends you referred:"];
             [self.view addSubview:invited];
-           [self.contacts  setHidden:NO];
-           [self.contacts reloadData];
+            [self.contacts  setHidden:NO];
+            [self.contacts reloadData];
             
         }
         else
@@ -234,11 +234,11 @@
         [serveOBJ setDelegate:self];
         [serveOBJ GetReferralCode:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]];
         
-
+        
     }
     else if ([tagName isEqualToString:@"SMS"])
     {
-         [self.navigationController setNavigationBarHidden:NO];
+        [self.navigationController setNavigationBarHidden:NO];
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDelegate:self];
         [UIView setAnimationDuration:0.5];
@@ -275,8 +275,8 @@
         [subview removeFromSuperview];
     NSDictionary*dict=[[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] objectAtIndex:indexPath.row];
     NSLog(@"%@",dict);
-
-\
+    
+    \
     UIImageView *user_pic = [UIImageView new];
     user_pic.clipsToBounds = YES;
     [user_pic setFrame:CGRectMake(20, 7, 46, 46)];
@@ -287,8 +287,8 @@
         [user_pic setImageWithURL:[NSURL URLWithString:[dict objectForKey:@"Photo"]]
                  placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
     }
-   else
-       [user_pic setImage:[UIImage imageNamed:@"RoundLoading.png"]];
+    else
+        [user_pic setImage:[UIImage imageNamed:@"RoundLoading.png"]];
     [cell.contentView addSubview:user_pic];
     
     UILabel *name = [UILabel new];
@@ -310,12 +310,12 @@
     [_formatter setDateFormat:@"MM/dd/yyyy"];
     NSString *_date=[_formatter stringFromDate:date];
     
-
+    
     UILabel *datelbl = [UILabel new];
     [datelbl setText:_date];
     [datelbl setStyleClass:@"refer_datetext"];
     [cell.contentView addSubview:datelbl];
-  
+    
     UILabel *seperatorlbl = [UILabel new];
     [seperatorlbl setBackgroundColor:[UIColor colorWithRed:234.0f/255.0f green:234.0f/255.0f blue:244.0f/255.0f alpha:1.0f]];
     [seperatorlbl setStyleClass:@"refer_seperator"];
@@ -326,14 +326,14 @@
 
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 - (IBAction)fbClicked:(id)sender {
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
     {
         SLComposeViewController *fbSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-       
+        
         [fbSheet setInitialText:[NSString stringWithFormat:@"%@[%@]-download here :",@"Check out @NoochMoney, the simplest way to pay me back(and pay you back)! Use my referral code",code.text]];
         [fbSheet addURL:[NSURL URLWithString:@"ow.ly/nGocT"]];
         [self presentViewController:fbSheet animated:YES completion:nil];
@@ -374,7 +374,7 @@
     [SMSView removeFromSuperview];
     SMSView=[[UIView alloc]initWithFrame:CGRectMake(0, 568, 320, 568)];
     SMSView.backgroundColor=[UIColor whiteColor];
-   
+    
     [self.view addSubview:SMSView];
     UIView*navBar=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundColor:[UIColor colorWithRed:82.0f/255.0f green:176.0f/255.0f blue:235.0f/255.0f alpha:1.0f]];
@@ -390,9 +390,9 @@
     crossbtn.frame=CGRectMake(10,20, 70,30);
     [crossbtn setStyleClass:@"smscrossbuttn-icon"];
     [crossbtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-
+    
     [crossbtn setTitle:@"Cancel" forState:UIControlStateNormal];
-   // [crossbtn setBackgroundColor:[UIColor orangeColor]];
+    // [crossbtn setBackgroundColor:[UIColor orangeColor]];
     [crossbtn addTarget:self action:@selector(crossClicked) forControlEvents:UIControlEventTouchUpInside];
     [navBar addSubview:crossbtn];
     
@@ -414,7 +414,7 @@
     // [crossbtn setBackgroundColor:[UIColor orangeColor]];
     [phonebookbtn addTarget:self action:@selector(showcontacts) forControlEvents:UIControlEventTouchUpInside];
     [SMSView addSubview:phonebookbtn];
-
+    
     
     textPhoneto=[[UITextField alloc]initWithFrame:CGRectMake(10, 74, 240, 40)];
     
@@ -438,8 +438,8 @@
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDelegate:self];
     [UIView setAnimationDuration:0.5];
-      SMSView.frame= CGRectMake(0, 0, 320, 568);
-       [UIView commitAnimations];
+    SMSView.frame= CGRectMake(0, 0, 320, 568);
+    [UIView commitAnimations];
 }
 -(void)showcontacts{
     _addressBookController = [[ABPeoplePickerNavigationController alloc] init];
@@ -532,19 +532,19 @@
     }
     
     // Initialize the array if it's not yet initialized.
-   
+    
     // Add the dictionary to the array.
-   // [_arrContactsData addObject:contactInfoDict];
+    // [_arrContactsData addObject:contactInfoDict];
     if (![[contactInfoDict valueForKey:@"mobileNumber"] isEqualToString:@""]) {
         textPhoneto.text= [contactInfoDict  valueForKey:@"mobileNumber"];
-  
+        
     }
     else
         textPhoneto.text= [contactInfoDict valueForKey:@"homeNumber"];
-
+    
     NSLog(@"%@",contactInfoDict );
     // Reload the table view data.
-   // [self.tableView reloadData];
+    // [self.tableView reloadData];
     
     // Dismiss the address book view controller.
     [_addressBookController dismissViewControllerAnimated:YES completion:nil];
@@ -563,24 +563,24 @@
 }
 -(void)crossClicked
 {
-     [self.navigationController setNavigationBarHidden:NO];
+    [self.navigationController setNavigationBarHidden:NO];
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDelegate:self];
     [UIView setAnimationDuration:0.5];
     SMSView.frame= CGRectMake(0, 568, 320, 568);
     [UIView commitAnimations];
-
+    
     [SMSView removeFromSuperview];
     
 }
 -(void)sendSMS:(id)sender
 
 {
-//    if ([textPhoneto.text length]!=10) {
-//        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter 10 digit Cell number to send Message" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//        [alert show];
-//        return;
-//    }
+    //    if ([textPhoneto.text length]!=10) {
+    //        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter 10 digit Cell number to send Message" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    //        [alert show];
+    //        return;
+    //    }
     if ([textPhoneto.text rangeOfString:@"("].location !=NSNotFound) {
         [textPhoneto.text stringByReplacingOccurrencesOfString:@"(" withString:@""];
         
@@ -595,7 +595,7 @@
     }
     if([textPhoneto.text length]>=10)
     {
-       
+        
         serve*serveOBJ=[serve new];
         serveOBJ.tagName=@"SMS";
         [serveOBJ setDelegate:self];
@@ -654,7 +654,7 @@
     NSString *emailTitle = @"NoochMoney";
     // Email Content
     //NSArray*arrReferCode=[code.text componentsSeparatedByString:@":"];
-   // NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    // NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     NSString *messageBody; // Change the message body to HTML
     messageBody=[NSString stringWithFormat:@"<h5>\"Hi, Your friend %@ has invited you to become a member of Nooch, the simplest way to pay back friends.<br />Accept this invitation by downloading Nooch and using this Referral Code: %@ <br /><br />To learn more about Nooch, check us out</h5> <a href=\"https://www.nooch.com/overview/\">here</a><br /><h6>-Team Nooch\"</h6>",[user objectForKey:@"firstName"],code.text];

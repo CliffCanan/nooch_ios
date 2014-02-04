@@ -14,6 +14,6 @@
 {
     UIActivityIndicatorView*spinner;
     NSDictionary*dictResult;
-
+    
 }
 @end

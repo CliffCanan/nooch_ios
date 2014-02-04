@@ -12,13 +12,13 @@
 
 @interface SendInvite : UIViewController<UITableViewDataSource,UITableViewDelegate,serveD,MFMailComposeViewControllerDelegate,UITextFieldDelegate>
 {
-     NSMutableDictionary*dictResponse;
-     NSMutableDictionary*dictInviteUserList;
-     UITextField*textPhoneto;
-     UITextView*msgTextView;
-     UIView*SMSView;
-     UIButton*btnToSend;
-     UILabel *code;
+    NSMutableDictionary*dictResponse;
+    NSMutableDictionary*dictInviteUserList;
+    UITextField*textPhoneto;
+    UITextView*msgTextView;
+    UIView*SMSView;
+    UIButton*btnToSend;
+    UILabel *code;
     NSMutableData*pic;
     NSRange start;
     NSRange end;

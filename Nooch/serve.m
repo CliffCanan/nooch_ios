@@ -98,7 +98,7 @@ NSString *amnt;
 
 
 -(void)addFund:(NSString*)amount{
-        NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     NSLog(@"oauthnd%@",[defaults valueForKey:@"OAuthToken"]);
     transactionInputaddfund = [NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"MemberId", @"", @"RecepientId", amount, @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction",  [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"], @"DeviceId", Latitude, @"Latitude", Longitude, @"Longitude", Altitude, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode", nil];
@@ -172,13 +172,14 @@ NSString *amnt;
     
 }
 -(void)getBanks{
-    
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [NSMutableData data];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     requestgetbanks = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&accessToken=%@", ServerUrl, @"GetBankAccountCollection", [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"],[defaults valueForKey:@"OAuthToken"]]]];
     NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:requestgetbanks delegate:self];
     if (!connection)
         NSLog(@"connect error");
+    
     
 }
 -(void)getCards{
@@ -191,10 +192,10 @@ NSString *amnt;
     
 }
 -(void)getEncrypt:(NSString *)input {
-   // NSString*key=@"kiddamalkit";
-   // input=[input stringByAppendingString:key];
+    // NSString*key=@"kiddamalkit";
+    // input=[input stringByAppendingString:key];
     //QUVTQGNoYW5nZXEwdWJtYWxraXQ=
-
+    
     NSString *encodedString = [NSString encodeBase64String:input];
     
     NSLog(@"%@",encodedString);
@@ -387,7 +388,7 @@ NSString *amnt;
 }
 -(void)newUser:(NSString *)email first:(NSString *)fName last:(NSString *)lName password:(NSString *)password pin:(NSString*)pin invCode:(NSString*)inv fbId:(NSString *)fbId {
     self.responseData = [NSMutableData data];
-   // NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    // NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     NSMutableDictionary*dictnew=[[NSMutableDictionary alloc]init];
     [dictnew setObject:email forKey:@"UserName"];
     [dictnew setObject:fName forKey:@"FirstName"];
@@ -398,13 +399,13 @@ NSString *amnt;
     [dictnew setObject:pin forKey:@"PinNumber"];
     //inviteCode
     [dictnew setObject:inv forKey:@"inviteCode"];
-     NSString *udid=[[UIDevice currentDevice] uniqueDeviceIdentifier];
+    NSString *udid=[[UIDevice currentDevice] uniqueDeviceIdentifier];
     [dictnew setObject:udid forKey:@"deviceTokenId"];
-//    [dictnew setObject:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"udId"];
+    //    [dictnew setObject:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"udId"];
     [dictnew setObject:@"" forKey:@"friendRequestId"];
     [dictnew setObject:@"" forKey:@"invitedFriendFacebookId"];
     [dictnew setObject:@"" forKey:@"facebookAccountLogin"];
-   
+    
     if ([[assist shared]getTranferImage]) {
         
         NSData *data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
@@ -422,10 +423,10 @@ NSString *amnt;
         NSArray*arr=[result1 componentsSeparatedByString:@","];
         [dictnew setObject:arr forKey:@"Picture"];
     }
-     NSDictionary*memDetails=[NSDictionary dictionaryWithObjectsAndKeys:dictnew,@"MemberDetails", nil];
+    NSDictionary*memDetails=[NSDictionary dictionaryWithObjectsAndKeys:dictnew,@"MemberDetails", nil];
     UIImage*img=[UIImage imageNamed:@""];
     [[assist shared]setTranferImage:img];
-     [[assist shared]setTranferImage:nil];
+    [[assist shared]setTranferImage:nil];
     NSLog(@"%@",dictnew);
     //  [settingsDictionary setValue:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
     NSError *error;
@@ -444,17 +445,17 @@ NSString *amnt;
     [requestSet setTimeoutInterval:5000];
     
     
-
+    
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestSet delegate:self];
     if (!connection)
         NSLog(@"connect error");
-//       self.responseData = [[NSMutableData alloc] init];
-//    //NSString *deviceToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"DeviceToken"];
-//    requestnewUser = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?uName=%@&fName=%@&lName=%@&secMail=%@&rEmail=%@&pwd=%@&pinNo=%@&deviceToken=%@&udId=&friendReqId=&invitedFriendFacebookId=&inviteCode=%@&facebookAccountLogin=", ServerUrl,@"MemberRegistration", email, fName, lName,email,email,password, pin, fbId,inv]]];
-//    
-//    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestnewUser delegate:self];
-//    if (!connection)
-//        NSLog(@"connect error");
+    //       self.responseData = [[NSMutableData alloc] init];
+    //    //NSString *deviceToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"DeviceToken"];
+    //    requestnewUser = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?uName=%@&fName=%@&lName=%@&secMail=%@&rEmail=%@&pwd=%@&pinNo=%@&deviceToken=%@&udId=&friendReqId=&invitedFriendFacebookId=&inviteCode=%@&facebookAccountLogin=", ServerUrl,@"MemberRegistration", email, fName, lName,email,email,password, pin, fbId,inv]]];
+    //
+    //    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestnewUser delegate:self];
+    //    if (!connection)
+    //        NSLog(@"connect error");
 }
 -(void)setSets:(NSDictionary*)settingsDictionary{
     
@@ -463,7 +464,7 @@ NSString *amnt;
     [settingsDictionary setValue:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
     NSError *error;
     postDataSet = [NSJSONSerialization dataWithJSONObject:settingsDictionary
-                                                       options:NSJSONWritingPrettyPrinted error:&error];
+                                                  options:NSJSONWritingPrettyPrinted error:&error];
     
     postLengthSet = [NSString stringWithFormat:@"%d", [postDataSet length]];
     urlStrSet = [[NSString alloc] initWithString:ServerUrl];
@@ -504,7 +505,7 @@ NSString *amnt;
     
     NSError *error;
     postDataBNK = [NSJSONSerialization dataWithJSONObject:bankDetails
-                                                       options:NSJSONWritingPrettyPrinted error:&error];
+                                                  options:NSJSONWritingPrettyPrinted error:&error];
     postLengthBNK = [NSString stringWithFormat:@"%d", [postDataBNK length]];
     NSString *urlStr = [[NSString alloc] initWithString:ServerUrl];
     urlStr = [urlStr stringByAppendingFormat:@"/%@", @"SaveBankAccountDetails"];
@@ -575,10 +576,10 @@ NSString *amnt;
 }
 -(void)withdrawFund:(NSString*)amount{
     /*locationManager = [[CLLocationManager alloc] init];
-    locationManager.delegate = self;
-    locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
-    locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
-    [locationManager startUpdatingLocation];*/
+     locationManager.delegate = self;
+     locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
+     locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
+     [locationManager startUpdatingLocation];*/
     NSRunLoop *loop = [NSRunLoop currentRunLoop];
     while ((!locationUpdate) &&
            ([loop runMode:NSDefaultRunLoopMode beforeDate:[NSDate
@@ -678,13 +679,13 @@ NSString *amnt;
 }
 //- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{
 //    [manager stopUpdatingLocation];
-//    
+//
 //    CLLocationCoordinate2D loc = [newLocation coordinate];
 //    Latitude = [[NSString alloc] initWithFormat:@"%f",loc.latitude];
 //    Longitude = [[NSString alloc] initWithFormat:@"%f",loc.longitude];
 //    Altitude = [[NSString alloc] initWithFormat:@"%f",newLocation.altitude];
 //    //[locationManager stopUpdatingLocation];
-//    
+//
 //    [self updateLocation:Latitude longitudeField:Longitude];
 //}
 
@@ -713,51 +714,51 @@ NSString *amnt;
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     
-
+    
     responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
     if ([responseString rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
-            //logout in case of invalid OAuth
-            if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"]isEqualToString:@"1"]) {
-                UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                
-                [Alert show];
-                
-                
-                [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-                
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-                
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-                
-                NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
-                [timer invalidate];
-               // timer=nil;
-                [nav_ctrl performSelector:@selector(disable)];
-                [nav_ctrl performSelector:@selector(reset)];
-                Register *reg = [Register new];
-                [nav_ctrl pushViewController:reg animated:YES];
-                me = [core new];
-                return;
- 
-            }
-            else if ([self.tagName isEqualToString:@"infopin"] && [[[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"]isEqualToString:@"1"])
-            {
-                [self.Delegate listen:responseString tagName:self.tagName];
-                return;
-            }
+        //logout in case of invalid OAuth
+        if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"]isEqualToString:@"1"]) {
+            UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             
-           
-                
+            [Alert show];
             
+            
+            [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+            
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+            
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+            
+            NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+            [timer invalidate];
+            // timer=nil;
+            [nav_ctrl performSelector:@selector(disable)];
+            [nav_ctrl performSelector:@selector(reset)];
+            Register *reg = [Register new];
+            [nav_ctrl pushViewController:reg animated:YES];
+            me = [core new];
+            return;
+            
+        }
+        else if ([self.tagName isEqualToString:@"infopin"] && [[[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"]isEqualToString:@"1"])
+        {
+            [self.Delegate listen:responseString tagName:self.tagName];
+            return;
+        }
+        
+        
+        
+        
         
     }
-
-  
+    
+    
     //20ov
-   else if ([tagName isEqualToString:@"info"]) {
-         NSLog(@"serve connected for %@",self.tagName);
+    else if ([tagName isEqualToString:@"info"]) {
+        NSLog(@"serve connected for %@",self.tagName);
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-       
+        
         //ADDING LOCAL NOTIFICATION CHARAN 19NOV 2013
         dictUsers=[[NSMutableDictionary alloc]init];
         if (![[defaults objectForKey:@"NotifPlaced"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced"]!=NULL) {
@@ -780,7 +781,7 @@ NSString *amnt;
                 //removing further notifications as the account is verified
                 for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
                     if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile1"]) {
-                         [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+                        [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
                     }
                     if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile2"]) {
                         [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
@@ -792,16 +793,16 @@ NSString *amnt;
                         [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
                     }
                 }
-               dictUsers=[[NSMutableDictionary alloc]init];
+                dictUsers=[[NSMutableDictionary alloc]init];
                 if (![[defaults objectForKey:@"NotifPlaced"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced"]!=NULL) {
                     dictUsers=[[defaults objectForKey:@"NotifPlaced"] mutableCopy];
                     
                 }
-              
+                
                 for (id key in dictUsers) {
                     if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
                         [dictUsers setValue:@"0" forKey:key];
-                       
+                        
                         break;
                     }
                 }
@@ -816,7 +817,7 @@ NSString *amnt;
                     
                 }
                 NSLog(@"%@",dictUsers);
-
+                
                 NSString*strNotifPlaced1=@"None";
                 for (id key in dictUsers) {
                     if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
@@ -839,7 +840,7 @@ NSString *amnt;
                         if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile4"]) {
                             [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
                         }
-
+                        
                     }
                     //adding local notification for 3 days
                     UILocalNotification* localNotification1 = [[UILocalNotification alloc] init];
@@ -879,13 +880,13 @@ NSString *amnt;
                         
                     }
                     NSLog(@"%@",dictUsers);
-
+                    
                     [dictUsers setValue:@"1" forKey:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]];
                     NSLog(@"%@",dictUsers);
-
+                    
                     [defaults setObject:dictUsers forKey:@"NotifPlaced"];
                     [defaults synchronize];
-
+                    
                 }
                 
                 
@@ -895,9 +896,9 @@ NSString *amnt;
         
         NSError* error;
         Dictresponse = [NSJSONSerialization
-                              JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
-                              options:kNilOptions 
-                              error:&error];
+                        JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
+                        options:kNilOptions
+                        error:&error];
         //Charan's edit 19 Nov 2013
         if (![[Dictresponse objectForKey:@"LastLocationLat"] isKindOfClass:[NSNull class]]&& ![[Dictresponse objectForKey:@"LastLocationLng"] isKindOfClass:[NSNull class]]) {
             [defaults setObject:[Dictresponse objectForKey:@"LastLocationLat"] forKey:@"LastLat"];
@@ -906,16 +907,16 @@ NSString *amnt;
         }
         
         //--
-       if ([Dictresponse valueForKey:@"IsRequiredImmediatley"]!=NULL || ![[Dictresponse valueForKey:@"IsRequiredImmediatley"] isKindOfClass:[NSNull class]]) {
-           if ([[Dictresponse valueForKey:@"IsRequiredImmediatley"]boolValue]) {
-               [user setObject:@"YES" forKey:@"requiredImmediately"];
-           }
-           else
-           {
-               [user setObject:@"NO" forKey:@"requiredImmediately"];
-           }
-           
-       }
+        if ([Dictresponse valueForKey:@"IsRequiredImmediatley"]!=NULL || ![[Dictresponse valueForKey:@"IsRequiredImmediatley"] isKindOfClass:[NSNull class]]) {
+            if ([[Dictresponse valueForKey:@"IsRequiredImmediatley"]boolValue]) {
+                [user setObject:@"YES" forKey:@"requiredImmediately"];
+            }
+            else
+            {
+                [user setObject:@"NO" forKey:@"requiredImmediately"];
+            }
+            
+        }
         
         if ([Dictresponse valueForKey:@"PhotoUrl"]!=NULL || ![[Dictresponse valueForKey:@"PhotoUrl"] isKindOfClass:[NSNull class]]) {
             [defaults setObject:[Dictresponse valueForKey:@"PhotoUrl"] forKey:@"PhotoUrlRef"];
@@ -930,7 +931,7 @@ NSString *amnt;
         [defaults synchronize];
         
     }
-      else if ([tagName isEqualToString:@"sets"]) {
+    else if ([tagName isEqualToString:@"sets"]) {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         
         NSError* error;
@@ -943,7 +944,7 @@ NSString *amnt;
         if ([[Dictresponse valueForKey:@"IsValidProfile"] intValue]) {
             
             [defaults setObject:@"1" forKey:@"FullyVerified"];
-                    }
+        }
         else
         {
             [defaults setObject:@"0" forKey:@"FullyVerified"];
@@ -957,7 +958,7 @@ NSString *amnt;
             [defaults setObject:@"NO" forKey:@"IsVerifiedPhone"];
         }
         [defaults synchronize];
-
+        
         //--
         
         
@@ -973,21 +974,21 @@ NSString *amnt;
         [defaults synchronize];
         
     }
-   else if ([tagName isEqualToString:@"banks"]) {
+    else if ([tagName isEqualToString:@"banks"]) {
         NSError* error;
         NSArray* arrResponse=[NSJSONSerialization
-                     JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
-                     options:kNilOptions
-                     error:&error];
-       [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"IsBankAvailable"];
-      
+                              JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
+                              options:kNilOptions
+                              error:&error];
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"IsBankAvailable"];
+        
         if ([arrResponse count]>0) {
             
-             [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
-             NSLog(@"%@",[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"]);
+            [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
+            NSLog(@"%@",[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"]);
             if (![[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] isKindOfClass:[NSNull class]] && [[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"]!=NULL) {
                 NSLog(@"%@",[[[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
- 
+                
             }
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
             NSLog(@"%@",[user objectForKey:@"firstName"]);
@@ -1009,21 +1010,21 @@ NSString *amnt;
             }
             NSLog(@"%@",strNotifPlaced);
             NSLog(@"%@ %@",dictUsers,[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"]);
-             if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]&& ![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue] )
-             {
+            if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]&& ![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue] )
+            {
                 [[assist shared]setBankVerified:YES];//                 if (![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
-//                     [defaults setObject:@"YES" forKey:@"IsPrimaryBankVerified"];
-//                 }
-                 
+                //                     [defaults setObject:@"YES" forKey:@"IsPrimaryBankVerified"];
+                //                 }
+                
                 
                 // [defaults synchronize];
-             }
-           else
-           {
-               [[assist shared]setBankVerified:NO];
-               //[defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
-               //[defaults synchronize];
-           }
+            }
+            else
+            {
+                [[assist shared]setBankVerified:NO];
+                //[defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
+                //[defaults synchronize];
+            }
             if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]&& [strNotifPlaced isEqualToString:@"1"]) {
                 if (![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue]) {
                     for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
@@ -1052,11 +1053,11 @@ NSString *amnt;
                         }
                     }
                     [defaults setValue:dictUsers forKey:@"NotifPlaced2"];
-                   
+                    
                     
                 }
-
-
+                
+                
             }
             else
             {
@@ -1091,7 +1092,7 @@ NSString *amnt;
                         }
                         
                     }
-
+                    
                     
                     UILocalNotification* localNotification1 = [[UILocalNotification alloc] init];
                     localNotification1.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor3days];
@@ -1118,7 +1119,7 @@ NSString *amnt;
                     localNotification3.timeZone = [NSTimeZone defaultTimeZone];
                     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification3];
                     
-                   // [defaults setObject:@"1" forKey:@"NotifPlaced2"];
+                    // [defaults setObject:@"1" forKey:@"NotifPlaced2"];
                     dictUsers=[[NSMutableDictionary alloc]init];
                     if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]] && [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
                         dictUsers=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
@@ -1135,16 +1136,16 @@ NSString *amnt;
                     
                     [defaults synchronize];
                 }
-
-
-               
-                              
- 
+                
+                
+                
+                
+                
             }
         }
         else
         {
-             [[assist shared]setBankVerified:NO];
+            [[assist shared]setBankVerified:NO];
             [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
             for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
                 if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
@@ -1159,12 +1160,12 @@ NSString *amnt;
                 
             }
             
-
+            
         }
-       
-       
+        
+        
     }
-
+    
     else if ([tagName isEqualToString:@"login"]) {
         //converting the result into Dictionary
         NSError* error;
@@ -1174,20 +1175,20 @@ NSString *amnt;
                                 error:&error];
         NSLog(@"dict object %@",[result objectForKey:@"Result"]);
         //getting the token
-    if([result objectForKey:@"Result"] && ![[result objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] && ![[result objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"]&& ![[result objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && result != nil){
-        NSString * token = [result objectForKey:@"Result"];
-        //storing the token
-        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-        //setting the token in the user defaults
-        [defaults setObject:token forKey:@"OAuthToken"];
-        //syncing the defaults
-        [defaults synchronize];
+        if([result objectForKey:@"Result"] && ![[result objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] && ![[result objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"]&& ![[result objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && result != nil){
+            NSString * token = [result objectForKey:@"Result"];
+            //storing the token
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+            //setting the token in the user defaults
+            [defaults setObject:token forKey:@"OAuthToken"];
+            //syncing the defaults
+            [defaults synchronize];
         }
         
     }
-   
     
-       [self.Delegate listen:responseString tagName:self.tagName];
+    
+    [self.Delegate listen:responseString tagName:self.tagName];
     
 }
 #pragma mark - file paths
@@ -1283,7 +1284,7 @@ NSString *amnt;
     // NSString *post = [dictSMS JSONRepresentation];
     NSError *error;
     postDataRef = [NSJSONSerialization dataWithJSONObject:dictValidate
-                                                       options:NSJSONWritingPrettyPrinted error:&error];
+                                                  options:NSJSONWritingPrettyPrinted error:&error];
     
     postLengthRef = [NSString stringWithFormat:@"%d", [postDataRef length]];
     
@@ -1322,7 +1323,7 @@ NSString *amnt;
     
     NSError *error;
     postDataSMS = [NSJSONSerialization dataWithJSONObject:dictSMS
-                                                       options:NSJSONWritingPrettyPrinted error:&error];
+                                                  options:NSJSONWritingPrettyPrinted error:&error];
     postLengthSMS = [NSString stringWithFormat:@"%d", [postDataSMS length]];
     requestSMS = [[NSMutableURLRequest alloc] initWithURL:url];
     [requestSMS setHTTPMethod:@"POST"];
@@ -1371,7 +1372,7 @@ NSString *amnt;
     // NSString *post = [dictSMS JSONRepresentation];
     NSError *error;
     postDataRef = [NSJSONSerialization dataWithJSONObject:dictRef
-                                                       options:NSJSONWritingPrettyPrinted error:&error];
+                                                  options:NSJSONWritingPrettyPrinted error:&error];
     
     postLengthRef = [NSString stringWithFormat:@"%d", [postDataRef length]];
     
@@ -1415,7 +1416,7 @@ NSString *amnt;
     // NSString *post = [dictSMS JSONRepresentation];
     NSError *error;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
-                                                       options:NSJSONWritingPrettyPrinted error:&error];
+                                                  options:NSJSONWritingPrettyPrinted error:&error];
     
     postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
     
@@ -1460,7 +1461,7 @@ NSString *amnt;
     // NSString *post = [dictSMS JSONRepresentation];
     NSError *error;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
-                                                       options:NSJSONWritingPrettyPrinted error:&error];
+                                                  options:NSJSONWritingPrettyPrinted error:&error];
     
     postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
     
@@ -1575,12 +1576,12 @@ NSString *amnt;
     
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
     // NSString *post = [dictSMS JSONRepresentation];
-  //  NSLog(@"dict %@",[dictInv JSONRepresentation]);
+    //  NSLog(@"dict %@",[dictInv JSONRepresentation]);
     NSError *error;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
     
-
+    
     
     postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
     
@@ -1618,7 +1619,7 @@ NSString *amnt;
 -(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len{
     //histSafe=NO;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     responseData = [NSMutableData data];
     NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@&accessToken=%@", ServerUrl, @"GetTransactionsList", [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"], type, @"pSize", [NSString stringWithFormat:@"%d",len], @"pIndex", [NSString stringWithFormat:@"%d",sPos],[defaults valueForKey:@"OAuthToken"]];
     NSLog(@"more hist %@",type);
@@ -1627,11 +1628,11 @@ NSString *amnt;
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
-
+    
 }
 -(void)histMoreSerachbyName:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len name:(NSString*)name{
     //histSafe=NO;
-    
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     responseData = [NSMutableData data];
@@ -1683,7 +1684,7 @@ NSString *amnt;
         servicePath=@"MemberPushNotificationSettings";
     }
     else{
-         servicePath=@"MemberEmailNotificationSettings";
+        servicePath=@"MemberEmailNotificationSettings";
     }
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",ServerUrl,servicePath];
     
@@ -1796,7 +1797,7 @@ NSString *amnt;
     if (!connectionInv)
         
         NSLog(@"connect error");
-
+    
 }
 
 // public StringResult SaveImmediateRequire(string userName, Boolean IsRequiredImmediatley, string accesstoken)
@@ -1837,7 +1838,7 @@ NSString *amnt;
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
- 
+    
 }
 -(void)ReferalCodeRequest:(NSString*)email{
     self.responseData = [[NSMutableData alloc] init];
@@ -1868,7 +1869,7 @@ NSString *amnt;
     [dictInv setObject:Input forKey:@"raiseDisputeInput"];
     
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-
+    
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
     
     NSError *error;
@@ -1914,7 +1915,25 @@ NSString *amnt;
     if (!connectionList)
         NSLog(@"connect error");
     
-
+    
+}
+-(void)UpDateLatLongOfUser:(NSString*)lat lng:(NSString*)lng{
+    //
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSString * memId = [defaults objectForKey:@"MemberId"];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/UpDateLatLongOfUser?memberId=%@&Lat=%@&Long=%@&accessToken=%@",ServerUrl,memId,lat,lng,[defaults valueForKey:@"OAuthToken"]];
+    NSLog(@"%@",urlString);
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+    
+    
 }
 
 @end

@@ -80,7 +80,7 @@
     self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 16;
     self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor clearColor];
     self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
-     self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
+    self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
     [self.view addSubview:self.first_num];
     [self.view addSubview:self.second_num];
     [self.view addSubview:self.third_num];
@@ -93,11 +93,11 @@
 {
     int len = [textField.text length] + [string length];
     NSLog(@"%@",[NSString stringWithFormat:@"%@%@",textField.text,string]);
-//    if ([self.pin.text isEqualToString:@""]) {
-//        len=1;
-//       // pinchangeProgress=0;
-//    }
-     UIColor *which;
+    //    if ([self.pin.text isEqualToString:@""]) {
+    //        len=1;
+    //       // pinchangeProgress=0;
+    //    }
+    UIColor *which;
     if([string length] == 0) //deleting
     {
         switch (len) {
@@ -119,7 +119,7 @@
                 break;
         }
     }else{
-       
+        
         
         which = kNoochGreen;
         switch (len) {
@@ -162,7 +162,7 @@
         [self.fourth_num setBackgroundColor:which];
         if ([newPinString length] != 4) {
             pinchangeProgress=3;
-             self.prompt.text=@"";
+            self.prompt.text=@"";
             newPinString = [NSString stringWithFormat:@"%@%@",textField.text,string];
             [title setText:@"Confirm your PIN"];
             [self.pin setText:@""];
@@ -172,7 +172,7 @@
             [self.fourth_num setBackgroundColor:[UIColor clearColor]];
             return NO;
         }
-
+        
     }
     else if (len==4 && pinchangeProgress==3) {
         if (![newPinString isEqualToString:[NSString stringWithFormat:@"%@%@",textField.text,string]]) {
@@ -194,7 +194,7 @@
             req.tagName=@"GetEncryptedData";
             [req getEncrypt:[NSString stringWithFormat:@"%@%@",textField.text,string]];
         }
-
+        
     }
     return YES;
 }
@@ -204,8 +204,8 @@
     {
         
         UIAlertView *showAlertMessage = [[UIAlertView alloc] initWithTitle:nil message:@"Your PIN number has been changed successfully!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-      //  [showAlertMessage setTag:2];
-       // [showAlertMessage setDelegate:self];
+        //  [showAlertMessage setTag:2];
+        // [showAlertMessage setDelegate:self];
         [showAlertMessage show];
         [self dismissViewControllerAnimated:YES completion:nil];
     }
@@ -235,13 +235,13 @@
         [resPin resetPIN:encryptedPIN new:newEncryptedPIN];
     }
     else if ([tagName isEqualToString:@"resetpin"]) {
-       
-           // NSDictionary *loginResult = [result JSONValue];
-            NSString *statusData= (NSString *)[dictResult objectForKey:@"Result"];
-            NSLog(@"Status %@", statusData);
-            [self pinChanged:statusData];
         
-
+        // NSDictionary *loginResult = [result JSONValue];
+        NSString *statusData= (NSString *)[dictResult objectForKey:@"Result"];
+        NSLog(@"Status %@", statusData);
+        [self pinChanged:statusData];
+        
+        
     }
     else if ([tagName isEqualToString:@"ValidatePinNumber"]) {
         encryptedPIN=[dictResult valueForKey:@"Status"];
@@ -263,7 +263,7 @@
             self.pin.text=@"";
             
             title.text=@"Enter New Pin";
-            }
+        }
         
         
         else{
@@ -296,14 +296,14 @@
             [spinner setHidden:YES];
             self.prompt.text=@"Account suspended.";
         }
-   }
+    }
     
 }
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (alertView.tag == 1) {
         if (buttonIndex == 0) {
             [user setObject:@"YES" forKey:@"requiredImmediately"];
-           // [[me usr] setObject:@"NO" forKey:@"requiredImmediately"];
+            // [[me usr] setObject:@"NO" forKey:@"requiredImmediately"];
         }else{
             [user setObject:@"YES" forKey:@"requiredImmediately"];
             //[[me usr] setObject:@"YES" forKey:@"requiredImmediately"];

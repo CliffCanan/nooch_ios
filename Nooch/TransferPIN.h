@@ -36,7 +36,7 @@
     NSData *postDataTransfer;
     NSString *postLengthTransfer;
     NSDictionary*dictResult;
-   NSMutableDictionary* transactionInputTransfer;
+    NSMutableDictionary* transactionInputTransfer;
     NSMutableDictionary*transactionTransfer;
     float lon;
     float lat;

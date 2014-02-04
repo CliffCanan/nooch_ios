@@ -21,8 +21,8 @@
     NSMutableData *responseData;
     id <GetEncryptionValueDelegate> Delegate;
     
-    @public
-        NSNumber *tag;
+@public
+    NSNumber *tag;
     
 }
 

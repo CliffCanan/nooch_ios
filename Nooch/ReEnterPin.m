@@ -35,33 +35,33 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-   // [nav_ctrl setNavigationBarHidden:NO];
+    // [nav_ctrl setNavigationBarHidden:NO];
 	// Do any additional setup after loading the view.
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-//    UIView*navBar=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
-//    [navBar setBackgroundColor:[UIColor colorWithRed:82.0f/255.0f green:176.0f/255.0f blue:235.0f/255.0f alpha:1.0f]];
-//    [self.view addSubview:navBar];
-//    UILabel*lbl=[[UILabel alloc]initWithFrame:CGRectMake(75, 20, 200, 30)];
-//    [lbl setText:@"PIN Confirmation"];
-//    [lbl setFont:[UIFont systemFontOfSize:22]];
-//    [lbl setTextColor:[UIColor whiteColor]];
-//    [navBar addSubview:lbl];
+    //    UIView*navBar=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
+    //    [navBar setBackgroundColor:[UIColor colorWithRed:82.0f/255.0f green:176.0f/255.0f blue:235.0f/255.0f alpha:1.0f]];
+    //    [self.view addSubview:navBar];
+    //    UILabel*lbl=[[UILabel alloc]initWithFrame:CGRectMake(75, 20, 200, 30)];
+    //    [lbl setText:@"PIN Confirmation"];
+    //    [lbl setFont:[UIFont systemFontOfSize:22]];
+    //    [lbl setTextColor:[UIColor whiteColor]];
+    //    [navBar addSubview:lbl];
     
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 140, 300, 40)];
     [title setText:@"Enter your PIN"];
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
- 
-   self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 280, 50)];
-   [self.prompt setNumberOfLines:2];
-   [self.prompt setText:@"Require Immediately is enabled, please enter your PIN to continue."];
-   [self.prompt setStyleClass:@"instruction_text"];
-   [self.view addSubview:self.prompt];
- 
- self.pin = [UITextField new]; [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
+    
+    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 280, 50)];
+    [self.prompt setNumberOfLines:2];
+    [self.prompt setText:@"Require Immediately is enabled, please enter your PIN to continue."];
+    [self.prompt setStyleClass:@"instruction_text"];
+    [self.view addSubview:self.prompt];
+    
+    self.pin = [UITextField new]; [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
     [self.pin setDelegate:self]; [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
     [self.view addSubview:self.pin]; [self.pin becomeFirstResponder];
     
@@ -107,8 +107,8 @@
     }else{
         UIColor *which;
         
-            which = kNoochGreen;
-               switch (len) {
+        which = kNoochGreen;
+        switch (len) {
             case 5:
                 return NO;
                 break;
@@ -142,8 +142,8 @@
         pin.Delegate = self;
         pin.tagName = @"infopin";
         //[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]
-       [pin getDetails:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]];
-       
+        [pin getDetails:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]];
+        
     }
     return YES;
 }
@@ -164,7 +164,7 @@
     if ([tagName isEqualToString:@"infopin"]) {
         [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"pincheck"];
         if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
-           
+            
             UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil                , nil];
             
             [Alert show];
@@ -196,7 +196,7 @@
             [self.second_num setBackgroundColor:[UIColor clearColor]];
             [self.first_num setBackgroundColor:[UIColor clearColor]];
             self.pin.text=@"";
-
+            
             UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"You account has been suspended." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
             [alert show];
             
@@ -209,14 +209,14 @@
             NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
             [timer invalidate];
             // timer=nil;
-             [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
-           // [nav_ctrl performSelector:@selector(disable)];
+            [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
+            // [nav_ctrl performSelector:@selector(disable)];
             [nav_ctrl performSelector:@selector(reset)];
             Register *reg = [Register new];
             [nav_ctrl pushViewController:reg animated:YES];
             me = [core new];
             return;
-
+            
         }
         else
         {
@@ -252,13 +252,13 @@
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
                 NSLog(@"yuppppp");
-               // reqImm = NO;
+                // reqImm = NO;
                 [self dismissViewControllerAnimated:YES completion:nil];
                 //[self dismissModalViewControllerAnimated:YES];
                 return;
             }
         }
-
+        
         else{
             
             [self.fourth_num setBackgroundColor:[UIColor clearColor]];
@@ -289,7 +289,7 @@
             [spinner setHidden:YES];
             self.prompt.text=@"Account suspended.";
         }
-}
+    }
 }
 #pragma mark - file paths
 - (NSString *)autoLogin{
@@ -299,28 +299,28 @@
     
 }
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-        if (alertView.tag == 1) {
-            if (buttonIndex == 0) {
-                serve*serveOBJ=[serve new];
-                [serveOBJ setTagName:@"requiredImmediately"];
-                [serveOBJ setDelegate:self];
-                [serveOBJ SaveImmediateRequire:NO];
-                [user setObject:@"NO" forKey:@"requiredImmediately"];
-            }else{
-                serve*serveOBJ=[serve new];
-                [serveOBJ setTagName:@"requiredImmediately"];
-                [serveOBJ setDelegate:self];
-                [serveOBJ SaveImmediateRequire:YES];
-                [user setObject:@"YES" forKey:@"requiredImmediately"];
-            }
-             NSLog(@"%@",user);
-            //reqImm = NO;
-            
-           // [navCtrl popToRootViewControllerAnimated:NO];
-    [self dismissViewControllerAnimated:YES completion:nil];
-            //  [self dismissModalViewControllerAnimated:YES];
+    if (alertView.tag == 1) {
+        if (buttonIndex == 0) {
+            serve*serveOBJ=[serve new];
+            [serveOBJ setTagName:@"requiredImmediately"];
+            [serveOBJ setDelegate:self];
+            [serveOBJ SaveImmediateRequire:NO];
+            [user setObject:@"NO" forKey:@"requiredImmediately"];
+        }else{
+            serve*serveOBJ=[serve new];
+            [serveOBJ setTagName:@"requiredImmediately"];
+            [serveOBJ setDelegate:self];
+            [serveOBJ SaveImmediateRequire:YES];
+            [user setObject:@"YES" forKey:@"requiredImmediately"];
+        }
+        NSLog(@"%@",user);
+        //reqImm = NO;
+        
+        // [navCtrl popToRootViewControllerAnimated:NO];
+        [self dismissViewControllerAnimated:YES completion:nil];
+        //  [self dismissModalViewControllerAnimated:YES];
     }
-    }
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

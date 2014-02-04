@@ -96,13 +96,13 @@
         
         return;
     }
- 
-   if (![userPass isEqualToString:self.old.text]) {
-       UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Password incorrect!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-       [alert show];
-       return;
-   }
- if([self.pass.text isEqualToString:self.confirm.text]){
+    
+    if (![userPass isEqualToString:self.old.text]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Password incorrect!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
+    if([self.pass.text isEqualToString:self.confirm.text]){
         if([self.pass.text length] < 8){
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain minimum of 8 characters." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
@@ -139,7 +139,7 @@
 }
 -(void)encryptionDidFinish:(NSString *) encryptedData TValue:(NSNumber *) tagValue{
     NSInteger value = [tagValue integerValue];
-//    [self setEncryptedPassword:encryptedData];
+    //    [self setEncryptedPassword:encryptedData];
     if(value ==3)
     {
         getEncryptionNewPassword=encryptedData;
@@ -149,7 +149,7 @@
 }
 -(void) resetNewPassword:(NSString *)encryptedNewPassword{
     [self.view addSubview:[me waitStat:@"Attempting password reset..."]];
-  //  getEncryptionOldPassword=password.text;
+    //  getEncryptionOldPassword=password.text;
     
     serve *respass = [[serve alloc] init];
     respass.Delegate = self;
@@ -204,7 +204,7 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-     if([tagName isEqualToString:@"resetPasswordDetails"]){
+    if([tagName isEqualToString:@"resetPasswordDetails"]){
         BOOL isResult = [result boolValue];
         if(isResult == 0)
         {
@@ -221,8 +221,8 @@
             UIAlertView *showAlertMessage = [[UIAlertView alloc] initWithTitle:nil message:@"Incorrect password. Please check your current password." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             [showAlertMessage show];
         }
-     }
-
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning

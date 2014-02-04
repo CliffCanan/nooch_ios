@@ -35,7 +35,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        [self.navigationItem setHidesBackButton:YES];
+    [self.navigationItem setHidesBackButton:YES];
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
@@ -48,7 +48,7 @@
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
-
+    
     [self.view setStyleClass:@"background_gray"];
     
     UITableView *menu = [UITableView new];
@@ -128,7 +128,7 @@
 
 - (void)sign_out
 {
-      UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Sign Out" message:@"Are you sure you want to sign out?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"I'm Sure", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Sign Out" message:@"Are you sure you want to sign out?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"I'm Sure", nil];
     [av show];
 }
 -(void)listen:(NSString *)result tagName:(NSString *)tagName{
@@ -138,7 +138,7 @@
                                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                         options:kNilOptions
                                         error:&error];
-     if([tagName isEqualToString:@"logout"])
+    if([tagName isEqualToString:@"logout"])
     {
         if([dictResponse valueForKey:@"Result"])
         {
@@ -146,14 +146,14 @@
                 
                 
                 [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"email"];
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"email"];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
                 NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
                 [nav_ctrl performSelector:@selector(disable)];
                 Register *reg = [Register new];
                 [self.navigationController pushViewController:reg animated:YES];
-            
+                
                 me = [core new];
                 
             }
@@ -163,7 +163,7 @@
             }
         }
     }
-  
+    
 }
 #pragma mark - file paths
 - (NSString *)autoLogin{
@@ -183,7 +183,7 @@
         
         serveOBJ.tagName=@"logout";
         [serveOBJ LogOutRequest:[[NSUserDefaults standardUserDefaults ]valueForKey:@"MemberId"]];
-
+        
     }
 }
 

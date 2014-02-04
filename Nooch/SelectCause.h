@@ -19,6 +19,6 @@ BOOL isOpenLeftSideBar;
     NSMutableArray *causesArr;
     NSMutableArray *FeaturedcausesArr;
     UIImageView *feat;
-     UILabel*textLabel;
+    UILabel*textLabel;
 }
 @end

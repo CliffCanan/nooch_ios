@@ -1252,7 +1252,7 @@
 	  
 	/**  Just the text of the Nonprofit's Name  **/
 	#nonprofit_howmuch_orgname {
-		width				: 176px;
+		width				: 220px;
 		height				: 38px;
 		top					: 10px;
 		left				: 72px;
@@ -2138,7 +2138,7 @@
 		width				: 180px;
 		height				: 28px;
 		top					: 37px;
-		left                : 70px;
+		left                : 80px;
 		font-family			: "Roboto";
 		font-weight         : regular;
 		font-size			: 22px;

@@ -24,7 +24,7 @@
     NSString *tagName;
     
     NSString *latlng;
-   // CLLocationManager *locationManager;
+    // CLLocationManager *locationManager;
     MKPlacemark *placeMarker;
     NSString *country;
     NSString *city;
@@ -109,6 +109,7 @@
 -(void)ReferalCodeRequest:(NSString*)email;
 -(void)RaiseDispute:(NSDictionary*)Input;
 -(void)saveShareToFB_Twiitter:(NSString*)PostTo;
+-(void)UpDateLatLongOfUser:(NSString*)lat lng:(NSString*)lng;
 @end
 
 //392f9c86-1651-4459-a6a9-d362fcfc4366 - nooch team

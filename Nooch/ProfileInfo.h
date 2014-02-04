@@ -21,7 +21,7 @@ BOOL isProfileOpenFromSideBar;
     NSMutableDictionary*transaction;
     NSMutableDictionary*transactionInput;
     NSMutableDictionary*dictProfileinfo;
-   
+    
     NSDictionary*GMTTimezonesDictionary;
     UIImageView *picture;
     BOOL isPhotoUpdate;

@@ -61,22 +61,22 @@
             return;
             
         }
-
+        
         self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         
         [self presentViewController:self.picker animated:YES completion:Nil];
-       // [self presentModalViewController:self.picker animated:YES];
+        // [self presentModalViewController:self.picker animated:YES];
     }
     
     else if(buttonIndex == 2)
     {
         self.picker.allowsEditing = YES;
         [self.picker.view setStyleClass:@"pickerstyle"];
-       
-      //  [self.picker setModalInPopover:YES];
+        
+        //  [self.picker setModalInPopover:YES];
         self.picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
         [self presentViewController:self.picker animated:YES completion:Nil];
-     //   [self presentModalViewController:self.picker animated:YES];
+        //   [self presentModalViewController:self.picker animated:YES];
     }
 }
 -(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size{
@@ -105,17 +105,17 @@
     return img;
 }
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info{
-
-
+    
+    
     UIImage *image=[info objectForKey:UIImagePickerControllerOriginalImage];
     [self.pic setImage:[self imageWithImage:image scaledToSize:CGSizeMake(40, 40)]];
     [[assist shared]setTranferImage:[self imageWithImage:image scaledToSize:CGSizeMake(40, 40)]];
     [self dismissViewControllerAnimated:YES completion:^{
         self.slidingViewController.panGesture.enabled=NO;
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
-
+        
     }];
-   
+    
     [self.next_button setTitle:@"Continue" forState:UIControlStateNormal];
     [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.next_button addTarget:self action:@selector(cont) forControlEvents:UIControlEventTouchUpInside];
@@ -123,9 +123,9 @@
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker1{
     [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
- self.slidingViewController.panGesture.enabled=NO;
-     [self dismissViewControllerAnimated:YES completion:Nil];
-  }
+    self.slidingViewController.panGesture.enabled=NO;
+    [self dismissViewControllerAnimated:YES completion:Nil];
+}
 
 - (void)next
 {

@@ -11,18 +11,18 @@
 #import "Decryption.h"
 NSMutableDictionary*dictnonprofitid;
 @interface CharityDetails : UIViewController<serveD,DecryptionDelegate>
-    {
-        UIImageView *image;
-        UILabel *info;
-        NSString* ServiceType;
-        NSMutableDictionary*detaildict;
-        NSMutableDictionary*dict;
-        NSString*weburl;
-        NSString*youurl;
-        NSString*fburl;
-        NSString*twurl;
-        UIActivityIndicatorView*spinner;
-        UIView*blankView;
+{
+    UIImageView *image;
+    UILabel *info;
+    NSString* ServiceType;
+    NSMutableDictionary*detaildict;
+    NSMutableDictionary*dict;
+    NSString*weburl;
+    NSString*youurl;
+    NSString*fburl;
+    NSString*twurl;
+    UIActivityIndicatorView*spinner;
+    UIView*blankView;
 }
 
 - (id)initWithReceiver:(NSDictionary *)charity;

@@ -43,7 +43,7 @@
     serve * ser = [serve new];
     ser.tagName=@"search";
     [ser setDelegate:self];
-    [ser getLocationBasedSearch:@"2"];
+    [ser getLocationBasedSearch:@"3000"];
 	// Do any additional setup after loading the view.
 }
 -(void)listen:(NSString *)result tagName:(NSString *)tagName {
@@ -61,7 +61,7 @@
         if ([self.users count]!=0) {
             [self.usersTable reloadData];
         }
-  
+        
     }
     
 }

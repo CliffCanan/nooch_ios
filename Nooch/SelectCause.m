@@ -47,9 +47,28 @@
         UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
         [self.navigationItem setLeftBarButtonItem:menu];
     }
+    UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [balance setFrame:CGRectMake(0, 0, 60, 30)];
+    if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
+        
+        [balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+        }
+    else
+        
+    {
+     [balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
+    }
+    
+    [balance.titleLabel setFont:kNoochFontMed];
+    [balance setStyleId:@"navbar_balance"];
+    
+    [self.navigationItem setRightBarButtonItem:Nil];
+    
+    UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:balance];
+    
+    [self.navigationItem setRightBarButtonItem:funds];
     
     
-
     [self.navigationItem setTitle:@"Select Cause"];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
@@ -71,11 +90,11 @@
     [self.search setDelegate:self];
     [self.view addSubview:self.search];
     
-//    UIButton *ribbon = [UIButton new];
-//    [ribbon setStyleId:@"nonprofit_ribbon_blue"];
-//    [self.view addSubview:ribbon];
+    //    UIButton *ribbon = [UIButton new];
+    //    [ribbon setStyleId:@"nonprofit_ribbon_blue"];
+    //    [self.view addSubview:ribbon];
     
-   feat = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 130)];
+    feat = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 130)];
     [feat setStyleClass:@"featured_nonprofit_banner"];
     [feat setStyleCSS:@"background-image : url(4k_image.png)"];
     [feat setImage:[UIImage imageNamed:@"4k_image.png"]];
@@ -94,10 +113,10 @@
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-        if (isSearching) {
-            return [arrSearchedRecords count];
-        }
-        return [causesArr count];
+    if (isSearching) {
+        return [arrSearchedRecords count];
+    }
+    return [causesArr count];
     
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -143,55 +162,55 @@
         
         dict = [arrSearchedRecords objectAtIndex:indexPath.row];
         textLabel.text=[NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
-       // cell.textLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
+        // cell.textLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
         
         if ([FeaturedcausesArr containsObject:dict]) {
             //cell.detailTextLabel.text=@"Featured";
             
         }
         else
-         //   cell.detailTextLabel.text=@"";
-        [pic setImageWithURL:[NSURL URLWithString:[dict valueForKey:@"PhotoIcon"]]
-           placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+            //   cell.detailTextLabel.text=@"";
+            [pic setImageWithURL:[NSURL URLWithString:[dict valueForKey:@"PhotoIcon"]]
+                placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
         
         //iv.image = [dict objectForKey:@"image"];
         [cell.contentView addSubview:pic];
         
         return cell;
     }
-
+    
     
     dict = [causesArr objectAtIndex:indexPath.row];
     textLabel.text=[NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
     //cell.textLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
     if (indexPath.row<[FeaturedcausesArr count]) {
-       // cell.detailTextLabel.textColor=[UIColor blackColor];
-       // cell.detailTextLabel.text=@"Featured";
+        // cell.detailTextLabel.textColor=[UIColor blackColor];
+        // cell.detailTextLabel.text=@"Featured";
     }
     else
         cell.detailTextLabel.text=@"";
     
-   
+    
     [textLabel setStyleClass:@"nonprofitlist_name"];
     //[cell.textLabel setStyleClass:@"nonprofitlist_name"];
     if (![[dict valueForKey:@"PhotoIcon"] isKindOfClass:[NSNull class]]) {
         [pic setImageWithURL:[NSURL URLWithString:[dict valueForKey:@"PhotoIcon"]]
-           placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+            placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
     }
     
-   [cell.contentView addSubview:pic];
+    [cell.contentView addSubview:pic];
     
     return cell;
-
+    
     //
-//    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
-//    [pic setImage:[UIImage imageNamed:@"4KforCancer.png"]];
-//    [pic setStyleClass:@"nonprofitlist_pic"];
-//    [pic setStyleCSS:@"background-image : 4KforCancer.png"];
-//    [cell addSubview:pic];
-//    
-//    [cell.textLabel setStyleClass:@"nonprofitlist_name"];
-//    cell.textLabel.text = @"4K For Cancer";
+    //    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
+    //    [pic setImage:[UIImage imageNamed:@"4KforCancer.png"]];
+    //    [pic setStyleClass:@"nonprofitlist_pic"];
+    //    [pic setStyleCSS:@"background-image : 4KforCancer.png"];
+    //    [cell addSubview:pic];
+    //
+    //    [cell.textLabel setStyleClass:@"nonprofitlist_name"];
+    //    cell.textLabel.text = @"4K For Cancer";
     
     return cell;
 }
@@ -204,24 +223,24 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-// UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-// for (UIView*subview in cell.contentView.subviews) {
-//     [subview removeFromSuperview];
-// }
-//    textLabel.text=@"";
-// [textLabel removeFromSuperview];
-
+    // UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    // for (UIView*subview in cell.contentView.subviews) {
+    //     [subview removeFromSuperview];
+    // }
+    //    textLabel.text=@"";
+    // [textLabel removeFromSuperview];
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     //clear Image cache
-//    SDImageCache *imageCache = [SDImageCache sharedImageCache];
-//    [imageCache clearMemory];
-//    [imageCache clearDisk];
-//    [imageCache cleanDisk];
+    //    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    //    [imageCache clearMemory];
+    //    [imageCache clearDisk];
+    //    [imageCache cleanDisk];
     NSDictionary *cause = [[causesArr objectAtIndex:indexPath.row] copy];
     
     CharityDetails *charity = [[CharityDetails alloc] initWithReceiver:cause];
     
-   // NSString*strNonProfitid=[[causesArr objectAtIndex:indexPath.row] valueForKey:@"NonprofitId"];
+    // NSString*strNonProfitid=[[causesArr objectAtIndex:indexPath.row] valueForKey:@"NonprofitId"];
     //NSDictionary*dict=[NSDictionary dictionaryWithObjectsAndKeys:strNonProfitid,@"id",[[causesArr objectAtIndex:indexPath.row] valueForKey:@"OrganizationName"],@"OrganizationName", nil];
     // dictnonprofitid=[dict mutableCopy];
     [self.navigationController pushViewController:charity animated:YES];
@@ -239,7 +258,7 @@
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     //29/12
-
+    
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
         UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
@@ -263,17 +282,17 @@
         me = [core new];
         return;
     }
-
+    
     if ([tagName isEqualToString:@"featuredNp"]) {
         FeaturedcausesArr = [[NSMutableArray alloc]init];
         
         NSError* error;
         FeaturedcausesArr = [NSJSONSerialization
-                        JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                        options:kNilOptions
-                        error:&error];
+                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                             options:kNilOptions
+                             error:&error];
         [feat setImageWithURL:[NSURL URLWithString:[[FeaturedcausesArr objectAtIndex:0] valueForKey:@"PhotoBanner"]]
-                    placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+             placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
         
         serve*serveOBJ=[serve new];
         serveOBJ.tagName=@"NPList";
@@ -286,14 +305,14 @@
         for (NSDictionary*dict in FeaturedcausesArr) {
             [causesArr addObject:dict];
         }
-          NSError* error;
+        NSError* error;
         for (NSDictionary*dict in [NSJSONSerialization
                                    JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                    options:kNilOptions
                                    error:&error]) {
             [causesArr addObject:dict];
         }
-       
+        
         NSLog(@"%@",causesArr);
         [self.list reloadData];
         
@@ -326,7 +345,7 @@
     if ([searchText length]>0) {
         SearchText = searchText;
         isSearching = YES;
-         arrSearchedRecords =[[NSMutableArray alloc]init];
+        arrSearchedRecords =[[NSMutableArray alloc]init];
         [self searchTableView];
         [self.list reloadData];
     }

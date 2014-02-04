@@ -51,7 +51,7 @@
     [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnback];
     
-
+    
     getLocation = [[GetLocation alloc] init];
 	getLocation.delegate = self;
 	[getLocation.locationManager startUpdatingLocation];
@@ -78,7 +78,7 @@
     [prompt setStyleClass:@"instruction_text"];
     [self.view addSubview:prompt];
     
-   enter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    enter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [enter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [enter setBackgroundColor:kNoochGreen];
     [enter setTitle:@"Continue" forState:UIControlStateNormal];
@@ -130,13 +130,13 @@
     NSString*get4chr=[self.code_field.text substringToIndex:3];
     if ([[get4chr uppercaseStringWithLocale:[NSLocale currentLocale]]isEqualToString:get4chr]) {
         //ServiceType=@"invitecheck";
-         [enter setEnabled:NO];
+        [enter setEnabled:NO];
         spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [self.view addSubview:spinner];
         spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
         [spinner startAnimating];
         
-
+        
         serve *inv_code = [serve new];
         [inv_code setDelegate:self];
         [inv_code setTagName:@"inv_check"];
@@ -147,17 +147,17 @@
         
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Check Your Referral Code" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-         [enter setEnabled:YES];
+        [enter setEnabled:YES];
         
     }
-
+    
     
     ///delete when server communication is done
     //Welcome *welc = [Welcome new];
     //[self.navigationController pushViewController:welc animated:YES];
     ///end delete
     
-   
+    
 }
 
 - (void)request_code
@@ -173,7 +173,7 @@
 
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-     NSError *error;
+    NSError *error;
     if ([tagName isEqualToString:@"requestcode"]) {
         self.slidingViewController.panGesture.enabled=NO;
         
@@ -185,7 +185,7 @@
         [nav_ctrl pushViewController:reg animated:YES];
     }
     else if ([tagName isEqualToString:@"inv_check"]) {
-       
+        
         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         if ([[response objectForKey:@"validateInvitationCodeResult"] boolValue]) {
             
@@ -194,7 +194,7 @@
             serveOBJ.tagName=@"validate";
             [serveOBJ getTotalReferralCode:self.code_field.text];
             
-           
+            
         } else {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Code" message:@"The referall code you entered is invalid. Please try again or request a code if you do not have one." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
@@ -207,12 +207,12 @@
         
         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         if ([[[response valueForKey:@"getTotalReferralCodeResult"] valueForKey:@"Result"] isEqualToString:@"True"]) {
-           
+            
             serve *create = [serve new];
             [create setDelegate:self];
             [create setTagName:@"encrypt"];
             [create getEncrypt:[self.user objectForKey:@"password"]];
-           // Signup*pNooch=[self.storyboard instantiateViewControllerWithIdentifier:@"signup"];
+            // Signup*pNooch=[self.storyboard instantiateViewControllerWithIdentifier:@"signup"];
             //[self.navigationController pushViewController:pNooch animated:YES];
             
         }
@@ -220,35 +220,35 @@
         {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Sorry! Referral Code Expired" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
-             [enter setEnabled:YES];
+            [enter setEnabled:YES];
             [spinner stopAnimating];
             [spinner setHidden:YES];
         }
         
     }
-     else if ([tagName isEqualToString:@"encrypt"])
-     {
-         serve *create = [serve new];
-         [create setDelegate:self];
-         [create setTagName:@"create_account"];
-         NSError *error;
-         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-         [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"email"] forKey:@"email"];
-         [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"first_name"] forKey:@"first_name"];
-         [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"last_name"] forKey:@"last_name"];
-         [[NSUserDefaults standardUserDefaults] setObject:[[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]] forKey:@"password"];
-         if ([self.user objectForKey:@"facebook_id"]) [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"facebook_id"] forKey:@"facebook_id"];
-         if (![[loginResult objectForKey:@"Status"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"Status"]!=NULL) {
-               getEncryptedPassword=[loginResult objectForKey:@"Status"];
-         }
-          [user setObject:[self.user objectForKey:@"first_name"] forKey:@"firstName"];
-         [create newUser:[self.user objectForKey:@"email"] first:[self.user objectForKey:@"first_name" ] last:[self.user objectForKey:@"last_name"] password:[[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]] pin:[self.user objectForKey:@"pin_number"] invCode:self.code_field.text fbId:[self.user objectForKey:@"facebook_id"] ? [self.user objectForKey:@"facebook_id"] : @"" ];
-         self.code_field.text=@"";
-     }
+    else if ([tagName isEqualToString:@"encrypt"])
+    {
+        serve *create = [serve new];
+        [create setDelegate:self];
+        [create setTagName:@"create_account"];
+        NSError *error;
+        NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"email"] forKey:@"email"];
+        [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"first_name"] forKey:@"first_name"];
+        [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"last_name"] forKey:@"last_name"];
+        [[NSUserDefaults standardUserDefaults] setObject:[[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]] forKey:@"password"];
+        if ([self.user objectForKey:@"facebook_id"]) [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"facebook_id"] forKey:@"facebook_id"];
+        if (![[loginResult objectForKey:@"Status"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"Status"]!=NULL) {
+            getEncryptedPassword=[loginResult objectForKey:@"Status"];
+        }
+        [user setObject:[self.user objectForKey:@"first_name"] forKey:@"firstName"];
+        [create newUser:[self.user objectForKey:@"email"] first:[self.user objectForKey:@"first_name" ] last:[self.user objectForKey:@"last_name"] password:[[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]] pin:[self.user objectForKey:@"pin_number"] invCode:self.code_field.text fbId:[self.user objectForKey:@"facebook_id"] ? [self.user objectForKey:@"facebook_id"] : @"" ];
+        self.code_field.text=@"";
+    }
     else if ([tagName isEqualToString:@"create_account"])
     {
         NSLog(@"login result %@",result);
-         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         if([[[response objectForKey:@"MemberRegistrationResult"]objectForKey:@"Result"] isEqualToString:@"Thanks for registering! Check your email to complete activation."])
         {
             
@@ -259,8 +259,8 @@
             login.Delegate = self;
             login.tagName = @"login";
             
-           // [login login:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"] password:getEncryptedPassword remember:YES lat:lat lon:lon];
-             NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+            // [login login:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"] password:getEncryptedPassword remember:YES lat:lat lon:lon];
+            NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
             [login login:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"] password:getEncryptedPassword remember:YES lat:lat lon:lon uid:udid];
         }
         else if([[[response objectForKey:@"MemberRegistrationResult"] objectForKey:@"Result"] isEqualToString:@"You are already a nooch member."])
@@ -268,25 +268,25 @@
             UIAlertView *decline= [[UIAlertView alloc] initWithTitle:@"Well..." message:@"This address already exists in our system, we do not support cloning you."delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [decline show];
             [decline setTag:1];
-             [enter setEnabled:YES];
+            [enter setEnabled:YES];
             [spinner stopAnimating];
             [spinner setHidden:YES];
-          
+            
             return;
         }
-              }
+    }
     else if ([tagName isEqualToString:@"login"]) {
         serve *req = [[serve alloc] init];
         req.Delegate = self;
         req.tagName = @"getMemId";
         [req getMemIdFromuUsername:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]];
-       
+        
     }
     if ([tagName isEqualToString:@"getMemId"]) {
-         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         NSLog(@"%@",response);
         [[NSUserDefaults standardUserDefaults] setObject:[response objectForKey:@"Result"] forKey:@"MemberId"];
-      //  [spinner stopAnimating];
+        //  [spinner stopAnimating];
         me = [core new];
         [me birth];
         [me stamp];
@@ -305,7 +305,7 @@
         }else{
             [[me usr] setObject:@"YES" forKey:@"requiredImmediately"];
         }
-      
+        
         [self dismissViewControllerAnimated:YES completion:nil];
         
     }else if(alertView.tag == 2){
@@ -330,7 +330,7 @@
         
         //[navCtrl performSelector:@selector(disable)];
         
-       // [navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"tutorial"] animated:YES];
+        // [navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"tutorial"] animated:YES];
         
         me = [core new];
         

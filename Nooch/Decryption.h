@@ -17,7 +17,7 @@
 
 
 @interface Decryption : NSObject {
-   
+    
     NSMutableData *responseData;
     id <DecryptionDelegate> Delegate;
     
