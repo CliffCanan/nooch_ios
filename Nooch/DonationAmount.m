@@ -12,6 +12,7 @@
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ECSlidingViewController.h"
+#import "Deposit.h"
 @interface DonationAmount ()
 @property(nonatomic,strong) NSDictionary *receiver;
 @property(nonatomic,strong) UITextField *amount;
@@ -86,7 +87,7 @@
     UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 60, 60)];
     [pic setImage:[UIImage imageNamed:@"4KforCancer.png"]];
     [pic setStyleId:@"nonprofit_orgpic"];
-    NSLog(@"%@",self.receiver);
+   // NSLog(@"%@",self.receiver);
     [pic setImageWithURL:[NSURL URLWithString:[self.receiver valueForKey:@"PhotoIcon"]]
         placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
     
@@ -112,9 +113,9 @@
     [self.camera setFrame:CGRectMake(270, 120, 40, 40)]; [self.camera setBackgroundColor:kNoochGrayDark];
     
     self.send = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.send setFrame:CGRectMake(160, 160, 150, 50)]; [self.send setBackgroundColor:kNoochGreen];
+    [self.send setFrame:CGRectMake(160, 160, 150, 50)]; [self.send setBackgroundColor:kNoochGrayLight];
     [self.send setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal]; [self.send setTitle:@"Donate" forState:UIControlStateNormal];
-    [self.send setEnabled:NO];
+    self.send.userInteractionEnabled=NO;
     [self.send addTarget:self action:@selector(donate) forControlEvents:UIControlEventTouchUpInside];
     [self.send setStyleId:@"nonprofit_donatebutton"];
     [self.view addSubview:self.send];
@@ -157,6 +158,8 @@
 
 - (void) five_dollars
 {
+    [self.send setBackgroundColor:kNoochGreen];
+    self.send.userInteractionEnabled=YES;
     [self.send setEnabled:YES];
     self.amount.text = @"$5.00";
     self.amnt = [@"500" mutableCopy];
@@ -164,6 +167,8 @@
 
 - (void) ten_dolalrs
 {
+    [self.send setBackgroundColor:kNoochGreen];
+    self.send.userInteractionEnabled=YES;
     [self.send setEnabled:YES];
     self.amount.text = @"$10.00";
     self.amnt = [@"1000" mutableCopy];
@@ -171,6 +176,8 @@
 
 - (void) twentyfive_dollars
 {
+    [self.send setBackgroundColor:kNoochGreen];
+    self.send.userInteractionEnabled=YES;
     [self.send setEnabled:YES];
     self.amount.text = @"$25.00";
     self.amnt = [@"2500" mutableCopy];
@@ -178,6 +185,8 @@
 
 - (void) fifty_dollars
 {
+    [self.send setBackgroundColor:kNoochGreen];
+    self.send.userInteractionEnabled=YES;
     [self.send setEnabled:YES];
     self.amount.text = @"$50.00";
     self.amnt = [@"5000" mutableCopy];
@@ -249,9 +258,9 @@
     [txtDedicate setText:[NSString stringWithFormat:@"%@",@"Type your dedication here..."]];
     [txtDedicate setBackgroundColor:[UIColor clearColor]];
     txtDedicate.textColor=[UIColor grayColor];
-    //[txtDedicate becomeFirstResponder];
     txtDedicate.layer.borderColor=[[UIColor grayColor]CGColor];
     txtDedicate.layer.borderWidth=2.0f;
+    txtDedicate.tag=2;
     txtDedicate.font=[UIFont systemFontOfSize:15.0f];
     txtDedicate.layer.cornerRadius=5.0f;
     txtDedicate.delegate=self;
@@ -295,13 +304,52 @@
         [av show];
         return;
     }
+    NSLog(@"%f",[[[self.amount text] substringFromIndex:1] doubleValue]);
+    if ([[[self.amount text] substringFromIndex:1] doubleValue] == 0)
+        
+        if ([self.amnt floatValue] == 0)
+            
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!" message:@"Minimum amount that can be transferred is any amount." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+            [alert show];
+            return;
+        }
+    if ([[self.amount text] length] < 3) {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Amount" message:@"Please enter a valid amount" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av show];
+        return;
+    }
+    
+    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100)
+        
+    {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Now" message:[NSString stringWithFormat:@"Sorry I’m not sorry, but don’t %@ more than $100. It’s against the rules (and protects the account from abuse.)", @"send"] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+        [alert show];
+        return;
+        
+    }
+    if ([[[self.amount text] substringFromIndex:1] floatValue]>[[user objectForKey:@"Balance"] floatValue]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!" message:@"Thanks for testing this impossibility, but you can't transfer more than you have in your Nooch account." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+        [alert setTag:2122];
+        [alert show];
+        return;
+    }
+
     NSMutableDictionary *transaction = [self.receiver mutableCopy];
     [transaction setObject:Donation_memo forKey:@"memo"];
     float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
     TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"donation" amount:input_amount];
     [self.navigationController pushViewController:pin animated:YES];
 }
-
+#pragma mark textVIew Delegate
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    if (textView.tag == 2) {
+        NSUInteger newLength = [textView.text length] + [text length] - range.length;
+        return (newLength > 25) ? NO : YES;
+    }
+    return YES;
+}
 #pragma mark - UITextField delegation
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
@@ -323,11 +371,7 @@
             self.amnt = [temp mutableCopy];
         }
         
-        if ([self.amnt length]==0) {
-            [self.send setEnabled:NO];
-        }
-        else
-            [self.send setEnabled:YES];
+       
         float maths = [self.amnt floatValue];
         maths /= 100;
         if (maths > 1000) {
@@ -336,7 +380,15 @@
         }
         
         [textField setText:[formatter stringFromNumber:[NSNumber numberWithFloat:maths]]];
-        
+        if ([textField.text length]==0 || [textField.text isEqualToString:@"$0.00"]) {
+            self.send.userInteractionEnabled=NO;
+            
+            [self.send setBackgroundColor:kNoochGrayLight];
+        }
+        else{
+            [self.send setBackgroundColor:kNoochGreen];
+            self.send.userInteractionEnabled=YES;
+        }
         return NO;
     }
     

@@ -35,6 +35,13 @@
     [super viewDidLoad];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+    UIActivityIndicatorView*act=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [act setFrame:CGRectMake(14, 5, 20, 20)];
+    [act startAnimating];
+    
+    UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:act];
+    [self.navigationItem setRightBarButtonItem:funds];
+    
     //    serve *serveOBJ=[serve new ];
     //
     //    serveOBJ.tagName=@"tranDetail";
@@ -54,6 +61,7 @@
     user_picture.layer.borderWidth = 1; user_picture.layer.borderColor = kNoochGrayDark.CGColor;
     user_picture.layer.cornerRadius = 38;
     user_picture.clipsToBounds = YES;
+    
     [user_picture setImageWithURL:[NSURL URLWithString:[self.trans objectForKey:@"Photo"]]
                  placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
     [self.view addSubview:user_picture];
@@ -62,18 +70,42 @@
     [payment setStyleClass:@"details_intro"];
     [payment setStyleClass:@"details_intro_green"];
     NSLog(@"%@",self.trans);
-    if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Sent"]) {
+    if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
+        if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
+            //send
+             [payment setText:@"Paid to:"];
+                  }
         
-        [payment setText:@"Paid to:"];
+        
     }
-    else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Received"]) {
+    else
+    {
+        if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
+           [payment setText:@"Received From:"];
+        }
+    }
+    
+
+    
+//    if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Sent"]) {
+//        
+//        [payment setText:@"Paid to:"];
+//    }
+//    else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Received"]) {
+//        
+//        [payment setText:@"Received From:"];
+//        
+//    }
+     if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
         
-        [payment setText:@"Received From:"];
+        [payment setText:@"Request Sent to:"];
+        
+        
         
     }
-    else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
+    else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"RequestRespond"]) {
         
-        [payment setText:@"Requested From:"];
+        [payment setText:@"Request From:"];
         
         
         
@@ -91,6 +123,7 @@
     
     UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];
     [other_party setStyleClass:@"details_othername"];
+
     [other_party setText:[self.trans objectForKey:@"Name"]];
     [self.view addSubview:other_party];
     /*
@@ -135,13 +168,16 @@
     
     UILabel *memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 110, 320, 60)];
     if (![[self.trans valueForKey:@"Memo"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Memo"]!=NULL) {
+        if ([[self.trans valueForKey:@"Memo"] length]==0 || [[self.trans valueForKey:@"Memo"] isEqualToString:@" "]) {
+            memo.text=@"";
+        }
         [memo setText:[NSString stringWithFormat:@"\"%@\"",[self.trans valueForKey:@"Memo"]]];
     }
     else
     {
         memo.text=@"";
     }
-    
+    memo.numberOfLines=2;
     [memo setStyleClass:@"details_label_memo"];
     [memo setStyleClass:@"blue_text"];
     [memo setStyleClass:@"italic_font"];
@@ -150,9 +186,17 @@
     
     UILabel *location = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 320, 60)];
     location.numberOfLines=2;
-    [location setStyleClass:@"details_label"];
+    [location setStyleClass:@"details_label_location"];
     if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"City"]!=NULL && [[assist shared]islocationAllowed] ) {
-        [location setText:[NSString stringWithFormat:@"%@ %@ %@ %@",[self.trans objectForKey:@"AddressLine1"],[self.trans objectForKey:@"AddressLine2"],[self.trans objectForKey:@"City"],[self.trans objectForKey:@"Country"]]];
+        //if ([[self.trans objectForKey:@"AddressLine2"] isEqualToString:@" "]) {
+        NSString*address=[[self.trans objectForKey:@"AddressLine1"] stringByReplacingOccurrencesOfString:@"," withString:@""];
+        address=[address stringByReplacingOccurrencesOfString:@" " withString:@""];
+        NSString*city=[[self.trans objectForKey:@"City"] stringByReplacingOccurrencesOfString:@"," withString:@""];
+        city=[city stringByReplacingOccurrencesOfString:@" " withString:@""];
+            [location setText:[NSString stringWithFormat:@"%@,%@",address,city]];
+       // }
+        
+        //[location setText:[NSString stringWithFormat:@"%@ %@ %@ %@",[self.trans objectForKey:@"AddressLine1"],[self.trans objectForKey:@"AddressLine2"],[self.trans objectForKey:@"City"],[self.trans objectForKey:@"Country"]]];
         if ([[self.trans objectForKey:@"AddressLine1"]length]==0 && [[self.trans objectForKey:@"City"]length]==0) {
             [location setText:@""];
         }
@@ -295,7 +339,14 @@
     [fb setTitle:@"" forState:UIControlStateNormal];
     [fb setStyleClass:@"details_buttons"];
     [fb setStyleCSS:@"background-image : url(fb-icon-90x90.png)"];
-    [fb setStyleId:@"details_fb"];
+    if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
+        [fb setStyleId:@"details_fb_donate"];
+    }
+    else
+        [fb setStyleId:@"details_fb"];
+    
+
+    
     [fb addTarget:self action:@selector(post_to_fb) forControlEvents:UIControlEventTouchUpInside];
     [fb setFrame:CGRectMake(95, 410, 60, 60)];
     
@@ -308,6 +359,10 @@
     [twit setTitle:@"" forState:UIControlStateNormal];
     [twit setStyleClass:@"details_buttons"];
     [twit setStyleCSS:@"background-image : url(twitter-icon.png)"];
+    if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
+        [twit setStyleId:@"details_twit_donate"];
+    }
+    else
     [twit setStyleId:@"details_twit"];
     [twit addTarget:self action:@selector(post_to_twitter) forControlEvents:UIControlEventTouchUpInside];
     [twit setFrame:CGRectMake(175, 410, 60, 60)];
@@ -322,7 +377,13 @@
     [disp setTitle:@"" forState:UIControlStateNormal];
     [disp setStyleClass:@"details_buttons"];
     [disp setStyleCSS:@"background-image : url(dispute-icon.png)"];
-    [disp setStyleId:@"details_disp"];
+    if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
+        [disp setStyleId:@"details_disp_donate"];
+    }
+    else
+        [disp setStyleId:@"details_disp"];
+
+    
     [disp addTarget:self action:@selector(dispute) forControlEvents:UIControlEventTouchUpInside];
     [disp setFrame:CGRectMake(255, 410, 60, 60)];
     
@@ -342,15 +403,16 @@
         [cancel setStyleClass:@"details_button_right"];
         
         if ([[self.trans objectForKey:@"MemberId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
+            [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
+            [cancel addTarget:self action:@selector(cancel_request) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:cancel];
+        } else {
             [pay setTitle:@"Pay" forState:UIControlStateNormal];
             [pay addTarget:self action:@selector(fulfill_request) forControlEvents:UIControlEventTouchUpInside];
             [cancel setTitle:@"Decline" forState:UIControlStateNormal];
             [cancel addTarget:self action:@selector(decline_request) forControlEvents:UIControlEventTouchUpInside];
             [self.view addSubview:pay]; [self.view addSubview:cancel];
-        } else {
-            [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
-            [cancel addTarget:self action:@selector(cancel_request) forControlEvents:UIControlEventTouchUpInside];
-            [self.view addSubview:cancel];
+            
         }
     }
     else
@@ -368,7 +430,14 @@
         [self.view addSubview:disp];
         [self.view addSubview:disp_text];
     }
+    serve *info = [serve new];
+    info.Delegate = self;
+    info.tagName = @"info";
     
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    [info getDetails:[defaults valueForKey:@"MemberId"]
+     ];
+
 }
 
 
@@ -519,7 +588,7 @@
             [dict setObject :memId forKey:@"MemberId"];
             [ dict setObject:[self.trans valueForKey:@"RecepientId"] forKey:@"RecepientId"];
             [ dict setObject:[self.trans valueForKey:@"TransactionId"] forKey:@"TransactionId"];
-            [ dict setObject:[self.trans valueForKey:@"TransactionType"] forKey:@"ListType"];
+            [ dict setObject:@"SENT" forKey:@"ListType"];
             NSLog(@"%@",dict);
             serve*serveobj=[serve new];
             [serveobj setDelegate:self];
@@ -536,6 +605,46 @@
 {
     if ([tagName isEqualToString:@"dispute"]) {
         
+    }
+    else if([tagName isEqualToString:@"info"]){
+        NSError *error;
+        
+        NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSLog(@"%@",loginResult);
+        if ([loginResult valueForKey:@"Status"]!=Nil  && ![[loginResult valueForKey:@"Status"] isKindOfClass:[NSNull class]]&& [loginResult valueForKey:@"Status"] !=NULL) {
+            [user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"];
+            NSString*url=[loginResult valueForKey:@"PhotoUrl"];
+            
+            [user setObject:[loginResult valueForKey:@"DateCreated"] forKey:@"DateCreated"];
+            //  url=[url stringByReplacingOccurrencesOfString:@"//" withString:@"/"];
+            NSLog(@"%@",url);
+            [user setObject:url forKey:@"Photo"];
+            
+        }
+        
+        if(![[loginResult objectForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"BalanceAmount"] != NULL)
+        {
+           
+            [user setObject:[loginResult objectForKey:@"BalanceAmount"] forKey:@"Balance"];
+            UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            
+            [balance setFrame:CGRectMake(0, 0, 60, 30)];
+            if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
+                
+                [balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+                
+            }
+           
+            [balance.titleLabel setFont:kNoochFontMed];
+            
+            [balance setStyleId:@"navbar_balance"];
+            
+            [self.navigationItem setRightBarButtonItem:Nil];
+            
+            UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:balance];
+            
+            [self.navigationItem setRightBarButtonItem:funds];
+        }
     }
 }
 

@@ -191,7 +191,13 @@
     }
     else{
         [user_pic setHidden:NO];
-        
+        if ([self.type isEqualToString:@"donation"]) {
+            [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoIcon"]]
+                     placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+
+        }
+        else
+        {
         if (self.receiver[@"Photo"]) {
             [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
                      placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
@@ -200,6 +206,7 @@
         {
             [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
                      placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+        }
         }
     }
     
@@ -257,12 +264,12 @@
     NSURL *url = [NSURL URLWithString:fetchURL];
     
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
-    __block NSArray *jsonArray;
+    
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse * response, NSData *data, NSError *err) {
         //NSString *responseBody = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         NSError * e;
-        jsonArray = [NSJSONSerialization JSONObjectWithData:data options: NSJSONReadingMutableContainers error: &e];
-        NSLog(@"RESPONSE %@",jsonArray);
+        jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options: NSJSONReadingMutableContainers error: &e];
+        NSLog(@"RESPONSE %@",jsonDictionary);
         [self setLocation];
     }];
     
@@ -274,7 +281,7 @@
     NSLog(@"RESPONSE %@",jsonDictionary);
     NSArray *placemark = [NSArray new];
     placemark = [jsonDictionary  objectForKey:@"results"];
-    if ([placemark count]>1) {
+    if ([placemark count]>0) {
         NSString *addr = [[placemark  objectAtIndex:1]objectForKey:@"formatted_address"];
         
         NSArray *addrParse = [addr componentsSeparatedByString:@" "];
@@ -285,16 +292,21 @@
             state = [[addrParse objectAtIndex:2] substringToIndex:3];
             zipcode = [[addrParse objectAtIndex:2] substringFromIndex:3];
             country = [addrParse objectAtIndex:3];
-        }else{
-            if ([addrParse count]>4) {
-                addressLine1 = [addrParse objectAtIndex:0];
-                addressLine2 = [addrParse objectAtIndex:1];
-                city = [addrParse objectAtIndex:2];
-                state = [[addrParse objectAtIndex:3] substringToIndex:3];
-                zipcode = [[addrParse objectAtIndex:3] substringFromIndex:3];
-                country = [addrParse objectAtIndex:4];
-            }
+        }else if ([addrParse count]>4)
+        {
+            addressLine1 = [addrParse objectAtIndex:0];
+            addressLine2 = [addrParse objectAtIndex:1];
+            city = [addrParse objectAtIndex:2];
+            state = [[addrParse objectAtIndex:3] substringToIndex:3];
+            zipcode = [[addrParse objectAtIndex:3] substringFromIndex:3];
+            country = [addrParse objectAtIndex:4];
             
+        }
+        else
+        {
+            addressLine1 = [addrParse objectAtIndex:0];
+             addressLine2 = @"";
+            city = [addrParse objectAtIndex:1];
         }
         
     }
@@ -313,20 +325,11 @@
     if ([addressLine2 rangeOfString:@"null"].location != NSNotFound || addressLine2 == NULL) {
         addressLine2 = @"";
     }
-    //    if (latitudeField == NULL || [latitudeField rangeOfString:@"null"].location != NSNotFound) {
-    //        latitudeField = @"0.0";
-    //    }
-    //    if (longitudeField == NULL || [longitudeField rangeOfString:@"null"].location != NSNotFound) {
-    //        longitudeField = @"0.0";
-    //    }
+    
     if (Altitude == NULL || [Altitude rangeOfString:@"null"].location != NSNotFound) {
         Altitude = @"0.0";
     }
-    // NSLog(@"%@%@",latitudeField,longitudeField);
     
-    // latitude = latitudeField;
-    //longitude = longitudeField;
-    // locationUpdate = YES;
 }
 - (void)locationError:(NSError *)error {
 	//locationLabel.text = [error description];
@@ -465,7 +468,7 @@
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lon] forKey:@"Longitude"];
             [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
-            [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine2"];
+            [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
             [transactionInputTransfer setValue:city forKey:@"City"];
             [transactionInputTransfer setValue:state forKey:@"State"];
             [transactionInputTransfer setValue:country forKey:@"Country"];
@@ -525,7 +528,7 @@
         [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
         [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lon] forKey:@"Longitude"];
         [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
-        [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine2"];
+        [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
         [transactionInputTransfer setValue:city forKey:@"City"];
         [transactionInputTransfer setValue:state forKey:@"State"];
         [transactionInputTransfer setValue:country forKey:@"Country"];
@@ -574,7 +577,7 @@
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lon] forKey:@"Longitude"];
             [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
-            [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine2"];
+            [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
             [transactionInputTransfer setValue:city forKey:@"City"];
             [transactionInputTransfer setValue:state forKey:@"State"];
             [transactionInputTransfer setValue:country forKey:@"Country"];
@@ -902,7 +905,10 @@
     if (self.receiver[@"Photo"] !=NULL && ![self.receiver[@"Photo"] isKindOfClass:[NSNull class]]) {
         [transactionInputTransfer setObject:self.receiver[@"Photo"]forKey:@"Photo"];
     }
-    
+    NSLog(@"%@",self.receiver[@"PhotoIcon"]);
+    if ([self.type isEqualToString:@"donation"] && self.receiver[@"PhotoIcon"]!=NULL && ![self.receiver[@"PhotoIcon"] isKindOfClass:[NSNull class]]) {
+          [transactionInputTransfer setObject:self.receiver[@"PhotoIcon"]forKey:@"Photo"];
+    }
     
     self.trans = [transactionInputTransfer copy];
     

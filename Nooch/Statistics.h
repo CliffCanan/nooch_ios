@@ -13,5 +13,6 @@
 {
     NSDictionary*dictResult;
     NSMutableDictionary*dictAllStats;
+     UIView*blankView;
 }
 @end

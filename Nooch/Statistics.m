@@ -45,7 +45,7 @@
     [hamburger setStyleId:@"navbar_hamburger"];
     UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
-    
+   
     
     serve*serveOBJ=[serve new];
     [serveOBJ setDelegate:self];
@@ -95,6 +95,15 @@
     [self.back addSubview:self.stats];
     [self.stats setUserInteractionEnabled:NO];
     [self.stats reloadData];
+    
+    blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
+    [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
+    UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
+    [actv startAnimating];
+    [blankView addSubview:actv];
+    [self .view addSubview:blankView];
+    [self.view bringSubviewToFront:blankView];
 }
 
 - (void) change_stats:(UISwipeGestureRecognizer *)slide
@@ -202,12 +211,18 @@
             [title setText:@"$ Cashed out of Nooch"];
             //[statistic setText:@"$ 200.00"];
             [statistic setText:[[dictAllStats valueForKey:@"Total_$_withdraw_from_Nooch"]  valueForKey:@"Result"]];
+            if ([[[dictAllStats valueForKey:@"Total_$_withdraw_from_Nooch" ]valueForKey:@"Result"] length]==0) {
+                [statistic setText:@"0"];
+            }
             //Total_$_withdraw_from_Nooch
         }
         else if (indexPath.row == 2) {
             [title setText:@"Friends Invited"];
             if ([dictAllStats valueForKey:@"Total_Friends_Invited"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Friends_Invited"]  valueForKey:@"Result"]];
+            }
+            if ([[[dictAllStats valueForKey:@"Total_Friends_Invited"]valueForKey:@"Result"] length]==0) {
+                [statistic setText:@"0"];
             }
             //"
             // [statistic setText:@"4"];
@@ -216,6 +231,9 @@
             [title setText:@"Invites Accepted"];
             if ([dictAllStats valueForKey:@"Total_Friends_Joined"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Friends_Joined"]  valueForKey:@"Result"]];
+            }
+            if ([[[dictAllStats valueForKey:@"Total_Friends_Joined"]valueForKey:@"Result"] length]==0) {
+                [statistic setText:@"0"];
             }
             // [statistic setText:@"7"];
         }
@@ -498,9 +516,9 @@
         serveOBJ.tagName=@"Total_$_Donated";
         
         [serveOBJ GetMemberStats:@"Total_$_Donated"];
-    }//Total_$_Donated
-    // Largest_Donation_Made //Total_Posts_To_FB
-    //Total_$_Added_to_Nooch
+        [blankView removeFromSuperview];
+        [self.stats reloadData];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated

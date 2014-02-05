@@ -644,7 +644,7 @@
 		842E3314187424440057EAFB /* GetEncryptionValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetEncryptionValue.h; sourceTree = "<group>"; };
 		842E3315187424440057EAFB /* GetEncryptionValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetEncryptionValue.m; sourceTree = "<group>"; };
 		843B29D31888EC3B00DA04C8 /* back-arrow-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-arrow-blue.png"; sourceTree = "<group>"; };
-		84443CA618A0BD9E0097F6C0 /* empty-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "empty-arrow.png"; sourceTree = "<group>"; };
+		84443CA618A0BD9E0097F6C0 /* empty-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "empty-arrow.png"; path = "../empty-arrow.png"; sourceTree = "<group>"; };
 		84443CA718A0BD9E0097F6C0 /* NSString+MD5Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5Addition.h"; sourceTree = "<group>"; };
 		84443CA818A0BD9E0097F6C0 /* NSString+MD5Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5Addition.m"; sourceTree = "<group>"; };
 		84443CA918A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IdentifierAddition.h"; sourceTree = "<group>"; };
@@ -876,6 +876,7 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				84443CA618A0BD9E0097F6C0 /* empty-arrow.png */,
 				843B29D31888EC3B00DA04C8 /* back-arrow-blue.png */,
 				01C949DA1888852A000FC11E /* nooch-icon.svg */,
 				0106773B1860F68400E11F3D /* take-pic-icon.png */,
@@ -1011,12 +1012,6 @@
 		16E4B1C0187054A80099D075 /* venturepact  */ = {
 			isa = PBXGroup;
 			children = (
-				84443CB018A0BDF30097F6C0 /* RoundLoading.png */,
-				84443CA618A0BD9E0097F6C0 /* empty-arrow.png */,
-				84443CA718A0BD9E0097F6C0 /* NSString+MD5Addition.h */,
-				84443CA818A0BD9E0097F6C0 /* NSString+MD5Addition.m */,
-				84443CA918A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.h */,
-				84443CAA18A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.m */,
 				84C3EF17187D0E82004687F6 /* mapBack.png */,
 				8420B395187AC4BF00A77E2D /* Black-pin.png */,
 				8420B396187AC4BF00A77E2D /* blue-pin.png */,
@@ -1028,6 +1023,7 @@
 				84BFD9311871270C001C0AAC /* cross_basic_yellow.png */,
 				16E4B1C51870832B0099D075 /* untick.png */,
 				16E4B1C718708C1D0099D075 /* tickR.png */,
+				84443CB018A0BDF30097F6C0 /* RoundLoading.png */,
 				16E4B1BE187054A50099D075 /* placeholder.jpg */,
 				84C3EF1C187D74C6004687F6 /* whitebg.png */,
 				16E4B1C1187078880099D075 /* tick.png */,
@@ -1075,6 +1071,7 @@
 		6B30372415FA3FF300056DAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				841CC8E018A1EBCB0075245C /* Device Identifier */,
 				840CADDD1887E02700BC5FED /* NSString+ASBase */,
 				84BFD92F187122DD001C0AAC /* Pixate.framework */,
 				16E4B1C91870A2C90099D075 /* MessageUI.framework */,
@@ -1486,6 +1483,17 @@
 				84193342187537A800D85FC4 /* GetLocation.m */,
 			);
 			name = "Location Tracker";
+			sourceTree = "<group>";
+		};
+		841CC8E018A1EBCB0075245C /* Device Identifier */ = {
+			isa = PBXGroup;
+			children = (
+				84443CA718A0BD9E0097F6C0 /* NSString+MD5Addition.h */,
+				84443CA818A0BD9E0097F6C0 /* NSString+MD5Addition.m */,
+				84443CA918A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.h */,
+				84443CAA18A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.m */,
+			);
+			name = "Device Identifier";
 			sourceTree = "<group>";
 		};
 		84BD986F1877F695008B6131 /* Location Search */ = {

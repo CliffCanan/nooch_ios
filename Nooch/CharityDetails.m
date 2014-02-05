@@ -36,8 +36,8 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-     self.navigationItem.title=[self.charity valueForKey:@"OrganizationName"];
-    
+    // self.title=[self.charity valueForKey:@"OrganizationName"];
+     [self.navigationItem setTitle:[self.charity valueForKey:@"OrganizationName"]];
     UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [balance setFrame:CGRectMake(0, 0, 60, 30)];
     if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
@@ -65,7 +65,7 @@
 	
     image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 150)];
     
-    [self.navigationItem setTitle:@"Cause Details"];
+   
     
     
     
@@ -242,8 +242,8 @@
     NSLog(@"%@",self.charity);
     NSMutableDictionary*dict_donate=[self.charity mutableCopy];
     if ([dict valueForKey:@"FirstName"]!=NULL && [dict valueForKey:@"LastName"]!=NULL) {
-        [dict_donate setValue:[[dict valueForKey:@"FirstName"] capitalizedString] forKey:@"FirstName"];
-        [dict_donate setValue:[[dict valueForKey:@"LastName"] capitalizedString] forKey:@"LastName"];
+        [dict_donate setValue:[[self.charity valueForKey:@"OrganizationName"] capitalizedString] forKey:@"FirstName"];
+        [dict_donate setValue:@"" forKey:@"LastName"];
     }
     
     NSLog(@"%@",dict_donate);
@@ -334,7 +334,7 @@
         decry->tag = [NSNumber numberWithInteger:2];
         [decry getDecryptionL:@"GetDecryptedData" textString:[self.charity valueForKey:@"LastName"]];
         
-        
+    
     }
     else
     {

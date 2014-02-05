@@ -88,6 +88,7 @@
     
     self.search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
     [self.search setDelegate:self];
+    self.search.placeholder=@"Search";
     [self.view addSubview:self.search];
     
     //    UIButton *ribbon = [UIButton new];
@@ -151,27 +152,31 @@
     [cell.contentView addSubview:textLabel];
     
     UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
-    [pic setImage:[UIImage imageNamed:@"4KforCancer.png"]];
+    
     [pic setStyleClass:@"nonprofitlist_pic"];
-    //[pic setStyleCSS:@"background-image : 4KforCancer.png"];
-    [cell addSubview:pic];
+  
+    [cell.contentView  addSubview:pic];
     if (isSearching) {
         
         cell.contentView.tag=indexPath.row;
-        
+        cell.indentationLevel = 1; cell.indentationWidth = 80;
         
         dict = [arrSearchedRecords objectAtIndex:indexPath.row];
-        textLabel.text=[NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
+       textLabel.frame=CGRectMake(55, 15, 250, 30);
+         [textLabel setStyleClass:@"nonprofitlist_name"];
         // cell.textLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
         
-        if ([FeaturedcausesArr containsObject:dict]) {
-            //cell.detailTextLabel.text=@"Featured";
-            
-        }
-        else
+//        if ([FeaturedcausesArr containsObject:dict]) {
+//            
+//            
+//        }
+//        else
+//        {
             //   cell.detailTextLabel.text=@"";
+             textLabel.text=[NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
             [pic setImageWithURL:[NSURL URLWithString:[dict valueForKey:@"PhotoIcon"]]
                 placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+        //}
         
         //iv.image = [dict objectForKey:@"image"];
         [cell.contentView addSubview:pic];
@@ -200,17 +205,7 @@
     
     [cell.contentView addSubview:pic];
     
-    return cell;
     
-    //
-    //    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
-    //    [pic setImage:[UIImage imageNamed:@"4KforCancer.png"]];
-    //    [pic setStyleClass:@"nonprofitlist_pic"];
-    //    [pic setStyleCSS:@"background-image : 4KforCancer.png"];
-    //    [cell addSubview:pic];
-    //
-    //    [cell.textLabel setStyleClass:@"nonprofitlist_name"];
-    //    cell.textLabel.text = @"4K For Cancer";
     
     return cell;
 }
@@ -321,6 +316,8 @@
 #pragma mark - searching
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
     isSearching = NO;
+    [searchBar setShowsCancelButton:NO];
+    [self.search resignFirstResponder];
     
     [self.list reloadData];
 }
@@ -340,7 +337,10 @@
     
     return YES;
 }
-
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    searchBar.text=@"";
+}
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
     if ([searchText length]>0) {
         SearchText = searchText;
@@ -350,8 +350,15 @@
         [self.list reloadData];
     }
     else{
+        if ([searchText isEqualToString:@""]) {
+            searchBar.text=@"";
+            isSearching=NO;
+            return;
+        }
+        else{
         isSearching=NO;
         [self.list reloadData];
+        }
     }
 }
 - (void) searchTableView

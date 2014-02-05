@@ -421,15 +421,16 @@
     fp.arrowDirection = FPPopoverArrowDirectionUp;
     fp.contentSize = CGSizeMake(200, 355);
     [fp presentPopoverFromPoint:CGPointMake(280, 45)];
-    
-    
+
 }
 -(void)dismissFP:(NSNotification *)notification{
     [fp dismissPopoverAnimated:YES];
     isSearch=NO;
     if (![listType isEqualToString:@"CANCEL"]) {
-        histShowArrayCompleted=[[NSMutableArray alloc]init];
-        histShowArrayPending=[[NSMutableArray alloc]init];
+        [histShowArrayCompleted removeAllObjects];
+        [histShowArrayPending removeAllObjects];
+        //histShowArrayCompleted=[[NSMutableArray alloc]init];
+       // histShowArrayPending=[[NSMutableArray alloc]init];
         
         isFilter=YES;
         index=1;
@@ -541,6 +542,30 @@
                 [amount setTextAlignment:NSTextAlignmentRight];
                 [amount setFont:[UIFont fontWithName:@"Roboto-Medium" size:18]];
                 [amount setStyleClass:@"history_transferamount"];
+                
+                NSLog(@"%@",[user valueForKey:@"MemberId"]);
+                NSLog(@"%@",[dictRecord valueForKey:@"MemberId"]);
+
+                 if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]]) {
+                      if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
+                        //send
+                          [amount setStyleClass:@"history_transferamount_neg"];
+                          [indicator setStyleClass:@"history_sidecolor_neg"];
+                          [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                          
+                      }
+                     
+                     
+                 }
+                else
+                {
+                    if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
+                        [amount setStyleClass:@"history_transferamount_pos"];
+                        [indicator setStyleClass:@"history_sidecolor_pos"];
+                        [amount setText:[NSString stringWithFormat:@"+$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                    }
+                }
+                
                 if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]) {
                     [amount setStyleClass:@"history_transferamount_neg"];
                     [indicator setStyleClass:@"history_sidecolor_neg"];
@@ -552,18 +577,18 @@
                     [indicator setStyleClass:@"history_sidecolor_pos"];
                     [amount setText:[NSString stringWithFormat:@"+$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                 }
-                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Received"])
-                {
-                    [amount setStyleClass:@"history_transferamount_pos"];
-                    [indicator setStyleClass:@"history_sidecolor_pos"];
-                    [amount setText:[NSString stringWithFormat:@"+$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                }
-                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Sent"])
-                {
-                    [amount setStyleClass:@"history_transferamount_neg"];
-                    [indicator setStyleClass:@"history_sidecolor_neg"];
-                    [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                }
+//                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Received"])
+//                {
+//                    [amount setStyleClass:@"history_transferamount_pos"];
+//                    [indicator setStyleClass:@"history_sidecolor_pos"];
+//                    [amount setText:[NSString stringWithFormat:@"+$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+//                }
+//                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Sent"])
+//                {
+//                    [amount setStyleClass:@"history_transferamount_neg"];
+//                    [indicator setStyleClass:@"history_sidecolor_neg"];
+//                    [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+//                }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"])
                 {
                     [amount setStyleClass:@"history_transferamount_neg"];
@@ -580,7 +605,7 @@
                 NSLog(@"%@",[dictRecord valueForKey:@"MemberId"]);
                 //Updated Balance after Transaction
                     UILabel *updated_balance = [UILabel new];
-                if (![[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]]) {
+                if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]]) {
                    [updated_balance setText:[NSString stringWithFormat:@"$%@",[dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"]]];
                 }
                 else
@@ -589,10 +614,6 @@
                 
                     [updated_balance setStyleClass:@"history_updatedbalance"];
                     [cell.contentView addSubview:updated_balance];
-
-                
-                
-                
                 
                 NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                
@@ -679,25 +700,40 @@
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabel"];
                 [name setStyleClass:@"history_recipientname"];
-                if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Received"]) {
+                if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]]) {
+                    if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
+                        [name setText:[NSString stringWithFormat:@"You Paid %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+                        [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                            placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                        
+                    }
                     
-                    [name setText:[NSString stringWithFormat:@"%@ Paid You",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
-                    [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                        placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
-                    
-                    
-                }
-                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Sent"]) {
-                    
-                    [name setText:[NSString stringWithFormat:@"You Paid %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
-                    [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                        placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                     
                 }
+                else
+                {
+                    if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
+                        [name setText:[NSString stringWithFormat:@"%@ Paid You",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+                        [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                            placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                    }
+                }
+                
+//                if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Received"]) {
+//                    
+//                    
+//                    
+//                    
+//                }
+//                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Sent"]) {
+//                    
+//                   
+//                    
+//                }
+//                
                 
                 
-                
-                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]){
+                if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]){
                     [name setText:@"Deposit into Nooch"];
                     [pic setImage:[UIImage imageNamed:@"Icon.png"]];
                     
@@ -800,12 +836,12 @@
                 else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]|| [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@""])
                 {
                     if ([[dictRecord valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
-                        [name setText:[NSString stringWithFormat:@"%@ Requested From You",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+                        [name setText:[NSString stringWithFormat:@"You Requested From %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                         
                     }
                     else
                     {
-                        [name setText:[NSString stringWithFormat:@"You Requested From %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+                        [name setText:[NSString stringWithFormat:@"%@ Requested",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                         
                         
                     }

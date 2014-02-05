@@ -247,6 +247,7 @@
         [SMSView removeFromSuperview];
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Message Sent Successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+         [self callService:@"SM"];
         
     }
 }
@@ -346,7 +347,7 @@
              {
                  case SLComposeViewControllerResultCancelled: output = @"Action Cancelled";
                      break;
-                 case SLComposeViewControllerResultDone: output = @" Report Shared Successfully"; [self dismissViewControllerAnimated:YES completion:nil];
+                 case SLComposeViewControllerResultDone: output = @"Report Shared Successfully"; [self dismissViewControllerAnimated:YES completion:nil];
                      [self callService:@"FB"];
                      break;
                  default: break;
@@ -697,6 +698,7 @@
             
             [alert setTitle:@"Mail sent"];
             [alert show];
+            [self callService:@"EM"];
             break;
         case MFMailComposeResultFailed:
             [alert setTitle:[error localizedDescription]];

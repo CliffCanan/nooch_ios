@@ -1152,6 +1152,7 @@
 		height			: 46px;
 		border			: none;
 		background		: transparent;
+        left            :10px;
 	}
 	
 	/**************************************/  
@@ -1222,7 +1223,7 @@
 	
 	/**  The labels under each social media button on each nonprofit's details screen. **/
 	.nonprofit_details_buttons_labels {
-		width				: 52px;
+		width				: 70px;
 		height				: 15px;
 		top					: 236px;
 		font-family			: "Roboto";
@@ -2135,7 +2136,7 @@
 	
 	/*****  Other Person's Name  ****/
 	.details_othername {
-		width				: 180px;
+		width				: 220px;
 		height				: 28px;
 		top					: 37px;
 		left                : 80px;
@@ -2179,7 +2180,7 @@
 		color 				: #6d6e71;
 		width				: 280px;
 		left                : 20px;
-		height				: 30px;
+		height				: 40px;
 	}
 	.details_label {
 		font-family			: "Roboto";
@@ -2189,6 +2190,16 @@
 		color 				: #6d6e71;
 		width				: 280px;
 		left                : 20px;
+		height				: 30px;
+	}
+    .details_label_location {
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 18px;
+		text-align          : left;
+		color 				: #6d6e71;
+		width				: 280px;
+		left                : 70px;
 		height				: 30px;
 	}
     .details_label1 {
@@ -2236,8 +2247,8 @@
 
 	/**  Text labels immediately below each round button at the bottom of Transfer Details. **/
 	.details_buttons_labels {
-		//width				: 60px;
-        text-align      : center;
+		width				: 55px;
+        text-align          : center;
 		height				: 14px;
 		top					: 480px;
 		font-family			: "Roboto";
@@ -2253,15 +2264,21 @@
     #details_fb {
         left : 95px;
     }
-    
+    #details_fb_donate {
+        left : 20px;
+    }
     #details_twit {
         left : 175px;
     }
-    
+    #details_twit_donate {
+        left : 140px;
+    }
     #details_disp {
         left : 255px;
     }
-	
+	#details_disp_donate {
+        left : 255px;
+    }
  /*******************************************
   *******************************************
   ********* 	 SETTINGS FLOW	    *********
@@ -2543,7 +2560,7 @@
 	}
 
 	.stats_table_left_lable {
-		width			: 190px;
+		width			: 210px;
 		height			: 50px;
 		top				: 0px;
 		left			: 10px;
