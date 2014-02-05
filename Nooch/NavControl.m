@@ -45,6 +45,8 @@
     
     LeftMenu *left_menu = [LeftMenu new];
     FundsMenu *funds_menu = [FundsMenu new];
+    
+    
     if (![self.slidingViewController.underLeftViewController isKindOfClass:[LeftMenu class]]) {
         self.slidingViewController.underLeftViewController  = left_menu;
     }
@@ -58,6 +60,7 @@
     self.view.layer.shadowRadius = 2.0f;
     self.view.layer.shadowColor = [UIColor blackColor].CGColor;
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+    
 }
 
 -(void)disable{

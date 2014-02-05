@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "ECSlidingViewController.h"
-
 @interface NavControl : UINavigationController
 
 -(void)disable;

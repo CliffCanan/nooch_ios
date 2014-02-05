@@ -11,6 +11,7 @@
 #import <Pixate/Pixate.h>
 #import "serve.h"
 #import "core.h"
+#import "NavControl.h"
 core *me;
 #define kNoochBlue      [Helpers hexColor:@"41ABE1"]
 #define kNoochGreen     [Helpers hexColor:@"72BF44"]
@@ -23,7 +24,6 @@ core *me;
 #define kNoochFontMed [UIFont fontWithName:@"BrandonGrotesque-Medium" size:16]
 #define kNoochFontLt [UIFont fontWithName:@"BrandonGrotesque-Light" size:18]
 UINavigationController *nav_ctrl;
-
 NSUserDefaults *user;
 @interface Home : UIViewController<serveD,CLLocationManagerDelegate>
 {

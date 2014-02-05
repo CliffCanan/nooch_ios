@@ -34,7 +34,6 @@
     self.menu = [[UITableView alloc] initWithFrame:CGRectMake(40, 64, 320, [[UIScreen mainScreen] bounds].size.height-64)];
     [self.menu setBackgroundColor:kNoochMenu]; [self.menu setDelegate:self]; [self.menu setDataSource:self]; [self.menu setSeparatorColor:kNoochLight];
     [self.menu setRowHeight:60];
-    //[self.menu setScrollEnabled:NO];
     [self.menu setStyleId:@"rside_tableview"];
     [self.view addSubview:self.menu];
     [self.menu reloadData];
@@ -58,7 +57,6 @@
     else {
         [name setText:[NSString stringWithFormat:@"$%@",@"0.00"]];
     }
-    // [name setText:@"$ 100.00"];
     [user_bar addSubview:name];
     
     UIButton *add_source = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -71,24 +69,21 @@
     [add_source setStyleId:@"buttons_addfundsource"];
     [self.view addSubview:add_source];
     //29/12
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated{
     isEditing=NO;
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self.view addSubview:spinner];
     spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
     [spinner startAnimating];
-    
-    
-        serve*serveOBJ=[serve new];
-    
-        serveOBJ.tagName=@"banks";
-        serveOBJ.Delegate=self;
-        [serveOBJ getBanks];
-    
-    
-    
-    
-    
+    serve*serveOBJ=[serve new];
+    serveOBJ.tagName=@"banks";
+    serveOBJ.Delegate=self;
+    [serveOBJ getBanks];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -96,16 +91,13 @@
     
     isWithdrawalSelected=NO;
     
-    
-    
     [arrWithrawalOptions addObject:@"Add Funds"];
     
     [arrWithrawalOptions addObject:@"Withdraw Funds"];
     [arrWithrawalOptions addObject:@"Auto Cash Out"];
     
     self.menu.scrollEnabled = YES;
-    
-	// Do any additional setup after loading the view.
+    NSLog(@"hmmmmmmm");
 }
 -(void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:YES];
@@ -686,19 +678,6 @@
                 return;
             }
             
-            
-            
-            
-            
-            //  NSLog(@"%@",[defaults valueForKey:@"IsPrimaryBankVerified"]);
-            
-            
-            
-            
-            
-            
-            // selectedId = [bank objectForKey:@"BankAccountId"];
-            
             Deposit *dep = [[Deposit alloc]initWithData:ArrBankAccountCollection];
             [nav_ctrl pushViewController:dep animated:YES];
             [self.slidingViewController resetTopView];
@@ -756,11 +735,6 @@
                 
                 return;
             }
-            
-            
-            
-            
-            NSLog(@"%d",[[assist shared]isBankVerified]);
             
             Withdraw *wd = [[Withdraw alloc]initWithData:ArrBankAccountCollection];
             
@@ -838,6 +812,7 @@
                 [[NSUserDefaults standardUserDefaults] setObject:[bank objectForKey:@"BankAccountId"] forKey:@"choice"];
                 
                 [self.slidingViewController resetTopView];
+                
                 BankVerification *bv=[BankVerification new];
                 [nav_ctrl pushViewController:bv animated:YES];
                 
@@ -871,7 +846,7 @@
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"%d %d",[ArrBankAccountCollection count],buttonIndex);
+    NSLog(@"banks: %d %d",[ArrBankAccountCollection count],buttonIndex);
     if (alertView.tag==147 && buttonIndex==1) {
         ProfileInfo *prof = [ProfileInfo new];
         [nav_ctrl pushViewController:prof animated:YES];
@@ -1067,7 +1042,6 @@
 {
     [spinner stopAnimating];
     [spinner setHidden:YES];
-    // [me endWaitStat];
     NSLog(@"%@",arrWithrawalOptions);
     NSError* error;
     NSDictionary * DictResponse = [NSJSONSerialization
@@ -1100,7 +1074,6 @@
         
         
         [self.menu reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
-        NSLog(@"Banks%@",ArrBankAccountCollection);
         [spinner startAnimating];
         [spinner setHidden:NO];
         
@@ -1112,12 +1085,10 @@
         
         serveOBJ.Delegate=self;
     }
-    // NSLog(@"%@",dictResult);
     if ([tagName isEqualToString:@"selectedWithdrawal"]) {
         
         if ([DictResponse valueForKey:@"Result"]) {
             NSArray*arr=[[DictResponse valueForKey:@"Result"] componentsSeparatedByString:@","];
-            NSLog(@"%@",arr);
             if ([[arr objectAtIndex:2] isEqualToString:@"Frequency"]) {
                 for (int i=0;i<arrAutoWithdrawalF.count;i++) {
                     NSDictionary*dict=[arrAutoWithdrawalF objectAtIndex:i];
@@ -1145,7 +1116,6 @@
                             strTimeFrequency=@"(Fri @ 5PM)";
                         }
                         countsubRecords=0;
-                        NSLog(@"%@",dictSelectedWithdrawal);
                         countsubRecords++;
                         for (int i=3; i<[arrWithrawalOptions count]; i++) {
                             [arrWithrawalOptions removeObjectAtIndex:i];
@@ -1193,7 +1163,6 @@
                             
                             [dictSelectedWithdrawal setValue:[NSString stringWithFormat:@"%d",[arrAutoWithdrawalT indexOfObject:dict]+3] forKey:SelectedOption];
                             [self.menu reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-                            NSLog(@"%@",dictSelectedWithdrawal);
                             
                         }
                     }
@@ -1211,8 +1180,6 @@
         // NSLog(@"response %@",[dictResult valueForKey:@"Result"]);
         arrAutoWithdrawalF=[[NSMutableArray alloc]init];
         arrAutoWithdrawalF=[arr mutableCopy];
-        
-        NSLog(@"%@",arrAutoWithdrawalF);
         
         [spinner startAnimating];
         [spinner setHidden:NO];
@@ -1238,7 +1205,6 @@
         
         arrAutoWithdrawalT=[[NSMutableArray alloc]init];
         arrAutoWithdrawalT=[arr mutableCopy];
-        NSLog(@"%@",arrAutoWithdrawalT);
         [spinner startAnimating];
         [spinner setHidden:NO];
         
@@ -1265,7 +1231,6 @@
                         options:kNilOptions
                         error:&error];
         
-        NSLog(@"%@",[[dictResponse valueForKey:@"SaveFrequencyResult"] valueForKey:@"Result"]);
         
         if ([[[dictResponse valueForKey:@"SaveFrequencyResult"] valueForKey:@"Result"]isEqualToString:@"Saved Successfully"]) {
             

@@ -42,11 +42,10 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    
-    NSLog(@"%@",nav_ctrl.view);
-    [ self.navigationItem setLeftBarButtonItem:Nil];
     nav_ctrl = self.navigationController;
-    NSLog(@"%d",[nav_ctrl.viewControllers count]);
+    
+    [ self.navigationItem setLeftBarButtonItem:Nil];
+    
     user = [NSUserDefaults standardUserDefaults];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     
@@ -130,11 +129,11 @@
             [nav_ctrl pushViewController:prof animated:YES];
             [self.slidingViewController resetTopView];
             
+            
         }
         me = [core new];
         [user removeObjectForKey:@"Balance"];
         loadInfo = [[NSMutableDictionary alloc] initWithContentsOfFile:[self autoLogin]];
-        NSLog(@"%@",loadInfo);
         [[NSUserDefaults standardUserDefaults] setValue:[loadInfo valueForKey:@"MemberId"] forKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] setValue:[loadInfo valueForKey:@"UserName"] forKey:@"UserName"];
         [me birth];
@@ -185,6 +184,7 @@
 }
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    
     self.slidingViewController.panGesture.enabled=YES;
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
@@ -273,7 +273,7 @@
 - (void)send_request
 {
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    NSLog(@"%d",[[assist shared]isBankVerified]);
+    NSLog(@"bank verified? %d",[[assist shared]isBankVerified]);
 #pragma mark-9jan
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
         
@@ -379,7 +379,6 @@
         
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         
-        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
         [timer invalidate];
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
         
@@ -395,7 +394,6 @@
     
     if ([tagName isEqualToString:@"banks"]) {
         [blankView removeFromSuperview];
-        NSLog(@"deets: %@",result);
     }
 }
 
