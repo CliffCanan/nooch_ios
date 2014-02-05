@@ -100,10 +100,6 @@
     button_frame.origin.y += height+20; [mid_button setFrame:button_frame];
     button_frame.origin.y += height+20; [bot_button setFrame:button_frame];
     
-    [top_button.titleLabel setFont:[UIFont fontWithName:@"BrandonGrotesque-Medium" size:18]];
-    [mid_button.titleLabel setFont:[UIFont fontWithName:@"BrandonGrotesque-Medium" size:18]];
-    [bot_button.titleLabel setFont:[UIFont fontWithName:@"BrandonGrotesque-Medium" size:18]];
-    
     [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
     [mid_button addTarget:self action:@selector(pay_in_person) forControlEvents:UIControlEventTouchUpInside];
     [bot_button addTarget:self action:@selector(donate) forControlEvents:UIControlEventTouchUpInside];

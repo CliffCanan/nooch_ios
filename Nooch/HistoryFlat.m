@@ -532,7 +532,6 @@
         
         if ([histShowArrayCompleted count]>indexPath.row) {
             NSDictionary*dictRecord=[histShowArrayCompleted objectAtIndex:indexPath.row];
-            NSLog(@"%@",dictRecord);
             if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]) {
                 UIView *indicator = [UIView new];
                 [indicator setStyleClass:@"history_sidecolor"];
@@ -542,9 +541,6 @@
                 [amount setTextAlignment:NSTextAlignmentRight];
                 [amount setFont:[UIFont fontWithName:@"Roboto-Medium" size:18]];
                 [amount setStyleClass:@"history_transferamount"];
-                
-                NSLog(@"%@",[user valueForKey:@"MemberId"]);
-                NSLog(@"%@",[dictRecord valueForKey:@"MemberId"]);
 
                  if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]]) {
                       if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
@@ -554,7 +550,6 @@
                           [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                           
                       }
-                     
                      
                  }
                 else
@@ -604,7 +599,7 @@
                 NSLog(@"%@",[user valueForKey:@"MemberId"]);
                 NSLog(@"%@",[dictRecord valueForKey:@"MemberId"]);
                 //Updated Balance after Transaction
-                    UILabel *updated_balance = [UILabel new];
+                UILabel *updated_balance = [UILabel new];
                 if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]]) {
                    [updated_balance setText:[NSString stringWithFormat:@"$%@",[dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"]]];
                 }

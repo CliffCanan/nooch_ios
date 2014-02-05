@@ -99,16 +99,11 @@
      if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
         
         [payment setText:@"Request Sent to:"];
-        
-        
-        
+    
     }
     else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"RequestRespond"]) {
         
         [payment setText:@"Request From:"];
-        
-        
-        
     }
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"])
     {
@@ -126,6 +121,7 @@
 
     [other_party setText:[self.trans objectForKey:@"Name"]];
     [self.view addSubview:other_party];
+    
     /*
      if ([other_party respondsToSelector:@selector(setAttributedText:)]) {
      //const CGFloat fontSize = 18;
@@ -154,8 +150,6 @@
      */
     // City = "";
     
-    
-    
     UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 60, 320, 60)];
     if ([self.trans objectForKey:@"Amount"]!=NULL) {
         [amount setText:[NSString stringWithFormat:@"$%.02f",[[self.trans valueForKey:@"Amount"] floatValue]]];
@@ -168,15 +162,16 @@
     
     UILabel *memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 110, 320, 60)];
     if (![[self.trans valueForKey:@"Memo"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Memo"]!=NULL) {
-        if ([[self.trans valueForKey:@"Memo"] length]==0 || [[self.trans valueForKey:@"Memo"] isEqualToString:@" "]) {
+        if ([[self.trans valueForKey:@"Memo"] length]==0 || [[self.trans valueForKey:@"Memo"] isEqualToString:@"\"\""]) {
             memo.text=@"";
-        }
-        [memo setText:[NSString stringWithFormat:@"\"%@\"",[self.trans valueForKey:@"Memo"]]];
+        } else
+            [memo setText:[NSString stringWithFormat:@"\"%@\"",[self.trans valueForKey:@"Memo"]]];
     }
     else
     {
         memo.text=@"";
     }
+    NSLog(@"asadfasdfasf: %@",[self.trans valueForKey:@"Memo"]);
     memo.numberOfLines=2;
     [memo setStyleClass:@"details_label_memo"];
     [memo setStyleClass:@"blue_text"];
@@ -222,15 +217,15 @@
         NSString*statusstr;
         if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
             //[status setStyleClass:@"details_label1"];
-            statusstr=@"Pending... :";
+            statusstr=@"Pending:";
         }
-        else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Donation"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Received"])
+        else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Donation"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Received"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
         {
-            statusstr=@"Completed on :";
+            statusstr=@"Completed on:";
         }
         else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"])
         {
-            statusstr=@"Submitted on :";
+            statusstr=@"Submitted on:";
         }
         NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
         if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {

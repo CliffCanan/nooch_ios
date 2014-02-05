@@ -92,8 +92,9 @@
 	 /******************************/
 
 		/****  BLUE BUTTON GRADIENT ****/
-		.button_blue { background-image			: linear-gradient(#6dbee8, #41abe1);
-                                width				: 280px;
+		.button_blue { 
+            background-image			: linear-gradient(#6dbee8, #41abe1);
+            width				: 280px;
 			height				: 56px;
 			left                : 20px;
 			color 				: white;
