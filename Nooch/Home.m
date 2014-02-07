@@ -271,6 +271,13 @@
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     NSLog(@"bank verified? %d",[[assist shared]isBankVerified]);
 #pragma mark-9jan
+    if ([[assist shared]getSuspended]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        return;
+        
+    }
+
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
         
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];

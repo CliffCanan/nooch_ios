@@ -34,7 +34,7 @@
     [super viewDidLoad];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-    
+    [self.navigationItem setTitle:@"Bank Verification"];
     
 	// Do any additional setup after loading the view.
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -83,9 +83,7 @@
     [self.verify setTitle:@"Verify Bank Account" forState:UIControlStateNormal];
     [self.verify setStyleClass:@"button_green"];
     [self.verify setStyleId:@"verifybank_button"];
-    //if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
     if ([[assist shared]isBankVerified]) {
-        
         [self.verify setTitle:@"Your bank is already Verified" forState:UIControlStateNormal];
         [self.verify setEnabled:NO];
         
@@ -98,8 +96,10 @@
     [self.view addSubview:self.verify];
     
     self.removeBank = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.removeBank setFrame:CGRectMake(0, 270, 0, 0)];
+    [self.removeBank setFrame:CGRectMake(20, 270, 280, 50)];
+    [self.removeBank setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.removeBank setTitle:@"Remove Bank Account" forState:UIControlStateNormal];
+    self.removeBank.layer.cornerRadius=5.0f;
     [self.removeBank setStyleClass:@"button_red"];
     [self.removeBank setStyleId:@"removebank_button"];
     
@@ -178,8 +178,6 @@
                 }
                 
             }
-            [[assist shared]setneedsReload:YES];
-            
             [self.navigationController popViewControllerAnimated:YES];
             //            [navCtrl dismissViewControllerAnimated:YES anima
             //             ];
@@ -189,8 +187,7 @@
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Eureka!"message:@"Your bank account information all checks out, you’re free to go. Nooch forth."delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView sizeToFit];
             [alertView show];
-            //[me getBanks];
-            [[assist shared]setneedsReload:YES];
+            [me getBanks];
             [self.navigationController popViewControllerAnimated:YES];
             //[navCtrl dismissModalViewControllerAnimated:YES];
             verifyAttempts = 0;

@@ -128,11 +128,6 @@
     
     [super viewDidLoad];
     
-    UIView *member_since_back = [UIView new];
-    [member_since_back setFrame:CGRectMake(0, 0, 320, 70)];
-    [member_since_back setBackgroundColor:[Helpers hexColor:@"3fabe1"]];
-    [member_since_back setAlpha:0.3];
-    [self.view addSubview:member_since_back];
     
     if (isProfileOpenFromSideBar) {
         
@@ -223,7 +218,12 @@
         [navBar removeFromSuperview];
         [lbl removeFromSuperview];
     }
-    
+    UIView *member_since_back = [UIView new];
+    [member_since_back setFrame:CGRectMake(0, 0+down, 320, 70)];
+    [member_since_back setBackgroundColor:[Helpers hexColor:@"3fabe1"]];
+    [member_since_back setAlpha:0.3];
+    [self.view addSubview:member_since_back];
+
     picture = [UIImageView new];
     
     [picture setFrame:CGRectMake(20, 5+down, 60, 60)];

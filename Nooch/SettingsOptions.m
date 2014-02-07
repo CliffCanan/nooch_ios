@@ -144,7 +144,7 @@
         {
             if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"Success."]) {
                 
-                
+                [blankView removeFromSuperview];
                 [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"email"];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
@@ -175,6 +175,14 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) {
+        blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
+        [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
+        UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
+        [actv startAnimating];
+        [blankView addSubview:actv];
+        [self .view addSubview:blankView];
+        [self.view bringSubviewToFront:blankView];
         [[assist shared]setisloggedout:YES];
         [timer invalidate];
         timer=nil;

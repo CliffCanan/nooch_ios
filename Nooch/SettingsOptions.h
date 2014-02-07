@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "serve.h"
 @interface SettingsOptions : UIViewController<UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate,serveD>
-
+{
+    UIView* blankView;
+}
 @end

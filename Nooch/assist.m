@@ -39,6 +39,13 @@ static assist * _sharedInstance = nil;
 {
     return imageOBJFortransfer;
 }
+-(BOOL)getSuspended{
+    return isUserSuspended;
+}
+-(void)setSusPended:(BOOL)istrue
+{
+    isUserSuspended=istrue;
+}
 -(void)setTranferImage:(UIImage*)image
 {
     imageOBJFortransfer=image;

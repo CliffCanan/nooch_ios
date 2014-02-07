@@ -33,6 +33,7 @@ NSString *histSearching;
     UIImage*imageOBJFortransfer;
     BOOL islocationAllowed;
     BOOL isNeed;
+    BOOL isUserSuspended;
 }
 //@property(nonatomic,retain)NSTimer*timer;
 @property (nonatomic, retain) ACAccountStore *accountStore;
@@ -78,5 +79,7 @@ NSString *histSearching;
 -(void)setlocationAllowed:(BOOL)istrue;
 -(BOOL)needsReload;
 -(void)setneedsReload:(BOOL)istrue;
+-(BOOL)getSuspended;
+-(void)setSusPended:(BOOL)istrue;
 
 @end

@@ -15,5 +15,6 @@
     NSString *first;
     NSString *last;
     NSMutableDictionary *transaction;
+    UIView*blankView;
 }
 @end

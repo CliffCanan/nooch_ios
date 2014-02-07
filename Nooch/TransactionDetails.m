@@ -70,12 +70,17 @@
     [payment setStyleClass:@"details_intro"];
     [payment setStyleClass:@"details_intro_green"];
     NSLog(@"%@",self.trans);
+    if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Sent"]|| [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Send"]) {
+         [payment setText:@"Paid to:"];
+    }
+   
+    else
+      {
     if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
         if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
-            //send
+            //send&&
              [payment setText:@"Paid to:"];
                   }
-        
         
     }
     else
@@ -85,7 +90,7 @@
         }
     }
     
-
+      }
     
 //    if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Sent"]) {
 //        
@@ -107,7 +112,11 @@
     }
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"])
     {
-        [payment setText:@"Withdraw From:"];
+        [payment setText:@"Withdraw to:"];
+    }
+    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
+    {
+        [payment setText:@"Deposit Into:"];
     }
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Donation"])
     {
@@ -223,7 +232,7 @@
         {
             statusstr=@"Completed on:";
         }
-        else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"])
+        else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"] || [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
         {
             statusstr=@"Submitted on:";
         }
@@ -301,130 +310,133 @@
     marker.position = CLLocationCoordinate2DMake(lat, lon);
     
     marker.map = mapView_;
-    
-    if (false) {
-        UIButton *pay = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [pay setFrame:CGRectMake(0, 440, 0, 0)];
-        [pay setTitle:@"Pay" forState:UIControlStateNormal];
-        [pay setStyleId:@"button_pay"];
-        [self.view addSubview:pay];
-        
-        UIButton *dec = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [dec setFrame:pay.frame];
-        [dec setTitle:@"Decline" forState:UIControlStateNormal];
-        [dec setStyleId:@"button_decline"];
-        [self.view addSubview:dec];
-    }
-  
-   
-    UIButton *pay_back = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [pay_back setTitle:@"" forState:UIControlStateNormal];
-    [pay_back setStyleClass:@"details_buttons"];
-    [pay_back setStyleCSS:@"background-image : url(pay-back-icon.png)"];
-    [pay_back setStyleId:@"details_payback"];
-    [pay_back addTarget:self action:@selector(pay_back) forControlEvents:UIControlEventTouchUpInside];
-    [pay_back setFrame:CGRectMake(15, 410, 60, 60)];
-    
-    UILabel *pay_text = [UILabel new];
-    [pay_text setFrame:pay_back.frame];
-    [pay_text setStyleClass:@"details_buttons_labels"];
-    [pay_text setText:@"Pay Back"];
-    
-    UIButton *fb = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [fb setTitle:@"" forState:UIControlStateNormal];
-    [fb setStyleClass:@"details_buttons"];
-    [fb setStyleCSS:@"background-image : url(fb-icon-90x90.png)"];
-    if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
-        [fb setStyleId:@"details_fb_donate"];
-    }
-    else
-        [fb setStyleId:@"details_fb"];
-    
-
-    
-    [fb addTarget:self action:@selector(post_to_fb) forControlEvents:UIControlEventTouchUpInside];
-    [fb setFrame:CGRectMake(95, 410, 60, 60)];
-    
-    UILabel *fb_text = [UILabel new];
-    [fb_text setFrame:fb.frame];
-    [fb_text setStyleClass:@"details_buttons_labels"];
-    [fb_text setText:@"Facebook"];
-    
-    UIButton *twit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [twit setTitle:@"" forState:UIControlStateNormal];
-    [twit setStyleClass:@"details_buttons"];
-    [twit setStyleCSS:@"background-image : url(twitter-icon.png)"];
-    if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
-        [twit setStyleId:@"details_twit_donate"];
-    }
-    else
-    [twit setStyleId:@"details_twit"];
-    [twit addTarget:self action:@selector(post_to_twitter) forControlEvents:UIControlEventTouchUpInside];
-    [twit setFrame:CGRectMake(175, 410, 60, 60)];
-    
-    UILabel *twit_text = [UILabel new];
-    [twit_text setFrame:twit.frame];
-    [twit_text setStyleClass:@"details_buttons_labels"];
-    [twit_text setText:@"Twitter"];
-    
-    
-    UIButton *disp = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [disp setTitle:@"" forState:UIControlStateNormal];
-    [disp setStyleClass:@"details_buttons"];
-    [disp setStyleCSS:@"background-image : url(dispute-icon.png)"];
-    if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
-        [disp setStyleId:@"details_disp_donate"];
-    }
-    else
-        [disp setStyleId:@"details_disp"];
-
-    
-    [disp addTarget:self action:@selector(dispute) forControlEvents:UIControlEventTouchUpInside];
-    [disp setFrame:CGRectMake(255, 410, 60, 60)];
-    
-    
-    UILabel *disp_text = [UILabel new];
-    [disp_text setFrame:disp.frame];
-    [disp_text setStyleClass:@"details_buttons_labels"];
-    [disp_text setText:@"Dispute"];
-    
-    
-    if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Request"]) {
-        //pay/cancel buttons
-        UIButton *pay = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [pay setStyleClass:@"details_button_left"];
-        
-        UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [cancel setStyleClass:@"details_button_right"];
-        
-        if ([[self.trans objectForKey:@"MemberId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
-            [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
-            [cancel addTarget:self action:@selector(cancel_request) forControlEvents:UIControlEventTouchUpInside];
-            [self.view addSubview:cancel];
-        } else {
-            [pay setTitle:@"Pay" forState:UIControlStateNormal];
-            [pay addTarget:self action:@selector(fulfill_request) forControlEvents:UIControlEventTouchUpInside];
-            [cancel setTitle:@"Decline" forState:UIControlStateNormal];
-            [cancel addTarget:self action:@selector(decline_request) forControlEvents:UIControlEventTouchUpInside];
-            [self.view addSubview:pay]; [self.view addSubview:cancel];
-            
-        }
-    }
-    else
+    if(![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"] && ![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
     {
-        if (![[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Donation"]) {
-            [self.view addSubview:pay_back];
-            [self.view addSubview:pay_text];
+        if (false) {
+            UIButton *pay = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [pay setFrame:CGRectMake(0, 440, 0, 0)];
+            [pay setTitle:@"Pay" forState:UIControlStateNormal];
+            [pay setStyleId:@"button_pay"];
+            [self.view addSubview:pay];
+            
+            UIButton *dec = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [dec setFrame:pay.frame];
+            [dec setTitle:@"Decline" forState:UIControlStateNormal];
+            [dec setStyleId:@"button_decline"];
+            [self.view addSubview:dec];
         }
         
         
-        [self.view addSubview:fb];
-        [self.view addSubview:fb_text];
-        [self.view addSubview:twit];
-        [self.view addSubview:twit_text];
-        [self.view addSubview:disp];
-        [self.view addSubview:disp_text];
+        UIButton *pay_back = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [pay_back setTitle:@"" forState:UIControlStateNormal];
+        [pay_back setStyleClass:@"details_buttons"];
+        [pay_back setStyleCSS:@"background-image : url(pay-back-icon.png)"];
+        [pay_back setStyleId:@"details_payback"];
+        [pay_back addTarget:self action:@selector(pay_back) forControlEvents:UIControlEventTouchUpInside];
+        [pay_back setFrame:CGRectMake(15, 410, 60, 60)];
+        
+        UILabel *pay_text = [UILabel new];
+        [pay_text setFrame:pay_back.frame];
+        [pay_text setStyleClass:@"details_buttons_labels"];
+        [pay_text setText:@"Pay Back"];
+        
+        UIButton *fb = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [fb setTitle:@"" forState:UIControlStateNormal];
+        [fb setStyleClass:@"details_buttons"];
+        [fb setStyleCSS:@"background-image : url(fb-icon-90x90.png)"];
+        if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
+            [fb setStyleId:@"details_fb_donate"];
+        }
+        else
+            [fb setStyleId:@"details_fb"];
+        
+        
+        
+        [fb addTarget:self action:@selector(post_to_fb) forControlEvents:UIControlEventTouchUpInside];
+        [fb setFrame:CGRectMake(95, 410, 60, 60)];
+        
+        UILabel *fb_text = [UILabel new];
+        [fb_text setFrame:fb.frame];
+        [fb_text setStyleClass:@"details_buttons_labels"];
+        [fb_text setText:@"Facebook"];
+        
+        UIButton *twit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [twit setTitle:@"" forState:UIControlStateNormal];
+        [twit setStyleClass:@"details_buttons"];
+        [twit setStyleCSS:@"background-image : url(twitter-icon.png)"];
+        if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
+            [twit setStyleId:@"details_twit_donate"];
+        }
+        else
+            [twit setStyleId:@"details_twit"];
+        [twit addTarget:self action:@selector(post_to_twitter) forControlEvents:UIControlEventTouchUpInside];
+        [twit setFrame:CGRectMake(175, 410, 60, 60)];
+        
+        UILabel *twit_text = [UILabel new];
+        [twit_text setFrame:twit.frame];
+        [twit_text setStyleClass:@"details_buttons_labels"];
+        [twit_text setText:@"Twitter"];
+        
+        
+        UIButton *disp = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [disp setTitle:@"" forState:UIControlStateNormal];
+        [disp setStyleClass:@"details_buttons"];
+        [disp setStyleCSS:@"background-image : url(dispute-icon.png)"];
+        if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
+            [disp setStyleId:@"details_disp_donate"];
+        }
+        else
+            [disp setStyleId:@"details_disp"];
+        
+        
+        [disp addTarget:self action:@selector(dispute) forControlEvents:UIControlEventTouchUpInside];
+        [disp setFrame:CGRectMake(255, 410, 60, 60)];
+        
+        
+        UILabel *disp_text = [UILabel new];
+        [disp_text setFrame:disp.frame];
+        [disp_text setStyleClass:@"details_buttons_labels"];
+        [disp_text setText:@"Dispute"];
+        
+        
+        if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Request"]) {
+            //pay/cancel buttons
+            UIButton *pay = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [pay setStyleClass:@"details_button_left"];
+            
+            UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [cancel setStyleClass:@"details_button_right"];
+            
+            if ([[self.trans objectForKey:@"MemberId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
+                [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
+                [cancel addTarget:self action:@selector(cancel_request) forControlEvents:UIControlEventTouchUpInside];
+                [self.view addSubview:cancel];
+            } else {
+                [pay setTitle:@"Pay" forState:UIControlStateNormal];
+                [pay addTarget:self action:@selector(fulfill_request) forControlEvents:UIControlEventTouchUpInside];
+                [cancel setTitle:@"Decline" forState:UIControlStateNormal];
+                [cancel addTarget:self action:@selector(decline_request) forControlEvents:UIControlEventTouchUpInside];
+                [self.view addSubview:pay]; [self.view addSubview:cancel];
+                
+            }
+        }
+        else
+        {
+            if (![[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Donation"]) {
+                [self.view addSubview:pay_back];
+                [self.view addSubview:pay_text];
+            }
+            
+            
+            [self.view addSubview:fb];
+            [self.view addSubview:fb_text];
+            [self.view addSubview:twit];
+            [self.view addSubview:twit_text];
+            [self.view addSubview:disp];
+            [self.view addSubview:disp_text];
+        }
     }
+    
     serve *info = [serve new];
     info.Delegate = self;
     info.tagName = @"info";

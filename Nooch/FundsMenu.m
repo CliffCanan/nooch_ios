@@ -136,6 +136,14 @@
 
 - (void) add_source
 {
+    if ([[assist shared]getSuspended]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        return;
+        
+    }
+
+    
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
         
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
@@ -628,7 +636,13 @@
     }
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            
+            if ([[assist shared]getSuspended]) {
+                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                [alert show];
+                return;
+                
+            }
+
             if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
                 
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
@@ -683,7 +697,13 @@
             [self.slidingViewController resetTopView];
             
         }else if(indexPath.row == 1){
-            
+            if ([[assist shared]getSuspended]) {
+                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                [alert show];
+                return;
+                
+            }
+
             if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
                 
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
@@ -743,62 +763,62 @@
             
         }
         else if(indexPath.row==2){
-            if ([on_off isOn]&& [SelectedOption isEqualToString:@"Triggers"]) {
-                
-                if (isWithdrawalSelected) {
-                    
-                    isWithdrawalSelected=NO;
-                    
-                    if ([arrWithrawalOptions count]>3) {
-                        
-                        for (int i=0; i<countsubRecords; i++) {
-                            
-                            [arrWithrawalOptions removeLastObject];
-                            
-                        }
-                    }
-                    
-                    if (![dictSelectedWithdrawal valueForKey:SelectedOption]) {
-                        
-                        SelectedOption=@"None";
-                        
-                    }
-                }
-                
-                else if (!isWithdrawalSelected)
-                    
-                {
-                    isWithdrawalSelected=YES;
-                    
-                    temp = [dictSelectedWithdrawal allKeysForObject:SelectedSubOption];
-                    
-                    temp2=[dictSelectedWithdrawal allKeysForObject:[temp objectAtIndex:0]];
-                    
-                    if ([[temp2 objectAtIndex:0]isEqualToString:@"Triggers"])
-                        
-                    {
-                        countsubRecords=0;
-                        
-                        for (NSDictionary*dict in arrAutoWithdrawalT) {
-                            
-                            countsubRecords++;
-                            
-                            //  [arrWithrawalOptions addObject:[NSString stringWithFormat:@"%@ at %@",[dict valueForKey:@"Name"],[dict valueForKey:@"Time"]]];
-                            [arrWithrawalOptions addObject:[NSString stringWithFormat:@"At %@",[dict valueForKey:@"Name"]]];
-                            
-                        }
-                        
-                        [arrWithrawalOptions addObject:@"$"];
-                        
-                        countsubRecords++;
-                    }
-                    
-                }
-                [tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-                
-                // [tableView reloadData];
-                
-            }
+//            if ([on_off isOn]&& [SelectedOption isEqualToString:@"Triggers"]) {
+//                
+//                if (isWithdrawalSelected) {
+//                    
+//                    isWithdrawalSelected=NO;
+//                    
+//                    if ([arrWithrawalOptions count]>3) {
+//                        
+//                        for (int i=0; i<countsubRecords; i++) {
+//                            
+//                            [arrWithrawalOptions removeLastObject];
+//                            
+//                        }
+//                    }
+//                    
+//                    if (![dictSelectedWithdrawal valueForKey:SelectedOption]) {
+//                        
+//                        SelectedOption=@"None";
+//                        
+//                    }
+//                }
+//                
+//                else if (!isWithdrawalSelected)
+//                    
+//                {
+//                    isWithdrawalSelected=YES;
+//                    
+//                    temp = [dictSelectedWithdrawal allKeysForObject:SelectedSubOption];
+//                    
+//                    temp2=[dictSelectedWithdrawal allKeysForObject:[temp objectAtIndex:0]];
+//                    
+//                    if ([[temp2 objectAtIndex:0]isEqualToString:@"Triggers"])
+//                        
+//                    {
+//                        countsubRecords=0;
+//                        
+//                        for (NSDictionary*dict in arrAutoWithdrawalT) {
+//                            
+//                            countsubRecords++;
+//                            
+//                            //  [arrWithrawalOptions addObject:[NSString stringWithFormat:@"%@ at %@",[dict valueForKey:@"Name"],[dict valueForKey:@"Time"]]];
+//                            [arrWithrawalOptions addObject:[NSString stringWithFormat:@"At %@",[dict valueForKey:@"Name"]]];
+//                            
+//                        }
+//                        
+//                        [arrWithrawalOptions addObject:@"$"];
+//                        
+//                        countsubRecords++;
+//                    }
+//                    
+//                }
+//                [tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+//                
+//                // [tableView reloadData];
+//                
+//            }
             
         }
         
@@ -822,12 +842,12 @@
         }else if(indexPath.row == 1){
             if ([ArrBankAccountCollection count]==2) {
                 // Deposit *dep = [Deposit new];
-                NSDictionary *bank = [ArrBankAccountCollection objectAtIndex:1];
-                [[NSUserDefaults standardUserDefaults] setObject:[bank objectForKey:@"BankAccountId"] forKey:@"choice"];
-                
-                [self.slidingViewController resetTopView];
-                BankVerification *bv=[BankVerification new];
-                [nav_ctrl pushViewController:bv animated:YES];
+//                NSDictionary *bank = [ArrBankAccountCollection objectAtIndex:1];
+//                [[NSUserDefaults standardUserDefaults] setObject:[bank objectForKey:@"BankAccountId"] forKey:@"choice"];
+//                
+//                [self.slidingViewController resetTopView];
+//                BankVerification *bv=[BankVerification new];
+//                [nav_ctrl pushViewController:bv animated:YES];
             }
             
         }else if(indexPath.row == 2){
@@ -1218,7 +1238,11 @@
         
         
     }
-    
+    else if ([tagName isEqualToString:@"AutoWithdrawalCancel"])
+    {
+        [spinner stopAnimating];
+        [spinner setHidden:YES];
+    }
     else if ([tagName isEqualToString:@"SaveWithdrawal"])
         
     {
@@ -1231,7 +1255,62 @@
                         options:kNilOptions
                         error:&error];
         
-        
+        {
+            
+            if (isWithdrawalSelected) {
+                
+                isWithdrawalSelected=NO;
+                
+                if ([arrWithrawalOptions count]>3) {
+                    
+                    for (int i=0; i<countsubRecords; i++) {
+                        
+                        [arrWithrawalOptions removeLastObject];
+                        
+                    }
+                }
+                
+                if (![dictSelectedWithdrawal valueForKey:SelectedOption]) {
+                    
+                    SelectedOption=@"None";
+                    
+                }
+            }
+            
+            else if (!isWithdrawalSelected)
+                
+            {
+                isWithdrawalSelected=YES;
+                
+                temp = [dictSelectedWithdrawal allKeysForObject:SelectedSubOption];
+                
+                temp2=[dictSelectedWithdrawal allKeysForObject:[temp objectAtIndex:0]];
+                
+                if ([[temp2 objectAtIndex:0]isEqualToString:@"Triggers"])
+                    
+                {
+                    countsubRecords=0;
+                    
+                    for (NSDictionary*dict in arrAutoWithdrawalT) {
+                        
+                        countsubRecords++;
+                        
+                        //  [arrWithrawalOptions addObject:[NSString stringWithFormat:@"%@ at %@",[dict valueForKey:@"Name"],[dict valueForKey:@"Time"]]];
+                        [arrWithrawalOptions addObject:[NSString stringWithFormat:@"At %@",[dict valueForKey:@"Name"]]];
+                        
+                    }
+                    
+                    [arrWithrawalOptions addObject:@"$"];
+                    
+                    countsubRecords++;
+                }
+                
+            }
+            [self.menu reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            
+            // [tableView reloadData];
+            
+        }
         if ([[[dictResponse valueForKey:@"SaveFrequencyResult"] valueForKey:@"Result"]isEqualToString:@"Saved Successfully"]) {
             
         }
@@ -1278,6 +1357,7 @@
     [spinner setHidden:NO];
     
     serve*serveOBJ=[serve new];
+    [serveOBJ setDelegate:self];
     serveOBJ.tagName=@"AutoWithdrawalCancel";
     [serveOBJ SaveFrequency:@"" type:@"" frequency:0];
     [self.menu reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -1346,7 +1426,7 @@
 - (void)changeSwitch:(UISwitch*)on_off1{
     int switch_tag=[on_off1 tag];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    if ([[[me usr] objectForKey:@"banks"] count]==0)
+    if ([ArrBankAccountCollection count]==0)
     {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Add and Verify Your Bank Account To Enable Auto Cash Out" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil] ;
         [alert show];
@@ -1431,6 +1511,7 @@
             [spinner setHidden:NO];
             
             serve*serveOBJ=[serve new];
+            [serveOBJ setDelegate:self];
             serveOBJ.tagName=@"AutoWithdrawalCancel";
             [serveOBJ SaveFrequency:@"" type:@"" frequency:0];
             

@@ -37,7 +37,7 @@
     [self.navigationItem setHidesBackButton:YES];
     [self.navigationController.view removeGestureRecognizer:self.navigationController.slidingViewController.panGesture];
     [self.view setStyleClass:@"background_gray"];
-    
+    titlestr=@"Profile Stats";
     dictAllStats=[[NSMutableDictionary alloc]init];
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
@@ -45,7 +45,7 @@
     [hamburger setStyleId:@"navbar_hamburger"];
     UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
-   
+    
     
     serve*serveOBJ=[serve new];
     [serveOBJ setDelegate:self];
@@ -114,11 +114,13 @@
     if (slide.direction == UISwipeGestureRecognizerDirectionLeft) {
         if (self.selected == 0) {
             self.selected++;
+            titlestr=@"Transfer Stats";
             [self.profile setStyleId:@"stats_circle_profile_inactive"];
             [self.transfers setStyleId:@"stats_circle_transfers_active"];
             [self.donations setStyleId:@"stats_circle_donations_inactive"];
         } else if (self.selected == 1) {
             self.selected++;
+            titlestr=@"Donation Stats";
             [self.profile setStyleId:@"stats_circle_profile_inactive"];
             [self.transfers setStyleId:@"stats_circle_transfers_inactive"];
             [self.donations setStyleId:@"stats_circle_donations_active"];
@@ -128,11 +130,13 @@
     } else if (slide.direction == UISwipeGestureRecognizerDirectionRight) {
         if (self.selected == 1) {
             self.selected--;
+            titlestr=@"Profile Stats";
             [self.profile setStyleId:@"stats_circle_profile_active"];
             [self.transfers setStyleId:@"stats_circle_transfers_inactive"];
             [self.donations setStyleId:@"stats_circle_donations_inactive"];
         } else if (self.selected == 2) {
             self.selected--;
+            titlestr=@"Transfer Stats";
             [self.profile setStyleId:@"stats_circle_profile_inactive"];
             [self.transfers setStyleId:@"stats_circle_transfers_active"];
             [self.donations setStyleId:@"stats_circle_donations_inactive"];
@@ -168,7 +172,19 @@
 }
 
 #pragma mark - UITableViewDataSource
-
+-(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView*view=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 50)];
+    view.backgroundColor=[UIColor clearColor];
+    UILabel*Title=[UILabel new];
+    [Title setStyleClass:@"titlelbl"];
+    Title.text=titlestr;
+    [view addSubview:Title];
+    return view;
+    
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 60;
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 7;
@@ -205,6 +221,10 @@
             [title setText:@"$ Added to Nooch"];
             //[statistic setText:@"$ 105.00"];
             [statistic setText:[[dictAllStats valueForKey:@"Total_$_Added_to_Nooch"]  valueForKey:@"Result"]];
+            if ([[[dictAllStats valueForKey:@"Total_$_Added_to_Nooch"]valueForKey:@"Result"] length]==0) {
+                [statistic setText:@"0"];
+            }
+            
             //Total_$_Added_to_Nooch
         }
         else if (indexPath.row == 1) {
@@ -245,7 +265,9 @@
             if ([dictAllStats valueForKey:@"Total_Posts_To_TW"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Posts_To_TW"]  valueForKey:@"Result"]];
             }
-            
+            if ([[[dictAllStats valueForKey:@"Total_Posts_To_TW"]valueForKey:@"Result"] length]==0) {
+                [statistic setText:@"0"];
+            }
             [title setText:@"Posts to Twitter"];
             // [statistic setText:@"0"];
         }
@@ -253,7 +275,9 @@
             if ([dictAllStats valueForKey:@"Total_Posts_To_FB"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Posts_To_FB"]  valueForKey:@"Result"]];
             }
-            
+            if ([[[dictAllStats valueForKey:@"Total_Posts_To_FB"]valueForKey:@"Result"] length]==0) {
+                [statistic setText:@"0"];
+            }
             [title setText:@"Posts to Facebook"];
             // [statistic setText:@"3"];
         }
@@ -266,23 +290,34 @@
             if ([dictAllStats valueForKey:@"Total_P2P_transfers"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_P2P_transfers"]  valueForKey:@"Result"]];
             }
-            
+            if ([[[dictAllStats valueForKey:@"Total_P2P_transfers"]valueForKey:@"Result"] length]==0) {
+                [statistic setText:@"0"];
+            }
             
             //
         }
         else if (indexPath.row == 1) {
             [title setText:@"Transfers Sent"];
             [statistic setText:[[dictAllStats valueForKey:@"Total_no_of_transfer_Sent"]  valueForKey:@"Result"]];
+            if ([[[dictAllStats valueForKey:@"Total_no_of_transfer_Sent"]valueForKey:@"Result"] length]==0) {
+                [statistic setText:@"0"];
+            }
             // [statistic setText:@"17"];
         }
         else if (indexPath.row == 2) {
             [title setText:@"Transfers Received"];
             [statistic setText:[[dictAllStats valueForKey:@"Total_no_of_transfer_Received"]  valueForKey:@"Result"]];
+            if ([[[dictAllStats valueForKey:@"Total_no_of_transfer_Received"]valueForKey:@"Result"] length]==0) {
+                [statistic setText:@"0"];
+            }
             //[statistic setText:@"4"];
         }
         else if (indexPath.row == 3) {
             [title setText:@"$ Amount Sent"];
             [statistic setText:[[dictAllStats valueForKey:@"Total_$_Sent"]  valueForKey:@"Result"]];
+            if ([[[dictAllStats valueForKey:@"Total_$_Sent"]valueForKey:@"Result"] length]==0) {
+                [statistic setText:@"0"];
+            }
             // [statistic setText:@"$ 256.75"];
         }
         else if (indexPath.row == 4) {
@@ -290,11 +325,17 @@
             //Total_$_Received
             // [statistic setText:@"$ 123.00"];
             [statistic setText:[[dictAllStats valueForKey:@"Total_$_Received"] valueForKey:@"Result"]];
+            if ([[[dictAllStats valueForKey:@"Total_$_Received"]valueForKey:@"Result"] length]==0) {
+                [statistic setText:@"0"];
+            }
         }
         else if (indexPath.row == 5) {
             [title setText:@"Largest Transfer Sent"];
             //Largest_sent_transfer
             [statistic setText:[[dictAllStats valueForKey:@"Largest_sent_transfer"]  valueForKey:@"Result"]];
+            if ([[[dictAllStats valueForKey:@"Largest_sent_transfer"]valueForKey:@"Result"] length]==0) {
+                [statistic setText:@"0"];
+            }
             // [statistic setText:@"$ 75.00"];
         }
         else if (indexPath.row == 6) {
@@ -302,6 +343,9 @@
             
             [title setText:@"Largest Transfer Received"];
             [statistic setText:[[dictAllStats valueForKey:@"Largest_received_transfer"]  valueForKey:@"Result"]];
+            if ([[[dictAllStats valueForKey:@"Largest_received_transfer"]valueForKey:@"Result"] length]==0) {
+                [statistic setText:@"0"];
+            }
             //  [statistic setText:@"$ 70.03"];
         }
     } else if (self.selected == 2) { //donations
@@ -310,11 +354,17 @@
         if (indexPath.row == 0) {
             [title setText:@"Total $ Donated"];
             [statistic setText:[[dictAllStats valueForKey:@"Total_$_Donated"]  valueForKey:@"Result"]];
+            if ([[[dictAllStats valueForKey:@"Total_$_Donated"]valueForKey:@"Result"] length]==0) {
+                [statistic setText:@"0"];
+            }
             //[statistic setText:@"$ 105.00"];
         }
         else if (indexPath.row == 1) {
             [title setText:@"Total Donations"];
             [statistic setText:[[dictAllStats valueForKey:@"Total_Donations_Count"]  valueForKey:@"Result"]];
+            if ([[[dictAllStats valueForKey:@"Total_Donations_Count"]valueForKey:@"Result"] length]==0) {
+                [statistic setText:@"0"];
+            }
             //[statistic setText:@"3"];
         }
         else if (indexPath.row == 2) {
@@ -324,6 +374,9 @@
         else if (indexPath.row == 3) {
             [title setText:@"Largest Donation"];
             [statistic setText:[[dictAllStats valueForKey:@"Largest_Donation_Made"]  valueForKey:@"Result"]];
+            if ([[[dictAllStats valueForKey:@"Largest_Donation_Made"]valueForKey:@"Result"] length]==0) {
+                [statistic setText:@"0"];
+            }
             // [statistic setText:@"$ 125.00"];
         }
     }

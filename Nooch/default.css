@@ -295,24 +295,47 @@
 		font-size			: 32px;
 		font-weight         : medium;
 
-		text-align       	: right;
+		text-align       	: center;
 		color 				: #58595B;
-		width				: 100px;
+		width				: 50px;
 		height				: 40px;
 		top					: 105px;
-		left                : 60px;
+		left                : 85px;
 	}
+    #label_micro1 {
+		width				: 70px;
+		height				: 40px;
+		left				: 30px;
+		font-size			: 32px;
+		font-weight			: medium;
+        color               : black;
+        font-family			: "Roboto";
+		top					: 105px;
+
+	}
+	#label_micro2 {
+		width				: 70px;
+		height				: 40px;
+		left				: 155px;
+		font-size			: 32px;
+		font-weight			: medium;
+        color               : black;
+        font-family			: "Roboto";
+		top					: 105px;
+
+	}
+
     #micro2_amountfield {
 		font-family			: "Roboto";
 		font-size			: 32px;
 		font-weight         : medium;
 
-		text-align       	: right;
+		text-align       	: center;
 		color 				: #58595B;
-		width				: 100px;
+		width				: 50px;
 		height				: 40px;
 		top					: 105px;
-		left                : 170px;
+		left                : 210px;
 	}
 .Repin_instructiontext {
 		width			: 300px;
@@ -2034,7 +2057,7 @@
 		height				: 15px;
 		top					: 16px;
 		left				: 75px;
-		font-size			: 16px;
+		font-size			: 12px;
 	}
 
 	/**  Date of the transfer ("2 days ago")  **/
@@ -2094,10 +2117,20 @@
 
 	 /**  Sets the other user's name to be bold for each row.  **/
 	.history_recipientname { 
-        font-weight	: regular;
+        
         color               : #313233;
     }
-	
+	.titlelbl{
+       width				: 320px;
+		height				: 38px;
+		top					: 0px;
+		left				: 0px;
+		font-size			: 20px;
+		font-weight			: regular;
+        color               : gray;
+        text-align       	: center;
+    }
+
 	.history_sidecolor {
 		top				: 1px;
 		left			: 0px;

@@ -162,6 +162,14 @@
             
             
         }
+        blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
+        [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
+        UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
+        [actv startAnimating];
+        [blankView addSubview:actv];
+        [self .view addSubview:blankView];
+        [self.view bringSubviewToFront:blankView];
         transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"accountInput", nil];
         serve *addBank = [serve new];
         addBank.tagName = @"addBank";
@@ -369,7 +377,7 @@
         NSDictionary *resultValue = [loginResult valueForKey:@"SaveBankAccountDetailsResult"];
         
         if([[resultValue valueForKey:@"Result"] isEqualToString:@"Your account details have been saved successfully."]){
-            
+            [blankView removeFromSuperview];
             UIAlertView *showAlertMessage = [[UIAlertView alloc] initWithTitle:@"Bank Account Submitted" message:@"Your bank information has been successfully submitted to Nooch. For security, we must verify that you own this account. In two business days, check your bank statement to find two deposits of less than $1 from Nooch Inc. Then return here, punch in the amounts, and tap 'Verify Account.'" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             // [showAlertMessage setTag:2];
             [showAlertMessage show];

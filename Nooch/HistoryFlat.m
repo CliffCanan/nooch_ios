@@ -206,7 +206,9 @@
     customView.layer.borderWidth=1.0f;
     
     customView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mapBack.png"]];
-    UIImageView*imgV=[[UIImageView alloc]initWithFrame:CGRectMake(5, 15, 50, 50)];
+    
+    
+    UIImageView*imgV=[[UIImageView alloc]initWithFrame:CGRectMake(5, 25, 50, 50)];
     
     imgV.layer.cornerRadius = 25; imgV.layer.borderColor = kNoochBlue.CGColor; imgV.layer.borderWidth = 1;
     imgV.clipsToBounds = YES;
@@ -215,43 +217,91 @@
     
     [customView addSubview:imgV];
     
-    UILabel*lblName=[[UILabel alloc]initWithFrame:CGRectMake(5, 70, 250, 17)];
-    NSLog(@"%d",[[marker title]intValue]);
-    lblName.text=[NSString stringWithFormat:@"%@ %@",[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"FirstName"] capitalizedString],[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"LastName"]];
-    lblName.font=[UIFont systemFontOfSize:15];
-    lblName.textColor=[UIColor whiteColor];
-    [customView addSubview:lblName];
+   
+    NSString*TransactionType=@"";
     
+     if ([[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"MemberId"]])
+     {
+     if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
+        TransactionType=@"Paid to :";
+     
+     }
+      }
     
-    //
-    UILabel*lblTitle=[[UILabel alloc]initWithFrame:CGRectMake(90, 10, 150, 17)];
-    lblTitle.text=[NSString stringWithFormat:@"%@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]];
+     else
+     {
+     if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
+     TransactionType=@"Payment From :";
+        }
+     }
+     
+     
+     
+     if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]){
+      TransactionType=@"Paid to :";
+     }
+     else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]){
+    
+      TransactionType=@"Withdrawal to :";
+     }
+     else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Donation"]){
+      TransactionType=@"Donate to :";
+     
+     }
+     else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Request"]){
+         TransactionType=@"Request From :";
+         
+     }
+
+    
+    UILabel*lblTitle=[[UILabel alloc]initWithFrame:CGRectMake(90, 10, 150, 15)];
+    
+    lblTitle.text=[NSString stringWithFormat:@"%@",TransactionType];
     lblTitle.textColor=[UIColor whiteColor];
-    lblTitle.font=[UIFont systemFontOfSize:17];
+    lblTitle.font=[UIFont systemFontOfSize:13];
     [customView addSubview:lblTitle];
     //
-    UILabel*lblAmt=[[UILabel alloc]initWithFrame:CGRectMake(100, 25, 100, 20)];
+    
+    UILabel*lblName=[[UILabel alloc]initWithFrame:CGRectMake(70, 25,150, 15)];
+    NSLog(@"%d",[[marker title]intValue]);
+    
+    lblName.text=[NSString stringWithFormat:@"%@ %@",[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"FirstName"] capitalizedString],[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"LastName"]];
+    lblName.font=[UIFont systemFontOfSize:12];
+    lblName.textColor=[UIColor colorWithRed:58.0f/255.0f green:170.0f/255.0f blue:227.0/255.0 alpha:1.0];
+    [customView addSubview:lblName];
+    
+    UILabel*lblAmt=[[UILabel alloc]initWithFrame:CGRectMake(100, 40, 100, 20)];
     lblAmt.text=[NSString stringWithFormat:@"$%@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Amount"]];
     lblAmt.textColor=[UIColor greenColor];
     lblAmt.font=[UIFont systemFontOfSize:18];
     [customView addSubview:lblAmt];
     //
-    UILabel*lblmemo=[[UILabel alloc]initWithFrame:CGRectMake(85, 55, 150, 15)];
+    UILabel*lblmemo=[[UILabel alloc]initWithFrame:CGRectMake(65, 60, 150, 25)];
+    lblmemo.font=[UIFont systemFontOfSize:10];
+    lblmemo.numberOfLines=2;
     if ([[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Memo"]!=NULL && ![[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Memo"] isKindOfClass:[NSNull class]]) {
-        lblmemo.text=[NSString stringWithFormat:@"%@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Memo"]];
+        lblmemo.text=[NSString stringWithFormat:@"\"%@\"",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Memo"]];
         
     }
     else
     {
         lblmemo.text=@"";
     }
-    lblmemo.textColor=[UIColor whiteColor];
+    lblmemo.textColor=[UIColor lightGrayColor];
     [customView addSubview:lblmemo];
     //
-    UILabel*lblloc=[[UILabel alloc]initWithFrame:CGRectMake(80, 50, 200, 30)];
-    lblloc.text=[NSString stringWithFormat:@"%@ %@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"City"],[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Country"]];
+    UILabel*lblloc=[[UILabel alloc]initWithFrame:CGRectMake(80, 75, 200, 30)];
+    
+   
+    NSString*address=[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"AddressLine1"] stringByReplacingOccurrencesOfString:@"," withString:@""];
+    address=[address stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString*city=[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"City"] stringByReplacingOccurrencesOfString:@"," withString:@""];
+    city=[city stringByReplacingOccurrencesOfString:@" " withString:@""];
+
+    
+    lblloc.text=[NSString stringWithFormat:@"%@,%@",address,city];
     lblloc.textColor=[UIColor whiteColor];
-    lblloc.font=[UIFont systemFontOfSize:12.0f];
+    lblloc.font=[UIFont systemFontOfSize:10.0f];
     lblloc.numberOfLines=2;
     [customView addSubview:lblloc];
     return customView;
@@ -294,10 +344,10 @@
         markerOBJ.position = CLLocationCoordinate2DMake([[tempDict objectForKey:@"Latitude"] floatValue], [[tempDict objectForKey:@"Longitude"] floatValue]);
         [markerOBJ setTitle:[NSString stringWithFormat:@"%d",i]];
         
-        if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Received"]) {
+        if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]&&[[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:i] valueForKey:@"MemberId"]]) {
             markerOBJ.icon=[UIImage imageNamed:@"blue-pin.png"];
         }
-        else if ([[[histShowArrayCompleted objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Sent"]) {
+        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]&&[[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:i] valueForKey:@"RecepientId"]]) {
             markerOBJ.icon=[UIImage imageNamed:@"orange-pin.png"];
             
         }
@@ -313,7 +363,7 @@
             markerOBJ.icon=[UIImage imageNamed:@"Black-pin.png"];
             
         }
-        else
+        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Donation"])
         {
             markerOBJ.icon=[UIImage imageNamed:@"red-pin.png"];
             
@@ -572,18 +622,7 @@
                     [indicator setStyleClass:@"history_sidecolor_pos"];
                     [amount setText:[NSString stringWithFormat:@"+$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                 }
-//                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Received"])
-//                {
-//                    [amount setStyleClass:@"history_transferamount_pos"];
-//                    [indicator setStyleClass:@"history_sidecolor_pos"];
-//                    [amount setText:[NSString stringWithFormat:@"+$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-//                }
-//                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Sent"])
-//                {
-//                    [amount setStyleClass:@"history_transferamount_neg"];
-//                    [indicator setStyleClass:@"history_sidecolor_neg"];
-//                    [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-//                }
+
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"])
                 {
                     [amount setStyleClass:@"history_transferamount_neg"];
@@ -600,12 +639,17 @@
                 NSLog(@"%@",[dictRecord valueForKey:@"MemberId"]);
                 //Updated Balance after Transaction
                 UILabel *updated_balance = [UILabel new];
+                if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]) {
+                     [updated_balance setText:[NSString stringWithFormat:@"$%@",[dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"]]];
+                }
+                else
+                {
                 if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]]) {
                    [updated_balance setText:[NSString stringWithFormat:@"$%@",[dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"]]];
                 }
                 else
                     [updated_balance setText:[NSString stringWithFormat:@"$%@",[dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"]]];
-                  
+                }//
                 
                     [updated_balance setStyleClass:@"history_updatedbalance"];
                     [cell.contentView addSubview:updated_balance];
@@ -714,18 +758,6 @@
                     }
                 }
                 
-//                if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Received"]) {
-//                    
-//                    
-//                    
-//                    
-//                }
-//                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Sent"]) {
-//                    
-//                   
-//                    
-//                }
-//                
                 
                 
                 if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]){
@@ -739,7 +771,7 @@
                     
                 }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"]){
-                    [name setText:[NSString stringWithFormat:@"%@ Donate to",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
+                    [name setText:[NSString stringWithFormat:@"Donate to %@",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                     [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                         placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                     
@@ -828,9 +860,9 @@
                         [name setText:[NSString stringWithFormat:@"Donate to %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                 
                 }
-                else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]|| [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@""])
+                else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                 {
-                    if ([[dictRecord valueForKey:@"MemberId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
+                    if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
                         [name setText:[NSString stringWithFormat:@"You Requested From %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                         
                     }
