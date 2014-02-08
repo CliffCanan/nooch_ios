@@ -1935,5 +1935,51 @@ NSString *amnt;
     
     
 }
+-(void)CancelRejectTransaction:(NSString*)transactionId resp:(NSString*)userResponse
+///CancelRejectTransaction(string memberId, string accessToken, string transactionId, string userResponse);
+{
+    self.responseData = [[NSMutableData alloc] init];
+    
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/CancelRejectTransaction",ServerUrl];
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    //
+    dictInv=[[NSMutableDictionary alloc]init];
+    //
+    [dictInv setObject:transactionId forKey:@"transactionId"];
+      [dictInv setObject:userResponse forKey:@"userResponse"];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    
+    [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
+    [dictInv setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"memberId"];
+    NSError *error;
+    postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
+                                                  options:NSJSONWritingPrettyPrinted error:&error];
+    
+    
+    
+    postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
+    
+    requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [requestInv setHTTPMethod:@"POST"];
+    
+    [requestInv setValue:postLengthInv forHTTPHeaderField:@"Content-Length"];
+    
+    [requestInv setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    [requestInv setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
+    
+    [requestInv setHTTPBody:postDataInv];
+    
+    connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
+    
+    if (!connectionInv)
+        
+        NSLog(@"connect error");
+    
+}
+
 
 @end

@@ -45,6 +45,7 @@
     UIActivityIndicatorView*spinner;
     NSDictionary*jsonDictionary;
     NSString*encryptedPINNonUser;
+    NSString*receiverId;
 }
 @property(nonatomic,strong)UIButton*balance;
 - (id)initWithReceiver:(NSMutableDictionary *)receiver type:(NSString *)type amount:(float)amount;

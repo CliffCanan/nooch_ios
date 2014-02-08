@@ -13,6 +13,7 @@
 #import "ECSlidingViewController.h"
 #import "HowMuch.h"
 #import "TransferPIN.h"
+#import "SelectRecipient.h"
 @interface TransactionDetails ()
 @property (nonatomic,strong) NSDictionary *trans;
 @property(nonatomic,strong) NSMutableData *responseData;
@@ -70,12 +71,7 @@
     [payment setStyleClass:@"details_intro"];
     [payment setStyleClass:@"details_intro_green"];
     NSLog(@"%@",self.trans);
-    if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Sent"]|| [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Send"]) {
-         [payment setText:@"Paid to:"];
-    }
-   
-    else
-      {
+    
     if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
         if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
             //send&&
@@ -90,26 +86,20 @@
         }
     }
     
-      }
-    
-//    if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Sent"]) {
-//        
-//        [payment setText:@"Paid to:"];
-//    }
-//    else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Received"]) {
-//        
-//        [payment setText:@"Received From:"];
-//        
-//    }
-     if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
-        
+    if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
+        if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]]) {
         [payment setText:@"Request Sent to:"];
+        }
+        else{
+          [payment setText:@"Request From:"];
+        }
     
     }
-    else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"RequestRespond"]) {
+    else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
         
-        [payment setText:@"Request From:"];
+        [payment setText:@"Invited to:"];
     }
+   
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"])
     {
         [payment setText:@"Withdraw to:"];
@@ -128,7 +118,14 @@
     UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];
     [other_party setStyleClass:@"details_othername"];
 
-    [other_party setText:[self.trans objectForKey:@"Name"]];
+  
+     if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
+         [other_party setText:[self.trans objectForKey:@"InvitationSentTo"]];
+         
+    }
+    else
+         [other_party setText:[self.trans objectForKey:@"Name"]];
+
     [self.view addSubview:other_party];
     
     /*
@@ -236,15 +233,20 @@
         {
             statusstr=@"Submitted on:";
         }
+        else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
+            
+           statusstr=@"Invited on:";
+        }
+
         NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
         if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
             //details_label1
             [status setText:[NSString stringWithFormat:@"%@",statusstr]];
-            UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(110, 190, 320, 30)];
+            UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(100, 190, 320, 30)];
             [datelbl setTextColor:[UIColor grayColor]];
             [self.view addSubview:datelbl];
             datelbl.text=[NSString stringWithFormat:@"(Sent on %@ %@,%@)",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]];
-            //[status setText:[NSString stringWithFormat:@"(Sent on %@ %@,%@)",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]]];
+            
             
         }
         else
@@ -252,7 +254,7 @@
             [status setText:[NSString stringWithFormat:@"%@ %@ %@,%@",statusstr,[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]]];
         }
     }
-    //[status setText:[NSString stringWithFormat:@"%@ on %@",[self.trans objectForKey:@"TransactionType"],[self.trans objectForKey:@"TransactionDate"]]];
+    
     [status setStyleClass:@"green_text"];
     [self.view addSubview:status];
     double lat = [[self.trans objectForKey:@"Latitude"] floatValue];
@@ -265,7 +267,6 @@
     UIImageView*imgTran;
     if (![[self.trans valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Picture"]!=NULL) {
         NSArray* bytedata = [self.trans valueForKey:@"Picture"];
-        //XXXXXXXX2222
         unsigned c = bytedata.count;
         uint8_t *bytes = malloc(sizeof(*bytes) * c);
         
@@ -407,16 +408,35 @@
             UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [cancel setStyleClass:@"details_button_right"];
             
-            if ([[self.trans objectForKey:@"MemberId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
+            if ([[self.trans objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
+                if ([[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
+                     [cancel setTitle:@"Cancelled" forState:UIControlStateNormal];
+                    [cancel setEnabled:NO];
+                }
+                else{
                 [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
+                    [cancel setEnabled:YES];
                 [cancel addTarget:self action:@selector(cancel_request) forControlEvents:UIControlEventTouchUpInside];
+                }
                 [self.view addSubview:cancel];
             } else {
+                if ([[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
+                    [cancel setTitle:@"Cancelled" forState:UIControlStateNormal];
+                    [cancel setEnabled:NO];
+                    [self.view addSubview:cancel];
+                }
+                else if ([[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
+                    [cancel setTitle:@"Rejected" forState:UIControlStateNormal];
+                    [cancel setEnabled:NO];
+                    [self.view addSubview:cancel];
+                }
+                else{
                 [pay setTitle:@"Pay" forState:UIControlStateNormal];
                 [pay addTarget:self action:@selector(fulfill_request) forControlEvents:UIControlEventTouchUpInside];
                 [cancel setTitle:@"Decline" forState:UIControlStateNormal];
                 [cancel addTarget:self action:@selector(decline_request) forControlEvents:UIControlEventTouchUpInside];
                 [self.view addSubview:pay]; [self.view addSubview:cancel];
+                }
                 
             }
         }
@@ -432,8 +452,15 @@
             [self.view addSubview:fb_text];
             [self.view addSubview:twit];
             [self.view addSubview:twit_text];
-            [self.view addSubview:disp];
-            [self.view addSubview:disp_text];
+            if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Transfer"]&& [[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
+                 [self.view addSubview:disp];
+                 [self.view addSubview:disp_text];
+            }
+            else{
+               [disp removeFromSuperview];
+                 [disp_text removeFromSuperview];
+            }
+           
         }
     }
     
@@ -450,27 +477,90 @@
 
 - (void) fulfill_request
 {
+   
     NSMutableDictionary *input = [self.trans mutableCopy];
     [input setValue:@"accept" forKey:@"response"];
+    NSLog(@"%@",input);
+     isMutipleRequest=NO;
     TransferPIN *trans = [[TransferPIN alloc] initWithReceiver:input type:@"requestRespond" amount:[[self.trans objectForKey:@"Amount"] floatValue]];
     [nav_ctrl pushViewController:trans animated:YES];
 }
 
 - (void) decline_request
 {
-    NSMutableDictionary *input = [self.trans mutableCopy];
-    [input setValue:@"deny" forKey:@"response"];
-    TransferPIN *trans = [[TransferPIN alloc] initWithReceiver:input type:@"requestRespond" amount:[[self.trans objectForKey:@"Amount"] floatValue]];
-    [nav_ctrl pushViewController:trans animated:YES];
+    
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to Reject this Request? " delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    [av show];
+    [av setTag:1011];
+//    NSMutableDictionary *input = [self.trans mutableCopy];
+//    [input setValue:@"deny" forKey:@"response"];
+//    TransferPIN *trans = [[TransferPIN alloc] initWithReceiver:input type:@"requestRespond" amount:[[self.trans objectForKey:@"Amount"] floatValue]];
+//    [nav_ctrl pushViewController:trans animated:YES];
 }
 
 - (void) cancel_request
 {
-    
-}
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to cancel this Request? " delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    [av show];
+    [av setTag:1010];
+   }
 
 - (void) pay_back
 {
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+   
+    if ([[assist shared]getSuspended]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        return;
+        
+    }
+    
+    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
+        
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        return;
+        
+        
+    }
+    
+    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+        [alert setTag:147];
+        [alert show];
+        return;
+    }
+    /* if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+     UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
+     
+     [alert show];
+     return;
+     }*/
+    //IsVerifiedPhone
+    //[user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"]
+    
+    
+    
+    if ( ![[[NSUserDefaults standardUserDefaults]
+            objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
+        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+       
+        [set show];
+        return;
+    }
+    
+    
+    if ( ![[assist shared]isBankVerified]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        
+        return;
+    }
+    
+    isPayBack=YES;
+    isMutipleRequest=NO;
+    isEmailEntry=NO;
     HowMuch *payback = [[HowMuch alloc] initWithReceiver:self.trans];
     [self.navigationController pushViewController:payback animated:YES];
 }
@@ -605,13 +695,56 @@
             //[NSURLConnection connectionWithRequest:request delegate:self];
         }
     }
+    else if(alertView.tag==1010 && buttonIndex==0)
+    {
+        serve*serveObj=[serve new];
+        [serveObj setDelegate:self];
+        serveObj.tagName=@"cancel";
+        [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Cancelled"];
+
+    }
+    else if(alertView.tag==1011 && buttonIndex==0)
+    {
+        serve*serveObj=[serve new];
+        [serveObj setDelegate:self];
+        serveObj.tagName=@"reject";
+        [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Rejected"];
+        
+    }
+
+    //1011
 }
 
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    if ([tagName isEqualToString:@"dispute"]) {
+    
+    //
+    if ([tagName isEqualToString:@"reject"]) {
+        NSError *error;
         
+        NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSLog(@"%@",loginResult);
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've rejected the Request Successfully!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        
+        [nav_ctrl popToRootViewControllerAnimated:YES];
+    }
+   else if ([tagName isEqualToString:@"cancel"]) {
+        NSError *error;
+        
+        NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSLog(@"%@",loginResult);
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've cancelled the Request Successfully!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        
+        [nav_ctrl popToRootViewControllerAnimated:YES];
+    }
+    else if ([tagName isEqualToString:@"dispute"]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've diputed your Transaction Successfully!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [[assist shared]setSusPended:YES];
+        [nav_ctrl popToRootViewControllerAnimated:YES];
     }
     else if([tagName isEqualToString:@"info"]){
         NSError *error;

@@ -11,7 +11,7 @@
 #import "GetLocation.h"
 #import "TransactionDetails.h"
 #import "UIImageView+WebCache.h"
-
+#import "SelectRecipient.h"
 @interface TransferPIN ()<GetLocationDelegate>
 {
     GetLocation*getlocation;
@@ -42,6 +42,8 @@
         self.memo=[receiver valueForKey:@"memo"];
         self.type = type;
         self.receiver = receiver;
+      
+
         self.amnt = amount;
         NSLog(@"%f",self.amnt);
         if ([type isEqualToString:@"donation"]) {
@@ -163,11 +165,24 @@
     }
     else
     {
+        if (isMutipleRequest) {
+                  NSLog(@"%@",arrRecipientsForRequest);
+
+            NSString*strMultiple=@"";
+            for (NSDictionary *dictRecord in arrRecipientsForRequest) {
+                strMultiple=[strMultiple stringByAppendingString:[NSString stringWithFormat:@",%@ %@",[dictRecord[@"FirstName"] capitalizedString],[dictRecord[@"LastName"] capitalizedString]]];
+            }
+           
+            strMultiple=[strMultiple substringFromIndex:1];
+            [to_label setText:strMultiple];
+        }
+        else{
         if ([[self.receiver objectForKey:@"FirstName"] length] == 0) {
             //[to_label setText:@"   4K For Cancer"];
             [to_label setBackgroundColor:kNoochPurple];
         } else {
             [to_label setText:[NSString stringWithFormat:@" %@ %@",[[self.receiver objectForKey:@"FirstName"] capitalizedString],[[self.receiver objectForKey:@"LastName"] capitalizedString]]];
+        }
         }
     }
     [to_label setStyleClass:@"pin_recipientname_text"];
@@ -441,14 +456,29 @@
             [transactionInputTransfer setValue:[dictResult valueForKey:@"Status"] forKey:@"PinNumber"];
             [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
             if ([self.type isEqualToString:@"request"]) {
-                [transactionInputTransfer setValue:@"Request" forKey:@"TransactionType"];
-                
+                [transactionInputTransfer setValue:@"Transfer" forKey:@"TransactionType"];
+                if (isMutipleRequest) {
+                    receiverId=@"";
+                    NSLog(@"%@",arrRecipientsForRequest);
+                    for (NSDictionary *dictRecord in arrRecipientsForRequest) {
+                        receiverId=[receiverId stringByAppendingString:[NSString stringWithFormat:@",%@",dictRecord[@"MemberId"]]];
+                    }
+                    
+                    receiverId=[receiverId substringFromIndex:1];
+                    NSLog(@"%@",receiverId);
+                    [transactionInputTransfer setValue:receiverId forKey:@"SenderId"];
+                }
+                else
                 [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"SenderId"];
+                
                 [transactionInputTransfer setValue:@"Pending" forKey:@"Status"];
             }
             else
             {
-                [transactionInputTransfer setValue:@"Sent" forKey:@"TransactionType"];
+                
+                [transactionInputTransfer setValue:@"Transfer" forKey:@"TransactionType"];
+                
+    
                 [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
             }
             
@@ -505,37 +535,41 @@
         }
     }
     else if ([self.type isEqualToString:@"requestRespond"]) {
-        transactionInputTransfer=[[NSMutableDictionary alloc]init];
-        [transactionInputTransfer setValue:[dictResult valueForKey:@"Status"] forKey:@"PinNumber"];
-        [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
-        [transactionInputTransfer setValue:[self.trans objectForKey:@"TransactionId"] forKey:@"TransactionId"];
-        NSDate *date = [NSDate date];
-        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-        [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
-        NSString *TransactionDate = [dateFormat stringFromDate:date];
-        [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
-        if ([[self.trans objectForKey:@"Response"] isEqualToString:@"accept"]) {
-            [transactionInputTransfer setValue:@"ACCEPT" forKey:@"Status"];
-        } else if ([[self.trans objectForKey:@"Response"] isEqualToString:@"deny"]){
-            [transactionInputTransfer setValue:@"DENY" forKey:@"Status"];
-        } else {
-            //cancel
+        if ([tagName isEqualToString:@"ValidatePinNumber"]) {
+            NSLog(@"%@",self.receiver);
+            transactionInputTransfer=[[NSMutableDictionary alloc]init];
+            [transactionInputTransfer setValue:[dictResult valueForKey:@"Status"] forKey:@"PinNumber"];
+            [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
+            [transactionInputTransfer setValue:[self.receiver objectForKey:@"TransactionId"] forKey:@"TransactionId"];
+            NSDate *date = [NSDate date];
+            NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+            [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+            NSString *TransactionDate = [dateFormat stringFromDate:date];
+            [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
+            if ([[self.receiver objectForKey:@"response"] isEqualToString:@"accept"]) {
+                [transactionInputTransfer setValue:@"Success" forKey:@"Status"];
+            } else if ([[self.receiver objectForKey:@"response"] isEqualToString:@"deny"]){
+                [transactionInputTransfer setValue:@"Cancelled" forKey:@"Status"];
+            } else {
+                //cancel
+            }
+            NSString *uid = [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"];
+            [transactionInputTransfer setValue:@"RequestRespond" forKey:@"TransactionType"];
+            [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
+            [transactionInputTransfer setValue:uid forKey:@"DeviceId"];
+            [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
+            [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lon] forKey:@"Longitude"];
+            [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
+            [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
+            [transactionInputTransfer setValue:city forKey:@"City"];
+            [transactionInputTransfer setValue:state forKey:@"State"];
+            [transactionInputTransfer setValue:country forKey:@"Country"];
+            [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
+            [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
+            
+            transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"handleRequestInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
+            NSLog(@"%@",transactionInputTransfer);
         }
-        NSString *uid = [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"];
-        [transactionInputTransfer setValue:@"RequestRespond" forKey:@"TransactionType"];
-        [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
-        [transactionInputTransfer setValue:uid forKey:@"DeviceId"];
-        [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
-        [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lon] forKey:@"Longitude"];
-        [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
-        [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
-        [transactionInputTransfer setValue:city forKey:@"City"];
-        [transactionInputTransfer setValue:state forKey:@"State"];
-        [transactionInputTransfer setValue:country forKey:@"Country"];
-        [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
-        [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
-        
-        transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"handleRequestInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
         postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
                                                        options:NSJSONWritingPrettyPrinted error:&error];;
         postLengthTransfer = [NSString stringWithFormat:@"%d", [postTransfer length]];
@@ -887,12 +921,14 @@
             }else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))            {
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [av show];
+                [[assist shared] setSusPended:YES];
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
                 self.prompt.text=@"Account suspended.";
             }else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])){
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [av show];
+                 [[assist shared] setSusPended:YES];
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
                 self.prompt.text=@"Account suspended.";
@@ -1092,9 +1128,24 @@
     }
     else if ([[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request made successfully."]){
         
+        if (isMutipleRequest) {
+            NSLog(@"%@",arrRecipientsForRequest);
+            
+            NSString*strMultiple=@"";
+            for (NSDictionary *dictRecord in arrRecipientsForRequest) {
+                strMultiple=[strMultiple stringByAppendingString:[NSString stringWithFormat:@",%@",[dictRecord[@"FirstName"] capitalizedString]]];
+            }
+            
+            strMultiple=[strMultiple substringFromIndex:1];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Pay Me" message:[NSString stringWithFormat:@"You requested $%.02f from %@ successfully.",self.amnt,strMultiple] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
+            [av setTag:1];
+            [av show];
+        }
+        else{
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Pay Me" message:[NSString stringWithFormat:@"You requested $%.02f from %@ successfully.",self.amnt,[receiverFirst capitalizedString]] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",@"View Details",nil];
         [av setTag:1];
         [av show];
+        }
     }else if([[[dictResultTransfer objectForKey:@"TransferMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]||[[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]||[[dictResultTransfer valueForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]
              || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]
              || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."])

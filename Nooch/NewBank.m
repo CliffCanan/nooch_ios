@@ -379,15 +379,12 @@
         if([[resultValue valueForKey:@"Result"] isEqualToString:@"Your account details have been saved successfully."]){
             [blankView removeFromSuperview];
             UIAlertView *showAlertMessage = [[UIAlertView alloc] initWithTitle:@"Bank Account Submitted" message:@"Your bank information has been successfully submitted to Nooch. For security, we must verify that you own this account. In two business days, check your bank statement to find two deposits of less than $1 from Nooch Inc. Then return here, punch in the amounts, and tap 'Verify Account.'" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-            // [showAlertMessage setTag:2];
+          
             [showAlertMessage show];
             self.routing_number.text = @"";
             self.name .text = @"";
             self.account_number.text=@"";
-            
-            //   [self reloadData];
-            //[me getBanks];
-            //[self cancel];
+           
             
             if ([[NSUserDefaults standardUserDefaults] valueForKey:@"ContactNumber"]) {
                 serve*serveOBJ=[serve new];

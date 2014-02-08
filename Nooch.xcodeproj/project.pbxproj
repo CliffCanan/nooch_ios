@@ -231,6 +231,9 @@
 		84172D15186D416D0041929F /* core.m in Sources */ = {isa = PBXBuildFile; fileRef = 84172D14186D416D0041929F /* core.m */; };
 		84172D18186D42200041929F /* assist.m in Sources */ = {isa = PBXBuildFile; fileRef = 84172D17186D42200041929F /* assist.m */; };
 		84193343187537A800D85FC4 /* GetLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84193342187537A800D85FC4 /* GetLocation.m */; };
+		841A3E0D18A61491001DAAA2 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 841A3E0818A61491001DAAA2 /* UIImage+Alpha.m */; };
+		841A3E0E18A61491001DAAA2 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 841A3E0A18A61491001DAAA2 /* UIImage+Resize.m */; };
+		841A3E0F18A61491001DAAA2 /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 841A3E0C18A61491001DAAA2 /* UIImage+RoundedCorner.m */; };
 		8420B390187A69CC00A77E2D /* profile_picture.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420B38F187A69CC00A77E2D /* profile_picture.png */; };
 		8420B39B187AC4BF00A77E2D /* Black-pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420B395187AC4BF00A77E2D /* Black-pin.png */; };
 		8420B39C187AC4BF00A77E2D /* blue-pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420B396187AC4BF00A77E2D /* blue-pin.png */; };
@@ -629,6 +632,12 @@
 		84172D17186D42200041929F /* assist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = assist.m; sourceTree = "<group>"; };
 		84193341187537A800D85FC4 /* GetLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetLocation.h; sourceTree = "<group>"; };
 		84193342187537A800D85FC4 /* GetLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetLocation.m; sourceTree = "<group>"; };
+		841A3E0718A61491001DAAA2 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
+		841A3E0818A61491001DAAA2 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
+		841A3E0918A61491001DAAA2 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
+		841A3E0A18A61491001DAAA2 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
+		841A3E0B18A61491001DAAA2 /* UIImage+RoundedCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RoundedCorner.h"; sourceTree = "<group>"; };
+		841A3E0C18A61491001DAAA2 /* UIImage+RoundedCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedCorner.m"; sourceTree = "<group>"; };
 		8420B38F187A69CC00A77E2D /* profile_picture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_picture.png; sourceTree = "<group>"; };
 		8420B395187AC4BF00A77E2D /* Black-pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Black-pin.png"; sourceTree = "<group>"; };
 		8420B396187AC4BF00A77E2D /* blue-pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-pin.png"; sourceTree = "<group>"; };
@@ -1018,6 +1027,7 @@
 		16E4B1C0187054A80099D075 /* venturepact  */ = {
 			isa = PBXGroup;
 			children = (
+				841A3E0618A61491001DAAA2 /* UIImage-categories */,
 				84C3EF17187D0E82004687F6 /* mapBack.png */,
 				8420B395187AC4BF00A77E2D /* Black-pin.png */,
 				8420B396187AC4BF00A77E2D /* blue-pin.png */,
@@ -1480,6 +1490,19 @@
 			name = "Location Tracker";
 			sourceTree = "<group>";
 		};
+		841A3E0618A61491001DAAA2 /* UIImage-categories */ = {
+			isa = PBXGroup;
+			children = (
+				841A3E0718A61491001DAAA2 /* UIImage+Alpha.h */,
+				841A3E0818A61491001DAAA2 /* UIImage+Alpha.m */,
+				841A3E0918A61491001DAAA2 /* UIImage+Resize.h */,
+				841A3E0A18A61491001DAAA2 /* UIImage+Resize.m */,
+				841A3E0B18A61491001DAAA2 /* UIImage+RoundedCorner.h */,
+				841A3E0C18A61491001DAAA2 /* UIImage+RoundedCorner.m */,
+			);
+			path = "UIImage-categories";
+			sourceTree = "<group>";
+		};
 		841CC8E018A1EBCB0075245C /* Device Identifier */ = {
 			isa = PBXGroup;
 			children = (
@@ -1734,6 +1757,7 @@
 				01086006180349E100A31F63 /* Statistics.m in Sources */,
 				842E3313187413490057EAFB /* Decryption.m in Sources */,
 				01086009180349F600A31F63 /* LimitsAndFees.m in Sources */,
+				841A3E0D18A61491001DAAA2 /* UIImage+Alpha.m in Sources */,
 				01085FA917FB2D2100A31F63 /* Register.m in Sources */,
 				6B425A63165568420092B16A /* OBShapedButton.m in Sources */,
 				01085FD81803337C00A31F63 /* PINSettings.m in Sources */,
@@ -1751,7 +1775,9 @@
 				01B63435187B33F900596D32 /* CheckPIN.m in Sources */,
 				84B65A73188542E9009A5205 /* NSString+ASBase64.m in Sources */,
 				6B89276116DEA49C00F9100F /* FPPopoverView.m in Sources */,
+				841A3E0F18A61491001DAAA2 /* UIImage+RoundedCorner.m in Sources */,
 				16E4B1BB187053F20099D075 /* UIImage+WebP.m in Sources */,
+				841A3E0E18A61491001DAAA2 /* UIImage+Resize.m in Sources */,
 				01085FF1180345B000A31F63 /* Withdraw.m in Sources */,
 				6B89276216DEA49C00F9100F /* FPTouchView.m in Sources */,
 				6B89276516DEB10200F9100F /* popSelect.m in Sources */,

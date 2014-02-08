@@ -27,14 +27,49 @@
     }
     return self;
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (isMutipleRequest) {
+        [self.navigationItem setRightBarButtonItem:Nil];
+        UIButton *Done = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [Done setStyleId:@"icon_RequestMultiple"];
+        [Done setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [Done setTitle:@"Done" forState:UIControlStateNormal];
+        [Done addTarget:self action:@selector(DoneEditing_RequestMultiple:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *DoneItem = [[UIBarButtonItem alloc] initWithCustomView:Done];
+        [self.navigationItem setRightBarButtonItem:DoneItem];
+        isRecentList=YES;
+        
+        [self.contacts reloadData];
+
+
+    }
+    
+}
+-(void)DoneEditing_RequestMultiple:(id)sender{
+    
+    if ([arrRecipientsForRequest count]==0) {
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Select a Recipient to Request!" delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+        [alert show];
+        return;
+    }
+    HowMuch *how_much = [[HowMuch alloc] init];
+    
+    [self.navigationController pushViewController:how_much animated:YES];
+    
+    }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self.navigationItem setTitle:@"Select Recipient"];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-    
-    
+    isMutipleRequest=NO;
+    isPayBack=NO;
+    isEmailEntry=NO;
+    arrRecipientsForRequest=nil;
     //    //clear Image cache
     //    SDImageCache *imageCache = [SDImageCache sharedImageCache];
     //    [imageCache clearMemory];
@@ -468,7 +503,7 @@
                              JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                              options:kNilOptions
                              error:&error]];
-        
+        isEmailEntry=YES;
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
         
         [self.navigationController pushViewController:how_much animated:YES];
@@ -604,7 +639,18 @@
         [cell setIndentationLevel:1];
         cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",info[@"FirstName"],info[@"LastName"]];
         
+        if (isMutipleRequest ) {
+            [npic removeFromSuperview];
+            if ([arrRecipientsForRequest containsObject:info]) {
+                cell.accessoryType=UITableViewCellAccessoryCheckmark;
+            }
+            else
+                cell.accessoryType=UITableViewCellAccessoryNone;
+  
         
+        }
+        else
+         cell.accessoryType=UITableViewCellAccessoryNone;
     }
     else if(emailEntry){
         //Email
@@ -626,12 +672,24 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+     NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];
+    if (isMutipleRequest) {
+        
+        if ([arrRecipientsForRequest containsObject:receiver]) {
+            [arrRecipientsForRequest removeObject:receiver];
+        }
+        else
+        [arrRecipientsForRequest addObject:receiver];
+       [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [tableView reloadData];
+        return;
+    }
     if (emailEntry){
         [self getMemberIdByUsingUserName];
         return;
     }
     if (searching) {
-        NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];;
+       
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
         
         [self.navigationController pushViewController:how_much animated:YES];
@@ -640,7 +698,7 @@
         
     }
     else{
-        NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];
+       
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
         
         [self.navigationController pushViewController:how_much animated:YES];

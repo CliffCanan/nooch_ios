@@ -33,7 +33,7 @@
 #import "Welcome.h"
 #import "Register.h"
 #import "ECSlidingViewController.h"
-
+#import "UIImage+Resize.h"
 @interface ProfileInfo ()
 
 @property(nonatomic) UIImagePickerController *picker;
@@ -1207,12 +1207,12 @@
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info{
     
     UIImage *image=[info objectForKey:UIImagePickerControllerOriginalImage];
-    
+    image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(300, 300) interpolationQuality:kCGInterpolationMedium];
     isPhotoUpdate=YES;
     
-    [picture setImage:[self imageWithImage:image scaledToSize:CGSizeMake(40, 40)]];
+    [picture setImage:image];
     
-    [[assist shared]setTranferImage:[self imageWithImage:image scaledToSize:CGSizeMake(40, 40)]];
+    [[assist shared]setTranferImage:image];
     
     [self dismissViewControllerAnimated:YES completion:Nil];
     

@@ -148,6 +148,7 @@
         else if(indexPath.row == 7){
         listType = @"CANCEL";
          }
+        isFilterSelected=YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissPopOver" object:nil];
   return;
     }

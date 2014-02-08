@@ -242,7 +242,7 @@
 
 -(void)showMenu
 {
-    //[[assist shared]setneedsReload:NO];
+    [[assist shared]setneedsReload:NO];
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
 -(void)showFunds

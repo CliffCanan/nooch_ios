@@ -12,5 +12,6 @@
 @interface BankVerification : UIViewController<UITextFieldDelegate,serveD>
 {
     int verifyAttempts;
+    UIView*blankView;
 }
 @end

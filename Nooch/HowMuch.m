@@ -10,6 +10,8 @@
 #import "TransferPIN.h"
 #import "UIImageView+WebCache.h"
 #import "Deposit.h"
+#import "UIImage+Resize.h"
+#import "SelectRecipient.h"
 @interface HowMuch ()
 @property(nonatomic,strong) NSDictionary *receiver;
 @property(nonatomic,strong) UITextField *amount;
@@ -74,12 +76,30 @@
     }
     else
     {
+        if (isMutipleRequest) {
+            NSString*strMultiple=@"";
+            for (NSDictionary *dictRecord in arrRecipientsForRequest) {
+                strMultiple=[strMultiple stringByAppendingString:[NSString stringWithFormat:@",%@ %@",[dictRecord[@"FirstName"] capitalizedString],[dictRecord[@"LastName"] capitalizedString]]];
+            }
+            [to_label setStyleId:@"label_howmuch_recipientname"];
+            strMultiple=[strMultiple substringFromIndex:1];
+            [to_label setText:strMultiple];
+        }
+        else
+        {
         [to_label setStyleId:@"label_howmuch_recipientname"];
         [to_label setText:[NSString stringWithFormat:@"%@ %@",[[self.receiver objectForKey:@"FirstName"] capitalizedString],[[self.receiver objectForKey:@"LastName"] capitalizedString]]];
+        }
     }
     
     [self.view addSubview:to_label];
-    
+    if (![self.receiver valueForKey:@"nonuser"] &&  !isPayBack && !isEmailEntry) {
+    UIButton*add=[[UIButton alloc]initWithFrame:CGRectMake(260, 15, 30, 30)];
+    [add setImage:[UIImage imageNamed:@"add-icon-blue.png"] forState:UIControlStateNormal];
+    [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];
+    [add setStyleCSS:@"addbutton_request"];
+    [self.view addSubview:add];
+    }
     UIImageView *user_pic = [UIImageView new];
     [user_pic setFrame:CGRectMake(28, 62, 74, 74)];
     user_pic.layer.borderColor = [Helpers hexColor:@"939598"].CGColor;
@@ -123,7 +143,6 @@
     [self.camera addTarget:self action:@selector(attach_pic) forControlEvents:UIControlEventTouchUpInside];
     [self.camera setStyleId:@"howmuch_camera"];
     [self.view addSubview:self.camera];
-    
     self.send = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.send setBackgroundColor:kNoochGreen];
     [self.send setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal]; [self.send setTitle:@"Send" forState:UIControlStateNormal];
@@ -133,18 +152,29 @@
     [self.send setFrame:CGRectMake(160, 160, 150, 50)];
     [self.view addSubview:self.send];
     
+   
+    
     self.request = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.request setBackgroundColor:kNoochBlue];
     [self.request setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal]; [self.request setTitle:@"Request" forState:UIControlStateNormal];
     [self.request addTarget:self action:@selector(initialize_request) forControlEvents:UIControlEventTouchUpInside];
-    [self.request setStyleClass:@"howmuch_buttons"];
+    
     [self.request setStyleId:@"howmuch_request"];
     [self.request setFrame:CGRectMake(10, 160, 150, 50)];
     [self.view addSubview:self.request];
+    if (isMutipleRequest) {
+        [self.send removeFromSuperview];
+        [self.request setStyleClass:@"howmuch_buttons_RequestMutiple"];
+        [self.request setFrame:CGRectMake(10, 160, 300, 50)];
+
+    }
+    else{
+        [self.request setStyleClass:@"howmuch_buttons"];
+        self.divider = [UIImageView new];
+        [self.divider setStyleId:@"howmuch_divider"];
+        [self.view addSubview:self.divider];
+    }
     
-    self.divider = [UIImageView new];
-    [self.divider setStyleId:@"howmuch_divider"];
-    [self.view addSubview:self.divider];
     
     self.reset_type = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.reset_type setFrame:CGRectMake(0, 160, 0, 50)]; [self.reset_type setBackgroundColor:[UIColor clearColor]]; [self.reset_type setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -178,7 +208,17 @@
 {
     [self.amount becomeFirstResponder];
 }
-
+#pragma mark- Request Multiple case
+-(void)addRecipient:(id)sender{
+    isMutipleRequest=YES;
+    if (!arrRecipientsForRequest) {
+          arrRecipientsForRequest=[[NSMutableArray alloc] init];
+        [arrRecipientsForRequest addObject:self.receiver];
+    }
+  
+    
+    [self.navigationController popViewControllerAnimated:YES];
+}
 #pragma mark - type of transaction
 - (void) initialize_send
 {
@@ -244,10 +284,13 @@
 }
 - (void) reset_send_request
 {
-    self.divider = [UIImageView new];
-    [self.divider setStyleId:@"howmuch_divider"];
-    [self.divider setAlpha:0];
-    [self.view addSubview:self.divider];
+    if (!isMutipleRequest) {
+        self.divider = [UIImageView new];
+        [self.divider setStyleId:@"howmuch_divider"];
+        [self.divider setAlpha:0];
+        [self.view addSubview:self.divider];
+    }
+   
     
     CGRect origin = self.reset_type.frame;
     [UIView beginAnimations:nil context:nil];
@@ -343,11 +386,20 @@
         [av show];
         return;
     }
+    if (isMutipleRequest) {
+        NSMutableDictionary *transaction = [[NSMutableDictionary alloc]init];
+        [transaction setObject:[self.memo text] forKey:@"memo"];
+        float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
+        TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"request" amount:input_amount];
+        [self.navigationController pushViewController:pin animated:YES];
+    }
+    else{
     NSMutableDictionary *transaction = [self.receiver mutableCopy];
     [transaction setObject:[self.memo text] forKey:@"memo"];
     float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
     TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"request" amount:input_amount];
     [self.navigationController pushViewController:pin animated:YES];
+    }
 }
 
 #pragma mark - picture attaching
@@ -451,8 +503,10 @@
     [self cancel_photo];
     
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+    chosenImage = [chosenImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(300, 300) interpolationQuality:kCGInterpolationMedium];
+
     [self.camera setStyleId:@"howmuch_camera_attached"];
-    [[assist shared]setTranferImage:[self imageWithImage:chosenImage scaledToSize:CGSizeMake(100,100)]];
+    [[assist shared]setTranferImage:chosenImage];
     
     
     [picker dismissViewControllerAnimated:YES completion:^{

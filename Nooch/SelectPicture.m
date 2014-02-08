@@ -11,6 +11,7 @@
 #import "CreatePIN.h"
 #import "assist.h"
 #import "ECSlidingViewController.h"
+#import "UIImage+Resize.h"
 @interface SelectPicture ()
 @property(nonatomic,strong) NSMutableDictionary *user;
 @property(nonatomic,strong) UIImageView *pic;
@@ -108,8 +109,9 @@
     
     
     UIImage *image=[info objectForKey:UIImagePickerControllerOriginalImage];
-    [self.pic setImage:[self imageWithImage:image scaledToSize:CGSizeMake(40, 40)]];
-    [[assist shared]setTranferImage:[self imageWithImage:image scaledToSize:CGSizeMake(40, 40)]];
+    image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(300, 300) interpolationQuality:kCGInterpolationMedium];
+    [self.pic setImage:image];
+    [[assist shared]setTranferImage:image];
     [self dismissViewControllerAnimated:YES completion:^{
         self.slidingViewController.panGesture.enabled=NO;
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];

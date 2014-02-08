@@ -476,7 +476,7 @@
 -(void)dismissFP:(NSNotification *)notification{
     [fp dismissPopoverAnimated:YES];
     isSearch=NO;
-    if (![listType isEqualToString:@"CANCEL"]) {
+    if (![listType isEqualToString:@"CANCEL"]&& isFilterSelected) {
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
         //histShowArrayCompleted=[[NSMutableArray alloc]init];
@@ -484,6 +484,7 @@
         
         isFilter=YES;
         index=1;
+        isFilterSelected=NO;
         [self loadHist:listType index:index len:20];
     }
     else
@@ -582,7 +583,8 @@
         
         if ([histShowArrayCompleted count]>indexPath.row) {
             NSDictionary*dictRecord=[histShowArrayCompleted objectAtIndex:indexPath.row];
-            if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]) {
+           // NSLog(@"%@",dictRecord);
+            if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]|| [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]||[[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] ) {
                 UIView *indicator = [UIView new];
                 [indicator setStyleClass:@"history_sidecolor"];
                 
@@ -629,7 +631,12 @@
                     [indicator setStyleClass:@"history_sidecolor_neg"];
                     [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                 }
-                
+                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
+                {
+                    [amount setStyleClass:@"history_transferamount_neg"];
+                    [indicator setStyleClass:@"history_sidecolor_neg"];
+                    [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                }
                 
                 [cell.contentView addSubview:amount];
                 [cell.contentView addSubview:indicator];
@@ -644,15 +651,22 @@
                 }
                 else
                 {
-                if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]]) {
-                   [updated_balance setText:[NSString stringWithFormat:@"$%@",[dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"]]];
-                }
-                else
-                    [updated_balance setText:[NSString stringWithFormat:@"$%@",[dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"]]];
-                }//
-                
+                    if (![[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]&& ![[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
+                        if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]]) {
+                            [updated_balance setText:[NSString stringWithFormat:@"$%@",[dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"]]];
+                        }
+                        else
+                            [updated_balance setText:[NSString stringWithFormat:@"$%@",[dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"]]];
+                  
+                    
                     [updated_balance setStyleClass:@"history_updatedbalance"];
                     [cell.contentView addSubview:updated_balance];
+                    }
+                    else {
+                        [updated_balance removeFromSuperview];
+                    }
+                }
+                
                 
                 NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                
@@ -776,8 +790,36 @@
                         placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                     
                 }
-                
-                
+                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]&& [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]){
+                    if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"RecepientId"]]) {
+                        [name setText:[NSString stringWithFormat:@"You Cancelled the Request to %@",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
+                        [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                            placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                    }
+                    else {
+                        [name setText:[NSString stringWithFormat:@"%@ Cancelled the Request",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
+                        [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                            placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                    }
+                   
+                    
+                }
+                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]&& [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]){
+                   
+                        
+                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"RecepientId"]]) {
+                         [name setText:[NSString stringWithFormat:@"%@ Rejected your Request",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
+                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                             placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                     }
+                    else
+                    {
+                    [name setText:[NSString stringWithFormat:@"You Rejected the Request from %@",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
+                    [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                        placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                    }
+                    
+                }
                 [cell.contentView addSubview:name];
                 
                            }
@@ -879,10 +921,15 @@
                 {
                     [name setText:[NSString stringWithFormat:@"Deposit into Nooch%@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                 }
-                else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Received"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL)
+                else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL)
                 {
                     [name setText:[NSString stringWithFormat:@"You Invited %@",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
                 }
+                else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] )
+                {
+                    [name setText:[NSString stringWithFormat:@"You Disputed a Transfer"]];
+                }
+                
                 [cell.contentView addSubview:name];
                 
                 
@@ -1190,7 +1237,7 @@
             isStart=NO;
             
             for (NSDictionary*dict in histArray) {
-                if ([[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]) {
+                if ([[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]||[[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]||[[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"] ) {
                     [histShowArrayCompleted addObject:dict];
                 }
             }

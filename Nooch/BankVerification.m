@@ -113,6 +113,15 @@
 }
 - (void) verify_amounts
 {
+    if (![self.micro1.text length]>0 || ![self.micro2.text length]>0) {
+        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Please enter valid amounts." delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil];
+        [alertView sizeToFit];
+        [alertView show];
+        self.micro1.text=@"";
+        self.micro2.text=@"";
+ 
+    }
+    
     [self.micro1 resignFirstResponder];
     [self.micro2 resignFirstResponder];
     NSString *amountOne=[NSString stringWithFormat:@".%@", self.micro1.text];
@@ -120,20 +129,22 @@
     //    if((([amountOne intValue] < 100) && ([amountOne intValue] > 0)) && (([amountTwo intValue] < 100) && ([amountTwo intValue] > 0)))
     //    {
     verifyAttempts++;
+    
+    blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
+    [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
+    UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
+    [actv startAnimating];
+    [blankView addSubview:actv];
+    [self .view addSubview:blankView];
+    [self.view bringSubviewToFront:blankView];
+    
     serve *ver  = [serve new];
     ver.tagName = @"verification";
     ver.Delegate = self;
     [ver verifyBank:[[NSUserDefaults standardUserDefaults] objectForKey:@"choice"] microOne:amountOne microTwo:amountTwo];
-    [me waitStat:@"Attempting to verify your account..."];
-    //    }
-    //    else
-    //    {
-    //        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Please enter valid amounts." delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil];
-    //        [alertView sizeToFit];
-    //        [alertView show];
-    //        self.micro1.text=@"";
-    //        self.micro1.text=@"";
-    //    }
+    //[me waitStat:@"Attempting to verify your account..."];
+    
     
 }
 -(void)Remove_Bank{
@@ -143,6 +154,14 @@
 }
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (alertView.tag == 1 && buttonIndex == 1) {
+        blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
+        [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
+        UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
+        [actv startAnimating];
+        [blankView addSubview:actv];
+        [self .view addSubview:blankView];
+        [self.view bringSubviewToFront:blankView];
         serve *bank = [serve new];
         bank.tagName = @"bDelete";
         bank.Delegate = self;
@@ -157,14 +176,15 @@
                                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                         options:kNilOptions
                                         error:&error];
-    // NSDictionary *loginResult = [result JSONValue];
+    
     if ([tagName isEqualToString:@"bDelete"]) {
-        // [me getBanks];
+        [blankView removeFromSuperview];
         if([(NSString *)[dictResponse valueForKey:@"Result"] isEqualToString:@"Your bank account details has been deleted successfully."])
         {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"The bank account details have been deleted." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView sizeToFit];
             [alertView show];
+             [[assist shared]setneedsReload:YES];
             [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"IsPrimaryBankVerified"];
             for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
                 if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
@@ -183,15 +203,17 @@
             //             ];
         }
     }else if([tagName isEqualToString:@"verification"]){
+        [blankView removeFromSuperview];
         if([[dictResponse objectForKey:@"Result"] isEqualToString:@"Your bank account is verified successfully."]){
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Eureka!"message:@"Your bank account information all checks out, you’re free to go. Nooch forth."delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView sizeToFit];
             [alertView show];
-            [me getBanks];
+            [[assist shared]setneedsReload:YES];
             [self.navigationController popViewControllerAnimated:YES];
             //[navCtrl dismissModalViewControllerAnimated:YES];
             verifyAttempts = 0;
         }else if(verifyAttempts == 2){
+             [[assist shared]setneedsReload:YES];
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Careful..."message:@"You've failed verification twice now. We're getting suspicious, one more failed verification attempt and this bank account will be deleted from our system."delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView sizeToFit];
             [alertView show];
@@ -199,7 +221,16 @@
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Uh oh!"message:@"You've failed verification three times now. Not that we don't trust you, but it's starting to look like the account doesn't belong to you."delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView sizeToFit];
             [alertView show];
-            [me waitStat:@"Deleting this account for security purposes..."];
+            blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
+            [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
+            UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+            [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
+            [actv startAnimating];
+            [blankView addSubview:actv];
+            [self .view addSubview:blankView];
+            [self.view bringSubviewToFront:blankView];
+             [[assist shared]setneedsReload:YES];
+//            [me waitStat:@"Deleting this account for security purposes..."];
             serve *bank = [serve new];
             bank.tagName = @"bDelete";
             bank.Delegate = self;

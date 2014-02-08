@@ -288,7 +288,7 @@
                              error:&error];
         [feat setImageWithURL:[NSURL URLWithString:[[FeaturedcausesArr objectAtIndex:0] valueForKey:@"PhotoBanner"]]
              placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
-        
+        NSLog(@"%@",FeaturedcausesArr);
         serve*serveOBJ=[serve new];
         serveOBJ.tagName=@"NPList";
         serveOBJ.Delegate=self;

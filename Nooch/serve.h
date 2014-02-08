@@ -110,6 +110,7 @@
 -(void)RaiseDispute:(NSDictionary*)Input;
 -(void)saveShareToFB_Twiitter:(NSString*)PostTo;
 -(void)UpDateLatLongOfUser:(NSString*)lat lng:(NSString*)lng;
+-(void)CancelRejectTransaction:(NSString*)transactionId resp:(NSString*)userResponse;
 @end
 
 //392f9c86-1651-4459-a6a9-d362fcfc4366 - nooch team

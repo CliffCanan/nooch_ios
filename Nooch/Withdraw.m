@@ -110,10 +110,8 @@
     
     [transaction setObject:[user objectForKey:@"firstName"]forKey:@"FirstName"];
     [transaction setObject:[user objectForKey:@"lastName"]forKey:@"LastName"];
-    // [transaction setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"FirstName"];
-    //[transaction setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"FirstName"];
+    
     float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
-    //  float input_amount = [[[self.amount text] substringFromIndex:2] floatValue];
     TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"withdrawfund" amount: input_amount];
     [self.navigationController pushViewController:pin animated:YES];
     

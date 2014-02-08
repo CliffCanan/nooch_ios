@@ -12,6 +12,8 @@
 #import "HowMuch.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
+NSMutableArray*arrRecipientsForRequest;
+BOOL isMutipleRequest;
 @interface SelectRecipient : UIViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate,ABPeoplePickerNavigationControllerDelegate>
 {
     UIView*loader;

@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "Home.h"
 #import "serve.h"
-
+BOOL isPayBack;
+BOOL isEmailEntry;
 @interface HowMuch : UIViewController<UITextFieldDelegate,serveD,UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 - (id)initWithReceiver:(NSDictionary *)receiver;

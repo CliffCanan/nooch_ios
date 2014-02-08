@@ -632,6 +632,13 @@
 		background-image	: url(map-icon.png);
 		background-size		: 20px 33px;
 	}
+    #icon_RequestMultiple {
+		/*top					: 29px;*/
+		left				: 277px;
+		width				: 70px;
+		height				: 33px;
+		background-size		: 20px 33px;
+	}
 #icon_phonebook {
         top					: 2px
 		left				: 282px;
@@ -763,7 +770,17 @@
 		color 				: #ffffff;
 		text-transform		: uppercase;
 	}
-
+.howmuch_buttons_RequestMutiple {
+		width				: 302px;
+		height				: 56px;
+		font-family			: "Roboto";
+		font-size			: 20px;
+		font-weight         : light;
+		font-stretch		: semi-expanded;
+		text-align       	: center;
+		color 				: #ffffff;
+		text-transform		: uppercase;
+	}
 	/**  Sets the position for the Request Button. **/
 	#howmuch_request {
 		left	: 9px;
@@ -2130,7 +2147,14 @@
         color               : gray;
         text-align       	: center;
     }
+    .addbutton_request{
+       width				: 30px;
+		height				: 30px;
+		top					: 15px;
+		left				: 260px;
+		background-image: url(add-icon-blue.png);
 
+}
 	.history_sidecolor {
 		top				: 1px;
 		left			: 0px;

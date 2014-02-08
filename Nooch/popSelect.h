@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 bool memoList;
+BOOL isFilterSelected;
 @interface popSelect : UIViewController<UITableViewDelegate,UITableViewDataSource>{
     UITableView *popList;
 }
