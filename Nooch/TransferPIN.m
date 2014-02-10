@@ -592,6 +592,7 @@
     }
     else if ([self.type isEqualToString:@"donation"]){
         if ([tagName isEqualToString:@"ValidatePinNumber"]) {
+            
             transactionInputTransfer=[[NSMutableDictionary alloc]init];
             [transactionInputTransfer setValue:@"Donation" forKey:@"TransactionType"];
             NSString *uid = [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"];
@@ -655,7 +656,10 @@
                     [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"MemberId"];
                     [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"RecepientId"];
                     [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
+                    [transactionInputTransfer setValue:[self.receiver valueForKey:@"BankId"] forKey:@"BankId"];
+                    [transactionInputTransfer setValue:[self.receiver valueForKey:@"BankAccountId"] forKey:@"BankAccountId"];
                     
+
                     NSDate *date = [NSDate date];
                     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
                     [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
@@ -721,6 +725,9 @@
                     transactionInputTransfer=[[NSMutableDictionary alloc]init];
                     [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
                     [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
+                     [transactionInputTransfer setValue:[self.receiver valueForKey:@"BankId"] forKey:@"BankId"];
+                    [transactionInputTransfer setValue:[self.receiver valueForKey:@"BankAccountId"] forKey:@"BankAccountId"];
+
                     [transactionInputTransfer setValue:[dictResult valueForKey:@"Status"] forKey:@"PinNumber"];
                     
                     [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
@@ -746,8 +753,6 @@
                     [transactionInputTransfer setValue:state forKey:@"State"];
                     [transactionInputTransfer setValue:country forKey:@"Country"];
                     [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
-                    
-                    //     transactionInputTransfer = [NSMutableDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"MemberId", [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"RecepientId", amount, @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction",  [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"], @"DeviceId", self.Latitude, @"Latitude", self.Longitude, @"Longitude", Altitude, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode", nil];
                     
                     transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[defaults valueForKey:@"OAuthToken"],@"accessToken", nil];
                     
@@ -814,6 +819,7 @@
             }else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])){
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [av show];
+                 [[assist shared]setSusPended:YES];
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
                 self.prompt.text=@"Account suspended.";
@@ -957,6 +963,7 @@
             
         }else if (buttonIndex == 1){
             [nav_ctrl popToRootViewControllerAnimated:NO];
+            NSLog(@"%@",self.trans);
             TransactionDetails *td = [[TransactionDetails alloc] initWithData:self.trans];
             [nav_ctrl pushViewController:td animated:YES];
         }
@@ -964,6 +971,13 @@
     else if (alertView.tag==2500)
     {
         if (buttonIndex == 0) {
+            [nav_ctrl popToRootViewControllerAnimated:YES];
+        }
+    }
+    else if (alertView.tag==20230)
+    {
+        if (buttonIndex == 0) {
+            
             [nav_ctrl popToRootViewControllerAnimated:YES];
         }
     }
@@ -1010,6 +1024,7 @@
             NSString *amt = [NSString stringWithFormat:@"%.02f", self.amnt];
             alertTitleString = [alertTitleString stringByAppendingFormat:@"%@ from your Nooch account has been submitted.", amt];
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:alertTitleString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+             [av setTag:20230];
             [av show];
         }else{
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -1022,11 +1037,14 @@
         NSLog(@"resultValue is : %@", dictResultTransfer);
         if([[resultValue valueForKey:@"Result"] isEqualToString:[NSString stringWithFormat:@"Fund you transferred has been added to your account successfully."]])
         {
+            
             NSString *alertTitleString = [NSString stringWithFormat:@"Success, your request to deposit $"];
             NSString *amt = [NSString stringWithFormat:@"%.02f",self.amnt];
             alertTitleString = [alertTitleString stringByAppendingFormat:@"%@ from your Nooch account has been submitted.", amt];
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:alertTitleString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av setTag:20230];
             [av show];
+          
             return;
         }
         else if([[resultValue valueForKey:@"Result"] isEqualToString:[NSString stringWithFormat:@"Your bank account is not verified. Please verify your bank account now."]])
@@ -1044,7 +1062,8 @@
     if ([self.type isEqualToString:@"send"]) {
         if (![[dictResultTransfer objectForKey:@"trnsactionId"] isKindOfClass:[NSNull class]])
             transactionId=[dictResultTransfer valueForKey:@"trnsactionId"];
-    }else{
+    }else if([self.type isEqualToString:@"request"])
+    {
         if (![[dictResultTransfer objectForKey:@"requestId"] isKindOfClass:[NSNull class]])
             transactionId=[dictResultTransfer valueForKey:@"requestId"];
     }
@@ -1055,8 +1074,10 @@
     if (![transactionId isKindOfClass:[NSNull class]] && transactionId!=NULL) {
         [transactionInputTransfer setObject:transactionId forKey:@"TransactionId"];
     }
-    
+    [transactionInputTransfer setObject:[self.receiver valueForKey:@"FirstName"] forKey:@"FirstName"];
+    [transactionInputTransfer setObject:[self.receiver valueForKey:@"LastName"] forKey:@"LastName"];
     self.trans = [transactionInputTransfer copy];
+   
     
     
     resultValueTransfer = [dictResultTransfer valueForKey:@"TransferMoneyResult"];
@@ -1129,8 +1150,8 @@
     else if ([[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request made successfully."]){
         
         if (isMutipleRequest) {
-            NSLog(@"%@",arrRecipientsForRequest);
-            
+           // NSLog(@"%@",arrRecipientsForRequest);
+            isMutipleRequest=NO;
             NSString*strMultiple=@"";
             for (NSDictionary *dictRecord in arrRecipientsForRequest) {
                 strMultiple=[strMultiple stringByAppendingString:[NSString stringWithFormat:@",%@",[dictRecord[@"FirstName"] capitalizedString]]];
@@ -1176,6 +1197,7 @@
             || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]
             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])
     {
+        [[assist shared]setSusPended:YES];
         self.prompt.text=@"3 failed attempt. Please try again.";
         [self.fourth_num setBackgroundColor:[UIColor clearColor]];
         [self.third_num setBackgroundColor:[UIColor clearColor]];

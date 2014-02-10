@@ -159,7 +159,7 @@
     
     NSMutableDictionary *transaction = [[NSMutableDictionary alloc] init];
     [transaction setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
-    
+    [transaction setObject:[[self.banks objectAtIndex:0] valueForKey:@"BankAccountId"] forKey:@"BankId"];
     [transaction setObject:[[user objectForKey:@"firstName"] capitalizedString]forKey:@"FirstName"];
     [transaction setObject:[[user objectForKey:@"lastName"] capitalizedString]forKey:@"LastName"];
     
@@ -187,6 +187,7 @@
     }
     
     NSDictionary *bank = [self.banks objectAtIndex:0];
+   //NSLog(@"%@",bank);
     UILabel *banktxt = [UILabel new];
     [banktxt setStyleClass:@"wd_dep_banklabel"];
     [banktxt setText:[NSString stringWithFormat:@"Account ending in %@",[bank valueForKey:@"BankAcctNumber"]]];

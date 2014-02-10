@@ -344,7 +344,7 @@
     [self.view addSubview:div2];
     
     
-    
+    //Recovery Mail
     self.recovery_email = [[UITextField alloc] initWithFrame:CGRectMake(20, 150+down, 280, 30)];
     
     [self.recovery_email setTextAlignment:NSTextAlignmentRight]; [self.recovery_email setBackgroundColor:[UIColor clearColor]];
@@ -366,7 +366,7 @@
     [self.view addSubview:recover];
     
     
-    
+    // Row Seperator
     UIView *div3= [[UIView alloc] initWithFrame:CGRectMake(0, 185+down, 0, 0)];
     
     [div3 setStyleId:@"divider"];
@@ -396,7 +396,7 @@
     [self.view addSubview:pass];
     
     
-    
+     // Row Seperator
     UIView *div4 = [[UIView alloc] initWithFrame:CGRectMake(0, 225+down, 0, 0)];
     
     [div4 setStyleId:@"divider"];
@@ -426,7 +426,7 @@
     [self.view addSubview:num];
     
     
-    
+     // Row Seperator
     UIView *div5 = [[UIView alloc] initWithFrame:CGRectMake(0, 265+down, 0, 0)];
     
     [div5 setStyleId:@"divider"];
@@ -434,7 +434,7 @@
     [self.view addSubview:div5];
     
     
-    
+     // Address
     self.address_one = [[UITextField alloc] initWithFrame:CGRectMake(20, 270+down, 280, 30)];
     
     [self.address_one setTextAlignment:NSTextAlignmentRight]; [self.address_one setBackgroundColor:[UIColor clearColor]];
@@ -447,6 +447,7 @@
     
     [self.view addSubview:self.address_one];
     
+    // Address label
     UILabel *addr1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 270+down, 280, 30)];
     
     [addr1 setBackgroundColor:[UIColor clearColor]]; [addr1 setText:@"Address One:"];
@@ -456,7 +457,7 @@
     [self.view addSubview:addr1];
     
     
-    
+     // Row Seperator
     UIView *div6 = [[UIView alloc] initWithFrame:CGRectMake(0, 305+down, 0, 0)];
     
     [div6 setStyleId:@"divider"];
@@ -464,7 +465,7 @@
     [self.view addSubview:div6];
     
     
-    
+    // Address
     self.address_two = [[UITextField alloc] initWithFrame:CGRectMake(20, 310+down, 280, 30)];
     
     [self.address_two setTextAlignment:NSTextAlignmentRight]; [self.address_two setBackgroundColor:[UIColor clearColor]];
@@ -477,6 +478,8 @@
     
     [self.view addSubview:self.address_two];
     
+    
+    // Address label
     UILabel *addr2 = [[UILabel alloc] initWithFrame:CGRectMake(20, 310+down, 280, 30)];
     
     [addr2 setBackgroundColor:[UIColor clearColor]]; [addr2 setText:@"Address Two:"];
@@ -486,7 +489,7 @@
     [self.view addSubview:addr2];
     
     
-    
+     // Row Seperator
     UIView *div7 = [[UIView alloc] initWithFrame:CGRectMake(0, 345+down, 0, 0)];
     
     [div7 setStyleId:@"divider"];
@@ -494,7 +497,7 @@
     [self.view addSubview:div7];
     
     
-    
+     // City
     self.city = [[UITextField alloc] initWithFrame:CGRectMake(20, 350+down, 280, 30)];
     
     [self.city setTextAlignment:NSTextAlignmentRight]; [self.city setBackgroundColor:[UIColor clearColor]];
@@ -507,6 +510,8 @@
     
     [self.view addSubview:self.city];
     
+    
+    // City label
     UILabel *cit = [[UILabel alloc] initWithFrame:CGRectMake(20, 350+down, 280, 30)];
     
     [cit setBackgroundColor:[UIColor clearColor]]; [cit setText:@"City:"];
@@ -516,7 +521,7 @@
     [self.view addSubview:cit];
     
     
-    
+    // Row Seperator
     UIView *div8 = [[UIView alloc] initWithFrame:CGRectMake(0, 385+down, 0, 0)];
     
     [div8 setStyleId:@"divider"];
@@ -524,7 +529,7 @@
     [self.view addSubview:div8];
     
     
-    
+     // Zip label
     self.zip = [[UITextField alloc] initWithFrame:CGRectMake(20, 390+down, 280, 30)];
     
     [self.zip setTextAlignment:NSTextAlignmentRight]; [self.zip setBackgroundColor:[UIColor clearColor]];

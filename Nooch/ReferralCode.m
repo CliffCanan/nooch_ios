@@ -110,13 +110,13 @@
 #pragma mark-Location Tracker Delegates
 
 - (void)locationUpdate:(CLLocation *)location{
-    
+    [[assist shared]setlocationAllowed:YES];
     lat=location.coordinate.latitude;
     lon=location.coordinate.longitude;
     [getLocation.locationManager stopUpdatingLocation];;
 }
 -(void)locationError:(NSError *)error{
-    
+    [[assist shared]setlocationAllowed:NO];
 }
 - (void)enter_code
 {

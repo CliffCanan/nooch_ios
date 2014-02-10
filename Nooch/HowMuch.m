@@ -39,6 +39,14 @@
     }
     return self;
 }
+-(void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    if (!isAddRequest) {
+        isMutipleRequest=NO;
+        [arrRecipientsForRequest removeAllObjects];
+        arrRecipientsForRequest=nil;
+    }
+}
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self.amount becomeFirstResponder];
@@ -93,7 +101,7 @@
     }
     
     [self.view addSubview:to_label];
-    if (![self.receiver valueForKey:@"nonuser"] &&  !isPayBack && !isEmailEntry) {
+    if (![self.receiver valueForKey:@"nonuser"] &&  !isPayBack && !isEmailEntry && !isUserByLocation) {
     UIButton*add=[[UIButton alloc]initWithFrame:CGRectMake(260, 15, 30, 30)];
     [add setImage:[UIImage imageNamed:@"add-icon-blue.png"] forState:UIControlStateNormal];
     [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];
@@ -211,6 +219,7 @@
 #pragma mark- Request Multiple case
 -(void)addRecipient:(id)sender{
     isMutipleRequest=YES;
+    isAddRequest=YES;
     if (!arrRecipientsForRequest) {
           arrRecipientsForRequest=[[NSMutableArray alloc] init];
         [arrRecipientsForRequest addObject:self.receiver];
@@ -381,6 +390,7 @@
 }
 - (void) confirm_request
 {
+    isAddRequest=YES;
     if ([[self.amount text] length] < 3) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Amount" message:@"Please enter a valid amount" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
@@ -503,7 +513,7 @@
     [self cancel_photo];
     
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
-    chosenImage = [chosenImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(300, 300) interpolationQuality:kCGInterpolationMedium];
+    chosenImage = [chosenImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(300, 200) interpolationQuality:kCGInterpolationMedium];
 
     [self.camera setStyleId:@"howmuch_camera_attached"];
     [[assist shared]setTranferImage:chosenImage];

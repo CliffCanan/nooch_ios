@@ -10,6 +10,7 @@
 #import <Pixate/Pixate.h>
 #import "serve.h"
 #import "UIImageView+WebCache.h"
+#import "HowMuch.h"
 @interface userlocation ()<serveD>
 @property(nonatomic,strong) UITableView *usersTable;
 @property(nonatomic,strong) NSMutableArray *users;
@@ -130,6 +131,18 @@
     
     return cell;
 }
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *receiver =  [self.users objectAtIndex:indexPath.row];
+            HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
+        
+        [self.navigationController pushViewController:how_much animated:YES];
+        
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+   
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

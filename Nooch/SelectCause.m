@@ -173,7 +173,7 @@
 //        else
 //        {
             //   cell.detailTextLabel.text=@"";
-             textLabel.text=[NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
+             textLabel.text=[NSString stringWithFormat:@"%@",[[dict objectForKey:@"OrganizationName"] capitalizedString]];
             [pic setImageWithURL:[NSURL URLWithString:[dict valueForKey:@"PhotoIcon"]]
                 placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
         //}
@@ -186,7 +186,7 @@
     
     
     dict = [causesArr objectAtIndex:indexPath.row];
-    textLabel.text=[NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
+    textLabel.text=[NSString stringWithFormat:@"%@",[[dict objectForKey:@"OrganizationName"] capitalizedString]];
     //cell.textLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
     if (indexPath.row<[FeaturedcausesArr count]) {
         // cell.detailTextLabel.textColor=[UIColor blackColor];

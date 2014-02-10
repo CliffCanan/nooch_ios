@@ -11,6 +11,7 @@
 #import "serve.h"
 BOOL isPayBack;
 BOOL isEmailEntry;
+BOOL isUserByLocation;
 @interface HowMuch : UIViewController<UITextFieldDelegate,serveD,UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 - (id)initWithReceiver:(NSDictionary *)receiver;

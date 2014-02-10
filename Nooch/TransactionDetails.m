@@ -42,16 +42,24 @@
     
     UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:act];
     [self.navigationItem setRightBarButtonItem:funds];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
+    [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
+    UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
+    [actv startAnimating];
+    [blankView addSubview:actv];
+    [self .view addSubview:blankView];
+    [self.view bringSubviewToFront:blankView];
+        serve *serveOBJ=[serve new ];
     
-    //    serve *serveOBJ=[serve new ];
-    //
-    //    serveOBJ.tagName=@"tranDetail";
-    //
-    //    [serveOBJ setDelegate:self];
-    //
-    //    [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"transactionId"]];
+        serveOBJ.tagName=@"tranDetail";
     
-    NSLog(@"trans details: %@",self.trans);
+        [serveOBJ setDelegate:self];
+    
+        [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
+    
+    //NSLog(@"trans details: %@",self.trans);
     
 	// Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"Transfer Details"];
@@ -124,7 +132,7 @@
          
     }
     else
-         [other_party setText:[self.trans objectForKey:@"Name"]];
+         [other_party setText:[[self.trans objectForKey:@"Name"] capitalizedString]];
 
     [self.view addSubview:other_party];
     
@@ -177,7 +185,7 @@
     {
         memo.text=@"";
     }
-    NSLog(@"asadfasdfasf: %@",[self.trans valueForKey:@"Memo"]);
+   
     memo.numberOfLines=2;
     [memo setStyleClass:@"details_label_memo"];
     [memo setStyleClass:@"blue_text"];
@@ -257,60 +265,60 @@
     
     [status setStyleClass:@"green_text"];
     [self.view addSubview:status];
-    double lat = [[self.trans objectForKey:@"Latitude"] floatValue];
-    double lon = [[self.trans objectForKey:@"Longitude"] floatValue];
-    
-    
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:lat
-                                                            longitude:lon
-                                                                 zoom:11];
-    UIImageView*imgTran;
-    if (![[self.trans valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Picture"]!=NULL) {
-        NSArray* bytedata = [self.trans valueForKey:@"Picture"];
-        unsigned c = bytedata.count;
-        uint8_t *bytes = malloc(sizeof(*bytes) * c);
-        
-        unsigned i;
-        for (i = 0; i < c; i++)
-        {
-            NSString *str = [bytedata objectAtIndex:i];
-            int byte = [str intValue];
-            bytes[i] = (uint8_t)byte;
-        }
-        
-        NSData *datos = [NSData dataWithBytes:bytes length:c];
-        
-        imgTran=[[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
-        [imgTran setImage:[UIImage imageWithData:datos]];
-        
-        mapView_ = [GMSMapView mapWithFrame:CGRectMake(165, 240, 150, 160) camera:camera];
-    }
-    else
-        mapView_ = [GMSMapView mapWithFrame:CGRectMake(-1, 240, 322, 160) camera:camera];
-    
-    mapView_.myLocationEnabled = YES;
-    //mapView_.layer.borderWidth = 1;
-    if ([[assist shared]islocationAllowed]) {
-        
-        [self.view addSubview:mapView_];
-        if (![[self.trans valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Picture"]!=NULL) {
-            
-            [self.view addSubview:imgTran];
-        }
-    }
-    else
-    {
-        if (![[self.trans valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Picture"]!=NULL) {
-            imgTran.frame=CGRectMake(5, 240, 310, 160);
-            
-            [self.view addSubview:imgTran];
-        }
-    }
-    // Creates a marker in the center of the map.
-    GMSMarker *marker = [[GMSMarker alloc] init];
-    marker.position = CLLocationCoordinate2DMake(lat, lon);
-    
-    marker.map = mapView_;
+//    double lat = [[self.trans objectForKey:@"Latitude"] floatValue];
+//    double lon = [[self.trans objectForKey:@"Longitude"] floatValue];
+//    
+//    
+//    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:lat
+//                                                            longitude:lon
+//                                                                 zoom:11];
+//    UIImageView*imgTran;
+//    if (![[self.trans valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Picture"]!=NULL) {
+//        NSArray* bytedata = [self.trans valueForKey:@"Picture"];
+//        unsigned c = bytedata.count;
+//        uint8_t *bytes = malloc(sizeof(*bytes) * c);
+//        
+//        unsigned i;
+//        for (i = 0; i < c; i++)
+//        {
+//            NSString *str = [bytedata objectAtIndex:i];
+//            int byte = [str intValue];
+//            bytes[i] = (uint8_t)byte;
+//        }
+//        
+//        NSData *datos = [NSData dataWithBytes:bytes length:c];
+//        
+//        imgTran=[[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
+//        [imgTran setImage:[UIImage imageWithData:datos]];
+//        
+//        mapView_ = [GMSMapView mapWithFrame:CGRectMake(165, 240, 150, 160) camera:camera];
+//    }
+//    else
+//        mapView_ = [GMSMapView mapWithFrame:CGRectMake(-1, 240, 322, 160) camera:camera];
+//    
+//    mapView_.myLocationEnabled = YES;
+//    //mapView_.layer.borderWidth = 1;
+//    if ([[assist shared]islocationAllowed]) {
+//        
+//        [self.view addSubview:mapView_];
+//        if (![[self.trans valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Picture"]!=NULL) {
+//            
+//            [self.view addSubview:imgTran];
+//        }
+//    }
+//    else
+//    {
+//        if (![[self.trans valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Picture"]!=NULL) {
+//            imgTran.frame=CGRectMake(5, 240, 310, 160);
+//            
+//            [self.view addSubview:imgTran];
+//        }
+//    }
+//    // Creates a marker in the center of the map.
+//    GMSMarker *marker = [[GMSMarker alloc] init];
+//    marker.position = CLLocationCoordinate2DMake(lat, lon);
+//    
+//    marker.map = mapView_;
     if(![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"] && ![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
     {
         if (false) {
@@ -413,6 +421,11 @@
                      [cancel setTitle:@"Cancelled" forState:UIControlStateNormal];
                     [cancel setEnabled:NO];
                 }
+                else if ([[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
+                    [cancel setTitle:@"Rejected" forState:UIControlStateNormal];
+                    [cancel setEnabled:NO];
+                   
+                }
                 else{
                 [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
                     [cancel setEnabled:YES];
@@ -453,25 +466,26 @@
             [self.view addSubview:twit];
             [self.view addSubview:twit_text];
             if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Transfer"]&& [[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
+                
+
                  [self.view addSubview:disp];
                  [self.view addSubview:disp_text];
             }
             else{
-               [disp removeFromSuperview];
+                [pay_back setStyleId:@"details_fb_donate"];
+                [fb setStyleId:@"details_twit_donate"];
+                [twit setStyleId:@"details_disp_donate"];
+                [pay_text setFrame:pay_back.frame];
+                [fb_text setFrame:fb.frame];
+                [twit_text setFrame:twit.frame];
+                 [disp removeFromSuperview];
                  [disp_text removeFromSuperview];
             }
            
         }
     }
     
-    serve *info = [serve new];
-    info.Delegate = self;
-    info.tagName = @"info";
     
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    [info getDetails:[defaults valueForKey:@"MemberId"]
-     ];
-
 }
 
 
@@ -561,6 +575,7 @@
     isPayBack=YES;
     isMutipleRequest=NO;
     isEmailEntry=NO;
+    NSLog(@"%@",self.trans);
     HowMuch *payback = [[HowMuch alloc] initWithReceiver:self.trans];
     [self.navigationController pushViewController:payback animated:YES];
 }
@@ -720,6 +735,75 @@
 {
     
     //
+    if ([tagName isEqualToString:@"tranDetail"]) {
+        [blankView removeFromSuperview];
+        NSError *error;
+        
+        NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        self.trans=[loginResult mutableCopy];
+        double lat = [[self.trans objectForKey:@"Latitude"] floatValue];
+        double lon = [[self.trans objectForKey:@"Longitude"] floatValue];
+        
+        
+        GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:lat
+                                                                longitude:lon
+                                                                     zoom:11];
+        UIImageView*imgTran;
+        if (![[self.trans valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Picture"]!=NULL) {
+            NSArray* bytedata = [self.trans valueForKey:@"Picture"];
+            unsigned c = bytedata.count;
+            uint8_t *bytes = malloc(sizeof(*bytes) * c);
+            
+            unsigned i;
+            for (i = 0; i < c; i++)
+            {
+                NSString *str = [bytedata objectAtIndex:i];
+                int byte = [str intValue];
+                bytes[i] = (uint8_t)byte;
+            }
+            
+            NSData *datos = [NSData dataWithBytes:bytes length:c];
+            
+            imgTran=[[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
+            [imgTran setImage:[UIImage imageWithData:datos]];
+            
+            mapView_ = [GMSMapView mapWithFrame:CGRectMake(165, 240, 150, 160) camera:camera];
+        }
+        else
+            mapView_ = [GMSMapView mapWithFrame:CGRectMake(-1, 240, 322, 160) camera:camera];
+        
+        mapView_.myLocationEnabled = YES;
+        //mapView_.layer.borderWidth = 1;
+        if ([[assist shared]islocationAllowed]) {
+            
+            [self.view addSubview:mapView_];
+            if (![[self.trans valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Picture"]!=NULL) {
+                
+                [self.view addSubview:imgTran];
+            }
+        }
+        else
+        {
+            if (![[self.trans valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Picture"]!=NULL) {
+                imgTran.frame=CGRectMake(5, 240, 310, 160);
+                
+                [self.view addSubview:imgTran];
+            }
+        }
+        // Creates a marker in the center of the map.
+        GMSMarker *marker = [[GMSMarker alloc] init];
+        marker.position = CLLocationCoordinate2DMake(lat, lon);
+        
+        marker.map = mapView_;
+        serve *info = [serve new];
+        info.Delegate = self;
+        info.tagName = @"info";
+        
+        NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+        [info getDetails:[defaults valueForKey:@"MemberId"]
+         ];
+
+    }
     if ([tagName isEqualToString:@"reject"]) {
         NSError *error;
         

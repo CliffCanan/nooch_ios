@@ -15,6 +15,7 @@
 #import "ReEnterPin.h"
 #import "ProfileInfo.h"
 #import "NewBank.h"
+
 #define kButtonType     @"transaction_type"
 #define kButtonTitle    @"button_title"
 #define kButtonColor    @"button_background_color"
@@ -206,7 +207,7 @@
     
     
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-    [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(updateLoader) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(updateLoader) userInfo:nil repeats:YES];
     
     
     if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]]) {
@@ -242,11 +243,14 @@
 
 -(void)showMenu
 {
+    
+    
     [[assist shared]setneedsReload:NO];
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
 -(void)showFunds
 {
+  
     [self.slidingViewController anchorTopViewTo:ECLeft];
 }
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

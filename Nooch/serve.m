@@ -307,11 +307,8 @@ NSString *amnt;
 }
 -(void)login:(NSString*)email password:(NSString*)pass remember:(BOOL)isRem lat:(float)lat lon:(float)lng uid:(NSString*)strId {
     
-    //    locationManager = [[CLLocationManager alloc] init];
-    //    locationManager.delegate = self;
-    //    locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
-    //    locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
-    //    [locationManager startUpdatingLocation];
+    [[assist shared]setBankVerified:NO];
+    [[assist shared]setSusPended:NO];
     ServiceType=@"Login";
     self.responseData = [[NSMutableData alloc] init];
     if (isRem) {
@@ -1665,7 +1662,7 @@ NSString *amnt;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     NSString * memId = [defaults objectForKey:@"MemberId"];
     
-    NSString *urlString = [NSString stringWithFormat:@"%@/GetLocationSearch?memberId=%@&accessToken=%@&Radius=%@",ServerUrl,memId,[defaults valueForKey:@"OAuthToken"],radius];
+    NSString *urlString = [NSString stringWithFormat:@"%@/GetLocationSearch?MemberId=%@&accessToken=%@&Radius=%@",ServerUrl,memId,[defaults valueForKey:@"OAuthToken"],radius];
     
     NSURL *url = [NSURL URLWithString:urlString];
     

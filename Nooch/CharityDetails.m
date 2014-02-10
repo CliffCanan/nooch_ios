@@ -37,7 +37,7 @@
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     // self.title=[self.charity valueForKey:@"OrganizationName"];
-     [self.navigationItem setTitle:[self.charity valueForKey:@"OrganizationName"]];
+     [self.navigationItem setTitle:[[self.charity valueForKey:@"OrganizationName"] capitalizedString]];
     UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [balance setFrame:CGRectMake(0, 0, 60, 30)];
     if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {

@@ -30,9 +30,10 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if (isMutipleRequest) {
+    if (isMutipleRequest && isAddRequest) {
         [self.navigationItem setRightBarButtonItem:Nil];
         UIButton *Done = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        Done.frame=CGRectMake(277, 25, 80, 35);
         [Done setStyleId:@"icon_RequestMultiple"];
         [Done setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [Done setTitle:@"Done" forState:UIControlStateNormal];
@@ -46,6 +47,18 @@
 
 
     }
+    else {
+        isUserByLocation=NO;
+         [self.navigationItem setRightBarButtonItem:Nil];
+        UIButton *location = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [location setStyleId:@"icon_location"];
+        [location addTarget:self action:@selector(locationSearch:) forControlEvents:UIControlEventTouchUpInside];
+        isRecentList=YES;
+        isMutipleRequest=NO;
+        UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
+        [self.navigationItem setRightBarButtonItem:loc];
+         [self.contacts reloadData];
+    }
     
 }
 -(void)DoneEditing_RequestMultiple:(id)sender{
@@ -55,6 +68,7 @@
         [alert show];
         return;
     }
+    isAddRequest=NO;
     HowMuch *how_much = [[HowMuch alloc] init];
     
     [self.navigationController pushViewController:how_much animated:YES];
@@ -69,6 +83,8 @@
     isMutipleRequest=NO;
     isPayBack=NO;
     isEmailEntry=NO;
+    isAddRequest=NO;
+    isUserByLocation=NO;
     arrRecipientsForRequest=nil;
     //    //clear Image cache
     //    SDImageCache *imageCache = [SDImageCache sharedImageCache];
@@ -307,6 +323,7 @@
 
 #pragma mark-Location Search
 -(void)locationSearch:(id)sender{
+     isUserByLocation=YES;
     userlocation*loc=[userlocation new];
     [self.navigationController pushViewController:loc animated:YES];
 }

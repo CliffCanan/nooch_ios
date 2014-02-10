@@ -116,6 +116,14 @@
     [self.view addSubview:self.email_withdraw_requested]; [self.view addSubview:self.email_withdraw_submitted]; [self.view addSubview:self.push_withdraw_submitted];
     [self.view addSubview:self.email_deposit_requested]; [self.view addSubview:self.email_deposit_completed]; [self.view addSubview:self.push_deposit_completed];
     [self.view addSubview:self.email_failure]; [self.view addSubview:self.push_failure];
+    blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
+    [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
+    UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
+    [actv startAnimating];
+    [blankView addSubview:actv];
+    [self .view addSubview:blankView];
+    [self.view bringSubviewToFront:blankView];
     serve*serveOBJ=[serve new];
     [serveOBJ setDelegate:self];
     serveOBJ.tagName=@"getSettings";
@@ -210,7 +218,7 @@
     else
     {
         
-        transactionInput1=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[self.email_received isOn]?@"1":@"0",@"EmailTransferReceived",[self.email_sent isOn]?@"1":@"0",@"EmailTransferSent",[self.email_failure isOn]?@"1":@"0",@"EmailTransferAttemptFailure",[self.email_unclaimed isOn]?@"1":@"0",@"TransferUnclaimed", [self.email_withdraw_requested isOn]?@"1":@"0",@"TransferUnclaimed",[self.email_withdraw_submitted isOn]?@"1":@"0",@"NoochToBankCompleted",[self.email_deposit_completed isOn]?@"1":@"0",@"BankToNoochCompleted",[self.email_deposit_requested isOn]?@"1":@"0",@"BankToNoochRequested",nil];
+        transactionInput1=[NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[self.email_received isOn]?@"1":@"0",@"EmailTransferReceived",[self.email_sent isOn]?@"1":@"0",@"EmailTransferSent",[self.email_failure isOn]?@"1":@"0",@"EmailTransferAttemptFailure",[self.email_unclaimed isOn]?@"1":@"0",@"TransferUnclaimed", [self.email_withdraw_requested isOn]?@"1":@"0",@"NoochToBankRequested",[self.email_withdraw_submitted isOn]?@"1":@"0",@"NoochToBankCompleted",[self.email_deposit_completed isOn]?@"1":@"0",@"BankToNoochCompleted",[self.email_deposit_requested isOn]?@"1":@"0",@"BankToNoochRequested",nil];
     }
     serve*serveOBJ=[serve new];
     [serveOBJ setDelegate:self];
@@ -305,7 +313,7 @@
                    options:kNilOptions
                    error:&error];
         NSLog(@"%@",dictInput);
-        
+        [blankView removeFromSuperview];
         
         if ([[dictInput objectForKey:@"BankToNooch"]boolValue]) {
             [self.push_deposit_completed setOn:YES];

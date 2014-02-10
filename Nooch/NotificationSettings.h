@@ -15,5 +15,6 @@
     NSDictionary*dictInput;
     NSDictionary*dictSettings;
     NSString*servicePath;
+    UIView*blankView;
 }
 @end

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "serve.h"
 
-@interface ReferralCode : UIViewController<serveD,UITextFieldDelegate,serveD>
+@interface ReferralCode : UIViewController<serveD,UITextFieldDelegate>
 {
     NSString*getEncryptedPassword;
     float lat,lon;
