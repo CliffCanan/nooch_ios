@@ -1074,9 +1074,12 @@
     if (![transactionId isKindOfClass:[NSNull class]] && transactionId!=NULL) {
         [transactionInputTransfer setObject:transactionId forKey:@"TransactionId"];
     }
-    [transactionInputTransfer setObject:[self.receiver valueForKey:@"FirstName"] forKey:@"FirstName"];
-    [transactionInputTransfer setObject:[self.receiver valueForKey:@"LastName"] forKey:@"LastName"];
-    self.trans = [transactionInputTransfer copy];
+    if ([self.receiver valueForKey:@"FirstName"]!=NULL || [self.receiver valueForKey:@"LastName"]!=NULL) {
+        [transactionInputTransfer setObject:[self.receiver valueForKey:@"FirstName"] forKey:@"FirstName"];
+        [transactionInputTransfer setObject:[self.receiver valueForKey:@"LastName"] forKey:@"LastName"];
+
+    }
+        self.trans = [transactionInputTransfer copy];
    
     
     

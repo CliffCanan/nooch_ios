@@ -159,6 +159,12 @@
         [alert show];
         return;
     }
+    if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+        [alert setTag:148];
+        [alert show];
+        return;
+    }
     if ([ArrBankAccountCollection count]==2) {
         
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"NoochMoney" message:@"You can't add more than  2 Bank Accounts " delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
@@ -168,13 +174,9 @@
     NewBank *add_bank = [NewBank new];
     [nav_ctrl pushViewController:add_bank animated:NO];
     [self.slidingViewController resetTopView];
-    /* if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-     UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
-     [alert setTag:148];
-     [alert show];
-     return;
-     }
-     */
+    
+    
+    
     //credit cards are disabled, but if ever readded the button is after Bank Account
     //UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Add Funding Source" message:@"Which type of account would you like to add?" //delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Bank Account", nil];
     //[av setTag:2];
@@ -666,12 +668,6 @@
                 return;
             }
             
-            /* if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
-             [alert setTag:147];
-             [alert show];
-             return;
-             }*/
             
             if ([ArrBankAccountCollection count] == 0) {
                 
@@ -729,12 +725,6 @@
                 return;
             }
             
-            /*   if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
-             [alert setTag:147];
-             [alert show];
-             return;
-             }*/
             
             if ([ArrBankAccountCollection count] == 0) {
                 
@@ -1426,19 +1416,12 @@
 - (void)changeSwitch:(UISwitch*)on_off1{
     int switch_tag=[on_off1 tag];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    if ([ArrBankAccountCollection count]==0)
-    {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Add and Verify Your Bank Account To Enable Auto Cash Out" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil] ;
+    if ([[assist shared]getSuspended]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         [on_off setOn:NO];
         return;
         
-    }
-    if (![[assist shared]isBankVerified]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Verify Your Bank Account To Enable Auto Cash Out" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil] ;
-        [alert show];
-        [on_off setOn:NO];
-        return;
     }
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
         
@@ -1455,6 +1438,21 @@
         [on_off setOn:NO];
         return;
     }
+    if ([ArrBankAccountCollection count]==0)
+    {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Add and Verify Your Bank Account To Enable Auto Cash Out" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil] ;
+        [alert show];
+        [on_off setOn:NO];
+        return;
+        
+    }
+    if (![[assist shared]isBankVerified]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Verify Your Bank Account To Enable Auto Cash Out" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil] ;
+        [alert show];
+        [on_off setOn:NO];
+        return;
+    }
+    
     
     if (switch_tag==12000) {
         

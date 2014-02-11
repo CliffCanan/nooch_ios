@@ -243,8 +243,6 @@
 
 -(void)showMenu
 {
-    
-    
     [[assist shared]setneedsReload:NO];
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
@@ -294,7 +292,7 @@
         [alert show];
         return;
     }
-    /*
+    
      if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
      UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
      [alert setTag:148];
@@ -302,7 +300,7 @@
      return;
      }
      
-     */
+    
     if ( ![[[NSUserDefaults standardUserDefaults]
             objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
         UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
@@ -316,7 +314,7 @@
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         
-        //return;
+        return;
     }
     
     

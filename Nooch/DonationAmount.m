@@ -212,7 +212,7 @@
         [UIView commitAnimations];
         
         [dedicateView removeFromSuperview];
-         [to_label setText:[NSString stringWithFormat:@"%@",[self.receiver valueForKey:@"OrganizationName"]]];
+         [to_label setText:[NSString stringWithFormat:@"%@",[[self.receiver valueForKey:@"OrganizationName"] capitalizedString]]];
     }
     else{
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Enter Dedication" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];

@@ -101,9 +101,7 @@
         self.password.text=newchangedPass;
         
     }
-    
-    
-    
+   
     if ([[user objectForKey:@"Photo"] length]>0 && [user objectForKey:@"Photo"]!=nil && !isPhotoUpdate) {
         
         [picture setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
@@ -655,6 +653,15 @@
 - (void) save_changes
 
 {
+    [self.name resignFirstResponder];
+    [self.email resignFirstResponder];
+    [self.recovery_email resignFirstResponder];
+    [self.password resignFirstResponder];
+    [self.phone resignFirstResponder];
+    [self.address_one resignFirstResponder];
+    [self.address_two resignFirstResponder];
+    [self.city resignFirstResponder];
+    [self.zip resignFirstResponder ];
     
     [UIView beginAnimations:@"bucketsOff" context:nil];
     
@@ -729,6 +736,9 @@
         [av show];
         
     }
+    
+    [self.save setEnabled:NO];
+    [self.save setUserInteractionEnabled:NO];
     
     NSLog(@"%@",self.SavePhoneNumber);
     
@@ -1212,13 +1222,16 @@
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info{
     
     UIImage *image=[info objectForKey:UIImagePickerControllerOriginalImage];
-    image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(300, 300) interpolationQuality:kCGInterpolationMedium];
+    image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(150,150) interpolationQuality:kCGInterpolationMedium];
     isPhotoUpdate=YES;
     
     [picture setImage:image];
     
     [[assist shared]setTranferImage:image];
-    
+    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    [imageCache clearMemory];
+    [imageCache clearDisk];
+    [imageCache cleanDisk];
     [self dismissViewControllerAnimated:YES completion:Nil];
     
     
@@ -1477,10 +1490,10 @@
             [defaults setObject:@"YES" forKey:@"ProfileComplete"];
             
             [defaults synchronize];
-            SDImageCache *imageCache = [SDImageCache sharedImageCache];
-            [imageCache clearMemory];
-            [imageCache clearDisk];
-            [imageCache cleanDisk];
+            [self.save setEnabled:YES];
+            [self.save setUserInteractionEnabled:YES];
+            
+           
             if ([[user objectForKey:@"Photo"] length]>0 && [user objectForKey:@"Photo"]!=nil && !isPhotoUpdate) {
                 
                 [picture setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]

@@ -689,8 +689,9 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-     NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];
+    
     if (isMutipleRequest) {
+         NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];
         
         if ([arrRecipientsForRequest containsObject:receiver]) {
             [arrRecipientsForRequest removeObject:receiver];
@@ -706,7 +707,7 @@
         return;
     }
     if (searching) {
-       
+        NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
         
         [self.navigationController pushViewController:how_much animated:YES];
@@ -715,7 +716,7 @@
         
     }
     else{
-       
+        NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
         
         [self.navigationController pushViewController:how_much animated:YES];

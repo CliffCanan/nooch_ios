@@ -218,16 +218,13 @@
         [alert show];
         return;
     }
-    /* if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+     if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
      UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
      
      [alert show];
      return;
-     }*/
-    //IsVerifiedPhone
-    //[user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"]
-    
-    
+     }
+       
     
     if ( ![[[NSUserDefaults standardUserDefaults]
             objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {

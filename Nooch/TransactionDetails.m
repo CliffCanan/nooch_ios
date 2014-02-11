@@ -43,23 +43,7 @@
     UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:act];
     [self.navigationItem setRightBarButtonItem:funds];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
-    [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
-    UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
-    [actv startAnimating];
-    [blankView addSubview:actv];
-    [self .view addSubview:blankView];
-    [self.view bringSubviewToFront:blankView];
-        serve *serveOBJ=[serve new ];
-    
-        serveOBJ.tagName=@"tranDetail";
-    
-        [serveOBJ setDelegate:self];
-    
-        [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
-    
-    //NSLog(@"trans details: %@",self.trans);
+       //NSLog(@"trans details: %@",self.trans);
     
 	// Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"Transfer Details"];
@@ -484,14 +468,77 @@
            
         }
     }
+    blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
+    [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
+    UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
+    [actv startAnimating];
+    [blankView addSubview:actv];
+    [self .view addSubview:blankView];
+    [self.view bringSubviewToFront:blankView];
+    serve *serveOBJ=[serve new ];
     
+    serveOBJ.tagName=@"tranDetail";
     
-}
+    [serveOBJ setDelegate:self];
+    
+    [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
+    }
 
 
 - (void) fulfill_request
 {
-   
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    
+    if ([[assist shared]getSuspended]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        return;
+        
+    }
+    
+    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
+        
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        return;
+        
+        
+    }
+    
+    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+        [alert setTag:147];
+        [alert show];
+        return;
+    }
+    /* if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+     UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
+     
+     [alert show];
+     return;
+     }*/
+    //IsVerifiedPhone
+    //[user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"]
+    
+    
+    
+    if ( ![[[NSUserDefaults standardUserDefaults]
+            objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
+        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        
+        [set show];
+        return;
+    }
+    
+    
+    if ( ![[assist shared]isBankVerified]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        
+        return;
+    }
+
     NSMutableDictionary *input = [self.trans mutableCopy];
     [input setValue:@"accept" forKey:@"response"];
     NSLog(@"%@",input);
