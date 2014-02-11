@@ -1299,6 +1299,7 @@
 		top				: 430px;
 		left			: 20px;
 		background-image: linear-gradient(#7fd034, #6ab029);
+        border-radius		: 3px;
 	}
 	
 	/**************************************/  
@@ -1421,13 +1422,19 @@
 		text-align       	: center;
 		text-transform		: uppercase;
 		color 				: #ffffff;
-		border-bottom-right-radius	: 0px;
+		border-bottom-right-radius	: 3px;
 		border-bottom-left-radius	: 0px;
 		border-top-right-radius		: 0px;
 		border-top-left-radius		: 3px;
 	}
   
-	#nonprofit_donatebutton:disabled {   }
+	#nonprofit_donatebutton:disabled {  
+        border-bottom-right-radius	: 3px;
+		border-bottom-left-radius	: 0px;
+		border-top-right-radius		: 0px;
+		border-top-left-radius		: 3px;
+        background-image: linear-gradient(#c0c2c4, #b1b3b6);
+    }
   
 	/**  Dedication Text Box  **/
 	#nonprofit_dedication_entrybox {

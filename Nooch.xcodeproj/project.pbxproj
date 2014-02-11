@@ -127,6 +127,7 @@
 		01C83E8417FB1606009CABBF /* NavControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C83E8317FB1606009CABBF /* NavControl.m */; };
 		01C949DB1888852A000FC11E /* nooch-icon.svg in Resources */ = {isa = PBXBuildFile; fileRef = 01C949DA1888852A000FC11E /* nooch-icon.svg */; };
 		01CABC5518A2BD9500BBB935 /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CABC5418A2BD9500BBB935 /* ECSlidingViewController.m */; };
+		01CABC5718A43B3200BBB935 /* green-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CABC5618A43B3200BBB935 /* green-arrow.png */; };
 		16E4B1B0187053F20099D075 /* NSData+GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E4B194187053F20099D075 /* NSData+GIF.m */; };
 		16E4B1B1187053F20099D075 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E4B196187053F20099D075 /* SDImageCache.m */; };
 		16E4B1B2187053F20099D075 /* SDWebImageCompat.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E4B198187053F20099D075 /* SDWebImageCompat.m */; };
@@ -416,6 +417,7 @@
 		01C949DA1888852A000FC11E /* nooch-icon.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "nooch-icon.svg"; sourceTree = "<group>"; };
 		01CABC5318A2BD9500BBB935 /* ECSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECSlidingViewController.h; sourceTree = "<group>"; };
 		01CABC5418A2BD9500BBB935 /* ECSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECSlidingViewController.m; sourceTree = "<group>"; };
+		01CABC5618A43B3200BBB935 /* green-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green-arrow.png"; sourceTree = "<group>"; };
 		16E4B193187053F20099D075 /* NSData+GIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+GIF.h"; sourceTree = "<group>"; };
 		16E4B194187053F20099D075 /* NSData+GIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GIF.m"; sourceTree = "<group>"; };
 		16E4B195187053F20099D075 /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
@@ -882,6 +884,7 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				01CABC5618A43B3200BBB935 /* green-arrow.png */,
 				84443CA618A0BD9E0097F6C0 /* empty-arrow.png */,
 				843B29D31888EC3B00DA04C8 /* back-arrow-blue.png */,
 				01C949DA1888852A000FC11E /* nooch-icon.svg */,
@@ -1682,6 +1685,7 @@
 				01C26DFD1843E85C005179B7 /* Preston.png in Resources */,
 				84C3EF18187D0E82004687F6 /* mapBack.png in Resources */,
 				01C26DE41843C56C005179B7 /* Clock_Icon.png in Resources */,
+				01CABC5718A43B3200BBB935 /* green-arrow.png in Resources */,
 				010677391860F67A00E11F3D /* check-icon-small.png in Resources */,
 				014C4336185B9A4C00956A84 /* quicktap_25.png in Resources */,
 				01C26E011843E88A005179B7 /* 4KforCancer.png in Resources */,

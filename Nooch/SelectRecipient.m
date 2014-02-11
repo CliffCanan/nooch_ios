@@ -624,7 +624,7 @@
     if (searching) {
         //Nooch User
         npic.hidden=NO;
-        [npic setFrame:CGRectMake(250,15, 34, 40)];
+        [npic setFrame:CGRectMake(260,25, 20, 20)];
         [npic setImage:[UIImage imageNamed:@"n_Icon.png"]];
         
         
@@ -635,15 +635,15 @@
         pic.hidden=NO;
         cell.indentationWidth = 70;
         [pic setFrame:CGRectMake(20, 5, 60, 60)];
-        pic.layer.cornerRadius = 30; pic.layer.borderColor = kNoochBlue.CGColor; pic.layer.borderWidth = 1;
-        
+        pic.layer.cornerRadius = 30; pic.layer.borderWidth = 1;
+        pic.layer.borderColor = [Helpers hexColor:@"6D6E71"].CGColor;
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",info[@"FirstName"],info[@"LastName"]];
     }
     else if(isRecentList){
         
         //Recent List
         
-        [npic setFrame:CGRectMake(250,15, 34, 40)];
+        [npic setFrame:CGRectMake(260,25, 20, 20)];
         [npic setImage:[UIImage imageNamed:@"n_Icon.png"]];
         NSDictionary *info = [self.recents objectAtIndex:indexPath.row];
         NSLog(@"%@",info);
@@ -652,7 +652,7 @@
         pic.hidden=NO;
         cell.indentationWidth = 70;
         [pic setFrame:CGRectMake(20, 5, 60, 60)];
-        pic.layer.cornerRadius = 30; pic.layer.borderColor = kNoochBlue.CGColor; pic.layer.borderWidth = 1;
+        pic.layer.cornerRadius = 30; pic.layer.borderColor = [Helpers hexColor:@"6D6E71"].CGColor; pic.layer.borderWidth = 1;
         [cell setIndentationLevel:1];
         cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",info[@"FirstName"],info[@"LastName"]];
         
