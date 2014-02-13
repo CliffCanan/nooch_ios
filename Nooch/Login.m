@@ -266,6 +266,7 @@
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"firstName"];
         // NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
         NSString *udid=[[UIDevice currentDevice] uniqueDeviceIdentifier];
+        NSLog(@"%@",udid);
         [[assist shared]setlocationAllowed:YES];
         if ([self.stay_logged_in isOn]) {
             [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:YES lat:lat lon:lon uid:udid];

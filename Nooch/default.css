@@ -78,7 +78,11 @@
 			width			: 60px;
 			left			: 255px;
 		}
-        
+         #navbar_back {
+             height         :40px;
+			width			: 80px;
+			left			: 0px;
+		}
         #navbar_hamburger {
             background-image : url(HamburgerButton.png);
             width       :  43px;
@@ -2112,10 +2116,10 @@
 	 
 	/**  Amount of the Transfer on the right side of the row  **/
 	.history_transferamount {
-		width				: 70px;
+		width				: 75px;
 		height				: 19px;
 		top					: 14px;
-		left				: 245px;
+		left				: 240px;
 		font-family			: "Roboto";
 		font-weight         : regular;
 		font-size			: 17px;
@@ -2160,7 +2164,7 @@
 		font-weight         : regular;
 		font-size			: 12px;
 		text-align       	: left;
-		color 				: #FF0000;
+		color 				: #c72127;
 	}
 	 /**  Sets the other user's name to be bold for each row.  **/
 	.history_recipientname { 
@@ -2281,11 +2285,11 @@
 		font-family			: "Roboto";
 		font-weight         : regular;
 		font-size			: 18px;
-		text-align          : left;
+		text-align          : center;
 		color 				: #6d6e71;
 		width				: 280px;
-		left                : 70px;
-		height				: 30px;
+		left                : 20px;
+		height				: 60px;
 	}
     .details_label1 {
 		font-family			: "Roboto";
@@ -2309,7 +2313,18 @@
             height				: 50px;
         background-image	: linear-gradient(#7fd034, #6ab029);
 	}
-	
+	.details_button_center {
+    height				: 50px;
+		width			: 152px;
+		top				: 430px;
+		left			: 84px;
+        color 				: white;
+			border-radius		: 3px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 22px;
+        background-image	: linear-gradient(#F5003D, #D21937);
+	}
 	.details_button_right {
     height				: 50px;
 		width			: 152px;

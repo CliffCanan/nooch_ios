@@ -34,6 +34,8 @@ NSString *histSearching;
     BOOL islocationAllowed;
     BOOL isNeed;
     BOOL isUserSuspended;
+    NSMutableArray*arrRequestMultiple;
+    BOOL isMutipleRequest;
 }
 //@property(nonatomic,retain)NSTimer*timer;
 @property (nonatomic, retain) ACAccountStore *accountStore;
@@ -81,5 +83,9 @@ NSString *histSearching;
 -(void)setneedsReload:(BOOL)istrue;
 -(BOOL)getSuspended;
 -(void)setSusPended:(BOOL)istrue;
+-(NSMutableArray*)getArray;
+-(void)setArray:(NSMutableArray*)arr;
+-(BOOL)isRequestMultiple;
+-(void)setRequestMultiple:(BOOL)istrue;
 
 @end

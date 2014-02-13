@@ -740,9 +740,9 @@
     [self.save setEnabled:NO];
     [self.save setUserInteractionEnabled:NO];
     
-    NSLog(@"%@",self.SavePhoneNumber);
+    //NSLog(@"%@",self.SavePhoneNumber);
     
-    NSLog(@"%@",self.phone.text);
+   // NSLog(@"%@",self.phone.text);
     
     strPhoneNumber=self.phone.text;
     
@@ -939,7 +939,7 @@
     
     [transactionInput setObject:self.city.text forKey:@"City"];
     
-    NSLog(@"%d",[self.phone.text length]);
+   // NSLog(@"%d",[self.phone.text length]);
     
     //    if ([self.phone.text length]!=10)
     
@@ -1018,7 +1018,7 @@
         
     }
     
-    NSLog(@"%@",transactionInput);
+    //NSLog(@"%@",transactionInput);
     
     [spinner startAnimating];
     
@@ -1222,7 +1222,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info{
     
     UIImage *image=[info objectForKey:UIImagePickerControllerOriginalImage];
-    image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(150,150) interpolationQuality:kCGInterpolationMedium];
+    image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(120,120) interpolationQuality:kCGInterpolationMedium];
     isPhotoUpdate=YES;
     
     [picture setImage:image];
@@ -1368,7 +1368,7 @@
         
         userPass=self.password.text;
         
-        NSLog(@"%@",userPass);
+        //NSLog(@"%@",userPass);
         
         ResetPassword *pass_res = [ResetPassword new];
         
@@ -1452,7 +1452,7 @@
         
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         
-        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+       // NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
         [timer invalidate];
         // timer=nil;
         [nav_ctrl performSelector:@selector(disable)];
@@ -1479,7 +1479,7 @@
         
         NSDictionary *resultValue = [dictProfileinfo valueForKey:@"MySettingsResult"];
         
-        NSLog(@"resultValue is : %@", result);
+        //NSLog(@"resultValue is : %@", result);
         
         getEncryptionOldPassword= [dictProfileinfo objectForKey:@"Password"];
         
@@ -1564,7 +1564,7 @@
         
         
         
-        NSLog(@"%@",dictProfileinfo);
+        //NSLog(@"%@",dictProfileinfo);
         
         if (![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]]) {
             
@@ -1816,7 +1816,7 @@
         
         self.ServiceType=@"City";
         
-        NSLog(@"address%@",[sourceData objectForKey:@"Status"]);
+      //  NSLog(@"address%@",[sourceData objectForKey:@"Status"]);
         
         
         

@@ -13,7 +13,6 @@
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
 NSMutableArray*arrRecipientsForRequest;
-BOOL isMutipleRequest;
 BOOL isAddRequest;
 @interface SelectRecipient : UIViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate,ABPeoplePickerNavigationControllerDelegate>
 {

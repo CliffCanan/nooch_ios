@@ -226,7 +226,7 @@ NSString *amnt;
     
     self.responseData = [[NSMutableData alloc] init];
     NSLog(@"%@",[defaults valueForKey:@"OAuthToken"]);
-    requestmemid=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetMemberIdByUsername?name=%@",ServerUrl,username
+    requestmemid=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetMemberIdByUsername?userName=%@",ServerUrl,username
                                                                            ]]];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestmemid delegate:self];
     if (!connection)
@@ -1614,7 +1614,7 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 -(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len{
-    //histSafe=NO;
+    
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     responseData = [NSMutableData data];

@@ -81,7 +81,18 @@ static assist * _sharedInstance = nil;
 -(void)setneedsReload:(BOOL)istrue{
     isNeed=istrue;
 }
-
+-(NSMutableArray*)getArray{
+    return arrRequestMultiple;
+}
+-(void)setArray:(NSMutableArray*)arr{
+    arrRequestMultiple=[arr copy];
+}
+-(BOOL)isRequestMultiple{
+    return isMutipleRequest;
+}
+-(void)setRequestMultiple:(BOOL)istrue{
+    isMutipleRequest=istrue;
+}
 -(void)birth{/*{{{*/
     limit = NO; oldFilter = @""; needsUpdating = YES;
     sortedHist = [NSMutableArray new];
@@ -563,6 +574,9 @@ static assist * _sharedInstance = nil;
         NSLog(@"%@",loginResult);
         if ([loginResult valueForKey:@"Status"]!=Nil  && ![[loginResult valueForKey:@"Status"] isKindOfClass:[NSNull class]]&& [loginResult valueForKey:@"Status"] !=NULL) {
             [user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"];
+            if ([[loginResult valueForKey:@"Status"]isEqualToString:@"Active"]) {
+                [[assist shared]setSusPended:NO];
+            }
             NSString*url=[loginResult valueForKey:@"PhotoUrl"];
             
             [user setObject:[loginResult valueForKey:@"DateCreated"] forKey:@"DateCreated"];

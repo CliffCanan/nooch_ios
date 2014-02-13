@@ -44,7 +44,7 @@
     serve * ser = [serve new];
     ser.tagName=@"search";
     [ser setDelegate:self];
-    [ser getLocationBasedSearch:@"3000"];
+    [ser getLocationBasedSearch:@"2"];
 	// Do any additional setup after loading the view.
 }
 -(void)listen:(NSString *)result tagName:(NSString *)tagName {
@@ -118,7 +118,7 @@
     
     NSString * miles;
     if ([[temp objectForKey:@"Miles"] intValue]<1) {
-        miles = [NSString stringWithFormat:@"    %d feet",([[temp objectForKey:@"Miles"] intValue] * 100)];
+        miles = [NSString stringWithFormat:@"    %f feet",([[temp objectForKey:@"Miles"] floatValue] * 5280)];
     }
     else
     {

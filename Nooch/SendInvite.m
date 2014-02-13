@@ -126,7 +126,14 @@
     [email_label setText:@"Email"];
     [self.view addSubview:email_label];
     
-    
+    blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
+    [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
+    UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
+    [actv startAnimating];
+    [blankView addSubview:actv];
+    [self .view addSubview:blankView];
+    [self.view bringSubviewToFront:blankView];
     
     serve*serveOBJ=[serve new];
     serveOBJ.tagName=@"GetReffereduser";
@@ -185,6 +192,8 @@
     }
     
     else if ([tagName isEqualToString:@"ReferralCode"]) {
+        [blankView removeFromSuperview];
+        
         dictResponse=[NSJSONSerialization
                       JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                       options:kNilOptions

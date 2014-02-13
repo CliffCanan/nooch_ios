@@ -249,6 +249,7 @@
 		84443CAC18A0BD9E0097F6C0 /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 84443CA818A0BD9E0097F6C0 /* NSString+MD5Addition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		84443CAD18A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 84443CAA18A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		84443CB118A0BDF30097F6C0 /* RoundLoading.png in Resources */ = {isa = PBXBuildFile; fileRef = 84443CB018A0BDF30097F6C0 /* RoundLoading.png */; };
+		849F6E8E18AB6D7F0016CD89 /* backbtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 849F6E8D18AB6D7F0016CD89 /* backbtn.png */; };
 		84B65A73188542E9009A5205 /* NSString+ASBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B65A72188542E9009A5205 /* NSString+ASBase64.m */; };
 		84BD98721877F6E9008B6131 /* userlocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BD98711877F6E9008B6131 /* userlocation.m */; };
 		84BFD930187122DD001C0AAC /* Pixate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84BFD92F187122DD001C0AAC /* Pixate.framework */; };
@@ -658,6 +659,7 @@
 		84443CA918A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IdentifierAddition.h"; sourceTree = "<group>"; };
 		84443CAA18A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IdentifierAddition.m"; sourceTree = "<group>"; };
 		84443CB018A0BDF30097F6C0 /* RoundLoading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoundLoading.png; sourceTree = "<group>"; };
+		849F6E8D18AB6D7F0016CD89 /* backbtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backbtn.png; sourceTree = "<group>"; };
 		84B65A71188542E9009A5205 /* NSString+ASBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ASBase64.h"; sourceTree = "<group>"; };
 		84B65A72188542E9009A5205 /* NSString+ASBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ASBase64.m"; sourceTree = "<group>"; };
 		84BD98701877F6E9008B6131 /* userlocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = userlocation.h; sourceTree = "<group>"; };
@@ -1030,6 +1032,7 @@
 		16E4B1C0187054A80099D075 /* venturepact  */ = {
 			isa = PBXGroup;
 			children = (
+				849F6E8D18AB6D7F0016CD89 /* backbtn.png */,
 				841A3E0618A61491001DAAA2 /* UIImage-categories */,
 				84C3EF17187D0E82004687F6 /* mapBack.png */,
 				8420B395187AC4BF00A77E2D /* Black-pin.png */,
@@ -1697,6 +1700,7 @@
 				8420B39C187AC4BF00A77E2D /* blue-pin.png in Resources */,
 				01C26DE51843C56C005179B7 /* CreditCard_Icon.png in Resources */,
 				01C26DC31843BB22005179B7 /* Twitter.png in Resources */,
+				849F6E8E18AB6D7F0016CD89 /* backbtn.png in Resources */,
 				84BFD9321871270C001C0AAC /* cross_basic_yellow.png in Resources */,
 				0129D8E81815B10D00BEAC30 /* Brandon_blk.otf in Resources */,
 				16E4B1BF187054A50099D075 /* placeholder.jpg in Resources */,

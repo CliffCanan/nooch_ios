@@ -162,6 +162,9 @@
             
             
         }
+        [self.name resignFirstResponder];
+        [self.routing_number resignFirstResponder];
+        [self.account_number resignFirstResponder];
         blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
         [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
         UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -294,13 +297,15 @@
         [arr_digits addObject:[NSNumber numberWithInteger:num%10]];
         num=num/10;
     }
-    NSLog(@"all array %@",arr_digits);
+    
     
     //reversing the array
     NSArray *array2=[arr_digits mutableCopy];
     NSArray* reversed = [[array2 reverseObjectEnumerator] allObjects];
+    
     [arr_digits removeAllObjects];
     arr_digits =[reversed mutableCopy];
+    
     
     //performign the calculations
     int first_part = (3*([arr_digits[0] intValue] + [arr_digits[3] intValue] + [arr_digits[6] intValue]));
@@ -311,6 +316,7 @@
     
     //peforming modulous
     int modulous = fmod(first_part+second_part+third_part, 10);
+    
     //checking mod
     if (modulous == 0) {
         return YES;

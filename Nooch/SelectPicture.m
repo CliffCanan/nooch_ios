@@ -109,7 +109,7 @@
     
     
     UIImage *image=[info objectForKey:UIImagePickerControllerOriginalImage];
-    image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(150, 150) interpolationQuality:kCGInterpolationMedium];
+    image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(120, 120) interpolationQuality:kCGInterpolationMedium];
     [self.pic setImage:image];
     [[assist shared]setTranferImage:image];
     [self dismissViewControllerAnimated:YES completion:^{

@@ -31,5 +31,8 @@ NSString*listType;
     BOOL isMapOpen;
     NSArray*histArrayCommon;
     UIButton*exportHistory;
+    NSMutableArray*histTempCompleted;
+    NSMutableArray*histTempPending;
+    BOOL isLocalSearch;
 }
 @end

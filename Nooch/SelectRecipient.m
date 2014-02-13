@@ -30,7 +30,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if (isMutipleRequest && isAddRequest) {
+    if ([[assist shared] isRequestMultiple] && isAddRequest) {
         [self.navigationItem setRightBarButtonItem:Nil];
         UIButton *Done = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         Done.frame=CGRectMake(277, 25, 80, 35);
@@ -54,7 +54,8 @@
         [location setStyleId:@"icon_location"];
         [location addTarget:self action:@selector(locationSearch:) forControlEvents:UIControlEventTouchUpInside];
         isRecentList=YES;
-        isMutipleRequest=NO;
+        [[assist shared]setRequestMultiple:NO];
+       // isMutipleRequest=NO;
         UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
         [self.navigationItem setRightBarButtonItem:loc];
          [self.contacts reloadData];
@@ -63,11 +64,12 @@
 }
 -(void)DoneEditing_RequestMultiple:(id)sender{
     
-    if ([arrRecipientsForRequest count]==0) {
+    if ([[[assist shared]getArray] count]==0) {
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Select a Recipient to Request!" delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
         [alert show];
         return;
     }
+    
     isAddRequest=NO;
     HowMuch *how_much = [[HowMuch alloc] init];
     
@@ -80,12 +82,14 @@
     [self.navigationItem setTitle:@"Select Recipient"];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-    isMutipleRequest=NO;
+   [[assist shared]setRequestMultiple:NO];
     isPayBack=NO;
     isEmailEntry=NO;
     isAddRequest=NO;
     isUserByLocation=NO;
-    arrRecipientsForRequest=nil;
+    [arrRecipientsForRequest removeAllObjects];
+    [[assist shared]setArray:[arrRecipientsForRequest copy]];
+   
     //    //clear Image cache
     //    SDImageCache *imageCache = [SDImageCache sharedImageCache];
     //    [imageCache clearMemory];
@@ -454,7 +458,7 @@
                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
-        NSLog(@"%@",self.recents);
+       // NSLog(@"%@",self.recents);
         if ([self.recents count]>0) {
             [self.contacts setHidden:NO];
             [self.contacts reloadData];
@@ -656,8 +660,9 @@
         [cell setIndentationLevel:1];
         cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",info[@"FirstName"],info[@"LastName"]];
         
-        if (isMutipleRequest ) {
+        if ([[assist shared] isRequestMultiple]) {
             [npic removeFromSuperview];
+            arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
             if ([arrRecipientsForRequest containsObject:info]) {
                 cell.accessoryType=UITableViewCellAccessoryCheckmark;
             }
@@ -690,14 +695,19 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    if (isMutipleRequest) {
+    if ([[assist shared] isRequestMultiple]) {
          NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];
         
+        arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
+        NSLog(@"%@",arrRecipientsForRequest);
         if ([arrRecipientsForRequest containsObject:receiver]) {
             [arrRecipientsForRequest removeObject:receiver];
+             [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
         }
-        else
+        else{
         [arrRecipientsForRequest addObject:receiver];
+        [[assist shared]setArray:[arrRecipientsForRequest copy]];
+        }
        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         [tableView reloadData];
         return;
@@ -732,6 +742,10 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    [imageCache clearMemory];
+    [imageCache clearDisk];
+    [imageCache cleanDisk];
     // Dispose of any resources that can be recreated.
 }
 

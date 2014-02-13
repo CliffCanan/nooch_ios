@@ -269,6 +269,12 @@
         }
         else if(indexPath.row == 1)
         {
+            //Rlease memory cache
+            SDImageCache *imageCache = [SDImageCache sharedImageCache];
+            [imageCache clearMemory];
+            [imageCache clearDisk];
+            [imageCache cleanDisk];
+
             HistoryFlat *hist = [[HistoryFlat alloc] init];
             [nav_ctrl pushViewController:hist animated:NO];
             [self.slidingViewController resetTopView];

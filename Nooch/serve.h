@@ -37,7 +37,7 @@
     NSString *Longitude;
     NSString *Altitude;
     NSMutableDictionary*dictUsers;
-}
+    }
 //@property(nonatomic,strong) CLLocationManager *locationManager;
 @property (retain) id<serveD> Delegate;
 @property (nonatomic, retain) NSMutableData *responseData;

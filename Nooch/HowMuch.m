@@ -41,21 +41,39 @@
 }
 -(void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
-    if (!isAddRequest) {
-        isMutipleRequest=NO;
-        [arrRecipientsForRequest removeAllObjects];
-        arrRecipientsForRequest=nil;
-    }
+    
 }
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self.amount becomeFirstResponder];
+}
+-(void)backPressed:(id)sender{
+    if (!isAddRequest) {
+        [[assist shared]setRequestMultiple:NO];
+        [arrRecipientsForRequest removeAllObjects];
+        [[assist shared]setArray:[arrRecipientsForRequest copy]];
+        
+    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self.navigationItem setTitle:@"How Much?"];
+    UIButton*backbtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [backbtn setFrame:CGRectMake(0, 0, 80, 40)];
+    [backbtn addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [backbtn setImage:[UIImage imageNamed:@"backbtn.png"] forState:UIControlStateNormal];
+    [backbtn setImage:[UIImage imageNamed:@"backbtn.png"] forState:UIControlStateHighlighted];
+    [backbtn setStyleId:@"navbar_back"];
+    
+    [self.navigationItem setLeftBarButtonItem:Nil];
+    
+    UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:backbtn];
+    
+    [self.navigationItem setLeftBarButtonItem:funds];
     
 
     self.amnt = [@"" mutableCopy];
@@ -84,9 +102,9 @@
     }
     else
     {
-        if (isMutipleRequest) {
+        if ([[assist shared]isRequestMultiple]) {
             NSString*strMultiple=@"";
-            for (NSDictionary *dictRecord in arrRecipientsForRequest) {
+            for (NSDictionary *dictRecord in [[assist shared]getArray]) {
                 strMultiple=[strMultiple stringByAppendingString:[NSString stringWithFormat:@",%@ %@",[dictRecord[@"FirstName"] capitalizedString],[dictRecord[@"LastName"] capitalizedString]]];
             }
             [to_label setStyleId:@"label_howmuch_recipientname"];
@@ -170,7 +188,7 @@
     [self.request setStyleId:@"howmuch_request"];
     [self.request setFrame:CGRectMake(10, 160, 150, 50)];
     [self.view addSubview:self.request];
-    if (isMutipleRequest) {
+    if ([[assist shared]isRequestMultiple]) {
         [self.send removeFromSuperview];
         [self.request setStyleClass:@"howmuch_buttons_RequestMutiple"];
         [self.request setFrame:CGRectMake(10, 160, 300, 50)];
@@ -218,11 +236,14 @@
 }
 #pragma mark- Request Multiple case
 -(void)addRecipient:(id)sender{
-    isMutipleRequest=YES;
+    [[assist shared]setRequestMultiple:YES];
+   // isMutipleRequest=YES;
     isAddRequest=YES;
-    if (!arrRecipientsForRequest) {
-          arrRecipientsForRequest=[[NSMutableArray alloc] init];
+    
+   if ([[[assist shared]getArray] count]==0) {
+        arrRecipientsForRequest=[[NSMutableArray alloc] init];
         [arrRecipientsForRequest addObject:self.receiver];
+        [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
     }
   
     
@@ -293,7 +314,7 @@
 }
 - (void) reset_send_request
 {
-    if (!isMutipleRequest) {
+    if (![[assist shared] isRequestMultiple]) {
         self.divider = [UIImageView new];
         [self.divider setStyleId:@"howmuch_divider"];
         [self.divider setAlpha:0];
@@ -390,13 +411,13 @@
 }
 - (void) confirm_request
 {
-    isAddRequest=YES;
+   // isAddRequest=YES;
     if ([[self.amount text] length] < 3) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Amount" message:@"Please enter a valid amount" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         return;
     }
-    if (isMutipleRequest) {
+    if ([[assist shared]isRequestMultiple]) {
         NSMutableDictionary *transaction = [[NSMutableDictionary alloc]init];
         [transaction setObject:[self.memo text] forKey:@"memo"];
         float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
@@ -511,9 +532,9 @@
 }
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [self cancel_photo];
-    
+   
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
-    chosenImage = [chosenImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(300, 200) interpolationQuality:kCGInterpolationMedium];
+    chosenImage = [chosenImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(150,150) interpolationQuality:kCGInterpolationMedium];
 
     [self.camera setStyleId:@"howmuch_camera_attached"];
     [[assist shared]setTranferImage:chosenImage];
@@ -522,8 +543,6 @@
     [picker dismissViewControllerAnimated:YES completion:^{
         // [self close:nil];
     }];
-    
-    
     
 }
 -(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size{
@@ -624,6 +643,10 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    [imageCache clearMemory];
+    [imageCache clearDisk];
+    [imageCache cleanDisk];
     // Dispose of any resources that can be recreated.
 }
 

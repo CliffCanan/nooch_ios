@@ -24,5 +24,6 @@
     NSRange end;
     NSString *betweenBraces;
     NSString *newString;
+    UIView*blankView;
 }
 @end
