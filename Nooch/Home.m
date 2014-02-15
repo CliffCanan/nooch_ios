@@ -207,7 +207,7 @@
     
     
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-    [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(updateLoader) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateLoader) userInfo:nil repeats:YES];
     
     
     if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]]) {

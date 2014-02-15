@@ -417,6 +417,15 @@
         [av show];
         return;
     }
+    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100)
+        
+    {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Now" message:[NSString stringWithFormat:@"Sorry I’m not sorry, but don’t %@ more than $100. It’s against the rules (and protects the account from abuse.)", @"request"] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+        [alert show];
+        return;
+        
+    }
     if ([[assist shared]isRequestMultiple]) {
         NSMutableDictionary *transaction = [[NSMutableDictionary alloc]init];
         [transaction setObject:[self.memo text] forKey:@"memo"];

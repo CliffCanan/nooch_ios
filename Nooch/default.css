@@ -2235,7 +2235,17 @@
 		text-align       	: center;
 		color 				: #313233;
 	}
-
+.details_othername_nonnooch {
+		width				: 260px;
+		height				: 28px;
+		top					: 37px;
+		left                : 80px;
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 15px;
+		text-align       	: center;
+		color 				: #313233;
+	}
 	/**  Profile Picture of the other user  **/
 	.details_userpic {
 		width				: 65px;

@@ -392,12 +392,12 @@
             self.account_number.text=@"";
            
             
-            if ([[NSUserDefaults standardUserDefaults] valueForKey:@"ContactNumber"]) {
-                serve*serveOBJ=[serve new];
-                NSLog(@"Contact number %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"ContactNumber"]);
-                
-                [ serveOBJ SendSMSApi:[[NSUserDefaults standardUserDefaults] valueForKey:@"ContactNumber"] msg:@"You have added New Bank Account.Please verify it."];
-            }
+//            if ([[NSUserDefaults standardUserDefaults] valueForKey:@"ContactNumber"]) {
+//                serve*serveOBJ=[serve new];
+//                NSLog(@"Contact number %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"ContactNumber"]);
+//                
+//                [ serveOBJ SendSMSApi:[[NSUserDefaults standardUserDefaults] valueForKey:@"ContactNumber"] msg:@"You have added New Bank Account.Please verify it."];
+//            }
             [[assist shared]setneedsReload:YES];
             [self.navigationController popViewControllerAnimated:YES];
             

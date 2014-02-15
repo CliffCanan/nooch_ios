@@ -490,7 +490,7 @@
            // NSLog(@"%@",date);
             
             NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-            [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+            [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss.SS"];
             NSString *TransactionDate = [dateFormat stringFromDate:date];
             
             [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
@@ -546,7 +546,7 @@
             [transactionInputTransfer setValue:[self.receiver objectForKey:@"TransactionId"] forKey:@"TransactionId"];
             NSDate *date = [NSDate date];
             NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-            [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+            [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss.SS"];
             NSString *TransactionDate = [dateFormat stringFromDate:date];
             [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
             if ([[self.receiver objectForKey:@"response"] isEqualToString:@"accept"]) {
@@ -607,7 +607,7 @@
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
             NSDate *date = [NSDate date];
             NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-            [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+            [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss.SS"];
             NSString *TransactionDate = [dateFormat stringFromDate:date];
             [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
             [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
@@ -665,7 +665,7 @@
 
                     NSDate *date = [NSDate date];
                     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-                    [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+                    [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss.SS"];
                     NSString *TransactionDate = [dateFormat stringFromDate:date];
                     [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
                     [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
@@ -738,7 +738,7 @@
                     [transactionInputTransfer setValue:@"Deposit" forKey:@"TransactionType"];
                     NSDate *date = [NSDate date];
                     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-                    [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+                    [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss.SS"];
                     NSString *TransactionDate = [dateFormat stringFromDate:date];
                     
                     [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
@@ -852,7 +852,7 @@
                 
                 NSDate *date = [NSDate date];
                 NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-                [dateFormat setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+                [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss.SS"];
                 NSString *TransactionDate = [dateFormat stringFromDate:date];
                 
                 [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];

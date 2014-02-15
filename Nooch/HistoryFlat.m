@@ -327,11 +327,15 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
      [customView addSubview:lblloc];
     
      if ([[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionDate"]!=NULL) {
+         NSLog(@"%@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionDate"]);
      NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-     dateFormatter.dateFormat = @"dd/MM/yyyy HH:mm:ss";
+         //Set the AM and PM symbols
+         [dateFormatter setAMSymbol:@"AM"];
+         [dateFormatter setPMSymbol:@"PM"];
+         dateFormatter.dateFormat = @"M/d/yyyy h:mm:ss a";
      NSDate *yourDate = [dateFormatter dateFromString:[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionDate"]];
      dateFormatter.dateFormat = @"dd-MMMM-yyyy";
-     [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+     //[dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
      NSLog(@"%@",[dateFormatter stringFromDate:yourDate]);
      NSString*statusstr;
      if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
@@ -774,7 +778,10 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     if ((long)[components day]>3) {
                         
                         NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-                        dateFormatter.dateFormat = @"dd/MM/yyyy HH:mm:ss";
+                        //Set the AM and PM symbols
+                        [dateFormatter setAMSymbol:@"AM"];
+                        [dateFormatter setPMSymbol:@"PM"];
+                        dateFormatter.dateFormat = @"M/d/yyyy h:mm:ss a";
                         NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                         dateFormatter.dateFormat = @"dd-MMMM-yyyy";
                         [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
@@ -805,11 +812,31 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                                             
                                                                                  options:0];
                             NSLog(@"%ld ",(long)[components minute]);
+                            if ((long)[components minute]==0) {
+                                NSDateComponents *components = [gregorianCalendar components:NSSecondCalendarUnit
+                                                                
+                                                                                    fromDate:addeddate
+                                                                
+                                                                                      toDate:[NSDate date]
+                                                                
+                                                                                     options:0];
+                                [date setText:[NSString stringWithFormat:@"%ld seconds ago",(long)[components second]]];
+                                [cell.contentView addSubview:date];
+
+                            }
+                            else if ((long)[components minute]==1) {
+                              [date setText:[NSString stringWithFormat:@"%ld minute ago",(long)[components minute]]];
+                            }
+                            else
                             [date setText:[NSString stringWithFormat:@"%ld minutes ago",(long)[components minute]]];
                             [cell.contentView addSubview:date];
                             
                         }
                         else{
+                            if ((long)[components hour]==1) {
+                            [date setText:[NSString stringWithFormat:@"%ld hour ago",(long)[components hour]]];
+                            }
+                            else
                             [date setText:[NSString stringWithFormat:@"%ld hours ago",(long)[components hour]]];
                             [cell.contentView addSubview:date];
                         }
@@ -825,6 +852,10 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                                         
                                                                              options:0];
                         NSLog(@"%ld", (long)[components day]);
+                        if ((long)[components day]==1) {
+                          [date setText:[NSString stringWithFormat:@"%ld day ago",(long)[components day]]];
+                        }
+                        else
                         [date setText:[NSString stringWithFormat:@"%ld days ago",(long)[components day]]];
                         [cell.contentView addSubview:date];
                         
@@ -1020,8 +1051,9 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 }
                 
                 
+                
                 NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
-               
+                
                 NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
                 
                 NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
@@ -1038,7 +1070,10 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 if ((long)[components day]>3) {
                     
                     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-                    dateFormatter.dateFormat = @"dd/MM/yyyy HH:mm:ss";
+                    //Set the AM and PM symbols
+                    [dateFormatter setAMSymbol:@"AM"];
+                    [dateFormatter setPMSymbol:@"PM"];
+                    dateFormatter.dateFormat = @"M/d/yyyy h:mm:ss a";
                     NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                     dateFormatter.dateFormat = @"dd-MMMM-yyyy";
                     [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
@@ -1068,14 +1103,34 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                                                               toDate:[NSDate date]
                                                         
                                                                              options:0];
-                       NSLog(@"%ld ",(long)[components minute]);
-                        [date setText:[NSString stringWithFormat:@"%ld minutes ago",(long)[components minute]]];
+                        NSLog(@"%ld ",(long)[components minute]);
+                        if ((long)[components minute]==0) {
+                            NSDateComponents *components = [gregorianCalendar components:NSSecondCalendarUnit
+                                                            
+                                                                                fromDate:addeddate
+                                                            
+                                                                                  toDate:[NSDate date]
+                                                            
+                                                                                 options:0];
+                            [date setText:[NSString stringWithFormat:@"%ld seconds ago",(long)[components second]]];
+                            [cell.contentView addSubview:date];
+                            
+                        }
+                        else if ((long)[components minute]==1) {
+                            [date setText:[NSString stringWithFormat:@"%ld minute ago",(long)[components minute]]];
+                        }
+                        else
+                            [date setText:[NSString stringWithFormat:@"%ld minutes ago",(long)[components minute]]];
                         [cell.contentView addSubview:date];
-
+                        
                     }
                     else{
-                    [date setText:[NSString stringWithFormat:@"%ld hours ago",(long)[components hour]]];
-                    [cell.contentView addSubview:date];
+                        if ((long)[components hour]==1) {
+                            [date setText:[NSString stringWithFormat:@"%ld hour ago",(long)[components hour]]];
+                        }
+                        else
+                            [date setText:[NSString stringWithFormat:@"%ld hours ago",(long)[components hour]]];
+                        [cell.contentView addSubview:date];
                     }
                     
                 }
@@ -1089,7 +1144,11 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                                     
                                                                          options:0];
                     NSLog(@"%ld", (long)[components day]);
-                    [date setText:[NSString stringWithFormat:@"%ld days ago",(long)[components day]]];
+                    if ((long)[components day]==1) {
+                        [date setText:[NSString stringWithFormat:@"%ld day ago",(long)[components day]]];
+                    }
+                    else
+                        [date setText:[NSString stringWithFormat:@"%ld days ago",(long)[components day]]];
                     [cell.contentView addSubview:date];
                     
                 }
@@ -1290,11 +1349,9 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     
                     UILabel *date = [UILabel new];
                     [date setStyleClass:@"history_datetext"];
-                    //[date setText:[dictRecord valueForKey:@"TransactionDate"]];
-                    // [cell.contentView addSubview:date];
+                    
+                    
                     NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
-                    
-                    
                     
                     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
                     
@@ -1312,7 +1369,10 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     if ((long)[components day]>3) {
                         
                         NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-                        dateFormatter.dateFormat = @"dd/MM/yyyy HH:mm:ss";
+                        //Set the AM and PM symbols
+                        [dateFormatter setAMSymbol:@"AM"];
+                        [dateFormatter setPMSymbol:@"PM"];
+                        dateFormatter.dateFormat = @"M/d/yyyy h:mm:ss a";
                         NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                         dateFormatter.dateFormat = @"dd-MMMM-yyyy";
                         [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
@@ -1343,16 +1403,34 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                                             
                                                                                  options:0];
                             NSLog(@"%ld ",(long)[components minute]);
-                            [date setText:[NSString stringWithFormat:@"%ld minutes ago",(long)[components minute]]];
+                            if ((long)[components minute]==0) {
+                                NSDateComponents *components = [gregorianCalendar components:NSSecondCalendarUnit
+                                                                
+                                                                                    fromDate:addeddate
+                                                                
+                                                                                      toDate:[NSDate date]
+                                                                
+                                                                                     options:0];
+                                [date setText:[NSString stringWithFormat:@"%ld seconds ago",(long)[components second]]];
+                                [cell.contentView addSubview:date];
+                                
+                            }
+                            else if ((long)[components minute]==1) {
+                                [date setText:[NSString stringWithFormat:@"%ld minute ago",(long)[components minute]]];
+                            }
+                            else
+                                [date setText:[NSString stringWithFormat:@"%ld minutes ago",(long)[components minute]]];
                             [cell.contentView addSubview:date];
                             
                         }
                         else{
-                            [date setText:[NSString stringWithFormat:@"%ld hours ago",(long)[components hour]]];
+                            if ((long)[components hour]==1) {
+                                [date setText:[NSString stringWithFormat:@"%ld hour ago",(long)[components hour]]];
+                            }
+                            else
+                                [date setText:[NSString stringWithFormat:@"%ld hours ago",(long)[components hour]]];
                             [cell.contentView addSubview:date];
                         }
-                        
-                        
                         
                     }
                     else
@@ -1365,12 +1443,14 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                                         
                                                                              options:0];
                         NSLog(@"%ld", (long)[components day]);
-                        [date setText:[NSString stringWithFormat:@"%ld days ago",(long)[components day]]];
+                        if ((long)[components day]==1) {
+                            [date setText:[NSString stringWithFormat:@"%ld day ago",(long)[components day]]];
+                        }
+                        else
+                            [date setText:[NSString stringWithFormat:@"%ld days ago",(long)[components day]]];
                         [cell.contentView addSubview:date];
                         
                     }
-                    
-                    
                     
                     
                     UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 50, 50)];
@@ -1463,11 +1543,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 
                 UILabel *date = [UILabel new];
                 [date setStyleClass:@"history_datetext"];
-                //[date setText:[dictRecord valueForKey:@"TransactionDate"]];
-                // [cell.contentView addSubview:date];
+                
                 NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
-                
-                
                 
                 NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
                 
@@ -1485,7 +1562,10 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 if ((long)[components day]>3) {
                     
                     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-                    dateFormatter.dateFormat = @"dd/MM/yyyy HH:mm:ss";
+                    //Set the AM and PM symbols
+                    [dateFormatter setAMSymbol:@"AM"];
+                    [dateFormatter setPMSymbol:@"PM"];
+                    dateFormatter.dateFormat = @"M/d/yyyy h:mm:ss a";
                     NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                     dateFormatter.dateFormat = @"dd-MMMM-yyyy";
                     [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
@@ -1516,16 +1596,34 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                                         
                                                                              options:0];
                         NSLog(@"%ld ",(long)[components minute]);
-                        [date setText:[NSString stringWithFormat:@"%ld minutes ago",(long)[components minute]]];
+                        if ((long)[components minute]==0) {
+                            NSDateComponents *components = [gregorianCalendar components:NSSecondCalendarUnit
+                                                            
+                                                                                fromDate:addeddate
+                                                            
+                                                                                  toDate:[NSDate date]
+                                                            
+                                                                                 options:0];
+                            [date setText:[NSString stringWithFormat:@"%ld seconds ago",(long)[components second]]];
+                            [cell.contentView addSubview:date];
+                            
+                        }
+                        else if ((long)[components minute]==1) {
+                            [date setText:[NSString stringWithFormat:@"%ld minute ago",(long)[components minute]]];
+                        }
+                        else
+                            [date setText:[NSString stringWithFormat:@"%ld minutes ago",(long)[components minute]]];
                         [cell.contentView addSubview:date];
                         
                     }
                     else{
-                        [date setText:[NSString stringWithFormat:@"%ld hours ago",(long)[components hour]]];
+                        if ((long)[components hour]==1) {
+                            [date setText:[NSString stringWithFormat:@"%ld hour ago",(long)[components hour]]];
+                        }
+                        else
+                            [date setText:[NSString stringWithFormat:@"%ld hours ago",(long)[components hour]]];
                         [cell.contentView addSubview:date];
                     }
-
-                    
                     
                 }
                 else
@@ -1538,11 +1636,14 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                                     
                                                                          options:0];
                     NSLog(@"%ld", (long)[components day]);
-                    [date setText:[NSString stringWithFormat:@"%ld days ago",(long)[components day]]];
+                    if ((long)[components day]==1) {
+                        [date setText:[NSString stringWithFormat:@"%ld day ago",(long)[components day]]];
+                    }
+                    else
+                        [date setText:[NSString stringWithFormat:@"%ld days ago",(long)[components day]]];
                     [cell.contentView addSubview:date];
                     
                 }
-                
                 
                 
                 
@@ -1612,10 +1713,13 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
 {
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+    //[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
     //[dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss a"];
-    [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    [dateFormatter setAMSymbol:@"AM"];
+    [dateFormatter setPMSymbol:@"PM"];
+    dateFormatter.dateFormat = @"M/d/yyyy h:mm:ss a";
+    //[dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+    //[dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
     
     NSLog(@"%@", aStr);
     NSDate   *aDate = [dateFormatter dateFromString:aStr];

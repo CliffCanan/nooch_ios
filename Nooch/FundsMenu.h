@@ -48,5 +48,6 @@
     NSString*strTimeFrequency;
     UIButton*Savebtn;
     NSMutableArray*ArrBankAccountCollection;
+    NSString*ID;
 }
 @end

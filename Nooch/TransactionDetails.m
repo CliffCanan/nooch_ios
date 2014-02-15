@@ -108,16 +108,18 @@
     [self.view addSubview:payment];
     
     UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];
-    [other_party setStyleClass:@"details_othername"];
+    
 
   
      if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
+         //details_othername_nonnooch
+           [other_party setStyleClass:@"details_othername_nonnooch"];
          [other_party setText:[self.trans objectForKey:@"InvitationSentTo"]];
          
     }
     else
          [other_party setText:[[self.trans objectForKey:@"Name"] capitalizedString]];
-
+          [other_party setStyleClass:@"details_othername"];
     [self.view addSubview:other_party];
     
     /*
@@ -207,86 +209,7 @@
     }
     
     
-    UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 190, 320, 30)];
-    [status setStyleClass:@"details_label"];
-    if ([self.trans objectForKey:@"TransactionDate"]!=NULL) {
-        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.dateFormat = @"dd/MM/yyyy HH:mm:ss";
-        NSDate *yourDate = [dateFormatter dateFromString:[self.trans valueForKey:@"TransactionDate"]];
-        dateFormatter.dateFormat = @"dd-MMMM-yyyy";
-        [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
-        //NSLog(@"%@",[dateFormatter stringFromDate:yourDate]);
-        NSString*statusstr;
-        if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
-            if ([[self.trans objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
-                if ([[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-                    statusstr=@"Cancelled:";
-                    [status setStyleClass:@"red_text"];
-                    
-                }
-                else if ([[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
-                   statusstr=@"Rejected:";
-                    [status setStyleClass:@"red_text"];
-                
-                }
-                else
-                {
-                    statusstr=@"Pending:";
-                     [status setStyleClass:@"green_text"];
-                }
-                
-            }
-            else{
-            if ([[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-             statusstr=@"Cancelled:";
-                [status setStyleClass:@"red_text"];
-            }
-            else if ([[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
-               statusstr=@"Rejected:";
-                [status setStyleClass:@"red_text"];
-            }
-            else
-            {
-                statusstr=@"Pending:";
-                 [status setStyleClass:@"green_text"];
-            }
-            }
-            
-        }
-        else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Donation"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Received"]||[[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
-        {
-            statusstr=@"Completed on:";
-             [status setStyleClass:@"green_text"];
-        }
-        else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"] || [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
-        {
-            statusstr=@"Submitted on:";
-             [status setStyleClass:@"green_text"];
-        }
-        else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
-            
-           statusstr=@"Invited on:";
-             [status setStyleClass:@"green_text"];
-        }
-
-        NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
-        if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
-            //details_label1
-            [status setText:[NSString stringWithFormat:@"%@",statusstr]];
-            UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(105, 190, 320, 30)];
-            [datelbl setTextColor:[UIColor grayColor]];
-            [self.view addSubview:datelbl];
-            datelbl.text=[NSString stringWithFormat:@"(Sent on %@ %@,%@)",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]];
-           
-        }
-        else
-        {
-            [status setText:[NSString stringWithFormat:@"%@ %@ %@,%@",statusstr,[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]]];
-        }
-    }
-    
    
-    [self.view addSubview:status];
     if(![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"] && ![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
     {
         if (false) {
@@ -810,6 +733,91 @@
         marker.position = CLLocationCoordinate2DMake(lat, lon);
         
         marker.map = mapView_;
+
+        //Set Status
+        UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 190, 320, 30)];
+        [status setStyleClass:@"details_label"];
+        if ([loginResult objectForKey:@"TransactionDate"]!=NULL) {
+            NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setAMSymbol:@"AM"];
+            [dateFormatter setPMSymbol:@"PM"];
+            dateFormatter.dateFormat = @"M/d/yyyy h:mm:ss a";
+            NSDate *yourDate = [dateFormatter dateFromString:[loginResult valueForKey:@"TransactionDate"]];
+            dateFormatter.dateFormat = @"dd-MMMM-yyyy";
+            [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+            //NSLog(@"%@",[dateFormatter stringFromDate:yourDate]);
+            NSString*statusstr;
+            if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
+                if ([[loginResult objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
+                    if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
+                        statusstr=@"Cancelled:";
+                        [status setStyleClass:@"red_text"];
+                        
+                    }
+                    else if ([[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
+                        statusstr=@"Rejected:";
+                        [status setStyleClass:@"red_text"];
+                        
+                    }
+                    else
+                    {
+                        statusstr=@"Pending:";
+                        [status setStyleClass:@"green_text"];
+                    }
+                    
+                }
+                else{
+                    if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
+                        statusstr=@"Cancelled:";
+                        [status setStyleClass:@"red_text"];
+                    }
+                    else if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
+                        statusstr=@"Rejected:";
+                        [status setStyleClass:@"red_text"];
+                    }
+                    else
+                    {
+                        statusstr=@"Pending:";
+                        [status setStyleClass:@"green_text"];
+                    }
+                }
+                
+            }
+            else if([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Donation"]||[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]||[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
+            {
+                statusstr=@"Completed on:";
+                [status setStyleClass:@"green_text"];
+            }
+            else if([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"] || [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
+            {
+                statusstr=@"Submitted on:";
+                [status setStyleClass:@"green_text"];
+            }
+            else if ([[loginResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
+                
+                statusstr=@"Invited on:";
+                [status setStyleClass:@"green_text"];
+            }
+            
+            NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
+            if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
+                //details_label1
+                [status setText:[NSString stringWithFormat:@"%@",statusstr]];
+                UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(105, 190, 320, 30)];
+                [datelbl setTextColor:[UIColor grayColor]];
+                [self.view addSubview:datelbl];
+                datelbl.text=[NSString stringWithFormat:@"(Sent on %@ %@,%@)",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]];
+                
+            }
+            else
+            {
+                [status setText:[NSString stringWithFormat:@"%@ %@ %@,%@",statusstr,[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]]];
+            }
+        }
+        
+        
+        [self.view addSubview:status];
+        
         serve *info = [serve new];
         info.Delegate = self;
         info.tagName = @"info";
