@@ -14,7 +14,7 @@
 #import "ECSlidingViewController.h"
 #import "NSString+MD5Addition.h"
 #import "UIDevice+IdentifierAddition.h"
-//Charan's edit 19nov2013
+
 //seconds for 3 days259200 518400 777600 604800 1209600
 #define secondsFor3days 259200
 //seconds for 6 days
@@ -745,7 +745,7 @@ NSString *amnt;
         NSLog(@"serve connected for %@",self.tagName);
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         
-        //ADDING LOCAL NOTIFICATION CHARAN 19NOV 2013
+        //ADDING LOCAL NOTIFICATION 19NOV 2013
         dictUsers=[[NSMutableDictionary alloc]init];
         if (![[defaults objectForKey:@"NotifPlaced"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced"]!=NULL) {
             dictUsers=[[defaults objectForKey:@"NotifPlaced"] mutableCopy];
@@ -885,7 +885,7 @@ NSString *amnt;
                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
-        //Charan's edit 19 Nov 2013
+        // edit 19 Nov 2013
         if (![[Dictresponse objectForKey:@"LastLocationLat"] isKindOfClass:[NSNull class]]&& ![[Dictresponse objectForKey:@"LastLocationLng"] isKindOfClass:[NSNull class]]) {
             [defaults setObject:[Dictresponse objectForKey:@"LastLocationLat"] forKey:@"LastLat"];
             [defaults setObject:[Dictresponse objectForKey:@"LastLocationLng"] forKey:@"LastLng"];
@@ -926,7 +926,7 @@ NSString *amnt;
                         options:kNilOptions
                         error:&error];
         NSLog(@"%@",Dictresponse);
-        //Charan's Edit 19Nov 2013
+        // Edit 19Nov 2013
         if ([[Dictresponse valueForKey:@"IsValidProfile"] intValue]) {
             
             [defaults setObject:@"1" forKey:@"FullyVerified"];

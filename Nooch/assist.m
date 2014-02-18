@@ -442,27 +442,7 @@ static assist * _sharedInstance = nil;
             [timer invalidate];
             timer=nil;
         }
-        //        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        //
-        //        [Alert show];
-        //
-        //
-        //        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-        //
-        //        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        //
-        //        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-        //
-        //        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
-        //
-        //        // timer=nil;
-        //        [nav_ctrl performSelector:@selector(disable)];
-        //        [nav_ctrl performSelector:@selector(reset)];
-        //        [nav_ctrl popViewControllerAnimated:YES];
-        //        Register *reg = [Register new];
-        //        [nav_ctrl pushViewController:reg animated:YES];
-        //        me = [core new];
-        //        return;
+        
         
     }
     if ([tagName isEqualToString:@"bDelete"]) {
@@ -586,7 +566,7 @@ static assist * _sharedInstance = nil;
         NSLog(@"%@",loginResult);
         if ([loginResult valueForKey:@"Status"]!=Nil  && ![[loginResult valueForKey:@"Status"] isKindOfClass:[NSNull class]]&& [loginResult valueForKey:@"Status"] !=NULL) {
             [user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"];
-            if ([[loginResult valueForKey:@"Status"]isEqualToString:@"Active"]) {
+            if (![[loginResult valueForKey:@"Status"]isEqualToString:@"Suspended"]) {
                 [[assist shared]setSusPended:NO];
             }
             NSString*url=[loginResult valueForKey:@"PhotoUrl"];

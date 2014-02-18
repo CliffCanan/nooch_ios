@@ -1807,8 +1807,6 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     [self.view addSubview:spinner];
     [spinner startAnimating];
     
-    
-    
     listType=@"ALL";
     isLocalSearch=NO;
     serve*serveOBJ=[serve new];

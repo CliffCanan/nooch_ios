@@ -448,9 +448,7 @@
                 NSArray*arr=[result1 componentsSeparatedByString:@","];
                 [transactionInputTransfer setValue:arr forKey:@"Picture"];
             }
-            [[assist shared] setTranferImage:nil];
-            UIImage*imgempty=[UIImage imageNamed:@""];
-            [[assist shared] setTranferImage:imgempty];
+            
             
             NSString *uid = [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"];
             
@@ -1010,16 +1008,20 @@
     [spinner setHidden:YES];
     responseString= [[NSString alloc] initWithData:self.respData encoding:NSASCIIStringEncoding];
     
-    //NSLog(@"response is %@",responseString);
+   
     
     NSError* error;
     dictResultTransfer= [NSJSONSerialization
                          JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                          options:kNilOptions
                          error:&error];
-   // NSLog(@"Array is : %@", dictResultTransfer);
+   
     if ([self.type isEqualToString:@"nonuser"]) {
         if ([[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserResult"] valueForKey:@"Result"]isEqualToString:@"Your cash was sent successfully"]) {
+            [[assist shared] setTranferImage:nil];
+            UIImage*imgempty=[UIImage imageNamed:@""];
+            [[assist shared] setTranferImage:imgempty];
+            
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserResult"] valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             av.tag=2500;
             [av show];
@@ -1032,6 +1034,7 @@
         
         if([[resultValue valueForKey:@"Result"] isEqualToString:[NSString stringWithFormat:@"You have withdrawn $%.02f from your nooch account successfully.",self.amnt ]])
         {
+            
             NSString *alertTitleString = [NSString stringWithFormat:@"Success, your request to withdraw $"];
             NSString *amt = [NSString stringWithFormat:@"%.02f", self.amnt];
             alertTitleString = [alertTitleString stringByAppendingFormat:@"%@ from your Nooch account has been submitted.", amt];
@@ -1099,6 +1102,9 @@
     resultValueTransfer = [dictResultTransfer valueForKey:@"TransferMoneyResult"];
     if ([[resultValueTransfer valueForKey:@"Result"] isEqualToString:@"Your cash was sent successfully"])
     {
+        [[assist shared] setTranferImage:nil];
+        UIImage*imgempty=[UIImage imageNamed:@""];
+        [[assist shared] setTranferImage:imgempty];
         int randNum = arc4random() % 12;
         NSString * sentMessage =[NSString stringWithFormat:@"You just sent money to %@, and you did it with style… and class.",receiverFirst] ;
         UIAlertView *av;
@@ -1151,7 +1157,9 @@
         sendingMoney = NO;
         [av setTag:1];
     }else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request processed successfully."]){
-        
+        [[assist shared] setTranferImage:nil];
+        UIImage*imgempty=[UIImage imageNamed:@""];
+        [[assist shared] setTranferImage:imgempty];
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Fulfilled" message:[NSString stringWithFormat:@"You successfully fulfilled %@'s request for $%.02f.",[receiverFirst capitalizedString],self.amnt] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
         [av setTag:1];
         [av show];
@@ -1165,6 +1173,9 @@
         [av show];
     }
     else if ([[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request made successfully."]){
+        [[assist shared] setTranferImage:nil];
+        UIImage*imgempty=[UIImage imageNamed:@""];
+        [[assist shared] setTranferImage:imgempty];
         
         if ([[assist shared]isRequestMultiple]) {
            // NSLog(@"%@",arrRecipientsForRequest);
