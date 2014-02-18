@@ -575,8 +575,7 @@
             }
         }else if(indexPath.row == 1){
             if ([ArrBankAccountCollection count] == 2) {
-                
-
+                  [cell.contentView addSubview:arrow];
                 NSDictionary *bank = [ArrBankAccountCollection objectAtIndex:1];
                 cell.textLabel.text = [NSString stringWithFormat:@"Account **** %@",[[bank objectForKey:@"BankAcctNumber"] substringFromIndex:[[bank objectForKey:@"BankAcctNumber"] length] -4]];
                 iv.image = [UIImage imageNamed:@"Bank_Icon.png"];
@@ -863,7 +862,7 @@
                 // Deposit *dep = [Deposit new];
                 NSDictionary *bank = [ArrBankAccountCollection objectAtIndex:0];
                 [[NSUserDefaults standardUserDefaults] setObject:[bank objectForKey:@"BankAccountId"] forKey:@"choice"];
-                
+                bankNo=1;
                 [self.slidingViewController resetTopView];
                 
                 BankVerification *bv=[BankVerification new];
@@ -874,7 +873,7 @@
             }
         }else if(indexPath.row == 1){
             if ([ArrBankAccountCollection count]==2) {
-              
+                bankNo=2;
                 NSDictionary *bank = [ArrBankAccountCollection objectAtIndex:1];
                 [[NSUserDefaults standardUserDefaults] setObject:[bank objectForKey:@"BankAccountId"] forKey:@"choice"];
                 

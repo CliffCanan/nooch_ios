@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "serve.h"
-
+int bankNo;
 @interface BankVerification : UIViewController<UITextFieldDelegate,serveD>
 {
     int verifyAttempts;

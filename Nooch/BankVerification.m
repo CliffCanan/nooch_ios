@@ -83,14 +83,19 @@
     [self.verify setTitle:@"Verify Bank Account" forState:UIControlStateNormal];
     [self.verify setStyleClass:@"button_green"];
     [self.verify setStyleId:@"verifybank_button"];
-    if ([[assist shared]isBankVerified] || [[assist shared]isSecondBankVerified]) {
+    if (bankNo==1 && [[assist shared]isBankVerified]) {
+        [self.verify setTitle:@"Your bank is already Verified" forState:UIControlStateNormal];
+        [self.verify setEnabled:NO];
+        
+    }
+    else if (bankNo==2 && [[assist shared]isSecondBankVerified]) {
         [self.verify setTitle:@"Your bank is already Verified" forState:UIControlStateNormal];
         [self.verify setEnabled:NO];
         
     }
     else
     {
-        [self.verify setEnabled:YES];
+      [self.verify setEnabled:YES];
     }
     [self.verify addTarget:self action:@selector(verify_amounts) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.verify];
