@@ -95,8 +95,8 @@
 -(void)GetAllWithdrawalTrigger;
 -(void)SaveFrequency:(NSString*) withdrawalId type:(NSString*) type frequency: (float)withdrawalFrequency;
 -(void)GetNonProfiltDetail:(NSString*)npId memberId:(NSString*)memberId;
--(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len;
--(void)histMoreSerachbyName:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len name:(NSString*)name;
+-(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len subType:(NSString*)subType;
+-(void)histMoreSerachbyName:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len name:(NSString*)name subType:(NSString*)subType;
 -(void) LogOutRequest:(NSString*) memberId;
 -(void)GetTransactionDetail:(NSString*)transactionId;
 //-(void)SendEmailToNonNooch:(NSString*)emai;
@@ -111,6 +111,7 @@
 -(void)saveShareToFB_Twiitter:(NSString*)PostTo;
 -(void)UpDateLatLongOfUser:(NSString*)lat lng:(NSString*)lng;
 -(void)CancelRejectTransaction:(NSString*)transactionId resp:(NSString*)userResponse;
+-(void)GetServerCurrentTime;
 @end
 
 //392f9c86-1651-4459-a6a9-d362fcfc4366 - nooch team

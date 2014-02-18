@@ -29,7 +29,8 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self.list reloadData];
+   
+   // [self.list reloadData];
 }
 -(void)showMenu
 {
@@ -38,7 +39,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if (isOpenLeftSideBar) {
+    NSLog(@"%@",nav_ctrl.viewControllers);
+   
+
+      if (isOpenLeftSideBar) {
         [self.navigationItem setHidesBackButton:YES];
         UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
@@ -47,18 +51,14 @@
         UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
         [self.navigationItem setLeftBarButtonItem:menu];
     }
+    //Right Bar Button for Balance
     UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [balance setFrame:CGRectMake(0, 0, 60, 30)];
-    if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
-        
+    if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL)
         [balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
-        }
     else
-        
-    {
      [balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
-    }
-    
+
     [balance.titleLabel setFont:kNoochFontMed];
     [balance setStyleId:@"navbar_balance"];
     
@@ -249,6 +249,16 @@
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
     
 }
+-(void)loadDelay{
+    
+    NSLog(@"%@",nav_ctrl.viewControllers);
+    NSMutableArray*arrNav=[nav_ctrl.viewControllers mutableCopy];
+    [arrNav removeLastObject];
+    [nav_ctrl setViewControllers:arrNav animated:NO];
+    NSLog(@"%@",nav_ctrl.viewControllers);
+    
+    [self.navigationController popViewControllerAnimated:YES];
+}
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
@@ -267,18 +277,34 @@
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         
         NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+        
         [timer invalidate];
-        // timer=nil;
+    
+       
+        NSLog(@"%@",nav_ctrl.viewControllers);
+       
         [nav_ctrl performSelector:@selector(disable)];
         [nav_ctrl performSelector:@selector(reset)];
-        [self.navigationController popViewControllerAnimated:YES];
+        if (!isOpenLeftSideBar) {
+            [[assist shared]setPOP:YES];
+            [self performSelector:@selector(loadDelay) withObject:Nil afterDelay:2.0];
+            
+        }
+        else{
+            NSLog(@"%@",nav_ctrl.viewControllers);
+            NSMutableArray*arrNav=[nav_ctrl.viewControllers mutableCopy];
+            [arrNav removeLastObject];
+            [nav_ctrl setViewControllers:arrNav animated:NO];
+            NSLog(@"%@",nav_ctrl.viewControllers);
         Register *reg = [Register new];
         [nav_ctrl pushViewController:reg animated:YES];
         me = [core new];
-        return;
+            return;
+        }
+        
     }
     
-    if ([tagName isEqualToString:@"featuredNp"]) {
+    else if ([tagName isEqualToString:@"featuredNp"]) {
         FeaturedcausesArr = [[NSMutableArray alloc]init];
         
         NSError* error;

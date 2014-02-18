@@ -49,7 +49,7 @@
     
     user = [NSUserDefaults standardUserDefaults];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    
+    [[assist shared]isPOP];
     self.transaction_types = @[
                                @{kButtonType: @"send_request",
                                  kButtonTitle: @"Send or Request",
@@ -181,23 +181,26 @@
 }
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    
-    self.slidingViewController.panGesture.enabled=YES;
-    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-    
-    //location
-    locationManager = [[CLLocationManager alloc] init];
-    locationManager.delegate = self;
-    locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
-    locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
-    [locationManager startUpdatingLocation];
+    if (![[assist shared]isPOP]) {
+        self.slidingViewController.panGesture.enabled=YES;
+        [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+        
+        //location
+        locationManager = [[CLLocationManager alloc] init];
+        locationManager.delegate = self;
+        locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
+        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
+        [locationManager startUpdatingLocation];
+
+    }
+
     
     
 }
 - (void)viewWillAppear:(BOOL)animated
 {
     [self.navigationItem setTitle:@"Nooch"];
-    
+      if (![[assist shared]isPOP]) {
     UIActivityIndicatorView*act=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [act setFrame:CGRectMake(14, 5, 20, 20)];
     [act startAnimating];
@@ -238,7 +241,14 @@
         [banks getBanks];
         
     }
-    
+      }
+    else
+    {
+        Register *reg = [Register new];
+        [nav_ctrl pushViewController:reg animated:YES];
+        me = [core new];
+        return;
+    }
 }
 
 -(void)showMenu

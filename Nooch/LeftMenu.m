@@ -351,6 +351,8 @@
             MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
             mailComposer.mailComposeDelegate = self;
             [mailComposer setSubject:[NSString stringWithFormat:@"Bug Report: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+            
+             mailComposer.navigationBar.tintColor=[UIColor whiteColor];
             [mailComposer setMessageBody:@"" isHTML:NO];
             [mailComposer setToRecipients:[NSArray arrayWithObjects:@"bugs@nooch.com",nil]];
             [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
@@ -368,7 +370,10 @@
             }
             MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
             mailComposer.mailComposeDelegate = self;
+            mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+          
             [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+            
             [mailComposer setMessageBody:@"" isHTML:NO];
             [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
             [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
@@ -399,7 +404,46 @@
     }
     
 }
-
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    UIAlertView *alert = [[UIAlertView alloc] init];
+    [alert addButtonWithTitle:@"OK"];
+    [alert setDelegate:nil];
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"Mail cancelled" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            // [alert show];
+            
+            [alert setTitle:@"Mail cancelled"];
+            [alert show];
+            NSLog(@"Mail cancelled");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved");
+            
+            [alert setTitle:@"Mail saved"];
+            [alert show];
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail sent");
+            
+            [alert setTitle:@"Mail sent"];
+            [alert show];
+            
+            break;
+        case MFMailComposeResultFailed:
+            [alert setTitle:[error localizedDescription]];
+            [alert show];
+            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    
+    // Close the Mail Interface
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

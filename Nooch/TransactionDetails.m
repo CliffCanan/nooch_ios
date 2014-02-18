@@ -341,10 +341,23 @@
             else
             {
                 if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Transfer"]) {
+                    if([[self.trans objectForKey:@"MemberId"] isEqualToString:[user objectForKey:@"MemberId"]])
+                    {
+                        [self.view addSubview:disp];
+                        [self.view addSubview:disp_text];
+                        
+                        
+                    }
+                    else {
+                        [fb setStyleId:@"details_twit_donate"];
+                        [fb_text setFrame:fb.frame];
+                        [twit setStyleId:@"details_disp"];
+                        [twit_text setFrame:twit.frame];
+                    }
+                    
                     [self.view addSubview:pay_back];
                     [self.view addSubview:pay_text];
-                [self.view addSubview:disp];
-                 [self.view addSubview:disp_text];
+               
                 [self.view addSubview:fb];
                 [self.view addSubview:fb_text];
                 [self.view addSubview:twit];

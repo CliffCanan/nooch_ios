@@ -174,7 +174,7 @@
         
         [nav_ctrl performSelector:@selector(disable)];
         [nav_ctrl performSelector:@selector(reset)];
-        [nav_ctrl popViewControllerAnimated:YES];
+       // [nav_ctrl popViewControllerAnimated:YES];
         Register *reg = [Register new];
         [nav_ctrl pushViewController:reg animated:YES];
         me = [core new];
@@ -662,22 +662,16 @@
 }
 - (IBAction)EmailCLicked:(id)sender {
     NSString *emailTitle = @"NoochMoney";
-    // Email Content
-    //NSArray*arrReferCode=[code.text componentsSeparatedByString:@":"];
-    // NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     NSString *messageBody; // Change the message body to HTML
     messageBody=[NSString stringWithFormat:@"<h5>\"Hi, Your friend %@ has invited you to become a member of Nooch, the simplest way to pay back friends.<br />Accept this invitation by downloading Nooch and using this Referral Code: %@ <br /><br />To learn more about Nooch, check us out</h5> <a href=\"https://www.nooch.com/overview/\">here</a><br /><h6>-Team Nooch\"</h6>",[user objectForKey:@"firstName"],code.text];
-    // To address
-    //NSArray *toRecipents = [NSArray arrayWithObject:@"support@appcoda.com"];
     
     MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
     mc.mailComposeDelegate = self;
     [mc setSubject:emailTitle];
     [mc setMessageBody:messageBody isHTML:YES];
-    //[mc setToRecipients:toRecipents];
     
-    // Present mail view controller on screen
+    
     [self presentViewController:mc animated:YES completion:NULL];
 }
 

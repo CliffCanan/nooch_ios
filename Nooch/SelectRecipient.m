@@ -445,15 +445,60 @@
         [emailCheck getMemIdFromuUsername:[search.text lowercaseString]];
     }
 }
+#pragma mark - file paths
+- (NSString *)autoLogin{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+    
+}
 
-
+-(void)loadDelay{
+    
+    NSLog(@"%@",nav_ctrl.viewControllers);
+    NSMutableArray*arrNav=[nav_ctrl.viewControllers mutableCopy];
+    [arrNav removeLastObject];
+    [nav_ctrl setViewControllers:arrNav animated:NO];
+    NSLog(@"%@",nav_ctrl.viewControllers);
+    
+    [self.navigationController popViewControllerAnimated:YES];
+}
 #pragma mark - server Delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName{
-    NSError* error;
     
-    if ([tagName isEqualToString:@"recents"]) {
+    
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
+        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        
+        [Alert show];
+        
+        
+        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        
+        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+        
+        [timer invalidate];
+        
+        
+        NSLog(@"%@",nav_ctrl.viewControllers);
+        
+        [nav_ctrl performSelector:@selector(disable)];
+        [nav_ctrl performSelector:@selector(reset)];
+        
+        [[assist shared]setPOP:YES];
+        [self performSelector:@selector(loadDelay) withObject:Nil afterDelay:2.0];
+        
+    }
+   
+    
+    else if ([tagName isEqualToString:@"recents"]) {
         [spinner stopAnimating];
         [spinner setHidden:YES];
+         NSError* error;
         self.recents = [NSJSONSerialization
                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
@@ -483,6 +528,7 @@
     }
     else if([tagName isEqualToString:@"emailCheck"])
     {
+         NSError* error;
         NSMutableDictionary *dictResult = [NSJSONSerialization
                                            JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                            options:kNilOptions
@@ -517,6 +563,7 @@
     }
     else if([tagName isEqualToString:@"getMemberDetails"])
     {
+         NSError* error;
         [spinner stopAnimating];
         [spinner setHidden:YES];
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];

@@ -34,5 +34,7 @@ NSString*listType;
     NSMutableArray*histTempCompleted;
     NSMutableArray*histTempPending;
     BOOL isLocalSearch;
+    NSString*subTypestr;
+    NSDate*ServerDate;
 }
 @end

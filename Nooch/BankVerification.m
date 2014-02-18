@@ -83,7 +83,7 @@
     [self.verify setTitle:@"Verify Bank Account" forState:UIControlStateNormal];
     [self.verify setStyleClass:@"button_green"];
     [self.verify setStyleId:@"verifybank_button"];
-    if ([[assist shared]isBankVerified]) {
+    if ([[assist shared]isBankVerified] || [[assist shared]isSecondBankVerified]) {
         [self.verify setTitle:@"Your bank is already Verified" forState:UIControlStateNormal];
         [self.verify setEnabled:NO];
         

@@ -58,6 +58,12 @@ static assist * _sharedInstance = nil;
 {
     isPrimaryBankVerified=istrue;
 }
+-(BOOL)isSecondBankVerified{
+    return isSecondBankVerified;
+}
+-(void)setSecondBankVerified:(BOOL)istrue{
+    isSecondBankVerified=istrue;
+}
 -(BOOL)isloggedout
 {
     return islogout;
@@ -65,6 +71,12 @@ static assist * _sharedInstance = nil;
 -(void)setisloggedout:(BOOL)islog
 {
     islogout=islog;
+}
+-(BOOL)isPOP{
+    return isPOP;
+}
+-(void)setPOP:(BOOL)istrue{
+    isPOP=istrue;
 }
 -(BOOL)islocationAllowed
 {

@@ -1033,7 +1033,6 @@
 			isa = PBXGroup;
 			children = (
 				849F6E8D18AB6D7F0016CD89 /* backbtn.png */,
-				841A3E0618A61491001DAAA2 /* UIImage-categories */,
 				84C3EF17187D0E82004687F6 /* mapBack.png */,
 				8420B395187AC4BF00A77E2D /* Black-pin.png */,
 				8420B396187AC4BF00A77E2D /* blue-pin.png */,
@@ -1167,6 +1166,7 @@
 		6B30372C15FA3FF300056DAD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				841A3E0618A61491001DAAA2 /* UIImage-categories */,
 				01CABC5218A2BD9500BBB935 /* ECSlidingViewController */,
 				01C26DF91843E676005179B7 /* Reachability.h */,
 				01C26DFA1843E676005179B7 /* Reachability.m */,
@@ -1506,7 +1506,8 @@
 				841A3E0B18A61491001DAAA2 /* UIImage+RoundedCorner.h */,
 				841A3E0C18A61491001DAAA2 /* UIImage+RoundedCorner.m */,
 			);
-			path = "UIImage-categories";
+			name = "UIImage-categories";
+			path = "../UIImage-categories";
 			sourceTree = "<group>";
 		};
 		841CC8E018A1EBCB0075245C /* Device Identifier */ = {

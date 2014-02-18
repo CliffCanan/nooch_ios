@@ -101,10 +101,10 @@
     [self.view addSubview:title];
     
     self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 70, 300, 30)];
-    if ([self.type isEqualToString:@"send"]||[self.receiver valueForKey:@"nonuser"]) {
+    if ([self.type isEqualToString:@"send"]||[self.receiver valueForKey:@"nonuser"]|| [self.type isEqualToString:@"requestRespond"]) {
         [self.prompt setText:@"transfer"];
         [self.prompt setStyleId:@"Transferpin_instructiontext_send"];
-    } else if ([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"]) {
+    } else if ([self.type isEqualToString:@"request"] ) {
         
         [self.prompt setText:@"request"];
         [self.prompt setStyleId:@"pin_instructiontext_request"];
@@ -138,10 +138,10 @@
     
     UIView *bar = [UIView new];
     [bar setStyleClass:@"pin_recipientname_bar"];
-    if ([self.type isEqualToString:@"send"]|| [self.type isEqualToString:@"addfund"]|| [self.type isEqualToString:@"withdrawfund"]||[self.receiver valueForKey:@"nonuser"]) {
+    if ([self.type isEqualToString:@"send"]|| [self.type isEqualToString:@"addfund"]|| [self.type isEqualToString:@"withdrawfund"]||[self.receiver valueForKey:@"nonuser"]|| [self.type isEqualToString:@"requestRespond"]) {
         [bar setStyleId:@"pin_recipientname_send"];
     }
-    else if ([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"]) {
+    else if ([self.type isEqualToString:@"request"] ) {
         [bar setStyleId:@"pin_recipientname_request"];
     }
     else {
@@ -376,9 +376,9 @@
         }
     }else{
         UIColor *which;
-        if ([self.type isEqualToString:@"send"]) {
+        if ([self.type isEqualToString:@"send"]|| [self.type isEqualToString:@"requestRespond"]) {
             which = kNoochGreen;
-        }else if([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"]){
+        }else if([self.type isEqualToString:@"request"] ){
             which = kNoochBlue;
         }
         else if ([self.type isEqualToString:@"donation"]|| [self.type isEqualToString:@"addfund"]||[self.type isEqualToString:@"withdrawfund"]|| [self.type isEqualToString:@"nonuser"])

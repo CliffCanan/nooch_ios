@@ -2692,7 +2692,17 @@
 		font-size		: 17px;
 		text-align		: left;
 	}
-
+.stats_table_right_lable1 {
+		width			: 150px;
+		height			: 20px;
+		top				: 0px;
+		left			: 170px;
+		color			: #3fabe1;
+		font-family		: "Roboto";
+		font-weight		: regular;
+		font-size		: 12px;
+		text-align		: left;
+	}
 	.stats_circle {
 		shape		: ellipse;
 		width		: 55px;

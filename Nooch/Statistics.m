@@ -302,7 +302,7 @@
             if ([[[dictAllStats valueForKey:@"Total_no_of_transfer_Sent"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
             }
-            // [statistic setText:@"17"];
+            
         }
         else if (indexPath.row == 2) {
             [title setText:@"Transfers Received"];
@@ -310,7 +310,7 @@
             if ([[[dictAllStats valueForKey:@"Total_no_of_transfer_Received"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
             }
-            //[statistic setText:@"4"];
+           
         }
         else if (indexPath.row == 3) {
             [title setText:@"$ Amount Sent"];
@@ -318,12 +318,11 @@
             if ([[[dictAllStats valueForKey:@"Total_$_Sent"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
             }
-            // [statistic setText:@"$ 256.75"];
+            
         }
         else if (indexPath.row == 4) {
             [title setText:@"$ Amount Received"];
-            //Total_$_Received
-            // [statistic setText:@"$ 123.00"];
+            
             [statistic setText:[[dictAllStats valueForKey:@"Total_$_Received"] valueForKey:@"Result"]];
             if ([[[dictAllStats valueForKey:@"Total_$_Received"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
@@ -331,12 +330,12 @@
         }
         else if (indexPath.row == 5) {
             [title setText:@"Largest Transfer Sent"];
-            //Largest_sent_transfer
+            
             [statistic setText:[[dictAllStats valueForKey:@"Largest_sent_transfer"]  valueForKey:@"Result"]];
             if ([[[dictAllStats valueForKey:@"Largest_sent_transfer"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
             }
-            // [statistic setText:@"$ 75.00"];
+            
         }
         else if (indexPath.row == 6) {
             
@@ -346,7 +345,7 @@
             if ([[[dictAllStats valueForKey:@"Largest_received_transfer"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
             }
-            //  [statistic setText:@"$ 70.03"];
+           
         }
     } else if (self.selected == 2) { //donations
         
@@ -365,11 +364,15 @@
             if ([[[dictAllStats valueForKey:@"Total_Donations_Count"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
             }
-            //[statistic setText:@"3"];
+           
         }
         else if (indexPath.row == 2) {
             [title setText:@"Causes Donated to"];
-            //  [statistic setText:@"4"];
+            [statistic setStyleClass:@"stats_table_right_lable1"];
+            [statistic setText:[[dictAllStats valueForKey:@"DonatedTo"]  valueForKey:@"Result"]];
+            if ([[[dictAllStats valueForKey:@"DonatedTo"]valueForKey:@"Result"] length]==0) {
+                [statistic setText:@"0"];
+            }
         }
         else if (indexPath.row == 3) {
             [title setText:@"Largest Donation"];
@@ -377,7 +380,7 @@
             if ([[[dictAllStats valueForKey:@"Largest_Donation_Made"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
             }
-            // [statistic setText:@"$ 125.00"];
+            
         }
     }
     
@@ -569,9 +572,21 @@
         serveOBJ.tagName=@"Total_$_Donated";
         
         [serveOBJ GetMemberStats:@"Total_$_Donated"];
+       // [blankView removeFromSuperview];
+       // [self.stats reloadData];
+    }
+    else if ([tagName isEqualToString:@"Total_$_Donated"]) {
+        serve*serveOBJ=[serve new];
+        
+        [serveOBJ setDelegate:self];
+        
+        serveOBJ.tagName=@"DonatedTo";
+        
+        [serveOBJ GetMemberStats:@"DonatedTo"];
         [blankView removeFromSuperview];
         [self.stats reloadData];
     }
+    //DonatedTo
 }
 
 - (void)viewWillDisappear:(BOOL)animated

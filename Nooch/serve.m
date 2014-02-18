@@ -25,6 +25,7 @@
 #define secondsFor14days 1209600
 #define secondsFor28days 2419200
 //
+
 NSDictionary *transactionInputaddfund;
 NSMutableURLRequest *requestmemid;
 NSMutableURLRequest*requestList;
@@ -306,10 +307,10 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 -(void)login:(NSString*)email password:(NSString*)pass remember:(BOOL)isRem lat:(float)lat lon:(float)lng uid:(NSString*)strId {
-    
     [[assist shared]setBankVerified:NO];
     [[assist shared]setSusPended:NO];
     ServiceType=@"Login";
+      [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     if (isRem) {
         requestLogin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&rememberMeEnabled=true&lat=%f&lng=%f&udid=%@", ServerUrl, @"LoginRequest", @"name", email, @"pwd", pass,lat,lng,strId]]];
@@ -713,9 +714,12 @@ NSString *amnt;
     
     
     responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
+    
+   
     if ([responseString rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
         //logout in case of invalid OAuth
-        if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"]isEqualToString:@"1"]) {
+        if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"]isEqualToString:@"1"] ) {
+            
             UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             
             [Alert show];
@@ -732,6 +736,15 @@ NSString *amnt;
             // timer=nil;
             [nav_ctrl performSelector:@selector(disable)];
             [nav_ctrl performSelector:@selector(reset)];
+            NSLog(@"%@",nav_ctrl.viewControllers);
+            NSMutableArray*arrNav=[nav_ctrl.viewControllers mutableCopy];
+            for (int i=[arrNav count]; i>1; i--) {
+                [arrNav removeLastObject];
+            }
+            
+            [nav_ctrl setViewControllers:arrNav animated:NO];
+            NSLog(@"%@",nav_ctrl.viewControllers);
+
             Register *reg = [Register new];
             [nav_ctrl pushViewController:reg animated:YES];
             me = [core new];
@@ -743,10 +756,6 @@ NSString *amnt;
             [self.Delegate listen:responseString tagName:self.tagName];
             return;
         }
-        
-        
-        
-        
         
     }
     
@@ -1613,12 +1622,12 @@ NSString *amnt;
     if (!connectionList)
         NSLog(@"connect error");
 }
--(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len{
+-(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len subType:(NSString*)subType{
     
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     responseData = [NSMutableData data];
-    NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@&accessToken=%@", ServerUrl, @"GetTransactionsList", [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"], type, @"pSize", [NSString stringWithFormat:@"%d",len], @"pIndex", [NSString stringWithFormat:@"%d",sPos],[defaults valueForKey:@"OAuthToken"]];
+    NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&SubListType=%@&%@=%@&%@=%@&accessToken=%@", ServerUrl, @"GetTransactionsList", [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"], type,subType, @"pSize", [NSString stringWithFormat:@"%d",len], @"pIndex", [NSString stringWithFormat:@"%d",sPos],[defaults valueForKey:@"OAuthToken"]];
     NSLog(@"more hist %@",type);
     requestList = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlForHis]];
     
@@ -1627,13 +1636,13 @@ NSString *amnt;
         NSLog(@"connect error");
     
 }
--(void)histMoreSerachbyName:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len name:(NSString*)name{
+-(void)histMoreSerachbyName:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len name:(NSString*)name subType:(NSString*)subType{
     //histSafe=NO;
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     responseData = [NSMutableData data];
-    NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&friendName=%@&%@=%@&%@=%@&accessToken=%@", ServerUrl, @"GetTransactionsSearchList", [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"], type,name, @"pSize", [NSString stringWithFormat:@"%d",len], @"pIndex", [NSString stringWithFormat:@"%d",sPos],[defaults valueForKey:@"OAuthToken"]];
+    NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&sublist=%@&friendName=%@&%@=%@&%@=%@&accessToken=%@", ServerUrl, @"GetTransactionsSearchList", [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"], type,subType,name, @"pSize", [NSString stringWithFormat:@"%d",len], @"pIndex", [NSString stringWithFormat:@"%d",sPos],[defaults valueForKey:@"OAuthToken"]];
     NSLog(@"more hist %@",type);
     requestList = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlForHis]];
     
@@ -1642,6 +1651,23 @@ NSString *amnt;
         NSLog(@"connect error");
     
 }
+//GetServerCurrentTime?memberId={memberId}&pinNo={accessToken}
+-(void)GetServerCurrentTime{
+    //histSafe=NO;
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+   
+    
+    responseData = [NSMutableData data];
+    NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@", ServerUrl, @"GetServerCurrentTime"];
+ 
+    requestList = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlForHis]];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+    
+}
+//GetServerCurrentTime?memberId={memberId}&pinNo={accessToken}
 -(void) LogOutRequest:(NSString*) memberId
 {
     self.responseData = [[NSMutableData alloc] init];
