@@ -169,7 +169,7 @@
         }else if(indexPath.row == 6){
             filterPick = @"DISPUTED";
         }*/
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissPopOver" object:nil];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:@"dismissPopOver" object:nil];
         return;
     }else{
         NSString *selectedImg = [NSString new];
@@ -197,7 +197,7 @@
         [selectedMemo setObject:selectedImg forKey:@"img"];
         [selectedMemo setObject:selectedCat forKey:@"cat"];
         memoList = NO;
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissPopOver" object:self userInfo:selectedMemo];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:@"dismissPopOver" object:self userInfo:selectedMemo];
         return;
     }
 }

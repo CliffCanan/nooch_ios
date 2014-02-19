@@ -43,7 +43,7 @@
     UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:act];
     [self.navigationItem setRightBarButtonItem:funds];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-       NSLog(@"trans details: %@",self.trans);
+       //NSLog(@"trans details: %@",self.trans);
     
 	// Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"Transfer Details"];
@@ -54,15 +54,44 @@
     user_picture.layer.borderWidth = 1; user_picture.layer.borderColor = kNoochGrayDark.CGColor;
     user_picture.layer.cornerRadius = 38;
     user_picture.clipsToBounds = YES;
+     if(([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"]&& [self.trans valueForKey:@"BankPicture"] !=NULL&& ![[self.trans valueForKey:@"BankPicture"]isKindOfClass:[NSNull class]]))
+    {
+        NSArray* bytedata = [self.trans valueForKey:@"BankPicture"];
+        unsigned c = bytedata.count;
+        uint8_t *bytes = malloc(sizeof(*bytes) * c);
+        
+        unsigned i;
+        for (i = 0; i < c; i++)
+        {
+            NSString *str = [bytedata objectAtIndex:i];
+            int byte = [str intValue];
+            bytes[i] = (uint8_t)byte;
+        }
+        
+        NSData *datos = [NSData dataWithBytes:bytes length:c];
+        
+      
+        [user_picture setImage:[UIImage imageWithData:datos]];
+        
+
+        
+    }
+     else if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"]){
+         [user_picture setImage:[UIImage imageNamed:@"Icon.png"]];
+     }
     
-    [user_picture setImageWithURL:[NSURL URLWithString:[self.trans objectForKey:@"Photo"]]
-                 placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+    else    {
+        [user_picture setImageWithURL:[NSURL URLWithString:[self.trans objectForKey:@"Photo"]]
+                     placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+    }
+    
+    
     [self.view addSubview:user_picture];
     
     UILabel *payment = [UILabel new];
     [payment setStyleClass:@"details_intro"];
     [payment setStyleClass:@"details_intro_green"];
-   // NSLog(@"%@",self.trans);
+    NSLog(@"%@",self.trans);
     
     if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
         if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
@@ -94,7 +123,7 @@
    
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"])
     {
-        [payment setText:@"Withdraw to:"];
+        [payment setText:@"Withdrawal to:"];
     }
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
     {
@@ -117,6 +146,16 @@
          [other_party setText:[self.trans objectForKey:@"InvitationSentTo"]];
          
     }
+     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"]&& [self.trans objectForKey:@"BankName"]!=NULL&& ![[self.trans valueForKey:@"BankName"]isKindOfClass:[NSNull class]])
+     {
+         [other_party setText:[[self.trans objectForKey:@"BankName"] capitalizedString]];
+         [other_party setStyleClass:@"details_othername"];
+     }
+     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
+     {
+         [other_party setText:@"Nooch"];
+         [other_party setStyleClass:@"details_othername"];
+     }
     else
          [other_party setText:[[self.trans objectForKey:@"Name"] capitalizedString]];
           [other_party setStyleClass:@"details_othername"];
@@ -691,61 +730,64 @@
         NSError *error;
         
         NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-       // self.trans=[loginResult mutableCopy];
-        double lat = [[self.trans objectForKey:@"Latitude"] floatValue];
-        double lon = [[self.trans objectForKey:@"Longitude"] floatValue];
-        
-        
-        GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:lat
-                                                                longitude:lon
-                                                                     zoom:11];
-        UIImageView*imgTran;
-        if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
-            NSArray* bytedata = [loginResult valueForKey:@"Picture"];
-            unsigned c = bytedata.count;
-            uint8_t *bytes = malloc(sizeof(*bytes) * c);
+       
+        if (![[self.trans objectForKey:@"Latitude"] intValue]==0&& ![[self.trans objectForKey:@"Longitude"] intValue]==0) {
+            // self.trans=[loginResult mutableCopy];
+            double lat = [[self.trans objectForKey:@"Latitude"] floatValue];
+            double lon = [[self.trans objectForKey:@"Longitude"] floatValue];
+            GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:lat
+                                                                    longitude:lon
+                                                                         zoom:11];
+            UIImageView*imgTran;
+            if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
+                NSArray* bytedata = [loginResult valueForKey:@"Picture"];
+                unsigned c = bytedata.count;
+                uint8_t *bytes = malloc(sizeof(*bytes) * c);
+                
+                unsigned i;
+                for (i = 0; i < c; i++)
+                {
+                    NSString *str = [bytedata objectAtIndex:i];
+                    int byte = [str intValue];
+                    bytes[i] = (uint8_t)byte;
+                }
+                
+                NSData *datos = [NSData dataWithBytes:bytes length:c];
+                
+                imgTran=[[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
+                [imgTran setImage:[UIImage imageWithData:datos]];
+                
+                mapView_ = [GMSMapView mapWithFrame:CGRectMake(165, 240, 150, 160) camera:camera];
+            }
+            else
+                mapView_ = [GMSMapView mapWithFrame:CGRectMake(-1, 240, 322, 160) camera:camera];
             
-            unsigned i;
-            for (i = 0; i < c; i++)
+            mapView_.myLocationEnabled = YES;
+            //mapView_.layer.borderWidth = 1;
+            if ([[assist shared]islocationAllowed]) {
+                
+                [self.view addSubview:mapView_];
+                if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
+                    
+                    [self.view addSubview:imgTran];
+                }
+            }
+            else
             {
-                NSString *str = [bytedata objectAtIndex:i];
-                int byte = [str intValue];
-                bytes[i] = (uint8_t)byte;
+                if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
+                    imgTran.frame=CGRectMake(5, 240, 310, 160);
+                    
+                    [self.view addSubview:imgTran];
+                }
             }
+            // Creates a marker in the center of the map.
+            GMSMarker *marker = [[GMSMarker alloc] init];
+            marker.position = CLLocationCoordinate2DMake(lat, lon);
             
-            NSData *datos = [NSData dataWithBytes:bytes length:c];
-            
-            imgTran=[[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
-            [imgTran setImage:[UIImage imageWithData:datos]];
-            
-            mapView_ = [GMSMapView mapWithFrame:CGRectMake(165, 240, 150, 160) camera:camera];
+            marker.map = mapView_;
         }
-        else
-            mapView_ = [GMSMapView mapWithFrame:CGRectMake(-1, 240, 322, 160) camera:camera];
         
-        mapView_.myLocationEnabled = YES;
-        //mapView_.layer.borderWidth = 1;
-        if ([[assist shared]islocationAllowed]) {
-            
-            [self.view addSubview:mapView_];
-            if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
-                
-                [self.view addSubview:imgTran];
-            }
-        }
-        else
-        {
-            if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
-                imgTran.frame=CGRectMake(5, 240, 310, 160);
-                
-                [self.view addSubview:imgTran];
-            }
-        }
-        // Creates a marker in the center of the map.
-        GMSMarker *marker = [[GMSMarker alloc] init];
-        marker.position = CLLocationCoordinate2DMake(lat, lon);
-        
-        marker.map = mapView_;
+       
 
         //Set Status
         UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 190, 320, 30)];

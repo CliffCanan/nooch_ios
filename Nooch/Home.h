@@ -30,5 +30,7 @@ NSUserDefaults *user;
     CLLocationManager*locationManager;
     float lat,lon;
     UIView*blankView;
+    NSDate*ServerDate;
+    NSTimer*timerHome;
 }
 @end

@@ -190,6 +190,7 @@
     
     //if ([emailAddress rangeOfString:@"@"].location!=NSNotFound && [emailAddress rangeOfString:@"."].location!=NSNotFound) {
     NSLog(@"%@",emailAddress);
+   
     // NSArray*arr=[emailAddress componentsSeparatedByString:@" "];
     //NSLog(@"%@",arr);
     // }
@@ -203,15 +204,15 @@
         
         //if ([emailAddress rangeOfString:@"@"].location!=NSNotFound && [emailAddress rangeOfString:@"."].location!=NSNotFound) {
         NSLog(@"%@",emailAddresslbl);
-        //        if ([emailAddresslbl isKindOfClass:[NSNull class]] || emailAddresslbl==NULL || [emailAddresslbl isEqualToString:@"(null)"]|| emailAddresslbl==nil
-        //) {
-        //
-        //            NSLog(@"%@",emailAddresslbl);
-        //            emailAddresslbl=[self stringBetweenString:@"- " andString:@" " fullText:emailAddress];
-        //             NSLog(@"%@",emailAddresslbl);
-        //        }
-        //
-        // }
+                if ([emailAddresslbl isKindOfClass:[NSNull class]] || emailAddresslbl==NULL || [emailAddresslbl isEqualToString:@"(null)"]|| emailAddresslbl==nil) {
+        
+                    [_addressBookController dismissViewControllerAnimated:YES completion:nil];
+                    
+                    return NO;
+
+                }
+        
+         
         
         if (CFStringCompare(currentEmailLabel, kABHomeLabel, 0) == kCFCompareEqualTo) {
             [contactInfoDict setObject:(__bridge NSString *)currentEmailValue forKey:@"homeEmail"];
@@ -250,28 +251,30 @@
     
     // Add the dictionary to the array.
     // [_arrContactsData addObject:contactInfoDict];
-    isphoneBook=YES;
-    if (![[contactInfoDict valueForKey:@"homeEmail"] isEqualToString:@""]) {
-        emailphoneBook= [contactInfoDict  valueForKey:@"homeEmail"];
-        [self getMemberIdByUsingUserNameFromPhoneBook];
-    }
-    else if(![[contactInfoDict valueForKey:@"homeEmail"] isEqualToString:@""])
-    {
-        emailphoneBook= [contactInfoDict valueForKey:@"workEmail"];
-        [self getMemberIdByUsingUserNameFromPhoneBook];
-    }
-    else
-    {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Email ID is not available." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-        [alert show];
-        
-    }
-    NSLog(@"%@",contactInfoDict );
+        NSLog(@"%@",contactInfoDict );
     // Reload the table view data.
     // [self.tableView reloadData];
     
     // Dismiss the address book view controller.
-    [_addressBookController dismissViewControllerAnimated:YES completion:nil];
+    [_addressBookController dismissViewControllerAnimated:YES completion:^{
+        isphoneBook=YES;
+        if (![[contactInfoDict valueForKey:@"homeEmail"] isEqualToString:@""]) {
+            emailphoneBook= [contactInfoDict  valueForKey:@"homeEmail"];
+            [self getMemberIdByUsingUserNameFromPhoneBook];
+        }
+        else if(![[contactInfoDict valueForKey:@"homeEmail"] isEqualToString:@""])
+        {
+            emailphoneBook= [contactInfoDict valueForKey:@"workEmail"];
+            [self getMemberIdByUsingUserNameFromPhoneBook];
+        }
+        else
+        {
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Email ID is not available." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            [alert show];
+            
+        }
+
+    }];
     
     return NO;
 }

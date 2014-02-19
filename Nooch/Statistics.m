@@ -257,11 +257,11 @@
             }
             // [statistic setText:@"7"];
         }
+//        else if (indexPath.row == 4) {
+//            [title setText:@"$ Earned from Invites"];
+//            //[statistic setText:@"$ 25.00"];
+//        }
         else if (indexPath.row == 4) {
-            [title setText:@"$ Earned from Invites"];
-            //[statistic setText:@"$ 25.00"];
-        }
-        else if (indexPath.row == 5) {
             if ([dictAllStats valueForKey:@"Total_Posts_To_TW"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Posts_To_TW"]  valueForKey:@"Result"]];
             }
@@ -271,7 +271,7 @@
             [title setText:@"Posts to Twitter"];
             // [statistic setText:@"0"];
         }
-        else if (indexPath.row == 6) {
+        else if (indexPath.row == 5) {
             if ([dictAllStats valueForKey:@"Total_Posts_To_FB"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Posts_To_FB"]  valueForKey:@"Result"]];
             }
@@ -369,7 +369,7 @@
         else if (indexPath.row == 2) {
             [title setText:@"Causes Donated to"];
             [statistic setStyleClass:@"stats_table_right_lable1"];
-            [statistic setText:[[dictAllStats valueForKey:@"DonatedTo"]  valueForKey:@"Result"]];
+            [statistic setText:[[[dictAllStats valueForKey:@"DonatedTo"]  valueForKey:@"Result"] capitalizedString]];
             if ([[[dictAllStats valueForKey:@"DonatedTo"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
             }

@@ -1281,7 +1281,7 @@
 	
 	/**  The labels under each social media button on each nonprofit's details screen. **/
 	.nonprofit_details_buttons_labels {
-		width				: 70px;
+		width				: 55px;
 		height				: 15px;
 		top					: 236px;
 		font-family			: "Roboto";
@@ -1292,10 +1292,10 @@
 	}
 	
 	/**  Setting the correct position for each button label. **/
-	.nonprofit_details_buttons_label_website { 	left	: 14px;}
-	.nonprofit_details_buttons_label_fb 		 { 	left	: 94px;}
-	.nonprofit_details_buttons_label_twitter { 	left	: 174px;}
-	.nonprofit_details_buttons_label_youtube { 	left	: 254px;}
+	#nonprofit_details_buttons_label_website { 	left	: 10px;}
+	#nonprofit_details_buttons_label_fb 		 { 	left	: 90px;}
+	#nonprofit_details_buttons_label_twitter { 	left	: 170px;}
+	#nonprofit_details_buttons_label_youtube { 	left	: 250px;}
 
 	.nonprofit_details_donatebutton {
 		width			: 280px;
@@ -2693,15 +2693,15 @@
 		text-align		: left;
 	}
 .stats_table_right_lable1 {
-		width			: 150px;
+		width			: 200px;
 		height			: 20px;
-		top				: 0px;
-		left			: 170px;
+		top				: 17px;
+		left			: 140px;
 		color			: #3fabe1;
 		font-family		: "Roboto";
 		font-weight		: regular;
-		font-size		: 12px;
-		text-align		: left;
+		font-size		: 13px;
+		text-align		: center;
 	}
 	.stats_circle {
 		shape		: ellipse;

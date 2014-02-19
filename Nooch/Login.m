@@ -276,7 +276,7 @@
         }
         
     }
-    if ([tagName isEqualToString:@"login"])
+    else if ([tagName isEqualToString:@"login"])
     {
         NSError *error;
         
@@ -314,7 +314,7 @@
     }
     
     
-    if([tagName isEqualToString:@"getMemberId"]){
+    else if([tagName isEqualToString:@"getMemberId"]){
         NSError *error;
         
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
