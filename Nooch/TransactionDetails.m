@@ -91,7 +91,7 @@
     UILabel *payment = [UILabel new];
     [payment setStyleClass:@"details_intro"];
     [payment setStyleClass:@"details_intro_green"];
-    NSLog(@"%@",self.trans);
+   // NSLog(@"%@",self.trans);
     
     if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
         if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {

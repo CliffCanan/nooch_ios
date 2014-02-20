@@ -756,12 +756,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
             [subview removeFromSuperview];
         }
     }
-    //Rlease memory cache
-    SDImageCache *imageCache = [SDImageCache sharedImageCache];
-    [imageCache clearMemory];
-    [imageCache clearDisk];
-    [imageCache cleanDisk];
-
+    
     
     
     if (self.completed_selected) {
@@ -1121,12 +1116,28 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 else
                 {
                     if (![[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]&& ![[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-                        if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]]) {
+                        if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
+                        {
+                            if(![[dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"]isKindOfClass:[NSNull class]]&& [dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"]!=NULL){
+                                [updated_balance setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"] floatValue]]];
+                                
+                            }
+                            else{
+                                [updated_balance setText:@""];
+                            }
                             [updated_balance setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"] floatValue]]];
                         }
                         else
-                            [updated_balance setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"] floatValue]]];
-                  
+                        {
+                            if(![[dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"]isKindOfClass:[NSNull class]]&& [dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"]!=NULL){
+                                [updated_balance setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"] floatValue]]];
+                                
+                            }
+                            else{
+                                NSLog(@"%@",dictRecord);
+                            [updated_balance setText:@""];
+                            }
+                        }
                     
                     [updated_balance setStyleClass:@"history_updatedbalance"];
                     [cell.contentView addSubview:updated_balance];
@@ -1947,7 +1958,12 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {  NSError *error;
     [spinner removeFromSuperview];
-    
+    //Rlease memory cache
+    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    [imageCache clearMemory];
+    [imageCache clearDisk];
+    [imageCache cleanDisk];
+
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
         UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [Alert show];

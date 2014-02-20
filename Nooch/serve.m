@@ -744,7 +744,7 @@ NSString *amnt;
     else if ([tagName isEqualToString:@"info"]) {
         NSLog(@"serve connected for %@",self.tagName);
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-        
+        /*
         //ADDING LOCAL NOTIFICATION 19NOV 2013
         dictUsers=[[NSMutableDictionary alloc]init];
         if (![[defaults objectForKey:@"NotifPlaced"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced"]!=NULL) {
@@ -879,7 +879,7 @@ NSString *amnt;
                 
             }
         }
-        
+        */
         NSError* error;
         Dictresponse = [NSJSONSerialization
                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
@@ -976,11 +976,8 @@ NSString *amnt;
                 NSLog(@"%@",[[[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
                 
             }
-            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-            NSLog(@"%@",[user objectForKey:@"firstName"]);
-            
-            
-            
+           // NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+           /*
             dictUsers=[[NSMutableDictionary alloc]init];
             if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
                 dictUsers=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
@@ -996,6 +993,7 @@ NSString *amnt;
             }
             NSLog(@"%@",strNotifPlaced);
             NSLog(@"%@ %@",dictUsers,[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"]);
+            */
             if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]&& ![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue] )
             {
                 [[assist shared]setBankVerified:YES];//                 if (![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
@@ -1011,6 +1009,7 @@ NSString *amnt;
                 //[defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
                 //[defaults synchronize];
             }
+            /*
             if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]&& [strNotifPlaced isEqualToString:@"1"]) {
                 if (![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue]) {
                     for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
@@ -1123,28 +1122,28 @@ NSString *amnt;
                     [defaults synchronize];
                 }
                 
-                
+                */
                 
                 
                 
             }
-        }
+        
         else
         {
             [[assist shared]setBankVerified:NO];
             [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
-            for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
-                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
-                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                }
-                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
-                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                }
-                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
-                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                }
-                
-            }
+//            for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
+//                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
+//                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+//                }
+//                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
+//                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+//                }
+//                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
+//                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+//                }
+//                
+//            }
             
             
         }

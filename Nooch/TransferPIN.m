@@ -1008,8 +1008,6 @@
     [spinner setHidden:YES];
     responseString= [[NSString alloc] initWithData:self.respData encoding:NSASCIIStringEncoding];
     
-   
-    
     NSError* error;
     dictResultTransfer= [NSJSONSerialization
                          JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
@@ -1043,6 +1041,7 @@
             [av show];
         }else{
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av setTag:20230];
             [av show];
         }
         return;
@@ -1065,12 +1064,15 @@
         else if([[resultValue valueForKey:@"Result"] isEqualToString:[NSString stringWithFormat:@"Your bank account is not verified. Please verify your bank account now."]])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av setTag:20230];
             [av show];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            
+           // [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             //Your bank account is not verified. Please verify your bank account now.
         }
         else{
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av setTag:20230];
             [av show];
             return;
         }
@@ -1084,7 +1086,7 @@
             transactionId=[dictResultTransfer valueForKey:@"requestId"];
     }
     
-    //NSLog(@"transactionId %@",transactionId);
+   
     
     //TransactionId
     if (![transactionId isKindOfClass:[NSNull class]] && transactionId!=NULL) {

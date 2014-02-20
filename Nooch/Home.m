@@ -492,34 +492,34 @@
      NSLog(@"%ld", (long)[components day]);
      if ([components day]>21) {
      
-     for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
-     if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
-     [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-     }
-     if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
-     [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-     }
-     if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
-     [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-     }
-     
-     }
-     NSMutableDictionary* dictUsers2=[[NSMutableDictionary alloc]init];
-     if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
-     dictUsers2=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
-     
-     }
-     NSLog(@"%@",dictUsers2);
-     for (id key in dictUsers2) {
-     if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
-     [dictUsers2 setValue:@"0" forKey:key];
-     
-     break;
-     }
-     }
-     [defaults setValue:dictUsers2 forKey:@"NotifPlaced2"];
-     [defaults synchronize];
-     
+//     for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
+//     if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
+//     [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+//     }
+//     if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
+//     [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+//     }
+//     if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
+//     [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+//     }
+//     
+//     }
+//     NSMutableDictionary* dictUsers2=[[NSMutableDictionary alloc]init];
+//     if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
+//     dictUsers2=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
+//     
+//     }
+//     NSLog(@"%@",dictUsers2);
+//     for (id key in dictUsers2) {
+//     if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
+//     [dictUsers2 setValue:@"0" forKey:key];
+//     
+//     break;
+//     }
+//     }
+//     [defaults setValue:dictUsers2 forKey:@"NotifPlaced2"];
+//     [defaults synchronize];
+//     
      
      serve *bank = [serve new];
      bank.tagName = @"bDelete";
