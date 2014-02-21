@@ -289,7 +289,6 @@
             [cell.contentView addSubview:iv];
             on_off.tag=12000;
             if ([SelectedOption isEqualToString:@"Triggers"])
-                
             {
                 [on_off setOn:YES];
                 
@@ -300,7 +299,7 @@
                         UILabel*lbldetail=[[UILabel alloc]initWithFrame:CGRectMake(45, 35, 105, 15)];
                         lbldetail.backgroundColor=[UIColor clearColor];
                         lbldetail.textColor=[UIColor lightGrayColor];
-                        lbldetail.text=[NSString stringWithFormat:@"%@",[dictSelectedWithdrawal valueForKey:option]];
+                        lbldetail.text=[NSString stringWithFormat:@"%@",At];
                         lbldetail.font=[UIFont systemFontOfSize:12.0f];
                         [cell.contentView addSubview:lbldetail];
                         
@@ -310,6 +309,11 @@
                         //   cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[dictSelectedWithdrawal valueForKey:option]];
                         
                         SelectedSubOption=[dictSelectedWithdrawal valueForKey:option];
+                    }
+                    else
+                    {
+                         [on_off setOn:NO];
+                        cell.detailTextLabel.text=@"";
                     }
                 }
                 else{
@@ -1192,7 +1196,8 @@
                         
                     }
                     //isWithdrawalSelected=YES;
-                    
+                    At=[NSString stringWithFormat:@"At $%@",[arr objectAtIndex:1]];
+                
                     [dictSelectedWithdrawal removeAllObjects];
                     [dictSelectedWithdrawal setValue:[NSString stringWithFormat:@"At $%@",[arr objectAtIndex:1]] forKey:@"custom"];
                     
@@ -1220,6 +1225,11 @@
                         }
                     }
                 }
+            }
+            else{
+                At=@"";
+                [dictSelectedWithdrawal removeAllObjects];
+                [self.menu reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
             }
             
         }
@@ -1288,8 +1298,8 @@
                         options:kNilOptions
                         error:&error];
         
-        {
-            
+        NSLog(@"%@",dictResponse);
+        if (![SelectedOption isEqualToString:@"Frequency"]) {
             if (isWithdrawalSelected) {
                 
                 isWithdrawalSelected=NO;
@@ -1339,11 +1349,14 @@
                 }
                 
             }
-            [self.menu reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+        }
+        
+        [self.menu reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
             
             // [tableView reloadData];
             
-        }
+        
         if ([[[dictResponse valueForKey:@"SaveFrequencyResult"] valueForKey:@"Result"]isEqualToString:@"Saved Successfully"]) {
             
         }
@@ -1431,11 +1444,12 @@
 //    
     
    
-    if (dictSelectedWithdrawal!=NULL && ID!=NULL && dictSelectedWithdrawal.count!=0) {
+    if (ID!=NULL && At!=NULL && [ID length]!=0) {
          [textMyWithdrawal resignFirstResponder];
         [spinner startAnimating];
         [spinner setHidden:NO];
-        
+        ID=@"";
+        At=@"";
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:0.5];
         [UIView setAnimationDelegate:self];
@@ -1578,9 +1592,7 @@
     NSString*strTitle=[actionSheet buttonTitleAtIndex:buttonIndex];
     if (![strTitle isEqualToString:@"Cancel"]) {
         if (!dictSelectedWithdrawal) {
-            
-            
-            
+           
             dictSelectedWithdrawal=[[NSMutableDictionary alloc]init];
             
         }
@@ -1621,7 +1633,7 @@
         
         [serveOBJ SaveFrequency:[[arrAutoWithdrawalF objectAtIndex:buttonIndex] valueForKey:@"Id"] type:@"Frequency" frequency:0];
         
-        [self.menu reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        //[self.menu reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
         
     }
     else{
@@ -1646,10 +1658,10 @@
        
        [dictSelectedWithdrawal removeAllObjects];
        
-       [dictSelectedWithdrawal setValue:[arrWithrawalOptions objectAtIndex:[sender tag]] forKey:[NSString stringWithFormat:@"%d",[sender tag]]];
+    [dictSelectedWithdrawal setValue:[arrWithrawalOptions objectAtIndex:[sender tag]] forKey:[NSString stringWithFormat:@"%d",[sender tag]]];
        
        [dictSelectedWithdrawal setValue:[NSString stringWithFormat:@"%d",[sender tag]] forKey:SelectedOption];
-       
+        At=[arrWithrawalOptions objectAtIndex:[sender tag]];
        //NSLog(@"%@ ddd%@",dictSelectedWithdrawal,arrAutoWithdrawalT);
        
         int tag=[sender tag];

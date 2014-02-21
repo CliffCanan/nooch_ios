@@ -128,6 +128,7 @@
     [spinner startAnimating];
     isRecentList=YES;
     searching=NO;
+    
     serve *recents = [serve new];
     [recents setTagName:@"recents"];
     [recents setDelegate:self];
@@ -767,13 +768,23 @@
         return;
     }
     if (searching) {
-        NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];
+        // histSearch = NO;
+        searching = NO;
+        emailEntry=NO;
+        isRecentList=YES;
+        [search resignFirstResponder];
+        [search setText:@""];
+        
+        [search setShowsCancelButton:NO];
+        
+        
+        NSDictionary *receiver =  [arrSearchedRecords objectAtIndex:indexPath.row];
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
         
         [self.navigationController pushViewController:how_much animated:YES];
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        
+        [self.contacts reloadData];
     }
     else{
         NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];

@@ -131,7 +131,7 @@
     
     [self.search setDelegate:self];
     self.search.searchBarStyle=UISearchBarIconSearch;
-   // NSLog(@"%@",[self.search subviews]);
+   // //nslog(@"%@",[self.search subviews]);
     //  [[[self.search subviews] objectAtIndex:0] removeFromSuperview];
     [self.search setPlaceholder:@"Search Transaction History"];
     [self.view addSubview:self.search];
@@ -322,7 +322,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     //
     
     UILabel*lblName=[[UILabel alloc]initWithFrame:CGRectMake(80, 25,150, 15)];
-    NSLog(@"%d",[[marker title]intValue]);
+    ////nslog(@"%d",[[marker title]intValue]);
      if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Deposit"])
      {
          lblName.text=@"Nooch";
@@ -380,7 +380,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
      [customView addSubview:lblloc];
     
      if ([[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionDate"]!=NULL) {
-         NSLog(@"%@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionDate"]);
+         ////nslog(@"%@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionDate"]);
      NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
          //Set the AM and PM symbols
          [dateFormatter setAMSymbol:@"AM"];
@@ -389,7 +389,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
      NSDate *yourDate = [dateFormatter dateFromString:[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionDate"]];
      dateFormatter.dateFormat = @"dd-MMMM-yyyy";
      //[dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
-     NSLog(@"%@",[dateFormatter stringFromDate:yourDate]);
+     ////nslog(@"%@",[dateFormatter stringFromDate:yourDate]);
       NSString*statusstr;
       if ([[[histArrayCommon objectAtIndex:[[marker title]intValue] ]valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
       if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
@@ -556,13 +556,13 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         return;
     }
     translatedPoint = CGPointMake(firstX+translatedPoint.x, firstY);
-    NSLog(@"float  %f",firstX+translatedPoint.x);
+    ////nslog(@"float  %f",firstX+translatedPoint.x);
     CGFloat animationDuration = 0.2;
     CGFloat velocityX = (0.0*[(UIPanGestureRecognizer*)sender velocityInView:self.view].x);
     
     
     CGFloat finalX = translatedPoint.x + velocityX;
-    NSLog(@"%f",finalX);
+    ////nslog(@"%f",finalX);
     CGFloat finalY = firstY;
     [[sender view] setCenter:translatedPoint];
     [UIView beginAnimations:nil context:NULL];
@@ -578,7 +578,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
      
      
      CGFloat finalX = translatedPoint.x + velocityX;
-     NSLog(@"%f",finalX);
+     ////nslog(@"%f",finalX);
      CGFloat finalY = firstY;// translatedPoint.y + (.35*[(UIPanGestureRecognizer*)sender velocityInView:self.view].y);
      
      //      if (UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
@@ -609,7 +609,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
      
      CGFloat animationDuration = (ABS(velocityX)*.0002)+.2;
      
-     NSLog(@"the duration is: %f", animationDuration);
+     ////nslog(@"the duration is: %f", animationDuration);
      
      [UIView beginAnimations:nil context:NULL];
      [UIView setAnimationDuration:animationDuration];
@@ -764,7 +764,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
             if ([histTempCompleted count]>indexPath.row)
             {
                 NSDictionary*dictRecord=[histTempCompleted objectAtIndex:indexPath.row];
-                NSLog(@"%@",dictRecord);
+                ////nslog(@"%@",dictRecord);
                 if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]|| [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]||[[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] ) {
                     UIView *indicator = [UIView new];
                     [indicator setStyleClass:@"history_sidecolor"];
@@ -823,8 +823,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     [cell.contentView addSubview:indicator];
                     UILabel *date = [UILabel new];
                     [date setStyleClass:@"history_datetext"];
-                    NSLog(@"%@",[user valueForKey:@"MemberId"]);
-                    NSLog(@"%@",[dictRecord valueForKey:@"MemberId"]);
+                    ////nslog(@"%@",[user valueForKey:@"MemberId"]);
+                    ////nslog(@"%@",[dictRecord valueForKey:@"MemberId"]);
                     //Updated Balance after Transaction
                     UILabel *updated_balance = [UILabel new];
                     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]) {
@@ -834,11 +834,27 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     {
                         if (![[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]&& ![[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
                             if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]]) {
-                                [updated_balance setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"] floatValue]]];
+                                if(![[dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"]isKindOfClass:[NSNull class]]&& [dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"]!=NULL){
+                                    [updated_balance setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"] floatValue]]];
+                                    
+                                }
+                                else{
+                                    [updated_balance setText:@""];
+                                }
+
                             }
                             else
-                                [updated_balance setText:[NSString stringWithFormat:@"$.02%f",[[dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"] floatValue]]];
-                            
+                            {
+                            if(![[dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"]isKindOfClass:[NSNull class]]&& [dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"]!=NULL){
+                                [updated_balance setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"] floatValue]]];
+                                
+                            }
+                            else{
+                                
+                                [updated_balance setText:@""];
+                            }
+
+                            }
                             
                             [updated_balance setStyleClass:@"history_updatedbalance"];
                             [cell.contentView addSubview:updated_balance];
@@ -867,7 +883,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     
                     
                     
-                    NSLog(@"%ld", (long)[components day]);
+                    ////nslog(@"%ld", (long)[components day]);
                 
                     if ((long)[components day]>3) {
                         
@@ -880,7 +896,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                         dateFormatter.dateFormat = @"dd-MMMM-yyyy";
                         [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
-                        NSLog(@"%@",[dateFormatter stringFromDate:yourDate]);
+                        ////nslog(@"%@",[dateFormatter stringFromDate:yourDate]);
                         NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
                         [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
                         [cell.contentView addSubview:date];
@@ -895,7 +911,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                                                               toDate:ServerDate
                                                         
                                                                              options:0];
-                        NSLog(@"%ld  %ld", (long)[components hour],(long)[components minute]);
+                        ////nslog(@"%ld  %ld", (long)[components hour],(long)[components minute]);
                         if ((long)[components hour]==0) {
                             NSDateComponents *components = [gregorianCalendar components:NSMinuteCalendarUnit
                                                             
@@ -904,7 +920,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                                                                   toDate:ServerDate
                                                             
                                                                                  options:0];
-                            NSLog(@"%ld ",(long)[components minute]);
+                            ////nslog(@"%ld ",(long)[components minute]);
                             if ((long)[components minute]==0) {
                                 NSDateComponents *components = [gregorianCalendar components:NSSecondCalendarUnit
                                                                 
@@ -957,11 +973,12 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     UILabel *name = [UILabel new];
                     [name setStyleClass:@"history_cell_textlabel"];
                     [name setStyleClass:@"history_recipientname"];
+                    
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]]) {
                         if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
                             [name setText:[NSString stringWithFormat:@"You Paid %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
-                            [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                                placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                            //[pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                              //  placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                             
                         }
                         
@@ -971,8 +988,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     {
                         if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
                             [name setText:[NSString stringWithFormat:@"%@ Paid You",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
-                            [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                                placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                           //[pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                               // placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                         }
                     }
                     
@@ -985,7 +1002,22 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]){
                         [name setText:@"Withdraw from  Nooch"];
-                        [pic setImage:[UIImage imageNamed:@"Icon.png"]];
+                        NSArray* bytedata = [dictRecord valueForKey:@"BankPicture"];
+                        unsigned c = bytedata.count;
+                        uint8_t *bytes = malloc(sizeof(*bytes) * c);
+                        
+                        unsigned i;
+                        for (i = 0; i < c; i++)
+                        {
+                            NSString *str = [bytedata objectAtIndex:i];
+                            int byte = [str intValue];
+                            bytes[i] = (uint8_t)byte;
+                        }
+                        
+                        NSData *datos = [NSData dataWithBytes:bytes length:c];
+                        
+                        
+                        [pic setImage:[UIImage imageWithData:datos]];
                         
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"]){
@@ -1048,7 +1080,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         }
         if ([histShowArrayCompleted count]>indexPath.row) {
             NSDictionary*dictRecord=[histShowArrayCompleted objectAtIndex:indexPath.row];
-            NSLog(@"%@",dictRecord);
+            ////nslog(@"%@",dictRecord);
             if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]|| [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]||[[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] ) {
                 UIView *indicator = [UIView new];
                 [indicator setStyleClass:@"history_sidecolor"];
@@ -1107,8 +1139,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 [cell.contentView addSubview:indicator];
                 UILabel *date = [UILabel new];
                 [date setStyleClass:@"history_datetext"];
-                NSLog(@"%@",[user valueForKey:@"MemberId"]);
-                NSLog(@"%@",[dictRecord valueForKey:@"MemberId"]);
+                ////nslog(@"%@",[user valueForKey:@"MemberId"]);
+                ////nslog(@"%@",[dictRecord valueForKey:@"MemberId"]);
                 //Updated Balance after Transaction
                 UILabel *updated_balance = [UILabel new];
                 if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"])
@@ -1125,7 +1157,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                             else{
                                 [updated_balance setText:@""];
                             }
-                            [updated_balance setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"] floatValue]]];
+                          
                         }
                         else
                         {
@@ -1134,7 +1166,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                 
                             }
                             else{
-                                NSLog(@"%@",dictRecord);
+                               
                             [updated_balance setText:@""];
                             }
                         }
@@ -1167,7 +1199,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 
                 
                 
-               // NSLog(@"%ld", (long)[components day]);
+               // ////nslog(@"%ld", (long)[components day]);
                 if ((long)[components day]>3) {
                     
                     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
@@ -1178,7 +1210,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                     dateFormatter.dateFormat = @"dd-MMMM-yyyy";
                     [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
-                    NSLog(@"%@",[dateFormatter stringFromDate:yourDate]);
+                    ////nslog(@"%@",[dateFormatter stringFromDate:yourDate]);
                     NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
                     [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
                     [cell.contentView addSubview:date];
@@ -1195,7 +1227,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                                                           toDate:ServerDate
                                                     
                                                                          options:0];
-                    NSLog(@"%ld  %ld", (long)[components hour],(long)[components minute]);
+                    ////nslog(@"%ld  %ld", (long)[components hour],(long)[components minute]);
                     if ((long)[components hour]==0) {
                         NSDateComponents *components = [gregorianCalendar components:NSMinuteCalendarUnit
                                                         
@@ -1204,7 +1236,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                                                               toDate:ServerDate
                                                         
                                                                              options:0];
-                        NSLog(@"%ld ",(long)[components minute]);
+                        ////nslog(@"%ld ",(long)[components minute]);
                         if ((long)[components minute]==0) {
                             NSDateComponents *components = [gregorianCalendar components:NSSecondCalendarUnit
                                                             
@@ -1235,14 +1267,6 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 }
                 else
                 {
-//                    NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
-//                                                    
-//                                                                        fromDate:addeddate
-//                                                    
-//                                                                          toDate:ServerDate
-//                                                    
-//                                                                         options:0];
-                    NSLog(@"%ld", (long)[components day]);
                     if ((long)[components day]==1)
                         [date setText:[NSString stringWithFormat:@"%ld day ago",(long)[components day]]];
                     else
@@ -1290,7 +1314,23 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]){
                     [name setText:@"Withdraw from  Nooch"];
-                    [pic setImage:[UIImage imageNamed:@"Icon.png"]];
+                    NSArray* bytedata = [dictRecord valueForKey:@"BankPicture"];
+                    unsigned c = bytedata.count;
+                    uint8_t *bytes = malloc(sizeof(*bytes) * c);
+                    
+                    unsigned i;
+                    for (i = 0; i < c; i++)
+                    {
+                        NSString *str = [bytedata objectAtIndex:i];
+                        int byte = [str intValue];
+                        bytes[i] = (uint8_t)byte;
+                    }
+                    
+                    NSData *datos = [NSData dataWithBytes:bytes length:c];
+                    
+                    
+                    [pic setImage:[UIImage imageWithData:datos]];
+
                     
                 }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"]){
@@ -1390,7 +1430,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         if (isLocalSearch) {
             if ([histTempPending count]>indexPath.row) {
                 NSDictionary*dictRecord=[histTempPending objectAtIndex:indexPath.row];
-                //NSLog(@"%@",dictRecord);
+                ////nslog(@"%@",dictRecord);
                 if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]) {
                     UIView *indicator = [UIView new];
                     [indicator setStyleClass:@"history_sidecolor"];
@@ -1455,7 +1495,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     
                     
                     
-                    NSLog(@"%ld", (long)[components day]);
+                    //nslog(@"%ld", (long)[components day]);
                     if ((long)[components day]>3) {
                         
                         NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
@@ -1466,7 +1506,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                         dateFormatter.dateFormat = @"dd-MMMM-yyyy";
                         [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
-                        NSLog(@"%@",[dateFormatter stringFromDate:yourDate]);
+                        //nslog(@"%@",[dateFormatter stringFromDate:yourDate]);
                         NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
                         [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
                         [cell.contentView addSubview:date];
@@ -1483,7 +1523,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                                                               toDate:ServerDate
                                                         
                                                                              options:0];
-                        NSLog(@"%ld  %ld", (long)[components hour],(long)[components minute]);
+                        //nslog(@"%ld  %ld", (long)[components hour],(long)[components minute]);
                         if ((long)[components hour]==0) {
                             NSDateComponents *components = [gregorianCalendar components:NSMinuteCalendarUnit
                                                             
@@ -1492,7 +1532,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                                                                   toDate:ServerDate
                                                             
                                                                                  options:0];
-                            NSLog(@"%ld ",(long)[components minute]);
+                            //nslog(@"%ld ",(long)[components minute]);
                             if ((long)[components minute]==0) {
                                 NSDateComponents *components = [gregorianCalendar components:NSSecondCalendarUnit
                                                                 
@@ -1530,7 +1570,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
 //                                                                              toDate:ServerDate
 //                                                        
 //                                                                             options:0];
-                        NSLog(@"%ld", (long)[components day]);
+                        //nslog(@"%ld", (long)[components day]);
                         if ((long)[components day]==1)
                             [date setText:[NSString stringWithFormat:@"%ld day ago",(long)[components day]]];
                         else
@@ -1572,7 +1612,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         if ([histShowArrayPending count]>indexPath.row) {
             
             NSDictionary*dictRecord=[histShowArrayPending objectAtIndex:indexPath.row];
-           // NSLog(@"%@",dictRecord);
+           // //nslog(@"%@",dictRecord);
             if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]) {
                 UIView *indicator = [UIView new];
                 [indicator setStyleClass:@"history_sidecolor"];
@@ -1633,7 +1673,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 
                 
                 
-                NSLog(@"%ld", (long)[components day]);
+                //nslog(@"%ld", (long)[components day]);
                 if ((long)[components day]>3) {
                     
                     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
@@ -1644,7 +1684,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                     dateFormatter.dateFormat = @"dd-MMMM-yyyy";
                     [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
-                    NSLog(@"%@",[dateFormatter stringFromDate:yourDate]);
+                    //nslog(@"%@",[dateFormatter stringFromDate:yourDate]);
                     NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
                     [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
                     [cell.contentView addSubview:date];
@@ -1661,7 +1701,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                                                           toDate:ServerDate
                                                     
                                                                          options:0];
-                    NSLog(@"%ld  %ld", (long)[components hour],(long)[components minute]);
+                    //nslog(@"%ld  %ld", (long)[components hour],(long)[components minute]);
                     if ((long)[components hour]==0) {
                         NSDateComponents *components = [gregorianCalendar components:NSMinuteCalendarUnit
                                                         
@@ -1670,7 +1710,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                                                               toDate:ServerDate
                                                         
                                                                              options:0];
-                        NSLog(@"%ld ",(long)[components minute]);
+                        //nslog(@"%ld ",(long)[components minute]);
                         if ((long)[components minute]==0) {
                             NSDateComponents *components = [gregorianCalendar components:NSSecondCalendarUnit
                                                             
@@ -1708,7 +1748,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
 //                                                                          toDate:ServerDate
 //                                                    
 //                                                                         options:0];
-                    NSLog(@"%ld", (long)[components day]);
+                    //nslog(@"%ld", (long)[components day]);
                     if ((long)[components day]==1)
                         [date setText:[NSString stringWithFormat:@"%ld day ago",(long)[components day]]];
                     else
@@ -1795,9 +1835,9 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     //[dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
  // [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:-5]];
     
-    NSLog(@"%@", aStr);
+    //nslog(@"%@", aStr);
     NSDate   *aDate = [dateFormatter dateFromString:aStr];
-      NSLog(@"%@", aDate);
+      //nslog(@"%@", aDate);
     return aDate;
 }
 #pragma mark - UITableViewDelegate
@@ -1975,7 +2015,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         
-        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+        //nslog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
         [timer invalidate];
         [nav_ctrl performSelector:@selector(disable)];
         [nav_ctrl performSelector:@selector(reset)];
@@ -1996,9 +2036,9 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     }
     else if ([tagName isEqualToString:@"hist"]) {
         //[histArray removeAllObjects];
-        NSLog(@"%@",result);
+        //nslog(@"%@",result);
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        NSLog(@"%d",[histArray count]);
+        //nslog(@"%d",[histArray count]);
         if ([histArray count]>0) {
             isEnd=NO;
             isStart=NO;
@@ -2013,8 +2053,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     [histShowArrayPending addObject:dict];
                 }
             }
-            NSLog(@"%@",histArray);
-            NSLog(@"%@",histShowArrayPending);
+            //nslog(@"%@",histArray);
+            //nslog(@"%@",histShowArrayPending);
             
         }
         else
@@ -2039,9 +2079,9 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     }
     else if([tagName isEqualToString:@"search"]){
         //[histArray removeAllObjects];
-        NSLog(@"%@",result);
+        //nslog(@"%@",result);
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        NSLog(@"%d",[histArray count]);
+        //nslog(@"%d",[histArray count]);
         if ([histArray count]>0) {
             isEnd=NO;
             isStart=NO;
@@ -2056,8 +2096,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     [histShowArrayPending addObject:dict];
                 }
             }
-            NSLog(@"%@",histArray);
-            NSLog(@"%@",histShowArrayPending);
+            //nslog(@"%@",histArray);
+            //nslog(@"%@",histShowArrayPending);
             
         }
         else
@@ -2090,7 +2130,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     if (actionSheet.tag == 11)
     {
         if (buttonIndex == 0) {
-            NSLog(@"Cancelled");
+            //nslog(@"Cancelled");
         }
         else
         {

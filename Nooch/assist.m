@@ -124,7 +124,7 @@ static assist * _sharedInstance = nil;
         [unarchiver finishDecoding];
     }
     @catch (NSException *exception) {
-        NSLog(@"got an error... %@",exception);
+        //nslog(@"got an error... %@",exception);
     }
     @finally {
         
@@ -141,7 +141,7 @@ static assist * _sharedInstance = nil;
         [self fetchPic];
     }
     [usr setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"] forKey:@"email"];
-    NSLog(@"user object: %@",usr);
+    //nslog(@"user object: %@",usr);
     /*
      accountStore = [[ACAccountStore alloc] init];
      if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]){
@@ -163,13 +163,13 @@ static assist * _sharedInstance = nil;
      facebookAccount = [accounts lastObject];
      fbAllowed = YES;
      [self renewFb];
-     NSLog(@"fb connected");
+     //nslog(@"fb connected");
      }
      else
      {
      // Handle Failure
      fbAllowed = NO;
-     NSLog(@"fb not connected");
+     //nslog(@"fb not connected");
      }
      }];
      
@@ -186,10 +186,10 @@ static assist * _sharedInstance = nil;
      NSArray *accounts = [accountStore accountsWithAccountType:twitterAccountType];
      twitterAccount = [accounts lastObject];
      twitterAllowed = YES;
-     NSLog(@"twitter granted");
+     //nslog(@"twitter granted");
      }else{
      twitterAllowed = NO;
-     NSLog(@"twitter not granted");
+     //nslog(@"twitter not granted");
      }
      }];
      }
@@ -230,14 +230,14 @@ static assist * _sharedInstance = nil;
     if (!histSafe) {
         return;
     }
-    NSLog(@"saving user object");
+    //nslog(@"saving user object");
     if ([usr objectForKey:@"PhotoUrl"] != NULL && [pic isKindOfClass:[NSNull class]]) {
         NSURL *photoUrl=[[NSURL alloc]initWithString:[usr objectForKey:@"PhotoUrl"]];
         pic = [NSMutableData dataWithContentsOfURL:photoUrl];
         if ([pic isKindOfClass:[NSNull class]]) {
-            NSLog(@"pic is null...");
+            //nslog(@"pic is null...");
         }else{
-            NSLog(@"downloaded pic successfully");
+            //nslog(@"downloaded pic successfully");
         }
     }
     [usr setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"MemberId"];
@@ -265,7 +265,7 @@ static assist * _sharedInstance = nil;
         [archivedData writeToFile:[self path:@"currentUser"] atomically:YES];
     }
     @catch (NSException *exception) {
-        NSLog(@"failed saving, was updating during attempt,reverting to last save");
+        //nslog(@"failed saving, was updating during attempt,reverting to last save");
         archivedData = [NSMutableData new];
         NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:archivedData];
         [archiver encodeObject:usrB forKey:@"core"];
@@ -276,22 +276,22 @@ static assist * _sharedInstance = nil;
         [archivedData writeToFile:[self path:@"currentUser"] atomically:YES];
     }
     @finally {
-        NSLog(@"done saving");
+        //nslog(@"done saving");
     }
     
 }/*}}}*/
 -(void)fetchPic{/*{{{*/
-    //NSLog(@"photourl %@",[usr objectForKey:@"PhotoUrl"]);
+    ////nslog(@"photourl %@",[usr objectForKey:@"PhotoUrl"]);
     if ([usr objectForKey:@"PhotoUrl"] != NULL) {
         if ([[usr objectForKey:@"PhotoUrl"] rangeOfString:@"gv_no_photo"].location == NSNotFound ) {
             NSURL *photoUrl=[[NSURL alloc]initWithString:[usr objectForKey:@"PhotoUrl"]];
             pic = [NSMutableData dataWithContentsOfURL:photoUrl];
         }
         if (pic == NULL) {
-            NSLog(@"pic is null...");
+            //nslog(@"pic is null...");
         }else{
             if ([pic length] != 0) {
-                NSLog(@"downloaded pic successfully");
+                //nslog(@"downloaded pic successfully");
             }
         }
     }
@@ -326,7 +326,7 @@ static assist * _sharedInstance = nil;
     
     responseData = [NSMutableData data];
     urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@&accessToken=%@", MyUrl, @"GetTransactionsList", [usr objectForKey:@"MemberId"], type, @"pSize", [NSString stringWithFormat:@"%d",len], @"pIndex", [NSString stringWithFormat:@"%d",sPos],[defaults valueForKey:@"OAuthToken"]];
-    NSLog(@"more hist %@",type);
+    //nslog(@"more hist %@",type);
     requestForHis = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlForHis]];
     connectionForHis=[[NSURLConnection alloc] initWithRequest:requestForHis delegate:self];
     if (!connectionForHis) {
@@ -421,7 +421,7 @@ static assist * _sharedInstance = nil;
         info.tagName = @"info";
         //
         NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-        NSLog(@"UserName%@",[usr objectForKey:@"email"]);
+        //nslog(@"UserName%@",[usr objectForKey:@"email"]);
         [info getDetails:[defaults valueForKey:@"MemberId"]
          ];
     }
@@ -471,7 +471,7 @@ static assist * _sharedInstance = nil;
                     dictUsers2=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
                     
                 }
-               // NSLog(@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+               // //nslog(@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
                 NSString*strNotifPlaced;
                 for (id key in dictUsers2) {
                     if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
@@ -479,10 +479,10 @@ static assist * _sharedInstance = nil;
                         break;
                     }
                 }
-               // NSLog(@"%@",strNotifPlaced);
+               // //nslog(@"%@",strNotifPlaced);
                 if ([strNotifPlaced isEqualToString:@"1"]) {
-                    //NSLog(@"%@",bankResult);
-                   // NSLog(@"%@",[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
+                    ////nslog(@"%@",bankResult);
+                   // //nslog(@"%@",[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
                     NSString*datestr=[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0];
                     
                     
@@ -494,7 +494,7 @@ static assist * _sharedInstance = nil;
                                                                           toDate:[NSDate date]
                                                                          options:0];
                     
-                    NSLog(@"%ld", (long)[components day]);
+                    //nslog(@"%ld", (long)[components day]);
                     if ([components day]>21) {
                         
 //                        for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
@@ -514,7 +514,7 @@ static assist * _sharedInstance = nil;
 //                            dictUsers2=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
 //                            
 //                        }
-//                        NSLog(@"%@",dictUsers2);
+//                        //nslog(@"%@",dictUsers2);
 //                        for (id key in dictUsers2) {
 //                            if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
 //                                [dictUsers2 setValue:@"0" forKey:key];
@@ -554,7 +554,7 @@ static assist * _sharedInstance = nil;
         NSError *error;
         NSMutableDictionary *setsResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         
-        NSLog(@"%@",setsResult);
+        //nslog(@"%@",setsResult);
         
         // [user setObject:[setsResult valueForKey:@"Photo"] forKey:@"Photo"];
         [usr setObject:setsResult forKey:@"sets"];
@@ -563,7 +563,7 @@ static assist * _sharedInstance = nil;
         NSError *error;
         
         NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-       // NSLog(@"%@",loginResult);
+       // //nslog(@"%@",loginResult);
         if ([loginResult valueForKey:@"Status"]!=Nil  && ![[loginResult valueForKey:@"Status"] isKindOfClass:[NSNull class]]&& [loginResult valueForKey:@"Status"] !=NULL) {
             [user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"];
             if ([[loginResult valueForKey:@"Status"]isEqualToString:@"Suspended"]) {
@@ -576,7 +576,7 @@ static assist * _sharedInstance = nil;
             NSString*url=[loginResult valueForKey:@"PhotoUrl"];
             
             [user setObject:[loginResult valueForKey:@"DateCreated"] forKey:@"DateCreated"];
-            //NSLog(@"%@",url);
+            ////nslog(@"%@",url);
             [user setObject:url forKey:@"Photo"];
             
         }
@@ -594,7 +594,7 @@ static assist * _sharedInstance = nil;
             
             [user setObject:[loginResult objectForKey:@"FirstName"] forKey:@"firstName"];
             [user setObject:[loginResult objectForKey:@"LastName"] forKey:@"lastName"];
-            NSLog(@"%@",[user valueForKey:@"firstName"]);
+            //nslog(@"%@",[user valueForKey:@"firstName"]);
         }
         if(![[loginResult objectForKey:@"Status"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"Status"] != NULL){
             [usr setObject:[loginResult objectForKey:@"Status"] forKey:@"Status"];
@@ -615,7 +615,7 @@ static assist * _sharedInstance = nil;
         {
             if (![[loginResult objectForKey:@"MemberId"] isEqualToString:[usr objectForKey:@"MemberId"]]) {
                 [usr setObject:[loginResult objectForKey:@"MemberId"] forKey:@"MemberId"];
-                NSLog(@"gotmemid%@",[loginResult objectForKey:@"MemberId"]);
+                //nslog(@"gotmemid%@",[loginResult objectForKey:@"MemberId"]);
                 if (![[loginResult objectForKey:@"MemberId"] isEqualToString:@"00000000-0000-0000-0000-000000000000"]) {
                     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
                     [defaults setObject:[loginResult objectForKey:@"MemberId"] forKey:@"MemberId"];
@@ -637,7 +637,7 @@ static assist * _sharedInstance = nil;
     [dateFormatter setDateFormat:@"MM/dd/yyyy"];
     [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
     
-    NSLog(@"%@", aStr);
+    //nslog(@"%@", aStr);
     NSDate   *aDate = [dateFormatter dateFromString:aStr];
     
     return aDate;
@@ -650,8 +650,8 @@ static assist * _sharedInstance = nil;
     [responseData appendData:data];
 }
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    //NSLog(@"Connection failed: %@", [error description]);
-    NSLog(@"failed updating lists");
+    ////nslog(@"Connection failed: %@", [error description]);
+    //nslog(@"failed updating lists");
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     responseStringForHis = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
@@ -697,7 +697,7 @@ static assist * _sharedInstance = nil;
             found = NO;
         }
         if([toAddTrans count] != 0){
-            NSLog(@"appended %d to history size of %d",[toAddTrans count],[hist count]);
+            //nslog(@"appended %d to history size of %d",[toAddTrans count],[hist count]);
             [toAddTrans addObjectsFromArray:hist];
             [histCache setArray:[toAddTrans mutableCopy]];
         }else{
@@ -717,7 +717,7 @@ static assist * _sharedInstance = nil;
 }
 -(void)getImages{
     NSMutableArray *tempArry = [histCache mutableCopy];
-    NSLog(@"tempArray%d",tempArry.count);
+    //nslog(@"tempArray%d",tempArry.count);
     for (NSMutableDictionary *dict in tempArry) {
         if (![dict objectForKey:@"image"] && ![[dict objectForKey:@"Photo"] isKindOfClass:[NSNull class]] && [[dict objectForKey:@"Photo"] rangeOfString:@"gv_no_photo"].location == NSNotFound ) {
             NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[dict objectForKey:@"Photo"]]];
@@ -729,7 +729,7 @@ static assist * _sharedInstance = nil;
             }
         }
     }
-    NSLog(@"tempArray%d",tempArry.count);
+    //nslog(@"tempArray%d",tempArry.count);
     [histCache setArray:tempArry];
     needsUpdating = YES;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"tableReload" object:self userInfo:nil];
@@ -745,12 +745,12 @@ static assist * _sharedInstance = nil;
         NSDate *date1;
         
         if ([objModel valueForKey:@"TransactionDate"]) {
-            NSLog(@"objectIssue%@",objModel);
+            //nslog(@"objectIssue%@",objModel);
             date1=[df dateFromString:[objModel objectForKey:@"TransactionDate"]];
-            NSLog(@"Date12Dec%@",date1);
+            //nslog(@"Date12Dec%@",date1);
         }
         
-        // NSLog(@"objmodel%@",objModel);
+        // //nslog(@"objmodel%@",objModel);
         dictsort=[[NSMutableDictionary alloc]init];
         if (objModel) {
             [dictsort setObject:objModel forKey:@"entity"];
@@ -762,7 +762,7 @@ static assist * _sharedInstance = nil;
         
         [tempArray addObject:dictsort];
     }
-    NSLog(@"%@",tempArray);
+    //nslog(@"%@",tempArray);
     
     NSInteger counter=[tempArray count];
     NSDate *compareDate;
@@ -793,7 +793,7 @@ static assist * _sharedInstance = nil;
             [tempArray exchangeObjectAtIndex:i withObjectAtIndex:index];
     }
     
-    NSLog(@"%@",tempArray);
+    //nslog(@"%@",tempArray);
     [unsortedArray removeAllObjects];
     if ([tempArray count]>0) {
         for(int i=0;i<[tempArray count];i++)
@@ -838,7 +838,7 @@ static assist * _sharedInstance = nil;
             people = [[assosciateCache objectForKey:@"people"] mutableCopy];
         }
         if ([[additions objectAtIndex:0] objectForKey:@"recent"]) {
-            //NSLog(@"recents %@",additions);
+            ////nslog(@"recents %@",additions);
             members = [[NSMutableArray alloc] init];
             for (int i = 0; i<[additions count]; i++) {
                 if ([[[additions objectAtIndex:i] objectForKey:@"firstName"] isKindOfClass:[NSNull class]] || [[[additions objectAtIndex:i] objectForKey:@"firstName"] length] < 1) {
@@ -943,21 +943,21 @@ static assist * _sharedInstance = nil;
             }
             
         }
-        //NSLog(@"recents %@",members);
+        ////nslog(@"recents %@",members);
         NSSortDescriptor *sortDescriptor;
         sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"firstName" ascending:YES];
         NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
         [nonmembers setArray:[nonmembers sortedArrayUsingDescriptors:sortDescriptors]];
         NSMutableDictionary *finishedAdditions = [NSMutableDictionary new];
         [finishedAdditions setObject:members forKey:@"members"];
-        //NSLog(@"members %@",members);
+        ////nslog(@"members %@",members);
         [finishedAdditions setObject:nonmembers forKey:@"nonmembers"];
         [finishedAdditions setObject:people forKey:@"people"];
         [assosciateCache setDictionary:[finishedAdditions mutableCopy]];
         
     }
     @catch (NSException *exception) {
-        NSLog(@"caugt exception in assos adding %@",[exception description]);
+        //nslog(@"caugt exception in assos adding %@",[exception description]);
     }
     @finally {
         
@@ -996,7 +996,7 @@ static assist * _sharedInstance = nil;
 }
 -(void)getAssosPics{
     @try {
-        NSLog(@"grabbing pictures");
+        //nslog(@"grabbing pictures");
         NSArray *keys = [NSArray new];
         keys = [[assosciateCache objectForKey:@"people"] allKeys];
         for (NSString *key in keys) {
@@ -1014,7 +1014,7 @@ static assist * _sharedInstance = nil;
         }
     }
     @catch (NSException *exception) {
-        NSLog(@"error gettin pictures");
+        //nslog(@"error gettin pictures");
     }
     @finally {
         
