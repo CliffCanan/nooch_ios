@@ -1457,7 +1457,16 @@
         // timer=nil;
         [nav_ctrl performSelector:@selector(disable)];
         [nav_ctrl performSelector:@selector(reset)];
-        [nav_ctrl popViewControllerAnimated:YES];
+        NSLog(@"%@",nav_ctrl.viewControllers);
+        NSMutableArray*arrNav=[nav_ctrl.viewControllers mutableCopy];
+        for (int i=[arrNav count]; i>1; i--) {
+            [arrNav removeLastObject];
+        }
+        
+        [nav_ctrl setViewControllers:arrNav animated:NO];
+        
+        NSLog(@"%@",nav_ctrl.viewControllers);
+
         Register *reg = [Register new];
         [nav_ctrl pushViewController:reg animated:YES];
         me = [core new];

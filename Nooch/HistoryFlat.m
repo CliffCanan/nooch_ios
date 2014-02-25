@@ -1650,9 +1650,13 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     [name setText:[NSString stringWithFormat:@"You Invited %@",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
                 
                 else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] )
-                    [name setText:[NSString stringWithFormat:@"You Disputed a Transfer"]];
-            
-                
+                {
+                    if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
+                        [name setText:[NSString stringWithFormat:@"You Disputed a Transfer"]];
+                    else
+                        [name setText:[NSString stringWithFormat:@"%@ Disputed a Transfer",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+                }
+
                 [cell.contentView addSubview:name];
                 
                 
@@ -1925,6 +1929,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         if (result == NSOrderedSame)
         {
             [histTempCompleted addObject:tableViewBind];
+           // NSLog(@"%@",histTempCompleted);
         }
     }
     for (NSMutableDictionary *tableViewBind in histShowArrayPending)

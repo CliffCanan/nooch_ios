@@ -513,7 +513,7 @@
 		6B75E9F315FE74CA00B091D8 /* terms.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = terms.m; sourceTree = "<group>"; };
 		6B75E9FA15FE7EE300B091D8 /* main 2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "main 2.m"; sourceTree = "<group>"; };
 		6B83649916C314360034655F /* serve.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = serve.h; sourceTree = "<group>"; };
-		6B83649A16C314360034655F /* serve.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = serve.m; sourceTree = "<group>"; };
+		6B83649A16C314360034655F /* serve.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = serve.m; sourceTree = "<group>"; wrapsLines = 0; };
 		6B89275916DEA49C00F9100F /* ARCMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCMacros.h; sourceTree = "<group>"; };
 		6B89275A16DEA49C00F9100F /* FPPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPPopoverController.h; sourceTree = "<group>"; };
 		6B89275B16DEA49C00F9100F /* FPPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPPopoverController.m; sourceTree = "<group>"; };

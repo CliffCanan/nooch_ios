@@ -253,8 +253,12 @@
     
     NSLog(@"%@",nav_ctrl.viewControllers);
     NSMutableArray*arrNav=[nav_ctrl.viewControllers mutableCopy];
-    [arrNav removeLastObject];
+    for (int i=[arrNav count]; i>1; i--) {
+        [arrNav removeLastObject];
+    }
+    
     [nav_ctrl setViewControllers:arrNav animated:NO];
+   
     NSLog(@"%@",nav_ctrl.viewControllers);
     
     [self.navigationController popViewControllerAnimated:YES];
@@ -293,8 +297,12 @@
         else{
             NSLog(@"%@",nav_ctrl.viewControllers);
             NSMutableArray*arrNav=[nav_ctrl.viewControllers mutableCopy];
-            [arrNav removeLastObject];
+            for (int i=[arrNav count]; i>1; i--) {
+                [arrNav removeLastObject];
+            }
+            
             [nav_ctrl setViewControllers:arrNav animated:NO];
+
             NSLog(@"%@",nav_ctrl.viewControllers);
         Register *reg = [Register new];
         [nav_ctrl pushViewController:reg animated:YES];

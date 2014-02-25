@@ -58,11 +58,19 @@
                       options:kNilOptions
                       error:&error];
         
-        NSLog(@"%@", self.users);
+        NSLog(@"%@", self.users);   
         if ([self.users count]!=0) {
             [self.usersTable reloadData];
         }
-        
+        else{
+            if (![[assist shared]islocationAllowed]) {
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Please enable location services from iPhone settings." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                
+                [av show];
+            }
+           
+
+        }
     }
     
 }

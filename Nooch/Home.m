@@ -67,7 +67,7 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     self.balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.balance setFrame:CGRectMake(0, 0, 60, 30)];
+    [self.balance setFrame:CGRectMake(0, 0, 80, 30)];
     // [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
     if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
         [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
