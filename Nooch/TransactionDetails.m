@@ -760,22 +760,31 @@
         [location setStyleClass:@"details_label_location"];
         [location setAlpha:0.7];
         if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"City"]!=NULL && [[assist shared]islocationAllowed] ) {
-            NSString*city=[[self.trans objectForKey:@"City"] stringByReplacingOccurrencesOfString:@"," withString:@""];
-            
-            [location setText:city];
-            
-            if ([[self.trans objectForKey:@"AddressLine1"]length]==0 && [[self.trans objectForKey:@"City"]length]==0) {
-                [location setText:@""];
-            }
+            if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"City"]!=NULL && [[assist shared]islocationAllowed] ) {
+                NSString*address=[[self.trans objectForKey:@"AddressLine1"] stringByReplacingOccurrencesOfString:@"," withString:@""];
+                
+                if ([self.trans objectForKey:@"AddressLine2"]!=NULL) {
+                    address=[address stringByAppendingString:[self.trans objectForKey:@"AddressLine2"]];
+                }
+                
+                NSString*city=[[self.trans objectForKey:@"City"] stringByReplacingOccurrencesOfString:@"," withString:@""];
+               
+                [location setText:[NSString stringWithFormat:@"%@,%@",address,city]];
+               
+                if ([[self.trans objectForKey:@"AddressLine1"]length]==0 && [[self.trans objectForKey:@"City"]length]==0) {
+                    [location setText:@""];
+                }
             [self.view addSubview:location];
         }
-     
+        }
         //Set Status
         UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 320, 30)];
         [status setStyleClass:@"details_label"];
         [status setStyleId:@"details_status"];
         if ([loginResult objectForKey:@"TransactionDate"]!=NULL) {
             NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+
             [dateFormatter setAMSymbol:@"AM"];
             [dateFormatter setPMSymbol:@"PM"];
             dateFormatter.dateFormat = @"M/d/yyyy h:mm:ss a";
