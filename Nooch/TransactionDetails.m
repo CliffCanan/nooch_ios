@@ -90,12 +90,13 @@
     
     UILabel *payment = [UILabel new];
     [payment setStyleClass:@"details_intro"];
-    [payment setStyleClass:@"details_intro_green"];
+    //[payment setStyleClass:@"details_intro_green"];
    // NSLog(@"%@",self.trans);
     
     if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
         if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
             //send&&
+            [payment setStyleClass:@"details_intro_green"];
              [payment setText:@"Paid to:"];
                   }
         
@@ -104,36 +105,47 @@
     {
         if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
            [payment setText:@"Payment From:"];
+            [payment setStyleClass:@"details_intro_green"];
         }
     }
     
     if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
         if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]]) {
         [payment setText:@"Request Sent to:"];
+            [payment setStyleClass:@"details_intro_green"];
         }
         else{
           [payment setText:@"Request From:"];
+            [payment setStyleClass:@"details_intro_green"];
         }
     
     }
     else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
         
         [payment setText:@"Invited to:"];
+        [payment setStyleClass:@"details_intro_green"];
     }
    
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"])
     {
         [payment setText:@"Withdrawal to:"];
+        [payment setStyleClass:@"details_intro_green"];
     }
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
     {
         [payment setText:@"Deposit Into:"];
+        [payment setStyleClass:@"details_intro_green"];
     }
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Donation"])
     {
         [payment setText:@"Donation To:"];
+        [payment setStyleClass:@"details_intro_green"];
     }
-    
+    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"])
+    {
+        [payment setText:@"Disputed:"];
+        [payment setStyleClass:@"red_text"];
+    }
     [self.view addSubview:payment];
     
     UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];
@@ -853,7 +865,11 @@
                 statusstr=@"Invited on:";
                 [status setStyleClass:@"green_text"];
             }
-            
+            else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"])
+            {
+                statusstr=@"Disputed on:";
+               [status setStyleClass:@"red_text"];
+            }
             NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
             if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
                 //details_label1

@@ -87,6 +87,7 @@
     isEmailEntry=NO;
     isAddRequest=NO;
     isUserByLocation=NO;
+    isphoneBook=NO;
     [arrRecipientsForRequest removeAllObjects];
     [[assist shared]setArray:[arrRecipientsForRequest copy]];
    
@@ -187,10 +188,10 @@
     
     // Get the e-mail addresses as a multi-value property.
     ABMultiValueRef emailsRef = ABRecordCopyValue(person, kABPersonEmailProperty);
-    NSString *emailAddress = CFBridgingRelease(emailsRef);
-    
-    //if ([emailAddress rangeOfString:@"@"].location!=NSNotFound && [emailAddress rangeOfString:@"."].location!=NSNotFound) {
-    NSLog(@"%@",emailAddress);
+//    NSString *emailAddress = CFBridgingRelease(emailsRef);
+//    
+//    //if ([emailAddress rangeOfString:@"@"].location!=NSNotFound && [emailAddress rangeOfString:@"."].location!=NSNotFound) {
+//    NSLog(@"%@",emailAddress);
    
     // NSArray*arr=[emailAddress componentsSeparatedByString:@" "];
     //NSLog(@"%@",arr);
@@ -201,17 +202,17 @@
         CFStringRef currentEmailLabel = ABMultiValueCopyLabelAtIndex(emailsRef, i);
         CFStringRef currentEmailValue = ABMultiValueCopyValueAtIndex(emailsRef, i);
         
-        NSString *emailAddresslbl = CFBridgingRelease(currentEmailLabel);
-        
-        //if ([emailAddress rangeOfString:@"@"].location!=NSNotFound && [emailAddress rangeOfString:@"."].location!=NSNotFound) {
-        NSLog(@"%@",emailAddresslbl);
-                if ([emailAddresslbl isKindOfClass:[NSNull class]] || emailAddresslbl==NULL || [emailAddresslbl isEqualToString:@"(null)"]|| emailAddresslbl==nil) {
-        
-                    [_addressBookController dismissViewControllerAnimated:YES completion:nil];
-                    
-                    return NO;
-
-                }
+//        NSString *emailAddresslbl = CFBridgingRelease(currentEmailLabel);
+//        
+//        //if ([emailAddress rangeOfString:@"@"].location!=NSNotFound && [emailAddress rangeOfString:@"."].location!=NSNotFound) {
+//        NSLog(@"%@",emailAddresslbl);
+//                if ([emailAddresslbl isKindOfClass:[NSNull class]] || emailAddresslbl==NULL || [emailAddresslbl isEqualToString:@"(null)"]|| emailAddresslbl==nil) {
+//        
+//                    [_addressBookController dismissViewControllerAnimated:YES completion:nil];
+//                    
+//                    return NO;
+//
+//                }
         
          
         
@@ -247,7 +248,31 @@
         
         [contactInfoDict setObject:contactImageData forKey:@"image"];
     }
-    
+    isphoneBook=YES;
+    if (![[contactInfoDict valueForKey:@"homeEmail"] isEqualToString:@""]) {
+        search.text=[contactInfoDict  valueForKey:@"homeEmail"];
+         [search setShowsCancelButton:YES];
+        [search becomeFirstResponder];
+
+        emailphoneBook= [contactInfoDict  valueForKey:@"homeEmail"];
+//        [self getMemberIdByUsingUserNameFromPhoneBook];
+    }
+    else if(![[contactInfoDict valueForKey:@"homeEmail"] isEqualToString:@""])
+    {
+       
+        search.text=[contactInfoDict  valueForKey:@"workEmail"];
+         [search setShowsCancelButton:YES];
+        [search becomeFirstResponder];
+        emailphoneBook= [contactInfoDict valueForKey:@"workEmail"];
+       // [self getMemberIdByUsingUserNameFromPhoneBook];
+    }
+    else
+    {
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Email ID is not available." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        
+    }
+
     // Initialize the array if it's not yet initialized.
     
     // Add the dictionary to the array.
@@ -258,23 +283,7 @@
     
     // Dismiss the address book view controller.
     [_addressBookController dismissViewControllerAnimated:YES completion:^{
-        isphoneBook=YES;
-        if (![[contactInfoDict valueForKey:@"homeEmail"] isEqualToString:@""]) {
-            emailphoneBook= [contactInfoDict  valueForKey:@"homeEmail"];
-            [self getMemberIdByUsingUserNameFromPhoneBook];
-        }
-        else if(![[contactInfoDict valueForKey:@"homeEmail"] isEqualToString:@""])
-        {
-            emailphoneBook= [contactInfoDict valueForKey:@"workEmail"];
-            [self getMemberIdByUsingUserNameFromPhoneBook];
-        }
-        else
-        {
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Email ID is not available." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-            [alert show];
-            
-        }
-
+        [self.contacts reloadData];
     }];
     
     return NO;
@@ -347,6 +356,7 @@
     searching = NO;
     emailEntry=NO;
     isRecentList=YES;
+    isphoneBook=NO;
     [searchBar resignFirstResponder];
     [searchBar setText:@""];
     
@@ -387,6 +397,7 @@
         NSRange isRange = [searchBar.text  rangeOfString:[NSString stringWithFormat:@"@"] options:NSCaseInsensitiveSearch];
         if(isRange.location != NSNotFound){
             emailEntry = YES;
+            isphoneBook=NO;
             searching = NO;
             isRecentList=NO;
             searchString = searchBar.text;
@@ -395,6 +406,7 @@
             [self.contacts setHidden:NO];
         }
         else{
+            isphoneBook=NO;
             emailEntry = NO;
             searching = YES;
             isRecentList=NO;
@@ -404,6 +416,7 @@
         [self.contacts reloadData];
     }
     else{
+        isphoneBook=NO;
         searchString = [searchBar.text substringToIndex:[searchBar.text length] - 1];
         [self.contacts reloadData];
     }
@@ -645,6 +658,10 @@
     {
         return 1;
     }
+    else if (isphoneBook)
+    {
+        return 1;
+    }
     return [self.recents count];
     
 }
@@ -675,7 +692,15 @@
     
     [cell.contentView addSubview:pic];
     [cell.contentView addSubview:npic];
-    
+    if (isphoneBook) {
+        [pic removeFromSuperview];
+        [npic removeFromSuperview];
+        cell.indentationWidth = 10;
+        
+        cell.textLabel.text = [NSString stringWithFormat:@"Send to %@",emailphoneBook];
+        return cell;
+
+    }
     if (searching) {
         //Nooch User
         npic.hidden=NO;
@@ -761,6 +786,10 @@
         }
        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         [tableView reloadData];
+        return;
+    }
+    if (isphoneBook) {
+        [self getMemberIdByUsingUserNameFromPhoneBook];
         return;
     }
     if (emailEntry){
