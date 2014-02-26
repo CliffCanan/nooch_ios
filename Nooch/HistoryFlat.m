@@ -1242,7 +1242,6 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                     dateFormatter.dateFormat = @"dd-MMMM-yyyy";
 
-                    ////nslog(@"%@",[dateFormatter stringFromDate:yourDate]);
                     NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
                     [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
                     [cell.contentView addSubview:date];
@@ -1530,8 +1529,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         dateFormatter.dateFormat = @"MM/dd/yyyy hh:mm:ss a";
                         NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                         dateFormatter.dateFormat = @"dd-MMMM-yyyy";
-
-                        //nslog(@"%@",[dateFormatter stringFromDate:yourDate]);
+                        
                         NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
                         [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
                         [cell.contentView addSubview:date];
