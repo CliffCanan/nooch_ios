@@ -450,96 +450,139 @@ static assist * _sharedInstance = nil;
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your Bank Account was not verified for 21 days.\nNooch has deleted your bank Account." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
     }
-    else if ([tagName isEqualToString:@"banks"]) {
-        NSError *error;
-        
-        NSMutableArray *bankResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        
-        if ([bankResult isKindOfClass:[NSNull class]] || bankResult == nil) {
-            bankResult = [NSMutableArray new];
-        }
-        if ([bankResult count]>0) {
-            if ([[[bankResult objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[bankResult objectAtIndex:0] valueForKey:@"IsVerified"] intValue]) {
-                
-                
-            }
-            else
-            {
-                NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-                NSMutableDictionary* dictUsers2=[[NSMutableDictionary alloc]init];
-                if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
-                    dictUsers2=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
-                    
-                }
-               // //nslog(@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
-                NSString*strNotifPlaced;
-                for (id key in dictUsers2) {
-                    if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
-                        strNotifPlaced=[dictUsers2 valueForKey:key];
-                        break;
-                    }
-                }
-               // //nslog(@"%@",strNotifPlaced);
-                if ([strNotifPlaced isEqualToString:@"1"]) {
-                    ////nslog(@"%@",bankResult);
-                   // //nslog(@"%@",[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
-                    NSString*datestr=[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0];
-                    
-                    
-                    NSDate *addeddate = [self dateFromString:datestr];
-                    
-                    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-                    NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
-                                                                        fromDate:addeddate
-                                                                          toDate:[NSDate date]
-                                                                         options:0];
-                    
-                    //nslog(@"%ld", (long)[components day]);
-                    if ([components day]>21) {
-                        
-//                        for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
-//                            if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
-//                                [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-//                            }
-//                            if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
-//                                [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-//                            }
-//                            if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
-//                                [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-//                            }
-//                            
-//                        }
-//                        NSMutableDictionary* dictUsers2=[[NSMutableDictionary alloc]init];
-//                        if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
-//                            dictUsers2=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
-//                            
-//                        }
-//                        //nslog(@"%@",dictUsers2);
-//                        for (id key in dictUsers2) {
-//                            if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
-//                                [dictUsers2 setValue:@"0" forKey:key];
-//                                
-//                                break;
-//                            }
-//                        }
-//                        [defaults setValue:dictUsers2 forKey:@"NotifPlaced2"];
-//                        [defaults synchronize];
-//                        
-                        
-                        serve *bank = [serve new];
-                        bank.tagName = @"bDelete";
-                        bank.Delegate = self;
-                        [bank deleteBank:[[bankResult objectAtIndex:0] valueForKey:@"BankAccountId"]];
-                    }
-                    
-                    
-                    
-                }
-            }
-        }
+//    else if ([tagName isEqualToString:@"banks"]) {
+//        NSError *error;
+//        
+//        NSMutableArray *bankResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+//        
+//        if ([bankResult isKindOfClass:[NSNull class]] || bankResult == nil) {
+//            bankResult = [NSMutableArray new];
+//        }
+//        if ([bankResult count]>0) {
+//            if ([[[bankResult objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[bankResult objectAtIndex:0] valueForKey:@"IsVerified"] intValue]) {
+//                
+//                
+//            }
+//            else
+//            {
+//                NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+//                NSMutableDictionary* dictUsers2=[[NSMutableDictionary alloc]init];
+//                if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
+//                    dictUsers2=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
+//                    
+//                }
+////<<<<<<< HEAD
+////               // //nslog(@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+////=======
+////                // //nslog(@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+////>>>>>>> e8acebe7e85f8b3a27613a5628e0e7bfee64efd8
+////                NSString*strNotifPlaced;
+////                for (id key in dictUsers2) {
+////                    if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
+////                        strNotifPlaced=[dictUsers2 valueForKey:key];
+////                        break;
+////                    }
+////                }
+////<<<<<<< HEAD
+////               // //nslog(@"%@",strNotifPlaced);
+////                if ([strNotifPlaced isEqualToString:@"1"]) {
+////                    ////nslog(@"%@",bankResult);
+////                   // //nslog(@"%@",[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
+////=======
+////                // //nslog(@"%@",strNotifPlaced);
+////                if ([strNotifPlaced isEqualToString:@"1"]) {
+////                    ////nslog(@"%@",bankResult);
+////                    // //nslog(@"%@",[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
+////>>>>>>> e8acebe7e85f8b3a27613a5628e0e7bfee64efd8
+////                    NSString*datestr=[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0];
+////                    
+////                    
+////                    NSDate *addeddate = [self dateFromString:datestr];
+////                    
+////                    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+////                    NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
+////                                                                        fromDate:addeddate
+////                                                                          toDate:[NSDate date]
+////                                                                         options:0];
+////                    
+////                    //nslog(@"%ld", (long)[components day]);
+////                    if ([components day]>21) {
+////                        
+////<<<<<<< HEAD
+//////                        for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
+//////                            if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
+//////                                [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+//////                            }
+//////                            if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
+//////                                [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+//////                            }
+//////                            if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
+//////                                [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+//////                            }
+//////                            
+//////                        }
+//////                        NSMutableDictionary* dictUsers2=[[NSMutableDictionary alloc]init];
+//////                        if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
+//////                            dictUsers2=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
+//////                            
+//////                        }
+//////                        //nslog(@"%@",dictUsers2);
+//////                        for (id key in dictUsers2) {
+//////                            if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
+//////                                [dictUsers2 setValue:@"0" forKey:key];
+//////                                
+//////                                break;
+//////                            }
+//////                        }
+//////                        [defaults setValue:dictUsers2 forKey:@"NotifPlaced2"];
+//////                        [defaults synchronize];
+//////                        
+////=======
+////                        //                        for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
+////                        //                            if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
+////                        //                                [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+////                        //                            }
+////                        //                            if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
+////                        //                                [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+////                        //                            }
+////                        //                            if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
+////                        //                                [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+////                        //                            }
+////                        //
+////                        //                        }
+////                        //                        NSMutableDictionary* dictUsers2=[[NSMutableDictionary alloc]init];
+////                        //                        if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
+////                        //                            dictUsers2=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
+////                        //
+////                        //                        }
+////                        //                        //nslog(@"%@",dictUsers2);
+////                        //                        for (id key in dictUsers2) {
+////                        //                            if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
+////                        //                                [dictUsers2 setValue:@"0" forKey:key];
+////                        //
+////                        //                                break;
+////                        //                            }
+////                        //                        }
+////                        //                        [defaults setValue:dictUsers2 forKey:@"NotifPlaced2"];
+////                        //                        [defaults synchronize];
+////                        //
+////>>>>>>> e8acebe7e85f8b3a27613a5628e0e7bfee64efd8
+//                
+//                        serve *bank = [serve new];
+//                        bank.tagName = @"bDelete";
+//                        bank.Delegate = self;
+//                        [bank deleteBank:[[bankResult objectAtIndex:0] valueForKey:@"BankAccountId"]];
+//                    }
+//                    
+//                    
+//                    
+//                }
+//            }
+        //}
         //banksZXc
-        [usr setObject:bankResult forKey:@"banks"];
-    }else if([tagName isEqualToString:@"cards"]){
+        //[usr setObject:bankResult forKey:@"banks"];
+   // }
+   else if([tagName isEqualToString:@"cards"]){
         NSError *error;
         
         NSMutableArray *cardResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
@@ -563,7 +606,7 @@ static assist * _sharedInstance = nil;
         NSError *error;
         
         NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-       // //nslog(@"%@",loginResult);
+        
         if ([loginResult valueForKey:@"Status"]!=Nil  && ![[loginResult valueForKey:@"Status"] isKindOfClass:[NSNull class]]&& [loginResult valueForKey:@"Status"] !=NULL) {
             [user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"];
             if ([[loginResult valueForKey:@"Status"]isEqualToString:@"Suspended"]) {
@@ -571,12 +614,14 @@ static assist * _sharedInstance = nil;
             }
             else
             {
+
                [[assist shared]setSusPended:NO];
+
             }
             NSString*url=[loginResult valueForKey:@"PhotoUrl"];
             
             [user setObject:[loginResult valueForKey:@"DateCreated"] forKey:@"DateCreated"];
-            ////nslog(@"%@",url);
+           
             [user setObject:url forKey:@"Photo"];
             
         }

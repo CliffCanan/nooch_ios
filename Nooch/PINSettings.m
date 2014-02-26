@@ -9,6 +9,7 @@
 #import "PINSettings.h"
 #import "Home.h"
 #import "ResetPIN.h"
+#import "ResetPassword.h"
 @interface PINSettings ()
 @property(nonatomic,strong)UISwitch *ri;
 @end
@@ -27,12 +28,12 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [self.navigationItem setTitle:@"PIN Settings"];
+    [self.navigationItem setTitle:@"Security Settings"];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     UIButton *change_pin = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [change_pin setFrame:CGRectMake(20, 50, 280, 60)]; [change_pin setBackgroundColor:kNoochGrayLight];
+    [change_pin setFrame:CGRectMake(20, 50, 280, 60)];
     [change_pin setTitle:@"Change PIN" forState:UIControlStateNormal];
     [change_pin setTitleColor:kNoochLight forState:UIControlStateNormal];
     [change_pin.titleLabel setFont:kNoochFontBold];
@@ -67,6 +68,18 @@
     if ([[user objectForKey:@"requiredImmediately"] boolValue]) {
         [self.ri setOn:YES];
     }
+    
+    UIButton *change_password = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [change_password setFrame:CGRectMake(0, 280, 0, 0)];
+    [change_password setStyleClass:@"button_green"];
+    [change_password setTitle:@"Change Password" forState:UIControlStateNormal];
+    [change_password addTarget:self action:@selector(changepass) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:change_password];
+}
+
+- (void)changepass{
+    ResetPassword *reset = [ResetPassword new];
+    [self.navigationController pushViewController:reset animated:YES];
 }
 
 -(void)changepin{

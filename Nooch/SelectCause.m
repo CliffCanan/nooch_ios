@@ -29,8 +29,8 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-   
-   // [self.list reloadData];
+    
+    // [self.list reloadData];
 }
 -(void)showMenu
 {
@@ -40,9 +40,9 @@
 {
     [super viewDidLoad];
     NSLog(@"%@",nav_ctrl.viewControllers);
-   
-
-      if (isOpenLeftSideBar) {
+    
+    
+    if (isOpenLeftSideBar) {
         [self.navigationItem setHidesBackButton:YES];
         UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
@@ -57,8 +57,8 @@
     if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL)
         [balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
     else
-     [balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
-
+        [balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
+    
     [balance.titleLabel setFont:kNoochFontMed];
     [balance setStyleId:@"navbar_balance"];
     
@@ -154,7 +154,7 @@
     UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
     
     [pic setStyleClass:@"nonprofitlist_pic"];
-  
+    
     [cell.contentView  addSubview:pic];
     if (isSearching) {
         
@@ -162,20 +162,20 @@
         cell.indentationLevel = 1; cell.indentationWidth = 80;
         
         dict = [arrSearchedRecords objectAtIndex:indexPath.row];
-       textLabel.frame=CGRectMake(55, 15, 250, 30);
-         [textLabel setStyleClass:@"nonprofitlist_name"];
+        textLabel.frame=CGRectMake(55, 15, 250, 30);
+        [textLabel setStyleClass:@"nonprofitlist_name"];
         // cell.textLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
         
-//        if ([FeaturedcausesArr containsObject:dict]) {
-//            
-//            
-//        }
-//        else
-//        {
-            //   cell.detailTextLabel.text=@"";
-             textLabel.text=[NSString stringWithFormat:@"%@",[[dict objectForKey:@"OrganizationName"] capitalizedString]];
-            [pic setImageWithURL:[NSURL URLWithString:[dict valueForKey:@"PhotoIcon"]]
-                placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+        //        if ([FeaturedcausesArr containsObject:dict]) {
+        //
+        //
+        //        }
+        //        else
+        //        {
+        //   cell.detailTextLabel.text=@"";
+        textLabel.text=[NSString stringWithFormat:@"%@",[[dict objectForKey:@"OrganizationName"] capitalizedString]];
+        [pic setImageWithURL:[NSURL URLWithString:[dict valueForKey:@"PhotoIcon"]]
+            placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
         //}
         
         //iv.image = [dict objectForKey:@"image"];
@@ -258,7 +258,7 @@
     }
     
     [nav_ctrl setViewControllers:arrNav animated:NO];
-   
+
     NSLog(@"%@",nav_ctrl.viewControllers);
     
     [self.navigationController popViewControllerAnimated:YES];
@@ -283,10 +283,10 @@
         NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
         
         [timer invalidate];
-    
-       
+        
+        
         NSLog(@"%@",nav_ctrl.viewControllers);
-       
+        
         [nav_ctrl performSelector:@selector(disable)];
         [nav_ctrl performSelector:@selector(reset)];
         if (!isOpenLeftSideBar) {
@@ -304,9 +304,9 @@
             [nav_ctrl setViewControllers:arrNav animated:NO];
 
             NSLog(@"%@",nav_ctrl.viewControllers);
-        Register *reg = [Register new];
-        [nav_ctrl pushViewController:reg animated:YES];
-        me = [core new];
+            Register *reg = [Register new];
+            [nav_ctrl pushViewController:reg animated:YES];
+            me = [core new];
             return;
         }
         
@@ -390,8 +390,8 @@
             return;
         }
         else{
-        isSearching=NO;
-        [self.list reloadData];
+            isSearching=NO;
+            [self.list reloadData];
         }
     }
 }

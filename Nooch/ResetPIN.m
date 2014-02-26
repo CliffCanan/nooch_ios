@@ -261,7 +261,7 @@
             [self.second_num setBackgroundColor:[UIColor clearColor]];
             [self.first_num setBackgroundColor:[UIColor clearColor]];
             self.pin.text=@"";
-             self.prompt.text=@"";
+            self.prompt.text=@"";
             title.text=@"Enter New Pin";
         }
         
@@ -277,6 +277,7 @@
         
         if([[dictResult objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]){
             self.prompt.text=@"1 failed attempt. Please try again.";
+            self.prompt.textColor = [UIColor colorWithRed:169 green:68 blue:66 alpha:1];
             [spinner stopAnimating];
             [spinner setHidden:YES];
         }else if([[dictResult objectForKey:@"Result"]isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]){
@@ -289,9 +290,10 @@
         }else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))            {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av setTag:202320];
-          
+            
             [av show];
-              [[assist shared]setSusPended:YES];
+            [[assist shared]setSusPended:YES];
+
             [spinner stopAnimating];
             [spinner setHidden:YES];
             self.prompt.text=@"Account suspended.";
@@ -299,7 +301,8 @@
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av setTag:202320];
             [av show];
-              [[assist shared]setSusPended:YES];
+            [[assist shared]setSusPended:YES];
+
             [spinner stopAnimating];
             [spinner setHidden:YES];
             self.prompt.text=@"Account suspended.";

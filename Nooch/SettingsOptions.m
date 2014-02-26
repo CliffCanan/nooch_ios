@@ -86,7 +86,7 @@
     if(indexPath.row == 0){
         title.text = @"Profile Info";
     }else if(indexPath.row == 1){
-        title.text = @"PIN Settings";
+        title.text = @"Security Settings";
     }else if(indexPath.row == 2){
         title.text = @"Notification Settings" ;
     }

@@ -37,7 +37,7 @@
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     // self.title=[self.charity valueForKey:@"OrganizationName"];
-     [self.navigationItem setTitle:[[self.charity valueForKey:@"OrganizationName"] capitalizedString]];
+    [self.navigationItem setTitle:[[self.charity valueForKey:@"OrganizationName"] capitalizedString]];
     UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [balance setFrame:CGRectMake(0, 0, 60, 30)];
     if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
@@ -124,9 +124,9 @@
     
     UILabel *yt = [UILabel new];
     [yt setText:@"Youtube"];
-      [yt setStyleId:@"nonprofit_details_buttons_label_youtube"];
+    [yt setStyleId:@"nonprofit_details_buttons_label_youtube"];
     [yt setStyleClass:@"nonprofit_details_buttons_labels"];
-  
+
     [self.view addSubview:yt];
     
     UIButton *donate = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -197,7 +197,7 @@
         return;
         
     }
-
+    
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
         
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
@@ -213,13 +213,13 @@
         [alert show];
         return;
     }
-     if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-     UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
-     
-     [alert show];
-     return;
-     }
-       
+    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
+        
+        [alert show];
+        return;
+    }
+    
     
     if ( ![[[NSUserDefaults standardUserDefaults]
             objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
@@ -332,7 +332,7 @@
         decry->tag = [NSNumber numberWithInteger:2];
         [decry getDecryptionL:@"GetDecryptedData" textString:[self.charity valueForKey:@"LastName"]];
         
-    
+        
     }
     else
     {

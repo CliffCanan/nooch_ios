@@ -130,7 +130,7 @@ NSString *amnt;
 -(void)getSettings {
     self.responseData = [NSMutableData data];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-     [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     requestS = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?id=%@&accessToken=%@", ServerUrl, @"GetMyDetails", [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], [defaults valueForKey:@"OAuthToken"]
                                                                          ]]];
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestS delegate:self];
@@ -138,7 +138,7 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 -(void)deleteBank:(NSString*)bankId{
-     [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [NSMutableData data];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&bankAcctId=%@&accessToken=%@", ServerUrl, @"DeleteBankAccountDetails", [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], bankId,[[NSUserDefaults standardUserDefaults] objectForKey:@"OAuthToken"]]]];
     NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -154,7 +154,7 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 -(void)forgotPass:(NSString *)email{
-     [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSString *urlString = [NSString stringWithFormat:@"%@/ForgotPassword", ServerUrl];
     NSURL *url = [NSURL URLWithString:urlString];
@@ -197,7 +197,7 @@ NSString *amnt;
 }
 -(void)getEncrypt:(NSString *)input {
     NSString *encodedString = [NSString encodeBase64String:input];
-
+    
     self.responseData = [[NSMutableData alloc] init];
     requestEncryption = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@", ServerUrl,@"GetEncryptedData",@"data",encodedString]]];
     [requestEncryption setHTTPMethod:@"GET"];
@@ -222,7 +222,7 @@ NSString *amnt;
 //-(void)getLatestTrans
 -(void)getMemIdFromuUsername:(NSString*)username{
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-     [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSLog(@"%@",[defaults valueForKey:@"OAuthToken"]);
     requestmemid=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetMemberIdByUsername?userName=%@",ServerUrl,username
@@ -254,7 +254,7 @@ NSString *amnt;
 -(void)getNoteSettings{
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
-     [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSString *method=@"GetMemberNotificationSettings";
     NSString *parameter=@"memberId";
@@ -274,7 +274,7 @@ NSString *amnt;
 }
 -(void)getRecents{
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-     [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetRecentMembers?id=%@&accessToken=%@",ServerUrl,[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],[defaults valueForKey:@"OAuthToken"]]]];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -296,7 +296,7 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 -(void)dupCheck:(NSString*)email{
-     [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [NSMutableData data];
     
     requestdup = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@", ServerUrl, @"IsDuplicateMember", @"name", email]]];
@@ -310,7 +310,9 @@ NSString *amnt;
     [[assist shared]setSusPended:NO];
     ServiceType=@"Login";
     //  [[NSUserDefaults standardUserDefaults] setValue:deviceTokens forKey:@"DeviceToken"];
-      [[NSURLCache sharedURLCache] removeAllCachedResponses];
+
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+
     self.responseData = [[NSMutableData alloc] init];
     if (isRem) {
         requestLogin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&rememberMeEnabled=true&lat=%f&lng=%f&udid=%@&devicetoken=%@", ServerUrl, @"LoginRequest", @"name", email, @"pwd", pass,lat,lng,strId,[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"]]]];
@@ -447,7 +449,7 @@ NSString *amnt;
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestSet delegate:self];
     if (!connection)
         NSLog(@"connect error");
-   
+    
 }
 -(void)setSets:(NSDictionary*)settingsDictionary{
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
@@ -549,7 +551,7 @@ NSString *amnt;
     self.responseData = [NSMutableData data];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&accessToken=%@", ServerUrl, @"ValidatePinNumber", @"memberId", memId, @"pinNo", pin,[[NSUserDefaults standardUserDefaults] objectForKey:@"OAuthToken"]]]];
     [request setTimeoutInterval:50.0f];
-   
+    
     NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
     if (!connection)
         NSLog(@"connect error");
@@ -563,7 +565,7 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 -(void)withdrawFund:(NSString*)amount{
-   
+    
     NSRunLoop *loop = [NSRunLoop currentRunLoop];
     while ((!locationUpdate) &&
            ([loop runMode:NSDefaultRunLoopMode beforeDate:[NSDate
@@ -696,7 +698,7 @@ NSString *amnt;
     
     responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
     
-   
+    
     if ([responseString rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
         //logout in case of invalid OAuth
         if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"]isEqualToString:@"1"] ) {
@@ -725,7 +727,7 @@ NSString *amnt;
             
             [nav_ctrl setViewControllers:arrNav animated:NO];
             NSLog(@"%@",nav_ctrl.viewControllers);
-
+            
             Register *reg = [Register new];
             [nav_ctrl pushViewController:reg animated:YES];
             me = [core new];
@@ -746,6 +748,7 @@ NSString *amnt;
         NSLog(@"serve connected for %@",self.tagName);
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         /*
+
         //ADDING LOCAL NOTIFICATION 19NOV 2013
         dictUsers=[[NSMutableDictionary alloc]init];
         if (![[defaults objectForKey:@"NotifPlaced"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced"]!=NULL) {
@@ -881,6 +884,8 @@ NSString *amnt;
             }
         }
         */
+
+        
         NSError* error;
         Dictresponse = [NSJSONSerialization
                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
@@ -977,6 +982,7 @@ NSString *amnt;
                 NSLog(@"%@",[[[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
                 
             }
+
            // NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
            /*
             dictUsers=[[NSMutableDictionary alloc]init];
@@ -995,6 +1001,7 @@ NSString *amnt;
             NSLog(@"%@",strNotifPlaced);
             NSLog(@"%@ %@",dictUsers,[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"]);
             */
+
             if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]&& ![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue] )
             {
                 [[assist shared]setBankVerified:YES];//                 if (![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
@@ -1128,11 +1135,13 @@ NSString *amnt;
                 
                 
             }
+
         
         else
         {
             [[assist shared]setBankVerified:NO];
             [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
+
 //            for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
 //                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
 //                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
@@ -1145,6 +1154,8 @@ NSString *amnt;
 //                }
 //                
 //            }
+                       //            }
+
             
             
         }
@@ -1222,7 +1233,7 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 -(void)getTotalReferralCode:(NSString *)inviteCode {
-   [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     [defaults setValue:inviteCode forKey:@"RefCode"];
@@ -1401,7 +1412,7 @@ NSString *amnt;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
-   
+    
     NSError *error;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
@@ -1499,7 +1510,7 @@ NSString *amnt;
 }
 -(void) GetAllWithdrawalFrequency
 {
-   [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
@@ -1562,7 +1573,7 @@ NSString *amnt;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
-   
+    
     NSError *error;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
@@ -1635,11 +1646,11 @@ NSString *amnt;
 -(void)GetServerCurrentTime{
     //histSafe=NO;
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
-   
+    
     
     responseData = [NSMutableData data];
     NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@", ServerUrl, @"GetServerCurrentTime"];
- 
+    
     requestList = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlForHis]];
     
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
@@ -1951,7 +1962,7 @@ NSString *amnt;
     
     dictInv=[[NSMutableDictionary alloc]init];
     [dictInv setObject:transactionId forKey:@"transactionId"];
-      [dictInv setObject:userResponse forKey:@"userResponse"];
+    [dictInv setObject:userResponse forKey:@"userResponse"];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];

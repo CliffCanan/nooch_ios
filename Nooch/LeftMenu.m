@@ -223,6 +223,7 @@
             iv.image = [UIImage imageNamed:@"n_Icon_58x66.png"];
         }else if(indexPath.row == 1){
             cell.textLabel.text = @"Transaction History";
+            [iv setFrame:CGRectMake(11, 9, 27, 27)];
             iv.image = [UIImage imageNamed:@"Clock_Icon.png"];
         }else if (indexPath.row == 2){
             cell.textLabel.text = @"Statistics";

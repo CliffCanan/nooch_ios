@@ -111,12 +111,6 @@
     
     [self.view addSubview:top_button]; [self.view addSubview:bot_button];
     
-    /*if (![user objectForKey:@"member_id"]) {
-     Register *reg = [Register new];
-     [self.navigationController pushViewController:reg animated:NO];
-     [self.navigationController.view removeGestureRecognizer:self.slidingViewController.panGesture];
-     }*/
-    
     //29/12
     NSMutableDictionary *loadInfo;
     //if user has autologin set bring up their data, otherwise redirect to the tutorial/login/signup flow
@@ -146,12 +140,11 @@
     }
     
     //if they have required immediately turned on or haven't selected the option yet, redirect them to PIN screen
-    if (![[user objectForKey:@"requiredImmediately"] isEqualToString:@"YES"]) {
-        
+    if (![user objectForKey:@"requiredImmediately"]) {
         ReEnterPin*pin=[ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
         
-    }else if([[user objectForKey:@"requiredImmediately"] isEqualToString:@"YES"]){
+    }else if([[user objectForKey:@"requiredImmediately"] boolValue]){
         ReEnterPin*pin=[ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
         
@@ -191,15 +184,16 @@
         locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
         locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
         [locationManager startUpdatingLocation];
-
+        
     }
-
+    
     
     
 }
 - (void)viewWillAppear:(BOOL)animated
 {
     [self.navigationItem setTitle:@"Nooch"];
+
       if (![[assist shared]isPOP]) {
           if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
               [self.navigationItem setRightBarButtonItem:Nil];
@@ -243,22 +237,21 @@
         [blankView addSubview:actv];
         [self .view addSubview:blankView];
         [self.view bringSubviewToFront:blankView];
-        
+        }
+        if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
+            serve *serveOBJ=[serve new ];
+            [serveOBJ setTagName:@"sets"];
+            [serveOBJ getSettings];
+        }
+        if ([[assist shared]needsReload]) {
+            [[assist shared]setneedsReload:NO];
+            serve *banks = [serve new];
+            banks.Delegate = self;
+            banks.tagName = @"banks";
+            [banks getBanks];
+            
+        }
     }
-    if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
-        serve *serveOBJ=[serve new ];
-        [serveOBJ setTagName:@"sets"];
-        [serveOBJ getSettings];
-    }
-    if ([[assist shared]needsReload]) {
-        [[assist shared]setneedsReload:NO];
-        serve *banks = [serve new];
-        banks.Delegate = self;
-        banks.tagName = @"banks";
-        [banks getBanks];
-        
-    }
-      }
     else
     {
         Register *reg = [Register new];
@@ -275,7 +268,7 @@
 }
 -(void)showFunds
 {
-  
+    
     [self.slidingViewController anchorTopViewTo:ECLeft];
 }
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -306,7 +299,7 @@
         return;
         
     }
-
+    
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
@@ -320,13 +313,13 @@
         return;
     }
     
-     if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-     UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
-     [alert setTag:148];
-     [alert show];
-     return;
-     }
-     
+    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+        [alert setTag:148];
+        [alert show];
+        return;
+    }
+    
     
     if ( ![[[NSUserDefaults standardUserDefaults]
             objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
@@ -460,23 +453,23 @@
      }
      else
      {
-     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-     NSMutableDictionary* dictUsers2=[[NSMutableDictionary alloc]init];
-     if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
-     dictUsers2=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
-     
-     }
-     NSLog(@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
-     NSString*strNotifPlaced;
-     for (id key in dictUsers2) {
-     if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
-     strNotifPlaced=[dictUsers2 valueForKey:key];
-     break;
-     }
-     }
-     NSLog(@"%@",strNotifPlaced);
-     if ([strNotifPlaced isEqualToString:@"1"]) {
-     NSLog(@"%@",bankResult);
+    // NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+//     NSMutableDictionary* dictUsers2=[[NSMutableDictionary alloc]init];
+//     if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
+//     dictUsers2=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
+//     
+//     }
+//     NSLog(@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+//     NSString*strNotifPlaced;
+//     for (id key in dictUsers2) {
+//     if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
+//     strNotifPlaced=[dictUsers2 valueForKey:key];
+//     break;
+//     }
+//     }
+//     NSLog(@"%@",strNotifPlaced);
+//     if ([strNotifPlaced isEqualToString:@"1"]) {
+//     NSLog(@"%@",bankResult);
     // NSLog(@"%@",[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
     NSString*datestr=[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"];
      
@@ -526,17 +519,13 @@
      bank.Delegate = self;
      [bank deleteBank:[[bankResult objectAtIndex:0] valueForKey:@"BankAccountId"]];
      }
+     }}
      
-     
-     
-     }
-     }
      }
 
-     }
-     
-    
-   }
+   
+}
+
 #pragma mark- Date From String
 - (NSDate*) dateFromString:(NSString*)aStr
 {

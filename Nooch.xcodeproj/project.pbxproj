@@ -66,11 +66,18 @@
 		014C4339185B9A4C00956A84 /* withdrawfunds.png in Resources */ = {isa = PBXBuildFile; fileRef = 014C4325185B9A4C00956A84 /* withdrawfunds.png */; };
 		014C433B185BB9EE00956A84 /* default.css in Resources */ = {isa = PBXBuildFile; fileRef = 014C433A185BB9EE00956A84 /* default.css */; };
 		014C433D185BC7EF00956A84 /* VarelaRound-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 014C433C185BC7EF00956A84 /* VarelaRound-Regular.ttf */; };
+		01759CFF18BBD7BA00F529AC /* add-icon-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 01759CFE18BBD7BA00F529AC /* add-icon-white.png */; };
 		0179E9EB17F355310027526C /* flat_storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0179E9EA17F355310027526C /* flat_storyboard.storyboard */; };
 		0179E9F017F35A740027526C /* SelectRecipient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0179E9EE17F35A740027526C /* SelectRecipient.m */; };
 		0179E9F917F35AA30027526C /* Home.m in Sources */ = {isa = PBXBuildFile; fileRef = 0179E9F817F35AA30027526C /* Home.m */; };
 		0179E9FC17F36C4C0027526C /* Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 0179E9FB17F36C4C0027526C /* Helpers.m */; };
 		018DA86318048309007B24FB /* SendInvite.m in Sources */ = {isa = PBXBuildFile; fileRef = 018DA86218048309007B24FB /* SendInvite.m */; };
+		01B2CA9818B3CC20008E6901 /* NSMutableArray+SWUtilityButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B2CA8C18B3CC20008E6901 /* NSMutableArray+SWUtilityButtons.m */; };
+		01B2CA9918B3CC20008E6901 /* SWCellScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B2CA8E18B3CC20008E6901 /* SWCellScrollView.m */; };
+		01B2CA9A18B3CC20008E6901 /* SWLongPressGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B2CA9118B3CC20008E6901 /* SWLongPressGestureRecognizer.m */; };
+		01B2CA9B18B3CC20008E6901 /* SWTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B2CA9318B3CC20008E6901 /* SWTableViewCell.m */; };
+		01B2CA9C18B3CC20008E6901 /* SWUtilityButtonTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B2CA9518B3CC20008E6901 /* SWUtilityButtonTapGestureRecognizer.m */; };
+		01B2CA9D18B3CC20008E6901 /* SWUtilityButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B2CA9718B3CC20008E6901 /* SWUtilityButtonView.m */; };
 		01B63435187B33F900596D32 /* CheckPIN.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B63434187B33F900596D32 /* CheckPIN.m */; };
 		01BD43D8181F096300062315 /* Legal.m in Sources */ = {isa = PBXBuildFile; fileRef = 01BD43D7181F096300062315 /* Legal.m */; };
 		01C26DAA1843BB22005179B7 /* address-book-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26D8F1843BB22005179B7 /* address-book-icon.png */; };
@@ -346,6 +353,7 @@
 		014C4325185B9A4C00956A84 /* withdrawfunds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = withdrawfunds.png; sourceTree = "<group>"; };
 		014C433A185BB9EE00956A84 /* default.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = default.css; sourceTree = "<group>"; };
 		014C433C185BC7EF00956A84 /* VarelaRound-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "VarelaRound-Regular.ttf"; sourceTree = "<group>"; };
+		01759CFE18BBD7BA00F529AC /* add-icon-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-icon-white.png"; sourceTree = "<group>"; };
 		0179E9EA17F355310027526C /* flat_storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = flat_storyboard.storyboard; sourceTree = "<group>"; };
 		0179E9ED17F35A740027526C /* SelectRecipient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectRecipient.h; sourceTree = "<group>"; };
 		0179E9EE17F35A740027526C /* SelectRecipient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectRecipient.m; sourceTree = "<group>"; };
@@ -355,6 +363,19 @@
 		0179E9FB17F36C4C0027526C /* Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Helpers.m; sourceTree = "<group>"; };
 		018DA86118048309007B24FB /* SendInvite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendInvite.h; sourceTree = "<group>"; };
 		018DA86218048309007B24FB /* SendInvite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendInvite.m; sourceTree = "<group>"; };
+		01B2CA8B18B3CC20008E6901 /* NSMutableArray+SWUtilityButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+SWUtilityButtons.h"; sourceTree = "<group>"; };
+		01B2CA8C18B3CC20008E6901 /* NSMutableArray+SWUtilityButtons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+SWUtilityButtons.m"; sourceTree = "<group>"; };
+		01B2CA8D18B3CC20008E6901 /* SWCellScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWCellScrollView.h; sourceTree = "<group>"; };
+		01B2CA8E18B3CC20008E6901 /* SWCellScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWCellScrollView.m; sourceTree = "<group>"; };
+		01B2CA8F18B3CC20008E6901 /* SWConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWConstants.h; sourceTree = "<group>"; };
+		01B2CA9018B3CC20008E6901 /* SWLongPressGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWLongPressGestureRecognizer.h; sourceTree = "<group>"; };
+		01B2CA9118B3CC20008E6901 /* SWLongPressGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWLongPressGestureRecognizer.m; sourceTree = "<group>"; };
+		01B2CA9218B3CC20008E6901 /* SWTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWTableViewCell.h; sourceTree = "<group>"; };
+		01B2CA9318B3CC20008E6901 /* SWTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWTableViewCell.m; sourceTree = "<group>"; };
+		01B2CA9418B3CC20008E6901 /* SWUtilityButtonTapGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWUtilityButtonTapGestureRecognizer.h; sourceTree = "<group>"; };
+		01B2CA9518B3CC20008E6901 /* SWUtilityButtonTapGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWUtilityButtonTapGestureRecognizer.m; sourceTree = "<group>"; };
+		01B2CA9618B3CC20008E6901 /* SWUtilityButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWUtilityButtonView.h; sourceTree = "<group>"; };
+		01B2CA9718B3CC20008E6901 /* SWUtilityButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWUtilityButtonView.m; sourceTree = "<group>"; };
 		01B63433187B33F900596D32 /* CheckPIN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckPIN.h; sourceTree = "<group>"; };
 		01B63434187B33F900596D32 /* CheckPIN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckPIN.m; sourceTree = "<group>"; };
 		01BD43D6181F096300062315 /* Legal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Legal.h; sourceTree = "<group>"; };
@@ -886,6 +907,7 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				01759CFE18BBD7BA00F529AC /* add-icon-white.png */,
 				01CABC5618A43B3200BBB935 /* green-arrow.png */,
 				84443CA618A0BD9E0097F6C0 /* empty-arrow.png */,
 				843B29D31888EC3B00DA04C8 /* back-arrow-blue.png */,
@@ -982,6 +1004,26 @@
 			children = (
 			);
 			name = BCrypt;
+			sourceTree = "<group>";
+		};
+		01B2CA8A18B3CC20008E6901 /* PodFiles */ = {
+			isa = PBXGroup;
+			children = (
+				01B2CA8B18B3CC20008E6901 /* NSMutableArray+SWUtilityButtons.h */,
+				01B2CA8C18B3CC20008E6901 /* NSMutableArray+SWUtilityButtons.m */,
+				01B2CA8D18B3CC20008E6901 /* SWCellScrollView.h */,
+				01B2CA8E18B3CC20008E6901 /* SWCellScrollView.m */,
+				01B2CA8F18B3CC20008E6901 /* SWConstants.h */,
+				01B2CA9018B3CC20008E6901 /* SWLongPressGestureRecognizer.h */,
+				01B2CA9118B3CC20008E6901 /* SWLongPressGestureRecognizer.m */,
+				01B2CA9218B3CC20008E6901 /* SWTableViewCell.h */,
+				01B2CA9318B3CC20008E6901 /* SWTableViewCell.m */,
+				01B2CA9418B3CC20008E6901 /* SWUtilityButtonTapGestureRecognizer.h */,
+				01B2CA9518B3CC20008E6901 /* SWUtilityButtonTapGestureRecognizer.m */,
+				01B2CA9618B3CC20008E6901 /* SWUtilityButtonView.h */,
+				01B2CA9718B3CC20008E6901 /* SWUtilityButtonView.m */,
+			);
+			path = PodFiles;
 			sourceTree = "<group>";
 		};
 		01CABC5218A2BD9500BBB935 /* ECSlidingViewController */ = {
@@ -1166,6 +1208,7 @@
 		6B30372C15FA3FF300056DAD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				01B2CA8A18B3CC20008E6901 /* PodFiles */,
 				841A3E0618A61491001DAAA2 /* UIImage-categories */,
 				01CABC5218A2BD9500BBB935 /* ECSlidingViewController */,
 				01C26DF91843E676005179B7 /* Reachability.h */,
@@ -1687,6 +1730,7 @@
 				6B01F1BE179DA8E800E34C49 /* GoogleMaps.bundle in Resources */,
 				0106773C1860F68400E11F3D /* take-pic-icon.png in Resources */,
 				01C26DFD1843E85C005179B7 /* Preston.png in Resources */,
+				01759CFF18BBD7BA00F529AC /* add-icon-white.png in Resources */,
 				84C3EF18187D0E82004687F6 /* mapBack.png in Resources */,
 				01C26DE41843C56C005179B7 /* Clock_Icon.png in Resources */,
 				01CABC5718A43B3200BBB935 /* green-arrow.png in Resources */,
@@ -1735,6 +1779,7 @@
 				01085FDB1803338700A31F63 /* NotificationSettings.m in Sources */,
 				01085FCF18030B6900A31F63 /* Login.m in Sources */,
 				16E4B1B4187053F20099D075 /* SDWebImageDownloader.m in Sources */,
+				01B2CA9918B3CC20008E6901 /* SWCellScrollView.m in Sources */,
 				6B3037DE15FA478F00056DAD /* Constant.m in Sources */,
 				01085FC317FDE5C700A31F63 /* LeftMenu.m in Sources */,
 				6B3037AD15FA45BB00056DAD /* NSData+AESCrypt.m in Sources */,
@@ -1759,6 +1804,7 @@
 				6B75E9F415FE74CA00B091D8 /* terms.m in Sources */,
 				01085FCC17FF3DE600A31F63 /* TransactionDetails.m in Sources */,
 				6B75E9FB15FE7EE300B091D8 /* main 2.m in Sources */,
+				01B2CA9C18B3CC20008E6901 /* SWUtilityButtonTapGestureRecognizer.m in Sources */,
 				84C3EF1B187D101E004687F6 /* ReEnterPin.m in Sources */,
 				01085FAE17FB4BFA00A31F63 /* SelectPicture.m in Sources */,
 				84443CAD18A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.m in Sources */,
@@ -1779,6 +1825,8 @@
 				16E4B1B7187053F20099D075 /* SDWebImagePrefetcher.m in Sources */,
 				16E4B1B8187053F20099D075 /* UIButton+WebCache.m in Sources */,
 				6B83649B16C314370034655F /* serve.m in Sources */,
+				01B2CA9A18B3CC20008E6901 /* SWLongPressGestureRecognizer.m in Sources */,
+				01B2CA9B18B3CC20008E6901 /* SWTableViewCell.m in Sources */,
 				6B89276016DEA49C00F9100F /* FPPopoverController.m in Sources */,
 				01085FB317FB59AB00A31F63 /* CreatePIN.m in Sources */,
 				01B63435187B33F900596D32 /* CheckPIN.m in Sources */,
@@ -1787,9 +1835,11 @@
 				841A3E0F18A61491001DAAA2 /* UIImage+RoundedCorner.m in Sources */,
 				16E4B1BB187053F20099D075 /* UIImage+WebP.m in Sources */,
 				841A3E0E18A61491001DAAA2 /* UIImage+Resize.m in Sources */,
+				01B2CA9D18B3CC20008E6901 /* SWUtilityButtonView.m in Sources */,
 				01085FF1180345B000A31F63 /* Withdraw.m in Sources */,
 				6B89276216DEA49C00F9100F /* FPTouchView.m in Sources */,
 				6B89276516DEB10200F9100F /* popSelect.m in Sources */,
+				01B2CA9818B3CC20008E6901 /* NSMutableArray+SWUtilityButtons.m in Sources */,
 				842E3316187424440057EAFB /* GetEncryptionValue.m in Sources */,
 				01085FE81803459000A31F63 /* NewCard.m in Sources */,
 				01085FE51803458800A31F63 /* NewBank.m in Sources */,
@@ -1902,8 +1952,8 @@
 		6B30375815FA3FF600056DAD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: charanjit singh (R2K5CMQ773)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: charanjit singh (R2K5CMQ773)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Preston Hults (LK8B7LGXK6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Preston Hults (LK8B7LGXK6)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1926,8 +1976,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
+				PROVISIONING_PROFILE = "7805F11D-FA0A-4677-8CA5-45AFFC13FE9F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7805F11D-FA0A-4677-8CA5-45AFFC13FE9F";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1935,8 +1985,8 @@
 		6B30375915FA3FF600056DAD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: charanjit singh (R2K5CMQ773)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: charanjit singh (R2K5CMQ773)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Preston Hults (LK8B7LGXK6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Preston Hults (LK8B7LGXK6)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1958,8 +2008,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ED1FE88F-D051-43BD-A600-BC3C1AF07664";
+				PROVISIONING_PROFILE = "7805F11D-FA0A-4677-8CA5-45AFFC13FE9F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7805F11D-FA0A-4677-8CA5-45AFFC13FE9F";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

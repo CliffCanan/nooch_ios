@@ -68,7 +68,6 @@
                 
                 [av show];
             }
-           
 
         }
     }
@@ -90,16 +89,7 @@
     tableView.rowHeight = 80;
     return self.users.count;
 }
-////- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-////
-////
-////    return view;
-////
-////}
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-//	return 60;
-//}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"LocationCell";
@@ -126,11 +116,11 @@
     
     NSString * miles;
     if ([[temp objectForKey:@"Miles"] intValue]<1) {
-        miles = [NSString stringWithFormat:@"    %f feet",([[temp objectForKey:@"Miles"] floatValue] * 5280)];
+        miles = [NSString stringWithFormat:@"    %.0f feet",([[temp objectForKey:@"Miles"] floatValue] * 5280)];
     }
     else
     {
-        miles = [NSString stringWithFormat:@"    %d miles",[[temp objectForKey:@"Miles"] intValue]];
+        miles = [NSString stringWithFormat:@"    %.0f miles",[[temp objectForKey:@"Miles"] floatValue]];
         
     }
     
@@ -142,13 +132,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *receiver =  [self.users objectAtIndex:indexPath.row];
-            HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
-        
-        [self.navigationController pushViewController:how_much animated:YES];
-        
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
     
-   
+    [self.navigationController pushViewController:how_much animated:YES];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
