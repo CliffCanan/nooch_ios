@@ -890,12 +890,13 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         
                         NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
                         //Set the AM and PM symbols
+                        [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
                         [dateFormatter setAMSymbol:@"AM"];
                         [dateFormatter setPMSymbol:@"PM"];
                         dateFormatter.dateFormat = @"MM/dd/yyyy hh:mm:ss a";
                         NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                         dateFormatter.dateFormat = @"dd-MMMM-yyyy";
-                        [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+                        //[dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
                         ////nslog(@"%@",[dateFormatter stringFromDate:yourDate]);
                         NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
                         [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
@@ -1204,12 +1205,13 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     
                     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
                     //Set the AM and PM symbols
+                     [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
                     [dateFormatter setAMSymbol:@"AM"];
                     [dateFormatter setPMSymbol:@"PM"];
                     dateFormatter.dateFormat = @"MM/dd/yyyy hh:mm:ss a";
                     NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                     dateFormatter.dateFormat = @"dd-MMMM-yyyy";
-                    [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+                    //[dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
                     ////nslog(@"%@",[dateFormatter stringFromDate:yourDate]);
                     NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
                     [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
@@ -1499,13 +1501,14 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     if ((long)[components day]>3) {
                         
                         NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+                         [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
                         //Set the AM and PM symbols
                         [dateFormatter setAMSymbol:@"AM"];
                         [dateFormatter setPMSymbol:@"PM"];
                         dateFormatter.dateFormat = @"MM/dd/yyyy hh:mm:ss a";
                         NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                         dateFormatter.dateFormat = @"dd-MMMM-yyyy";
-                        [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+                      //  [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
                         //nslog(@"%@",[dateFormatter stringFromDate:yourDate]);
                         NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
                         [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
@@ -1682,12 +1685,13 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     
                     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
                     //Set the AM and PM symbols
+                     [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
                     [dateFormatter setAMSymbol:@"AM"];
                     [dateFormatter setPMSymbol:@"PM"];
                     dateFormatter.dateFormat = @"MM/dd/yyyy hh:mm:ss a";
                     NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                     dateFormatter.dateFormat = @"dd-MMMM-yyyy";
-                    [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+                   // [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
                     //nslog(@"%@",[dateFormatter stringFromDate:yourDate]);
                     NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
                     [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
@@ -1831,7 +1835,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
 {
    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-   // [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
     //[dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss a"];
     [dateFormatter setAMSymbol:@"AM"];
     [dateFormatter setPMSymbol:@"PM"];
@@ -1839,9 +1843,9 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     //[dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
  // [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:-5]];
     
-    //nslog(@"%@", aStr);
+    NSLog(@"%@", aStr);
     NSDate   *aDate = [dateFormatter dateFromString:aStr];
-      //nslog(@"%@", aDate);
+      NSLog(@"%@", aDate);
     return aDate;
 }
 #pragma mark - UITableViewDelegate
