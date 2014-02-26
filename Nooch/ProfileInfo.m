@@ -44,8 +44,6 @@
 
 @property(nonatomic,strong) UITextField *recovery_email;
 
-@property(nonatomic,strong) UITextField *password;
-
 @property(nonatomic,strong) UITextField *phone;
 
 @property(nonatomic,strong) UITextField *address_one;
@@ -96,12 +94,7 @@
     
     [super viewWillAppear:animated];
     
-    if ([newchangedPass length]>0 && isPasswordChanged) {
-        
-        self.password.text=newchangedPass;
-        
-    }
-   
+    
     if ([[user objectForKey:@"Photo"] length]>0 && [user objectForKey:@"Photo"]!=nil && !isPhotoUpdate) {
         
         [picture setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
@@ -221,12 +214,12 @@
     [member_since_back setBackgroundColor:[Helpers hexColor:@"3fabe1"]];
     [member_since_back setAlpha:0.3];
     [self.view addSubview:member_since_back];
-
+    
     picture = [UIImageView new];
     
     [picture setFrame:CGRectMake(20, 5+down, 60, 60)];
     
-    picture.layer.cornerRadius = 30; picture.layer.borderColor = kNoochBlue.CGColor; picture.layer.borderWidth = 1;
+    picture.layer.cornerRadius = 30; picture.layer.borderColor = [UIColor whiteColor].CGColor; picture.layer.borderWidth = 2;
     
     picture.clipsToBounds = YES;
     
@@ -371,30 +364,7 @@
     
     [self.view addSubview:div3];
     
-    
-    
-    self.password = [[UITextField alloc] initWithFrame:CGRectMake(20, 190+down, 280, 30)];
-    
-    [self.password setTextAlignment:NSTextAlignmentRight]; [self.password setBackgroundColor:[UIColor clearColor]];
-    
-    [self.password setPlaceholder:@"password"]; [self.password setDelegate:self];
-    
-    [self.password setStyleClass:@"table_view_cell_detailtext_1"];
-    
-    [self.password setSecureTextEntry:YES];
-    
-    [self.view addSubview:self.password];
-    
-    UILabel *pass = [[UILabel alloc] initWithFrame:CGRectMake(20, 190+down, 280, 30)];
-    
-    [pass setBackgroundColor:[UIColor clearColor]]; [pass setText:@"Password:"];
-    
-    [pass setStyleClass:@"table_view_cell_textlabel_1"];
-    
-    [self.view addSubview:pass];
-    
-    
-     // Row Seperator
+    // Row Seperator
     UIView *div4 = [[UIView alloc] initWithFrame:CGRectMake(0, 225+down, 0, 0)];
     
     [div4 setStyleId:@"divider"];
@@ -403,7 +373,7 @@
     
     
     
-    self.phone = [[UITextField alloc] initWithFrame:CGRectMake(20,230+down,280,30)];
+    self.phone = [[UITextField alloc] initWithFrame:CGRectMake(20,190+down,280,30)];
     
     [self.phone setTextAlignment:NSTextAlignmentRight]; [self.phone setBackgroundColor:[UIColor clearColor]];
     
@@ -415,7 +385,7 @@
     
     [self.view addSubview:self.phone];
     
-    UILabel *num = [[UILabel alloc] initWithFrame:CGRectMake(20, 230+down, 280, 30)];
+    UILabel *num = [[UILabel alloc] initWithFrame:CGRectMake(20, 190+down, 280, 30)];
     
     [num setBackgroundColor:[UIColor clearColor]]; [num setText:@"Phone:"];
     
@@ -424,7 +394,7 @@
     [self.view addSubview:num];
     
     
-     // Row Seperator
+    // Row Seperator
     UIView *div5 = [[UIView alloc] initWithFrame:CGRectMake(0, 265+down, 0, 0)];
     
     [div5 setStyleId:@"divider"];
@@ -432,8 +402,8 @@
     [self.view addSubview:div5];
     
     
-     // Address
-    self.address_one = [[UITextField alloc] initWithFrame:CGRectMake(20, 270+down, 280, 30)];
+    // Address
+    self.address_one = [[UITextField alloc] initWithFrame:CGRectMake(20, 230+down, 280, 30)];
     
     [self.address_one setTextAlignment:NSTextAlignmentRight]; [self.address_one setBackgroundColor:[UIColor clearColor]];
     
@@ -446,7 +416,7 @@
     [self.view addSubview:self.address_one];
     
     // Address label
-    UILabel *addr1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 270+down, 280, 30)];
+    UILabel *addr1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 230+down, 280, 30)];
     
     [addr1 setBackgroundColor:[UIColor clearColor]]; [addr1 setText:@"Address One:"];
     
@@ -455,7 +425,7 @@
     [self.view addSubview:addr1];
     
     
-     // Row Seperator
+    // Row Seperator
     UIView *div6 = [[UIView alloc] initWithFrame:CGRectMake(0, 305+down, 0, 0)];
     
     [div6 setStyleId:@"divider"];
@@ -464,7 +434,7 @@
     
     
     // Address
-    self.address_two = [[UITextField alloc] initWithFrame:CGRectMake(20, 310+down, 280, 30)];
+    self.address_two = [[UITextField alloc] initWithFrame:CGRectMake(20, 270+down, 280, 30)];
     
     [self.address_two setTextAlignment:NSTextAlignmentRight]; [self.address_two setBackgroundColor:[UIColor clearColor]];
     
@@ -478,7 +448,7 @@
     
     
     // Address label
-    UILabel *addr2 = [[UILabel alloc] initWithFrame:CGRectMake(20, 310+down, 280, 30)];
+    UILabel *addr2 = [[UILabel alloc] initWithFrame:CGRectMake(20, 270+down, 280, 30)];
     
     [addr2 setBackgroundColor:[UIColor clearColor]]; [addr2 setText:@"Address Two:"];
     
@@ -487,7 +457,7 @@
     [self.view addSubview:addr2];
     
     
-     // Row Seperator
+    // Row Seperator
     UIView *div7 = [[UIView alloc] initWithFrame:CGRectMake(0, 345+down, 0, 0)];
     
     [div7 setStyleId:@"divider"];
@@ -495,8 +465,8 @@
     [self.view addSubview:div7];
     
     
-     // City
-    self.city = [[UITextField alloc] initWithFrame:CGRectMake(20, 350+down, 280, 30)];
+    // City
+    self.city = [[UITextField alloc] initWithFrame:CGRectMake(20, 310+down, 280, 30)];
     
     [self.city setTextAlignment:NSTextAlignmentRight]; [self.city setBackgroundColor:[UIColor clearColor]];
     
@@ -510,7 +480,7 @@
     
     
     // City label
-    UILabel *cit = [[UILabel alloc] initWithFrame:CGRectMake(20, 350+down, 280, 30)];
+    UILabel *cit = [[UILabel alloc] initWithFrame:CGRectMake(20, 310+down, 280, 30)];
     
     [cit setBackgroundColor:[UIColor clearColor]]; [cit setText:@"City:"];
     
@@ -527,8 +497,8 @@
     [self.view addSubview:div8];
     
     
-     // Zip label
-    self.zip = [[UITextField alloc] initWithFrame:CGRectMake(20, 390+down, 280, 30)];
+    // Zip label
+    self.zip = [[UITextField alloc] initWithFrame:CGRectMake(20, 350+down, 280, 30)];
     
     [self.zip setTextAlignment:NSTextAlignmentRight]; [self.zip setBackgroundColor:[UIColor clearColor]];
     
@@ -540,7 +510,7 @@
     
     [self.view addSubview:self.zip];
     
-    UILabel *z = [[UILabel alloc] initWithFrame:CGRectMake(20, 390+down, 280, 30)];
+    UILabel *z = [[UILabel alloc] initWithFrame:CGRectMake(20, 350+down, 280, 30)];
     
     [z setBackgroundColor:[UIColor clearColor]]; [z setText:@"ZIP:"];
     
@@ -556,7 +526,7 @@
     
     [self.save setTitle:@"Save Profile" forState:UIControlStateNormal];
     
-    [self.save setFrame:CGRectMake(0, 440+down, 0, 0)];
+    [self.save setFrame:CGRectMake(0, 400+down, 0, 0)];
     
     [self.save setStyleClass:@"button_green"];
     
@@ -571,8 +541,6 @@
     self.email.text=@"";
     
     self.recovery_email.text=@"";
-    
-    self.password.text=@"";
     
     self.phone.text=@"";
     
@@ -620,8 +588,6 @@
     
     [self.recovery_email resignFirstResponder];
     
-    [self.password resignFirstResponder];
-    
     [self.phone resignFirstResponder];
     
     [self.address_one resignFirstResponder];
@@ -656,7 +622,6 @@
     [self.name resignFirstResponder];
     [self.email resignFirstResponder];
     [self.recovery_email resignFirstResponder];
-    [self.password resignFirstResponder];
     [self.phone resignFirstResponder];
     [self.address_one resignFirstResponder];
     [self.address_two resignFirstResponder];
@@ -742,7 +707,7 @@
     
     //NSLog(@"%@",self.SavePhoneNumber);
     
-   // NSLog(@"%@",self.phone.text);
+    // NSLog(@"%@",self.phone.text);
     
     strPhoneNumber=self.phone.text;
     
@@ -854,228 +819,6 @@
         [[me usr] removeObjectForKey:@"Addr2"];
         
     }
-    
-    
-    
-    NSCharacterSet* digitsCharSet = [NSCharacterSet decimalDigitCharacterSet];
-    
-    NSCharacterSet* lettercaseCharSet = [NSCharacterSet letterCharacterSet];
-    
-    if([self.password.text length] != 0)
-        
-    {
-        
-        if([self.password.text length] < 8){
-            
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain minimum of 8 characters." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            
-            [av show];
-            
-        }else if([self.password.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound){
-            
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain at least one numeric character." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            
-            [av show];
-            
-        }
-        
-        
-        
-        else if([self.password.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound){
-            
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Password should contain at least one character." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            
-            [av show];
-            
-        }
-        
-        
-        
-        else {
-            
-            [self getEncryptedPassword:self.password.text];
-            
-        }
-        
-    }
-    
-    
-    
-    
-    
-}
-
-
-
--(void)setEncryptedPassword:(NSString *) encryptedPwd{
-    
-    NSLog(@"%@",encryptedPwd);
-    
-    getEncryptedPasswordValue = [[NSString alloc] initWithString:encryptedPwd];
-    
-    self.name.text=[self.name.text lowercaseString];
-    
-    NSArray*arrdivide=[self.name.text componentsSeparatedByString:@" "];
-    
-    if ([arrdivide count]==2) {
-        
-        transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[arrdivide objectAtIndex:0],@"FirstName",[arrdivide objectAtIndex:1],@"LastName",self.email.text,@"UserName",nil];
-        
-    }
-    
-    else
-        
-    {
-        
-        transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",self.name.text,@"FirstName",@" ",@"LastName",self.email.text,@"UserName",nil];
-        
-    }
-    
-    [transactionInput setObject:getEncryptedPasswordValue forKey:@"Password"];
-    
-    [transactionInput setObject:[NSString stringWithFormat:@"%@/%@",self.address_one.text,self.address_two.text] forKey:@"Address"];
-    
-    //[transactionInput setObject:[NSString stringWithFormat:@"%@ %@",self.address.text,self.addressLine2.text] forKey:@"Address"];
-    
-    [transactionInput setObject:self.city.text forKey:@"City"];
-    
-   // NSLog(@"%d",[self.phone.text length]);
-    
-    //    if ([self.phone.text length]!=10)
-    
-    //    {
-    
-    //        //[me endWaitStat];
-    
-    //        UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"NoochMoney" message:@"Enter valid 10 digit Cell Number" delegate:nil cancelButtonTitle:@"OK"otherButtonTitles:nil, nil];
-    
-    //        [alert show];
-    
-    //        return;
-    
-    //    }
-    
-    //    else
-    
-    //    {
-    
-    //NSString *number = [NSString stringWithFormat:@"%@%@%@",[self.phone.text substringWithRange:NSMakeRange(1, 3)],[self.phone.text substringWithRange:NSMakeRange(6, 3)],[self.phone.text substringWithRange:NSMakeRange(10, 4)]];
-    if ( [[assist shared]islocationAllowed]) {
-        [transactionInput setObject:[[assist shared]islocationAllowed]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO] forKey:@"ShowInSearch"];
-
-    }
-    else
-         [transactionInput setObject:[[assist shared]islocationAllowed]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO] forKey:@"ShowInSearch"];
-    [transactionInput setObject:strPhoneNumber forKey:@"ContactNumber"];
-    
-    [transactionInput setObject:self.zip.text forKey:@"Zipcode"];
-    
-    [transactionInput setObject:@"false" forKey:@"UseFacebookPicture"];
-    
-    
-    
-    [transactionInput setObject:@".png" forKey:@"fileExtension"];
-    
-    
-    
-    [transactionInput setObject:recoverMail forKey:@"RecoveryMail"];
-    
-    // [transactionInput setObject:self.state.text forKey:@"State"];
-    
-    [transactionInput setObject:timezoneStandard forKey:@"TimeZoneKey"];
-    
-    [transactionInput setObject:getEncryptedPasswordValue forKey:@"Password"];
-    
-    if ([[assist shared] getTranferImage]) {
-        
-        
-        
-        NSData *data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
-        
-        NSUInteger len = data.length;
-        
-        uint8_t *bytes = (uint8_t *)[data bytes];
-        
-        NSMutableString *result1 = [NSMutableString stringWithCapacity:len * 3];
-        
-        //  [result1 appendString:@"["];
-        
-        for (NSUInteger i = 0; i < len; i++) {
-            
-            if (i) {
-                
-                [result1 appendString:@","];
-                
-            }
-            
-            [result1 appendFormat:@"%d", bytes[i]];
-            
-        }
-        NSArray*arr=[result1 componentsSeparatedByString:@","];
-        
-        
-        [transactionInput setObject:arr forKey:@"Picture"];
-        
-    }
-    
-    //NSLog(@"%@",transactionInput);
-    
-    [spinner startAnimating];
-    
-    [spinner setHidden:NO];
-    
-    transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"mySettings", nil];
-    
-    serve *req=[serve new];
-    
-    req.Delegate = self;
-    
-    req.tagName=@"MySettingsResult";
-    
-    
-    [req setSets:transaction];
-    
-    
-    NSArray*arr=[self.name.text componentsSeparatedByString:@" "];
-    
-    if ([arr count]==2) {
-        
-        self.name.text=[NSString stringWithFormat:@"%@ %@",[[arr objectAtIndex:0] capitalizedString],[[arr objectAtIndex:1] capitalizedString]];
-        
-    }
-    
-}
-
--(void) getEncryptedPassword:(NSString *)newPassword{
-    
-    
-    
-    if([newPassword length]!=0){
-        
-        GetEncryptionValue *encryPassword = [[GetEncryptionValue alloc] init];
-        
-        encryPassword.Delegate = self;
-        
-        encryPassword->tag = [NSNumber numberWithInteger:2];
-        
-        [encryPassword getEncryptionData:newPassword];
-        
-        
-        
-    }
-    
-    NSLog(@"encrypting password");
-    
-}
-
--(void)encryptionDidFinish:(NSString *) encryptedData TValue:(NSNumber *) tagValue{
-    
-    // NSInteger value = [tagValue integerValue];
-    
-    [self setEncryptedPassword:encryptedData];
-    
-    
-    
 }
 
 - (void)change_pic
@@ -1360,22 +1103,6 @@
 
 {
     
-    if (textField == self.password) {
-        
-        
-        
-        [self.view endEditing:YES];
-        
-        userPass=self.password.text;
-        
-        //NSLog(@"%@",userPass);
-        
-        ResetPassword *pass_res = [ResetPassword new];
-        
-        [self.navigationController pushViewController:pass_res animated:YES];
-        
-    }
-    
     [self animateTextField:textField up:YES];
     
 }
@@ -1452,12 +1179,21 @@
         
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         
-       // NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+        // NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
         [timer invalidate];
         // timer=nil;
         [nav_ctrl performSelector:@selector(disable)];
         [nav_ctrl performSelector:@selector(reset)];
-        [nav_ctrl popViewControllerAnimated:YES];
+        NSLog(@"%@",nav_ctrl.viewControllers);
+        NSMutableArray*arrNav=[nav_ctrl.viewControllers mutableCopy];
+        for (int i=[arrNav count]; i>1; i--) {
+            [arrNav removeLastObject];
+        }
+        
+        [nav_ctrl setViewControllers:arrNav animated:NO];
+        
+        NSLog(@"%@",nav_ctrl.viewControllers);
+        
         Register *reg = [Register new];
         [nav_ctrl pushViewController:reg animated:YES];
         me = [core new];
@@ -1493,7 +1229,7 @@
             [self.save setEnabled:YES];
             [self.save setUserInteractionEnabled:YES];
             
-           
+            
             if ([[user objectForKey:@"Photo"] length]>0 && [user objectForKey:@"Photo"]!=nil && !isPhotoUpdate) {
                 
                 [picture setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
@@ -1789,14 +1525,7 @@
             
             
         }
-        
-        
-        
-        
-        
-        
-        
-        
+        [spinner stopAnimating];
         
     }
     
@@ -1816,7 +1545,7 @@
         
         self.ServiceType=@"City";
         
-      //  NSLog(@"address%@",[sourceData objectForKey:@"Status"]);
+        //  NSLog(@"address%@",[sourceData objectForKey:@"Status"]);
         
         
         
@@ -2135,28 +1864,6 @@
             self.recovery_email.text=@"";
             
         }
-        if (![[dictProfileinfo objectForKey:@"Password"] isKindOfClass:[NSNull class]]) {
-            Decryption *decry = [[Decryption alloc] init];
-            
-            decry.Delegate = self;
-            
-            decry->tag = [NSNumber numberWithInteger:2];
-            
-            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Password"]];
-            
-        }
-    }
-    else if([self.ServiceType isEqualToString:@"pwd"])
-        
-    {
-        
-        NSLog(@"%@",[sourceData objectForKey:@"Status"]);
-        
-        self.password.text=[sourceData objectForKey:@"Status"];
-        [spinner stopAnimating];
-        
-        [spinner setHidden:YES];
-        
     }
     
 }
@@ -2174,4 +1881,3 @@
 
 
 @end
-

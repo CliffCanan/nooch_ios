@@ -27,7 +27,7 @@
     if (self) {
         // Custom initialization
         self.trans = trans;
-      //  NSLog(@"%@",self.trans);
+        //  NSLog(@"%@",self.trans);
     }
     return self;
 }
@@ -43,58 +43,92 @@
     UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:act];
     [self.navigationItem setRightBarButtonItem:funds];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-       NSLog(@"trans details: %@",self.trans);
+    //NSLog(@"trans details: %@",self.trans);
     
 	// Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"Transfer Details"];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
-    UIImageView *user_picture = [[UIImageView alloc] initWithFrame:CGRectMake(10, 20, 76, 76)];
+    //UIImageView *user_picture = [[UIImageView alloc] initWithFrame:CGRectMake(10, 20, 76, 76)];
+    UIImageView *user_picture = [[UIImageView alloc] initWithFrame:CGRectMake(5, 8, 76, 76)];
     user_picture.layer.borderWidth = 1; user_picture.layer.borderColor = kNoochGrayDark.CGColor;
-    user_picture.layer.cornerRadius = 38;
+    //user_picture.layer.cornerRadius = 38;
+    user_picture.layer.cornerRadius = 4;
     user_picture.clipsToBounds = YES;
+    if(([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"]&& [self.trans valueForKey:@"BankPicture"] !=NULL&& ![[self.trans valueForKey:@"BankPicture"]isKindOfClass:[NSNull class]]))
+    {
+        NSArray* bytedata = [self.trans valueForKey:@"BankPicture"];
+        unsigned c = bytedata.count;
+        uint8_t *bytes = malloc(sizeof(*bytes) * c);
+        
+        unsigned i;
+        for (i = 0; i < c; i++)
+        {
+            NSString *str = [bytedata objectAtIndex:i];
+            int byte = [str intValue];
+            bytes[i] = (uint8_t)byte;
+        }
+        
+        NSData *datos = [NSData dataWithBytes:bytes length:c];
+        
+        
+        [user_picture setImage:[UIImage imageWithData:datos]];
+        
+        
+        
+    }
+    else if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"]){
+        [user_picture setImage:[UIImage imageNamed:@"Icon.png"]];
+    }
     
-    [user_picture setImageWithURL:[NSURL URLWithString:[self.trans objectForKey:@"Photo"]]
-                 placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+    else    {
+        [user_picture setImageWithURL:[NSURL URLWithString:[self.trans objectForKey:@"Photo"]]
+                     placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+    }
+    
+    
     [self.view addSubview:user_picture];
     
     UILabel *payment = [UILabel new];
     [payment setStyleClass:@"details_intro"];
-    [payment setStyleClass:@"details_intro_green"];
-   // NSLog(@"%@",self.trans);
+    NSLog(@"%@",self.trans);
     
     if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
         if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
             //send&&
-             [payment setText:@"Paid to:"];
-                  }
+            [payment setText:@"Paid to:"];
+            [payment setStyleClass:@"details_intro_red"];
+        }
         
     }
     else
     {
         if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
-           [payment setText:@"Payment From:"];
+            [payment setText:@"Payment From:"];
+            [payment setStyleClass:@"details_intro_green"];
         }
     }
     
     if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
         if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]]) {
-        [payment setText:@"Request Sent to:"];
+            [payment setText:@"Request Sent to:"];
+            [payment setStyleClass:@"details_intro_blue"];
         }
         else{
-          [payment setText:@"Request From:"];
+            [payment setText:@"Request From:"];
+            [payment setStyleClass:@"details_intro_blue"];
         }
-    
+        
     }
     else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
         
         [payment setText:@"Invited to:"];
     }
-   
+    
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"])
     {
-        [payment setText:@"Withdraw to:"];
+        [payment setText:@"Withdrawal to:"];
     }
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
     {
@@ -103,52 +137,34 @@
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Donation"])
     {
         [payment setText:@"Donation To:"];
+        [payment setStyleClass:@"details_intro_purple"];
     }
     
     [self.view addSubview:payment];
     
-    UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];
     
-
-  
-     if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
-         //details_othername_nonnooch
-           [other_party setStyleClass:@"details_othername_nonnooch"];
-         [other_party setText:[self.trans objectForKey:@"InvitationSentTo"]];
-         
+    UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];
+    if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
+        //details_othername_nonnooch
+        [other_party setStyleClass:@"details_othername_nonnooch"];
+        [other_party setText:[self.trans objectForKey:@"InvitationSentTo"]];
+        
+    }
+    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"]&& [self.trans objectForKey:@"BankName"]!=NULL&& ![[self.trans valueForKey:@"BankName"]isKindOfClass:[NSNull class]])
+    {
+        [other_party setText:[[self.trans objectForKey:@"BankName"] capitalizedString]];
+        [other_party setStyleClass:@"details_othername"];
+    }
+    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
+    {
+        [other_party setText:@"Nooch"];
+        [other_party setStyleClass:@"details_othername"];
     }
     else
-         [other_party setText:[[self.trans objectForKey:@"Name"] capitalizedString]];
-          [other_party setStyleClass:@"details_othername"];
+        [other_party setText:[[self.trans objectForKey:@"Name"] capitalizedString]];
+    [other_party setStyleClass:@"details_othername"];
     [self.view addSubview:other_party];
     
-    /*
-     if ([other_party respondsToSelector:@selector(setAttributedText:)]) {
-     //const CGFloat fontSize = 18;
-     UIFont *boldFont = kNoochFontBold;
-     UIFont *regularFont = kNoochFontMed;
-     UIColor *foregroundColor = [UIColor whiteColor];
-     
-     // Create the attributes
-     NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
-     boldFont, NSFontAttributeName,
-     foregroundColor, NSForegroundColorAttributeName, nil];
-     NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
-     regularFont, NSFontAttributeName, nil];
-     const NSRange range = NSMakeRange(1,6); // range of " 2012/10/14 ". Ideally this should not be hardcoded
-     
-     // Create the attributed string (text + attributes)
-     NSMutableAttributedString *attributedText =
-     [[NSMutableAttributedString alloc] initWithString:@"Preston Hults"
-     attributes:attrs];
-     [attributedText setAttributes:subAttrs range:range];
-     
-     // Set it in our UILabel and we are done!
-     [other_party setAttributedText:attributedText];
-     [self.view addSubview:other_party];
-     }
-     */
-    // City = "";
     
     UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 60, 320, 60)];
     if ([self.trans objectForKey:@"Amount"]!=NULL) {
@@ -156,22 +172,21 @@
     }
     
     [amount setStyleClass:@"details_amount"];
-    //[amount setFont:kNoochFontBold];
     [amount setTextAlignment:NSTextAlignmentCenter];
     [self.view addSubview:amount];
     
     UILabel *memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 110, 320, 60)];
     if (![[self.trans valueForKey:@"Memo"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Memo"]!=NULL) {
         if ([[self.trans valueForKey:@"Memo"] length]==0 || [[self.trans valueForKey:@"Memo"] isEqualToString:@"\"\""]) {
-            memo.text=@"";
+            memo.text=@"No memo attached";
         } else
             [memo setText:[NSString stringWithFormat:@"\"%@\"",[self.trans valueForKey:@"Memo"]]];
     }
     else
     {
-        memo.text=@"";
+        memo.text=@"No memo attached";
     }
-   
+    
     memo.numberOfLines=2;
     [memo setStyleClass:@"details_label_memo"];
     [memo setStyleClass:@"blue_text"];
@@ -179,37 +194,6 @@
     [self.view addSubview:memo];
     
     
-    UILabel *location = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 320, 60)];
-    location.numberOfLines=2;
-    [location setStyleClass:@"details_label_location"];
-    if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"City"]!=NULL && [[assist shared]islocationAllowed] ) {
-        //if ([[self.trans objectForKey:@"AddressLine2"] isEqualToString:@" "]) {
-        NSString*address=[[self.trans objectForKey:@"AddressLine1"] stringByReplacingOccurrencesOfString:@"," withString:@""];
-       
-        if ([self.trans objectForKey:@"AddressLine2"]!=NULL) {
-            address=[address stringByAppendingString:[self.trans objectForKey:@"AddressLine2"]];
-        }
-         //address=[address stringByReplacingOccurrencesOfString:@" " withString:@""];
-        NSString*city=[[self.trans objectForKey:@"City"] stringByReplacingOccurrencesOfString:@"," withString:@""];
-        //city=[city stringByReplacingOccurrencesOfString:@" " withString:@""];
-            [location setText:[NSString stringWithFormat:@"%@,%@",address,city]];
-       // }
-        
-        //[location setText:[NSString stringWithFormat:@"%@ %@ %@ %@",[self.trans objectForKey:@"AddressLine1"],[self.trans objectForKey:@"AddressLine2"],[self.trans objectForKey:@"City"],[self.trans objectForKey:@"Country"]]];
-        if ([[self.trans objectForKey:@"AddressLine1"]length]==0 && [[self.trans objectForKey:@"City"]length]==0) {
-            [location setText:@""];
-        }
-        [self.view addSubview:location];
-    }
-    else
-    {
-        [location setText:@""];
-        [self.view addSubview:location];
-        
-    }
-    
-    
-   
     if(![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"] && ![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
     {
         if (false) {
@@ -249,8 +233,6 @@
         }
         else
             [fb setStyleId:@"details_fb"];
-        
-        
         
         [fb addTarget:self action:@selector(post_to_fb) forControlEvents:UIControlEventTouchUpInside];
         [fb setFrame:CGRectMake(95, 410, 60, 60)];
@@ -305,7 +287,7 @@
             [pay setStyleClass:@"details_button_left"];
             
             UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [cancel setStyleClass:@"details_button_right"];
+            
             
             if ([[self.trans objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
                 if (![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] && ![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
@@ -318,6 +300,7 @@
                 
             } else {
                 if (![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]&& ![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
+                    [cancel setStyleClass:@"details_button_right"];
                     [pay setTitle:@"Pay" forState:UIControlStateNormal];
                     [pay addTarget:self action:@selector(fulfill_request) forControlEvents:UIControlEventTouchUpInside];
                     [cancel setTitle:@"Decline" forState:UIControlStateNormal];
@@ -329,14 +312,14 @@
         }
         else
         {
-
+            
             if([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Donation"]){
-            [self.view addSubview:disp];
-            [self.view addSubview:disp_text];
-            [self.view addSubview:fb];
-            [self.view addSubview:fb_text];
-            [self.view addSubview:twit];
-            [self.view addSubview:twit_text];
+                [self.view addSubview:disp];
+                [self.view addSubview:disp_text];
+                [self.view addSubview:fb];
+                [self.view addSubview:fb_text];
+                [self.view addSubview:twit];
+                [self.view addSubview:twit_text];
             }
             else
             {
@@ -357,18 +340,16 @@
                     
                     [self.view addSubview:pay_back];
                     [self.view addSubview:pay_text];
-               
-                [self.view addSubview:fb];
-                [self.view addSubview:fb_text];
-                [self.view addSubview:twit];
-                [self.view addSubview:twit_text];
-                
+                    
+                    [self.view addSubview:fb];
+                    [self.view addSubview:fb_text];
+                    [self.view addSubview:twit];
+                    [self.view addSubview:twit_text];
+                }
             }
-
-            }
-           
         }
     }
+    
     blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
     [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
     UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -384,7 +365,7 @@
     [serveOBJ setDelegate:self];
     
     [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
-    }
+}
 
 
 - (void) fulfill_request
@@ -413,14 +394,6 @@
         [alert show];
         return;
     }
-    /* if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-     UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
-     
-     [alert show];
-     return;
-     }*/
-    //IsVerifiedPhone
-    //[user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"]
     
     
     
@@ -439,7 +412,7 @@
         
         return;
     }
-
+    
     NSMutableDictionary *input = [self.trans mutableCopy];
     [input setValue:@"accept" forKey:@"response"];
     //NSLog(@"%@",input);
@@ -455,10 +428,10 @@
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to Reject this Request? " delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1011];
-//    NSMutableDictionary *input = [self.trans mutableCopy];
-//    [input setValue:@"deny" forKey:@"response"];
-//    TransferPIN *trans = [[TransferPIN alloc] initWithReceiver:input type:@"requestRespond" amount:[[self.trans objectForKey:@"Amount"] floatValue]];
-//    [nav_ctrl pushViewController:trans animated:YES];
+    //    NSMutableDictionary *input = [self.trans mutableCopy];
+    //    [input setValue:@"deny" forKey:@"response"];
+    //    TransferPIN *trans = [[TransferPIN alloc] initWithReceiver:input type:@"requestRespond" amount:[[self.trans objectForKey:@"Amount"] floatValue]];
+    //    [nav_ctrl pushViewController:trans animated:YES];
 }
 
 - (void) cancel_request
@@ -466,12 +439,12 @@
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to cancel this Request? " delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1010];
-   }
+}
 
 - (void) pay_back
 {
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-   
+    
     if ([[assist shared]getSuspended]) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
@@ -494,18 +467,18 @@
         [alert show];
         return;
     }
-     if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-     UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
-     
-     [alert show];
-     return;
-     }
+    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
+        
+        [alert show];
+        return;
+    }
     
     
     if ( ![[[NSUserDefaults standardUserDefaults]
             objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
         UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-       
+        
         [set show];
         return;
     }
@@ -518,15 +491,15 @@
         return;
     }
     NSMutableDictionary *input = [self.trans mutableCopy];
-      if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
-          NSString*MemberId=[input valueForKey:@"RecepientId"];
-          [input setObject:MemberId forKey:@"MemberId"];
-      }
-   
+    if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
+        NSString*MemberId=[input valueForKey:@"RecepientId"];
+        [input setObject:MemberId forKey:@"MemberId"];
+    }
+    
     isPayBack=YES;
     [[assist shared]setRequestMultiple:NO];
     isEmailEntry=NO;
-   // NSLog(@"%@",self.trans);
+    // NSLog(@"%@",self.trans);
     HowMuch *payback = [[HowMuch alloc] initWithReceiver:input];
     [self.navigationController pushViewController:payback animated:YES];
 }
@@ -667,7 +640,7 @@
         [serveObj setDelegate:self];
         serveObj.tagName=@"cancel";
         [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Cancelled"];
-
+        
     }
     else if(alertView.tag==1011 && buttonIndex==0)
     {
@@ -677,7 +650,7 @@
         [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Rejected"];
         
     }
-
+    
     //1011
 }
 
@@ -691,65 +664,89 @@
         NSError *error;
         
         NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-       // self.trans=[loginResult mutableCopy];
-        double lat = [[self.trans objectForKey:@"Latitude"] floatValue];
-        double lon = [[self.trans objectForKey:@"Longitude"] floatValue];
         
-        
-        GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:lat
-                                                                longitude:lon
-                                                                     zoom:11];
-        UIImageView*imgTran;
-        if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
-            NSArray* bytedata = [loginResult valueForKey:@"Picture"];
-            unsigned c = bytedata.count;
-            uint8_t *bytes = malloc(sizeof(*bytes) * c);
+        if (![[self.trans objectForKey:@"Latitude"] intValue]==0&& ![[self.trans objectForKey:@"Longitude"] intValue]==0) {
+            // self.trans=[loginResult mutableCopy];
+            double lat = [[self.trans objectForKey:@"Latitude"] floatValue];
+            double lon = [[self.trans objectForKey:@"Longitude"] floatValue];
+            GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:lat
+                                                                    longitude:lon
+                                                                         zoom:11];
+            UIImageView*imgTran;
+            if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
+                NSArray* bytedata = [loginResult valueForKey:@"Picture"];
+                unsigned c = bytedata.count;
+                uint8_t *bytes = malloc(sizeof(*bytes) * c);
+                
+                unsigned i;
+                for (i = 0; i < c; i++)
+                {
+                    NSString *str = [bytedata objectAtIndex:i];
+                    int byte = [str intValue];
+                    bytes[i] = (uint8_t)byte;
+                }
+                
+                NSData *datos = [NSData dataWithBytes:bytes length:c];
+                
+                imgTran=[[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
+                [imgTran setImage:[UIImage imageWithData:datos]];
+                
+                mapView_ = [GMSMapView mapWithFrame:CGRectMake(165, 240, 150, 160) camera:camera];
+            }
+            else
+                mapView_ = [GMSMapView mapWithFrame:CGRectMake(-1, 240, 322, 160) camera:camera];
             
-            unsigned i;
-            for (i = 0; i < c; i++)
+            mapView_.myLocationEnabled = YES;
+            //mapView_.layer.borderWidth = 1;
+            if ([[assist shared]islocationAllowed]) {
+                
+                [self.view addSubview:mapView_];
+                if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
+                    [self.view addSubview:imgTran];
+                }
+            }
+            else
             {
-                NSString *str = [bytedata objectAtIndex:i];
-                int byte = [str intValue];
-                bytes[i] = (uint8_t)byte;
+                if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
+                    imgTran.frame=CGRectMake(5, 240, 310, 160);
+                    
+                    [self.view addSubview:imgTran];
+                }
             }
+            // Creates a marker in the center of the map.
+            GMSMarker *marker = [[GMSMarker alloc] init];
+            marker.position = CLLocationCoordinate2DMake(lat, lon);
             
-            NSData *datos = [NSData dataWithBytes:bytes length:c];
+            marker.map = mapView_;
             
-            imgTran=[[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
-            [imgTran setImage:[UIImage imageWithData:datos]];
             
-            mapView_ = [GMSMapView mapWithFrame:CGRectMake(165, 240, 150, 160) camera:camera];
         }
-        else
-            mapView_ = [GMSMapView mapWithFrame:CGRectMake(-1, 240, 322, 160) camera:camera];
         
-        mapView_.myLocationEnabled = YES;
-        //mapView_.layer.borderWidth = 1;
-        if ([[assist shared]islocationAllowed]) {
+        UILabel *location = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 320, 60)];
+        CGRect frame = location.frame;
+        if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
+            frame.origin.x = 165;
+            frame.size.width = 155;
+            [location setFrame:frame];
+        }
+        location.numberOfLines=2;
+        [location setStyleClass:@"details_label_location"];
+        [location setAlpha:0.7];
+        if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"City"]!=NULL && [[assist shared]islocationAllowed] ) {
+            NSString*city=[[self.trans objectForKey:@"City"] stringByReplacingOccurrencesOfString:@"," withString:@""];
             
-            [self.view addSubview:mapView_];
-            if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
-                
-                [self.view addSubview:imgTran];
+            [location setText:city];
+            
+            if ([[self.trans objectForKey:@"AddressLine1"]length]==0 && [[self.trans objectForKey:@"City"]length]==0) {
+                [location setText:@""];
             }
+            [self.view addSubview:location];
         }
-        else
-        {
-            if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
-                imgTran.frame=CGRectMake(5, 240, 310, 160);
-                
-                [self.view addSubview:imgTran];
-            }
-        }
-        // Creates a marker in the center of the map.
-        GMSMarker *marker = [[GMSMarker alloc] init];
-        marker.position = CLLocationCoordinate2DMake(lat, lon);
         
-        marker.map = mapView_;
-
         //Set Status
-        UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 190, 320, 30)];
+        UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 320, 30)];
         [status setStyleClass:@"details_label"];
+        [status setStyleId:@"details_status"];
         if ([loginResult objectForKey:@"TransactionDate"]!=NULL) {
             NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setAMSymbol:@"AM"];
@@ -758,39 +755,39 @@
             NSDate *yourDate = [dateFormatter dateFromString:[loginResult valueForKey:@"TransactionDate"]];
             dateFormatter.dateFormat = @"dd-MMMM-yyyy";
             [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
-            //NSLog(@"%@",[dateFormatter stringFromDate:yourDate]);
+            
             NSString*statusstr;
             if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
                 if ([[loginResult objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
                     if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-                        statusstr=@"Cancelled:";
+                        statusstr=@"Cancelled";
                         [status setStyleClass:@"red_text"];
                         
                     }
                     else if ([[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
-                        statusstr=@"Rejected:";
+                        statusstr=@"Rejected";
                         [status setStyleClass:@"red_text"];
                         
                     }
                     else
                     {
-                        statusstr=@"Pending:";
+                        statusstr=@"Pending";
                         [status setStyleClass:@"green_text"];
                     }
                     
                 }
                 else{
                     if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-                        statusstr=@"Cancelled:";
+                        statusstr=@"Cancelled";
                         [status setStyleClass:@"red_text"];
                     }
                     else if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
-                        statusstr=@"Rejected:";
+                        statusstr=@"Rejected";
                         [status setStyleClass:@"red_text"];
                     }
                     else
                     {
-                        statusstr=@"Pending:";
+                        statusstr=@"Pending";
                         [status setStyleClass:@"green_text"];
                     }
                 }
@@ -798,63 +795,46 @@
             }
             else if([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Donation"]||[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]||[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
             {
-                statusstr=@"Completed on:";
+                statusstr=@"Completed";
                 [status setStyleClass:@"green_text"];
             }
             else if([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"] || [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
             {
-                statusstr=@"Submitted on:";
+                statusstr=@"Submitted";
                 [status setStyleClass:@"green_text"];
             }
             else if ([[loginResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
                 
-                statusstr=@"Invited on:";
+                statusstr=@"Invited";
                 [status setStyleClass:@"green_text"];
             }
+            [status setText:statusstr];
+            [self.view addSubview:status];
+            
             
             NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
-            if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
-                //details_label1
-                [status setText:[NSString stringWithFormat:@"%@",statusstr]];
-                UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(105, 190, 320, 30)];
-                [datelbl setTextColor:[UIColor grayColor]];
-                [self.view addSubview:datelbl];
-                datelbl.text=[NSString stringWithFormat:@"(Sent on %@ %@,%@)",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]];
-                
-            }
-            else
-            {
-                [status setText:[NSString stringWithFormat:@"%@ %@ %@,%@",statusstr,[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]]];
-            }
+            UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(90, 190, 140, 30)];
+            [datelbl setTextAlignment:NSTextAlignmentCenter]; [datelbl setFont:[UIFont fontWithName:@"Roboto-Light" size:16]];
+            [datelbl setTextColor:kNoochGrayDark];
+            [self.view addSubview:datelbl];
+            datelbl.text=[NSString stringWithFormat:@"%@ %@, %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]];
         }
-        
-        
-        [self.view addSubview:status];
         
         serve *info = [serve new];
         info.Delegate = self;
         info.tagName = @"info";
         
         NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-        [info getDetails:[defaults valueForKey:@"MemberId"]
-         ];
-
+        [info getDetails:[defaults valueForKey:@"MemberId"]];
+        
     }
     if ([tagName isEqualToString:@"reject"]) {
-        //NSError *error;
-        
-        //NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-       // NSLog(@"%@",loginResult);
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've rejected the Request Successfully!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         
         [nav_ctrl popToRootViewControllerAnimated:YES];
     }
-   else if ([tagName isEqualToString:@"cancel"]) {
-      //  NSError *error;
-        
-      //  NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        //NSLog(@"%@",loginResult);
+    else if ([tagName isEqualToString:@"cancel"]) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've cancelled the Request Successfully!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         
@@ -870,21 +850,18 @@
         NSError *error;
         
         NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        //NSLog(@"%@",loginResult);
         if ([loginResult valueForKey:@"Status"]!=Nil  && ![[loginResult valueForKey:@"Status"] isKindOfClass:[NSNull class]]&& [loginResult valueForKey:@"Status"] !=NULL) {
             [user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"];
             NSString*url=[loginResult valueForKey:@"PhotoUrl"];
             
             [user setObject:[loginResult valueForKey:@"DateCreated"] forKey:@"DateCreated"];
-            //  url=[url stringByReplacingOccurrencesOfString:@"//" withString:@"/"];
-           // NSLog(@"%@",url);
             [user setObject:url forKey:@"Photo"];
             
         }
         
         if(![[loginResult objectForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"BalanceAmount"] != NULL)
         {
-           
+            
             [user setObject:[loginResult objectForKey:@"BalanceAmount"] forKey:@"Balance"];
             UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             
@@ -894,7 +871,7 @@
                 [balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
                 
             }
-           
+            
             [balance.titleLabel setFont:kNoochFontMed];
             
             [balance setStyleId:@"navbar_balance"];

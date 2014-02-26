@@ -130,7 +130,7 @@ NSString *amnt;
 -(void)getSettings {
     self.responseData = [NSMutableData data];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-     [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     requestS = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?id=%@&accessToken=%@", ServerUrl, @"GetMyDetails", [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], [defaults valueForKey:@"OAuthToken"]
                                                                          ]]];
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestS delegate:self];
@@ -138,7 +138,7 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 -(void)deleteBank:(NSString*)bankId{
-     [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [NSMutableData data];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&bankAcctId=%@&accessToken=%@", ServerUrl, @"DeleteBankAccountDetails", [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], bankId,[[NSUserDefaults standardUserDefaults] objectForKey:@"OAuthToken"]]]];
     NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -154,7 +154,7 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 -(void)forgotPass:(NSString *)email{
-     [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSString *urlString = [NSString stringWithFormat:@"%@/ForgotPassword", ServerUrl];
     NSURL *url = [NSURL URLWithString:urlString];
@@ -197,7 +197,7 @@ NSString *amnt;
 }
 -(void)getEncrypt:(NSString *)input {
     NSString *encodedString = [NSString encodeBase64String:input];
-
+    
     self.responseData = [[NSMutableData alloc] init];
     requestEncryption = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@", ServerUrl,@"GetEncryptedData",@"data",encodedString]]];
     [requestEncryption setHTTPMethod:@"GET"];
@@ -222,7 +222,7 @@ NSString *amnt;
 //-(void)getLatestTrans
 -(void)getMemIdFromuUsername:(NSString*)username{
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-     [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSLog(@"%@",[defaults valueForKey:@"OAuthToken"]);
     requestmemid=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetMemberIdByUsername?userName=%@",ServerUrl,username
@@ -254,7 +254,7 @@ NSString *amnt;
 -(void)getNoteSettings{
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
-     [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSString *method=@"GetMemberNotificationSettings";
     NSString *parameter=@"memberId";
@@ -274,7 +274,7 @@ NSString *amnt;
 }
 -(void)getRecents{
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-     [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetRecentMembers?id=%@&accessToken=%@",ServerUrl,[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],[defaults valueForKey:@"OAuthToken"]]]];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -296,7 +296,7 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 -(void)dupCheck:(NSString*)email{
-     [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [NSMutableData data];
     
     requestdup = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@", ServerUrl, @"IsDuplicateMember", @"name", email]]];
@@ -309,15 +309,16 @@ NSString *amnt;
     [[assist shared]setBankVerified:NO];
     [[assist shared]setSusPended:NO];
     ServiceType=@"Login";
-      [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    //  [[NSUserDefaults standardUserDefaults] setValue:deviceTokens forKey:@"DeviceToken"];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     if (isRem) {
-        requestLogin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&rememberMeEnabled=true&lat=%f&lng=%f&udid=%@", ServerUrl, @"LoginRequest", @"name", email, @"pwd", pass,lat,lng,strId]]];
+        requestLogin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&rememberMeEnabled=true&lat=%f&lng=%f&udid=%@&devicetoken=%@", ServerUrl, @"LoginRequest", @"name", email, @"pwd", pass,lat,lng,strId,[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"]]]];
         
     }
     else
     {
-        requestLogin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&rememberMeEnabled=false&lat=%f&lng=%f&udid=%@", ServerUrl, @"LoginRequest", @"name", email, @"pwd", pass,lat,lng,strId]]];
+        requestLogin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&rememberMeEnabled=false&lat=%f&lng=%f&udid=%@&devicetoken=%@", ServerUrl, @"LoginRequest", @"name", email, @"pwd", pass,lat,lng,strId,[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"]]]];
     }
     [requestLogin setTimeoutInterval:10000];
     connectionLogin = [[NSURLConnection alloc] initWithRequest:requestLogin delegate:self];
@@ -446,7 +447,7 @@ NSString *amnt;
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestSet delegate:self];
     if (!connection)
         NSLog(@"connect error");
-   
+    
 }
 -(void)setSets:(NSDictionary*)settingsDictionary{
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
@@ -548,7 +549,7 @@ NSString *amnt;
     self.responseData = [NSMutableData data];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&accessToken=%@", ServerUrl, @"ValidatePinNumber", @"memberId", memId, @"pinNo", pin,[[NSUserDefaults standardUserDefaults] objectForKey:@"OAuthToken"]]]];
     [request setTimeoutInterval:50.0f];
-   
+    
     NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
     if (!connection)
         NSLog(@"connect error");
@@ -562,7 +563,7 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 -(void)withdrawFund:(NSString*)amount{
-   
+    
     NSRunLoop *loop = [NSRunLoop currentRunLoop];
     while ((!locationUpdate) &&
            ([loop runMode:NSDefaultRunLoopMode beforeDate:[NSDate
@@ -695,7 +696,7 @@ NSString *amnt;
     
     responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
     
-   
+    
     if ([responseString rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
         //logout in case of invalid OAuth
         if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"]isEqualToString:@"1"] ) {
@@ -724,7 +725,7 @@ NSString *amnt;
             
             [nav_ctrl setViewControllers:arrNav animated:NO];
             NSLog(@"%@",nav_ctrl.viewControllers);
-
+            
             Register *reg = [Register new];
             [nav_ctrl pushViewController:reg animated:YES];
             me = [core new];
@@ -744,142 +745,142 @@ NSString *amnt;
     else if ([tagName isEqualToString:@"info"]) {
         NSLog(@"serve connected for %@",self.tagName);
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-        
-        //ADDING LOCAL NOTIFICATION 19NOV 2013
-        dictUsers=[[NSMutableDictionary alloc]init];
-        if (![[defaults objectForKey:@"NotifPlaced"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced"]!=NULL) {
-            dictUsers=[[defaults objectForKey:@"NotifPlaced"] mutableCopy];
-            
-        }
-        NSLog(@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
-        NSString*strNotifPlaced;
-        for (id key in dictUsers) {
-            if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
-                strNotifPlaced=[dictUsers valueForKey:key];
-                break;
-            }
-        }
-        if ([defaults objectForKey:@"FullyVerified"] && ![strNotifPlaced isEqualToString:@"1"]) {
-            
-            if ([[defaults objectForKey:@"FullyVerified"] isEqualToString:@"1"] &&
-                [strNotifPlaced isEqualToString:@"1"]) {
-                NSLog(@"Fully Verified");
-                //removing further notifications as the account is verified
-                for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
-                    if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile1"]) {
-                        [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                    }
-                    if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile2"]) {
-                        [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                    }
-                    if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile3"]) {
-                        [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                    }
-                    if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile4"]) {
-                        [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                    }
-                }
-                dictUsers=[[NSMutableDictionary alloc]init];
-                if (![[defaults objectForKey:@"NotifPlaced"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced"]!=NULL) {
-                    dictUsers=[[defaults objectForKey:@"NotifPlaced"] mutableCopy];
-                    
-                }
-                
-                for (id key in dictUsers) {
-                    if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
-                        [dictUsers setValue:@"0" forKey:key];
-                        
-                        break;
-                    }
-                }
-                [defaults setValue:dictUsers forKey:@"NotifPlaced"];
-                [defaults synchronize];
-            }
-            else
-            {
-                dictUsers=[[NSMutableDictionary alloc]init];
-                if (![[defaults objectForKey:@"NotifPlaced"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced"]!=NULL) {
-                    dictUsers=[[defaults objectForKey:@"NotifPlaced"] mutableCopy];
-                    
-                }
-                NSLog(@"%@",dictUsers);
-                
-                NSString*strNotifPlaced1=@"None";
-                for (id key in dictUsers) {
-                    if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
-                        strNotifPlaced1=[dictUsers valueForKey:key];
-                        
-                        break;
-                    }
-                }
-                if (![strNotifPlaced1 isEqualToString:@"1"] || [strNotifPlaced1 isEqualToString:@"None"]) {
-                    for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
-                        if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile1"]) {
-                            [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                        }
-                        if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile2"]) {
-                            [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                        }
-                        if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile3"]) {
-                            [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                        }
-                        if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile4"]) {
-                            [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                        }
-                        
-                    }
-                    //adding local notification for 3 days
-                    UILocalNotification* localNotification1 = [[UILocalNotification alloc] init];
-                    localNotification1.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor3days];
-                    localNotification1.alertBody = @"Hey! Just a reminder that your Nooch account is almost ready. Open Nooch to complete your profile and start sending money!- Team Nooch";
-                    localNotification1.userInfo=@{@"notificationId": @"Profile1"};
-                    localNotification1.timeZone = [NSTimeZone defaultTimeZone];
-                    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification1];
-                    
-                    //adding local notification for 6 days
-                    UILocalNotification*localNotification2 = [[UILocalNotification alloc] init];
-                    localNotification2.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor7days];
-                    localNotification2.alertBody = @"Hey! Just a reminder that your Nooch account is almost ready. Open Nooch to complete your profile and start sending money!- Team Nooch";
-                    localNotification2.userInfo=@{@"notificationId": @"Profile2"};
-                    localNotification2.timeZone = [NSTimeZone defaultTimeZone];
-                    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification2];
-                    
-                    //adding local notification for 9 days
-                    UILocalNotification*localNotification3 = [[UILocalNotification alloc] init];
-                    localNotification3.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor14days];
-                    localNotification3.alertBody = @"Hey! Just a reminder that your Nooch account is almost ready. Open Nooch to complete your profile and start sending money!- Team Nooch";
-                    localNotification3.userInfo=@{@"notificationId": @"Profile3"};
-                    localNotification3.timeZone = [NSTimeZone defaultTimeZone];
-                    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification3];
-                    
-                    //adding local notification for 9 days
-                    UILocalNotification*localNotification4 = [[UILocalNotification alloc] init];
-                    localNotification4.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor28days];
-                    localNotification4.alertBody = @"Hey! Just a reminder that your Nooch account is almost ready. Open Nooch to complete your profile and start sending money!- Team Nooch";
-                    localNotification4.userInfo=@{@"notificationId": @"Profile4"};
-                    localNotification4.timeZone = [NSTimeZone defaultTimeZone];
-                    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification4];
-                    
-                    dictUsers=[[NSMutableDictionary alloc]init];
-                    if (![[defaults objectForKey:@"NotifPlaced"]isKindOfClass:[NSNull class]] && [defaults objectForKey:@"NotifPlaced"]!=NULL) {
-                        dictUsers=[[defaults objectForKey:@"NotifPlaced"] mutableCopy];
-                        
-                    }
-                    NSLog(@"%@",dictUsers);
-                    
-                    [dictUsers setValue:@"1" forKey:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]];
-                    NSLog(@"%@",dictUsers);
-                    
-                    [defaults setObject:dictUsers forKey:@"NotifPlaced"];
-                    [defaults synchronize];
-                    
-                }
-                
-                
-                
-            }
-        }
-        
+        /*
+         //ADDING LOCAL NOTIFICATION 19NOV 2013
+         dictUsers=[[NSMutableDictionary alloc]init];
+         if (![[defaults objectForKey:@"NotifPlaced"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced"]!=NULL) {
+         dictUsers=[[defaults objectForKey:@"NotifPlaced"] mutableCopy];
+         
+         }
+         NSLog(@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+         NSString*strNotifPlaced;
+         for (id key in dictUsers) {
+         if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
+         strNotifPlaced=[dictUsers valueForKey:key];
+         break;
+         }
+         }
+         if ([defaults objectForKey:@"FullyVerified"] && ![strNotifPlaced isEqualToString:@"1"]) {
+         
+         if ([[defaults objectForKey:@"FullyVerified"] isEqualToString:@"1"] &&
+         [strNotifPlaced isEqualToString:@"1"]) {
+         NSLog(@"Fully Verified");
+         //removing further notifications as the account is verified
+         for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
+         if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile1"]) {
+         [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+         }
+         if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile2"]) {
+         [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+         }
+         if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile3"]) {
+         [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+         }
+         if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile4"]) {
+         [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+         }
+         }
+         dictUsers=[[NSMutableDictionary alloc]init];
+         if (![[defaults objectForKey:@"NotifPlaced"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced"]!=NULL) {
+         dictUsers=[[defaults objectForKey:@"NotifPlaced"] mutableCopy];
+         
+         }
+         
+         for (id key in dictUsers) {
+         if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
+         [dictUsers setValue:@"0" forKey:key];
+         
+         break;
+         }
+         }
+         [defaults setValue:dictUsers forKey:@"NotifPlaced"];
+         [defaults synchronize];
+         }
+         else
+         {
+         dictUsers=[[NSMutableDictionary alloc]init];
+         if (![[defaults objectForKey:@"NotifPlaced"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced"]!=NULL) {
+         dictUsers=[[defaults objectForKey:@"NotifPlaced"] mutableCopy];
+         
+         }
+         NSLog(@"%@",dictUsers);
+         
+         NSString*strNotifPlaced1=@"None";
+         for (id key in dictUsers) {
+         if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
+         strNotifPlaced1=[dictUsers valueForKey:key];
+         
+         break;
+         }
+         }
+         if (![strNotifPlaced1 isEqualToString:@"1"] || [strNotifPlaced1 isEqualToString:@"None"]) {
+         for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
+         if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile1"]) {
+         [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+         }
+         if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile2"]) {
+         [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+         }
+         if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile3"]) {
+         [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+         }
+         if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Profile4"]) {
+         [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+         }
+         
+         }
+         //adding local notification for 3 days
+         UILocalNotification* localNotification1 = [[UILocalNotification alloc] init];
+         localNotification1.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor3days];
+         localNotification1.alertBody = @"Hey! Just a reminder that your Nooch account is almost ready. Open Nooch to complete your profile and start sending money!- Team Nooch";
+         localNotification1.userInfo=@{@"notificationId": @"Profile1"};
+         localNotification1.timeZone = [NSTimeZone defaultTimeZone];
+         [[UIApplication sharedApplication] scheduleLocalNotification:localNotification1];
+         
+         //adding local notification for 6 days
+         UILocalNotification*localNotification2 = [[UILocalNotification alloc] init];
+         localNotification2.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor7days];
+         localNotification2.alertBody = @"Hey! Just a reminder that your Nooch account is almost ready. Open Nooch to complete your profile and start sending money!- Team Nooch";
+         localNotification2.userInfo=@{@"notificationId": @"Profile2"};
+         localNotification2.timeZone = [NSTimeZone defaultTimeZone];
+         [[UIApplication sharedApplication] scheduleLocalNotification:localNotification2];
+         
+         //adding local notification for 9 days
+         UILocalNotification*localNotification3 = [[UILocalNotification alloc] init];
+         localNotification3.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor14days];
+         localNotification3.alertBody = @"Hey! Just a reminder that your Nooch account is almost ready. Open Nooch to complete your profile and start sending money!- Team Nooch";
+         localNotification3.userInfo=@{@"notificationId": @"Profile3"};
+         localNotification3.timeZone = [NSTimeZone defaultTimeZone];
+         [[UIApplication sharedApplication] scheduleLocalNotification:localNotification3];
+         
+         //adding local notification for 9 days
+         UILocalNotification*localNotification4 = [[UILocalNotification alloc] init];
+         localNotification4.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor28days];
+         localNotification4.alertBody = @"Hey! Just a reminder that your Nooch account is almost ready. Open Nooch to complete your profile and start sending money!- Team Nooch";
+         localNotification4.userInfo=@{@"notificationId": @"Profile4"};
+         localNotification4.timeZone = [NSTimeZone defaultTimeZone];
+         [[UIApplication sharedApplication] scheduleLocalNotification:localNotification4];
+         
+         dictUsers=[[NSMutableDictionary alloc]init];
+         if (![[defaults objectForKey:@"NotifPlaced"]isKindOfClass:[NSNull class]] && [defaults objectForKey:@"NotifPlaced"]!=NULL) {
+         dictUsers=[[defaults objectForKey:@"NotifPlaced"] mutableCopy];
+         
+         }
+         NSLog(@"%@",dictUsers);
+         
+         [dictUsers setValue:@"1" forKey:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]];
+         NSLog(@"%@",dictUsers);
+         
+         [defaults setObject:dictUsers forKey:@"NotifPlaced"];
+         [defaults synchronize];
+         
+         }
+         
+         
+         
+         }
+         }
+         */
         NSError* error;
         Dictresponse = [NSJSONSerialization
                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
@@ -976,26 +977,24 @@ NSString *amnt;
                 NSLog(@"%@",[[[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
                 
             }
-            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-            NSLog(@"%@",[user objectForKey:@"firstName"]);
-            
-            
-            
-            dictUsers=[[NSMutableDictionary alloc]init];
-            if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
-                dictUsers=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
-                
-            }
-            NSLog(@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
-            NSString*strNotifPlaced;
-            for (id key in dictUsers) {
-                if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
-                    strNotifPlaced=[dictUsers valueForKey:key];
-                    break;
-                }
-            }
-            NSLog(@"%@",strNotifPlaced);
-            NSLog(@"%@ %@",dictUsers,[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"]);
+            // NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+            /*
+             dictUsers=[[NSMutableDictionary alloc]init];
+             if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
+             dictUsers=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
+             
+             }
+             NSLog(@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+             NSString*strNotifPlaced;
+             for (id key in dictUsers) {
+             if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
+             strNotifPlaced=[dictUsers valueForKey:key];
+             break;
+             }
+             }
+             NSLog(@"%@",strNotifPlaced);
+             NSLog(@"%@ %@",dictUsers,[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"]);
+             */
             if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]&& ![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue] )
             {
                 [[assist shared]setBankVerified:YES];//                 if (![[defaults valueForKey:@"IsPrimaryBankVerified"]isEqualToString:@"YES"]) {
@@ -1011,140 +1010,141 @@ NSString *amnt;
                 //[defaults setObject:@"NO" forKey:@"IsPrimaryBankVerified"];
                 //[defaults synchronize];
             }
-            if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]&& [strNotifPlaced isEqualToString:@"1"]) {
-                if (![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue]) {
-                    for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
-                        if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
-                            [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                        }
-                        if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
-                            [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                        }
-                        if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
-                            [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                        }
-                        
-                    }
-                    dictUsers=[[NSMutableDictionary alloc]init];
-                    if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
-                        dictUsers=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
-                        
-                    }
-                    NSLog(@"%@",dictUsers);
-                    for (id key in dictUsers) {
-                        if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
-                            [dictUsers setValue:@"0" forKey:key];
-                            
-                            break;
-                        }
-                    }
-                    [defaults setValue:dictUsers forKey:@"NotifPlaced2"];
-                    
-                    
-                }
-                
-                
-            }
-            else
-            {
-                
-                dictUsers=[[NSMutableDictionary alloc]init];
-                if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
-                    dictUsers=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
-                    
-                }
-                NSLog(@"%@",dictUsers);
-                
-                NSString*strNotifPlaced1=@"None";
-                for (id key in dictUsers) {
-                    if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
-                        strNotifPlaced1=[dictUsers valueForKey:key];
-                        
-                        break;
-                    }
-                }
-                if (![strNotifPlaced1 isEqualToString:@"1"] || [strNotifPlaced1 isEqualToString:@"None"]) {
-                    NSLog(@"%@",[user objectForKey:@"firstName"]);
-                    
-                    for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
-                        if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
-                            [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                        }
-                        if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
-                            [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                        }
-                        if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
-                            [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                        }
-                        
-                    }
-                    
-                    
-                    UILocalNotification* localNotification1 = [[UILocalNotification alloc] init];
-                    localNotification1.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor3days];
-                    localNotification1.userInfo=@{@"notificationId": @"Bank1"};
-                    localNotification1.alertBody = [NSString stringWithFormat:@"Hi %@ Check your bank account for 2 small deposits from Nooch that should have arrived on %@. Enter the amounts in the Nooch App to confirm your bank account.",[[user objectForKey:@"firstName"] capitalizedString],[[[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]];
-                    localNotification1.timeZone = [NSTimeZone defaultTimeZone];
-                    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification1];
-                    
-                    //adding local notification for 6 days
-                    UILocalNotification* localNotification2 = [[UILocalNotification alloc] init];
-                    localNotification2.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor7days];
-                    localNotification2.alertBody = [NSString stringWithFormat:@"Hi %@ Check your bank account for 2 small deposits from Nooch that should have arrived on %@. Enter the amounts in the Nooch App to confirm your bank account.",[[user objectForKey:@"firstName"] capitalizedString],[[[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]];
-                    localNotification2.timeZone = [NSTimeZone defaultTimeZone];
-                    
-                    localNotification2.userInfo=@{@"notificationId": @"Bank2"};
-                    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification2];
-                    
-                    //adding local notification for 9 days
-                    UILocalNotification* localNotification3 = [[UILocalNotification alloc] init];
-                    localNotification3.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor14days];
-                    localNotification3.userInfo=@{@"notificationId": @"Bank3"};
-                    localNotification3.alertBody = [NSString stringWithFormat:@"Hi %@ Check your bank account for 2 small deposits from Nooch that should have arrived on %@. Enter the amounts in the Nooch App to confirm your bank account.",[[user objectForKey:@"firstName"] capitalizedString],[[[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]];
-                    
-                    localNotification3.timeZone = [NSTimeZone defaultTimeZone];
-                    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification3];
-                    
-                    // [defaults setObject:@"1" forKey:@"NotifPlaced2"];
-                    dictUsers=[[NSMutableDictionary alloc]init];
-                    if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]] && [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
-                        dictUsers=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
-                        
-                    }
-                    NSLog(@"%@",dictUsers);
-                    if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]  isKindOfClass:[NSNull class]] && [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]!=NULL) {
-                        [dictUsers setValue:@"1" forKey:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]];
-                    }
-                    
-                    NSLog(@"%@",dictUsers);
-                    
-                    [defaults setObject:dictUsers forKey:@"NotifPlaced2"];
-                    
-                    [defaults synchronize];
-                }
-                
-                
-                
-                
-                
-            }
+            /*
+             if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]&& [strNotifPlaced isEqualToString:@"1"]) {
+             if (![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue]) {
+             for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
+             if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
+             [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+             }
+             if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
+             [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+             }
+             if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
+             [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+             }
+             
+             }
+             dictUsers=[[NSMutableDictionary alloc]init];
+             if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
+             dictUsers=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
+             
+             }
+             NSLog(@"%@",dictUsers);
+             for (id key in dictUsers) {
+             if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
+             [dictUsers setValue:@"0" forKey:key];
+             
+             break;
+             }
+             }
+             [defaults setValue:dictUsers forKey:@"NotifPlaced2"];
+             
+             
+             }
+             
+             
+             }
+             else
+             {
+             
+             dictUsers=[[NSMutableDictionary alloc]init];
+             if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
+             dictUsers=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
+             
+             }
+             NSLog(@"%@",dictUsers);
+             
+             NSString*strNotifPlaced1=@"None";
+             for (id key in dictUsers) {
+             if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
+             strNotifPlaced1=[dictUsers valueForKey:key];
+             
+             break;
+             }
+             }
+             if (![strNotifPlaced1 isEqualToString:@"1"] || [strNotifPlaced1 isEqualToString:@"None"]) {
+             NSLog(@"%@",[user objectForKey:@"firstName"]);
+             
+             for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
+             if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
+             [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+             }
+             if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
+             [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+             }
+             if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
+             [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+             }
+             
+             }
+             
+             
+             UILocalNotification* localNotification1 = [[UILocalNotification alloc] init];
+             localNotification1.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor3days];
+             localNotification1.userInfo=@{@"notificationId": @"Bank1"};
+             localNotification1.alertBody = [NSString stringWithFormat:@"Hi %@ Check your bank account for 2 small deposits from Nooch that should have arrived on %@. Enter the amounts in the Nooch App to confirm your bank account.",[[user objectForKey:@"firstName"] capitalizedString],[[[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]];
+             localNotification1.timeZone = [NSTimeZone defaultTimeZone];
+             [[UIApplication sharedApplication] scheduleLocalNotification:localNotification1];
+             
+             //adding local notification for 6 days
+             UILocalNotification* localNotification2 = [[UILocalNotification alloc] init];
+             localNotification2.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor7days];
+             localNotification2.alertBody = [NSString stringWithFormat:@"Hi %@ Check your bank account for 2 small deposits from Nooch that should have arrived on %@. Enter the amounts in the Nooch App to confirm your bank account.",[[user objectForKey:@"firstName"] capitalizedString],[[[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]];
+             localNotification2.timeZone = [NSTimeZone defaultTimeZone];
+             
+             localNotification2.userInfo=@{@"notificationId": @"Bank2"};
+             [[UIApplication sharedApplication] scheduleLocalNotification:localNotification2];
+             
+             //adding local notification for 9 days
+             UILocalNotification* localNotification3 = [[UILocalNotification alloc] init];
+             localNotification3.fireDate = [NSDate dateWithTimeIntervalSinceNow:secondsFor14days];
+             localNotification3.userInfo=@{@"notificationId": @"Bank3"};
+             localNotification3.alertBody = [NSString stringWithFormat:@"Hi %@ Check your bank account for 2 small deposits from Nooch that should have arrived on %@. Enter the amounts in the Nooch App to confirm your bank account.",[[user objectForKey:@"firstName"] capitalizedString],[[[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]];
+             
+             localNotification3.timeZone = [NSTimeZone defaultTimeZone];
+             [[UIApplication sharedApplication] scheduleLocalNotification:localNotification3];
+             
+             // [defaults setObject:@"1" forKey:@"NotifPlaced2"];
+             dictUsers=[[NSMutableDictionary alloc]init];
+             if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]] && [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
+             dictUsers=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
+             
+             }
+             NSLog(@"%@",dictUsers);
+             if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]  isKindOfClass:[NSNull class]] && [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]!=NULL) {
+             [dictUsers setValue:@"1" forKey:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]];
+             }
+             
+             NSLog(@"%@",dictUsers);
+             
+             [defaults setObject:dictUsers forKey:@"NotifPlaced2"];
+             
+             [defaults synchronize];
+             }
+             
+             */
+            
+            
+            
         }
+        
         else
         {
             [[assist shared]setBankVerified:NO];
             [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
-            for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
-                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
-                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                }
-                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
-                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                }
-                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
-                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                }
-                
-            }
+            //            for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
+            //                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
+            //                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+            //                }
+            //                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
+            //                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+            //                }
+            //                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
+            //                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+            //                }
+            //
+            //            }
             
             
         }
@@ -1222,7 +1222,7 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 -(void)getTotalReferralCode:(NSString *)inviteCode {
-   [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     [defaults setValue:inviteCode forKey:@"RefCode"];
@@ -1401,7 +1401,7 @@ NSString *amnt;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
-   
+    
     NSError *error;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
@@ -1499,7 +1499,7 @@ NSString *amnt;
 }
 -(void) GetAllWithdrawalFrequency
 {
-   [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
@@ -1562,7 +1562,7 @@ NSString *amnt;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
-   
+    
     NSError *error;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
@@ -1635,11 +1635,11 @@ NSString *amnt;
 -(void)GetServerCurrentTime{
     //histSafe=NO;
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
-   
+    
     
     responseData = [NSMutableData data];
     NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@", ServerUrl, @"GetServerCurrentTime"];
- 
+    
     requestList = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlForHis]];
     
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
@@ -1951,7 +1951,7 @@ NSString *amnt;
     
     dictInv=[[NSMutableDictionary alloc]init];
     [dictInv setObject:transactionId forKey:@"transactionId"];
-      [dictInv setObject:userResponse forKey:@"userResponse"];
+    [dictInv setObject:userResponse forKey:@"userResponse"];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];

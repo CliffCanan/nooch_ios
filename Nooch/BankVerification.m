@@ -95,7 +95,7 @@
     }
     else
     {
-      [self.verify setEnabled:YES];
+        [self.verify setEnabled:YES];
     }
     [self.verify addTarget:self action:@selector(verify_amounts) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.verify];
@@ -124,7 +124,7 @@
         [alertView show];
         self.micro1.text=@"";
         self.micro2.text=@"";
- 
+        
     }
     
     [self.micro1 resignFirstResponder];
@@ -189,23 +189,22 @@
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"The bank account details have been deleted." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView sizeToFit];
             [alertView show];
-             [[assist shared]setneedsReload:YES];
+            [[assist shared]setneedsReload:YES];
             [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"IsPrimaryBankVerified"];
-            for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
-                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
-                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                }
-                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
-                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                }
-                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
-                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-                }
-                
-            }
+            //            for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
+            //                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
+            //                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+            //                }
+            //                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
+            //                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+            //                }
+            //                if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
+            //                    [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+            //                }
+            //
+            //            }
             [self.navigationController popViewControllerAnimated:YES];
-            //            [navCtrl dismissViewControllerAnimated:YES anima
-            //             ];
+            
         }
     }else if([tagName isEqualToString:@"verification"]){
         [blankView removeFromSuperview];
@@ -218,7 +217,7 @@
             //[navCtrl dismissModalViewControllerAnimated:YES];
             verifyAttempts = 0;
         }else if(verifyAttempts == 2){
-             [[assist shared]setneedsReload:YES];
+            [[assist shared]setneedsReload:YES];
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Careful..."message:@"You've failed verification twice now. We're getting suspicious, one more failed verification attempt and this bank account will be deleted from our system."delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView sizeToFit];
             [alertView show];
@@ -234,8 +233,8 @@
             [blankView addSubview:actv];
             [self .view addSubview:blankView];
             [self.view bringSubviewToFront:blankView];
-             [[assist shared]setneedsReload:YES];
-//            [me waitStat:@"Deleting this account for security purposes..."];
+            [[assist shared]setneedsReload:YES];
+            //            [me waitStat:@"Deleting this account for security purposes..."];
             serve *bank = [serve new];
             bank.tagName = @"bDelete";
             bank.Delegate = self;

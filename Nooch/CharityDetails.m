@@ -37,7 +37,7 @@
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     // self.title=[self.charity valueForKey:@"OrganizationName"];
-     [self.navigationItem setTitle:[[self.charity valueForKey:@"OrganizationName"] capitalizedString]];
+    [self.navigationItem setTitle:[[self.charity valueForKey:@"OrganizationName"] capitalizedString]];
     UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [balance setFrame:CGRectMake(0, 0, 60, 30)];
     if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
@@ -59,16 +59,7 @@
     
     [self.navigationItem setRightBarButtonItem:funds];
     
-    
-    
-   
-	
     image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 150)];
-    
-   
-    
-    
-    
     [image setImage:[UIImage imageNamed:@"4k_image.png"]];
     [image setStyleClass:@"featured_nonprofit_banner_details"];
     [image setStyleCSS:@"background-image : url(4k_image.png)"];
@@ -112,26 +103,30 @@
     
     UILabel *website = [UILabel new];
     [website setText:@"Website"];
+    [website setStyleId:@"nonprofit_details_buttons_label_website"];
     [website setStyleClass:@"nonprofit_details_buttons_labels"];
-    [website setStyleClass:@"nonprofit_details_buttons_label_website"];
+    
     [self.view addSubview:website];
     
     UILabel *facebook = [UILabel new];
     [facebook setText:@"Facebook"];
+    [facebook setStyleId:@"nonprofit_details_buttons_label_fb"];
     [facebook setStyleClass:@"nonprofit_details_buttons_labels"];
-    [facebook setStyleClass:@"nonprofit_details_buttons_label_fb"];
+    
     [self.view addSubview:facebook];
     
     UILabel *twitter = [UILabel new];
     [twitter setText:@"Twitter"];
+    [twitter setStyleId:@"nonprofit_details_buttons_label_twitter"];
     [twitter setStyleClass:@"nonprofit_details_buttons_labels"];
-    [twitter setStyleClass:@"nonprofit_details_buttons_label_twitter"];
+    
     [self.view addSubview:twitter];
     
     UILabel *yt = [UILabel new];
     [yt setText:@"Youtube"];
+    [yt setStyleId:@"nonprofit_details_buttons_label_youtube"];
     [yt setStyleClass:@"nonprofit_details_buttons_labels"];
-    [yt setStyleClass:@"nonprofit_details_buttons_label_youtube"];
+    
     [self.view addSubview:yt];
     
     UIButton *donate = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -202,7 +197,7 @@
         return;
         
     }
-
+    
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
         
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
@@ -218,13 +213,13 @@
         [alert show];
         return;
     }
-     if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-     UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
-     
-     [alert show];
-     return;
-     }
-       
+    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
+        
+        [alert show];
+        return;
+    }
+    
     
     if ( ![[[NSUserDefaults standardUserDefaults]
             objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
@@ -337,7 +332,7 @@
         decry->tag = [NSNumber numberWithInteger:2];
         [decry getDecryptionL:@"GetDecryptedData" textString:[self.charity valueForKey:@"LastName"]];
         
-    
+        
     }
     else
     {

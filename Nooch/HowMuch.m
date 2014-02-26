@@ -86,8 +86,8 @@
     [self.view addSubview:back];
     
     self.recip_back=  [UILabel new];
-    [self.recip_back setStyleClass:@"barbackground_gray"];
     [self.recip_back setStyleClass:@"barbackground"];
+    [self.recip_back setStyleClass:@"barbackground_gray"];
     [self.view addSubview:self.recip_back];
     
     UILabel *to = [UILabel new]; [to setText:@"To: "];
@@ -120,11 +120,11 @@
     
     [self.view addSubview:to_label];
     if (![self.receiver valueForKey:@"nonuser"] &&  !isPayBack && !isEmailEntry && !isUserByLocation) {
-    UIButton*add=[[UIButton alloc]initWithFrame:CGRectMake(260, 15, 30, 30)];
-    [add setImage:[UIImage imageNamed:@"add-icon-blue.png"] forState:UIControlStateNormal];
-    [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];
-    [add setStyleCSS:@"addbutton_request"];
-    [self.view addSubview:add];
+        UIButton*add=[[UIButton alloc]initWithFrame:CGRectMake(260, 15, 30, 30)];
+        [add setImage:[UIImage imageNamed:@"add-icon-white.png"] forState:UIControlStateNormal];
+        [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];
+        [add setStyleCSS:@"addbutton_request"];
+        [self.view addSubview:add];
     }
     UIImageView *user_pic = [UIImageView new];
     [user_pic setFrame:CGRectMake(28, 62, 74, 74)];

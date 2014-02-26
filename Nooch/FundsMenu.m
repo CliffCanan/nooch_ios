@@ -142,7 +142,7 @@
         return;
         
     }
-
+    
     
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
         
@@ -289,7 +289,6 @@
             [cell.contentView addSubview:iv];
             on_off.tag=12000;
             if ([SelectedOption isEqualToString:@"Triggers"])
-                
             {
                 [on_off setOn:YES];
                 
@@ -300,7 +299,7 @@
                         UILabel*lbldetail=[[UILabel alloc]initWithFrame:CGRectMake(45, 35, 105, 15)];
                         lbldetail.backgroundColor=[UIColor clearColor];
                         lbldetail.textColor=[UIColor lightGrayColor];
-                        lbldetail.text=[NSString stringWithFormat:@"%@",[dictSelectedWithdrawal valueForKey:option]];
+                        lbldetail.text=[NSString stringWithFormat:@"%@",At];
                         lbldetail.font=[UIFont systemFontOfSize:12.0f];
                         [cell.contentView addSubview:lbldetail];
                         
@@ -310,6 +309,11 @@
                         //   cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[dictSelectedWithdrawal valueForKey:option]];
                         
                         SelectedSubOption=[dictSelectedWithdrawal valueForKey:option];
+                    }
+                    else
+                    {
+                        [on_off setOn:NO];
+                        cell.detailTextLabel.text=@"";
                     }
                 }
                 else{
@@ -338,178 +342,178 @@
         
         else{
             
-                if ([SelectedOption isEqualToString:@"Frequency"]) {
-                    UIView*subV=[[UIView alloc]initWithFrame:CGRectMake(73, 5, 150, 40)];
-                    subV.backgroundColor=[UIColor clearColor];
+            if ([SelectedOption isEqualToString:@"Frequency"]) {
+                UIView*subV=[[UIView alloc]initWithFrame:CGRectMake(73, 5, 150, 40)];
+                subV.backgroundColor=[UIColor clearColor];
+                
+                UILabel*lbl=[[UILabel alloc]initWithFrame:CGRectMake(0, 5, 150, 17)];
+                lbl.backgroundColor=[UIColor clearColor];
+                lbl.textColor=[UIColor whiteColor];
+                lbl.font=[UIFont systemFontOfSize:15.0f];
+                lbl.text=[arrWithrawalOptions objectAtIndex:indexPath.row];
+                [subV addSubview:lbl];
+                [cell.contentView addSubview:subV];
+                
+                UILabel*lblTime=[[UILabel alloc]initWithFrame:CGRectMake(0, 22, 105, 15)];
+                lblTime.backgroundColor=[UIColor clearColor];
+                lblTime.textColor=[UIColor lightGrayColor];
+                lblTime.text=strTimeFrequency;
+                lblTime.font=[UIFont systemFontOfSize:12.0f];
+                [cell.contentView addSubview:lblTime];
+                [subV addSubview:lblTime];
+                [cell.contentView addSubview:subV];
+                
+                
+                UIImageView*img=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"tickR.png"]];
+                img.frame=CGRectMake(25, 5, 32, 30);
+                [cell.contentView addSubview:img];
+                
+                cell.textLabel.text=Nil;
+                
+                if (!isEditing) {
                     
-                    UILabel*lbl=[[UILabel alloc]initWithFrame:CGRectMake(0, 5, 150, 17)];
-                    lbl.backgroundColor=[UIColor clearColor];
-                    lbl.textColor=[UIColor whiteColor];
-                    lbl.font=[UIFont systemFontOfSize:15.0f];
-                    lbl.text=[arrWithrawalOptions objectAtIndex:indexPath.row];
-                    [subV addSubview:lbl];
-                    [cell.contentView addSubview:subV];
+                    UIButton*edit=[UIButton buttonWithType:UIButtonTypeCustom];
                     
-                    UILabel*lblTime=[[UILabel alloc]initWithFrame:CGRectMake(0, 22, 105, 15)];
-                    lblTime.backgroundColor=[UIColor clearColor];
-                    lblTime.textColor=[UIColor lightGrayColor];
-                    lblTime.text=strTimeFrequency;
-                    lblTime.font=[UIFont systemFontOfSize:12.0f];
-                    [cell.contentView addSubview:lblTime];
-                    [subV addSubview:lblTime];
-                    [cell.contentView addSubview:subV];
+                    [edit  setTag:indexPath.row];
+                    [edit setTintColor:[UIColor whiteColor]];
+                    
+                    // [edit setBackgroundColor:[UIColor blackColor]];
+                    [edit setTitle:@"edit" forState:UIControlStateNormal];
+                    [edit setStyleClass:@"reditbutton"];
+                    [edit setFrame:CGRectMake(180, 5, 60, 30)];
                     
                     
-                    UIImageView*img=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"tickR.png"]];
-                    img.frame=CGRectMake(25, 5, 32, 30);
-                    [cell.contentView addSubview:img];
                     
-                    cell.textLabel.text=Nil;
+                    [edit addTarget:self action:@selector(editFrequency:) forControlEvents:UIControlEventTouchUpInside];
                     
-                    if (!isEditing) {
-                        
-                        UIButton*edit=[UIButton buttonWithType:UIButtonTypeCustom];
-                        
-                        [edit  setTag:indexPath.row];
-                        [edit setTintColor:[UIColor whiteColor]];
-                        
-                        // [edit setBackgroundColor:[UIColor blackColor]];
-                        [edit setTitle:@"edit" forState:UIControlStateNormal];
-                        [edit setStyleClass:@"reditbutton"];
-                        [edit setFrame:CGRectMake(180, 5, 60, 30)];
-                        
-                        
-                        
-                        [edit addTarget:self action:@selector(editFrequency:) forControlEvents:UIControlEventTouchUpInside];
-                        
-                        [cell.contentView addSubview:edit];
-                        //[menuTable setEditing:!menuTable.editing animated:YES];
-                    }
-                    else{
-                        UIButton*removeBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-                        
-                        [removeBtn  setTag:indexPath.row];
-                        [removeBtn setTintColor:[UIColor whiteColor]];
-                        //[removeBtn setBackgroundColor:[UIColor redColor]];
-                        
-                        [removeBtn setTitle:@"Remove" forState:UIControlStateNormal];
-                        [removeBtn setFrame:CGRectMake(320, 5, 70, 35)];
-                        [removeBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
-                        [removeBtn addTarget:self action:@selector(RemoveFrequency:) forControlEvents:UIControlEventTouchUpInside];
-                        
-                        [cell.contentView addSubview:removeBtn];
-                        UIButton*cBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-                        
-                        [cBtn  setTag:indexPath.row];
-                        [cBtn setTintColor:[UIColor whiteColor]];
-                        // [cBtn setBackgroundColor:[UIColor greenColor]];
-                        [cBtn setTitle:@"Cancel" forState:UIControlStateNormal];
-                        
-                        [cBtn setFrame:CGRectMake(395, 5, 70, 35)];
-                        [cBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
-                        [cBtn addTarget:self action:@selector(CancelEdit:) forControlEvents:UIControlEventTouchUpInside];
-                        
-                        [cell.contentView addSubview:cBtn];
-                        
-                        [UIView beginAnimations:nil context:nil];
-                        
-                        [UIView setAnimationDelegate:self];
-                        [UIView setAnimationDuration:0.3];
-                        subV.frame=CGRectMake(20, 5, 80, 35);
-                        img.frame=CGRectMake(-40, 5, 40, 40);
-                        [removeBtn setStyleClass:@"rremovebutton"];
-                        [cBtn setStyleClass:@"rcancelbutton"];
-                        [removeBtn setFrame:CGRectMake(125, 5, 70, 35)];
-                        [cBtn setFrame:CGRectMake(200, 5, 70, 35)];
-                        [UIView commitAnimations];
-                        
-                        
-                    }
-                    
+                    [cell.contentView addSubview:edit];
+                    //[menuTable setEditing:!menuTable.editing animated:YES];
                 }
                 else{
+                    UIButton*removeBtn=[UIButton buttonWithType:UIButtonTypeCustom];
                     
-                    cell.textLabel.text=[arrWithrawalOptions objectAtIndex:indexPath.row] ;
-                    if (indexPath.row==7) {
-                        
-                        
-                        textMyWithdrawal=[[UITextField alloc]initWithFrame:CGRectMake(70, 10, 70, 30)];
-                        
-                        
-                        
-                        [textMyWithdrawal setPlaceholder:@"Amount"];
-                        
-                        
-                        
-                        textMyWithdrawal.textColor = [UIColor blackColor];
-                        
-                        
-                        
-                        textMyWithdrawal.borderStyle = UITextBorderStyleRoundedRect;
-                        
-                        textMyWithdrawal.keyboardType=UIKeyboardTypeNumberPad ;
-                        
-                        textMyWithdrawal.font = [UIFont systemFontOfSize:15.0];
-                        
-                        
-                        
-                        [textMyWithdrawal setDelegate:self];
-                        
-                        
-                        
-                        textMyWithdrawal.backgroundColor = [UIColor whiteColor];
-                        
-                        
-                        
-                        [cell.contentView addSubview:textMyWithdrawal];
-                        
-                        
-                        
-                        Savebtn=[UIButton buttonWithType:UIButtonTypeCustom];
-                        
-                        
-                        
-                        [Savebtn  setTag:indexPath.row];
-                        
-                        //[Savebtn setBackgroundColor:[UIColor greenColor]];
-                        
-                        [Savebtn setTitle:@"Save" forState:UIControlStateNormal];
-                        
-                        [Savebtn setFrame:CGRectMake(180, 5, 70, 35)];
-                        [Savebtn setStyleClass:@"rsavebutton"];
-                        [Savebtn addTarget:self action:@selector(saveAmtTrigger:) forControlEvents:UIControlEventTouchUpInside];
-                        [cell.contentView addSubview:Savebtn];
-                        
-                        
-                    }
-                    else
-                    {
-                        UIButton*check=[UIButton buttonWithType:UIButtonTypeCustom];
-                        
-                        [check  setTag:indexPath.row];
-                        
-                        if([dictSelectedWithdrawal valueForKey:[NSString stringWithFormat:@"%d",indexPath.row]])
-                            
-                        {
-                            [check setImage:[UIImage imageNamed:@"tick.png"] forState:UIControlStateNormal];
-                        }
-                        
-                        else{
-                            [check setImage:[UIImage imageNamed:@"untick.png"] forState:UIControlStateNormal];
-                        }
-                        [check setStyleClass:@"rcheckmarkbutton"];
-                        [check setFrame:CGRectMake(180, 5, 40, 40)];
-                        
-                        [check addTarget:self action:@selector(checkButtonCLicked:) forControlEvents:UIControlEventTouchUpInside];
-                        
-                        [cell.contentView addSubview:check];
-                        
-                    }
+                    [removeBtn  setTag:indexPath.row];
+                    [removeBtn setTintColor:[UIColor whiteColor]];
+                    //[removeBtn setBackgroundColor:[UIColor redColor]];
+                    
+                    [removeBtn setTitle:@"Remove" forState:UIControlStateNormal];
+                    [removeBtn setFrame:CGRectMake(320, 5, 70, 35)];
+                    [removeBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
+                    [removeBtn addTarget:self action:@selector(RemoveFrequency:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    [cell.contentView addSubview:removeBtn];
+                    UIButton*cBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+                    
+                    [cBtn  setTag:indexPath.row];
+                    [cBtn setTintColor:[UIColor whiteColor]];
+                    // [cBtn setBackgroundColor:[UIColor greenColor]];
+                    [cBtn setTitle:@"Cancel" forState:UIControlStateNormal];
+                    
+                    [cBtn setFrame:CGRectMake(395, 5, 70, 35)];
+                    [cBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
+                    [cBtn addTarget:self action:@selector(CancelEdit:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    [cell.contentView addSubview:cBtn];
+                    
+                    [UIView beginAnimations:nil context:nil];
+                    
+                    [UIView setAnimationDelegate:self];
+                    [UIView setAnimationDuration:0.3];
+                    subV.frame=CGRectMake(20, 5, 80, 35);
+                    img.frame=CGRectMake(-40, 5, 40, 40);
+                    [removeBtn setStyleClass:@"rremovebutton"];
+                    [cBtn setStyleClass:@"rcancelbutton"];
+                    [removeBtn setFrame:CGRectMake(125, 5, 70, 35)];
+                    [cBtn setFrame:CGRectMake(200, 5, 70, 35)];
+                    [UIView commitAnimations];
+                    
                     
                 }
                 
-                cell.detailTextLabel.text=@"";
+            }
+            else{
                 
+                cell.textLabel.text=[arrWithrawalOptions objectAtIndex:indexPath.row] ;
+                if (indexPath.row==7) {
+                    
+                    
+                    textMyWithdrawal=[[UITextField alloc]initWithFrame:CGRectMake(70, 10, 70, 30)];
+                    
+                    
+                    
+                    [textMyWithdrawal setPlaceholder:@"Amount"];
+                    
+                    
+                    
+                    textMyWithdrawal.textColor = [UIColor blackColor];
+                    
+                    
+                    
+                    textMyWithdrawal.borderStyle = UITextBorderStyleRoundedRect;
+                    
+                    textMyWithdrawal.keyboardType=UIKeyboardTypeNumberPad ;
+                    
+                    textMyWithdrawal.font = [UIFont systemFontOfSize:15.0];
+                    
+                    
+                    
+                    [textMyWithdrawal setDelegate:self];
+                    
+                    
+                    
+                    textMyWithdrawal.backgroundColor = [UIColor whiteColor];
+                    
+                    
+                    
+                    [cell.contentView addSubview:textMyWithdrawal];
+                    
+                    
+                    
+                    Savebtn=[UIButton buttonWithType:UIButtonTypeCustom];
+                    
+                    
+                    
+                    [Savebtn  setTag:indexPath.row];
+                    
+                    //[Savebtn setBackgroundColor:[UIColor greenColor]];
+                    
+                    [Savebtn setTitle:@"Save" forState:UIControlStateNormal];
+                    
+                    [Savebtn setFrame:CGRectMake(180, 5, 70, 35)];
+                    [Savebtn setStyleClass:@"rsavebutton"];
+                    [Savebtn addTarget:self action:@selector(saveAmtTrigger:) forControlEvents:UIControlEventTouchUpInside];
+                    [cell.contentView addSubview:Savebtn];
+                    
+                    
+                }
+                else
+                {
+                    UIButton*check=[UIButton buttonWithType:UIButtonTypeCustom];
+                    
+                    [check  setTag:indexPath.row];
+                    
+                    if([dictSelectedWithdrawal valueForKey:[NSString stringWithFormat:@"%d",indexPath.row]])
+                        
+                    {
+                        [check setImage:[UIImage imageNamed:@"tick.png"] forState:UIControlStateNormal];
+                    }
+                    
+                    else{
+                        [check setImage:[UIImage imageNamed:@"untick.png"] forState:UIControlStateNormal];
+                    }
+                    [check setStyleClass:@"rcheckmarkbutton"];
+                    [check setFrame:CGRectMake(180, 5, 40, 40)];
+                    
+                    [check addTarget:self action:@selector(checkButtonCLicked:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    [cell.contentView addSubview:check];
+                    
+                }
+                
+            }
+            
+            cell.detailTextLabel.text=@"";
+            
             
             [cell.textLabel setStyleClass:@"rtable_view_cell_textlabel_1"];
             [cell.detailTextLabel setStyleClass:@"rtable_view_cell_detailtext_1"];
@@ -527,14 +531,14 @@
             if ([ArrBankAccountCollection count] > 0) {
                 [cell.contentView addSubview:arrow];
                 NSDictionary *bank = [ArrBankAccountCollection objectAtIndex:0];
-                    if ([ArrBankAccountCollection objectAtIndex:0]&&[[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsVerified"] intValue]==1&& [[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]==1 ) {
+                if ([ArrBankAccountCollection objectAtIndex:0]&&[[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsVerified"] intValue]==1&& [[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]==1 ) {
                     if ([[[ArrBankAccountCollection objectAtIndex:0] valueForKey:@"IsDeleted"] intValue]==0) {
                         [[assist shared]setBankVerified:YES];
                         
                     }
                     else {
                         [[assist shared]setBankVerified:NO];
-                                            }
+                    }
                 }
                 else {
                     [[assist shared]setBankVerified:NO];
@@ -575,7 +579,7 @@
             }
         }else if(indexPath.row == 1){
             if ([ArrBankAccountCollection count] == 2) {
-                  [cell.contentView addSubview:arrow];
+                [cell.contentView addSubview:arrow];
                 NSDictionary *bank = [ArrBankAccountCollection objectAtIndex:1];
                 cell.textLabel.text = [NSString stringWithFormat:@"Account **** %@",[[bank objectForKey:@"BankAcctNumber"] substringFromIndex:[[bank objectForKey:@"BankAcctNumber"] length] -4]];
                 iv.image = [UIImage imageNamed:@"Bank_Icon.png"];
@@ -622,45 +626,45 @@
             }
             else
             {
-                 [[assist shared]setSecondBankVerified:NO];
-               cell.textLabel.text=@"";
+                [[assist shared]setSecondBankVerified:NO];
+                cell.textLabel.text=@"";
                 cell.detailTextLabel.text=@"";
             }
         }else if(indexPath.row == 2){
             cell.textLabel.text=@"";
             cell.detailTextLabel.text=@"";
-//            if ([[[me usr] objectForKey:@"banks"] count] == 2 && [[[me usr] objectForKey:@"cards"] count] > 0) {
-//                [cell.contentView addSubview:arrow];
-//                NSDictionary *card = [[[me usr] objectForKey:@"cards"] objectAtIndex:0];
-//                cell.textLabel.text = [NSString stringWithFormat:@"Card **** %@",[[card objectForKey:@"CardNumber"] substringFromIndex:[[card objectForKey:@"CardNumber"] length] -4]];
-//                iv.image = [UIImage imageNamed:@"CreditCard_Icon.png"];
-//            }else if([[[me usr] objectForKey:@"banks"] count] == 1 && [[[me usr] objectForKey:@"cards"] count] == 2){
-//                [cell.contentView addSubview:arrow];
-//                NSDictionary *card = [[[me usr] objectForKey:@"cards"] objectAtIndex:1];
-//                cell.textLabel.text = [NSString stringWithFormat:@"Card **** %@",[[card objectForKey:@"CardNumber"] substringFromIndex:[[card objectForKey:@"CardNumber"] length] -4]];
-//                iv.image = [UIImage imageNamed:@"CreditCard_Icon.png"];
-//            }else if([[[me usr] objectForKey:@"banks"] count] == 2 && [[[me usr] objectForKey:@"cards"] count] == 0){
-//                //cell.userInteractionEnabled = NO;
-//                cell.textLabel.textColor = [core hexColor:@"adb1b3"];
-//                cell.textLabel.text = @"No Credit Cards";
-//                iv.image = [UIImage imageNamed:@"CreditCard_Icon.png"];
-//            }else{
-//                cell.textLabel.text = @"";
-                // cell.userInteractionEnabled = NO;
-            }
-        }else if(indexPath.row == 3){
-            cell.textLabel.text=@"";
-            cell.detailTextLabel.text=@"";
-//            if ([[[me usr] objectForKey:@"cards"] count] == 2 && [[[me usr] objectForKey:@"banks"] count] == 2){
-//                [cell.contentView addSubview:arrow];
-//                NSDictionary *card = [[[me usr] objectForKey:@"cards"] objectAtIndex:1];
-//                cell.textLabel.text = [NSString stringWithFormat:@"Card **** %@",[[card objectForKey:@"CardNumber"] substringFromIndex:[[card objectForKey:@"CardNumber"] length] -4]];
-//                iv.image = [UIImage imageNamed:@"CreditCard_Icon.png"];
-//            }else{
-//                cell.textLabel.text = @"";
-//                //cell.userInteractionEnabled = NO;
-//            }
-            
+            //            if ([[[me usr] objectForKey:@"banks"] count] == 2 && [[[me usr] objectForKey:@"cards"] count] > 0) {
+            //                [cell.contentView addSubview:arrow];
+            //                NSDictionary *card = [[[me usr] objectForKey:@"cards"] objectAtIndex:0];
+            //                cell.textLabel.text = [NSString stringWithFormat:@"Card **** %@",[[card objectForKey:@"CardNumber"] substringFromIndex:[[card objectForKey:@"CardNumber"] length] -4]];
+            //                iv.image = [UIImage imageNamed:@"CreditCard_Icon.png"];
+            //            }else if([[[me usr] objectForKey:@"banks"] count] == 1 && [[[me usr] objectForKey:@"cards"] count] == 2){
+            //                [cell.contentView addSubview:arrow];
+            //                NSDictionary *card = [[[me usr] objectForKey:@"cards"] objectAtIndex:1];
+            //                cell.textLabel.text = [NSString stringWithFormat:@"Card **** %@",[[card objectForKey:@"CardNumber"] substringFromIndex:[[card objectForKey:@"CardNumber"] length] -4]];
+            //                iv.image = [UIImage imageNamed:@"CreditCard_Icon.png"];
+            //            }else if([[[me usr] objectForKey:@"banks"] count] == 2 && [[[me usr] objectForKey:@"cards"] count] == 0){
+            //                //cell.userInteractionEnabled = NO;
+            //                cell.textLabel.textColor = [core hexColor:@"adb1b3"];
+            //                cell.textLabel.text = @"No Credit Cards";
+            //                iv.image = [UIImage imageNamed:@"CreditCard_Icon.png"];
+            //            }else{
+            //                cell.textLabel.text = @"";
+            // cell.userInteractionEnabled = NO;
+        }
+    }else if(indexPath.row == 3){
+        cell.textLabel.text=@"";
+        cell.detailTextLabel.text=@"";
+        //            if ([[[me usr] objectForKey:@"cards"] count] == 2 && [[[me usr] objectForKey:@"banks"] count] == 2){
+        //                [cell.contentView addSubview:arrow];
+        //                NSDictionary *card = [[[me usr] objectForKey:@"cards"] objectAtIndex:1];
+        //                cell.textLabel.text = [NSString stringWithFormat:@"Card **** %@",[[card objectForKey:@"CardNumber"] substringFromIndex:[[card objectForKey:@"CardNumber"] length] -4]];
+        //                iv.image = [UIImage imageNamed:@"CreditCard_Icon.png"];
+        //            }else{
+        //                cell.textLabel.text = @"";
+        //                //cell.userInteractionEnabled = NO;
+        //            }
+        
         //}
         //cell.textLabel.text=@"";
     }
@@ -686,7 +690,7 @@
                 return;
                 
             }
-
+            
             if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
                 
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
@@ -741,7 +745,7 @@
                 return;
                 
             }
-
+            
             if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
                 
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
@@ -795,62 +799,62 @@
             
         }
         else if(indexPath.row==2){
-//            if ([on_off isOn]&& [SelectedOption isEqualToString:@"Triggers"]) {
-//                
-//                if (isWithdrawalSelected) {
-//                    
-//                    isWithdrawalSelected=NO;
-//                    
-//                    if ([arrWithrawalOptions count]>3) {
-//                        
-//                        for (int i=0; i<countsubRecords; i++) {
-//                            
-//                            [arrWithrawalOptions removeLastObject];
-//                            
-//                        }
-//                    }
-//                    
-//                    if (![dictSelectedWithdrawal valueForKey:SelectedOption]) {
-//                        
-//                        SelectedOption=@"None";
-//                        
-//                    }
-//                }
-//                
-//                else if (!isWithdrawalSelected)
-//                    
-//                {
-//                    isWithdrawalSelected=YES;
-//                    
-//                    temp = [dictSelectedWithdrawal allKeysForObject:SelectedSubOption];
-//                    
-//                    temp2=[dictSelectedWithdrawal allKeysForObject:[temp objectAtIndex:0]];
-//                    
-//                    if ([[temp2 objectAtIndex:0]isEqualToString:@"Triggers"])
-//                        
-//                    {
-//                        countsubRecords=0;
-//                        
-//                        for (NSDictionary*dict in arrAutoWithdrawalT) {
-//                            
-//                            countsubRecords++;
-//                            
-//                            //  [arrWithrawalOptions addObject:[NSString stringWithFormat:@"%@ at %@",[dict valueForKey:@"Name"],[dict valueForKey:@"Time"]]];
-//                            [arrWithrawalOptions addObject:[NSString stringWithFormat:@"At %@",[dict valueForKey:@"Name"]]];
-//                            
-//                        }
-//                        
-//                        [arrWithrawalOptions addObject:@"$"];
-//                        
-//                        countsubRecords++;
-//                    }
-//                    
-//                }
-//                [tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-//                
-//                // [tableView reloadData];
-//                
-//            }
+            //            if ([on_off isOn]&& [SelectedOption isEqualToString:@"Triggers"]) {
+            //
+            //                if (isWithdrawalSelected) {
+            //
+            //                    isWithdrawalSelected=NO;
+            //
+            //                    if ([arrWithrawalOptions count]>3) {
+            //
+            //                        for (int i=0; i<countsubRecords; i++) {
+            //
+            //                            [arrWithrawalOptions removeLastObject];
+            //
+            //                        }
+            //                    }
+            //
+            //                    if (![dictSelectedWithdrawal valueForKey:SelectedOption]) {
+            //
+            //                        SelectedOption=@"None";
+            //
+            //                    }
+            //                }
+            //
+            //                else if (!isWithdrawalSelected)
+            //
+            //                {
+            //                    isWithdrawalSelected=YES;
+            //
+            //                    temp = [dictSelectedWithdrawal allKeysForObject:SelectedSubOption];
+            //
+            //                    temp2=[dictSelectedWithdrawal allKeysForObject:[temp objectAtIndex:0]];
+            //
+            //                    if ([[temp2 objectAtIndex:0]isEqualToString:@"Triggers"])
+            //
+            //                    {
+            //                        countsubRecords=0;
+            //
+            //                        for (NSDictionary*dict in arrAutoWithdrawalT) {
+            //
+            //                            countsubRecords++;
+            //
+            //                            //  [arrWithrawalOptions addObject:[NSString stringWithFormat:@"%@ at %@",[dict valueForKey:@"Name"],[dict valueForKey:@"Time"]]];
+            //                            [arrWithrawalOptions addObject:[NSString stringWithFormat:@"At %@",[dict valueForKey:@"Name"]]];
+            //
+            //                        }
+            //
+            //                        [arrWithrawalOptions addObject:@"$"];
+            //
+            //                        countsubRecords++;
+            //                    }
+            //
+            //                }
+            //                [tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            //
+            //                // [tableView reloadData];
+            //
+            //            }
             
         }
         
@@ -880,7 +884,7 @@
                 [self.slidingViewController resetTopView];
                 BankVerification *bv=[BankVerification new];
                 [nav_ctrl pushViewController:bv animated:YES];
-          }
+            }
             
         }else if(indexPath.row == 2){
             if ([[[me usr] objectForKey:@"banks"] count] == 2 && [[[me usr] objectForKey:@"cards"] count] > 0) {
@@ -1192,6 +1196,7 @@
                         
                     }
                     //isWithdrawalSelected=YES;
+                    At=[NSString stringWithFormat:@"At $%@",[arr objectAtIndex:1]];
                     
                     [dictSelectedWithdrawal removeAllObjects];
                     [dictSelectedWithdrawal setValue:[NSString stringWithFormat:@"At $%@",[arr objectAtIndex:1]] forKey:@"custom"];
@@ -1220,6 +1225,11 @@
                         }
                     }
                 }
+            }
+            else{
+                At=@"";
+                [dictSelectedWithdrawal removeAllObjects];
+                [self.menu reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
             }
             
         }
@@ -1288,8 +1298,8 @@
                         options:kNilOptions
                         error:&error];
         
-        {
-            
+        NSLog(@"%@",dictResponse);
+        if (![SelectedOption isEqualToString:@"Frequency"]) {
             if (isWithdrawalSelected) {
                 
                 isWithdrawalSelected=NO;
@@ -1339,11 +1349,14 @@
                 }
                 
             }
-            [self.menu reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-            
-            // [tableView reloadData];
             
         }
+        
+        [self.menu reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+        // [tableView reloadData];
+        
+        
         if ([[[dictResponse valueForKey:@"SaveFrequencyResult"] valueForKey:@"Result"]isEqualToString:@"Saved Successfully"]) {
             
         }
@@ -1398,7 +1411,7 @@
 }
 -(void)saveAmtTrigger:(id)sender{
     
-   
+    
     if (![textMyWithdrawal.text length]>0) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Enter Amount Between $10-$100" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
@@ -1413,29 +1426,30 @@
         return;
         
     }
-   
-//    if (!dictSelectedWithdrawal) {
-//        
-//        dictSelectedWithdrawal=[[NSMutableDictionary alloc]init];
-//        
-//    }
-//    
-//    isWithdrawalSelected=YES;
-//    
-//    [dictSelectedWithdrawal removeAllObjects];
-//    
-//    [dictSelectedWithdrawal setValue:[NSString stringWithFormat:@"$%@",textMyWithdrawal.text] forKey:[NSString stringWithFormat:@"%d",7]];
-//    
-//    [dictSelectedWithdrawal setValue:[NSString stringWithFormat:@"%d",7] forKey:SelectedOption];
-//    //[dictSelectedWithdrawal setValue:[NSString stringWithFormat:@"%d",8] forKey:SelectedOption];
-//    
     
-   
-    if (dictSelectedWithdrawal!=NULL && ID!=NULL && dictSelectedWithdrawal.count!=0) {
-         [textMyWithdrawal resignFirstResponder];
+    //    if (!dictSelectedWithdrawal) {
+    //
+    //        dictSelectedWithdrawal=[[NSMutableDictionary alloc]init];
+    //
+    //    }
+    //
+    //    isWithdrawalSelected=YES;
+    //
+    //    [dictSelectedWithdrawal removeAllObjects];
+    //
+    //    [dictSelectedWithdrawal setValue:[NSString stringWithFormat:@"$%@",textMyWithdrawal.text] forKey:[NSString stringWithFormat:@"%d",7]];
+    //
+    //    [dictSelectedWithdrawal setValue:[NSString stringWithFormat:@"%d",7] forKey:SelectedOption];
+    //    //[dictSelectedWithdrawal setValue:[NSString stringWithFormat:@"%d",8] forKey:SelectedOption];
+    //
+    
+    
+    if (ID!=NULL && At!=NULL && [ID length]!=0) {
+        [textMyWithdrawal resignFirstResponder];
         [spinner startAnimating];
         [spinner setHidden:NO];
-        
+        ID=@"";
+        At=@"";
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:0.5];
         [UIView setAnimationDelegate:self];
@@ -1458,7 +1472,7 @@
         [alert show];
         return;
     }
-   
+    
     
 }
 - (void)changeSwitch:(UISwitch*)on_off1{
@@ -1579,8 +1593,6 @@
     if (![strTitle isEqualToString:@"Cancel"]) {
         if (!dictSelectedWithdrawal) {
             
-            
-            
             dictSelectedWithdrawal=[[NSMutableDictionary alloc]init];
             
         }
@@ -1621,7 +1633,7 @@
         
         [serveOBJ SaveFrequency:[[arrAutoWithdrawalF objectAtIndex:buttonIndex] valueForKey:@"Id"] type:@"Frequency" frequency:0];
         
-        [self.menu reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        //[self.menu reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
         
     }
     else{
@@ -1635,37 +1647,37 @@
 {
     
     if ([SelectedOption isEqualToString:@"Triggers"]) {
-     
-       if (!dictSelectedWithdrawal) {
-           
-           dictSelectedWithdrawal=[[NSMutableDictionary alloc]init];
-           
-       }
-       
-       isWithdrawalSelected=YES;
-       
-       [dictSelectedWithdrawal removeAllObjects];
-       
-       [dictSelectedWithdrawal setValue:[arrWithrawalOptions objectAtIndex:[sender tag]] forKey:[NSString stringWithFormat:@"%d",[sender tag]]];
-       
-       [dictSelectedWithdrawal setValue:[NSString stringWithFormat:@"%d",[sender tag]] forKey:SelectedOption];
-       
-       //NSLog(@"%@ ddd%@",dictSelectedWithdrawal,arrAutoWithdrawalT);
-       
+        
+        if (!dictSelectedWithdrawal) {
+            
+            dictSelectedWithdrawal=[[NSMutableDictionary alloc]init];
+            
+        }
+        
+        isWithdrawalSelected=YES;
+        
+        [dictSelectedWithdrawal removeAllObjects];
+        
+        [dictSelectedWithdrawal setValue:[arrWithrawalOptions objectAtIndex:[sender tag]] forKey:[NSString stringWithFormat:@"%d",[sender tag]]];
+        
+        [dictSelectedWithdrawal setValue:[NSString stringWithFormat:@"%d",[sender tag]] forKey:SelectedOption];
+        At=[arrWithrawalOptions objectAtIndex:[sender tag]];
+        //NSLog(@"%@ ddd%@",dictSelectedWithdrawal,arrAutoWithdrawalT);
+        
         int tag=[sender tag];
         ID=[[arrAutoWithdrawalT objectAtIndex:tag-3] valueForKey:@"Id"];
-//        float value= [[[[arrAutoWithdrawalT objectAtIndex:tag-3] valueForKey:@"Name"] substringFromIndex:1] floatValue];
-//        [spinner startAnimating];
-//        [spinner setHidden:NO];
-//        
-//        serve*serveOBJ=[serve new];
-//        
-//        serveOBJ.tagName=@"SaveWithdrawal";
-//        
-//        serveOBJ.Delegate=self;
-//        
-//        [serveOBJ SaveFrequency:[[arrAutoWithdrawalT objectAtIndex:tag-3] valueForKey:@"Id"] type:SelectedOption frequency:value];
-//        
+        //        float value= [[[[arrAutoWithdrawalT objectAtIndex:tag-3] valueForKey:@"Name"] substringFromIndex:1] floatValue];
+        //        [spinner startAnimating];
+        //        [spinner setHidden:NO];
+        //
+        //        serve*serveOBJ=[serve new];
+        //
+        //        serveOBJ.tagName=@"SaveWithdrawal";
+        //
+        //        serveOBJ.Delegate=self;
+        //
+        //        [serveOBJ SaveFrequency:[[arrAutoWithdrawalT objectAtIndex:tag-3] valueForKey:@"Id"] type:SelectedOption frequency:value];
+        //
     }
     
     [self.menu reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];

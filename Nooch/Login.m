@@ -52,7 +52,7 @@
     serve *log = [serve new];
     [log setDelegate:self];
     [log setTagName:@"encrypt"];
-    NSLog(@"%@",self.password.text);
+    //nslog(@"%@",self.password.text);
     [log getEncrypt:self.password.text];
     
     
@@ -60,9 +60,9 @@
 
 # pragma mark - CLLocationManager Delegate Methods
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
-    NSLog(@"Error : %@",error);
+    //nslog(@"Error : %@",error);
     if ([error code] == kCLErrorDenied){
-        NSLog(@"Error : %@",error);
+        //nslog(@"Error : %@",error);
     }
 }
 
@@ -240,7 +240,7 @@
 }
 
 -(void)listen:(NSString *)result tagName:(NSString *)tagName{
-    NSLog(@"response %@", result);
+    //nslog(@"response %@", result);
     
     if([tagName isEqualToString:@"ForgotPass"]){
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Check your email for a reset password link." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -252,7 +252,7 @@
     else if ([tagName isEqualToString:@"encrypt"]) {
         NSError *error;
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        NSLog(@"json test %@",loginResult);
+        //nslog(@"json test %@",loginResult);
         self.encrypted_pass = [[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]];
         
         serve *log = [serve new];
@@ -266,7 +266,7 @@
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"firstName"];
         // NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
         NSString *udid=[[UIDevice currentDevice] uniqueDeviceIdentifier];
-        NSLog(@"%@",udid);
+        //nslog(@"%@",udid);
         [[assist shared]setlocationAllowed:YES];
         if ([self.stay_logged_in isOn]) {
             [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:YES lat:lat lon:lon uid:udid];
@@ -276,7 +276,7 @@
         }
         
     }
-    if ([tagName isEqualToString:@"login"])
+    else if ([tagName isEqualToString:@"login"])
     {
         NSError *error;
         
@@ -314,7 +314,7 @@
     }
     
     
-    if([tagName isEqualToString:@"getMemberId"]){
+    else if([tagName isEqualToString:@"getMemberId"]){
         NSError *error;
         
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
@@ -344,7 +344,7 @@
         
         NSError *error;
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        NSLog(@"test: %@",loginResult);
+        //nslog(@"test: %@",loginResult);
         serve *details = [serve new];
         [details setDelegate:self];
         [details setTagName:@"info"];
@@ -355,7 +355,7 @@
         
         NSError *error;
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        NSLog(@"User response: %@",loginResult);
+        //nslog(@"User response: %@",loginResult);
         [self.navigationItem setHidesBackButton:YES];
         [nav_ctrl setNavigationBarHidden:NO];
         [nav_ctrl.navigationItem setLeftBarButtonItem:nil];

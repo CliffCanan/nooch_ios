@@ -10,9 +10,11 @@
 #import "serve.h"
 #import "popSelect.h"
 #import "FPPopoverController.h"
+#import "SWTableViewCell.h"
 BOOL isHistFilter;
 NSString*listType;
-@interface HistoryFlat : UIViewController<UITableViewDataSource,UITableViewDelegate,serveD,FPPopoverControllerDelegate,UISearchBarDelegate>
+@interface HistoryFlat : UIViewController<UITableViewDataSource,UITableViewDelegate,
+serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate>
 {
     NSMutableArray*histArray;
     NSMutableArray*histShowArrayCompleted;

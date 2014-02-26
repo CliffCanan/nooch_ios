@@ -44,7 +44,7 @@
     [popList reloadData];
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{  
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -132,44 +132,44 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (isHistFilter) {
         if (indexPath.row == 0) {
-         listType = @"ALL";
-         }else if(indexPath.row == 1){
-         listType = @"SENT";
-         }else if(indexPath.row == 2){
-         listType = @"RECEIVED";
-         }else if(indexPath.row == 3){
-         listType = @"REQUEST";
-         }else if(indexPath.row == 4){
-         listType = @"DEPOSIT";
-         }else if(indexPath.row == 5){
-         listType = @"WITHDRAW";
-         }else if(indexPath.row == 6){
-             listType = @"DISPUTED";}
+            listType = @"ALL";
+        }else if(indexPath.row == 1){
+            listType = @"SENT";
+        }else if(indexPath.row == 2){
+            listType = @"RECEIVED";
+        }else if(indexPath.row == 3){
+            listType = @"REQUEST";
+        }else if(indexPath.row == 4){
+            listType = @"DEPOSIT";
+        }else if(indexPath.row == 5){
+            listType = @"WITHDRAW";
+        }else if(indexPath.row == 6){
+            listType = @"DISPUTED";}
         else if(indexPath.row == 7){
-        listType = @"CANCEL";
-         }
+            listType = @"CANCEL";
+        }
         isFilterSelected=YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissPopOver" object:nil];
-  return;
+        return;
     }
     if (!memoList) {
         
         /*if (indexPath.row == 0) {
-            filterPick = @"ALL";
-        }else if(indexPath.row == 1){
-            filterPick = @"SENT";
-        }else if(indexPath.row == 2){
-            filterPick = @"RECEIVED";
-        }else if(indexPath.row == 3){
-            filterPick = @"REQUEST";
-        }else if(indexPath.row == 4){
-            filterPick = @"DEPOSIT";
-        }else if(indexPath.row == 5){
-            filterPick = @"WITHDRAW";
-        }else if(indexPath.row == 6){
-            filterPick = @"DISPUTED";
-        }*/
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissPopOver" object:nil];
+         filterPick = @"ALL";
+         }else if(indexPath.row == 1){
+         filterPick = @"SENT";
+         }else if(indexPath.row == 2){
+         filterPick = @"RECEIVED";
+         }else if(indexPath.row == 3){
+         filterPick = @"REQUEST";
+         }else if(indexPath.row == 4){
+         filterPick = @"DEPOSIT";
+         }else if(indexPath.row == 5){
+         filterPick = @"WITHDRAW";
+         }else if(indexPath.row == 6){
+         filterPick = @"DISPUTED";
+         }*/
+        //[[NSNotificationCenter defaultCenter] postNotificationName:@"dismissPopOver" object:nil];
         return;
     }else{
         NSString *selectedImg = [NSString new];
@@ -197,7 +197,7 @@
         [selectedMemo setObject:selectedImg forKey:@"img"];
         [selectedMemo setObject:selectedCat forKey:@"cat"];
         memoList = NO;
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissPopOver" object:self userInfo:selectedMemo];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:@"dismissPopOver" object:self userInfo:selectedMemo];
         return;
     }
 }

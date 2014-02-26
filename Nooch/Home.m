@@ -15,7 +15,7 @@
 #import "ReEnterPin.h"
 #import "ProfileInfo.h"
 #import "NewBank.h"
-
+#import "serve.h"
 #define kButtonType     @"transaction_type"
 #define kButtonTitle    @"button_title"
 #define kButtonColor    @"button_background_color"
@@ -67,7 +67,7 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     self.balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.balance setFrame:CGRectMake(0, 0, 60, 30)];
+    [self.balance setFrame:CGRectMake(0, 0, 80, 30)];
     // [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
     if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
         [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
@@ -111,12 +111,6 @@
     
     [self.view addSubview:top_button]; [self.view addSubview:bot_button];
     
-    /*if (![user objectForKey:@"member_id"]) {
-     Register *reg = [Register new];
-     [self.navigationController pushViewController:reg animated:NO];
-     [self.navigationController.view removeGestureRecognizer:self.slidingViewController.panGesture];
-     }*/
-    
     //29/12
     NSMutableDictionary *loadInfo;
     //if user has autologin set bring up their data, otherwise redirect to the tutorial/login/signup flow
@@ -146,12 +140,11 @@
     }
     
     //if they have required immediately turned on or haven't selected the option yet, redirect them to PIN screen
-    if (![[user objectForKey:@"requiredImmediately"] isEqualToString:@"YES"]) {
-        
+    if (![user objectForKey:@"requiredImmediately"]) {
         ReEnterPin*pin=[ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
         
-    }else if([[user objectForKey:@"requiredImmediately"] isEqualToString:@"YES"]){
+    }else if([[user objectForKey:@"requiredImmediately"] boolValue]){
         ReEnterPin*pin=[ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
         
@@ -191,57 +184,74 @@
         locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
         locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
         [locationManager startUpdatingLocation];
-
+        
     }
-
+    
     
     
 }
 - (void)viewWillAppear:(BOOL)animated
 {
     [self.navigationItem setTitle:@"Nooch"];
-      if (![[assist shared]isPOP]) {
-    UIActivityIndicatorView*act=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    [act setFrame:CGRectMake(14, 5, 20, 20)];
-    [act startAnimating];
-    
-    UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:act];
-    [self.navigationItem setRightBarButtonItem:funds];
-    
-    
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateLoader) userInfo:nil repeats:YES];
-    
-    
-    if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]]) {
-        //push login
-        return;
-    }
-    if (![self.view.subviews containsObject:blankView] && [[assist shared]needsReload]) {
-        blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
-        [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
-        UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
-        [actv startAnimating];
-        [blankView addSubview:actv];
-        [self .view addSubview:blankView];
-        [self.view bringSubviewToFront:blankView];
+    if (![[assist shared]isPOP]) {
+        if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
+            [self.navigationItem setRightBarButtonItem:Nil];
+            if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound) {
+                [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+            }
+            else
+                [self.balance setTitle:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+            UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
+            [self.navigationItem setRightBarButtonItem:funds];
+        }
+        else
+        {
+            UIActivityIndicatorView*act=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+            [act setFrame:CGRectMake(14, 5, 20, 20)];
+            [act startAnimating];
+            
+            UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:act];
+            [self.navigationItem setRightBarButtonItem:funds];
+        }
         
-    }
-    if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
-        serve *serveOBJ=[serve new ];
-        [serveOBJ setTagName:@"sets"];
-        [serveOBJ getSettings];
-    }
-    if ([[assist shared]needsReload]) {
-        [[assist shared]setneedsReload:NO];
-        serve *banks = [serve new];
-        banks.Delegate = self;
-        banks.tagName = @"banks";
-        [banks getBanks];
         
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+        if (timerHome==nil) {
+            timerHome=[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateLoader) userInfo:nil repeats:YES];
+        }
+        
+        
+        
+        if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]]) {
+            //push login
+            return;
+        }
+        if (![self.view.subviews containsObject:blankView] && [[assist shared]needsReload]) {
+            blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
+            [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
+            UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+            [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
+            [actv startAnimating];
+            [blankView addSubview:actv];
+            [self .view addSubview:blankView];
+            [self.view bringSubviewToFront:blankView];
+            
+        }
+        if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
+            serve *serveOBJ=[serve new ];
+            [serveOBJ setTagName:@"sets"];
+            [serveOBJ getSettings];
+        }
+        if ([[assist shared]needsReload]) {
+            [[assist shared]setneedsReload:NO];
+            serve *banks = [serve new];
+            banks.Delegate = self;
+            banks.tagName = @"banks";
+            [banks getBanks];
+            
+        }
     }
-      }
     else
     {
         Register *reg = [Register new];
@@ -258,7 +268,7 @@
 }
 -(void)showFunds
 {
-  
+    
     [self.slidingViewController anchorTopViewTo:ECLeft];
 }
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -289,7 +299,7 @@
         return;
         
     }
-
+    
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
@@ -303,13 +313,13 @@
         return;
     }
     
-     if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-     UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
-     [alert setTag:148];
-     [alert show];
-     return;
-     }
-     
+    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+        [alert setTag:148];
+        [alert show];
+        return;
+    }
+    
     
     if ( ![[[NSUserDefaults standardUserDefaults]
             objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
@@ -403,12 +413,141 @@
     }
     
     
-    
     if ([tagName isEqualToString:@"banks"]) {
+        
+        NSError *error = nil;
+        //bank Data
+        NSMutableArray *bankResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         [blankView removeFromSuperview];
+        
+        //Get Server Date info
+        NSString *urlString = [NSString stringWithFormat:@"%@"@"/%@", @"https://192.203.102.254/NoochService/NoochService.svc", @"GetServerCurrentTime"];
+        [[NSURLCache sharedURLCache] removeAllCachedResponses];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[[NSString stringWithFormat:@"%@",urlString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+        NSHTTPURLResponse* urlResponse = nil;
+        
+        NSData *newData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&error];
+        
+        
+        if (nil == urlResponse ) {
+            if (error)
+            {
+                ServerDate=[NSDate date];
+                
+            }
+        }else{
+            if([newData length] && error == nil ){
+                
+                NSString *responseString = [[NSString alloc] initWithData:newData encoding:NSUTF8StringEncoding];
+                NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+                NSLog(@"%@",[jsonObject valueForKey:@"Result"]);
+                ServerDate=[self dateFromString:[jsonObject valueForKey:@"Result"] ];
+                NSLog(@"%@",ServerDate);
+            }
+        }
+        // NSLog(@"%@",[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
+        if ([bankResult count]>0) {
+            if ([[[bankResult objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[bankResult objectAtIndex:0] valueForKey:@"IsVerified"] intValue]) {
+                
+                
+            }
+            else
+            {
+                NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+                NSMutableDictionary* dictUsers2=[[NSMutableDictionary alloc]init];
+                if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
+                    dictUsers2=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
+                    
+                }
+                NSLog(@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+                NSString*strNotifPlaced;
+                for (id key in dictUsers2) {
+                    if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
+                        strNotifPlaced=[dictUsers2 valueForKey:key];
+                        break;
+                    }
+                }
+                NSLog(@"%@",strNotifPlaced);
+                if ([strNotifPlaced isEqualToString:@"1"]) {
+                    NSLog(@"%@",bankResult);
+                    // NSLog(@"%@",[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
+                    NSString*datestr=[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"];
+                    
+                    
+                    NSDate *addeddate = [self dateFromString:datestr];
+                    
+                    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+                    NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
+                                                                        fromDate:addeddate
+                                                                          toDate:ServerDate
+                                                                         options:0];
+                    
+                    NSLog(@"%ld", (long)[components day]);
+                    if ([components day]>21) {
+                        
+                        //     for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
+                        //     if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
+                        //     [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+                        //     }
+                        //     if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
+                        //     [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+                        //     }
+                        //     if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
+                        //     [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
+                        //     }
+                        //
+                        //     }
+                        //     NSMutableDictionary* dictUsers2=[[NSMutableDictionary alloc]init];
+                        //     if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
+                        //     dictUsers2=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
+                        //
+                        //     }
+                        //     NSLog(@"%@",dictUsers2);
+                        //     for (id key in dictUsers2) {
+                        //     if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
+                        //     [dictUsers2 setValue:@"0" forKey:key];
+                        //     
+                        //     break;
+                        //     }
+                        //     }
+                        //     [defaults setValue:dictUsers2 forKey:@"NotifPlaced2"];
+                        //     [defaults synchronize];
+                        //     
+                        
+                        serve *bank = [serve new];
+                        bank.tagName = @"bDelete";
+                        bank.Delegate = self;
+                        [bank deleteBank:[[bankResult objectAtIndex:0] valueForKey:@"BankAccountId"]];
+                    }
+                    
+                    
+                    
+                }
+            }
+        }
+        
     }
+    
+    
 }
-
+#pragma mark- Date From String
+- (NSDate*) dateFromString:(NSString*)aStr
+{
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    // [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+    //[dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss a"];
+    [dateFormatter setAMSymbol:@"AM"];
+    [dateFormatter setPMSymbol:@"PM"];
+    dateFormatter.dateFormat = @"M/dd/yyyy hh:mm:ss a";
+    //[dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+    // [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:-5]];
+    
+    NSLog(@"%@", aStr);
+    NSDate   *aDate = [dateFormatter dateFromString:aStr];
+    NSLog(@"%@", aDate);
+    return aDate;
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

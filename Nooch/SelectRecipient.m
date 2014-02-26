@@ -44,21 +44,21 @@
         isRecentList=YES;
         
         [self.contacts reloadData];
-
-
+        
+        
     }
     else {
         isUserByLocation=NO;
-         [self.navigationItem setRightBarButtonItem:Nil];
+        [self.navigationItem setRightBarButtonItem:Nil];
         UIButton *location = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [location setStyleId:@"icon_location"];
         [location addTarget:self action:@selector(locationSearch:) forControlEvents:UIControlEventTouchUpInside];
         isRecentList=YES;
         [[assist shared]setRequestMultiple:NO];
-       // isMutipleRequest=NO;
+        // isMutipleRequest=NO;
         UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
         [self.navigationItem setRightBarButtonItem:loc];
-         [self.contacts reloadData];
+        [self.contacts reloadData];
     }
     
 }
@@ -75,21 +75,21 @@
     
     [self.navigationController pushViewController:how_much animated:YES];
     
-    }
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self.navigationItem setTitle:@"Select Recipient"];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-   [[assist shared]setRequestMultiple:NO];
+    [[assist shared]setRequestMultiple:NO];
     isPayBack=NO;
     isEmailEntry=NO;
     isAddRequest=NO;
     isUserByLocation=NO;
     [arrRecipientsForRequest removeAllObjects];
     [[assist shared]setArray:[arrRecipientsForRequest copy]];
-   
+    
     //    //clear Image cache
     //    SDImageCache *imageCache = [SDImageCache sharedImageCache];
     //    [imageCache clearMemory];
@@ -128,6 +128,7 @@
     [spinner startAnimating];
     isRecentList=YES;
     searching=NO;
+    
     serve *recents = [serve new];
     [recents setTagName:@"recents"];
     [recents setDelegate:self];
@@ -190,6 +191,7 @@
     
     //if ([emailAddress rangeOfString:@"@"].location!=NSNotFound && [emailAddress rangeOfString:@"."].location!=NSNotFound) {
     NSLog(@"%@",emailAddress);
+    
     // NSArray*arr=[emailAddress componentsSeparatedByString:@" "];
     //NSLog(@"%@",arr);
     // }
@@ -203,15 +205,15 @@
         
         //if ([emailAddress rangeOfString:@"@"].location!=NSNotFound && [emailAddress rangeOfString:@"."].location!=NSNotFound) {
         NSLog(@"%@",emailAddresslbl);
-        //        if ([emailAddresslbl isKindOfClass:[NSNull class]] || emailAddresslbl==NULL || [emailAddresslbl isEqualToString:@"(null)"]|| emailAddresslbl==nil
-        //) {
-        //
-        //            NSLog(@"%@",emailAddresslbl);
-        //            emailAddresslbl=[self stringBetweenString:@"- " andString:@" " fullText:emailAddress];
-        //             NSLog(@"%@",emailAddresslbl);
-        //        }
-        //
-        // }
+        if ([emailAddresslbl isKindOfClass:[NSNull class]] || emailAddresslbl==NULL || [emailAddresslbl isEqualToString:@"(null)"]|| emailAddresslbl==nil) {
+            
+            [_addressBookController dismissViewControllerAnimated:YES completion:nil];
+            
+            return NO;
+            
+        }
+        
+        
         
         if (CFStringCompare(currentEmailLabel, kABHomeLabel, 0) == kCFCompareEqualTo) {
             [contactInfoDict setObject:(__bridge NSString *)currentEmailValue forKey:@"homeEmail"];
@@ -250,28 +252,30 @@
     
     // Add the dictionary to the array.
     // [_arrContactsData addObject:contactInfoDict];
-    isphoneBook=YES;
-    if (![[contactInfoDict valueForKey:@"homeEmail"] isEqualToString:@""]) {
-        emailphoneBook= [contactInfoDict  valueForKey:@"homeEmail"];
-        [self getMemberIdByUsingUserNameFromPhoneBook];
-    }
-    else if(![[contactInfoDict valueForKey:@"homeEmail"] isEqualToString:@""])
-    {
-        emailphoneBook= [contactInfoDict valueForKey:@"workEmail"];
-        [self getMemberIdByUsingUserNameFromPhoneBook];
-    }
-    else
-    {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Email ID is not available." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-        [alert show];
-        
-    }
     NSLog(@"%@",contactInfoDict );
     // Reload the table view data.
     // [self.tableView reloadData];
     
     // Dismiss the address book view controller.
-    [_addressBookController dismissViewControllerAnimated:YES completion:nil];
+    [_addressBookController dismissViewControllerAnimated:YES completion:^{
+        isphoneBook=YES;
+        if (![[contactInfoDict valueForKey:@"homeEmail"] isEqualToString:@""]) {
+            emailphoneBook= [contactInfoDict  valueForKey:@"homeEmail"];
+            [self getMemberIdByUsingUserNameFromPhoneBook];
+        }
+        else if(![[contactInfoDict valueForKey:@"homeEmail"] isEqualToString:@""])
+        {
+            emailphoneBook= [contactInfoDict valueForKey:@"workEmail"];
+            [self getMemberIdByUsingUserNameFromPhoneBook];
+        }
+        else
+        {
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Email ID is not available." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            [alert show];
+            
+        }
+        
+    }];
     
     return NO;
 }
@@ -327,7 +331,7 @@
 
 #pragma mark-Location Search
 -(void)locationSearch:(id)sender{
-     isUserByLocation=YES;
+    isUserByLocation=YES;
     userlocation*loc=[userlocation new];
     [self.navigationController pushViewController:loc animated:YES];
 }
@@ -493,17 +497,17 @@
         [self performSelector:@selector(loadDelay) withObject:Nil afterDelay:2.0];
         
     }
-   
+    
     
     else if ([tagName isEqualToString:@"recents"]) {
         [spinner stopAnimating];
         [spinner setHidden:YES];
-         NSError* error;
+        NSError* error;
         self.recents = [NSJSONSerialization
                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
-       // NSLog(@"%@",self.recents);
+        // NSLog(@"%@",self.recents);
         if ([self.recents count]>0) {
             [self.contacts setHidden:NO];
             [self.contacts reloadData];
@@ -528,7 +532,7 @@
     }
     else if([tagName isEqualToString:@"emailCheck"])
     {
-         NSError* error;
+        NSError* error;
         NSMutableDictionary *dictResult = [NSJSONSerialization
                                            JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                            options:kNilOptions
@@ -563,7 +567,7 @@
     }
     else if([tagName isEqualToString:@"getMemberDetails"])
     {
-         NSError* error;
+        NSError* error;
         [spinner stopAnimating];
         [spinner setHidden:YES];
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
@@ -715,11 +719,11 @@
             }
             else
                 cell.accessoryType=UITableViewCellAccessoryNone;
-  
-        
+            
+            
         }
         else
-         cell.accessoryType=UITableViewCellAccessoryNone;
+            cell.accessoryType=UITableViewCellAccessoryNone;
     }
     else if(emailEntry){
         //Email
@@ -743,19 +747,19 @@
 {
     
     if ([[assist shared] isRequestMultiple]) {
-         NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];
+        NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];
         
         arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
         NSLog(@"%@",arrRecipientsForRequest);
         if ([arrRecipientsForRequest containsObject:receiver]) {
             [arrRecipientsForRequest removeObject:receiver];
-             [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
+            [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
         }
         else{
-        [arrRecipientsForRequest addObject:receiver];
-        [[assist shared]setArray:[arrRecipientsForRequest copy]];
+            [arrRecipientsForRequest addObject:receiver];
+            [[assist shared]setArray:[arrRecipientsForRequest copy]];
         }
-       [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         [tableView reloadData];
         return;
     }
@@ -764,13 +768,23 @@
         return;
     }
     if (searching) {
-        NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];
+        // histSearch = NO;
+        searching = NO;
+        emailEntry=NO;
+        isRecentList=YES;
+        [search resignFirstResponder];
+        [search setText:@""];
+        
+        [search setShowsCancelButton:NO];
+        
+        
+        NSDictionary *receiver =  [arrSearchedRecords objectAtIndex:indexPath.row];
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
         
         [self.navigationController pushViewController:how_much animated:YES];
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        
+        [self.contacts reloadData];
     }
     else{
         NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];

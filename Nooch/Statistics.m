@@ -257,11 +257,11 @@
             }
             // [statistic setText:@"7"];
         }
+        //        else if (indexPath.row == 4) {
+        //            [title setText:@"$ Earned from Invites"];
+        //            //[statistic setText:@"$ 25.00"];
+        //        }
         else if (indexPath.row == 4) {
-            [title setText:@"$ Earned from Invites"];
-            //[statistic setText:@"$ 25.00"];
-        }
-        else if (indexPath.row == 5) {
             if ([dictAllStats valueForKey:@"Total_Posts_To_TW"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Posts_To_TW"]  valueForKey:@"Result"]];
             }
@@ -271,7 +271,7 @@
             [title setText:@"Posts to Twitter"];
             // [statistic setText:@"0"];
         }
-        else if (indexPath.row == 6) {
+        else if (indexPath.row == 5) {
             if ([dictAllStats valueForKey:@"Total_Posts_To_FB"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Posts_To_FB"]  valueForKey:@"Result"]];
             }
@@ -310,7 +310,7 @@
             if ([[[dictAllStats valueForKey:@"Total_no_of_transfer_Received"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
             }
-           
+            
         }
         else if (indexPath.row == 3) {
             [title setText:@"$ Amount Sent"];
@@ -345,7 +345,7 @@
             if ([[[dictAllStats valueForKey:@"Largest_received_transfer"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
             }
-           
+            
         }
     } else if (self.selected == 2) { //donations
         
@@ -364,12 +364,12 @@
             if ([[[dictAllStats valueForKey:@"Total_Donations_Count"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
             }
-           
+            
         }
         else if (indexPath.row == 2) {
             [title setText:@"Causes Donated to"];
             [statistic setStyleClass:@"stats_table_right_lable1"];
-            [statistic setText:[[dictAllStats valueForKey:@"DonatedTo"]  valueForKey:@"Result"]];
+            [statistic setText:[[[dictAllStats valueForKey:@"DonatedTo"]  valueForKey:@"Result"] capitalizedString]];
             if ([[[dictAllStats valueForKey:@"DonatedTo"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
             }
@@ -572,8 +572,8 @@
         serveOBJ.tagName=@"Total_$_Donated";
         
         [serveOBJ GetMemberStats:@"Total_$_Donated"];
-       // [blankView removeFromSuperview];
-       // [self.stats reloadData];
+        // [blankView removeFromSuperview];
+        // [self.stats reloadData];
     }
     else if ([tagName isEqualToString:@"Total_$_Donated"]) {
         serve*serveOBJ=[serve new];

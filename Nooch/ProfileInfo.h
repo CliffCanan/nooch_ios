@@ -11,7 +11,7 @@
 #import "Decryption.h"
 #import "GetEncryptionValue.h"
 BOOL isProfileOpenFromSideBar;
-@interface ProfileInfo : UIViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,GetEncryptionValueDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate>
+@interface ProfileInfo : UIViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate>
 {
     int down;
     UIActivityIndicatorView*spinner;
