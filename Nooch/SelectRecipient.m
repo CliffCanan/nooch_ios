@@ -58,7 +58,20 @@
         // isMutipleRequest=NO;
         UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
         [self.navigationItem setRightBarButtonItem:loc];
-        [self.contacts reloadData];
+        isRecentList=YES;
+        searching=NO;
+        emailEntry=NO;
+        isphoneBook=NO;
+        search.text=@"";
+        [search setShowsCancelButton:NO];
+        [search resignFirstResponder];
+        
+        serve *recents = [serve new];
+        [recents setTagName:@"recents"];
+        [recents setDelegate:self];
+        [recents getRecents];
+
+        //[self.contacts reloadData];
     }
     
 }
@@ -127,14 +140,7 @@
     [self.view addSubview:spinner];
     spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
     [spinner startAnimating];
-    isRecentList=YES;
-    searching=NO;
-    
-    serve *recents = [serve new];
-    [recents setTagName:@"recents"];
-    [recents setDelegate:self];
-    [recents getRecents];
-}
+   }
 -(void)phonebook:(id)sender
 {
     _addressBookController = [[ABPeoplePickerNavigationController alloc] init];

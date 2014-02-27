@@ -351,11 +351,8 @@
 
 - (void) confirm_send
 {
-    
-    NSLog(@"%f",[[[self.amount text] substringFromIndex:1] doubleValue]);
-    if ([[[self.amount text] substringFromIndex:1] doubleValue] == 0)
-        
-        if ([self.amnt floatValue] == 0)
+
+    if ([self.amnt floatValue] == 0)
             
         {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!" message:@"Minimum amount that can be transferred is any amount." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];

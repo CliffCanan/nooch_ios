@@ -1119,28 +1119,33 @@
             
             [[NSUserDefaults standardUserDefaults]
              setObject:@"1" forKey:@"IsBankAvailable"];
+            ArrBankAccountCollection=[[NSMutableArray alloc]init];
+            ArrBankAccountCollection=[arr mutableCopy];
+            
+            
+            [self.menu reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [spinner startAnimating];
+            [spinner setHidden:NO];
+            
+            serve*serveOBJ=[serve new];
+            
+            serveOBJ.tagName=@"withdrawOptions";
+            
+            [serveOBJ GetAllWithdrawalFrequency];
+            
+            serveOBJ.Delegate=self;
         }
         else
         {
             [[NSUserDefaults standardUserDefaults]
              setObject:@"0" forKey:@"IsBankAvailable"];
+            serve*serveOBJ=[serve new];
+            [serveOBJ setDelegate:self];
+            serveOBJ.tagName=@"AutoWithdrawalCancel";
+            [serveOBJ SaveFrequency:@"" type:@"" frequency:0];
             
         }
-        ArrBankAccountCollection=[[NSMutableArray alloc]init];
-        ArrBankAccountCollection=[arr mutableCopy];
         
-        
-        [self.menu reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [spinner startAnimating];
-        [spinner setHidden:NO];
-        
-        serve*serveOBJ=[serve new];
-        
-        serveOBJ.tagName=@"withdrawOptions";
-        
-        [serveOBJ GetAllWithdrawalFrequency];
-        
-        serveOBJ.Delegate=self;
     }
     if ([tagName isEqualToString:@"selectedWithdrawal"]) {
         
@@ -1285,6 +1290,7 @@
     {
         [spinner stopAnimating];
         [spinner setHidden:YES];
+        [self.menu reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     else if ([tagName isEqualToString:@"SaveWithdrawal"])
         
