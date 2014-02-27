@@ -14,6 +14,7 @@
 #import "ReEnterPin.h"
 #import "ProfileInfo.h"
 #import "ECSlidingViewController.h"
+#import "METoast.h"
 @implementation AppDelegate
 
 static NSString *const kTrackingId = @"UA-36976317-2";
@@ -213,12 +214,25 @@ void exceptionHandler(NSException *exception){
 }
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
     NSLog(@"userInfo%@", userInfo);
+    UIApplicationState state = [application applicationState];
+    if (state == UIApplicationStateActive) {
+        
+        NSString *message = [[userInfo valueForKey:@"aps"] valueForKey:@"alert"];
+        [METoast resetToastAttribute];
+        [METoast toastWithMessage:message];
+    }
+    else{
     [[UAPush shared] handleNotification:userInfo
                        applicationState:application.applicationState];
     // Reset the badge if you are using that functionality
-    [[UAPush shared] resetBadge]; // zero badge after push received
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    
     [[UAPush shared] setBadgeNumber:0];
+    [[UAPush shared] resetBadge];
+    }// zero badge after push received
+    NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
+    
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[UIApplication sharedApplication] applicationIconBadgeNumber]+1];
+    
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url

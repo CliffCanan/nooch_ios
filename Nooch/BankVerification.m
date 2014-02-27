@@ -129,8 +129,8 @@
     
     [self.micro1 resignFirstResponder];
     [self.micro2 resignFirstResponder];
-    NSString *amountOne=[NSString stringWithFormat:@".%@", self.micro1.text];
-    NSString *amountTwo=[NSString stringWithFormat:@".%@", self.micro2.text];
+    NSString *amountOne=[NSString stringWithFormat:@"0.%@", self.micro1.text];
+    NSString *amountTwo=[NSString stringWithFormat:@"0.%@", self.micro2.text];
     //    if((([amountOne intValue] < 100) && ([amountOne intValue] > 0)) && (([amountTwo intValue] < 100) && ([amountTwo intValue] > 0)))
     //    {
     verifyAttempts++;

@@ -264,6 +264,7 @@
 		84C3EF18187D0E82004687F6 /* mapBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C3EF17187D0E82004687F6 /* mapBack.png */; };
 		84C3EF1B187D101E004687F6 /* ReEnterPin.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C3EF1A187D101E004687F6 /* ReEnterPin.m */; };
 		84C3EF1D187D74C6004687F6 /* whitebg.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C3EF1C187D74C6004687F6 /* whitebg.png */; };
+		84D8794218BF3ED200A60A38 /* METoast.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D8794118BF3ED200A60A38 /* METoast.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -691,6 +692,8 @@
 		84C3EF19187D101E004687F6 /* ReEnterPin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReEnterPin.h; sourceTree = "<group>"; };
 		84C3EF1A187D101E004687F6 /* ReEnterPin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReEnterPin.m; sourceTree = "<group>"; };
 		84C3EF1C187D74C6004687F6 /* whitebg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whitebg.png; sourceTree = "<group>"; };
+		84D8794018BF3ED200A60A38 /* METoast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = METoast.h; sourceTree = "<group>"; };
+		84D8794118BF3ED200A60A38 /* METoast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = METoast.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1074,6 +1077,8 @@
 		16E4B1C0187054A80099D075 /* venturepact  */ = {
 			isa = PBXGroup;
 			children = (
+				84D8794018BF3ED200A60A38 /* METoast.h */,
+				84D8794118BF3ED200A60A38 /* METoast.m */,
 				849F6E8D18AB6D7F0016CD89 /* backbtn.png */,
 				84C3EF17187D0E82004687F6 /* mapBack.png */,
 				8420B395187AC4BF00A77E2D /* Black-pin.png */,
@@ -1792,6 +1797,7 @@
 				16E4B1B0187053F20099D075 /* NSData+GIF.m in Sources */,
 				84BD98721877F6E9008B6131 /* userlocation.m in Sources */,
 				16E4B1B9187053F20099D075 /* UIImage+GIF.m in Sources */,
+				84D8794218BF3ED200A60A38 /* METoast.m in Sources */,
 				0179E9FC17F36C4C0027526C /* Helpers.m in Sources */,
 				01085FFF1803490500A31F63 /* CharityDetails.m in Sources */,
 				16E4B1BD187053F20099D075 /* MKAnnotationView+WebCache.m in Sources */,

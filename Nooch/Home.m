@@ -20,7 +20,7 @@
 #define kButtonTitle    @"button_title"
 #define kButtonColor    @"button_background_color"
 
-
+NSMutableURLRequest *request;
 @interface Home ()
 @property(nonatomic,strong) NSArray *transaction_types;
 @property(nonatomic,strong) UIButton *balance;
@@ -411,9 +411,13 @@
         me = [core new];
         return;
     }
-    
+    if ([tagName isEqualToString:@"bDelete"]) {
+        
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your Bank Account was not verified for 21 days.\nNooch has deleted your bank Account." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+    }
 
-     if ([tagName isEqualToString:@"banks"]) {
+     else if ([tagName isEqualToString:@"banks"]) {
          
          NSError *error = nil;
          //bank Data
@@ -423,7 +427,7 @@
          //Get Server Date info
           NSString *urlString = [NSString stringWithFormat:@"%@"@"/%@", @"https://192.203.102.254/NoochService/NoochService.svc", @"GetServerCurrentTime"];
         [[NSURLCache sharedURLCache] removeAllCachedResponses];
-         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[[NSString stringWithFormat:@"%@",urlString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+        request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[[NSString stringWithFormat:@"%@",urlString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
                   NSHTTPURLResponse* urlResponse = nil;
         
          NSData *newData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&error];
@@ -436,14 +440,14 @@
                 
             }
         }else{
-                if([newData length] && error == nil ){
+            
                     
                NSString *responseString = [[NSString alloc] initWithData:newData encoding:NSUTF8StringEncoding];
                  NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
                     NSLog(@"%@",[jsonObject valueForKey:@"Result"]);
                    ServerDate=[self dateFromString:[jsonObject valueForKey:@"Result"] ];
                     NSLog(@"%@",ServerDate);
-                }
+            
         }
      // NSLog(@"%@",[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
      if ([bankResult count]>0) {
@@ -453,26 +457,9 @@
      }
      else
      {
-    // NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-//     NSMutableDictionary* dictUsers2=[[NSMutableDictionary alloc]init];
-//     if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
-//     dictUsers2=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
-//     
-//     }
-//     NSLog(@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
-//     NSString*strNotifPlaced;
-//     for (id key in dictUsers2) {
-//     if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
-//     strNotifPlaced=[dictUsers2 valueForKey:key];
-//     break;
-//     }
-//     }
-//     NSLog(@"%@",strNotifPlaced);
-//     if ([strNotifPlaced isEqualToString:@"1"]) {
-//     NSLog(@"%@",bankResult);
-    // NSLog(@"%@",[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
+    
     NSString*datestr=[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"];
-     
+         NSLog(@"%@",datestr);
      
      NSDate *addeddate = [self dateFromString:datestr];
      
@@ -485,34 +472,6 @@
      NSLog(@"%ld", (long)[components day]);
      if ([components day]>21) {
      
-//     for (UILocalNotification *localnoti in [[UIApplication sharedApplication] scheduledLocalNotifications] ) {
-//     if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank1"]) {
-//     [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-//     }
-//     if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank2"]) {
-//     [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-//     }
-//     if ([[localnoti.userInfo valueForKey:@"notificationId"]isEqualToString:@"Bank3"]) {
-//     [[UIApplication sharedApplication]cancelLocalNotification:localnoti];
-//     }
-//     
-//     }
-//     NSMutableDictionary* dictUsers2=[[NSMutableDictionary alloc]init];
-//     if (![[defaults objectForKey:@"NotifPlaced2"]isKindOfClass:[NSNull class]]&& [defaults objectForKey:@"NotifPlaced2"]!=NULL) {
-//     dictUsers2=[[defaults objectForKey:@"NotifPlaced2"] mutableCopy];
-//     
-//     }
-//     NSLog(@"%@",dictUsers2);
-//     for (id key in dictUsers2) {
-//     if ([key isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]) {
-//     [dictUsers2 setValue:@"0" forKey:key];
-//     
-//     break;
-//     }
-//     }
-//     [defaults setValue:dictUsers2 forKey:@"NotifPlaced2"];
-//     [defaults synchronize];
-//     
      
      serve *bank = [serve new];
      bank.tagName = @"bDelete";
@@ -522,8 +481,7 @@
      }}
      
      }
-
-   
+ 
 }
 
 #pragma mark- Date From String
@@ -531,13 +489,12 @@
 {
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    // [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
-    //[dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss a"];
+     [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+   
     [dateFormatter setAMSymbol:@"AM"];
     [dateFormatter setPMSymbol:@"PM"];
-    dateFormatter.dateFormat = @"M/dd/yyyy hh:mm:ss a";
-    //[dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
-    // [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:-5]];
+    dateFormatter.dateFormat = @"MM/dd/yyyy hh:mm:ss a";
+    
     
     NSLog(@"%@", aStr);
     NSDate   *aDate = [dateFormatter dateFromString:aStr];

@@ -498,7 +498,7 @@
                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
-        // NSLog(@"%@",self.recents);
+         NSLog(@"%@",self.recents);
         if ([self.recents count]>0) {
             [self.contacts setHidden:NO];
             [self.contacts reloadData];
