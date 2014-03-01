@@ -172,7 +172,8 @@
     [exportHistory addTarget:self action:@selector(ExportHistory:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:exportHistory];
     [self.view bringSubviewToFront:exportHistory];
-    
+    // ROw count for scrolling
+    countRows=0;
 }
 
 -(void)sideright:(id)sender
@@ -637,6 +638,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         [imageCache clearMemory];
         [imageCache clearDisk];
         [imageCache cleanDisk];
+       
+        countRows=0;
         [self loadHist:listType index:index len:20 subType:subTypestr];
     }
     else
@@ -648,6 +651,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+    [spinner setHidden:NO];
     [self.view addSubview:spinner];
     [spinner startAnimating];
     
@@ -668,7 +672,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
         self.completed_selected = YES;
-        
+        index=1;
+        countRows=0;
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
     }
     else
@@ -677,6 +682,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         self.completed_selected = NO;
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
+         index=1;
+          countRows=0;
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
     }
     [self.list removeFromSuperview];
@@ -731,6 +738,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     }
     return 0;
 }
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
+  }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellIdentifier = @"Cell";
@@ -857,6 +866,11 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                     }
                     
+                    else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL){
+                    [amount setStyleClass:@"history_transferamount_pos"];
+                    [indicator setStyleClass:@"history_sidecolor_pos"];
+                    [amount setText:[NSString stringWithFormat:@"+$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                    }
                     [cell.contentView addSubview:amount];
                     [cell.contentView addSubview:indicator];
                     UILabel *date = [UILabel new];
@@ -864,25 +878,26 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
 
                     //Updated Balance after Transaction
                     UILabel *updated_balance = [UILabel new];
-                    if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]) {
-                        [updated_balance setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"] floatValue]]];
-                    }
-                    else
-                    {
+                    //if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]) {
+                    //    [updated_balance setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"] floatValue]]];
+                    //}
+                    //else
+                   // {
                         
-                        if (![[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]&& ![[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-                            if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]]) {
-                                if(![[dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"]isKindOfClass:[NSNull class]]&& [dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"]!=NULL){
-                                    [updated_balance setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"] floatValue]]];
-                                    
-                                }
-                                else{
-                                    [updated_balance setText:@""];
-                                }
-
+                    if (![[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]&& ![[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
+                        if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
+                        {
+                            if(![[dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"]isKindOfClass:[NSNull class]]&& [dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"]!=NULL){
+                                [updated_balance setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"SenderUpdatedBalanceAfterTransaction"] floatValue]]];
+                                
                             }
-                            else
-                            {
+                            else{
+                                [updated_balance setText:@""];
+                            }
+                            
+                        }
+                        else
+                        {
                             if(![[dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"]isKindOfClass:[NSNull class]]&& [dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"]!=NULL){
                                 [updated_balance setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"] floatValue]]];
                                 
@@ -891,19 +906,20 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                 
                                 [updated_balance setText:@""];
                             }
-
-                            }
-
-                            
-                            [updated_balance setStyleClass:@"history_updatedbalance"];
-                            [cell.contentView addSubview:updated_balance];
                         }
-                        else {
-                            [updated_balance setStyleClass:@"history_RequestStatus"];
-                            [updated_balance setText:[NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"TransactionStatus"]]];
-                            [cell.contentView addSubview:updated_balance];
-                        }
+                        
+                        [updated_balance setStyleClass:@"history_updatedbalance"];
+                        [cell.contentView addSubview:updated_balance];
+                        
                     }
+                    else {
+                        [updated_balance setStyleClass:@"history_updatedbalance"];
+                        
+                        [updated_balance setText:[NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"TransactionStatus"]]];
+                        [cell.contentView addSubview:updated_balance];
+                        
+                    }
+                //}
                     
                     
                     NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
@@ -1087,6 +1103,10 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         [updated_balance setText:[NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"TransactionStatus"]]];
                         [cell.contentView addSubview:updated_balance];
                     }
+                    else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL){
+                        [pic setImage:[UIImage imageNamed:@"RoundLoading"]];
+                         [name setText:[NSString stringWithFormat:@"You Invited %@",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
+                    }
                     [cell.contentView addSubview:name];
                     
                 }
@@ -1110,7 +1130,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         }
         if ([histShowArrayCompleted count]>indexPath.row) {
             NSDictionary*dictRecord=[histShowArrayCompleted objectAtIndex:indexPath.row];
-            
+            NSLog(@"%@",dictRecord);
             if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]|| [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]
                 ||[[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] ) {
 
@@ -1166,7 +1186,12 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     [indicator setStyleClass:@"history_sidecolor_neg"];
                     [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                 }
-                
+                else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL){
+                    [amount setStyleClass:@"history_transferamount_pos"];
+                    [indicator setStyleClass:@"history_sidecolor_pos"];
+                    [amount setText:[NSString stringWithFormat:@"+$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                   
+                }
                 [cell.contentView addSubview:amount];
                 [cell.contentView addSubview:indicator];
                 UILabel *date = [UILabel new];
@@ -1175,10 +1200,10 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 ////nslog(@"%@",[dictRecord valueForKey:@"MemberId"]);
                 //Updated Balance after Transaction
                 UILabel *updated_balance = [UILabel new];
-                if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"])
-                    [updated_balance setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"] floatValue]]];
-                else
-                {
+                //if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"])
+                 //   [updated_balance setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"] floatValue]]];
+                //else
+                //{
                     if (![[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]&& ![[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
                         if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
                         {
@@ -1214,7 +1239,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         [cell.contentView addSubview:updated_balance];
                         
                     }
-                }
+              //  }
                 
                 NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                 
@@ -1368,7 +1393,11 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                     
                 }
-                
+                else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL){
+                    
+                    [pic setImage:[UIImage imageNamed:@"RoundLoading"]];
+                    [name setText:[NSString stringWithFormat:@"You Invited %@",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
+                }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]&& [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]){
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"RecepientId"]]) {
                         [name setText:[NSString stringWithFormat:@"You Requested of %@",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
@@ -1415,14 +1444,6 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 else
                     [name setText:@""];
                 [cell.contentView addSubview:name];            }
-            else if(isStart==YES)
-            {
-                
-                UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-                activityIndicator.center = CGPointMake(cell.contentView.frame.size.width / 2, cell.contentView.frame.size.height / 2);
-                [activityIndicator startAnimating];
-                [cell.contentView addSubview:activityIndicator];
-            }
             else
             {
                 if (isSearch) {
@@ -1436,6 +1457,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 }
                 else
                 {
+                    if (indexPath.row!=0) {
                     UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
                     activityIndicator.center = CGPointMake(cell.contentView.frame.size.width / 2, cell.contentView.frame.size.height / 2);
                     [activityIndicator startAnimating];
@@ -1443,6 +1465,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     ishistLoading=YES;
                     index++;
                     [self loadHist:listType index:index len:20 subType:subTypestr];
+                    }
                 }
             }
         }
@@ -1812,14 +1835,17 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 }
                 else
                 {
-                    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-                    activityIndicator.center = CGPointMake(cell.contentView.frame.size.width / 2, cell.contentView.frame.size.height / 2);
-                    [activityIndicator startAnimating];
-                    [cell.contentView addSubview:activityIndicator];
-                    ishistLoading=YES;
-                    
-                    index++;
-                    [self loadHist:listType index:index len:20 subType:subTypestr];
+                    if (indexPath.row!=0) {
+                        UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                        activityIndicator.center = CGPointMake(cell.contentView.frame.size.width / 2, cell.contentView.frame.size.height / 2);
+                        [activityIndicator startAnimating];
+                        [cell.contentView addSubview:activityIndicator];
+                        ishistLoading=YES;
+                        
+                        index++;
+                        [self loadHist:listType index:index len:20 subType:subTypestr];
+                    }
+                   
                 }
             }
         }
@@ -2000,7 +2026,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         [imageCache clearMemory];
         [imageCache clearDisk];
         [imageCache cleanDisk];
-        
+         countRows=0;
         [self loadSearchByName];
         
     }
@@ -2045,8 +2071,10 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     listType=@"ALL";
     isLocalSearch=NO;
     serve*serveOBJ=[serve new];
+   
     serveOBJ.tagName=@"search";
     [serveOBJ setDelegate:self];
+    
     [serveOBJ histMoreSerachbyName:listType sPos:index len:20 name:SearchStirng subType:subTypestr];
 }
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
@@ -2171,8 +2199,16 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
         [self.list setStyleId:@"history"]; [self.list setRowHeight:70];
         [self.list setDataSource:self]; [self.list setDelegate:self]; [self.list setSectionHeaderHeight:0];
-        [self.view addSubview:self.list]; [self.list reloadData];
-        
+        [self.view addSubview:self.list];
+        [self.list reloadData];
+         if ([subTypestr isEqualToString:@"Pending"]) {
+             [self.list scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:countRows inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+         countRows=[histShowArrayPending count];
+         }
+         else{
+            [self.list scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:countRows inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        countRows=[histShowArrayCompleted count];
+         }
         [self.view bringSubviewToFront:exportHistory];
         
         //[self.list scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.list numberOfRowsInSection:0]-4 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
@@ -2213,6 +2249,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         self.completed_selected = NO;
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
+        index=1;
+        countRows=0;
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
         
         [self.list removeFromSuperview];
@@ -2230,6 +2268,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         self.completed_selected = NO;
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
+        index=1;
+        countRows=0;
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
         
         [self.list removeFromSuperview];

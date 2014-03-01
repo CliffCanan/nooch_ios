@@ -61,7 +61,7 @@
         isRecentList=YES;
         searching=NO;
         emailEntry=NO;
-        isphoneBook=NO;
+        //isphoneBook=NO;
         search.text=@"";
         [search setShowsCancelButton:NO];
         [search resignFirstResponder];
@@ -241,7 +241,7 @@
 
     isphoneBook=YES;
     if (![[contactInfoDict valueForKey:@"homeEmail"] isEqualToString:@""]) {
-        search.text=[contactInfoDict  valueForKey:@"homeEmail"];
+         search.text=[contactInfoDict  valueForKey:@"homeEmail"];
          [search setShowsCancelButton:YES];
         [search becomeFirstResponder];
 
@@ -259,6 +259,7 @@
     }
     else
     {
+        isphoneBook=NO;
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Email ID is not available." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         

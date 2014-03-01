@@ -16,6 +16,7 @@ NSString*listType;
 @interface HistoryFlat : UIViewController<UITableViewDataSource,UITableViewDelegate,
 serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate>
 {
+    int countRows;
     NSMutableArray*histArray;
     NSMutableArray*histShowArrayCompleted;
     NSMutableArray*histShowArrayPending;

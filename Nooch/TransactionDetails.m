@@ -82,7 +82,10 @@
     else if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"]){
         [user_picture setImage:[UIImage imageNamed:@"Icon.png"]];
     }
-
+   else if([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"])
+         {
+             [user_picture setImage:[UIImage imageNamed:@"RoundLoading"]];
+         }
     
     else    {
         [user_picture setImageWithURL:[NSURL URLWithString:[self.trans objectForKey:@"Photo"]]
@@ -186,9 +189,10 @@
          [other_party setText:@"Nooch"];
          [other_party setStyleClass:@"details_othername"];
      }
-    else
+     else{
         [other_party setText:[[self.trans objectForKey:@"Name"] capitalizedString]];
     [other_party setStyleClass:@"details_othername"];
+     }
     [self.view addSubview:other_party];
     
     

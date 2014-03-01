@@ -630,7 +630,7 @@
                 cell.textLabel.text=@"";
                 cell.detailTextLabel.text=@"";
             }
-        }else if(indexPath.row == 2){
+        }else {
             cell.textLabel.text=@"";
             cell.detailTextLabel.text=@"";
             //            if ([[[me usr] objectForKey:@"banks"] count] == 2 && [[[me usr] objectForKey:@"cards"] count] > 0) {
@@ -652,22 +652,7 @@
             //                cell.textLabel.text = @"";
             // cell.userInteractionEnabled = NO;
         }
-    }else if(indexPath.row == 3){
-        cell.textLabel.text=@"";
-        cell.detailTextLabel.text=@"";
-        //            if ([[[me usr] objectForKey:@"cards"] count] == 2 && [[[me usr] objectForKey:@"banks"] count] == 2){
-        //                [cell.contentView addSubview:arrow];
-        //                NSDictionary *card = [[[me usr] objectForKey:@"cards"] objectAtIndex:1];
-        //                cell.textLabel.text = [NSString stringWithFormat:@"Card **** %@",[[card objectForKey:@"CardNumber"] substringFromIndex:[[card objectForKey:@"CardNumber"] length] -4]];
-        //                iv.image = [UIImage imageNamed:@"CreditCard_Icon.png"];
-        //            }else{
-        //                cell.textLabel.text = @"";
-        //                //cell.userInteractionEnabled = NO;
-        //            }
-        
-        //}
-        //cell.textLabel.text=@"";
-    }
+    }    
     //[cell.contentView addSubview:iv];
     return cell;
 }

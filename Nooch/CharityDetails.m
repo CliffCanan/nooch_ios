@@ -286,6 +286,7 @@
                 JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                 options:kNilOptions
                 error:&error];
+    NSLog(@"%@",detaildict);
     if (![[detaildict valueForKey:@"Description"]isKindOfClass:[NSNull class]]&& [detaildict valueForKey:@"Description"]!=nil && [detaildict valueForKey:@"Description"]!=NULL) {
         info.text=[detaildict valueForKey:@"Description"];
     }
