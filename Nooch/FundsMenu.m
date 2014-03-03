@@ -438,52 +438,23 @@
                     
                     
                     textMyWithdrawal=[[UITextField alloc]initWithFrame:CGRectMake(70, 10, 70, 30)];
-                    
-                    
-                    
                     [textMyWithdrawal setPlaceholder:@"Amount"];
-                    
-                    
-                    
                     textMyWithdrawal.textColor = [UIColor blackColor];
-                    
-                    
-                    
                     textMyWithdrawal.borderStyle = UITextBorderStyleRoundedRect;
-                    
                     textMyWithdrawal.keyboardType=UIKeyboardTypeNumberPad ;
-                    
                     textMyWithdrawal.font = [UIFont systemFontOfSize:15.0];
-                    
-                    
-                    
                     [textMyWithdrawal setDelegate:self];
-                    
-                    
-                    
                     textMyWithdrawal.backgroundColor = [UIColor whiteColor];
-                    
-                    
-                    
                     [cell.contentView addSubview:textMyWithdrawal];
-                    
-                    
-                    
-                    Savebtn=[UIButton buttonWithType:UIButtonTypeCustom];
-                    
-                    
-                    
+                
+                    //save button
+                     Savebtn=[UIButton buttonWithType:UIButtonTypeCustom];
                     [Savebtn  setTag:indexPath.row];
-                    
-                    //[Savebtn setBackgroundColor:[UIColor greenColor]];
-                    
                     [Savebtn setTitle:@"Save" forState:UIControlStateNormal];
-                    
                     [Savebtn setFrame:CGRectMake(180, 5, 70, 35)];
                     [Savebtn setStyleClass:@"rsavebutton"];
                     [Savebtn addTarget:self action:@selector(saveAmtTrigger:) forControlEvents:UIControlEventTouchUpInside];
                     [cell.contentView addSubview:Savebtn];
-                    
                     
                 }
                 else
@@ -505,7 +476,6 @@
                     [check setFrame:CGRectMake(180, 5, 40, 40)];
                     
                     [check addTarget:self action:@selector(checkButtonCLicked:) forControlEvents:UIControlEventTouchUpInside];
-                    
                     [cell.contentView addSubview:check];
                     
                 }
@@ -545,8 +515,6 @@
                     
                 }
                 
-                
-                
                 NSString*lastdigit=[NSString stringWithFormat:@"XXXX%@",[[bank objectForKey:@"BankAcctNumber"] substringFromIndex:[[bank objectForKey:@"BankAcctNumber"] length]-4]];
                 cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",[bank objectForKey:@"BankName"],lastdigit];
                 cell.textLabel.font=[UIFont fontWithName:@"Arial" size:12.0f];
@@ -570,9 +538,8 @@
                 
                 img.image = [UIImage imageWithData:datos];
                 
-                
             }else{
-                // cell.userInteractionEnabled = NO;
+               
                 cell.textLabel.textColor = [core hexColor:@"adb1b3"];
                 cell.textLabel.text = @"No Bank Accounts";
                 iv.image = [UIImage imageNamed:@"Bank_Icon.png"];
@@ -597,8 +564,6 @@
                     [[assist shared]setSecondBankVerified:NO];
                     
                 }
-                
-                
                 
                 NSString*lastdigit=[NSString stringWithFormat:@"XXXX%@",[[bank objectForKey:@"BankAcctNumber"] substringFromIndex:[[bank objectForKey:@"BankAcctNumber"] length]-4]];
                 cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",[bank objectForKey:@"BankName"],lastdigit];

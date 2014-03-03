@@ -12,6 +12,7 @@
 #import "HowMuch.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
+ BOOL isphoneBook;
 NSMutableArray*arrRecipientsForRequest;
 BOOL isAddRequest;
 @interface SelectRecipient : UIViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate,ABPeoplePickerNavigationControllerDelegate>
@@ -26,7 +27,7 @@ BOOL isAddRequest;
     
     BOOL isRecentList;
     NSString*emailphoneBook;
-    BOOL isphoneBook;
+   
     UIImageView *arrow;
     UILabel *em;
 }

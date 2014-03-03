@@ -11,6 +11,7 @@
 #import "Helpers.h"
 #import "userlocation.h"
 #import "ECSlidingViewController.h"
+
 @interface SelectRecipient ()
 @property(nonatomic,strong) UITableView *contacts;
 @property(nonatomic,strong) NSMutableArray *recents;
@@ -147,7 +148,6 @@
     [_addressBookController setPeoplePickerDelegate:self];
     [self presentViewController:_addressBookController animated:YES completion:nil];
 }
-#pragma mark - ABPeoplePickerNavigationController Delegate method implementation
 
 -(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person{
     
@@ -272,6 +272,7 @@
         [self.contacts reloadData];
     }];
     return NO;
+     
 }
 
 -(NSString*)stringBetweenString:(NSString*)start andString:(NSString*)end fullText:(NSString*)text {

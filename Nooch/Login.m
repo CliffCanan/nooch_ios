@@ -342,8 +342,8 @@
     } else if ([tagName isEqualToString:@"username"])
     {
         
-        NSError *error;
-        NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+       // NSError *error;
+        //NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         //nslog(@"test: %@",loginResult);
         serve *details = [serve new];
         [details setDelegate:self];
@@ -353,8 +353,8 @@
     else if ([tagName isEqualToString:@"info"])
     {
         
-        NSError *error;
-        NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+       // NSError *error;
+       // NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         //nslog(@"User response: %@",loginResult);
         [self.navigationItem setHidesBackButton:YES];
         [nav_ctrl setNavigationBarHidden:NO];

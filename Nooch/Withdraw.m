@@ -110,7 +110,7 @@
      [transaction setObject:[[self.banks objectAtIndex:0] valueForKey:@"BankAccountId"] forKey:@"BankId"];
     [transaction setObject:[user objectForKey:@"firstName"]forKey:@"FirstName"];
     [transaction setObject:[user objectForKey:@"lastName"]forKey:@"LastName"];
-    
+    [transaction setObject:[user objectForKey:@"Photo"] forKey:@"Photo"];
     float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
     TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"withdrawfund" amount: input_amount];
     [self.navigationController pushViewController:pin animated:YES];

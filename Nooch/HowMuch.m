@@ -48,6 +48,7 @@
     [self.amount becomeFirstResponder];
 }
 -(void)backPressed:(id)sender{
+    isphoneBook=NO;
     if (!isAddRequest) {
         [[assist shared]setRequestMultiple:NO];
         [arrRecipientsForRequest removeAllObjects];

@@ -162,7 +162,7 @@
     [transaction setObject:[[self.banks objectAtIndex:0] valueForKey:@"BankAccountId"] forKey:@"BankId"];
     [transaction setObject:[[user objectForKey:@"firstName"] capitalizedString]forKey:@"FirstName"];
     [transaction setObject:[[user objectForKey:@"lastName"] capitalizedString]forKey:@"LastName"];
-    
+    [transaction setObject:[user objectForKey:@"Photo"] forKey:@"Photo"];
     TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"addfund" amount:input_amount];
     [self.navigationController pushViewController:pin animated:YES];
     

@@ -608,6 +608,9 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
      }*/
 }
 -(void)FilterHistory:(id)sender{
+    [self.search setShowsCancelButton:NO];
+    [self.search setText:@""];
+    [self.search resignFirstResponder];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissFP:) name:@"dismissPopOver" object:nil];
     isHistFilter=YES;
     popSelect *popOver = [[popSelect alloc] init];
@@ -768,7 +771,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
             }
            if ([temp count]>indexPath.row) {
                 NSDictionary*dictRecord=[temp objectAtIndex:indexPath.row];
-               NSLog(@"hmmmmm %@",dictRecord);
+              // NSLog(@"hmmmmm %@",dictRecord);
                if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                {
                    if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
@@ -1026,6 +1029,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]]) {
                         if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
                             [name setText:[NSString stringWithFormat:@"You Paid %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+                            [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                                placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
 
                             
                         }
@@ -1034,6 +1039,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     {
                         if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
                             [name setText:[NSString stringWithFormat:@"%@ Paid You",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+                            [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                                placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
 
                         }
                     }
@@ -1130,7 +1137,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         }
         if ([histShowArrayCompleted count]>indexPath.row) {
             NSDictionary*dictRecord=[histShowArrayCompleted objectAtIndex:indexPath.row];
-            NSLog(@"%@",dictRecord);
+           // NSLog(@"%@",dictRecord);
             if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]|| [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]
                 ||[[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] ) {
 
@@ -2006,7 +2013,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     [imageCache clearMemory];
     [imageCache clearDisk];
     [imageCache cleanDisk];
-
+    countRows=0;
     [self.search resignFirstResponder];
     [self loadHist:listType index:index len:20 subType:subTypestr];
     
