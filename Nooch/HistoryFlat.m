@@ -608,9 +608,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
      }*/
 }
 -(void)FilterHistory:(id)sender{
-    [self.search setShowsCancelButton:NO];
-    [self.search setText:@""];
-    [self.search resignFirstResponder];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissFP:) name:@"dismissPopOver" object:nil];
     isHistFilter=YES;
     popSelect *popOver = [[popSelect alloc] init];
@@ -628,6 +626,9 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"dismissPopOver" object:nil];
     isSearch=NO;
     if (![listType isEqualToString:@"CANCEL"]&& isFilterSelected) {
+        [self.search setShowsCancelButton:NO];
+        [self.search setText:@""];
+        [self.search resignFirstResponder];
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
         //histShowArrayCompleted=[[NSMutableArray alloc]init];
@@ -668,6 +669,14 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
 #pragma mark - transaction type switching
 - (void) completed_or_pending:(id)sender
 {
+    [self.list removeFromSuperview];
+    self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
+    [self.list setStyleId:@"history"]; [self.list setRowHeight:70];
+    [self.list setDataSource:self]; [self.list setDelegate:self]; [self.list setSectionHeaderHeight:0];
+    [self.view addSubview:self.list]; [self.list reloadData];
+    
+    [self.view bringSubviewToFront:exportHistory];
+    
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     if ([segmentedControl selectedSegmentIndex] == 0) {
         
@@ -689,13 +698,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
           countRows=0;
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
     }
-    [self.list removeFromSuperview];
-    self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
-    [self.list setStyleId:@"history"]; [self.list setRowHeight:70];
-    [self.list setDataSource:self]; [self.list setDelegate:self]; [self.list setSectionHeaderHeight:0];
-    [self.view addSubview:self.list]; [self.list reloadData];
     
-    [self.view bringSubviewToFront:exportHistory];
 }
 
 #pragma mark - UITableViewDataSource
@@ -1504,9 +1507,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     UILabel *name = [UILabel new];
                     [name setStyleClass:@"history_cell_textlabel"];
                     [name setStyleClass:@"history_recipientname"];
-                    if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"])
-                        [name setText:[NSString stringWithFormat:@"Donate to %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
-                    else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
+                    if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                     {
                         if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
                             [name setText:[NSString stringWithFormat:@"You Requested of %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
@@ -1515,8 +1516,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         
                     }
                     
-                    else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"])
-                        [name setText:[NSString stringWithFormat:@"Deposit into Nooch%@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+                    //else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"])
+                   //     [name setText:[NSString stringWithFormat:@"Deposit into Nooch%@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                     else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL)
                         [name setText:[NSString stringWithFormat:@"You Invited %@",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
                     else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] )
@@ -1526,7 +1527,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         else
                             [name setText:[NSString stringWithFormat:@"%@ Disputed a Transfer",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                     }
-                    
+                    else
+                        [name setText:@""];
                     [cell.contentView addSubview:name];
                     
                     
@@ -1677,9 +1679,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabel"];
                 [name setStyleClass:@"history_recipientname"];
-                if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"])
-                    [name setText:[NSString stringWithFormat:@"Donate to %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
-                else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
+                 if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                 {
                     if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
                         [name setText:[NSString stringWithFormat:@"You Requested of %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
@@ -1687,8 +1687,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         [name setText:[NSString stringWithFormat:@"%@ Requested",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                     
                 }
-                else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"])
-                    [name setText:[NSString stringWithFormat:@"Deposit into Nooch%@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+               // else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"])
+               //     [name setText:[NSString stringWithFormat:@"Deposit into Nooch%@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                 
                 else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL)
                     [name setText:[NSString stringWithFormat:@"You Invited %@",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
@@ -1699,6 +1699,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     else
                         [name setText:[NSString stringWithFormat:@"%@ Disputed a Transfer",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                 }
+                else
+                    [name setText:@""];
 
                 [cell.contentView addSubview:name];
                 
@@ -2258,15 +2260,15 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         [histShowArrayPending removeAllObjects];
         index=1;
         countRows=0;
-        [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
         
         [self.list removeFromSuperview];
         self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
         [self.list setStyleId:@"history"]; [self.list setRowHeight:70];
         [self.list setDataSource:self]; [self.list setDelegate:self]; [self.list setSectionHeaderHeight:0];
         [self.view addSubview:self.list]; [self.list reloadData];
-        
         [self.view bringSubviewToFront:exportHistory];
+        [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
+
     }
     else if ([tagName isEqualToString:@"cancel"]) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've cancelled the Request Successfully!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -2277,8 +2279,6 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         [histShowArrayPending removeAllObjects];
         index=1;
         countRows=0;
-        [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
-        
         [self.list removeFromSuperview];
         self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
         [self.list setStyleId:@"history"]; [self.list setRowHeight:70];
@@ -2286,6 +2286,9 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         [self.view addSubview:self.list]; [self.list reloadData];
         
         [self.view bringSubviewToFront:exportHistory];
+        [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
+        
+        
     }
 }
 #pragma mark Exporting History

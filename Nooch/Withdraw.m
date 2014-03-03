@@ -160,10 +160,15 @@
 }
 -(void)addFundCall:(id)sender
 {
-    NewBank *add_bank = [NewBank new];
-    [self.navigationController pushViewController:add_bank animated:NO];
-    
-}
+    if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"AddBank"]isEqualToString:@"1"]) {
+        NewBank *add_bank = [NewBank new];
+        [self.navigationController pushViewController:add_bank animated:NO];
+    }
+    else{
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"NoochMoney" message:@"You can't add more than  2 Bank Accounts " delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        return;
+    }}
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

@@ -1069,6 +1069,15 @@
             
             [[NSUserDefaults standardUserDefaults]
              setObject:@"1" forKey:@"IsBankAvailable"];
+            
+            if ([arr count]==2) {
+                [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"AddBank"];
+            }
+            else
+            {
+                [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"AddBank"];
+            }
+            
             ArrBankAccountCollection=[[NSMutableArray alloc]init];
             ArrBankAccountCollection=[arr mutableCopy];
             

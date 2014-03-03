@@ -449,35 +449,45 @@ NSMutableURLRequest *request;
                     NSLog(@"%@",ServerDate);
             
         }
-     // NSLog(@"%@",[[[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
+     
      if ([bankResult count]>0) {
+    
      if ([[[bankResult objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[bankResult objectAtIndex:0] valueForKey:@"IsVerified"] intValue]) {
      
      
      }
      else
      {
-    
-    NSString*datestr=[[bankResult objectAtIndex:0] valueForKey:@"ExpirationDate"];
-         NSLog(@"%@",datestr);
-     
-     NSDate *addeddate = [self dateFromString:datestr];
-     
-     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-     NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
-     fromDate:addeddate
-     toDate:ServerDate
-     options:0];
-     
-     NSLog(@"%ld", (long)[components day]);
-     if ([components day]>21) {
-     
-     
-     serve *bank = [serve new];
-     bank.tagName = @"bDelete";
-     bank.Delegate = self;
-     [bank deleteBank:[[bankResult objectAtIndex:0] valueForKey:@"BankAccountId"]];
-     }
+         if ([bankResult count]==2) {
+             [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"AddBank"];
+         }
+         else
+         {
+             [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"AddBank"];
+         }
+         for (int i=0; i<[bankResult count]; i++) {
+             NSString*datestr=[[bankResult objectAtIndex:i] valueForKey:@"ExpirationDate"];
+             NSLog(@"%@",datestr);
+             
+             NSDate *addeddate = [self dateFromString:datestr];
+             
+             NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+             NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
+                                                                 fromDate:addeddate
+                                                                   toDate:ServerDate
+                                                                  options:0];
+             
+             NSLog(@"%ld", (long)[components day]);
+             if ([components day]>21) {
+                 
+                 
+                 serve *bank = [serve new];
+                 bank.tagName = @"bDelete";
+                 bank.Delegate = self;
+                 [bank deleteBank:[[bankResult objectAtIndex:i] valueForKey:@"BankAccountId"]];
+             }
+         }
+   
      }}
      
      }
