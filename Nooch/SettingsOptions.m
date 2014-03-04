@@ -128,6 +128,8 @@
 
 - (void)sign_out
 {
+      NSLog(@"%@",nav_ctrl.viewControllers);
+    
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Sign Out" message:@"Are you sure you want to sign out?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"I'm Sure", nil];
     [av show];
 }

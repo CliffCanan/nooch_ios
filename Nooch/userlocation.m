@@ -44,7 +44,7 @@
     serve * ser = [serve new];
     ser.tagName=@"search";
     [ser setDelegate:self];
-    [ser getLocationBasedSearch:@"2"];
+    [ser getLocationBasedSearch:@"10"];
 	// Do any additional setup after loading the view.
 }
 -(void)listen:(NSString *)result tagName:(NSString *)tagName {

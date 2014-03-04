@@ -49,6 +49,7 @@
 }
 -(void)backPressed:(id)sender{
     isphoneBook=NO;
+    isEmailEntry=NO;
     if (!isAddRequest) {
         [[assist shared]setRequestMultiple:NO];
         [arrRecipientsForRequest removeAllObjects];
@@ -174,12 +175,8 @@
     [self.send setBackgroundColor:kNoochGreen];
     [self.send setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal]; [self.send setTitle:@"Send" forState:UIControlStateNormal];
     [self.send addTarget:self action:@selector(initialize_send) forControlEvents:UIControlEventTouchUpInside];
-    [self.send setStyleClass:@"howmuch_buttons"];
-    [self.send setStyleId:@"howmuch_send"];
-    [self.send setFrame:CGRectMake(160, 160, 150, 50)];
-    [self.view addSubview:self.send];
     
-   
+    //[self.send setFrame:CGRectMake(160, 160, 150, 50)];
     
     self.request = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.request setBackgroundColor:kNoochBlue];
@@ -195,11 +192,23 @@
         [self.request setFrame:CGRectMake(10, 160, 300, 50)];
 
     }
+    else if ([self.receiver valueForKey:@"nonuser"]) {
+        [self.request removeFromSuperview];
+        [self.send setStyleClass:@"nonhowmuch_send"];
+        [self.send setFrame:CGRectMake(10, 160, 300, 50)];
+        [self.view addSubview:self.send];
+    }
     else{
+        
+        [self.send setStyleClass:@"howmuch_buttons"];
+        [self.send setStyleId:@"howmuch_send"];
+        [self.send setFrame:CGRectMake(160, 160, 150, 50)];
+        [self.view addSubview:self.send];
         [self.request setStyleClass:@"howmuch_buttons"];
         self.divider = [UIImageView new];
         [self.divider setStyleId:@"howmuch_divider"];
         [self.view addSubview:self.divider];
+        
     }
     
     
@@ -315,7 +324,7 @@
 }
 - (void) reset_send_request
 {
-    if (![[assist shared] isRequestMultiple]) {
+    if (![[assist shared] isRequestMultiple] && ![self.receiver valueForKey:@"nonuser"]) {
         self.divider = [UIImageView new];
         [self.divider setStyleId:@"howmuch_divider"];
         [self.divider setAlpha:0];

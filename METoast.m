@@ -308,6 +308,7 @@ static METoastAttribute *sharedAttribute = nil;
                     duration:(CGFloat)duration
             andCompleteBlock:(void (^)(void))completeBlock {
     METoastItem *item = [[METoastItem alloc] init];
+    NSLog(@"%@",message);
     item.message = message;
     item.duration = duration;
     item.completeBlock = completeBlock;
@@ -320,7 +321,7 @@ static METoastAttribute *sharedAttribute = nil;
 - (void)layoutToastView {
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     CGRect toastWindowBounds = self.toastWindow.bounds;
-    CGFloat w = CGRectGetWidth(toastWindowBounds);
+    CGFloat w = 300.0f;
     CGFloat h = CGRectGetHeight(toastWindowBounds);
     METoastLocation loc = [[METoast toastAttribute] location];
     CGPoint center = CGPointZero;

@@ -804,10 +804,6 @@
         
         recoverMail = @"";
     
-    
-    
-    
-    
     if([self.address_two.text length] != 0){
         
         [[me usr] setObject:self.address_two.text forKey:@"Addr2"];
@@ -819,10 +815,119 @@
         [[me usr] removeObjectForKey:@"Addr2"];
         
     }
+    self.name.text=[self.name.text lowercaseString];
+    
+    NSArray*arrdivide=[self.name.text componentsSeparatedByString:@" "];
+    
+    if ([arrdivide count]==2) {
+        
+        transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[arrdivide objectAtIndex:0],@"FirstName",[arrdivide objectAtIndex:1],@"LastName",self.email.text,@"UserName",nil];
+        
+    }
+    
+    else
+        
+    {
+        
+        transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",self.name.text,@"FirstName",@" ",@"LastName",self.email.text,@"UserName",nil];
+        
+    }
+    
+    
+    [transactionInput setObject:[NSString stringWithFormat:@"%@/%@",self.address_one.text,self.address_two.text] forKey:@"Address"];
+    
+    
+    [transactionInput setObject:self.city.text forKey:@"City"];
+    
+    NSLog(@"%d",[self.phone.text length]);
+    
+    //    if ([self.phone.text length]!=10)
+    
+    //    {
+    
+    //        //[me endWaitStat];
+    
+    //        UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"NoochMoney" message:@"Enter valid 10 digit Cell Number" delegate:nil cancelButtonTitle:@"OK"otherButtonTitles:nil, nil];
+    
+    //        [alert show];
+    
+    //        return;
+    
+    //    }
+    
+    //    else
+    
+    //    {
+    
+    //NSString *number = [NSString stringWithFormat:@"%@%@%@",[self.phone.text substringWithRange:NSMakeRange(1, 3)],[self.phone.text substringWithRange:NSMakeRange(6, 3)],[self.phone.text substringWithRange:NSMakeRange(10, 4)]];
+    if ( [[assist shared]islocationAllowed]) {
+        [transactionInput setObject:[[assist shared]islocationAllowed]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO] forKey:@"ShowInSearch"];
+        
+    }
+    else
+        [transactionInput setObject:[[assist shared]islocationAllowed]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO] forKey:@"ShowInSearch"];
+    [transactionInput setObject:strPhoneNumber forKey:@"ContactNumber"];
+    
+    [transactionInput setObject:self.zip.text forKey:@"Zipcode"];
+    
+    [transactionInput setObject:@"false" forKey:@"UseFacebookPicture"];
+    [transactionInput setObject:@".png" forKey:@"fileExtension"];
+    [transactionInput setObject:recoverMail forKey:@"RecoveryMail"];
+    [transactionInput setObject:timezoneStandard forKey:@"TimeZoneKey"];
+    
+    if ([[assist shared] getTranferImage]) {
+       
+        NSData *data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
+        
+        NSUInteger len = data.length;
+        
+        uint8_t *bytes = (uint8_t *)[data bytes];
+        
+        NSMutableString *result1 = [NSMutableString stringWithCapacity:len * 3];
+        for (NSUInteger i = 0; i < len; i++) {
+            
+            if (i) {
+                
+                [result1 appendString:@","];
+                
+            }
+            
+            [result1 appendFormat:@"%d", bytes[i]];
+            
+        }
+        NSArray*arr=[result1 componentsSeparatedByString:@","];
+        
+        
+        [transactionInput setObject:arr forKey:@"Picture"];
+        
+    }
+    NSLog(@"%@",transactionInput);
+    
+    [spinner startAnimating];
+    
+    [spinner setHidden:NO];
+    
+    transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"mySettings", nil];
+    
+    serve *req=[serve new];
+    
+    req.Delegate = self;
+    
+    req.tagName=@"MySettingsResult";
+    
+    
+    [req setSets:transaction];
+    
+    NSArray*arr=[self.name.text componentsSeparatedByString:@" "];
+    
+    if ([arr count]==2) {
+        
+        self.name.text=[NSString stringWithFormat:@"%@ %@",[[arr objectAtIndex:0] capitalizedString],[[arr objectAtIndex:1] capitalizedString]];
+    }
+
 }
 
 - (void)change_pic
-
 {
     
     UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Use Facebook Picture", @"Use Camera", @"From iPhone Library", nil];
@@ -832,9 +937,6 @@
     [actionSheetObject showInView:self.view];
     
 }
-
-
-
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     if(buttonIndex == 0)
         
@@ -847,13 +949,9 @@
     }
     
     else if(buttonIndex == 1)
-        
     {
         
         if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            
-            
-            
             UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
                                         
                                                                   message:@"Device has no camera"
@@ -863,7 +961,6 @@
                                                         cancelButtonTitle:@"OK"
                                         
                                                         otherButtonTitles: nil];
-            
             
             
             [myAlertView show];
@@ -885,13 +982,8 @@
         
         
     }
-    
-    
-    
     else if(buttonIndex == 2)
-        
-    {
-        
+        {
         self.picker=[UIImagePickerController new];
         
         self.picker.delegate = self;
@@ -899,14 +991,8 @@
         self.picker.allowsEditing = YES;
         
         self.picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        
-        
-        
         [self presentViewController:self.picker animated:YES completion:Nil];
-        
-        
-        
-    }
+        }
     
 }
 
@@ -919,8 +1005,6 @@
     float imgRatio = actualWidth/actualHeight;
     
     float maxRatio = 75.0/115.0;
-    
-    
     
     if(imgRatio!=maxRatio){
         
@@ -994,7 +1078,6 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 
 {
-    
     return 1;
     
 }
@@ -1002,7 +1085,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 
 {
-    
     return 10;
     
 }
@@ -1010,36 +1092,15 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 
 {
-    
     static NSString *CellIdentifier = @"Cell";
-    
-    
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    
-    
     if (cell == nil) {
-        
-        
-        
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                 
                                       reuseIdentifier:CellIdentifier];
-        
-        
-        
         [cell.textLabel setTextColor:kNoochGrayLight];
-        
-        //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        
-        /*cell.textLabel.textColor = [UIColor colorWithRed:51./255.
-         
-         green:153./255.
-         
-         blue:204./255.
-         
-         alpha:1.0];*/
         
     }
     
@@ -1047,16 +1108,12 @@
     
 }
 
-
-
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 
 {
-    
-    
-    
+   
     return 70.0;
     
 }
@@ -1064,14 +1121,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 
 {
-    
-    
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+  [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
 }
-
-
 
 #pragma mark - UITextField delegation
 
@@ -1096,9 +1148,7 @@
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
-
 {
-    
     [self animateTextField:textField up:YES];
     
 }
@@ -1119,8 +1169,6 @@
     [self animateTextField:textField up:NO];
     
 }
-
-
 
 #pragma mark - adjusting for textfield view
 
@@ -1149,6 +1197,7 @@
     [UIView commitAnimations];
     
 }
+
 
 #pragma mark - file paths
 - (NSString *)autoLogin{
@@ -1256,18 +1305,6 @@
         
         [av setTag:9];
         
-        
-        
-        //prompt = NO;
-        
-        // serve *targ = [serve new];
-        
-        //targ.Delegate = self;
-        
-        //targ.tagName = @"GetMemberTargusScoresForBank";
-        
-        //[targ getTargus];
-        
         [spinner stopAnimating];
         
         [spinner setHidden:YES];
@@ -1293,11 +1330,6 @@
                          options:kNilOptions
                          
                          error:&error];
-        
-        
-        
-        //NSLog(@"%@",dictProfileinfo);
-        
         if (![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]]) {
             
             
@@ -1307,12 +1339,9 @@
                 self.SavePhoneNumber=[dictProfileinfo valueForKey:@"ContactNumber"];
                 
             }
-            
-            else
-                
+        else
             {
-                
-                self.SavePhoneNumber=@"";
+            self.SavePhoneNumber=@"";
                 
             }
             
@@ -1329,16 +1358,8 @@
         }
         
         else
-            
-        {
-            
             self.SavePhoneNumber=@"";
             
-        }
-        
-        //NSLog(@"%@",dictProfileinfo);
-        
-        
         
         if (![[dictProfileinfo valueForKey:@"Address"] isKindOfClass:[NSNull class]]) {
             
@@ -1351,19 +1372,12 @@
             decry->tag = [NSNumber numberWithInteger:2];
             
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Address"]];
-            
-            
-            
-            
-            
+           
         }
         
         else if(![[dictProfileinfo valueForKey:@"City"] isKindOfClass:[NSNull class]])
             
         {
-            
-            //NSLog(@"address%@",[sourceData objectForKey:@"Status"]);
-            
             self.ServiceType=@"City";
             
             Decryption *decry = [[Decryption alloc] init];
@@ -1392,21 +1406,12 @@
             
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"State"]];
             
-            
-            
-            
-            
-            
-            
         }
         
         else if(![[dictProfileinfo valueForKey:@"Zipcode"] isKindOfClass:[NSNull class]])
             
         {
-            
-            
-            
-            self.ServiceType=@"zip";
+         self.ServiceType=@"zip";
             
             Decryption *decry = [[Decryption alloc] init];
             
@@ -1416,10 +1421,7 @@
             
             [decry getDecryptedValue:@"GetDecryptedData" pwdString:[dictProfileinfo objectForKey:@"Zipcode"]];
             
-            
-            
-            NSLog(@"should be encrypting password");
-            
+        
         }
         
         else if (![[dictProfileinfo valueForKey:@"FirstName"] isKindOfClass:[NSNull class]])
@@ -1468,20 +1470,11 @@
             
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"UserName"]];
             
-            //   zip.text=[dictProfileinfo objectForKey:@"UserName"];
-            
-            
-            
         }
         
         else if (![[dictProfileinfo valueForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]])
             
         {
-            
-            
-            
-            
-            
             self.ServiceType=@"recovery";
             
             Decryption *decry = [[Decryption alloc] init];
@@ -1492,20 +1485,11 @@
             
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"RecoveryMail"]];
             
-            //   zip.text=[dictProfileinfo objectForKey:@"UserName"];
-            
-            
-            
         }
-        
-        //RecoveryMail
-        
         else if (![[dictProfileinfo valueForKey:@"Password"] isKindOfClass:[NSNull class]])
             
         {
-            
-            
-            
+           
             self.ServiceType=@"pwd";
             
             Decryption *decry = [[Decryption alloc] init];
@@ -1515,10 +1499,6 @@
             decry->tag = [NSNumber numberWithInteger:2];
             
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Password"]];
-            
-            //   zip.text=[dictProfileinfo objectForKey:@"UserName"];
-            
-            
             
         }
         [spinner stopAnimating];
@@ -1530,21 +1510,11 @@
 #pragma mark - password encryption
 
 -(void)decryptionDidFinish:(NSMutableDictionary *) sourceData TValue:(NSNumber *) tagValue{
-    
-    
-    
-    //20nov
-    
     if([self.ServiceType isEqualToString:@"Address"])
         
     {
         
         self.ServiceType=@"City";
-        
-        //  NSLog(@"address%@",[sourceData objectForKey:@"Status"]);
-        
-        
-        
         NSArray*arr=[[sourceData objectForKey:@"Status"] componentsSeparatedByString:@"/"];
         
         if ([arr count]==2) {
@@ -1556,19 +1526,9 @@
         }
         
         else
-            
-        {
-            
-            self.address_one.text=[arr objectAtIndex:0];
-            
-        }
+        self.address_one.text=[arr objectAtIndex:0];
         
         if (![[dictProfileinfo objectForKey:@"City"] isKindOfClass:[NSNull class]]) {
-            
-            
-            
-            
-            
             Decryption *decry = [[Decryption alloc] init];
             
             decry.Delegate = self;
@@ -1578,14 +1538,7 @@
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"City"]];
             
         }
-        
-        
-        
-        
-        
-        
-        
-    }
+        }
     
     else if([self.ServiceType isEqualToString:@"City"])
         
@@ -1594,13 +1547,8 @@
         self.ServiceType=@"State";
         
         self.city.text=[sourceData objectForKey:@"Status"];
-        
-        
-        
         if (![[dictProfileinfo objectForKey:@"State"] isKindOfClass:[NSNull class]]) {
-            
-            
-            
+           
             Decryption *decry = [[Decryption alloc] init];
             
             decry.Delegate = self;
@@ -1608,23 +1556,12 @@
             decry->tag = [NSNumber numberWithInteger:2];
             
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"State"]];
-            
-            
-            
-            
-            
-            
-            
+           
         }
         
         else if (![[dictProfileinfo objectForKey:@"Zipcode"] isKindOfClass:[NSNull class]]) {
-            
-            
-            
             self.ServiceType=@"zip";
-            
-            
-            
+           
             Decryption *decry = [[Decryption alloc] init];
             
             decry.Delegate = self;
@@ -1633,24 +1570,7 @@
             
             [decry getDecryptedValue:@"GetDecryptedData" pwdString:[dictProfileinfo objectForKey:@"Zipcode"]];
             
-            
-            
-            
-            
         }
-        
-        
-        
-        
-        
-        
-        
-        //        password.text = decryptedPassword;
-        
-        //        [self getEncryptedPassword:password.text];
-        
-        //        NSLog(@"should be encrypting password");
-        
     }
     
     else if([self.ServiceType isEqualToString:@"State"])
@@ -1659,18 +1579,7 @@
         
         self.ServiceType=@"zip";
         
-        //  self.state.text=[sourceData objectForKey:@"Status"];
-        
-        
-        
         if (![[dictProfileinfo objectForKey:@"Zipcode"] isKindOfClass:[NSNull class]]) {
-            
-            
-            
-            
-            
-            
-            
             Decryption *decry = [[Decryption alloc] init];
             
             decry.Delegate = self;
@@ -1679,16 +1588,10 @@
             
             [decry getDecryptedValue:@"GetDecryptedData" pwdString:[dictProfileinfo objectForKey:@"Zipcode"]];
             
-            
-            
-            
-            
         }
         
         else
-            
         {
-            
             self.ServiceType=@"name";
             
             if (![[dictProfileinfo objectForKey:@"FirstName"] isKindOfClass:[NSNull class]]) {
@@ -1704,14 +1607,12 @@
             }
             
         }
-        
-        
+       
     }
     
     else  if ([self.ServiceType isEqualToString:@"zip"])
         
     {
-        
         self.ServiceType=@"name";
         self.zip.text=[sourceData objectForKey:@"Status"];
         if (![[dictProfileinfo objectForKey:@"FirstName"] isKindOfClass:[NSNull class]]) {
@@ -1735,12 +1636,9 @@
         if ([[sourceData objectForKey:@"Status"] length]>0) {
             
             NSString* letterA=[[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
-            
-            
-            
+           
             self.name.text=[NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
             
-            // NSLog(@"zipcode %@",[sourceData objectForKey:@"Status"]);
             if (![[dictProfileinfo objectForKey:@"LastName"] isKindOfClass:[NSNull class]])
                 
             {
@@ -1778,7 +1676,6 @@
     else  if ([self.ServiceType isEqualToString:@"lastname"])
         
     {
-        
         self.ServiceType=@"email";
         
         if ([[sourceData objectForKey:@"Status"] length]>0) {
@@ -1823,7 +1720,6 @@
         else
             
         {
-            
             self.recovery_email.text=@"";
             
             self.ServiceType=@"pwd";

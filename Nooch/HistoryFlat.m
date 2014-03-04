@@ -751,7 +751,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     static NSString *cellIdentifier = @"Cell";
     SWTableViewCell *cell = (SWTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
-    if (cell == nil) {
+   // if (cell == nil) {
         NSMutableArray *leftUtilityButtons = [NSMutableArray new];
         NSMutableArray *rightUtilityButtons = [NSMutableArray new];
         
@@ -774,7 +774,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
             }
            if ([temp count]>indexPath.row) {
                 NSDictionary*dictRecord=[temp objectAtIndex:indexPath.row];
-              // NSLog(@"hmmmmm %@",dictRecord);
+               NSLog(@"hmmmmm %@",dictRecord);
                if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                {
                    if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
@@ -803,7 +803,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                                       rightUtilityButtons:rightUtilityButtons];
         }
         [cell setDelegate:self];
-    }
+   // }
     if ([cell.contentView subviews]){
         for (UIView *subview in [cell.contentView subviews]) {
             [subview removeFromSuperview];

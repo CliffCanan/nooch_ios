@@ -211,9 +211,9 @@
             serve *create = [serve new];
             [create setDelegate:self];
             [create setTagName:@"encrypt"];
+            [[assist shared]setPassValue:[self.user objectForKey:@"password"]];
             [create getEncrypt:[self.user objectForKey:@"password"]];
-            // Signup*pNooch=[self.storyboard instantiateViewControllerWithIdentifier:@"signup"];
-            //[self.navigationController pushViewController:pNooch animated:YES];
+            
             
         }
         else
@@ -259,7 +259,7 @@
             login.Delegate = self;
             login.tagName = @"login";
             
-            // [login login:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"] password:getEncryptedPassword remember:YES lat:lat lon:lon];
+        
             NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
             [login login:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"] password:getEncryptedPassword remember:YES lat:lat lon:lon uid:udid];
         }
@@ -321,16 +321,6 @@
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         
         NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
-        
-        //sendingMoney = NO;
-        
-        //[navCtrl dismissViewControllerAnimated:YES completion:nil];
-        
-        // [navCtrl dismissModalViewControllerAnimated:NO];
-        
-        //[navCtrl performSelector:@selector(disable)];
-        
-        // [navCtrl pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"tutorial"] animated:YES];
         
         me = [core new];
         

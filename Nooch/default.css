@@ -802,7 +802,20 @@
 		left	: 162px;
 		top		: 204px;
 	}
- 
+ .nonhowmuch_send {
+        left	            : 9px;
+		top		            : 204px;
+		width				: 300px;
+		height				: 56px;
+		font-family			: "Roboto";
+		font-size			: 20px;
+		font-weight         : light;
+		font-stretch		: semi-expanded;
+		text-align       	: center;
+		color 				: #ffffff;
+		text-transform		: uppercase;
+	}
+
 	/**  The middle divider between the send/request buttons.  Includes the $ sign and white circle (but not the verticle white line, which is just empty space. **/ 
 	#howmuch_divider {
 		width			: 38px;

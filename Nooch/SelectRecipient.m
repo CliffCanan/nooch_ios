@@ -83,7 +83,7 @@
         [alert show];
         return;
     }
-    
+   
     isAddRequest=NO;
     HowMuch *how_much = [[HowMuch alloc] init];
     
@@ -146,12 +146,18 @@
 {
     _addressBookController = [[ABPeoplePickerNavigationController alloc] init];
     [_addressBookController setPeoplePickerDelegate:self];
+
+    NSArray *displayedItems = [NSArray arrayWithObjects:[NSNumber numberWithInt:kABPersonPhoneProperty],
+                               [NSNumber numberWithInt:kABPersonEmailProperty],
+                               [NSNumber numberWithInt:kABPersonBirthdayProperty], nil];
+	
+    _addressBookController.displayedProperties=displayedItems;
     [self presentViewController:_addressBookController animated:YES completion:nil];
 }
 
--(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person{
+-(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person {
     
-    // Initialize a mutable dictionary and give it initial values.
+  /*  // Initialize a mutable dictionary and give it initial values.
     NSMutableDictionary *contactInfoDict = [[NSMutableDictionary alloc]
                                             initWithObjects:@[@"", @"", @"", @"", @"", @"", @"", @"", @""]
                                             forKeys:@[@"firstName", @"lastName", @"mobileNumber", @"homeNumber", @"homeEmail", @"workEmail", @"address", @"zipCode", @"city"]];
@@ -200,8 +206,14 @@
 //    //if ([emailAddress rangeOfString:@"@"].location!=NSNotFound && [emailAddress rangeOfString:@"."].location!=NSNotFound) {
 //    NSLog(@"%@",emailAddress);
    
-    
-    
+    if(ABMultiValueGetCount(emailsRef)>0){
+        NSLog(@"okfb");
+    }
+    ABMultiValueRef email = ABRecordCopyValue(person, kABPersonEmailProperty);
+    int size = ABMultiValueGetCount(email);
+    if (size>0) {
+         NSLog(@"okfb");
+    }
     for (int i=0; i<ABMultiValueGetCount(emailsRef); i++) {
         CFStringRef currentEmailLabel = ABMultiValueCopyLabelAtIndex(emailsRef, i);
         CFStringRef currentEmailValue = ABMultiValueCopyValueAtIndex(emailsRef, i);
@@ -272,6 +284,8 @@
         [self.contacts reloadData];
     }];
     return NO;
+   */
+    return YES;
      
 }
 
@@ -286,8 +300,25 @@
         }
     }
     return nil;
-}-(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier{
-    return NO;
+}
+-(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier{
+    
+    if (kABPersonEmailProperty == property)
+    {
+        ABMultiValueRef multi = ABRecordCopyValue(person, kABPersonEmailProperty);
+        NSString *email = (__bridge NSString *)ABMultiValueCopyValueAtIndex(multi, identifier);
+        NSLog(@"email: %@", email);
+        search.text=email;
+        [search setShowsCancelButton:YES];
+        [search becomeFirstResponder];
+        emailphoneBook= email;
+         isphoneBook=YES;
+        [_addressBookController dismissViewControllerAnimated:YES completion:^{
+            [self.contacts reloadData];
+        }];
+        return NO;
+    }
+    return YES;
 }
 
 
@@ -599,10 +630,7 @@
             
             [self.navigationController pushViewController:how_much animated:YES];
             
-            //            serve*serveOBJ=[serve new];
-            //            [serveOBJ setDelegate:self];
-            //            serveOBJ.tagName=@"sendNonNooch";
-            //            serveOBJ TransferMoneyToNonNoochUser:<#(NSDictionary *)#> email:<#(NSString *)#>
+           
         }
     }
 }
@@ -758,6 +786,7 @@
 {
     
     if ([[assist shared] isRequestMultiple]) {
+        
         NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];
         
         arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
@@ -767,6 +796,12 @@
             [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
         }
         else{
+            NSLog(@"%d",[[[assist shared]getArray] count]);
+            if ([[[assist shared]getArray] count]==10) {
+                UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You can't request more than 10 Users!" delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+                [alert show];
+                return;
+            }
             [arrRecipientsForRequest addObject:receiver];
             [[assist shared]setArray:[arrRecipientsForRequest copy]];
         }

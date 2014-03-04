@@ -38,6 +38,7 @@ NSString *histSearching;
     BOOL isMutipleRequest;
     BOOL isSecondBankVerified;
     BOOL isPOP;
+    NSString*passValue;
 }
 //@property(nonatomic,retain)NSTimer*timer;
 @property (nonatomic, retain) ACAccountStore *accountStore;
@@ -93,5 +94,7 @@ NSString *histSearching;
 -(void)setArray:(NSMutableArray*)arr;
 -(BOOL)isRequestMultiple;
 -(void)setRequestMultiple:(BOOL)istrue;
+-(NSString*)getPass;
+-(void)setPassValue:(NSString*)value;
 
 @end

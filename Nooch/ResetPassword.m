@@ -73,7 +73,7 @@
     NSCharacterSet* digitsCharSet = [NSCharacterSet decimalDigitCharacterSet];
     NSCharacterSet* lettercaseCharSet = [NSCharacterSet letterCharacterSet];
     NSLog(@"sahi%@",self.old.text);
-    NSLog(@"new%@",userPass);
+    NSLog(@"new%@",self.pass);
     
     if ([self.old.text length]==0) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Enter Old Password!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -97,7 +97,7 @@
         return;
     }
     
-    if (![userPass isEqualToString:self.old.text]) {
+    if (![[[assist shared]getPass] isEqualToString:self.old.text]) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Password incorrect!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         return;
@@ -115,6 +115,7 @@
             [av show];
         }else{
             passwordReset = self.pass.text;
+            
             [self resetPassword:self.pass.text];
         }
     }else{
@@ -211,6 +212,7 @@
             isPasswordChanged=YES;
             UIAlertView *showAlertMessage = [[UIAlertView alloc] initWithTitle:nil message:@"Your password has been changed successfully" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             [showAlertMessage show];
+            [[assist shared]setPassValue:passwordReset];
             [self.navigationController popViewControllerAnimated:YES];
             
         }

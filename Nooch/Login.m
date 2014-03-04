@@ -52,7 +52,7 @@
     serve *log = [serve new];
     [log setDelegate:self];
     [log setTagName:@"encrypt"];
-    //nslog(@"%@",self.password.text);
+    [[assist shared]setPassValue:self.password.text];
     [log getEncrypt:self.password.text];
     
     
@@ -241,7 +241,7 @@
 
 -(void)listen:(NSString *)result tagName:(NSString *)tagName{
     //nslog(@"response %@", result);
-    
+    NSLog(@"%@",nav_ctrl.viewControllers);
     if([tagName isEqualToString:@"ForgotPass"]){
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Check your email for a reset password link." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
