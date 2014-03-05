@@ -340,8 +340,6 @@
             
         }
         if ([[dictInput objectForKey:@"TransferSent"]boolValue]) {
-            //  [self.push setOn:YES];
-            
             
         }
         else

@@ -88,10 +88,14 @@
     [pic setImage:[UIImage imageNamed:@"4KforCancer.png"]];
     [pic setStyleId:@"nonprofit_orgpic"];
    // NSLog(@"%@",self.receiver);
-    [pic setImageWithURL:[NSURL URLWithString:[self.receiver valueForKey:@"PhotoIcon"]]
-        placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
-    
-    
+    if (![[self.receiver  valueForKey:@"BannerImage"]isKindOfClass:[NSNull class]]&&[self.receiver  valueForKey:@"BannerImage"]!=NULL) {
+        [pic setImageWithURL:[NSURL URLWithString:[self.receiver  valueForKey:@"BannerImage"]]
+              placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+    }
+    else {
+        [pic setImage:[UIImage imageNamed:@"placeholder.jpg"]];
+    }
+        
     // [pic setStyleCSS:@"background-image : url(4KforCancer.png)"];
     [self.view addSubview:pic];
     

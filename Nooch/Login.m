@@ -259,19 +259,19 @@
         [log setDelegate:self];
         [log setTagName:@"login"];
         [[UIApplication sharedApplication]setStatusBarHidden:NO];
-        //[log validateInvitation:@"pilot"];
         
-        
-        //[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"IsPrimaryBankVerified"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"firstName"];
         // NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
         NSString *udid=[[UIDevice currentDevice] uniqueDeviceIdentifier];
         //nslog(@"%@",udid);
         [[assist shared]setlocationAllowed:YES];
         if ([self.stay_logged_in isOn]) {
+            
+           
             [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:YES lat:lat lon:lon uid:udid];
         }
         else{
+            
             [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:NO lat:lat lon:lon uid:udid];
         }
         

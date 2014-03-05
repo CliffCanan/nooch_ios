@@ -15,7 +15,7 @@
  BOOL isphoneBook;
 NSMutableArray*arrRecipientsForRequest;
 BOOL isAddRequest;
-@interface SelectRecipient : UIViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate,ABPeoplePickerNavigationControllerDelegate>
+@interface SelectRecipient : UIViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate,ABPeoplePickerNavigationControllerDelegate,UIActionSheetDelegate>
 {
     
     UIView*loader;
@@ -31,5 +31,6 @@ BOOL isAddRequest;
    
     UIImageView *arrow;
     UILabel *em;
+    NSArray *emailAddresses;
 }
 @end

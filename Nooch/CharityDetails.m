@@ -290,11 +290,12 @@
     if (![[detaildict valueForKey:@"Description"]isKindOfClass:[NSNull class]]&& [detaildict valueForKey:@"Description"]!=nil && [detaildict valueForKey:@"Description"]!=NULL) {
         info.text=[detaildict valueForKey:@"Description"];
     }
-    if (![[detaildict valueForKey:@"BannerImage"]isKindOfClass:[NSNull class]]||[detaildict valueForKey:@"BannerImage"]!=nil) {
+    if (![[detaildict valueForKey:@"BannerImage"]isKindOfClass:[NSNull class]]&&[detaildict valueForKey:@"BannerImage"]!=NULL) {
         [image setImageWithURL:[NSURL URLWithString:[detaildict valueForKey:@"BannerImage"]]
               placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
-        
-        
+        }
+    else {
+        [image setImage:[UIImage imageNamed:@"placeholder.jpg"]];
     }
     
     

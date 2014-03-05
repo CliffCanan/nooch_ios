@@ -162,30 +162,72 @@
 }
 
 -(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person {
-    [_addressBookController.view removeConstraints:_addressBookController.view.constraints];
-     return YES;
-     
+    ABMultiValueRef emailMultiValue = ABRecordCopyValue(person, kABPersonEmailProperty);
+    emailAddresses = (__bridge NSArray *)ABMultiValueCopyArrayOfAllValues(emailMultiValue) ;
+    NSLog(@"%@",emailAddresses);
+    CFRelease(emailMultiValue);
+     [_addressBookController dismissViewControllerAnimated:YES completion:^{
+         if ([emailAddresses count]==0) {
+             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"No email attached with the user!" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+             [alert show];
+         }
+         else{
+         UIActionSheet *actionSheet=[[UIActionSheet alloc]init];
+         [actionSheet setDelegate:self];
+         for (int i=0 ; i<[emailAddresses count];i++) {
+             [actionSheet addButtonWithTitle:[NSString stringWithFormat:@"%@",[emailAddresses objectAtIndex:i]]];
+         }
+         actionSheet.tag=1111;
+         [actionSheet addButtonWithTitle:@"Cancel"];
+         [actionSheet showInView:self.view];
+         }
+     }];
+    
+    
+    
+     return NO;
+    
+}
+- (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
+    for (UIView *_currentView in actionSheet.subviews) {
+        if ([_currentView isKindOfClass:[UILabel class]]) {
+            [((UILabel *)_currentView) setFont:[UIFont boldSystemFontOfSize:15.f]];
+        }
+    }
+}
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+   
+     if ([actionSheet tag]==1111)
+    {
+               if (![[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Cancel"]) {
+            search.text=[actionSheet buttonTitleAtIndex:buttonIndex];
+            [search setShowsCancelButton:YES];
+            [search becomeFirstResponder];
+            emailphoneBook= [actionSheet buttonTitleAtIndex:buttonIndex];
+            isphoneBook=YES;
+            [self getMemberIdByUsingUserNameFromPhoneBook];
+        }
+    }
 }
 
-
 -(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier{
-    [_addressBookController.view removeConstraints:_addressBookController.view.constraints];
-    if (kABPersonEmailProperty == property)
-    {
-        ABMultiValueRef multi = ABRecordCopyValue(person, kABPersonEmailProperty);
-        NSString *email = (__bridge NSString *)ABMultiValueCopyValueAtIndex(multi, identifier);
-        NSLog(@"email: %@", email);
-        search.text=email;
-        [search setShowsCancelButton:YES];
-        [search becomeFirstResponder];
-        emailphoneBook= email;
-         isphoneBook=YES;
-        [_addressBookController dismissViewControllerAnimated:YES completion:^{
-            [self.contacts reloadData];
-        }];
-        return NO;
-    }
-    return NO;
+//    [_addressBookController.view removeConstraints:_addressBookController.view.constraints];
+//    if (kABPersonEmailProperty == property)
+//    {
+//        ABMultiValueRef multi = ABRecordCopyValue(person, kABPersonEmailProperty);
+//        NSString *email = (__bridge NSString *)ABMultiValueCopyValueAtIndex(multi, identifier);
+//        NSLog(@"email: %@", email);
+//        search.text=email;
+//        [search setShowsCancelButton:YES];
+//        [search becomeFirstResponder];
+//        emailphoneBook= email;
+//         isphoneBook=YES;
+//        [_addressBookController dismissViewControllerAnimated:YES completion:^{
+//            [self.contacts reloadData];
+//        }];
+//        return NO;
+//    }
+    return YES;
 }
 
 

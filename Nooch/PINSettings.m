@@ -64,7 +64,7 @@
     [info setTextColor:[Helpers hexColor:@"939598"]];
     [info setText:@"Require a passcode even when switching apps for a short time"];
     [self.view addSubview:info];
-    
+    NSLog(@"%@",[user objectForKey:@"requiredImmediately"]);
     if ([[user objectForKey:@"requiredImmediately"] boolValue]) {
         [self.ri setOn:YES];
     }
@@ -120,6 +120,7 @@
                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
+        NSLog(@"%@",Dictresponse);
         if ([[Dictresponse valueForKey:@"Result"] isEqualToString:@"success"]) {
             
         }

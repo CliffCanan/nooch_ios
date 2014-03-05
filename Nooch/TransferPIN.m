@@ -207,8 +207,13 @@
     else{
         [user_pic setHidden:NO];
         if ([self.type isEqualToString:@"donation"]) {
-            [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoIcon"]]
-                     placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+            if (![[self.receiver valueForKey:@"BannerImage"]isKindOfClass:[NSNull class]]&&[self.receiver valueForKey:@"BannerImage"]!=NULL) {
+                [user_pic setImageWithURL:[NSURL URLWithString:[self.receiver valueForKey:@"BannerImage"]]
+                      placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+            }
+            else {
+                [user_pic setImage:[UIImage imageNamed:@"placeholder.jpg"]];
+            }
             
         }
         else
