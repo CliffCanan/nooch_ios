@@ -11,7 +11,8 @@
 #import "Helpers.h"
 #import "userlocation.h"
 #import "ECSlidingViewController.h"
-
+#import <objc/runtime.h>
+#import <objc/message.h>
 @interface SelectRecipient ()
 @property(nonatomic,strong) UITableView *contacts;
 @property(nonatomic,strong) NSMutableArray *recents;
@@ -28,6 +29,8 @@
     }
     return self;
 }
+
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -146,163 +149,27 @@
 {
     _addressBookController = [[ABPeoplePickerNavigationController alloc] init];
     [_addressBookController setPeoplePickerDelegate:self];
-
-    NSArray *displayedItems = [NSArray arrayWithObjects:[NSNumber numberWithInt:kABPersonPhoneProperty],
+    [self.view removeConstraints:self.view.constraints];
+    NSArray *displayedItems = [NSArray arrayWithObjects:
                                [NSNumber numberWithInt:kABPersonEmailProperty],
-                               [NSNumber numberWithInt:kABPersonBirthdayProperty], nil];
-	
+                                nil];
+  
+    _addressBookController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _addressBookController.view.translatesAutoresizingMaskIntoConstraints=YES;
+	[_addressBookController.view removeConstraints:_addressBookController.view.constraints];
     _addressBookController.displayedProperties=displayedItems;
     [self presentViewController:_addressBookController animated:YES completion:nil];
 }
 
 -(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person {
-    
-  /*  // Initialize a mutable dictionary and give it initial values.
-    NSMutableDictionary *contactInfoDict = [[NSMutableDictionary alloc]
-                                            initWithObjects:@[@"", @"", @"", @"", @"", @"", @"", @"", @""]
-                                            forKeys:@[@"firstName", @"lastName", @"mobileNumber", @"homeNumber", @"homeEmail", @"workEmail", @"address", @"zipCode", @"city"]];
-    
-    // Use a general Core Foundation object.
-    CFTypeRef generalCFObject = ABRecordCopyValue(person, kABPersonFirstNameProperty);
-    
-    // Get the first name.
-    if (generalCFObject) {
-        [contactInfoDict setObject:(__bridge NSString *)generalCFObject forKey:@"firstName"];
-        CFRelease(generalCFObject);
-    }
-    
-    // Get the last name.
-    generalCFObject = ABRecordCopyValue(person, kABPersonLastNameProperty);
-    if (generalCFObject) {
-        [contactInfoDict setObject:(__bridge NSString *)generalCFObject forKey:@"lastName"];
-        CFRelease(generalCFObject);
-    }
-    
-    // Get the phone numbers as a multi-value property.
-    ABMultiValueRef phonesRef = ABRecordCopyValue(person, kABPersonPhoneProperty);
-    for (int i=0; i<ABMultiValueGetCount(phonesRef); i++) {
-        CFStringRef currentPhoneLabel = ABMultiValueCopyLabelAtIndex(phonesRef, i);
-        CFStringRef currentPhoneValue = ABMultiValueCopyValueAtIndex(phonesRef, i);
-        
-        if (CFStringCompare(currentPhoneLabel, kABPersonPhoneMobileLabel, 0) == kCFCompareEqualTo) {
-            [contactInfoDict setObject:(__bridge NSString *)currentPhoneValue forKey:@"mobileNumber"];
-        }
-        
-        if (CFStringCompare(currentPhoneLabel, kABHomeLabel, 0) == kCFCompareEqualTo) {
-            [contactInfoDict setObject:(__bridge NSString *)currentPhoneValue forKey:@"homeNumber"];
-        }
-        
-        CFRelease(currentPhoneLabel);
-        CFRelease(currentPhoneValue);
-    }
-    CFRelease(phonesRef);
-    
-    
-    // Get the e-mail addresses as a multi-value property.
-    ABMultiValueRef emailsRef = ABRecordCopyValue(person, kABPersonEmailProperty);
-
-//    NSString *emailAddress = CFBridgingRelease(emailsRef);
-//    
-//    //if ([emailAddress rangeOfString:@"@"].location!=NSNotFound && [emailAddress rangeOfString:@"."].location!=NSNotFound) {
-//    NSLog(@"%@",emailAddress);
-   
-    if(ABMultiValueGetCount(emailsRef)>0){
-        NSLog(@"okfb");
-    }
-    ABMultiValueRef email = ABRecordCopyValue(person, kABPersonEmailProperty);
-    int size = ABMultiValueGetCount(email);
-    if (size>0) {
-         NSLog(@"okfb");
-    }
-    for (int i=0; i<ABMultiValueGetCount(emailsRef); i++) {
-        CFStringRef currentEmailLabel = ABMultiValueCopyLabelAtIndex(emailsRef, i);
-        CFStringRef currentEmailValue = ABMultiValueCopyValueAtIndex(emailsRef, i);
-        
-        if (CFStringCompare(currentEmailLabel, kABHomeLabel, 0) == kCFCompareEqualTo) {
-            [contactInfoDict setObject:(__bridge NSString *)currentEmailValue forKey:@"homeEmail"];
-        }
-        
-        if (CFStringCompare(currentEmailLabel, kABWorkLabel, 0) == kCFCompareEqualTo) {
-            [contactInfoDict setObject:(__bridge NSString *)currentEmailValue forKey:@"workEmail"];
-        }
-        
-        CFRelease(currentEmailLabel);
-        CFRelease(currentEmailValue);
-    }
-    CFRelease(emailsRef);
-    
-    
-    // Get the first street address among all addresses of the selected contact.
-    ABMultiValueRef addressRef = ABRecordCopyValue(person, kABPersonAddressProperty);
-    if (ABMultiValueGetCount(addressRef) > 0) {
-        NSDictionary *addressDict = (__bridge NSDictionary *)ABMultiValueCopyValueAtIndex(addressRef, 0);
-        
-        [contactInfoDict setObject:[addressDict objectForKey:(NSString *)kABPersonAddressStreetKey] forKey:@"address"];
-        [contactInfoDict setObject:[addressDict objectForKey:(NSString *)kABPersonAddressZIPKey] forKey:@"zipCode"];
-        [contactInfoDict setObject:[addressDict objectForKey:(NSString *)kABPersonAddressCityKey] forKey:@"city"];
-    }
-    CFRelease(addressRef);
-    
-    
-    // If the contact has an image then get it too.
-    if (ABPersonHasImageData(person)) {
-        NSData *contactImageData = (__bridge NSData *)ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
-        
-        [contactInfoDict setObject:contactImageData forKey:@"image"];
-    }
-
-    isphoneBook=YES;
-    if (![[contactInfoDict valueForKey:@"homeEmail"] isEqualToString:@""]) {
-         search.text=[contactInfoDict  valueForKey:@"homeEmail"];
-         [search setShowsCancelButton:YES];
-        [search becomeFirstResponder];
-
-        emailphoneBook= [contactInfoDict  valueForKey:@"homeEmail"];
-
-    }
-    else if(![[contactInfoDict valueForKey:@"homeEmail"] isEqualToString:@""])
-    {
-       
-        search.text=[contactInfoDict  valueForKey:@"workEmail"];
-         [search setShowsCancelButton:YES];
-        [search becomeFirstResponder];
-        emailphoneBook= [contactInfoDict valueForKey:@"workEmail"];
-      
-    }
-    else
-    {
-        isphoneBook=NO;
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Email ID is not available." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-        [alert show];
-        
-    }
-
-
-    
-    // Dismiss the address book view controller.
-    [_addressBookController dismissViewControllerAnimated:YES completion:^{
-        [self.contacts reloadData];
-    }];
-    return NO;
-   */
-    return YES;
+    [_addressBookController.view removeConstraints:_addressBookController.view.constraints];
+     return YES;
      
 }
 
--(NSString*)stringBetweenString:(NSString*)start andString:(NSString*)end fullText:(NSString*)text {
-    NSScanner* scanner = [NSScanner scannerWithString:text];
-    [scanner setCharactersToBeSkipped:nil];
-    [scanner scanUpToString:start intoString:NULL];
-    if ([scanner scanString:start intoString:NULL]) {
-        NSString* result = nil;
-        if ([scanner scanUpToString:end intoString:&result]) {
-            return result;
-        }
-    }
-    return nil;
-}
+
 -(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier{
-    
+    [_addressBookController.view removeConstraints:_addressBookController.view.constraints];
     if (kABPersonEmailProperty == property)
     {
         ABMultiValueRef multi = ABRecordCopyValue(person, kABPersonEmailProperty);
@@ -318,7 +185,7 @@
         }];
         return NO;
     }
-    return YES;
+    return NO;
 }
 
 

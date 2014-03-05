@@ -17,6 +17,7 @@ NSMutableArray*arrRecipientsForRequest;
 BOOL isAddRequest;
 @interface SelectRecipient : UIViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate,ABPeoplePickerNavigationControllerDelegate>
 {
+    
     UIView*loader;
     NSString*searchString;
     BOOL searching;

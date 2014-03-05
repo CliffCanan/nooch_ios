@@ -270,7 +270,7 @@
         
         if([[dictResult objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]){
             self.prompt.text=@"1 failed attempt. Please try again.";
-            self.prompt.textColor = [UIColor colorWithRed:169 green:68 blue:66 alpha:1];
+            self.prompt.textColor = [UIColor colorWithRed:169.0/255.0 green:68/255.0 blue:66/255.0 alpha:1];
             [spinner stopAnimating];
             [spinner setHidden:YES];
         }else if([[dictResult objectForKey:@"Result"]isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]){
