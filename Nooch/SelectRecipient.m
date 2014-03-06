@@ -481,7 +481,6 @@
             if ([self.view.subviews containsObject:spinner]) {
                 [spinner removeFromSuperview];
             }
-            // NSLog(@"%@",[dictResult objectForKey:@"Result"]);
             spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             [self.view addSubview:spinner];
             [spinner setHidden:NO];
@@ -514,6 +513,7 @@
                              JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                              options:kNilOptions
                              error:&error]];
+        NSLog(@"%@",dict);
         isEmailEntry=YES;
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
         

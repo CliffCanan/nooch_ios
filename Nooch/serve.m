@@ -309,8 +309,8 @@ NSString *amnt;
     [[assist shared]setBankVerified:NO];
     [[assist shared]setSusPended:NO];
     ServiceType=@"Login";
-    //  [[NSUserDefaults standardUserDefaults] setValue:deviceTokens forKey:@"DeviceToken"];
-
+   
+     [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"pincheck"];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 
     self.responseData = [[NSMutableData alloc] init];
@@ -690,7 +690,7 @@ NSString *amnt;
     
     if ([responseString rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
         //logout in case of invalid OAuth
-        if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"]isEqualToString:@"1"] ) {
+        if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"]isEqualToString:@"1"] || [[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"]) {
             
             UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             

@@ -954,7 +954,9 @@
     if (self.receiver[@"Photo"] !=NULL && ![self.receiver[@"Photo"] isKindOfClass:[NSNull class]]) {
         [transactionInputTransfer setObject:self.receiver[@"Photo"]forKey:@"Photo"];
     }
-    //NSLog(@"%@",self.receiver[@"PhotoIcon"]);
+    else if (self.receiver[@"PhotoUrl"] !=NULL && ![self.receiver[@"PhotoUrl"] isKindOfClass:[NSNull class]])
+        [transactionInputTransfer setObject:self.receiver[@"PhotoUrl"]forKey:@"Photo"];
+  
     if ([self.type isEqualToString:@"donation"] && self.receiver[@"PhotoIcon"]!=NULL && ![self.receiver[@"PhotoIcon"] isKindOfClass:[NSNull class]]) {
         [transactionInputTransfer setObject:self.receiver[@"PhotoIcon"]forKey:@"Photo"];
     }

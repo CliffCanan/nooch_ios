@@ -1481,7 +1481,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         }
         
     }
-    else
+    else if(self.completed_selected == NO)
     {
         if (isLocalSearch) {
             if ([histTempPending count]>indexPath.row) {
@@ -2045,16 +2045,19 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
 {
     [histTempCompleted removeAllObjects];
     [histTempPending removeAllObjects];
-    for (NSMutableDictionary *tableViewBind in histShowArrayCompleted)
-    {
-        
-        NSComparisonResult result = [[tableViewBind valueForKey:@"FirstName"] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
-        if (result == NSOrderedSame)
+    if ([subTypestr isEqualToString:@"Success"]) {
+        for (NSMutableDictionary *tableViewBind in histShowArrayCompleted)
         {
-            [histTempCompleted addObject:tableViewBind];
-           // NSLog(@"%@",histTempCompleted);
+            
+            NSComparisonResult result = [[tableViewBind valueForKey:@"FirstName"] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
+            if (result == NSOrderedSame)
+            {
+                [histTempCompleted addObject:tableViewBind];
+                // NSLog(@"%@",histTempCompleted);
+            }
         }
     }
+    else{
     for (NSMutableDictionary *tableViewBind in histShowArrayPending)
     {
         
@@ -2064,7 +2067,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
             [histTempPending addObject:tableViewBind];
         }
     }
-    
+    }
    
 }
 
