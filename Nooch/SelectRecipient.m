@@ -171,6 +171,14 @@
              UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"No email attached with the user!" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
              [alert show];
          }
+         else if ([emailAddresses count]==1){
+           //  search.text=[emailAddresses objectAtIndex:0];
+             //[search setShowsCancelButton:YES];
+            // [search becomeFirstResponder];
+             emailphoneBook= [emailAddresses objectAtIndex:0];
+             isphoneBook=YES;
+             [self getMemberIdByUsingUserNameFromPhoneBook];
+         }
          else{
          UIActionSheet *actionSheet=[[UIActionSheet alloc]init];
          [actionSheet setDelegate:self];
@@ -200,9 +208,7 @@
      if ([actionSheet tag]==1111)
     {
                if (![[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Cancel"]) {
-            search.text=[actionSheet buttonTitleAtIndex:buttonIndex];
-            [search setShowsCancelButton:YES];
-            [search becomeFirstResponder];
+            
             emailphoneBook= [actionSheet buttonTitleAtIndex:buttonIndex];
             isphoneBook=YES;
             [self getMemberIdByUsingUserNameFromPhoneBook];
@@ -211,22 +217,6 @@
 }
 
 -(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier{
-//    [_addressBookController.view removeConstraints:_addressBookController.view.constraints];
-//    if (kABPersonEmailProperty == property)
-//    {
-//        ABMultiValueRef multi = ABRecordCopyValue(person, kABPersonEmailProperty);
-//        NSString *email = (__bridge NSString *)ABMultiValueCopyValueAtIndex(multi, identifier);
-//        NSLog(@"email: %@", email);
-//        search.text=email;
-//        [search setShowsCancelButton:YES];
-//        [search becomeFirstResponder];
-//        emailphoneBook= email;
-//         isphoneBook=YES;
-//        [_addressBookController dismissViewControllerAnimated:YES completion:^{
-//            [self.contacts reloadData];
-//        }];
-//        return NO;
-//    }
     return YES;
 }
 
@@ -542,6 +532,17 @@
            
         }
     }
+    else if (alertView.tag==4 && buttonIndex==0){
+        isEmailEntry=NO;
+        emailEntry=NO;
+        isphoneBook=NO;
+        isRecentList=YES;
+        searching=NO;
+        search.text=@"";
+        [search setShowsCancelButton:NO];
+        [search resignFirstResponder];
+        [self.contacts reloadData];
+    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -581,11 +582,10 @@
     {
         return 1;
     }
-    else if (isphoneBook)
-    {
-        return 1;
-    }
+    else{
+        
     return [self.recents count];
+    }
     
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -615,15 +615,7 @@
     
     [cell.contentView addSubview:pic];
     [cell.contentView addSubview:npic];
-    if (isphoneBook) {
-        [pic removeFromSuperview];
-        [npic removeFromSuperview];
-        cell.indentationWidth = 10;
-        
-        cell.textLabel.text = [NSString stringWithFormat:@"Send to %@",emailphoneBook];
-        return cell;
-
-    }
+    
     if (searching) {
         //Nooch User
         npic.hidden=NO;
@@ -718,10 +710,7 @@
         [tableView reloadData];
         return;
     }
-    if (isphoneBook) {
-        [self getMemberIdByUsingUserNameFromPhoneBook];
-        return;
-    }
+   
     if (emailEntry){
         [self getMemberIdByUsingUserName];
         return;

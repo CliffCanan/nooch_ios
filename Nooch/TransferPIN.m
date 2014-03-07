@@ -683,7 +683,7 @@
                     [transactionInputTransfer setValue:state forKey:@"State"];
                     [transactionInputTransfer setValue:country forKey:@"Country"];
                     [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
-                    transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[[NSUserDefaults standardUserDefaults] objectForKey:@"OAuthToken"],@"accessToken"
+                                       transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[[NSUserDefaults standardUserDefaults] objectForKey:@"OAuthToken"],@"accessToken"
                                            , nil];
                     postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
                                     
@@ -846,6 +846,22 @@
             if([[dictResult objectForKey:@"Result"] isEqualToString:@"Success"]){
                 transactionInputTransfer=[[NSMutableDictionary alloc]init];
                 [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
+                if ([[assist shared] getTranferImage]) {
+                    NSData *data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
+                    NSUInteger len = data.length;
+                    uint8_t *bytes = (uint8_t *)[data bytes];
+                    NSMutableString *result1 = [NSMutableString stringWithCapacity:len * 3];
+                    for (NSUInteger i = 0; i < len; i++) {
+                        if (i) {
+                            [result1 appendString:@","];
+                        }
+                        [result1 appendFormat:@"%d", bytes[i]];
+                    }
+                    NSArray*arr=[result1 componentsSeparatedByString:@","];
+                    [transactionInputTransfer setValue:arr forKey:@"Picture"];
+                }
+                [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
+
                 // [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
                 
                 [transactionInputTransfer setValue:encryptedPINNonUser forKey:@"PinNumber"];

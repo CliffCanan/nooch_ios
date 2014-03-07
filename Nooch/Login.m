@@ -265,10 +265,10 @@
         NSString *udid=[[UIDevice currentDevice] uniqueDeviceIdentifier];
         //nslog(@"%@",udid);
         [[assist shared]setlocationAllowed:YES];
-         
+        [[NSUserDefaults standardUserDefaults] setObject:self.email.text forKey:@"email"];
+
         if ([self.stay_logged_in isOn]) {
             
-          
             [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:YES lat:lat lon:lon uid:udid];
         }
         else{

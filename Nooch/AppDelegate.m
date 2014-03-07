@@ -220,6 +220,9 @@ void exceptionHandler(NSException *exception){
         NSString *message = [[userInfo valueForKey:@"aps"] valueForKey:@"alert"];
         [METoast resetToastAttribute];
         [METoast toastWithMessage:message];
+        NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
+        
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     }
     else{
     [[UAPush shared] handleNotification:userInfo
@@ -228,10 +231,11 @@ void exceptionHandler(NSException *exception){
     
     [[UAPush shared] setBadgeNumber:0];
     [[UAPush shared] resetBadge];
+        NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
+        
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[UIApplication sharedApplication] applicationIconBadgeNumber]+1];
     }// zero badge after push received
-    NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
-    
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[UIApplication sharedApplication] applicationIconBadgeNumber]+1];
+   
     
 }
 
