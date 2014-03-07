@@ -13,6 +13,7 @@
 @interface TransactionDetails : UIViewController<serveD,UIAlertViewDelegate>{
     GMSMapView *mapView_;
     UIView*blankView;
+    UILabel *amount;
 }
 - (id)initWithData:(NSDictionary *)trans;
 

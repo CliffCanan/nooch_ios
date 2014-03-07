@@ -196,10 +196,10 @@
     [self.view addSubview:other_party];
     
     
-    UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 60, 320, 60)];
-    if ([self.trans objectForKey:@"Amount"]!=NULL) {
-        [amount setText:[NSString stringWithFormat:@"$%.02f",[[self.trans valueForKey:@"Amount"] floatValue]]];
-    }
+    amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 60, 320, 60)];
+//    if ([self.trans objectForKey:@"Amount"]!=NULL) {
+//        [amount setText:[NSString stringWithFormat:@"$%.02f",[[self.trans valueForKey:@"Amount"] floatValue]]];
+//    }
     
     [amount setStyleClass:@"details_amount"];
     [amount setTextAlignment:NSTextAlignmentCenter];
@@ -688,7 +688,7 @@
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     
-    //
+
     if ([tagName isEqualToString:@"tranDetail"]) {
         [blankView removeFromSuperview];
         NSError *error;
@@ -752,6 +752,12 @@
             
             
         }
+        if ([self.trans objectForKey:@"Amount"]!=NULL) {
+            [amount setText:[NSString stringWithFormat:@"$%.02f",[[loginResult valueForKey:@"Amount"] floatValue]]];
+        }
+        
+        [amount setStyleClass:@"details_amount"];
+        [amount setTextAlignment:NSTextAlignmentCenter];
         
         UILabel *location = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 320, 60)];
         CGRect frame = location.frame;
