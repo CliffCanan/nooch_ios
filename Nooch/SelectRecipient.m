@@ -45,7 +45,10 @@
         
         UIBarButtonItem *DoneItem = [[UIBarButtonItem alloc] initWithCustomView:Done];
         [self.navigationItem setRightBarButtonItem:DoneItem];
-        isRecentList=YES;
+        isRecentList=NO;
+        if ([arrRequestPersons count]==0) {
+            arrRequestPersons=[self.recents mutableCopy];
+        }
         
         [self.contacts reloadData];
         
@@ -74,7 +77,7 @@
         [recents setTagName:@"recents"];
         [recents setDelegate:self];
         [recents getRecents];
-
+        
         //[self.contacts reloadData];
     }
     
@@ -86,7 +89,7 @@
         [alert show];
         return;
     }
-   
+    
     isAddRequest=NO;
     HowMuch *how_much = [[HowMuch alloc] init];
     
@@ -144,7 +147,7 @@
     [self.view addSubview:spinner];
     spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
     [spinner startAnimating];
-   }
+}
 -(void)phonebook:(id)sender
 {
     _addressBookController = [[ABPeoplePickerNavigationController alloc] init];
@@ -152,8 +155,8 @@
     [self.view removeConstraints:self.view.constraints];
     NSArray *displayedItems = [NSArray arrayWithObjects:
                                [NSNumber numberWithInt:kABPersonEmailProperty],
-                                nil];
-  
+                               nil];
+    
     _addressBookController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _addressBookController.view.translatesAutoresizingMaskIntoConstraints=YES;
 	[_addressBookController.view removeConstraints:_addressBookController.view.constraints];
@@ -166,34 +169,34 @@
     emailAddresses = (__bridge NSArray *)ABMultiValueCopyArrayOfAllValues(emailMultiValue) ;
     NSLog(@"%@",emailAddresses);
     CFRelease(emailMultiValue);
-     [_addressBookController dismissViewControllerAnimated:YES completion:^{
-         if ([emailAddresses count]==0) {
-             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"No email attached with the user!" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-             [alert show];
-         }
-         else if ([emailAddresses count]==1){
-           //  search.text=[emailAddresses objectAtIndex:0];
-             //[search setShowsCancelButton:YES];
+    [_addressBookController dismissViewControllerAnimated:YES completion:^{
+        if ([emailAddresses count]==0) {
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"No email attached with the user!" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            [alert show];
+        }
+        else if ([emailAddresses count]==1){
+            //  search.text=[emailAddresses objectAtIndex:0];
+            //[search setShowsCancelButton:YES];
             // [search becomeFirstResponder];
-             emailphoneBook= [emailAddresses objectAtIndex:0];
-             isphoneBook=YES;
-             [self getMemberIdByUsingUserNameFromPhoneBook];
-         }
-         else{
-         UIActionSheet *actionSheet=[[UIActionSheet alloc]init];
-         [actionSheet setDelegate:self];
-         for (int i=0 ; i<[emailAddresses count];i++) {
-             [actionSheet addButtonWithTitle:[NSString stringWithFormat:@"%@",[emailAddresses objectAtIndex:i]]];
-         }
-         actionSheet.tag=1111;
-         [actionSheet addButtonWithTitle:@"Cancel"];
-         [actionSheet showInView:self.view];
-         }
-     }];
+            emailphoneBook= [emailAddresses objectAtIndex:0];
+            isphoneBook=YES;
+            [self getMemberIdByUsingUserNameFromPhoneBook];
+        }
+        else{
+            UIActionSheet *actionSheet=[[UIActionSheet alloc]init];
+            [actionSheet setDelegate:self];
+            for (int i=0 ; i<[emailAddresses count];i++) {
+                [actionSheet addButtonWithTitle:[NSString stringWithFormat:@"%@",[emailAddresses objectAtIndex:i]]];
+            }
+            actionSheet.tag=1111;
+            [actionSheet addButtonWithTitle:@"Cancel"];
+            [actionSheet showInView:self.view];
+        }
+    }];
     
     
     
-     return NO;
+    return NO;
     
 }
 - (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
@@ -204,10 +207,10 @@
     }
 }
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-   
-     if ([actionSheet tag]==1111)
+    
+    if ([actionSheet tag]==1111)
     {
-               if (![[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Cancel"]) {
+        if (![[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Cancel"]) {
             
             emailphoneBook= [actionSheet buttonTitleAtIndex:buttonIndex];
             isphoneBook=YES;
@@ -283,6 +286,10 @@
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     [searchBar resignFirstResponder];
     [searchBar setShowsCancelButton:NO];
+    if ([[assist shared]isRequestMultiple]) {
+        [self getMemberIdByUsingUserName];
+        return;
+    }
     //newTransfersDecrement = newTransfers;
     [self.contacts reloadData];
 }
@@ -320,6 +327,9 @@
             [arrow setHidden:YES];
             [em setHidden:YES];
             [self.contacts setHidden:NO];
+            if ([[assist shared]isRequestMultiple]) {
+                return;
+            }
         }
         else{
             isphoneBook=NO;
@@ -436,7 +446,7 @@
                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
-         NSLog(@"%@",self.recents);
+        NSLog(@"%@",self.recents);
         if ([self.recents count]>0) {
             [self.contacts setHidden:NO];
             [self.contacts reloadData];
@@ -483,8 +493,25 @@
         }
         else
         {
-            
-            //[me endWaitStat];
+            if ([[assist shared]isRequestMultiple]) {
+                UIAlertView *alertRedirectToProfileScreen=[[UIAlertView alloc]initWithTitle:@"Unknown" message:@"We at Nooch have no knowledge of this email address. You can't make request to this mail address?" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil,nil];
+                
+                [alertRedirectToProfileScreen show];
+                [spinner stopAnimating];
+                [spinner setHidden:YES];
+                // histSearch = NO;
+                searching = NO;
+                emailEntry=NO;
+                isRecentList=NO;
+                isphoneBook=NO;
+                [search resignFirstResponder];
+                [search setText:@""];
+                
+                [search setShowsCancelButton:NO];
+                
+                [self.contacts reloadData];
+                return;
+            }
             UIAlertView *alertRedirectToProfileScreen=[[UIAlertView alloc]initWithTitle:@"Unknown" message:@"We at Nooch have no knowledge of this email address. Do you still want to Transfer to this mail address?" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES",nil];
             [alertRedirectToProfileScreen setTag:20220];
             [alertRedirectToProfileScreen show];
@@ -504,6 +531,27 @@
                              options:kNilOptions
                              error:&error]];
         NSLog(@"%@",dict);
+        if ([[assist shared]isRequestMultiple]) {
+            emailEntry=YES;
+            int loc=0;
+            for (int i=0;i<[arrRequestPersons count]; i++) {
+                if ([[[arrRequestPersons objectAtIndex:i]valueForKey:@"MemberId"]isEqualToString:[dict valueForKey:@"MemberId"]]) {
+                    loc=1;
+                    
+                }
+            }
+            
+            if (loc==0) {
+                NSString*PhotoUrl=[dict valueForKey:@"PhotoUrl"];
+                [dict setObject:PhotoUrl forKey:@"Photo"];
+                [arrRequestPersons addObject:dict];
+                
+                
+            }
+            [self.contacts reloadData];
+            return;
+            
+        }
         isEmailEntry=YES;
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
         
@@ -529,7 +577,7 @@
             
             [self.navigationController pushViewController:how_much animated:YES];
             
-           
+            
         }
     }
     else if (alertView.tag==4 && buttonIndex==0){
@@ -578,13 +626,18 @@
     if (searching) {
         return [arrSearchedRecords count];
     }
+    else if ([[assist shared] isRequestMultiple])
+    {
+        return [arrRequestPersons count];
+    }
+    
     else if (emailEntry)
     {
         return 1;
     }
     else{
         
-    return [self.recents count];
+        return [self.recents count];
     }
     
 }
@@ -618,6 +671,7 @@
     
     if (searching) {
         //Nooch User
+        
         npic.hidden=NO;
         [npic setFrame:CGRectMake(260,25, 20, 20)];
         [npic setImage:[UIImage imageNamed:@"n_Icon.png"]];
@@ -633,7 +687,48 @@
         pic.layer.cornerRadius = 30; pic.layer.borderWidth = 1;
         pic.layer.borderColor = [Helpers hexColor:@"6D6E71"].CGColor;
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",info[@"FirstName"],info[@"LastName"]];
+        if ([[assist shared] isRequestMultiple]) {
+            [npic removeFromSuperview];
+            arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
+            if ([arrRecipientsForRequest containsObject:info]) {
+                cell.accessoryType=UITableViewCellAccessoryCheckmark;
+            }
+            else
+                cell.accessoryType=UITableViewCellAccessoryNone;
+            
+            
+        }
+        else
+            cell.accessoryType=UITableViewCellAccessoryNone;
+        
     }
+    else if ([[assist shared] isRequestMultiple]) {
+        //Recent List
+        
+        [npic setFrame:CGRectMake(260,25, 20, 20)];
+        [npic setImage:[UIImage imageNamed:@"n_Icon.png"]];
+        NSDictionary *info = [arrRequestPersons objectAtIndex:indexPath.row];
+        NSLog(@"%@",info);
+        [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
+            placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+        pic.hidden=NO;
+        cell.indentationWidth = 70;
+        [pic setFrame:CGRectMake(20, 5, 60, 60)];
+        pic.layer.cornerRadius = 30; pic.layer.borderColor = [Helpers hexColor:@"6D6E71"].CGColor; pic.layer.borderWidth = 1;
+        [cell setIndentationLevel:1];
+        cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",info[@"FirstName"],info[@"LastName"]];
+        
+        
+        [npic removeFromSuperview];
+        arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
+        if ([arrRecipientsForRequest containsObject:info])
+            cell.accessoryType=UITableViewCellAccessoryCheckmark;
+        else
+            cell.accessoryType=UITableViewCellAccessoryNone;
+        
+    }
+    
+    
     else if(isRecentList){
         
         //Recent List
@@ -651,27 +746,28 @@
         [cell setIndentationLevel:1];
         cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",info[@"FirstName"],info[@"LastName"]];
         
-        if ([[assist shared] isRequestMultiple]) {
-            [npic removeFromSuperview];
-            arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
-            if ([arrRecipientsForRequest containsObject:info]) {
-                cell.accessoryType=UITableViewCellAccessoryCheckmark;
-            }
-            else
-                cell.accessoryType=UITableViewCellAccessoryNone;
-            
-            
-        }
-        else
-            cell.accessoryType=UITableViewCellAccessoryNone;
+        //        if ([[assist shared] isRequestMultiple]) {
+        //            [npic removeFromSuperview];
+        //            arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
+        //            if ([arrRecipientsForRequest containsObject:info]) {
+        //                cell.accessoryType=UITableViewCellAccessoryCheckmark;
+        //            }
+        //            else
+        //                cell.accessoryType=UITableViewCellAccessoryNone;
+        //
+        //
+        //        }
+        //        else
+        cell.accessoryType=UITableViewCellAccessoryNone;
     }
     else if(emailEntry){
         //Email
+        cell.accessoryType=UITableViewCellAccessoryNone;
         [pic removeFromSuperview];
         [npic removeFromSuperview];
         cell.indentationWidth = 10;
-        
         cell.textLabel.text = [NSString stringWithFormat:@"Send to %@",search.text];
+        
         return cell;
     }
     return cell;
@@ -688,8 +784,10 @@
     
     if ([[assist shared] isRequestMultiple]) {
         
-        NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];
-        
+        NSDictionary *receiver =  [arrRequestPersons objectAtIndex:indexPath.row];
+        if (searching) {
+            receiver =  [arrSearchedRecords objectAtIndex:indexPath.row];
+        }
         arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
         NSLog(@"%@",arrRecipientsForRequest);
         if ([arrRecipientsForRequest containsObject:receiver]) {
@@ -710,7 +808,7 @@
         [tableView reloadData];
         return;
     }
-   
+    
     if (emailEntry){
         [self getMemberIdByUsingUserName];
         return;
