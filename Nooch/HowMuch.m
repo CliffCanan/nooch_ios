@@ -121,7 +121,7 @@
     }
     
     [self.view addSubview:to_label];
-    if (![self.receiver valueForKey:@"nonuser"] &&  !isPayBack && !isEmailEntry && !isUserByLocation) {
+    if (![self.receiver valueForKey:@"nonuser"] &&  !isPayBack  && !isUserByLocation) {
         UIButton*add=[[UIButton alloc]initWithFrame:CGRectMake(260, 15, 30, 30)];
         [add setImage:[UIImage imageNamed:@"add-icon-white.png"] forState:UIControlStateNormal];
         [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];

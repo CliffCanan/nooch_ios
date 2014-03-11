@@ -46,10 +46,38 @@
         UIBarButtonItem *DoneItem = [[UIBarButtonItem alloc] initWithCustomView:Done];
         [self.navigationItem setRightBarButtonItem:DoneItem];
         isRecentList=NO;
+        searching = NO;
+        emailEntry=NO;
+        isRecentList=YES;
+        isphoneBook=NO;
+        [search resignFirstResponder];
+        [search setText:@""];
+        
+        [search setShowsCancelButton:NO];
         if ([arrRequestPersons count]==0) {
             arrRequestPersons=[self.recents mutableCopy];
         }
-        
+        else
+        {
+            int loc=-1;
+            for (int i=0;i<[self.recents count];i++) {
+                NSDictionary*dict=[self.recents objectAtIndex:i];
+                
+                for (int j=0;j<[arrRequestPersons count];j++) {
+                   
+                   NSDictionary*dictSub=[arrRequestPersons objectAtIndex:j];
+                    NSLog(@"%@",[dict valueForKey:@"MemberId"]);
+                      NSLog(@"%@",[dictSub valueForKey:@"MemberId"]);
+                    if ([[dict valueForKey:@"MemberId"]isEqualToString:[dictSub valueForKey:@"MemberId"]])
+                        loc=1;
+                    
+                }
+                if (loc==-1) {
+                      NSLog(@"%@",[dict valueForKey:@"MemberId"]);
+                    [arrRequestPersons addObject:dict];
+                }
+            }
+        }
         [self.contacts reloadData];
         
         
@@ -110,7 +138,7 @@
     isphoneBook=NO;
     [arrRecipientsForRequest removeAllObjects];
     [[assist shared]setArray:[arrRecipientsForRequest copy]];
-    
+    arrRequestPersons=[[NSMutableArray alloc]init];
     //    //clear Image cache
     //    SDImageCache *imageCache = [SDImageCache sharedImageCache];
     //    [imageCache clearMemory];
@@ -351,15 +379,29 @@
 - (void) searchTableView
 {
     arrSearchedRecords =[[NSMutableArray alloc]init];
-    for (NSMutableDictionary *dict in self.recents)
-    {
-        
-        NSComparisonResult result = [[dict valueForKey:@"FirstName"] compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
-        if (result == NSOrderedSame)
+    if ([[assist shared]isRequestMultiple]) {
+        for (NSMutableDictionary *dict in arrRequestPersons)
         {
-            [arrSearchedRecords addObject:dict];
+            
+            NSComparisonResult result = [[dict valueForKey:@"FirstName"] compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
+            if (result == NSOrderedSame)
+            {
+                [arrSearchedRecords addObject:dict];
+            }
         }
     }
+    else{
+        for (NSMutableDictionary *dict in self.recents)
+        {
+            
+            NSComparisonResult result = [[dict valueForKey:@"FirstName"] compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
+            if (result == NSOrderedSame)
+            {
+                [arrSearchedRecords addObject:dict];
+            }
+        }
+    }
+    
 }
 #pragma mark - email handling
 -(void)getMemberIdByUsingUserName{
@@ -552,10 +594,31 @@
             return;
             
         }
-        isEmailEntry=YES;
-        HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
-        
-        [self.navigationController pushViewController:how_much animated:YES];
+        else{
+            
+            isEmailEntry=NO;
+            int loc=0;
+            for (int i=0;i<[arrRequestPersons count]; i++) {
+                if ([[[arrRequestPersons objectAtIndex:i]valueForKey:@"MemberId"]isEqualToString:[dict valueForKey:@"MemberId"]]) {
+                    loc=1;
+                    
+                }
+            }
+            
+            if (loc==0) {
+                NSString*PhotoUrl=[dict valueForKey:@"PhotoUrl"];
+                [dict setObject:PhotoUrl forKey:@"Photo"];
+                [arrRequestPersons addObject:dict];
+                
+                
+            }
+
+           
+            HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
+            
+            [self.navigationController pushViewController:how_much animated:YES];
+        }
+       
         
     }
     
@@ -840,9 +903,6 @@
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
-    
-    
-    
     
 }
 
