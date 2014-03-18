@@ -28,6 +28,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setTitle:@"Security Settings"];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];

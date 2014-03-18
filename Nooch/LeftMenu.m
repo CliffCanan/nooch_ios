@@ -20,6 +20,7 @@
 #import "assist.h"
 #import "privacy.h"
 #import "terms.h"
+#import "WTGlyphFontSet.h"
 @interface LeftMenu ()
 @property(nonatomic,strong) UITableView *menu;
 @property(nonatomic) NSIndexPath *selected;
@@ -42,6 +43,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
+    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
+    [ttt setImage:[UIImage imageGlyphNamed:@"cogs" height:40 color:[UIColor whiteColor]]];
+    
     self.selected = 0,0;
     [self.view setBackgroundColor:kNoochMenu];
     
@@ -80,6 +85,7 @@
     
     UIButton *settings = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [settings setStyleId:@"settings_icon"];
+    [settings setBackgroundImage:ttt.image forState:UIControlStateNormal];
     [settings addTarget:self action:@selector(go_settings) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:settings];
     
@@ -98,17 +104,16 @@
     // assist*assistOBJ=[assist new];
     //clear Image cache
     [self.name setText:[[user objectForKey:@"firstName"] capitalizedString]];
-    
-    if ([user objectForKey:@"Balance"]) {
-        if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound)
-            [self.balance setText:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]]];
-        else
-            [self.balance setText:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]]];
-        
-    } else {
-        [self.balance setText:[NSString stringWithFormat:@"$%@",@"0.00"]];
-    }
-    NSLog(@"%@",[user objectForKey:@"Photo"]);
+    [self.balance setText:[[user objectForKey:@"lastName"] capitalizedString]];
+    /*if ([user objectForKey:@"Balance"]) {
+     if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound)
+     [self.balance setText:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]]];
+     else
+     [self.balance setText:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]]];
+     
+     } else {
+     [self.balance setText:[NSString stringWithFormat:@"$%@",@"0.00"]];
+     }*/
     if ([[user objectForKey:@"Photo"] length]>0 && [user objectForKey:@"Photo"]!=nil) {
         [user_pic setStyleId:@"lside_userpic"];
         [user_pic setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
@@ -117,7 +122,6 @@
         user_pic.layer.cornerRadius = 30;
         user_pic.layer.borderWidth = 2; user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
         [user_pic setUserInteractionEnabled:YES];
-        
     }
 }
 -(void) go_profile {
@@ -210,6 +214,10 @@
             [subview removeFromSuperview];
         }
     }
+    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
+    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
+    [ttt setImage:[UIImage imageGlyphNamed:@"time" height:40 color:[UIColor whiteColor]]];
+    
     cell.indentationLevel = 1;
     cell.indentationWidth = 30;
     cell.textLabel.textColor = [UIColor whiteColor];
@@ -217,45 +225,63 @@
     cell.textLabel.font = [UIFont fontWithName:@"Roboto-Light" size:18];
     
     UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(10, 9, 25, 25)];
-    if (indexPath.section == 0) {
+    if (indexPath.section == 0)
+    {
         if (indexPath.row == 0) {
             cell.textLabel.text = @"Home";
             iv.image = [UIImage imageNamed:@"n_Icon_58x66.png"];
         }else if(indexPath.row == 1){
             cell.textLabel.text = @"Transaction History";
-            [iv setFrame:CGRectMake(11, 9, 27, 27)];
-            iv.image = [UIImage imageNamed:@"Clock_Icon.png"];
+            iv.image = ttt.image;
+            [iv setFrame:CGRectMake(7, 7, 28, 29)];
         }else if (indexPath.row == 2){
             cell.textLabel.text = @"Statistics";
             iv.image = [UIImage imageNamed:@"Stats_Icon.png"];
         }
-    }else if(indexPath.section == 1){
-        //[cell setAccessoryType:UITableViewCellAccessoryDetailButton];
+    }
+    else if(indexPath.section == 1)
+    {
         if (indexPath.row == 0) {
             cell.textLabel.text = @"Donate to a Cause";
-            iv.image = [UIImage imageNamed:@"Ribbon_Icon.png"];
+            [ttt setImage:[UIImage imageGlyphNamed:@"globe" height:30 color:[UIColor whiteColor]]];
+            iv.image = ttt.image;
+            [iv setFrame:CGRectMake(7, 7, 28, 30)];
         }
-    }else if(indexPath.section == 2){
+    }
+    else if(indexPath.section == 2)
+    {
         if (indexPath.row == 0) {
             cell.textLabel.text = @"Refer a Friend";
-            iv.image = [UIImage imageNamed:@"ReferAFriend_Icon.png"];
+            [ttt setImage:[UIImage imageGlyphNamed:@"group" height:25 color:[UIColor whiteColor]]];
+            iv.image = ttt.image;
+            [iv setFrame:CGRectMake(7, 7, 24, 24)];
         }else if(indexPath.row == 1){
             cell.textLabel.text = @"Rate Nooch";
-            iv.image = [UIImage imageNamed:@"RateNooch_Icon.png"];
+            [ttt setImage:[UIImage imageGlyphNamed:@"star" height:25 color:[UIColor whiteColor]]];
+            iv.image = ttt.image;
+            [iv setFrame:CGRectMake(7, 7, 24, 24)];
         }
-    }else if(indexPath.section == 3){
+    }
+    else if(indexPath.section == 3)
+    {
         if (indexPath.row == 0) {
             cell.textLabel.text = @"How Nooch Works";
-            iv.image = [UIImage imageNamed:@"Help_Icon.png"];
+            [ttt setImage:[UIImage imageGlyphNamed:@"question" height:25 color:[UIColor whiteColor]]];
+            iv.image = ttt.image;
+            [iv setFrame:CGRectMake(7, 7, 26, 30)];
         }else if(indexPath.row == 1){
             cell.textLabel.text = @"Contact Support";
-            iv.image = [UIImage imageNamed:@"Diamonds_Icon.png"];
+            [ttt setImage:[UIImage imageGlyphNamed:@"envelope" height:25 color:[UIColor whiteColor]]];
+            iv.image = ttt.image;
+            [iv setFrame:CGRectMake(7, 7, 24, 23)];
         }else if(indexPath.row == 2){
             cell.textLabel.text =  @"Limits & Fees";
             iv.image = [UIImage imageNamed:@"LimitsAndFees_Icon.png"];
         }else if(indexPath.row == 3) {
             cell.textLabel.text = @"Legal Info";
-            iv.image = [UIImage imageNamed:@"LegalStuff_Icon.png"];
+            [ttt setImage:[UIImage imageGlyphNamed:@"legal" height:25 color:[UIColor whiteColor]]];
+            iv.image = ttt.image;
+            [iv setFrame:CGRectMake(7, 7, 24, 24)];
         }
     }
     [cell.contentView addSubview:iv];
@@ -275,7 +301,7 @@
             [imageCache clearMemory];
             [imageCache clearDisk];
             [imageCache cleanDisk];
-
+            
             HistoryFlat *hist = [[HistoryFlat alloc] init];
             [nav_ctrl pushViewController:hist animated:NO];
             [self.slidingViewController resetTopView];
@@ -353,7 +379,7 @@
             mailComposer.mailComposeDelegate = self;
             [mailComposer setSubject:[NSString stringWithFormat:@"Bug Report: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
             
-             mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+            mailComposer.navigationBar.tintColor=[UIColor whiteColor];
             [mailComposer setMessageBody:@"" isHTML:NO];
             [mailComposer setToRecipients:[NSArray arrayWithObjects:@"bugs@nooch.com",nil]];
             [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
@@ -372,7 +398,7 @@
             MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
             mailComposer.mailComposeDelegate = self;
             mailComposer.navigationBar.tintColor=[UIColor whiteColor];
-          
+            
             [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
             
             [mailComposer setMessageBody:@"" isHTML:NO];

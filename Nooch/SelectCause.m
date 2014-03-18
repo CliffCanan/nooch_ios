@@ -29,7 +29,7 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
+    [self.navigationItem setTitle:@"Select Cause"];
     // [self.list reloadData];
 }
 -(void)showMenu
@@ -41,7 +41,7 @@
     [super viewDidLoad];
     NSLog(@"%@",nav_ctrl.viewControllers);
     
-    
+    self.navigationController.navigationBar.topItem.title = @"";
     if (isOpenLeftSideBar) {
         [self.navigationItem setHidesBackButton:YES];
         UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];

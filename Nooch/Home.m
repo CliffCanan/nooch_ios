@@ -24,6 +24,10 @@ NSMutableURLRequest *request;
 @interface Home ()
 @property(nonatomic,strong) NSArray *transaction_types;
 @property(nonatomic,strong) UIButton *balance;
+@property(nonatomic,strong) UITableView *news_feed;
+@property(nonatomic,strong) UIImageView *close;
+@property(nonatomic,strong) UIView *popup;
+@property(nonatomic,strong) MBProgressHUD *hud;
 @end
 
 @implementation Home
@@ -66,26 +70,55 @@ NSMutableURLRequest *request;
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
-    self.balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.balance setFrame:CGRectMake(0, 0, 80, 30)];
-    // [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
-    if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
-        [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
-    }
-    else
-    {
-        [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
-    }
-    [self.balance.titleLabel setFont:kNoochFontMed];
-    [self.balance addTarget:self action:@selector(showFunds) forControlEvents:UIControlEventTouchUpInside];
-    [self.balance setStyleId:@"navbar_balance"];
-    [self.navigationItem setLeftBarButtonItem:nil];
+    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
+    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
+    [ttt setImage:[UIImage imageGlyphNamed:@"reorder" height:40 color:[UIColor whiteColor]]];
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
+    [hamburger setFrame:CGRectMake(0, 0, 30, 30)];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
-    [hamburger setStyleId:@"navbar_hamburger"];
+    [hamburger setBackgroundImage:ttt.image forState:UIControlStateNormal];
     UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
+    
+    self.balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.balance setFrame:CGRectMake(0, 0, 30, 30)];
+    /*
+     if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
+     [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+     }
+     else
+     {
+     [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
+     }
+     */
+    
+    [self.balance addTarget:self action:@selector(show_news) forControlEvents:UIControlEventTouchUpInside];
+    [self.balance setStyleId:@"navbar_balance"];
+    [ttt setImage:[UIImage imageGlyphNamed:@"flag" height:64.0f color:[UIColor whiteColor]]];
+    [self.balance setBackgroundImage:ttt.image forState:UIControlStateNormal];
+    
+    self.popup = [UIView new];
+    [self.popup setStyleId:@"news_popup"];
+    
+    self.news_feed = [UITableView new];
+    [self.news_feed setDelegate:self];
+    [self.news_feed setDataSource:self];
+    [self.news_feed setStyleId:@"news_feed"];
+    self.news_feed.clipsToBounds = YES;
+    self.news_feed.layer.masksToBounds = YES;
+    [self.popup addSubview:self.news_feed];
+    
+    self.close = [UIImageView new];
+    [self.close setStyleId:@"close_news"];
+    
+    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
+    [ttt setImage:[UIImage imageGlyphNamed:@"caret-up" height:64.0f color:[UIColor whiteColor]]];
+    
+    [self.close setImage:ttt.image];
+    
+    UITapGestureRecognizer *tap = [UITapGestureRecognizer new];
+    [tap addTarget:self action:@selector(hide_news)];
+    [self.view addGestureRecognizer:tap];
     
     UIButton *top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [top_button setStyleClass:@"button_blue"];
@@ -119,8 +152,6 @@ NSMutableURLRequest *request;
             ProfileInfo *prof = [ProfileInfo new];
             [nav_ctrl pushViewController:prof animated:YES];
             [self.slidingViewController resetTopView];
-            
-            
         }
         me = [core new];
         [user removeObjectForKey:@"Balance"];
@@ -132,7 +163,6 @@ NSMutableURLRequest *request;
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
-        //[nav_ctrl performSelector:@selector(disable)];
         [user removeObjectForKey:@"Balance"];
         Register*reg=[Register new];
         [nav_ctrl pushViewController:reg animated:NO];
@@ -140,32 +170,41 @@ NSMutableURLRequest *request;
     }
     
     //if they have required immediately turned on or haven't selected the option yet, redirect them to PIN screen
-    if (![user objectForKey:@"requiredImmediately"]) {
+    if (![user objectForKey:@"requiredImmediately"])
+    {
         ReEnterPin*pin=[ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
-        
-    }else if([[user objectForKey:@"requiredImmediately"] boolValue]){
+    }
+    else if([[user objectForKey:@"requiredImmediately"] boolValue])
+    {
         ReEnterPin*pin=[ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
-        
     }
 }
+
 -(void)updateLoader{
-    if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
-        [self.navigationItem setRightBarButtonItem:Nil];
-        if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound) {
-            [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
-        }
-        else
-            [self.balance setTitle:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
-        UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
-        [self.navigationItem setRightBarButtonItem:funds];
-    }
-    else
-    {
-        [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];    }
-    
-    
+    /*
+     if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
+     [self.navigationItem setRightBarButtonItem:Nil];
+     if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound) {
+     [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+     }
+     else
+     [self.balance setTitle:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+     UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
+     [self.navigationItem setRightBarButtonItem:funds];
+     }
+     else
+     {
+     [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
+     }
+     */
+    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
+    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
+    [ttt setImage:[UIImage imageGlyphNamed:@"flag" height:40 color:[UIColor whiteColor]]];
+    [self.balance setBackgroundImage:ttt.image forState:UIControlStateNormal];
+    UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
+    [self.navigationItem setRightBarButtonItem:funds];
 }
 - (NSString *)autoLogin{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -198,10 +237,11 @@ NSMutableURLRequest *request;
           if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
               [self.navigationItem setRightBarButtonItem:Nil];
               if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound) {
-                  [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+                  //[self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
               }
-              else
-                  [self.balance setTitle:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+              else{
+                  //[self.balance setTitle:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
+              }
               UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
               [self.navigationItem setRightBarButtonItem:funds];
           }
@@ -231,12 +271,13 @@ NSMutableURLRequest *request;
     if (![self.view.subviews containsObject:blankView] && [[assist shared]needsReload]) {
         blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
         [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
-        UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
-        [actv startAnimating];
-        [blankView addSubview:actv];
-        [self .view addSubview:blankView];
-        [self.view bringSubviewToFront:blankView];
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:self.hud];
+        
+        self.hud.delegate = self;
+        self.hud.labelText = @"Loading your Nooch account";
+        
+        [self.hud showWhileExecuting:@selector(myTask) onTarget:self withObject:nil animated:YES];
         }
         if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
             serve *serveOBJ=[serve new ];
@@ -259,6 +300,81 @@ NSMutableURLRequest *request;
         me = [core new];
         return;
     }
+}
+
+- (void)myTask {
+	// This just increases the progress indicator in a loop
+	float progress = 0.0f;
+	while (progress < 1.0f) {
+		progress += 0.01f;
+		self.hud.progress = progress;
+		usleep(50000);
+	}
+}
+
+#pragma mark - news feed
+-(void)show_news
+{
+    [self.balance removeTarget:self action:@selector(show_news) forControlEvents:UIControlEventTouchUpInside];
+    [self.balance addTarget:self action:@selector(hide_news) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.navigationController.view addSubview:self.popup];
+    [self.navigationController.view addSubview:self.close];
+    
+    [self.news_feed reloadData];
+}
+
+-(void)hide_news
+{
+    [self.balance removeTarget:self action:@selector(hide_news) forControlEvents:UIControlEventTouchUpInside];
+    [self.balance addTarget:self action:@selector(show_news) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.popup removeFromSuperview];
+    [self.close removeFromSuperview];
+}
+
+#pragma mark - Table view data source
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+    return 4;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    }
+    for(UIView *subview in cell.contentView.subviews)
+        [subview removeFromSuperview];
+    // Configure the cell...
+    
+    UILabel *test = [[UILabel alloc] initWithFrame:CGRectMake(70, 15, 150, 30)];
+    [test setFont:[UIFont fontWithName:@"Roboto-Regular" size:12]];
+    [test setBackgroundColor:[UIColor clearColor]];
+    [test setNumberOfLines:0];
+    [test setText:@"Paid you $1bil with the force, Yoda did"];
+    [cell.contentView addSubview:test];
+    
+    UILabel *time = [[UILabel alloc] initWithFrame:CGRectMake(70, 45, 150, 20)];
+    [time setFont:[UIFont fontWithName:@"Roboto-Light" size:10]];
+    [time setText:@"2 days ago"];
+    [time setTextColor:kNoochGrayLight];
+    [cell.contentView addSubview:time];
+    
+    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
+    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
+    [ttt setImage:[UIImage imageGlyphNamed:@"user" height:64.0f color:[UIColor darkGrayColor]]];
+    [cell.contentView addSubview:ttt];
+    return cell;
+}
+
+#pragma mark - table view delegate
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 -(void)showMenu

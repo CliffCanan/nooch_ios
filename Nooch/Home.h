@@ -12,6 +12,8 @@
 #import "serve.h"
 #import "core.h"
 #import "NavControl.h"
+#import "WTGlyphFontSet.h"
+#import "MBProgressHUD.h"
 core *me;
 #define kNoochBlue      [Helpers hexColor:@"41ABE1"]
 #define kNoochGreen     [Helpers hexColor:@"72BF44"]
@@ -25,7 +27,7 @@ core *me;
 #define kNoochFontLt [UIFont fontWithName:@"BrandonGrotesque-Light" size:18]
 UINavigationController *nav_ctrl;
 NSUserDefaults *user;
-@interface Home : UIViewController<serveD,CLLocationManagerDelegate>
+@interface Home : UIViewController<serveD,CLLocationManagerDelegate,MBProgressHUDDelegate,UITableViewDataSource,UITableViewDelegate>
 {
     CLLocationManager*locationManager;
     float lat,lon;

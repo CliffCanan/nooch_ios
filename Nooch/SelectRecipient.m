@@ -34,6 +34,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.navigationItem setTitle:@"Select Recipient"];
     if ([[assist shared] isRequestMultiple] && isAddRequest) {
         [self.navigationItem setRightBarButtonItem:Nil];
         UIButton *Done = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -127,6 +128,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setTitle:@"Select Recipient"];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];

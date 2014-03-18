@@ -66,6 +66,7 @@
 {
     [super viewDidLoad];
     //set right bar buton
+    self.navigationController.navigationBar.topItem.title = @"";
     UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     
     [balance setFrame:CGRectMake(0, 0, 60, 30)];
@@ -79,8 +80,8 @@
     
     [balance setStyleId:@"navbar_balance"];
     [self.navigationItem setRightBarButtonItem:Nil];
-    UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:balance];
-    [self.navigationItem setRightBarButtonItem:funds];
+    /*UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:balance];
+    [self.navigationItem setRightBarButtonItem:funds];*/
     
     getlocation = [[GetLocation alloc] init];
 	getlocation.delegate = self;
