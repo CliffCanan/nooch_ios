@@ -94,7 +94,6 @@
     
     [super viewWillAppear:animated];
     [self.navigationItem setTitle:@"Profile Info"];
-    
     if ([[user objectForKey:@"Photo"] length]>0 && [user objectForKey:@"Photo"]!=nil && !isPhotoUpdate) {
         
         [picture setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
