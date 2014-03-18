@@ -2012,14 +2012,30 @@
 		width			: 270px;
 		height			: 55px;
 		top				: 513px;  /* is this value right? */
-		left			: 0px;
+        left			: 0px;
 		background-image: linear-gradient(#69b9e0, #3fa5d9);
 	}
+    
+    #lside_bottombar_background_4 {
+        width			: 270px;
+		height			: 55px;
+		top				: 425px;  /* is this value right? */
+        left			: 0px;
+		background-image: linear-gradient(#69b9e0, #3fa5d9);
+    }
 
 	#settings_icon {
 		width			: 31px;
 		height			: 30px;
 		top				: 524px;
+		left			: 15px;
+		background-image: url(settings-icon2.png);
+	}
+    
+    #settings_icon_4 {
+		width			: 31px;
+		height			: 30px;
+		top				: 436px;
 		left			: 15px;
 		background-image: url(settings-icon2.png);
 	}
@@ -2031,11 +2047,32 @@
 		left			: 96px;
 		background-image: url(nooch_Logo.png);
 	}
+    
+    #nooch_whitelogo_4 {
+		width			: 80px;
+		height			: 26px;
+		top				: 433px;
+		left			: 96px;
+		background-image: url(nooch_Logo.png);
+	}
 	
 	#version_label {
 		width			: 80px;
 		height			: 12px;
 		top				: 551px;
+		left			: 96px;
+		color			: white;
+		font-family		: "Roboto";
+		font-size		: 10px;
+		font-weight		: regular;
+		text-align		: center;
+		letter-spacing	: expanded;
+	}
+    
+    #version_label_4 {
+		width			: 80px;
+		height			: 12px;
+		top				: 463px;
 		left			: 96px;
 		color			: white;
 		font-family		: "Roboto";
@@ -2400,6 +2437,12 @@
 		height				: 50px;
 		top					: 420px;
 	}
+    
+    .details_buttons_4 {
+		width				: 50px;
+		height				: 50px;
+		top					: 332px;
+	}
 
 	/**  Text labels immediately below each round button at the bottom of Transfer Details. **/
 	.details_buttons_labels {
@@ -2407,6 +2450,17 @@
         text-align          : center;
 		height				: 14px;
 		top					: 480px;
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 12px;
+		color 				: #6d6e71;
+	}
+    
+    .details_buttons_labels_4 {
+		width				: 55px;
+        text-align          : center;
+		height				: 14px;
+		top					: 392px;
 		font-family			: "Roboto";
 		font-weight         : regular;
 		font-size			: 12px;

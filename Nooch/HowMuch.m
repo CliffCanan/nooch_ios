@@ -64,20 +64,6 @@
     // Do any additional setup after loading the view from its nib.
     self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setTitle:@"How Much?"];
-    UIButton*backbtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [backbtn setFrame:CGRectMake(0, 0, 80, 40)];
-    [backbtn addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [backbtn setImage:[UIImage imageNamed:@"backbtn.png"] forState:UIControlStateNormal];
-    [backbtn setImage:[UIImage imageNamed:@"backbtn.png"] forState:UIControlStateHighlighted];
-    [backbtn setStyleId:@"navbar_back"];
-    
-    [self.navigationItem setLeftBarButtonItem:Nil];
-    
-    UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:backbtn];
-    
-    [self.navigationItem setLeftBarButtonItem:funds];
-    
 
     self.amnt = [@"" mutableCopy];
     self.decimals = YES;

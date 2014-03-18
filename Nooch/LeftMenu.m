@@ -80,21 +80,37 @@
     [user_pic addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profile)]];
     
     UIView *bottom_bar = [UIView new];
-    [bottom_bar setStyleId:@"lside_bottombar_background"];
+    if ([[UIScreen mainScreen] bounds].size.height < 520) {
+        [bottom_bar setStyleId:@"lside_bottombar_background_4"];
+    } else {
+        [bottom_bar setStyleId:@"lside_bottombar_background"];
+    }
     [self.view addSubview:bottom_bar];
     
     UIButton *settings = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [settings setStyleId:@"settings_icon"];
+    if ([[UIScreen mainScreen] bounds].size.height < 520) {
+        [settings setStyleId:@"settings_icon_4"];
+    } else {
+        [settings setStyleId:@"settings_icon"];
+    }
     [settings setBackgroundImage:ttt.image forState:UIControlStateNormal];
     [settings addTarget:self action:@selector(go_settings) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:settings];
     
     UIImageView *logo = [UIImageView new];
-    [logo setStyleId:@"nooch_whitelogo"];
+    if ([[UIScreen mainScreen] bounds].size.height < 520) {
+        [logo setStyleId:@"nooch_whitelogo_4"];
+    } else {
+        [logo setStyleId:@"nooch_whitelogo"];
+    }
     [self.view addSubview:logo];
     
     UILabel *version = [UILabel new];
-    [version setStyleId:@"version_label"];
+    if ([[UIScreen mainScreen] bounds].size.height < 520) {
+        [version setStyleId:@"version_label_4"];
+    } else {
+        [version setStyleId:@"version_label"];
+    }
     [version setText:@"version 1.1.1."];
     [self.view addSubview:version];
 }

@@ -43,20 +43,6 @@
     [super viewDidLoad];
     [[UIApplication sharedApplication]setStatusBarHidden:YES];
     [nav_ctrl performSelector:@selector(disable)];
-    /*NSArray *familyNames = [[NSArray alloc] initWithArray:[UIFont familyNames]];
-     NSArray *fontNames;
-     NSInteger indFamily, indFont;
-     for (indFamily=0; indFamily<[familyNames count]; ++indFamily)
-     {
-     NSLog(@"Family name: %@", [familyNames objectAtIndex:indFamily]);
-     fontNames = [[NSArray alloc] initWithArray:
-     [UIFont fontNamesForFamilyName:
-     [familyNames objectAtIndex:indFamily]]];
-     for (indFont=0; indFont<[fontNames count]; ++indFont)
-     {
-     NSLog(@"    Font name: %@", [fontNames objectAtIndex:indFont]);
-     }
-     }*/
     
     // Do any additional setup after loading the view from its nib.
     
@@ -69,18 +55,27 @@
     [self.view addSubview:logo];
     
     UILabel *signup = [[UILabel alloc] initWithFrame:CGRectMake(0, 115, 320, 15)];
-    [signup setText:@"Sign Up Below With"]; //[signup setBackgroundColor:[UIColor clearColor]];
+    if ([[UIScreen mainScreen] bounds].size.height < 520) {
+        [signup setFrame:CGRectMake(0, 105, 0, 0)];
+    }
+    [signup setText:@"Sign Up Below With"];
     [signup setStyleClass:@"instruction_text"];
     [self.view addSubview:signup];
     
     self.facebook = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.facebook setTitle:@"Facebook" forState:UIControlStateNormal];
     [self.facebook setFrame:CGRectMake(0, 180, 0, 0)];
+    if ([[UIScreen mainScreen] bounds].size.height < 520) {
+        [self.facebook setFrame:CGRectMake(0, 165, 0, 0)];
+    }
     [self.facebook addTarget:self action:@selector(connect_to_facebook) forControlEvents:UIControlEventTouchUpInside];
     [self.facebook setStyleClass:@"button_blue"];
     [self.view addSubview:self.facebook];
     
     UILabel *or = [[UILabel alloc] initWithFrame:CGRectMake(0, 240, 320, 15)]; [or setBackgroundColor:[UIColor clearColor]];
+    if ([[UIScreen mainScreen] bounds].size.height < 520) {
+        [or setFrame:CGRectMake(0, 220, 0, 0)];
+    }
     [or setTextAlignment:NSTextAlignmentCenter]; [or setText:@"Or..."];
     [or setStyleClass:@"label_small"];
     [self.view addSubview:or];
@@ -99,9 +94,10 @@
     [self.name_field setAutocapitalizationType:UITextAutocapitalizationTypeWords];
     [self.view addSubview:self.name_field];
     
-    UIView *div = [[UIView alloc] initWithFrame:CGRectMake(0, 320, 0, 0)];
-    [div setStyleId:@"divider"];
-    [self.view addSubview:div];
+    if ([[UIScreen mainScreen] bounds].size.height < 520) {
+        [name setFrame:CGRectMake(0, 250, 0, 0)];
+        [self.name_field setFrame:CGRectMake(0, 250, 0, 0)];
+    }
     
     UILabel *email = [[UILabel alloc] initWithFrame:CGRectMake(20, 325, 60, 20)];
     [email setBackgroundColor:[UIColor clearColor]]; [email setTextColor:kNoochBlue]; [email setText:@"Email"];
@@ -117,9 +113,10 @@
     [self.email_field setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.email_field];
     
-    UIView *div2 = [[UIView alloc] initWithFrame:CGRectMake(0, 360, 0, 0)];
-    [div2 setStyleId:@"divider"];
-    [self.view addSubview:div2];
+    if ([[UIScreen mainScreen] bounds].size.height < 520) {
+        [email setFrame:CGRectMake(0, 290, 0, 0)];
+        [self.email_field setFrame:CGRectMake(0, 290, 0, 0)];
+    }
     
     UILabel *password = [[UILabel alloc] initWithFrame:CGRectMake(20, 365, 80, 20)];
     [password setBackgroundColor:[UIColor clearColor]]; [password setTextColor:kNoochBlue]; [password setText:@"Password"];
@@ -134,11 +131,20 @@
     [self.password_field setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.password_field];
     
+    if ([[UIScreen mainScreen] bounds].size.height < 520) {
+        [password setFrame:CGRectMake(0, 330, 0, 0)];
+        [self.password_field setFrame:CGRectMake(0, 330, 0, 0)];
+    }
+    
     self.cont = [UIButton buttonWithType:UIButtonTypeRoundedRect]; [self.cont setTitle:@"Continue" forState:UIControlStateNormal];
     [self.cont setFrame:CGRectMake(10, 420, 300, 60)]; [self.cont addTarget:self action:@selector(continue_to_signup) forControlEvents:UIControlEventTouchUpInside];
     [self.cont setStyleClass:@"button_green"];
     [self.view addSubview:self.cont];
     [self.cont setEnabled:NO];
+    
+    if ([[UIScreen mainScreen] bounds].size.height < 520) {
+        [self.cont setFrame:CGRectMake(0, 375, 0, 0)];
+    }
     
     UIButton *login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [login setBackgroundColor:[UIColor clearColor]]; //[login setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
@@ -147,6 +153,10 @@
     [login setFrame:CGRectMake(0, 510, 320, 20)]; [login addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
     [login setStyleClass:@"label_small"];
     [self.view addSubview:login];
+    
+    if ([[UIScreen mainScreen] bounds].size.height < 520) {
+        [login setFrame:CGRectMake(0, 445, 320, 20)];
+    }
 }
 
 #pragma mark - facebook integration

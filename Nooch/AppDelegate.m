@@ -10,7 +10,6 @@
 #import "UAirship.h"
 #import "UAPush.h"
 #import <CoreTelephony/CTCallCenter.h>
-#import "CheckPIN.h"
 #import "ReEnterPin.h"
 #import "ProfileInfo.h"
 #import "ECSlidingViewController.h"
