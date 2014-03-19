@@ -805,6 +805,19 @@
 		top					: 73px;
 		left                : 120px;
 	}
+    
+    #howmuch_amountfield_4 {
+		font-family			: "Roboto";
+		font-size			: 35px;
+		font-weight         : medium;
+		font-stretch		: expanded;
+		text-align       	: right;
+		color 				: #58595B;
+		width				: 180px;
+		height				: 50px;
+		top					: 53px;
+		left                : 120px;
+	}
  
 	/**  Send and Request buttons. **/ 
 	.howmuch_buttons {
@@ -824,11 +837,21 @@
 		left	: 9px;
 		top		: 204px;
 	}
+    
+    #howmuch_request_4 {
+		left	: 9px;
+		top		: 139px;
+	}
 
 	/**  Sets the position for the Send Button. **/
 	#howmuch_send {
 		left	: 162px;
 		top		: 204px;
+	}
+    
+    #howmuch_send_4 {
+		left	: 162px;
+		top		: 139px;
 	}
  .nonhowmuch_send {
         left	            : 9px;
@@ -849,6 +872,15 @@
 		width			: 38px;
 		height			: 38px;
 		top				: 212px;
+		left			: 141px;
+		background-image: url(dollar-sign.png);
+		background-size	: 39px;
+	}
+    
+    #howmuch_divider_4 {
+		width			: 38px;
+		height			: 38px;
+		top				: 148px;
 		left			: 141px;
 		background-image: url(dollar-sign.png);
 		background-size	: 39px;
@@ -930,6 +962,14 @@
 		top 			: 161px;
 		background-size	: 30px 22px;
 	}
+    
+    #howmuch_camera_4 {
+		width 			: 30px;
+		height 			: 22px;
+		left 			: 265px;
+		top 			: 71px;
+		background-size	: 30px 22px;
+	}
 
 	/**  Icon when a picture has been attached. **/
 	#howmuch_camera_attached {
@@ -945,6 +985,35 @@
 		width 			: 280px;
 		left    		: 19px;
 		top     		: 154px;
+		border 			: 1px solid;
+		border-color	: #939598;
+		border-radius	: 2px;
+        text-align      : center;
+		font-family 	: "Roboto";
+		font-weight 	: light;
+		font-size       : 16px;
+		color           : #414042px;
+	}
+    
+    #howmuch_memo {
+		width 			: 280px;
+		left    		: 19px;
+		top     		: 154px;
+		border 			: 1px solid;
+		border-color	: #939598;
+		border-radius	: 2px;
+        text-align      : center;
+		font-family 	: "Roboto";
+		font-weight 	: light;
+		font-size       : 16px;
+		color           : #414042px;
+	}
+    
+    #howmuch_memo_4 {
+		width 			: 280px;
+		left    		: 19px;
+		top     		: 104px;
+        height      : 30px;
 		border 			: 1px solid;
 		border-color	: #939598;
 		border-radius	: 2px;

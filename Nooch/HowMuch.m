@@ -226,6 +226,19 @@
     {
         [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
     }*/
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+        CGRect frame = back.frame;
+        frame.size.height = 175;
+        back.frame = frame;
+        [self.send setStyleId:@"howmuch_send_4"];
+        [self.request setStyleId:@"howmuch_request_4"];
+        [self.divider setStyleId:@"howmuch_divider_4"];
+        [user_pic setFrame:CGRectMake(28, 55, 46, 46)];
+        user_pic.layer.cornerRadius = 23;
+        [self.amount setStyleId:@"howmuch_amountfield_4"];
+        [self.memo setStyleId:@"howmuch_memo_4"];
+        [self.camera setStyleId:@"howmuch_camera_4"];
+    }
 }
 - (void)viewWillAppear:(BOOL)animated
 {
