@@ -39,6 +39,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.navigationController.navigationBar.topItem.title = @"";
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     

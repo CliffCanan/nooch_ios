@@ -44,7 +44,6 @@
     [self.navigationBar addSubview:hax];
     
     LeftMenu *left_menu = [LeftMenu new];
-    FundsMenu *funds_menu = [FundsMenu new];
     
     
     if (![self.slidingViewController.underLeftViewController isKindOfClass:[LeftMenu class]]) {
@@ -52,9 +51,6 @@
     }
     [self.slidingViewController setAnchorRightRevealAmount:270.0f];
     
-    if (![self.slidingViewController.underRightViewController isKindOfClass:[FundsMenu class]]) {
-        self.slidingViewController.underRightViewController  = funds_menu;
-    }
     [self.slidingViewController setAnchorLeftRevealAmount:270.0f];
     self.view.layer.shadowOpacity = 1.0f;
     self.view.layer.shadowRadius = 2.0f;

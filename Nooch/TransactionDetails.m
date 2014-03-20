@@ -34,14 +34,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationController.navigationBar.topItem.title = @"";
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     UIActivityIndicatorView*act=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [act setFrame:CGRectMake(14, 5, 20, 20)];
     [act startAnimating];
     
-    UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:act];
-    [self.navigationItem setRightBarButtonItem:funds];
+    /*UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:act];
+    [self.navigationItem setRightBarButtonItem:funds];*/
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
 	// Do any additional setup after loading the view.
@@ -930,9 +931,8 @@
             
             [self.navigationItem setRightBarButtonItem:Nil];
             
-            UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:balance];
-            
-            [self.navigationItem setRightBarButtonItem:funds];
+            //UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:balance];
+            //[self.navigationItem setRightBarButtonItem:funds];
         }
     }
 }

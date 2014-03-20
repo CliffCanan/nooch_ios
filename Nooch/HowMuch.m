@@ -62,6 +62,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setTitle:@"How Much?"];
     UIButton*backbtn = [UIButton buttonWithType:UIButtonTypeCustom];
     
@@ -220,7 +221,7 @@
     [self.view addSubview:self.reset_type];
     
     [self.navigationItem setRightBarButtonItem:Nil];
-    self.balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    /*self.balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.balance setFrame:CGRectMake(0, 0, 60, 30)];
     [self.balance.titleLabel setFont:kNoochFontMed];
     [self.balance setStyleId:@"navbar_balance"];
@@ -238,11 +239,12 @@
     else
     {
         [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
-    }
+    }*/
 }
 - (void)viewWillAppear:(BOOL)animated
 {
     [self.amount becomeFirstResponder];
+    [self.navigationItem setTitle:@"How Much?"];
 }
 #pragma mark- Request Multiple case
 -(void)addRecipient:(id)sender{

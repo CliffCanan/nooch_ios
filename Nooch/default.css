@@ -22,10 +22,10 @@
 		position : 60 15;
 	}
 
-     #empltyRecentList {
+     #emptyRecentList {
 		background-image : url(empty-arrow.png);
-		height : 70px;
-		width : 80px;
+		height : 204px;
+		width : 122px;
 		left   : 20px;
         top    :50px;
 	}
@@ -75,8 +75,6 @@
 			letter-spacing	: .25px;
 			color			: #ffffff;
 			text-align		: left;
-			width			: 70px;
-			left			: 245px;
 		}
         #navbar_back {
              height         :40px;
@@ -85,11 +83,8 @@
 		}
 
         #navbar_hamburger {
-            background-image : url(HamburgerButton.png);
-            width       :  43px;
-            height      : 43px;
-            //left           : 10px;
-            //top          : 20px;
+            width       :  30px;
+            height      : 30px;
         }
 
 	 /******************************/
@@ -165,6 +160,38 @@
 			background-image: url(info-button.png);
 			background-size	: 16px;
 		}
+        
+        /**** News Feed ****/
+        #news_feed {
+            left        : 0px;
+            top         : 5px;
+            width      : 270px;
+            height      : 300px;
+            row-height  : 70px;
+            background-color : white;
+            border-radius   : 5px;
+        }
+        
+        #news_popup {
+            left        : 30px;
+            top         : 60px;
+            width      : 270px;
+            height      : 300px;
+            background-color : white;
+            border-radius   : 5px;
+            box-shadow			: 1px 2px 2px rgba(109,110,113,0.6);
+        }
+        
+        #close_news
+        {
+            left        : 262px;
+            top         : 35px;
+            width      : 30px;
+            height      : 40px;
+            background-color : white;
+            border				: 1px solid #b1b3b6;
+            border-radius   : 10px;
+        }
         
          /****************************
 	  *****	  Fund Menu buttons 28/12 	 *****
@@ -259,7 +286,7 @@
 			left                : 10px;
 			height				: 300px;
 			text-align       	: left;
-            top                 : 40
+            top                 : 180px;
 		}
         /***Invite Friend***/
         .smscrossbuttn-icon {
@@ -459,14 +486,15 @@
 			text-align       	: right;
 		}
 		 .exportHistorybutton{
-            background-color: #3FABE1 ;
+            background-color: #3FABE1;
+            border-radius   : 4px;
             top                 :450px;
 			font-family			: "Roboto";
 			font-weight         : regular;
-			font-size			: 12px;
+			font-size			: 14px;
 			text-align       	: center;
 			color 				: white;
-			width				: 100px;
+			width				: 130px;
 			left                : 10px;
 			height				: 30px;
          }
@@ -900,7 +928,6 @@
 		height 			: 22px;
 		left 			: 265px;
 		top 			: 161px;
-		background-image: url(camera-unselected.png);
 		background-size	: 30px 22px;
 	}
 
@@ -910,7 +937,6 @@
 		height 			: 24px;
 		left 			: 256px;
 		top 			: 160px;
-		background-image: url(camera-attached.png);
 		background-size	: 40px 24px;
 	}
 
@@ -2031,9 +2057,9 @@
 	/**************************/
 
 	.label_filter  {
-		width				: 38px;
-		height				: 17px;
-		/*top					: 14px;*/
+		width				: 25px;
+		height				: 25px;
+		top					: 5px;
 		left                : 266px;
 		font-family			: "Roboto";
 		font-weight         : light;
@@ -2420,11 +2446,64 @@
 	/**************************/
 	
 	.background_gray { background-color: #efeff4; }
+    
+    #account_background {
+        top : 30px;
+        left : 0px;
+        width : 320px;
+        height : 80px;
+        background-color : white;
+        border : 1px solid;
+        border-color : gray;
+    }
+
+    #linked_account_name {
+        top : 20px;
+        left : 60px;
+        width : 260px;
+        height : 20px;
+        font-family : "Roboto";
+        font-weight : bold;
+        font-size   : 14px;
+        text-align : left;
+        color           : black;
+    }
+    
+    #linked_account_number {
+        top : 40px;
+        left :60px;
+        width : 260px;
+        height : 20px;
+        font-family : "Roboto";
+        font-weight : regular;
+        font-size   : 13px;
+        text-align : left;
+        color           : black;
+    }
+    
+    #remove_account {
+        color   : #D21937;
+        top : 30px;
+        left : 250px;
+        width : 50px;
+        height : 20px;
+        font-family : "Roboto";
+        font-weight : regular;
+        font-size   : 10px;
+    }
 	
+    #link_new_account {
+        background-image			: linear-gradient(#6dbee8, #41abe1);
+        color           : white;
+        border-radius           : 5px;
+        left     : 20px;
+        width  : 280px;
+    }
+
 	table-view#settings {
 		width				: 320px;
         height             : 150px;
-		top					: 25px;
+		top					: 200px;
 		left				: 0px;
 		background-color	: white;
 		row-height			: 50px;
@@ -2460,10 +2539,10 @@
 	/**  Gray Signout Button. **/
 	#button_signout {
 		width				: 250px;
-		height				: 50px;
+		height				: 44px;
 		top					: 390px;
 		left				: 35px;
-		font-size			: 20px;
+		font-size			: 18px;
 	}
 	
 	/**************************/
@@ -2760,6 +2839,156 @@
         left : 209px;
     }
 		
+        
+    /*** Knox flow ***/
+    #bank_step_title {
+        top     : 0px;
+        left     : 0px;
+        width   : 300px;
+        height  : 40px;
+        font-family   : "Roboto";
+        font-weight   : bold;
+        font-size           :16px;
+        background-image			: linear-gradient(#6dbee8, #41abe1);
+        color       : white;
+        text-align : center;
+    }
+
+    #step_segcontrol {
+        width				: 300px;
+		height				: 25px;
+		left				: 0px;
+		top					: 80px;
+		background-color	: #3fabe1;
+		font-family			: "Roboto";
+		font-weight			: light;
+        font-size              : 10px;
+        color   : black;
+    }
+    
+    .bank_textfield {
+        font-family : "Roboto";
+        font-weight :   regular;
+        font-size       : 14px;
+    }
+    
+    #bank_login {
+        top             : 330px;
+        height        : 40px;
+        left              : 10px;
+        width           : 280px;
+        font-family : "Roboto";
+        font-weight : regular;
+        font-size       : 14px;
+        background-image	: linear-gradient(#7fd034, #6ab029);
+        color           : white;
+        border-radius           : 5px;
+    }
+    
+    #fraud_label {
+        top : 190px;
+        left : 10px;
+        height : 40px;
+        width : 280px;
+        font-family : "Roboto";
+        font-weight : light;
+        font-size       : 16px;
+        text-align      : center;
+        color       : black;
+    }
+    
+    #question_number {
+        left : 10px;
+        top : 225px;
+        width : 280px;
+        height : 40px;
+        color : black;
+        font-family : "Roboto";
+        font-weight : bold;
+        font-size : 14px;
+        text-align : center;
+    }
+    
+    #question {
+        left : 10px;
+        top : 250px;
+        width : 280px;
+        height : 40px;
+        font-family : "Roboto";
+        font-weight : light;
+        font-size : 14px;
+        color : black;
+        text-align : center;
+    }
+    
+    #submit_answer_button {
+        background-image			: linear-gradient(#6dbee8, #41abe1);
+        color           : white;
+        border-radius           : 5px;
+        top     : 355px;
+        left     : 10px;
+        width  : 280px;
+        height  : 40px;
+        font-family : "Roboto";
+        font-weight : regular;
+        font-size       : 14px;
+    }
+    
+    .account_listing:normal {
+        left : 10px;
+        width : 280px;
+        height : 40px;
+        color : gray;
+        background-color : white;
+        border 			: 1px solid;
+		border-color	: #939598;
+        text-align : center;
+        border-radius : 5px;
+        font-family : "Roboto";
+        font-weight : light;
+        font-size       : 14px;
+    }
+    
+    .account_listing:selected {
+        left : 10px;
+        width : 280px;
+        height : 40px;
+        color : white;
+        border 			: 1px solid;
+		border-color	: #939598;
+        background-image	: linear-gradient(#7fd034, #6ab029);
+        text-align  : center;
+        border-radius : 5px;
+        font-family : "Roboto";
+        font-weight : regular;
+        font-size       : 14px;
+    }
+    
+    #select_account:normal {
+        background-image			: linear-gradient(#6dbee8, #41abe1);
+        color           : white;
+        border-radius           : 5px;
+        top     : 380px;
+        left     : 10px;
+        width  : 280px;
+        height  : 40px;
+        font-family : "Roboto";
+        font-weight : regular;
+        font-size       : 14px;
+    }
+    
+    #select_account:disabled {
+        background-image			: linear-gradient(#c0c2c4, #b1b3b6);
+        color           : white;
+        border-radius           : 5px;
+        top     : 380px;
+        left     : 10px;
+        width  : 280px;
+        height  : 40px;
+        font-family : "Roboto";
+        font-weight : regular;
+        font-size       : 14px;
+    }
 
  /*******************************************
   *******************************************

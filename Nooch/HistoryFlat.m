@@ -55,6 +55,10 @@
         [UIView commitAnimations];
     }
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.navigationItem setTitle:@"History"];
+}
 -(void)showMenu
 {
     [self.search resignFirstResponder];
@@ -65,12 +69,19 @@
     [super viewDidLoad];
     [self.navigationItem setHidesBackButton:YES];
     
+    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
+    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
+    [ttt setImage:[UIImage imageGlyphNamed:@"reorder" height:40 color:[UIColor whiteColor]]];
+    
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
+    [hamburger setFrame:CGRectMake(0, 0, 30, 30)];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
     [hamburger setStyleId:@"navbar_hamburger"];
+    [hamburger setBackgroundImage:ttt.image forState:UIControlStateNormal];
     UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
+    
+    [ttt setImage:[UIImage imageGlyphNamed:@"filter" height:40 color:[UIColor whiteColor]]];
     [self.navigationItem setTitle:@"History"];
      [nav_ctrl performSelector:@selector(disable)];
     
@@ -102,7 +113,7 @@
     
     UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [filter setStyleClass:@"label_filter"];
-    [filter setTitle:@"Filter" forState:UIControlStateNormal];
+    [filter setBackgroundImage:ttt.image forState:UIControlStateNormal];
     [filter addTarget:self action:@selector(FilterHistory:) forControlEvents:UIControlEventTouchUpInside];
     
     UIBarButtonItem *filt = [[UIBarButtonItem alloc] initWithCustomView:filter];
@@ -166,9 +177,13 @@
     [self loadHist:@"ALL" index:index len:20 subType:subTypestr];
     //Export History
     exportHistory=[UIButton buttonWithType:UIButtonTypeCustom];
-    [exportHistory setTitle:@"Export History" forState:UIControlStateNormal];
-    [exportHistory setFrame:CGRectMake(10, 420, 70, 20)];
+    [exportHistory setTitle:@" Export History" forState:UIControlStateNormal];
+    [exportHistory setFrame:CGRectMake(10, 420, 150, 20)];
     [exportHistory setStyleClass:@"exportHistorybutton"];
+    [ttt setFrame:CGRectMake(5, 5, 20, 20)];
+    [ttt setImage:[UIImage imageGlyphNamed:@"cloud-download" height:40 color:[UIColor whiteColor]]];
+    [exportHistory setGlyphNamed:@"cloud-download"];
+    //[exportHistory addSubview:ttt];
     [exportHistory addTarget:self action:@selector(ExportHistory:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:exportHistory];
     [self.view bringSubviewToFront:exportHistory];

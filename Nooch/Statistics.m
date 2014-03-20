@@ -34,18 +34,23 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationController.navigationBar.topItem.title = @"";
+    
     [self.navigationItem setHidesBackButton:YES];
     [self.navigationController.view removeGestureRecognizer:self.navigationController.slidingViewController.panGesture];
     [self.view setStyleClass:@"background_gray"];
     titlestr=@"Profile Stats";
     dictAllStats=[[NSMutableDictionary alloc]init];
+    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
+    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
+    [ttt setImage:[UIImage imageGlyphNamed:@"reorder" height:40 color:[UIColor whiteColor]]];
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
+    [hamburger setFrame:CGRectMake(0, 0, 30, 30)];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
     [hamburger setStyleId:@"navbar_hamburger"];
+    [hamburger setBackgroundImage:ttt.image forState:UIControlStateNormal];
     UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
-    
     
     serve*serveOBJ=[serve new];
     [serveOBJ setDelegate:self];
@@ -54,7 +59,7 @@
 	// Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"Statistics"];
     
-    self.selected = 0;
+    self.selected = 1;
     UISwipeGestureRecognizer *left = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(change_stats:)];
     [left setDirection:UISwipeGestureRecognizerDirectionLeft];
     [self.view addGestureRecognizer:left];
@@ -71,12 +76,12 @@
     
     self.profile = [UIImageView new];
     [self.profile setStyleClass:@"stats_circle"];
-    [self.profile setStyleId:@"stats_circle_profile_active"];
+    [self.profile setStyleId:@"stats_circle_profile_inactive"];
     [self.back addSubview:self.profile];
     
     self.transfers = [UIImageView new];
     [self.transfers setStyleClass:@"stats_circle"];
-    [self.transfers setStyleId:@"stats_circle_transfers_inactive"];
+    [self.transfers setStyleId:@"stats_circle_transfers_active"];
     [self.back addSubview:self.transfers];
     
     self.donations = [UIImageView new];
@@ -104,6 +109,10 @@
     [blankView addSubview:actv];
     [self .view addSubview:blankView];
     [self.view bringSubviewToFront:blankView];
+}
+
+- (void) button_change:(int)num {
+    
 }
 
 - (void) change_stats:(UISwipeGestureRecognizer *)slide
@@ -215,8 +224,6 @@
     [statistic setStyleClass:@"stats_table_right_lable"];
     
     if (self.selected == 0) { //profile
-        
-        
         if (indexPath.row == 0) {
             [title setText:@"$ Added to Nooch"];
             //[statistic setText:@"$ 105.00"];
@@ -224,7 +231,6 @@
             if ([[[dictAllStats valueForKey:@"Total_$_Added_to_Nooch"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
             }
-            
             //Total_$_Added_to_Nooch
         }
         else if (indexPath.row == 1) {
@@ -244,7 +250,6 @@
             if ([[[dictAllStats valueForKey:@"Total_Friends_Invited"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
             }
-            //"
             // [statistic setText:@"4"];
         }
         else if (indexPath.row == 3) {
@@ -257,7 +262,7 @@
             }
             // [statistic setText:@"7"];
         }
-
+        
         else if (indexPath.row == 4) {
             if ([dictAllStats valueForKey:@"Total_Posts_To_TW"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Posts_To_TW"]  valueForKey:@"Result"]];
@@ -393,192 +398,128 @@
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     NSError* error;
-    
     dictResult= [NSJSONSerialization
-                 
                  JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                 
                  options:kNilOptions
-                 
                  error:&error];
     
-    NSLog(@"%@",dictResult);
     [ dictAllStats setObject:dictResult forKey:tagName];
-    NSLog(@"%@",dictAllStats);
     
     if ([tagName isEqualToString:@"Total_P2P_transfers"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"Get_Member_Signup_Date";
-        
         [serveOBJ GetMemberStats:@"Get_Member_Signup_Date"];
     }
     else if ([tagName isEqualToString:@"Get_Member_Signup_Date"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"Total_$_Sent";
-        
         [serveOBJ GetMemberStats:@"Total_$_Sent"];
     }
     else if ([tagName isEqualToString:@"Total_$_Sent"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"Total_no_of_transfer_Sent";
-        
         [serveOBJ GetMemberStats:@"Total_no_of_transfer_Sent"];
     }
     else if ([tagName isEqualToString:@"Total_no_of_transfer_Sent"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"Total_$_Received";
-        
         [serveOBJ GetMemberStats:@"Total_$_Received"];
     }
     else if ([tagName isEqualToString:@"Total_$_Received"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"Total_no_of_transfer_Received";
-        
         [serveOBJ GetMemberStats:@"Total_no_of_transfer_Received"];
     }
     else if ([tagName isEqualToString:@"Total_no_of_transfer_Received"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"Smallest_sent_transfer";
-        
         [serveOBJ GetMemberStats:@"Smallest_sent_transfer"];
     }
     else if ([tagName isEqualToString:@"Smallest_sent_transfer"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"Smallest_received_transfer";
-        
         [serveOBJ GetMemberStats:@"Smallest_received_transfer"];
     }
     else if ([tagName isEqualToString:@"Smallest_received_transfer"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"Largest_sent_transfer";
-        
         [serveOBJ GetMemberStats:@"Largest_sent_transfer"];
     }
-    
     else if ([tagName isEqualToString:@"Largest_sent_transfer"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"Largest_received_transfer";
-        
         [serveOBJ GetMemberStats:@"Largest_received_transfer"];
     }
     else if ([tagName isEqualToString:@"Largest_received_transfer"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"Total_$_Added_to_Nooch";
-        
         [serveOBJ GetMemberStats:@"Total_$_Added_to_Nooch"];
     }
     else if ([tagName isEqualToString:@"Total_$_Added_to_Nooch"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"Total_$_withdraw_from_Nooch";
-        
         [serveOBJ GetMemberStats:@"Total_$_withdraw_from_Nooch"];
     }
     
     else if ([tagName isEqualToString:@"Total_$_withdraw_from_Nooch"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"Total_Friends_Invited";
-        
         [serveOBJ GetMemberStats:@"Total_Friends_Invited"];
     }
     else if ([tagName isEqualToString:@"Total_Friends_Invited"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"Total_Friends_Joined";
-        
         [serveOBJ GetMemberStats:@"Total_Friends_Joined"];
     }
     else if ([tagName isEqualToString:@"Total_Friends_Joined"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"Total_Posts_To_FB";
-        
         [serveOBJ GetMemberStats:@"Total_Posts_To_FB"];
     }
     else if ([tagName isEqualToString:@"Total_Posts_To_FB"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"Total_Posts_To_TW";
-        
         [serveOBJ GetMemberStats:@"Total_Posts_To_TW"];
     }
     else if ([tagName isEqualToString:@"Total_Posts_To_TW"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"Largest_Donation_Made";
-        
         [serveOBJ GetMemberStats:@"Largest_Donation_Made"];
     }
     else if ([tagName isEqualToString:@"Largest_Donation_Made"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"Total_Donations_Count";
-        
         [serveOBJ GetMemberStats:@"Total_Donations_Count"];
     }
     else if ([tagName isEqualToString:@"Total_Donations_Count"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"Total_$_Donated";
-        
         [serveOBJ GetMemberStats:@"Total_$_Donated"];
         // [blankView removeFromSuperview];
         // [self.stats reloadData];
     }
     else if ([tagName isEqualToString:@"Total_$_Donated"]) {
         serve*serveOBJ=[serve new];
-        
         [serveOBJ setDelegate:self];
-        
         serveOBJ.tagName=@"DonatedTo";
-        
         [serveOBJ GetMemberStats:@"DonatedTo"];
         [blankView removeFromSuperview];
         [self.stats reloadData];
