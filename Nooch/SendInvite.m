@@ -215,7 +215,7 @@
         dictInviteUserList=[NSJSONSerialization
                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                             options:kNilOptions
-                            error:&error];;
+                            error:&error];
         if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"]count]>0) {
             self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 42, 320, [[UIScreen mainScreen] bounds].size.height-90)];
             [self.contacts setDataSource:self]; [self.contacts setDelegate:self];

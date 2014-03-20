@@ -113,7 +113,6 @@
 }
 
 - (void)viewDidLoad
-
 {
     
     [super viewDidLoad];
@@ -575,6 +574,17 @@
                               
                               nil];
     
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+        UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
+                                                                             [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
+        [scroll setDelegate:self];
+        [scroll setContentSize:CGSizeMake(320, 530)];
+        for (UIView *subview in self.view.subviews) {
+            [subview removeFromSuperview];
+            [scroll addSubview:subview];
+        }
+         [self.view addSubview:scroll];
+    }
 }
 -(void)crossClicked{
     [self dismissViewControllerAnimated:YES completion:nil];

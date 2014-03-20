@@ -304,7 +304,6 @@
         else
             [disp setStyleId:@"details_disp"];
         
-        
         [disp addTarget:self action:@selector(dispute) forControlEvents:UIControlEventTouchUpInside];
         if ([[UIScreen mainScreen] bounds].size.height == 480) {
             [disp setStyleClass:@"details_buttons_4"];
@@ -792,6 +791,9 @@
         }
         location.numberOfLines=2;
         [location setStyleClass:@"details_label_location"];
+        if ([[UIScreen mainScreen] bounds].size.height == 480) {
+            [location setStyleClass:@"details_label_location_4"];
+        }
         [location setAlpha:0.7];
         if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"City"]!=NULL && [[assist shared]islocationAllowed] ) {
             if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"City"]!=NULL && [[assist shared]islocationAllowed] ) {

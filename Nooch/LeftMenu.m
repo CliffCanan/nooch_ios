@@ -270,7 +270,7 @@
             cell.textLabel.text = @"Refer a Friend";
             [ttt setImage:[UIImage imageGlyphNamed:@"group" height:25 color:[UIColor whiteColor]]];
             iv.image = ttt.image;
-            [iv setFrame:CGRectMake(7, 7, 24, 24)];
+            [iv setFrame:CGRectMake(7, 10, 24, 24)];
         }else if(indexPath.row == 1){
             cell.textLabel.text = @"Rate Nooch";
             [ttt setImage:[UIImage imageGlyphNamed:@"star" height:25 color:[UIColor whiteColor]]];
@@ -287,9 +287,9 @@
             [iv setFrame:CGRectMake(7, 7, 26, 30)];
         }else if(indexPath.row == 1){
             cell.textLabel.text = @"Contact Support";
-            [ttt setImage:[UIImage imageGlyphNamed:@"envelope" height:25 color:[UIColor whiteColor]]];
+            [ttt setImage:[UIImage imageGlyphNamed:@"envelope-alt" height:25 color:[UIColor whiteColor]]];
             iv.image = ttt.image;
-            [iv setFrame:CGRectMake(7, 7, 24, 23)];
+            [iv setFrame:CGRectMake(7, 10, 24, 23)];
         }else if(indexPath.row == 2){
             cell.textLabel.text =  @"Limits & Fees";
             iv.image = [UIImage imageNamed:@"LimitsAndFees_Icon.png"];

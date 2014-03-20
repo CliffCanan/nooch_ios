@@ -70,7 +70,7 @@
     
     self.back = [UIView new];
     [self.back setBackgroundColor:[UIColor whiteColor]];
-    [self.back setFrame:CGRectMake(10, 10, 300, 425)];
+    [self.back setFrame:CGRectMake(10, 10, 300, 400)];
     [self.back setStyleClass:@"raised_view"];
     [self.view addSubview:self.back];
     

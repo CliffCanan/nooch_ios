@@ -226,7 +226,9 @@
     self.next_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.next_button setFrame:CGRectMake(10, 460, 300, 60)];
     [self.next_button addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
-    
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+        [self.next_button setFrame:CGRectMake(10, 450, 300, 60)];
+    }
     if ([self.user objectForKey:@"image"])
     {
         [self.next_button setTitle:@"Continue" forState:UIControlStateNormal];

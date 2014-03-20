@@ -78,6 +78,10 @@
     [self.view addSubview:change_password];
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [self.navigationItem setTitle:@"Security Settings"];
+}
+
 - (void)changepass{
     ResetPassword *reset = [ResetPassword new];
     [self.navigationController pushViewController:reset animated:YES];

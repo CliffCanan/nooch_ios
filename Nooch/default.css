@@ -2317,7 +2317,7 @@
 		width			: 6px;
 	}
 	.titlelbl{
-       width				: 320px;
+       width				: 300px;
 		height				: 38px;
 		top					: 0px;
 		left				: 0px;
@@ -2449,6 +2449,17 @@
 		color 				: white;
         background-color : black;
         top                : 380px;
+		height				: 20px;
+	}
+    
+    .details_label_location_4 {
+		font-family			: "Roboto";
+		font-weight         : bold;
+		font-size			: 12px;
+		text-align          : center;
+		color 				: white;
+        background-color : black;
+        top                : 300px;
 		height				: 20px;
 	}
     .details_label1 {
@@ -2667,6 +2678,14 @@
 		left				: 35px;
 		font-size			: 18px;
 	}
+    
+    #button_signout_4 {
+		width				: 250px;
+		height				: 44px;
+		top					: 360px;
+		left				: 35px;
+		font-size			: 18px;
+	}
 	
 	/**************************/
 	/****  Reset Password  ****/
@@ -2872,7 +2891,7 @@
 	table-view.stats {
 		height			: 300px;
 		width			: 300px;
-		top				: 100px;
+		top				: 80px;
 		left			: 0px;
 		background-color: white;
 		row-height		: 40px;
