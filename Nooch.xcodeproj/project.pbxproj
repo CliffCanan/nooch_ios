@@ -251,6 +251,7 @@
 		84443CAC18A0BD9E0097F6C0 /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 84443CA818A0BD9E0097F6C0 /* NSString+MD5Addition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		84443CAD18A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 84443CAA18A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		84443CB118A0BDF30097F6C0 /* RoundLoading.png in Resources */ = {isa = PBXBuildFile; fileRef = 84443CB018A0BDF30097F6C0 /* RoundLoading.png */; };
+		847C885A18DD86B200C2D79B /* add-icon-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 847C885918DD86B200C2D79B /* add-icon-white.png */; };
 		849F6E8E18AB6D7F0016CD89 /* backbtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 849F6E8D18AB6D7F0016CD89 /* backbtn.png */; };
 		84B65A73188542E9009A5205 /* NSString+ASBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B65A72188542E9009A5205 /* NSString+ASBase64.m */; };
 		84BD98721877F6E9008B6131 /* userlocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BD98711877F6E9008B6131 /* userlocation.m */; };
@@ -674,6 +675,7 @@
 		84443CA918A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IdentifierAddition.h"; sourceTree = "<group>"; };
 		84443CAA18A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IdentifierAddition.m"; sourceTree = "<group>"; };
 		84443CB018A0BDF30097F6C0 /* RoundLoading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoundLoading.png; sourceTree = "<group>"; };
+		847C885918DD86B200C2D79B /* add-icon-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-icon-white.png"; sourceTree = "<group>"; };
 		849F6E8D18AB6D7F0016CD89 /* backbtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backbtn.png; sourceTree = "<group>"; };
 		84B65A71188542E9009A5205 /* NSString+ASBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ASBase64.h"; sourceTree = "<group>"; };
 		84B65A72188542E9009A5205 /* NSString+ASBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ASBase64.m"; sourceTree = "<group>"; };
@@ -905,6 +907,7 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				847C885918DD86B200C2D79B /* add-icon-white.png */,
 				01CABC5618A43B3200BBB935 /* green-arrow.png */,
 				84443CA618A0BD9E0097F6C0 /* empty-arrow.png */,
 				843B29D31888EC3B00DA04C8 /* back-arrow-blue.png */,
@@ -1735,6 +1738,7 @@
 				01C26DF71843C56C005179B7 /* TopSideBar.png in Resources */,
 				014C4330185B9A4C00956A84 /* nonprofits-fb.png in Resources */,
 				6BE1332D176F65D8009763AC /* SplashPageBckgrnd-568h@2x.png in Resources */,
+				847C885A18DD86B200C2D79B /* add-icon-white.png in Resources */,
 				8420B39B187AC4BF00A77E2D /* Black-pin.png in Resources */,
 				6B01F1BE179DA8E800E34C49 /* GoogleMaps.bundle in Resources */,
 				0106773C1860F68400E11F3D /* take-pic-icon.png in Resources */,

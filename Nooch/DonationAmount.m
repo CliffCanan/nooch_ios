@@ -88,9 +88,9 @@
     UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 60, 60)];
     [pic setImage:[UIImage imageNamed:@"4KforCancer.png"]];
     [pic setStyleId:@"nonprofit_orgpic"];
-   // NSLog(@"%@",self.receiver);
-    if (![[self.receiver  valueForKey:@"BannerImage"]isKindOfClass:[NSNull class]]&&[self.receiver  valueForKey:@"BannerImage"]!=NULL) {
-        [pic setImageWithURL:[NSURL URLWithString:[self.receiver  valueForKey:@"BannerImage"]]
+    NSLog(@"%@",self.receiver);
+    if (![[self.receiver  valueForKey:@"PhotoIcon"]isKindOfClass:[NSNull class]]&&[self.receiver  valueForKey:@"PhotoIcon"]!=NULL) {
+        [pic setImageWithURL:[NSURL URLWithString:[self.receiver  valueForKey:@"PhotoIcon"]]
               placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
     }
     else {

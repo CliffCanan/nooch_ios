@@ -77,6 +77,9 @@
                       NSLog(@"%@",[dict valueForKey:@"MemberId"]);
                     [arrRequestPersons addObject:dict];
                 }
+                else
+                    loc=-1;
+
             }
         }
         [self.contacts reloadData];
@@ -768,7 +771,6 @@
         
     }
     else if ([[assist shared] isRequestMultiple]) {
-        //Recent List
         
         [npic setFrame:CGRectMake(260,25, 20, 20)];
         [npic setImage:[UIImage imageNamed:@"n_Icon.png"]];
@@ -786,10 +788,27 @@
         
         [npic removeFromSuperview];
         arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
-        if ([arrRecipientsForRequest containsObject:info])
-            cell.accessoryType=UITableViewCellAccessoryCheckmark;
-        else
-            cell.accessoryType=UITableViewCellAccessoryNone;
+        NSLog(@"%@",arrRecipientsForRequest);
+        int loc =-1;
+        for (int i=0; i<[arrRecipientsForRequest count]; i++) {
+            NSDictionary*dictionary=[arrRecipientsForRequest objectAtIndex:i];
+            if ([[dictionary valueForKey:@"MemberId"]isEqualToString:info[@"MemberId"]]) {
+                loc=1;
+            }
+            
+        }
+        if (loc==1) {
+             cell.accessoryType=UITableViewCellAccessoryCheckmark;
+        }
+        else{
+            loc=-1;
+              cell.accessoryType=UITableViewCellAccessoryNone;
+        }
+        
+//        if ([arrRecipientsForRequest containsObject:info])
+//            cell.accessoryType=UITableViewCellAccessoryCheckmark;
+//        else
+//            cell.accessoryType=UITableViewCellAccessoryNone;
         
     }
     
@@ -855,10 +874,24 @@
         }
         arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
         NSLog(@"%@",arrRecipientsForRequest);
-        if ([arrRecipientsForRequest containsObject:receiver]) {
+        int loc =-1;
+        for (int i=0; i<[arrRecipientsForRequest count]; i++) {
+            NSDictionary*dictionary=[arrRecipientsForRequest objectAtIndex:i];
+            if ([[dictionary valueForKey:@"MemberId"]isEqualToString:receiver[@"MemberId"]]) {
+                loc=1;
+            }
+            else
+                loc=-1;
+        }
+        if (loc==1) {
             [arrRecipientsForRequest removeObject:receiver];
             [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
         }
+       
+//        if ([arrRecipientsForRequest containsObject:receiver]) {
+//            [arrRecipientsForRequest removeObject:receiver];
+//            [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
+//        }
         else{
             NSLog(@"%d",[[[assist shared]getArray] count]);
             if ([[[assist shared]getArray] count]==10) {
@@ -867,7 +900,7 @@
                 return;
             }
             [arrRecipientsForRequest addObject:receiver];
-            [[assist shared]setArray:[arrRecipientsForRequest copy]];
+            [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
         }
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         [tableView reloadData];
