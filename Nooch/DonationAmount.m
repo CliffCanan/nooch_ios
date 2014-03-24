@@ -34,7 +34,10 @@
     }
     return self;
 }
-
+-(void)viewWillAppear:(BOOL)animated{
+    [self.navigationItem setTitle:@"How Much"];
+    [self.amount becomeFirstResponder];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];

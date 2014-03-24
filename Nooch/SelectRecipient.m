@@ -35,6 +35,8 @@
     [super viewWillAppear:animated];
     [self.navigationItem setTitle:@"Select Recipient"];
     if ([[assist shared] isRequestMultiple] && isAddRequest) {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Add Recipients" message:@"To send a request to more than one person, search for them and tap each additional person (up to 10). Tap Done when finished." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av show];
         [self.navigationItem setRightBarButtonItem:Nil];
         UIButton *Done = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         Done.frame=CGRectMake(277, 25, 80, 35);
@@ -71,17 +73,13 @@
                     
                 }
                 if (loc==-1) {
-                      NSLog(@"%@",[dict valueForKey:@"MemberId"]);
                     [arrRequestPersons addObject:dict];
                 }
                 else
                     loc=-1;
-
             }
         }
         [self.contacts reloadData];
-        
-        
     }
     else {
         isUserByLocation=NO;
@@ -91,13 +89,11 @@
         [location addTarget:self action:@selector(locationSearch:) forControlEvents:UIControlEventTouchUpInside];
         isRecentList=YES;
         [[assist shared]setRequestMultiple:NO];
-        // isMutipleRequest=NO;
         UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
         [self.navigationItem setRightBarButtonItem:loc];
         isRecentList=YES;
         searching=NO;
         emailEntry=NO;
-        //isphoneBook=NO;
         search.text=@"";
         [search setShowsCancelButton:NO];
         [search resignFirstResponder];
@@ -106,28 +102,22 @@
         [recents setTagName:@"recents"];
         [recents setDelegate:self];
         [recents getRecents];
-        
-        //[self.contacts reloadData];
     }
-    
 }
 -(void)DoneEditing_RequestMultiple:(id)sender{
-    
     if ([[[assist shared]getArray] count]==0) {
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Select a Recipient to Request!" delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
         [alert show];
         return;
     }
-    
     isAddRequest=NO;
     HowMuch *how_much = [[HowMuch alloc] init];
-    
     [self.navigationController pushViewController:how_much animated:YES];
-    
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setTitle:@"Select Recipient"];
     [self.slidingViewController.panGesture setEnabled:YES];
@@ -141,12 +131,6 @@
     [arrRecipientsForRequest removeAllObjects];
     [[assist shared]setArray:[arrRecipientsForRequest copy]];
     arrRequestPersons=[[NSMutableArray alloc]init];
-    //    //clear Image cache
-    //    SDImageCache *imageCache = [SDImageCache sharedImageCache];
-    //    [imageCache clearMemory];
-    //    [imageCache clearDisk];
-    //    [imageCache cleanDisk];
-    // Do any additional setup after loading the view from its nib.
     
     UIButton *location = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [location setStyleId:@"icon_location"];
@@ -155,14 +139,20 @@
     UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
     [self.navigationItem setRightBarButtonItem:loc];
     
+    NSArray *seg_items = @[@"Recent",@"Find by Location"];
+    UISegmentedControl *completed_pending = [[UISegmentedControl alloc] initWithItems:seg_items];
+    [completed_pending setStyleId:@"history_segcontrol"];
+    [completed_pending addTarget:self action:@selector(recent_or_location:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:completed_pending];
+    [completed_pending setSelectedSegmentIndex:0];
     
-    self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 42, 320, [[UIScreen mainScreen] bounds].size.height-90)];
+    self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 82, 320, [[UIScreen mainScreen] bounds].size.height-90)];
     [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
     [self.contacts setSectionHeaderHeight:30];
     [self.contacts setStyleId:@"select_recipient"];
     [self.view addSubview:self.contacts]; [self.contacts reloadData];
     
-    search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 280, 40)];
+    search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 40, 280, 40)];
     [search setBackgroundColor:kNoochGrayDark];
     search.placeholder=@"Search by Name or Email";
     [search setDelegate:self];
@@ -177,6 +167,14 @@
     [self.view addSubview:spinner];
     spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
     [spinner startAnimating];
+}
+-(void)recent_or_location:(UISegmentedControl *)sender
+{
+    if (sender.selectedSegmentIndex == 0) {
+        
+    } else {
+        
+    }
 }
 -(void)phonebook:(id)sender
 {

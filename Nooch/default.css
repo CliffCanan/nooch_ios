@@ -699,7 +699,7 @@
 		background-size		: 20px 33px;
 	}
 #icon_phonebook {
-        top					: 2px
+        top					: 42px
 		left				: 282px;
 		width				: 38px;
 		height				: 38px;
@@ -1717,7 +1717,7 @@
 		}
 	
 	    /**  Background only of the blue section headers of the right sidebar Table. */
-		.rside_sectionheader_bckgrnd {
+		.sectionheader_bckgrnd {
 			width				: 270px;
 			height				: 23px;
 			background-image	: linear-gradient(#6dbee8, #41abe1);

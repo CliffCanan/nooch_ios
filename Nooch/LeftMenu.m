@@ -163,7 +163,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake (10,0,300,23)];
-    [title setFont:[UIFont fontWithName:@"VarelaRound-Regular" size:15]];
+    [title setFont:[UIFont fontWithName:@"Roboto-Regular" size:15]];
     title.textColor = [UIColor whiteColor];
     if (section == 0) {
         title.text = @"ACCOUNT";
@@ -176,17 +176,10 @@
     }else{
         title.text = @"";
     }
-    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, 22, 320, 1)];
-    [bottomLine setBackgroundColor:[UIColor blackColor]];
-    [headerView addSubview:bottomLine];
-    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 1)];
-    [topLine setBackgroundColor:[UIColor blackColor]];
-    [headerView addSubview:topLine];
     
     [headerView addSubview:title];
-    [headerView setBackgroundColor:kNoochBlue];
-    //[headerView setStyleClass:@"button_blue"];
     [title setBackgroundColor:[UIColor clearColor]];
+    [headerView setStyleClass:@"sectionheader_bckgrnd"];
     return headerView;
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{

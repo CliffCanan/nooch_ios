@@ -67,6 +67,7 @@
 
     self.amnt = [@"" mutableCopy];
     self.decimals = YES;
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     
     UIView *back = [[UIView alloc] initWithFrame:CGRectMake(10, 10, 300, 248)];
     [back setStyleClass:@"how_much_mainbox"];

@@ -61,12 +61,10 @@
     
     [balance.titleLabel setFont:kNoochFontMed];
     [balance setStyleId:@"navbar_balance"];
-    
     [self.navigationItem setRightBarButtonItem:Nil];
     
-    UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:balance];
-    
-    [self.navigationItem setRightBarButtonItem:funds];
+    //UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:balance];
+    //[self.navigationItem setRightBarButtonItem:funds];
     
     
     [self.navigationItem setTitle:@"Select Cause"];
