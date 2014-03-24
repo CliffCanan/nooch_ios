@@ -39,7 +39,7 @@
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     // self.title=[self.charity valueForKey:@"OrganizationName"];
     [self.navigationItem setTitle:[[self.charity valueForKey:@"OrganizationName"] capitalizedString]];
-    UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    /*UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [balance setFrame:CGRectMake(0, 0, 60, 30)];
     if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
         
@@ -58,7 +58,7 @@
     
     UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:balance];
     
-    [self.navigationItem setRightBarButtonItem:funds];
+    [self.navigationItem setRightBarButtonItem:funds];*/
     
     image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 150)];
     [image setImage:[UIImage imageNamed:@"4k_image.png"]];
@@ -150,6 +150,18 @@
     serveOBJ.Delegate=self;
     serveOBJ.tagName=@"npDetail";
     [serveOBJ GetNonProfiltDetail:[self.charity valueForKey:@"NonprofitId"] memberId:[self.charity valueForKey:@"MemberId"]];
+    
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+        UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
+                                                                              [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
+        [scroll setDelegate:self];
+        [scroll setContentSize:CGSizeMake(320, 560)];
+        for (UIView *subview in self.view.subviews) {
+            [subview removeFromSuperview];
+            [scroll addSubview:subview];
+        }
+        [self.view addSubview:scroll];
+    }
 }
 -(void)webRef{
     if ([weburl length]>0) {

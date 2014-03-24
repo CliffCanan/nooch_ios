@@ -30,7 +30,6 @@
     return self;
 }
 
-
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -67,8 +66,6 @@
                 for (int j=0;j<[arrRequestPersons count];j++) {
                    
                    NSDictionary*dictSub=[arrRequestPersons objectAtIndex:j];
-                    NSLog(@"%@",[dict valueForKey:@"MemberId"]);
-                      NSLog(@"%@",[dictSub valueForKey:@"MemberId"]);
                     if ([[dict valueForKey:@"MemberId"]isEqualToString:[dictSub valueForKey:@"MemberId"]])
                         loc=1;
                     

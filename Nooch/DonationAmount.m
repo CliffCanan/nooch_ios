@@ -45,7 +45,7 @@
     
     
     [self.navigationItem setTitle:@"How Much"];
-    UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    /*UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     
     [balance setFrame:CGRectMake(0, 0, 60, 30)];
     
@@ -63,7 +63,7 @@
     
     UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:balance];
     
-    [self.navigationItem setRightBarButtonItem:funds];
+    [self.navigationItem setRightBarButtonItem:funds];*/
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     self.amnt = [@"" mutableCopy];

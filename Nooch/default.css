@@ -571,6 +571,19 @@
 
  /*******************************************
   *******************************************
+  ********  	PROFILE STATUS	VIEWS     ********
+  *******************************************
+  *******************************************/
+    #suspended {
+        width           : 320px;
+        height          : 50px;
+        left               : 0px;
+        background-color: #d2232a;
+        opacity : 0.6;
+    }
+
+ /*******************************************
+  *******************************************
   ********  	PRE-LOGIN FLOW	     ********
   *******************************************
   *******************************************/
@@ -805,6 +818,19 @@
 		top					: 73px;
 		left                : 120px;
 	}
+    
+    #howmuch_amountfield_4 {
+		font-family			: "Roboto";
+		font-size			: 35px;
+		font-weight         : medium;
+		font-stretch		: expanded;
+		text-align       	: right;
+		color 				: #58595B;
+		width				: 180px;
+		height				: 50px;
+		top					: 53px;
+		left                : 120px;
+	}
  
 	/**  Send and Request buttons. **/ 
 	.howmuch_buttons {
@@ -824,11 +850,21 @@
 		left	: 9px;
 		top		: 204px;
 	}
+    
+    #howmuch_request_4 {
+		left	: 9px;
+		top		: 139px;
+	}
 
 	/**  Sets the position for the Send Button. **/
 	#howmuch_send {
 		left	: 162px;
 		top		: 204px;
+	}
+    
+    #howmuch_send_4 {
+		left	: 162px;
+		top		: 139px;
 	}
  .nonhowmuch_send {
         left	            : 9px;
@@ -849,6 +885,15 @@
 		width			: 38px;
 		height			: 38px;
 		top				: 212px;
+		left			: 141px;
+		background-image: url(dollar-sign.png);
+		background-size	: 39px;
+	}
+    
+    #howmuch_divider_4 {
+		width			: 38px;
+		height			: 38px;
+		top				: 148px;
 		left			: 141px;
 		background-image: url(dollar-sign.png);
 		background-size	: 39px;
@@ -930,6 +975,14 @@
 		top 			: 161px;
 		background-size	: 30px 22px;
 	}
+    
+    #howmuch_camera_4 {
+		width 			: 30px;
+		height 			: 22px;
+		left 			: 265px;
+		top 			: 71px;
+		background-size	: 30px 22px;
+	}
 
 	/**  Icon when a picture has been attached. **/
 	#howmuch_camera_attached {
@@ -945,6 +998,35 @@
 		width 			: 280px;
 		left    		: 19px;
 		top     		: 154px;
+		border 			: 1px solid;
+		border-color	: #939598;
+		border-radius	: 2px;
+        text-align      : center;
+		font-family 	: "Roboto";
+		font-weight 	: light;
+		font-size       : 16px;
+		color           : #414042px;
+	}
+    
+    #howmuch_memo {
+		width 			: 280px;
+		left    		: 19px;
+		top     		: 154px;
+		border 			: 1px solid;
+		border-color	: #939598;
+		border-radius	: 2px;
+        text-align      : center;
+		font-family 	: "Roboto";
+		font-weight 	: light;
+		font-size       : 16px;
+		color           : #414042px;
+	}
+    
+    #howmuch_memo_4 {
+		width 			: 280px;
+		left    		: 19px;
+		top     		: 104px;
+        height      : 30px;
 		border 			: 1px solid;
 		border-color	: #939598;
 		border-radius	: 2px;
@@ -2012,14 +2094,30 @@
 		width			: 270px;
 		height			: 55px;
 		top				: 513px;  /* is this value right? */
-		left			: 0px;
+        left			: 0px;
 		background-image: linear-gradient(#69b9e0, #3fa5d9);
 	}
+    
+    #lside_bottombar_background_4 {
+        width			: 270px;
+		height			: 55px;
+		top				: 425px;  /* is this value right? */
+        left			: 0px;
+		background-image: linear-gradient(#69b9e0, #3fa5d9);
+    }
 
 	#settings_icon {
 		width			: 31px;
 		height			: 30px;
 		top				: 524px;
+		left			: 15px;
+		background-image: url(settings-icon2.png);
+	}
+    
+    #settings_icon_4 {
+		width			: 31px;
+		height			: 30px;
+		top				: 436px;
 		left			: 15px;
 		background-image: url(settings-icon2.png);
 	}
@@ -2031,11 +2129,32 @@
 		left			: 96px;
 		background-image: url(nooch_Logo.png);
 	}
+    
+    #nooch_whitelogo_4 {
+		width			: 80px;
+		height			: 26px;
+		top				: 433px;
+		left			: 96px;
+		background-image: url(nooch_Logo.png);
+	}
 	
 	#version_label {
 		width			: 80px;
 		height			: 12px;
 		top				: 551px;
+		left			: 96px;
+		color			: white;
+		font-family		: "Roboto";
+		font-size		: 10px;
+		font-weight		: regular;
+		text-align		: center;
+		letter-spacing	: expanded;
+	}
+    
+    #version_label_4 {
+		width			: 80px;
+		height			: 12px;
+		top				: 463px;
 		left			: 96px;
 		color			: white;
 		font-family		: "Roboto";
@@ -2211,7 +2330,7 @@
 		width			: 6px;
 	}
 	.titlelbl{
-       width				: 320px;
+       width				: 300px;
 		height				: 38px;
 		top					: 0px;
 		left				: 0px;
@@ -2345,6 +2464,17 @@
         top                : 380px;
 		height				: 20px;
 	}
+    
+    .details_label_location_4 {
+		font-family			: "Roboto";
+		font-weight         : bold;
+		font-size			: 12px;
+		text-align          : center;
+		color 				: white;
+        background-color : black;
+        top                : 300px;
+		height				: 20px;
+	}
     .details_label1 {
 		font-family			: "Roboto";
 		font-weight         : regular;
@@ -2400,6 +2530,12 @@
 		height				: 50px;
 		top					: 420px;
 	}
+    
+    .details_buttons_4 {
+		width				: 50px;
+		height				: 50px;
+		top					: 332px;
+	}
 
 	/**  Text labels immediately below each round button at the bottom of Transfer Details. **/
 	.details_buttons_labels {
@@ -2407,6 +2543,17 @@
         text-align          : center;
 		height				: 14px;
 		top					: 480px;
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 12px;
+		color 				: #6d6e71;
+	}
+    
+    .details_buttons_labels_4 {
+		width				: 55px;
+        text-align          : center;
+		height				: 14px;
+		top					: 392px;
 		font-family			: "Roboto";
 		font-weight         : regular;
 		font-size			: 12px;
@@ -2541,6 +2688,14 @@
 		width				: 250px;
 		height				: 44px;
 		top					: 390px;
+		left				: 35px;
+		font-size			: 18px;
+	}
+    
+    #button_signout_4 {
+		width				: 250px;
+		height				: 44px;
+		top					: 360px;
 		left				: 35px;
 		font-size			: 18px;
 	}
@@ -2749,7 +2904,7 @@
 	table-view.stats {
 		height			: 300px;
 		width			: 300px;
-		top				: 100px;
+		top				: 80px;
 		left			: 0px;
 		background-color: white;
 		row-height		: 40px;

@@ -64,20 +64,6 @@
     // Do any additional setup after loading the view from its nib.
     self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setTitle:@"How Much?"];
-    UIButton*backbtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [backbtn setFrame:CGRectMake(0, 0, 80, 40)];
-    [backbtn addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [backbtn setImage:[UIImage imageNamed:@"backbtn.png"] forState:UIControlStateNormal];
-    [backbtn setImage:[UIImage imageNamed:@"backbtn.png"] forState:UIControlStateHighlighted];
-    [backbtn setStyleId:@"navbar_back"];
-    
-    [self.navigationItem setLeftBarButtonItem:Nil];
-    
-    UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:backbtn];
-    
-    [self.navigationItem setLeftBarButtonItem:funds];
-    
 
     self.amnt = [@"" mutableCopy];
     self.decimals = YES;
@@ -240,6 +226,19 @@
     {
         [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
     }*/
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+        CGRect frame = back.frame;
+        frame.size.height = 175;
+        back.frame = frame;
+        [self.send setStyleId:@"howmuch_send_4"];
+        [self.request setStyleId:@"howmuch_request_4"];
+        [self.divider setStyleId:@"howmuch_divider_4"];
+        [user_pic setFrame:CGRectMake(28, 55, 46, 46)];
+        user_pic.layer.cornerRadius = 23;
+        [self.amount setStyleId:@"howmuch_amountfield_4"];
+        [self.memo setStyleId:@"howmuch_memo_4"];
+        [self.camera setStyleId:@"howmuch_camera_4"];
+    }
 }
 - (void)viewWillAppear:(BOOL)animated
 {

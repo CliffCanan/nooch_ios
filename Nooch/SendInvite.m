@@ -40,10 +40,13 @@
     
     
     [self.navigationItem setHidesBackButton:YES];
+    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
+    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
+    [ttt setImage:[UIImage imageGlyphNamed:@"reorder" height:40 color:[UIColor whiteColor]]];
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
+    [hamburger setFrame:CGRectMake(0, 0, 30, 30)];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
-    [hamburger setStyleId:@"navbar_hamburger"];
+    [hamburger setBackgroundImage:ttt.image forState:UIControlStateNormal];
     UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
     
@@ -212,7 +215,7 @@
         dictInviteUserList=[NSJSONSerialization
                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                             options:kNilOptions
-                            error:&error];;
+                            error:&error];
         if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"]count]>0) {
             self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 42, 320, [[UIScreen mainScreen] bounds].size.height-90)];
             [self.contacts setDataSource:self]; [self.contacts setDelegate:self];

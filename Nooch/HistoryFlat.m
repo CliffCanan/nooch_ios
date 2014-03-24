@@ -124,8 +124,6 @@
     [self.list setDataSource:self]; [self.list setDelegate:self]; [self.list setSectionHeaderHeight:0];
     [self.view addSubview:self.list]; [self.list reloadData];
     
-    
-    
     UISwipeGestureRecognizer * recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideright:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self.list addGestureRecognizer:recognizer];
@@ -133,8 +131,6 @@
     UISwipeGestureRecognizer * recognizer2 = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideleft:)];
     [recognizer2 setDirection:(UISwipeGestureRecognizerDirectionLeft)];
     [self.list addGestureRecognizer:recognizer2];
-    
-    
     
     self.search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 40, 320, 40)];
     [self.search setStyleId:@"history_search"];
@@ -167,7 +163,6 @@
     [completed_pending addTarget:self action:@selector(completed_or_pending:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:completed_pending];
     [completed_pending setSelectedSegmentIndex:0];
-    
     
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     [imageCache clearMemory];

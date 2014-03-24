@@ -106,7 +106,11 @@
     [self.logout setTitle:@"Sign Out" forState:UIControlStateNormal];
     [ self.logout addTarget:self action:@selector(sign_out) forControlEvents:UIControlEventTouchUpInside];
     [self.logout setStyleClass:@"button_gray"];
-    [self.logout setStyleId:@"button_signout"];
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+        [self.logout setStyleId:@"button_signout_4"];
+    } else {
+        [self.logout setStyleId:@"button_signout"];
+    }
     [self.view addSubview: self.logout];
 }
 

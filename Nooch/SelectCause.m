@@ -42,15 +42,15 @@
     NSLog(@"%@",nav_ctrl.viewControllers);
     
     self.navigationController.navigationBar.topItem.title = @"";
-    if (isOpenLeftSideBar) {
-        [self.navigationItem setHidesBackButton:YES];
-        UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [hamburger setFrame:CGRectMake(0, 0, 40, 40)];
-        [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
-        [hamburger setStyleId:@"navbar_hamburger"];
-        UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
-        [self.navigationItem setLeftBarButtonItem:menu];
-    }
+    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
+    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
+    [ttt setImage:[UIImage imageGlyphNamed:@"reorder" height:40 color:[UIColor whiteColor]]];
+    UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [hamburger setFrame:CGRectMake(0, 0, 30, 30)];
+    [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+    [hamburger setBackgroundImage:ttt.image forState:UIControlStateNormal];
+    UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+    [self.navigationItem setLeftBarButtonItem:menu];
     //Right Bar Button for Balance
     UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [balance setFrame:CGRectMake(0, 0, 60, 30)];

@@ -80,21 +80,37 @@
     [user_pic addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profile)]];
     
     UIView *bottom_bar = [UIView new];
-    [bottom_bar setStyleId:@"lside_bottombar_background"];
+    if ([[UIScreen mainScreen] bounds].size.height < 520) {
+        [bottom_bar setStyleId:@"lside_bottombar_background_4"];
+    } else {
+        [bottom_bar setStyleId:@"lside_bottombar_background"];
+    }
     [self.view addSubview:bottom_bar];
     
     UIButton *settings = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [settings setStyleId:@"settings_icon"];
+    if ([[UIScreen mainScreen] bounds].size.height < 520) {
+        [settings setStyleId:@"settings_icon_4"];
+    } else {
+        [settings setStyleId:@"settings_icon"];
+    }
     [settings setBackgroundImage:ttt.image forState:UIControlStateNormal];
     [settings addTarget:self action:@selector(go_settings) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:settings];
     
     UIImageView *logo = [UIImageView new];
-    [logo setStyleId:@"nooch_whitelogo"];
+    if ([[UIScreen mainScreen] bounds].size.height < 520) {
+        [logo setStyleId:@"nooch_whitelogo_4"];
+    } else {
+        [logo setStyleId:@"nooch_whitelogo"];
+    }
     [self.view addSubview:logo];
     
     UILabel *version = [UILabel new];
-    [version setStyleId:@"version_label"];
+    if ([[UIScreen mainScreen] bounds].size.height < 520) {
+        [version setStyleId:@"version_label_4"];
+    } else {
+        [version setStyleId:@"version_label"];
+    }
     [version setText:@"version 1.1.1."];
     [self.view addSubview:version];
 }
@@ -254,7 +270,7 @@
             cell.textLabel.text = @"Refer a Friend";
             [ttt setImage:[UIImage imageGlyphNamed:@"group" height:25 color:[UIColor whiteColor]]];
             iv.image = ttt.image;
-            [iv setFrame:CGRectMake(7, 7, 24, 24)];
+            [iv setFrame:CGRectMake(7, 10, 24, 24)];
         }else if(indexPath.row == 1){
             cell.textLabel.text = @"Rate Nooch";
             [ttt setImage:[UIImage imageGlyphNamed:@"star" height:25 color:[UIColor whiteColor]]];
@@ -271,9 +287,9 @@
             [iv setFrame:CGRectMake(7, 7, 26, 30)];
         }else if(indexPath.row == 1){
             cell.textLabel.text = @"Contact Support";
-            [ttt setImage:[UIImage imageGlyphNamed:@"envelope" height:25 color:[UIColor whiteColor]]];
+            [ttt setImage:[UIImage imageGlyphNamed:@"envelope-alt" height:25 color:[UIColor whiteColor]]];
             iv.image = ttt.image;
-            [iv setFrame:CGRectMake(7, 7, 24, 23)];
+            [iv setFrame:CGRectMake(7, 10, 24, 23)];
         }else if(indexPath.row == 2){
             cell.textLabel.text =  @"Limits & Fees";
             iv.image = [UIImage imageNamed:@"LimitsAndFees_Icon.png"];

@@ -173,6 +173,13 @@
     self.third_num = [[UIView alloc] initWithFrame:CGRectMake(165,240,30,30)];
     self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(205,240,30,30)];
     
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+        self.first_num = [[UIView alloc] initWithFrame:CGRectMake(85,230,30,30)];
+        self.second_num = [[UIView alloc] initWithFrame:CGRectMake(125,230,30,30)];
+        self.third_num = [[UIView alloc] initWithFrame:CGRectMake(165,230,30,30)];
+        self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(205,230,30,30)];
+    }
+    
     //self.first_num.alpha = self.second_num.alpha = self.third_num.alpha = self.fourth_num.alpha = 0.5;
     self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 15;
     self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor clearColor];

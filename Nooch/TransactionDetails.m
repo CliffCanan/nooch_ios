@@ -198,9 +198,6 @@
     
     
     amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 60, 320, 60)];
-//    if ([self.trans objectForKey:@"Amount"]!=NULL) {
-//        [amount setText:[NSString stringWithFormat:@"$%.02f",[[self.trans valueForKey:@"Amount"] floatValue]]];
-//    }
     
     [amount setStyleClass:@"details_amount"];
     [amount setTextAlignment:NSTextAlignmentCenter];
@@ -227,37 +224,28 @@
     
     if(![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"] && ![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
     {
-        if (false) {
-            UIButton *pay = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [pay setFrame:CGRectMake(0, 440, 0, 0)];
-            [pay setTitle:@"Pay" forState:UIControlStateNormal];
-            [pay setStyleId:@"button_pay"];
-            [self.view addSubview:pay];
-            
-            UIButton *dec = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [dec setFrame:pay.frame];
-            [dec setTitle:@"Decline" forState:UIControlStateNormal];
-            [dec setStyleId:@"button_decline"];
-            [self.view addSubview:dec];
-        }
-        
-        
         UIButton *pay_back = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [pay_back setTitle:@"" forState:UIControlStateNormal];
-        [pay_back setStyleClass:@"details_buttons"];
         [pay_back setStyleCSS:@"background-image : url(pay-back-icon.png)"];
         [pay_back setStyleId:@"details_payback"];
         [pay_back addTarget:self action:@selector(pay_back) forControlEvents:UIControlEventTouchUpInside];
-        [pay_back setFrame:CGRectMake(15, 410, 60, 60)];
+        if ([[UIScreen mainScreen] bounds].size.height == 480) {
+            [pay_back setStyleClass:@"details_buttons_4"];
+        } else {
+            [pay_back setStyleClass:@"details_buttons"];
+        }
         
         UILabel *pay_text = [UILabel new];
         [pay_text setFrame:pay_back.frame];
-        [pay_text setStyleClass:@"details_buttons_labels"];
+        if ([[UIScreen mainScreen] bounds].size.height == 480) {
+            [pay_text setStyleClass:@"details_buttons_labels_4"];
+        } else {
+            [pay_text setStyleClass:@"details_buttons_labels"];
+        }
         [pay_text setText:@"Pay Back"];
         
         UIButton *fb = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [fb setTitle:@"" forState:UIControlStateNormal];
-        [fb setStyleClass:@"details_buttons"];
         [fb setStyleCSS:@"background-image : url(fb-icon-90x90.png)"];
         if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
             [fb setStyleId:@"details_fb_donate"];
@@ -266,16 +254,24 @@
             [fb setStyleId:@"details_fb"];
         
         [fb addTarget:self action:@selector(post_to_fb) forControlEvents:UIControlEventTouchUpInside];
-        [fb setFrame:CGRectMake(95, 410, 60, 60)];
+        if ([[UIScreen mainScreen] bounds].size.height == 480) {
+            [fb setStyleClass:@"details_buttons_4"];
+        } else {
+            [fb setStyleClass:@"details_buttons"];
+        }
+        
         
         UILabel *fb_text = [UILabel new];
         [fb_text setFrame:fb.frame];
-        [fb_text setStyleClass:@"details_buttons_labels"];
+        if ([[UIScreen mainScreen] bounds].size.height == 480) {
+            [fb_text setStyleClass:@"details_buttons_labels_4"];
+        } else {
+            [fb_text setStyleClass:@"details_buttons_labels"];
+        }
         [fb_text setText:@"Facebook"];
         
         UIButton *twit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [twit setTitle:@"" forState:UIControlStateNormal];
-        [twit setStyleClass:@"details_buttons"];
         [twit setStyleCSS:@"background-image : url(twitter-icon.png)"];
         if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
             [twit setStyleId:@"details_twit_donate"];
@@ -283,17 +279,24 @@
         else
             [twit setStyleId:@"details_twit"];
         [twit addTarget:self action:@selector(post_to_twitter) forControlEvents:UIControlEventTouchUpInside];
-        [twit setFrame:CGRectMake(175, 410, 60, 60)];
+        if ([[UIScreen mainScreen] bounds].size.height == 480) {
+            [twit setStyleClass:@"details_buttons_4"];
+        } else {
+            [twit setStyleClass:@"details_buttons"];
+        }
         
         UILabel *twit_text = [UILabel new];
         [twit_text setFrame:twit.frame];
-        [twit_text setStyleClass:@"details_buttons_labels"];
+        if ([[UIScreen mainScreen] bounds].size.height == 480) {
+            [twit_text setStyleClass:@"details_buttons_labels_4"];
+        } else {
+            [twit_text setStyleClass:@"details_buttons_labels"];
+        }
         [twit_text setText:@"Twitter"];
         
         
         UIButton *disp = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [disp setTitle:@"" forState:UIControlStateNormal];
-        [disp setStyleClass:@"details_buttons"];
         [disp setStyleCSS:@"background-image : url(dispute-icon.png)"];
         if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
             [disp setStyleId:@"details_disp_donate"];
@@ -301,14 +304,22 @@
         else
             [disp setStyleId:@"details_disp"];
         
-        
         [disp addTarget:self action:@selector(dispute) forControlEvents:UIControlEventTouchUpInside];
-        [disp setFrame:CGRectMake(255, 410, 60, 60)];
+        if ([[UIScreen mainScreen] bounds].size.height == 480) {
+            [disp setStyleClass:@"details_buttons_4"];
+        } else {
+            [disp setStyleClass:@"details_buttons"];
+        }
         
         
         UILabel *disp_text = [UILabel new];
         [disp_text setFrame:disp.frame];
-        [disp_text setStyleClass:@"details_buttons_labels"];
+        if ([[UIScreen mainScreen] bounds].size.height == 480) {
+            [disp_text setStyleClass:@"details_buttons_labels_4"];
+        } else {
+            [disp_text setStyleClass:@"details_buttons_labels"];
+        }
+        
         [disp_text setText:@"Dispute"];
         
         
@@ -720,12 +731,21 @@
                 NSData *datos = [NSData dataWithBytes:bytes length:c];
                 
                 imgTran=[[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
+                
                 [imgTran setImage:[UIImage imageWithData:datos]];
                 
                 mapView_ = [GMSMapView mapWithFrame:CGRectMake(165, 240, 150, 160) camera:camera];
+                if ([[UIScreen mainScreen] bounds].size.height == 480) {
+                    [imgTran setFrame:CGRectMake(5, 240, 150, 80)];
+                    [mapView_ setFrame:CGRectMake(165, 240, 150, 80)];
+                }
             }
-            else
+            else {
                 mapView_ = [GMSMapView mapWithFrame:CGRectMake(-1, 240, 322, 160) camera:camera];
+                if ([[UIScreen mainScreen] bounds].size.height == 480) {
+                    [mapView_ setFrame:CGRectMake(-1, 240, 322, 80)];
+                }
+            }
             
             mapView_.myLocationEnabled = YES;
             //mapView_.layer.borderWidth = 1;
@@ -741,7 +761,9 @@
             {
                 if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
                     imgTran.frame=CGRectMake(5, 240, 310, 160);
-                    
+                    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+                        [imgTran setFrame:CGRectMake(5, 240, 150, 80)];
+                    }
                     [self.view addSubview:imgTran];
                 }
             }
@@ -769,6 +791,9 @@
         }
         location.numberOfLines=2;
         [location setStyleClass:@"details_label_location"];
+        if ([[UIScreen mainScreen] bounds].size.height == 480) {
+            [location setStyleClass:@"details_label_location_4"];
+        }
         [location setAlpha:0.7];
         if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"City"]!=NULL && [[assist shared]islocationAllowed] ) {
             if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"City"]!=NULL && [[assist shared]islocationAllowed] ) {

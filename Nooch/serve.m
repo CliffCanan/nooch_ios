@@ -782,7 +782,7 @@ NSString *amnt;
                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
-        NSLog(@"%@",Dictresponse);
+        NSLog(@"user info: %@",Dictresponse);
         // Edit 19Nov 2013
         if ([[Dictresponse valueForKey:@"IsValidProfile"] intValue]) {
             
