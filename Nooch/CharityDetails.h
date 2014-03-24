@@ -10,7 +10,7 @@
 #import "serve.h"
 #import "Decryption.h"
 NSMutableDictionary*dictnonprofitid;
-@interface CharityDetails : UIViewController<serveD,DecryptionDelegate>
+@interface CharityDetails : UIViewController<serveD,DecryptionDelegate,UIScrollViewDelegate>
 {
     UIImageView *image;
     UILabel *info;

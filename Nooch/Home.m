@@ -28,6 +28,9 @@ NSMutableURLRequest *request;
 @property(nonatomic,strong) UIImageView *close;
 @property(nonatomic,strong) UIView *popup;
 @property(nonatomic,strong) MBProgressHUD *hud;
+@property(nonatomic,strong) UIView *suspended;
+@property(nonatomic,strong) UIView *profile_incomplete;
+@property(nonatomic,strong) UIView *phone_unverified;
 @end
 
 @implementation Home
@@ -129,7 +132,7 @@ NSMutableURLRequest *request;
     
     float height = [[UIScreen mainScreen] bounds].size.height;
     height -= 150; height /= 3;
-    CGRect button_frame = CGRectMake(20.00, 20.00, 280, height);
+    CGRect button_frame = CGRectMake(20.00, 70.00, 280, height);
     [top_button setFrame:button_frame];
     button_frame.origin.y += height+20; [mid_button setFrame:button_frame];
     button_frame.origin.y += height+20; [bot_button setFrame:button_frame];
@@ -180,6 +183,17 @@ NSMutableURLRequest *request;
         ReEnterPin*pin=[ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
     }
+    
+    self.suspended = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    [self.suspended setStyleId:@"suspended"];
+    UILabel *sus = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 320, 20)];
+    [sus setText:@"Profile Suspended!"];
+    [sus setFont:[UIFont fontWithName:@"Roboto-Medium" size:12]];
+    [sus setTextColor:[UIColor blackColor]];
+    [sus setBackgroundColor:[UIColor clearColor]];
+    [sus setTextAlignment:NSTextAlignmentCenter];
+    [self.suspended addSubview:sus];
+    //[self.view addSubview:self.suspended];
 }
 
 -(void)updateLoader{
@@ -290,7 +304,6 @@ NSMutableURLRequest *request;
             banks.Delegate = self;
             banks.tagName = @"banks";
             [banks getBanks];
-            
         }
     }
     else
@@ -417,7 +430,7 @@ NSMutableURLRequest *request;
     }
     
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         return;
     }

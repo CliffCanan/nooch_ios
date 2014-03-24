@@ -62,10 +62,6 @@
 
 @property (nonatomic , retain) NSString * SavePhoneNumber;
 
-
-
-
-
 @end
 
 
@@ -300,6 +296,13 @@
     [self.view addSubview:div];
     
     
+    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
+        UIView *email_not_validated = [[UIView alloc] initWithFrame:CGRectMake(0, 110+down, 320, 30)];
+        [email_not_validated setBackgroundColor:[UIColor redColor]];
+        [email_not_validated setAlpha:0.3];
+        [self.view addSubview:email_not_validated];
+    }
+    
     self.email = [[UITextField alloc] initWithFrame:CGRectMake(20, 110+down, 280, 30)];
     
     [self.email setTextAlignment:NSTextAlignmentRight]; [self.email setBackgroundColor:[UIColor clearColor]];
@@ -323,7 +326,6 @@
     [mail setStyleClass:@"table_view_cell_textlabel_1"];
     
     [self.view addSubview:mail];
-    
     
     
     UIView *div2 = [[UIView alloc] initWithFrame:CGRectMake(0, 145+down, 0, 0)];
@@ -370,7 +372,11 @@
     [self.view addSubview:div4];
     
     
-    
+    if (![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"]) {
+        UIView *unverified_phone = [[UIView alloc] initWithFrame:CGRectMake(0,190+down,320,30)];
+        [unverified_phone setAlpha:0.3]; [unverified_phone setBackgroundColor:[UIColor redColor]];
+        [self.view addSubview:unverified_phone];
+    }
     self.phone = [[UITextField alloc] initWithFrame:CGRectMake(20,190+down,280,30)];
     
     [self.phone setTextAlignment:NSTextAlignmentRight]; [self.phone setBackgroundColor:[UIColor clearColor]];
