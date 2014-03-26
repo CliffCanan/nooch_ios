@@ -239,9 +239,6 @@ NSMutableURLRequest *request;
         [locationManager startUpdatingLocation];
         
     }
-    
-    
-    
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -269,14 +266,10 @@ NSMutableURLRequest *request;
               [self.navigationItem setRightBarButtonItem:funds];
           }
     
-    
-    
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
         if (timerHome==nil) {
              timerHome=[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateLoader) userInfo:nil repeats:YES];
         }
-    
-    
     
     if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]]) {
         //push login
@@ -290,7 +283,6 @@ NSMutableURLRequest *request;
         
         self.hud.delegate = self;
         self.hud.labelText = @"Loading your Nooch account";
-        
         [self.hud showWhileExecuting:@selector(myTask) onTarget:self withObject:nil animated:YES];
         }
         if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
@@ -455,14 +447,6 @@ NSMutableURLRequest *request;
         UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
         [set setTag:201];
         [set show];
-        return;
-    }
-    
-    
-    if (![[assist shared]isBankVerified]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-        [alert show];
-        
         return;
     }
     

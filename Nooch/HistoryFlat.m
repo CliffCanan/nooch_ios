@@ -627,7 +627,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     fp.border = NO;
     fp.tint = FPPopoverWhiteTint;
     fp.arrowDirection = FPPopoverArrowDirectionUp;
-    fp.contentSize = CGSizeMake(200, 355);
+    fp.contentSize = CGSizeMake(200, 335);
     [fp presentPopoverFromPoint:CGPointMake(280, 45)];
     
 }
@@ -925,7 +925,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         }
                         
                         [updated_balance setStyleClass:@"history_updatedbalance"];
-                        [cell.contentView addSubview:updated_balance];
+                        //[cell.contentView addSubview:updated_balance];
                         
                     }
                     else {
@@ -1249,7 +1249,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         }
                         
                         [updated_balance setStyleClass:@"history_updatedbalance"];
-                        [cell.contentView addSubview:updated_balance];
+                        //[cell.contentView addSubview:updated_balance];
 
                     }
                     else {

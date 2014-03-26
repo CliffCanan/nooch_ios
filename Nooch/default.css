@@ -850,6 +850,7 @@
 		left	: 9px;
 		top		: 204px;
 	}
+
     
     #howmuch_request_4 {
 		left	: 9px;
@@ -912,6 +913,13 @@
     #howmuch_request_expand {
         width       : 302px;
         left           : 9px;
+    }
+    
+    #howmuch_request_mult_expand {
+        width       : 302px;
+        left           : 9px;
+        top         : 210px;
+        height    : 50px;
     }
     
     #howmuch_request_hide {
@@ -1307,7 +1315,7 @@
 
 	/**  Name of each Nonprofit in the 'Choose a Cause' Table  **/	
 	.nonprofitlist_name {
-		width			: 240px;
+		width			: 320px;
 		height			: 22px;
 		top				: 20px;
 		left			: 77px;
@@ -2178,8 +2186,6 @@
 	.label_filter  {
 		width				: 25px;
 		height				: 25px;
-		top					: 5px;
-		left                : 266px;
 		font-family			: "Roboto";
 		font-weight         : light;
 		font-size			: 16px;

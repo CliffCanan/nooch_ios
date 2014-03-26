@@ -49,23 +49,14 @@
     
     [self.navigationItem setTitle:@"How Much"];
     /*UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    
     [balance setFrame:CGRectMake(0, 0, 60, 30)];
-    
     if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
-        
         [balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
-        
     }
-    
     [balance.titleLabel setFont:kNoochFontMed];
-    
     [balance setStyleId:@"navbar_balance"];
-    
     [self.navigationItem setRightBarButtonItem:Nil];
-    
     UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:balance];
-    
     [self.navigationItem setRightBarButtonItem:funds];*/
     [self.view setBackgroundColor:[UIColor whiteColor]];
     

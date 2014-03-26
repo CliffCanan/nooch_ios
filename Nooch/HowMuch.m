@@ -63,7 +63,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.navigationController.navigationBar.topItem.title = @"";
-    [self.navigationItem setTitle:@"How Much?"];
+    [self.navigationItem setTitle:@"How Much"];
 
     self.amnt = [@"" mutableCopy];
     self.decimals = YES;
@@ -137,7 +137,6 @@
                      placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
         }
     }
-    NSLog(@"%@",self.receiver);
     [self.view addSubview:user_pic];
     
     self.amount = [[UITextField alloc] initWithFrame:CGRectMake(30, 40, 260, 80)];
@@ -176,7 +175,8 @@
     [self.view addSubview:self.request];
     if ([[assist shared]isRequestMultiple]) {
         [self.send removeFromSuperview];
-        [self.request setStyleClass:@"howmuch_buttons_RequestMutiple"];
+        [self.request setStyleClass:@"howmuch_buttons"];
+        [self.request setStyleId:@"howmuch_request_mult_expand"];
         [self.request setFrame:CGRectMake(10, 160, 300, 50)];
 
     }

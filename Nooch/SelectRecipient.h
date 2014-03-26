@@ -15,7 +15,7 @@
 BOOL isphoneBook;
 NSMutableArray*arrRecipientsForRequest;
 BOOL isAddRequest;
-@interface SelectRecipient : UIViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate,ABPeoplePickerNavigationControllerDelegate,UIActionSheetDelegate>
+@interface SelectRecipient : UIViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate,ABPeoplePickerNavigationControllerDelegate,UIActionSheetDelegate,MBProgressHUDDelegate>
 {
     
     UIView*loader;

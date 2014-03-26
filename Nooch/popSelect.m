@@ -27,11 +27,11 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    popList = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 250, 320)];
+    popList = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 250, 290)];
     [popList setRowHeight:40];
     if (memoList) {
         [popList setRowHeight:35];
-        [popList setFrame:CGRectMake(0, 0, 300, 320)];
+        [popList setFrame:CGRectMake(0, 0, 300, 290)];
     }
     [popList setUserInteractionEnabled:YES];
     [popList setScrollEnabled:NO];
@@ -74,10 +74,8 @@
         }else if(indexPath.row == 4){
             cell.textLabel.text = @"Deposits";
         }else if(indexPath.row == 5){
-            cell.textLabel.text = @"Withdrawals";
-        }else if(indexPath.row == 6){
-            cell.textLabel.text = @"Disputes";
-        }else if(indexPath.row == 7){
+            cell.textLabel.text = @"Donations";
+        } else if(indexPath.row == 6){
             cell.textLabel.text = @"Cancel";
         }
         return cell;
@@ -96,10 +94,8 @@
         }else if(indexPath.row == 4){
             cell.textLabel.text = @"Deposits";
         }else if(indexPath.row == 5){
-            cell.textLabel.text = @"Withdrawals";
-        }else if(indexPath.row == 6){
-            cell.textLabel.text = @"Disputes";
-        }else if(indexPath.row == 7){
+            cell.textLabel.text = @"Donations";
+        } else if(indexPath.row == 6){
             cell.textLabel.text = @"Cancel";
         }
         return cell;
@@ -140,12 +136,11 @@
         }else if(indexPath.row == 3){
             listType = @"REQUEST";
         }else if(indexPath.row == 4){
-            listType = @"DEPOSIT";
-        }else if(indexPath.row == 5){
-            listType = @"WITHDRAW";
-        }else if(indexPath.row == 6){
-            listType = @"DISPUTED";}
-        else if(indexPath.row == 7){
+            listType = @"DISPUTED";
+        }else if (indexPath.row == 5) {
+            listType = @"DONATION";
+        }
+        else if(indexPath.row == 6){
             listType = @"CANCEL";
         }
         isFilterSelected=YES;
