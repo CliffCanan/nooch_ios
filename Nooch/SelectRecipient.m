@@ -117,9 +117,187 @@
     HowMuch *how_much = [[HowMuch alloc] init];
     [self.navigationController pushViewController:how_much animated:YES];
 }
+
+-(void) facebook
+{
+    NSDictionary *options = @{
+                              ACFacebookAppIdKey: @"198279616971457",
+                              ACFacebookPermissionsKey: @[@"friends_about_me"],
+                              ACFacebookAudienceKey: ACFacebookAudienceFriends
+                              };
+    ACAccountType *facebookAccountType = [me.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+    [me.accountStore requestAccessToAccountsWithType:facebookAccountType
+                                             options:options completion:^(BOOL granted, NSError *e)
+     {
+         
+     }];
+    NSString *acessToken = [NSString stringWithFormat:@"%@",me.facebookAccount.credential.oauthToken];
+    NSDictionary *parameters = @{@"access_token": acessToken,@"fields":@"id,installed,username,first_name,last_name"};
+    NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/friends"];
+    SLRequest *feedRequest = [SLRequest
+                              requestForServiceType:SLServiceTypeFacebook
+                              requestMethod:SLRequestMethodGET
+                              URL:feedURL
+                              parameters:parameters];
+    feedRequest.account = me.facebookAccount;
+    [feedRequest performRequestWithHandler:^(NSData *respData,
+                                             NSHTTPURLResponse *urlResponse, NSError *error)
+     {
+         NSString *resp = [[NSString alloc] initWithData:respData encoding:NSUTF8StringEncoding];
+         NSError* err;
+        NSDictionary *d = [NSJSONSerialization
+                         JSONObjectWithData:[resp dataUsingEncoding:NSUTF8StringEncoding]
+                         options:kNilOptions
+                         error:&err];
+         NSMutableArray *friends = [d objectForKey:@"data"];
+         NSLog(@"friends %@",friends);
+         NSMutableArray *temp = [NSMutableArray new];
+         for(NSMutableDictionary *dict in friends){
+             if (![dict objectForKey:@"id"]) continue;
+             NSMutableDictionary *new = [NSMutableDictionary new];
+             [new addEntriesFromDictionary:dict];
+             [new setObject:dict[@"id"] forKey:@"facebookId"];
+             if([dict objectForKey:@"installed"]) [new setObject:@"wut2do" forKey:@"MemberId"];
+             [temp addObject:new];
+         }
+         
+         NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+         NSMutableArray *temp2 = [[NSMutableArray alloc] init];
+         NSMutableArray *temp3 = [[NSMutableArray alloc] init];
+         NSMutableArray *fbFriendsTemp = [[NSMutableArray alloc] init];
+         NSMutableArray *fbNoochFriendsTemp = [[NSMutableArray alloc] init];
+         for(int i= 0; i<[temp count];i++){
+             NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+             if([[temp objectAtIndex:i] objectForKey:@"first_name"] != NULL)[dict setObject:[NSString stringWithFormat:@"%@",[[temp objectAtIndex:i] objectForKey:@"first_name"]] forKey:@"FirstName"];
+             if([[temp objectAtIndex:i] objectForKey:@"last_name"] != NULL)[dict setObject:[NSString stringWithFormat:@"%@",[[temp objectAtIndex:i] objectForKey:@"last_name"]] forKey:@"LastName"];
+             [dict setObject:[NSString stringWithFormat:@"%@",[[temp objectAtIndex:i] objectForKey:@"name"]] forKey:@"name"];
+             if([[temp objectAtIndex:i] objectForKey:@"username"] != NULL) [dict setObject:[NSString stringWithFormat:@"%@",[[temp objectAtIndex:i] objectForKey:@"username"]] forKey:@"UserName"];
+             [dict setObject:[NSString stringWithFormat:@"%@",[[temp objectAtIndex:i] objectForKey:@"facebookId"]] forKey:@"facebookId"];
+             NSString *photoURL;
+             if([dict objectForKey:@"UserName"] != NULL) photoURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square", [dict objectForKey:@"UserName"]];
+             else if([dict objectForKey:@"facebookId"] != NULL) photoURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square", [dict objectForKey:@"facebookId"]];
+             [dict setObject:photoURL forKey:@"Photo"];
+             if([[temp objectAtIndex:i] objectForKey:@"MemberId"] != NULL){
+                 [dict setObject:[NSString stringWithFormat:@"%@",[[temp objectAtIndex:i] objectForKey:@"MemberId"]] forKey:@"MemberId"];
+                 [temp3 addObject:dict];
+             }else
+                 [temp2 addObject:dict];
+         }
+         fbFriendsTemp = [[temp2 sortedArrayUsingDescriptors:[NSArray arrayWithObject:descriptor]] mutableCopy];
+         fbNoochFriendsTemp = [[temp3 sortedArrayUsingDescriptors:[NSArray arrayWithObject:descriptor]] mutableCopy];
+         
+         [[assist shared] addAssos:fbFriendsTemp];
+         [[assist shared] addAssos:fbNoochFriendsTemp];
+         //friends = [me cleanForSave:friends];
+         //[self facebookProcess:friends];
+     }];
+}
+
+-(void)address_book
+{
+    NSMutableArray *additions = [NSMutableArray new];
+    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
+    CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
+    CFIndex nPeople = ABAddressBookGetPersonCount(addressBook);
+    for(int i=0; i<nPeople; i++){
+        NSMutableDictionary *curContact=[[NSMutableDictionary alloc] init];
+        ABRecordRef person=CFArrayGetValueAtIndex(people, i);
+        NSString *contacName = [[NSMutableString alloc] init];
+        contacName =(__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        NSString *firstName = [[NSString alloc] init];
+        NSString *lastName = [[NSString alloc] init];
+        firstName = (__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        if((__bridge NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty))
+        {
+            [contacName stringByAppendingString:[NSString stringWithFormat:@" %@", (__bridge NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty)]];
+            lastName = (__bridge NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty);
+        }
+        NSData *contactImage;
+        if(ABPersonHasImageData(person) > 0 )
+        {
+            contactImage = (__bridge NSData *)(ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail));
+        }
+        else
+        {
+            contactImage = UIImageJPEGRepresentation([UIImage imageNamed:@"profile_picture.png"], 1);
+        }
+        ABMultiValueRef phoneNumber = ABRecordCopyValue(person, kABPersonPhoneProperty);
+        ABMultiValueRef emailInfo = ABRecordCopyValue(person, kABPersonEmailProperty);
+        NSString *emailId = (__bridge NSString *)ABMultiValueCopyValueAtIndex(emailInfo, 0);
+        if(emailId != NULL) {
+            [curContact setObject:emailId forKey:@"UserName"]; [curContact setObject:emailId forKey:@"emailAddy"];
+        }
+        if(contacName != NULL)  [curContact setObject:contacName forKey:@"Name"];
+        if(firstName != NULL) [curContact setObject:firstName forKey:@"FirstName"];
+        if(lastName != NULL)  [curContact setObject:lastName forKey:@"LastName"];
+        [curContact setObject:contactImage forKey:@"image"];
+        [curContact setObject:@"YES" forKey:@"addressbook"];
+        NSString *phone,*phone2,*phone3;
+        if(ABMultiValueGetCount(phoneNumber)> 0)
+            phone =  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber, 0));
+        
+        if(ABMultiValueGetCount(phoneNumber)> 1){
+            phone2=  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber, 1));
+            phone2 = [phone2 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone2 length])];
+            [curContact setObject:phone2 forKey:@"phoneNo2"];
+        }
+        
+        if(ABMultiValueGetCount(phoneNumber)> 2){
+            phone3 =  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber,2));
+            phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
+            [curContact setObject:phone3 forKey:@"phoneNo3"];
+        }
+        if(phone == NULL && (emailId == NULL || [emailId rangeOfString:@"facebook"].location != NSNotFound)){
+            [additions addObject:curContact];
+        }else if( contacName == NULL){
+        }else{
+            NSString * strippedNumber = [phone stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone length])];
+            if([strippedNumber length] == 11){
+                strippedNumber = [strippedNumber substringFromIndex:1];
+            }
+            if(strippedNumber != NULL)
+                [curContact setObject:strippedNumber forKey:@"phoneNo"];
+            
+            [additions addObject:curContact];
+        }
+    }
+    CFRelease(people);
+    CFRelease(addressBook);
+    
+    
+    /*for (NSDictionary *person in additions)
+    {
+        if (person[@"UserName"])
+        {
+            if (![assist shared].assos[@"UserName"])
+            {
+                [[assist shared].assos setObject:person forKey:person[@"UserName"]];
+            }
+            else
+            {
+                for (NSString *key in person.allKeys)
+                {
+                    //[[assist shared].assos[person[@"UserName"]] setObject:person[key] forKey:key];
+                    [[assist shared].assos[person[@"UserName"]] addEntriesFromDictionary:person[key]];
+                }
+            }
+        }
+    }*/
+    
+    //remove when getMemberIds is fixed
+    [[assist shared] addAssos:additions];
+    
+    serve *get_ids = [serve new];
+    [get_ids setDelegate:self];
+    [get_ids setTagName:@"getMemberIds"];
+    [get_ids getMemberIds:additions.mutableCopy];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self address_book];
+    [self facebook];
     self.location = NO;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     self.navigationController.navigationBar.topItem.title = @"";
@@ -149,23 +327,23 @@
     [self.view addSubview:completed_pending];
     [completed_pending setSelectedSegmentIndex:0];
     
-    self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 82, 320, [[UIScreen mainScreen] bounds].size.height-90)];
+    self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 82, 320, [[UIScreen mainScreen] bounds].size.height-146)];
     [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
     [self.contacts setSectionHeaderHeight:30];
     [self.contacts setStyleId:@"select_recipient"];
     [self.view addSubview:self.contacts]; [self.contacts reloadData];
     
-    search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 40, 280, 40)];
+    search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 40, 320, 40)];
     [search setBackgroundColor:kNoochGrayDark];
     search.placeholder=@"Search by Name or Email";
     [search setDelegate:self];
     [search setTintColor:kNoochGrayDark];
     [self.view addSubview:search];
     
-    UIButton *phonebook = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    /*UIButton *phonebook = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [phonebook setStyleId:@"icon_phonebook"];
     [phonebook addTarget:self action:@selector(phonebook:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:phonebook];
+    [self.view addSubview:phonebook];*/
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [self.view addSubview:spinner];
     spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
@@ -422,17 +600,23 @@
         }
     }
     else{
-        for (NSMutableDictionary *dict in self.recents)
+        for (NSString *key in [[assist shared] assos].allKeys)
         {
-            
+            NSMutableDictionary *dict = [[assist shared] assos][key];
             NSComparisonResult result = [[dict valueForKey:@"FirstName"] compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
             if (result == NSOrderedSame)
             {
                 [arrSearchedRecords addObject:dict];
             }
         }
+        if (![arrSearchedRecords isKindOfClass:[NSNull class]]) {
+            NSSortDescriptor *sortDescriptor;
+            sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"FirstName" ascending:YES];
+            NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+            NSArray *temp = [arrSearchedRecords copy];
+            [arrSearchedRecords setArray:[temp sortedArrayUsingDescriptors:sortDescriptors]];
+        }
     }
-    
 }
 #pragma mark - email handling
 -(void)getMemberIdByUsingUserName{
@@ -444,11 +628,11 @@
     }
     else
     {
-        
-        if ([self.view.subviews containsObject:spinner]) {
+        if ([self.view.subviews containsObject:spinner])
+        {
             [spinner removeFromSuperview];
         }
-        // NSLog(@"%@",[dictResult objectForKey:@"Result"]);
+        
         spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [self.view addSubview:spinner];
         [spinner setHidden:NO];
@@ -466,16 +650,12 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
-    
 }
 
 -(void)loadDelay{
-    
-    NSLog(@"%@",nav_ctrl.viewControllers);
     NSMutableArray*arrNav=[nav_ctrl.viewControllers mutableCopy];
     [arrNav removeLastObject];
     [nav_ctrl setViewControllers:arrNav animated:NO];
-    NSLog(@"%@",nav_ctrl.viewControllers);
     
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -506,7 +686,15 @@
         [self performSelector:@selector(loadDelay) withObject:Nil afterDelay:2.0];
         
     }
-    
+    else if ([tagName isEqualToString:@"getMemberIds"])
+    {
+        /*NSError *error;
+        NSLog(@"well %@",result);
+        NSLog(@"welll %@",[NSJSONSerialization
+              JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+              options:kNilOptions
+              error:&error]);*/
+    }
     
     else if ([tagName isEqualToString:@"recents"]) {
         [spinner stopAnimating];
@@ -516,6 +704,8 @@
                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
+        
+        [[assist shared] addAssos:[self.recents mutableCopy]];
         
         if ([[assist shared] isRequestMultiple]) {
             isRecentList=NO;
@@ -571,7 +761,8 @@
             
             [em setTextAlignment:NSTextAlignmentCenter];
             [em setBackgroundColor:[UIColor clearColor]];
-            em.numberOfLines=10;             [em setText:@"Hey There!\nUse this handy dandy search bar to easily find contacts to send or request money with.\n\n\nThe next time you come here, your most recent contacts will automatically appear "];
+            em.numberOfLines=10;
+            [em setText:@"Hey There!\nUse this handy dandy search bar to easily find contacts to send or request money with.\n\n\nThe next time you come here, your most recent contacts will automatically appear "];
             [self.view addSubview:em];
             
         }
@@ -582,7 +773,7 @@
                       JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                       options:kNilOptions
                       error:&error];
-        
+        [[assist shared] addAssos:[self.recents mutableCopy]];
         if ([self.recents count]!=0) {
             if ([[assist shared]isRequestMultiple]) {
                 arrRequestPersons = [self.recents mutableCopy];
@@ -799,12 +990,17 @@
     [cell.contentView addSubview:pic];
     [cell.contentView addSubview:npic];
     
+    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
+    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(30, 48, 12, 16)];
+    [ttt setImage:[UIImage imageGlyphNamed:@"facebook" height:40 color:kNoochBlue]];
+    
     if (self.location) {
         [cell.textLabel setTextColor:kNoochGrayLight];
         cell.indentationLevel = 1; cell.indentationWidth = 70;
         [cell.textLabel setStyleClass:@"select_recipient_name"];
         
         NSDictionary * temp;
+        
         if ([[assist shared] isRequestMultiple]) {
             temp = [arrRequestPersons objectAtIndex:indexPath.row];
             arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
@@ -847,6 +1043,18 @@
             miles = [NSString stringWithFormat:@"    %.0f miles",[[temp objectForKey:@"Miles"] floatValue]];
         }
         [cell.detailTextLabel setText:miles];
+        
+        for (NSString *key in [assist shared].assos.allKeys)
+        {
+            NSDictionary *person = [assist shared].assos[key];
+            if ([person[@"MemberId"] isEqualToString:temp[@"MemberId"]])
+            {
+                UIImageView *ab = [UIImageView new];
+                [ab setStyleClass:@"addressbook-icons"];
+                [cell.contentView addSubview:ab];
+                break;
+            }
+        }
         return cell;
     }else if (searching) {
         //Nooch User
@@ -854,7 +1062,7 @@
         npic.hidden=NO;
         [npic setFrame:CGRectMake(260,25, 20, 20)];
         [npic setImage:[UIImage imageNamed:@"n_Icon.png"]];
-        
+        [npic removeFromSuperview];
         
         NSDictionary *info = [arrSearchedRecords objectAtIndex:indexPath.row];
         [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
@@ -866,6 +1074,20 @@
         pic.layer.cornerRadius = 30; pic.layer.borderWidth = 1;
         pic.layer.borderColor = [Helpers hexColor:@"6D6E71"].CGColor;
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",info[@"FirstName"],info[@"LastName"]];
+        if (info[@"facebookId"]) {
+            //add fb image
+            [cell.contentView addSubview:ttt];
+        }
+        if (info[@"MemberId"]) {
+            [cell.contentView addSubview:npic];
+        }
+        if ([[[assist shared] assos] objectForKey:info[@"UserName"]]) {
+            if ([[assist shared] assos][info[@"UserName"]][@"addressbook"]) {
+                UIImageView *ab = [UIImageView new];
+                [ab setStyleClass:@"addressbook-icons"];
+                [cell.contentView addSubview:ab];
+            }
+        }
         if ([[assist shared] isRequestMultiple]) {
             [npic removeFromSuperview];
             arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
@@ -914,6 +1136,14 @@
               cell.accessoryType=UITableViewCellAccessoryNone;
         }
         
+        if ([[[assist shared] assos] objectForKey:info[@"UserName"]]) {
+            if ([[assist shared] assos][info[@"UserName"]][@"addressbook"]) {
+                UIImageView *ab = [UIImageView new];
+                [ab setStyleClass:@"addressbook-icons"];
+                [cell.contentView addSubview:ab];
+            }
+        }
+        
 //        if ([arrRecipientsForRequest containsObject:info])
 //            cell.accessoryType=UITableViewCellAccessoryCheckmark;
 //        else
@@ -929,7 +1159,6 @@
         [npic setFrame:CGRectMake(260,25, 20, 20)];
         [npic setImage:[UIImage imageNamed:@"n_Icon.png"]];
         NSDictionary *info = [self.recents objectAtIndex:indexPath.row];
-        NSLog(@"%@",info);
         [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
             placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
         pic.hidden=NO;
@@ -952,6 +1181,14 @@
         //        }
         //        else
         cell.accessoryType=UITableViewCellAccessoryNone;
+        
+        if ([[[assist shared] assos] objectForKey:info[@"UserName"]]) {
+            if ([[assist shared] assos][info[@"UserName"]][@"addressbook"]) {
+                UIImageView *ab = [UIImageView new];
+                [ab setStyleClass:@"addressbook-icons"];
+                [cell.contentView addSubview:ab];
+            }
+        }
     }
     else if(emailEntry){
         //Email

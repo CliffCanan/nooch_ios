@@ -10,6 +10,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "Home.h"
 #import "Register.h"
+#import <AddressBook/AddressBook.h>
+#import <AddressBookUI/AddressBookUI.h>
 @implementation assist
 @synthesize arrRecordsCheck;
 
@@ -150,7 +152,7 @@ static assist * _sharedInstance = nil;
     }
     [usr setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"] forKey:@"email"];
     //nslog(@"user object: %@",usr);
-    /*
+    
      accountStore = [[ACAccountStore alloc] init];
      if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]){
      ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
@@ -170,7 +172,7 @@ static assist * _sharedInstance = nil;
      
      facebookAccount = [accounts lastObject];
      fbAllowed = YES;
-     [self renewFb];
+     //[self renewFb];
      //nslog(@"fb connected");
      }
      else
@@ -201,7 +203,7 @@ static assist * _sharedInstance = nil;
      }
      }];
      }
-     */
+     
     timer= [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
 #pragma mark 9jan
     [[assist shared]setneedsReload:YES];
@@ -230,7 +232,7 @@ static assist * _sharedInstance = nil;
         }
         else{
             //handle error gracefully
-            NSLog(@"error from renew credentials%@",error);
+            NSLog(@"FB error from renew credentials %@",error);
         }
     }];
 }
@@ -735,11 +737,38 @@ static assist * _sharedInstance = nil;
 }
 -(void)addAssos:(NSMutableArray*)additions{
     @try {
-        if ([additions count] == 0) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTable" object:self userInfo:nil];
+        if ([additions count] == 0)
             return;
+        
+        if ([assosciateCache isKindOfClass:[NSNull class]])
+        {
+            assosciateCache = [NSMutableDictionary new];
         }
-        NSMutableArray *members = [[NSMutableArray alloc] init];
+        else if ( [assosciateCache allKeys].count == 0)
+        {
+            assosciateCache = [NSMutableDictionary new];
+        }
+        
+        for (NSDictionary *person in additions)
+        {
+            if (person[@"UserName"])
+            {
+                if (!assosciateCache[@"UserName"])
+                {
+                    [assosciateCache setObject:person forKey:person[@"UserName"]];
+                }
+                else
+                {
+                    for (NSString *key in person.allKeys)
+                    {
+                        //[assosciateCache[person[@"UserName"]] setObject:person[key] forKey:key];
+                        [assosciateCache[person[@"UserName"]] addEntriesFromDictionary:person[key]];
+                    }
+                }
+            }
+        }
+        
+        /*NSMutableArray *members = [[NSMutableArray alloc] init];
         if ([assosciateCache objectForKey:@"members"]) {
             members = [[assosciateCache objectForKey:@"members"] mutableCopy];
         }
@@ -870,7 +899,7 @@ static assist * _sharedInstance = nil;
         [finishedAdditions setObject:nonmembers forKey:@"nonmembers"];
         [finishedAdditions setObject:people forKey:@"people"];
         [assosciateCache setDictionary:[finishedAdditions mutableCopy]];
-        
+        */
     }
     @catch (NSException *exception) {
         //nslog(@"caugt exception in assos adding %@",[exception description]);
@@ -879,9 +908,11 @@ static assist * _sharedInstance = nil;
         
     }
     
+    //NSLog(@"assos %@", assosciateCache);
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTable" object:self userInfo:nil];
     
-    [self performSelectorInBackground:@selector(getAssosPics) withObject:nil];
+    //[self performSelectorInBackground:@selector(getAssosPics) withObject:nil];
 }
 -(NSMutableArray*)assosSearch:(NSString*)searchText{
     NSMutableArray *responseArray = [NSMutableArray new];

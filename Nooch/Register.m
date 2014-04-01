@@ -180,8 +180,8 @@
                  
                  NSArray *accounts = [self.accountStore accountsWithAccountType:facebookAccountType];
                  self.facebookAccount = [accounts lastObject];
-                 [self renewFb];
-                 
+                 //[self renewFb];
+                 [self finishFb];
              }
          }];
         

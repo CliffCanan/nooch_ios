@@ -233,6 +233,13 @@ NSString *amnt;
 }
 -(void)getMemberIds:(NSMutableArray*)input{
     self.responseData = [[NSMutableData alloc] init];
+    for (NSMutableDictionary *temp in input) {
+        for (NSString *key in temp.allKeys) {
+            if ([temp[key] isKindOfClass:[NSData class]]) {
+                [temp removeObjectForKey:key];
+            }
+        }
+    }
     NSString *urlString = [NSString stringWithFormat:@"%@/GetMemberIds",ServerUrl];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableDictionary *emailParam = [NSMutableDictionary dictionaryWithObjectsAndKeys:input,@"phoneEmailList", nil];
