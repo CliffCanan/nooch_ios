@@ -20,6 +20,7 @@
 @property (nonatomic, strong) ABPeoplePickerNavigationController *addressBookController;
 @property(nonatomic) BOOL location;
 @property(nonatomic,strong) MBProgressHUD *hud;
+@property(nonatomic,strong) UISegmentedControl *completed_pending;
 @end
 
 @implementation SelectRecipient
@@ -32,12 +33,70 @@
     }
     return self;
 }
-
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    
+    self.location = NO;
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    self.navigationController.navigationBar.topItem.title = @"";
+    [self.slidingViewController.panGesture setEnabled:YES];
+    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+    [[assist shared]setRequestMultiple:NO];
+    isPayBack=NO;
+    isEmailEntry=NO;
+    isAddRequest=NO;
+    isUserByLocation=NO;
+    isphoneBook=NO;
+    [arrRecipientsForRequest removeAllObjects];
+    [[assist shared]setArray:[arrRecipientsForRequest copy]];
+    arrRequestPersons=[[NSMutableArray alloc]init];
+    
+    UIButton *location = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [location setStyleId:@"icon_location"];
+    [location addTarget:self action:@selector(locationSearch:) forControlEvents:UIControlEventTouchUpInside];
+    
+    //UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
+    //[self.navigationItem setRightBarButtonItem:loc];
+    
+    NSArray *seg_items = @[@"Recent",@"Find by Location"];
+    self.completed_pending = [[UISegmentedControl alloc] initWithItems:seg_items];
+    [self.completed_pending setStyleId:@"history_segcontrol"];
+    [self.completed_pending addTarget:self action:@selector(recent_or_location:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:self.completed_pending];
+    [self.completed_pending setSelectedSegmentIndex:0];
+    
+    self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 82, 320, [[UIScreen mainScreen] bounds].size.height-146)];
+    [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
+    [self.contacts setSectionHeaderHeight:30];
+    [self.contacts setStyleId:@"select_recipient"];
+    [self.view addSubview:self.contacts]; [self.contacts reloadData];
+    
+    search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 40, 320, 40)];
+    [search setBackgroundColor:kNoochGrayDark];
+    search.placeholder=@"Search by Name or Email";
+    [search setDelegate:self];
+    [search setTintColor:kNoochGrayDark];
+    [self.view addSubview:search];
+    
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [self.view addSubview:spinner];
+    spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+    
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.hud];
+    self.hud.delegate = self;
+    self.hud.labelText = @"Loading your Recent list";
+    [self.hud show:YES];
+    
+}
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationItem setTitle:@"Select Recipient"];
     if ([[assist shared] isRequestMultiple] && isAddRequest) {
+        self.location = NO;
+        [self.completed_pending setSelectedSegmentIndex:0];
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Add Recipients" message:@"To send a request to more than one person, search for them and tap each additional person (up to 10). Tap Done when finished." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         [self.navigationItem setTitle:@"Group Request"];
@@ -107,6 +166,15 @@
         [search resignFirstResponder];
     }
 }
+-(void)viewDidAppear:(BOOL)animated
+{
+    [self address_book];
+    [self facebook];
+    serve *recents = [serve new];
+    [recents setTagName:@"recents"];
+    [recents setDelegate:self];
+    [recents getRecents];
+}
 -(void)DoneEditing_RequestMultiple:(id)sender{
     if ([[[assist shared]getArray] count]==0) {
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Select a Recipient to Request!" delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
@@ -150,7 +218,6 @@
                          options:kNilOptions
                          error:&err];
          NSMutableArray *friends = [d objectForKey:@"data"];
-         NSLog(@"friends %@",friends);
          NSMutableArray *temp = [NSMutableArray new];
          for(NSMutableDictionary *dict in friends){
              if (![dict objectForKey:@"id"]) continue;
@@ -199,7 +266,8 @@
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
     CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
     CFIndex nPeople = ABAddressBookGetPersonCount(addressBook);
-    for(int i=0; i<nPeople; i++){
+    for(int i=0; i<nPeople; i++)
+    {
         NSMutableDictionary *curContact=[[NSMutableDictionary alloc] init];
         ABRecordRef person=CFArrayGetValueAtIndex(people, i);
         NSString *contacName = [[NSMutableString alloc] init];
@@ -224,33 +292,40 @@
         ABMultiValueRef phoneNumber = ABRecordCopyValue(person, kABPersonPhoneProperty);
         ABMultiValueRef emailInfo = ABRecordCopyValue(person, kABPersonEmailProperty);
         NSString *emailId = (__bridge NSString *)ABMultiValueCopyValueAtIndex(emailInfo, 0);
-        if(emailId != NULL) {
+        if(emailId != NULL)
+        {
             [curContact setObject:emailId forKey:@"UserName"]; [curContact setObject:emailId forKey:@"emailAddy"];
         }
         if(contacName != NULL)  [curContact setObject:contacName forKey:@"Name"];
         if(firstName != NULL) [curContact setObject:firstName forKey:@"FirstName"];
         if(lastName != NULL)  [curContact setObject:lastName forKey:@"LastName"];
-        [curContact setObject:contactImage forKey:@"image"];
+        //[curContact setObject:contactImage forKey:@"image"];
         [curContact setObject:@"YES" forKey:@"addressbook"];
         NSString *phone,*phone2,*phone3;
         if(ABMultiValueGetCount(phoneNumber)> 0)
             phone =  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber, 0));
         
-        if(ABMultiValueGetCount(phoneNumber)> 1){
+        if(ABMultiValueGetCount(phoneNumber)> 1)
+        {
             phone2=  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber, 1));
             phone2 = [phone2 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone2 length])];
             [curContact setObject:phone2 forKey:@"phoneNo2"];
         }
         
-        if(ABMultiValueGetCount(phoneNumber)> 2){
+        if(ABMultiValueGetCount(phoneNumber)> 2)
+        {
             phone3 =  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber,2));
             phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
             [curContact setObject:phone3 forKey:@"phoneNo3"];
         }
-        if(phone == NULL && (emailId == NULL || [emailId rangeOfString:@"facebook"].location != NSNotFound)){
+        if(phone == NULL && (emailId == NULL || [emailId rangeOfString:@"facebook"].location != NSNotFound))
+        {
             [additions addObject:curContact];
-        }else if( contacName == NULL){
-        }else{
+        }else if( contacName == NULL)
+        {
+        }
+        else
+        {
             NSString * strippedNumber = [phone stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone length])];
             if([strippedNumber length] == 11){
                 strippedNumber = [strippedNumber substringFromIndex:1];
@@ -261,104 +336,28 @@
             [additions addObject:curContact];
         }
     }
-    CFRelease(people);
-    CFRelease(addressBook);
-    
-    
-    /*for (NSDictionary *person in additions)
+    [[assist shared] addAssos:additions.mutableCopy];
+    NSMutableArray *get_ids_input = [NSMutableArray new];
+    for (NSDictionary *person in additions)
     {
-        if (person[@"UserName"])
-        {
-            if (![assist shared].assos[@"UserName"])
-            {
-                [[assist shared].assos setObject:person forKey:person[@"UserName"]];
-            }
-            else
-            {
-                for (NSString *key in person.allKeys)
-                {
-                    //[[assist shared].assos[person[@"UserName"]] setObject:person[key] forKey:key];
-                    [[assist shared].assos[person[@"UserName"]] addEntriesFromDictionary:person[key]];
-                }
-            }
-        }
-    }*/
-    
-    //remove when getMemberIds is fixed
-    [[assist shared] addAssos:additions];
+        NSMutableDictionary *person_input = [NSMutableDictionary new];
+        [person_input setObject:@"" forKey:@"memberId"];
+        if (person[@"phoneNo"]) [person_input setObject:person[@"phoneNo"] forKey:@"phoneNo"];
+        if (person[@"emailAddy"]) [person_input setObject:person[@"emailAddy"] forKey:@"emailAddy"];
+        else [person_input setObject:@"" forKey:@"emailAddy"];
+        if (person[@"phoneNo2"]) [person_input setObject:person[@"phoneNo2"] forKey:@"phoneNo2"];
+        if (person[@"phoneNo3"]) [person_input setObject:person[@"phoneNo3"] forKey:@"phoneNo3"];
+        [get_ids_input addObject:person_input];
+    }
     
     serve *get_ids = [serve new];
     [get_ids setDelegate:self];
     [get_ids setTagName:@"getMemberIds"];
-    [get_ids getMemberIds:additions.mutableCopy];
+    [get_ids getMemberIds:get_ids_input];
+    CFRelease(people);
+    CFRelease(addressBook);
 }
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    [self address_book];
-    [self facebook];
-    self.location = NO;
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    self.navigationController.navigationBar.topItem.title = @"";
-    [self.slidingViewController.panGesture setEnabled:YES];
-    [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-    [[assist shared]setRequestMultiple:NO];
-    isPayBack=NO;
-    isEmailEntry=NO;
-    isAddRequest=NO;
-    isUserByLocation=NO;
-    isphoneBook=NO;
-    [arrRecipientsForRequest removeAllObjects];
-    [[assist shared]setArray:[arrRecipientsForRequest copy]];
-    arrRequestPersons=[[NSMutableArray alloc]init];
-    
-    UIButton *location = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [location setStyleId:@"icon_location"];
-    [location addTarget:self action:@selector(locationSearch:) forControlEvents:UIControlEventTouchUpInside];
-    
-    //UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
-    //[self.navigationItem setRightBarButtonItem:loc];
-    
-    NSArray *seg_items = @[@"Recent",@"Find by Location"];
-    UISegmentedControl *completed_pending = [[UISegmentedControl alloc] initWithItems:seg_items];
-    [completed_pending setStyleId:@"history_segcontrol"];
-    [completed_pending addTarget:self action:@selector(recent_or_location:) forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:completed_pending];
-    [completed_pending setSelectedSegmentIndex:0];
-    
-    self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 82, 320, [[UIScreen mainScreen] bounds].size.height-146)];
-    [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
-    [self.contacts setSectionHeaderHeight:30];
-    [self.contacts setStyleId:@"select_recipient"];
-    [self.view addSubview:self.contacts]; [self.contacts reloadData];
-    
-    search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 40, 320, 40)];
-    [search setBackgroundColor:kNoochGrayDark];
-    search.placeholder=@"Search by Name or Email";
-    [search setDelegate:self];
-    [search setTintColor:kNoochGrayDark];
-    [self.view addSubview:search];
-    
-    /*UIButton *phonebook = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [phonebook setStyleId:@"icon_phonebook"];
-    [phonebook addTarget:self action:@selector(phonebook:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:phonebook];*/
-    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [self.view addSubview:spinner];
-    spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-    
-    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:self.hud];
-    self.hud.delegate = self;
-    self.hud.labelText = @"Loading your Recent list";
-    [self.hud show:YES];
-    
-    serve *recents = [serve new];
-    [recents setTagName:@"recents"];
-    [recents setDelegate:self];
-    [recents getRecents];
-}
+
 -(void)recent_or_location:(UISegmentedControl *)sender
 {
     if (sender.selectedSegmentIndex == 0) {
@@ -604,7 +603,7 @@
         {
             NSMutableDictionary *dict = [[assist shared] assos][key];
             NSComparisonResult result = [[dict valueForKey:@"FirstName"] compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
-            if (result == NSOrderedSame)
+            if (result == NSOrderedSame && dict[@"FirstName"] && dict[@"LastName"])
             {
                 [arrSearchedRecords addObject:dict];
             }
@@ -688,12 +687,29 @@
     }
     else if ([tagName isEqualToString:@"getMemberIds"])
     {
-        /*NSError *error;
-        NSLog(@"well %@",result);
-        NSLog(@"welll %@",[NSJSONSerialization
-              JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-              options:kNilOptions
-              error:&error]);*/
+        NSError *error;
+        NSMutableDictionary *temp = [NSJSONSerialization
+                               JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                               options:kNilOptions
+                               error:&error];
+        NSMutableArray *temp2 = [[temp objectForKey:@"GetMemberIdsResult"] objectForKey:@"phoneEmailList"];
+        NSMutableArray *additions = [NSMutableArray new];
+        for (NSDictionary *dict in temp2)
+        {
+            NSMutableDictionary *new = [NSMutableDictionary new];
+            for (NSString *key in dict.allKeys)
+            {
+                if ([key isEqualToString:@"memberId"] && [dict[key] length] > 0)
+                    [new setObject:dict[key] forKey:@"MemberId"];
+                else if ([key isEqualToString:@"emailAddy"])
+                    [new setObject:dict[key] forKey:@"UserName"];
+                else
+                    [new setObject:dict[key] forKey:key];
+            }
+            if (new[@"MemberId"])
+                [additions addObject:new];
+        }
+        [[assist shared] addAssos:additions];
     }
     
     else if ([tagName isEqualToString:@"recents"]) {
@@ -705,8 +721,15 @@
                         options:kNilOptions
                         error:&error];
         
+        NSMutableArray *temp = [NSMutableArray new];
+        for (NSDictionary *dict in self.recents)
+        {
+            NSMutableDictionary *prep = dict.mutableCopy;
+            [prep setObject:@"YES" forKey:@"recent"];
+            [temp addObject:prep];
+        }
+        self.recents = temp.mutableCopy;
         [[assist shared] addAssos:[self.recents mutableCopy]];
-        
         if ([[assist shared] isRequestMultiple]) {
             isRecentList=NO;
             searching = NO;
@@ -1005,9 +1028,11 @@
             temp = [arrRequestPersons objectAtIndex:indexPath.row];
             arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
             int loc =-1;
-            for (int i=0; i<[arrRecipientsForRequest count]; i++) {
+            for (int i=0; i<[arrRecipientsForRequest count]; i++)
+            {
                 NSDictionary*dictionary=[arrRecipientsForRequest objectAtIndex:i];
-                if ([[dictionary valueForKey:@"MemberId"]isEqualToString:temp[@"MemberId"]]) {
+                if ([[dictionary valueForKey:@"MemberId"]isEqualToString:temp[@"MemberId"]])
+                {
                     loc=1;
                 }
                 
@@ -1020,7 +1045,9 @@
                 cell.accessoryType=UITableViewCellAccessoryNone;
             }
             
-        } else {
+        }
+        else
+        {
              temp = [self.recents objectAtIndex:indexPath.row];
         }
         UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
@@ -1035,7 +1062,8 @@
         [cell.textLabel setText:name];
         
         NSString * miles;
-        if ([[temp objectForKey:@"Miles"] intValue]<1) {
+        if ([[temp objectForKey:@"Miles"] intValue]<1)
+        {
             miles = [NSString stringWithFormat:@"    %.0f feet",([[temp objectForKey:@"Miles"] floatValue] * 5280)];
         }
         else
@@ -1056,9 +1084,10 @@
             }
         }
         return cell;
-    }else if (searching) {
+    }
+    else if (searching)
+    {
         //Nooch User
-        
         npic.hidden=NO;
         [npic setFrame:CGRectMake(260,25, 20, 20)];
         [npic setImage:[UIImage imageNamed:@"n_Icon.png"]];
@@ -1074,6 +1103,7 @@
         pic.layer.cornerRadius = 30; pic.layer.borderWidth = 1;
         pic.layer.borderColor = [Helpers hexColor:@"6D6E71"].CGColor;
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",info[@"FirstName"],info[@"LastName"]];
+        
         if (info[@"facebookId"]) {
             //add fb image
             [cell.contentView addSubview:ttt];
@@ -1123,7 +1153,8 @@
         int loc =-1;
         for (int i=0; i<[arrRecipientsForRequest count]; i++) {
             NSDictionary*dictionary=[arrRecipientsForRequest objectAtIndex:i];
-            if ([[dictionary valueForKey:@"MemberId"]isEqualToString:info[@"MemberId"]]) {
+            if ([[dictionary valueForKey:@"MemberId"]isEqualToString:info[@"MemberId"]])
+            {
                 loc=1;
             }
             

@@ -784,7 +784,6 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
             }
            if ([temp count]>indexPath.row) {
                 NSDictionary*dictRecord=[temp objectAtIndex:indexPath.row];
-               NSLog(@"hmmmmm %@",dictRecord);
                if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                {
                    if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])

@@ -1104,7 +1104,8 @@
     if ([self.type isEqualToString:@"send"]) {
         if (![[dictResultTransfer objectForKey:@"trnsactionId"] isKindOfClass:[NSNull class]])
             transactionId=[dictResultTransfer valueForKey:@"trnsactionId"];
-    }else if([self.type isEqualToString:@"request"])
+    }
+    else if([self.type isEqualToString:@"request"])
     {
         if (![[dictResultTransfer objectForKey:@"requestId"] isKindOfClass:[NSNull class]])
             transactionId=[dictResultTransfer valueForKey:@"requestId"];
@@ -1180,23 +1181,30 @@
         transferFinished = YES;
         sendingMoney = NO;
         [av setTag:1];
-    }else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request processed successfully."]){
+    }
+    else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request processed successfully."])
+    {
         [[assist shared] setTranferImage:nil];
         UIImage*imgempty=[UIImage imageNamed:@""];
         [[assist shared] setTranferImage:imgempty];
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Fulfilled" message:[NSString stringWithFormat:@"You successfully fulfilled %@'s request for $%.02f.",[receiverFirst capitalizedString],self.amnt] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
         [av setTag:1];
         [av show];
-    }else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request successfully declined."]){
+    }
+    else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request successfully declined."])
+    {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Denied" message:[NSString stringWithFormat:@"You successfully denied %@'s request for $%.02f.",[receiverFirst capitalizedString],self.amnt] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
         [av setTag:1];
         [av show];
-    }else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request successfully cancelled."]){
+    }
+    else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request successfully cancelled."])
+    {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Cancelled" message:[NSString stringWithFormat:@"You successfully cancelled your request for $%.02f from %@.",self.amnt,[receiverFirst capitalizedString]] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
         [av setTag:1];
         [av show];
     }
-    else if ([[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request made successfully."]){
+    else if ([[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request made successfully."])
+    {
         [[assist shared] setTranferImage:nil];
         UIImage*imgempty=[UIImage imageNamed:@""];
         [[assist shared] setTranferImage:imgempty];
@@ -1219,7 +1227,8 @@
             [av setTag:1];
             [av show];
         }
-    }else if([[[dictResultTransfer objectForKey:@"TransferMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]||[[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]||[[dictResultTransfer valueForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]
+    }
+    else if([[[dictResultTransfer objectForKey:@"TransferMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]||[[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]||[[dictResultTransfer valueForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]
              || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]
              || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."])
     {
@@ -1262,27 +1271,35 @@
         [suspendedAlert show];
         [suspendedAlert setTag:3];
         
-    }else if([[resultValueTransfer valueForKey:@"Result"]isEqual:@"Receiver does not exist."]
+    }
+    else if([[resultValueTransfer valueForKey:@"Result"]isEqual:@"Receiver does not exist."]
              || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Receiver does not exist."]
-             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Receiver does not exist."]){
+             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Receiver does not exist."])
+    {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Sorry!" message:@"Sending money to non-Noochers is not yet supported."delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         transferFinished = YES;
         sendingMoney = NO;
-    }else if([[resultValueTransfer valueForKey:@"Result"]isEqual:@"Please go to 'My Account' menu and configure your account details."]
+    }
+    else if([[resultValueTransfer valueForKey:@"Result"]isEqual:@"Please go to 'My Account' menu and configure your account details."]
              || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Please go to 'My Account' menu and configure your account details."]
-             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Please go to 'My Account' menu and configure your account details."]){
+             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Please go to 'My Account' menu and configure your account details."])
+    {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Sorry!" message:@"Sending money to non-Noochers is not yet supported."delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         transferFinished = YES;
         sendingMoney = NO;
-    }else{
+    }
+    else
+    {
         NSString *resultValue = [dictResultTransfer objectForKey:@"RaiseDisputeResult"];
         if ([resultValue valueForKey:@"Result"]) {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
             return;
-        }else{
+        }
+        else
+        {
             NSString *resultValue = [dictResultTransfer objectForKey:@"HandleRequestMoneyResult"];
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];

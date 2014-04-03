@@ -214,7 +214,6 @@ NSString *amnt;
     requestMem=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&accessToken=%@",ServerUrl,@"GetMemberDetails",username,[defaults valueForKey:@"OAuthToken"]]]];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestMem delegate:self];
     
-    NSLog(@"url %@",[NSString stringWithFormat:@"%@"@"/%@?name=%@&accessToken=%@",ServerUrl,@"GetMemberDetails",username,[defaults valueForKey:@"OAuthToken"]]);
     if (!connection)
         NSLog(@"connect error");
     
@@ -789,7 +788,7 @@ NSString *amnt;
                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
-        NSLog(@"user info: %@",Dictresponse);
+        //NSLog(@"user info: %@",Dictresponse);
         // Edit 19Nov 2013
         if ([[Dictresponse valueForKey:@"IsValidProfile"] intValue]) {
             
@@ -1625,7 +1624,6 @@ NSString *amnt;
     NSString * memId = [defaults objectForKey:@"MemberId"];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSString *urlString = [NSString stringWithFormat:@"%@/SaveSocialMediaPost?MemberId=%@&PostTo=%@&PostContent=%@&accessToken=%@",ServerUrl,memId,PostTo,PostTo,[defaults valueForKey:@"OAuthToken"]];
-    NSLog(@"%@",urlString);
     NSURL *url = [NSURL URLWithString:urlString];
     
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -1643,7 +1641,6 @@ NSString *amnt;
     NSString * memId = [defaults objectForKey:@"MemberId"];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSString *urlString = [NSString stringWithFormat:@"%@/UpDateLatLongOfUser?memberId=%@&Lat=%@&Long=%@&accessToken=%@",ServerUrl,memId,lat,lng,[defaults valueForKey:@"OAuthToken"]];
-    NSLog(@"%@",urlString);
     NSURL *url = [NSURL URLWithString:urlString];
     
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];

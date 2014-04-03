@@ -213,6 +213,7 @@ NSMutableURLRequest *request;
      [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
      }
      */
+    
     [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
     UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
     [ttt setImage:[UIImage imageGlyphNamed:@"flag" height:40 color:[UIColor whiteColor]]];

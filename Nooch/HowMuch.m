@@ -386,12 +386,12 @@
         return;
         
     }
-    if ([[[self.amount text] substringFromIndex:1] floatValue]>[[user objectForKey:@"Balance"] floatValue]) {
+    /*if ([[[self.amount text] substringFromIndex:1] floatValue]>[[user objectForKey:@"Balance"] floatValue]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!" message:@"Thanks for testing this impossibility, but you can't transfer more than you have in your Nooch account." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Add Funds", nil];
         [alert setTag:2122];
         [alert show];
         return;
-    }
+    }*/
     //[user objectForKey:@"Balance"]
     NSMutableDictionary *transaction = [self.receiver mutableCopy];
     [transaction setObject:[self.memo text] forKey:@"memo"];
