@@ -335,6 +335,7 @@
                 if (![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] && ![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
                     [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
                     [cancel setStyleClass:@"details_button_center"];
+                    [cancel setTag:13];
                     [cancel setEnabled:YES];
                     [cancel addTarget:self action:@selector(cancel_request) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:cancel];
@@ -409,13 +410,54 @@
     [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
 }
 
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    UIAlertView *alert = [[UIAlertView alloc] init];
+    [alert addButtonWithTitle:@"OK"];
+    [alert setDelegate:nil];
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"Mail cancelled" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            // [alert show];
+            
+            [alert setTitle:@"Mail cancelled"];
+            [alert show];
+            NSLog(@"Mail cancelled");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved");
+            
+            [alert setTitle:@"Mail saved"];
+            [alert show];
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail sent");
+            
+            [alert setTitle:@"Mail sent"];
+            [alert show];
+            
+            break;
+        case MFMailComposeResultFailed:
+            [alert setTitle:[error localizedDescription]];
+            [alert show];
+            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    
+    // Close the Mail Interface
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
 
 - (void) fulfill_request
 {
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     if ([[assist shared]getSuspended]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+        [alert setTag:50];
         [alert show];
         return;
         
@@ -488,7 +530,8 @@
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     if ([[assist shared]getSuspended]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+        [alert setTag:50];
         [alert show];
         return;
         
@@ -691,6 +734,25 @@
         serveObj.tagName=@"reject";
         [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Rejected"];
         
+    } else if (alertView.tag == 50 && buttonIndex == 1)
+    {
+        if (![MFMailComposeViewController canSendMail]){
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [av show];
+            return;
+        }
+        MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+        mailComposer.mailComposeDelegate = self;
+        mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+        
+        [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+        
+        [mailComposer setMessageBody:@"" isHTML:NO];
+        [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+        [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+        [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        [self presentViewController:mailComposer animated:YES completion:nil];
     }
     
     //1011
@@ -815,6 +877,7 @@
         }
         //Set Status
         UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 320, 30)];
+        [status setTag:13];
         [status setStyleClass:@"details_label"];
         [status setStyleId:@"details_status"];
         if ([loginResult objectForKey:@"TransactionDate"]!=NULL) {
@@ -915,8 +978,18 @@
     else if ([tagName isEqualToString:@"cancel"]) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've cancelled the Request Successfully!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-        
-        [nav_ctrl popToRootViewControllerAnimated:YES];
+        for (UIView *subview in self.view.subviews) {
+            if (subview.tag == 13)
+                [subview removeFromSuperview];
+        }
+        UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 320, 30)];
+        [status setStyleClass:@"details_label"];
+        [status setStyleId:@"details_status"];
+        NSString *statusstr=@"Cancelled";
+        [status setStyleClass:@"red_text"];
+        [status setText:statusstr];
+        [self.view addSubview:status];
+        //[nav_ctrl popToRootViewControllerAnimated:YES];
     }
     else if ([tagName isEqualToString:@"dispute"]) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've diputed your Transaction Successfully!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];

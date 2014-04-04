@@ -810,6 +810,8 @@
                                            JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                            options:kNilOptions
                                            error:&error];
+        
+        
         if([dictResult objectForKey:@"Result"] != [NSNull null])
         {
             if ([self.view.subviews containsObject:spinner]) {
@@ -846,9 +848,21 @@
                 [self.contacts reloadData];
                 return;
             }
+            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+            if (isphoneBook) {
+                [dict setObject:emailphoneBook forKey:@"email"];
+            }
+            else
+                [dict setObject:searchString forKey:@"email"];
+            
+            [dict setObject:@"nonuser" forKey:@"nonuser"];
+            HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
+            [self.navigationController pushViewController:how_much animated:YES];
+            return;
+            
             UIAlertView *alertRedirectToProfileScreen=[[UIAlertView alloc]initWithTitle:@"Unknown" message:@"We at Nooch have no knowledge of this email address. Do you still want to Transfer to this mail address?" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES",nil];
             [alertRedirectToProfileScreen setTag:20220];
-            //[alertRedirectToProfileScreen show];
+            [alertRedirectToProfileScreen show];
             [spinner stopAnimating];
             [spinner setHidden:YES];
             
@@ -864,7 +878,6 @@
                              JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                              options:kNilOptions
                              error:&error]];
-        NSLog(@"%@",dict);
         if ([[assist shared]isRequestMultiple]) {
             emailEntry=YES;
             int loc=0;
@@ -942,7 +955,12 @@
     if (section == 0) {
         if (self.location) {
             return @"Nearby Users";
-        } else {
+        } else if (searching)
+        {
+            return @"Search Results";
+        }
+        else
+        {
             return @"Recent";
         }
         return @"Recent";
@@ -1277,7 +1295,6 @@
 //            [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
 //        }
         else{
-            NSLog(@"%d",[[[assist shared]getArray] count]);
             if ([[[assist shared]getArray] count]==10) {
                 UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You can't request more than 10 Users!" delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
                 [alert show];

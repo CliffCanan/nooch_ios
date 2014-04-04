@@ -36,7 +36,7 @@
     [self.view setStyleClass:@"background_gray"];
     
     UITableView *menu = [UITableView new];
-    [menu setStyleId:@"settings"];
+    [menu setStyleId:@"settings_resetpw"];
     [menu setDelegate:self]; [menu setDataSource:self]; [menu setScrollEnabled:NO];
     [self.view addSubview:menu];
     [menu reloadData];

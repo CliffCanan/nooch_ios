@@ -12,6 +12,7 @@
 #import "Deposit.h"
 #import "UIImage+Resize.h"
 #import "SelectRecipient.h"
+#import "WTGlyphFontSet.h"
 @interface HowMuch ()
 @property(nonatomic,strong) NSDictionary *receiver;
 @property(nonatomic,strong) UITextField *amount;
@@ -122,7 +123,7 @@
     user_pic.layer.borderWidth = 2; user_pic.clipsToBounds = YES;
     user_pic.layer.cornerRadius = 37;
     if ([self.receiver valueForKey:@"nonuser"]) {
-        [user_pic setHidden:YES];
+        [user_pic setImage:[UIImage imageNamed:@"silhouette.png"]];
     }
     else{
         [user_pic setHidden:NO];
@@ -154,9 +155,15 @@
     [self.view addSubview:self.memo];
     
     self.camera = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.camera setFrame:CGRectMake(270, 120, 40, 40)];
+    [self.camera setFrame:CGRectMake(260, 161, 22, 22)];
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+        [self.camera setFrame:CGRectMake(260, 71, 22, 22)];
+    }
     [self.camera addTarget:self action:@selector(attach_pic) forControlEvents:UIControlEventTouchUpInside];
-    [self.camera setStyleId:@"howmuch_camera"];
+    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
+    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 22, 22)];
+    [ttt setImage:[UIImage imageGlyphNamed:@"camera" height:30 color:kNoochGrayLight]];
+    [self.camera setBackgroundImage:ttt.image forState:UIControlStateNormal];
     [self.view addSubview:self.camera];
     self.send = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.send setBackgroundColor:kNoochGreen];
@@ -258,7 +265,6 @@
         [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
     }
   
-    
     [self.navigationController popViewControllerAnimated:YES];
 }
 #pragma mark - type of transaction
@@ -396,7 +402,6 @@
     NSMutableDictionary *transaction = [self.receiver mutableCopy];
     [transaction setObject:[self.memo text] forKey:@"memo"];
     
-    NSLog(@"%@",self.amount.text);
     float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
     if ([self.receiver valueForKey:@"nonuser"]) {
         TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"nonuser" amount:input_amount];
@@ -554,7 +559,13 @@
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
     chosenImage = [chosenImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(150,150) interpolationQuality:kCGInterpolationMedium];
 
-    [self.camera setStyleId:@"howmuch_camera_attached"];
+    //[self.camera setStyleId:@"howmuch_camera_attached"];
+    
+    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
+    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 22, 22)];
+    [ttt setImage:[UIImage imageGlyphNamed:@"camera" height:30 color:kNoochPurple]];
+    [self.camera setBackgroundImage:ttt.image forState:UIControlStateNormal];
+    
     [[assist shared]setTranferImage:chosenImage];
     
     

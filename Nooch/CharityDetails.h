@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "serve.h"
 #import "Decryption.h"
+#import <MessageUI/MessageUI.h>
 NSMutableDictionary*dictnonprofitid;
-@interface CharityDetails : UIViewController<serveD,DecryptionDelegate,UIScrollViewDelegate>
+@interface CharityDetails : UIViewController<serveD,DecryptionDelegate,UIScrollViewDelegate,MFMailComposeViewControllerDelegate>
 {
     UIImageView *image;
     UILabel *info;

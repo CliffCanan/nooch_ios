@@ -2663,6 +2663,17 @@
 		separator-style 	: single-line;
 		separator-color		: rgba(188,190,192,0.9);
 	}
+    
+    table-view#settings_resetpw {
+		width				: 320px;
+        height             : 150px;
+		top					: 40px;
+		left				: 0px;
+		background-color	: white;
+		row-height			: 50px;
+		separator-style 	: single-line;
+		separator-color		: rgba(188,190,192,0.9);
+	}
 	
 	/**  Left side text label. **/
 	.settings_table_label {

@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <GoogleMaps/GoogleMaps.h>
 #import "serve.h"
+#import <MessageUI/MessageUI.h>
 
-@interface TransactionDetails : UIViewController<serveD,UIAlertViewDelegate>{
+@interface TransactionDetails : UIViewController<serveD,UIAlertViewDelegate,MFMailComposeViewControllerDelegate>{
     GMSMapView *mapView_;
     UIView*blankView;
     UILabel *amount;
