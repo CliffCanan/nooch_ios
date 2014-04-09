@@ -12,7 +12,6 @@
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ECSlidingViewController.h"
-#import "Deposit.h"
 @interface DonationAmount ()
 @property(nonatomic,strong) NSDictionary *receiver;
 @property(nonatomic,strong) UITextField *amount;

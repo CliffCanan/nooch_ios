@@ -9,7 +9,6 @@
 #import "HowMuch.h"
 #import "TransferPIN.h"
 #import "UIImageView+WebCache.h"
-#import "Deposit.h"
 #import "UIImage+Resize.h"
 #import "SelectRecipient.h"
 #import "WTGlyphFontSet.h"
@@ -418,8 +417,6 @@
     
     if([actionSheet tag] == 2122 && buttonIndex==1)
     {
-        Deposit *dp=[Deposit new];
-        [self.navigationController pushViewController:dp animated:YES];
         
     }
 }

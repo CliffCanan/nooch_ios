@@ -16,7 +16,6 @@
 		01085FBD17FC9C8B00A31F63 /* Welcome.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FBC17FC9C8B00A31F63 /* Welcome.m */; };
 		01085FC017FCB13100A31F63 /* InitSliding.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FBF17FCB13000A31F63 /* InitSliding.m */; };
 		01085FC317FDE5C700A31F63 /* LeftMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FC217FDE5C700A31F63 /* LeftMenu.m */; };
-		01085FC617FDE5F800A31F63 /* FundsMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FC517FDE5F800A31F63 /* FundsMenu.m */; };
 		01085FC917FDFDB300A31F63 /* HistoryFlat.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FC817FDFDB300A31F63 /* HistoryFlat.m */; };
 		01085FCC17FF3DE600A31F63 /* TransactionDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FCB17FF3DE600A31F63 /* TransactionDetails.m */; };
 		01085FCF18030B6900A31F63 /* Login.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FCE18030B6800A31F63 /* Login.m */; };
@@ -24,11 +23,6 @@
 		01085FD5180332D400A31F63 /* ProfileInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FD4180332D400A31F63 /* ProfileInfo.m */; };
 		01085FD81803337C00A31F63 /* PINSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FD71803337C00A31F63 /* PINSettings.m */; };
 		01085FDB1803338700A31F63 /* NotificationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FDA1803338700A31F63 /* NotificationSettings.m */; };
-		01085FE51803458800A31F63 /* NewBank.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FE41803458800A31F63 /* NewBank.m */; };
-		01085FE81803459000A31F63 /* NewCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FE71803459000A31F63 /* NewCard.m */; };
-		01085FEB180345A000A31F63 /* BankVerification.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FEA180345A000A31F63 /* BankVerification.m */; };
-		01085FEE180345AA00A31F63 /* Deposit.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FED180345AA00A31F63 /* Deposit.m */; };
-		01085FF1180345B000A31F63 /* Withdraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FF0180345B000A31F63 /* Withdraw.m */; };
 		01085FF5180345D200A31F63 /* ResetPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FF4180345D200A31F63 /* ResetPassword.m */; };
 		01085FF81803461500A31F63 /* ResetPIN.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FF71803461500A31F63 /* ResetPIN.m */; };
 		01085FFC180348FD00A31F63 /* SelectCause.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FFB180348FD00A31F63 /* SelectCause.m */; };
@@ -179,9 +173,7 @@
 		6B33DC9A1635FB4700B8B8B6 /* noochLogo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B33DC991635FB4600B8B8B6 /* noochLogo1.png */; };
 		6B33DC9E1635FCA400B8B8B6 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B33DC9D1635FCA400B8B8B6 /* Default.png */; };
 		6B33DCA11639AE1D00B8B8B6 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B33DCA01639AE0C00B8B8B6 /* Default-568h@2x.png */; };
-		6B425A63165568420092B16A /* OBShapedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B425A5F165568420092B16A /* OBShapedButton.m */; };
 		6B425A64165568420092B16A /* UIImage+ColorAtPixel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B425A62165568420092B16A /* UIImage+ColorAtPixel.m */; };
-		6B5265F616680C0F00E5341F /* libCardIO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B5265F516680C0F00E5341F /* libCardIO.a */; };
 		6B5265F816680D2400E5341F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B5265F716680D2400E5341F /* AVFoundation.framework */; };
 		6B5265FA16680D4600E5341F /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B5265F916680D4600E5341F /* CoreMedia.framework */; };
 		6B5265FC16680D5200E5341F /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B5265FB16680D5100E5341F /* CoreVideo.framework */; };
@@ -251,7 +243,6 @@
 		847C885A18DD86B200C2D79B /* add-icon-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 847C885918DD86B200C2D79B /* add-icon-white.png */; };
 		849F6E8E18AB6D7F0016CD89 /* backbtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 849F6E8D18AB6D7F0016CD89 /* backbtn.png */; };
 		84B65A73188542E9009A5205 /* NSString+ASBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B65A72188542E9009A5205 /* NSString+ASBase64.m */; };
-		84BD98721877F6E9008B6131 /* userlocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BD98711877F6E9008B6131 /* userlocation.m */; };
 		84BFD930187122DD001C0AAC /* Pixate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84BFD92F187122DD001C0AAC /* Pixate.framework */; };
 		84BFD9321871270C001C0AAC /* cross_basic_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 84BFD9311871270C001C0AAC /* cross_basic_yellow.png */; };
 		84C3EF18187D0E82004687F6 /* mapBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C3EF17187D0E82004687F6 /* mapBack.png */; };
@@ -277,8 +268,6 @@
 		01085FBF17FCB13000A31F63 /* InitSliding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InitSliding.m; sourceTree = "<group>"; };
 		01085FC117FDE5C700A31F63 /* LeftMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftMenu.h; sourceTree = "<group>"; };
 		01085FC217FDE5C700A31F63 /* LeftMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftMenu.m; sourceTree = "<group>"; };
-		01085FC417FDE5F800A31F63 /* FundsMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FundsMenu.h; sourceTree = "<group>"; };
-		01085FC517FDE5F800A31F63 /* FundsMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FundsMenu.m; sourceTree = "<group>"; };
 		01085FC717FDFDB300A31F63 /* HistoryFlat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryFlat.h; sourceTree = "<group>"; };
 		01085FC817FDFDB300A31F63 /* HistoryFlat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryFlat.m; sourceTree = "<group>"; wrapsLines = 0; };
 		01085FCA17FF3DE500A31F63 /* TransactionDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionDetails.h; sourceTree = "<group>"; };
@@ -293,16 +282,6 @@
 		01085FD71803337C00A31F63 /* PINSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PINSettings.m; sourceTree = "<group>"; };
 		01085FD91803338700A31F63 /* NotificationSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSettings.h; sourceTree = "<group>"; };
 		01085FDA1803338700A31F63 /* NotificationSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSettings.m; sourceTree = "<group>"; };
-		01085FE31803458800A31F63 /* NewBank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewBank.h; sourceTree = "<group>"; };
-		01085FE41803458800A31F63 /* NewBank.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewBank.m; sourceTree = "<group>"; };
-		01085FE61803459000A31F63 /* NewCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewCard.h; sourceTree = "<group>"; };
-		01085FE71803459000A31F63 /* NewCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewCard.m; sourceTree = "<group>"; };
-		01085FE9180345A000A31F63 /* BankVerification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankVerification.h; sourceTree = "<group>"; };
-		01085FEA180345A000A31F63 /* BankVerification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankVerification.m; sourceTree = "<group>"; };
-		01085FEC180345AA00A31F63 /* Deposit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Deposit.h; sourceTree = "<group>"; };
-		01085FED180345AA00A31F63 /* Deposit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Deposit.m; sourceTree = "<group>"; };
-		01085FEF180345B000A31F63 /* Withdraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Withdraw.h; sourceTree = "<group>"; };
-		01085FF0180345B000A31F63 /* Withdraw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Withdraw.m; sourceTree = "<group>"; };
 		01085FF3180345D200A31F63 /* ResetPassword.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetPassword.h; sourceTree = "<group>"; };
 		01085FF4180345D200A31F63 /* ResetPassword.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetPassword.m; sourceTree = "<group>"; };
 		01085FF61803461500A31F63 /* ResetPIN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetPIN.h; sourceTree = "<group>"; };
@@ -503,15 +482,8 @@
 		6B33DC991635FB4600B8B8B6 /* noochLogo1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = noochLogo1.png; path = ../noochLogo1.png; sourceTree = "<group>"; };
 		6B33DC9D1635FCA400B8B8B6 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../Default.png; sourceTree = "<group>"; };
 		6B33DCA01639AE0C00B8B8B6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
-		6B425A5E165568420092B16A /* OBShapedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBShapedButton.h; sourceTree = "<group>"; };
-		6B425A5F165568420092B16A /* OBShapedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBShapedButton.m; sourceTree = "<group>"; };
 		6B425A61165568420092B16A /* UIImage+ColorAtPixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ColorAtPixel.h"; sourceTree = "<group>"; };
 		6B425A62165568420092B16A /* UIImage+ColorAtPixel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ColorAtPixel.m"; sourceTree = "<group>"; };
-		6B5265F116680C0F00E5341F /* CardIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardIO.h; sourceTree = "<group>"; };
-		6B5265F216680C0F00E5341F /* CardIOCreditCardInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardIOCreditCardInfo.h; sourceTree = "<group>"; };
-		6B5265F316680C0F00E5341F /* CardIOPaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardIOPaymentViewController.h; sourceTree = "<group>"; };
-		6B5265F416680C0F00E5341F /* CardIOPaymentViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardIOPaymentViewControllerDelegate.h; sourceTree = "<group>"; };
-		6B5265F516680C0F00E5341F /* libCardIO.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libCardIO.a; sourceTree = "<group>"; };
 		6B5265F716680D2400E5341F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		6B5265F916680D4600E5341F /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		6B5265FB16680D5100E5341F /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -672,8 +644,6 @@
 		849F6E8D18AB6D7F0016CD89 /* backbtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backbtn.png; sourceTree = "<group>"; };
 		84B65A71188542E9009A5205 /* NSString+ASBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ASBase64.h"; sourceTree = "<group>"; };
 		84B65A72188542E9009A5205 /* NSString+ASBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ASBase64.m"; sourceTree = "<group>"; };
-		84BD98701877F6E9008B6131 /* userlocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = userlocation.h; sourceTree = "<group>"; };
-		84BD98711877F6E9008B6131 /* userlocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = userlocation.m; sourceTree = "<group>"; };
 		84BFD92F187122DD001C0AAC /* Pixate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Pixate.framework; sourceTree = "<group>"; };
 		84BFD9311871270C001C0AAC /* cross_basic_yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cross_basic_yellow.png; sourceTree = "<group>"; };
 		84C3EF17187D0E82004687F6 /* mapBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapBack.png; sourceTree = "<group>"; };
@@ -724,7 +694,6 @@
 				6B30380915FA48F900056DAD /* UIKit.framework in Frameworks */,
 				6B30380A15FA48F900056DAD /* Foundation.framework in Frameworks */,
 				6B30380B15FA48F900056DAD /* CoreGraphics.framework in Frameworks */,
-				6B5265F616680C0F00E5341F /* libCardIO.a in Frameworks */,
 				6BF90A5C169B6AA2009486E7 /* libGoogleAnalytics.a in Frameworks */,
 				6B01F1B2179D994A00E34C49 /* GoogleMaps.framework in Frameworks */,
 			);
@@ -787,8 +756,6 @@
 			children = (
 				01085FC117FDE5C700A31F63 /* LeftMenu.h */,
 				01085FC217FDE5C700A31F63 /* LeftMenu.m */,
-				01085FC417FDE5F800A31F63 /* FundsMenu.h */,
-				01085FC517FDE5F800A31F63 /* FundsMenu.m */,
 			);
 			name = "Sliding Menus";
 			sourceTree = "<group>";
@@ -825,7 +792,6 @@
 		01085FE2180335DC00A31F63 /* Transfer Flow Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				84BD986F1877F695008B6131 /* Location Search */,
 				0179E9ED17F35A740027526C /* SelectRecipient.h */,
 				0179E9EE17F35A740027526C /* SelectRecipient.m */,
 				01C83E7817F4D726009CABBF /* HowMuch.h */,
@@ -841,16 +807,6 @@
 			children = (
 				01C49AE218D8C83500BACE23 /* knoxWeb.h */,
 				0169E22C18D8D7C200442642 /* knoxWeb.m */,
-				01085FE31803458800A31F63 /* NewBank.h */,
-				01085FE41803458800A31F63 /* NewBank.m */,
-				01085FE61803459000A31F63 /* NewCard.h */,
-				01085FE71803459000A31F63 /* NewCard.m */,
-				01085FE9180345A000A31F63 /* BankVerification.h */,
-				01085FEA180345A000A31F63 /* BankVerification.m */,
-				01085FEC180345AA00A31F63 /* Deposit.h */,
-				01085FED180345AA00A31F63 /* Deposit.m */,
-				01085FEF180345B000A31F63 /* Withdraw.h */,
-				01085FF0180345B000A31F63 /* Withdraw.m */,
 			);
 			name = "Funds Controllers";
 			sourceTree = "<group>";
@@ -1228,8 +1184,6 @@
 				6BA6C0AD16BC3B8A00A89D7D /* privacy.h */,
 				6BA6C0AE16BC3B8B00A89D7D /* privacy.m */,
 				6BF90A52169B6A77009486E7 /* Google Analytics */,
-				6B5265F016680C0F00E5341F /* CardIO */,
-				6B425A5D165568420092B16A /* OBShapedButton */,
 				6B425A60165568420092B16A /* UIImage+ColorAtPixel */,
 				6B75E9F215FE74CA00B091D8 /* terms.h */,
 				6B75E9F315FE74CA00B091D8 /* terms.m */,
@@ -1262,15 +1216,6 @@
 			name = Main;
 			sourceTree = "<group>";
 		};
-		6B425A5D165568420092B16A /* OBShapedButton */ = {
-			isa = PBXGroup;
-			children = (
-				6B425A5E165568420092B16A /* OBShapedButton.h */,
-				6B425A5F165568420092B16A /* OBShapedButton.m */,
-			);
-			path = OBShapedButton;
-			sourceTree = "<group>";
-		};
 		6B425A60165568420092B16A /* UIImage+ColorAtPixel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1301,18 +1246,6 @@
 				6BC5FECA1625F1B0007EAD7A /* Roboto-ThinItalic.ttf */,
 			);
 			name = "Roboto Fonts";
-			sourceTree = "<group>";
-		};
-		6B5265F016680C0F00E5341F /* CardIO */ = {
-			isa = PBXGroup;
-			children = (
-				6B5265F116680C0F00E5341F /* CardIO.h */,
-				6B5265F216680C0F00E5341F /* CardIOCreditCardInfo.h */,
-				6B5265F316680C0F00E5341F /* CardIOPaymentViewController.h */,
-				6B5265F416680C0F00E5341F /* CardIOPaymentViewControllerDelegate.h */,
-				6B5265F516680C0F00E5341F /* libCardIO.a */,
-			);
-			path = CardIO;
 			sourceTree = "<group>";
 		};
 		6B75EA4415FE93A000B091D8 /* Storyboards */ = {
@@ -1576,15 +1509,6 @@
 			name = "Device Identifier";
 			sourceTree = "<group>";
 		};
-		84BD986F1877F695008B6131 /* Location Search */ = {
-			isa = PBXGroup;
-			children = (
-				84BD98701877F6E9008B6131 /* userlocation.h */,
-				84BD98711877F6E9008B6131 /* userlocation.m */,
-			);
-			name = "Location Search";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1775,7 +1699,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01085FEE180345AA00A31F63 /* Deposit.m in Sources */,
 				84443CAC18A0BD9E0097F6C0 /* NSString+MD5Addition.m in Sources */,
 				01CABC5518A2BD9500BBB935 /* ECSlidingViewController.m in Sources */,
 				01085FBD17FC9C8B00A31F63 /* Welcome.m in Sources */,
@@ -1794,7 +1717,6 @@
 				01085FB717FB6ABE00A31F63 /* ReferralCode.m in Sources */,
 				01085FF5180345D200A31F63 /* ResetPassword.m in Sources */,
 				16E4B1B0187053F20099D075 /* NSData+GIF.m in Sources */,
-				84BD98721877F6E9008B6131 /* userlocation.m in Sources */,
 				16E4B1B9187053F20099D075 /* UIImage+GIF.m in Sources */,
 				84D8794218BF3ED200A60A38 /* METoast.m in Sources */,
 				0169E22D18D8D7C200442642 /* knoxWeb.m in Sources */,
@@ -1806,7 +1728,6 @@
 				16E4B1B3187053F20099D075 /* SDWebImageDecoder.m in Sources */,
 				6B30373615FA3FF400056DAD /* AppDelegate.m in Sources */,
 				01085FF81803461500A31F63 /* ResetPIN.m in Sources */,
-				01085FEB180345A000A31F63 /* BankVerification.m in Sources */,
 				6B75E9F415FE74CA00B091D8 /* terms.m in Sources */,
 				01085FCC17FF3DE600A31F63 /* TransactionDetails.m in Sources */,
 				6B75E9FB15FE7EE300B091D8 /* main 2.m in Sources */,
@@ -1820,7 +1741,6 @@
 				01086009180349F600A31F63 /* LimitsAndFees.m in Sources */,
 				841A3E0D18A61491001DAAA2 /* UIImage+Alpha.m in Sources */,
 				01085FA917FB2D2100A31F63 /* Register.m in Sources */,
-				6B425A63165568420092B16A /* OBShapedButton.m in Sources */,
 				01085FD81803337C00A31F63 /* PINSettings.m in Sources */,
 				01BD43D8181F096300062315 /* Legal.m in Sources */,
 				6B425A64165568420092B16A /* UIImage+ColorAtPixel.m in Sources */,
@@ -1841,21 +1761,17 @@
 				16E4B1BB187053F20099D075 /* UIImage+WebP.m in Sources */,
 				841A3E0E18A61491001DAAA2 /* UIImage+Resize.m in Sources */,
 				01B2CA9D18B3CC20008E6901 /* SWUtilityButtonView.m in Sources */,
-				01085FF1180345B000A31F63 /* Withdraw.m in Sources */,
 				6B89276216DEA49C00F9100F /* FPTouchView.m in Sources */,
 				6B89276516DEB10200F9100F /* popSelect.m in Sources */,
 				01B2CA9818B3CC20008E6901 /* NSMutableArray+SWUtilityButtons.m in Sources */,
 				842E3316187424440057EAFB /* GetEncryptionValue.m in Sources */,
-				01085FE81803459000A31F63 /* NewCard.m in Sources */,
 				01C49AEC18D8C83500BACE23 /* MBProgressHUD.m in Sources */,
-				01085FE51803458800A31F63 /* NewBank.m in Sources */,
 				01085FD218030E5900A31F63 /* SettingsOptions.m in Sources */,
 				01C83E8417FB1606009CABBF /* NavControl.m in Sources */,
 				018DA86318048309007B24FB /* SendInvite.m in Sources */,
 				01085FFC180348FD00A31F63 /* SelectCause.m in Sources */,
 				01C83E8017F9FF9E009CABBF /* TransferPIN.m in Sources */,
 				0179E9F017F35A740027526C /* SelectRecipient.m in Sources */,
-				01085FC617FDE5F800A31F63 /* FundsMenu.m in Sources */,
 				16E4B1B2187053F20099D075 /* SDWebImageCompat.m in Sources */,
 				010860021803492C00A31F63 /* DonationAmount.m in Sources */,
 				16E4B1B1187053F20099D075 /* SDImageCache.m in Sources */,

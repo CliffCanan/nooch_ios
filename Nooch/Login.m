@@ -210,6 +210,7 @@
     
     UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Enter Email ID" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
     alert.alertViewStyle=UIAlertViewStylePlainTextInput;
+    [[alert textFieldAtIndex:0] setText:self.email.text];
     [alert setTag:220011];
     [alert show];
     

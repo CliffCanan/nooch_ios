@@ -9,7 +9,6 @@
 #import "SelectRecipient.h"
 #import "UIImageView+WebCache.h"
 #import "Helpers.h"
-#import "userlocation.h"
 #import "ECSlidingViewController.h"
 #import <objc/runtime.h>
 #import <objc/message.h>
@@ -55,7 +54,6 @@
     
     UIButton *location = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [location setStyleId:@"icon_location"];
-    [location addTarget:self action:@selector(locationSearch:) forControlEvents:UIControlEventTouchUpInside];
     
     //UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
     //[self.navigationItem setRightBarButtonItem:loc];
@@ -67,18 +65,18 @@
     [self.view addSubview:self.completed_pending];
     [self.completed_pending setSelectedSegmentIndex:0];
     
-    self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 82, 320, [[UIScreen mainScreen] bounds].size.height-146)];
-    [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
-    [self.contacts setSectionHeaderHeight:30];
-    [self.contacts setStyleId:@"select_recipient"];
-    [self.view addSubview:self.contacts]; [self.contacts reloadData];
-    
     search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 40, 320, 40)];
     [search setBackgroundColor:kNoochGrayDark];
     search.placeholder=@"Search by Name or Email";
     [search setDelegate:self];
     [search setTintColor:kNoochGrayDark];
     [self.view addSubview:search];
+    
+    self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 82, 320, [[UIScreen mainScreen] bounds].size.height-146)];
+    [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
+    [self.contacts setSectionHeaderHeight:30];
+    [self.contacts setStyleId:@"select_recipient"];
+    [self.view addSubview:self.contacts]; [self.contacts reloadData];
     
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [self.view addSubview:spinner];
@@ -360,8 +358,18 @@
 
 -(void)recent_or_location:(UISegmentedControl *)sender
 {
+    [search resignFirstResponder];
+    [search setText:@""];
+    searching = NO;
     if (sender.selectedSegmentIndex == 0) {
         self.location = NO;
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:1];
+        //[search setHidden:NO];
+        CGRect frame = self.contacts.frame;
+        frame.origin.y =82;
+        [self.contacts setFrame:frame];
+        [UIView commitAnimations];
         serve *recents = [serve new];
         [recents setTagName:@"recents"];
         [recents setDelegate:self];
@@ -373,6 +381,13 @@
         [self.hud show:YES];
     } else {
         self.location = YES;
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:1];
+        //[search setHidden:YES];
+        CGRect frame = self.contacts.frame;
+        frame.origin.y =40;
+        [self.contacts setFrame:frame];
+        [UIView commitAnimations];
         serve * ser = [serve new];
         ser.tagName=@"search";
         [ser setDelegate:self];
@@ -492,13 +507,6 @@
     }
 }
 
-
-#pragma mark-Location Search
--(void)locationSearch:(id)sender{
-    isUserByLocation=YES;
-    userlocation*loc=[userlocation new];
-    [self.navigationController pushViewController:loc animated:YES];
-}
 #pragma mark - searching
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
     
@@ -661,7 +669,7 @@
 #pragma mark - server Delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName{
     [self.hud hide:YES];
-    
+    [self.contacts setNeedsDisplay];
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
         UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
@@ -974,7 +982,10 @@
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake (10,0,200,30)];
     title.textColor = kNoochGrayDark;
     if (section == 0) {
-        title.text = @"Recent";
+        if (self.location)
+            title.text = @"Nearby Users";
+        else
+            title.text = @"Recent";
     }else{
         title.text = @"";
     }

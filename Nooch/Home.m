@@ -14,7 +14,6 @@
 #import "TransferPIN.h"
 #import "ReEnterPin.h"
 #import "ProfileInfo.h"
-#import "NewBank.h"
 #import "serve.h"
 #define kButtonType     @"transaction_type"
 #define kButtonTitle    @"button_title"
@@ -194,6 +193,11 @@ NSMutableURLRequest *request;
     [sus setTextAlignment:NSTextAlignmentCenter];
     [self.suspended addSubview:sus];
     //[self.view addSubview:self.suspended];
+    
+    serve *fb = [serve new];
+    [fb setDelegate:self];
+    [fb setTagName:@"fb"];
+    [fb storeFB:@"12456"];
 }
 
 -(void)updateLoader{
@@ -404,9 +408,6 @@ NSMutableURLRequest *request;
     else if (alertView.tag == 201){
         if (buttonIndex == 1) {
             
-            NewBank *add_bank = [NewBank new];
-            [nav_ctrl pushViewController:add_bank animated:NO];
-            [self.slidingViewController resetTopView];
         }
     }
     else if (alertView.tag == 50 && buttonIndex == 1)
@@ -563,6 +564,14 @@ NSMutableURLRequest *request;
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
+    if ([tagName isEqualToString:@"fb"]) {
+        NSError *error;
+        NSMutableDictionary *temp = [NSJSONSerialization
+                                     JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                     options:kNilOptions
+                                     error:&error];
+        NSLog(@"temp %@",temp);
+    }
     
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
         UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];

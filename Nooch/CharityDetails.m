@@ -12,7 +12,6 @@
 #import "UIImageView+WebCache.h"
 #import "ECSlidingViewController.h"
 #import "ProfileInfo.h"
-#import "NewBank.h"
 @interface CharityDetails ()
 @property (nonatomic,strong) NSDictionary *charity;
 @end
@@ -194,9 +193,6 @@
     else if (alertView.tag == 201){
         if (buttonIndex == 1) {
             
-            NewBank *add_bank = [NewBank new];
-            [nav_ctrl pushViewController:add_bank animated:NO];
-            [self.slidingViewController resetTopView];
         }
     } else if (alertView.tag == 50) {
         if (![MFMailComposeViewController canSendMail]){

@@ -39,6 +39,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>nooch</string>
 				<string>fb198279616971457</string>
 			</array>
 		</dict>

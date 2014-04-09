@@ -8,7 +8,6 @@
 
 #import "NavControl.h"
 #import "LeftMenu.h"
-#import "FundsMenu.h"
 
 @interface NavControl ()
 @property(nonatomic,strong) UIButton *balance;

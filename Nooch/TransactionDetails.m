@@ -151,13 +151,13 @@
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Donation"])
     {
         [payment setText:@"Donation To:"];
-        [payment setStyleClass:@"details_intro_green"];
+        [payment setStyleClass:@"details_intro_purple"];
     }
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"])
     {
         [payment setText:@"Disputed:"];
         
-        [payment setStyleClass:@"details_intro_purple"];
+        [payment setStyleClass:@"details_intro_red"];
 
     }
     [self.view addSubview:payment];

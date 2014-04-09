@@ -740,7 +740,6 @@ NSString *amnt;
     
     //20ov
     else if ([tagName isEqualToString:@"info"]) {
-        NSLog(@"serve connected for %@",self.tagName);
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         
         NSError* error;
@@ -1691,6 +1690,22 @@ NSString *amnt;
         
         NSLog(@"connect error");
     
+}
+-(void)storeFB:(NSString*)fb_id
+{
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSString * memId = [defaults objectForKey:@"MemberId"];
+    NSString *urlString = [NSString stringWithFormat:@"%@/SaveMembersFBId?MemberId=%@&MemberfaceBookId=%@&accessToken=%@",ServerUrl,memId,fb_id,[defaults valueForKey:@"OAuthToken"]];
+    NSLog(@"%@",urlString);
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
 }
 
 
