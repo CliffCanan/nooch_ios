@@ -1036,6 +1036,7 @@
     
     UIImageView*pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
     pic.clipsToBounds = YES;
+    [pic setStyleClass:@"animate_bubble"];
     UIImageView* npic = [UIImageView new];
     npic.clipsToBounds = YES;
     
