@@ -1731,11 +1731,7 @@ NSString *amnt;
     NSError *error;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
-    
-    
-    
     postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
-    
     requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
     
     [requestInv setHTTPMethod:@"POST"];
@@ -1752,6 +1748,38 @@ NSString *amnt;
     
     if (!connectionInv)
         
+        NSLog(@"connect error");
+}
+
+-(void)resendSMS
+{
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSString *urlString = [NSString stringWithFormat:@"%@/ResendVerificationSMS?UserName=%@",ServerUrl,[defaults objectForKey:@"UserName"]];
+    NSLog(@"%@",urlString);
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+}
+
+-(void)resendEmail
+{
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSString *urlString = [NSString stringWithFormat:@"%@/ResendVerificationLink?UserName=%@",ServerUrl,[defaults objectForKey:@"UserName"]];
+    NSLog(@"%@",urlString);
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
         NSLog(@"connect error");
 }
 

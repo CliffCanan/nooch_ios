@@ -984,6 +984,8 @@
     if (section == 0) {
         if (self.location)
             title.text = @"Nearby Users";
+        else if (searching)
+            title.text = @"Search Results";
         else
             title.text = @"Recent";
     }else{
