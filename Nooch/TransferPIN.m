@@ -200,7 +200,7 @@
     [self.view addSubview:memo_label];
     
     UIImageView *user_pic = [UIImageView new];
-    [user_pic setFrame:CGRectMake(20, 204, 52, 52)];
+    [user_pic setFrame:CGRectMake(10, 204, 55, 55)];
     
     if ([self.receiver valueForKey:@"nonuser"]) {
         [user_pic setImage:[UIImage imageNamed:@"silhouette.png"]];
@@ -210,10 +210,10 @@
         if ([self.type isEqualToString:@"donation"]) {
             if (![[self.receiver valueForKey:@"BannerImage"]isKindOfClass:[NSNull class]]&&[self.receiver valueForKey:@"BannerImage"]!=NULL) {
                 [user_pic setImageWithURL:[NSURL URLWithString:[self.receiver valueForKey:@"BannerImage"]]
-                      placeholderImage:[UIImage imageNamed:@"placeholder.jpg"]];
+                      placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
             }
             else {
-                [user_pic setImage:[UIImage imageNamed:@"placeholder.jpg"]];
+                [user_pic setImage:[UIImage imageNamed:@"RoundLoading.png"]];
             }
             
         }
