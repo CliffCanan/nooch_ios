@@ -90,7 +90,7 @@
     //[link_bank setGlyphNamed:@"plus-sign"];
     [link_bank setStyleClass:@"button_blue"];
     [link_bank setStyleId:@"link_new_account"];
-    [ttt setFrame:CGRectMake(30, 15, 25, 25)];
+    [ttt setFrame:CGRectMake(28, 12, 22, 24)];
     [ttt setImage:[UIImage imageGlyphNamed:@"plus-sign" height:40 color:[UIColor whiteColor]]];
     [link_bank addSubview:ttt];
     [link_bank setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -144,7 +144,7 @@
     }
     [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
     UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
-    [ttt setImage:[UIImage imageGlyphNamed:@"chevron-right" height:40 color:kNoochGrayLight]];
+    [ttt setImage:[UIImage imageGlyphNamed:@"chevron-right" height:40 color:kNoochBlue]];
     
     UILabel *title = [UILabel new];
     [title setStyleClass:@"settings_table_label"];
