@@ -241,9 +241,9 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     [RightArrowlbl setFont:[UIFont systemFontOfSize:20.0f]];
     RightArrowlbl.text=@">";
     
-    UIImageView*imgV=[[UIImageView alloc]initWithFrame:CGRectMake(5, 25, 50, 50)];
+    UIImageView*imgV=[[UIImageView alloc]initWithFrame:CGRectMake(5, 25, 52, 52)];
     
-    imgV.layer.cornerRadius = 25; imgV.layer.borderColor = kNoochBlue.CGColor; imgV.layer.borderWidth = 1;
+    imgV.layer.cornerRadius = 26; imgV.layer.borderColor = kNoochBlue.CGColor; imgV.layer.borderWidth = 1;
     imgV.clipsToBounds = YES;
 
      if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]){
@@ -1032,10 +1032,10 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     }
                     
                     
-                    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 50, 50)];
+                    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 52, 52)];
                     pic.layer.borderColor = kNoochGrayDark.CGColor;
                     pic.layer.borderWidth = 1;
-                    pic.layer.cornerRadius = 25;
+                    pic.layer.cornerRadius = 26;
                     pic.clipsToBounds = YES;
                     [cell.contentView addSubview:pic];
                     
@@ -1173,9 +1173,9 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         [amount setStyleClass:@"history_transferamount_neg"];
                         [indicator setStyleClass:@"history_sidecolor_neg"];
                         [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                        
-                    }
                     
+                    }
+                
                 }
                 else
                 {
@@ -1356,10 +1356,10 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 }
                 
                 
-                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 50, 50)];
+                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 52, 52)];
                 pic.layer.borderColor = kNoochGrayDark.CGColor;
                 pic.layer.borderWidth = 1;
-                pic.layer.cornerRadius = 25;
+                pic.layer.cornerRadius = 26;
                 pic.clipsToBounds = YES;
                 [cell.contentView addSubview:pic];
                 
@@ -1644,10 +1644,10 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     }
                     
                     
-                    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 50, 50)];
+                    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 52, 52)];
                     pic.layer.borderColor = kNoochGrayDark.CGColor;
                     pic.layer.borderWidth = 1;
-                    pic.layer.cornerRadius = 25;
+                    pic.layer.cornerRadius = 26;
                     pic.clipsToBounds = YES;
                     [cell.contentView addSubview:pic];
                     [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
@@ -1813,10 +1813,10 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 
                 
                 
-                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 50, 50)];
+                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 52, 52)];
                 pic.layer.borderColor = kNoochGrayDark.CGColor;
                 pic.layer.borderWidth = 1;
-                pic.layer.cornerRadius = 25;
+                pic.layer.cornerRadius = 26;
                 pic.clipsToBounds = YES;
                 [cell.contentView addSubview:pic];
                 [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
@@ -1943,7 +1943,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         {
             //cancel
             self.responseDict = [dictRecord copy];
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to cancel this Request? " delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to cancel this request? " delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
             [av show];
             [av setTag:1010];
         }
@@ -1955,7 +1955,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
                 
                 if ([[assist shared]getSuspended]) {
-                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
                     [alert setTag:50];
                     [alert show];
                     return;
@@ -1964,7 +1964,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 
                 if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
                     
-                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You are not a active user. Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Email Verification Needed" message:@"Please click the link we emailed you to verify your email address." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
                     [alert show];
                     return;
                     
@@ -1972,7 +1972,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 }
                 
                 if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
-                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Profile Not Complete" message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!" delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
                     [alert setTag:147];
                     [alert show];
                     return;
@@ -1980,7 +1980,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 
                 if ( ![[[NSUserDefaults standardUserDefaults]
                         objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
-                    UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                    UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Please Attach an Account" message:@"Before you can send or receive money, you must add a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
                     
                     [set show];
                     return;
@@ -1988,7 +1988,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 
                 
                 if ( ![[assist shared]isBankVerified]) {
-                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Attach an Account" message:@"Before you can send or receive money, you must add a bank account." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
                     [alert show];
                     
                     return;
@@ -2004,7 +2004,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
             } else {
                 //decline
                 self.responseDict = [dictRecord copy];
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to Reject this Request? " delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to reject this request?" delegate:self cancelButtonTitle:@"Yes - Reject" otherButtonTitles:@"No", nil];
                 [av show];
                 [av setTag:1011];
             }
@@ -2155,7 +2155,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     [imageCache cleanDisk];
 
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
-        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Login Detected From New Device" message:@"It seems like you have logged in from another device, which automatically signs you out of any other active devices." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [Alert show];
         
         
@@ -2178,7 +2178,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         if ([tagName isEqualToString:@"csv"]) {
         NSDictionary*dictResponse=[NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         if ([[[dictResponse valueForKey:@"sendTransactionInCSVResult"]valueForKey:@"Result"]isEqualToString:@"1"]) {
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Export Successful" message:@"Your personalized transaction report has been emailed email to you." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Export Successful" message:@"Your personalized transaction report has been emailed to you." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
             [alert show];
         }
     }
@@ -2270,7 +2270,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         [serveOBJ setTagName:@"time"];
         [serveOBJ GetServerCurrentTime];
     } else if ([tagName isEqualToString:@"reject"]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've rejected the Request Successfully!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Request Rejected" message:@"No problem, you have rejected this request successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         subTypestr=@"Pending";
         self.completed_selected = NO;
@@ -2289,7 +2289,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
 
     }
     else if ([tagName isEqualToString:@"cancel"]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've cancelled the Request Successfully!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Request Cancelled" message:@"You got it. That request has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         subTypestr=@"Pending";
         self.completed_selected = NO;
