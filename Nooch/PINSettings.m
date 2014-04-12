@@ -34,19 +34,17 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     UIButton *change_pin = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [change_pin setFrame:CGRectMake(20, 50, 280, 60)];
+    [change_pin setFrame:CGRectMake(20, 30, 280, 60)];
     [change_pin setTitle:@"Change PIN" forState:UIControlStateNormal];
     [change_pin setTitleColor:kNoochLight forState:UIControlStateNormal];
-    [change_pin.titleLabel setFont:kNoochFontBold];
-    change_pin.layer.cornerRadius=5.0f;
     
     [change_pin addTarget:self action:@selector(changepin) forControlEvents:UIControlEventTouchUpInside];
-    [change_pin setStyleClass:@"button_green"];
+    [change_pin setStyleClass:@"button_blue"];
     [self.view addSubview:change_pin];
     
-    UILabel *req_imm = [[UILabel alloc] initWithFrame:CGRectMake(-1, 140, 322, 60)];
+    UILabel *req_imm = [[UILabel alloc] initWithFrame:CGRectMake(-1, 100, 322, 56)];
     [req_imm setFont:[UIFont fontWithName:@"Roboto-Light" size:17]];
-    [req_imm setText:@"   Require Immediately"];
+    [req_imm setText:@"      Require Immediately"];
     [req_imm setTextColor:kNoochBlue];
     req_imm.layer.borderColor = [Helpers hexColor:@"BCBEC0"].CGColor;
     req_imm.layer.borderWidth = 1;
@@ -58,7 +56,7 @@
     [self.view addSubview:self.ri];
     
     UILabel *info = [UILabel new];
-    [info setFrame:CGRectMake(10, 205, 300, 60)];
+    [info setFrame:CGRectMake(15, 154, 290, 45)];
     [info setNumberOfLines:0];
     [info setTextAlignment:NSTextAlignmentCenter];
     [info setFont:[UIFont fontWithName:@"Roboto-Light" size:14]];
@@ -71,8 +69,8 @@
     }
     
     UIButton *change_password = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [change_password setFrame:CGRectMake(0, 280, 0, 0)];
-    [change_password setStyleClass:@"button_green"];
+    [change_password setFrame:CGRectMake(0, 250, 0, 0)];
+    [change_password setStyleClass:@"button_blue"];
     [change_password setTitle:@"Change Password" forState:UIControlStateNormal];
     [change_password addTarget:self action:@selector(changepass) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:change_password];
