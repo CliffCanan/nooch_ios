@@ -117,10 +117,10 @@
         [self.view addSubview:add];
     }
     UIImageView *user_pic = [UIImageView new];
-    [user_pic setFrame:CGRectMake(28, 62, 74, 74)];
+    [user_pic setFrame:CGRectMake(28, 62, 76, 76)];
     user_pic.layer.borderColor = [Helpers hexColor:@"939598"].CGColor;
-    user_pic.layer.borderWidth = 2; user_pic.clipsToBounds = YES;
-    user_pic.layer.cornerRadius = 37;
+    user_pic.layer.borderWidth = 1; user_pic.clipsToBounds = YES;
+    user_pic.layer.cornerRadius = 38;
     if ([self.receiver valueForKey:@"nonuser"]) {
         [user_pic setImage:[UIImage imageNamed:@"silhouette.png"]];
     }
@@ -139,7 +139,7 @@
     }
     [self.view addSubview:user_pic];
     
-    self.amount = [[UITextField alloc] initWithFrame:CGRectMake(30, 40, 260, 80)];
+    self.amount = [[UITextField alloc] initWithFrame:CGRectMake(20, 40, 260, 80)];
     [self.amount setTextAlignment:NSTextAlignmentRight]; [self.amount setPlaceholder:@"$ 0.00"];
     [self.amount setDelegate:self]; [self.amount setTag:1];
     [self.amount setKeyboardType:UIKeyboardTypeNumberPad];
@@ -156,11 +156,11 @@
     self.camera = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.camera setFrame:CGRectMake(260, 161, 22, 22)];
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
-        [self.camera setFrame:CGRectMake(260, 71, 22, 22)];
+        [self.camera setFrame:CGRectMake(260, 71, 27, 22)];
     }
     [self.camera addTarget:self action:@selector(attach_pic) forControlEvents:UIControlEventTouchUpInside];
     [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
-    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 22, 22)];
+    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 27, 22)];
     [ttt setImage:[UIImage imageGlyphNamed:@"camera" height:30 color:kNoochGrayLight]];
     [self.camera setBackgroundImage:ttt.image forState:UIControlStateNormal];
     [self.view addSubview:self.camera];
@@ -505,8 +505,6 @@
     [self.shade setAlpha:0.6];
     [self.amount resignFirstResponder];
     [UIView commitAnimations];
-    
-    
 }
 - (void) cancel_photo
 {
@@ -604,7 +602,6 @@
         // [self close:nil];
     }];
     // [self dismissViewControllerAnimated:YES completion:nil];
-    
 }
 
 #pragma mark - UITextField delegation
@@ -643,7 +640,6 @@
             [textField setText:@""];
         }
         
-        
         return NO;
     }
     
@@ -663,7 +659,7 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    
+
 }
 
 - (void)didReceiveMemoryWarning
