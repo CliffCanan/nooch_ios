@@ -987,7 +987,7 @@
         else if (searching)
             title.text = @"Search Results";
         else
-            title.text = @"Recent";
+            title.text = @"Recent Contacts";
     }else{
         title.text = @"";
     }
@@ -1046,7 +1046,7 @@
     [cell.contentView addSubview:npic];
     
     [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
-    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(30, 48, 12, 16)];
+    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(20, 48, 12, 16)];
     [ttt setImage:[UIImage imageGlyphNamed:@"facebook" height:40 color:kNoochBlue]];
     
     if (self.location) {
@@ -1121,7 +1121,7 @@
     {
         //Nooch User
         npic.hidden=NO;
-        [npic setFrame:CGRectMake(260,25, 20, 20)];
+        [npic setFrame:CGRectMake(265,25, 17, 20)];
         [npic setImage:[UIImage imageNamed:@"n_Icon.png"]];
         [npic removeFromSuperview];
         
