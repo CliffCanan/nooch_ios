@@ -1826,7 +1826,7 @@
 	table-view#history {
 		width				: 320px;
 		background-color	: #ffffff;
-		row-height			: 64px;
+		row-height			: 74px;
 		separator-style 	: single-line;
 		separator-color		: rgba(188,190,192,.65);	
 	}
@@ -1865,8 +1865,8 @@
 	/**  Amount of the Transfer on the right side of the row  **/
 	.history_transferamount {
 		width				: 65px;
-		height				: 20px;
-		top					: 18px;
+		height				: 26px;
+		top					: 5px;
 		left				: 250px;
 		font-family			: "Roboto";
 		font-weight         : regular;
@@ -1877,8 +1877,8 @@
 	 /**  Amount of the PENDING Transfer on the right side of the row (Only on the Pending Tab)  **/
 	.history_pending_transferamount {
 		width				: 61px;
-		height				: 20px;
-		top					: 18px;
+		height				: 40px;
+		top					: 10px;
 		left				: 254px;
 		font-family			: "Roboto";
 		font-weight         : regular;

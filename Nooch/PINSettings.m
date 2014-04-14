@@ -1,10 +1,8 @@
-//
 //  PINSettings.m
 //  Nooch
 //
 //  Created by crks on 10/7/13.
-//  Copyright (c) 2013 Nooch. All rights reserved.
-//
+//  Copyright (c) 2014 Nooch. All rights reserved.
 
 #import "PINSettings.h"
 #import "Home.h"
@@ -44,13 +42,13 @@
     
     UILabel *req_imm = [[UILabel alloc] initWithFrame:CGRectMake(-1, 100, 322, 56)];
     [req_imm setFont:[UIFont fontWithName:@"Roboto-Light" size:17]];
-    [req_imm setText:@"      Require Immediately"];
+    [req_imm setText:@"       Require PIN Immediately"];
     [req_imm setTextColor:kNoochBlue];
     req_imm.layer.borderColor = [Helpers hexColor:@"BCBEC0"].CGColor;
     req_imm.layer.borderWidth = 1;
     [self.view addSubview:req_imm];
     
-    self.ri = [[UISwitch alloc] initWithFrame:CGRectMake(260, 155, 40, 40)];
+    self.ri = [[UISwitch alloc] initWithFrame:CGRectMake(260, 135, 40, 40)];
     [self.ri setTintColor:kNoochGrayLight];
     [self.ri addTarget:self action:@selector(req) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.ri];
