@@ -48,13 +48,13 @@
     req_imm.layer.borderWidth = 1;
     [self.view addSubview:req_imm];
     
-    self.ri = [[UISwitch alloc] initWithFrame:CGRectMake(260, 135, 40, 40)];
+    self.ri = [[UISwitch alloc] initWithFrame:CGRectMake(260, 113, 40, 40)];
     [self.ri setTintColor:kNoochGrayLight];
     [self.ri addTarget:self action:@selector(req) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.ri];
-    
+
     UILabel *info = [UILabel new];
-    [info setFrame:CGRectMake(15, 154, 290, 45)];
+    [info setFrame:CGRectMake(15, 160, 290, 42)];
     [info setNumberOfLines:0];
     [info setTextAlignment:NSTextAlignmentCenter];
     [info setFont:[UIFont fontWithName:@"Roboto-Light" size:14]];
@@ -65,7 +65,7 @@
     if ([[user objectForKey:@"requiredImmediately"] boolValue]) {
         [self.ri setOn:YES];
     }
-    
+
     UIButton *change_password = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [change_password setFrame:CGRectMake(0, 250, 0, 0)];
     [change_password setStyleClass:@"button_blue"];
