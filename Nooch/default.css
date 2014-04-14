@@ -413,96 +413,97 @@
 	 /****************************
 	  *****	  TABLE Styles 	 *****
 	  ****************************/
-		/***     	TABLE STYLE 1  				***/	
-		/***   SIGNUP Screen, ADD BANK Screen   ***/
-		/***  PROFILE Screen, SETTINGS Screens  ***/
+	/***     	TABLE STYLE 1  				***/	
+	/***   SIGNUP Screen, ADD BANK Screen   ***/
+	/***  PROFILE Screen, SETTINGS Screens  ***/
 
-		 .table_view_1 {
-			row-height		: 45px;
-			separator-style : single-line;
-			separator-color : rgba(188,190,192,.65);
-			background-color: #ffffff;
-		}
+	 .table_view_1 {
+		row-height		: 45px;
+		separator-style : single-line;
+		separator-color : rgba(188,190,192,.65);
+		background-color: #ffffff;
+	}
 
-		 .table_view_cell_1 { text-overflow	: ellipsis; } 
+	 .table_view_cell_1 { text-overflow	: ellipsis; } 
 		 
-		  /****  Table Main Text  (left side of row)  ****/
-		 .table_view_cell_textlabel_1 {
-			font-family			: "Roboto";
-			font-weight         : regular;
-			font-size			: 16px;
-			text-align       	: left;
-			color 				: #41ABE1;
-			width				: 260px;
-			left                : 20px;
-			height				: 30px;
-		}
-.memtable_view_cell_textlabel_1 {
-            top                 :10px;
-			font-family			: "Roboto";
-			font-weight         : regular;
-			font-size			: 16px;
-			text-align       	: center;
-			color 				: gray;
-			width				: 200px;
-			left                : 110px;
-			height				: 60px;
-		}		
-        
-         #icon_RequestMultiple {
+	  /****  Table Main Text  (left side of row)  ****/
+	 .table_view_cell_textlabel_1 {
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 16px;
+		text-align       	: left;
+		color 				: #41ABE1;
+		width				: 260px;
+		left                : 20px;
+		height				: 40px;
+	}
+	.memtable_view_cell_textlabel_1 {
+		top                 : 8px;
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 16px;
+		text-align       	: center;
+		color 				: #313233;
+		width				: 200px;
+		left                : 90px;
+		height				: 60px;
+	}		
+	.memtable_view_cell_textlabel_1_64 {
+		top                 : 72px;
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 16px;
+		text-align       	: center;
+		color 				: #313233;
+		width				: 200px;
+		left                : 90px;
+		height				: 60px;
+	}       
+	#icon_RequestMultiple {
 		/*top					: 29px;*/
 		left				: 290px;
 		width				: 80px;
 		height				: 40px;
 		background-size		: 80px 40px;
 	}
-        .memtable_view_cell_textlabel_1_64 {
-            top                 :74px;
-			font-family			: "Roboto";
-			font-weight         : regular;
-			font-size			: 16px;
-			text-align       	: center;
-			color 				: gray;
-			width				: 200px;
-			left                : 110px;
-			height				: 60px;
-		}
+
         /****  Table Detail Text  (right side of row)  ****/
 		.table_view_cell_detailtext_1 {
 			font-family			: "Roboto";
 			font-weight         : light;
-			font-size			: 17px;
+			font-size			: 16px;
 			color 				: #6d6e71;
-			width				: 220px;
-			left                : 80px;
-			height				: 30px;
+			width				: 210px;
+			left                : 95px;
+			height				: 40px;
 			text-align       	: right;
 		}
-		 .exportHistorybutton{
-            background-color: #3FABE1;
-            border-radius   : 4px;
-            top                 :450px;
-			font-family			: "Roboto";
-			font-weight         : regular;
-			font-size			: 14px;
-			text-align       	: center;
-			color 				: white;
-			width				: 130px;
-			left                : 10px;
-			height				: 30px;
-         }
-		/****  		Sub-header Text (Outside of Table)     ****/
-		/****  Mostly Pre-Login Screens + Referral Screen  ****/
-		.header_label{
-			font-family			: "Roboto";
-			font-weight         : regular;
-			font-size			: 17px;
-			text-align       	: center;
-			color 				: #414042;
-			width				: 280px;
-			left                : 20px;
-			height				: 30px;
-		}
+	.exportHistorybutton{
+		background-color: #3FABE1;
+        border-radius   : 4px;
+        top                 :450px;
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 14px;
+		text-align       	: center;
+		color 				: white;
+		width				: 130px;
+		left                : 10px;
+		height				: 30px;
+	}
+	
+	/****  		Sub-header Text (Outside of Table)     ****/
+	/****  Mostly Pre-Login Screens + Referral Screen  ****/
+	.header_label{
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 17px;
+		text-align       	: center;
+		color 				: #414042;
+		width				: 280px;
+		left                : 20px;
+		height				: 30px;
+	}
 
 		 /************************************/
 		 /*******     TABLE STYLE 2      ******   SELECT RECIPIENT screen; CHOOSE A CAUSE screen ****/
@@ -635,7 +636,6 @@
 		top					: 328px;
 		left				: 19px;
 	}
-
 	/**  Text "Forgot Password?" **/
 	#label_forgotpw {
 		font-family			: "Roboto";
@@ -648,7 +648,6 @@
 		top					: 328px;
 		left				: 170px;
 	}
-	
 	#login_switch {
 		width				: 34px;
 		height				: 21px;
@@ -661,9 +660,7 @@
 	#login_switch thumb { color: white; }
 
  /*******************************************
-  *******************************************
   ********  	SEND MONEY FLOW	     ********
-  *******************************************
   *******************************************/
   
 	/****  NAV BAR:  Select Recipient, How Much?, PIN screens  ****/
@@ -684,33 +681,32 @@
     
 	/**  The "Search by Location" icon on the Top Nav Bar (top-right corner).  **/
 	#icon_location {
-		/*top					: 29px;*/
 		left				: 277px;
 		width				: 20px;
 		height				: 33px;
 		background-image	: url(map-icon.png);
 		background-size		: 20px 33px;
 	}
-	#icon_phonebook {
-        top					: 42px
-		left				: 282px;
-		width				: 38px;
-		height				: 38px;
-		background-image	: url(address-book-icon.png);
-
-	}
 
 	/**  Styles all the profile pictures of users that are returned in the Select Recipient Table.  **/
 	.list_userprofilepic {
-		width				: 46px;
-		height				: 46px;
-		border				: 1px solid #6d6E71;
-		top					: 7px;
-		left				: 20px;
-        shape       : ellipse;
+		width: 46px;
+		height: 46px;
+		border: 1px solid #6d6E71;
+		top: 7px;
+		left: 20px;
+        shape: ellipse;
 	}
 
-	.first_name { font-weight	: regular;}
+	.select_recipient_name {
+		color: #313233;
+		font-family: "Roboto";
+		font-weight: Regular;
+		font-size: 18px;
+		text-align: left;
+	}
+	
+	.first_name { font-weight: regular;}
 
 	/**  Very small FB icon next to Nooch user pics in the Select Recipient Screen. Designates the user is FB friends with the marked user.  **/  
 	.facebook-icons {
@@ -812,7 +808,7 @@
 	/**  Main entry field for the Amount.  Starts as light gray, turns dark when a number is entered. **/  
 	#howmuch_amountfield {
 		font-family			: "Roboto";
-		font-size			: 46px;
+		font-size			: 48px;
 		font-weight         : medium;
 		text-align       	: right;
 		color 				: #58595B;
@@ -823,7 +819,7 @@
 	}
     #howmuch_amountfield_4 {
 		font-family			: "Roboto";
-		font-size			: 38px;
+		font-size			: 40px;
 		font-weight         : medium;
 		text-align       	: right;
 		color 				: #58595B;
@@ -929,10 +925,10 @@
         width: 40px;
     }
     .animate_bubble {
-        animation-name      : bubble;
-        animation-duration      : 1.7s;
-		animation-timing-function	: ease;
-		animation-iteration-count	: 1;
+        animation-name: bubble;
+        animation-duration: 1.3s;
+		animation-timing-function: ease;
+		animation-iteration-count: 1;
     }
 	.animate_roll_left {
 		animation-name				: howmuch_roll_left;
@@ -1109,7 +1105,7 @@
 	.pin_instructiontext {
 		width			: 300px;
 		left			: 10px;
-		top             : 15px;
+		top             : 14px;
 		height          : 20px;
 		font-family		: "Roboto";
 		font-weight		: medium;
@@ -1143,7 +1139,6 @@
         text-align : center;
 		color	: #3fabe1;
 	}
-
 	/**  Making the word "contribution" purple.  **/  
 	#pin_instructiontext_donate {
 		width	: 300px;
@@ -1166,7 +1161,6 @@
 		left            : 60px;
 		top             : 114px;
 	}
-	.pin_amountfield attributed-text {letter-spacing:10px;}
 
 	/**  Background white box for the recipient info right above the number pad.  **/  
 	.pin_recipientbox {
@@ -1175,6 +1169,7 @@
 		width			: 302px;
 		height			: 71px;
 		background-color: white;
+		border-radius	: 4px;
 	}
 
 	/** Profile pic of the recipient.  **/  
@@ -1195,13 +1190,13 @@
 		height				: 38px;
 	}
 
-    #pin_recipientname_send {background-image	: linear-gradient(#76c22f, #66aa27);}
-    #pin_recipientname_request {background-image			: linear-gradient(#6dbee8, #41abe1);}
-    #pin_recipientname_donate {background-image: linear-gradient(#595287, #413a70);}
+    #pin_recipientname_send {background-image: linear-gradient(#76c22f, #66aa27); border-top-left-radius:4px;border-top-right-radius:4px;}
+    #pin_recipientname_request {background-image: linear-gradient(#6dbee8, #41abe1); border-top-left-radius:4px;border-top-right-radius:4px;}
+    #pin_recipientname_donate {background-image: linear-gradient(#595287, #413a70); border-top-left-radius:4px;border-top-right-radius:4px;}
 
 	/**  The text of the recipient's name in the recipient box.  **/
 	.pin_recipientname_text {
-		top					: 196px;
+		top					: 198px;
 		left				: 81px;
 		width				: 226px;
 		height				: 38px;
@@ -1214,7 +1209,7 @@
 
 	/**  The text of the memo if one was attached.  **/ 
 	.pin_memotext {
-		top					: 234px;
+		top					: 235px;
 		left				: 81px;
 		width				: 226px;
 		height				: 33px;
@@ -1897,7 +1892,7 @@
 	.history_transferamount_neutral {color	: #3fabe1;}
 
 	/**  The small running tally of the user's balance directly beneath the transfer amount for each row.  **/
-	 .history_updatedbalance {
+	.history_updatedbalance {
 		width				: 60px;
 		height				: 13px;
 		top					: 35px;
@@ -2256,7 +2251,7 @@
 	#button_signout {
 		width				: 260px;
 		height				: 44px;
-		top					: 390px;
+		top					: 410px;
 		left				: 30px;
 		font-size			: 18px;
 	}
@@ -2573,158 +2568,6 @@
 	#stats_circle_donations_inactive 	{ 
         background-image: url(stats-donations-inactive.png);
         left : 209px;
-    }
-		
-	/*****************/
-    /*** KNOX Flow ***/
-	/*****************/
-    #bank_step_title {
-        top     : 0px;
-        left     : 0px;
-        width   : 300px;
-        height  : 40px;
-        font-family   : "Roboto";
-        font-weight   : bold;
-        font-size           :16px;
-        background-image			: linear-gradient(#6dbee8, #41abe1);
-        color       : white;
-        text-align : center;
-    }
-
-    #step_segcontrol {
-        width				: 300px;
-		height				: 25px;
-		left				: 0px;
-		top					: 80px;
-		background-color	: #3fabe1;
-		font-family			: "Roboto";
-		font-weight			: light;
-        font-size              : 10px;
-        color   : black;
-    }
-
-    .bank_textfield {
-        font-family : "Roboto";
-        font-weight :   regular;
-        font-size       : 14px;
-    }
-
-    #bank_login {
-        top             : 330px;
-        height        : 40px;
-        left              : 10px;
-        width           : 280px;
-        font-family : "Roboto";
-        font-weight : regular;
-        font-size       : 14px;
-        background-image	: linear-gradient(#7fd034, #6ab029);
-        color           : white;
-        border-radius           : 5px;
-    }
-
-    #fraud_label {
-        top : 190px;
-        left : 10px;
-        height : 40px;
-        width : 280px;
-        font-family : "Roboto";
-        font-weight : light;
-        font-size       : 16px;
-        text-align      : center;
-        color       : black;
-    }
-
-    #question_number {
-        left : 10px;
-        top : 225px;
-        width : 280px;
-        height : 40px;
-        color : black;
-        font-family : "Roboto";
-        font-weight : bold;
-        font-size : 14px;
-        text-align : center;
-    }
-
-    #question {
-        left : 10px;
-        top : 250px;
-        width : 280px;
-        height : 40px;
-        font-family : "Roboto";
-        font-weight : light;
-        font-size : 14px;
-        color : black;
-        text-align : center;
-    }
-
-    #submit_answer_button {
-        background-image			: linear-gradient(#6dbee8, #41abe1);
-        color           : white;
-        border-radius           : 5px;
-        top     : 355px;
-        left     : 10px;
-        width  : 280px;
-        height  : 40px;
-        font-family : "Roboto";
-        font-weight : regular;
-        font-size       : 14px;
-    }
-
-    .account_listing:normal {
-        left : 10px;
-        width : 280px;
-        height : 40px;
-        color : gray;
-        background-color : white;
-        border 			: 1px solid;
-		border-color	: #939598;
-        text-align : center;
-        border-radius : 5px;
-        font-family : "Roboto";
-        font-weight : light;
-        font-size       : 14px;
-    }
-
-    .account_listing:selected {
-        left : 10px;
-        width : 280px;
-        height : 40px;
-        color : white;
-        border 			: 1px solid;
-		border-color	: #939598;
-        background-image	: linear-gradient(#7fd034, #6ab029);
-        text-align  : center;
-        border-radius : 5px;
-        font-family : "Roboto";
-        font-weight : regular;
-        font-size       : 14px;
-    }
-
-    #select_account:normal {
-        background-image			: linear-gradient(#6dbee8, #41abe1);
-        color           : white;
-        border-radius           : 5px;
-        top     : 380px;
-        left     : 10px;
-        width  : 280px;
-        height  : 40px;
-        font-family : "Roboto";
-        font-weight : regular;
-        font-size       : 14px;
-    }
-
-    #select_account:disabled {
-        background-image			: linear-gradient(#c0c2c4, #b1b3b6);
-        color           : white;
-        border-radius           : 5px;
-        top     : 380px;
-        left     : 10px;
-        width  : 280px;
-        height  : 40px;
-        font-family : "Roboto";
-        font-weight : regular;
-        font-size       : 14px;
     }
 
  /*******************************************

@@ -55,31 +55,7 @@
     user_picture.layer.cornerRadius = 39;
     user_picture.clipsToBounds = YES;
 
-     if(([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"]&& [self.trans valueForKey:@"BankPicture"] !=NULL&& ![[self.trans valueForKey:@"BankPicture"]isKindOfClass:[NSNull class]]))
-
-    {
-        NSArray* bytedata = [self.trans valueForKey:@"BankPicture"];
-        unsigned c = bytedata.count;
-        uint8_t *bytes = malloc(sizeof(*bytes) * c);
-
-        unsigned i;
-        for (i = 0; i < c; i++)
-        {
-            NSString *str = [bytedata objectAtIndex:i];
-            int byte = [str intValue];
-            bytes[i] = (uint8_t)byte;
-        }
-
-        NSData *datos = [NSData dataWithBytes:bytes length:c];
-
-        [user_picture setImage:[UIImage imageWithData:datos]];
-
-        
-    }
-    else if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"]){
-        [user_picture setImage:[UIImage imageNamed:@"Icon.png"]];
-    }
-   else if([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"])
+     if([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"])
          {
              [user_picture setImage:[UIImage imageNamed:@"RoundLoading"]];
          }
@@ -131,19 +107,6 @@
         [payment setText:@"Invited to:"];
         [payment setStyleClass:@"details_intro_green"];
     }
-    
-    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"])
-    {
-        [payment setText:@"Withdrawal to:"];
-
-        [payment setStyleClass:@"details_intro_green"];
-
-    }
-    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
-    {
-        [payment setText:@"Deposit Into:"];
-        [payment setStyleClass:@"details_intro_green"];
-    }
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Donation"])
     {
         [payment setText:@"Donation To:"];
@@ -166,26 +129,6 @@
         [other_party setText:[self.trans objectForKey:@"InvitationSentTo"]];
         
     }
-    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"]&& [self.trans objectForKey:@"BankName"]!=NULL&& ![[self.trans valueForKey:@"BankName"]isKindOfClass:[NSNull class]])
-    {
-        [other_party setText:[[self.trans objectForKey:@"BankName"] capitalizedString]];
-        [other_party setStyleClass:@"details_othername"];
-    }
-    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
-    {
-        [other_party setText:@"Nooch"];
-        [other_party setStyleClass:@"details_othername"];
-    }
-     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"]&& [self.trans objectForKey:@"BankName"]!=NULL&& ![[self.trans valueForKey:@"BankName"]isKindOfClass:[NSNull class]])
-     {
-         [other_party setText:[[self.trans objectForKey:@"BankName"] capitalizedString]];
-         [other_party setStyleClass:@"details_othername"];
-     }
-     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
-     {
-         [other_party setText:@"Nooch"];
-         [other_party setStyleClass:@"details_othername"];
-     }
      else{
         [other_party setText:[[self.trans objectForKey:@"Name"] capitalizedString]];
     [other_party setStyleClass:@"details_othername"];
@@ -855,15 +798,10 @@
         if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"City"]!=NULL && [[assist shared]islocationAllowed] ) {
             if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"City"]!=NULL && [[assist shared]islocationAllowed] ) {
                 NSString*address=[[self.trans objectForKey:@"AddressLine1"] stringByReplacingOccurrencesOfString:@"," withString:@""];
-                
                 if ([self.trans objectForKey:@"AddressLine2"]!=NULL) {
                     address=[address stringByAppendingString:[self.trans objectForKey:@"AddressLine2"]];
                 }
-                
-                NSString*city=[[self.trans objectForKey:@"City"] stringByReplacingOccurrencesOfString:@"," withString:@""];
-               
-                [location setText:[NSString stringWithFormat:@"%@,%@",address,city]];
-               
+                [location setText:[NSString stringWithFormat:@"%@",address]];
                 if ([[self.trans objectForKey:@"AddressLine1"]length]==0 && [[self.trans objectForKey:@"City"]length]==0) {
                     [location setText:@""];
                 }
@@ -926,11 +864,6 @@
             else if([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Donation"]||[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]||[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
             {
                 statusstr=@"Completed";
-                [status setStyleClass:@"green_text"];
-            }
-            else if([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"] || [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
-            {
-                statusstr=@"Submitted";
                 [status setStyleClass:@"green_text"];
             }
             else if ([[loginResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {

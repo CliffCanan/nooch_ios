@@ -205,7 +205,7 @@
     [self.email setTextAlignment:NSTextAlignmentRight]; [self.email setBackgroundColor:[UIColor clearColor]];
     [self.email setPlaceholder:@"email@email.com"]; [self.email setDelegate:self];
     [self.email setKeyboardType:UIKeyboardTypeEmailAddress];
-    [self.email setStyleClass:@"table_view_cell_detailtext_1"]    
+    [self.email setStyleClass:@"table_view_cell_detailtext_1"];
     [self.name setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]];
     [self.email setUserInteractionEnabled:NO];
     [self.view addSubview:self.email];
