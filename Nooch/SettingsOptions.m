@@ -1,10 +1,8 @@
-//
 //  SettingsOptions.m
 //  Nooch
 //
 //  Created by crks on 10/7/13.
-//  Copyright (c) 2013 Nooch. All rights reserved.
-//
+//  Copyright (c) 2014 Nooch. All rights reserved.
 
 #import "SettingsOptions.h"
 #import "Home.h"
@@ -32,19 +30,16 @@
 {
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
-
 -(void)viewWillAppear:(BOOL)animated
 {
     [self.navigationItem setTitle:@"Settings"];
 }
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
     UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
     [ttt setImage:[UIImage imageGlyphNamed:@"reorder" height:40 color:[UIColor whiteColor]]];
-    
     
     [self.navigationItem setHidesBackButton:YES];
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -54,35 +49,35 @@
     [hamburger setBackgroundImage:ttt.image forState:UIControlStateNormal];
     UIBarButtonItem *menu1 = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu1];
-    
+
 	// Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"Settings"];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     [ttt setImage:[UIImage imageGlyphNamed:@"cogs" height:40 color:[UIColor whiteColor]]];
-    
+
     [self.view setStyleClass:@"background_gray"];
-    
+
     UIView *linked_background = [UIView new];
     [linked_background setStyleId:@"account_background"];
     [self.view addSubview:linked_background];
-    
+
     UILabel *bank_name = [UILabel new];
     [bank_name setStyleId:@"linked_account_name"];
     [bank_name setText:@"Bank of America"];
     [linked_background addSubview:bank_name];
-    
+
     UILabel *bank_num = [UILabel new];
     [bank_num setStyleId:@"linked_account_number"];
     [bank_num setText:@"XXXX XXXX XXXX 1234"];
     [linked_background addSubview:bank_num];
-    
+
     UIButton *unlink_account = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [unlink_account setStyleId:@"remove_account"];
     [unlink_account setTitle:@"Remove" forState:UIControlStateNormal];
     [unlink_account addTarget:self action:@selector(remove_attached_bank) forControlEvents:UIControlEventTouchUpInside];
     [linked_background addSubview:unlink_account];
-    
+
     UIButton *link_bank = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [link_bank setFrame:CGRectMake(0, 125, 0, 0)];
     [link_bank setTitle:@" Link a new bank" forState:UIControlStateNormal];
@@ -95,20 +90,21 @@
     [link_bank addSubview:ttt];
     [link_bank setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.view addSubview:link_bank];
-    
+
     UITableView *menu = [UITableView new];
     [menu setStyleId:@"settings"];
     [menu setDelegate:self]; [menu setDataSource:self]; [menu setScrollEnabled:NO];
     [self.view addSubview:menu];
     [menu reloadData];
-    
+
     self.logout = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.logout setTitle:@"Sign Out" forState:UIControlStateNormal];
     [ self.logout addTarget:self action:@selector(sign_out) forControlEvents:UIControlEventTouchUpInside];
     [self.logout setStyleClass:@"button_gray"];
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
         [self.logout setStyleId:@"button_signout_4"];
-    } else {
+    } 
+    else {
         [self.logout setStyleId:@"button_signout"];
     }
     [self.view addSubview: self.logout];
@@ -145,7 +141,7 @@
     [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
     UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
     [ttt setImage:[UIImage imageGlyphNamed:@"chevron-right" height:40 color:kNoochBlue]];
-    
+
     UILabel *title = [UILabel new];
     [title setStyleClass:@"settings_table_label"];
     UIImageView *arrow = [[UIImageView alloc] initWithFrame:CGRectMake(280, 17, 12, 18)];
@@ -159,10 +155,10 @@
     }else if(indexPath.row == 1){
         title.text = @"Security Settings";
         [iv setImage:[UIImage imageGlyphNamed:@"lock" height:30 color:kNoochBlue]];
-        [iv setFrame:CGRectMake(10, 10, 21, 28)];
+        [iv setFrame:CGRectMake(10, 10, 20, 28)];
     }else if(indexPath.row == 2){
         title.text = @"Notification Settings" ;
-        [iv setImage:[UIImage imageGlyphNamed:@"bell" height:30 color:kNoochBlue]];
+        [iv setImage:[UIImage imageGlyphNamed:@"bell-alt" height:30 color:kNoochBlue]];
         [iv setFrame:CGRectMake(10, 10, 24, 26)];
     }
     [cell.contentView addSubview:title];
@@ -201,7 +197,6 @@
 {
     [self.navigationController pushViewController:view animated:YES];
 }
-
 - (void)sign_out
 {
     NSLog(@"%@",nav_ctrl.viewControllers);
@@ -231,21 +226,17 @@
                 [nav_ctrl performSelector:@selector(disable)];
                 Register *reg = [Register new];
                 [self.navigationController pushViewController:reg animated:YES];
-                
                 me = [core new];
-                
             }
-            
         }
     }
-    
 }
+
 #pragma mark - file paths
 - (NSString *)autoLogin{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
-    
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -257,7 +248,7 @@
         }
         return;
     }
-    
+
     if (buttonIndex == 1) {
         blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
         [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
@@ -272,10 +263,8 @@
         timer=nil;
         serve*  serveOBJ=[serve new];
         serveOBJ.Delegate=self;
-        
         serveOBJ.tagName=@"logout";
         [serveOBJ LogOutRequest:[[NSUserDefaults standardUserDefaults ]valueForKey:@"MemberId"]];
-        
     }
 }
 
@@ -284,5 +273,4 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 @end
