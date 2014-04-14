@@ -40,50 +40,22 @@
     UIActivityIndicatorView*act=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [act setFrame:CGRectMake(14, 5, 20, 20)];
     [act startAnimating];
-    
+
     /*UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:act];
     [self.navigationItem setRightBarButtonItem:funds];*/
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    
+
 	// Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"Transfer Details"];
-    
+
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    
-    //UIImageView *user_picture = [[UIImageView alloc] initWithFrame:CGRectMake(10, 20, 76, 76)];
-    UIImageView *user_picture = [[UIImageView alloc] initWithFrame:CGRectMake(5, 8, 76, 76)];
+
+    UIImageView *user_picture = [[UIImageView alloc] initWithFrame:CGRectMake(10, 25, 78, 78)];
     user_picture.layer.borderWidth = 1; user_picture.layer.borderColor = kNoochGrayDark.CGColor;
-    //user_picture.layer.cornerRadius = 38;
-    user_picture.layer.cornerRadius = 4;
+    user_picture.layer.cornerRadius = 39;
     user_picture.clipsToBounds = YES;
 
-     if(([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"]&& [self.trans valueForKey:@"BankPicture"] !=NULL&& ![[self.trans valueForKey:@"BankPicture"]isKindOfClass:[NSNull class]]))
-
-    {
-        NSArray* bytedata = [self.trans valueForKey:@"BankPicture"];
-        unsigned c = bytedata.count;
-        uint8_t *bytes = malloc(sizeof(*bytes) * c);
-        
-        unsigned i;
-        for (i = 0; i < c; i++)
-        {
-            NSString *str = [bytedata objectAtIndex:i];
-            int byte = [str intValue];
-            bytes[i] = (uint8_t)byte;
-        }
-        
-        NSData *datos = [NSData dataWithBytes:bytes length:c];
-        
-        
-        [user_picture setImage:[UIImage imageWithData:datos]];
-        
-        
-        
-    }
-    else if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"]){
-        [user_picture setImage:[UIImage imageNamed:@"Icon.png"]];
-    }
-   else if([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"])
+     if([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"])
          {
              [user_picture setImage:[UIImage imageNamed:@"RoundLoading"]];
          }
@@ -135,29 +107,16 @@
         [payment setText:@"Invited to:"];
         [payment setStyleClass:@"details_intro_green"];
     }
-    
-    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"])
-    {
-        [payment setText:@"Withdrawal to:"];
-
-        [payment setStyleClass:@"details_intro_green"];
-
-    }
-    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
-    {
-        [payment setText:@"Deposit Into:"];
-        [payment setStyleClass:@"details_intro_green"];
-    }
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Donation"])
     {
         [payment setText:@"Donation To:"];
-        [payment setStyleClass:@"details_intro_green"];
+        [payment setStyleClass:@"details_intro_purple"];
     }
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"])
     {
         [payment setText:@"Disputed:"];
         
-        [payment setStyleClass:@"details_intro_purple"];
+        [payment setStyleClass:@"details_intro_red"];
 
     }
     [self.view addSubview:payment];
@@ -170,26 +129,6 @@
         [other_party setText:[self.trans objectForKey:@"InvitationSentTo"]];
         
     }
-    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"]&& [self.trans objectForKey:@"BankName"]!=NULL&& ![[self.trans valueForKey:@"BankName"]isKindOfClass:[NSNull class]])
-    {
-        [other_party setText:[[self.trans objectForKey:@"BankName"] capitalizedString]];
-        [other_party setStyleClass:@"details_othername"];
-    }
-    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
-    {
-        [other_party setText:@"Nooch"];
-        [other_party setStyleClass:@"details_othername"];
-    }
-     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"]&& [self.trans objectForKey:@"BankName"]!=NULL&& ![[self.trans valueForKey:@"BankName"]isKindOfClass:[NSNull class]])
-     {
-         [other_party setText:[[self.trans objectForKey:@"BankName"] capitalizedString]];
-         [other_party setStyleClass:@"details_othername"];
-     }
-     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
-     {
-         [other_party setText:@"Nooch"];
-         [other_party setStyleClass:@"details_othername"];
-     }
      else{
         [other_party setText:[[self.trans objectForKey:@"Name"] capitalizedString]];
     [other_party setStyleClass:@"details_othername"];
@@ -260,7 +199,6 @@
             [fb setStyleClass:@"details_buttons"];
         }
         
-        
         UILabel *fb_text = [UILabel new];
         [fb_text setFrame:fb.frame];
         if ([[UIScreen mainScreen] bounds].size.height == 480) {
@@ -268,7 +206,7 @@
         } else {
             [fb_text setStyleClass:@"details_buttons_labels"];
         }
-        [fb_text setText:@"Facebook"];
+        [fb_text setText:@"Share"];
         
         UIButton *twit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [twit setTitle:@"" forState:UIControlStateNormal];
@@ -292,7 +230,7 @@
         } else {
             [twit_text setStyleClass:@"details_buttons_labels"];
         }
-        [twit_text setText:@"Twitter"];
+        [twit_text setText:@"Tweet"];
         
         
         UIButton *disp = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -335,6 +273,7 @@
                 if (![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] && ![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
                     [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
                     [cancel setStyleClass:@"details_button_center"];
+                    [cancel setTag:13];
                     [cancel setEnabled:YES];
                     [cancel addTarget:self action:@selector(cancel_request) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:cancel];
@@ -409,13 +348,54 @@
     [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
 }
 
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    UIAlertView *alert = [[UIAlertView alloc] init];
+    [alert addButtonWithTitle:@"OK"];
+    [alert setDelegate:nil];
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"Email Cancelled" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            // [alert show];
+            
+            [alert setTitle:@"Mail cancelled"];
+            [alert show];
+            NSLog(@"Mail cancelled");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved");
+            
+            [alert setTitle:@"Mail saved"];
+            [alert show];
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail sent");
+            
+            [alert setTitle:@"Mail sent"];
+            [alert show];
+            
+            break;
+        case MFMailComposeResultFailed:
+            [alert setTitle:[error localizedDescription]];
+            [alert show];
+            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    
+    // Close the Mail Interface
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
 
 - (void) fulfill_request
 {
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     if ([[assist shared]getSuspended]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+        [alert setTag:50];
         [alert show];
         return;
         
@@ -423,7 +403,7 @@
     
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
         
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Email Verification Needed" message:@"Please click the link sent to your email to verify your email address." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         return;
         
@@ -431,7 +411,7 @@
     }
     
     if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Profile Not Complete" message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!" delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
         [alert setTag:147];
         [alert show];
         return;
@@ -441,7 +421,7 @@
     
     if ( ![[[NSUserDefaults standardUserDefaults]
             objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
-        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Please Attach an Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         
         [set show];
         return;
@@ -467,7 +447,7 @@
 - (void) decline_request
 {
     
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to Reject this Request? " delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to reject this request? " delegate:self cancelButtonTitle:@"Yes - Reject" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1011];
     //    NSMutableDictionary *input = [self.trans mutableCopy];
@@ -478,7 +458,7 @@
 
 - (void) cancel_request
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to cancel this Request? " delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to cancel this request? " delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1010];
 }
@@ -488,7 +468,8 @@
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     if ([[assist shared]getSuspended]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+        [alert setTag:50];
         [alert show];
         return;
         
@@ -496,7 +477,7 @@
     
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
         
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Email Verification Needed" message:@"Please click the link sent to your email to verify your email address." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         return;
         
@@ -504,7 +485,7 @@
     }
     
     if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Validation Needed" message:@"Please validate your profile before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
         [alert setTag:147];
         [alert show];
         return;
@@ -519,7 +500,7 @@
     
     if ( ![[[NSUserDefaults standardUserDefaults]
             objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
-        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Please Attach an Account" message:@"Before you can make any transfer you must link a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         
         [set show];
         return;
@@ -527,7 +508,7 @@
     
     
     if ( ![[assist shared]isBankVerified]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         
         return;
@@ -650,7 +631,7 @@
 
 - (void) dispute
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to dispute this transfer? Your account will be suspended while we investigate." delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to dispute this transfer? Your account will be suspended while we investigate to protect your account." delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1];
 }
@@ -691,6 +672,25 @@
         serveObj.tagName=@"reject";
         [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Rejected"];
         
+    } else if (alertView.tag == 50 && buttonIndex == 1)
+    {
+        if (![MFMailComposeViewController canSendMail]){
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [av show];
+            return;
+        }
+        MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+        mailComposer.mailComposeDelegate = self;
+        mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+        
+        [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+        
+        [mailComposer setMessageBody:@"" isHTML:NO];
+        [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+        [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+        [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        [self presentViewController:mailComposer animated:YES completion:nil];
     }
     
     //1011
@@ -798,15 +798,10 @@
         if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"City"]!=NULL && [[assist shared]islocationAllowed] ) {
             if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"City"]!=NULL && [[assist shared]islocationAllowed] ) {
                 NSString*address=[[self.trans objectForKey:@"AddressLine1"] stringByReplacingOccurrencesOfString:@"," withString:@""];
-                
                 if ([self.trans objectForKey:@"AddressLine2"]!=NULL) {
                     address=[address stringByAppendingString:[self.trans objectForKey:@"AddressLine2"]];
                 }
-                
-                NSString*city=[[self.trans objectForKey:@"City"] stringByReplacingOccurrencesOfString:@"," withString:@""];
-               
-                [location setText:[NSString stringWithFormat:@"%@,%@",address,city]];
-               
+                [location setText:[NSString stringWithFormat:@"%@",address]];
                 if ([[self.trans objectForKey:@"AddressLine1"]length]==0 && [[self.trans objectForKey:@"City"]length]==0) {
                     [location setText:@""];
                 }
@@ -815,6 +810,7 @@
         }
         //Set Status
         UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 320, 30)];
+        [status setTag:13];
         [status setStyleClass:@"details_label"];
         [status setStyleId:@"details_status"];
         if ([loginResult objectForKey:@"TransactionDate"]!=NULL) {
@@ -844,7 +840,7 @@
                     else
                     {
                         statusstr=@"Pending";
-                        [status setStyleClass:@"green_text"];
+                        [status setStyleClass:@"yellow_text"];
                     }
                     
                 }
@@ -860,7 +856,7 @@
                     else
                     {
                         statusstr=@"Pending";
-                        [status setStyleClass:@"green_text"];
+                        [status setStyleClass:@"yellow_text"];
                     }
                 }
                 
@@ -868,11 +864,6 @@
             else if([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Donation"]||[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]||[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
             {
                 statusstr=@"Completed";
-                [status setStyleClass:@"green_text"];
-            }
-            else if([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"] || [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
-            {
-                statusstr=@"Submitted";
                 [status setStyleClass:@"green_text"];
             }
             else if ([[loginResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
@@ -907,19 +898,29 @@
         
     }
     if ([tagName isEqualToString:@"reject"]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've rejected the Request Successfully!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Request Rejected" message:@"No problem, you have rejected this request successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         
         [nav_ctrl popToRootViewControllerAnimated:YES];
     }
     else if ([tagName isEqualToString:@"cancel"]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've cancelled the Request Successfully!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Request Cancelled" message:@"You got it. That request has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-        
-        [nav_ctrl popToRootViewControllerAnimated:YES];
+        for (UIView *subview in self.view.subviews) {
+            if (subview.tag == 13)
+                [subview removeFromSuperview];
+        }
+        UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 320, 30)];
+        [status setStyleClass:@"details_label"];
+        [status setStyleId:@"details_status"];
+        NSString *statusstr=@"Cancelled";
+        [status setStyleClass:@"red_text"];
+        [status setText:statusstr];
+        [self.view addSubview:status];
+        //[nav_ctrl popToRootViewControllerAnimated:YES];
     }
     else if ([tagName isEqualToString:@"dispute"]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've diputed your Transaction Successfully!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Transfer Disputed" message:@"Thanks for letting us knox about this. We will investigate and may contact you for more information." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [[assist shared]setSusPended:YES];
         [nav_ctrl popToRootViewControllerAnimated:YES];

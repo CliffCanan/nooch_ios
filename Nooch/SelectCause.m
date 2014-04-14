@@ -61,12 +61,10 @@
     
     [balance.titleLabel setFont:kNoochFontMed];
     [balance setStyleId:@"navbar_balance"];
-    
     [self.navigationItem setRightBarButtonItem:Nil];
     
-    UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:balance];
-    
-    [self.navigationItem setRightBarButtonItem:funds];
+    //UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:balance];
+    //[self.navigationItem setRightBarButtonItem:funds];
     
     
     [self.navigationItem setTitle:@"Select Cause"];
@@ -145,7 +143,7 @@
     //29/12
     cell.contentView.tag=indexPath.row;
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    textLabel=[[UILabel alloc] initWithFrame:CGRectMake(55, 15, 250, 30)];
+    textLabel=[[UILabel alloc] initWithFrame:CGRectMake(55, 15, 300, 30)];
     textLabel.backgroundColor=[UIColor clearColor];
     textLabel.textColor=[UIColor blackColor];
     textLabel.tag=indexPath.row;
@@ -159,10 +157,10 @@
     if (isSearching) {
         
         cell.contentView.tag=indexPath.row;
-        cell.indentationLevel = 1; cell.indentationWidth = 80;
+        //cell.indentationLevel = 1; cell.indentationWidth = 80;
         
         dict = [arrSearchedRecords objectAtIndex:indexPath.row];
-        textLabel.frame=CGRectMake(55, 15, 250, 30);
+        textLabel.frame=CGRectMake(55, 15, 300, 30);
         [textLabel setStyleClass:@"nonprofitlist_name"];
         // cell.textLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"OrganizationName"]];
         

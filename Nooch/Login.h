@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 //#import "Server.h"
 #import "serve.h"
+#import <MessageUI/MessageUI.h>
 
-@interface Login : UIViewController<UITextFieldDelegate,serveD,CLLocationManagerDelegate>
+@interface Login : UIViewController<UITextFieldDelegate,serveD,CLLocationManagerDelegate,MFMailComposeViewControllerDelegate>
 {
     float lat;
     float lon;

@@ -10,6 +10,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "Home.h"
 #import "Register.h"
+#import <AddressBook/AddressBook.h>
+#import <AddressBookUI/AddressBookUI.h>
 @implementation assist
 @synthesize arrRecordsCheck;
 
@@ -150,7 +152,7 @@ static assist * _sharedInstance = nil;
     }
     [usr setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"] forKey:@"email"];
     //nslog(@"user object: %@",usr);
-    /*
+    
      accountStore = [[ACAccountStore alloc] init];
      if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]){
      ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
@@ -170,7 +172,7 @@ static assist * _sharedInstance = nil;
      
      facebookAccount = [accounts lastObject];
      fbAllowed = YES;
-     [self renewFb];
+     //[self renewFb];
      //nslog(@"fb connected");
      }
      else
@@ -201,7 +203,7 @@ static assist * _sharedInstance = nil;
      }
      }];
      }
-     */
+     
     timer= [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
 #pragma mark 9jan
     [[assist shared]setneedsReload:YES];
@@ -230,7 +232,7 @@ static assist * _sharedInstance = nil;
         }
         else{
             //handle error gracefully
-            NSLog(@"error from renew credentials%@",error);
+            NSLog(@"FB error from renew credentials %@",error);
         }
     }];
 }
@@ -735,153 +737,46 @@ static assist * _sharedInstance = nil;
 }
 -(void)addAssos:(NSMutableArray*)additions{
     @try {
-        if ([additions count] == 0) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTable" object:self userInfo:nil];
+        if ([additions count] == 0)
             return;
+        
+        if ([assosciateCache isKindOfClass:[NSNull class]])
+        {
+            assosciateCache = [NSMutableDictionary new];
         }
-        NSMutableArray *members = [[NSMutableArray alloc] init];
-        if ([assosciateCache objectForKey:@"members"]) {
-            members = [[assosciateCache objectForKey:@"members"] mutableCopy];
+        else if ( [assosciateCache allKeys].count == 0)
+        {
+            assosciateCache = [NSMutableDictionary new];
         }
         
-        NSMutableArray *nonmembers = [[NSMutableArray alloc] init];
-        if ([assosciateCache objectForKey:@"nonmembers"]) {
-            nonmembers = [[assosciateCache objectForKey:@"nonmembers"] mutableCopy];
-        }
-        
-        NSMutableDictionary *people = [[NSMutableDictionary alloc] init];
-        if ([assosciateCache objectForKey:@"people"]) {
-            people = [[assosciateCache objectForKey:@"people"] mutableCopy];
-        }
-        if ([[additions objectAtIndex:0] objectForKey:@"recent"]) {
-            ////nslog(@"recents %@",additions);
-            members = [[NSMutableArray alloc] init];
-            for (int i = 0; i<[additions count]; i++) {
-                if ([[[additions objectAtIndex:i] objectForKey:@"firstName"] isKindOfClass:[NSNull class]] || [[[additions objectAtIndex:i] objectForKey:@"firstName"] length] < 1) {
-                    continue;
+        for (NSDictionary *person in additions)
+            if (person[@"UserName"])
+                if (!assosciateCache[person[@"UserName"]])
+                    [assosciateCache setObject:person forKey:person[@"UserName"]];
+                else
+                {
+                    for (NSString *key in person.allKeys)
+                        if (!assosciateCache[person[@"UserName"]][key])
+                            [assosciateCache[person[@"UserName"]] setObject:person[key] forKey:key];
                 }
-                NSMutableDictionary *recEntry = [NSMutableDictionary new];
-                [recEntry setObject:[[additions objectAtIndex:i] objectForKey:@"MemberId"] forKey:@"MemberId"];
-                [recEntry setObject:[[additions objectAtIndex:i] objectForKey:@"firstName"] forKey:@"firstName"];
-                [recEntry setObject:[[additions objectAtIndex:i] objectForKey:@"lastName"] forKey:@"lastName"];
-                [members addObject:recEntry];
-            }
-        }
-        for (NSMutableDictionary *dict in additions) {
-            if ([dict objectForKey:@"image"]) {
-                if ([[dict objectForKey:@"image"]isKindOfClass:[UIImage class]]) {
-                    [dict setObject:UIImagePNGRepresentation([dict objectForKey:@"image"]) forKey:@"image"];
-                }
-            }
-        }
-        
-        NSMutableDictionary *arrayEntry = [NSMutableDictionary new];
-        for (NSMutableDictionary *dict in additions) {
-            
-            if ([dict objectForKey:@"MemberId"]) {
-                //NSMutableDictionary *pers = [NSMutableDictionary new];
-                
-                //nooch member entry
-                if ([people objectForKey:[dict objectForKey:@"MemberId"]]) {
-                    NSMutableDictionary *pers = [people objectForKey:[dict objectForKey:@"MemberId"]];
-                    //person is in cache
-                    if ([pers objectForKey:@"Photo"]) {
-                        [dict removeObjectForKey:@"Photo"];
-                    }
-                    if ([pers objectForKey:@"image"] && [dict objectForKey:@"image"]) {
-                        [dict removeObjectForKey:@"image"];
-                    }
-                    if (![[pers objectForKey:@"firstName"] isKindOfClass:[NSNull class]]) {
-                        [dict removeObjectForKey:@"firstName"];
-                    }
-                    if (![[pers objectForKey:@"lastName"] isKindOfClass:[NSNull class]]) {
-                        [dict removeObjectForKey:@"lastName"];
-                    }
-                    [pers addEntriesFromDictionary:dict];
-                    [people setObject:pers forKey:[pers objectForKey:@"MemberId"]];
-                }else{
-                    //not in cache
-                    bool found = NO;
-                    for (NSString *strings in people) {
-                        NSMutableDictionary *d = [people objectForKey:strings];
-                        if([[d objectForKey:@"firstName"] isEqualToString:[dict objectForKey:@"firstName"]] &&
-                           [[d objectForKey:@"lastName"] isEqualToString:[dict objectForKey:@"lastName"]]){
-                            found = YES;
-                            //[dict removeObjectForKey:@"MemberId"];
-                            [d addEntriesFromDictionary:dict];
-                            [people setObject:d forKey:[d objectForKey:@"MemberId"]];
+            else if (person[@"MemberId"])
+                for (NSString *key in assosciateCache.allKeys)
+                    if (![assosciateCache[key][@"MemberId"] isKindOfClass:[NSNull class]])
+                        if ( [assosciateCache[key][@"MemberId"] isEqualToString:person[@"MemberId"]])
+                        {
+                            for (NSString *key2 in person.allKeys)
+                                if (!assosciateCache[key][key2])
+                                    [assosciateCache[key] setObject:person[key2] forKey:key2];
                             break;
                         }
-                    }
-                    if (!found) {
-                        NSMutableDictionary *pers = [NSMutableDictionary dictionaryWithDictionary:dict];
-                        
-                        [people setObject:pers forKey:[pers objectForKey:@"MemberId"]];
-                    }
-                }
-                [arrayEntry setObject:[dict objectForKey:@"MemberId"] forKey:@"MemberId"];
-                if ([dict objectForKey:@"firstName"]) {
-                    [arrayEntry setObject:[dict objectForKey:@"firstName"] forKey:@"firstName"];
-                }
-                if ([dict objectForKey:@"lastName"]) {
-                    [arrayEntry setObject:[dict objectForKey:@"lastName"] forKey:@"lastName"];
-                }
-            }else{
-                //non nooch member entry
-                
-                if ([dict objectForKey:@"firstName"]) {
-                    [arrayEntry setObject:[dict objectForKey:@"firstName"] forKey:@"firstName"];
-                }
-                if ([dict objectForKey:@"lastName"]) {
-                    [arrayEntry setObject:[dict objectForKey:@"lastName"] forKey:@"lastName"];
-                }
-                if ([dict objectForKey:@"email"]) {
-                    [arrayEntry setObject:[dict objectForKey:@"email"] forKey:@"email"];
-                }
-                if ([dict objectForKey:@"number"]) {
-                    [arrayEntry setObject:[dict objectForKey:@"number"] forKey:@"number"];
-                }
-                if ([dict objectForKey:@"number"]) {
-                    [people setObject:dict forKey:[dict objectForKey:@"number"]];
-                }else if([dict objectForKey:@"email"]){
-                    [people setObject:dict forKey:[dict objectForKey:@"email"]];
-                }
-                if ([dict objectForKey:@"facebookId"]) {
-                    [people setObject:dict forKey:[dict objectForKey:@"facebookId"]];
-                }
-                
-                
-                if (![nonmembers containsObject:arrayEntry]) {
-                    [nonmembers addObject:arrayEntry];
-                }
-                
-                
-            }
-            
-        }
-        ////nslog(@"recents %@",members);
-        NSSortDescriptor *sortDescriptor;
-        sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"firstName" ascending:YES];
-        NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-        [nonmembers setArray:[nonmembers sortedArrayUsingDescriptors:sortDescriptors]];
-        NSMutableDictionary *finishedAdditions = [NSMutableDictionary new];
-        [finishedAdditions setObject:members forKey:@"members"];
-        ////nslog(@"members %@",members);
-        [finishedAdditions setObject:nonmembers forKey:@"nonmembers"];
-        [finishedAdditions setObject:people forKey:@"people"];
-        [assosciateCache setDictionary:[finishedAdditions mutableCopy]];
-        
     }
     @catch (NSException *exception) {
-        //nslog(@"caugt exception in assos adding %@",[exception description]);
+        NSLog(@"caugt exception in assos adding %@",[exception description]);
+        NSLog(@"adding... %@",additions);
     }
     @finally {
         
     }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTable" object:self userInfo:nil];
-    
-    [self performSelectorInBackground:@selector(getAssosPics) withObject:nil];
 }
 -(NSMutableArray*)assosSearch:(NSString*)searchText{
     NSMutableArray *responseArray = [NSMutableArray new];

@@ -175,13 +175,13 @@
                                                    options:options completion:^(BOOL granted, NSError *e)
          {
              if (!granted) {
-                 NSLog(@"didnt grant cause: %@",e.description);
+                 NSLog(@"didnt grant because: %@",e.description);
              }else{
                  
                  NSArray *accounts = [self.accountStore accountsWithAccountType:facebookAccountType];
                  self.facebookAccount = [accounts lastObject];
-                 [self renewFb];
-                 
+                 //[self renewFb];
+                 [self finishFb];
              }
          }];
         
@@ -238,6 +238,7 @@
          self.name_field.text = [NSString stringWithFormat:@"%@ %@",[self.facebook_info objectForKey:@"first_name"],[self.facebook_info objectForKey:@"last_name"]];
          self.email_field.text = [self.facebook_info objectForKey:@"email"];
          NSString *imageURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", [self.facebook_info objectForKey:@"id"]];
+         [[NSUserDefaults standardUserDefaults] setObject:[self.facebook_info objectForKey:@"id"] forKey:@"facebook_id"];
          NSData *imgData = [NSData new];
          imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURL]];
          NSMutableDictionary *d = [self.facebook_info mutableCopy];

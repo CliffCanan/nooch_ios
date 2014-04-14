@@ -112,6 +112,10 @@
 -(void)UpDateLatLongOfUser:(NSString*)lat lng:(NSString*)lng;
 -(void)CancelRejectTransaction:(NSString*)transactionId resp:(NSString*)userResponse;
 -(void)GetServerCurrentTime;
+-(void)storeFB:(NSString*)fb_id;
+-(void)saveMemberTransId:(NSString*)trans_id;
+-(void)resendSMS;
+-(void)resendEmail;
 @end
 
 //392f9c86-1651-4459-a6a9-d362fcfc4366 - nooch team

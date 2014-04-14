@@ -90,7 +90,7 @@
     //[link_bank setGlyphNamed:@"plus-sign"];
     [link_bank setStyleClass:@"button_blue"];
     [link_bank setStyleId:@"link_new_account"];
-    [ttt setFrame:CGRectMake(30, 15, 25, 25)];
+    [ttt setFrame:CGRectMake(28, 12, 22, 24)];
     [ttt setImage:[UIImage imageGlyphNamed:@"plus-sign" height:40 color:[UIColor whiteColor]]];
     [link_bank addSubview:ttt];
     [link_bank setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -144,7 +144,7 @@
     }
     [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
     UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
-    [ttt setImage:[UIImage imageGlyphNamed:@"chevron-right" height:40 color:kNoochGrayLight]];
+    [ttt setImage:[UIImage imageGlyphNamed:@"chevron-right" height:40 color:kNoochBlue]];
     
     UILabel *title = [UILabel new];
     [title setStyleClass:@"settings_table_label"];
@@ -152,18 +152,18 @@
     arrow.image = ttt.image;
     [cell.contentView addSubview:arrow];
     
-    UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 26, 30)];
+    UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 22, 30)];
     [iv setImage:[UIImage imageGlyphNamed:@"user" height:30 color:kNoochBlue]];
     if(indexPath.row == 0){
         title.text = @"Profile Info";
     }else if(indexPath.row == 1){
         title.text = @"Security Settings";
         [iv setImage:[UIImage imageGlyphNamed:@"lock" height:30 color:kNoochBlue]];
-        [iv setFrame:CGRectMake(10, 10, 26, 28)];
+        [iv setFrame:CGRectMake(10, 10, 21, 28)];
     }else if(indexPath.row == 2){
         title.text = @"Notification Settings" ;
         [iv setImage:[UIImage imageGlyphNamed:@"bell" height:30 color:kNoochBlue]];
-        [iv setFrame:CGRectMake(10, 10, 26, 26)];
+        [iv setFrame:CGRectMake(10, 10, 24, 26)];
     }
     [cell.contentView addSubview:title];
     [cell.contentView addSubview:iv];

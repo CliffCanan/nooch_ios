@@ -214,7 +214,6 @@ NSString *amnt;
     requestMem=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&accessToken=%@",ServerUrl,@"GetMemberDetails",username,[defaults valueForKey:@"OAuthToken"]]]];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestMem delegate:self];
     
-    NSLog(@"url %@",[NSString stringWithFormat:@"%@"@"/%@?name=%@&accessToken=%@",ServerUrl,@"GetMemberDetails",username,[defaults valueForKey:@"OAuthToken"]]);
     if (!connection)
         NSLog(@"connect error");
     
@@ -233,6 +232,13 @@ NSString *amnt;
 }
 -(void)getMemberIds:(NSMutableArray*)input{
     self.responseData = [[NSMutableData alloc] init];
+    for (NSMutableDictionary *temp in input) {
+        for (NSString *key in temp.allKeys) {
+            if ([temp[key] isKindOfClass:[NSData class]]) {
+                [temp removeObjectForKey:key];
+            }
+        }
+    }
     NSString *urlString = [NSString stringWithFormat:@"%@/GetMemberIds",ServerUrl];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableDictionary *emailParam = [NSMutableDictionary dictionaryWithObjectsAndKeys:input,@"phoneEmailList", nil];
@@ -734,7 +740,6 @@ NSString *amnt;
     
     //20ov
     else if ([tagName isEqualToString:@"info"]) {
-        NSLog(@"serve connected for %@",self.tagName);
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         
         NSError* error;
@@ -782,7 +787,7 @@ NSString *amnt;
                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
-        NSLog(@"user info: %@",Dictresponse);
+        //NSLog(@"user info: %@",Dictresponse);
         // Edit 19Nov 2013
         if ([[Dictresponse valueForKey:@"IsValidProfile"] intValue]) {
             
@@ -1618,7 +1623,6 @@ NSString *amnt;
     NSString * memId = [defaults objectForKey:@"MemberId"];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSString *urlString = [NSString stringWithFormat:@"%@/SaveSocialMediaPost?MemberId=%@&PostTo=%@&PostContent=%@&accessToken=%@",ServerUrl,memId,PostTo,PostTo,[defaults valueForKey:@"OAuthToken"]];
-    NSLog(@"%@",urlString);
     NSURL *url = [NSURL URLWithString:urlString];
     
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -1636,7 +1640,6 @@ NSString *amnt;
     NSString * memId = [defaults objectForKey:@"MemberId"];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSString *urlString = [NSString stringWithFormat:@"%@/UpDateLatLongOfUser?memberId=%@&Lat=%@&Long=%@&accessToken=%@",ServerUrl,memId,lat,lng,[defaults valueForKey:@"OAuthToken"]];
-    NSLog(@"%@",urlString);
     NSURL *url = [NSURL URLWithString:urlString];
     
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -1687,6 +1690,97 @@ NSString *amnt;
         
         NSLog(@"connect error");
     
+}
+-(void)storeFB:(NSString*)fb_id
+{
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSString * memId = [defaults objectForKey:@"MemberId"];
+    NSString *urlString = [NSString stringWithFormat:@"%@/SaveMembersFBId?MemberId=%@&MemberfaceBookId=%@&accessToken=%@",ServerUrl,memId,fb_id,[defaults valueForKey:@"OAuthToken"]];
+    NSLog(@"%@",urlString);
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+}
+-(void)saveMemberTransId:(NSString*)trans_id
+{
+    self.responseData = [[NSMutableData alloc] init];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/SaveMemberTransId",ServerUrl];
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    //
+    dictInv=[[NSMutableDictionary alloc]init];
+    //
+    
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    
+    NSMutableDictionary *knox_input = [NSMutableDictionary new];
+    [knox_input setObject:[defaults objectForKey:@"MemberId"] forKey:@"MemberId"];
+    [knox_input setObject:trans_id forKey:@"trans_id"];
+    
+    [dictInv setObject:@"personal" forKey:@"inviteType"];
+    [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
+    
+    NSError *error;
+    postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
+                                                  options:NSJSONWritingPrettyPrinted error:&error];
+    postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
+    requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [requestInv setHTTPMethod:@"POST"];
+    
+    [requestInv setValue:postLengthInv forHTTPHeaderField:@"Content-Length"];
+    
+    [requestInv setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    [requestInv setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
+    
+    [requestInv setHTTPBody:postDataInv];
+    
+    connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
+    
+    if (!connectionInv)
+        
+        NSLog(@"connect error");
+}
+
+-(void)resendSMS
+{
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSString *urlString = [NSString stringWithFormat:@"%@/ResendVerificationSMS?UserName=%@",ServerUrl,[defaults objectForKey:@"UserName"]];
+    NSLog(@"%@",urlString);
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+}
+
+-(void)resendEmail
+{
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSString *urlString = [NSString stringWithFormat:@"%@/ResendVerificationLink?UserName=%@",ServerUrl,[defaults objectForKey:@"UserName"]];
+    NSLog(@"%@",urlString);
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
 }
 
 

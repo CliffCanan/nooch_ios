@@ -10,8 +10,9 @@
 #import "serve.h"
 #import "Helpers.h"
 #import "Home.h"
+#import <MessageUI/MessageUI.h>
 
-@interface ResetPIN : UIViewController<serveD>
+@interface ResetPIN : UIViewController<serveD,MFMailComposeViewControllerDelegate>
 {
     UIActivityIndicatorView*spinner;
     NSDictionary*dictResult;

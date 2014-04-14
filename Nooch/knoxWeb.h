@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
 
-@interface knoxWeb : UIViewController<UIWebViewDelegate,MBProgressHUDDelegate> {
-    UIWebView *web;
-}
+@interface knoxWeb : UIViewController<MBProgressHUDDelegate>
 
 @end

@@ -14,7 +14,6 @@
 #import "TransferPIN.h"
 #import "ReEnterPin.h"
 #import "ProfileInfo.h"
-#import "NewBank.h"
 #import "serve.h"
 #define kButtonType     @"transaction_type"
 #define kButtonTitle    @"button_title"
@@ -194,6 +193,11 @@ NSMutableURLRequest *request;
     [sus setTextAlignment:NSTextAlignmentCenter];
     [self.suspended addSubview:sus];
     //[self.view addSubview:self.suspended];
+    
+    serve *fb = [serve new];
+    [fb setDelegate:self];
+    [fb setTagName:@"fb"];
+    [fb storeFB:@"12456"];
 }
 
 -(void)updateLoader{
@@ -213,6 +217,7 @@ NSMutableURLRequest *request;
      [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
      }
      */
+    
     [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
     UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
     [ttt setImage:[UIImage imageGlyphNamed:@"flag" height:40 color:[UIColor whiteColor]]];
@@ -239,9 +244,6 @@ NSMutableURLRequest *request;
         [locationManager startUpdatingLocation];
         
     }
-    
-    
-    
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -269,14 +271,10 @@ NSMutableURLRequest *request;
               [self.navigationItem setRightBarButtonItem:funds];
           }
     
-    
-    
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
         if (timerHome==nil) {
              timerHome=[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateLoader) userInfo:nil repeats:YES];
         }
-    
-    
     
     if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]]) {
         //push login
@@ -290,7 +288,6 @@ NSMutableURLRequest *request;
         
         self.hud.delegate = self;
         self.hud.labelText = @"Loading your Nooch account";
-        
         [self.hud showWhileExecuting:@selector(myTask) onTarget:self withObject:nil animated:YES];
         }
         if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
@@ -411,11 +408,68 @@ NSMutableURLRequest *request;
     else if (alertView.tag == 201){
         if (buttonIndex == 1) {
             
-            NewBank *add_bank = [NewBank new];
-            [nav_ctrl pushViewController:add_bank animated:NO];
-            [self.slidingViewController resetTopView];
         }
     }
+    else if (alertView.tag == 50 && buttonIndex == 1)
+    {
+        if (![MFMailComposeViewController canSendMail]){
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [av show];
+            return;
+        }
+        MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+        mailComposer.mailComposeDelegate = self;
+        mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+        
+        [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+        
+        [mailComposer setMessageBody:@"" isHTML:NO];
+        [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+        [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+        [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        [self presentViewController:mailComposer animated:YES completion:nil];
+    }
+}
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    UIAlertView *alert = [[UIAlertView alloc] init];
+    [alert addButtonWithTitle:@"OK"];
+    [alert setDelegate:nil];
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"Mail cancelled" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            // [alert show];
+            
+            [alert setTitle:@"Mail cancelled"];
+            [alert show];
+            NSLog(@"Mail cancelled");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved");
+            
+            [alert setTitle:@"Mail saved"];
+            [alert show];
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail sent");
+            
+            [alert setTitle:@"Mail sent"];
+            [alert show];
+            
+            break;
+        case MFMailComposeResultFailed:
+            [alert setTitle:[error localizedDescription]];
+            [alert show];
+            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    
+    // Close the Mail Interface
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 - (void)send_request
 {
@@ -423,7 +477,8 @@ NSMutableURLRequest *request;
     NSLog(@"bank verified? %d",[[assist shared]isBankVerified]);
 #pragma mark-9jan
     if ([[assist shared]getSuspended]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+        [alert setTag:50];
         [alert show];
         return;
         
@@ -455,14 +510,6 @@ NSMutableURLRequest *request;
         UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
         [set setTag:201];
         [set show];
-        return;
-    }
-    
-    
-    if (![[assist shared]isBankVerified]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-        [alert show];
-        
         return;
     }
     
@@ -517,6 +564,14 @@ NSMutableURLRequest *request;
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
+    if ([tagName isEqualToString:@"fb"]) {
+        NSError *error;
+        NSMutableDictionary *temp = [NSJSONSerialization
+                                     JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                     options:kNilOptions
+                                     error:&error];
+        NSLog(@"temp %@",temp);
+    }
     
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
         UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];

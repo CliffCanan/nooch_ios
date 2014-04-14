@@ -9,9 +9,9 @@
 #import "HowMuch.h"
 #import "TransferPIN.h"
 #import "UIImageView+WebCache.h"
-#import "Deposit.h"
 #import "UIImage+Resize.h"
 #import "SelectRecipient.h"
+#import "WTGlyphFontSet.h"
 @interface HowMuch ()
 @property(nonatomic,strong) NSDictionary *receiver;
 @property(nonatomic,strong) UITextField *amount;
@@ -63,10 +63,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.navigationController.navigationBar.topItem.title = @"";
-    [self.navigationItem setTitle:@"How Much?"];
+    [self.navigationItem setTitle:@"How Much"];
 
     self.amnt = [@"" mutableCopy];
     self.decimals = YES;
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     
     UIView *back = [[UIView alloc] initWithFrame:CGRectMake(10, 10, 300, 248)];
     [back setStyleClass:@"how_much_mainbox"];
@@ -116,12 +117,12 @@
         [self.view addSubview:add];
     }
     UIImageView *user_pic = [UIImageView new];
-    [user_pic setFrame:CGRectMake(28, 62, 74, 74)];
+    [user_pic setFrame:CGRectMake(28, 62, 76, 76)];
     user_pic.layer.borderColor = [Helpers hexColor:@"939598"].CGColor;
-    user_pic.layer.borderWidth = 2; user_pic.clipsToBounds = YES;
-    user_pic.layer.cornerRadius = 37;
+    user_pic.layer.borderWidth = 1; user_pic.clipsToBounds = YES;
+    user_pic.layer.cornerRadius = 38;
     if ([self.receiver valueForKey:@"nonuser"]) {
-        [user_pic setHidden:YES];
+        [user_pic setImage:[UIImage imageNamed:@"silhouette.png"]];
     }
     else{
         [user_pic setHidden:NO];
@@ -136,10 +137,9 @@
                      placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
         }
     }
-    NSLog(@"%@",self.receiver);
     [self.view addSubview:user_pic];
     
-    self.amount = [[UITextField alloc] initWithFrame:CGRectMake(30, 40, 260, 80)];
+    self.amount = [[UITextField alloc] initWithFrame:CGRectMake(20, 40, 260, 80)];
     [self.amount setTextAlignment:NSTextAlignmentRight]; [self.amount setPlaceholder:@"$ 0.00"];
     [self.amount setDelegate:self]; [self.amount setTag:1];
     [self.amount setKeyboardType:UIKeyboardTypeNumberPad];
@@ -154,9 +154,15 @@
     [self.view addSubview:self.memo];
     
     self.camera = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.camera setFrame:CGRectMake(270, 120, 40, 40)];
+    [self.camera setFrame:CGRectMake(260, 161, 22, 22)];
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+        [self.camera setFrame:CGRectMake(260, 71, 27, 22)];
+    }
     [self.camera addTarget:self action:@selector(attach_pic) forControlEvents:UIControlEventTouchUpInside];
-    [self.camera setStyleId:@"howmuch_camera"];
+    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
+    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 27, 22)];
+    [ttt setImage:[UIImage imageGlyphNamed:@"camera" height:30 color:kNoochGrayLight]];
+    [self.camera setBackgroundImage:ttt.image forState:UIControlStateNormal];
     [self.view addSubview:self.camera];
     self.send = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.send setBackgroundColor:kNoochGreen];
@@ -175,7 +181,8 @@
     [self.view addSubview:self.request];
     if ([[assist shared]isRequestMultiple]) {
         [self.send removeFromSuperview];
-        [self.request setStyleClass:@"howmuch_buttons_RequestMutiple"];
+        [self.request setStyleClass:@"howmuch_buttons"];
+        [self.request setStyleId:@"howmuch_request_mult_expand"];
         [self.request setFrame:CGRectMake(10, 160, 300, 50)];
 
     }
@@ -257,7 +264,6 @@
         [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
     }
   
-    
     [self.navigationController popViewControllerAnimated:YES];
 }
 #pragma mark - type of transaction
@@ -385,17 +391,16 @@
         return;
         
     }
-    if ([[[self.amount text] substringFromIndex:1] floatValue]>[[user objectForKey:@"Balance"] floatValue]) {
+    /*if ([[[self.amount text] substringFromIndex:1] floatValue]>[[user objectForKey:@"Balance"] floatValue]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!" message:@"Thanks for testing this impossibility, but you can't transfer more than you have in your Nooch account." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Add Funds", nil];
         [alert setTag:2122];
         [alert show];
         return;
-    }
+    }*/
     //[user objectForKey:@"Balance"]
     NSMutableDictionary *transaction = [self.receiver mutableCopy];
     [transaction setObject:[self.memo text] forKey:@"memo"];
     
-    NSLog(@"%@",self.amount.text);
     float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
     if ([self.receiver valueForKey:@"nonuser"]) {
         TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"nonuser" amount:input_amount];
@@ -412,8 +417,6 @@
     
     if([actionSheet tag] == 2122 && buttonIndex==1)
     {
-        Deposit *dp=[Deposit new];
-        [self.navigationController pushViewController:dp animated:YES];
         
     }
 }
@@ -502,8 +505,6 @@
     [self.shade setAlpha:0.6];
     [self.amount resignFirstResponder];
     [UIView commitAnimations];
-    
-    
 }
 - (void) cancel_photo
 {
@@ -553,7 +554,13 @@
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
     chosenImage = [chosenImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(150,150) interpolationQuality:kCGInterpolationMedium];
 
-    [self.camera setStyleId:@"howmuch_camera_attached"];
+    //[self.camera setStyleId:@"howmuch_camera_attached"];
+    
+    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
+    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 22, 22)];
+    [ttt setImage:[UIImage imageGlyphNamed:@"camera" height:30 color:kNoochPurple]];
+    [self.camera setBackgroundImage:ttt.image forState:UIControlStateNormal];
+    
     [[assist shared]setTranferImage:chosenImage];
     
     
@@ -595,7 +602,6 @@
         // [self close:nil];
     }];
     // [self dismissViewControllerAnimated:YES completion:nil];
-    
 }
 
 #pragma mark - UITextField delegation
@@ -634,7 +640,6 @@
             [textField setText:@""];
         }
         
-        
         return NO;
     }
     
@@ -654,7 +659,7 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    
+
 }
 
 - (void)didReceiveMemoryWarning

@@ -12,10 +12,11 @@
 #import "FPPopoverController.h"
 #import "SWTableViewCell.h"
 #import "Home.h"
+#import <MessageUI/MessageUI.h>
 BOOL isHistFilter;
 NSString*listType;
 @interface HistoryFlat : UIViewController<UITableViewDataSource,UITableViewDelegate,
-serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate,MBProgressHUDDelegate>
+serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate,MBProgressHUDDelegate,MFMailComposeViewControllerDelegate>
 {
     int countRows;
     NSMutableArray*histArray;

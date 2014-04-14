@@ -126,11 +126,11 @@
     
     UISwipeGestureRecognizer * recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideright:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
-    [self.list addGestureRecognizer:recognizer];
+    [self.view addGestureRecognizer:recognizer];
     
     UISwipeGestureRecognizer * recognizer2 = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideleft:)];
     [recognizer2 setDirection:(UISwipeGestureRecognizerDirectionLeft)];
-    [self.list addGestureRecognizer:recognizer2];
+    [self.view addGestureRecognizer:recognizer2];
     
     self.search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 40, 320, 40)];
     [self.search setStyleId:@"history_search"];
@@ -188,6 +188,9 @@
 
 -(void)sideright:(id)sender
 {
+    if (!self.completed_selected) {
+        return;
+    }
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDelegate:self];
     [UIView setAnimationDuration:0.5];
@@ -200,7 +203,9 @@
 }
 -(void)sideleft:(id)sender
 {
-    
+    if (!self.completed_selected) {
+        return;
+    }
     [UIView beginAnimations:nil context:nil];
     
     [UIView setAnimationDelegate:self];
@@ -236,39 +241,15 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     [RightArrowlbl setFont:[UIFont systemFontOfSize:20.0f]];
     RightArrowlbl.text=@">";
     
-    UIImageView*imgV=[[UIImageView alloc]initWithFrame:CGRectMake(5, 25, 50, 50)];
+    UIImageView*imgV=[[UIImageView alloc]initWithFrame:CGRectMake(5, 25, 52, 52)];
     
-    imgV.layer.cornerRadius = 25; imgV.layer.borderColor = kNoochBlue.CGColor; imgV.layer.borderWidth = 1;
+    imgV.layer.cornerRadius = 26; imgV.layer.borderColor = kNoochBlue.CGColor; imgV.layer.borderWidth = 1;
     imgV.clipsToBounds = YES;
 
-     if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]){
-         NSArray* bytedata = [[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"BankPicture"];
-         unsigned c = bytedata.count;
-         uint8_t *bytes = malloc(sizeof(*bytes) * c);
-         
-         unsigned i;
-         for (i = 0; i < c; i++)
-         {
-             NSString *str = [bytedata objectAtIndex:i];
-             int byte = [str intValue];
-             bytes[i] = (uint8_t)byte;
-         }
-         
-         NSData *datos = [NSData dataWithBytes:bytes length:c];
-         
-         
-         [imgV setImage:[UIImage imageWithData:datos]];
-       
-    }
-
-    else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]){
-        [imgV setImage:[UIImage imageNamed:@"Icon.png"]];
-     }
-   else
-   {
+    
     NSString*urlImage=[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Photo"];
     [imgV setImageWithURL:[NSURL URLWithString:urlImage] placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
-   }
+   
 
     [customView addSubview:imgV];
     
@@ -292,14 +273,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         }
     }
     
-    if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]){
-        TransactionType=@"Deposit Into:";
-    }
-    else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]){
-        
-        TransactionType=@"Withdrawal to :";
-    }
-    else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Donation"]){
+    if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Donation"]){
         TransactionType=@"Donate to :";
         
     }
@@ -311,7 +285,6 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     }
     else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Invite"]){
         TransactionType=@"Invited to :";
-        
     }
 
     
@@ -325,16 +298,6 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     
     UILabel*lblName=[[UILabel alloc]initWithFrame:CGRectMake(80, 25,150, 15)];
 
-    ////nslog(@"%d",[[marker title]intValue]);
-     if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Deposit"])
-     {
-         lblName.text=@"Nooch";
-     }
-     else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]&& [[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"BankName"]!=NULL && ![[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"BankName"]isKindOfClass:[NSNull class]]){
-         lblName.text=[NSString stringWithFormat:@"%@",[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"BankName"] capitalizedString]];
-   
-     }
-    else
     lblName.text=[NSString stringWithFormat:@"%@ %@",[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"FirstName"] capitalizedString],[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"LastName"]];
 
     
@@ -343,7 +306,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     [customView addSubview:lblName];
     
     UILabel*lblAmt=[[UILabel alloc]initWithFrame:CGRectMake(100, 40, 100, 20)];
-    lblAmt.text=[NSString stringWithFormat:@"$%@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Amount"]];
+    lblAmt.text=[NSString stringWithFormat:@"$%.02f",[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Amount"] floatValue]];
     lblAmt.textColor=[UIColor greenColor];
     
     lblAmt.font=[UIFont systemFontOfSize:18];
@@ -428,11 +391,6 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
       statusstr=@"Completed on:";
       [lblloc setStyleClass:@"green_text"];
       }
-      else if([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"] || [[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
-      {
-      statusstr=@"Submitted on:";
-      [lblloc setStyleClass:@"green_text"];
-      }
       else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Invite"]) {
       
       statusstr=@"Invited on:";
@@ -457,9 +415,6 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
      [lblloc setText:[NSString stringWithFormat:@"%@ %@ %@,%@",statusstr,[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]]];
      }
      }
-     
-
-    
     return customView;
     
 }
@@ -510,14 +465,6 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         }
         else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Requested"]) {
             markerOBJ.icon=[UIImage imageNamed:@"green-pin.png"];
-            
-        }
-        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]) {
-            markerOBJ.icon=[UIImage imageNamed:@"pink-pin.png"];
-            
-        }
-        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]) {
-            markerOBJ.icon=[UIImage imageNamed:@"Black-pin.png"];
             
         }
         else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Donation"])
@@ -627,7 +574,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     fp.border = NO;
     fp.tint = FPPopoverWhiteTint;
     fp.arrowDirection = FPPopoverArrowDirectionUp;
-    fp.contentSize = CGSizeMake(200, 355);
+    fp.contentSize = CGSizeMake(200, 335);
     [fp presentPopoverFromPoint:CGPointMake(280, 45)];
     
 }
@@ -718,25 +665,12 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return @"Recent";
-    }else{
-        return @"";
-    }
+     return @"";
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake (10,0,200,30)];
-    title.textColor = kNoochGrayDark;
-    if (section == 0) {
-        title.text = @"Recent";
-    }else{
-        title.text = @"";
-    }
-    [headerView addSubview:title];
     [headerView setBackgroundColor:[Helpers hexColor:@"f8f8f8"]];
-    [title setBackgroundColor:[UIColor clearColor]];
     return headerView;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section2
@@ -784,7 +718,6 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
             }
            if ([temp count]>indexPath.row) {
                 NSDictionary*dictRecord=[temp objectAtIndex:indexPath.row];
-               NSLog(@"hmmmmm %@",dictRecord);
                if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                {
                    if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
@@ -857,22 +790,10 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         }
                     }
                     
-                    if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]) {
-                        [amount setStyleClass:@"history_transferamount_neg"];
-                        [indicator setStyleClass:@"history_sidecolor_neg"];
-                        [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue] ]];
-                    }
-                    else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"])
-                    {
-                        [amount setStyleClass:@"history_transferamount_pos"];
-                        [indicator setStyleClass:@"history_sidecolor_pos"];
-                        [amount setText:[NSString stringWithFormat:@"+$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                    }
-                    
-                    else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"])
+                    if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"])
                     {
                         [amount setStyleClass:@"history_transferamount_neg"];
-                        [indicator setStyleClass:@"history_sidecolor_neg"];
+                        [indicator setStyleClass:@"history_sidecolor_donate"];
                         [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
@@ -894,12 +815,6 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
 
                     //Updated Balance after Transaction
                     UILabel *updated_balance = [UILabel new];
-                    //if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]) {
-                    //    [updated_balance setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"] floatValue]]];
-                    //}
-                    //else
-                   // {
-                        
                     if (![[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]&& ![[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
                         if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
                         {
@@ -925,7 +840,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         }
                         
                         [updated_balance setStyleClass:@"history_updatedbalance"];
-                        [cell.contentView addSubview:updated_balance];
+                        //[cell.contentView addSubview:updated_balance];
                         
                     }
                     else {
@@ -1028,10 +943,10 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     }
                     
                     
-                    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 50, 50)];
+                    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 52, 52)];
                     pic.layer.borderColor = kNoochGrayDark.CGColor;
                     pic.layer.borderWidth = 1;
-                    pic.layer.cornerRadius = 25;
+                    pic.layer.cornerRadius = 26;
                     pic.clipsToBounds = YES;
                     [cell.contentView addSubview:pic];
                     
@@ -1058,32 +973,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         }
                     }
                     
-                    if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]){
-                        [name setText:@"Deposit into Nooch"];
-                        [pic setImage:[UIImage imageNamed:@"Icon.png"]];
-                        
-                    }
-                    else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]){
-                        [name setText:@"Withdraw from  Nooch"];
-                        NSArray* bytedata = [dictRecord valueForKey:@"BankPicture"];
-                        unsigned c = bytedata.count;
-                        uint8_t *bytes = malloc(sizeof(*bytes) * c);
-                        
-                        unsigned i;
-                        for (i = 0; i < c; i++)
-                        {
-                            NSString *str = [bytedata objectAtIndex:i];
-                            int byte = [str intValue];
-                            bytes[i] = (uint8_t)byte;
-                        }
-                        
-                        NSData *datos = [NSData dataWithBytes:bytes length:c];
-                        
-                        
-                        [pic setImage:[UIImage imageWithData:datos]];
-                        
-                    }
-                    else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"]){
+                    if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"]){
                         [name setText:[NSString stringWithFormat:@"Donate to %@",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                             placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
@@ -1143,14 +1033,12 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 else
                     [name setText:@""];
                 [cell.contentView addSubview:name];
-                
-
             }
             return cell;
         }
         if ([histShowArrayCompleted count]>indexPath.row) {
             NSDictionary*dictRecord=[histShowArrayCompleted objectAtIndex:indexPath.row];
-           // NSLog(@"%@",dictRecord);
+            
             if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]|| [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]
                 ||[[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] ) {
 
@@ -1169,9 +1057,9 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         [amount setStyleClass:@"history_transferamount_neg"];
                         [indicator setStyleClass:@"history_sidecolor_neg"];
                         [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                        
-                    }
                     
+                    }
+                
                 }
                 else
                 {
@@ -1182,22 +1070,10 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     }
                 }
                 
-                if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]) {
-                    [amount setStyleClass:@"history_transferamount_neg"];
-                    [indicator setStyleClass:@"history_sidecolor_neg"];
-                    [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue] ]];
-                }
-                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"])
-                {
-                    [amount setStyleClass:@"history_transferamount_pos"];
-                    [indicator setStyleClass:@"history_sidecolor_pos"];
-                    [amount setText:[NSString stringWithFormat:@"+$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                }
-                
-                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"])
+                if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"])
                 {
                     [amount setStyleClass:@"history_transferamount_neg"];
-                    [indicator setStyleClass:@"history_sidecolor_neg"];
+                    [indicator setStyleClass:@"history_sidecolor_donate"];
                     [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                 }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
@@ -1216,14 +1092,9 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 [cell.contentView addSubview:indicator];
                 UILabel *date = [UILabel new];
                 [date setStyleClass:@"history_datetext"];
-                ////nslog(@"%@",[user valueForKey:@"MemberId"]);
-                ////nslog(@"%@",[dictRecord valueForKey:@"MemberId"]);
+                
                 //Updated Balance after Transaction
                 UILabel *updated_balance = [UILabel new];
-                //if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"])
-                 //   [updated_balance setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"ReceiverUpdatedBalanceAfterTransaction"] floatValue]]];
-                //else
-                //{
                     if (![[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]&& ![[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
                         if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
                         {
@@ -1249,7 +1120,6 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         }
                         
                         [updated_balance setStyleClass:@"history_updatedbalance"];
-                        [cell.contentView addSubview:updated_balance];
 
                     }
                     else {
@@ -1259,22 +1129,13 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         [cell.contentView addSubview:updated_balance];
                         
                     }
-              //  }
                 
                 NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
-                
                 NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-                
                 NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
-                                                
                                                                     fromDate:addeddate
-                                                
                                                                       toDate:[NSDate date]
-                                                
                                                                      options:0];
-                
-                
-                
 
                 if ((long)[components day]>3) {
                     
@@ -1290,8 +1151,6 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
                     [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
                     [cell.contentView addSubview:date];
-                    
-                    
                     
                 }
                 else if ((long)[components day]==0)
@@ -1352,10 +1211,10 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 }
                 
                 
-                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 50, 50)];
+                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 52, 52)];
                 pic.layer.borderColor = kNoochGrayDark.CGColor;
                 pic.layer.borderWidth = 1;
-                pic.layer.cornerRadius = 25;
+                pic.layer.cornerRadius = 26;
                 pic.clipsToBounds = YES;
                 [cell.contentView addSubview:pic];
                 
@@ -1381,36 +1240,12 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     }
                 }
                 
-                
-                
-                if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"]){
-                    [name setText:@"Deposit into Nooch"];
-                    [pic setImage:[UIImage imageNamed:@"Icon.png"]];
-                    
-                }
-                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Withdraw"]){
-                    [name setText:@"Withdraw from  Nooch"];
-                    NSArray* bytedata = [dictRecord valueForKey:@"BankPicture"];
-                    unsigned c = bytedata.count;
-                    uint8_t *bytes = malloc(sizeof(*bytes) * c);
-                    
-                    unsigned i;
-                    for (i = 0; i < c; i++)
-                    {
-                        NSString *str = [bytedata objectAtIndex:i];
-                        int byte = [str intValue];
-                        bytes[i] = (uint8_t)byte;
-                    }
-                    
-                    NSData *datos = [NSData dataWithBytes:bytes length:c];
-                    
-                    
-                    [pic setImage:[UIImage imageWithData:datos]];
-                }
-                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"]){
+                if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"]){
                     [name setText:[NSString stringWithFormat:@"Donate to %@",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                     [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                         placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                    
+                    
                     
                 }
                 else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL){
@@ -1525,9 +1360,6 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                             [name setText:[NSString stringWithFormat:@"%@ Requested",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                         
                     }
-                    
-                    //else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"])
-                   //     [name setText:[NSString stringWithFormat:@"Deposit into Nooch%@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                     else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL)
                         [name setText:[NSString stringWithFormat:@"You Invited %@",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
                     else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] )
@@ -1638,10 +1470,10 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                     }
                     
                     
-                    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 50, 50)];
+                    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 52, 52)];
                     pic.layer.borderColor = kNoochGrayDark.CGColor;
                     pic.layer.borderWidth = 1;
-                    pic.layer.cornerRadius = 25;
+                    pic.layer.cornerRadius = 26;
                     pic.clipsToBounds = YES;
                     [cell.contentView addSubview:pic];
                     [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
@@ -1697,9 +1529,6 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                         [name setText:[NSString stringWithFormat:@"%@ Requested",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                     
                 }
-               // else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Deposit"])
-               //     [name setText:[NSString stringWithFormat:@"Deposit into Nooch%@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
-                
                 else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL)
                     [name setText:[NSString stringWithFormat:@"You Invited %@",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
                 
@@ -1807,10 +1636,10 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 
                 
                 
-                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 50, 50)];
+                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 52, 52)];
                 pic.layer.borderColor = kNoochGrayDark.CGColor;
                 pic.layer.borderWidth = 1;
-                pic.layer.cornerRadius = 25;
+                pic.layer.cornerRadius = 26;
                 pic.clipsToBounds = YES;
                 [cell.contentView addSubview:pic];
                 [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
@@ -1937,7 +1766,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         {
             //cancel
             self.responseDict = [dictRecord copy];
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to cancel this Request? " delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to cancel this request? " delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
             [av show];
             [av setTag:1010];
         }
@@ -1949,7 +1778,8 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
                 
                 if ([[assist shared]getSuspended]) {
-                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+                    [alert setTag:50];
                     [alert show];
                     return;
                     
@@ -1957,7 +1787,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 
                 if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
                     
-                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Email Verification Needed" message:@"Please click the link we emailed you to verify your email address." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
                     [alert show];
                     return;
                     
@@ -1965,7 +1795,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 }
                 
                 if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
-                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Profile Not Complete" message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!" delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
                     [alert setTag:147];
                     [alert show];
                     return;
@@ -1973,7 +1803,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 
                 if ( ![[[NSUserDefaults standardUserDefaults]
                         objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
-                    UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                    UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Please Attach an Account" message:@"Before you can send or receive money, you must add a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
                     
                     [set show];
                     return;
@@ -1981,7 +1811,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
                 
                 
                 if ( ![[assist shared]isBankVerified]) {
-                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Attach an Account" message:@"Before you can send or receive money, you must add a bank account." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
                     [alert show];
                     
                     return;
@@ -1997,7 +1827,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
             } else {
                 //decline
                 self.responseDict = [dictRecord copy];
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to Reject this Request? " delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to reject this request?" delegate:self cancelButtonTitle:@"Yes - Reject" otherButtonTitles:@"No", nil];
                 [av show];
                 [av setTag:1011];
             }
@@ -2148,7 +1978,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     [imageCache cleanDisk];
 
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
-        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Login Detected From New Device" message:@"It seems like you have logged in from another device, which automatically signs you out of any other active devices." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [Alert show];
         
         
@@ -2171,11 +2001,9 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         if ([tagName isEqualToString:@"csv"]) {
         NSDictionary*dictResponse=[NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         if ([[[dictResponse valueForKey:@"sendTransactionInCSVResult"]valueForKey:@"Result"]isEqualToString:@"1"]) {
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Success!" message:@"Email is in queue.Please check the mail" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Export Successful" message:@"Your personalized transaction report has been emailed to you." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
             [alert show];
-            
         }
-        
     }
     else if ([tagName isEqualToString:@"hist"]) {
 
@@ -2265,7 +2093,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         [serveOBJ setTagName:@"time"];
         [serveOBJ GetServerCurrentTime];
     } else if ([tagName isEqualToString:@"reject"]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've rejected the Request Successfully!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Request Rejected" message:@"No problem, you have rejected this request successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         subTypestr=@"Pending";
         self.completed_selected = NO;
@@ -2284,7 +2112,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
 
     }
     else if ([tagName isEqualToString:@"cancel"]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've cancelled the Request Successfully!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Request Cancelled" message:@"You got it. That request has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         subTypestr=@"Pending";
         self.completed_selected = NO;
@@ -2346,9 +2174,69 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         [serveObj CancelRejectTransaction:[self.responseDict valueForKey:@"TransactionId"] resp:@"Rejected"];
         
     }
+    else if (actionSheet.tag == 50 && buttonIndex == 1)
+    {
+        if (![MFMailComposeViewController canSendMail]){
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [av show];
+            return;
+        }
+        MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+        mailComposer.mailComposeDelegate = self;
+        mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+        
+        [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+        
+        [mailComposer setMessageBody:@"" isHTML:NO];
+        [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+        [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+        [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        [self presentViewController:mailComposer animated:YES completion:nil];
+    }
     
     
     
+}
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    UIAlertView *alert = [[UIAlertView alloc] init];
+    [alert addButtonWithTitle:@"OK"];
+    [alert setDelegate:nil];
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"Mail cancelled" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            // [alert show];
+            
+            [alert setTitle:@"Mail cancelled"];
+            [alert show];
+            NSLog(@"Mail cancelled");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved");
+            
+            [alert setTitle:@"Mail saved"];
+            [alert show];
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail sent");
+            
+            [alert setTitle:@"Mail sent"];
+            [alert show];
+            
+            break;
+        case MFMailComposeResultFailed:
+            [alert setTitle:[error localizedDescription]];
+            [alert show];
+            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    
+    // Close the Mail Interface
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 - (void)didReceiveMemoryWarning
 {

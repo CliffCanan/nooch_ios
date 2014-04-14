@@ -10,8 +10,9 @@
 #import "Helpers.h"
 #import "Home.h"
 #import "serve.h"
+#import <MessageUI/MessageUI.h>
 
-@interface TransferPIN : UIViewController<UITextFieldDelegate,serveD,NSURLConnectionDelegate>
+@interface TransferPIN : UIViewController<UITextFieldDelegate,serveD,NSURLConnectionDelegate,MFMailComposeViewControllerDelegate>
 {
     
     NSString*Altitude;

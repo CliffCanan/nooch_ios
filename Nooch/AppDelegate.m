@@ -232,14 +232,48 @@ void exceptionHandler(NSException *exception){
     [[UAPush shared] resetBadge];
         NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
         
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[UIApplication sharedApplication] applicationIconBadgeNumber]+1];
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[UIApplication sharedApplication] applicationIconBadgeNumber]+1]; 
     }// zero badge after push received
    
     
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+-(BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    //Get the Response from Knox and parse it
+    NSString *response = [[url absoluteString]stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSArray *URLParse = [response componentsSeparatedByString:@"?"];
+    NSString *responseBody = URLParse[1];
+    NSArray *responseParse = [responseBody componentsSeparatedByString:@"&"];
+    //Parse the components of the response
+    NSArray *isPaid = [responseParse[0] componentsSeparatedByString:@"pst="][1];
+    NSString *paymentID = [responseParse[1] componentsSeparatedByString:@"pay_id="][1];
+    //Components of response are Logged here - you may want to store them in your Database or check to make sure the reponse includes "Paid"
+    NSLog(@"fired in Delegate - URL Encoded %@ %@", isPaid, paymentID);
+    //Handle the response using our private API
+    //    NSString *apiURL = [NSString stringWithFormat:@"http://paidez.com/api/trz.php?trans_id=%@",paymentID];
+    //    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    //    [request setHTTPMethod:@"GET"];
+    //    [request setURL:[NSURL URLWithString:apiURL]];
+    //
+    //    NSError *error = [[NSError alloc] init];
+    //    NSHTTPURLResponse *responseCode = nil;
+    //
+    //    NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
+    //
+    //    if([responseCode statusCode] != 200){
+    //        NSLog(@"Error getting %@, HTTP status code %li", apiURL, (long)[responseCode statusCode]);
+    //    }
+    //
+    //    NSString *knoxpayments = [[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding];
+    //
+    //    NSData *data = [knoxpayments dataUsingEncoding:NSUTF8StringEncoding];
+    //
+    //    NSError *e = nil;
+    //    NSLog(@"%@",data);
+    //Send Notification to WebView so it can resign itself and to the parent view if desired to handle response and give success notification etc.
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"KnoxResponse" object:self];
     return YES;
 }
 

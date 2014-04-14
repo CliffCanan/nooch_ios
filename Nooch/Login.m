@@ -210,6 +210,7 @@
     
     UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Enter Email ID" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
     alert.alertViewStyle=UIAlertViewStylePlainTextInput;
+    [[alert textFieldAtIndex:0] setText:self.email.text];
     [alert setTag:220011];
     [alert show];
     
@@ -226,6 +227,26 @@
             [forgetful forgotPass:emailField.text];
             
         }
+        else if (actionSheet.tag == 50 && buttonIndex == 1)
+        {
+            if (![MFMailComposeViewController canSendMail]){
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [av show];
+                return;
+            }
+            MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+            mailComposer.mailComposeDelegate = self;
+            mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+            
+            [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+            
+            [mailComposer setMessageBody:@"" isHTML:NO];
+            [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+            [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+            [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+            [self presentViewController:mailComposer animated:YES completion:nil];
+        }
         else
         {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Enter Valid Email ID" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
@@ -238,7 +259,46 @@
     
     
 }
-
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    UIAlertView *alert = [[UIAlertView alloc] init];
+    [alert addButtonWithTitle:@"OK"];
+    [alert setDelegate:nil];
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"Mail cancelled" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            // [alert show];
+            
+            [alert setTitle:@"Mail cancelled"];
+            [alert show];
+            NSLog(@"Mail cancelled");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved");
+            
+            [alert setTitle:@"Mail saved"];
+            [alert show];
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail sent");
+            
+            [alert setTitle:@"Mail sent"];
+            [alert show];
+            
+            break;
+        case MFMailComposeResultFailed:
+            [alert setTitle:[error localizedDescription]];
+            [alert show];
+            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    
+    // Close the Mail Interface
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
 -(void)listen:(NSString *)result tagName:(NSString *)tagName{
     //nslog(@"response %@", result);
     NSLog(@"%@",nav_ctrl.viewControllers);
@@ -301,7 +361,8 @@
             [spinner stopAnimating];
         }
         else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil){
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"NoochMoney" message:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"NoochMoney" message:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+            [alert setTag:50];
             [alert show];
             [spinner stopAnimating];
         }

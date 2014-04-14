@@ -292,7 +292,7 @@
     \
     UIImageView *user_pic = [UIImageView new];
     user_pic.clipsToBounds = YES;
-    [user_pic setFrame:CGRectMake(20, 7, 46, 46)];
+    [user_pic setFrame:CGRectMake(12, 7, 46, 46)];
     user_pic.layer.cornerRadius = 23;
     user_pic.layer.borderWidth = 1;
     user_pic.layer.borderColor = [Helpers hexColor:@"6d6e71"].CGColor;
