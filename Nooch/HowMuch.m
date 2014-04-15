@@ -1,10 +1,8 @@
-//
 //  HowMuch.m
 //  Nooch
 //
 //  Created by crks on 9/26/13.
-//  Copyright (c) 2013 Nooch. All rights reserved.
-//
+//  Copyright (c) 2014 Nooch. All rights reserved.
 
 #import "HowMuch.h"
 #import "TransferPIN.h"
@@ -68,13 +66,13 @@
     self.amnt = [@"" mutableCopy];
     self.decimals = YES;
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    
+
     UIView *back = [[UIView alloc] initWithFrame:CGRectMake(10, 10, 300, 248)];
     [back setStyleClass:@"how_much_mainbox"];
     [back setStyleClass:@"raised_view"];
     [back setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:back];
-    
+
     self.recip_back=  [UILabel new];
     [self.recip_back setStyleClass:@"barbackground"];
     [self.recip_back setStyleClass:@"barbackground_gray"];
@@ -83,15 +81,14 @@
     UILabel *to = [UILabel new]; [to setText:@"To: "];
     [to setStyleId:@"label_howmuch_to"];
     [self.view addSubview:to];
-    
+
     UILabel *to_label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
     if ([self.receiver valueForKey:@"nonuser"]) {
         //
         [to_label setStyleId:@"label_howmuch_recipientnamenonuser"];
         [to_label setText:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"email"]]];
     }
-    else
-    {
+    else {
         if ([[assist shared]isRequestMultiple]) {
             NSString*strMultiple=@"";
             for (NSDictionary *dictRecord in [[assist shared]getArray]) {
@@ -101,13 +98,12 @@
             strMultiple=[strMultiple substringFromIndex:1];
             [to_label setText:strMultiple];
         }
-        else
-        {
+        else {
         [to_label setStyleId:@"label_howmuch_recipientname"];
         [to_label setText:[NSString stringWithFormat:@"%@ %@",[[self.receiver objectForKey:@"FirstName"] capitalizedString],[[self.receiver objectForKey:@"LastName"] capitalizedString]]];
         }
     }
-    
+
     [self.view addSubview:to_label];
     if (![self.receiver valueForKey:@"nonuser"] &&  !isPayBack  && !isUserByLocation) {
         UIButton*add=[[UIButton alloc]initWithFrame:CGRectMake(260, 15, 30, 30)];
@@ -124,21 +120,20 @@
     if ([self.receiver valueForKey:@"nonuser"]) {
         [user_pic setImage:[UIImage imageNamed:@"silhouette.png"]];
     }
-    else{
+    else {
         [user_pic setHidden:NO];
         
         if (self.receiver[@"Photo"]) {
             [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
                      placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
         }
-        else
-        {
+        else {
             [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
                      placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
         }
     }
     [self.view addSubview:user_pic];
-    
+
     self.amount = [[UITextField alloc] initWithFrame:CGRectMake(20, 40, 260, 80)];
     [self.amount setTextAlignment:NSTextAlignmentRight]; [self.amount setPlaceholder:@"$ 0.00"];
     [self.amount setDelegate:self]; [self.amount setTag:1];
@@ -152,7 +147,7 @@
     [self.memo setKeyboardType:UIKeyboardTypeDefault];
     [self.memo setStyleId:@"howmuch_memo"];
     [self.view addSubview:self.memo];
-    
+
     self.camera = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.camera setFrame:CGRectMake(260, 161, 22, 22)];
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
@@ -168,14 +163,14 @@
     [self.send setBackgroundColor:kNoochGreen];
     [self.send setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal]; [self.send setTitle:@"Send" forState:UIControlStateNormal];
     [self.send addTarget:self action:@selector(initialize_send) forControlEvents:UIControlEventTouchUpInside];
-    
+
     //[self.send setFrame:CGRectMake(160, 160, 150, 50)];
-    
+
     self.request = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.request setBackgroundColor:kNoochBlue];
     [self.request setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal]; [self.request setTitle:@"Request" forState:UIControlStateNormal];
     [self.request addTarget:self action:@selector(initialize_request) forControlEvents:UIControlEventTouchUpInside];
-    
+
     [self.request setStyleId:@"howmuch_request"];
     [self.request setFrame:CGRectMake(10, 160, 150, 50)];
     [self.view addSubview:self.request];
@@ -184,7 +179,6 @@
         [self.request setStyleClass:@"howmuch_buttons"];
         [self.request setStyleId:@"howmuch_request_mult_expand"];
         [self.request setFrame:CGRectMake(10, 160, 300, 50)];
-
     }
     else if ([self.receiver valueForKey:@"nonuser"]) {
         [self.request removeFromSuperview];
@@ -192,8 +186,7 @@
         [self.send setFrame:CGRectMake(10, 160, 300, 50)];
         [self.view addSubview:self.send];
     }
-    else{
-        
+    else {
         [self.send setStyleClass:@"howmuch_buttons"];
         [self.send setStyleId:@"howmuch_send"];
         [self.send setFrame:CGRectMake(160, 160, 150, 50)];
@@ -202,23 +195,21 @@
         self.divider = [UIImageView new];
         [self.divider setStyleId:@"howmuch_divider"];
         [self.view addSubview:self.divider];
-        
     }
-    
-    
+
     self.reset_type = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.reset_type setFrame:CGRectMake(0, 160, 0, 50)]; [self.reset_type setBackgroundColor:[UIColor clearColor]]; [self.reset_type setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.reset_type addTarget:self action:@selector(reset_send_request) forControlEvents:UIControlEventTouchUpInside];
     [self.reset_type setStyleId:@"cancel_hidden"];
     [self.reset_type setAlpha:0];
     [self.view addSubview:self.reset_type];
-    
+
     [self.navigationItem setRightBarButtonItem:Nil];
     /*self.balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.balance setFrame:CGRectMake(0, 0, 60, 30)];
     [self.balance.titleLabel setFont:kNoochFontMed];
     [self.balance setStyleId:@"navbar_balance"];
-    
+
     if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
         [self.navigationItem setRightBarButtonItem:Nil];
         if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound) {
@@ -229,8 +220,7 @@
         UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
         [self.navigationItem setRightBarButtonItem:funds];
     }
-    else
-    {
+    else {
         [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
     }*/
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
@@ -257,15 +247,16 @@
     [[assist shared]setRequestMultiple:YES];
    // isMutipleRequest=YES;
     isAddRequest=YES;
-    
-   if ([[[assist shared]getArray] count]==0) {
+
+    if ([[[assist shared]getArray] count]==0) {
         arrRecipientsForRequest=[[NSMutableArray alloc] init];
         [arrRecipientsForRequest addObject:self.receiver];
         [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
     }
-  
+
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 #pragma mark - type of transaction
 - (void) initialize_send
 {
@@ -283,16 +274,16 @@
     origin = self.request.frame;
     origin.size.width = 0; //origin.origin.x = 50;
     [self.request setFrame:origin];
-    
+
     [self.send addTarget:self action:@selector(confirm_send) forControlEvents:UIControlEventTouchUpInside];
-    
+
     [self.reset_type setTitle:@">" forState:UIControlStateNormal];
     [self.reset_type setAlpha:1];
     [self.send setTitle:@"Confirm Send" forState:UIControlStateNormal];
-    
+
     [self.reset_type setStyleClass:@"button_blue"];
     [UIView commitAnimations];
-    
+
     [self.divider setStyleClass:@"animate_roll_left"];
     [self.send setStyleId:@"howmuch_send_expand"];
     [self.request setStyleId:@"howmuch_request_hide"];
@@ -314,16 +305,16 @@
     origin = self.request.frame;
     origin.size.width = 260; origin.origin.x = 10;
     [self.request setFrame:origin];
-    
+
     [self.request addTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
-    
+
     [self.reset_type setAlpha:1];
     [self.reset_type setTitle:@"<" forState:UIControlStateNormal];
     [self.request setTitle:@"Confirm Request" forState:UIControlStateNormal];
-    
+
     [self.reset_type setStyleClass:@"button_green"];
     [UIView commitAnimations];
-    
+
     [self.divider setStyleClass:@"animate_roll_right"];
     [self.send setStyleId:@"howmuch_send_hide"];
     [self.request setStyleId:@"howmuch_request_expand"];
@@ -337,8 +328,7 @@
         [self.divider setAlpha:0];
         [self.view addSubview:self.divider];
     }
-   
-    
+
     CGRect origin = self.reset_type.frame;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.5];
@@ -349,65 +339,50 @@
     origin = self.request.frame;
     origin.size.width = 150; origin.origin.x = 10;
     [self.request setFrame:origin];
-    
+
     [self.send removeTarget:self action:@selector(confirm_send) forControlEvents:UIControlEventTouchUpInside];
     [self.request removeTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
     [self.send addTarget:self action:@selector(initialize_send) forControlEvents:UIControlEventTouchUpInside];
     [self.request addTarget:self action:@selector(initialize_request) forControlEvents:UIControlEventTouchUpInside];
-    
+
     [self.divider setAlpha:1];
     [self.reset_type setAlpha:0];
     [self.reset_type setTitle:@"" forState:UIControlStateNormal];
     [self.send setTitle:@"Send" forState:UIControlStateNormal];
     [self.request setTitle:@"Request" forState:UIControlStateNormal];
     [UIView commitAnimations];
-    
+
     [self.send setStyleId:@"howmuch_send"];
     [self.request setStyleId:@"howmuch_request"];
 }
 
 - (void) confirm_send
 {
-
-    if ([self.amnt floatValue] == 0)
-            
-        {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!" message:@"Minimum amount that can be transferred is any amount." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+    if ([self.amnt floatValue] == 0) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!" message:@"Please enter a value over $0.00. We'd love to send a negative amount, but it's actually pretty difficult." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
             [alert show];
             return;
         }
     if ([[self.amount text] length] < 3) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Amount" message:@"Please enter a valid amount" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Amount" message:@"Please enter a valid amount." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         return;
     }
     
-    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100)
-        
-    {
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Now" message:[NSString stringWithFormat:@"Sorry I’m not sorry, but don’t %@ more than $100. It’s against the rules (and protects the account from abuse.)", @"send"] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100) {   
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Now" message:[NSString stringWithFormat:@"Sorry, but to keep Nooch safe, please don’t %@ more than $100. It’s against the rules (and protects the account from abuse.)", @"send"] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
         [alert show];
         return;
-        
     }
-    /*if ([[[self.amount text] substringFromIndex:1] floatValue]>[[user objectForKey:@"Balance"] floatValue]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!" message:@"Thanks for testing this impossibility, but you can't transfer more than you have in your Nooch account." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Add Funds", nil];
-        [alert setTag:2122];
-        [alert show];
-        return;
-    }*/
     //[user objectForKey:@"Balance"]
     NSMutableDictionary *transaction = [self.receiver mutableCopy];
     [transaction setObject:[self.memo text] forKey:@"memo"];
-    
     float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
     if ([self.receiver valueForKey:@"nonuser"]) {
         TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"nonuser" amount:input_amount];
         [self.navigationController pushViewController:pin animated:YES];
     }
-    else
-    {
+    else {
         TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"send" amount: input_amount];
         [self.navigationController pushViewController:pin animated:YES];
     }
@@ -415,9 +390,7 @@
 #pragma mark  - alert view delegation
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     
-    if([actionSheet tag] == 2122 && buttonIndex==1)
-    {
-        
+    if([actionSheet tag] == 2122 && buttonIndex==1) {
     }
 }
 - (void) confirm_request
@@ -428,14 +401,10 @@
         [av show];
         return;
     }
-    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100)
-        
-    {
-        
+    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Now" message:[NSString stringWithFormat:@"Sorry I’m not sorry, but don’t %@ more than $100. It’s against the rules (and protects the account from abuse.)", @"request"] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
         [alert show];
         return;
-        
     }
     if ([[assist shared]isRequestMultiple]) {
         NSMutableDictionary *transaction = [[NSMutableDictionary alloc]init];
@@ -518,16 +487,14 @@
 - (void) take_photo
 {
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        
+
         UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
                                                               message:@"Device has no camera"
                                                              delegate:nil
                                                     cancelButtonTitle:@"OK"
                                                     otherButtonTitles: nil];
-        
         [myAlertView show];
-        return;
-        
+        return;        
     }
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
@@ -536,7 +503,7 @@
     
     [self presentViewController:picker animated:YES completion:NULL];
     //[self.amount becomeFirstResponder];
-    
+
     //[self cancel_photo];
 }
 - (void) from_album
@@ -545,7 +512,7 @@
     picker.delegate = self;
     picker.allowsEditing = YES;
     picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-    
+
     [self presentViewController:picker animated:YES completion:NULL];
 }
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -555,33 +522,30 @@
     chosenImage = [chosenImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(150,150) interpolationQuality:kCGInterpolationMedium];
 
     //[self.camera setStyleId:@"howmuch_camera_attached"];
-    
+
     [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
     UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 22, 22)];
     [ttt setImage:[UIImage imageGlyphNamed:@"camera" height:30 color:kNoochPurple]];
     [self.camera setBackgroundImage:ttt.image forState:UIControlStateNormal];
-    
     [[assist shared]setTranferImage:chosenImage];
-    
-    
     [picker dismissViewControllerAnimated:YES completion:^{
         // [self close:nil];
     }];
-    
+
 }
 -(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size{
     float actualHeight = image.size.height;
     float actualWidth = image.size.width;
     float imgRatio = actualWidth/actualHeight;
     float maxRatio = 75.0/115.0;
-    
+
     if(imgRatio!=maxRatio){
         if(imgRatio < maxRatio){
             imgRatio = 75.0 / actualHeight;
             actualWidth = imgRatio * actualWidth;
             actualHeight = 115.0;
         }
-        else{
+        else {
             imgRatio = 75.0 / actualWidth;
             actualHeight = imgRatio * actualHeight;
             actualWidth = 75.0;
@@ -624,7 +588,8 @@
             if ([self.amnt length] > 0) {
                 self.amnt = [[self.amnt substringToIndex:[self.amnt length]-1] mutableCopy];
             }
-        }else{
+        }
+        else{
             NSString *temp = [self.amnt stringByAppendingString:string];
             self.amnt = [temp mutableCopy];
         }
@@ -636,18 +601,17 @@
         }
         if (maths != 0) {
             [textField setText:[formatter stringFromNumber:[NSNumber numberWithFloat:maths]]];
-        } else {
+        } 
+        else {
             [textField setText:@""];
         }
-        
         return NO;
     }
-    
+
     if (textField.tag == 2) {
         NSUInteger newLength = [textField.text length] + [string length] - range.length;
         return (newLength > 25) ? NO : YES;
     }
-    
     return YES;
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -659,9 +623,7 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-
 }
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -671,5 +633,4 @@
     [imageCache cleanDisk];
     // Dispose of any resources that can be recreated.
 }
-
 @end
