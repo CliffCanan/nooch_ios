@@ -2,16 +2,12 @@
 //  Legal.m
 //  Nooch
 //
-//  Created by crks on 10/28/13.
-//  Copyright (c) 2013 Nooch. All rights reserved.
-//
+//  Copyright (c) 2014 Nooch. All rights reserved.
 
 #import "Legal.h"
 
 @interface Legal ()
-
 @end
-
 @implementation Legal
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -26,20 +22,15 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
     [self.view setBackgroundColor:[UIColor whiteColor]];
 }
-
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
-{
-    
+{   
 }
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 @end
