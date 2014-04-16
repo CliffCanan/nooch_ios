@@ -137,7 +137,6 @@
 
     serve*serveOBJ=[serve new];
     serveOBJ.tagName=@"GetReffereduser";
-
     [serveOBJ setDelegate:self];
     [serveOBJ getInvitedMemberList:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]];
 }
@@ -196,7 +195,6 @@
         [defaults setValue:[[dictResponse valueForKey:@"getReferralCodeResult"] valueForKey:@"Result"] forKey:@"ReferralCode"];
         [defaults synchronize];
         code.text=[NSString stringWithFormat:@"%@",[[dictResponse valueForKey:@"getReferralCodeResult"] valueForKey:@"Result"]];
-        NSLog(@"%@",dictResponse);
     }
     else if ([tagName isEqualToString:@"GetReffereduser"]) {
         dictInviteUserList=[[NSMutableDictionary alloc]init];
@@ -268,8 +266,7 @@
     for(UIView *subview in cell.contentView.subviews)
         [subview removeFromSuperview];
     NSDictionary*dict=[[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] objectAtIndex:indexPath.row];
-    NSLog(@"%@",dict);
-    \
+    
     UIImageView *user_pic = [UIImageView new];
     user_pic.clipsToBounds = YES;
     [user_pic setFrame:CGRectMake(12, 7, 46, 46)];
@@ -299,7 +296,7 @@
     NSTimeInterval _interval=[newString doubleValue];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:_interval];
     NSDateFormatter *_formatter=[[NSDateFormatter alloc]init];
-    [_formatter setDateFormat:@"MM/dd/yyyy"];
+    [_formatter setDateFormat:@"MM/dd/yy"];
     NSString *_date=[_formatter stringFromDate:date];
 
     UILabel *datelbl = [UILabel new];

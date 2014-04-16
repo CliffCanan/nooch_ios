@@ -186,89 +186,7 @@
             border-radius   : 10px;
         }
         
-     /****************************
-	  *****	 Fund Menu buttons 28/12  *****
-	  ****************************/
-        .rcheckmarkbutton {
-			width			    : 40px;
-			height			    : 40px;
-			left                : 200px;
-			color 				: white;
-			border-radius		: 3px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 22px;
-		}
 
-         .rsavebutton {
-			width			: 70px;
-			height			: 40px;
-
-			left                : 180px;
-			color 				: white;
-			border-radius		: 3px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 22px;
-            background-image			: linear-gradient(#6dbee8, #41abe1);
-		}
-               .reditbutton {
-			width			: 70px;
-			height			: 40px;
-
-			left                : 200px;
-			color 				: white;
-			border-radius		: 3px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 22px;
-		}
-        .rcancelbutton {
-			width			: 65px;
-			height			: 40px;
-
-			left                : 200px;
-			color 				: white;
-			border-radius		: 3px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 15px;
-            background-image			: linear-gradient(#6dbee8, #41abe1);
-		}
-         .rremovebutton {
-			width			: 65px;
-			height			: 40px;
-
-			left                : 125px;
-			color 				: white;
-			border-radius		: 3px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 15px;
-            background-image			: linear-gradient(#6dbee8, #41abe1);
-		}
-.rtable_view_cell_textlabel_1 {
-             top                :10px;
-			font-family			: "Roboto";
-			font-weight         : regular;
-			font-size			: 18px;
-			text-align       	: left;
-			color 				: #FFFFFF;
-			width				: 260px;
-			left                : 45px;
-			height				: 30px;
-		}
-.rtable_view_cell_textlabel_1 {
-             top                :10px;
-			font-family			: "Roboto";
-			font-weight         : regular;
-			font-size			: 18px;
-			text-align       	: left;
-			color 				: #FFFFFF;
-			width				: 260px;
-			left                : 45px;
-			height				: 30px;
-		}
 		/****  Table Detail Text  (right side of row)  ****/
 		.recentEmptytable_view_cell_detailtext_1 {
 			font-family			: "Roboto";
@@ -413,8 +331,7 @@
 	 /****************************
 	  *****	  TABLE Styles 	 *****
 	  ****************************/
-	/***     	TABLE STYLE 1  				***/	
-	/***   SIGNUP Screen, ADD BANK Screen   ***/
+	/***     	TABLE STYLE 1  				***/
 	/***  PROFILE Screen, SETTINGS Screens  ***/
 
 	 .table_view_1 {
@@ -546,7 +463,6 @@
 	/***********************/
 
 	/*** 	 SIGNUP FLOW:  Instructional Text	***/
-	/***      FUNDS FLOW:  Instructional Text	***/
 	.instruction_text {
 		font-family			: "Roboto";
 		font-weight         : regular;
@@ -731,7 +647,7 @@
 	table-view#select_recipient {
 		width				: 320px;
 		background-color	: #ffffff;
-		row-height			: 60px;
+		row-height			: 80px;
 		separator-style 	: single-line;
 		separator-color		: rgba(188,190,192,.65);	
 	}

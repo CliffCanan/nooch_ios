@@ -58,6 +58,11 @@
 
     [self.view setStyleClass:@"background_gray"];
 
+    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 16, 0, 0)];
+    [title setStyleClass:@"refer_header"];
+    [title setText:@"Linked Bank Account"];
+    [self.view addSubview:title];
+    
     UIView *linked_background = [UIView new];
     [linked_background setStyleId:@"account_background"];
     [self.view addSubview:linked_background];

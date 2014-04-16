@@ -219,7 +219,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     customView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mapBack.png"]];
 
     UIImageView*imgV=[[UIImageView alloc]initWithFrame:CGRectMake(5, 8, 52, 52)];
-    imgV.layer.cornerRadius = 26; imgV.layer.borderColor = whiteColor; imgV.layer.borderWidth = 2;
+    imgV.layer.cornerRadius = 26; imgV.layer.borderColor = [UIColor whiteColor].CGColor; imgV.layer.borderWidth = 2;
     imgV.clipsToBounds = YES;
 
     NSString*urlImage=[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Photo"];
@@ -229,7 +229,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     NSString*TransactionType=@"";
 
         if ([[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"MemberId"]]) {
-            ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
+            if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
                 TransactionType=@"Paid to :";
             }
         }
@@ -262,12 +262,12 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
         lblName.text=[NSString stringWithFormat:@"%@ %@",[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"FirstName"] capitalizedString],[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"LastName"]];
         lblName.textAlignment=NSTextAlignmentCenter;
         lblName.font=[UIFont systemFontOfSize:12];
-        lblName.textColor=[UIColor kNoochBlue.CGColor];
+        lblName.textColor=kNoochBlue;
         [customView addSubview:lblName];
 
         UILabel*lblAmt=[[UILabel alloc]initWithFrame:CGRectMake(66, 43, 135, 20)];
         lblAmt.text=[NSString stringWithFormat:@"$%.02f",[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Amount"] floatValue]];
-        lblAmt.textColor=[UIColor kNoochGreen.CGColor];
+        lblAmt.textColor= kNoochGreen;
         lblAmt.textAlignment=NSTextAlignmentCenter;
         lblAmt.font=[UIFont systemFontOfSize:18];
         [customView addSubview:lblAmt];
@@ -1859,33 +1859,29 @@ return customView;
     UIAlertView *alert = [[UIAlertView alloc] init];
     [alert addButtonWithTitle:@"OK"];
     [alert setDelegate:nil];
-    switch (result)
-    {
+    switch (result) {
         case MFMailComposeResultCancelled:
-            //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"Mail cancelled" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            // [alert show];
-
-            [alert setTitle:@"Mail cancelled"];
-            [alert show];
             NSLog(@"Mail cancelled");
             break;
+
         case MFMailComposeResultSaved:
             NSLog(@"Mail saved");
-
-            [alert setTitle:@"Mail saved"];
+            [alert setTitle:@"Email Draft Saved"];
             [alert show];
             break;
+
         case MFMailComposeResultSent:
             NSLog(@"Mail sent");
-
-            [alert setTitle:@"Mail sent"];
+            [alert setTitle:@"Email Sent Successfully"];
             [alert show];
             break;
+
         case MFMailComposeResultFailed:
             [alert setTitle:[error localizedDescription]];
             [alert show];
             NSLog(@"Mail sent failure: %@", [error localizedDescription]);
             break;
+
         default:
             break;
     }

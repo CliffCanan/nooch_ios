@@ -151,7 +151,6 @@
         [self.navigationItem setRightBarButtonItem:Nil];
         UIButton *location = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [location setStyleId:@"icon_location"];
-        [location addTarget:self action:@selector(locationSearch:) forControlEvents:UIControlEventTouchUpInside];
         isRecentList=YES;
         [[assist shared]setRequestMultiple:NO];
         //UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
@@ -367,7 +366,7 @@
         [UIView setAnimationDuration:1];
         //[search setHidden:NO];
         CGRect frame = self.contacts.frame;
-        frame.origin.y =82;
+        frame.origin.y =82; frame.size.height = [[UIScreen mainScreen] bounds].size.height-146;
         [self.contacts setFrame:frame];
         [UIView commitAnimations];
         serve *recents = [serve new];
@@ -386,6 +385,7 @@
         //[search setHidden:YES];
         CGRect frame = self.contacts.frame;
         frame.origin.y =40;
+        frame.size.height = [[UIScreen mainScreen] bounds].size.height-104;
         [self.contacts setFrame:frame];
         [UIView commitAnimations];
         serve * ser = [serve new];
@@ -1019,17 +1019,12 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
     if (cell == nil) {
-        
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                       reuseIdentifier:CellIdentifier];
-        
         [cell.textLabel setTextColor:kNoochGrayLight];
         cell.indentationLevel = 1;
-        
     }
     for (UIView*subview in cell.contentView.subviews) {
         [subview removeFromSuperview];
@@ -1115,6 +1110,8 @@
                 break;
             }
         }
+        
+        [pic setStyleClass:@"animate_bubble"];
         return cell;
     }
     else if (searching)
@@ -1207,11 +1204,6 @@
             }
         }
         
-//        if ([arrRecipientsForRequest containsObject:info])
-//            cell.accessoryType=UITableViewCellAccessoryCheckmark;
-//        else
-//            cell.accessoryType=UITableViewCellAccessoryNone;
-        
     }
     
     
@@ -1267,11 +1259,6 @@
 }
 
 #pragma mark - UITableViewDelegate
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    return 70.0;
-}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     /*if (self.location) {
