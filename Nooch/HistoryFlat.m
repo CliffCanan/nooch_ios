@@ -1859,33 +1859,29 @@ return customView;
     UIAlertView *alert = [[UIAlertView alloc] init];
     [alert addButtonWithTitle:@"OK"];
     [alert setDelegate:nil];
-    switch (result)
-    {
+    switch (result) {
         case MFMailComposeResultCancelled:
-            //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"Mail cancelled" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            // [alert show];
-
-            [alert setTitle:@"Mail cancelled"];
-            [alert show];
             NSLog(@"Mail cancelled");
             break;
+
         case MFMailComposeResultSaved:
             NSLog(@"Mail saved");
-
-            [alert setTitle:@"Mail saved"];
+            [alert setTitle:@"Email Draft Saved"];
             [alert show];
             break;
+
         case MFMailComposeResultSent:
             NSLog(@"Mail sent");
-
-            [alert setTitle:@"Mail sent"];
+            [alert setTitle:@"Email Sent Successfully"];
             [alert show];
             break;
+
         case MFMailComposeResultFailed:
             [alert setTitle:[error localizedDescription]];
             [alert show];
             NSLog(@"Mail sent failure: %@", [error localizedDescription]);
             break;
+
         default:
             break;
     }
