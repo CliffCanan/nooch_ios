@@ -19,8 +19,7 @@
 
 @implementation TransactionDetails
 
-- (id)initWithData:(NSDictionary *)trans
-{
+- (id)initWithData:(NSDictionary *)trans {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         // Custom initialization
@@ -29,8 +28,7 @@
     }
     return self;
 }
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBar.topItem.title = @"";
     [self.slidingViewController.panGesture setEnabled:YES];
@@ -62,7 +60,7 @@
     }
 
     [self.view addSubview:user_picture];
-    
+
     UILabel *payment = [UILabel new];
     [payment setStyleClass:@"details_intro"];
 
@@ -139,8 +137,7 @@
     [memo setStyleClass:@"italic_font"];
     [self.view addSubview:memo];
 
-    if(![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"] && ![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"])
-    {
+    if(![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"] && ![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"]) {
         UIButton *pay_back = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [pay_back setTitle:@"" forState:UIControlStateNormal];
         [pay_back setStyleCSS:@"background-image : url(pay-back-icon.png)"];
@@ -148,7 +145,8 @@
         [pay_back addTarget:self action:@selector(pay_back) forControlEvents:UIControlEventTouchUpInside];
         if ([[UIScreen mainScreen] bounds].size.height == 480) {
             [pay_back setStyleClass:@"details_buttons_4"];
-        } else {
+        } 
+        else {
             [pay_back setStyleClass:@"details_buttons"];
         }
 
@@ -156,7 +154,8 @@
         [pay_text setFrame:pay_back.frame];
         if ([[UIScreen mainScreen] bounds].size.height == 480) {
             [pay_text setStyleClass:@"details_buttons_labels_4"];
-        } else {
+        } 
+        else {
             [pay_text setStyleClass:@"details_buttons_labels"];
         }
         [pay_text setText:@"Pay Back"];
@@ -181,7 +180,8 @@
         [fb_text setFrame:fb.frame];
         if ([[UIScreen mainScreen] bounds].size.height == 480) {
             [fb_text setStyleClass:@"details_buttons_labels_4"];
-        } else {
+        } 
+        else {
             [fb_text setStyleClass:@"details_buttons_labels"];
         }
         [fb_text setText:@"Share"];
@@ -233,13 +233,14 @@
         [disp_text setFrame:disp.frame];
         if ([[UIScreen mainScreen] bounds].size.height == 480) {
             [disp_text setStyleClass:@"details_buttons_labels_4"];
-        } else {
+        }
+        else {
             [disp_text setStyleClass:@"details_buttons_labels"];
         }
         [disp_text setText:@"Dispute"];
 
         if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Request"]) {
-            //pay/cancel buttons
+            // Pay & Cancel Buttons
             UIButton *pay = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [pay setStyleClass:@"details_button_left"];
 
@@ -262,7 +263,8 @@
                     [pay addTarget:self action:@selector(fulfill_request) forControlEvents:UIControlEventTouchUpInside];
                     [cancel setTitle:@"Decline" forState:UIControlStateNormal];
                     [cancel addTarget:self action:@selector(decline_request) forControlEvents:UIControlEventTouchUpInside];
-                    [self.view addSubview:pay]; [self.view addSubview:cancel];                }
+                    [self.view addSubview:pay]; [self.view addSubview:cancel];
+                }
             }
         }
         else {
@@ -310,32 +312,27 @@
     [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
 }
 
-- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
-{
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
     UIAlertView *alert = [[UIAlertView alloc] init];
     [alert addButtonWithTitle:@"OK"];
     [alert setDelegate:nil];
-    switch (result)
-    {
-        case MFMailComposeResultCancelled:
-            //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"Email Cancelled" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            // [alert show];
-    
-            [alert setTitle:@"Mail cancelled"];
-            [alert show];
+    switch (result) {
+        case MFMailComposeResultCancelled:    
             NSLog(@"Mail cancelled");
             break;
+        
         case MFMailComposeResultSaved:
             NSLog(@"Mail saved");
-
-            [alert setTitle:@"Mail saved"];
+            [alert setTitle:@"Email Draft Saved"];
             [alert show];
             break;
+
         case MFMailComposeResultSent:
             NSLog(@"Mail sent");
-            [alert setTitle:@"Mail sent"];
+            [alert setTitle:@"Email Sent Successfully"];
             [alert show];
             break;
+
         case MFMailComposeResultFailed:
             [alert setTitle:[error localizedDescription]];
             [alert show];
@@ -348,8 +345,7 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
-- (void) fulfill_request
-{
+- (void) fulfill_request {
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     if ([[assist shared]getSuspended]) {
@@ -371,7 +367,7 @@
     }
     if ( ![[[NSUserDefaults standardUserDefaults]
             objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
-        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Please Attach an Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Please Attach A Bank Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
 
         [set show];
         return;
@@ -390,9 +386,8 @@
     [nav_ctrl pushViewController:trans animated:YES];
 }
 
-- (void) decline_request
-{
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to reject this request? " delegate:self cancelButtonTitle:@"Yes - Reject" otherButtonTitles:@"No", nil];
+- (void) decline_request {
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to reject this request?" delegate:self cancelButtonTitle:@"Yes - Reject" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1011];
     //    NSMutableDictionary *input = [self.trans mutableCopy];
@@ -401,15 +396,13 @@
     //    [nav_ctrl pushViewController:trans animated:YES];
 }
 
-- (void) cancel_request
-{
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to cancel this request? " delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+- (void) cancel_request {
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1010];
 }
 
-- (void) pay_back
-{
+- (void) pay_back {
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
 
     if ([[assist shared]getSuspended]) {
@@ -418,26 +411,25 @@
         [alert show];
         return;
     }
-
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Email Verification Needed" message:@"Please click the link sent to your email to verify your email address." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         return;
     }
     if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Validation Needed" message:@"Please validate your profile before proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Profile Not Complete" message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!" delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
         [alert setTag:147];
         [alert show];
         return;
     }
     if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your phone number before sending money." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Phone Not Verified" message:@"Please validate your phone number before sending money." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
         [alert show];
         return;
     }
     if ( ![[[NSUserDefaults standardUserDefaults]
             objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
-        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Please attach an Account" message:@"Before you can make any transfers you must link a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Please Attach an Account" message:@"Before you can send or receive money, you must add a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [set show];
         return;
     }
@@ -459,22 +451,22 @@
     HowMuch *payback = [[HowMuch alloc] initWithReceiver:input];
     [self.navigationController pushViewController:payback animated:YES];
 }
-- (void) post_to_fb
-{
+
+- (void) post_to_fb {
     if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]){
         me.accountStore = [[ACAccountStore alloc] init];
         ACAccountType *facebookAccountType = [me.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
         me.facebookAccount = nil;
 
         NSDictionary *options = @{
-                                  ACFacebookAppIdKey: @"198279616971457",
-                                  ACFacebookPermissionsKey: @[@"publish_stream"],
-                                  ACFacebookAudienceKey: ACFacebookAudienceFriends
-                                  };
+                ACFacebookAppIdKey: @"198279616971457",
+                ACFacebookPermissionsKey: @[@"publish_stream"],
+                ACFacebookAudienceKey: ACFacebookAudienceFriends
+        };
 
         [me.accountStore requestAccessToAccountsWithType:facebookAccountType
-                                                 options:options completion:^(BOOL granted, NSError *e)
-         {
+                options:options completion:^(BOOL granted, NSError *e)
+        {
              if (granted) {
                  NSArray *accounts = [me.accountStore accountsWithAccountType:facebookAccountType];
                  me.facebookAccount = [accounts lastObject];
@@ -488,8 +480,7 @@
     }
 }
 
-- (void) post_to_twitter
-{
+- (void) post_to_twitter {
     SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
     [controller setInitialText:[NSString stringWithFormat:@"I just Nooch'ed %@!",[self.trans objectForKey:@"Name"]]];
     [controller addURL:[NSURL URLWithString:@"http://www.nooch.com"]];
@@ -499,7 +490,6 @@
         NSString *output= nil;
         switch (result) {
             case SLComposeViewControllerResultCancelled:
-                
                 NSLog (@"cancelled");
                 break;
             case SLComposeViewControllerResultDone:
@@ -519,8 +509,7 @@
     controller.completionHandler =myBlock;
 }
 
--(void)post
-{
+-(void)post {
     SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
     [controller setInitialText:[NSString stringWithFormat:@"I just Nooch'ed %@!",[self.trans objectForKey:@"Name"]]];
     [controller addURL:[NSURL URLWithString:@"http://www.nooch.com"]];
@@ -547,19 +536,16 @@
     };
     controller.completionHandler =myBlock;
 }
--(void)finishedPosting
-{
+-(void)finishedPosting {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-- (void) dispute
-{
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to dispute this transfer? Your account will be suspended while we investigate to protect your account." delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+- (void) dispute {
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Sure About This?" message:@"To protect your money, if you dispute a transfer your Nooch account will be temporarily suspended while we investigate." delegate:self cancelButtonTitle:@"Yes - Dispute" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1];
 }
 
-- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (alertView.tag == 1) {
         if (buttonIndex == 0) {
             self.responseData = [NSMutableData data];
@@ -592,7 +578,7 @@
     } 
     else if (alertView.tag == 50 && buttonIndex == 1) {
         if (![MFMailComposeViewController canSendMail]){
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't seem to have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [av show];
             return;
         }
@@ -611,8 +597,7 @@
 }
 
 #pragma mark - server delegation
-- (void) listen:(NSString *)result tagName:(NSString *)tagName
-{
+- (void) listen:(NSString *)result tagName:(NSString *)tagName {
     if ([tagName isEqualToString:@"tranDetail"]) {
         [blankView removeFromSuperview];
         NSError *error;
@@ -632,18 +617,17 @@
                 uint8_t *bytes = malloc(sizeof(*bytes) * c);
                 
                 unsigned i;
-                for (i = 0; i < c; i++)
-                {
+                for (i = 0; i < c; i++) {
                     NSString *str = [bytedata objectAtIndex:i];
                     int byte = [str intValue];
                     bytes[i] = (uint8_t)byte;
                 }
-                
+
                 NSData *datos = [NSData dataWithBytes:bytes length:c];
-                
+
                 imgTran=[[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
                 [imgTran setImage:[UIImage imageWithData:datos]];
-                
+
                 mapView_ = [GMSMapView mapWithFrame:CGRectMake(165, 240, 150, 160) camera:camera];
                 if ([[UIScreen mainScreen] bounds].size.height == 480) {
                     [imgTran setFrame:CGRectMake(5, 240, 150, 80)];
@@ -725,7 +709,7 @@
             NSDate *yourDate = [dateFormatter dateFromString:[loginResult valueForKey:@"TransactionDate"]];
             dateFormatter.dateFormat = @"dd-MMMM-yyyy";
             [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
-            
+
             NSString*statusstr;
             if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
                 if ([[loginResult objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
@@ -772,7 +756,7 @@
 
             [status setText:statusstr];
             [self.view addSubview:status];
-            
+
             NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
             UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(90, 190, 140, 30)];
             [datelbl setTextAlignment:NSTextAlignmentCenter]; [datelbl setFont:[UIFont fontWithName:@"Roboto-Light" size:16]];
@@ -780,7 +764,7 @@
             [self.view addSubview:datelbl];
             datelbl.text=[NSString stringWithFormat:@"%@ %@, %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]];
         }
-        
+
         serve *info = [serve new];
         info.Delegate = self;
         info.tagName = @"info";
@@ -810,7 +794,7 @@
         //[nav_ctrl popToRootViewControllerAnimated:YES];
     }
     else if ([tagName isEqualToString:@"dispute"]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Transfer Disputed" message:@"Thanks for letting us knox about this. We will investigate and may contact you for more information." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Transfer Disputed" message:@"Thanks for letting us know about this. We will investigate and may contact you for more information." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [[assist shared]setSusPended:YES];
         [nav_ctrl popToRootViewControllerAnimated:YES];
@@ -840,8 +824,7 @@
         }
     }
 }
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     [imageCache clearMemory];
