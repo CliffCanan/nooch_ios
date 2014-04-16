@@ -92,7 +92,7 @@
         if ([[assist shared]isRequestMultiple]) {
             NSString*strMultiple=@"";
             for (NSDictionary *dictRecord in [[assist shared]getArray]) {
-                strMultiple=[strMultiple stringByAppendingString:[NSString stringWithFormat:@",%@ %@",[dictRecord[@"FirstName"] capitalizedString],[dictRecord[@"LastName"] capitalizedString]]];
+                strMultiple=[strMultiple stringByAppendingString:[NSString stringWithFormat:@", %@ %@",[dictRecord[@"FirstName"] capitalizedString],[dictRecord[@"LastName"] capitalizedString]]];
             }
             [to_label setStyleId:@"label_howmuch_recipientname"];
             strMultiple=[strMultiple substringFromIndex:1];
@@ -164,7 +164,6 @@
     [self.send setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal]; [self.send setTitle:@"Send" forState:UIControlStateNormal];
     [self.send addTarget:self action:@selector(initialize_send) forControlEvents:UIControlEventTouchUpInside];
 
-    //[self.send setFrame:CGRectMake(160, 160, 150, 50)];
 
     self.request = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.request setBackgroundColor:kNoochBlue];
@@ -205,24 +204,7 @@
     [self.view addSubview:self.reset_type];
 
     [self.navigationItem setRightBarButtonItem:Nil];
-    /*self.balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.balance setFrame:CGRectMake(0, 0, 60, 30)];
-    [self.balance.titleLabel setFont:kNoochFontMed];
-    [self.balance setStyleId:@"navbar_balance"];
-
-    if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
-        [self.navigationItem setRightBarButtonItem:Nil];
-        if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound) {
-            [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
-        }
-        else
-            [self.balance setTitle:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
-        UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
-        [self.navigationItem setRightBarButtonItem:funds];
-    }
-    else {
-        [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
-    }*/
+    
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
         CGRect frame = back.frame;
         frame.size.height = 175;
