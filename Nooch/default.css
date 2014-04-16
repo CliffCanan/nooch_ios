@@ -480,16 +480,17 @@
 		}
 	.exportHistorybutton{
 		background-color: #3FABE1;
-        border-radius   : 4px;
-        top                 :450px;
-		font-family			: "Roboto";
-		font-weight         : regular;
-		font-size			: 14px;
-		text-align       	: center;
-		color 				: white;
-		width				: 130px;
-		left                : 10px;
-		height				: 30px;
+        border-radius: 4px;
+        top:450px;
+		font-family: "Roboto";
+		font-weight: regular;
+		font-size: 14px;
+		text-align: center;
+		color: white;
+		width: 130px;
+		left: 10px;
+		height: 30px;
+		box-shadow: 1px 1px 2px rgba(88,90,92,0.55);
 	}
 	
 	/****  		Sub-header Text (Outside of Table)     ****/
@@ -504,45 +505,45 @@
 		left                : 20px;
 		height				: 30px;
 	}
+	
+	/************************************/
+	/*******     TABLE STYLE 2      ******   SELECT RECIPIENT screen; CHOOSE A CAUSE screen ****/
+	/************************************/
+	.table_view_2 {
+		row-height		: 45px;
+		separator-color	: rgba(188,190,192,.65);
+		separator-style : single-line;
+		background-color: #ffffff;
+	}
 
-		 /************************************/
-		 /*******     TABLE STYLE 2      ******   SELECT RECIPIENT screen; CHOOSE A CAUSE screen ****/
-		 /************************************/
-		 .table_view_2 {
-			row-height		: 45px;
-			separator-style : single-line;
-			separator-color	: rgba(188,190,192,.65);
-			background-color: #ffffff;
-		}
-
-		 .table_view_cell_2 {text-overflow	: ellipsis; } 
+	.table_view_cell_2 {text-overflow	: ellipsis; } 
 		 
-		/****  Table Cell View Main Text Label (Left Side)  ****/
-		 .table_view_cell_textlabel_2 {
-			font-family			: "Roboto";
-			font-weight         : regular;
-			font-size			: 17px;
-			text-align       	: left;
-			color 				: #313233;
-			width				: 250px;
-			left                : 20px;
-			height				: 30px;
-		}
+	/****  Table Cell View Main Text Label (Left Side)  ****/
+	.table_view_cell_textlabel_2 {
+		font-family			: "Roboto";
+		font-weight         : regular;
+		font-size			: 17px;
+		text-align       	: left;
+		color 				: #313233;
+		width				: 250px;
+		left                : 20px;
+		height				: 30px;
+	}
 
-		/****  Table text right side  ****/
-		.table_view_cell_detailtext_2 {
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 17px;
-			text-align       	: right;
-			color 				: #6d6e71;
-			width				: 280px;
-			left                : 20px;
-			height				: 30px;
-		}
-		/***********************/
-		/****  END TABLES   ****/
-		/***********************/
+	/****  Table text right side  ****/
+	.table_view_cell_detailtext_2 {
+		font-family			: "Roboto";
+		font-weight         : light;
+		font-size			: 17px;
+		text-align       	: right;
+		color 				: #6d6e71;
+		width				: 280px;
+		left                : 20px;
+		height				: 30px;
+	}
+	/***********************/
+	/****  END TABLES   ****/
+	/***********************/
 
 	/*** 	 SIGNUP FLOW:  Instructional Text	***/
 	/***      FUNDS FLOW:  Instructional Text	***/
@@ -564,9 +565,7 @@
 	}
 
  /*******************************************
-  *******************************************
-  ********  	PROFILE STATUS	VIEWS     ********
-  *******************************************
+  ********  PROFILE STATUS VIEWS     ********
   *******************************************/
     #suspended {
         width           : 320px;
@@ -1843,8 +1842,8 @@
 	/**  Left Side Main Text ("You Paid/Requested/Donated...")  **/
 	.history_cell_textlabel { 
 		width				: 185px;
-		height				: 15px;
-		top					: 16px;
+		height				: 20px;
+		top					: 10px;
 		left				: 75px;
 		font-size			: 16px;
 	}
@@ -1853,7 +1852,7 @@
 	.history_datetext {
 		width				: 150px;
 		height				: 14px;
-		top					: 38px;
+		top					: 35px;
 		left                : 76px;
 		font-family			: "Roboto";
 		font-weight         : light;
@@ -1865,8 +1864,8 @@
 	/**  Amount of the Transfer on the right side of the row  **/
 	.history_transferamount {
 		width				: 65px;
-		height				: 26px;
-		top					: 5px;
+		height				: 20px;
+		top					: 10px;
 		left				: 250px;
 		font-family			: "Roboto";
 		font-weight         : regular;
@@ -1987,7 +1986,7 @@
 	.details_othername {
 		width				: 213px;
 		height				: 28px;
-		top					: 24px;
+		top					: 26px;
 		left                : 88px;
 		font-family			: "Roboto";
 		font-weight         : regular;
@@ -2009,7 +2008,7 @@
 	.details_amount {
 		width				: 213px;
 		height				: 40px;
-		top					: 58px;
+		top					: 60px;
 		left                : 88px;
 		font-family			: "Roboto";
 		font-weight         : medium;
@@ -2210,7 +2209,6 @@
         font-size	: 11px;
 		text-align	: right;
     }
-
 	table-view#settings {
 		width			: 322px;
         height			: 150px;
@@ -2222,7 +2220,6 @@
 		separator-color	: rgba(188,190,192,0.9);
 		border			: 1px solid rgb(188,190,192);
 	}
-    
     table-view#settings_resetpw {
 		width				: 320px;
         height             : 150px;
@@ -2233,7 +2230,6 @@
 		separator-style 	: single-line;
 		separator-color		: rgba(188,190,192,0.9);
 	}
-
 	/**  Left side text label. **/
 	.settings_table_label {
 		width		: 250px;
@@ -2246,20 +2242,18 @@
 		font-size	: 18px;
 		text-align	: left;
 	}
-
 	/**  Gray Signout Button. **/
 	#button_signout {
 		width				: 260px;
 		height				: 44px;
-		top					: 410px;
+		top					: 415px;
 		left				: 30px;
 		font-size			: 18px;
 	}
-    
     #button_signout_4 {
 		width				: 260px;
 		height				: 44px;
-		top					: 360px;
+		top					: 364px;
 		left				: 30px;
 		font-size			: 18px;
 	}
@@ -2280,13 +2274,13 @@
 		font-size	: 18px;
 		text-align	: left;
     }
-	
+
 	.resetpw_left_label	{ 
 		width			: 170px;
 		left			: 15px;
 		font-size		: 16px;
 	}
-	
+
 	.resetpw_right_label {
 		width			: 140px;
 		height			: 45px;
@@ -2298,7 +2292,7 @@
 		font-weight		: light;
 		text-align		: right;
 	}
-	
+
 	.password_strength_label {
 		width			: 125px;
 		height			: 15px;
@@ -2310,7 +2304,7 @@
 		font-weight		: regular;
 		text-align		: left;
 	}
-	
+
 	.password_strength_feedback {
 		width			: 120px;
 		height			: 15px;
@@ -2322,7 +2316,7 @@
 		font-weight		: regular;
 		text-align		: left;
 	}
-	
+
 	.resetpw_match {
 		width			: 125px;
 		height			: 10px;
@@ -2334,7 +2328,7 @@
 		text-align		: center;
 		text-transform	: uppercase;
 	}
-	
+
 	#resetpw_check_icon {
 		width			: 12px;
 		height			: 8px;
@@ -2358,7 +2352,6 @@
 		font-size		: 23px;
 		text-align		: center;
 	}
-	
 	#refer_invitecode {
 		width			: 300px;
 		height			: 45px;
@@ -2372,7 +2365,6 @@
 		text-align		: center;
 		text-transform	: uppercase;
 	}
-	
 	.refer_header {
 		width			: 250px;
 		height			: 25px;
@@ -2383,7 +2375,7 @@
 		font-size		: 17px;
 		text-align		: left;
 	}
-	
+
 	/**  Circle Buttons at the bottom ('Pay Back'  FB  Twitter  'Dispute' **/
 	.refer_buttons {
 		width				: 50px;
@@ -2474,14 +2466,14 @@
 /*****     STATS     *****/
 /*************************/
 	table-view.stats {
-		height			: 320px;
+		height			: 340px;
 		width			: 300px;
 		top				: 80px;
 		left			: 0px;
 		background-color: white;
-		row-height		: 44px;
+		row-height		: 46px;
 		separator-style : single-line;
-		separator-color : rgba(188,190,192,.5);
+		separator-color : rgba(188,190,192,.65);
 	}
 	.stats_header {
 		width			: 300px;
@@ -2510,10 +2502,10 @@
 		height			: 50px;
 		top				: 0px;
 		left			: 230px;
-		color			: #313233;
+		color			: #3fabe1;
 		font-family		: "Roboto";
 		font-weight		: regular;
-		font-size		: 16px;
+		font-size		: 17px;
 		text-align		: center;
 	}
 	.stats_table_right_lable1 {
@@ -2524,11 +2516,12 @@
 		color			: #3fabe1;
 		font-family		: "Roboto";
 		font-weight		: light;
-		font-size		: 13px;
+		font-size		: 14px;
 		text-align		: center;
 	}
 
 	.stats_circle {
+		top			: 15px;
 		shape		: ellipse;
 		width		: 55px;
 		height		: 55px;
@@ -2537,9 +2530,9 @@
         left						: 33px;
         background-image			: url(stats-profile-active.png);
 		animation-name				: floatingStatsCircle;
-		animation-duration			: 1.75s;	
+		animation-duration			: 2s;	
 		animation-iteration-count	: infinite;
-		animation-timing-function	: ease-in-out;
+		animation-timing-function	: ease;
     }
 	#stats_circle_profile_inactive 		{ 
         background-image: url(stats-profile-inactive.png);
@@ -2549,9 +2542,9 @@
         background-image: url(stats-transfers-active.png);
         left : 121px;
 		animation-name				: floatingStatsCircle;
-		animation-duration			: 1.75s;	
+		animation-duration			: 2s;	
 		animation-iteration-count	: infinite;
-		animation-timing-function	: ease-in-out;
+		animation-timing-function	: ease;
     }
 	#stats_circle_transfers_inactive 	{ 
         background-image: url(stats-transfers-inactive.png);
@@ -2561,9 +2554,9 @@
         background-image: url(stats-donations-active.png);
         left :  209px;
 		animation-name				: floatingStatsCircle;
-		animation-duration			: 1.75s;	
+		animation-duration			: 2s;	
 		animation-iteration-count	: infinite;
-		animation-timing-function	: ease-in-out;
+		animation-timing-function	: ease
     }
 	#stats_circle_donations_inactive 	{ 
         background-image: url(stats-donations-inactive.png);
@@ -2642,9 +2635,11 @@
 	
 /**  FLOATING Stats Circle Icon **/
 @keyframes floatingStatsCircle {
-	from {top: 13px;}
-	50% {top: 7px;}	
-	to {top: 13px;}			
+	0% {top: 15px;}
+	25% {top: 8px;}	
+	50% {top: 15px;}	
+	75% {top: 8px;}	
+	100% {top: 15px;}			
 }
 
 /*=============================

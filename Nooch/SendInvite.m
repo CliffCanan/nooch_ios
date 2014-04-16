@@ -1,10 +1,8 @@
-//
 //  SendInvite.m
 //  Nooch
 //
 //  Created by crks on 10/8/13.
-//  Copyright (c) 2013 Nooch. All rights reserved.
-//
+//  Copyright (c) 2014 Nooch. All rights reserved.
 
 #import "SendInvite.h"
 #import <AddressBook/AddressBook.h>
@@ -37,8 +35,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    
+
     [self.navigationItem setHidesBackButton:YES];
     [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
     UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
@@ -49,36 +46,36 @@
     [hamburger setBackgroundImage:ttt.image forState:UIControlStateNormal];
     UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
-    
+
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     // Do any additional setup after loading the view from its nib.
     [self.navigationItem setTitle:@"Refer a Friend"];
-    
+
     [self.view setStyleClass:@"background_gray"];
-    
+
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 320, 40)];
     [title setText:@"Your referral code:"];
     [title setStyleId:@"refer_introtext"];
     [self.view addSubview:title];
-    
+
     code = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, 320, 100)];
     [code setStyleId:@"refer_invitecode"];
     //[code setText:@"MIKE123"];
     [self.view addSubview:code];
-    
+
     UILabel *with = [[UILabel alloc] initWithFrame:CGRectMake(20, 130, 170, 40)];
     [with setStyleClass:@"refer_header"];
     [with setText:@"Refer a friend with..."];
     [self.view addSubview:with];
-    
+
     CGRect frame;
-    
+
     UIButton *sms = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [sms setStyleClass:@"refer_buttons"];
     [sms setStyleId:@"refer_sms"];
     [sms addTarget:self action:@selector(SMSClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
+
     [self.view addSubview:sms];
     UILabel *sms_label = [UILabel new];
     frame = sms.frame;
@@ -87,12 +84,12 @@
     [sms_label setStyleClass:@"refer_buttons_labels"];
     [sms_label setText:@"SMS Text"];
     [self.view addSubview:sms_label];
-    
+
     UIButton *fb = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [fb setStyleClass:@"refer_buttons"];
     [fb setStyleId:@"refer_fb"];
     [fb addTarget:self action:@selector(fbClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
+
     [self.view addSubview:fb];
     UILabel *fb_label = [UILabel new];
     frame = fb.frame;
@@ -101,12 +98,12 @@
     [fb_label setStyleClass:@"refer_buttons_labels"];
     [fb_label setText:@"Facebook"];
     [self.view addSubview:fb_label];
-    
+
     UIButton *twit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [twit setStyleClass:@"refer_buttons"];
     [twit setStyleId:@"refer_twit"];
     [twit addTarget:self action:@selector(TwitterClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
+
     [self.view addSubview:twit];
     UILabel *twit_label = [UILabel new];
     frame = twit.frame;
@@ -115,7 +112,7 @@
     [twit_label setStyleClass:@"refer_buttons_labels"];
     [twit_label setText:@"Twitter"];
     [self.view addSubview:twit_label];
-    
+
     UIButton *email = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [email setStyleClass:@"refer_buttons"];
     [email setStyleId:@"refer_email"];
@@ -128,7 +125,7 @@
     [email_label setStyleClass:@"refer_buttons_labels"];
     [email_label setText:@"Email"];
     [self.view addSubview:email_label];
-    
+
     blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
     [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
     UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -137,43 +134,37 @@
     [blankView addSubview:actv];
     [self .view addSubview:blankView];
     [self.view bringSubviewToFront:blankView];
-    
+
     serve*serveOBJ=[serve new];
     serveOBJ.tagName=@"GetReffereduser";
-    
+
     [serveOBJ setDelegate:self];
     [serveOBJ getInvitedMemberList:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]];
-    
-    
 }
+
 #pragma mark - file paths
 - (NSString *)autoLogin{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
-    
 }
+
 #pragma mark - server Delegation
 
 -(void) listen:(NSString *)result tagName:(NSString *)tagName{
     NSError* error;
-    
+
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
         UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
         [Alert show];
-        
-        
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-        
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         
         NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
         [timer invalidate];
         // timer=nil;
-        
         
         [nav_ctrl performSelector:@selector(disable)];
         [nav_ctrl performSelector:@selector(reset)];
@@ -184,7 +175,6 @@
         return;
     }
     
-    
     if ([tagName isEqualToString:@"recents"]) {
         
         self.recents = [NSJSONSerialization
@@ -193,7 +183,7 @@
                         error:&error];
         [self.contacts reloadData];
     }
-    
+
     else if ([tagName isEqualToString:@"ReferralCode"]) {
         [blankView removeFromSuperview];
         
@@ -207,10 +197,8 @@
         [defaults synchronize];
         code.text=[NSString stringWithFormat:@"%@",[[dictResponse valueForKey:@"getReferralCodeResult"] valueForKey:@"Result"]];
         NSLog(@"%@",dictResponse);
-        
     }
-    else if ([tagName isEqualToString:@"GetReffereduser"])
-    {
+    else if ([tagName isEqualToString:@"GetReffereduser"]) {
         dictInviteUserList=[[NSMutableDictionary alloc]init];
         dictInviteUserList=[NSJSONSerialization
                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
@@ -219,37 +207,34 @@
         if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"]count]>0) {
             self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 42, 320, [[UIScreen mainScreen] bounds].size.height-90)];
             [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
-            
+            [self.contacts setStyleClass:@"raised_view"];
             [self.contacts setStyleId:@"refer"];
             if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] count]==1) {
                 [self.contacts setStyleCSS:@"height : 60px"];
             }
-            
+
             [self.contacts setSeparatorStyle:UITableViewCellSeparatorStyleNone];
             self.contacts.separatorColor = [UIColor clearColor];
             //[self.contacts setStyleClass:@"raised_view"];
             [self.view addSubview:self.contacts]; [self.contacts reloadData];
-            
+
             UILabel *invited = [[UILabel alloc] initWithFrame:CGRectMake(20, 265, 170, 40)];
             [invited setStyleClass:@"refer_header"];
             [invited setText:@"Friends you referred:"];
             [self.view addSubview:invited];
             [self.contacts  setHidden:NO];
             [self.contacts reloadData];
-            
+
         }
         else
             [self.contacts  setHidden:YES];
-        
+
         serve*serveOBJ=[serve new];
         serveOBJ.tagName=@"ReferralCode";
         [serveOBJ setDelegate:self];
         [serveOBJ GetReferralCode:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]];
-        
-        
     }
-    else if ([tagName isEqualToString:@"SMS"])
-    {
+    else if ([tagName isEqualToString:@"SMS"]) {
         [self.navigationController setNavigationBarHidden:NO];
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDelegate:self];
@@ -260,10 +245,8 @@
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Message Sent Successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
          [self callService:@"SM"];
-        
     }
 }
-
 
 #pragma mark - UITableViewDataSource
 
@@ -274,11 +257,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (cell == nil) {
-        
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:CellIdentifier];
         
@@ -288,7 +269,6 @@
         [subview removeFromSuperview];
     NSDictionary*dict=[[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] objectAtIndex:indexPath.row];
     NSLog(@"%@",dict);
-    
     \
     UIImageView *user_pic = [UIImageView new];
     user_pic.clipsToBounds = YES;
@@ -311,46 +291,43 @@
     //Date from Time stamp
     start = [[dict valueForKey:@"DateCreated"] rangeOfString:@"("];
     end = [[dict valueForKey:@"DateCreated"] rangeOfString:@")"];
-    if (start.location != NSNotFound && end.location != NSNotFound && end.location > start.location)
-    {
+    if (start.location != NSNotFound && end.location != NSNotFound && end.location > start.location) {
         betweenBraces = [[dict valueForKey:@"DateCreated"] substringWithRange:NSMakeRange(start.location+1, end.location-(start.location+1))];
     }
     newString = [betweenBraces substringToIndex:[betweenBraces length]-8];
-    
+
     NSTimeInterval _interval=[newString doubleValue];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:_interval];
     NSDateFormatter *_formatter=[[NSDateFormatter alloc]init];
     [_formatter setDateFormat:@"MM/dd/yyyy"];
     NSString *_date=[_formatter stringFromDate:date];
-    
-    
+
     UILabel *datelbl = [UILabel new];
     [datelbl setText:_date];
     [datelbl setStyleClass:@"refer_datetext"];
     [cell.contentView addSubview:datelbl];
-    
+
     UILabel *seperatorlbl = [UILabel new];
     [seperatorlbl setBackgroundColor:[UIColor colorWithRed:234.0f/255.0f green:234.0f/255.0f blue:244.0f/255.0f alpha:1.0f]];
     [seperatorlbl setStyleClass:@"refer_seperator"];
     [cell.contentView addSubview:seperatorlbl];
-    
+
     return cell;
 }
 
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 - (IBAction)fbClicked:(id)sender {
-    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
-    {
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
         SLComposeViewController *fbSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-        
+
         [fbSheet setInitialText:[NSString stringWithFormat:@"%@[%@]-download here :",@"Check out @NoochMoney, the simplest way to pay me back(and pay you back)! Use my referral code",code.text]];
         [fbSheet addURL:[NSURL URLWithString:@"ow.ly/nGocT"]];
         [self presentViewController:fbSheet animated:YES completion:nil];
-        
+
         [fbSheet setCompletionHandler:^(SLComposeViewControllerResult result)
          {
              //NSLog(@"dfsdf");
@@ -367,10 +344,8 @@
              UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Facebook Message" message:output delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
              [alert show];
          }];
-        
     }
-    else
-    {
+    else {
         UIAlertView *alertView = [[UIAlertView alloc]
                                   initWithTitle:@"Sorry"
                                   message:@"Enable Settings you have at least one Facebook account setup,and make sure your device has an internet connection"
@@ -379,10 +354,9 @@
                                   otherButtonTitles:nil];
         [alertView show];
     }
-    
 }
 - (IBAction)SMSClicked:(id)sender {
-    
+
     [self.navigationController setNavigationBarHidden:YES];
     [SMSView removeFromSuperview];
     SMSView=[[UIView alloc]initWithFrame:CGRectMake(0, 568, 320, 568)];
@@ -397,18 +371,16 @@
     [lbl setFont:[UIFont systemFontOfSize:22]];
     [lbl setTextColor:[UIColor whiteColor]];
     [SMSView addSubview:lbl];
-    
-    
+
     UIButton*crossbtn=[UIButton buttonWithType:UIButtonTypeCustom];
     crossbtn.frame=CGRectMake(10,20, 70,30);
     [crossbtn setStyleClass:@"smscrossbuttn-icon"];
     [crossbtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
+
     [crossbtn setTitle:@"Cancel" forState:UIControlStateNormal];
-    // [crossbtn setBackgroundColor:[UIColor orangeColor]];
     [crossbtn addTarget:self action:@selector(crossClicked) forControlEvents:UIControlEventTouchUpInside];
     [navBar addSubview:crossbtn];
-    
+
     btnToSend=[UIButton buttonWithType:UIButtonTypeCustom];
     btnToSend.frame=CGRectMake(245,20 , 70, 30);
     // [btnToSend setBackgroundColor:[UIColor blueColor]];
@@ -417,20 +389,17 @@
     [btnToSend setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [navBar addSubview:btnToSend];
     [btnToSend addTarget:self action:@selector(sendSMS:) forControlEvents:UIControlEventTouchUpInside];
-    
+
     UIButton*phonebookbtn=[UIButton buttonWithType:UIButtonTypeCustom];
     phonebookbtn.frame=CGRectMake(245,75, 50,50);
     [phonebookbtn setStyleClass:@"plusbutton"];
     [phonebookbtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    
+
     [phonebookbtn setTitle:@"+" forState:UIControlStateNormal];
-    // [crossbtn setBackgroundColor:[UIColor orangeColor]];
     [phonebookbtn addTarget:self action:@selector(showcontacts) forControlEvents:UIControlEventTouchUpInside];
     [SMSView addSubview:phonebookbtn];
-    
-    
+
     textPhoneto=[[UITextField alloc]initWithFrame:CGRectMake(10, 74, 240, 40)];
-    
     textPhoneto.textColor = [UIColor blackColor];
     textPhoneto.borderStyle = UITextBorderStyleRoundedRect;
     textPhoneto.font = [UIFont systemFontOfSize:30.0];
@@ -440,7 +409,7 @@
     [textPhoneto becomeFirstResponder];
     [textPhoneto setDelegate:self];
     //NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
+
     msgTextView = [[UITextView alloc] initWithFrame:CGRectMake(10, 125, 300, 200)];
     [msgTextView setFont:[UIFont systemFontOfSize:18]];
     //NSArray*arrReferCode=[referCode.text componentsSeparatedByString:@":"];
@@ -463,12 +432,12 @@
 #pragma mark - ABPeoplePickerNavigationController Delegate method implementation
 
 -(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person{
-    
+
     // Initialize a mutable dictionary and give it initial values.
     NSMutableDictionary *contactInfoDict = [[NSMutableDictionary alloc]
                                             initWithObjects:@[@"", @"", @"", @"", @"", @"", @"", @"", @""]
                                             forKeys:@[@"firstName", @"lastName", @"mobileNumber", @"homeNumber", @"homeEmail", @"workEmail", @"address", @"zipCode", @"city"]];
-    
+
     // Use a general Core Foundation object.
     CFTypeRef generalCFObject = ABRecordCopyValue(person, kABPersonFirstNameProperty);
     
@@ -484,7 +453,7 @@
         [contactInfoDict setObject:(__bridge NSString *)generalCFObject forKey:@"lastName"];
         CFRelease(generalCFObject);
     }
-    
+
     // Get the phone numbers as a multi-value property.
     ABMultiValueRef phonesRef = ABRecordCopyValue(person, kABPersonPhoneProperty);
     for (int i=0; i<ABMultiValueGetCount(phonesRef); i++) {
@@ -494,17 +463,14 @@
         if (CFStringCompare(currentPhoneLabel, kABPersonPhoneMobileLabel, 0) == kCFCompareEqualTo) {
             [contactInfoDict setObject:(__bridge NSString *)currentPhoneValue forKey:@"mobileNumber"];
         }
-        
         if (CFStringCompare(currentPhoneLabel, kABHomeLabel, 0) == kCFCompareEqualTo) {
             [contactInfoDict setObject:(__bridge NSString *)currentPhoneValue forKey:@"homeNumber"];
         }
-        
         CFRelease(currentPhoneLabel);
         CFRelease(currentPhoneValue);
     }
     CFRelease(phonesRef);
-    
-    
+
     // Get the e-mail addresses as a multi-value property.
     ABMultiValueRef emailsRef = ABRecordCopyValue(person, kABPersonEmailProperty);
     for (int i=0; i<ABMultiValueGetCount(emailsRef); i++) {
@@ -514,62 +480,51 @@
         if (CFStringCompare(currentEmailLabel, kABHomeLabel, 0) == kCFCompareEqualTo) {
             [contactInfoDict setObject:(__bridge NSString *)currentEmailValue forKey:@"homeEmail"];
         }
-        
         if (CFStringCompare(currentEmailLabel, kABWorkLabel, 0) == kCFCompareEqualTo) {
             [contactInfoDict setObject:(__bridge NSString *)currentEmailValue forKey:@"workEmail"];
         }
-        
         CFRelease(currentEmailLabel);
         CFRelease(currentEmailValue);
     }
     CFRelease(emailsRef);
-    
-    
+
     // Get the first street address among all addresses of the selected contact.
     ABMultiValueRef addressRef = ABRecordCopyValue(person, kABPersonAddressProperty);
     if (ABMultiValueGetCount(addressRef) > 0) {
         NSDictionary *addressDict = (__bridge NSDictionary *)ABMultiValueCopyValueAtIndex(addressRef, 0);
-        
+
         [contactInfoDict setObject:[addressDict objectForKey:(NSString *)kABPersonAddressStreetKey] forKey:@"address"];
         [contactInfoDict setObject:[addressDict objectForKey:(NSString *)kABPersonAddressZIPKey] forKey:@"zipCode"];
         [contactInfoDict setObject:[addressDict objectForKey:(NSString *)kABPersonAddressCityKey] forKey:@"city"];
     }
     CFRelease(addressRef);
-    
-    
+
     // If the contact has an image then get it too.
     if (ABPersonHasImageData(person)) {
         NSData *contactImageData = (__bridge NSData *)ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
-        
         [contactInfoDict setObject:contactImageData forKey:@"image"];
     }
-    
+
     // Initialize the array if it's not yet initialized.
     
     // Add the dictionary to the array.
     // [_arrContactsData addObject:contactInfoDict];
     if (![[contactInfoDict valueForKey:@"mobileNumber"] isEqualToString:@""]) {
         textPhoneto.text= [contactInfoDict  valueForKey:@"mobileNumber"];
-        
     }
     else
-        textPhoneto.text= [contactInfoDict valueForKey:@"homeNumber"];
-    
+        textPhoneto.text= [contactInfoDict valueForKey:@"homeNumber"];    
     NSLog(@"%@",contactInfoDict );
     // Reload the table view data.
-    // [self.tableView reloadData];
-    
+    // [self.tableView reloadData];    
     // Dismiss the address book view controller.
     [_addressBookController dismissViewControllerAnimated:YES completion:nil];
-    
     return NO;
 }
-
 
 -(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier{
     return NO;
 }
-
 
 -(void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker{
     [_addressBookController dismissViewControllerAnimated:YES completion:nil];
@@ -582,9 +537,7 @@
     [UIView setAnimationDuration:0.5];
     SMSView.frame= CGRectMake(0, 568, 320, 568);
     [UIView commitAnimations];
-    
     [SMSView removeFromSuperview];
-    
 }
 -(void)sendSMS:(id)sender
 
@@ -596,36 +549,28 @@
     //    }
     if ([textPhoneto.text rangeOfString:@"("].location !=NSNotFound) {
         [textPhoneto.text stringByReplacingOccurrencesOfString:@"(" withString:@""];
-        
     }
     if ([textPhoneto.text rangeOfString:@")"].location !=NSNotFound) {
         [textPhoneto.text stringByReplacingOccurrencesOfString:@")" withString:@""];
-        
     }
     if ([textPhoneto.text rangeOfString:@"-"].location !=NSNotFound) {
         [textPhoneto.text stringByReplacingOccurrencesOfString:@"-" withString:@""];
-        
     }
-    if([textPhoneto.text length]>=10)
-    {
-        
+    if([textPhoneto.text length]>=10) {
         serve*serveOBJ=[serve new];
         serveOBJ.tagName=@"SMS";
         [serveOBJ setDelegate:self];
-        [serveOBJ SendSMSApi:textPhoneto.text msg:msgTextView.text];
-        
+        [serveOBJ SendSMSApi:textPhoneto.text msg:msgTextView.text];        
     }
-    
 }
 - (IBAction)TwitterClicked:(id)sender {
-    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
-    {
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]) {
         SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
         //NSArray*arrReferCode=[referCode.text componentsSeparatedByString:@":"];
         [tweetSheet setInitialText:[NSString stringWithFormat:@"%@[%@]-download here :",@"Check out @NoochMoney, the simplest way to pay me back! Use my referral code",code.text]];
         [tweetSheet addURL:[NSURL URLWithString:@"ow.ly/nGocT"]];
         [self presentViewController:tweetSheet animated:YES completion:nil];
-        
+
         [tweetSheet setCompletionHandler:^(SLComposeViewControllerResult result)
          {
              NSString *output;
@@ -641,11 +586,8 @@
              UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Twitter Message" message:output delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
              [alert show];
          }];
-        
-        
     }
-    else
-    {
+    else {
         UIAlertView *alertView = [[UIAlertView alloc]
                                   initWithTitle:@"Sorry"
                                   message:@"Enable Settings you have at least one Twitter account setup,and make sure your device has an internet connection"
@@ -654,8 +596,6 @@
                                   otherButtonTitles:nil];
         [alertView show];
     }
-    
-    
 }
 -(void)callService:(NSString*)shareTo{
     serve*serveOBJ=[serve new];
@@ -665,20 +605,17 @@
 }
 - (IBAction)EmailCLicked:(id)sender {
     NSString *emailTitle = @"NoochMoney";
-    
+
     NSString *messageBody; // Change the message body to HTML
     messageBody=[NSString stringWithFormat:@"<h5>\"Hi, Your friend %@ has invited you to become a member of Nooch, the simplest way to pay back friends.<br />Accept this invitation by downloading Nooch and using this Referral Code: %@ <br /><br />To learn more about Nooch, check us out</h5> <a href=\"https://www.nooch.com/overview/\">here</a><br /><h6>-Team Nooch\"</h6>",[user objectForKey:@"firstName"],code.text];
-    
+
     MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
     mc.mailComposeDelegate = self;
     [mc setSubject:emailTitle];
     [mc setMessageBody:messageBody isHTML:YES];
-    
-    
+
     [self presentViewController:mc animated:YES completion:NULL];
 }
-
-
 
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
@@ -690,14 +627,14 @@
         case MFMailComposeResultCancelled:
             //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"Mail cancelled" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
             // [alert show];
-            
+
             [alert setTitle:@"Mail cancelled"];
             [alert show];
             NSLog(@"Mail cancelled");
             break;
         case MFMailComposeResultSaved:
             NSLog(@"Mail saved");
-            
+
             [alert setTitle:@"Mail saved"];
             [alert show];
             break;
@@ -716,7 +653,6 @@
         default:
             break;
     }
-    
     // Close the Mail Interface
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
@@ -725,5 +661,4 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 @end
