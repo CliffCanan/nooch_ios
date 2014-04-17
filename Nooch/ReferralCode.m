@@ -56,14 +56,17 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 140, 300, 40)];
-    [title setTextColor:kNoochGrayDark]; [title setBackgroundColor:[UIColor clearColor]];
-    [title setText:@"Enter Referral Code"]; [title setTextAlignment:NSTextAlignmentCenter];
+    [title setTextColor:kNoochGrayDark];
+    [title setBackgroundColor:[UIColor clearColor]];
+    [title setText:@"Enter Referral Code"];
+    [title setTextAlignment:NSTextAlignmentCenter];
     [title setFont:[UIFont systemFontOfSize:24]];
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
 
-    UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 170, 280, 70)];
-    [prompt setTextColor:kNoochGrayDark]; [prompt setBackgroundColor:[UIColor clearColor]];
+    UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 150, 280, 70)];
+    [prompt setTextColor:kNoochGrayDark];
+    [prompt setBackgroundColor:[UIColor clearColor]];
     [prompt setNumberOfLines:3];
     [prompt setFont:[UIFont systemFontOfSize:14]];
     [prompt setText:@"Nooch is currently invite-only. If you have a Referral Code enter it below to sign up."]; [prompt setTextAlignment:NSTextAlignmentCenter];
@@ -92,6 +95,7 @@
     [self.code_field setKeyboardType:UIKeyboardTypeAlphabet];
     [self.code_field setDelegate:self];
     [self.code_field setTextAlignment:NSTextAlignmentCenter];
+    [self.code setFont:[UIFont systemFontOfSize:20]];
     [self.code_field setPlaceholder:@"ENTER CODE"];
     self.code_field.layer.borderWidth = 2;
     self.code_field.layer.borderColor = kNoochGrayLight.CGColor;
