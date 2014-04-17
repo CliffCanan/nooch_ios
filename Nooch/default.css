@@ -813,7 +813,6 @@
 		font-family			: "Roboto";
 		font-size			: 20px;
 		font-weight         : light;
-		font-stretch		: semi-expanded;
 		text-align       	: center;
 		color 				: #ffffff;
 		text-transform		: uppercase;
@@ -821,31 +820,44 @@
 
 	/**  Sets the position for the Request Button. **/
 	#howmuch_request {
-		left	: 9px;
-		top		: 204px;
+		background-image: linear-gradient(#6dbee8, #41abe1);
+		/*border: 1px solid #29A1DE;*/
+		border-bottom-left-radius: 4px;
+		left: 9px;
+		top: 204px;
 	}
     #howmuch_request_4 {
-		left	: 9px;
-		top		: 139px;
+		background-image: linear-gradient(#6dbee8, #41abe1);
+		/*border: 1px solid #29A1DE;*/
+		border-bottom-left-radius: 4px;
+		left: 9px;
+		top: 139px;
 	}
 	/**  Sets the position for the Send Button. **/
 	#howmuch_send {
-		left	: 162px;
-		top		: 204px;
+		background-image: linear-gradient(#7fd034, #6ab029);
+		/*border: 1px solid #66AE3C;*/
+		left: 162px;
+		top: 204px; 
+		border-bottom-right-radius: 4px;
 	}
     #howmuch_send_4 {
-		left	: 162px;
-		top		: 139px;
+		background-image: linear-gradient(#7fd034, #6ab029);
+		/*border: 1px solid #66AE3C;*/
+		left: 162px;
+		top: 139px;
+		border-bottom-right-radius: 4px;
 	}
 	.nonhowmuch_send {
         left	            : 9px;
+		border-bottom-right-radius: 4px;
+		border-bottom-left-radius: 4px;
 		top		            : 204px;
 		width				: 302px;
 		height				: 56px;
 		font-family			: "Roboto";
 		font-size			: 22px;
 		font-weight         : light;
-		font-stretch		: semi-expanded;
 		text-align       	: center;
 		color 				: #ffffff;
 		text-transform		: uppercase;
@@ -871,6 +883,8 @@
     #howmuch_send_expand {
         width: 302px;
         left: 9px;
+		border-bottom-right-radius: 4px;
+		border-bottom-left-radius: 4px;
     }
     #howmuch_send_hide {
         left:311px;
@@ -879,12 +893,16 @@
     #howmuch_request_expand {
         width: 302px;
         left: 9px;
+		border-bottom-right-radius: 4px;
+		border-bottom-left-radius: 4px;
     }
     #howmuch_request_mult_expand {
         width: 302px;
         left: 9px;
-        top: 210px;
-        height: 50px;
+        top: 204px;
+        height: 56px;
+		border-bottom-right-radius: 4px;
+		border-bottom-left-radius: 4px;
     }
     #howmuch_request_hide {width: 1px;}
     #cancel_hidden {
@@ -1142,9 +1160,9 @@
 	/**  Background white box for the recipient info right above the number pad.  **/  
 	.pin_recipientbox {
 		top				: 198px;
-		left			: 9px;
-		width			: 302px;
-		height			: 71px;
+		left			: 6px;
+		width			: 308px;
+		height			: 72px;
 		background-color: white;
 		border-radius	: 4px;
 	}
@@ -2065,6 +2083,10 @@
 		font-weight     : light;
         height			: 50px;
         background-image: linear-gradient(#7fd034, #6ab029);
+		
+		animation-name: moveUp_transDetailsBtns;
+		animation-duration: 0.9s;
+		animation-timing-function: ease-out;
 	}
 	.details_button_right {
 		height				: 50px;
@@ -2077,6 +2099,10 @@
 		font-weight         : light;
 		font-size			: 22px;
         background-image	: linear-gradient(#F5003D, #D21937);
+		
+		animation-name: moveUp_transDetailsBtns;
+		animation-duration: 0.9s;
+		animation-timing-function: ease-out;
 	}
     .details_button_center {
         height			: 50px;
@@ -2089,19 +2115,22 @@
 		font-weight     : light;
 		font-size		: 22px;
         background-image: linear-gradient(#F5003D, #D21937);
+		
+		animation-name: moveUp_transDetailsBtns;
+		animation-duration: 0.9s;
+		animation-timing-function: ease-out;
 	}
 
 	/**  Circle Buttons at the bottom ('Pay Back'  FB  Twitter  'Dispute' **/
 	.details_buttons {
-		width				: 50px;
-		height				: 50px;
-		top					: 420px;
+		width: 50px;
+		height: 50px;
+		top: 420px;
 	}
-
     .details_buttons_4 {
-		width				: 50px;
-		height				: 50px;
-		top					: 332px;
+		width: 50px;
+		height: 50px;
+		top: 332px;
 	}
 
 	/**  Text labels immediately below each round button at the bottom of Transfer Details. **/
@@ -2115,7 +2144,6 @@
 		font-size			: 12px;
 		color 				: #6d6e71;
 	}
-
     .details_buttons_labels_4 {
 		width				: 55px;
         text-align          : center;
@@ -2621,12 +2649,23 @@
 }
 
 /*=============================
+			Move Up
+  ============================= */
+@keyframes moveUp_transDetailsBtns {
+    0% {top: 502;}
+    40% {top: 428;}
+    60% {top: 432;}
+    80% {top: 429;}
+    100% {top: 430;}
+}
+	
+/*=============================
 			pullUp
   ============================= */
 .pullUp{
 	animation-name: pullUp;
 	animation-duration: 1.1s;	
-	animation-timing-function: ease-out;	
+	animation-timing-function: ease-out;
 	transform-origin: 50% 100%;		
 }
 
