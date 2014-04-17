@@ -39,7 +39,7 @@
     [self.second_num setBackgroundColor:[UIColor clearColor]];
     [self.third_num setBackgroundColor:[UIColor clearColor]];
     [self.fourth_num setBackgroundColor:[UIColor clearColor]];
-    [self.prompt setText:@"You'll be asked to enter this PIN anytime you send, withdraw, or deposit money."];
+    [self.prompt setText:@"You'll be asked to enter this PIN anytime you send or request money."];
 }
 
 #pragma mark - UITextField delegation
@@ -119,10 +119,8 @@
     return YES;
 }
 -(void) BackClicked:(id) sender
-
 {
     [self.navigationController popViewControllerAnimated:YES];
-    
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
@@ -163,16 +161,16 @@
     [self.pin setDelegate:self]; [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
     [self.view addSubview:self.pin]; [self.pin becomeFirstResponder];
 
-    self.first_num = [[UIView alloc] initWithFrame:CGRectMake(85,240,30,30)];
-    self.second_num = [[UIView alloc] initWithFrame:CGRectMake(125,240,30,30)];
-    self.third_num = [[UIView alloc] initWithFrame:CGRectMake(165,240,30,30)];
-    self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(205,240,30,30)];
+    self.first_num = [[UIView alloc] initWithFrame:CGRectMake(76,250,30,30)];
+    self.second_num = [[UIView alloc] initWithFrame:CGRectMake(122,250,30,30)];
+    self.third_num = [[UIView alloc] initWithFrame:CGRectMake(168,250,30,30)];
+    self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(214,250,30,30)];
 
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
-        self.first_num = [[UIView alloc] initWithFrame:CGRectMake(85,230,30,30)];
-        self.second_num = [[UIView alloc] initWithFrame:CGRectMake(125,230,30,30)];
-        self.third_num = [[UIView alloc] initWithFrame:CGRectMake(165,230,30,30)];
-        self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(205,230,30,30)];
+        self.first_num = [[UIView alloc] initWithFrame:CGRectMake(76,230,30,30)];
+        self.second_num = [[UIView alloc] initWithFrame:CGRectMake(122,230,30,30)];
+        self.third_num = [[UIView alloc] initWithFrame:CGRectMake(168,230,30,30)];
+        self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(214,230,30,30)];
     }
 
     //self.first_num.alpha = self.second_num.alpha = self.third_num.alpha = self.fourth_num.alpha = 0.5;
