@@ -158,13 +158,11 @@
     [self.view addSubview:self.camera];
     
     self.send = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.send setBackgroundColor:kNoochGreen];
     [self.send setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.send setTitle:@"Send" forState:UIControlStateNormal];
     [self.send addTarget:self action:@selector(initialize_send) forControlEvents:UIControlEventTouchUpInside];
 
     self.request = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.request setBackgroundColor:kNoochBlue];
     [self.request setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.request setTitle:@"Request" forState:UIControlStateNormal];
     [self.request addTarget:self action:@selector(initialize_request) forControlEvents:UIControlEventTouchUpInside];
@@ -541,7 +539,7 @@
 
     if(imgRatio!=maxRatio){
         if(imgRatio < maxRatio){
-            imgRatio = 75.0 / actualHeight;
+            imgRatio = 115.0 / actualHeight;
             actualWidth = imgRatio * actualWidth;
             actualHeight = 115.0;
         }
