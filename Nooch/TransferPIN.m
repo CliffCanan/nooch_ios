@@ -167,7 +167,7 @@
     [self.view addSubview:memo_label];
 
     UIImageView *user_pic = [UIImageView new];
-    [user_pic setFrame:CGRectMake(10, 204, 55, 55)];
+    [user_pic setFrame:CGRectMake(10, 205, 56, 56)];
 
     if ([self.receiver valueForKey:@"nonuser"]) {
         [user_pic setImage:[UIImage imageNamed:@"silhouette.png"]];
@@ -194,10 +194,9 @@
             }
         }
     }
-
     user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
     user_pic.layer.borderWidth = 2; user_pic.clipsToBounds = YES;
-    user_pic.layer.cornerRadius = 26;
+    user_pic.layer.cornerRadius = 27;
     [self.view addSubview:user_pic];
 
     UILabel *total = [[UILabel alloc] initWithFrame:CGRectMake(10, 200, 290, 30)];
@@ -228,11 +227,10 @@
     [self.view addSubview:self.third_num];
     [self.view addSubview:self.fourth_num];
     
-    if ([[assist shared] getTranferImage])
-    {
+    if ([[assist shared] getTranferImage]) {
         UIImageView *trans_image = [[UIImageView alloc] initWithFrame:CGRectMake(251, 206, 54, 54)];
         trans_image.layer.cornerRadius = 5;
-        trans_image.layer.borderWidth = 1;
+        trans_image.layer.borderWidth = 1; trans_image.clipsToBounds = YES;
         trans_image.layer.borderColor = [UIColor whiteColor].CGColor;
         [trans_image setImage:[[assist shared] getTranferImage]];
         [self.view addSubview:trans_image];
