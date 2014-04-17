@@ -75,7 +75,7 @@
                 [self.fourth_num setBackgroundColor:which];
                 if ([self.pin_check length] != 4) {
                     self.pin_check = [NSString stringWithFormat:@"%@%@",textField.text,string];
-                    [self.prompt setText:@"Confirm your PIN"];
+                    [self.prompt setText:@"Confirm Your PIN"];
                     [self.pin setText:@""];
                     [self.first_num setBackgroundColor:[UIColor clearColor]];
                     [self.second_num setBackgroundColor:[UIColor clearColor]];
