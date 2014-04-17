@@ -38,8 +38,7 @@
     return self;
 }
 -(void)viewDidDisappear:(BOOL)animated{
-    [super viewDidDisappear:animated];
-    
+    [super viewDidDisappear:animated];   
 }
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
@@ -52,7 +51,6 @@
         [[assist shared]setRequestMultiple:NO];
         [arrRecipientsForRequest removeAllObjects];
         [[assist shared]setArray:[arrRecipientsForRequest copy]];
-        
     }
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -77,14 +75,13 @@
     [self.recip_back setStyleClass:@"barbackground"];
     [self.recip_back setStyleClass:@"barbackground_gray"];
     [self.view addSubview:self.recip_back];
-    
+
     UILabel *to = [UILabel new]; [to setText:@"To: "];
     [to setStyleId:@"label_howmuch_to"];
     [self.view addSubview:to];
 
     UILabel *to_label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
     if ([self.receiver valueForKey:@"nonuser"]) {
-        //
         [to_label setStyleId:@"label_howmuch_recipientnamenonuser"];
         [to_label setText:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"email"]]];
     }
@@ -99,30 +96,29 @@
             [to_label setText:strMultiple];
         }
         else {
-        [to_label setStyleId:@"label_howmuch_recipientname"];
-        [to_label setText:[NSString stringWithFormat:@"%@ %@",[[self.receiver objectForKey:@"FirstName"] capitalizedString],[[self.receiver objectForKey:@"LastName"] capitalizedString]]];
+            [to_label setStyleId:@"label_howmuch_recipientname"];
+            [to_label setText:[NSString stringWithFormat:@"%@ %@",[[self.receiver objectForKey:@"FirstName"] capitalizedString],[[self.receiver objectForKey:@"LastName"] capitalizedString]]];
         }
     }
-
     [self.view addSubview:to_label];
+
     if (![self.receiver valueForKey:@"nonuser"] &&  !isPayBack  && !isUserByLocation) {
-        UIButton*add=[[UIButton alloc]initWithFrame:CGRectMake(260, 15, 30, 30)];
-        [add setImage:[UIImage imageNamed:@"add-icon-white.png"] forState:UIControlStateNormal];
+        UIButton*add=[[UIButton alloc]initWithFrame:CGRectMake(260, 16, 28, 28)];
+        [add setImage:[UIImage imageGlyphNamed:@"plus-sig" height:28 color:kNoochGrayLight] forState:UIControlStateNormal];
         [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];
         [add setStyleCSS:@"addbutton_request"];
         [self.view addSubview:add];
     }
     UIImageView *user_pic = [UIImageView new];
-    [user_pic setFrame:CGRectMake(28, 62, 76, 76)];
+    [user_pic setFrame:CGRectMake(28, 58, 84, 84)];
     user_pic.layer.borderColor = [Helpers hexColor:@"939598"].CGColor;
     user_pic.layer.borderWidth = 1; user_pic.clipsToBounds = YES;
-    user_pic.layer.cornerRadius = 38;
+    user_pic.layer.cornerRadius = 42;
     if ([self.receiver valueForKey:@"nonuser"]) {
         [user_pic setImage:[UIImage imageNamed:@"silhouette.png"]];
     }
     else {
         [user_pic setHidden:NO];
-        
         if (self.receiver[@"Photo"]) {
             [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
                      placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
@@ -141,6 +137,7 @@
     [self.amount setStyleId:@"howmuch_amountfield"];
     [self.view addSubview:self.amount];
     [self.amount becomeFirstResponder];
+
     self.memo = [[UITextField alloc] initWithFrame:CGRectMake(10, 120, 260, 40)];
     [self.memo setPlaceholder:@"Enter a memo"];
     [self.memo setDelegate:self]; [self.memo setTag:2];
@@ -149,9 +146,9 @@
     [self.view addSubview:self.memo];
 
     self.camera = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.camera setFrame:CGRectMake(260, 161, 22, 22)];
+    [self.camera setFrame:CGRectMake(275, 162, 27, 22)];
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
-        [self.camera setFrame:CGRectMake(260, 71, 27, 22)];
+        [self.camera setFrame:CGRectMake(275, 71, 27, 22)];
     }
     [self.camera addTarget:self action:@selector(attach_pic) forControlEvents:UIControlEventTouchUpInside];
     [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
@@ -159,20 +156,22 @@
     [ttt setImage:[UIImage imageGlyphNamed:@"camera" height:30 color:kNoochGrayLight]];
     [self.camera setBackgroundImage:ttt.image forState:UIControlStateNormal];
     [self.view addSubview:self.camera];
+    
     self.send = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.send setBackgroundColor:kNoochGreen];
-    [self.send setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal]; [self.send setTitle:@"Send" forState:UIControlStateNormal];
+    [self.send setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.send setTitle:@"Send" forState:UIControlStateNormal];
     [self.send addTarget:self action:@selector(initialize_send) forControlEvents:UIControlEventTouchUpInside];
-
 
     self.request = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.request setBackgroundColor:kNoochBlue];
-    [self.request setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal]; [self.request setTitle:@"Request" forState:UIControlStateNormal];
+    [self.request setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.request setTitle:@"Request" forState:UIControlStateNormal];
     [self.request addTarget:self action:@selector(initialize_request) forControlEvents:UIControlEventTouchUpInside];
-
     [self.request setStyleId:@"howmuch_request"];
     [self.request setFrame:CGRectMake(10, 160, 150, 50)];
     [self.view addSubview:self.request];
+
     if ([[assist shared]isRequestMultiple]) {
         [self.send removeFromSuperview];
         [self.request setStyleClass:@"howmuch_buttons"];
@@ -196,12 +195,34 @@
         [self.view addSubview:self.divider];
     }
 
-    self.reset_type = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.reset_type setFrame:CGRectMake(0, 160, 0, 50)]; [self.reset_type setBackgroundColor:[UIColor clearColor]]; [self.reset_type setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.reset_type addTarget:self action:@selector(reset_send_request) forControlEvents:UIControlEventTouchUpInside];
-    [self.reset_type setStyleId:@"cancel_hidden"];
-    [self.reset_type setAlpha:0];
-    [self.view addSubview:self.reset_type];
+//	  self.reset_type = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//	  [self.reset_type setFrame:CGRectMake(0, 160, 0, 50)];
+//	  [self.reset_type setBackgroundColor:[UIColor clearColor]]; 
+//    [self.reset_type setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [self.reset_type setImage:[UIImage imageGlyphNamed:@"remove" height:22 color:white]];
+//    [self.reset_type addTarget:self action:@selector(reset_send_request) forControlEvents:UIControlEventTouchUpInside];
+//    [self.reset_type setStyleId:@"cancel_hidden"];
+//    [self.reset_type setAlpha:0];
+//    [self.view addSubview:self.reset_type];
+
+/////////////////////////////////////////////////////////////////////
+//  EXAMPLE 1 THAT I WAS TRYING TO COPY FOR THE ABOVE CHUNK ('reset_type')... TRYING TO MAKE IT A GLYPHICON, NOT AN IMAGE
+//	 [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
+//    UIImageView *backX = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 22, 22)];
+//    [backX setImage:[UIImage imageGlyphNamed:@"remove" height:22 color:white]];
+//    [self.camera setBackgroundImage:backX.image forState:UIControlStateNormal];
+//	  [self.view addSubview:self.camera];
+/////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////
+//  EXAMPLE 2 THAT I WAS TRYING TO COPY FOR THE ABOVE CHUNK ('reset_type')... TRYING TO MAKE IT A GLYPHICON, NOT AN IMAGE
+	UIButton*add=[[UIButton alloc]initWithFrame:CGRectMake(260, 16, 28, 28)];
+        [add setImage:[UIImage imageGlyphNamed:@"plus-sig" height:28 color:kNoochGrayLight] forState:UIControlStateNormal];
+        [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];
+        [add setStyleCSS:@"addbutton_request"];
+        [self.view addSubview:add];
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 
     [self.navigationItem setRightBarButtonItem:Nil];
     
@@ -219,8 +240,7 @@
         [self.camera setStyleId:@"howmuch_camera_4"];
     }
 }
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [self.amount becomeFirstResponder];
     [self.navigationItem setTitle:@"How Much?"];
 }
@@ -235,26 +255,31 @@
         [arrRecipientsForRequest addObject:self.receiver];
         [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
     }
-
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - type of transaction
-- (void) initialize_send
-{
-    CGRect origin = self.reset_type.frame;
-    origin.origin.x = 160;
-    [self.reset_type setFrame:origin];
+
+- (void) initialize_send {
+    //CGRect origin = self.reset_type.frame;
+    //origin.origin.x = 160;
+    //[self.reset_type setFrame:origin];
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.5];
+    //origin.origin.x = 10;
+    origin.size.width = 30;
+    //[self.reset_type setFrame:origin];
+
     [self.recip_back setStyleClass:@"barbackground_green"];
-    origin.origin.x = 10; origin.size.width = 40;
-    [self.reset_type setFrame:origin];
+
     origin = self.send.frame;
-    origin.size.width = 260; origin.origin.x = 50;
+    origin.size.width = 149;
+    origin.origin.x = 162;
     [self.send setFrame:origin];
+    
     origin = self.request.frame;
-    origin.size.width = 0; //origin.origin.x = 50;
+    origin.size.width = 149;
+    origin.origin.x = 9;
     [self.request setFrame:origin];
 
     [self.send addTarget:self action:@selector(confirm_send) forControlEvents:UIControlEventTouchUpInside];
@@ -271,8 +296,8 @@
     [self.request setStyleId:@"howmuch_request_hide"];
     [self.reset_type setStyleId:@"cancel_request"];
 }
-- (void) initialize_request
-{
+
+- (void) initialize_request {
     CGRect origin = self.reset_type.frame;
     origin.origin.x = 160;
     [self.reset_type setFrame:origin];
@@ -302,8 +327,8 @@
     [self.request setStyleId:@"howmuch_request_expand"];
     [self.reset_type setStyleId:@"cancel_send"];
 }
-- (void) reset_send_request
-{
+
+- (void) reset_send_request {
     if (![[assist shared] isRequestMultiple] && ![self.receiver valueForKey:@"nonuser"]) {
         self.divider = [UIImageView new];
         [self.divider setStyleId:@"howmuch_divider"];
@@ -338,19 +363,17 @@
     [self.request setStyleId:@"howmuch_request"];
 }
 
-- (void) confirm_send
-{
+- (void) confirm_send {
     if ([self.amnt floatValue] == 0) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!" message:@"Please enter a value over $0.00. We'd love to send a negative amount, but it's actually pretty difficult." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
             [alert show];
             return;
-        }
+    }
     if ([[self.amount text] length] < 3) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Amount" message:@"Please enter a valid amount." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         return;
     }
-    
     else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100) {   
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Now" message:[NSString stringWithFormat:@"Sorry, but to keep Nooch safe, please don’t %@ more than $100. It’s against the rules (and protects the account from abuse.)", @"send"] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
         [alert show];
@@ -371,12 +394,10 @@
 }
 #pragma mark  - alert view delegation
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    
     if([actionSheet tag] == 2122 && buttonIndex==1) {
     }
 }
-- (void) confirm_request
-{
+- (void) confirm_request {
    // isAddRequest=YES;
     if ([[self.amount text] length] < 3) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Amount" message:@"Please enter a valid amount" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -384,7 +405,7 @@
         return;
     }
     else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Now" message:[NSString stringWithFormat:@"Sorry I’m not sorry, but don’t %@ more than $100. It’s against the rules (and protects the account from abuse.)", @"request"] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Big Spender" message:[NSString stringWithFormat:@"While we definitely appreciate your enthusiasm, we are limiting transfers to $100 for now in order to minimize our risk (and yours). We don't like it either, but as usual, it's the lawyers fault. We're working to raise the limit soon! ", @"request"] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
         [alert show];
         return;
     }
@@ -395,18 +416,17 @@
         TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"request" amount:input_amount];
         [self.navigationController pushViewController:pin animated:YES];
     }
-    else{
-    NSMutableDictionary *transaction = [self.receiver mutableCopy];
-    [transaction setObject:[self.memo text] forKey:@"memo"];
-    float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
-    TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"request" amount:input_amount];
-    [self.navigationController pushViewController:pin animated:YES];
+    else {
+        NSMutableDictionary *transaction = [self.receiver mutableCopy];
+        [transaction setObject:[self.memo text] forKey:@"memo"];
+        float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
+        TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"request" amount:input_amount];
+        [self.navigationController pushViewController:pin animated:YES];
     }
 }
 
 #pragma mark - picture attaching
-- (void) attach_pic
-{
+- (void) attach_pic {
     self.shade = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, [UIScreen mainScreen].bounds.size.height)];
     [self.shade setBackgroundColor:kNoochGrayDark]; [self.shade setAlpha:0.0];
     [self.shade setUserInteractionEnabled:YES];
@@ -428,9 +448,9 @@
     [self.choose addSubview:album];
     
     [self.navigationController.view addSubview:self.choose];
-    
+
     [UIView beginAnimations:Nil context:nil];
-    [UIView setAnimationDuration:1];
+    [UIView setAnimationDuration:.5];
     [self.choose setFrame:CGRectMake(20, 125, 280, 120)];
     [self.choose setStyleId:@"attachpic_container"];
     [take setStyleId:@"attachpic_takephoto_box"];
@@ -457,8 +477,7 @@
     [self.amount resignFirstResponder];
     [UIView commitAnimations];
 }
-- (void) cancel_photo
-{
+- (void) cancel_photo  {
     [UIView beginAnimations:Nil context:nil];
     [UIView setAnimationDuration:1];
     //[self.shade removeFromSuperview];
@@ -466,8 +485,7 @@
     [self.shade setAlpha:0.0];
     [UIView commitAnimations];
 }
-- (void) take_photo
-{
+- (void) take_photo  {
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
 
         UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -589,15 +607,13 @@
         }
         return NO;
     }
-
     if (textField.tag == 2) {
         NSUInteger newLength = [textField.text length] + [string length] - range.length;
         return (newLength > 25) ? NO : YES;
     }
     return YES;
 }
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
+- (BOOL)textFieldShouldReturn:(UITextField *)textField  {
     [textField resignFirstResponder];
     return YES;
 }
@@ -606,8 +622,7 @@
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
 }
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     [imageCache clearMemory];
