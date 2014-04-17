@@ -1,20 +1,16 @@
-//
 //  Welcome.m
 //  Nooch
 //
 //  Created by crks on 10/2/13.
-//  Copyright (c) 2013 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch. All rights reserved.
 //
 
 #import "Welcome.h"
 #import "Home.h"
 #import "ProfileInfo.h"
 #import "ECSlidingViewController.h"
-
 @interface Welcome ()
-
 @end
-
 @implementation Welcome
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -38,8 +34,6 @@
         [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
         isSignup=NO;
     }
-    
-    
 }
 - (void)validate
 {
@@ -87,25 +81,23 @@
     [self.view addSubview:title];
     
     UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 180, 280, 200)];
-    [prompt setTextColor:kNoochGrayDark]; [prompt setBackgroundColor:[UIColor clearColor]];
+    [prompt setBackgroundColor:[UIColor clearColor]];
     [prompt setNumberOfLines:0];
-    [prompt setFont:[UIFont systemFontOfSize:14]];
-    [prompt setText:@"Your account has been created.\n\nBe sure to check your email for a message from us to confirm your email address.\n\nBefore you can start sending money you must validate your profile. Tap the green button to validate your profile now."]; [prompt setTextAlignment:NSTextAlignmentCenter];
+    [prompt setText:@"Your account has been created.\n\nCheck your email for a message from us to confirm your email address.\n\nBefore you can start sending money you must validate your profile. Tap the green button to validate your profile now."]; [prompt setTextAlignment:NSTextAlignmentCenter];
     [prompt setStyleClass:@"instruction_text"];
     CGRect frame = prompt.frame;
-    frame.size.height += 50;
+    frame.size.height += 150;
     [prompt setFrame:frame];
     [self.view addSubview:prompt];
-    
+
     UIButton *enter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [enter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [enter setBackgroundColor:kNoochGreen];
     [enter setTitle:@"Validate Profile" forState:UIControlStateNormal];
     [enter addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
-    [enter setFrame:CGRectMake(10, 390, 300, 60)];
+    [enter setFrame:CGRectMake(10, 375, 300, 60)];
     [enter setStyleClass:@"button_green"];
     [self.view addSubview:enter];
-    
+
     UIButton *later = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [later setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
     [later setBackgroundColor:[UIColor clearColor]];
@@ -116,10 +108,8 @@
     [self.view addSubview:later];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 @end

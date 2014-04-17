@@ -17,7 +17,7 @@
 		background-image : url(Logo_with_line.png);
 		height : 120px;
 		width : 200px;
-		position : 60 15;
+		position : 60 10;
 	}
 
      #emptyRecentList {
@@ -228,7 +228,7 @@
 			font-size			: 22px;
             background-image			: linear-gradient(#6dbee8, #41abe1);
 		}
-.donation_closebutton {
+	.donation_closebutton {
 			width			: 50px;
 			height			: 30px;
 
@@ -240,7 +240,7 @@
 			font-size			: 12px;
             background-image			: linear-gradient(#6dbee8, #41abe1);
 		}
-        #label_micro1 {
+    #label_micro1 {
 		width				: 70px;
 		height				: 40px;
 		left				: 30px;
@@ -262,9 +262,7 @@
 		top					: 105px;
 
 	}
-
-
-        #micro1_amountfield {
+    #micro1_amountfield {
 		font-family			: "Roboto";
 		font-size			: 32px;
 		font-weight         : medium;
@@ -287,7 +285,7 @@
 		top					: 105px;
 		left                : 210px;
 	}
-.Repin_instructiontext {
+	.Repin_instructiontext {
 		width			: 300px;
 		left			: 10px;
 		top             : 80px;
@@ -330,11 +328,11 @@
         padding: 100px;
 	}
     .back_button-icon {
-        top             : 15px;
-		width			: 20px;
-		height			: 32px;
+        top             : 45px;
+		width			: 15px;
+		height			: 24px;
 		left			: 10px;
-        }
+    }
 	 /****************************
 	  *****	  TABLE Styles 	 *****
 	  ****************************/
@@ -478,7 +476,7 @@
 		color 				: #58595b;
 		width				: 280px;
 		left                : 20px;
-		height				: 90px;
+		height				: 150px;
 	}
 
 	/****  Raised Box - This adds a drop-shadow. ****/
@@ -1187,8 +1185,8 @@
 	/**  The background bar of the top half of the recipient box.  **/
 	.pin_recipientname_bar {
 		top					: 198px;
-		left				: 9px;
-		width				: 302px;
+		left				: 6px;
+		width				: 308px;
 		height				: 38px;
 	}
 

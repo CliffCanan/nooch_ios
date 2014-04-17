@@ -1,10 +1,8 @@
-//
 //  ReferralCode.m
 //  Nooch
 //
 //  Created by crks on 10/1/13.
-//  Copyright (c) 2013 Nooch. All rights reserved.
-//
+//  Copyright (c) 2014 Nooch. All rights reserved.
 
 #import "ReferralCode.h"
 #import "Home.h"
@@ -31,65 +29,60 @@
     }
     return self;
 }
--(void) BackClicked:(id) sender
-
-{
-    
+-(void) BackClicked:(id) sender {
     [self.navigationController popViewControllerAnimated:YES];
-    
 }
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     UIButton* btnback=[UIButton buttonWithType:UIButtonTypeCustom];
-    
+
     [btnback setImage:[UIImage imageNamed:@"back-arrow-blue.png"] forState:UIControlStateNormal];
     [btnback setStyleClass:@"back_button-icon"];
     btnback.frame=CGRectMake(0, 7, 50, 30);
-    
+
     [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnback];
-    
-    
+
     getLocation = [[GetLocation alloc] init];
 	getLocation.delegate = self;
 	[getLocation.locationManager startUpdatingLocation];
-    
+
 	// Do any additional setup after loading the view.
     UIImageView *logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
-    
+
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    
+
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 140, 300, 40)];
-    [title setTextColor:kNoochGrayDark]; [title setBackgroundColor:[UIColor clearColor]];
-    [title setText:@"Enter Referral Code"]; [title setTextAlignment:NSTextAlignmentCenter];
+    [title setTextColor:kNoochGrayDark];
+    [title setBackgroundColor:[UIColor clearColor]];
+    [title setText:@"Enter Referral Code"];
+    [title setTextAlignment:NSTextAlignmentCenter];
     [title setFont:[UIFont systemFontOfSize:24]];
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
-    
-    UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 170, 280, 70)];
-    [prompt setTextColor:kNoochGrayDark]; [prompt setBackgroundColor:[UIColor clearColor]];
+
+    UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 150, 280, 70)];
+    [prompt setTextColor:kNoochGrayDark];
+    [prompt setBackgroundColor:[UIColor clearColor]];
     [prompt setNumberOfLines:3];
     [prompt setFont:[UIFont systemFontOfSize:14]];
-    [prompt setText:@"Nooch is currently invite only. If you have a referral code enter it below to sign up."]; [prompt setTextAlignment:NSTextAlignmentCenter];
+    [prompt setText:@"Nooch is currently invite-only. If you have a Referral Code enter it below to sign up."]; [prompt setTextAlignment:NSTextAlignmentCenter];
     [prompt setStyleClass:@"instruction_text"];
     [self.view addSubview:prompt];
-    
+
     enter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [enter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [enter setBackgroundColor:kNoochGreen];
     [enter setTitle:@"Continue" forState:UIControlStateNormal];
     [enter addTarget:self action:@selector(enter_code) forControlEvents:UIControlEventTouchUpInside];
     [enter setFrame:CGRectMake(10, 350, 300, 60)];
     [enter setStyleClass:@"button_green"];
     [self.view addSubview:enter];
-    
+
     UIButton *request = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [request setFrame:CGRectMake(10, 420, 300, 60)];
-    [request setBackgroundColor:kNoochGrayLight];
     [request setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [request setTitle:@"Don't Have a Code" forState:UIControlStateNormal];
     [request addTarget:self action:@selector(request_code) forControlEvents:UIControlEventTouchUpInside];
@@ -97,14 +90,19 @@
     [self.view addSubview:request];
     
     self.code_field = [[UITextField alloc] initWithFrame:CGRectMake(55, 250, 210, 60)];
-    [self.code_field setBackgroundColor:[UIColor whiteColor]]; [self.code_field setTextColor:kNoochGrayLight];
-    [self.code_field setKeyboardType:UIKeyboardTypeAlphabet]; [self.code_field setDelegate:self];
-    [self.code_field setTextAlignment:NSTextAlignmentCenter]; [self.code_field setPlaceholder:@"ENTER CODE"];
-    self.code_field.layer.borderWidth = 1; self.code_field.layer.borderColor = kNoochGrayLight.CGColor;
-    self.code_field.layer.cornerRadius = 2;
-    [self.code_field setAutocorrectionType:UITextAutocorrectionTypeNo]; [self.code_field setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+    [self.code_field setBackgroundColor:[UIColor whiteColor]]; 
+    [self.code_field setTextColor:kNoochGrayLight];
+    [self.code_field setKeyboardType:UIKeyboardTypeAlphabet];
+    [self.code_field setDelegate:self];
+    [self.code_field setTextAlignment:NSTextAlignmentCenter];
+    [self.code setFont:[UIFont systemFontOfSize:20]];
+    [self.code_field setPlaceholder:@"ENTER CODE"];
+    self.code_field.layer.borderWidth = 2;
+    self.code_field.layer.borderColor = kNoochGrayLight.CGColor;
+    [self.code_field setAutocorrectionType:UITextAutocorrectionTypeNo];
+    [self.code_field setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     self.code_field.layer.borderColor = kNoochBlue.CGColor;
-    self.code_field.layer.cornerRadius = 15;
+    self.code_field.layer.cornerRadius = 12;
     [self.view addSubview:self.code_field];
 }
 #pragma mark-Location Tracker Delegates
