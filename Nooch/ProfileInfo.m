@@ -136,8 +136,7 @@
     }
     UIView *member_since_back = [UIView new];
     [member_since_back setFrame:CGRectMake(0, 0+down, 320, 70)];
-    [member_since_back setBackgroundColor:[Helpers hexColor:@"3fabe1"]];
-    [member_since_back setAlpha:0.4];
+    [member_since_back setStyleId:@"profileTopSectionBackground"];
     [self.view addSubview:member_since_back];
 
     picture = [UIImageView new];
@@ -337,7 +336,7 @@
     self.save = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.save addTarget:self action:@selector(save_changes) forControlEvents:UIControlEventTouchUpInside];
     [self.save setTitle:@"Save Profile" forState:UIControlStateNormal];
-    [self.save setFrame:CGRectMake(0, 456+down, 0, 0)];
+    [self.save setFrame:CGRectMake(0, 430+down, 0, 0)];
     [self.save setStyleClass:@"button_green"];
     [self.save setEnabled:YES];
     [self.view addSubview:self.save];
