@@ -63,11 +63,14 @@
 
 		/****  NAV BAR:  User's Balance  ****/
 		#navbar_balance {
-			font-family		: "Roboto";
-			font-weight		: light;
-			font-size		: 16px;
+			font-family : "FontAwesome";
+            font-size     : 24px;
 			color			: #ffffff;
 			text-align		: left;
+            left            : 0px;
+            top             : 0px;
+            width       :  30px;
+            height      : 30px;
 		}
         #navbar_back {
             height         :40px;
@@ -75,8 +78,12 @@
 			left			: 0px;
 		}
         #navbar_hamburger {
+            left            : 0px;
+            top             : 0px;
             width       :  30px;
             height      : 30px;
+            font-family : "FontAwesome";
+            font-size     : 24px;
         }
 
 	 /******************************/
@@ -1658,6 +1665,20 @@
  /*******************************************
   ********* 	 Left SIDEBAR	    *********
   *******************************************/
+    .lside_menu_icons {
+        font-family : "FontAwesome";
+        font-size       : 24px;
+        left                : 10px;
+        top                 : 9px;
+        width             : 25px;
+        height           : 25px;
+        color              : white;
+    }
+    
+    #lside_settings {
+    
+    }
+
 
 	#lside_topbar_background {
 		width			: 270px;

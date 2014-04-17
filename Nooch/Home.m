@@ -24,7 +24,7 @@ NSMutableURLRequest *request;
 @property(nonatomic,strong) NSArray *transaction_types;
 @property(nonatomic,strong) UIButton *balance;
 @property(nonatomic,strong) UITableView *news_feed;
-@property(nonatomic,strong) UIImageView *close;
+@property(nonatomic,strong) FAImageView *close;
 @property(nonatomic,strong) UIView *popup;
 @property(nonatomic,strong) MBProgressHUD *hud;
 @property(nonatomic,strong) UIView *suspended;
@@ -45,12 +45,10 @@ NSMutableURLRequest *request;
 
 - (void)viewDidLoad
 {
-    
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
     nav_ctrl = self.navigationController;
-    
     [ self.navigationItem setLeftBarButtonItem:Nil];
     
     user = [NSUserDefaults standardUserDefaults];
@@ -72,33 +70,13 @@ NSMutableURLRequest *request;
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
-    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
-    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
-    [ttt setImage:[UIImage imageGlyphNamed:@"reorder" height:40 color:[UIColor whiteColor]]];
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [hamburger setFrame:CGRectMake(0, 0, 30, 30)];
+    [hamburger setStyleId:@"navbar_hamburger"];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
-    [hamburger setBackgroundImage:ttt.image forState:UIControlStateNormal];
+    [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
     UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
-    
-    self.balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.balance setFrame:CGRectMake(0, 0, 30, 30)];
-    /*
-     if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
-     [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
-     }
-     else
-     {
-     [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
-     }
-     */
-    
-    [self.balance addTarget:self action:@selector(show_news) forControlEvents:UIControlEventTouchUpInside];
-    [self.balance setStyleId:@"navbar_balance"];
-    [ttt setImage:[UIImage imageGlyphNamed:@"flag" height:64.0f color:[UIColor whiteColor]]];
-    [self.balance setBackgroundImage:ttt.image forState:UIControlStateNormal];
-    
+
     self.popup = [UIView new];
     [self.popup setStyleId:@"news_popup"];
     
@@ -110,13 +88,10 @@ NSMutableURLRequest *request;
     self.news_feed.layer.masksToBounds = YES;
     [self.popup addSubview:self.news_feed];
     
-    self.close = [UIImageView new];
-    [self.close setStyleId:@"close_news"];
-    
-    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
-    [ttt setImage:[UIImage imageGlyphNamed:@"caret-up" height:64.0f color:[UIColor whiteColor]]];
-    
-    [self.close setImage:ttt.image];
+    self.close = [[FAImageView alloc] initWithFrame:CGRectMake(262.f, 35.f, 30.f, 40.f)];
+    self.close.image = nil;
+    //[self.close setBackgroundColor:[UIColor whiteColor]];
+    [self.close setDefaultIconIdentifier:@"fa-caret-up"];
     
     UITapGestureRecognizer *tap = [UITapGestureRecognizer new];
     [tap addTarget:self action:@selector(hide_news)];
@@ -201,27 +176,10 @@ NSMutableURLRequest *request;
 }
 
 -(void)updateLoader{
-    /*
-     if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
-     [self.navigationItem setRightBarButtonItem:Nil];
-     if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound) {
-     [self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
-     }
-     else
-     [self.balance setTitle:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
-     UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
-     [self.navigationItem setRightBarButtonItem:funds];
-     }
-     else
-     {
-     [self.balance setTitle:[NSString stringWithFormat:@"$%@",@"00.00"] forState:UIControlStateNormal];
-     }
-     */
-    
-    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
-    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
-    [ttt setImage:[UIImage imageGlyphNamed:@"flag" height:40 color:[UIColor whiteColor]]];
-    [self.balance setBackgroundImage:ttt.image forState:UIControlStateNormal];
+    self.balance = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    [self.balance.titleLabel setFont:[UIFont fontWithName:kFontAwesomeFamilyName size:24]];
+    [self.balance setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-flag"] forState:UIControlStateNormal];
+    [self.balance addTarget:self action:@selector(show_news) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
     [self.navigationItem setRightBarButtonItem:funds];
 }
@@ -252,12 +210,6 @@ NSMutableURLRequest *request;
       if (![[assist shared]isPOP]) {
           if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
               [self.navigationItem setRightBarButtonItem:Nil];
-              if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound) {
-                  //[self.balance setTitle:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
-              }
-              else{
-                  //[self.balance setTitle:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]] forState:UIControlStateNormal];
-              }
               UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
               [self.navigationItem setRightBarButtonItem:funds];
           }

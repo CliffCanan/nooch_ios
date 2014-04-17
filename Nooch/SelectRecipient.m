@@ -127,7 +127,6 @@
                 }
                 if (loc==-1)
                     [arrRequestPersons addObject:dict];
-                }
                 else
                     loc=-1;
             }

@@ -104,7 +104,7 @@
             [av show];
         }
         else if([self.pass.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound){
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Gotta Give Something message:@"For fairly self-evident reasons, your password must have more than 0 characters." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Gotta Give Something" message:@"For fairly self-evident reasons, your password must have more than 0 characters." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
         }
         else{

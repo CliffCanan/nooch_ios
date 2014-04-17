@@ -121,15 +121,6 @@
     //clear Image cache
     [self.name setText:[[user objectForKey:@"firstName"] capitalizedString]];
     [self.balance setText:[[user objectForKey:@"lastName"] capitalizedString]];
-    /*if ([user objectForKey:@"Balance"]) {
-    if ([[user objectForKey:@"Balance"] rangeOfString:@"."].location!=NSNotFound)
-    [self.balance setText:[NSString stringWithFormat:@"$%@",[user objectForKey:@"Balance"]]];
-    else
-        [self.balance setText:[NSString stringWithFormat:@"$%@.00",[user objectForKey:@"Balance"]]];
-    } 
-    else {
-        [self.balance setText:[NSString stringWithFormat:@"$%@",@"0.00"]];
-    }*/
     
     if ([[user objectForKey:@"Photo"] length]>0 && [user objectForKey:@"Photo"]!=nil) {
         [user_pic setStyleId:@"lside_userpic"];
@@ -236,76 +227,61 @@
             [subview removeFromSuperview];
         }
     }
-    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
-    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
-    [ttt setImage:[UIImage imageGlyphNamed:@"time" height:40 color:[UIColor whiteColor]]];
-
     cell.indentationLevel = 1;
     cell.indentationWidth = 30;
     cell.textLabel.textColor = [UIColor whiteColor];
     [cell setBackgroundColor:kNoochMenu];
     cell.textLabel.font = [UIFont fontWithName:@"Roboto-Light" size:18];
 
-    UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(10, 9, 25, 25)];
+    UILabel *iv = [UILabel new];
+    [iv setStyleClass:@"lside_menu_icons"];
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             cell.textLabel.text = @"Home";
-            iv.image = [UIImage imageNamed:@"n_Icon_58x66.png"];
+            //iv.image = [UIImage imageNamed:@"n_Icon_58x66.png"];
         }
         else if(indexPath.row == 1){
             cell.textLabel.text = @"Transaction History";
-            iv.image = ttt.image;
+            iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"];
             [iv setFrame:CGRectMake(7, 7, 28, 29)];
         }
         else if (indexPath.row == 2){
             cell.textLabel.text = @"Statistics";
-            iv.image = [UIImage imageNamed:@"Stats_Icon.png"];
+            //iv.image = [UIImage imageNamed:@"Stats_Icon.png"];
         }
     }
     else if(indexPath.section == 1) {
         if (indexPath.row == 0) {
             cell.textLabel.text = @"Donate to a Cause";
-            [ttt setImage:[UIImage imageGlyphNamed:@"globe" height:30 color:[UIColor whiteColor]]];
-            iv.image = ttt.image;
-            [iv setFrame:CGRectMake(7, 7, 28, 30)];
+            iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-globe"];
         }
     }
     else if(indexPath.section == 2) {
         if (indexPath.row == 0) {
             cell.textLabel.text = @"Refer a Friend";
-            [ttt setImage:[UIImage imageGlyphNamed:@"group" height:25 color:[UIColor whiteColor]]];
-            iv.image = ttt.image;
-            [iv setFrame:CGRectMake(7, 10, 24, 24)];
+            iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"];
         }
         else if(indexPath.row == 1){
             cell.textLabel.text = @"Rate Nooch";
-            [ttt setImage:[UIImage imageGlyphNamed:@"star" height:25 color:[UIColor whiteColor]]];
-            iv.image = ttt.image;
-            [iv setFrame:CGRectMake(7, 7, 24, 24)];
+            iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-star"];
         }
     }
     else if(indexPath.section == 3) {
         if (indexPath.row == 0) {
             cell.textLabel.text = @"How Nooch Works";
-            [ttt setImage:[UIImage imageGlyphNamed:@"question" height:25 color:[UIColor whiteColor]]];
-            iv.image = ttt.image;
-            [iv setFrame:CGRectMake(7, 7, 26, 30)];
+            iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-question"];
         }
         else if(indexPath.row == 1){
             cell.textLabel.text = @"Contact Support";
-            [ttt setImage:[UIImage imageGlyphNamed:@"envelope-alt" height:25 color:[UIColor whiteColor]]];
-            iv.image = ttt.image;
-            [iv setFrame:CGRectMake(7, 10, 24, 23)];
+            iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope"];
         }
         else if(indexPath.row == 2){
             cell.textLabel.text =  @"Limits & Fees";
-            iv.image = [UIImage imageNamed:@"LimitsAndFees_Icon.png"];
+            //iv.image = [UIImage imageNamed:@"LimitsAndFees_Icon.png"];
         }
         else if(indexPath.row == 3) {
             cell.textLabel.text = @"Legal Info";
-            [ttt setImage:[UIImage imageGlyphNamed:@"legal" height:25 color:[UIColor whiteColor]]];
-            iv.image = ttt.image;
-            [iv setFrame:CGRectMake(7, 7, 24, 24)];
+            iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-gavel"];
         }
     }
     [cell.contentView addSubview:iv];
