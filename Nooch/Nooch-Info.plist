@@ -58,12 +58,10 @@
 		<string>Roboto-Regular.ttf</string>
 		<string>Roboto-Bold.ttf</string>
 		<string>Roboto-Medium.ttf</string>
-		<string>Brandon_bld.otf</string>
-		<string>Brandon_blk.otf</string>
-		<string>Brandon_light.otf</string>
-		<string>Brandon_med.otf</string>
 		<string>Roboto-Light.ttf</string>
+		<string>FontAwesome.ttf</string>
 		<string>VarelaRound-Regular.ttf</string>
+		<string>fontawesome-webfont.ttf</string>
 	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>flat_storyboard</string>

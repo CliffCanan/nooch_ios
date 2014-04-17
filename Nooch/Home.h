@@ -15,6 +15,8 @@
 #import "WTGlyphFontSet.h"
 #import "MBProgressHUD.h"
 #import <MessageUI/MessageUI.h>
+#import "NSString+FontAwesome.h"
+#import "FAImageView.h"
 core *me;
 #define kNoochBlue      [Helpers hexColor:@"41ABE1"]
 #define kNoochGreen     [Helpers hexColor:@"72BF44"]

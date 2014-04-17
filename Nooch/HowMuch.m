@@ -261,26 +261,26 @@
 #pragma mark - type of transaction
 
 - (void) initialize_send {
-    //CGRect origin = self.reset_type.frame;
-    //origin.origin.x = 160;
+    CGRect origin = self.reset_type.frame;
+    origin.origin.x = 160;
     //[self.reset_type setFrame:origin];
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.5];
     //origin.origin.x = 10;
-    origin.size.width = 30;
+    //origin.size.width = 30;
     //[self.reset_type setFrame:origin];
 
     [self.recip_back setStyleClass:@"barbackground_green"];
 
-    origin = self.send.frame;
+    //origin = self.send.frame;
     origin.size.width = 149;
     origin.origin.x = 162;
-    [self.send setFrame:origin];
+    //[self.send setFrame:origin];
     
     origin = self.request.frame;
     origin.size.width = 149;
     origin.origin.x = 9;
-    [self.request setFrame:origin];
+    //[self.request setFrame:origin];
 
     [self.send addTarget:self action:@selector(confirm_send) forControlEvents:UIControlEventTouchUpInside];
 
@@ -289,12 +289,14 @@
     [self.send setTitle:@"Confirm Send" forState:UIControlStateNormal];
 
     [self.reset_type setStyleClass:@"button_blue"];
-    [UIView commitAnimations];
-
-    [self.divider setStyleClass:@"animate_roll_left"];
+    
     [self.send setStyleId:@"howmuch_send_expand"];
     [self.request setStyleId:@"howmuch_request_hide"];
     [self.reset_type setStyleId:@"cancel_request"];
+    [UIView commitAnimations];
+
+    [self.divider setStyleClass:@"animate_roll_left"];
+    
 }
 
 - (void) initialize_request {
@@ -304,14 +306,7 @@
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.5];
     [self.recip_back setStyleClass:@"barbackground_blue"];
-    origin.origin.x = 270; origin.size.width = 40;
-    [self.reset_type setFrame:origin];
-    origin = self.send.frame;
-    origin.size.width = 0; origin.origin.x = 310;
-    [self.send setFrame:origin];
-    origin = self.request.frame;
-    origin.size.width = 260; origin.origin.x = 10;
-    [self.request setFrame:origin];
+    
 
     [self.request addTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
 
@@ -320,12 +315,14 @@
     [self.request setTitle:@"Confirm Request" forState:UIControlStateNormal];
 
     [self.reset_type setStyleClass:@"button_green"];
-    [UIView commitAnimations];
-
-    [self.divider setStyleClass:@"animate_roll_right"];
+    
     [self.send setStyleId:@"howmuch_send_hide"];
     [self.request setStyleId:@"howmuch_request_expand"];
     [self.reset_type setStyleId:@"cancel_send"];
+    [UIView commitAnimations];
+
+    [self.divider setStyleClass:@"animate_roll_right"];
+    
 }
 
 - (void) reset_send_request {
