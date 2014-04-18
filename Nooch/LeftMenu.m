@@ -18,7 +18,6 @@
 #import "assist.h"
 #import "privacy.h"
 #import "terms.h"
-#import "WTGlyphFontSet.h"
 @interface LeftMenu ()
 @property(nonatomic,strong) UITableView *menu;
 @property(nonatomic) NSIndexPath *selected;
@@ -40,9 +39,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
-    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
-    [ttt setImage:[UIImage imageGlyphNamed:@"cogs" height:40 color:[UIColor whiteColor]]];
 
     self.selected = 0,0;
     [self.view setBackgroundColor:kNoochMenu];
@@ -90,8 +86,7 @@
     else {
         [settings setStyleId:@"settings_icon"];
     }
-
-    [settings setBackgroundImage:ttt.image forState:UIControlStateNormal];
+    [settings setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cogs"] forState:UIControlStateNormal];
     [settings addTarget:self action:@selector(go_settings) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:settings];
     
@@ -247,7 +242,7 @@
         }
         else if (indexPath.row == 2){
             cell.textLabel.text = @"Statistics";
-            //iv.image = [UIImage imageNamed:@"Stats_Icon.png"];
+            iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-tachometer"];
         }
     }
     else if(indexPath.section == 1) {
@@ -259,6 +254,8 @@
     else if(indexPath.section == 2) {
         if (indexPath.row == 0) {
             cell.textLabel.text = @"Refer a Friend";
+            //[iv setFrame:CGRectMake(7, 7, 30, 30)];
+            [iv setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"];
         }
         else if(indexPath.row == 1){

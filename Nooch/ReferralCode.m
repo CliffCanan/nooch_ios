@@ -95,7 +95,7 @@
     [self.code_field setKeyboardType:UIKeyboardTypeAlphabet];
     [self.code_field setDelegate:self];
     [self.code_field setTextAlignment:NSTextAlignmentCenter];
-    [self.code setFont:[UIFont systemFontOfSize:20]];
+    [self.code_field setFont:[UIFont systemFontOfSize:20]];
     [self.code_field setPlaceholder:@"ENTER CODE"];
     self.code_field.layer.borderWidth = 2;
     self.code_field.layer.borderColor = kNoochGrayLight.CGColor;

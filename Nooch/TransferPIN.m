@@ -227,7 +227,8 @@
     [self.view addSubview:self.third_num];
     [self.view addSubview:self.fourth_num];
     
-    if ([[assist shared] getTranferImage]) {
+    if ([[assist shared] getTranferImage])
+    {
         UIImageView *trans_image = [[UIImageView alloc] initWithFrame:CGRectMake(251, 206, 54, 54)];
         trans_image.layer.cornerRadius = 5;
         trans_image.layer.borderWidth = 1; trans_image.clipsToBounds = YES;

@@ -114,7 +114,6 @@ static assist * _sharedInstance = nil;
     passValue=value;
 }
 
-
 -(void)birth{/*{{{*/
     limit = NO; oldFilter = @""; needsUpdating = YES;
     sortedHist = [NSMutableArray new];

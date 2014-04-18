@@ -78,8 +78,6 @@
 			left			: 0px;
 		}
         #navbar_hamburger {
-            left            : 0px;
-            top             : 0px;
             width       :  30px;
             height      : 30px;
             font-family : "FontAwesome";
@@ -414,6 +412,21 @@
 		height: 30px;
 		box-shadow: 1px 1px 2px rgba(88,90,92,0.55);
 	}
+    
+    .exportHistorybutton_4{
+		background-color: #3FABE1;
+        border-radius: 4px;
+        top:380px;
+		font-family: "Roboto";
+		font-weight: regular;
+		font-size: 14px;
+		text-align: center;
+		color: white;
+		width: 130px;
+		left: 10px;
+		height: 30px;
+		box-shadow: 1px 1px 2px rgba(88,90,92,0.55);
+	}
 	
 	/****  		Sub-header Text (Outside of Table)     ****/
 	/****  Mostly Pre-Login Screens + Referral Screen  ****/
@@ -438,7 +451,17 @@
 		background-color: #ffffff;
 	}
 
-	.table_view_cell_2 {text-overflow	: ellipsis; } 
+	.table_view_cell_2 {text-overflow	: ellipsis; }
+    
+    .facebook_glyph {
+        width			: 14px;
+		height			: 16px;
+		top				: 50px;
+		left			: 15px;
+        color       : #41ABE1;
+        font-family : "FontAwesome";
+        font-size       : 14px;
+    }
 		 
 	/****  Table Cell View Main Text Label (Left Side)  ****/
 	.table_view_cell_textlabel_2 {
@@ -971,7 +994,7 @@
 		width 			: 30px;
 		height 			: 22px;
 		left 			: 265px;
-		top 			: 71px;
+		top 			: 81px;
 		background-size	: 30px 22px;
 	}
 	/**  Icon when a picture has been attached. **/
@@ -1671,6 +1694,7 @@
         width             : 25px;
         height           : 25px;
         color              : white;
+        text-align      : center;
     }
     
     #lside_settings {
@@ -1737,14 +1761,18 @@
 		height			: 30px;
 		top				: 524px;
 		left			: 15px;
-		background-image: url(settings-icon2.png);
+        font-family : "FontAwesome";
+        font-size       : 24px;
+        color : white;
 	}
     #settings_icon_4 {
 		width			: 31px;
 		height			: 30px;
 		top				: 436px;
 		left			: 15px;
-		background-image: url(settings-icon2.png);
+        font-family : "FontAwesome";
+        font-size       : 24px;
+        color           : white;
 	}
 	#nooch_whitelogo {
 		width			: 80px;
@@ -1955,7 +1983,9 @@
 		height				: 30px;
 		top					: 15px;
 		left				: 260px;
-		background-image: url(add-icon-blue.png);
+        color           : white;
+        font-family : "FontAwesome";
+        font-size       : 24px;
 	}
 	.details_othername_nonnooch {
 		width				: 260px;
@@ -2189,6 +2219,26 @@
 	/**************************/
 	/****   Main Settings  ****/
 	/**************************/
+
+    .table_arrow {
+        left        : 280px;
+        top         : 17px;
+        width       : 20px;
+        height      : 20px;
+        color        :  gray;
+        font-family : "FontAwesome";
+        font-size       : 24px;
+    }
+    
+    .table_glyph {
+        left        : 15px;
+        top         : 10px;
+        width      : 22px;
+        height      : 30px;
+        font-family : "FontAwesome";
+        font-size       : 24px;
+        color       : gray;
+    }
 
 	.background_gray { background-color: #efeff4; }
 

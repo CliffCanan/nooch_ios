@@ -326,10 +326,7 @@ NSMutableURLRequest *request;
     [time setTextColor:kNoochGrayLight];
     [cell.contentView addSubview:time];
     
-    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
-    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
-    [ttt setImage:[UIImage imageGlyphNamed:@"user" height:64.0f color:[UIColor darkGrayColor]]];
-    [cell.contentView addSubview:ttt];
+    
     return cell;
 }
 
