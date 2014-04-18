@@ -9,7 +9,6 @@
 #import "UIImageView+WebCache.h"
 #import "UIImage+Resize.h"
 #import "SelectRecipient.h"
-#import "WTGlyphFontSet.h"
 @interface HowMuch ()
 @property(nonatomic,strong) NSDictionary *receiver;
 @property(nonatomic,strong) UITextField *amount;
@@ -61,6 +60,8 @@
     self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setTitle:@"How Much"];
 
+    [[assist shared] setTranferImage:nil];
+    
     self.amnt = [@"" mutableCopy];
     self.decimals = YES;
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -89,7 +90,7 @@
         if ([[assist shared]isRequestMultiple]) {
             NSString*strMultiple=@"";
             for (NSDictionary *dictRecord in [[assist shared]getArray]) {
-                strMultiple=[strMultiple stringByAppendingString:[NSString stringWithFormat:@", %@ %@",[dictRecord[@"FirstName"] capitalizedString],[dictRecord[@"LastName"] capitalizedString]]];
+                strMultiple=[strMultiple stringByAppendingString:[NSString stringWithFormat:@", %@",[dictRecord[@"FirstName"] capitalizedString]]];
             }
             [to_label setStyleId:@"label_howmuch_recipientname"];
             strMultiple=[strMultiple substringFromIndex:1];
@@ -104,9 +105,9 @@
 
     if (![self.receiver valueForKey:@"nonuser"] &&  !isPayBack  && !isUserByLocation) {
         UIButton*add=[[UIButton alloc]initWithFrame:CGRectMake(260, 16, 28, 28)];
-        [add setImage:[UIImage imageGlyphNamed:@"plus-sig" height:28 color:kNoochGrayLight] forState:UIControlStateNormal];
         [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];
-        [add setStyleCSS:@"addbutton_request"];
+        [add setStyleClass:@"addbutton_request"];
+        [add setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"] forState:UIControlStateNormal];
         [self.view addSubview:add];
     }
     UIImageView *user_pic = [UIImageView new];
@@ -151,10 +152,9 @@
         [self.camera setFrame:CGRectMake(275, 71, 27, 22)];
     }
     [self.camera addTarget:self action:@selector(attach_pic) forControlEvents:UIControlEventTouchUpInside];
-    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
-    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 27, 22)];
-    [ttt setImage:[UIImage imageGlyphNamed:@"camera" height:30 color:kNoochGrayLight]];
-    [self.camera setBackgroundImage:ttt.image forState:UIControlStateNormal];
+    [self.camera.titleLabel setFont:[UIFont fontWithName:@"FontAwesome" size:24]];
+    [self.camera setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-camera"] forState:UIControlStateNormal];
+    [self.camera setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
     [self.view addSubview:self.camera];
     
     self.send = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -215,7 +215,6 @@
 /////////////////////////////////////////////////////////////////////
 //  EXAMPLE 2 THAT I WAS TRYING TO COPY FOR THE ABOVE CHUNK ('reset_type')... TRYING TO MAKE IT A GLYPHICON, NOT AN IMAGE
 	UIButton*add=[[UIButton alloc]initWithFrame:CGRectMake(260, 16, 28, 28)];
-        [add setImage:[UIImage imageGlyphNamed:@"plus-sig" height:28 color:kNoochGrayLight] forState:UIControlStateNormal];
         [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];
         [add setStyleCSS:@"addbutton_request"];
         [self.view addSubview:add];
@@ -400,7 +399,7 @@
         return;
     }
     else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Big Spender" message:[NSString stringWithFormat:@"While we definitely appreciate your enthusiasm, we are limiting transfers to $100 for now in order to minimize our risk (and yours). We don't like it either, but as usual, it's the lawyers fault. We're working to raise the limit soon! ", @"request"] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Big Spender" message:[NSString stringWithFormat:@"While we definitely appreciate your enthusiasm, we are limiting transfers to $100 for now in order to minimize our risk (and yours). We don't like it either, but as usual, it's the lawyers fault. We're working to raise the limit soon! "] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
         [alert show];
         return;
     }
@@ -515,13 +514,9 @@
    
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
     chosenImage = [chosenImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(150,150) interpolationQuality:kCGInterpolationMedium];
+    [self.camera setTitleColor:kNoochBlue forState:UIControlStateNormal];
 
-    //[self.camera setStyleId:@"howmuch_camera_attached"];
-
-    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
-    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 22, 22)];
-    [ttt setImage:[UIImage imageGlyphNamed:@"camera" height:30 color:kNoochPurple]];
-    [self.camera setBackgroundImage:ttt.image forState:UIControlStateNormal];
+    //camera 22 22
     [[assist shared]setTranferImage:chosenImage];
     [picker dismissViewControllerAnimated:YES completion:^{
         // [self close:nil];

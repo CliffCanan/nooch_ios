@@ -37,9 +37,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
-    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
-    [ttt setImage:[UIImage imageGlyphNamed:@"reorder" height:40 color:[UIColor whiteColor]]];
     
     [self.navigationItem setHidesBackButton:YES];
     
@@ -54,7 +51,6 @@
     [self.navigationItem setTitle:@"Settings"];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-    [ttt setImage:[UIImage imageGlyphNamed:@"cogs" height:40 color:[UIColor whiteColor]]];
 
     [self.view setStyleClass:@"background_gray"];
 
@@ -85,14 +81,17 @@
 
     UIButton *link_bank = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [link_bank setFrame:CGRectMake(0, 125, 0, 0)];
-    [link_bank setTitle:@" Link a new bank" forState:UIControlStateNormal];
+    [link_bank setTitle:@"Link a New Bank" forState:UIControlStateNormal];
+    UILabel *glyph = [UILabel new];
+    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:24]];
+    [glyph setFrame:CGRectMake(25, 9, 30, 30)];
+    [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"]];
+    [glyph setTextColor:[UIColor whiteColor]];
+    [link_bank addSubview:glyph];
     [link_bank addTarget:self action:@selector(attach_bank) forControlEvents:UIControlEventTouchUpInside];
     //[link_bank setGlyphNamed:@"plus-sign"];
     [link_bank setStyleClass:@"button_blue"];
     [link_bank setStyleId:@"link_new_account"];
-    [ttt setFrame:CGRectMake(28, 12, 22, 24)];
-    [ttt setImage:[UIImage imageGlyphNamed:@"plus-sign" height:40 color:[UIColor whiteColor]]];
-    [link_bank addSubview:ttt];
     [link_bank setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.view addSubview:link_bank];
 
@@ -143,31 +142,27 @@
         selectionColor.backgroundColor = kNoochGrayLight;
         cell.selectedBackgroundView = selectionColor;
     }
-    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
-    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
-    [ttt setImage:[UIImage imageGlyphNamed:@"chevron-right" height:40 color:kNoochBlue]];
-
     UILabel *title = [UILabel new];
     [title setStyleClass:@"settings_table_label"];
-    UIImageView *arrow = [[UIImageView alloc] initWithFrame:CGRectMake(280, 17, 12, 18)];
-    arrow.image = ttt.image;
+    UILabel *arrow = [UILabel new];
+    [arrow setStyleClass:@"table_arrow"];
+    [arrow setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-right"]];
     [cell.contentView addSubview:arrow];
     
-    UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 22, 30)];
-    [iv setImage:[UIImage imageGlyphNamed:@"user" height:30 color:kNoochBlue]];
+    UILabel *glyph = [UILabel new];
+    [glyph setStyleClass:@"table_glyph"];
     if(indexPath.row == 0){
         title.text = @"Profile Info";
+        [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-user"]];
     }else if(indexPath.row == 1){
         title.text = @"Security Settings";
-        [iv setImage:[UIImage imageGlyphNamed:@"lock" height:30 color:kNoochBlue]];
-        [iv setFrame:CGRectMake(10, 10, 20, 28)];
+        [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
     }else if(indexPath.row == 2){
-        title.text = @"Notification Settings" ;
-        [iv setImage:[UIImage imageGlyphNamed:@"bell-alt" height:30 color:kNoochBlue]];
-        [iv setFrame:CGRectMake(10, 10, 24, 26)];
+        title.text = @"Notification Settings";
+        [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
     }
     [cell.contentView addSubview:title];
-    [cell.contentView addSubview:iv];
+    [cell.contentView addSubview:glyph];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

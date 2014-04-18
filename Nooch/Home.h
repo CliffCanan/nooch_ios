@@ -12,7 +12,6 @@
 #import "serve.h"
 #import "core.h"
 #import "NavControl.h"
-#import "WTGlyphFontSet.h"
 #import "MBProgressHUD.h"
 #import <MessageUI/MessageUI.h>
 #import "NSString+FontAwesome.h"

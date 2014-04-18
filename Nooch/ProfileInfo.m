@@ -67,9 +67,6 @@
     self.navigationController.navigationBar.topItem.title = @"";
 
     if (isProfileOpenFromSideBar) {
-        [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
-        UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
-        [ttt setImage:[UIImage imageGlyphNamed:@"reorder" height:40 color:[UIColor whiteColor]]];
         [self.navigationItem setHidesBackButton:YES];
         
         UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -176,7 +173,7 @@
 
     [self.view addSubview:memSincelbl];
 
-    self.name = [[UITextField alloc] initWithFrame:CGRectMake(95, 70+down, 210, 50)];
+    self.name = [[UITextField alloc] initWithFrame:CGRectMake(95, 0, 210, 50)];
     [self.name setTextAlignment:NSTextAlignmentRight]; [self.name setBackgroundColor:[UIColor clearColor]];
     [self.name setPlaceholder:@"First & Last Name"]; [self.name setDelegate:self];
     [self.name setStyleClass:@"table_view_cell_detailtext_1"];
@@ -184,23 +181,19 @@
     [self.name setUserInteractionEnabled:NO];
     [self.view addSubview:self.name];
 
-    UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(20, 70+down, 140, 40)];
+    UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 140, 50)];
     [name setBackgroundColor:[UIColor clearColor]]; [name setText:@"Name:"];
     [name setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:name];
 
-    UIView *div = [[UIView alloc] initWithFrame:CGRectMake(0, 110+down, 0, 0)];
-    [div setStyleId:@"divider"];
-    [self.view addSubview:div];
-
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
-        UIView *email_not_validated = [[UIView alloc] initWithFrame:CGRectMake(0, 110+down, 320, 40)];
+        UIView *email_not_validated = [[UIView alloc] initWithFrame:CGRectMake(0, 110+down, 320, 50)];
         [email_not_validated setBackgroundColor:[UIColor redColor]];
         [email_not_validated setAlpha:0.4];
         [self.view addSubview:email_not_validated];
     }
 
-    self.email = [[UITextField alloc] initWithFrame:CGRectMake(95, 110+down, 210, 40)];
+    self.email = [[UITextField alloc] initWithFrame:CGRectMake(95, 0, 210, 50)];
     [self.email setTextAlignment:NSTextAlignmentRight]; [self.email setBackgroundColor:[UIColor clearColor]];
     [self.email setPlaceholder:@"email@email.com"]; [self.email setDelegate:self];
     [self.email setKeyboardType:UIKeyboardTypeEmailAddress];
@@ -209,62 +202,45 @@
     [self.email setUserInteractionEnabled:NO];
     [self.view addSubview:self.email];
 
-    UILabel *mail = [[UILabel alloc] initWithFrame:CGRectMake(20, 110+down, 140, 40)];
+    UILabel *mail = [[UILabel alloc] initWithFrame:CGRectMake(20, 110+down, 140, 50)];
     [mail setBackgroundColor:[UIColor clearColor]]; [mail setText:@"Email:"];
     [mail setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:mail];
 
-    UIView *div2 = [[UIView alloc] initWithFrame:CGRectMake(0, 150+down, 0, 0)];
-    [div2 setStyleId:@"divider"];
-    [self.view addSubview:div2];
 
     //Recovery Mail
-    self.recovery_email = [[UITextField alloc] initWithFrame:CGRectMake(95, 150+down, 210, 40)];
+    self.recovery_email = [[UITextField alloc] initWithFrame:CGRectMake(95, 0, 210, 50)];
     [self.recovery_email setTextAlignment:NSTextAlignmentRight]; [self.recovery_email setBackgroundColor:[UIColor clearColor]];
     [self.recovery_email setPlaceholder:@"(Optional)"]; [self.recovery_email setDelegate:self];
     [self.recovery_email setKeyboardType:UIKeyboardTypeEmailAddress];
     [self.recovery_email setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.recovery_email];
 
-    UILabel *recover = [[UILabel alloc] initWithFrame:CGRectMake(20, 150+down, 140, 40)];
+    UILabel *recover = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 140, 50)];
     [recover setBackgroundColor:[UIColor clearColor]]; [recover setText:@"Recovery Email:"];
     [recover setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:recover];
 
-    // Row Seperator
-    UIView *div3= [[UIView alloc] initWithFrame:CGRectMake(0, 190+down, 0, 0)];
-    [div3 setStyleId:@"divider"];
-    [self.view addSubview:div3];
-
-    // Row Seperator
-    UIView *div4 = [[UIView alloc] initWithFrame:CGRectMake(0, 230+down, 0, 0)];
-    [div4 setStyleId:@"divider"];
-    [self.view addSubview:div4];
-
     if (![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"]) {
-        UIView *unverified_phone = [[UIView alloc] initWithFrame:CGRectMake(0,190+down,320,40)];
+        UIView *unverified_phone = [[UIView alloc] initWithFrame:CGRectMake(0,0,320,50)];
         [unverified_phone setAlpha:0.4]; [unverified_phone setBackgroundColor:[UIColor redColor]];
         [self.view addSubview:unverified_phone];
     }
-    self.phone = [[UITextField alloc] initWithFrame:CGRectMake(95, 190+down, 210, 40)];
+    self.phone = [[UITextField alloc] initWithFrame:CGRectMake(95, 0, 210, 50)];
     [self.phone setTextAlignment:NSTextAlignmentRight]; [self.phone setBackgroundColor:[UIColor clearColor]];
     [self.phone setPlaceholder:@"555-555-5555"]; [self.phone setDelegate:self];
     [self.phone setKeyboardType:UIKeyboardTypePhonePad];
     [self.phone setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.phone];
     
-    UILabel *num = [[UILabel alloc] initWithFrame:CGRectMake(20, 190+down, 140, 40)];
+    UILabel *num = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 140, 50)];
     [num setBackgroundColor:[UIColor clearColor]]; [num setText:@"Phone:"];
     [num setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:num];
     
-    // Row Seperator
-    UIView *div5 = [[UIView alloc] initWithFrame:CGRectMake(0, 270+down, 0, 0)];
-    [div5 setStyleId:@"divider"];
-    [self.view addSubview:div5];
 
     // Address
-    self.address_one = [[UITextField alloc] initWithFrame:CGRectMake(95, 230+down, 210, 40)];
+    self.address_one = [[UITextField alloc] initWithFrame:CGRectMake(95, 0, 210, 50)];
     [self.address_one setTextAlignment:NSTextAlignmentRight]; [self.address_one setBackgroundColor:[UIColor clearColor]];
     [self.address_one setPlaceholder:@"123 Nooch Lane"]; [self.address_one setDelegate:self];
     [self.address_one setKeyboardType:UIKeyboardTypeDefault];
@@ -272,18 +248,14 @@
     [self.view addSubview:self.address_one];
     
     // Address label
-    UILabel *addr1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 230+down, 140, 40)];
+    UILabel *addr1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 140, 50)];
     [addr1 setBackgroundColor:[UIColor clearColor]]; [addr1 setText:@"Address One:"];
     [addr1 setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:addr1];
 
-    // Row Seperator
-    UIView *div6 = [[UIView alloc] initWithFrame:CGRectMake(0, 310+down, 0, 0)];
-    [div6 setStyleId:@"divider"];
-    [self.view addSubview:div6];
 
     // Address
-    self.address_two = [[UITextField alloc] initWithFrame:CGRectMake(95, 270+down, 210, 40)];
+    self.address_two = [[UITextField alloc] initWithFrame:CGRectMake(95, 0, 210, 50)];
     [self.address_two setTextAlignment:NSTextAlignmentRight]; [self.address_two setBackgroundColor:[UIColor clearColor]];
     [self.address_two setPlaceholder:@"(Optional)"]; [self.address_two setDelegate:self];
     [self.address_two setKeyboardType:UIKeyboardTypeDefault];
@@ -291,18 +263,14 @@
     [self.view addSubview:self.address_two];
 
     // Address label
-    UILabel *addr2 = [[UILabel alloc] initWithFrame:CGRectMake(20, 270+down, 140, 40)];
+    UILabel *addr2 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 140, 50)];
     [addr2 setBackgroundColor:[UIColor clearColor]]; [addr2 setText:@"Address Two:"];
     [addr2 setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:addr2];
     
-    // Row Seperator
-    UIView *div7 = [[UIView alloc] initWithFrame:CGRectMake(0, 350+down, 0, 0)];
-    [div7 setStyleId:@"divider"];
-    [self.view addSubview:div7];
 
     // City
-    self.city = [[UITextField alloc] initWithFrame:CGRectMake(95, 310+down, 210, 40)];
+    self.city = [[UITextField alloc] initWithFrame:CGRectMake(95, 0, 210, 50)];
     [self.city setTextAlignment:NSTextAlignmentRight]; [self.city setBackgroundColor:[UIColor clearColor]];
     [self.city setPlaceholder:@"City"]; [self.city setDelegate:self];
     [self.city setKeyboardType:UIKeyboardTypeDefault];
@@ -310,25 +278,21 @@
     [self.view addSubview:self.city];
     
     // City label
-    UILabel *cit = [[UILabel alloc] initWithFrame:CGRectMake(20, 310+down, 140, 40)];
+    UILabel *cit = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 140, 50)];
     [cit setBackgroundColor:[UIColor clearColor]]; [cit setText:@"City:"];
     [cit setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:cit];
 
-    // Row Seperator
-    UIView *div8 = [[UIView alloc] initWithFrame:CGRectMake(0, 390+down, 0, 0)];
-    [div8 setStyleId:@"divider"];
-    [self.view addSubview:div8];
 
     // Zip label
-    self.zip = [[UITextField alloc] initWithFrame:CGRectMake(95, 350+down, 210, 40)];
+    self.zip = [[UITextField alloc] initWithFrame:CGRectMake(95, 0, 210, 50)];
     [self.zip setTextAlignment:NSTextAlignmentRight]; [self.zip setBackgroundColor:[UIColor clearColor]];
     [self.zip setPlaceholder:@"12345"]; [self.zip setDelegate:self];
     [self.zip setKeyboardType:UIKeyboardTypeNumberPad];
     [self.zip setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.zip];
     
-    UILabel *z = [[UILabel alloc] initWithFrame:CGRectMake(20, 350+down, 140, 40)];
+    UILabel *z = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 140, 50)];
     [z setBackgroundColor:[UIColor clearColor]]; [z setText:@"ZIP:"];
     [z setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:z];
@@ -359,6 +323,14 @@
                               @"Eastern Standard Time",@"GMT-05:00",
                               @"Atlantic Standard Time",@"GMT-04:00",
                               nil];
+    
+    self.list = [UITableView new];
+    [self.list setFrame:CGRectMake(0, 70+down, 320, 350)];
+    [self.list setDelegate:self];
+    [self.list setDataSource:self];
+    [self.list setScrollEnabled:NO];
+    [self.list setRowHeight:50];
+    [self.view addSubview:self.list];
     
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
         UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
@@ -673,7 +645,6 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-
 {
     return 1;
 }
@@ -694,17 +665,27 @@
                                       reuseIdentifier:CellIdentifier];
         [cell.textLabel setTextColor:kNoochGrayLight];
     }
+    if (indexPath.row == 0) {
+        [cell.contentView addSubview:self.name];
+    } else if (indexPath.row == 1) {
+        [cell.contentView addSubview:self.email];
+    } else if (indexPath.row == 2) {
+        [cell.contentView addSubview:self.recovery_email];
+    } else if (indexPath.row == 3) {
+        [cell.contentView addSubview:self.phone];
+    } else if (indexPath.row == 4) {
+        [cell.contentView addSubview:self.address_one];
+    } else if (indexPath.row == 5) {
+        [cell.contentView addSubview:self.address_two];
+    } else if (indexPath.row == 6) {
+        [cell.contentView addSubview:self.zip];
+    } else if (indexPath.row == 7) {
+        [cell.contentView addSubview:self.zip];
+    }
     return cell;
 }
 
 #pragma mark - UITableViewDelegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-
-{
-    return 70.0;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 
 {

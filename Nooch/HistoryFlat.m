@@ -64,9 +64,6 @@
     [super viewDidLoad];
     [self.navigationItem setHidesBackButton:YES];
 
-    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
-    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 100, 100)];
-    [ttt setImage:[UIImage imageGlyphNamed:@"reorder" height:40 color:[UIColor whiteColor]]];
 
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
@@ -75,7 +72,7 @@
     UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
 
-    [ttt setImage:[UIImage imageGlyphNamed:@"filter" height:40 color:[UIColor whiteColor]]];
+    //[ttt setImage:[UIImage imageGlyphNamed:@"filter" height:40 color:[UIColor whiteColor]]];
     [self.navigationItem setTitle:@"History"];
      [nav_ctrl performSelector:@selector(disable)];
 
@@ -103,7 +100,6 @@
 
     UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [filter setStyleClass:@"label_filter"];
-    [filter setBackgroundImage:ttt.image forState:UIControlStateNormal];
     [filter addTarget:self action:@selector(FilterHistory:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *filt = [[UIBarButtonItem alloc] initWithCustomView:filter];
     [self.navigationItem setRightBarButtonItem:filt];
@@ -160,11 +156,17 @@
     exportHistory=[UIButton buttonWithType:UIButtonTypeCustom];
     [exportHistory setTitle:@" Export History" forState:UIControlStateNormal];
     [exportHistory setFrame:CGRectMake(10, 420, 150, 20)];
-    [exportHistory setStyleClass:@"exportHistorybutton"];
-    [ttt setFrame:CGRectMake(5, 5, 20, 20)];
-    [ttt setImage:[UIImage imageGlyphNamed:@"cloud-download" height:40 color:[UIColor whiteColor]]];
-    [exportHistory setGlyphNamed:@"cloud-download"];
-    //[exportHistory addSubview:ttt];
+    if ([UIScreen mainScreen].bounds.size.height > 500) {
+        [exportHistory setStyleClass:@"exportHistorybutton"];
+    } else {
+        [exportHistory setStyleClass:@"exportHistorybutton_4"];
+    }
+    UILabel *glyph = [UILabel new];
+    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
+    [glyph setFrame:CGRectMake(3, 7, 15, 15)];
+    [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cloud-download"]];
+    [glyph setTextColor:[UIColor whiteColor]];
+    [exportHistory addSubview:glyph];
     [exportHistory addTarget:self action:@selector(ExportHistory:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:exportHistory];
     [self.view bringSubviewToFront:exportHistory];

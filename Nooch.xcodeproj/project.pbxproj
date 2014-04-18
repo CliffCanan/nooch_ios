@@ -107,7 +107,6 @@
 		01C26E011843E88A005179B7 /* 4KforCancer.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DFF1843E88A005179B7 /* 4KforCancer.png */; };
 		01C49AEA18D8C83500BACE23 /* fontawesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 01C49AE118D8C83500BACE23 /* fontawesome.ttf */; };
 		01C49AEC18D8C83500BACE23 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C49AE518D8C83500BACE23 /* MBProgressHUD.m */; };
-		01C49AED18D8C83500BACE23 /* WTGlyphFontSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C49AE818D8C83500BACE23 /* WTGlyphFontSet.m */; };
 		01C83E7B17F4D726009CABBF /* HowMuch.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C83E7917F4D726009CABBF /* HowMuch.m */; };
 		01C83E8017F9FF9E009CABBF /* TransferPIN.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C83E7E17F9FF9E009CABBF /* TransferPIN.m */; };
 		01C83E8417FB1606009CABBF /* NavControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C83E8317FB1606009CABBF /* NavControl.m */; };
@@ -383,8 +382,6 @@
 		01C49AE218D8C83500BACE23 /* knoxWeb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = knoxWeb.h; sourceTree = "<group>"; };
 		01C49AE418D8C83500BACE23 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		01C49AE518D8C83500BACE23 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
-		01C49AE718D8C83500BACE23 /* WTGlyphFontSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WTGlyphFontSet.h; sourceTree = "<group>"; };
-		01C49AE818D8C83500BACE23 /* WTGlyphFontSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WTGlyphFontSet.m; sourceTree = "<group>"; };
 		01C83E7817F4D726009CABBF /* HowMuch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HowMuch.h; sourceTree = "<group>"; };
 		01C83E7917F4D726009CABBF /* HowMuch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HowMuch.m; sourceTree = "<group>"; };
 		01C83E7D17F9FF9D009CABBF /* TransferPIN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferPIN.h; sourceTree = "<group>"; };
@@ -957,15 +954,6 @@
 			path = fontawesome;
 			sourceTree = "<group>";
 		};
-		01C49AE618D8C83500BACE23 /* WTGlyphFontSet */ = {
-			isa = PBXGroup;
-			children = (
-				01C49AE718D8C83500BACE23 /* WTGlyphFontSet.h */,
-				01C49AE818D8C83500BACE23 /* WTGlyphFontSet.m */,
-			);
-			path = WTGlyphFontSet;
-			sourceTree = "<group>";
-		};
 		01CABC5218A2BD9500BBB935 /* ECSlidingViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1157,7 +1145,6 @@
 				01C49ADF18D8C83500BACE23 /* fontawesome */,
 				01C49AE418D8C83500BACE23 /* MBProgressHUD.h */,
 				01C49AE518D8C83500BACE23 /* MBProgressHUD.m */,
-				01C49AE618D8C83500BACE23 /* WTGlyphFontSet */,
 				01B2CA8A18B3CC20008E6901 /* PodFiles */,
 				841A3E0618A61491001DAAA2 /* UIImage-categories */,
 				01CABC5218A2BD9500BBB935 /* ECSlidingViewController */,
@@ -1686,7 +1673,6 @@
 				0179E9F917F35AA30027526C /* Home.m in Sources */,
 				0103AEAF18FC8B8D003225DA /* FAImageView.m in Sources */,
 				16E4B1BA187053F20099D075 /* UIImage+MultiFormat.m in Sources */,
-				01C49AED18D8C83500BACE23 /* WTGlyphFontSet.m in Sources */,
 				01085FB717FB6ABE00A31F63 /* ReferralCode.m in Sources */,
 				01085FF5180345D200A31F63 /* ResetPassword.m in Sources */,
 				16E4B1B0187053F20099D075 /* NSData+GIF.m in Sources */,

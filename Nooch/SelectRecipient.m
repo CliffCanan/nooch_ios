@@ -627,7 +627,6 @@
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
         
         [timer invalidate];
         
@@ -961,9 +960,6 @@
     [cell.contentView addSubview:pic];
     [cell.contentView addSubview:npic];
 
-    [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
-    UIImageView *ttt = [[UIImageView alloc] initWithFrame:CGRectMake(20, 48, 12, 16)];
-    [ttt setImage:[UIImage imageGlyphNamed:@"facebook" height:40 color:kNoochBlue]];
     
     if (self.location) {
         [cell.textLabel setTextColor:kNoochGrayLight];
@@ -1048,7 +1044,10 @@
         
         if (info[@"facebookId"]) {
             //add fb image
-            [cell.contentView addSubview:ttt];
+            UILabel *fb = [UILabel new];
+            [fb setStyleClass:@"facebook_glyph"];
+            [fb setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook"]];
+            [cell.contentView addSubview:fb];
         }
         if (info[@"MemberId"]) {
             [cell.contentView addSubview:npic];
