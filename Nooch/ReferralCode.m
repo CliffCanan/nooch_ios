@@ -64,7 +64,7 @@
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
 
-    UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 150, 280, 70)];
+    UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 175, 280, 70)];
     [prompt setTextColor:kNoochGrayDark];
     [prompt setBackgroundColor:[UIColor clearColor]];
     [prompt setNumberOfLines:3];
