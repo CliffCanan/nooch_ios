@@ -151,7 +151,7 @@
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
 
-    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 280, 50)];
+    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 175, 280, 50)];
     [self.prompt setNumberOfLines:2];
     [self.prompt setText:@"You'll be asked to enter this PIN anytime you send or request money."];
     [self.prompt setStyleClass:@"instruction_text"];
