@@ -178,7 +178,7 @@
     }
     [subview addSubview:self.pic];
     
-    self.message = [[UILabel alloc] initWithFrame:CGRectMake(20, 310, 280, 70)];
+    self.message = [[UILabel alloc] initWithFrame:CGRectMake(20, 315, 280, 70)];
     [self.message setBackgroundColor:[UIColor clearColor]];
     
     if ([self.user objectForKey:@"image"]) {
