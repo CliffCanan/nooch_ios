@@ -21,7 +21,7 @@ core *me;
 #define kNoochGreen     [Helpers hexColor:@"72BF44"]
 #define kNoochPurple    [Helpers hexColor:@"5A538D"]
 #define kNoochGrayLight [Helpers hexColor:@"939598"]
-#define kNoochGrayDark  [Helpers hexColor:@"424242"]
+#define kNoochGrayDark  [Helpers hexColor:@"414042"]
 #define kNoochLight     [Helpers hexColor:@"EBEBEB"]
 #define kNoochMenu      [Helpers hexColor:@"58595b"]
 #define kNoochFontBold [UIFont fontWithName:@"BrandonGrotesque-Bold" size:22]
