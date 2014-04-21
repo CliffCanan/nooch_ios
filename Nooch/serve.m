@@ -101,7 +101,6 @@ NSString *amnt;
 -(void)addFund:(NSString*)amount{
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
-    NSLog(@"oauthnd%@",[defaults valueForKey:@"OAuthToken"]);
     transactionInputaddfund = [NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"MemberId", @"", @"RecepientId", amount, @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction",  [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"], @"DeviceId", Latitude, @"Latitude", Longitude, @"Longitude", Altitude, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode", nil];
     
     NSMutableDictionary *transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputaddfund, @"transactionInput",[defaults valueForKey:@"OAuthToken"],@"accessToken", nil];
@@ -223,7 +222,6 @@ NSString *amnt;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
-    NSLog(@"%@",[defaults valueForKey:@"OAuthToken"]);
     requestmemid=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetMemberIdByUsername?userName=%@",ServerUrl,username
                                                                            ]]];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestmemid delegate:self];
@@ -433,7 +431,6 @@ NSString *amnt;
     UIImage*img=[UIImage imageNamed:@""];
     [[assist shared]setTranferImage:img];
     [[assist shared]setTranferImage:nil];
-    NSLog(@"%@",dictnew);
     //  [settingsDictionary setValue:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
     NSError *error;
     postDataSet = [NSJSONSerialization dataWithJSONObject:memDetails
@@ -709,7 +706,6 @@ NSString *amnt;
             
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
             
-            NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
             [timer invalidate];
             // timer=nil;
             [nav_ctrl performSelector:@selector(disable)];

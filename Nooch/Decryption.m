@@ -43,7 +43,6 @@ NSMutableURLRequest *request1,*request2;
                                 [NSURL URLWithString:
                                  [[NSString stringWithFormat:@"%@"@"/%@?data=%@", MyUrl, methodName, text] stringByAddingPercentEscapesUsingEncoding:
                                   NSUTF8StringEncoding]]];
-    NSLog(@"%@",requisicao);
     //request2 = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?data=%@", MyUrl, methodName, text]]];
     //Load the request in the UIWebView.
     [[NSURLConnection alloc] initWithRequest:requisicao delegate:self];
@@ -82,7 +81,6 @@ NSMutableURLRequest *request1,*request2;
                    options:kNilOptions
                    error:&error];;
     NSString *decodeString = [NSString decodeBase64String:[loginResult valueForKey:@"Status"]];
-    NSLog(@"%@",decodeString);
     NSMutableDictionary *loginResult2=[[NSMutableDictionary alloc]init];
     for (id key  in loginResult) {
         if ([key isEqualToString:@"Status"]) {

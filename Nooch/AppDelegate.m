@@ -52,7 +52,6 @@ bool modal;
 
     NSSetUncaughtExceptionHandler(&exceptionHandler);
    // [[UIApplication sharedApplication]registerForRemoteNotificationTypes:UIRemoteNotificationTypeNone];
-    NSLog(@"finished launching");
     return YES;
 }
 

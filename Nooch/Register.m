@@ -232,7 +232,6 @@
      {
          self.facebook_info = [NSJSONSerialization
                                JSONObjectWithData:respData //1
-                               
                                options:kNilOptions
                                error:&error];
          self.name_field.text = [NSString stringWithFormat:@"%@ %@",[self.facebook_info objectForKey:@"first_name"],[self.facebook_info objectForKey:@"last_name"]];
@@ -308,7 +307,6 @@
     if ([tagName isEqualToString:@"check_dup"]) {
         NSError *error;
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        NSLog(@"%@",loginResult);
         if (![[loginResult objectForKey:@"Result"] isEqualToString:@"Not a nooch member."]) {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Email in Use" message:@"The email address you are attempting to sign up with is already in use." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
@@ -414,7 +412,6 @@
 {
     const int movementDistance = textField.frame.origin.y/2; // tweak as needed
     const float movementDuration = 0.3f; // tweak as needed
-    
     int movement = (up ? -movementDistance : movementDistance);
     
     [UIView beginAnimations: @"anim" context: nil];

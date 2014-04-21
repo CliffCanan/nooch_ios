@@ -24,7 +24,6 @@ NSMutableURLRequest*requestEncryption;
     
     NSString *encodedString = [NSString encodeBase64String:stringtoEncry];
     
-    NSLog(@"%@",encodedString);
     responseData = [[NSMutableData alloc] init];
     requestEncryption = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@", MyUrl,@"GetEncryptedData",@"data",encodedString]]];
     [requestEncryption setHTTPMethod:@"GET"];
