@@ -46,11 +46,9 @@
 -(void)backPressed:(id)sender{
     isphoneBook=NO;
     isEmailEntry=NO;
-    if (!isAddRequest) {
-        [[assist shared]setRequestMultiple:NO];
-        [arrRecipientsForRequest removeAllObjects];
-        [[assist shared]setArray:[arrRecipientsForRequest copy]];
-    }
+    [[assist shared]setRequestMultiple:NO];
+    [arrRecipientsForRequest removeAllObjects];
+    [[assist shared]setArray:[arrRecipientsForRequest copy]];
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)viewDidLoad
@@ -201,12 +199,12 @@
     } else {
         [self.reset_type setStyleId:@"cancel_hidden_4"];
     }
-    UILabel *glyphReset = [UILabel new];
+    UILabel *glyph = [UILabel new];
     [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:23]];
     [glyph setFrame:CGRectMake(3, 0, 24, 56)];
     [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
     [glyph setTextColor:[UIColor whiteColor]];
-    [self.reset_type addSubview:glyphReset];
+    [self.reset_type addSubview:glyph];
     [self.reset_type addTarget:self action:@selector(reset_send_request) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.reset_type];
 

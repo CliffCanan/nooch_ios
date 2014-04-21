@@ -519,7 +519,6 @@ NSMutableURLRequest *request;
                                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                      options:kNilOptions
                                      error:&error];
-        NSLog(@"temp %@",temp);
     }
     
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
@@ -577,9 +576,7 @@ NSMutableURLRequest *request;
                     
                NSString *responseString = [[NSString alloc] initWithData:newData encoding:NSUTF8StringEncoding];
                  NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-                    NSLog(@"%@",[jsonObject valueForKey:@"Result"]);
                    ServerDate=[self dateFromString:[jsonObject valueForKey:@"Result"] ];
-                    NSLog(@"%@",ServerDate);
             
         }
      

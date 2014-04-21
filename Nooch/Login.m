@@ -283,8 +283,6 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 -(void)listen:(NSString *)result tagName:(NSString *)tagName{
-    //nslog(@"response %@", result);
-    NSLog(@"%@",nav_ctrl.viewControllers);
     if([tagName isEqualToString:@"ForgotPass"]){
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Check your email for a reset password link." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];

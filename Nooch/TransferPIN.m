@@ -134,10 +134,9 @@
     }
     else {
         if ([[assist shared] isRequestMultiple]) {
-            NSLog(@"%@",[[assist shared]getArray]);
             NSString*strMultiple=@"";
             for (NSDictionary *dictRecord in [[assist shared]getArray]) {
-                strMultiple=[strMultiple stringByAppendingString:[NSString stringWithFormat:@",%@ %@",[dictRecord[@"FirstName"] capitalizedString],[dictRecord[@"LastName"] capitalizedString]]];
+                strMultiple=[strMultiple stringByAppendingString:[NSString stringWithFormat:@", %@",[dictRecord[@"FirstName"] capitalizedString]]];
             }
             strMultiple=[strMultiple substringFromIndex:1];
             [to_label setText:strMultiple];
