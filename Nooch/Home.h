@@ -19,6 +19,7 @@
 core *me;
 #define kNoochBlue      [Helpers hexColor:@"41ABE1"]
 #define kNoochGreen     [Helpers hexColor:@"72BF44"]
+#define kNoochRed       [Helpers hexColor:@"41ABE1"]
 #define kNoochPurple    [Helpers hexColor:@"5A538D"]
 #define kNoochGrayLight [Helpers hexColor:@"939598"]
 #define kNoochGrayDark  [Helpers hexColor:@"414042"]
