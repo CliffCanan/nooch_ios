@@ -57,13 +57,24 @@
     [self.confirm setSecureTextEntry:YES];
 
     self.save = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.save setFrame:CGRectMake(0, 200, 0, 0)];
+    [self.save setFrame:CGRectMake(0, 205, 0, 0)];
     [self.save setStyleClass:@"button_green"];
     [self.save setTitle:@"Change Password" forState:UIControlStateNormal];
     [self.save addTarget:self action:@selector(finishResetPassword:) forControlEvents:UIControlEventTouchUpInside];
     [self.save setEnabled:YES];
     [self.view addSubview:self.save];
     [self.old becomeFirstResponder];
+
+    UIButton *forgot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [forgot setBackgroundColor:[UIColor clearColor]];
+    [forgot setTitle:@"Forgot Password?" forState:UIControlStateNormal];
+    [forgot setFrame:CGRectMake(20, 275, 280, 30)];
+    [forgot.titleLabel setFont:[UIFont fontWithName:@"Roboto-Regular" size:13]];
+    [forgot setTitleColor:kNoochGrayLight forState:UIControlStateNormal];
+    [forgot addTarget:self action:@selector(forgot_pass) forControlEvents:UIControlEventTouchUpInside];
+    [forgot setStyleId:@"label_forgotpw"];
+    [self.view addSubview:forgot];
+
 }
 - (IBAction)finishResetPassword:(id)sender {
     NSCharacterSet* digitsCharSet = [NSCharacterSet decimalDigitCharacterSet];
@@ -150,6 +161,15 @@
     respass.tagName = @"resetPasswordDetails";
     [respass resetPassword:getEncryptionOldPassword new:getEncryptionNewPassword];
 }
+
+- (void) forgot_pass {
+    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Enter your email and we will send you a reset link." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+    alert.alertViewStyle=UIAlertViewStylePlainTextInput;
+    [[alert textFieldAtIndex:0] setText:self.email.text];
+    [alert setTag:220011];
+    [alert show];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 3;
 }
