@@ -91,16 +91,16 @@
     
     self.code_field = [[UITextField alloc] initWithFrame:CGRectMake(55, 250, 210, 60)];
     [self.code_field setBackgroundColor:[UIColor whiteColor]]; 
-    [self.code_field setTextColor:kNoochGrayLight];
+    [self.code_field setTextColor:kNoochGrayDark];
     [self.code_field setKeyboardType:UIKeyboardTypeAlphabet];
     [self.code_field setDelegate:self];
     [self.code_field setTextAlignment:NSTextAlignmentCenter];
-    [self.code_field setFont:[UIFont systemFontOfSize:20]];
+    [self.code_field setFont:[UIFont systemFontOfSize:24]];
     [self.code_field setPlaceholder:@"ENTER CODE"];
     self.code_field.layer.borderWidth = 2;
     self.code_field.layer.borderColor = kNoochGrayLight.CGColor;
     [self.code_field setAutocorrectionType:UITextAutocorrectionTypeNo];
-    [self.code_field setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+    [self.code_field setAutocapitalizationType:UITextAutocapitalizationTypeAllCharacters];
     self.code_field.layer.borderColor = kNoochBlue.CGColor;
     self.code_field.layer.cornerRadius = 12;
     [self.view addSubview:self.code_field];
