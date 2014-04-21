@@ -89,7 +89,6 @@
     [glyph setTextColor:[UIColor whiteColor]];
     [link_bank addSubview:glyph];
     [link_bank addTarget:self action:@selector(attach_bank) forControlEvents:UIControlEventTouchUpInside];
-    //[link_bank setGlyphNamed:@"plus-sign"];
     [link_bank setStyleClass:@"button_blue"];
     [link_bank setStyleId:@"link_new_account"];
     [link_bank setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -103,7 +102,13 @@
 
     self.logout = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.logout setTitle:@"Sign Out" forState:UIControlStateNormal];
-    [ self.logout addTarget:self action:@selector(sign_out) forControlEvents:UIControlEventTouchUpInside];
+    UILabel *glyphLogout = [UILabel new];
+    [glyphLogout setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
+    [glyphLogout setFrame:CGRectMake(25, 7, 30, 30)];
+    [glyphLogout setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-sign-out"]];
+    [glyphLogout setTextColor:[UIColor whiteColor]];
+    [self.logout link_bank addSubview:glyphLogout];
+    [self.logout addTarget:self action:@selector(sign_out) forControlEvents:UIControlEventTouchUpInside];
     [self.logout setStyleClass:@"button_gray"];
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
         [self.logout setStyleId:@"button_signout_4"];
@@ -159,7 +164,7 @@
         [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
     }else if(indexPath.row == 2){
         title.text = @"Notification Settings";
-        [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
+        [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bell"]];
     }
     [cell.contentView addSubview:title];
     [cell.contentView addSubview:glyph];
