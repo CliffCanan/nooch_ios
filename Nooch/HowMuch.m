@@ -67,8 +67,8 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
     UIView *back = [[UIView alloc] initWithFrame:CGRectMake(10, 10, 300, 248)];
-    [back setStyleClass:@"how_much_mainbox"];
     [back setStyleClass:@"raised_view"];
+    [back setStyleClass:@"how_much_mainbox"];
     [back setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:back];
 
@@ -103,7 +103,7 @@
     }
     [self.view addSubview:to_label];
 
-    if (![self.receiver valueForKey:@"nonuser"] &&  !isPayBack  && !isUserByLocation) {
+    if (![self.receiver valueForKey:@"nonuser"]  && !isUserByLocation) {
         UIButton*add=[[UIButton alloc]initWithFrame:CGRectMake(260, 16, 28, 28)];
         [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];
         [add setStyleClass:@"addbutton_request"];
@@ -193,33 +193,24 @@
         [self.view addSubview:self.divider];
     }
 
-//	  self.reset_type = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//	  [self.reset_type setFrame:CGRectMake(0, 160, 0, 50)];
-//	  [self.reset_type setBackgroundColor:[UIColor clearColor]]; 
-//    [self.reset_type setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    [self.reset_type setImage:[UIImage imageGlyphNamed:@"remove" height:22 color:white]];
-//    [self.reset_type addTarget:self action:@selector(reset_send_request) forControlEvents:UIControlEventTouchUpInside];
-//    [self.reset_type setStyleId:@"cancel_hidden"];
-//    [self.reset_type setAlpha:0];
-//    [self.view addSubview:self.reset_type];
+    self.reset_type = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	[self.reset_type setFrame:CGRectMake(0, 160, 30, 56)];
+	[self.reset_type setBackgroundColor:[UIColor clearColor]]; 
+    if ([UIScreen mainScreen].bounds.size.height > 500) {
+        [self.reset_type setStyleId:@"cancel_hidden"];
+    } else {
+        [self.reset_type setStyleId:@"cancel_hidden_4"];
+    }
+    UILabel *glyphReset = [UILabel new];
+    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:23]];
+    [glyph setFrame:CGRectMake(3, 0, 24, 56)];
+    [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
+    [glyph setTextColor:[UIColor whiteColor]];
+    [self.reset_type addSubview:glyphReset];
+    [self.reset_type addTarget:self action:@selector(reset_send_request) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.reset_type];
 
-/////////////////////////////////////////////////////////////////////
-//  EXAMPLE 1 THAT I WAS TRYING TO COPY FOR THE ABOVE CHUNK ('reset_type')... TRYING TO MAKE IT A GLYPHICON, NOT AN IMAGE
-//	 [WTGlyphFontSet setDefaultFontSetName: @"fontawesome"];
-//    UIImageView *backX = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 22, 22)];
-//    [backX setImage:[UIImage imageGlyphNamed:@"remove" height:22 color:white]];
-//    [self.camera setBackgroundImage:backX.image forState:UIControlStateNormal];
-//	  [self.view addSubview:self.camera];
-/////////////////////////////////////////////////////////////////////
 
-/////////////////////////////////////////////////////////////////////
-//  EXAMPLE 2 THAT I WAS TRYING TO COPY FOR THE ABOVE CHUNK ('reset_type')... TRYING TO MAKE IT A GLYPHICON, NOT AN IMAGE
-	UIButton*add=[[UIButton alloc]initWithFrame:CGRectMake(260, 16, 28, 28)];
-        [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];
-        [add setStyleCSS:@"addbutton_request"];
-        [self.view addSubview:add];
-/////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
 
     [self.navigationItem setRightBarButtonItem:Nil];
     
