@@ -471,16 +471,7 @@
     [transactionInput setObject:[NSString stringWithFormat:@"%@/%@",self.address_one.text,self.address_two.text] forKey:@"Address"];
     [transactionInput setObject:self.city.text forKey:@"City"];
     
-    //    if ([self.phone.text length]!=10)
-    //    {
-    //        //[me endWaitStat];
-    //        UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"NoochMoney" message:@"Enter valid 10 digit Cell Number" delegate:nil cancelButtonTitle:@"OK"otherButtonTitles:nil, nil];
-    //        [alert show];
-    //        return;
-    //    }
-    //    else {
     
-    //NSString *number = [NSString stringWithFormat:@"%@%@%@",[self.phone.text substringWithRange:NSMakeRange(1, 3)],[self.phone.text substringWithRange:NSMakeRange(6, 3)],[self.phone.text substringWithRange:NSMakeRange(10, 4)]];
     if ( [[assist shared]islocationAllowed]) {
         [transactionInput setObject:[[assist shared]islocationAllowed]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO] forKey:@"ShowInSearch"];
     }
@@ -641,6 +632,7 @@
         [name setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:name];
         [cell.contentView addSubview:self.name];
+        [cell setUserInteractionEnabled:NO];
     }
     else if (indexPath.row == 1) {
         if ([[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
@@ -818,7 +810,7 @@
             }
         }
     } else
-        self.view.frame = CGRectOffset(self.view.frame, 0, movement);
+        self.view.frame = CGRectOffset(self.view.frame, 0, -movement);
     [UIView commitAnimations];
 }
 
@@ -856,23 +848,59 @@
         return;
     }
     if ([tagName isEqualToString:@"email_verify"]) {
-        if ([[[NSJSONSerialization
-             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-             options:kNilOptions
-             error:&error] objectForKey:@"Result"] isEqualToString:@"Already Activated."]) {
+        NSString *response = [[NSJSONSerialization
+                               JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                               options:kNilOptions
+                               error:&error] objectForKey:@"Result"];
+        if ([response isEqualToString:@"Already Activated."]) {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your email has already been verified." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
             self.disclose = NO;
             [self.list beginUpdates];
             [self.list endUpdates];
+        } else if ([response isEqualToString:@"Not a nooch member."]) {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"An error occurred when attempting to fulfill this request, please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
+        } else if ([response isEqualToString:@"Success"]) {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"A verifiction link has been sent to your email." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
+            self.disclose = NO;
+            [self.list beginUpdates];
+            [self.list endUpdates];
+        } else if ([response isEqualToString:@"Failure"]) {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"An error occurred when attempting to fulfill this request, please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
         }
     }
     else if ([tagName isEqualToString:@"sms_verify"]) {
-        if ([[[NSJSONSerialization
-               JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-               options:kNilOptions
-               error:&error] objectForKey:@"Result"] isEqualToString:@"Already Verified."]) {
+        NSString *response = [[NSJSONSerialization
+                               JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                               options:kNilOptions
+                               error:&error] objectForKey:@"Result"];
+        if ([response isEqualToString:@"Already Verified."]) {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your phone number has already been verified." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
             self.disclose = NO;
             [self.list beginUpdates];
             [self.list endUpdates];
+        } else if ([response isEqualToString:@"Not a nooch member."]) {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"An error occurred when attempting to fulfill this request, please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
+        } else if ([response isEqualToString:@"Success"]) {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"A verifiction SMS has been sent to your phone." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
+            self.disclose = NO;
+            [self.list beginUpdates];
+            [self.list endUpdates];
+        } else if ([response isEqualToString:@"Failure"]) {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"An error occurred when attempting to fulfill this request, please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
+        } else if ([response isEqualToString:@"Temporarily_Blocked"]) {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account is currently suspended, please attempt to verify your phone number when you are no longer suspended." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
+        } else if ([response isEqualToString:@"Suspended"]) {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account is currently suspended, please attempt to verify your phone number when you are no longer suspended." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
         }
     }
     else if([tagName isEqualToString:@"MySettingsResult"])  {

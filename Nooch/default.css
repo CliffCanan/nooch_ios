@@ -1722,8 +1722,15 @@
         text-align      : center;
     }
     
-    #lside_settings {
-    
+    .lside_arrow {
+        left        : 240px;
+        top         : 9px;
+        width       : 20px;
+        height      : 30px;
+        color        :  white;
+        font-family : "FontAwesome";
+        font-size       : 22px;
+		text-align: right;
     }
 	
 	#lside_topbar_background {
@@ -2593,7 +2600,7 @@
 		left			: 10px;
 		color			: #313233;
 		font-family		: "Roboto";
-		font-weight		: regular;
+		font-weight		: light;
 		font-size		: 17px;
 		text-align		: left;
 	}
@@ -2604,7 +2611,7 @@
 		left			: 230px;
 		color			: #3fabe1;
 		font-family		: "Roboto";
-		font-weight		: regular;
+		font-weight		: medium;
 		font-size		: 17px;
 		text-align		: center;
 	}

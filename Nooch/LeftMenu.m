@@ -228,6 +228,11 @@
     [cell setBackgroundColor:kNoochMenu];
     cell.textLabel.font = [UIFont fontWithName:@"Roboto-Light" size:18];
 
+    UILabel *arrow = [UILabel new];
+    [arrow setStyleClass:@"lside_arrow"];
+    arrow.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-right"];
+    [cell.contentView addSubview:arrow];
+    
     UILabel *iv = [UILabel new];
     [iv setStyleClass:@"lside_menu_icons"];
     if (indexPath.section == 0) {

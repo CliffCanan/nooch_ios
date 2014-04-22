@@ -10,6 +10,7 @@
 #import "ResetPassword.h"
 @interface PINSettings ()
 @property(nonatomic,strong)UISwitch *ri;
+@property(nonatomic,strong)UISwitch *search;
 @end
 
 @implementation PINSettings
@@ -61,17 +62,36 @@
     [info setTextColor:[Helpers hexColor:@"939598"]];
     [info setText:@"Require a passcode even when switching apps for a short time"];
     [self.view addSubview:info];
-    NSLog(@"%@",[user objectForKey:@"requiredImmediately"]);
     if ([[user objectForKey:@"requiredImmediately"] boolValue]) {
         [self.ri setOn:YES];
     }
 
     UIButton *change_password = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [change_password setFrame:CGRectMake(0, 250, 0, 0)];
+    [change_password setFrame:CGRectMake(0, 240, 0, 0)];
     [change_password setStyleClass:@"button_blue"];
     [change_password setTitle:@"Change Password" forState:UIControlStateNormal];
     [change_password addTarget:self action:@selector(changepass) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:change_password];
+    
+    UILabel *show_search = [[UILabel alloc] initWithFrame:CGRectMake(-1, 310, 322, 56)];
+    [show_search setFont:[UIFont fontWithName:@"Roboto-Light" size:17]];
+    [show_search setText:@"       Show in Search"];
+    [show_search setTextColor:kNoochBlue]; show_search.layer.borderColor = [Helpers hexColor:@"BCBEC0"].CGColor; show_search.layer.borderWidth = 1;
+    [self.view addSubview:show_search];
+    
+    self.search = [[UISwitch alloc] initWithFrame:CGRectMake(260, 323, 40, 40)];
+    [self.search setTintColor:kNoochGrayLight];
+    [self.search addTarget:self action:@selector(show_in_search) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:self.search];
+    
+    UILabel *info2 = [UILabel new];
+    [info2 setFrame:CGRectMake(15, 370, 290, 42)];
+    [info2 setNumberOfLines:0];
+    [info2 setTextAlignment:NSTextAlignmentCenter];
+    [info2 setFont:[UIFont fontWithName:@"Roboto-Light" size:14]];
+    [info2 setTextColor:[Helpers hexColor:@"939598"]];
+    [info2 setText:@"Show up when users search Nooch for other members."];
+    [self.view addSubview:info2];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -89,6 +109,10 @@
     
 }
 
+-(void)show_in_search
+{
+    
+}
 
 - (void) req
 {

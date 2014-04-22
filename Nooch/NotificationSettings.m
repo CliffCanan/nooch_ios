@@ -76,46 +76,9 @@
     self.email_unclaimed.tag=12003;
     [ self.email_unclaimed addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     
-    self.bank_transfers = [[UITableView alloc] initWithFrame:CGRectMake(0, 196, 320, 250)];
-    [self.bank_transfers setDataSource:self]; [self.bank_transfers setDelegate:self];
-    [self.bank_transfers setUserInteractionEnabled:NO];
-    [self.view addSubview:self.bank_transfers]; [self.bank_transfers reloadData];
-    
-    self.email_withdraw_requested = [[UISwitch alloc] initWithFrame:CGRectMake(180, 210, 40, 30)];
-    self.email_withdraw_requested.tag=12004;
-    
-    [self.email_withdraw_requested addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
-    self.email_withdraw_submitted = [[UISwitch alloc] initWithFrame:CGRectMake(180, 260, 40, 30)];
-    self.email_withdraw_submitted.tag=12005;
-    
-    
-    [self.email_withdraw_submitted addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
-    self.push_withdraw_submitted = [[UISwitch alloc] initWithFrame:CGRectMake(260, 260, 40, 30)];
-    self.push_withdraw_submitted.tag=12006;
-    [self.push_withdraw_submitted addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
-    self.email_deposit_requested = [[UISwitch alloc] initWithFrame:CGRectMake(180, 310, 40, 30)];
-    self.email_deposit_requested.tag=12007;
-    
-    [self.email_deposit_requested addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
-    self.email_deposit_completed = [[UISwitch alloc] initWithFrame:CGRectMake(180, 360, 40, 30)];
-    self.email_deposit_completed.tag=12008;
-    
-    [ self.email_deposit_completed addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
-    self.push_deposit_completed = [[UISwitch alloc] initWithFrame:CGRectMake(260, 360, 40, 30)];
-    self.push_deposit_completed.tag=12009;
-    
-    [self.push_deposit_completed addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
-    self.email_failure = [[UISwitch alloc] initWithFrame:CGRectMake(180, 410, 40, 30)];
-    self.email_failure.tag=12010;
-    
-    [self.email_failure addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
-    self.push_failure = [[UISwitch alloc] initWithFrame:CGRectMake(260, 410, 40, 30)];
-    self.push_failure.tag=12011;
     
     [self.push_failure addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.email_received]; [self.view addSubview:self.push_received]; [self.view addSubview:self.email_sent]; [self.view addSubview:self.email_unclaimed];
-    [self.view addSubview:self.email_withdraw_requested]; [self.view addSubview:self.email_withdraw_submitted]; [self.view addSubview:self.push_withdraw_submitted];
-    [self.view addSubview:self.email_deposit_requested]; [self.view addSubview:self.email_deposit_completed]; [self.view addSubview:self.push_deposit_completed];
     [self.view addSubview:self.email_failure]; [self.view addSubview:self.push_failure];
     blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
     [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
@@ -167,51 +130,6 @@
             serviceType=@"email_unclaimed";
             [self setService];
             break;
-        case 12004:
-            servicePath=@"email";
-            serviceType=@"email_withdraw_requested";
-            
-            [self setService];
-            break;
-        case 12005:
-            servicePath=@"email";
-            serviceType=@"email_withdraw_submitted";
-            [self setService];
-            break;
-        case 12006:
-            servicePath=@"push";
-            serviceType=@"push_withdraw_submitted";
-            [self setService];
-            break;
-        case 12007:
-            servicePath=@"email";
-            serviceType=@"email_deposit_requested";
-            
-            [self setService];
-            break;
-        case 12008:
-            servicePath=@"email";
-            serviceType=@"email_deposit_completed";
-            [self setService];
-            break;
-        case 12009:
-            servicePath=@"push";
-            serviceType=@"push_deposit_completed";
-            [self setService];
-            break;
-        case 12010:
-            servicePath=@"email";
-            serviceType=@"email_failure";
-            [self setService];
-            break;
-        case 12011:
-            servicePath=@"push";
-            serviceType=@"push_failure";
-            [self setService];
-            break;
-            
-            
-            
         default:
             break;
     }
@@ -249,9 +167,6 @@
     if (tableView == self.nooch_transfers) {
         return 3;
     }
-    else if(tableView == self.bank_transfers) {
-        return 5;
-    }
     return 0;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -285,23 +200,6 @@
         }
         else if (indexPath.row == 2) {
             cell.textLabel.text = @"Transfer Unclaimed";
-        }
-    }
-    else if (tableView == self.bank_transfers) {
-        if (indexPath.row == 0) {
-            cell.textLabel.text = @"Withdraw Requested";
-        }
-        else if (indexPath.row == 1) {
-            cell.textLabel.text = @"Withdraw Submitted";
-        }
-        else if (indexPath.row == 2) {
-            cell.textLabel.text = @"Deposit Requested";
-        }
-        else if (indexPath.row == 3) {
-            cell.textLabel.text = @"Deposit Completed";
-        }
-        else if (indexPath.row == 4) {
-            cell.textLabel.text = @"Transfer Failure";
         }
     }
     
