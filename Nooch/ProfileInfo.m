@@ -175,9 +175,12 @@
 
     [self.view addSubview:memSincelbl];
 
+
     self.name = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 50)];
-    [self.name setTextAlignment:NSTextAlignmentRight]; [self.name setBackgroundColor:[UIColor clearColor]];
-    [self.name setPlaceholder:@"First & Last Name"]; [self.name setDelegate:self];
+    [self.name setTextAlignment:NSTextAlignmentRight];
+    [self.name setBackgroundColor:[UIColor clearColor]];
+    [self.name setPlaceholder:@"First & Last Name"];
+    [self.name setDelegate:self];
     [self.name setStyleClass:@"table_view_cell_detailtext_1"];
     [self.name setText:[NSString stringWithFormat:@"%@ %@",[[[NSUserDefaults standardUserDefaults] objectForKey:@"FirstName"] capitalizedString],[[[NSUserDefaults standardUserDefaults] objectForKey:@"LastName"] capitalizedString]]];
     [self.name setUserInteractionEnabled:NO];
@@ -185,8 +188,10 @@
     [self.view addSubview:self.name];
 
     self.email = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 50)];
-    [self.email setTextAlignment:NSTextAlignmentRight]; [self.email setBackgroundColor:[UIColor clearColor]];
-    [self.email setPlaceholder:@"email@email.com"]; [self.email setDelegate:self];
+    [self.email setTextAlignment:NSTextAlignmentRight];
+    [self.email setBackgroundColor:[UIColor clearColor]];
+    [self.email setPlaceholder:@"email@email.com"];
+    [self.email setDelegate:self];
     [self.email setKeyboardType:UIKeyboardTypeEmailAddress];
     [self.email setStyleClass:@"table_view_cell_detailtext_1"];
     [self.name setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]];
@@ -194,19 +199,22 @@
     [self.email setTag:0];
     [self.view addSubview:self.email];
 
-
     //Recovery Mail
     self.recovery_email = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 50)];
-    [self.recovery_email setTextAlignment:NSTextAlignmentRight]; [self.recovery_email setBackgroundColor:[UIColor clearColor]];
-    [self.recovery_email setPlaceholder:@"(Optional)"]; [self.recovery_email setDelegate:self];
+    [self.recovery_email setTextAlignment:NSTextAlignmentRight];
+    [self.recovery_email setBackgroundColor:[UIColor clearColor]];
+    [self.recovery_email setPlaceholder:@"(Optional)"];
+    [self.recovery_email setDelegate:self];
     [self.recovery_email setKeyboardType:UIKeyboardTypeEmailAddress];
     [self.recovery_email setStyleClass:@"table_view_cell_detailtext_1"];
     [self.recovery_email setTag:1];
     [self.view addSubview:self.recovery_email];
 
     self.phone = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 50)];
-    [self.phone setTextAlignment:NSTextAlignmentRight]; [self.phone setBackgroundColor:[UIColor clearColor]];
-    [self.phone setPlaceholder:@"555-555-5555"]; [self.phone setDelegate:self];
+    [self.phone setTextAlignment:NSTextAlignmentRight];
+    [self.phone setBackgroundColor:[UIColor clearColor]];
+    [self.phone setPlaceholder:@"555-555-5555"];
+    [self.phone setDelegate:self];
     [self.phone setKeyboardType:UIKeyboardTypePhonePad];
     [self.phone setStyleClass:@"table_view_cell_detailtext_1"];
     [self.phone setTag:2];
@@ -214,18 +222,21 @@
 
     // Address
     self.address_one = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 50)];
-    [self.address_one setTextAlignment:NSTextAlignmentRight]; [self.address_one setBackgroundColor:[UIColor clearColor]];
-    [self.address_one setPlaceholder:@"123 Nooch Lane"]; [self.address_one setDelegate:self];
+    [self.address_one setTextAlignment:NSTextAlignmentRight];
+    [self.address_one setBackgroundColor:[UIColor clearColor]];
+    [self.address_one setPlaceholder:@"123 Nooch Lane"];
+    [self.address_one setDelegate:self];
     [self.address_one setKeyboardType:UIKeyboardTypeDefault];
     [self.address_one setStyleClass:@"table_view_cell_detailtext_1"];
     [self.address_one setTag:3];
     [self.view addSubview:self.address_one];
-    
 
     // Address
     self.address_two = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 50)];
-    [self.address_two setTextAlignment:NSTextAlignmentRight]; [self.address_two setBackgroundColor:[UIColor clearColor]];
-    [self.address_two setPlaceholder:@"(Optional)"]; [self.address_two setDelegate:self];
+    [self.address_two setTextAlignment:NSTextAlignmentRight];
+    [self.address_two setBackgroundColor:[UIColor clearColor]];
+    [self.address_two setPlaceholder:@"(Optional)"];
+    [self.address_two setDelegate:self];
     [self.address_two setKeyboardType:UIKeyboardTypeDefault];
     [self.address_two setStyleClass:@"table_view_cell_detailtext_1"];
     [self.address_two setTag:4];
@@ -233,13 +244,15 @@
 
     // City
     self.city = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 50)];
-    [self.city setTextAlignment:NSTextAlignmentRight]; [self.city setBackgroundColor:[UIColor clearColor]];
-    [self.city setPlaceholder:@"City"]; [self.city setDelegate:self];
+    [self.city setTextAlignment:NSTextAlignmentRight];
+    [self.city setBackgroundColor:[UIColor clearColor]];
+    [self.city setPlaceholder:@"City"];
+    [self.city setDelegate:self];
     [self.city setKeyboardType:UIKeyboardTypeDefault];
     [self.city setStyleClass:@"table_view_cell_detailtext_1"];
     
     //[self.view addSubview:self.city];
-    
+
     // City label
     UILabel *cit = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, 50)];
     [cit setBackgroundColor:[UIColor clearColor]]; [cit setText:@"City:"];
@@ -340,7 +353,6 @@
 }
 
 - (void) save_changes
-
 {
     [self.name resignFirstResponder];
     [self.email resignFirstResponder];
@@ -370,14 +382,14 @@
         [alert show];
         return;
     }
-    
+
     if ([self.address_one.text length]==0) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Address" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [self.address_one becomeFirstResponder];
         return;
     }
-    
+
     if ([self.city.text length]==0) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Your City" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -386,16 +398,14 @@
     }
 
     UIAlertView *av =[ [UIAlertView alloc] initWithTitle:@"I don't see you!" message:@"You haven't set your profile picture, would you like to?" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
-
     [av setTag:20];
-
     if([[me pic] isKindOfClass:[NSNull class]]){
         [av show];
     }
 
     [self.save setEnabled:NO];
     [self.save setUserInteractionEnabled:NO];
-    
+
     strPhoneNumber=self.phone.text;
     strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@"(" withString:@""];
     strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
@@ -406,7 +416,6 @@
         serve *req = [serve new];
         [req SendSMSApi:strPhoneNumber msg:@"PLEASE RESPOND \"GO\" TO THE TEXT"];
     }
-
     if([self.recovery_email.text length]==0) {
         self.recovery_email.text=@"";
     }
@@ -425,7 +434,6 @@
     recoverMail = [[NSString alloc] init];
 
     if([self.recovery_email.text length] > 0) {
-        
         if (![self validateEmail:[self.recovery_email text]]) {
             // [me endWaitStat];
             self.recovery_email.text = @"";
@@ -456,7 +464,6 @@
     if ([arrdivide count]==2) {
         transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[arrdivide objectAtIndex:0],@"FirstName",[arrdivide objectAtIndex:1],@"LastName",self.email.text,@"UserName",nil];
     }
-    
     else {
         transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",self.name.text,@"FirstName",@" ",@"LastName",self.email.text,@"UserName",nil];
     }
@@ -522,22 +529,19 @@
     actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
     [actionSheetObject showInView:self.view];
 }
+
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if(buttonIndex == 0)
-    {
+    if(buttonIndex == 0) {
         //self.pic.layer.borderColor = kNoochBlue.CGColor;
         //[self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
     }
-    else if(buttonIndex == 1)
-    {
+    else if(buttonIndex == 1) {
         if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
             UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                        
                                                                   message:@"Device has no camera"
                                                                  delegate:nil
                                                         cancelButtonTitle:@"OK"
                                                         otherButtonTitles: nil];
-            
             [myAlertView show];
             return;
         }
@@ -548,10 +552,8 @@
         self.picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
         self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         [self presentViewController:self.picker animated:YES completion:Nil];
-
     }
-    else if(buttonIndex == 2)
-        {
+    else if(buttonIndex == 2) {
         self.picker=[UIImagePickerController new];
         self.picker.delegate = self;
         self.picker.allowsEditing = YES;
@@ -568,12 +570,11 @@
     if(imgRatio!=maxRatio){
         
         if(imgRatio < maxRatio){
-            imgRatio = 75.0 / actualHeight;
+            imgRatio = 115.0 / actualHeight;
             actualWidth = imgRatio * actualWidth;
             actualHeight = 115.0;
         }
-    
-        else{
+        else {
             imgRatio = 75.0 / actualWidth;
             actualHeight = imgRatio * actualHeight;
             actualWidth = 75.0;
@@ -623,7 +624,6 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -635,67 +635,101 @@
         cell.clipsToBounds = YES;
     }
     if (indexPath.row == 0) {
-        UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, 50)];
-        [name setBackgroundColor:[UIColor clearColor]]; [name setText:@"Name:"];
+        UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        [name setBackgroundColor:[UIColor clearColor]];
+        [name setText:@"Name:"];
         [name setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:name];
         [cell.contentView addSubview:self.name];
-    } else if (indexPath.row == 1) {
+    }
+    else if (indexPath.row == 1) {
         if ([[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
+            
             UIView *email_not_validated = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
-            [email_not_validated setBackgroundColor:[UIColor redColor]];
+            [email_not_validated setBackgroundColor:[UIColor kNoochRed]];
             [email_not_validated setAlpha:0.4];
             [cell.contentView addSubview:email_not_validated];
+        
+            //CLIFF ADDED THE FOLLOWING CHUNK
+            UILabel *emailVerifiedStatus = [[UILabel alloc] initWithFrame:CGRectMake(25, 60, 130, 30)];
+            [name setBackgroundColor:[UIColor clearColor]];
+            [name setText:@"Not Verified"];
+            [name setStyleClass:@"notVerifiedLabel"];
+            [cell.contentView addSubview:emailVerifiedStatus];
+            [cell.contentView addSubview:self.emailVerifiedStatus];
+
             UIButton *resend_mail = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [resend_mail setStyleClass:@"button_green"];
-            [resend_mail setFrame:CGRectMake(20, 50, 280, 50)];
+            [resend_mail setFrame:CGRectMake(200,60,105,30)];
+            [resend_mail setStyleClass:@"button_green_sm"];
             [resend_mail addTarget:self action:@selector(resend_email) forControlEvents:UIControlEventTouchUpInside];
-            [resend_mail setTitle:@"Resend Verification Email" forState:UIControlStateNormal];
+            [resend_mail setTitle:@"Resend Email" forState:UIControlStateNormal];
             [cell.contentView addSubview:resend_mail];
         }
-        UILabel *mail = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, 50)];
-        [mail setBackgroundColor:[UIColor clearColor]]; [mail setText:@"Email:"];
+        UILabel *mail = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        [mail setBackgroundColor:[UIColor clearColor]];
+        [mail setText:@"Email:*"];
         [mail setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:mail];
         [cell.contentView addSubview:self.email];
-    } else if (indexPath.row == 2) {
-        UILabel *recover = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, 50)];
-        [recover setBackgroundColor:[UIColor clearColor]]; [recover setText:@"Recovery Email:"];
+    }
+    else if (indexPath.row == 2) {
+        UILabel *recover = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        [recover setBackgroundColor:[UIColor clearColor]];
+        [recover setText:@"Recovery Email:"];
         [recover setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:recover];
         [cell.contentView addSubview:self.recovery_email];
-    } else if (indexPath.row == 3) {
+    }
+    else if (indexPath.row == 3) {
         if ([[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"]) {
+            
             UIView *unverified_phone = [[UIView alloc] initWithFrame:CGRectMake(0,0,320,100)];
-            [unverified_phone setAlpha:0.4]; [unverified_phone setBackgroundColor:[UIColor redColor]];
+            [unverified_phone setAlpha:0.4];
+            [unverified_phone setBackgroundColor:[UIColor kNoochRed]];
             [cell.contentView addSubview:unverified_phone];
+            
+            //CLIFF ADDED THE FOLLOWING CHUNK
+            UILabel *phoneVerifiedStatus = [[UILabel alloc] initWithFrame:CGRectMake(25, 60, 130, 30)];
+            [name setBackgroundColor:[UIColor clearColor]];
+            [name setText:@"Not Verified"];
+            [name setStyleClass:@"notVerifiedLabel"];
+            [cell.contentView addSubview:phoneVerifiedStatus];
+            [cell.contentView addSubview:self.phoneVerifiedStatus];
+
             UIButton *resend_phone = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [resend_phone setTitle:@"Resend Verification SMS" forState:UIControlStateNormal];
+            [resend_phone setTitle:@"Resend SMS" forState:UIControlStateNormal];
             [resend_phone addTarget:self action:@selector(resend_SMS) forControlEvents:UIControlEventTouchUpInside];
-            [resend_phone setStyleClass:@"button_green"];
-            [resend_phone setFrame:CGRectMake(20, 50, 280, 50)];
+            [resend_phone setFrame:CGRectMake(200, 60, 110, 30)];
+            [resend_phone setStyleClass:@"button_green_sm"];
             [cell.contentView addSubview:resend_phone];
         }
-        UILabel *num = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, 50)];
-        [num setBackgroundColor:[UIColor clearColor]]; [num setText:@"Phone:"];
+        UILabel *num = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        [num setBackgroundColor:[UIColor clearColor]];
+        [num setText:@"Phone:*"];
         [num setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:num];
         [cell.contentView addSubview:self.phone];
-    } else if (indexPath.row == 4) {
-        UILabel *addr1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, 50)];
-        [addr1 setBackgroundColor:[UIColor clearColor]]; [addr1 setText:@"Address One:"];
+    }
+    else if (indexPath.row == 4) {
+        UILabel *addr1 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        [addr1 setBackgroundColor:[UIColor clearColor]];
+        [addr1 setText:@"St Address:*"];
         [addr1 setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:addr1];
         [cell.contentView addSubview:self.address_one];
-    } else if (indexPath.row == 5) {
-        UILabel *addr2 = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, 50)];
-        [addr2 setBackgroundColor:[UIColor clearColor]]; [addr2 setText:@"Address Two:"];
+    }
+    else if (indexPath.row == 5) {
+        UILabel *addr2 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        [addr2 setBackgroundColor:[UIColor clearColor]];
+        [addr2 setText:@"Address 2:"];
         [addr2 setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:addr2];
         [cell.contentView addSubview:self.address_two];
-    } else if (indexPath.row == 6) {
+    }
+    else if (indexPath.row == 6) {
         UILabel *z = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, 50)];
-        [z setBackgroundColor:[UIColor clearColor]]; [z setText:@"ZIP:"];
+        [z setBackgroundColor:[UIColor clearColor]];
+        [z setText:@"ZIP:*"];
         [z setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:z];
         [cell.contentView addSubview:self.zip];
@@ -707,19 +741,21 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.name resignFirstResponder];
-    [self.email  resignFirstResponder];
+    [self.email resignFirstResponder];
     [self.recovery_email resignFirstResponder];
     [self.phone resignFirstResponder];
     [self.address_one resignFirstResponder];
     [self.address_two resignFirstResponder];
     [self.city resignFirstResponder];
     [self.zip resignFirstResponder];
+
     if (indexPath.row == 1 && [[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
         self.disclose = YES;
         self.expand_path = indexPath;
         [self.list beginUpdates];
         [self.list endUpdates];
-    } else if (indexPath.row == 3 && [[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"]) {
+    } 
+    else if (indexPath.row == 3 && [[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"]) {
         self.disclose = YES;
         self.expand_path = indexPath;
         [self.list beginUpdates];
@@ -733,10 +769,9 @@
     }
     return 50;
 }
+
 #pragma mark - UITextField delegation
-
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-
 {
     [self.save setEnabled:YES];
     return YES;
@@ -754,7 +789,6 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
-
 {
     if (textField==self.phone) {
         if ([self.phone.text length]==10) {
@@ -829,7 +863,8 @@
             [self.list beginUpdates];
             [self.list endUpdates];
         }
-    } else if ([tagName isEqualToString:@"sms_verify"]) {
+    }
+    else if ([tagName isEqualToString:@"sms_verify"]) {
         if ([[[NSJSONSerialization
                JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                options:kNilOptions
@@ -838,7 +873,8 @@
             [self.list beginUpdates];
             [self.list endUpdates];
         }
-    } else if([tagName isEqualToString:@"MySettingsResult"])  {
+    }
+    else if([tagName isEqualToString:@"MySettingsResult"])  {
         dictProfileinfo=[NSJSONSerialization
                          JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                          options:kNilOptions
@@ -866,7 +902,6 @@
         }
         
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        
         [av show];
         [av setTag:9];
         [spinner stopAnimating];
@@ -891,11 +926,9 @@
             else {
                 self.SavePhoneNumber=@"";
             }
-            
             if ([[dictProfileinfo valueForKey:@"ContactNumber"] length]==10) {
                 self.phone.text = [NSString stringWithFormat:@"(%@) %@-%@",[[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(0, 3)],[[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(3, 3)],[[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(6, 4)]];
             }
-            
             else
                 self.phone.text=[dictProfileinfo valueForKey:@"ContactNumber"];
         }
@@ -910,7 +943,6 @@
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Address"]];
         }
-        
         else if(![[dictProfileinfo valueForKey:@"City"] isKindOfClass:[NSNull class]])  {
             self.ServiceType=@"City";
             Decryption *decry = [[Decryption alloc] init];
@@ -918,7 +950,7 @@
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"City"]];
         }
-        
+
         else if(![[dictProfileinfo valueForKey:@"State"] isKindOfClass:[NSNull class]])  {
             self.ServiceType=@"State";
             Decryption *decry = [[Decryption alloc] init];
@@ -926,7 +958,6 @@
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"State"]];
         }
-        
         else if(![[dictProfileinfo valueForKey:@"Zipcode"] isKindOfClass:[NSNull class]])  {
          self.ServiceType=@"zip";
             Decryption *decry = [[Decryption alloc] init];
@@ -934,7 +965,6 @@
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptedValue:@"GetDecryptedData" pwdString:[dictProfileinfo objectForKey:@"Zipcode"]];
         }
-        
         else if (![[dictProfileinfo valueForKey:@"FirstName"] isKindOfClass:[NSNull class]])  {
             self.ServiceType=@"name";
             Decryption *decry = [[Decryption alloc] init];
@@ -942,7 +972,6 @@
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"FirstName"]];
         }
-        
         else if (![[dictProfileinfo valueForKey:@"LastName"] isKindOfClass:[NSNull class]]) {
             self.ServiceType=@"lastname";
             Decryption *decry = [[Decryption alloc] init];
@@ -950,7 +979,6 @@
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"LastName"]];
         }
-
         else if (![[dictProfileinfo valueForKey:@"UserName"] isKindOfClass:[NSNull class]])  {
             self.ServiceType=@"email";
             Decryption *decry = [[Decryption alloc] init];
@@ -958,7 +986,6 @@
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"UserName"]];
         }
-        
         else if (![[dictProfileinfo valueForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]]) {
             self.ServiceType=@"recovery";
             Decryption *decry = [[Decryption alloc] init];
@@ -966,7 +993,6 @@
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"RecoveryMail"]];
         }
-
         else if (![[dictProfileinfo valueForKey:@"Password"] isKindOfClass:[NSNull class]]) {
             self.ServiceType=@"pwd";
             Decryption *decry = [[Decryption alloc] init];
@@ -1127,7 +1153,6 @@
     //RecoveryMail
 
     else if ([self.ServiceType isEqualToString:@"recovery"]) {
-        
         self.ServiceType=@"pwd";
         self.recovery_email.text=[NSString stringWithFormat:@"%@",[sourceData objectForKey:@"Status"]];
         if ([self.recovery_email.text isKindOfClass:[NSNull class]]) {
