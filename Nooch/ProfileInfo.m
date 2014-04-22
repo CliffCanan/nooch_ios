@@ -637,7 +637,7 @@
     if (indexPath.row == 0) {
         UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [name setBackgroundColor:[UIColor clearColor]];
-        [name setText:@"Name:"];
+        [name setText:@"Name"];
         [name setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:name];
         [cell.contentView addSubview:self.name];
@@ -667,7 +667,7 @@
         }
         UILabel *mail = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [mail setBackgroundColor:[UIColor clearColor]];
-        [mail setText:@"Email:*"];
+        [mail setText:@"Email*"];
         [mail setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:mail];
         [cell.contentView addSubview:self.email];
@@ -675,7 +675,7 @@
     else if (indexPath.row == 2) {
         UILabel *recover = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [recover setBackgroundColor:[UIColor clearColor]];
-        [recover setText:@"Recovery Email:"];
+        [recover setText:@"Recovery Email"];
         [recover setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:recover];
         [cell.contentView addSubview:self.recovery_email];
@@ -705,7 +705,7 @@
         }
         UILabel *num = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [num setBackgroundColor:[UIColor clearColor]];
-        [num setText:@"Phone:*"];
+        [num setText:@"Phone*"];
         [num setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:num];
         [cell.contentView addSubview:self.phone];
@@ -713,7 +713,7 @@
     else if (indexPath.row == 4) {
         UILabel *addr1 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [addr1 setBackgroundColor:[UIColor clearColor]];
-        [addr1 setText:@"St Address:*"];
+        [addr1 setText:@"St Address*"];
         [addr1 setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:addr1];
         [cell.contentView addSubview:self.address_one];
@@ -721,7 +721,7 @@
     else if (indexPath.row == 5) {
         UILabel *addr2 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [addr2 setBackgroundColor:[UIColor clearColor]];
-        [addr2 setText:@"Address 2:"];
+        [addr2 setText:@"Address 2"];
         [addr2 setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:addr2];
         [cell.contentView addSubview:self.address_two];
@@ -729,7 +729,7 @@
     else if (indexPath.row == 6) {
         UILabel *z = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, 50)];
         [z setBackgroundColor:[UIColor clearColor]];
-        [z setText:@"ZIP:*"];
+        [z setText:@"ZIP*"];
         [z setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:z];
         [cell.contentView addSubview:self.zip];
