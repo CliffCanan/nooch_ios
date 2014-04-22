@@ -78,6 +78,8 @@
 			left			: 0px;
 		}
         #navbar_hamburger {
+            left            : 0px;
+			top				: 0px;
 			width       :  30px;
             height      : 30px;
 			font-family : "FontAwesome";
@@ -142,15 +144,38 @@
 		}
 		/****  RED BUTTON GRADIENT  ****/
 		.gradient_red { 
+			left                : 20px;
 			width				: 280px;
 			height				: 48px;
-			left                : 20px;
 			color 				: white;
 			border-radius		: 5px;
 			font-family			: "Roboto";
 			font-weight         : light;
 			font-size			: 22px;
 			background-image	: linear gradient(#e02d33, #d2232a); 
+		}
+
+		.button_green_sm {
+			left                : 205px;
+			width				: 100px;
+			height				: 30px;
+			color 				: white;
+			border-radius		: 5px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 18px;
+            background-image	: linear-gradient(#7fd034, #6ab029);
+			border				: 1px solid #66AE3C;
+		}
+
+		.notVerifiedLabel {
+			left                : 25px;
+			width				: 130px;
+			height				: 30px;
+			color 				: #c41713;
+			font-family			: "Roboto";
+			font-weight         : regular;
+			font-size			: 18px;
 		}
 		
 		.infobutton {
@@ -170,7 +195,6 @@
             background-color : white;
             border-radius   : 5px;
         }
-        
         #news_popup {
             left        : 30px;
             top         : 60px;
@@ -180,7 +204,6 @@
             border-radius   : 5px;
             box-shadow			: 1px 2px 2px rgba(109,110,113,0.6);
         }
-        
         #close_news {
             left        : 262px;
             top         : 35px;
@@ -191,7 +214,6 @@
             border-radius   : 10px;
         }
         
-
 		/****  Table Detail Text  (right side of row)  ****/
 		.recentEmptytable_view_cell_detailtext_1 {
 			font-family			: "Roboto";
@@ -204,17 +226,18 @@
 			text-align       	: left;
             top                 : 180px;
 		}
+
         /***Invite Friend***/
         .smscrossbuttn-icon {
 		width			: 70px;
 		height			: 35px;
 		left			: 10px;
         }
-     .sendInvitebuttn-icon {
+		.sendInvitebuttn-icon {
 		width			: 70px;
 		height			: 35px;
 		left			: 245px;
-	}
+		}
          .invitesendbutton {
 			width			: 70px;
 			height			: 40px;
@@ -305,7 +328,7 @@
 		text-align		: left;
 
 	}
-.plusbutton {
+	.plusbutton {
 		width			: 50px;
 		left			: 245px;
 		height          : 40px;
@@ -313,9 +336,9 @@
 		font-weight		: medium;
 		font-size		: 22px;
 		text-align		: left;
-       color 				: #6d6e71;
+		color 				: #6d6e71;
 	}
-.pickerstyle {
+	.pickerstyle {
 		width			: 320px;
 		left			: 0px;
 		height          : 568px;
@@ -350,11 +373,11 @@
 	 .table_view_cell_textlabel_1 {
 		font-family			: "Roboto";
 		font-weight         : regular;
-		font-size			: 16px;
+		font-size			: 17px;
 		text-align       	: left;
 		color 				: #41ABE1;
 		width				: 260px;
-		left                : 20px;
+		left                : 14px;
 		height				: 40px;
 	}
 	.memtable_view_cell_textlabel_1 {
@@ -388,16 +411,16 @@
 	}
 
         /****  Table Detail Text  (right side of row)  ****/
-		.table_view_cell_detailtext_1 {
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 16px;
-			color 				: #6d6e71;
-			width				: 210px;
-			left                : 95px;
-			height				: 40px;
-			text-align       	: right;
-		}
+	.table_view_cell_detailtext_1 {
+		font-family		: "Roboto";
+		font-weight		: light;
+		font-size		: 17px;
+		color 			: #313233;
+		width			: 212px;
+		left			: 95px;
+		height			: 40px;
+		text-align		: right;
+	}
 	.exportHistorybutton {
 		background-color: #3FABE1;
         border-radius: 4px;
@@ -491,14 +514,14 @@
 
 	/*** 	 SIGNUP FLOW:  Instructional Text	***/
 	.instruction_text {
-		font-family			: "Roboto";
-		font-weight         : regular;
-		font-size			: 14px;
-		text-align       	: center;
-		color 				: #58595b;
-		width				: 280px;
-		left                : 20px;
-		height				: 70px;
+		font-family		: "Roboto";
+		font-weight     : regular;
+		font-size		: 15px;
+		text-align      : center;
+		color 			: #313233;
+		width			: 280px;
+		left            : 20px;
+		height			: 70px;
 	}
 
 	/****  Raised Box - This adds a drop-shadow. ****/
@@ -600,14 +623,14 @@
 	  
 	/**  Signup: "Already a member...",  Select a Picture Screen, Welcome Screen **/
 	.label_small {
+		left                : 20px;
+		width				: 280px;
+		height				: 30px;
 		font-family			: "Roboto";
 		font-weight         : light;
-		font-size			: 15px;
+		font-size			: 16px;
 		text-align       	: center;
 		color 				: #414042;
-		width				: 280px;
-		left                : 20px;
-		height				: 30px;
 	}
 
 	/**  Text entry field for inputting a referral code. **/
@@ -2223,16 +2246,6 @@
 	/****   Main Settings  ****/
 	/**************************/
 
-	.table_arrow {
-        left        : 280px;
-        top         : 10px;
-        width       : 20px;
-        height      : 30px;
-        color        :  #3fabe1;
-        font-family : "FontAwesome";
-        font-size       : 22px;
-		text-align: right;
-    }
     .table_glyph {
         left        : 15px;
         top         : 10px;
@@ -2240,8 +2253,18 @@
         height      : 30px;
         font-family : "FontAwesome";
         font-size       : 24px;
-        color       : rgba(63,171,225,.6);
+        color       : #3fabe1;
 		text-align: center;
+    }	
+	.table_arrow {
+        left        : 280px;
+        top         : 10px;
+        width       : 20px;
+        height      : 30px;
+        color        :  rgba(63,171,225,.7);
+        font-family : "FontAwesome";
+        font-size       : 22px;
+		text-align: right;
     }
 
 	.background_gray { background-color: #efeff4; }
