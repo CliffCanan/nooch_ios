@@ -101,6 +101,7 @@
     self.email = [[UITextField alloc] initWithFrame:CGRectMake(30, 160, 300, 40)];
     [self.email setBackgroundColor:[UIColor clearColor]]; [self.email setPlaceholder:@"Email"];
     [self.email setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+    [self.email setAutocorrectionType:UITextAutocorrectionTypeNo];
     [self.email setKeyboardType:UIKeyboardTypeEmailAddress];
     //[self.email setTextColor:kNoochLight];
     [self.email setTextAlignment:NSTextAlignmentRight];
@@ -439,63 +440,6 @@
     }
     
     return YES;
-}
-
-#pragma mark - alert view delegation
-- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (actionSheet.tag == 54 || actionSheet.tag == 55) {
-        if (![MFMailComposeViewController canSendMail]){
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-            [av show];
-            return;
-        }
-        else {
-            MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
-            mailComposer.mailComposeDelegate = self;
-            mailComposer.navigationBar.tintColor=[UIColor whiteColor];
-            [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-            [mailComposer setMessageBody:@"" isHTML:NO];
-            [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
-            [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
-            [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-            [self presentViewController:mailComposer animated:YES completion:nil];
-        }
-    }
-}
-- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
-{
-    UIAlertView *alert = [[UIAlertView alloc] init];
-    [alert addButtonWithTitle:@"OK"];
-    [alert setDelegate:nil];
-    switch (result) {
-        case MFMailComposeResultCancelled:
-            NSLog(@"Mail cancelled");
-            break;
-
-        case MFMailComposeResultSaved:
-            NSLog(@"Mail saved");
-            [alert setTitle:@"Email Draft Saved"];
-            [alert show];
-            break;
-
-        case MFMailComposeResultSent:
-            NSLog(@"Mail sent");
-            [alert setTitle:@"Email Sent Successfully"];
-            [alert show];
-            break;
-
-        case MFMailComposeResultFailed:
-            [alert setTitle:[error localizedDescription]];
-            [alert show];
-            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
-            break;
-
-        default:
-            break;
-    }
-    // Close the Mail Interface
-    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 

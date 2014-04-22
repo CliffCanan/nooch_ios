@@ -646,17 +646,16 @@
         if ([[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
             
             UIView *email_not_validated = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
-            [email_not_validated setBackgroundColor:[UIColor kNoochRed]];
+            [email_not_validated setBackgroundColor:kNoochRed];
             [email_not_validated setAlpha:0.4];
             [cell.contentView addSubview:email_not_validated];
         
             //CLIFF ADDED THE FOLLOWING CHUNK
             UILabel *emailVerifiedStatus = [[UILabel alloc] initWithFrame:CGRectMake(25, 60, 130, 30)];
-            [name setBackgroundColor:[UIColor clearColor]];
-            [name setText:@"Not Verified"];
-            [name setStyleClass:@"notVerifiedLabel"];
+            [emailVerifiedStatus setBackgroundColor:[UIColor clearColor]];
+            [emailVerifiedStatus setText:@"Not Verified"];
+            [emailVerifiedStatus setStyleClass:@"notVerifiedLabel"];
             [cell.contentView addSubview:emailVerifiedStatus];
-            [cell.contentView addSubview:self.emailVerifiedStatus];
 
             UIButton *resend_mail = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [resend_mail setFrame:CGRectMake(200,60,105,30)];
@@ -667,7 +666,7 @@
         }
         UILabel *mail = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [mail setBackgroundColor:[UIColor clearColor]];
-        [mail setText:@"Email*"];
+        [mail setText:@"Email"];
         [mail setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:mail];
         [cell.contentView addSubview:self.email];
@@ -685,16 +684,15 @@
             
             UIView *unverified_phone = [[UIView alloc] initWithFrame:CGRectMake(0,0,320,100)];
             [unverified_phone setAlpha:0.4];
-            [unverified_phone setBackgroundColor:[UIColor kNoochRed]];
+            [unverified_phone setBackgroundColor:kNoochRed];
             [cell.contentView addSubview:unverified_phone];
             
             //CLIFF ADDED THE FOLLOWING CHUNK
             UILabel *phoneVerifiedStatus = [[UILabel alloc] initWithFrame:CGRectMake(25, 60, 130, 30)];
-            [name setBackgroundColor:[UIColor clearColor]];
-            [name setText:@"Not Verified"];
-            [name setStyleClass:@"notVerifiedLabel"];
+            [phoneVerifiedStatus setBackgroundColor:[UIColor clearColor]];
+            [phoneVerifiedStatus setText:@"Not Verified"];
+            [phoneVerifiedStatus setStyleClass:@"notVerifiedLabel"];
             [cell.contentView addSubview:phoneVerifiedStatus];
-            [cell.contentView addSubview:self.phoneVerifiedStatus];
 
             UIButton *resend_phone = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [resend_phone setTitle:@"Resend SMS" forState:UIControlStateNormal];
@@ -702,10 +700,12 @@
             [resend_phone setFrame:CGRectMake(200, 60, 110, 30)];
             [resend_phone setStyleClass:@"button_green_sm"];
             [cell.contentView addSubview:resend_phone];
+            
+            [self.phone setUserInteractionEnabled:NO];
         }
         UILabel *num = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [num setBackgroundColor:[UIColor clearColor]];
-        [num setText:@"Phone*"];
+        [num setText:@"Phone"];
         [num setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:num];
         [cell.contentView addSubview:self.phone];
@@ -713,7 +713,7 @@
     else if (indexPath.row == 4) {
         UILabel *addr1 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [addr1 setBackgroundColor:[UIColor clearColor]];
-        [addr1 setText:@"St Address*"];
+        [addr1 setText:@"St Address"];
         [addr1 setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:addr1];
         [cell.contentView addSubview:self.address_one];
@@ -760,6 +760,7 @@
         self.expand_path = indexPath;
         [self.list beginUpdates];
         [self.list endUpdates];
+        [self.phone setUserInteractionEnabled:YES];
     }
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

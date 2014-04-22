@@ -254,7 +254,7 @@
     [UIView commitAnimations];
     
     if ([[[self.name_field.text componentsSeparatedByString:@" "] objectAtIndex:0]length]<3) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@nil message:@"Our system is currently only able to handle names greater than 3 letters. Please email us if your first or last name has fewer than 3." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:nil message:@"Our system is currently only able to handle names greater than 3 letters. Please email us if your first or last name has fewer than 3." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         return;
     }

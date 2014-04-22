@@ -165,7 +165,7 @@
 - (void) forgot_pass {
     UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Enter your email and we will send you a reset link." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
     alert.alertViewStyle=UIAlertViewStylePlainTextInput;
-    [[alert textFieldAtIndex:0] setText:self.email.text];
+    [[alert textFieldAtIndex:0] setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]];
     [alert setTag:220011];
     [alert show];
 }

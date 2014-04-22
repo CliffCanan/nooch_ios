@@ -107,7 +107,7 @@
     [glyphLogout setFrame:CGRectMake(25, 7, 30, 30)];
     [glyphLogout setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-sign-out"]];
     [glyphLogout setTextColor:[UIColor whiteColor]];
-    [self.logout link_bank addSubview:glyphLogout];
+    [self.logout addSubview:glyphLogout];
     [self.logout addTarget:self action:@selector(sign_out) forControlEvents:UIControlEventTouchUpInside];
     [self.logout setStyleClass:@"button_gray"];
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
