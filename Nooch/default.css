@@ -2748,11 +2748,91 @@
 			Move Up
   ============================= */
 @keyframes moveUp_transDetailsBtns {
-    0% {top: 550;}
-    40% {top: 436;}
-    60% {top: 443;}
-    80% {top: 438;}
-    100% {top: 440;}
+    0% {top: 550px;}
+    40% {top: 424px;}
+    60% {top: 436px;}
+    80% {top: 427px;}
+    100% {top: 430px;}
+}
+/*=============================
+			SHAKE (For incorrect PIN entry)
+  ============================= */
+@keyframes shakePin1 {
+  from	{left: 44px}
+  10%	{left: 37px}
+  20%	{left: 52px}
+  30%	{left: 34px}
+  40%	{left: 54px}
+  50%	{left: 34px}
+  60%	{left: 54px}
+  70%	{left: 34px}
+  80%	{left: 52px}
+  90%	{left: 37px}
+  to 	{left: 44px}
+  }
+.shakePin1 {
+	animation-name: shakePin1;
+	animation-duration: 1s;
+	animation-iteration-count: 1;
+    animation-timing-function: ease;
+}
+
+@keyframes shakePin2 {
+  from	{left: 107px}
+  10%	{left: 100px}
+  20%	{left: 115px}
+  30%	{left: 97px}
+  40%	{left: 117px}
+  50%	{left: 97px}
+  60%	{left: 117px}
+  70%	{left: 97px}
+  80%	{left: 115px}
+  90%	{left: 100px}
+  to 	{left: 107px}
+  }
+.shakePin2 {
+	animation-name: shakePin2;
+	animation-duration: 1s;
+	animation-iteration-count: 1;
+    animation-timing-function: ease;
+}
+@keyframes shakePin3 {
+  from	{left: 170px}
+  10%	{left: 163px}
+  20%	{left: 178px}
+  30%	{left: 160px}
+  40%	{left: 180px}
+  50%	{left: 160px}
+  60%	{left: 180px}
+  70%	{left: 160px}
+  80%	{left: 178px}
+  90%	{left: 163px}
+  to 	{left: 170px}
+  }
+.shakePin3 {
+	animation-name: shakePin3;
+	animation-duration: 1s;
+	animation-iteration-count: 1;
+    animation-timing-function: ease;
+}
+@keyframes shakePin4 {
+  from	{left: 233px}
+  10%	{left: 226px}
+  20%	{left: 241px}
+  30%	{left: 223px}
+  40%	{left: 243px}
+  50%	{left: 223px}
+  60%	{left: 243px}
+  70%	{left: 223px}
+  80%	{left: 241px}
+  90%	{left: 226px}
+  to 	{left: 233px}
+  }
+.shakePin4 {
+	animation-name: shakePin4;
+	animation-duration: 1s;
+	animation-iteration-count: 1;
+    animation-timing-function: ease;
 }
 
 /*=============================
