@@ -222,24 +222,14 @@
     switch (result)
     {
         case MFMailComposeResultCancelled:
-            //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"Mail cancelled" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            // [alert show];
-            
-            [alert setTitle:@"Mail cancelled"];
-            [alert show];
             NSLog(@"Mail cancelled");
             break;
         case MFMailComposeResultSaved:
             NSLog(@"Mail saved");
             
-            [alert setTitle:@"Mail saved"];
-            [alert show];
             break;
         case MFMailComposeResultSent:
             NSLog(@"Mail sent");
-            
-            [alert setTitle:@"Mail sent"];
-            [alert show];
             
             break;
         case MFMailComposeResultFailed:

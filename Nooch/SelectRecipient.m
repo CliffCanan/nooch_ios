@@ -142,14 +142,13 @@
         [location setStyleId:@"icon_location"];
         isRecentList=YES;
         [[assist shared]setRequestMultiple:NO];
-        //UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
-        //[self.navigationItem setRightBarButtonItem:loc];
         isRecentList=YES;
         searching=NO;
         emailEntry=NO;
         search.text=@"";
         [search setShowsCancelButton:NO];
         [search resignFirstResponder];
+        [self.contacts reloadData];
     }
 }
 -(void)viewDidAppear:(BOOL)animated  {
@@ -953,7 +952,6 @@
     
     UIImageView*pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
     pic.clipsToBounds = YES;
-    [pic setStyleClass:@"animate_bubble"];
     UIImageView* npic = [UIImageView new];
     npic.clipsToBounds = YES;
 
@@ -1020,7 +1018,9 @@
                 break;
             }
         }
-        [pic setStyleClass:@"animate_bubble"];
+        if (![[assist shared] isRequestMultiple]) {
+            [pic setStyleClass:@"animate_bubble"];
+        }
         return cell;
     }
     else if (searching) {
@@ -1128,16 +1128,6 @@
         cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",info[@"FirstName"],info[@"LastName"]];
         [cell.textLabel setStyleClass:@"select_recipient_name"];
 
-        //        if ([[assist shared] isRequestMultiple]) {
-        //            [npic removeFromSuperview];
-        //            arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
-        //            if ([arrRecipientsForRequest containsObject:info]) {
-        //                cell.accessoryType=UITableViewCellAccessoryCheckmark;
-        //            }
-        //            else
-        //                cell.accessoryType=UITableViewCellAccessoryNone;
-        //        }
-        //        else
         cell.accessoryType=UITableViewCellAccessoryNone;
         
         if ([[[assist shared] assos] objectForKey:info[@"UserName"]]) {
@@ -1146,6 +1136,9 @@
                 [ab setStyleClass:@"addressbook-icons"];
                 [cell.contentView addSubview:ab];
             }
+        }
+        if (![[assist shared] isRequestMultiple]) {
+            [pic setStyleClass:@"animate_bubble"];
         }
     }
     else if(emailEntry){
@@ -1164,13 +1157,6 @@
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    /*if (self.location) {
-        NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];
-        HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
-        [self.navigationController pushViewController:how_much animated:YES];
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        return;
-    }*/
     
     if ([[assist shared] isRequestMultiple]) {
         
@@ -1193,12 +1179,8 @@
             [arrRecipientsForRequest removeObject:receiver];
             [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
         }
-       
-//        if ([arrRecipientsForRequest containsObject:receiver]) {
-//            [arrRecipientsForRequest removeObject:receiver];
-//            [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
-//        }
-        else {
+        else
+        {
             if ([[[assist shared]getArray] count]==10) {
                 UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You can't request more than 10 Users!" delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
                 [alert show];

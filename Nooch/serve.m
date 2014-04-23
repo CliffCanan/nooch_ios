@@ -1355,7 +1355,7 @@ NSString *amnt;
         NSLog(@"connect error");
     
 }
-//GetServerCurrentTime?memberId={memberId}&pinNo={accessToken}
+
 -(void) LogOutRequest:(NSString*) memberId
 {
     self.responseData = [[NSMutableData alloc] init];
@@ -1770,6 +1770,20 @@ NSString *amnt;
     NSString *urlString = [NSString stringWithFormat:@"%@/ResendVerificationLink?UserName=%@",ServerUrl,[defaults objectForKey:@"UserName"]];
     NSURL *url = [NSURL URLWithString:urlString];
     
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+}
+
+-(void)show_in_search:(BOOL)show
+{
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSString *urlString = [NSString stringWithFormat:@"%@/SetShowInSearch?memberId=%@&showInSearch=%@&accessToken=%@",ServerUrl,[defaults objectForKey:@"MemberId"],show ? @"YES" : @"NO", [defaults objectForKey:@"OAuthToken"]];
+    NSURL *url = [NSURL URLWithString:urlString];
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
     
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];

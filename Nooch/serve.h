@@ -116,6 +116,7 @@
 -(void)saveMemberTransId:(NSString*)trans_id;
 -(void)resendSMS;
 -(void)resendEmail;
+-(void)show_in_search:(BOOL)show;
 @end
 
 //392f9c86-1651-4459-a6a9-d362fcfc4366 - nooch team

@@ -106,10 +106,10 @@ NSMutableURLRequest *request;
     
     float height = [[UIScreen mainScreen] bounds].size.height;
     height -= 150; height /= 3;
-    CGRect button_frame = CGRectMake(20.00, 70.00, 280, height);
+    CGRect button_frame = CGRectMake(20.00, 270.00, 280, height);
     [top_button setFrame:button_frame];
     button_frame.origin.y += height+20; [mid_button setFrame:button_frame];
-    button_frame.origin.y += height+20; [bot_button setFrame:button_frame];
+    button_frame.origin.y = 350; [bot_button setFrame:button_frame];
     
     [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
     [mid_button addTarget:self action:@selector(pay_in_person) forControlEvents:UIControlEventTouchUpInside];
@@ -158,21 +158,116 @@ NSMutableURLRequest *request;
         [self presentViewController:pin animated:YES completion:nil];
     }
     
-    self.suspended = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-    [self.suspended setStyleId:@"suspended"];
-    UILabel *sus = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 320, 20)];
-    [sus setText:@"Profile Suspended!"];
-    [sus setFont:[UIFont fontWithName:@"Roboto-Medium" size:12]];
-    [sus setTextColor:[UIColor blackColor]];
-    [sus setBackgroundColor:[UIColor clearColor]];
-    [sus setTextAlignment:NSTextAlignmentCenter];
-    [self.suspended addSubview:sus];
-    //[self.view addSubview:self.suspended];
+    if (![[user objectForKey:@"Status"] isEqualToString:@"Suspended"]) {
+        self.suspended = [UIView new];
+        [self.suspended setStyleId:@"suspended_home"];
+        UILabel *sus_header = [UILabel new];
+        [sus_header setStyleClass:@"banner_header"];
+        [sus_header setText:@"Account Suspended"];
+        [self.suspended addSubview:sus_header];
+        UILabel *sus_info = [UILabel new];
+        [sus_info setStyleClass:@"banner_info"];
+        [sus_info setNumberOfLines:0];
+        [sus_info setText:@"Your account will have limited functionality until you are unsuspended. Contact support for further inquiries."];
+        [self.suspended addSubview:sus_info];
+        UILabel *sus_exclaim = [UILabel new];
+        [sus_exclaim setStyleClass:@"banner_alert_glyph"];
+        [sus_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
+        [self.suspended addSubview:sus_exclaim];
+        
+        UIButton *contact = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [contact setStyleClass:@"go_now"];
+        [contact setTitle:@"Contact" forState:UIControlStateNormal];
+        [contact addTarget:self action:@selector(contact_support) forControlEvents:UIControlEventTouchUpInside];
+        [self.suspended addSubview:contact];
+        
+        UIButton *dis = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [dis setStyleClass:@"dismiss_banner"];
+        [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
+        [dis addTarget:self action:@selector(dismiss_suspended_alert) forControlEvents:UIControlEventTouchUpInside];
+        [self.suspended addSubview:dis];
+        
+        [self.view addSubview:self.suspended];
+    }
+    
+    if ([[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
+        self.profile_incomplete = [UIView new];
+        [self.profile_incomplete setStyleId:@"email_unverified"];
+        
+        UILabel *em = [UILabel new];
+        [em setStyleClass:@"banner_header"];
+        [em setText:@"Profile Not Validated"];
+        [self.profile_incomplete addSubview:em];
+        
+        UILabel *em_exclaim = [UILabel new];
+        [em_exclaim setStyleClass:@"banner_alert_glyph"];
+        [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
+        [self.profile_incomplete addSubview:em_exclaim];
+        
+        UILabel *em_info = [UILabel new];
+        [em_info setStyleClass:@"banner_info"];
+        [em_info setNumberOfLines:0];
+        [em_info setText:@"Please complete your profile to unlock all features."];
+        [self.profile_incomplete addSubview:em_info];
+        
+        UIButton *go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [go setStyleClass:@"go_now"];
+        [go setTitle:@"Go Now" forState:UIControlStateNormal];
+        [go addTarget:self action:@selector(go_profile) forControlEvents:UIControlEventTouchUpInside];
+        [self.profile_incomplete addSubview:go];
+        
+        UIButton *dis = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [dis setStyleClass:@"dismiss_banner"];
+        [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
+        [dis addTarget:self action:@selector(dismiss_profile_unvalidated) forControlEvents:UIControlEventTouchUpInside];
+        [self.profile_incomplete addSubview:dis];
+        
+        [self.view addSubview:self.profile_incomplete];
+    }
+    
+    
     
     serve *fb = [serve new];
     [fb setDelegate:self];
     [fb setTagName:@"fb"];
-    [fb storeFB:@"12456"];
+    if ([user objectForKey:@"facebook_id"]) {
+        [fb storeFB:[user objectForKey:@"facebook_id"]];
+    }
+}
+
+-(void)dismiss_suspended_alert {
+    [self.suspended removeFromSuperview];
+}
+
+-(void)contact_support
+{
+    if (![MFMailComposeViewController canSendMail]){
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [av show];
+        return;
+    }
+    MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+    mailComposer.mailComposeDelegate = self;
+    mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+    
+    [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+    
+    [mailComposer setMessageBody:@"" isHTML:NO];
+    [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+    [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+    [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+    [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+    [self presentViewController:mailComposer animated:YES completion:nil];
+}
+
+-(void)dismiss_profile_unvalidated {
+    [self.profile_incomplete removeFromSuperview];
+}
+
+-(void)go_profile
+{
+    ProfileInfo *info = [ProfileInfo new];
+    [self.navigationController pushViewController:info animated:YES];
 }
 
 -(void)updateLoader{
@@ -388,25 +483,13 @@ NSMutableURLRequest *request;
     switch (result)
     {
         case MFMailComposeResultCancelled:
-            //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"Mail cancelled" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            // [alert show];
-            
-            [alert setTitle:@"Mail cancelled"];
-            [alert show];
             NSLog(@"Mail cancelled");
             break;
         case MFMailComposeResultSaved:
             NSLog(@"Mail saved");
-            
-            [alert setTitle:@"Mail saved"];
-            [alert show];
             break;
         case MFMailComposeResultSent:
             NSLog(@"Mail sent");
-            
-            [alert setTitle:@"Mail sent"];
-            [alert show];
-            
             break;
         case MFMailComposeResultFailed:
             [alert setTitle:[error localizedDescription]];
@@ -519,6 +602,7 @@ NSMutableURLRequest *request;
                                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                      options:kNilOptions
                                      error:&error];
+        NSLog(@"fb storing %@",temp);
     }
     
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {

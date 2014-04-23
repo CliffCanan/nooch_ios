@@ -203,7 +203,7 @@ static assist * _sharedInstance = nil;
      }];
      }
      
-    timer= [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
+    timer= [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:NO];
 #pragma mark 9jan
     [[assist shared]setneedsReload:YES];
     [self getSettings];
@@ -478,7 +478,7 @@ static assist * _sharedInstance = nil;
         NSError *error;
         
         NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        
+        NSLog(@"user info %@",loginResult);
         if ([loginResult valueForKey:@"Status"]!=Nil  && ![[loginResult valueForKey:@"Status"] isKindOfClass:[NSNull class]]&& [loginResult valueForKey:@"Status"] !=NULL) {
             [user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"];
             if ([[loginResult valueForKey:@"Status"]isEqualToString:@"Suspended"]) {

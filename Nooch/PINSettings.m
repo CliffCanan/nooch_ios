@@ -82,6 +82,11 @@
     self.search = [[UISwitch alloc] initWithFrame:CGRectMake(260, 323, 40, 40)];
     [self.search setTintColor:kNoochGrayLight];
     [self.search addTarget:self action:@selector(show_in_search) forControlEvents:UIControlEventValueChanged];
+    [self.search setOn:YES];
+    if ([user objectForKey:@"show_in_search"]) {
+        if ([[user objectForKey:@"show_in_search"] isEqualToString:@"YES"]) [self.search setOn:YES];
+        else [self.search setOn:NO];
+    }
     [self.view addSubview:self.search];
     
     UILabel *info2 = [UILabel new];
@@ -111,7 +116,10 @@
 
 -(void)show_in_search
 {
-    
+    serve *set_search = [serve new];
+    [set_search setDelegate:self];
+    [set_search setTagName:@"set_search"];
+    [set_search show_in_search:self.search.isOn ? YES : NO];
 }
 
 - (void) req
@@ -150,6 +158,12 @@
             
         }
     }
+    NSError* error;
+    Dictresponse = [NSJSONSerialization
+                    JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                    options:kNilOptions
+                    error:&error];
+    NSLog(@"%@",Dictresponse);
 }
 
 - (void)didReceiveMemoryWarning
