@@ -149,7 +149,7 @@
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake (10,0,300,23)];
+    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake (10,0,300,22)];
     [title setFont:[UIFont fontWithName:@"Roboto-Regular" size:15]];
     title.textColor = [UIColor whiteColor];
     if (section == 0) {
