@@ -1,10 +1,7 @@
-//
 //  ReEnterPin.m
 //  Nooch
 //
-//  Created by Vicky Mathneja on 08/01/14.
 //  Copyright (c) 2014 Nooch. All rights reserved.
-//
 
 #import "ReEnterPin.h"
 #import <Pixate/Pixate.h>
@@ -51,27 +48,30 @@
     //    [lbl setTextColor:[UIColor whiteColor]];
     //    [navBar addSubview:lbl];
     
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 140, 300, 40)];
-    [title setText:@"Enter your PIN"];
+    UIImageView *logoicon = [UIImageView new];
+    [logo setStyleId:@"requireImmediatelyLogo"];
+    [self.view addSubview:logoicon];
+    
+    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 118, 300, 40)];
+    [title setText:@"Enter Your PIN"];
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
     
-    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 280, 50)];
-    [self.prompt setNumberOfLines:2];
-    [self.prompt setText:@"Require Immediately is enabled, please enter your PIN to continue."];
-    [self.prompt setStyleClass:@"instruction_text"];
-    [self.view addSubview:self.prompt];
+    //    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 280, 50)];
+    //    [self.prompt setNumberOfLines:2];
+    //    [self.prompt setText:@"Require Immediately is enabled, please enter your PIN to continue."];
+    //    [self.prompt setStyleClass:@"instruction_text"];
+    //    [self.view addSubview:self.prompt];
     
     self.pin = [UITextField new]; [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
     [self.pin setDelegate:self]; [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
     [self.view addSubview:self.pin]; [self.pin becomeFirstResponder];
     
-    self.first_num = [[UIView alloc] initWithFrame:CGRectMake(85,240,30,30)];
-    self.second_num = [[UIView alloc] initWithFrame:CGRectMake(125,240,30,30)];
-    self.third_num = [[UIView alloc] initWithFrame:CGRectMake(165,240,30,30)];
-    self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(205,240,30,30)];
+    self.first_num = [[UIView alloc] initWithFrame:CGRectMake(44,135,32,32)];
+    self.second_num = [[UIView alloc] initWithFrame:CGRectMake(107,135,30,32)];
+    self.third_num = [[UIView alloc] initWithFrame:CGRectMake(170,135,32,32)];
+    self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(233,135,32,32)];
     
-    //self.first_num.alpha = self.second_num.alpha = self.third_num.alpha = self.fourth_num.alpha = 0.5;
     self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 16;
     self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor clearColor];
     self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
