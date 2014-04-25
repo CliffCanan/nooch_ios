@@ -496,6 +496,7 @@
     }
     //newTransfersDecrement = newTransfers;
     [self.contacts reloadData];
+    NSLog(@"returnn %@",arrSearchedRecords);
 }
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
     //histSearch = YES;
@@ -566,7 +567,8 @@
         {
             NSMutableDictionary *dict = [[assist shared] assos][key];
             NSComparisonResult result = [[dict valueForKey:@"FirstName"] compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
-            if (result == NSOrderedSame && dict[@"FirstName"] && dict[@"LastName"]) {
+            NSComparisonResult result2 = [[dict valueForKey:@"LastName"] compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
+            if ((result == NSOrderedSame || result2 == NSOrderedSame) && dict[@"FirstName"] && dict[@"LastName"]) {
                 [arrSearchedRecords addObject:dict];
             }
         }

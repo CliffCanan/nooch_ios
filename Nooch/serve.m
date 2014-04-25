@@ -1791,5 +1791,18 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 
+-(void)cancel_invite:(NSString *)transaction {
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSString *urlString = [NSString stringWithFormat:@"%@/CancelMoneyRequestForNonNoochUser?TransactionId=%@&MemberId=%@",ServerUrl,transaction,[defaults objectForKey:@"MemberId"]];
+    NSURL *url = [NSURL URLWithString:urlString];
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+}
+
 
 @end

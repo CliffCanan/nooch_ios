@@ -24,7 +24,7 @@
     if (self) {
         // Custom initialization
         self.trans = trans;
-        //  NSLog(@"%@",self.trans);
+        NSLog(@"%@",self.trans);
     }
     return self;
 }
@@ -107,6 +107,14 @@
         //details_othername_nonnooch
         [other_party setStyleClass:@"details_othername_nonnooch"];
         [other_party setText:[self.trans objectForKey:@"InvitationSentTo"]];
+        
+        UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
+        [cancel setStyleClass:@"details_button_center"];
+        [cancel setTag:13];
+        [cancel setEnabled:YES];
+        [cancel addTarget:self action:@selector(cancel_invite) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:cancel];
     }
      else{
         [other_party setText:[[self.trans objectForKey:@"Name"] capitalizedString]];
@@ -298,6 +306,19 @@
             }
         }
     }
+    
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+        UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
+                                                                              [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
+        [scroll setDelegate:self];
+        [scroll setContentSize:CGSizeMake(320, 550)];
+        for (UIView *subview in self.view.subviews) {
+            [subview removeFromSuperview];
+            [scroll addSubview:subview];
+        }
+        [self.view addSubview:scroll];
+    }
+    
     blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
     [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
     UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -310,6 +331,13 @@
     serveOBJ.tagName=@"tranDetail";
     [serveOBJ setDelegate:self];
     [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
+}
+
+-(void) cancel_invite {
+    serve *canc = [serve new];
+    [canc setTagName:@"cancel_invite"];
+    [canc setDelegate:self];
+    [canc cancel_invite:self.trans[@"TransactionId"]];
 }
 
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
@@ -379,8 +407,6 @@
     }
     NSMutableDictionary *input = [self.trans mutableCopy];
     [input setValue:@"accept" forKey:@"response"];
-    //NSLog(@"%@",input);
-    // isMutipleRequest=NO;
     [[assist shared]setRequestMultiple:NO];
     TransferPIN *trans = [[TransferPIN alloc] initWithReceiver:input type:@"requestRespond" amount:[[self.trans objectForKey:@"Amount"] floatValue]];
     [nav_ctrl pushViewController:trans animated:YES];
@@ -598,6 +624,11 @@
 
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName {
+    if ([tagName isEqualToString:@"cancel_invite"]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Invitation Cancelled" message:@"You have withdrawn this invite/request successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [nav_ctrl popViewControllerAnimated:YES];
+    }
     if ([tagName isEqualToString:@"tranDetail"]) {
         [blankView removeFromSuperview];
         NSError *error;

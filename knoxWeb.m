@@ -7,6 +7,7 @@
 //
 
 #import "knoxWeb.h"
+#import "ProfileInfo.h"
 
 @interface knoxWeb ()
 @property(nonatomic,strong) MBProgressHUD *hud;
@@ -57,7 +58,9 @@
 }
 
 - (void)resignView {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:NO];
+    ProfileInfo *profile = [ProfileInfo new];
+    [self.navigationController pushViewController:profile animated:YES];
 }
 
 #pragma mark - webview delegation

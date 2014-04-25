@@ -116,6 +116,7 @@
 
 -(void)show_in_search
 {
+    self.search.isOn ? [user setObject:@"YES" forKey:@"show_in_search"] : [user setObject:@"NO" forKey:@"show_in_search"];
     serve *set_search = [serve new];
     [set_search setDelegate:self];
     [set_search setTagName:@"set_search"];

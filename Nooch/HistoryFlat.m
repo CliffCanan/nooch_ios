@@ -1591,16 +1591,17 @@ return customView;
         for (NSMutableDictionary *tableViewBind in histShowArrayCompleted)
         {
             NSComparisonResult result = [[tableViewBind valueForKey:@"FirstName"] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
-            if (result == NSOrderedSame) {
+            NSComparisonResult result2 = [[tableViewBind valueForKey:@"LastName"] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
+            if (result == NSOrderedSame || result2 == NSOrderedSame) {
                 [histTempCompleted addObject:tableViewBind];
-                // NSLog(@"%@",histTempCompleted);
             }
         }
     }
     else {
         for (NSMutableDictionary *tableViewBind in histShowArrayPending) {
             NSComparisonResult result = [[tableViewBind valueForKey:@"FirstName"] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
-            if (result == NSOrderedSame) {
+            NSComparisonResult result2 = [[tableViewBind valueForKey:@"LastName"] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
+            if (result == NSOrderedSame || result2 == NSOrderedSame) {
                 [histTempPending addObject:tableViewBind];
             }
         }

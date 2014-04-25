@@ -33,6 +33,7 @@
 @property (nonatomic , retain) NSString * SavePhoneNumber;
 @property(nonatomic) BOOL disclose;
 @property(nonatomic) NSIndexPath *expand_path;
+@property(nonatomic,strong) MBProgressHUD *hud;
 @end
 @implementation ProfileInfo
 
@@ -303,17 +304,7 @@
     [self.list setScrollEnabled:NO];
     [self.view addSubview:self.list];
     
-    if ([[UIScreen mainScreen] bounds].size.height == 480) {
-        UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
-                                                                             [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
-        [scroll setDelegate:self];
-        [scroll setContentSize:CGSizeMake(320, 550)];
-        for (UIView *subview in self.view.subviews) {
-            [subview removeFromSuperview];
-            [scroll addSubview:subview];
-        }
-         [self.view addSubview:scroll];
-    }
+    
 }
 -(void)crossClicked{
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -500,8 +491,13 @@
         [transactionInput setObject:arr forKey:@"Picture"];
     }
     
-    [spinner startAnimating];
-    [spinner setHidden:NO];
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.hud];
+    
+    self.hud.delegate = self;
+    self.hud.labelText = @"Saving your profile";
+    [self.hud show:YES];
+    
     transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"mySettings", nil];
     serve *req=[serve new];
     req.Delegate = self;
@@ -525,6 +521,12 @@
     if(buttonIndex == 0) {
         //self.pic.layer.borderColor = kNoochBlue.CGColor;
         //[self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
+        if (![user objectForKey:@"facebook_id"]) {
+            
+            return;
+        }
+        NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square",[user objectForKey:@"facebook_id"]];
+        [picture setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
     }
     else if(buttonIndex == 1) {
         if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
@@ -824,7 +826,9 @@
 #pragma mark - server delegation
 
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
-{      NSError* error;
+{
+    [self.hud hide:YES];
+    NSError* error;
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
         UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [Alert show];

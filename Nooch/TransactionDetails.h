@@ -11,7 +11,7 @@
 #import "serve.h"
 #import <MessageUI/MessageUI.h>
 
-@interface TransactionDetails : UIViewController<serveD,UIAlertViewDelegate,MFMailComposeViewControllerDelegate>{
+@interface TransactionDetails : UIViewController<serveD,UIAlertViewDelegate,MFMailComposeViewControllerDelegate,UIScrollViewDelegate>{
     GMSMapView *mapView_;
     UIView*blankView;
     UILabel *amount;

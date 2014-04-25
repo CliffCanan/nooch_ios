@@ -16,6 +16,7 @@
 }
 @property(nonatomic,strong) NSMutableDictionary *user;
 @property(nonatomic,strong) UITextField *code_field;
+@property(nonatomic,strong) MBProgressHUD *hud;
 @end
 
 @implementation ReferralCode
@@ -138,7 +139,14 @@
         serve *inv_code = [serve new];
         [inv_code setDelegate:self];
         [inv_code setTagName:@"inv_check"];
-        [inv_code validateInviteCode:self.code_field.text];
+        [inv_code validateInviteCode:[self.code_field.text uppercaseString]];
+        
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:self.hud];
+        
+        self.hud.delegate = self;
+        self.hud.labelText = @"Validating your invite code";
+        [self.hud show:YES];
     }
     else
     {
@@ -183,7 +191,7 @@
         [nav_ctrl pushViewController:reg animated:YES];
     }
     else if ([tagName isEqualToString:@"inv_check"]) {
-        
+        [self.hud hide:YES];
         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         if ([[response objectForKey:@"validateInvitationCodeResult"] boolValue]) {
             
@@ -192,7 +200,8 @@
             serveOBJ.tagName=@"validate";
             [serveOBJ getTotalReferralCode:self.code_field.text];
             
-            
+            self.hud.labelText = @"Creating your Nooch account";
+            [self.hud show:YES];
         } else {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Code" message:@"The referall code you entered is invalid. Please try again or request a code if you do not have one." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
@@ -249,7 +258,7 @@
         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         if([[[response objectForKey:@"MemberRegistrationResult"]objectForKey:@"Result"] isEqualToString:@"Thanks for registering! Check your email to complete activation."])
         {
-            
+            [self.hud hide:YES];
             //[decline setTag:1];
             [[NSUserDefaults standardUserDefaults] setObject:@"asdfa" forKey:@"setPrompt"];
             //[spinner stopAnimating];

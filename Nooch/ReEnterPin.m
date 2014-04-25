@@ -11,6 +11,7 @@
 #import "Register.h"
 #import "assist.h"
 #import "ECSlidingViewController.h"
+#import <AudioToolbox/AudioToolbox.h>
 @interface ReEnterPin ()<UITextFieldDelegate>
 @property(nonatomic,retain) UIView *first_num;
 @property(nonatomic,retain) UIView *second_num;
@@ -83,6 +84,7 @@
 }
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
+    self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
     int len = [textField.text length] + [string length];
     if([string length] == 0) //deleting
     {
@@ -269,14 +271,32 @@
         }
         
         if([[dictResult objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]){
-            self.prompt.text=@"1 failed attempt. Please try again.";
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+            self.prompt.textColor = kNoochRed;
+            self.fourth_num.layer.borderColor = kNoochRed.CGColor;
+            self.third_num.layer.borderColor = kNoochRed.CGColor;
+            self.second_num.layer.borderColor = kNoochRed.CGColor;
+            self.first_num.layer.borderColor = kNoochRed.CGColor;
+            [self.fourth_num setStyleClass:@"shakePin4"];
+            [self.third_num setStyleClass:@"shakePin3"];
+            [self.second_num setStyleClass:@"shakePin2"];
+            [self.first_num setStyleClass:@"shakePin1"];
+            self.prompt.text=@"1 failed attempt.";
             self.prompt.textColor = [UIColor colorWithRed:169.0/255.0 green:68/255.0 blue:66/255.0 alpha:1];
             [spinner stopAnimating];
             [spinner setHidden:YES];
         }else if([[dictResult objectForKey:@"Result"]isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]){
             [spinner stopAnimating];
             [spinner setHidden:YES];
-            self.prompt.text=@"2 Failed Attempts";
+            self.fourth_num.layer.borderColor = kNoochRed.CGColor;
+            self.third_num.layer.borderColor = kNoochRed.CGColor;
+            self.second_num.layer.borderColor = kNoochRed.CGColor;
+            self.first_num.layer.borderColor = kNoochRed.CGColor;
+            [self.fourth_num setStyleClass:@"shakePin4"];
+            [self.third_num setStyleClass:@"shakePin3"];
+            [self.second_num setStyleClass:@"shakePin2"];
+            [self.first_num setStyleClass:@"shakePin1"];
+            self.prompt.text=@"2nd failed attempt.";
             UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:nil message:@"Your account will be suspended for 24 hours if you enter another incorrect PIN." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
             [suspendedAlert show];
             
@@ -287,7 +307,14 @@
             [spinner stopAnimating];
             [spinner setHidden:YES];
             [[assist shared]setSusPended:YES];
-
+            self.fourth_num.layer.borderColor = kNoochRed.CGColor;
+            self.third_num.layer.borderColor = kNoochRed.CGColor;
+            self.second_num.layer.borderColor = kNoochRed.CGColor;
+            self.first_num.layer.borderColor = kNoochRed.CGColor;
+            [self.fourth_num setStyleClass:@"shakePin4"];
+            [self.third_num setStyleClass:@"shakePin3"];
+            [self.second_num setStyleClass:@"shakePin2"];
+            [self.first_num setStyleClass:@"shakePin1"];
             self.prompt.text=@"Account suspended.";
             
         }else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])){

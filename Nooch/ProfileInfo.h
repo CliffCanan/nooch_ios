@@ -10,9 +10,11 @@
 #import "serve.h"
 #import "Decryption.h"
 #import "GetEncryptionValue.h"
+#import "MBProgressHUD.h"
 BOOL isProfileOpenFromSideBar;
-@interface ProfileInfo : UIViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UIScrollViewDelegate>
+@interface ProfileInfo : UIViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UIScrollViewDelegate,MBProgressHUDDelegate>
 {
+    
     int down;
     UIActivityIndicatorView*spinner;
     NSString *recoverMail;

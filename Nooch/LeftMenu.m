@@ -238,12 +238,11 @@
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             cell.textLabel.text = @"Home";
-            //iv.image = [UIImage imageNamed:@"n_Icon_58x66.png"];
+            iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-home"];
         }
         else if(indexPath.row == 1){
             cell.textLabel.text = @"Transaction History";
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"];
-            [iv setFrame:CGRectMake(7, 7, 28, 29)];
         }
         else if (indexPath.row == 2){
             cell.textLabel.text = @"Statistics";
@@ -279,7 +278,7 @@
         }
         else if(indexPath.row == 2){
             cell.textLabel.text =  @"Limits & Fees";
-            //iv.image = [UIImage imageNamed:@"LimitsAndFees_Icon.png"];
+            iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-usd"];
         }
         else if(indexPath.row == 3) {
             cell.textLabel.text = @"Legal Info";

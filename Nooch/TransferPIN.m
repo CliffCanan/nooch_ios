@@ -9,6 +9,7 @@
 #import "TransactionDetails.h"
 #import "UIImageView+WebCache.h"
 #import "SelectRecipient.h"
+#import <AudioToolbox/AudioToolbox.h>
 @interface TransferPIN ()<GetLocationDelegate>
 {
     GetLocation*getlocation;
@@ -267,6 +268,7 @@
     }
         // Close the Mail Interface
     [self dismissViewControllerAnimated:YES completion:NULL];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark-Location Tracker Delegates
@@ -299,7 +301,6 @@
     // locationUpdate = YES;
 }
 -(void)setLocation{
-    NSLog(@"RESPONSE %@",jsonDictionary);
     NSArray *placemark = [NSArray new];
     placemark = [jsonDictionary  objectForKey:@"results"];
     if ([placemark count]>0) {
@@ -354,6 +355,12 @@
 #pragma mark - UITextField delegation
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
+    if ([self.type isEqualToString:@"send"]||[self.type isEqualToString:@"donation"]||[self.type isEqualToString:@"addfund"]||[self.type isEqualToString:@"withdrawfund"]||[self.receiver valueForKey:@"nonuser"]) {
+        self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
+    }
+    else if([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"]){
+        self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochBlue.CGColor;
+    }
     int len = [textField.text length] + [string length];
     if([string length] == 0) { //deleting {
         switch (len) {
@@ -430,7 +437,6 @@
                  JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                  options:kNilOptions
                  error:&error];
-    NSLog(@"trans result %@",dictResult);
     if ([self.type isEqualToString:@"send"]|| [self.type isEqualToString:@"request"]) {
         if ([tagName isEqualToString:@"ValidatePinNumber"]) {
             transactionInputTransfer=[[NSMutableDictionary alloc]init];
@@ -457,13 +463,11 @@
                 [transactionInputTransfer setValue:@"Request" forKey:@"TransactionType"];
                 if ([[assist shared]isRequestMultiple]) {
                     receiverId=@"";
-                    // NSLog(@"%@",arrRecipientsForRequest);
                     for (NSDictionary *dictRecord in [[assist shared]getArray]) {
                         receiverId=[receiverId stringByAppendingString:[NSString stringWithFormat:@",%@",dictRecord[@"MemberId"]]];
                     }
 
                     receiverId=[receiverId substringFromIndex:1];
-                    //NSLog(@"%@",receiverId);
                     [transactionInputTransfer setValue:receiverId forKey:@"SenderId"];
                 }
                 else
@@ -563,7 +567,6 @@
             [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
 
             transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"handleRequestInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
-            //  NSLog(@"%@",transactionInputTransfer);
         }
         postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
                                                        options:NSJSONWritingPrettyPrinted error:&error];;
@@ -717,6 +720,16 @@
                 self.pin.text=@"";
             }
             if([[dictResult objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]){
+                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+                self.prompt.textColor = kNoochRed;
+                self.fourth_num.layer.borderColor = kNoochRed.CGColor;
+                self.third_num.layer.borderColor = kNoochRed.CGColor;
+                self.second_num.layer.borderColor = kNoochRed.CGColor;
+                self.first_num.layer.borderColor = kNoochRed.CGColor;
+                [self.fourth_num setStyleClass:@"shakePin4"];
+                [self.third_num setStyleClass:@"shakePin3"];
+                [self.second_num setStyleClass:@"shakePin2"];
+                [self.first_num setStyleClass:@"shakePin1"];
                 self.prompt.text=@"1 failed attempt. Please try again.";
                 self.prompt.textColor = [UIColor colorWithRed:169 green:68 blue:66 alpha:1];
                 [spinner stopAnimating];
@@ -725,7 +738,15 @@
             else if([[dictResult objectForKey:@"Result"]isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]){
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
-                self.prompt.text=@"2 Failed Attempts";
+                self.fourth_num.layer.borderColor = kNoochRed.CGColor;
+                self.third_num.layer.borderColor = kNoochRed.CGColor;
+                self.second_num.layer.borderColor = kNoochRed.CGColor;
+                self.first_num.layer.borderColor = kNoochRed.CGColor;
+                [self.fourth_num setStyleClass:@"shakePin4"];
+                [self.third_num setStyleClass:@"shakePin3"];
+                [self.second_num setStyleClass:@"shakePin2"];
+                [self.first_num setStyleClass:@"shakePin1"];
+                self.prompt.text=@"2nd Failed Attempt";
             }
             else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))            {
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
@@ -734,6 +755,14 @@
                 [[assist shared] setSusPended:YES];
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
+                self.fourth_num.layer.borderColor = kNoochRed.CGColor;
+                self.third_num.layer.borderColor = kNoochRed.CGColor;
+                self.second_num.layer.borderColor = kNoochRed.CGColor;
+                self.first_num.layer.borderColor = kNoochRed.CGColor;
+                [self.fourth_num setStyleClass:@"shakePin4"];
+                [self.third_num setStyleClass:@"shakePin3"];
+                [self.second_num setStyleClass:@"shakePin2"];
+                [self.first_num setStyleClass:@"shakePin1"];
                 self.prompt.text=@"Account suspended.";
             }
             else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])){
@@ -807,6 +836,8 @@
         [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
         [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
         [self presentViewController:mailComposer animated:YES completion:nil];
+    } else if (alertView.tag == 50 && buttonIndex == 1) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 
@@ -829,15 +860,13 @@
                          JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                          options:kNilOptions
                          error:&error];
-    
-    NSLog(@"resultttt %@",dictResultTransfer);
     if ([self.type isEqualToString:@"nonuser"]) {
         if ([[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserResult"] valueForKey:@"Result"]isEqualToString:@"Your cash was sent successfully"]) {
             [[assist shared] setTranferImage:nil];
             UIImage*imgempty=[UIImage imageNamed:@""];
             [[assist shared] setTranferImage:imgempty];
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserResult"] valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            av.tag=2500;
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your transfer was sent successfully.  The recipient must accept this payment by linking a bank account.  We will contact them and let you know when they respond." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",nil];
+            av.tag=1;
             [av show];
             return;
         }
@@ -965,6 +994,16 @@
              || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]
              || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."])
     {
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        self.prompt.textColor = kNoochRed;
+        self.fourth_num.layer.borderColor = kNoochRed.CGColor;
+        self.third_num.layer.borderColor = kNoochRed.CGColor;
+        self.second_num.layer.borderColor = kNoochRed.CGColor;
+        self.first_num.layer.borderColor = kNoochRed.CGColor;
+        [self.fourth_num setStyleClass:@"shakePin4"];
+        [self.third_num setStyleClass:@"shakePin3"];
+        [self.second_num setStyleClass:@"shakePin2"];
+        [self.first_num setStyleClass:@"shakePin1"];
         self.prompt.text=@"1 failed attempt. Please try again.";
         [self.fourth_num setBackgroundColor:[UIColor clearColor]];
         [self.third_num setBackgroundColor:[UIColor clearColor]];
@@ -976,7 +1015,15 @@
             || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]
             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."])
     {
-        self.prompt.text=@"2 failed attempt. Please try one more time.";
+        self.prompt.text=@"2nd failed attempt.";
+        self.fourth_num.layer.borderColor = kNoochRed.CGColor;
+        self.third_num.layer.borderColor = kNoochRed.CGColor;
+        self.second_num.layer.borderColor = kNoochRed.CGColor;
+        self.first_num.layer.borderColor = kNoochRed.CGColor;
+        [self.fourth_num setStyleClass:@"shakePin4"];
+        [self.third_num setStyleClass:@"shakePin3"];
+        [self.second_num setStyleClass:@"shakePin2"];
+        [self.first_num setStyleClass:@"shakePin1"];
         [self.fourth_num setBackgroundColor:[UIColor clearColor]];
         [self.third_num setBackgroundColor:[UIColor clearColor]];
         [self.second_num setBackgroundColor:[UIColor clearColor]];
@@ -992,7 +1039,15 @@
             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])
     {
         [[assist shared]setSusPended:YES];
-        self.prompt.text=@"3 failed attempt. Please try again.";
+        self.prompt.text=@"3rd failed attempt.";
+        self.fourth_num.layer.borderColor = kNoochRed.CGColor;
+        self.third_num.layer.borderColor = kNoochRed.CGColor;
+        self.second_num.layer.borderColor = kNoochRed.CGColor;
+        self.first_num.layer.borderColor = kNoochRed.CGColor;
+        [self.fourth_num setStyleClass:@"shakePin4"];
+        [self.third_num setStyleClass:@"shakePin3"];
+        [self.second_num setStyleClass:@"shakePin2"];
+        [self.first_num setStyleClass:@"shakePin1"];
         [self.fourth_num setBackgroundColor:[UIColor clearColor]];
         [self.third_num setBackgroundColor:[UIColor clearColor]];
         [self.second_num setBackgroundColor:[UIColor clearColor]];

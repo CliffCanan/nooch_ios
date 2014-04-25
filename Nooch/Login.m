@@ -337,14 +337,14 @@
         }
         else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil){
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
-            [alert setTag:54];
+            [alert setTag:50];
             [alert show];
             [spinner stopAnimating];
         }
         else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] && loginResult != nil){
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"NoochMoney" message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
             [alert show];
-            [alert setTag:55];
+            [alert setTag:50];
             [spinner stopAnimating];
         }        
     }
