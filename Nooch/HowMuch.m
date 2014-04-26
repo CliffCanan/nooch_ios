@@ -90,7 +90,7 @@
             for (NSDictionary *dictRecord in [[assist shared]getArray]) {
                 strMultiple=[strMultiple stringByAppendingString:[NSString stringWithFormat:@", %@",[dictRecord[@"FirstName"] capitalizedString]]];
             }
-            [to_label setStyleId:@"label_howmuch_recipientname"];
+            [to_label setStyleId:@"label_howmuch_recipientnamenonuser"];
             strMultiple=[strMultiple substringFromIndex:1];
             [to_label setText:strMultiple];
         }
@@ -102,7 +102,7 @@
     [self.view addSubview:to_label];
 
     if (![self.receiver valueForKey:@"nonuser"]  && !isUserByLocation) {
-        UIButton*add=[[UIButton alloc]initWithFrame:CGRectMake(260, 16, 28, 28)];
+        UIButton*add=[[UIButton alloc]initWithFrame:CGRectMake(266, 16, 28, 28)];
         [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];
         [add setStyleClass:@"addbutton_request"];
         [add setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"] forState:UIControlStateNormal];
@@ -129,7 +129,7 @@
     }
     [self.view addSubview:user_pic];
 
-    self.amount = [[UITextField alloc] initWithFrame:CGRectMake(20, 40, 260, 80)];
+    self.amount = [[UITextField alloc] initWithFrame:CGRectMake(120, 40, 260, 80)];
     [self.amount setTextAlignment:NSTextAlignmentRight]; [self.amount setPlaceholder:@"$ 0.00"];
     [self.amount setDelegate:self]; [self.amount setTag:1];
     [self.amount setKeyboardType:UIKeyboardTypeNumberPad];
@@ -145,7 +145,7 @@
     [self.view addSubview:self.memo];
 
     self.camera = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.camera setFrame:CGRectMake(275, 162, 27, 22)];
+    [self.camera setFrame:CGRectMake(268, 161, 30, 26)];
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
         [self.camera setFrame:CGRectMake(275, 71, 27, 22)];
     }
@@ -174,18 +174,20 @@
         [self.request setStyleId:@"howmuch_request_mult_expand"];
         [self.request setFrame:CGRectMake(10, 160, 300, 50)];
     }
-    else if ([self.receiver valueForKey:@"nonuser"]) {
-        [self.request removeFromSuperview];
-        [self.send setStyleClass:@"nonhowmuch_send"];
-        [self.send setFrame:CGRectMake(10, 160, 300, 50)];
-        [self.view addSubview:self.send];
-    }
+//    else if ([self.receiver valueForKey:@"nonuser"]) {
+//        [self.request removeFromSuperview];
+//        [self.send setStyleClass:@"nonhowmuch_send"];
+//        [self.send setFrame:CGRectMake(10, 160, 300, 50)];
+//        [self.view addSubview:self.send];
+//    }
     else {
         [self.send setStyleClass:@"howmuch_buttons"];
         [self.send setStyleId:@"howmuch_send"];
-        [self.send setFrame:CGRectMake(160, 160, 150, 50)];
+        [self.send setFrame:CGRectMake(160, 160, 150, 50)];  // Are these numbers right, they don't match the CSS for "howmuch_send"?
         [self.view addSubview:self.send];
+
         [self.request setStyleClass:@"howmuch_buttons"];
+
         self.divider = [UIImageView new];
         [self.divider setStyleId:@"howmuch_divider"];
         [self.view addSubview:self.divider];
@@ -196,19 +198,19 @@
 	[self.reset_type setBackgroundColor:[UIColor clearColor]]; 
     if ([UIScreen mainScreen].bounds.size.height > 500) {
         [self.reset_type setStyleId:@"cancel_hidden"];
-    } else {
+    } 
+    else {
         [self.reset_type setStyleId:@"cancel_hidden_4"];
     }
+
     UILabel *glyph = [UILabel new];
-    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:23]];
-    [glyph setFrame:CGRectMake(3, 0, 24, 56)];
+    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:24]];
+    [glyph setFrame:CGRectMake(5, 0, 24, 56)];
     [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
     [glyph setTextColor:[UIColor whiteColor]];
     [self.reset_type addSubview:glyph];
     [self.reset_type addTarget:self action:@selector(reset_send_request) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.reset_type];
-
-
 
     [self.navigationItem setRightBarButtonItem:Nil];
     
@@ -247,16 +249,15 @@
 #pragma mark - type of transaction
 
 - (void) initialize_send {
+    [self.recip_back setStyleClass:@"barbackground_green"];
+    
     CGRect origin = self.reset_type.frame;
-    origin.origin.x = 160;
+    origin.origin.x = 10;
     //[self.reset_type setFrame:origin];
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.5];
-    //origin.origin.x = 10;
+    [UIView setAnimationDuration:0.6];
     //origin.size.width = 30;
     //[self.reset_type setFrame:origin];
-
-    [self.recip_back setStyleClass:@"barbackground_green"];
 
     //origin = self.send.frame;
     origin.size.width = 149;
@@ -270,11 +271,13 @@
 
     [self.send addTarget:self action:@selector(confirm_send) forControlEvents:UIControlEventTouchUpInside];
 
-    [self.reset_type setTitle:@">" forState:UIControlStateNormal];
+//    [self.reset_type setTitle:@">" forState:UIControlStateNormal];
     [self.reset_type setAlpha:1];
+    [self.glyph setAlpha:1];        //added by Cliff... is this needed? I added 'opacity: 0' to the CSS for the "cancel_hidden" ID, which this is initially set to
+
     [self.send setTitle:@"Confirm Send" forState:UIControlStateNormal];
 
-    [self.reset_type setStyleClass:@"button_blue"];
+//    [self.reset_type setStyleClass:@"button_blue"];    // Unnecessary, can just leave the clear background
     
     [self.send setStyleId:@"howmuch_send_expand"];
     [self.request setStyleId:@"howmuch_request_hide"];
@@ -282,25 +285,25 @@
     [UIView commitAnimations];
 
     [self.divider setStyleClass:@"animate_roll_left"];
-    
 }
 
 - (void) initialize_request {
-    CGRect origin = self.reset_type.frame;
-    origin.origin.x = 160;
-    [self.reset_type setFrame:origin];
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.5];
     [self.recip_back setStyleClass:@"barbackground_blue"];
     
+    CGRect origin = self.reset_type.frame;
+    origin.origin.x = 271;
+//    [self.reset_type setFrame:origin];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.6];
 
     [self.request addTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
 
     [self.reset_type setAlpha:1];
-    [self.reset_type setTitle:@"<" forState:UIControlStateNormal];
+    [self.glyph setAlpha:1];        //added by Cliff... is this needed? I added 'opacity: 0' to the CSS for the "cancel_hidden" ID, which this is initially set to
+//    [self.reset_type setTitle:@"<" forState:UIControlStateNormal];
     [self.request setTitle:@"Confirm Request" forState:UIControlStateNormal];
 
-    [self.reset_type setStyleClass:@"button_green"];
+//    [self.reset_type setStyleClass:@"button_green"];    // Unnecessary, can just leave the clear background
     
     [self.send setStyleId:@"howmuch_send_hide"];
     [self.request setStyleId:@"howmuch_request_expand"];
@@ -308,10 +311,11 @@
     [UIView commitAnimations];
 
     [self.divider setStyleClass:@"animate_roll_right"];
-    
 }
 
 - (void) reset_send_request {
+    [self.recip_back setStyleClass:@"barbackground_gray"];
+
     if (![[assist shared] isRequestMultiple] && ![self.receiver valueForKey:@"nonuser"]) {
         self.divider = [UIImageView new];
         [self.divider setStyleId:@"howmuch_divider"];
@@ -321,13 +325,15 @@
 
     CGRect origin = self.reset_type.frame;
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.5];
-    [self.recip_back setStyleClass:@"barbackground_gray"];
+    [UIView setAnimationDuration:0.6];
+
     origin = self.send.frame;
     origin.size.width = 150; origin.origin.x = 160;
+
     [self.send setFrame:origin];
     origin = self.request.frame;
     origin.size.width = 150; origin.origin.x = 10;
+
     [self.request setFrame:origin];
 
     [self.send removeTarget:self action:@selector(confirm_send) forControlEvents:UIControlEventTouchUpInside];
@@ -411,25 +417,26 @@
 #pragma mark - picture attaching
 - (void) attach_pic {
     self.shade = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, [UIScreen mainScreen].bounds.size.height)];
-    [self.shade setBackgroundColor:kNoochGrayDark]; [self.shade setAlpha:0.0];
+    [self.shade setBackgroundColor:kNoochGrayDark]; 
+    [self.shade setAlpha:0.0];
     [self.shade setUserInteractionEnabled:YES];
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancel_photo)];
     [self.shade addGestureRecognizer:recognizer];
     [self.navigationController.view addSubview:self.shade];
-    
+
     CGRect frame = self.camera.frame;
     self.choose = [[UIView alloc] initWithFrame:frame];
-    
+
     UIButton *take = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [take addTarget:self action:@selector(take_photo) forControlEvents:UIControlEventTouchUpInside];
     [take setTitle:@"" forState:UIControlStateNormal];
     [self.choose addSubview:take];
-    
+
     UIButton *album = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [album addTarget:self action:@selector(from_album) forControlEvents:UIControlEventTouchUpInside];
     [album setTitle:@"" forState:UIControlStateNormal];
     [self.choose addSubview:album];
-    
+
     [self.navigationController.view addSubview:self.choose];
 
     [UIView beginAnimations:Nil context:nil];
@@ -438,26 +445,32 @@
     [self.choose setStyleId:@"attachpic_container"];
     [take setStyleId:@"attachpic_takephoto_box"];
     [album setStyleId:@"attachpic_choosefrom_box"];
+    
     UIImageView *camera_icon = [UIImageView new];
     [camera_icon setStyleId:@"attachpic_takephoto_icon"];
     [self.choose addSubview:camera_icon];
+    
     UIImageView *album_icon = [UIImageView new];
     [album_icon setStyleId:@"attachpic_choosefrom_icon"];
     [self.choose addSubview:album_icon];
+    
     UILabel *take_label = [UILabel new];
     [take_label setStyleId:@"attachpic_takephoto_label"];
     [take_label setText:@"Take a Photo"];
     [self.choose addSubview:take_label];
+    
     UILabel *album_label = [UILabel new];
     [album_label setText:@"Choose from Album"];
     [album_label setStyleId:@"attachpic_choosefrom_label"];
     [self.choose addSubview:album_label];
+    
     UILabel *or = [UILabel new];
     [or setStyleId:@"attachpic_or"];
     [or setText:@"or"];
     [self.choose addSubview:or];
     [self.shade setAlpha:0.6];
     [self.amount resignFirstResponder];
+    
     [UIView commitAnimations];
 }
 - (void) cancel_photo  {
