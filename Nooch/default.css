@@ -19,6 +19,13 @@
 		width : 200px;
 		position : 60 10;
 	}
+	
+	#requireImmediatelyLogo {
+		background-image : url(noochIcon-96.png);
+		height : 96px;
+		width : 96px;
+		position : 136px 50px;
+	}
 
      #emptyRecentList {
 		background-image : url(empty-arrow.png);
@@ -567,7 +574,7 @@
 
 	/****  Raised Box - This adds a drop-shadow. ****/
 	.raised_view {
-		border-radius       : 0px;
+		/* border-radius       : 0px;  */
 		box-shadow			: 0 2px 2px rgba(109,110,113,0.6);
 	}
 
@@ -800,19 +807,19 @@
 
 	/**  Background box for all the content of the How Much? screen.  This element should also be assigned the ".raised_view" class. **/  
 	.how_much_mainbox {
+		left				: 9px;
+		top					: 10px;
 		width				: 302px;
 		height				: 250px;
-		top					: 10px;
-		left				: 9px;
 		border-radius		: 4px;
 	}
 	
 	/**  Just the text "To:"  **/
 	#label_howmuch_to  {
+		left				: 20px;
+		top					: 10px;
 		width				: 28px;
 		height				: 38px;
-		top					: 10px;
-		left				: 20px;
 		font-size			: 20px;
 		font-weight			: light;
         color               : white;
@@ -820,27 +827,27 @@
   
 	/**  Styles the recipient's name in the bar at the top of the main box. **/
 	#label_howmuch_recipientname {
+		left				: 53px;
+		top					: 10px;
 		width				: 210px;
 		height				: 38px;
-		top					: 10px;
-		left				: 53px;
 		font-size			: 20px;
 		font-weight			: regular;
         color               : white;
 	}
 	#label_howmuch_recipientnamenonuser {
-		width				: 220px;
-		height				: 38px;
-		top					: 10px;
 		left				: 53px;
-		font-size			: 15px;
+		top					: 13px;
+		width				: 220px;
+		height				: 35px;
+		font-size			: 16px;
 		font-weight			: regular;
         color               : white;
 	}
 
 	.barbackground {
-        top : 10px;
         left : 9px;
+        top : 10px;
         width : 302px;
         height  : 38px;
 		border-top-left-radius: 4px;
@@ -875,26 +882,26 @@
 
 	/**  Main entry field for the Amount.  Starts as light gray, turns dark when a number is entered. **/  
 	#howmuch_amountfield {
+		left                : 120px;
+		top					: 73px;
+		width				: 180px;
+		height				: 60px;
 		font-family			: "Roboto";
 		font-size			: 50px;
 		font-weight         : medium;
 		text-align       	: right;
 		color 				: #58595B;
-		width				: 180px;
-		height				: 60px;
-		top					: 73px;
-		left                : 120px;
 	}
     #howmuch_amountfield_4 {
+		left                : 120px;
+		top					: 53px;
+		width				: 180px;
+		height				: 50px;
 		font-family			: "Roboto";
 		font-size			: 42px;
 		font-weight         : medium;
 		text-align       	: right;
 		color 				: #58595B;
-		width				: 180px;
-		height				: 50px;
-		top					: 53px;
-		left                : 120px;
 	}
  
 	/**  Send and Request buttons. **/ 
@@ -977,9 +984,10 @@
     }
     #howmuch_send_hide {
         left:311px;
-        width:1px;
+        width:0px;
     }
     #howmuch_request_expand {
+        background-image: linear-gradient(#6dbee8, #41abe1);
         width: 302px;
         left: 9px;
 		border-bottom-right-radius: 4px;
@@ -994,19 +1002,21 @@
 		border-bottom-right-radius: 4px;
 		border-bottom-left-radius: 4px;
     }
-    #howmuch_request_hide {width: 1px;}
+    #howmuch_request_hide {width: 0px;}
     #cancel_hidden {
 		left: 141px;
 		top: 204px;
         width: 0px;
         height: 56px;
+		opacity: 0;
     }
 	#cancel_hidden_4 {
 		left: 141px;
 		top: 139px;
         width: 0px;
         height: 56px;
-    }
+		opacity: 0;
+	}
     #cancel_request {
         width: 40px;
 		left: 9px;
@@ -1023,34 +1033,34 @@
     }
 	.animate_roll_left {
 		animation-name				: howmuch_roll_left;
-		animation-duration			: 1.5s;
+		animation-duration			: 0.75s;
 		animation-fill-mode			: forwards;
-		animation-timing-function	: ease;
+		animation-timing-function	: ease-out;
 		animation-iteration-count	: 1;
 	}
     .animate_roll_left_return {
         animation-name				: howmuch_roll_left_return;
-		animation-duration			: 1.5s;
+		animation-duration			: 0.75s;
 		animation-fill-mode			: forwards;
-		animation-timing-function	: ease;
+		animation-timing-function	: ease-out;
 		animation-iteration-count	: 1;
     }
 	.animate_roll_right {
 		animation-name				: howmuch_roll_right;
-		animation-duration			: 1.5s;
+		animation-duration			: 0.75s;
 		animation-fill-mode			: forwards;
-		animation-timing-function	: ease;
+		animation-timing-function	: ease-out;
 		animation-iteration-count	: 1;
 	}
     .animate_roll_right_return {
         animation-name				: howmuch_roll_right_return;
-		animation-duration			: 1.5s;
+		animation-duration			: 0.75s;
 		animation-fill-mode			: forwards;
-		animation-timing-function	: ease;
+		animation-timing-function	: ease-out;
 		animation-iteration-count	: 1;
     }
 
-	/**  Icon when a picture is NOT attached yet. **/ 
+	/**  Icon when a picture is NOT attached yet.
 	#howmuch_camera {
 		width 			: 30px;
 		height 			: 22px;
@@ -1065,13 +1075,13 @@
 		top 			: 81px;
 		background-size	: 30px 22px;
 	}
-	/**  Icon when a picture has been attached. **/
+	/**  Icon when a picture has been attached. 
 	#howmuch_camera_attached {
 		width 			: 40px;
 		height 			: 24px;
 		left 			: 256px;
 		top 			: 160px;
-		background-size	: 40px 24px;
+		background-size	: 40px 24px;   **/
 	}
 
 	/**  Text entry field for inputting a memo. **/
@@ -1719,15 +1729,6 @@
 
 /* END NONPROFIT FLOW */
 
-    /**  Background only of the blue section headers of the right sidebar Table. */
-	.sectionheader_bckgrnd {
-		width				: 270px;
-		height				: 23px;
-		background-image	: linear-gradient(#6dbee8, #41abe1);
-		box-shadow			: 0px 1px 0px rgba(36,37,38,1),  /* Effect of a "border-top" attribute, which Pixate doesn't support. */
-							  0px -1px 0px rgba(36,37,38,1); /* Effect of a "border-top" attribute, which Pixate doesn't support. */
-	}
-
 	/**  The text "Sent using a 196-bit encryption." **/
 	.label_encryption  {
 		font-family			: "Roboto";
@@ -1754,15 +1755,25 @@
  /*******************************************
   ********* 	 Left SIDEBAR	    *********
   *******************************************/
+
+    /**  Background only of the blue section headers of the right sidebar Table. */
+	.sectionheader_bckgrnd {
+		width				: 270px;
+		height				: 22px;
+		background-image	: linear-gradient(#6dbee8, #41abe1);
+		box-shadow			: 0px 1px 0px rgba(46,47,48,.95),  /* Effect of a "border-top" attribute, which Pixate doesn't support. */
+							  0px -1px 0px rgba(46,47,48,.95); /* Effect of a "border-top" attribute, which Pixate doesn't support. */
+	}
+	
 	.lside_menu_icons {
-        font-family : "FontAwesome";
-        font-size       : 24px;
-        left                : 10px;
-        top                 : 9px;
-        width             : 25px;
-        height           : 25px;
-        color              : white;
-        text-align      : center;
+        font-family	: "FontAwesome";
+        font-size	: 24px;
+        left		: 10px;
+        top			: 9px;
+        width		: 25px;
+        height		: 25px;
+        color		: white;
+        text-align	: center;
     }
     
     .lside_arrow {
@@ -1770,10 +1781,11 @@
         top         : 9px;
         width       : 20px;
         height      : 30px;
-        color        :  white;
+        color       : white;
+		opacity		: .5;
         font-family : "FontAwesome";
-        font-size       : 22px;
-		text-align: right;
+        font-size	: 21px;
+		text-align	: right;
     }
 	
 	#lside_topbar_background {
@@ -2056,9 +2068,9 @@
 		width				: 30px;
 		height				: 30px;
 		top					: 15px;
-		left				: 260px;
+		left				: 266px;
 		color           : white;
-        font-family : "FontAwesome";
+        font-family	: "FontAwesome";
         font-size       : 24px;
 	}
 	.details_othername_nonnooch {
@@ -2720,53 +2732,57 @@
 	@keyframes howmuch_roll_left {
         0% {
 			left: 141px;
-            rotation    : 0;
+            rotation: 0;
 			scale: 1;
             opacity : 1;
 		}
 		100% {
-			left: -40px;
-            rotation  : -5;
-			scale: .4;
-            opacity : 0;
+			left: 5px;
+            rotation  : -4;
+			scale: .1;
+            opacity: 0;
 		}
 	}
     @keyframes howmuch_roll_left_return {
         0% {
-            left: -40px;
-            rotation  : 0;
-			scale: .4;
+            left: 5px;
+            rotation: 0;
+			scale: .1;
+			opacity: 0;
         }
         100% {
             left: 141px;
-            rotation    : 5;
+            rotation: 4;
 			scale: 1;
+			opacity: 1;
         }
     }
     @keyframes howmuch_roll_right {
 		0% {
 			left: 141px;
-            rotation    : 0;
+            rotation: 0;
 			scale: 1;
-            opacity : 1;
+            opacity: 1;
 		}
 		100% {
-			left: 340px;
-            rotation  : 5;
-			scale: .4;
+			left: 310px;
+            rotation  : 4;
+			scale: .1;
             opacity : 0;
 		}
     }
     @keyframes howmuch_roll_right_return {
 		0% {
-			left: 340px;
-            rotation  : 0;
-			scale: .4;
+			left: 310px;
+            rotation: 0;
+			scale: .1;
+			opacity: 0;
 		}
 		100% {
 			left: 141px;
-            rotation    : -5;
+            rotation: -4;
 			scale: 1;
+			opacity: 1;
 		}
 	}
 	@keyframes bubble {
@@ -2820,7 +2836,7 @@
   }
 .shakePin1 {
 	animation-name: shakePin1;
-	animation-duration: 1s;
+	animation-duration: 0.75s;
 	animation-iteration-count: 1;
     animation-timing-function: ease;
 }
@@ -2840,7 +2856,7 @@
   }
 .shakePin2 {
 	animation-name: shakePin2;
-	animation-duration: 1s;
+	animation-duration: 0.75s;
 	animation-iteration-count: 1;
     animation-timing-function: ease;
 }
@@ -2859,7 +2875,7 @@
   }
 .shakePin3 {
 	animation-name: shakePin3;
-	animation-duration: 1s;
+	animation-duration: 0.75s;
 	animation-iteration-count: 1;
     animation-timing-function: ease;
 }
@@ -2878,7 +2894,7 @@
   }
 .shakePin4 {
 	animation-name: shakePin4;
-	animation-duration: 1s;
+	animation-duration: 0.75s;
 	animation-iteration-count: 1;
     animation-timing-function: ease;
 }
