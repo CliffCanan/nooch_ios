@@ -68,11 +68,6 @@
     [bank_name setText:@"Bank of America"];
     [linked_background addSubview:bank_name];
 
-    UILabel *bank_num = [UILabel new];
-    [bank_num setStyleId:@"linked_account_number"];
-    [bank_num setText:@"XXXX XXXX XXXX 1234"];
-    [linked_background addSubview:bank_num];
-
     UIButton *unlink_account = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [unlink_account setStyleId:@"remove_account"];
     [unlink_account setTitle:@"Remove" forState:UIControlStateNormal];
