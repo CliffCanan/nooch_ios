@@ -490,13 +490,8 @@
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     [searchBar resignFirstResponder];
     [searchBar setShowsCancelButton:NO];
-    if ([[assist shared]isRequestMultiple]) {
-        [self getMemberIdByUsingUserName];
-        return;
-    }
     //newTransfersDecrement = newTransfers;
     [self.contacts reloadData];
-    NSLog(@"returnn %@",arrSearchedRecords);
 }
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
     //histSearch = YES;
@@ -509,8 +504,6 @@
 }
 
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
-    
-    //  NSLog(@"%@",searchText);
     if ([searchBar.text length]==0) {
         searching=NO;
         emailEntry=NO;
@@ -522,7 +515,8 @@
     if ([searchText length]>0) {
         searching = YES;
         NSRange isRange = [searchBar.text  rangeOfString:[NSString stringWithFormat:@"@"] options:NSCaseInsensitiveSearch];
-        if(isRange.location != NSNotFound){
+        NSRange isRange2 = [searchBar.text  rangeOfString:[NSString stringWithFormat:@"."] options:NSCaseInsensitiveSearch];
+        if(isRange.location != NSNotFound && isRange2.location != NSNotFound){
             emailEntry = YES;
             isphoneBook=NO;
             searching = NO;
@@ -554,31 +548,21 @@
 }
 - (void) searchTableView {
     arrSearchedRecords =[[NSMutableArray alloc]init];
-    if ([[assist shared]isRequestMultiple]) {
-        for (NSMutableDictionary *dict in arrRequestPersons) {
-            NSComparisonResult result = [[dict valueForKey:@"FirstName"] compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
-            if (result == NSOrderedSame) {
-                [arrSearchedRecords addObject:dict];
-            }
+    for (NSString *key in [[assist shared] assos].allKeys)
+    {
+        NSMutableDictionary *dict = [[assist shared] assos][key];
+        NSComparisonResult result = [[dict valueForKey:@"FirstName"] compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
+        NSComparisonResult result2 = [[dict valueForKey:@"LastName"] compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
+        if ((result == NSOrderedSame || result2 == NSOrderedSame) && dict[@"FirstName"] && dict[@"LastName"]) {
+            [arrSearchedRecords addObject:dict];
         }
     }
-    else{
-        for (NSString *key in [[assist shared] assos].allKeys)
-        {
-            NSMutableDictionary *dict = [[assist shared] assos][key];
-            NSComparisonResult result = [[dict valueForKey:@"FirstName"] compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
-            NSComparisonResult result2 = [[dict valueForKey:@"LastName"] compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
-            if ((result == NSOrderedSame || result2 == NSOrderedSame) && dict[@"FirstName"] && dict[@"LastName"]) {
-                [arrSearchedRecords addObject:dict];
-            }
-        }
-        if (![arrSearchedRecords isKindOfClass:[NSNull class]]) {
-            NSSortDescriptor *sortDescriptor;
-            sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"FirstName" ascending:YES];
-            NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-            NSArray *temp = [arrSearchedRecords copy];
-            [arrSearchedRecords setArray:[temp sortedArrayUsingDescriptors:sortDescriptors]];
-        }
+    if (![arrSearchedRecords isKindOfClass:[NSNull class]]) {
+        NSSortDescriptor *sortDescriptor;
+        sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"FirstName" ascending:YES];
+        NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        NSArray *temp = [arrSearchedRecords copy];
+        [arrSearchedRecords setArray:[temp sortedArrayUsingDescriptors:sortDescriptors]];
     }
 }
 #pragma mark - email handling

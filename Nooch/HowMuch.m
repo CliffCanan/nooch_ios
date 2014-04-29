@@ -273,7 +273,7 @@
 
 //    [self.reset_type setTitle:@">" forState:UIControlStateNormal];
     [self.reset_type setAlpha:1];
-    [self.glyph setAlpha:1];        //added by Cliff... is this needed? I added 'opacity: 0' to the CSS for the "cancel_hidden" ID, which this is initially set to
+    //[self.glyph setAlpha:1];        //added by Cliff... is this needed? I added 'opacity: 0' to the CSS for the "cancel_hidden" ID, which this is initially set to
 
     [self.send setTitle:@"Confirm Send" forState:UIControlStateNormal];
 
@@ -299,7 +299,7 @@
     [self.request addTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
 
     [self.reset_type setAlpha:1];
-    [self.glyph setAlpha:1];        //added by Cliff... is this needed? I added 'opacity: 0' to the CSS for the "cancel_hidden" ID, which this is initially set to
+    //[self.glyph setAlpha:1];        //added by Cliff... is this needed? I added 'opacity: 0' to the CSS for the "cancel_hidden" ID, which this is initially set to
 //    [self.reset_type setTitle:@"<" forState:UIControlStateNormal];
     [self.request setTitle:@"Confirm Request" forState:UIControlStateNormal];
 
@@ -601,7 +601,7 @@
     }
     if (textField.tag == 2) {
         NSUInteger newLength = [textField.text length] + [string length] - range.length;
-        return (newLength > 25) ? NO : YES;
+        return (newLength > 50) ? NO : YES;
     }
     return YES;
 }

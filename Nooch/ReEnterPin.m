@@ -49,7 +49,7 @@
     //    [navBar addSubview:lbl];
     
     UIImageView *logoicon = [UIImageView new];
-    [logo setStyleId:@"requireImmediatelyLogo"];
+    [logoicon setStyleId:@"requireImmediatelyLogo"];
     [self.view addSubview:logoicon];
     
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 118, 300, 40)];

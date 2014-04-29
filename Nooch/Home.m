@@ -158,7 +158,7 @@ NSMutableURLRequest *request;
         [self presentViewController:pin animated:YES completion:nil];
     }
     
-    if (![[user objectForKey:@"Status"] isEqualToString:@"Suspended"]) {
+    if ([[user objectForKey:@"Status"] isEqualToString:@"Suspended"]) {
         self.suspended = [UIView new];
         [self.suspended setStyleId:@"suspended_home"];
         UILabel *sus_header = [UILabel new];
@@ -190,7 +190,7 @@ NSMutableURLRequest *request;
         [self.view addSubview:self.suspended];
     }
     
-    if ([[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
+    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
         self.profile_incomplete = [UIView new];
         [self.profile_incomplete setStyleId:@"email_unverified"];
         
