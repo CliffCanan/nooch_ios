@@ -104,7 +104,7 @@
     [self.logout setTitle:@"Sign Out" forState:UIControlStateNormal];
     UILabel *glyphLogout = [UILabel new];
     [glyphLogout setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
-    [glyphLogout setFrame:CGRectMake(25, 7, 30, 30)];
+    [glyphLogout setFrame:CGRectMake(60, 7, 30, 30)];
     [glyphLogout setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-sign-out"]];
     [glyphLogout setTextColor:[UIColor whiteColor]];
     [self.logout addSubview:glyphLogout];

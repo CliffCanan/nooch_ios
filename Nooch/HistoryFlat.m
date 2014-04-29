@@ -72,7 +72,6 @@
     UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
 
-    //[ttt setImage:[UIImage imageGlyphNamed:@"filter" height:40 color:[UIColor whiteColor]]];
     [self.navigationItem setTitle:@"History"];
      [nav_ctrl performSelector:@selector(disable)];
 
@@ -100,6 +99,7 @@
 
     UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [filter setStyleClass:@"label_filter"];
+    [filter setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-filter"] forState:UIControlStateNormal];
     [filter addTarget:self action:@selector(FilterHistory:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *filt = [[UIBarButtonItem alloc] initWithCustomView:filter];
     [self.navigationItem setRightBarButtonItem:filt];

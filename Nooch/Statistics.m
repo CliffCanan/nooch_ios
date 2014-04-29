@@ -39,7 +39,6 @@
     [self.navigationItem setHidesBackButton:YES];
     [self.navigationController.view removeGestureRecognizer:self.navigationController.slidingViewController.panGesture];
     [self.view setStyleClass:@"background_gray"];
-    titlestr=@"Profile Stats";
     dictAllStats=[[NSMutableDictionary alloc]init];
     
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -250,6 +249,7 @@
         }
     }
     [UIView commitAnimations];
+    
 }
 
 #pragma mark - UITableViewDataSource
@@ -259,6 +259,13 @@
     UILabel*Title=[UILabel new];
     [Title setStyleClass:@"titlelbl"];
     Title.text=titlestr;
+    if (tableView == self.profile_stats) {
+        Title.text = @"Profile Stats";
+    } else if (tableView == self.donation_stats) {
+        Title.text = @"Donation Stats";
+    } else if (tableView == self.transfer_stats) {
+        Title.text = @"Transfer Stats";
+    }
     [view addSubview:Title];
     return view;    
 }

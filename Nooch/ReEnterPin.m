@@ -4,7 +4,6 @@
 //  Copyright (c) 2014 Nooch. All rights reserved.
 
 #import "ReEnterPin.h"
-#import <Pixate/Pixate.h>
 #import "Register.h"
 #import "assist.h"
 #import "ECSlidingViewController.h"
@@ -67,12 +66,12 @@
     [self.pin setDelegate:self]; [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
     [self.view addSubview:self.pin]; [self.pin becomeFirstResponder];
     
-    self.first_num = [[UIView alloc] initWithFrame:CGRectMake(44,135,32,32)];
-    self.second_num = [[UIView alloc] initWithFrame:CGRectMake(107,135,30,32)];
-    self.third_num = [[UIView alloc] initWithFrame:CGRectMake(170,135,32,32)];
-    self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(233,135,32,32)];
+    self.first_num = [[UIView alloc] initWithFrame:CGRectMake(44,180,30,30)];
+    self.second_num = [[UIView alloc] initWithFrame:CGRectMake(106,180,30,30)];
+    self.third_num = [[UIView alloc] initWithFrame:CGRectMake(171,180,30,30)];
+    self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(235,180,30,30)];
     
-    self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 16;
+    self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 15;
     self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor clearColor];
     self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
     self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;

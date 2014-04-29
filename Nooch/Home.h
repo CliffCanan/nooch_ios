@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Helpers.h"
-#import <Pixate/Pixate.h>
+#import <PixateFreestyle/PixateFreestyle.h>
 #import "serve.h"
 #import "core.h"
 #import "NavControl.h"

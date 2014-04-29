@@ -225,6 +225,7 @@ NSMutableURLRequest *request;
         [self.view addSubview:self.profile_incomplete];
     }
     
+    [top_button setStyleId:@"test"];
     
     
     serve *fb = [serve new];

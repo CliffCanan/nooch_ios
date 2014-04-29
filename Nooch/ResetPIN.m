@@ -7,7 +7,7 @@
 //
 
 #import "ResetPIN.h"
-#import <Pixate/Pixate.h>
+#import <PixateFreestyle/PixateFreestyle.h>
 #import <AudioToolbox/AudioToolbox.h>
 @interface ResetPIN ()<UITextFieldDelegate>
 @property(nonatomic,retain) UIView *first_num;
@@ -72,13 +72,12 @@
     [self.prompt setStyleId:@"pin_instructiontext_send"];
     [self.view addSubview:self.prompt];
     
-    self.first_num = [[UIView alloc] initWithFrame:CGRectMake(44,134,32,32)];
-    self.second_num = [[UIView alloc] initWithFrame:CGRectMake(107,134,32,32)];
-    self.third_num = [[UIView alloc] initWithFrame:CGRectMake(170,134,32,32)];
-    self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(233,134,32,32)];
+    self.first_num = [[UIView alloc] initWithFrame:CGRectMake(44,134,30,30)];
+    self.second_num = [[UIView alloc] initWithFrame:CGRectMake(106,134,30,30)];
+    self.third_num = [[UIView alloc] initWithFrame:CGRectMake(171,134,30,30)];
+    self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(235,134,30,30)];
     
-    //self.first_num.alpha = self.second_num.alpha = self.third_num.alpha = self.fourth_num.alpha = 0.5;
-    self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 16;
+    self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 15;
     self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor clearColor];
     self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
     self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;

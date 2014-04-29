@@ -66,7 +66,8 @@
 
     UIView *back = [[UIView alloc] initWithFrame:CGRectMake(10, 10, 300, 248)];
     [back setStyleClass:@"raised_view"];
-    [back setStyleClass:@"how_much_mainbox"];
+    [back setStyleClass:@"howmuch_mainbox"];
+    back.layer.cornerRadius = 4;
     [back setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:back];
 
@@ -174,16 +175,10 @@
         [self.request setStyleId:@"howmuch_request_mult_expand"];
         [self.request setFrame:CGRectMake(10, 160, 300, 50)];
     }
-//    else if ([self.receiver valueForKey:@"nonuser"]) {
-//        [self.request removeFromSuperview];
-//        [self.send setStyleClass:@"nonhowmuch_send"];
-//        [self.send setFrame:CGRectMake(10, 160, 300, 50)];
-//        [self.view addSubview:self.send];
-//    }
     else {
         [self.send setStyleClass:@"howmuch_buttons"];
         [self.send setStyleId:@"howmuch_send"];
-        [self.send setFrame:CGRectMake(160, 160, 150, 50)];  // Are these numbers right, they don't match the CSS for "howmuch_send"?
+        [self.send setFrame:CGRectMake(160, 160, 150, 50)];
         [self.view addSubview:self.send];
 
         [self.request setStyleClass:@"howmuch_buttons"];
@@ -253,31 +248,21 @@
     
     CGRect origin = self.reset_type.frame;
     origin.origin.x = 10;
-    //[self.reset_type setFrame:origin];
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.6];
-    //origin.size.width = 30;
-    //[self.reset_type setFrame:origin];
 
-    //origin = self.send.frame;
     origin.size.width = 149;
     origin.origin.x = 162;
-    //[self.send setFrame:origin];
     
     origin = self.request.frame;
     origin.size.width = 149;
     origin.origin.x = 9;
-    //[self.request setFrame:origin];
 
     [self.send addTarget:self action:@selector(confirm_send) forControlEvents:UIControlEventTouchUpInside];
 
-//    [self.reset_type setTitle:@">" forState:UIControlStateNormal];
     [self.reset_type setAlpha:1];
-    //[self.glyph setAlpha:1];        //added by Cliff... is this needed? I added 'opacity: 0' to the CSS for the "cancel_hidden" ID, which this is initially set to
 
     [self.send setTitle:@"Confirm Send" forState:UIControlStateNormal];
-
-//    [self.reset_type setStyleClass:@"button_blue"];    // Unnecessary, can just leave the clear background
     
     [self.send setStyleId:@"howmuch_send_expand"];
     [self.request setStyleId:@"howmuch_request_hide"];
@@ -290,20 +275,13 @@
 - (void) initialize_request {
     [self.recip_back setStyleClass:@"barbackground_blue"];
     
-    CGRect origin = self.reset_type.frame;
-    origin.origin.x = 271;
-//    [self.reset_type setFrame:origin];
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.6];
 
     [self.request addTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
 
     [self.reset_type setAlpha:1];
-    //[self.glyph setAlpha:1];        //added by Cliff... is this needed? I added 'opacity: 0' to the CSS for the "cancel_hidden" ID, which this is initially set to
-//    [self.reset_type setTitle:@"<" forState:UIControlStateNormal];
     [self.request setTitle:@"Confirm Request" forState:UIControlStateNormal];
-
-//    [self.reset_type setStyleClass:@"button_green"];    // Unnecessary, can just leave the clear background
     
     [self.send setStyleId:@"howmuch_send_hide"];
     [self.request setStyleId:@"howmuch_request_expand"];
@@ -316,25 +294,18 @@
 - (void) reset_send_request {
     [self.recip_back setStyleClass:@"barbackground_gray"];
 
-    if (![[assist shared] isRequestMultiple] && ![self.receiver valueForKey:@"nonuser"]) {
+    if (![[assist shared] isRequestMultiple]) {
         self.divider = [UIImageView new];
         [self.divider setStyleId:@"howmuch_divider"];
         [self.divider setAlpha:0];
         [self.view addSubview:self.divider];
     }
 
-    CGRect origin = self.reset_type.frame;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.6];
-
-    origin = self.send.frame;
-    origin.size.width = 150; origin.origin.x = 160;
-
-    [self.send setFrame:origin];
-    origin = self.request.frame;
-    origin.size.width = 150; origin.origin.x = 10;
-
-    [self.request setFrame:origin];
+    
+    [self.send setStyleId:@"howmuch_send"];
+    [self.request setStyleId:@"howmuch_request"];
 
     [self.send removeTarget:self action:@selector(confirm_send) forControlEvents:UIControlEventTouchUpInside];
     [self.request removeTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
@@ -348,8 +319,7 @@
     [self.request setTitle:@"Request" forState:UIControlStateNormal];
     [UIView commitAnimations];
 
-    [self.send setStyleId:@"howmuch_send"];
-    [self.request setStyleId:@"howmuch_request"];
+    
 }
 
 - (void) confirm_send {
@@ -409,7 +379,12 @@
         NSMutableDictionary *transaction = [self.receiver mutableCopy];
         [transaction setObject:[self.memo text] forKey:@"memo"];
         float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
-        TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"request" amount:input_amount];
+        TransferPIN *pin;
+        if ([self.receiver valueForKey:@"nonuser"]) {
+            pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"request" amount:input_amount];
+        } else {
+            pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"request" amount:input_amount];
+        }
         [self.navigationController pushViewController:pin animated:YES];
     }
 }
@@ -564,10 +539,6 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     if (textField.tag == 1) {
-        //        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        //        [formatter setNumberStyle:NSNumberFormatterNoStyle];
-        //        [formatter setPositiveFormat:@"$ ##.##"];
-        //        [formatter setLenient:YES];
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
         [formatter setGeneratesDecimalNumbers:YES];

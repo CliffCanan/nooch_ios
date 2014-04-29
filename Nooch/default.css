@@ -22,8 +22,8 @@
 	
 	#requireImmediatelyLogo {
 		background-image : url(noochIcon-96.png);
-		height : 96px;
-		width : 96px;
+		height : 48px;
+		width : 48px;
 		position : 136px 50px;
 	}
 
@@ -371,10 +371,9 @@
 		top             : 25px;
 		height          : 25px;
 		font-family		: "Roboto";
-		font-weight		: medium;
-		font-size		: 22px;
+		font-weight		: light;
+		font-size		: 21px;
 		text-align		: left;
-
 	}
 	.plusbutton {
 		width			: 50px;
@@ -806,7 +805,7 @@
 	/*************************/
 
 	/**  Background box for all the content of the How Much? screen.  This element should also be assigned the ".raised_view" class. **/  
-	.how_much_mainbox {
+	.howmuch_mainbox {
 		left				: 9px;
 		top					: 10px;
 		width				: 302px;
@@ -922,6 +921,7 @@
 		border-bottom-left-radius: 4px;
 		left: 9px;
 		top: 204px;
+        opacity : 1;
 	}
     #howmuch_request_4 {
 		background-image: linear-gradient(#6dbee8, #41abe1);
@@ -935,6 +935,7 @@
 		left: 162px;
 		top: 204px; 
 		border-bottom-right-radius: 4px;
+        opacity : 1;
 	}
     #howmuch_send_4 {
 		background-image: linear-gradient(#7fd034, #6ab029);
@@ -984,7 +985,8 @@
     }
     #howmuch_send_hide {
         left:311px;
-        width:0px;
+        width:1px;
+        opacity : 0;
     }
     #howmuch_request_expand {
         background-image: linear-gradient(#6dbee8, #41abe1);
@@ -1002,7 +1004,10 @@
 		border-bottom-right-radius: 4px;
 		border-bottom-left-radius: 4px;
     }
-    #howmuch_request_hide {width: 0px;}
+    #howmuch_request_hide {
+        width: 1px;
+        opacity : 0;
+    }
     #cancel_hidden {
 		left: 141px;
 		top: 204px;
@@ -1081,8 +1086,8 @@
 		height 			: 24px;
 		left 			: 256px;
 		top 			: 160px;
-		background-size	: 40px 24px;   **/
-	}
+		background-size	: 40px 24px;
+	} **/
 
 	/**  Text entry field for inputting a memo. **/
     #howmuch_memo {
@@ -1749,7 +1754,6 @@
 		top 				: 465px;
 		left 				: 39px;
 		background-image 	: url(encryption-lock.png);
-	//background-size		: 18px 22px;
 	}
 
  /*******************************************
@@ -1802,7 +1806,7 @@
 		left			: 18px;
 		border			: 2px solid white;
 		border-radius	: 31px;
-		box-shadow		: 0px 2px 6px rgba(29,30,31,.75)
+		box-shadow		: 0px 2px 6px rgba(29,30,31,.75);
 	}
 	#lside_firstname {
 		width			: 170px;
@@ -2089,6 +2093,7 @@
 	.history_sidecolor_neg {background-color		: #d2232a;}
 	.history_sidecolor_neutral {background-color	: #3fabe1;}
 	.history_sidecolor_donate {background-color	: #5a538d;}
+
 	
 	/*********************************/
 	/*****    TRANSFER DETAILS   *****/
