@@ -63,7 +63,6 @@
 {
     [super viewDidLoad];
     [self.navigationItem setHidesBackButton:YES];
-    //test
 
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];

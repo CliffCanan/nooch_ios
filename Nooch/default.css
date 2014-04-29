@@ -1912,9 +1912,8 @@
 	.label_filter  {
 		width				: 25px;
 		height				: 25px;
-		font-family			: "Roboto";
-		font-weight         : light;
-		font-size			: 16px;
+		font-family	: "FontAwesome";
+		font-size			: 24px;
 		text-align       	: right;
 		color 				: #ffffff;
 	}

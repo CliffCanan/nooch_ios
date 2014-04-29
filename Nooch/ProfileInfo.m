@@ -79,9 +79,6 @@
         UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
         [self.navigationItem setLeftBarButtonItem:menu];
     }
-    
-    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-    //[self.view addGestureRecognizer:tap];
 
     if (!isSignup) {
         [self.slidingViewController.panGesture setEnabled:YES];
@@ -519,8 +516,6 @@
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     if(buttonIndex == 0) {
-        //self.pic.layer.borderColor = kNoochBlue.CGColor;
-        //[self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
         if (![user objectForKey:@"facebook_id"]) {
             
             return;
@@ -637,7 +632,7 @@
         [cell setUserInteractionEnabled:NO];
     }
     else if (indexPath.row == 1) {
-        if ([[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
+        if (![[user valueForKey:@"Status"] isEqualToString:@"Active"]) {
             
             UIView *email_not_validated = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
             [email_not_validated setBackgroundColor:kNoochRed];
@@ -674,7 +669,7 @@
         [cell.contentView addSubview:self.recovery_email];
     }
     else if (indexPath.row == 3) {
-        if ([[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"]) {
+        if (![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"]) {
             
             UIView *unverified_phone = [[UIView alloc] initWithFrame:CGRectMake(0,0,320,100)];
             [unverified_phone setAlpha:0.4];
