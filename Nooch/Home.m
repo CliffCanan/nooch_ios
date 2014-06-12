@@ -10,11 +10,12 @@
 #import "Register.h"
 #import "InitSliding.h"
 #import "ECSlidingViewController.h"
-#import "SelectCause.h"
 #import "TransferPIN.h"
 #import "ReEnterPin.h"
 #import "ProfileInfo.h"
 #import "serve.h"
+#import "iCarousel.h"
+#import <QuartzCore/QuartzCore.h>
 #define kButtonType     @"transaction_type"
 #define kButtonTitle    @"button_title"
 #define kButtonColor    @"button_background_color"
@@ -30,6 +31,8 @@ NSMutableURLRequest *request;
 @property(nonatomic,strong) UIView *suspended;
 @property(nonatomic,strong) UIView *profile_incomplete;
 @property(nonatomic,strong) UIView *phone_unverified;
+@property(nonatomic,strong) iCarousel *carousel;
+@property(nonatomic,strong) NSMutableDictionary *favorites;
 @end
 
 @implementation Home
@@ -113,13 +116,13 @@ NSMutableURLRequest *request;
     
     [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
     [mid_button addTarget:self action:@selector(pay_in_person) forControlEvents:UIControlEventTouchUpInside];
-    [bot_button addTarget:self action:@selector(donate) forControlEvents:UIControlEventTouchUpInside];
+    //[bot_button addTarget:self action:@selector(donate) forControlEvents:UIControlEventTouchUpInside];
     
     [top_button setTitle:[[self.transaction_types objectAtIndex:0] objectForKey:kButtonTitle] forState:UIControlStateNormal];
     [mid_button setTitle:[[self.transaction_types objectAtIndex:1] objectForKey:kButtonTitle] forState:UIControlStateNormal];
     [bot_button setTitle:[[self.transaction_types objectAtIndex:2] objectForKey:kButtonTitle] forState:UIControlStateNormal];
     
-    [self.view addSubview:top_button]; [self.view addSubview:bot_button];
+    [self.view addSubview:top_button];
     
     //29/12
     NSMutableDictionary *loadInfo;
@@ -227,6 +230,12 @@ NSMutableURLRequest *request;
     
     [top_button setStyleId:@"test"];
     
+    _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 45, 320, 30)];
+    _carousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _carousel.type = iCarouselTypeCoverFlow2;
+    [_carousel setNeedsLayout];
+    _carousel.delegate = self;
+    _carousel.dataSource = self;
     
     serve *fb = [serve new];
     [fb setDelegate:self];
@@ -357,6 +366,101 @@ NSMutableURLRequest *request;
         [nav_ctrl pushViewController:reg animated:YES];
         me = [core new];
         return;
+    }
+    
+    if ([[user valueForKey:@"Status"]isEqualToString:@"Active"] && [[user objectForKey:@"Status"] isEqualToString:@"Suspended"]) {
+        //do carousel
+        
+        
+        
+        //launch favorites call
+    }
+    
+    [self.view addSubview:_carousel];
+    [_carousel reloadData];
+    
+}
+
+#pragma mark - iCarousel methods
+
+-(void)scrollCarouselToIndex:(NSNumber *)index
+{
+    [_carousel scrollToItemAtIndex:index.intValue animated:YES];
+}
+
+- (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel
+{
+    //return the total number of items in the carousel
+    //return [self.favorites count];
+    return 5;
+}
+
+- (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view
+{
+    UIImageView *imageView = nil;
+    
+    //create new view if no view is available for recycling
+    if (view == nil)
+    {
+		view = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 100, 100)];
+        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 70, 70)];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        imageView.layer.borderColor = kNoochBlue.CGColor;
+        imageView.layer.borderWidth = 1;
+        imageView.layer.cornerRadius = 35;
+        [imageView setImage:[UIImage imageNamed:@"Preston.png"]];
+        [imageView setClipsToBounds:YES];
+        [view addSubview:imageView];
+        
+    }
+    else
+    {
+        imageView = (UIImageView *)[view viewWithTag:1];
+    }
+    
+    //set image
+    
+    return view;
+}
+
+- (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel
+{
+    
+}
+
+- (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index
+{
+    if(carousel.scrolling == NO)
+    {
+        [self carouselDidEndScrollingAnimation:carousel];
+    }
+}
+
+- (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value
+{
+    
+    switch (option)
+    {
+        case iCarouselOptionWrap:
+        {
+            return NO;
+        }
+        case iCarouselOptionArc:
+        {
+            return 360; //arc
+        }
+        case iCarouselOptionRadius:
+        {
+            return 160;
+        }
+        case iCarouselOptionSpacing:
+        {
+            return value * 1;
+        }
+        default:
+        {
+            return value;
+        }
     }
 }
 
@@ -564,12 +668,6 @@ NSMutableURLRequest *request;
 - (void)pay_in_person
 {
     
-}
-- (void)donate
-{
-    isOpenLeftSideBar=NO;
-    SelectCause *donate = [SelectCause new];
-    [self.navigationController pushViewController:donate animated:YES];
 }
 # pragma mark - CLLocationManager Delegate Methods
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
