@@ -38,14 +38,6 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    //    UIView*navBar=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
-    //    [navBar setBackgroundColor:[UIColor colorWithRed:82.0f/255.0f green:176.0f/255.0f blue:235.0f/255.0f alpha:1.0f]];
-    //    [self.view addSubview:navBar];
-    //    UILabel*lbl=[[UILabel alloc]initWithFrame:CGRectMake(75, 20, 200, 30)];
-    //    [lbl setText:@"PIN Confirmation"];
-    //    [lbl setFont:[UIFont systemFontOfSize:22]];
-    //    [lbl setTextColor:[UIColor whiteColor]];
-    //    [navBar addSubview:lbl];
     
     UIImageView *logoicon = [UIImageView new];
     [logoicon setStyleId:@"requireImmediatelyLogo"];
@@ -166,10 +158,9 @@
         [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"pincheck"];
         if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
             
-            UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil                , nil];
+            UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Looks like you have logged in from a different device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil , nil];
             
             [Alert show];
-            
             
             [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
             
@@ -296,7 +287,7 @@
             [self.second_num setStyleClass:@"shakePin2"];
             [self.first_num setStyleClass:@"shakePin1"];
             self.prompt.text=@"2nd failed attempt.";
-            UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:nil message:@"Your account will be suspended for 24 hours if you enter another incorrect PIN." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:nil message:@"For security protection, your account will be suspended for 24 hours if you enter wrong PIN number again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
             [suspendedAlert show];
             
         }else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))            {
