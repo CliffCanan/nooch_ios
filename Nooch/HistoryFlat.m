@@ -641,28 +641,30 @@ return customView;
                 NSDictionary*dictRecord=[temp objectAtIndex:indexPath.row];
                 if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
                     if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
-                        //cancel
+                        //cancel or remind						
+						[rightUtilityButtons sw_addUtilityButtonWithColor:kNoochBlue
+                        title:@"Remind"];
                         [rightUtilityButtons sw_addUtilityButtonWithColor:
                             [UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
-                            title:@"Cancel"];
-                        }
-                        else {
-                            //accept decline
-                            [rightUtilityButtons sw_addUtilityButtonWithColor:kNoochGreen
-                            title:@"Accept"];
-                            [rightUtilityButtons sw_addUtilityButtonWithColor:
-                            [UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
-                            title:@"Decline"];
-                        }
+                        title:@"Cancel"];
+                    }
+                    else {
+                        //accept or decline
+                        [rightUtilityButtons sw_addUtilityButtonWithColor:kNoochGreen
+                        title:@"Accept"];
+                        [rightUtilityButtons sw_addUtilityButtonWithColor:
+							[UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
+                        title:@"Decline"];
                     }
                 }
-                cell = [[SWTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
-                    reuseIdentifier:cellIdentifier
-                    containingTableView:self.list // For row height and selection
-                    leftUtilityButtons:leftUtilityButtons
-                    rightUtilityButtons:rightUtilityButtons];
-                }
-                [cell setDelegate:self];
+            }
+            cell = [[SWTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                reuseIdentifier:cellIdentifier
+                containingTableView:self.list // For row height and selection
+                leftUtilityButtons:leftUtilityButtons
+                rightUtilityButtons:rightUtilityButtons];
+        }
+        [cell setDelegate:self];
    // }
     if ([cell.contentView subviews]){
         for (UIView *subview in [cell.contentView subviews]) {
@@ -1500,11 +1502,22 @@ return customView;
     NSDictionary*dictRecord=[temp objectAtIndex:[self.list indexPathForCell:cell].row];
     if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
         if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
-            //cancel
-            self.responseDict = [dictRecord copy];
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to cancel this request? " delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
-            [av show];
-            [av setTag:1010];
+			
+			// ADDED BY CLIFF
+			if (ind == 0) {
+                //remind
+				self.responseDict = [dictRecord copy];
+				UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder" message:@"Send a reminder about this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+				[av show];
+				[av setTag:1012];
+			}
+			else {
+				//cancel
+				self.responseDict = [dictRecord copy];
+				UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel Request" message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+				[av show];
+				[av setTag:1010];
+			}
         }
         else {
             //accept/decline
@@ -1846,17 +1859,24 @@ return customView;
             [s sendCsvTrasactionHistory:email];
         }
     } 
-    else if(actionSheet.tag==1010 && buttonIndex==0) {
+    else if (actionSheet.tag==1010 && buttonIndex==0) {
         serve*serveObj=[serve new];
         [serveObj setDelegate:self];
         serveObj.tagName=@"cancel";
         [serveObj CancelRejectTransaction:[self.responseDict valueForKey:@"TransactionId"] resp:@"Cancelled"];        
     }
-    else if(actionSheet.tag==1011 && buttonIndex==0) {
+    else if (actionSheet.tag==1011 && buttonIndex==0) {
         serve*serveObj=[serve new];
         [serveObj setDelegate:self];
         serveObj.tagName=@"reject";
         [serveObj CancelRejectTransaction:[self.responseDict valueForKey:@"TransactionId"] resp:@"Rejected"];
+    }
+	// ADDED BY CLIFF
+	else if (actionSheet.tag==1012 && buttonIndex==0) {
+        serve*serveObj=[serve new];
+        [serveObj setDelegate:self];
+        serveObj.tagName=@"remind";
+        // ////////////////////////////////////
     }
     else if (actionSheet.tag == 50 && buttonIndex == 1) {
         if (![MFMailComposeViewController canSendMail]){
