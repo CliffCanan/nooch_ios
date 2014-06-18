@@ -61,6 +61,14 @@
     [self.view addSubview:self.completed_pending];
     [self.completed_pending setSelectedSegmentIndex:0];
 
+//  ADDED BY CLIFF
+    UILabel *glyph1 = [UILabel new];
+    [glyph1 setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+    [glyph1 setFrame:CGRectMake(8, 8, 16, 16)];
+    [glyph1 setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
+    [glyph1 setTextColor:[UIColor whiteColor]];
+    [self.completed_pending addSubview:glyph1];
+
     search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 40, 320, 40)];
     [search setBackgroundColor:kNoochGrayDark];
     search.placeholder=@"Search by Name or Enter an Email";
@@ -81,7 +89,7 @@
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
     self.hud.delegate = self;
-    self.hud.labelText = @"Loading your Recent list";
+    self.hud.labelText = @"Building Your Recent List";
     [self.hud show:YES];   
 }
 
