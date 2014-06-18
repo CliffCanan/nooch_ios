@@ -691,32 +691,40 @@ return customView;
                         if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
                             [amount setStyleClass:@"history_transferamount_neg"];
                             [indicator setStyleClass:@"history_sidecolor_neg"];
-                            [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                            [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                         }  
                     }
                     else  {
                         if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
                             [amount setStyleClass:@"history_transferamount_pos"];
                             [indicator setStyleClass:@"history_sidecolor_pos"];
-                            [amount setText:[NSString stringWithFormat:@"+$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                            [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                         }
                     }
                     
                     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"]) {
                         [amount setStyleClass:@"history_transferamount_neg"];
                         [indicator setStyleClass:@"history_sidecolor_donate"];
-                        [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                        [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
                         [amount setStyleClass:@"history_transferamount_neg"];
                         [indicator setStyleClass:@"history_sidecolor_neg"];
-                        [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                        [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                     }
                     else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL){
-                        [amount setStyleClass:@"history_transferamount_pos"];
-                        [indicator setStyleClass:@"history_sidecolor_pos"];
-                        [amount setText:[NSString stringWithFormat:@"+$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                    }
+                        //ADDED BY CLIFF
+						if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
+							[amount setStyleClass:@"history_transferamount_neutral"];
+							[indicator setStyleClass:@"history_sidecolor_neutral"];
+							[amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+						}
+						else {
+							[amount setStyleClass:@"history_transferamount_pos"];
+							[indicator setStyleClass:@"history_sidecolor_pos"];
+							[amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+						}
+					}
                     [cell.contentView addSubview:amount];
                     [cell.contentView addSubview:indicator];
                     UILabel *date = [UILabel new];
@@ -752,7 +760,7 @@ return customView;
                         [updated_balance setText:[NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"TransactionStatus"]]];
                         [cell.contentView addSubview:updated_balance];
                     }
-                //}
+                
 
                     NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -922,32 +930,45 @@ return customView;
                         //send
                         [amount setStyleClass:@"history_transferamount_neg"];
                         [indicator setStyleClass:@"history_sidecolor_neg"];
-                        [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                        [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                     }
                 }
                 else {
                     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
                         [amount setStyleClass:@"history_transferamount_pos"];
                         [indicator setStyleClass:@"history_sidecolor_pos"];
-                        [amount setText:[NSString stringWithFormat:@"+$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                        [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                     }
                 }
 
                 if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"]) {
                     [amount setStyleClass:@"history_transferamount_neg"];
                     [indicator setStyleClass:@"history_sidecolor_donate"];
-                    [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                    [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                 }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
                     [amount setStyleClass:@"history_transferamount_neg"];
                     [indicator setStyleClass:@"history_sidecolor_neg"];
-                    [amount setText:[NSString stringWithFormat:@"-$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                    [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                 }
                 else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL){
                     [amount setStyleClass:@"history_transferamount_pos"];
                     [indicator setStyleClass:@"history_sidecolor_pos"];
-                    [amount setText:[NSString stringWithFormat:@"+$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]]; 
+                    [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]]; 
                 }
+				else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL){
+                    //ADDED BY CLIFF
+					if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
+						[amount setStyleClass:@"history_transferamount_neutral"];
+						[indicator setStyleClass:@"history_sidecolor_neutral"];
+						[amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+					}
+					else {
+						[amount setStyleClass:@"history_transferamount_pos"];
+						[indicator setStyleClass:@"history_sidecolor_pos"];
+						[amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+					}
+				}
                 [cell.contentView addSubview:amount];
                 [cell.contentView addSubview:indicator];
                 UILabel *date = [UILabel new];
