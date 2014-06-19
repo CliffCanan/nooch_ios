@@ -461,7 +461,6 @@ return customView;
      //          } else if (finalX > 768) {
      //              //finalX = 768;
      //          }
-     //
      //          if (finalY < 0) {
      //              finalY = 0;
      //          } else if (finalY > 1024) {
@@ -473,7 +472,6 @@ return customView;
      //          } else if (finalX > 1024) {
      //              //finalX = 768;
      //          }
-     //
      //          if (finalY < 0) {
      //              finalY = 0;
      //          } else if (finalY > 768) {
@@ -838,65 +836,83 @@ return customView;
                     pic.clipsToBounds = YES;
                     [cell.contentView addSubview:pic];
 
+                    UILabel *transferTypeLabel = [UILabel new];
+                    [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
+
                     UILabel *name = [UILabel new];
                     [name setStyleClass:@"history_cell_textlabel"];
                     [name setStyleClass:@"history_recipientname"];
 
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]]) {
                         if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
-                            [name setText:[NSString stringWithFormat:@"You Paid %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+                            [transferTypeLabel setText:@"Transfer to"];
+							[transferTypeLabel setTextColor:[UIColor kNoochRed]];
+                            [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                             [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                                 placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                         }
                     }
                     else {
                         if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
-                            [name setText:[NSString stringWithFormat:@"%@ Paid You",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+                            [transferTypeLabel setText:@"Transfer from"];
+							[transferTypeLabel setTextColor:[UIColor kNoochGreen]];
+                            [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                             [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                                 placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                         }
                     }
 
                     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"]){
-                        [name setText:[NSString stringWithFormat:@"Donate to %@",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
+                        [transferTypeLabel setText:@"Donation to"];
+						[transferTypeLabel setTextColor:[UIColor kNoochPurple]];
+                        [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                             placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                         
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]&& [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]){
                         if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"RecepientId"]]) {
-                            [name setText:[NSString stringWithFormat:@"You Requested of %@",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
+                            [transferTypeLabel setText:@"Request sent to"];
+                            [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                             [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                                 placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                         }
                         else {
-                            [name setText:[NSString stringWithFormat:@"%@ Requested",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
+                            [transferTypeLabel setText:@"Request from"];
+                            [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                             [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                                 placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                         }
+						[transferTypeLabel setTextColor:[UIColor kNoochBlue]];
                         [updated_balance setStyleClass:@"history_RequestStatus"];
                         [updated_balance setText:[NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"TransactionStatus"]]];
                         [cell.contentView addSubview:updated_balance];
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]&& [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]){
                         if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"RecepientId"]]) {
-                            [name setText:[NSString stringWithFormat:@"You Requested of %@",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
+                            [transferTypeLabel setText:@"Request sent to"];
+                            [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                             [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                                 placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                         }
                         else {
-                            [name setText:[NSString stringWithFormat:@"%@ Requested",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
+                            [transferTypeLabel setText:@"Request from"];
+                            [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                             [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                                 placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                         }
+						[transferTypeLabel setTextColor:[UIColor kNoochBlue]];
                         [updated_balance setStyleClass:@"history_RequestStatus"];
                         [updated_balance setText:[NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"TransactionStatus"]]];
                         [cell.contentView addSubview:updated_balance];
                     }
                     else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL){
                         [pic setImage:[UIImage imageNamed:@"RoundLoading"]];
-                         [name setText:[NSString stringWithFormat:@"You Invited %@",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
+                         [transferTypeLabel setText:@"Invite sent to"];
+						 [transferTypeLabel setTextColor:[UIColor kNoochGrayDark]];
+                         [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
                     }
+                    [cell.contentView addSubview:name];
                     [cell.contentView addSubview:name];
                 }
             }
@@ -905,7 +921,7 @@ return customView;
                 [name setStyleClass:@"history_cell_textlabel"];
                 [name setStyleClass:@"history_recipientname"];
                 if (indexPath.row==0)
-                    [name setText:@"No Records"];
+                    [name setText:@"You haven't made or received any payments yet!  :("];
                 else
                     [name setText:@""];
                 [cell.contentView addSubview:name];
@@ -1072,55 +1088,73 @@ return customView;
                 pic.clipsToBounds = YES;
                 [cell.contentView addSubview:pic];
 
+				UILabel *transferTypeLabel = [UILabel new];
+                [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
+					
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabel"];
                 [name setStyleClass:@"history_recipientname"];
+
                 if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]]) {
                     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
-                        [name setText:[NSString stringWithFormat:@"You Paid %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+                        [transferTypeLabel setText:@"Transfer to"];
+						[transferTypeLabel setTextColor:[UIColor kNoochRed]];
+                        [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                             placeholderImage:[UIImage imageNamed:@"RoundLoading"]];   
                     }
                 }
                 else {
                     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
-                        [name setText:[NSString stringWithFormat:@"%@ Paid You",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+                        [transferTypeLabel setText:@"Transfer from"];
+						[transferTypeLabel setTextColor:[UIColor kNoochGreen]];
+						[name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                             placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                     }
                 }
                 if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"]){
-                    [name setText:[NSString stringWithFormat:@"Donate to %@",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
+                    [transferTypeLabel setText:@"Donation to"];
+					[transferTypeLabel setTextColor:[UIColor kNoochPurple]];
+                    [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                     [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                         placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                 }
                 else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL){
                     [pic setImage:[UIImage imageNamed:@"RoundLoading"]];
-                    [name setText:[NSString stringWithFormat:@"You Invited %@",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
+                    [transferTypeLabel setText:@"Invite sent to"];
+					[transferTypeLabel setTextColor:[UIColor kNoochGrayDark]];
+                    [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
                 }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]&& [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]){
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"RecepientId"]]) {
-                        [name setText:[NSString stringWithFormat:@"You Requested of %@",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
+                        [transferTypeLabel setText:@"Request sent to"];
+                        [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                             placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                     }
                     else {
-                        [name setText:[NSString stringWithFormat:@"%@ Requested",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
+                        [transferTypeLabel setText:@"Request from"];
+                        [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                             placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                     }
+					[transferTypeLabel setTextColor:[UIColor kNoochBlue]];
                 }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]&& [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]){
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"RecepientId"]]) {
-                        [name setText:[NSString stringWithFormat:@"You Requested of %@",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
+                        [transferTypeLabel setText:@"Request sent to"];
+                        [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                             placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                     }
                     else {
-                        [name setText:[NSString stringWithFormat:@"%@ Requested",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
+                        [transferTypeLabel setText:@"Request from"];
+                        [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                             placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
                     }
+					[transferTypeLabel setTextColor:[UIColor kNoochBlue]];
                 }
                 [cell.contentView addSubview:name];
             }
@@ -1131,7 +1165,7 @@ return customView;
                 [name setStyleClass:@"history_cell_textlabel"];
                 [name setStyleClass:@"history_recipientname"];
                 if (indexPath.row==0)
-                    [name setText:@"No Records"];
+                    [name setText:@"You haven't made or received any payments yet!  :("];
                 else
                     [name setText:@""];
                 [cell.contentView addSubview:name];            }
@@ -1180,22 +1214,35 @@ return customView;
                     [cell.contentView addSubview:amount];
                     [cell.contentView addSubview:indicator];
 
+					UILabel *transferTypeLabel = [UILabel new];
+                    [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
+
                     UILabel *name = [UILabel new];
                     [name setStyleClass:@"history_cell_textlabel"];
                     [name setStyleClass:@"history_recipientname"];
-                    if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
+					
+                    if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
                         if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
-                            [name setText:[NSString stringWithFormat:@"You Requested of %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+							[transferTypeLabel setText:@"Request sent to"];
+                            [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                         else
-                            [name setText:[NSString stringWithFormat:@"%@ Requested",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+                            [transferTypeLabel setText:@"Request from"];
+                            [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                     }
-                    else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL)
-                        [name setText:[NSString stringWithFormat:@"You Invited %@",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
-                    else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] ) {
+                    else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL)
+                        [transferTypeLabel setText:@"Invite sent to"];
+						[transferTypeLabel setTextColor:[UIColor kNoochGrayDark]];
+                        [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
+                    
+					else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] ) {
                         if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
-                            [name setText:[NSString stringWithFormat:@"You Disputed a Transfer"]];
+                            [transferTypeLabel setText:@"You disputed a transfer to"];
+							[transferTypeLabel setTextColor:[UIColor kNoochRed]];
+							[name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                         else
-                            [name setText:[NSString stringWithFormat:@"%@ Disputed a Transfer",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+							[transferTypeLabel setText:@"Transfer disputed by"];
+							[transferTypeLabel setTextColor:[UIColor kNoochRed]];
+							[name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                     }
                     else
                         [name setText:@""];
@@ -1314,17 +1361,27 @@ return customView;
                 [name setStyleClass:@"history_recipientname"];
                 if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
                     if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
-                        [name setText:[NSString stringWithFormat:@"You Requested of %@",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
-                    else
-                        [name setText:[NSString stringWithFormat:@"%@ Requested",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
-                }
+						[transferTypeLabel setText:@"Request sent to"];
+						[name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+                    else {
+                        [transferTypeLabel setText:@"Request sent to"];
+						[name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+					}
+					[transferTypeLabel setTextColor:[UIColor kNoochBlue]];
+				}
                 else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL)
-                    [name setText:[NSString stringWithFormat:@"You Invited %@",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
-                else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] ){
+                    [transferTypeLabel setText:@"You invited"];
+					[transferTypeLabel setTextColor:[UIColor kNoochGrayDark]];
+					[name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
+				else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] ) {
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
-                        [name setText:[NSString stringWithFormat:@"You Disputed a Transfer"]];
+                        [transferTypeLabel setText:@"You disputed a transfer to"];
+						[transferTypeLabel setTextColor:[UIColor kNoochRed]];
+						[name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                     else
-                        [name setText:[NSString stringWithFormat:@"%@ Disputed a Transfer",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
+						[transferTypeLabel setText:@"Transfer disputed by"];
+						[transferTypeLabel setTextColor:[UIColor kNoochRed]];
+						[name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                 }
                 else
                     [name setText:@""];
@@ -1876,7 +1933,7 @@ return customView;
         serve*serveObj=[serve new];
         [serveObj setDelegate:self];
         serveObj.tagName=@"remind";
-        // ////////////////////////////////////
+        // NEED TO ADD SERVER CALL
     }
     else if (actionSheet.tag == 50 && buttonIndex == 1) {
         if (![MFMailComposeViewController canSendMail]){
