@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by crks on 9/25/13.
-//  Copyright (c) 2013 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch. All rights reserved.
 //
 
 #import "Home.h"
@@ -227,7 +227,6 @@ NSMutableURLRequest *request;
     
     [top_button setStyleId:@"test"];
     
-    
     serve *fb = [serve new];
     [fb setDelegate:self];
     [fb setTagName:@"fb"];
@@ -243,7 +242,7 @@ NSMutableURLRequest *request;
 -(void)contact_support
 {
     if (![MFMailComposeViewController canSendMail]){
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [av show];
         return;
     }
@@ -452,7 +451,7 @@ NSMutableURLRequest *request;
     
     else if (alertView.tag == 201){
         if (buttonIndex == 1) {
-            
+            // SHOULD GO TO THE KNOX UIWEBVIEW WITHIN THE 'SettingsOptions.m' 
         }
     }
     else if (alertView.tag == 50 && buttonIndex == 1)
@@ -510,37 +509,35 @@ NSMutableURLRequest *request;
     NSLog(@"bank verified? %d",[[assist shared]isBankVerified]);
 #pragma mark-9jan
     if ([[assist shared]getSuspended]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
         [alert setTag:50];
         [alert show];
         return;
-        
     }
     
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You are not a active user.Please click the link sent to your email." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Verify Your Email" message:@"Terribly sorry, but before you can send money, we need you to confirm your email address by clicking the link we emailed to the address you used to sign up." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         return;
     }
     
     if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Profile before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe" message:@"Please take 1 minute to validate your identity by completing your Nooch profile (just 4 fields)." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
         [alert setTag:147];
         [alert show];
         return;
     }
     
     if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Phone Number before Proceeding." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame Our Lawyers" message:@"To help keep Nooch safe, we ask that you validate your phone number before before sending money.\n \nIf you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
         [alert setTag:148];
         [alert show];
         return;
     }
     
-    
     if ( ![[[NSUserDefaults standardUserDefaults]
             objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
-        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Attach an Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
+        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Connect Your Bank" message:@"Adding a bank account to fund Nooch payments is lightening quick. (You don't have to type a routing or account number!)  Would you like to take care of this now?." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
         [set setTag:201];
         [set show];
         return;
@@ -607,7 +604,7 @@ NSMutableURLRequest *request;
     }
     
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
-        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"New Device Detected" message:@"It looks like you have logged in from a new device.  To protect your account, we will just log you out of all other devices." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
         [Alert show];
         
@@ -654,7 +651,6 @@ NSMutableURLRequest *request;
             if (error)
             {
                 ServerDate=[NSDate date];
-                
             }
         }else{
             
@@ -702,7 +698,6 @@ NSMutableURLRequest *request;
                  [bank deleteBank:[[bankResult objectAtIndex:i] valueForKey:@"BankAccountId"]];
              }
          }
-   
      }}
      
      }
@@ -719,7 +714,6 @@ NSMutableURLRequest *request;
     [dateFormatter setAMSymbol:@"AM"];
     [dateFormatter setPMSymbol:@"PM"];
     dateFormatter.dateFormat = @"MM/dd/yyyy hh:mm:ss a";
-    
     
     NSLog(@"%@", aStr);
     NSDate   *aDate = [dateFormatter dateFromString:aStr];
