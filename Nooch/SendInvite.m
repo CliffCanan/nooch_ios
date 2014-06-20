@@ -201,7 +201,7 @@
                             options:kNilOptions
                             error:&error];
         if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"]count]>0) {
-            self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 42, 320, [[UIScreen mainScreen] bounds].size.height-90)];
+            self.contacts = [UITableView new];
             [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
             [self.contacts setStyleClass:@"raised_view"];
             [self.contacts setStyleId:@"refer"];
@@ -599,10 +599,10 @@
     [serveOBJ saveShareToFB_Twiitter:shareTo];
 }
 - (IBAction)EmailCLicked:(id)sender {
-    NSString *emailTitle = @"NoochMoney";
+    NSString *emailTitle = @"Check out Nooch - a free app to send money";
 
     NSString *messageBody; // Change the message body to HTML
-    messageBody=[NSString stringWithFormat:@"<h5>\"Hi, Your friend %@ has invited you to become a member of Nooch, the simplest way to pay back friends.<br />Accept this invitation by downloading Nooch and using this Referral Code: %@ <br /><br />To learn more about Nooch, check us out</h5> <a href=\"https://www.nooch.com/overview/\">here</a><br /><h6>-Team Nooch\"</h6>",[user objectForKey:@"firstName"],code.text];
+    messageBody=[NSString stringWithFormat:@"<h5>\"Hi, Your friend %@ has invited you to become a member of Nooch, the simplest way to pay back friends.<br/><br/>Accept this invitation by downloading Nooch from the App Store.  You can use this Referral Code to get exclusive access:<br />  %@  <br /><br />To learn more about Nooch, check us out</h5> <a href=\"https://www.nooch.com/overview/\">here</a><br /><h6>-Team Nooch\"</h6>",[user objectForKey:@"firstName"],code.text];
 
     MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
     mc.mailComposeDelegate = self;

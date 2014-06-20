@@ -1772,10 +1772,10 @@
 	.lside_menu_icons {
         font-family	: "FontAwesome";
         font-size	: 24px;
-        left		: 10px;
-        top			: 9px;
-        width		: 25px;
-        height		: 25px;
+        left		: 9px;
+        top			: 8px;
+        width		: 27px;
+        height		: 27px;
         color		: white;
         text-align	: center;
     }
@@ -2343,16 +2343,17 @@
         border-color: rgba(188, 190, 192, 0.85);
     }
     #linked_account_name {
-        top			: 13px;
+        top			: 2px;
         left		: 60px;
         width		: 200px;
-        height		: 21px;
+        height		: 60px;
         font-family	: "Roboto";
         font-weight	: bold;
         font-size	: 16px;
         text-align	: left;
         color		: #313233;
     }
+    /**
     #linked_account_number {
         top			: 34px;
         left		: 60px;
@@ -2364,6 +2365,7 @@
         text-align	: left;
         color		: #313233;
     }
+    **/
     #remove_account {
         color		: #a94442;
         top			: 1px;
@@ -2840,7 +2842,7 @@
   }
 .shakePin1 {
 	animation-name: shakePin1;
-	animation-duration: 0.75s;
+	animation-duration: 0.7s;
 	animation-iteration-count: 1;
     animation-timing-function: ease;
 }
@@ -2860,45 +2862,45 @@
   }
 .shakePin2 {
 	animation-name: shakePin2;
-	animation-duration: 0.75s;
+	animation-duration: 0.7s;
 	animation-iteration-count: 1;
     animation-timing-function: ease;
 }
 @keyframes shakePin3 {
-  from	{left: 170px}
-  10%	{left: 163px}
-  20%	{left: 178px}
-  30%	{left: 160px}
-  40%	{left: 180px}
-  50%	{left: 160px}
-  60%	{left: 180px}
-  70%	{left: 160px}
-  80%	{left: 178px}
-  90%	{left: 163px}
-  to 	{left: 170px}
+  from	{left: 171px}
+    10%	{left: 164px}
+    20%	{left: 179px}
+    30%	{left: 161px}
+    40%	{left: 181px}
+    50%	{left: 161px}
+    60%	{left: 181px}
+    70%	{left: 161px}
+    80%	{left: 179px}
+    90%	{left: 164px}
+    to 	{left: 171px}
   }
 .shakePin3 {
 	animation-name: shakePin3;
-	animation-duration: 0.75s;
+	animation-duration: 0.7s;
 	animation-iteration-count: 1;
     animation-timing-function: ease;
 }
 @keyframes shakePin4 {
-  from	{left: 233px}
-  10%	{left: 226px}
-  20%	{left: 241px}
-  30%	{left: 223px}
-  40%	{left: 243px}
-  50%	{left: 223px}
-  60%	{left: 243px}
-  70%	{left: 223px}
-  80%	{left: 241px}
-  90%	{left: 226px}
-  to 	{left: 233px}
+  from	{left: 235px}
+    10%	{left: 228px}
+    20%	{left: 243px}
+    30%	{left: 225px}
+    40%	{left: 245px}
+    50%	{left: 225px}
+    60%	{left: 245px}
+    70%	{left: 225px}
+    80%	{left: 243px}
+    90%	{left: 228px}
+    to 	{left: 235px}
   }
 .shakePin4 {
 	animation-name: shakePin4;
-	animation-duration: 0.75s;
+	animation-duration: 0.7s;
 	animation-iteration-count: 1;
     animation-timing-function: ease;
 }

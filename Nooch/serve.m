@@ -846,20 +846,12 @@ NSString *amnt;
             }
             
             }
-
-        
         else
         {
             [[assist shared]setBankVerified:NO];
             [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
-
-            
-            
         }
-        
-        
     }
-    
     else if ([tagName isEqualToString:@"login"]) {
         //converting the result into Dictionary
         NSError* error;
@@ -1703,6 +1695,25 @@ NSString *amnt;
     if (!connectionList)
         NSLog(@"connect error");
 }
+
+-(void)get_favorites
+{
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSString * memId = [defaults objectForKey:@"MemberId"];
+    NSString *urlString = [NSString stringWithFormat:@"%@/GetMostFrequentFriends?MemberId=%@&accessToken=%@",ServerUrl,memId,[defaults valueForKey:@"OAuthToken"]];
+    NSLog(@"%@",urlString);
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+}
+
+
 -(void)saveMemberTransId:(NSString*)trans_id
 {
     self.responseData = [[NSMutableData alloc] init];

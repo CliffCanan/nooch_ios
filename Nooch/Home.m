@@ -15,6 +15,8 @@
 #import "ProfileInfo.h"
 #import "serve.h"
 #import "iCarousel.h"
+#import "UIImageView+WebCache.h"
+#import "HowMuch.h"
 #import <QuartzCore/QuartzCore.h>
 #define kButtonType     @"transaction_type"
 #define kButtonTitle    @"button_title"
@@ -32,7 +34,7 @@ NSMutableURLRequest *request;
 @property(nonatomic,strong) UIView *profile_incomplete;
 @property(nonatomic,strong) UIView *phone_unverified;
 @property(nonatomic,strong) iCarousel *carousel;
-@property(nonatomic,strong) NSMutableDictionary *favorites;
+@property(nonatomic,strong) NSMutableArray *favorites;
 @end
 
 @implementation Home
@@ -53,6 +55,8 @@ NSMutableURLRequest *request;
     
     nav_ctrl = self.navigationController;
     [ self.navigationItem setLeftBarButtonItem:Nil];
+    
+    self.favorites = [NSMutableArray new];
     
     user = [NSUserDefaults standardUserDefaults];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
@@ -368,17 +372,17 @@ NSMutableURLRequest *request;
         return;
     }
     
-    if ([[user valueForKey:@"Status"]isEqualToString:@"Active"] && [[user objectForKey:@"Status"] isEqualToString:@"Suspended"]) {
+    if ([[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
         //do carousel
+        [self.view addSubview:_carousel];
+        [_carousel reloadData];
         
-        
-        
+        serve *favorites = [serve new];
+        [favorites setTagName:@"favorites"];
+        [favorites setDelegate:self];
+        [favorites get_favorites];
         //launch favorites call
     }
-    
-    [self.view addSubview:_carousel];
-    [_carousel reloadData];
-    
 }
 
 #pragma mark - iCarousel methods
@@ -391,14 +395,13 @@ NSMutableURLRequest *request;
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
     //return the total number of items in the carousel
-    //return [self.favorites count];
-    return 5;
+    return [self.favorites count];
 }
 
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view
 {
     UIImageView *imageView = nil;
-    
+    NSDictionary *favorite = [self.favorites objectAtIndex:index];
     //create new view if no view is available for recycling
     if (view == nil)
     {
@@ -408,7 +411,8 @@ NSMutableURLRequest *request;
         imageView.layer.borderColor = kNoochBlue.CGColor;
         imageView.layer.borderWidth = 1;
         imageView.layer.cornerRadius = 35;
-        [imageView setImage:[UIImage imageNamed:@"Preston.png"]];
+        [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+                                   placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
         [imageView setClipsToBounds:YES];
         [view addSubview:imageView];
         
@@ -432,7 +436,12 @@ NSMutableURLRequest *request;
 {
     if(carousel.scrolling == NO)
     {
-        [self carouselDidEndScrollingAnimation:carousel];
+        //[self carouselDidEndScrollingAnimation:carousel];
+        NSMutableDictionary *favorite = [NSMutableDictionary new];
+        [favorite addEntriesFromDictionary:[self.favorites objectAtIndex:index]];
+        [favorite setObject:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
+        HowMuch *trans = [[HowMuch alloc] initWithReceiver:favorite];
+        [self.navigationController pushViewController:trans animated:YES];
     }
 }
 
@@ -695,7 +704,17 @@ NSMutableURLRequest *request;
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    if ([tagName isEqualToString:@"fb"]) {
+    if ([tagName isEqualToString:@"favorites"]) {
+        NSError *error;
+        self.favorites = [NSMutableArray new];
+        self.favorites = [NSJSONSerialization
+                                     JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                     options:kNilOptions
+                                     error:&error];
+        NSLog(@"favorites %@",self.favorites);
+        [_carousel reloadData];
+    }
+    else if ([tagName isEqualToString:@"fb"]) {
         NSError *error;
         NSMutableDictionary *temp = [NSJSONSerialization
                                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]

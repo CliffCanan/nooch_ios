@@ -44,10 +44,10 @@
     self.hud.labelText = @"Loading online banking";
     //[self.hud show:YES];
     
-    NSURL *url = [NSURL URLWithString: @"https://www.knoxpayments.com/admin/popup_paid.php"];
-    NSString *body = [NSString stringWithFormat: @"d_amout=%@&api_key=%@&api_pass=%@invoice_detail=%@&recur_status=%@user_request=%@&req_url=%@", @"1",@"7068_59cd5c1f5a75c31",@"7068_da64134cc66a5f0",@"testing",@"ot",@"show_all",@"nooch://"];
+    NSURL *url = [NSURL URLWithString: @"https://knoxpayments.com/nooch/index.php"];
+    NSString *body = [NSString stringWithFormat: @"d_amout=%@&api_key=%@&api_pass=%@invoice_detail=%@&recur_status=%@user_request=%@&req_url=%@", @".01",@"7068_59cd5c1f5a75c31",@"7068_da64134cc66a5f0",@"testing",@"ot",@"show_all",@"nooch://"];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL: url];
-    [request setHTTPMethod: @"POST"];
+    [request setHTTPMethod: @"GET"];
     [request setHTTPBody: [body dataUsingEncoding: NSUTF8StringEncoding]];
     [self.web loadRequest: request];
     
