@@ -80,11 +80,11 @@
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
     
-    UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 180, 280, 200)];
-    [prompt setBackgroundColor:[UIColor clearColor]];
-    [prompt setNumberOfLines:0];
+    UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 180, 280, 180)];
+    [title setTextColor:kNoochGrayDark]; [prompt setBackgroundColor:[UIColor clearColor]];
     [prompt setText:@"Your account has been created.\n\nCheck your email for a message from us to confirm your email address.\n\nBefore you can start sending money you must validate your profile. Tap the green button to validate your profile now."]; [prompt setTextAlignment:NSTextAlignmentCenter];
-    [prompt setStyleClass:@"instruction_text"];
+    [prompt setTextAlignment:NSTextAlignmentCenter];
+    [prompt setFont:[UIFont systemFontOfSize:15]];
     CGRect frame = prompt.frame;
     frame.size.height += 150;
     [prompt setFrame:frame];
