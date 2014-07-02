@@ -10,7 +10,6 @@
 #import "SettingsOptions.h"
 #import "LimitsAndFees.h"
 #import "Statistics.h"
-#import "SelectCause.h"
 #import "SendInvite.h"
 #import "Legal.h"
 #import "ProfileInfo.h"
@@ -156,12 +155,9 @@
         title.text = @"ACCOUNT";
     }
     else if(section == 1){
-        title.text =  @"DISCOVER";
-    }
-    else if(section == 2){
         title.text = @"SOCIAL";
     }
-    else if(section == 3){
+    else if(section == 2){
         title.text = @"ABOUT";
     }
     else{
@@ -195,12 +191,9 @@
         return 3;
     }
     else if(section == 1){
-        return 1;
-    }
-    else if(section == 2){
         return 2;
     }
-    else if(section == 3){
+    else if(section == 2){
         return 4;
     }
     else {
@@ -249,13 +242,13 @@
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-tachometer"];
         }
     }
-    else if(indexPath.section == 1) {
+    else if(indexPath.section == 9) {
         if (indexPath.row == 0) {
             cell.textLabel.text = @"Donate to a Cause";
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-globe"];
         }
     }
-    else if(indexPath.section == 2) {
+    else if(indexPath.section == 1) {
         if (indexPath.row == 0) {
             cell.textLabel.text = @"Refer a Friend";
             //[iv setFrame:CGRectMake(7, 7, 30, 30)];
@@ -267,7 +260,7 @@
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-star"];
         }
     }
-    else if(indexPath.section == 3) {
+    else if(indexPath.section == 2) {
         if (indexPath.row == 0) {
             cell.textLabel.text = @"How Nooch Works";
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-question"];
@@ -313,12 +306,6 @@
         }
     }
     else if(indexPath.section == 1) {
-        isOpenLeftSideBar=YES;
-        SelectCause *donate = [SelectCause new];
-        [nav_ctrl pushViewController:donate animated:NO];
-        [self.slidingViewController resetTopView];
-    }
-    else if(indexPath.section == 2) {
         if (indexPath.row == 0) {
             SendInvite *inv = [SendInvite new];
             [nav_ctrl pushViewController:inv animated:NO];
@@ -328,7 +315,7 @@
             //rate nooch
         }
     }
-    else if(indexPath.section == 3) {
+    else if(indexPath.section == 2) {
         if (indexPath.row == 0) {
             //tutorial
         }

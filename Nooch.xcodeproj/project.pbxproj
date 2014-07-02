@@ -27,9 +27,6 @@
 		01085FDB1803338700A31F63 /* NotificationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FDA1803338700A31F63 /* NotificationSettings.m */; };
 		01085FF5180345D200A31F63 /* ResetPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FF4180345D200A31F63 /* ResetPassword.m */; };
 		01085FF81803461500A31F63 /* ResetPIN.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FF71803461500A31F63 /* ResetPIN.m */; };
-		01085FFC180348FD00A31F63 /* SelectCause.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FFB180348FD00A31F63 /* SelectCause.m */; };
-		01085FFF1803490500A31F63 /* CharityDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 01085FFE1803490500A31F63 /* CharityDetails.m */; };
-		010860021803492C00A31F63 /* DonationAmount.m in Sources */ = {isa = PBXBuildFile; fileRef = 010860011803492C00A31F63 /* DonationAmount.m */; };
 		01086006180349E100A31F63 /* Statistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 01086005180349E100A31F63 /* Statistics.m */; };
 		01086009180349F600A31F63 /* LimitsAndFees.m in Sources */ = {isa = PBXBuildFile; fileRef = 01086008180349F600A31F63 /* LimitsAndFees.m */; };
 		010A993A185FA99F001DCE6B /* choose-pic-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 010A9937185FA99F001DCE6B /* choose-pic-icon.png */; };
@@ -64,6 +61,7 @@
 		0179E9F017F35A740027526C /* SelectRecipient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0179E9EE17F35A740027526C /* SelectRecipient.m */; };
 		0179E9F917F35AA30027526C /* Home.m in Sources */ = {isa = PBXBuildFile; fileRef = 0179E9F817F35AA30027526C /* Home.m */; };
 		0179E9FC17F36C4C0027526C /* Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 0179E9FB17F36C4C0027526C /* Helpers.m */; };
+		017B107A19403F7B007CA7E1 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 017B107919403F7B007CA7E1 /* iCarousel.m */; };
 		018DA86318048309007B24FB /* SendInvite.m in Sources */ = {isa = PBXBuildFile; fileRef = 018DA86218048309007B24FB /* SendInvite.m */; };
 		01B2CA9818B3CC20008E6901 /* NSMutableArray+SWUtilityButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B2CA8C18B3CC20008E6901 /* NSMutableArray+SWUtilityButtons.m */; };
 		01B2CA9918B3CC20008E6901 /* SWCellScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B2CA8E18B3CC20008E6901 /* SWCellScrollView.m */; };
@@ -283,12 +281,6 @@
 		01085FF4180345D200A31F63 /* ResetPassword.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetPassword.m; sourceTree = "<group>"; };
 		01085FF61803461500A31F63 /* ResetPIN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetPIN.h; sourceTree = "<group>"; };
 		01085FF71803461500A31F63 /* ResetPIN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetPIN.m; sourceTree = "<group>"; };
-		01085FFA180348FD00A31F63 /* SelectCause.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectCause.h; sourceTree = "<group>"; };
-		01085FFB180348FD00A31F63 /* SelectCause.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectCause.m; sourceTree = "<group>"; };
-		01085FFD1803490500A31F63 /* CharityDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharityDetails.h; sourceTree = "<group>"; };
-		01085FFE1803490500A31F63 /* CharityDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharityDetails.m; sourceTree = "<group>"; };
-		010860001803492C00A31F63 /* DonationAmount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DonationAmount.h; sourceTree = "<group>"; };
-		010860011803492C00A31F63 /* DonationAmount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DonationAmount.m; sourceTree = "<group>"; };
 		01086004180349E100A31F63 /* Statistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Statistics.h; sourceTree = "<group>"; };
 		01086005180349E100A31F63 /* Statistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Statistics.m; sourceTree = "<group>"; };
 		01086007180349F600A31F63 /* LimitsAndFees.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LimitsAndFees.h; sourceTree = "<group>"; };
@@ -328,6 +320,8 @@
 		0179E9F817F35AA30027526C /* Home.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Home.m; sourceTree = "<group>"; };
 		0179E9FA17F36C4C0027526C /* Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helpers.h; sourceTree = "<group>"; };
 		0179E9FB17F36C4C0027526C /* Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Helpers.m; sourceTree = "<group>"; };
+		017B107819403F7B007CA7E1 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
+		017B107919403F7B007CA7E1 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		018DA86118048309007B24FB /* SendInvite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendInvite.h; sourceTree = "<group>"; };
 		018DA86218048309007B24FB /* SendInvite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendInvite.m; sourceTree = "<group>"; };
 		01B2CA8B18B3CC20008E6901 /* NSMutableArray+SWUtilityButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+SWUtilityButtons.h"; sourceTree = "<group>"; };
@@ -797,19 +791,6 @@
 			name = "Funds Controllers";
 			sourceTree = "<group>";
 		};
-		01085FF9180346E000A31F63 /* Donation Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				01085FFA180348FD00A31F63 /* SelectCause.h */,
-				01085FFB180348FD00A31F63 /* SelectCause.m */,
-				01085FFD1803490500A31F63 /* CharityDetails.h */,
-				01085FFE1803490500A31F63 /* CharityDetails.m */,
-				010860001803492C00A31F63 /* DonationAmount.h */,
-				010860011803492C00A31F63 /* DonationAmount.m */,
-			);
-			name = "Donation Controllers";
-			sourceTree = "<group>";
-		};
 		01086003180349CF00A31F63 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
@@ -1120,7 +1101,6 @@
 				01085FE1180335C500A31F63 /* Initial Controllers */,
 				01085FDF1803359700A31F63 /* Sliding Menus */,
 				01085FE2180335DC00A31F63 /* Transfer Flow Controllers */,
-				01085FF9180346E000A31F63 /* Donation Controllers */,
 				01085FDE1803358600A31F63 /* History Controllers */,
 				01085FDC1803353600A31F63 /* Settings Controllers */,
 				6B1C157C16D4306000FBEFBB /* Custom Classes */,
@@ -1145,6 +1125,8 @@
 				0103AEAC18FC8B8D003225DA /* NSString+FontAwesome.m */,
 				0103AEAD18FC8B8D003225DA /* UIFont+FontAwesome.h */,
 				0103AEAE18FC8B8D003225DA /* UIFont+FontAwesome.m */,
+				017B107819403F7B007CA7E1 /* iCarousel.h */,
+				017B107919403F7B007CA7E1 /* iCarousel.m */,
 				01C49ADF18D8C83500BACE23 /* fontawesome */,
 				01C49AE418D8C83500BACE23 /* MBProgressHUD.h */,
 				01C49AE518D8C83500BACE23 /* MBProgressHUD.m */,
@@ -1684,7 +1666,6 @@
 				84D8794218BF3ED200A60A38 /* METoast.m in Sources */,
 				0169E22D18D8D7C200442642 /* knoxWeb.m in Sources */,
 				0179E9FC17F36C4C0027526C /* Helpers.m in Sources */,
-				01085FFF1803490500A31F63 /* CharityDetails.m in Sources */,
 				16E4B1BD187053F20099D075 /* MKAnnotationView+WebCache.m in Sources */,
 				01085FC917FDFDB300A31F63 /* HistoryFlat.m in Sources */,
 				01085FD5180332D400A31F63 /* ProfileInfo.m in Sources */,
@@ -1694,6 +1675,7 @@
 				6B75E9F415FE74CA00B091D8 /* terms.m in Sources */,
 				01085FCC17FF3DE600A31F63 /* TransactionDetails.m in Sources */,
 				6B75E9FB15FE7EE300B091D8 /* main 2.m in Sources */,
+				017B107A19403F7B007CA7E1 /* iCarousel.m in Sources */,
 				01B2CA9C18B3CC20008E6901 /* SWUtilityButtonTapGestureRecognizer.m in Sources */,
 				84C3EF1B187D101E004687F6 /* ReEnterPin.m in Sources */,
 				01085FAE17FB4BFA00A31F63 /* SelectPicture.m in Sources */,
@@ -1733,11 +1715,9 @@
 				01C83E8417FB1606009CABBF /* NavControl.m in Sources */,
 				0103AEB018FC8B8D003225DA /* NSString+FontAwesome.m in Sources */,
 				018DA86318048309007B24FB /* SendInvite.m in Sources */,
-				01085FFC180348FD00A31F63 /* SelectCause.m in Sources */,
 				01C83E8017F9FF9E009CABBF /* TransferPIN.m in Sources */,
 				0179E9F017F35A740027526C /* SelectRecipient.m in Sources */,
 				16E4B1B2187053F20099D075 /* SDWebImageCompat.m in Sources */,
-				010860021803492C00A31F63 /* DonationAmount.m in Sources */,
 				16E4B1B1187053F20099D075 /* SDImageCache.m in Sources */,
 				16E4B1B5187053F20099D075 /* SDWebImageDownloaderOperation.m in Sources */,
 				01C26DFB1843E676005179B7 /* Reachability.m in Sources */,

@@ -113,6 +113,7 @@
 -(void)CancelRejectTransaction:(NSString*)transactionId resp:(NSString*)userResponse;
 -(void)GetServerCurrentTime;
 -(void)storeFB:(NSString*)fb_id;
+-(void)get_favorites;
 -(void)saveMemberTransId:(NSString*)trans_id;
 -(void)resendSMS;
 -(void)resendEmail;

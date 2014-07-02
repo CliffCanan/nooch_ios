@@ -148,8 +148,9 @@
         [self.navigationItem setRightBarButtonItem:Nil];
         UIButton *location = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [location setStyleId:@"icon_location"];
-        isRecentList=YES;
         [[assist shared]setRequestMultiple:NO];
+        [self.completed_pending setSelectedSegmentIndex:0];
+        self.location = NO;
         isRecentList=YES;
         searching=NO;
         emailEntry=NO;
@@ -157,6 +158,13 @@
         [search setShowsCancelButton:NO];
         [search resignFirstResponder];
         [self.contacts reloadData];
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:1];
+        //[search setHidden:NO];
+        CGRect frame = self.contacts.frame;
+        frame.origin.y =82; frame.size.height = [[UIScreen mainScreen] bounds].size.height-146;
+        [self.contacts setFrame:frame];
+        [UIView commitAnimations];
     }
 }
 -(void)viewDidAppear:(BOOL)animated  {

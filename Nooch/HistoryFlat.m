@@ -53,6 +53,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [self.navigationItem setTitle:@"History"];
+    [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
 }
 -(void)showMenu
 {
@@ -1532,6 +1533,13 @@ return customView;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (self.completed_selected) {
+        if (isLocalSearch) {
+            NSDictionary*dictRecord=[histTempCompleted objectAtIndex:indexPath.row];
+            //NSDictionary *transaction = [NSDictionary new];
+            TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
+            [self.navigationController pushViewController:details animated:YES];
+            return;
+        }
         if ([histShowArrayCompleted count]>indexPath.row) {
             NSDictionary*dictRecord=[histShowArrayCompleted objectAtIndex:indexPath.row];
             //NSDictionary *transaction = [NSDictionary new];
@@ -1540,6 +1548,13 @@ return customView;
         }
     }
     else {
+        if (isLocalSearch) {
+            NSDictionary*dictRecord=[histTempPending objectAtIndex:indexPath.row];
+            //NSDictionary *transaction = [NSDictionary new];
+            TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
+            [self.navigationController pushViewController:details animated:YES];
+            return;
+        }
         if ([histShowArrayPending count]>indexPath.row) {
             NSDictionary*dictRecord=[histShowArrayPending objectAtIndex:indexPath.row];
             //NSDictionary *transaction = [NSDictionary new];
@@ -1696,6 +1711,8 @@ return customView;
             }
         }
     }
+    //[self loadSearchByName];
+    [self.list reloadData];
 }
 
 -(void)loadSearchByName

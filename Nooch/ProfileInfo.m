@@ -738,13 +738,13 @@
     [self.city resignFirstResponder];
     [self.zip resignFirstResponder];
 
-    if (indexPath.row == 1 && [[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
+    if (indexPath.row == 1 && ![[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
         self.disclose = YES;
         self.expand_path = indexPath;
         [self.list beginUpdates];
         [self.list endUpdates];
     } 
-    else if (indexPath.row == 3 && [[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"]) {
+    else if (indexPath.row == 3 && ![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"]) {
         self.disclose = YES;
         self.expand_path = indexPath;
         [self.list beginUpdates];
