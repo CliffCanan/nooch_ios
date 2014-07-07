@@ -206,17 +206,15 @@
              [self.view addSubview:view_table];
             self.contacts = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 300, 190)];
             [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
-         //   [self.contacts setStyleClass:@"raised_view"];
-          //  [self.contacts setStyleId:@"refer"];
-//            if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] count]==1) {
-//                [self.contacts setStyleCSS:@"height : 60px"];
-//         
+//      [self.contacts setStyleClass:@"raised_view"];
+//      [self.contacts setStyleId:@"refer"];
+//      if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] count]==1) {
+
            view_table.layer.masksToBounds = NO;
            view_table.layer.cornerRadius = 0; // if you like rounded corners
-           view_table.layer.shadowOffset = CGSizeMake(-15, 20);
-           view_table.layer.shadowRadius = 5;
-           view_table.layer.shadowOpacity = 0.5;
-
+           view_table.layer.shadowOffset = CGSizeMake(0, 2);
+           view_table.layer.shadowRadius = 2;
+           view_table.layer.shadowOpacity = 0.4;
             
             self.contacts.backgroundColor=[UIColor clearColor];
             [self.contacts setSeparatorStyle:UITableViewCellSeparatorStyleNone];
