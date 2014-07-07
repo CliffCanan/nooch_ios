@@ -17,6 +17,7 @@
 #import "assist.h"
 #import "privacy.h"
 #import "terms.h"
+#import "webView.h"
 @interface LeftMenu ()
 @property(nonatomic,strong) UITableView *menu;
 @property(nonatomic) NSIndexPath *selected;
@@ -385,8 +386,11 @@
         }
         else if(buttonIndex == 2) {
             //support center
-            NSURL *webURL = [NSURL URLWithString:@"http://support.nooch.com"];
-            [[UIApplication sharedApplication] openURL: webURL];
+            webView*wb=[[webView alloc]init];
+            [nav_ctrl pushViewController:wb animated:NO];
+            [self.slidingViewController resetTopView];
+           // 
+           // [[UIApplication sharedApplication] openURL: webURL];
         }
     }
     else if ([actionSheet tag] == 2) {

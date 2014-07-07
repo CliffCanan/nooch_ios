@@ -15,6 +15,9 @@
     GMSMapView *mapView_;
     UIView*blankView;
     UILabel *amount;
+    UIView*overlay,*mainView;
+    double lat;
+    double lon;
 }
 - (id)initWithData:(NSDictionary *)trans;
 

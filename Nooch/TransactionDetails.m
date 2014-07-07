@@ -332,7 +332,115 @@
     [serveOBJ setDelegate:self];
     [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
 }
+-(void)Map_LightBox{
+    overlay=[[UIView alloc]init];
+    overlay.frame=CGRectMake(0, 0, 320, 568);
+    overlay.backgroundColor=[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+    
+    [UIView transitionWithView:self.navigationController.view
+                      duration:0.25
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{
+                        [self.navigationController.view addSubview:overlay];
+                    }
+                    completion:nil];
 
+        mainView=[[UIView alloc]init];
+        mainView.layer.cornerRadius=5;
+        mapView_.layer.borderColor=[[UIColor blackColor]CGColor];
+        mapView_.layer.borderWidth=2;
+        
+        mainView.frame=CGRectMake(10, 70, 300, self.view.frame.size.height-20);
+        mainView.backgroundColor=[UIColor whiteColor];
+    
+  [overlay addSubview:mainView];
+   mainView.layer.masksToBounds = NO;
+   mainView.layer.cornerRadius = 5; // if you like rounded corners
+   mainView.layer.shadowOffset = CGSizeMake(-15, 20);
+   mainView.layer.shadowRadius = 5;
+   mainView.layer.shadowOpacity = 0.5;
+    
+    
+    UIView*head_container=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 300, 44)];
+    head_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    [mainView addSubview:head_container];
+    head_container.layer.cornerRadius = 10;
+
+    UILabel*title=[[UILabel alloc]initWithFrame:CGRectMake(0, 10, 300, 30)];
+    [title setBackgroundColor:[UIColor clearColor]];
+    title.textAlignment=NSTextAlignmentCenter;
+    [title setText:@"Transfer Location"];
+   // title.textColor=
+        title.font=[UIFont fontWithName:@"Arial" size:20];
+    [title setTextColor:kNoochBlue];
+    [mainView addSubview:title];
+    UIView*space_container=[[UIView alloc]initWithFrame:CGRectMake(0, 34, 300, 10)];
+    space_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    [mainView addSubview:space_container];
+ //   head_container.layer.cornerRadius = 0;
+    
+    
+    UIView*map_container=[[UIView alloc]initWithFrame:CGRectMake(10, 50, 280, 300)];
+    map_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    [mainView addSubview:map_container];
+    
+    map_container.layer.cornerRadius=5;
+    map_container.layer.borderColor=[[UIColor lightGrayColor]CGColor];
+    map_container.layer.borderWidth=0.5;
+    map_container.clipsToBounds=YES;
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:lat
+                                                            longitude:lon
+                                                                 zoom:11];
+    mapView_ = [GMSMapView mapWithFrame:CGRectMake(10.5, 50.5, 279, 299) camera:camera];
+    [mapView_ setFrame:CGRectMake(10.5, 50.5, 279, 299)];
+    [mainView addSubview:mapView_];
+    mapView_.myLocationEnabled = YES;
+    // Creates a marker in the center of the map.
+    GMSMarker *marker = [[GMSMarker alloc] init];
+    marker.position = CLLocationCoordinate2DMake(lat, lon);
+    marker.map = mapView_;
+
+    
+    UIView*desc_container=[[UIView alloc]initWithFrame:CGRectMake(10, 355, 280, 60)];
+    desc_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    [mainView addSubview:desc_container];
+    desc_container.layer.cornerRadius = 5;
+    desc_container.layer.borderColor=[[UIColor lightGrayColor]CGColor];
+    desc_container.layer.borderWidth=0.5;
+    UILabel*desc=[[UILabel alloc]initWithFrame:CGRectMake(13, 358, 276, 45)];
+    [desc setBackgroundColor:[UIColor clearColor]];
+    
+    desc.text=@"This shows the location of the user that initialed the transfer. You can adjuest the location settings at any time in your device settinga";
+    desc.font=[UIFont fontWithName:@"Arial" size:12];
+    desc.textColor=[UIColor lightGrayColor];
+    desc.numberOfLines=0;
+    [desc sizeToFit];
+    [mainView addSubview:desc];
+    
+    
+    
+    UIView*line_container=[[UIView alloc]initWithFrame:CGRectMake(0, desc_container.frame.origin.y+desc_container.frame.size.height+5, 300, 1)];
+    line_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    [mainView addSubview:line_container];
+    
+    UIButton *btnclose=[UIButton buttonWithType:UIButtonTypeCustom];
+    btnclose.frame=CGRectMake(160, desc_container.frame.origin.y+desc_container.frame.size.height+8, 120, 40);
+    [btnclose setBackgroundColor:kNoochBlue];
+    btnclose.layer.cornerRadius=5;
+    btnclose.layer.borderColor=[[UIColor whiteColor]CGColor];
+    btnclose.layer.borderWidth=1.0f;
+    [btnclose setTitle:@"Close" forState:UIControlStateNormal];
+    [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
+    [mainView addSubview:btnclose];
+    
+    
+
+
+   
+}
+-(void)close_lightBox{
+    [overlay removeFromSuperview];
+}
 -(void) cancel_invite {
     serve *canc = [serve new];
     [canc setTagName:@"cancel_invite"];
@@ -590,6 +698,23 @@
             //[NSURLConnection connectionWithRequest:request delegate:self];
         }
     }
+    else if(alertView.tag==568 && buttonIndex==1) {
+        if (![MFMailComposeViewController canSendMail]){
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [av show];
+            return;
+        }
+        MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+        mailComposer.mailComposeDelegate = self;
+        mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+        [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+        [mailComposer setMessageBody:@"" isHTML:NO];
+        [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+        [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+        [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        [self presentViewController:mailComposer animated:YES completion:nil];
+           }
     else if(alertView.tag==1010 && buttonIndex==0) {
         serve*serveObj=[serve new];
         [serveObj setDelegate:self];
@@ -636,11 +761,19 @@
         NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         if (![[self.trans objectForKey:@"Latitude"] intValue]==0&& ![[self.trans objectForKey:@"Longitude"] intValue]==0) {
             // self.trans=[loginResult mutableCopy];
-            double lat = [[self.trans objectForKey:@"Latitude"] floatValue];
-            double lon = [[self.trans objectForKey:@"Longitude"] floatValue];
+            NSLog(@"%f",[[self.trans objectForKey:@"Latitude"] floatValue]);
+             NSLog(@"%f",[[self.trans objectForKey:@"Longitude"] floatValue]);
+            
+             lat = [[self.trans objectForKey:@"Latitude"] floatValue];
+             lon = [[self.trans objectForKey:@"Longitude"] floatValue];
+            
             GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:lat
                                                                     longitude:lon
                                                                          zoom:11];
+            
+            
+            UIButton*btnShowOverlay=[[UIButton alloc]init];
+            
             UIImageView*imgTran;
             if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
                 NSArray* bytedata = [loginResult valueForKey:@"Picture"];
@@ -658,20 +791,30 @@
 
                 imgTran=[[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
                 [imgTran setImage:[UIImage imageWithData:datos]];
-
+              
+                
                 mapView_ = [GMSMapView mapWithFrame:CGRectMake(165, 240, 150, 160) camera:camera];
                 if ([[UIScreen mainScreen] bounds].size.height == 480) {
                     [imgTran setFrame:CGRectMake(5, 240, 150, 80)];
                     [mapView_ setFrame:CGRectMake(165, 240, 150, 80)];
+                    btnShowOverlay.frame=mainView.frame;
                 }
             }
             else {
+                
                 mapView_ = [GMSMapView mapWithFrame:CGRectMake(-1, 240, 322, 160) camera:camera];
                 if ([[UIScreen mainScreen] bounds].size.height == 480) {
                     [mapView_ setFrame:CGRectMake(-1, 240, 322, 80)];
+                    btnShowOverlay.frame=CGRectMake(-1, 240, 322, 80);
                 }
+                else
+                {
+                  [mapView_ setFrame:CGRectMake(-1, 240, 322, 160)];
+                    btnShowOverlay.frame=CGRectMake(-1, 240, 322, 160);
+                }
+                
             }
-
+           [self.view addSubview:mapView_];
             mapView_.myLocationEnabled = YES;
             //mapView_.layer.borderWidth = 1;
             if ([[assist shared]islocationAllowed]) {
@@ -693,6 +836,15 @@
             GMSMarker *marker = [[GMSMarker alloc] init];
             marker.position = CLLocationCoordinate2DMake(lat, lon);
             marker.map = mapView_;
+            [self.view addSubview:btnShowOverlay];
+          //  btnShowOverlay.center=mapView_.center;
+            [btnShowOverlay setBackgroundColor:[UIColor clearColor]];
+            [self.view bringSubviewToFront:btnShowOverlay];
+            [btnShowOverlay addTarget:self action:@selector(Map_LightBox) forControlEvents:UIControlEventTouchUpInside];
+            //Overlay on Tap
+          //  UITapGestureRecognizer*tap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(Map_LightBox)];
+            // [mapView_ addGestureRecognizer:tap];
+            
         }
         if ([self.trans objectForKey:@"Amount"]!=NULL) {
             [amount setText:[NSString stringWithFormat:@"$%.02f",[[loginResult valueForKey:@"Amount"] floatValue]]];
@@ -825,8 +977,9 @@
         //[nav_ctrl popToRootViewControllerAnimated:YES];
     }
     else if ([tagName isEqualToString:@"dispute"]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Transfer Disputed" message:@"Thanks for letting us know about this. We will investigate and may contact you for more information." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Transfer Disputed" message:@"Thanks for letting us know about this. We will investigate and may contact you for more information." delegate:self cancelButtonTitle:@"No Thanks." otherButtonTitles:@"Dispute Reason", nil];
         [alert show];
+        [alert setTag:568];
         [[assist shared]setSusPended:YES];
         [nav_ctrl popToRootViewControllerAnimated:YES];
     }
