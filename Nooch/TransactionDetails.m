@@ -338,7 +338,7 @@
     overlay.backgroundColor=[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
     
     [UIView transitionWithView:self.navigationController.view
-                      duration:0.25
+                      duration:0.4
                        options:UIViewAnimationOptionTransitionCrossDissolve
                     animations:^{
                         [self.navigationController.view addSubview:overlay];
@@ -348,18 +348,17 @@
         mainView=[[UIView alloc]init];
         mainView.layer.cornerRadius=5;
         mapView_.layer.borderColor=[[UIColor blackColor]CGColor];
-        mapView_.layer.borderWidth=2;
+        mapView_.layer.borderWidth=1;
         
         mainView.frame=CGRectMake(10, 70, 300, self.view.frame.size.height-20);
         mainView.backgroundColor=[UIColor whiteColor];
     
   [overlay addSubview:mainView];
    mainView.layer.masksToBounds = NO;
-   mainView.layer.cornerRadius = 5; // if you like rounded corners
-   mainView.layer.shadowOffset = CGSizeMake(-15, 20);
-   mainView.layer.shadowRadius = 5;
+   mainView.layer.cornerRadius = 5;
+   mainView.layer.shadowOffset = CGSizeMake(0, 2);
+   mainView.layer.shadowRadius = 4;
    mainView.layer.shadowOpacity = 0.5;
-    
     
     UIView*head_container=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 300, 44)];
     head_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
@@ -370,15 +369,12 @@
     [title setBackgroundColor:[UIColor clearColor]];
     title.textAlignment=NSTextAlignmentCenter;
     [title setText:@"Transfer Location"];
-   // title.textColor=
-        title.font=[UIFont fontWithName:@"Arial" size:20];
+    title.font=[UIFont fontWithName:@"Arial" size:20];
     [title setTextColor:kNoochBlue];
     [mainView addSubview:title];
     UIView*space_container=[[UIView alloc]initWithFrame:CGRectMake(0, 34, 300, 10)];
     space_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
-    [mainView addSubview:space_container];
- //   head_container.layer.cornerRadius = 0;
-    
+    [mainView addSubview:space_container];   
     
     UIView*map_container=[[UIView alloc]initWithFrame:CGRectMake(10, 50, 280, 300)];
     map_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
@@ -406,37 +402,28 @@
     [mainView addSubview:desc_container];
     desc_container.layer.cornerRadius = 5;
     desc_container.layer.borderColor=[[UIColor lightGrayColor]CGColor];
-    desc_container.layer.borderWidth=0.5;
-    UILabel*desc=[[UILabel alloc]initWithFrame:CGRectMake(13, 358, 276, 45)];
+    desc_container.layer.borderWidth=0.75;
+    UILabel*desc=[[UILabel alloc]initWithFrame:CGRectMake(15, 359, 270, 52)];
     [desc setBackgroundColor:[UIColor clearColor]];
     
-    desc.text=@"This shows the location of the user that initialed the transfer. You can adjuest the location settings at any time in your device settinga";
-    desc.font=[UIFont fontWithName:@"Arial" size:12];
-    desc.textColor=[UIColor lightGrayColor];
+    desc.text=@"This shows the location of the user that initiated the transfer. You can adjuest the location settings at any time in your device settings.";
+    desc.font=[UIFont fontWithName:@"Roboto" size:12];
+    desc.textColor=[UIColor kNoochGrayDark];
     desc.numberOfLines=0;
     [desc sizeToFit];
     [mainView addSubview:desc];
-    
-    
-    
+
     UIView*line_container=[[UIView alloc]initWithFrame:CGRectMake(0, desc_container.frame.origin.y+desc_container.frame.size.height+5, 300, 1)];
     line_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
     [mainView addSubview:line_container];
     
     UIButton *btnclose=[UIButton buttonWithType:UIButtonTypeCustom];
-    btnclose.frame=CGRectMake(160, desc_container.frame.origin.y+desc_container.frame.size.height+8, 120, 40);
-    [btnclose setBackgroundColor:kNoochBlue];
-    btnclose.layer.cornerRadius=5;
-    btnclose.layer.borderColor=[[UIColor whiteColor]CGColor];
-    btnclose.layer.borderWidth=1.0f;
+    btnclose.frame=CGRectMake(160, desc_container.frame.origin.y+desc_container.frame.size.height+12, 120, 40);
+    [btnclose setStyleClass:@"button_blue"];
     [btnclose setTitle:@"Close" forState:UIControlStateNormal];
     [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
     [mainView addSubview:btnclose];
-    
-    
 
-
-   
 }
 -(void)close_lightBox{
     [overlay removeFromSuperview];
