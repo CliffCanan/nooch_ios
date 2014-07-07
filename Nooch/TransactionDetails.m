@@ -374,6 +374,11 @@
         title.font=[UIFont fontWithName:@"Arial" size:20];
     [title setTextColor:kNoochBlue];
     [mainView addSubview:title];
+    UIView*space_container=[[UIView alloc]initWithFrame:CGRectMake(0, 34, 300, 10)];
+    space_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    [mainView addSubview:space_container];
+ //   head_container.layer.cornerRadius = 0;
+    
     
     UIView*map_container=[[UIView alloc]initWithFrame:CGRectMake(10, 50, 280, 300)];
     map_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
@@ -414,7 +419,7 @@
     
     
     
-    UIView*line_container=[[UIView alloc]initWithFrame:CGRectMake(10, desc_container.frame.origin.y+desc_container.frame.size.height+5, 300, 1)];
+    UIView*line_container=[[UIView alloc]initWithFrame:CGRectMake(0, desc_container.frame.origin.y+desc_container.frame.size.height+5, 300, 1)];
     line_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
     [mainView addSubview:line_container];
     

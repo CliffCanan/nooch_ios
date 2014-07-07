@@ -201,18 +201,28 @@
                             options:kNilOptions
                             error:&error];
         if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"]count]>0) {
-            self.contacts = [UITableView new];
+            UIView*view_table=[[UIView alloc]initWithFrame:CGRectMake(10, self.view.frame.size.height-210, 300, 200)];
+            view_table.backgroundColor=[UIColor whiteColor];
+             [self.view addSubview:view_table];
+            self.contacts = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 300, 190)];
             [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
-            [self.contacts setStyleClass:@"raised_view"];
-            [self.contacts setStyleId:@"refer"];
-            if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] count]==1) {
-                [self.contacts setStyleCSS:@"height : 60px"];
-            }
+         //   [self.contacts setStyleClass:@"raised_view"];
+          //  [self.contacts setStyleId:@"refer"];
+//            if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] count]==1) {
+//                [self.contacts setStyleCSS:@"height : 60px"];
+//         
+           view_table.layer.masksToBounds = NO;
+           view_table.layer.cornerRadius = 0; // if you like rounded corners
+           view_table.layer.shadowOffset = CGSizeMake(-15, 20);
+           view_table.layer.shadowRadius = 5;
+           view_table.layer.shadowOpacity = 0.5;
 
+            
+            self.contacts.backgroundColor=[UIColor clearColor];
             [self.contacts setSeparatorStyle:UITableViewCellSeparatorStyleNone];
             self.contacts.separatorColor = [UIColor clearColor];
             //[self.contacts setStyleClass:@"raised_view"];
-            [self.view addSubview:self.contacts]; [self.contacts reloadData];
+            [view_table addSubview:self.contacts]; [self.contacts reloadData];
 
             UILabel *invited = [[UILabel alloc] initWithFrame:CGRectMake(20, 265, 170, 40)];
             [invited setStyleClass:@"refer_header"];
@@ -248,6 +258,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    tableView.rowHeight=60;
     return [[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] count];
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -306,6 +317,7 @@
     [seperatorlbl setBackgroundColor:[UIColor colorWithRed:234.0f/255.0f green:234.0f/255.0f blue:244.0f/255.0f alpha:1.0f]];
     [seperatorlbl setStyleClass:@"refer_seperator"];
     [cell.contentView addSubview:seperatorlbl];
+    cell.backgroundColor=[UIColor clearColor];
 
     return cell;
 }

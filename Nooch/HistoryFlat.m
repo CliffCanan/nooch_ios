@@ -90,7 +90,7 @@
     if (!histTempPending) {
         histTempPending=[[NSMutableArray alloc]init];
     }
-
+   subTypestr=@"Success";
     listType=@"ALL";
     index=1;
     isStart=YES;
@@ -150,8 +150,8 @@
     [imageCache clearMemory];
     [imageCache clearDisk];
     [imageCache cleanDisk];
-    subTypestr=@"Success";
-    [self loadHist:@"ALL" index:index len:20 subType:subTypestr];
+    
+   // [self loadHist:@"ALL" index:index len:20 subType:subTypestr];
 
     //Export History
     exportHistory=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -538,11 +538,26 @@ return customView;
 
 -(void)loadHist:(NSString*)filter index:(int)ind len:(int)len subType:(NSString*)subType{
     
-    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-    [spinner setHidden:NO];
-    [self.view addSubview:spinner];
-    [spinner startAnimating];
+    //if (![self.navigationController.view.subviews containsObject:self.hud]) {
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        
+        [self.navigationController.view addSubview:self.hud];
+        
+        self.hud.delegate = self;
+        
+        self.hud.labelText = @"Loading Transaction Histroy...";
+        
+        [self.hud show:YES];
+        
+
+   // }
+    
+    
+//    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//    spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+//    [spinner setHidden:NO];
+//    [self.view addSubview:spinner];
+//    [spinner startAnimating];
     isSearch=NO;
     isLocalSearch=NO;
     serve*serveOBJ=[serve new];
@@ -1546,6 +1561,8 @@ return customView;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+   
+    
     if (self.completed_selected) {
         if (isLocalSearch) {
             NSDictionary*dictRecord=[histTempCompleted objectAtIndex:indexPath.row];
@@ -1576,6 +1593,10 @@ return customView;
             [self.navigationController pushViewController:details animated:YES];
         }
     }
+    [histShowArrayCompleted removeAllObjects];
+    [histShowArrayPending removeAllObjects];
+    index=1;
+
 }
 - (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)ind {
     NSMutableArray *temp = [NSMutableArray new];
@@ -1730,11 +1751,20 @@ return customView;
 }
 
 -(void)loadSearchByName
-{   
-    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-    [self.view addSubview:spinner];
-    [spinner startAnimating];
+{
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    
+    [self.navigationController.view addSubview:self.hud];
+    
+    self.hud.delegate = self;
+    
+    self.hud.labelText = @"Searching History...";
+    
+    [self.hud show:YES];
+//    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//    spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+//    [self.view addSubview:spinner];
+//    [spinner startAnimating];
     listType=@"ALL";
     isLocalSearch=NO;
     serve*serveOBJ=[serve new];
@@ -1777,8 +1807,11 @@ return customView;
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
+    
+    
     NSError *error;
-    [spinner removeFromSuperview];
+   
+    //[spinner removeFromSuperview];
     //Rlease memory cache
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     [imageCache clearMemory];
@@ -1807,6 +1840,11 @@ return customView;
         }
     }
     else if ([tagName isEqualToString:@"hist"]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.hud hide:YES];
+            // do work here
+        });
+        
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
         if ([histArray count]>0) {
@@ -1816,8 +1854,11 @@ return customView;
                 if ([[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Success"] ||
                     [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] ||
                     [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"] ) {
+                    
                     [histShowArrayCompleted addObject:dict];
+                    
                 }
+                
             }
             for (NSDictionary*dict in histArray) {
                 if ([[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]) {
@@ -1863,6 +1904,7 @@ return customView;
         //[self.list scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.list numberOfRowsInSection:0]-4 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
     }
     else if([tagName isEqualToString:@"search"]){
+         [self.hud hide:YES];
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
         if ([histArray count]>0) {
