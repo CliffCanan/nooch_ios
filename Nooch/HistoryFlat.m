@@ -935,7 +935,7 @@ return customView;
             }
             else if([histTempCompleted count]==indexPath.row){
                 UILabel *name = [UILabel new];
-                [name setStyleClass:@"history_cell_textlabel"];
+                [name setStyleClass:@"history_cell_textlabelEmpty"];
                 [name setStyleClass:@"history_recipientname"];
                 if (indexPath.row==0)
                     [name setText:@"You haven't made or received any payments yet!  :("];
@@ -1179,7 +1179,7 @@ return customView;
         else if (indexPath.row==[histShowArrayCompleted count]) {
             if(isEnd==YES) {
                 UILabel *name = [UILabel new];
-                [name setStyleClass:@"history_cell_textlabel"];
+                [name setStyleClass:@"history_cell_textlabelEmpty"];
                 [name setStyleClass:@"history_recipientname"];
                 if (indexPath.row==0)
                     [name setText:@"You haven't made or received any payments yet!  :("];
