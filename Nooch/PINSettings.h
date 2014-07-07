@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "serve.h"
 
-@interface PINSettings : UIViewController<serveD>
+@interface PINSettings : UIViewController<serveD,UIAlertViewDelegate>
 {
     NSDictionary*Dictresponse;
 }

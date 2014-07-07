@@ -291,7 +291,7 @@
             [suspendedAlert show];
             
         }else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))            {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
             [av setTag:202320];
             [av show];
             [spinner stopAnimating];
@@ -330,7 +330,8 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (alertView.tag==202320 && buttonIndex==0) {
         [nav_ctrl popToRootViewControllerAnimated:YES];
-    } else if (alertView.tag == 202320 && buttonIndex == 1) {
+    }
+    else if (alertView.tag == 202320 && buttonIndex == 1) {
         if (![MFMailComposeViewController canSendMail]){
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [av show];

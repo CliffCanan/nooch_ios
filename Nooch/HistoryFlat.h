@@ -18,6 +18,7 @@ NSString*listType;
 @interface HistoryFlat : UIViewController<UITableViewDataSource,UITableViewDelegate,
 serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate,MBProgressHUDDelegate,MFMailComposeViewControllerDelegate>
 {
+    UISegmentedControl *completed_pending;
     int countRows;
     NSMutableArray*histArray;
     NSMutableArray*histShowArrayCompleted;

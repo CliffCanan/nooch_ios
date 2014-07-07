@@ -212,7 +212,8 @@
             forgetful.Delegate = self; forgetful.tagName = @"ForgotPass";
             [forgetful forgotPass:emailField.text];   
         }
-        else if (actionSheet.tag == 50 && buttonIndex == 1)
+    }
+    else if (actionSheet.tag == 500 && buttonIndex == 1)
         {
             if (![MFMailComposeViewController canSendMail]){
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -239,9 +240,9 @@
             [alert setTag:220011];
             [alert show];
         }
-        
-    }    
 }
+
+
 
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
@@ -337,7 +338,7 @@
         }
         else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil){
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
-            [alert setTag:50];
+            [alert setTag:500];
             [alert show];
             [spinner stopAnimating];
         }

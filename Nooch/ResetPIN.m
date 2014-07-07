@@ -338,7 +338,9 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (alertView.tag==202320 && buttonIndex==0) {
         [nav_ctrl popToRootViewControllerAnimated:YES];
-    } else if (alertView.tag == 202320 && buttonIndex == 1) {
+    }
+    
+    else if (alertView.tag == 202320 && buttonIndex == 1) {
         if (![MFMailComposeViewController canSendMail]){
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [av show];
