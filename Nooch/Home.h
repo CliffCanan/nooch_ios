@@ -31,7 +31,7 @@ core *me;
 #define kNoochFontLt [UIFont fontWithName:@"BrandonGrotesque-Light" size:18]
 UINavigationController *nav_ctrl;
 NSUserDefaults *user;
-@interface Home : UIViewController<serveD,CLLocationManagerDelegate,MBProgressHUDDelegate,UITableViewDataSource,UITableViewDelegate,MFMailComposeViewControllerDelegate,iCarouselDataSource,iCarouselDelegate>
+@interface Home : UIViewController<serveD,CLLocationManagerDelegate,MBProgressHUDDelegate,UITableViewDataSource,UITableViewDelegate,MFMailComposeViewControllerDelegate,iCarouselDataSource,iCarouselDelegate,UIAlertViewDelegate>
 {
     CLLocationManager*locationManager;
     float lat,lon;
