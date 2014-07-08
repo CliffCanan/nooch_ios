@@ -95,88 +95,83 @@
 	 /******	 BANNERS	********/
 	 /******************************/
      .banner_header {
-        top     : 5px;
-        left    : 10px;
-        width   : 310px;
-        height  : 20px;
-        font-family : "Roboto-Medium";
-        font-size       : 18px;
-        text-align      : center;
-        color               : white;
+        top: 3px;
+        left: 10px;
+        width: 310px;
+        height: 24px;
+        font-family: "Roboto-Medium";
+        font-size: 18px;
+        text-align: center;
+        color: white;
      }
-     
      .banner_alert_glyph {
-        top     : 5px;
-        left    : 40px;
-        width   : 20px;
-        height  : 20px;
-        font-family : "FontAwesome";
-        font-size       : 18px;
-        text-align      : center;
-        color               : white;
+        top: 3px;
+        left: 40px;
+        width: 20px;
+        height: 24px;
+        font-family: "FontAwesome";
+        font-size: 18px;
+        text-align: center;
+        color: white;
      }
-     
      .banner_info {
-        top     : 18px;
-        left    : 10px;
-        width   : 200px;
-        height  : 50px;
+        top: 30px;
+        left: 10px;
+        width: 220px;
+        height: 34px;
         font-family : "Roboto-Light";
-        font-size       : 10px;
-        text-align      : center;
-        color               : white;
+        font-size: 10px;
+        text-align: center;
+        color: white;
      }
-     
     .dismiss_banner {
-        top     : 10px;
-        left    : 280px;
-        width   : 20px;
-        height  : 20px;
-        font-family : "FontAwesome";
-        font-size       : 18px;
-        text-align      : center;
-        color               : white;
+        top     : 6px;
+        left    : 292px;
+        width   : 18px;
+        height  : 18px;
+        font-family: "FontAwesome";
+        font-size: 16px;
+        text-align: center;
+        color: white;
     }
-     
-     .go_now {
-            top                : 35px;
-            left                : 215px;
-			width				: 100px;
-			height				: 30px;
-			color 				: white;
-			border-radius		: 5px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 14px;
-            background-image	: linear-gradient(#6dbee8, #41abe1);
-			border				: 1px solid #66AE3C;
-     }
-
-     #suspended_home {
-        top     : 0px;
-        left     : 0px;
-        width   : 320px;
-        height  : 80px;
-        background-color: #D61915;
+	.go_now {
+		top: 35px;
+        left: 224px;
+		width: 68px;
+		height: 30px;
+		color: white;
+		border-radius: 5px;
+		font-family: "Roboto";
+		font-weight: light;
+		font-size: 14px;
+		background-image: linear-gradient(#6dbee8, #41abe1);
+		border: 1px solid #66AE3C;
+    }
+    #suspended_home {
+        top: 0px;
+        left: 0px;
+        width: 320px;
+        height: 70px;
+        background-image: linear-gradient(#D61915, #c41713);
 		border: 1px solid #C41713;
-     }
-     
-     #email_unverified {
-        top     : 70px;
-        left     : 0px;
-        width   : 320px;
-        height  : 80px;
-        background-color: #D61915;
+		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.4);
+    }
+    #email_unverified {
+        left: 0px;
+        width: 320px;
+        height: 70px;
+        background-image: linear-gradient(#D61915, #c41713);
 		border: 1px solid #C41713;
-     }
-     
-     #phone_unverified {
-        left     : 0px;
-        width   : 320px;
-        height  : 80px;
-        background-color: #D61915;
+		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.4);
+    }
+    #phone_unverified {
+        left: 0px;
+        width: 320px;
+        height: 70px;
+        background-image: linear-gradient(#D61915, #c41713);
 		border: 1px solid #C41713;
-     }
+		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.4);
+    }
 
 	 /******************************/
 	 /******	 BUTTONS	********/
@@ -1981,6 +1976,17 @@
 		font-weight			: light;
 	}
 	
+	/**  Text in top row if table is empty  **/
+	.history_cell_textlabelEmpty { 
+		left				: 20px;
+		top					: 23px;
+		width				: 280px;
+		height				: 30px;
+		font-size			: 17px;
+		font-weight			: regular;
+		text-align			: center;
+	}
+
 	/**  Name of other party  **/
 	.history_cell_textlabel { 
 		left				: 75px;
