@@ -213,10 +213,10 @@
             [forgetful forgotPass:emailField.text];   
         }
     }
-    else if (actionSheet.tag == 500 && buttonIndex == 1)
+    else if ((actionSheet.tag == 50 && buttonIndex == 1) || (actionSheet.tag == 500 && buttonIndex == 1) || (actionSheet.tag == 510 && buttonIndex == 1))
         {
             if (![MFMailComposeViewController canSendMail]){
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [av show];
                 return;
             }
@@ -224,7 +224,7 @@
             mailComposer.mailComposeDelegate = self;
             mailComposer.navigationBar.tintColor=[UIColor whiteColor];
             
-            [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+            [mailComposer setSubject:[NSString stringWithFormat:@"Help Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
             
             [mailComposer setMessageBody:@"" isHTML:NO];
             [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
@@ -281,7 +281,7 @@
 }
 -(void)listen:(NSString *)result tagName:(NSString *)tagName{
     if([tagName isEqualToString:@"ForgotPass"]){
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Check your email for a reset password link." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Please check your email for a reset password link." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         [spinner stopAnimating];
         [spinner setHidden:YES];
@@ -327,12 +327,13 @@
         }
         
         else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] && loginResult != nil){
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Invalid Email or Password" message:@"We don't recognize that email or password, please double check your email is entered correctly and try again." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Invalid Email or Password" message:@"We don't recognize that information, please double check your email is entered correctly and try again." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             [spinner stopAnimating];
         }
         else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && loginResult != nil){
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"This Is Awkward" message:@"That doesn't appear to be the correct password. Please try again or contact us for futher help." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"This Is Awkward" message:@"That doesn't appear to be the correct password. Please try again or contact us for futher help." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+            [alert setTag:510];
             [alert show];
             [spinner stopAnimating];
         }
@@ -343,7 +344,7 @@
             [spinner stopAnimating];
         }
         else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] && loginResult != nil){
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"NoochMoney" message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been temporarily suspended.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
             [alert show];
             [alert setTag:50];
             [spinner stopAnimating];
