@@ -18,6 +18,7 @@
 #import "UIImageView+WebCache.h"
 #import "HowMuch.h"
 #import <QuartzCore/QuartzCore.h>
+#import "knoxWeb.h"
 #define kButtonType     @"transaction_type"
 #define kButtonTitle    @"button_title"
 #define kButtonColor    @"button_background_color"
@@ -106,11 +107,11 @@ NSMutableURLRequest *request;
     
     UIButton *top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [top_button setStyleClass:@"button_blue"];
-
-    // UIButton *mid_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    // UIButton *bot_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    // [bot_button setStyleClass:@"button_green"];
-
+    
+//    UIButton *mid_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    UIButton *bot_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    [bot_button setStyleClass:@"button_green"];
+    
     float height = [[UIScreen mainScreen] bounds].size.height;
     height -= 150; height /= 3;
     CGRect button_frame = CGRectMake(20.00, 270.00, 280, height);
@@ -119,16 +120,15 @@ NSMutableURLRequest *request;
     button_frame.origin.y = 350; [bot_button setFrame:button_frame];
     
     [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
-    //[mid_button addTarget:self action:@selector(pay_in_person) forControlEvents:UIControlEventTouchUpInside];
-    //[bot_button addTarget:self action:@selector(donate) forControlEvents:UIControlEventTouchUpInside];
+//  [mid_button addTarget:self action:@selector(pay_in_person) forControlEvents:UIControlEventTouchUpInside];
+//  [bot_button addTarget:self action:@selector(donate) forControlEvents:UIControlEventTouchUpInside];
     
     [top_button setTitle:[[self.transaction_types objectAtIndex:0] objectForKey:kButtonTitle] forState:UIControlStateNormal];
-    //[mid_button setTitle:[[self.transaction_types objectAtIndex:1] objectForKey:kButtonTitle] forState:UIControlStateNormal];
-    //[bot_button setTitle:[[self.transaction_types objectAtIndex:2] objectForKey:kButtonTitle] forState:UIControlStateNormal];
+//  [mid_button setTitle:[[self.transaction_types objectAtIndex:1] objectForKey:kButtonTitle] forState:UIControlStateNormal];
+//  [bot_button setTitle:[[self.transaction_types objectAtIndex:2] objectForKey:kButtonTitle] forState:UIControlStateNormal];
     
     [self.view addSubview:top_button];
-
-
+    
     NSMutableDictionary *loadInfo;
     //if user has autologin set bring up their data, otherwise redirect to the tutorial/login/signup flow
     if ([core isAlive:[self autoLogin]]) {
@@ -143,8 +143,7 @@ NSMutableURLRequest *request;
         [[NSUserDefaults standardUserDefaults] setValue:[loadInfo valueForKey:@"MemberId"] forKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] setValue:[loadInfo valueForKey:@"UserName"] forKey:@"UserName"];
         [me birth];
-    }
-    else{
+    }else{
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
@@ -165,84 +164,7 @@ NSMutableURLRequest *request;
         ReEnterPin*pin=[ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
     }
-    
-    if ([[user objectForKey:@"Status"] isEqualToString:@"Suspended"]) {
-        self.suspended = [UIView new];
-        [self.suspended setStyleId:@"suspended_home"];
-        
-        UILabel *sus_header = [UILabel new];
-        [sus_header setStyleClass:@"banner_header"];
-        [sus_header setText:@"Account Suspended"];
-        [self.suspended addSubview:sus_header];
-        
-        UILabel *sus_info = [UILabel new];
-        [sus_info setStyleClass:@"banner_info"];
-        [sus_info setNumberOfLines:0];
-        [sus_info setText:@"Your account will have limited functionality until you are unsuspended. Please contact support if you have questions."];
-        [self.suspended addSubview:sus_info];
-        
-        UILabel *sus_exclaim = [UILabel new];
-        [sus_exclaim setStyleClass:@"banner_alert_glyph"];
-        [sus_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
-        [self.suspended addSubview:sus_exclaim];
-        
-        UIButton *contact = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [contact setStyleClass:@"go_now"];
-        [contact setTitle:@"Contact" forState:UIControlStateNormal];
-        [contact addTarget:self action:@selector(contact_support) forControlEvents:UIControlEventTouchUpInside];
-        [self.suspended addSubview:contact];
-        
-        UIButton *dis = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [dis setStyleClass:@"dismiss_banner"];
-        [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
-        [dis addTarget:self action:@selector(dismiss_suspended_alert) forControlEvents:UIControlEventTouchUpInside];
-        [self.suspended addSubview:dis];
-        
-        [self.view addSubview:self.suspended];
-    }
-    
-    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
-        self.profile_incomplete = [UIView new];
-        [self.profile_incomplete setStyleId:@"email_unverified"];
-        
-        UILabel *em = [UILabel new];
-        [em setStyleClass:@"banner_header"];
-        [em setText:@"Profile Not Validated"];
-        [self.profile_incomplete addSubview:em];
-        
-        UILabel *em_exclaim = [UILabel new];
-        [em_exclaim setStyleClass:@"banner_alert_glyph"];
-        [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
-        [self.profile_incomplete addSubview:em_exclaim];
-        
-        UILabel *em_info = [UILabel new];
-        [em_info setStyleClass:@"banner_info"];
-        [em_info setNumberOfLines:0];
-        [em_info setText:@"Please complete your profile to unlock all features."];
-        [self.profile_incomplete addSubview:em_info];
-        
-        UIButton *go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [go setStyleClass:@"go_now"];
-        [go setTitle:@"Go Now" forState:UIControlStateNormal];
-        [go addTarget:self action:@selector(go_profile) forControlEvents:UIControlEventTouchUpInside];
-        [self.profile_incomplete addSubview:go];
-        
-        UIButton *dis = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [dis setStyleClass:@"dismiss_banner"];
-        [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
-        [dis addTarget:self action:@selector(dismiss_profile_unvalidated) forControlEvents:UIControlEventTouchUpInside];
-        [self.profile_incomplete addSubview:dis];
-        
-        [self.view addSubview:self.profile_incomplete];
-    }
-    
-    _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 45, 320, 140)];
-    _carousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    _carousel.type = iCarouselTypeCylinder;
-    [_carousel setNeedsLayout];
-    _carousel.delegate = self;
-    _carousel.dataSource = self;
-    
+   
     serve *fb = [serve new];
     [fb setDelegate:self];
     [fb setTagName:@"fb"];
@@ -301,6 +223,92 @@ NSMutableURLRequest *request;
 }
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    
+    if ([[user objectForKey:@"Status"] isEqualToString:@"Suspended"]) {
+        [self.suspended removeFromSuperview];
+        self.suspended = [UIView new];
+        [self.suspended setStyleId:@"suspended_home"];
+
+        UILabel *sus_header = [UILabel new];
+        [sus_header setStyleClass:@"banner_header"];
+        [sus_header setText:@"Account Suspended"];
+        [self.suspended addSubview:sus_header];
+
+        UILabel *sus_info = [UILabel new];
+        [sus_info setStyleClass:@"banner_info"];
+        [sus_info setNumberOfLines:0];
+        [sus_info setText:@"Your account will have limited functionality until you are unsuspended. Contact support for further inquiries."];
+        [self.suspended addSubview:sus_info];
+
+        UILabel *sus_exclaim = [UILabel new];
+        [sus_exclaim setStyleClass:@"banner_alert_glyph"];
+        [sus_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
+        [self.suspended addSubview:sus_exclaim];
+        
+        UIButton *contact = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [contact setStyleClass:@"go_now"];
+        [contact setTitle:@"Contact" forState:UIControlStateNormal];
+        [contact addTarget:self action:@selector(contact_support) forControlEvents:UIControlEventTouchUpInside];
+        [self.suspended addSubview:contact];
+        
+        UIButton *dis = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [dis setStyleClass:@"dismiss_banner"];
+        [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
+        [dis addTarget:self action:@selector(dismiss_suspended_alert) forControlEvents:UIControlEventTouchUpInside];
+        [self.suspended addSubview:dis];
+        
+        [self.view addSubview:self.suspended];
+    }
+    
+   else if (![[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
+       [self.profile_incomplete removeFromSuperview];
+        self.profile_incomplete = [UIView new];
+        [self.profile_incomplete setStyleId:@"email_unverified"];
+        
+        UILabel *em = [UILabel new];
+        [em setStyleClass:@"banner_header"];
+        [em setText:@"Profile Not Validated"];
+        [self.profile_incomplete addSubview:em];
+        
+        UILabel *em_exclaim = [UILabel new];
+        [em_exclaim setStyleClass:@"banner_alert_glyph"];
+        [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
+        [self.profile_incomplete addSubview:em_exclaim];
+        
+        UILabel *em_info = [UILabel new];
+        [em_info setStyleClass:@"banner_info"];
+        [em_info setNumberOfLines:0];
+        [em_info setText:@"Please complete your profile to unlock all features."];
+        [self.profile_incomplete addSubview:em_info];
+        
+        UIButton *go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [go setStyleClass:@"go_now"];
+        [go setTitle:@"Go Now" forState:UIControlStateNormal];
+        [go addTarget:self action:@selector(go_profile) forControlEvents:UIControlEventTouchUpInside];
+        [self.profile_incomplete addSubview:go];
+        
+        UIButton *dis = [UIButton buttonWithType:UIButtonTypeCustom];
+        [dis setStyleClass:@"dismiss_banner"];
+        [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
+        [dis addTarget:self action:@selector(dismiss_profile_unvalidated) forControlEvents:UIControlEventTouchUpInside];
+      
+        [self.profile_incomplete addSubview:dis];
+        
+        [self.view addSubview:self.profile_incomplete];
+    }
+
+    
+    [_carousel removeFromSuperview];
+    _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 50, 320, 150)];
+    _carousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _carousel.type = iCarouselTypeCylinder;
+    
+    [_carousel setNeedsLayout];
+    _carousel.delegate = self;
+    _carousel.dataSource = self;
+    [self.view addSubview:_carousel];
+    
+    
     if (![[assist shared]isPOP]) {
         self.slidingViewController.panGesture.enabled=YES;
         [self.view addGestureRecognizer:self.slidingViewController.panGesture];
@@ -407,12 +415,12 @@ NSMutableURLRequest *request;
     //create new view if no view is available for recycling
     if (view == nil)
     {
-		view = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 100, 100)];
-        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 70, 70)];
+		view = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 200, 150)];
+            imageView = [[UIImageView alloc] initWithFrame:CGRectMake(50, 25, 100, 100)];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         imageView.layer.borderColor = kNoochBlue.CGColor;
         imageView.layer.borderWidth = 1;
-        imageView.layer.cornerRadius = 35;
+        imageView.layer.cornerRadius = 50;
         [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                                    placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
         [imageView setClipsToBounds:YES];
@@ -567,6 +575,9 @@ NSMutableURLRequest *request;
     
     else if (alertView.tag == 201){
         if (buttonIndex == 1) {
+            knoxWeb *knox = [knoxWeb new];
+            [nav_ctrl pushViewController:knox animated:YES];
+            [self.slidingViewController resetTopView];
             // SHOULD GO TO THE KNOX UIWEBVIEW WITHIN THE 'SettingsOptions.m' 
         }
     }
@@ -625,7 +636,7 @@ NSMutableURLRequest *request;
     NSLog(@"bank verified? %d",[[assist shared]isBankVerified]);
 #pragma mark-9jan
     if ([[assist shared]getSuspended]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
         [alert setTag:50];
         [alert show];
         return;
@@ -652,7 +663,7 @@ NSMutableURLRequest *request;
     }
     
     if ( ![[[NSUserDefaults standardUserDefaults]
-            objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
+        objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
         UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Connect Your Bank" message:@"Adding a bank account to fund Nooch payments is lightening quick. (You don't have to type a routing or account number!)  Would you like to take care of this now?." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
         [set setTag:201];
         [set show];
