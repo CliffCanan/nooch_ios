@@ -108,9 +108,9 @@ NSMutableURLRequest *request;
     UIButton *top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [top_button setStyleClass:@"button_blue"];
     
-//    UIButton *mid_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    UIButton *bot_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    [bot_button setStyleClass:@"button_green"];
+    UIButton *mid_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton *bot_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [bot_button setStyleClass:@"button_green"];
     
     float height = [[UIScreen mainScreen] bounds].size.height;
     height -= 150; height /= 3;
@@ -120,15 +120,16 @@ NSMutableURLRequest *request;
     button_frame.origin.y = 350; [bot_button setFrame:button_frame];
     
     [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
-//  [mid_button addTarget:self action:@selector(pay_in_person) forControlEvents:UIControlEventTouchUpInside];
-//  [bot_button addTarget:self action:@selector(donate) forControlEvents:UIControlEventTouchUpInside];
+  //  [mid_button addTarget:self action:@selector(pay_in_person) forControlEvents:UIControlEventTouchUpInside];
+    //[bot_button addTarget:self action:@selector(donate) forControlEvents:UIControlEventTouchUpInside];
     
     [top_button setTitle:[[self.transaction_types objectAtIndex:0] objectForKey:kButtonTitle] forState:UIControlStateNormal];
-//  [mid_button setTitle:[[self.transaction_types objectAtIndex:1] objectForKey:kButtonTitle] forState:UIControlStateNormal];
-//  [bot_button setTitle:[[self.transaction_types objectAtIndex:2] objectForKey:kButtonTitle] forState:UIControlStateNormal];
+    [mid_button setTitle:[[self.transaction_types objectAtIndex:1] objectForKey:kButtonTitle] forState:UIControlStateNormal];
+    [bot_button setTitle:[[self.transaction_types objectAtIndex:2] objectForKey:kButtonTitle] forState:UIControlStateNormal];
     
     [self.view addSubview:top_button];
     
+    //29/12
     NSMutableDictionary *loadInfo;
     //if user has autologin set bring up their data, otherwise redirect to the tutorial/login/signup flow
     if ([core isAlive:[self autoLogin]]) {
@@ -164,6 +165,10 @@ NSMutableURLRequest *request;
         ReEnterPin*pin=[ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
     }
+    
+    
+    [top_button setStyleId:@"test"];
+    
    
     serve *fb = [serve new];
     [fb setDelegate:self];
@@ -228,18 +233,15 @@ NSMutableURLRequest *request;
         [self.suspended removeFromSuperview];
         self.suspended = [UIView new];
         [self.suspended setStyleId:@"suspended_home"];
-
         UILabel *sus_header = [UILabel new];
         [sus_header setStyleClass:@"banner_header"];
         [sus_header setText:@"Account Suspended"];
         [self.suspended addSubview:sus_header];
-
         UILabel *sus_info = [UILabel new];
         [sus_info setStyleClass:@"banner_info"];
         [sus_info setNumberOfLines:0];
         [sus_info setText:@"Your account will have limited functionality until you are unsuspended. Contact support for further inquiries."];
         [self.suspended addSubview:sus_info];
-
         UILabel *sus_exclaim = [UILabel new];
         [sus_exclaim setStyleClass:@"banner_alert_glyph"];
         [sus_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
@@ -299,9 +301,9 @@ NSMutableURLRequest *request;
 
     
     [_carousel removeFromSuperview];
-    _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 50, 320, 150)];
+    _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 45, 320, 150)];
     _carousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    _carousel.type = iCarouselTypeCylinder;
+    _carousel.type = iCarouselTypeCoverFlow2;
     
     [_carousel setNeedsLayout];
     _carousel.delegate = self;
@@ -462,11 +464,11 @@ NSMutableURLRequest *request;
     {
         case iCarouselOptionWrap:
         {
-            return YES;
+            return NO;
         }
         case iCarouselOptionArc:
         {
-            return 360;
+            return 360; //arc
         }
         case iCarouselOptionRadius:
         {
