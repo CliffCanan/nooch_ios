@@ -106,11 +106,11 @@ NSMutableURLRequest *request;
     
     UIButton *top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [top_button setStyleClass:@"button_blue"];
-    
-    UIButton *mid_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    UIButton *bot_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [bot_button setStyleClass:@"button_green"];
-    
+
+    // UIButton *mid_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    // UIButton *bot_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    // [bot_button setStyleClass:@"button_green"];
+
     float height = [[UIScreen mainScreen] bounds].size.height;
     height -= 150; height /= 3;
     CGRect button_frame = CGRectMake(20.00, 270.00, 280, height);
@@ -119,16 +119,16 @@ NSMutableURLRequest *request;
     button_frame.origin.y = 350; [bot_button setFrame:button_frame];
     
     [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
-    [mid_button addTarget:self action:@selector(pay_in_person) forControlEvents:UIControlEventTouchUpInside];
+    //[mid_button addTarget:self action:@selector(pay_in_person) forControlEvents:UIControlEventTouchUpInside];
     //[bot_button addTarget:self action:@selector(donate) forControlEvents:UIControlEventTouchUpInside];
     
     [top_button setTitle:[[self.transaction_types objectAtIndex:0] objectForKey:kButtonTitle] forState:UIControlStateNormal];
-    [mid_button setTitle:[[self.transaction_types objectAtIndex:1] objectForKey:kButtonTitle] forState:UIControlStateNormal];
-    [bot_button setTitle:[[self.transaction_types objectAtIndex:2] objectForKey:kButtonTitle] forState:UIControlStateNormal];
+    //[mid_button setTitle:[[self.transaction_types objectAtIndex:1] objectForKey:kButtonTitle] forState:UIControlStateNormal];
+    //[bot_button setTitle:[[self.transaction_types objectAtIndex:2] objectForKey:kButtonTitle] forState:UIControlStateNormal];
     
     [self.view addSubview:top_button];
-    
-    //29/12
+
+
     NSMutableDictionary *loadInfo;
     //if user has autologin set bring up their data, otherwise redirect to the tutorial/login/signup flow
     if ([core isAlive:[self autoLogin]]) {
@@ -143,7 +143,8 @@ NSMutableURLRequest *request;
         [[NSUserDefaults standardUserDefaults] setValue:[loadInfo valueForKey:@"MemberId"] forKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] setValue:[loadInfo valueForKey:@"UserName"] forKey:@"UserName"];
         [me birth];
-    }else{
+    }
+    else{
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
@@ -168,15 +169,18 @@ NSMutableURLRequest *request;
     if ([[user objectForKey:@"Status"] isEqualToString:@"Suspended"]) {
         self.suspended = [UIView new];
         [self.suspended setStyleId:@"suspended_home"];
+        
         UILabel *sus_header = [UILabel new];
         [sus_header setStyleClass:@"banner_header"];
         [sus_header setText:@"Account Suspended"];
         [self.suspended addSubview:sus_header];
+        
         UILabel *sus_info = [UILabel new];
         [sus_info setStyleClass:@"banner_info"];
         [sus_info setNumberOfLines:0];
-        [sus_info setText:@"Your account will have limited functionality until you are unsuspended. Contact support for further inquiries."];
+        [sus_info setText:@"Your account will have limited functionality until you are unsuspended. Please contact support if you have questions."];
         [self.suspended addSubview:sus_info];
+        
         UILabel *sus_exclaim = [UILabel new];
         [sus_exclaim setStyleClass:@"banner_alert_glyph"];
         [sus_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
@@ -232,11 +236,9 @@ NSMutableURLRequest *request;
         [self.view addSubview:self.profile_incomplete];
     }
     
-    [top_button setStyleId:@"test"];
-    
-    _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 45, 320, 30)];
+    _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 45, 320, 140)];
     _carousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    _carousel.type = iCarouselTypeCoverFlow2;
+    _carousel.type = iCarouselTypeCylinder;
     [_carousel setNeedsLayout];
     _carousel.delegate = self;
     _carousel.dataSource = self;
@@ -452,11 +454,11 @@ NSMutableURLRequest *request;
     {
         case iCarouselOptionWrap:
         {
-            return NO;
+            return YES;
         }
         case iCarouselOptionArc:
         {
-            return 360; //arc
+            return 360;
         }
         case iCarouselOptionRadius:
         {
