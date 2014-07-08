@@ -53,7 +53,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [self.navigationItem setTitle:@"History"];
-    [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
+   // [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
 }
 -(void)showMenu
 {
@@ -151,7 +151,7 @@
     [imageCache clearDisk];
     [imageCache cleanDisk];
     
-   // [self loadHist:@"ALL" index:index len:20 subType:subTypestr];
+   [self loadHist:@"ALL" index:index len:20 subType:subTypestr];
 
     //Export History
     exportHistory=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -1593,9 +1593,7 @@ return customView;
             [self.navigationController pushViewController:details animated:YES];
         }
     }
-    [histShowArrayCompleted removeAllObjects];
-    [histShowArrayPending removeAllObjects];
-    index=1;
+   
 
 }
 - (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)ind {
@@ -1882,6 +1880,7 @@ return customView;
         [serveOBJ GetServerCurrentTime];
     }
     else if ([tagName isEqualToString:@"time"]){
+        
         //ServerDate
          NSDictionary*dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         ServerDate=[self dateFromString:[dict valueForKey:@"Result"] ];

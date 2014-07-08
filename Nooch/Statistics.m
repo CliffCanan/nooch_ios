@@ -128,7 +128,7 @@
     [temp1 setStyleId:@"stats_circle_donations_inactive"];
     [self.back_transfer addSubview:temp1];
     temp1.userInteractionEnabled=YES;
-    UITapGestureRecognizer*tap_donation2=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(donate_tap)];
+    UITapGestureRecognizer*tap_donation2=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(donate_tap_Fromtran)];
     [temp1 addGestureRecognizer:tap_donation2];
     
 
@@ -221,6 +221,23 @@
     self.selected++;
     titlestr=@"Donation Stats";
     frame = self.back_profile.frame;
+    frame.origin.x -= 640;
+    [self.back_profile setFrame:frame];
+    frame = self.back_transfer.frame;
+    frame.origin.x -= 640;
+    [self.back_transfer setFrame:frame];
+    frame = self.back_donation.frame;
+    frame.origin.x -= 640;
+    [self.back_donation setFrame:frame];
+     [UIView commitAnimations];
+}
+-(void)donate_tap_Fromtran{
+    CGRect frame;
+    [UIView setAnimationDuration:0.4];
+    [self.donations setStyleId:@"stats_circle_donations_active"];
+    self.selected++;
+    titlestr=@"Donation Stats";
+    frame = self.back_profile.frame;
     frame.origin.x -= 320;
     [self.back_profile setFrame:frame];
     frame = self.back_transfer.frame;
@@ -229,7 +246,7 @@
     frame = self.back_donation.frame;
     frame.origin.x -= 320;
     [self.back_donation setFrame:frame];
-     [UIView commitAnimations];
+    [UIView commitAnimations];
 }
 -(void)trans_tap{
     CGRect frame;
@@ -287,13 +304,13 @@
     self.selected--;
     titlestr=@"Profile Stats";
     frame = self.back_profile.frame;
-    frame.origin.x += 320;
+    frame.origin.x += 640;
     [self.back_profile setFrame:frame];
     frame = self.back_transfer.frame;
-    frame.origin.x += 320;
+    frame.origin.x += 640;
     [self.back_transfer setFrame:frame];
     frame = self.back_donation.frame;
-    frame.origin.x += 320;
+    frame.origin.x += 640;
     [self.back_donation setFrame:frame];
     [UIView commitAnimations];
     

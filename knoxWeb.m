@@ -35,7 +35,7 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     self.web = [UIWebView new];
-    [self.web setFrame:CGRectMake(0, -10, 320, [[UIScreen mainScreen] bounds].size.height)];
+    [self.web setFrame:CGRectMake(0, -5, 320, [[UIScreen mainScreen] bounds].size.height)];
     [self.view addSubview:self.web];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
@@ -45,10 +45,10 @@
     //[self.hud show:YES];
     
     NSURL *url = [NSURL URLWithString: @"https://knoxpayments.com/nooch/index.php"];
-    NSString *body = [NSString stringWithFormat: @"d_amout=%@&api_key=%@&api_pass=%@invoice_detail=%@&recur_status=%@user_request=%@&req_url=%@", @".01",@"7068_59cd5c1f5a75c31",@"7068_da64134cc66a5f0",@"testing",@"ot",@"show_all",@"nooch://"];
+   // NSString *body = [NSString stringWithFormat: @"d_amout=%@&api_key=%@&api_pass=%@invoice_detail=%@&recur_status=%@user_request=%@&req_url=%@", @".01",@"7068_59cd5c1f5a75c31",@"7068_da64134cc66a5f0",@"testing",@"ot",@"show_all",@"nooch://"];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL: url];
     [request setHTTPMethod: @"GET"];
-    [request setHTTPBody: [body dataUsingEncoding: NSUTF8StringEncoding]];
+   // [request setHTTPBody: [body dataUsingEncoding: NSUTF8StringEncoding]];
     [self.web loadRequest: request];
     
     [[NSNotificationCenter defaultCenter] addObserver:self

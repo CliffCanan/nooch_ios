@@ -225,6 +225,10 @@
 		8420B39E187AC4BF00A77E2D /* orange-pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420B398187AC4BF00A77E2D /* orange-pin.png */; };
 		8420B39F187AC4BF00A77E2D /* pink-pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420B399187AC4BF00A77E2D /* pink-pin.png */; };
 		8420B3A0187AC4BF00A77E2D /* red-pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420B39A187AC4BF00A77E2D /* red-pin.png */; };
+		842B4196196BB3C7009BF8B7 /* clock_arrow_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 842B4195196BB3C7009BF8B7 /* clock_arrow_white.png */; };
+		842B4198196BC081009BF8B7 /* map_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 842B4197196BC081009BF8B7 /* map_icon.png */; };
+		842B419A196BC2D3009BF8B7 /* map_icon_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 842B4199196BC2D3009BF8B7 /* map_icon_blue.png */; };
+		842B419C196BC2EB009BF8B7 /* clock_arrow_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 842B419B196BC2EB009BF8B7 /* clock_arrow_blue.png */; };
 		842E3313187413490057EAFB /* Decryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 842E3312187413490057EAFB /* Decryption.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		842E3316187424440057EAFB /* GetEncryptionValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 842E3315187424440057EAFB /* GetEncryptionValue.m */; };
 		843B29D41888EC3B00DA04C8 /* back-arrow-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 843B29D31888EC3B00DA04C8 /* back-arrow-blue.png */; };
@@ -612,6 +616,10 @@
 		8420B398187AC4BF00A77E2D /* orange-pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orange-pin.png"; sourceTree = "<group>"; };
 		8420B399187AC4BF00A77E2D /* pink-pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pink-pin.png"; sourceTree = "<group>"; };
 		8420B39A187AC4BF00A77E2D /* red-pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red-pin.png"; sourceTree = "<group>"; };
+		842B4195196BB3C7009BF8B7 /* clock_arrow_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = clock_arrow_white.png; path = Nooch/clock_arrow_white.png; sourceTree = "<group>"; };
+		842B4197196BC081009BF8B7 /* map_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_icon.png; sourceTree = "<group>"; };
+		842B4199196BC2D3009BF8B7 /* map_icon_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_icon_blue.png; sourceTree = "<group>"; };
+		842B419B196BC2EB009BF8B7 /* clock_arrow_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock_arrow_blue.png; sourceTree = "<group>"; };
 		842E3311187413490057EAFB /* Decryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Decryption.h; sourceTree = "<group>"; };
 		842E3312187413490057EAFB /* Decryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Decryption.m; sourceTree = "<group>"; };
 		842E3314187424440057EAFB /* GetEncryptionValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetEncryptionValue.h; sourceTree = "<group>"; };
@@ -1009,6 +1017,10 @@
 				16E4B1BE187054A50099D075 /* placeholder.jpg */,
 				84C3EF1C187D74C6004687F6 /* whitebg.png */,
 				16E4B1C1187078880099D075 /* tick.png */,
+				842B4199196BC2D3009BF8B7 /* map_icon_blue.png */,
+				842B419B196BC2EB009BF8B7 /* clock_arrow_blue.png */,
+				842B4195196BB3C7009BF8B7 /* clock_arrow_white.png */,
+				842B4197196BC081009BF8B7 /* map_icon.png */,
 			);
 			name = "venturepact ";
 			sourceTree = "<group>";
@@ -1542,6 +1554,7 @@
 				6BC5FED91625F1B0007EAD7A /* Roboto-CondensedItalic.ttf in Resources */,
 				6BC5FEDB1625F1B0007EAD7A /* Roboto-Italic.ttf in Resources */,
 				01C26DBF1843BB22005179B7 /* stats-profile-inactive.png in Resources */,
+				842B4196196BB3C7009BF8B7 /* clock_arrow_white.png in Resources */,
 				01C26DB81843BB22005179B7 /* nooch-logo.png in Resources */,
 				6BC5FEDD1625F1B0007EAD7A /* Roboto-Light.ttf in Resources */,
 				014C4333185B9A4C00956A84 /* nonprofits-youtube.png in Resources */,
@@ -1551,6 +1564,7 @@
 				6BC5FEE11625F1B0007EAD7A /* Roboto-Medium.ttf in Resources */,
 				6BC5FEE31625F1B0007EAD7A /* Roboto-MediumItalic.ttf in Resources */,
 				16E4B1C3187078880099D075 /* tick.png in Resources */,
+				842B419A196BC2D3009BF8B7 /* map_icon_blue.png in Resources */,
 				01C26DC01843BB22005179B7 /* stats-transfers-active.png in Resources */,
 				6BC5FEE51625F1B0007EAD7A /* Roboto-Regular.ttf in Resources */,
 				01C26DB61843BB22005179B7 /* memo-nonprofits.png in Resources */,
@@ -1574,6 +1588,7 @@
 				6BC04B991677DE0D005C68D6 /* CHANGELOG in Resources */,
 				01C26DBB1843BB22005179B7 /* sms-icon.png in Resources */,
 				01C26DC41843BB22005179B7 /* YouTube.png in Resources */,
+				842B419C196BC2EB009BF8B7 /* clock_arrow_blue.png in Resources */,
 				01C26DE71843C56C005179B7 /* Facebook_Icon.png in Resources */,
 				01C26DAA1843BB22005179B7 /* address-book-icon.png in Resources */,
 				01C26DBC1843BB22005179B7 /* stats-donations-active.png in Resources */,
@@ -1596,6 +1611,7 @@
 				6BC04B9D1677DE0E005C68D6 /* README.rst in Resources */,
 				6BC04C031677E25D005C68D6 /* AirshipConfig.plist in Resources */,
 				84443CB118A0BDF30097F6C0 /* RoundLoading.png in Resources */,
+				842B4198196BC081009BF8B7 /* map_icon.png in Resources */,
 				014C433D185BC7EF00956A84 /* VarelaRound-Regular.ttf in Resources */,
 				6B8E848A17565A9E00B3D7B1 /* BackgroundMain@2x.png in Resources */,
 				8420B390187A69CC00A77E2D /* profile_picture.png in Resources */,

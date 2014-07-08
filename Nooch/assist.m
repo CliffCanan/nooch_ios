@@ -203,7 +203,7 @@ static assist * _sharedInstance = nil;
      }];
      }
      
-    timer= [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:NO];
+    timer= [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
 #pragma mark 9jan
     [[assist shared]setneedsReload:YES];
     [self getSettings];

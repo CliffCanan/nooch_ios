@@ -51,10 +51,10 @@
     UIButton *location = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [location setStyleId:@"icon_location"];
 
-    //UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
-    //[self.navigationItem setRightBarButtonItem:loc];
+   UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
+   [self.navigationItem setRightBarButtonItem:loc];
     
-    NSArray *seg_items = @[@"Recent",@"Find by Location"];
+    NSArray *seg_items = @[@"Recent",@"    Find by Location"];
     self.completed_pending = [[UISegmentedControl alloc] initWithItems:seg_items];
     [self.completed_pending setStyleId:@"history_segcontrol"];
     [self.completed_pending addTarget:self action:@selector(recent_or_location:) forControlEvents:UIControlEventValueChanged];
@@ -81,7 +81,16 @@
     [self.contacts setSectionHeaderHeight:30];
     [self.contacts setStyleId:@"select_recipient"];
     [self.view addSubview:self.contacts]; [self.contacts reloadData];
+    img_recent=[[UIImageView alloc]initWithFrame:CGRectMake(30, 13, 15, 15)];
+    img_recent.image=[UIImage imageNamed:@"clock_arrow_white.png"];
+    [self.view addSubview:img_recent];
+    
+     img_location=[[UIImageView alloc]initWithFrame:CGRectMake(165, 13, 15, 15)];
+    img_location.image=[UIImage imageNamed:@"map_icon_blue.png"];
+    [self.view addSubview:img_location];
+    
 
+    
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [self.view addSubview:spinner];
     spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
@@ -349,6 +358,8 @@
     [search setText:@""];
     searching = NO;
     if (sender.selectedSegmentIndex == 0) {
+        img_recent.image=[UIImage imageNamed:@"clock_arrow_white.png"];
+        img_location.image=[UIImage imageNamed:@"map_icon_blue.png"];
         self.location = NO;
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:1];
@@ -368,6 +379,8 @@
         [self.hud show:YES];
     } 
     else {
+        img_recent.image=[UIImage imageNamed:@"clock_arrow_blue.png"];
+        img_location.image=[UIImage imageNamed:@"map_icon.png"];
         self.location = YES;
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:1];
@@ -990,6 +1003,7 @@
         }
         else {
              temp = [self.recents objectAtIndex:indexPath.row];
+            NSLog(@"%@",temp);
         }
         UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
         pic.clipsToBounds = YES;
@@ -1129,7 +1143,7 @@
         [cell setIndentationLevel:1];
         cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",info[@"FirstName"],info[@"LastName"]];
         [cell.textLabel setStyleClass:@"select_recipient_name"];
-
+        
         cell.accessoryType=UITableViewCellAccessoryNone;
         
         if ([[[assist shared] assos] objectForKey:info[@"UserName"]]) {
