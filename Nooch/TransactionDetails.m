@@ -408,7 +408,7 @@
     
     desc.text=@"This shows the location of the user that initiated the transfer. You can adjuest the location settings at any time in your device settings.";
     desc.font=[UIFont fontWithName:@"Roboto" size:12];
-    desc.textColor=[UIColor kNoochGrayDark];
+    desc.textColor= kNoochGrayDark;
     desc.numberOfLines=0;
     [desc sizeToFit];
     [mainView addSubview:desc];

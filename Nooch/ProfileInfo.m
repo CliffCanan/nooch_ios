@@ -61,12 +61,30 @@
 -(void)showMenu
 
 {
+    if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]||![[dictSavedInfo valueForKey:@"name"]isEqualToString:self.name.text]||![[dictSavedInfo valueForKey:@"recovery_email"]isEqualToString:self.recovery_email.text]) {
+        
+    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Do you want to save the changes in your profile?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
+           [alert setTag:5020];
+           [alert show];
+        
+     
+    return;
+}
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
-
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (alertView.tag==5020 && buttonIndex==0) {
+        [self save_changes];
+    }
+    else if(alertView.tag==5020 && buttonIndex==1){
+        [self.slidingViewController anchorTopViewTo:ECRight];
+    }
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    dictSavedInfo=[[NSMutableDictionary alloc]init];
+    [dictSavedInfo setObject:@"NO" forKey:@"ImageChanged"];
     self.navigationController.navigationBar.topItem.title = @"";
     self.disclose = NO;
     if (isProfileOpenFromSideBar) {
@@ -583,7 +601,7 @@
     UIImage *image=[info objectForKey:UIImagePickerControllerOriginalImage];
     image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(120,120) interpolationQuality:kCGInterpolationMedium];
     isPhotoUpdate=YES;
-
+     [dictSavedInfo setObject:@"YES" forKey:@"ImageChanged"];
     [picture setImage:image];
 
     [[assist shared]setTranferImage:image];
@@ -1043,11 +1061,15 @@
         if ([arr count]==2) {
             self.address_one.text=[arr objectAtIndex:0];
             self.address_two.text=[arr objectAtIndex:1];
+            
         }
         
-        else
+        else{
         self.address_one.text=[arr objectAtIndex:0];
-    
+            self.address_two.text=@"";
+        }
+        [dictSavedInfo setObject:self.address_one.text forKey:@"Address1"];
+        [dictSavedInfo setObject:self.address_two.text forKey:@"Address2"];
         if (![[dictProfileinfo objectForKey:@"City"] isKindOfClass:[NSNull class]]) {
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
@@ -1060,6 +1082,8 @@
         
         self.ServiceType=@"State";
         self.city.text=[sourceData objectForKey:@"Status"];
+        [dictSavedInfo setObject:self.city.text forKey:@"City"];
+       
         if (![[dictProfileinfo objectForKey:@"State"] isKindOfClass:[NSNull class]]) {
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
@@ -1101,6 +1125,7 @@
     else  if ([self.ServiceType isEqualToString:@"zip"]) {
         self.ServiceType=@"name";
         self.zip.text=[sourceData objectForKey:@"Status"];
+         [dictSavedInfo setObject:self.zip.text forKey:@"zip"];
         if (![[dictProfileinfo objectForKey:@"FirstName"] isKindOfClass:[NSNull class]]) {
             
             Decryption *decry = [[Decryption alloc] init];
@@ -1120,7 +1145,8 @@
             NSString* letterA=[[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
 
             self.name.text=[NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
-            
+            [dictSavedInfo setObject:self.name.text forKey:@"name"];
+
             if (![[dictProfileinfo objectForKey:@"LastName"] isKindOfClass:[NSNull class]]) {
                 self.ServiceType=@"lastname";
                 Decryption *decry = [[Decryption alloc] init];
@@ -1145,6 +1171,7 @@
         if ([[sourceData objectForKey:@"Status"] length]>0) {
             NSString* letterA=[[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
             self.name.text=[self.name.text stringByAppendingString:[NSString stringWithFormat:@" %@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]]];
+              [dictSavedInfo setObject:self.name.text forKey:@"name"];
         }
         
         if (![[dictProfileinfo objectForKey:@"UserName"] isKindOfClass:[NSNull class]]) {
@@ -1183,6 +1210,8 @@
     else if ([self.ServiceType isEqualToString:@"recovery"]) {
         self.ServiceType=@"pwd";
         self.recovery_email.text=[NSString stringWithFormat:@"%@",[sourceData objectForKey:@"Status"]];
+        [dictSavedInfo setObject:self.recovery_email.text forKey:@"recovery_email"];
+
         if ([self.recovery_email.text isKindOfClass:[NSNull class]]) {
             self.recovery_email.text=@"";
         }

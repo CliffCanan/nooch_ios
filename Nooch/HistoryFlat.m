@@ -1858,13 +1858,19 @@ return customView;
                 }
                 
             }
+            int counter=0;
             for (NSDictionary*dict in histArray) {
                 if ([[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]) {
                     [histShowArrayPending addObject:dict];
+                    if ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
+                        counter++;
+                    }
+                    
                 }
             }
-            if ([histShowArrayPending count]>0) {
-                [completed_pending setTitle:[NSString stringWithFormat:@"Pending (%d)",[histShowArrayPending  count]]forSegmentAtIndex:1];
+            if (counter>0) {
+                
+                [completed_pending setTitle:[NSString stringWithFormat:@"Pending (%d)",counter]forSegmentAtIndex:1];
                 
             }
            }

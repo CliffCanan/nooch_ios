@@ -216,6 +216,7 @@
 }
 -(void)donate_tap{
     CGRect frame;
+     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.4];
     [self.donations setStyleId:@"stats_circle_donations_active"];
     self.selected++;
@@ -233,6 +234,7 @@
 }
 -(void)donate_tap_Fromtran{
     CGRect frame;
+     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.4];
     [self.donations setStyleId:@"stats_circle_donations_active"];
     self.selected++;
@@ -250,6 +252,7 @@
 }
 -(void)trans_tap{
     CGRect frame;
+     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.4];
     [self.transfers setStyleId:@"stats_circle_transfers_active"];
     self.selected++;
@@ -267,6 +270,7 @@
 }
 -(void)Profile_tap{
     CGRect frame;
+     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.4];
     [self.profile setStyleId:@"stats_circle_profile_active"];
     self.selected--;
@@ -283,22 +287,9 @@
       [UIView commitAnimations];
 }
 -(void)profileRev{
-//    CGRect frame;
-//    [UIView setAnimationDuration:0.4];
-//    [self.transfers setStyleId:@"stats_circle_transfers_active"];
-//    self.selected++;
-//    titlestr=@"Transfer Stats";
-//    frame = self.back_profile.frame;
-//    frame.origin.x -= 320;
-//    [self.back_profile setFrame:frame];
-//    frame = self.back_transfer.frame;
-//    frame.origin.x -= 320;
-//    [self.back_transfer setFrame:frame];
-//    frame = self.back_donation.frame;
-//    frame.origin.x -= 320;
-//    [self.back_donation setFrame:frame];
-//    [UIView commitAnimations];
+
     CGRect frame;
+     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.4];
     [self.profile setStyleId:@"stats_circle_profile_active"];
     self.selected--;
@@ -317,6 +308,7 @@
 }
 -(void)transRev_tap{
     CGRect frame;
+     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.4];
     [self.profile setStyleId:@"stats_circle_profile_active"];
     self.selected--;

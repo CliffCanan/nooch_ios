@@ -108,8 +108,8 @@ NSMutableURLRequest *request;
     UIButton *top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [top_button setStyleClass:@"button_blue"];
     
-//    UIButton *mid_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    UIButton *bot_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton *mid_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton *bot_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 //    [bot_button setStyleClass:@"button_green"];
     
     float height = [[UIScreen mainScreen] bounds].size.height;

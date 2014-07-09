@@ -12,7 +12,7 @@
 #import "GetEncryptionValue.h"
 #import "MBProgressHUD.h"
 BOOL isProfileOpenFromSideBar;
-@interface ProfileInfo : UIViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UIScrollViewDelegate,MBProgressHUDDelegate>
+@interface ProfileInfo : UIViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UIScrollViewDelegate,MBProgressHUDDelegate,UIAlertViewDelegate>
 {
     
     int down;
@@ -35,5 +35,6 @@ BOOL isProfileOpenFromSideBar;
     UIView*navBar;
     UILabel*lbl;
     UIButton*crossbtn;
+    NSMutableDictionary*dictSavedInfo;
 }
 @end
