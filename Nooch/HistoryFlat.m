@@ -130,10 +130,12 @@
     [self.view bringSubviewToFront:self.list];
 
     // Google map
-    camera = [GMSCameraPosition cameraWithLatitude:[@"0" floatValue]
-                                         longitude:[@"0" floatValue]
-                                              zoom:1];
+    camera = [GMSCameraPosition cameraWithLatitude:39.952360
+                                         longitude:-75.163602
+                                              zoom:6];
     mapView_=[GMSMapView mapWithFrame:self.view.frame camera:camera];
+    [mapView_ animateToZoom:10];
+    [mapView_ animateToViewingAngle:10];
     mapView_.myLocationEnabled = YES;
     mapView_.delegate=self;
     [mapArea addSubview:mapView_];
