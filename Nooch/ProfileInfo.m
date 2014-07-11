@@ -57,21 +57,100 @@
                 placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
     }
 }
+-(void) viewWillDisappear:(BOOL)animated {
+    if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
+        // Navigation button was pressed. Do some stuff
+        
+        [self savePrompt2];
+    }
+    [super viewWillDisappear:animated];
+}
 
 -(void)showMenu
 
 {
+    NSLog(@"%@",self.address_one.text);
+      NSLog(@"%@",self.address_two.text);
+      NSLog(@"%@",self.zip.text);
+      NSLog(@"%@",self.recovery_email.text);
+      NSLog(@"%@",self.phone.text);
     
-    if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]||![[dictSavedInfo valueForKey:@"recovery_email"]isEqualToString:self.recovery_email.text]|| ![[dictProfileinfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) {
-        
-    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Do you want to save the changes in your profile?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
-           [alert setTag:5020];
-           [alert show];
-        
-     
-    return;
+    NSLog(@"%d",[self.address_one.text length]);
+    NSLog(@"%d",[self.address_two.text length]);
+    NSLog(@"%d",[self.zip.text length]);
+    NSLog(@"%d",[self.recovery_email.text length]);
+    NSLog(@"%d",[self.phone.text length]);
+    
+    NSLog(@"%d",[[dictSavedInfo valueForKey:@"Address2"] length]);
+    NSLog(@"%d",[[dictSavedInfo valueForKey:@"zip"] length]);
+    NSLog(@"%d",[[dictSavedInfo valueForKey:@"recovery_email"] length]);
+    NSLog(@"%d",[[dictSavedInfo valueForKey:@"Address1"]length]);
+    NSLog(@"%d",[[dictSavedInfo valueForKey:@"phoneno"] length]);
+
+    NSLog(@"%d",[[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]);
+    NSLog(@"%d",[[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]);
+    
+    NSLog(@"%d",[[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]);
+    NSLog(@"%d",[[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]);
+    NSLog(@"%d",[[dictSavedInfo valueForKey:@"recovery_email"]isEqualToString:self.recovery_email.text]);
+    NSLog(@"%d",[[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]);
+   
+    [self savePrompt];
+    
 }
-    [self.slidingViewController anchorTopViewTo:ECRight];
+-(void)savePrompt2{
+    if ([self.recovery_email.text length]==0) {
+        if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]|| ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) {
+            
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Do you want to save the changes in your profile?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
+            [alert setTag:5021];
+            [alert show];
+            
+            
+            return;
+        }
+        [self.navigationController popViewControllerAnimated:NO];
+    }
+    else{
+        if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]||![[dictSavedInfo valueForKey:@"recovery_email"]isEqualToString:self.recovery_email.text]|| ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) {
+            
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Do you want to save the changes in your profile?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
+            [alert setTag:5021];
+            [alert show];
+            
+            
+            return;
+        }
+        [self.navigationController popViewControllerAnimated:NO];
+        
+    }
+}
+-(void)savePrompt{
+    if ([self.recovery_email.text length]==0) {
+        if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]|| ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) {
+            
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Do you want to save the changes in your profile?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
+            [alert setTag:5020];
+            [alert show];
+            
+            
+            return;
+        }
+        [self.slidingViewController anchorTopViewTo:ECRight];
+    }
+    else{
+        if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]||![[dictSavedInfo valueForKey:@"recovery_email"]isEqualToString:self.recovery_email.text]|| ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) {
+            
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Do you want to save the changes in your profile?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
+            [alert setTag:5020];
+            [alert show];
+            
+            
+            return;
+        }
+        [self.slidingViewController anchorTopViewTo:ECRight];
+        
+    }
 }
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (alertView.tag==5020 && buttonIndex==0) {
@@ -80,6 +159,13 @@
     else if(alertView.tag==5020 && buttonIndex==1){
         [self.slidingViewController anchorTopViewTo:ECRight];
     }
+    if (alertView.tag==5021 && buttonIndex==0) {
+        [self save_changes];
+    }
+    else if(alertView.tag==5021 && buttonIndex==1){
+       [self.navigationController popViewControllerAnimated:NO];
+    }
+
 }
 - (void)viewDidLoad
 {
@@ -935,7 +1021,10 @@
             [defaults synchronize];
             [self.save setEnabled:YES];
             [self.save setUserInteractionEnabled:YES];
-        
+            serve*serveOBJ=[serve new];
+            serveOBJ.tagName=@"myset";
+            [serveOBJ setDelegate:self];
+            [serveOBJ getSettings];
             if ([[user objectForKey:@"Photo"] length]>0 && [user objectForKey:@"Photo"]!=nil && !isPhotoUpdate) {
                 [picture setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
                         placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
@@ -979,6 +1068,7 @@
             }
             else
                 self.phone.text=[dictProfileinfo valueForKey:@"ContactNumber"];
+             [dictSavedInfo setObject:self.phone.text forKey:@"phoneno"];
         }
         
         else

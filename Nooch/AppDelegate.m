@@ -190,6 +190,8 @@ void exceptionHandler(NSException *exception){
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
     NSLog(@"Error in registration. Error: %@", error);
+    [[NSUserDefaults standardUserDefaults] setValue:@"123456" forKey:@"DeviceToken"];
+
 }
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
     NSLog(@"%@",notification.userInfo);
