@@ -58,42 +58,13 @@
     }
 }
 -(void) viewWillDisappear:(BOOL)animated {
-    if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
-        // Navigation button was pressed. Do some stuff
-        
-        [self savePrompt2];
-    }
+    
     [super viewWillDisappear:animated];
 }
 
 -(void)showMenu
 
 {
-    NSLog(@"%@",self.address_one.text);
-      NSLog(@"%@",self.address_two.text);
-      NSLog(@"%@",self.zip.text);
-      NSLog(@"%@",self.recovery_email.text);
-      NSLog(@"%@",self.phone.text);
-    
-    NSLog(@"%d",[self.address_one.text length]);
-    NSLog(@"%d",[self.address_two.text length]);
-    NSLog(@"%d",[self.zip.text length]);
-    NSLog(@"%d",[self.recovery_email.text length]);
-    NSLog(@"%d",[self.phone.text length]);
-    
-    NSLog(@"%d",[[dictSavedInfo valueForKey:@"Address2"] length]);
-    NSLog(@"%d",[[dictSavedInfo valueForKey:@"zip"] length]);
-    NSLog(@"%d",[[dictSavedInfo valueForKey:@"recovery_email"] length]);
-    NSLog(@"%d",[[dictSavedInfo valueForKey:@"Address1"]length]);
-    NSLog(@"%d",[[dictSavedInfo valueForKey:@"phoneno"] length]);
-
-    NSLog(@"%d",[[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]);
-    NSLog(@"%d",[[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]);
-    
-    NSLog(@"%d",[[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]);
-    NSLog(@"%d",[[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]);
-    NSLog(@"%d",[[dictSavedInfo valueForKey:@"recovery_email"]isEqualToString:self.recovery_email.text]);
-    NSLog(@"%d",[[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]);
    
     [self savePrompt];
     
@@ -109,7 +80,7 @@
             
             return;
         }
-        [self.navigationController popViewControllerAnimated:NO];
+        [self.navigationController popViewControllerAnimated:YES];
     }
     else{
         if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]||![[dictSavedInfo valueForKey:@"recovery_email"]isEqualToString:self.recovery_email.text]|| ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) {
@@ -121,7 +92,7 @@
             
             return;
         }
-        [self.navigationController popViewControllerAnimated:NO];
+        [self.navigationController popViewControllerAnimated:YES];
         
     }
 }
@@ -184,7 +155,17 @@
         UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
         [self.navigationItem setLeftBarButtonItem:menu];
     }
+    else{
+        UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeCustom];
+        [hamburger setStyleId:@"navbar_back"];
+        [hamburger setImage:[UIImage imageNamed:@"whiteBack.png"] forState:UIControlStateNormal];
+        [hamburger setImage:[UIImage imageNamed:@"whiteBack.png"] forState:UIControlStateHighlighted];
 
+        [hamburger addTarget:self action:@selector(savePrompt2) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+        [self.navigationItem setLeftBarButtonItem:menu];
+
+    }
     if (!isSignup) {
         [self.slidingViewController.panGesture setEnabled:YES];
         [self.view addGestureRecognizer:self.slidingViewController.panGesture];
@@ -518,11 +499,7 @@
     timezoneStandard = [GMTTimezonesDictionary objectForKey:timezoneStandard];
     timezoneStandard = @"";
 
-    //    if ([self.phone.text length]!=10) {
-    //        UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"NoochMoney" message:@"Enter valid 10 digit Cell Number" delegate:nil cancelButtonTitle:@"OK"otherButtonTitles:nil, nil];
-    //        [alert show];
-    //        return;
-    //    }
+   
 
     recoverMail = [[NSString alloc] init];
 

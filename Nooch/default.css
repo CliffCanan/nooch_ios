@@ -90,7 +90,12 @@
 			font-family : "FontAwesome";
 			font-size     : 24px;
         }
-        
+        #navbar_back {
+			width       :  30px;
+            height      : 30px;
+			font-family : "FontAwesome";
+			font-size     : 24px;
+        }
         /******************************/
 	 /******	 BANNERS	********/
 	 /******************************/
