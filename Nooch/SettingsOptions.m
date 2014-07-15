@@ -243,6 +243,7 @@
     if (alertView.tag == 2) {
         if (buttonIndex == 0) {
             //proceed to unlink
+            
         } else if (buttonIndex == 1) {
             //cancel
         }

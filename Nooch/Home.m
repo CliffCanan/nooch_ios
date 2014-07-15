@@ -33,6 +33,7 @@ NSMutableURLRequest *request;
 @property(nonatomic,strong) MBProgressHUD *hud;
 @property(nonatomic,strong) UIView *suspended;
 @property(nonatomic,strong) UIView *profile_incomplete;
+@property(nonatomic,strong) UIView *phone_incomplete;
 @property(nonatomic,strong) UIView *phone_unverified;
 @property(nonatomic,strong) iCarousel *carousel;
 @property(nonatomic,strong) NSMutableArray *favorites;
@@ -175,6 +176,13 @@ NSMutableURLRequest *request;
 
 -(void)dismiss_suspended_alert {
     [self.suspended removeFromSuperview];
+    CGRect rect= self.profile_incomplete.frame;
+    rect.origin.y-=70;
+    self.profile_incomplete.frame=rect;
+    
+    CGRect rect2= self.phone_incomplete.frame;
+    rect2.origin.y-=70;
+    self.phone_incomplete.frame=rect2;
 }
 
 -(void)contact_support
@@ -200,8 +208,17 @@ NSMutableURLRequest *request;
 
 -(void)dismiss_profile_unvalidated {
     [self.profile_incomplete removeFromSuperview];
+   
+    
+    CGRect rect2= self.phone_incomplete.frame;
+    rect2.origin.y-=70;
+    self.phone_incomplete.frame=rect2;
 }
-
+-(void)dismiss_phone_unvalidated {
+    [self.phone_unverified removeFromSuperview];
+    
+   
+}
 -(void)go_profile
 {
     ProfileInfo *info = [ProfileInfo new];
@@ -223,8 +240,9 @@ NSMutableURLRequest *request;
 }
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    
+    int bannerAlert=0;
     if ([[user objectForKey:@"Status"] isEqualToString:@"Suspended"]) {
+        bannerAlert++;
         [self.suspended removeFromSuperview];
         self.suspended = [UIView new];
         [self.suspended setStyleId:@"suspended_home"];
@@ -259,12 +277,22 @@ NSMutableURLRequest *request;
         
         [self.view addSubview:self.suspended];
     }
-    
-   else if (![[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
+    else if(![[user objectForKey:@"Status"] isEqualToString:@"Suspended"] && ![[user objectForKey:@"Status"] isEqualToString:@"Registered"]&& ![[user valueForKey:@"Status"]isEqualToString:@"Active"]){
+         [self.suspended removeFromSuperview];
+        bannerAlert--;
+    }
+   else if (![[user valueForKey:@"Status"]isEqualToString:@"Active"]|| [[user objectForKey:@"Status"] isEqualToString:@"Registered"]) {
+      
        [self.profile_incomplete removeFromSuperview];
         self.profile_incomplete = [UIView new];
-        [self.profile_incomplete setStyleId:@"email_unverified"];
-        
+       [self.profile_incomplete setStyleId:@"email_unverified"];
+       if (bannerAlert>0) {
+           CGRect rect= self.profile_incomplete.frame;
+           rect.origin.y+=70;
+           self.profile_incomplete.frame=rect;
+       }
+        bannerAlert++;
+      
         UILabel *em = [UILabel new];
         [em setStyleClass:@"banner_header"];
         [em setText:@"Profile Not Validated"];
@@ -296,8 +324,56 @@ NSMutableURLRequest *request;
         
         [self.view addSubview:self.profile_incomplete];
     }
+     else if ([[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
+         bannerAlert--;
+    [self.profile_incomplete removeFromSuperview];
 
-    
+     }
+      if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+          [self.phone_incomplete removeFromSuperview];
+          self.phone_incomplete = [UIView new];
+          [self.phone_incomplete setStyleId:@"phone_unverified"];
+          
+          if (bannerAlert>0) {
+              CGRect rect= self.phone_incomplete.frame;
+              rect.origin.y+=70;
+              self.phone_incomplete.frame=rect;
+          }
+           bannerAlert++;
+          UILabel *em = [UILabel new];
+          [em setStyleClass:@"banner_header"];
+          [em setText:@"Phone Not Verified"];
+          [self.phone_incomplete addSubview:em];
+          
+          UILabel *em_exclaim = [UILabel new];
+          [em_exclaim setStyleClass:@"banner_alert_glyph"];
+          [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
+          [self.phone_incomplete addSubview:em_exclaim];
+          
+          UILabel *em_info = [UILabel new];
+          [em_info setStyleClass:@"banner_info"];
+          [em_info setNumberOfLines:0];
+          [em_info setText:@"Please verify your phone to unlock all \n features."];
+          [self.phone_incomplete addSubview:em_info];
+          
+          UIButton *go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+          [go setStyleClass:@"go_now"];
+          [go setTitle:@"Go Now" forState:UIControlStateNormal];
+          [go addTarget:self action:@selector(go_profile) forControlEvents:UIControlEventTouchUpInside];
+          [self.phone_incomplete addSubview:go];
+          
+          UIButton *dis = [UIButton buttonWithType:UIButtonTypeCustom];
+          [dis setStyleClass:@"dismiss_banner"];
+          [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
+          [dis addTarget:self action:@selector(dismiss_phone_unvalidated) forControlEvents:UIControlEventTouchUpInside];
+          
+          [self.phone_incomplete addSubview:dis];
+          
+          [self.view addSubview:self.phone_incomplete];
+      }
+      else{
+          [self.profile_incomplete removeFromSuperview];
+      }
     [_carousel removeFromSuperview];
     _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 50, 320, 150)];
     _carousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
