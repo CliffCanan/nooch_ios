@@ -132,10 +132,18 @@
         [spinner startAnimating];
         self.pinNumber=[NSString stringWithFormat:@"%@%@",textField.text,string];
         serve *pin = [serve new];
+        
         pin.Delegate = self;
-        pin.tagName = @"infopin";
-        //[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]
-        [pin getDetails:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]];
+        
+        pin.tagName = @"ValidatePinNumber";
+        
+        [pin getEncrypt:[NSString stringWithFormat:@"%@",self.pinNumber]];
+        
+//        serve *pin = [serve new];
+//        pin.Delegate = self;
+//        pin.tagName = @"infopin";
+//        //[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]
+//        [pin getDetails:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]];
         
     }
     return YES;
@@ -222,6 +230,8 @@
         }
     }
     else if ([tagName isEqualToString:@"ValidatePinNumber"]) {
+        [spinner stopAnimating];
+        [spinner setHidden:YES];
         NSString *encryptedPIN=[dictResult valueForKey:@"Status"];
         
         serve *checkValid = [serve new];

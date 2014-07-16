@@ -1731,9 +1731,9 @@ NSString *amnt;
     
     NSMutableDictionary *knox_input = [NSMutableDictionary new];
     [knox_input setObject:[defaults objectForKey:@"MemberId"] forKey:@"MemberId"];
-    [knox_input setObject:trans_id forKey:@"trans_id"];
+    [knox_input setObject:trans_id forKey:@"TransId"];
     
-    [dictInv setObject:@"personal" forKey:@"inviteType"];
+    [dictInv setObject:knox_input forKey:@"KNoxInput"];
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
     
     NSError *error;

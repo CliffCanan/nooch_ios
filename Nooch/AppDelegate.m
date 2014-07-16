@@ -241,16 +241,25 @@ void exceptionHandler(NSException *exception){
 
 -(BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
+    NSLog(@"%@",url);
     //Get the Response from Knox and parse it
     NSString *response = [[url absoluteString]stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSArray *URLParse = [response componentsSeparatedByString:@"?"];
+    NSLog(@"%@",URLParse);
     NSString *responseBody = URLParse[1];
+     NSLog(@"%@",responseBody);
     NSArray *responseParse = [responseBody componentsSeparatedByString:@"&"];
     //Parse the components of the response
+      NSLog(@"%@",responseParse);
     NSArray *isPaid = [responseParse[0] componentsSeparatedByString:@"pst="][1];
-    NSString *paymentID = [responseParse[1] componentsSeparatedByString:@"pay_id="][1];
+      NSLog(@"%@",isPaid);
+    NSString *paymentID = [responseParse[2] componentsSeparatedByString:@"pay_id="][1];
     //Components of response are Logged here - you may want to store them in your Database or check to make sure the reponse includes "Paid"
     NSLog(@"fired in Delegate - URL Encoded %@ %@", isPaid, paymentID);
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    [defaults setObject:isPaid forKey:@"isPaid"];
+    [defaults setObject:paymentID forKey:@"paymentID"];
+    [defaults synchronize];
     //Handle the response using our private API
     //    NSString *apiURL = [NSString stringWithFormat:@"http://paidez.com/api/trz.php?trans_id=%@",paymentID];
     //    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];

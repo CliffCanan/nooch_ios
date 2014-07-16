@@ -9,7 +9,7 @@
 #import "knoxWeb.h"
 #import "ProfileInfo.h"
 #import "Home.h"
-@interface knoxWeb ()
+@interface knoxWeb ()<serveD>
 {
     NSString *jsonString;
 }
@@ -66,11 +66,33 @@
 }
 
 - (void)resignView {
+    serve*obj=[serve new];
+    obj.tagName=@"saveMemberTransId";
+    [obj setDelegate:self];
+    [obj saveMemberTransId:[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"]];
+    
+    
     [nav_ctrl popViewControllerAnimated:NO];
     ProfileInfo *profile = [ProfileInfo new];
     [nav_ctrl pushViewController:profile animated:YES];
 }
-
+#pragma mark - server delegation
+- (void) listen:(NSString *)result tagName:(NSString *)tagName
+{
+        NSError *error;
+    
+    if ([tagName isEqualToString:@"saveMemberTransId"]) {
+        NSDictionary*dictResponse=[NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        if ([[[dictResponse valueForKey:@"SaveMemberTransIdResult"]valueForKey:@"Result"]isEqualToString:@"Success"]) {
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Whooo" message:@"Bank Successfully Linked" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            [alert show];
+        }
+        else{
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Try Lator" message:@"Bank Linking failure" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            [alert show];
+        }
+    }
+}
 #pragma mark - webview delegation
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
