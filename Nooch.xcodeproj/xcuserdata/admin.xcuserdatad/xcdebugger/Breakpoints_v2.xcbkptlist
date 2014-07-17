@@ -394,27 +394,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/Register.m"
-            timestampString = "427098126.77666"
+            timestampString = "427283121.209375"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
-            landmarkName = "-connect_to_facebook"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nooch/Register.m"
-            timestampString = "427098132.610387"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "191"
-            endingLineNumber = "191"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
             landmarkName = "-renewFb"
             landmarkType = "5">
             <Locations>
@@ -425,11 +409,11 @@
                   symbolName = "-[Register renewFb]"
                   moduleName = "Nooch"
                   urlString = "file:///Users/admin/Desktop/nooch_JULY2014/nooch_ios/Nooch/Register.m"
-                  timestampString = "427200098.690001"
+                  timestampString = "427288358.840109"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "191"
-                  endingLineNumber = "191"
+                  startingLineNumber = "203"
+                  endingLineNumber = "203"
                   offsetFromSymbolStart = "18">
                </Location>
                <Location
@@ -439,11 +423,11 @@
                   symbolName = "__19-[Register renewFb]_block_invoke"
                   moduleName = "Nooch"
                   urlString = "file:///Users/admin/Desktop/nooch_JULY2014/nooch_ios/Nooch/Register.m"
-                  timestampString = "427200098.690161"
+                  timestampString = "427288358.840349"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "210"
-                  endingLineNumber = "210"
+                  startingLineNumber = "222"
+                  endingLineNumber = "222"
                   offsetFromSymbolStart = "32">
                </Location>
             </Locations>
@@ -456,11 +440,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/Register.m"
-            timestampString = "427098134.762347"
+            timestampString = "427283121.209375"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "214"
-            endingLineNumber = "214"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
             landmarkName = "-finishFb"
             landmarkType = "5">
          </BreakpointContent>
@@ -606,6 +590,38 @@
             startingLineNumber = "1723"
             endingLineNumber = "1723"
             landmarkName = "-saveMemberTransId:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/Register.m"
+            timestampString = "427283121.209375"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "266"
+            endingLineNumber = "266"
+            landmarkName = "-continue_to_signup"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/AppDelegate.m"
+            timestampString = "427288192.641045"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "145"
+            endingLineNumber = "145"
+            landmarkName = "-applicationWillEnterForeground:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

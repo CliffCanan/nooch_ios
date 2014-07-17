@@ -10,10 +10,10 @@
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
 #import "serve.h"
-
-@interface Register : UIViewController<UITextFieldDelegate,serveD>
+#import "MBProgressHUD.h"
+@interface Register : UIViewController<UITextFieldDelegate,serveD,MBProgressHUDDelegate>
 {
     UIActivityIndicatorView*spinner;
 }
-
+@property(nonatomic,strong) MBProgressHUD *hud;
 @end
