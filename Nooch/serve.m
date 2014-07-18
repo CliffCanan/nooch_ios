@@ -1815,6 +1815,17 @@ NSString *amnt;
     if (!connectionList)
         NSLog(@"connect error");
 }
-
+-(void)SendReminderToRecepient:(NSString *)transactionId {
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSString *urlString = [NSString stringWithFormat:@"%@/SendReminderToRecepient?MemberId=%@&accesstoken=%@&transactionId=%@",ServerUrl,[defaults objectForKey:@"MemberId"],[defaults objectForKey:@"OAuthToken"],transactionId];
+    NSURL *url = [NSURL URLWithString:urlString];
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+}
 
 @end

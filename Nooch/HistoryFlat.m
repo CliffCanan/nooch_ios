@@ -1809,8 +1809,6 @@ return customView;
     
     NSError *error;
    
-    //[spinner removeFromSuperview];
-    //Rlease memory cache
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     [imageCache clearMemory];
     [imageCache clearDisk];
@@ -1974,6 +1972,13 @@ return customView;
         [self.view bringSubviewToFront:exportHistory];
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
     }
+    else if ([tagName isEqualToString:@"remind"]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Success!" message:@"Reminder Sent Successfully!!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        
+    }
+
+    
 }
 #pragma mark Exporting History
 - (IBAction)ExportHistory:(id)sender {
@@ -2010,11 +2015,12 @@ return customView;
         serveObj.tagName=@"reject";
         [serveObj CancelRejectTransaction:[self.responseDict valueForKey:@"TransactionId"] resp:@"Rejected"];
     }
-	// ADDED BY CLIFF
+	// ADDED BY CLIFF Edited By Baljeet
 	else if (actionSheet.tag==1012 && buttonIndex==0) {
         serve*serveObj=[serve new];
         [serveObj setDelegate:self];
         serveObj.tagName=@"remind";
+        [serveObj SendReminderToRecepient:[self.responseDict valueForKey:@"TransactionId"]];
         // NEED TO ADD SERVER CALL
     }
     else if (actionSheet.tag == 50 && buttonIndex == 1) {

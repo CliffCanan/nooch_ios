@@ -119,6 +119,7 @@
 -(void)resendEmail;
 -(void)show_in_search:(BOOL)show;
 -(void)cancel_invite:(NSString*)transaction;
+-(void)SendReminderToRecepient:(NSString *)transactionId;
 @end
 
 //392f9c86-1651-4459-a6a9-d362fcfc4366 - nooch team

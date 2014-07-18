@@ -277,7 +277,7 @@ NSMutableURLRequest *request;
         
         [self.view addSubview:self.suspended];
     }
-    else if(![[user objectForKey:@"Status"] isEqualToString:@"Suspended"] && ![[user objectForKey:@"Status"] isEqualToString:@"Registered"]&& ![[user valueForKey:@"Status"]isEqualToString:@"Active"]){
+    else if(![[user objectForKey:@"Status"] isEqualToString:@"Suspended"] && ![[user objectForKey:@"Status"] isEqualToString:@"Registered"]&& [[user valueForKey:@"Status"]isEqualToString:@"Active"]){
          [self.suspended removeFromSuperview];
         bannerAlert--;
     }
@@ -326,7 +326,8 @@ NSMutableURLRequest *request;
     }
      else if ([[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
          bannerAlert--;
-    [self.profile_incomplete removeFromSuperview];
+         [self.profile_incomplete removeFromSuperview];
+         [self.suspended removeFromSuperview];
 
      }
       if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
@@ -372,7 +373,7 @@ NSMutableURLRequest *request;
           [self.view addSubview:self.phone_incomplete];
       }
       else{
-          [self.profile_incomplete removeFromSuperview];
+          [self.phone_incomplete removeFromSuperview];
       }
     [_carousel removeFromSuperview];
     _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 50, 320, 150)];
