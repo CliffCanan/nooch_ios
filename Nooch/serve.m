@@ -550,6 +550,15 @@ NSString *amnt;
     if (!connection)
         NSLog(@"connect error");
 }
+-(void)ValidatePinNumberToEnterForEnterForeground:(NSString*)memId pin:(NSString*)pin{
+    self.responseData = [NSMutableData data];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&accessToken=%@", ServerUrl, @"ValidatePinNumberToEnterForEnterForeground", @"memberId", memId, @"pinNo", pin,[[NSUserDefaults standardUserDefaults] objectForKey:@"OAuthToken"]]]];
+    [request setTimeoutInterval:50.0f];
+    
+    NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
+    if (!connection)
+        NSLog(@"connect error");
+}
 -(void)pinCheck:(NSString*)memId pin:(NSString*)pin{
     self.responseData = [NSMutableData data];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&accessToken=%@", ServerUrl, @"ValidatePinNumber", @"memberId", memId, @"pinNo", pin,[[NSUserDefaults standardUserDefaults] objectForKey:@"OAuthToken"]]]];

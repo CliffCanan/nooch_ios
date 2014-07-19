@@ -561,7 +561,7 @@
                 if ([self.type isEqualToString:@"request"]) {
                     urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyFromNonNoochUser"];
                 } else {
-                    urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUser"];
+                    urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserUsingKnox"];
                 }
                 urlTransfer = [NSURL URLWithString:urlStrTranfer];
                 requestTransfer = [[NSMutableURLRequest alloc] initWithURL:urlTransfer];
@@ -711,6 +711,7 @@
                 transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
             }
         }
+        NSLog(@"%@",transactionTransfer);
         postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
                                                        options:NSJSONWritingPrettyPrinted error:&error];;
         postLengthTransfer = [NSString stringWithFormat:@"%d", [postTransfer length]];
@@ -720,7 +721,7 @@
             urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoney"];
         }
         else{
-            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoney"];
+            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyUsingKnox"];
         }
         urlTransfer = [NSURL URLWithString:urlStrTranfer];
         requestTransfer = [[NSMutableURLRequest alloc] initWithURL:urlTransfer];
@@ -931,11 +932,12 @@
                          JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                          options:kNilOptions
                          error:&error];
+   
     
     NSLog(@"%@",responseString);
     if ([self.receiver valueForKey:@"nonuser"]) {
         
-        if ([[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserResult"] valueForKey:@"Result"]isEqualToString:@"Your cash was sent successfully"]) {
+        if ([[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Your cash was sent successfully"]) {
             [[assist shared] setTranferImage:nil];
             UIImage*imgempty=[UIImage imageNamed:@""];
             [[assist shared] setTranferImage:imgempty];
@@ -945,6 +947,7 @@
             return;
         }
     }
+    
     if ([self.type isEqualToString:@"send"]) {
         if (![[dictResultTransfer objectForKey:@"trnsactionId"] isKindOfClass:[NSNull class]])
             transactionId=[dictResultTransfer valueForKey:@"trnsactionId"];

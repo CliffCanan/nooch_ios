@@ -2268,7 +2268,7 @@
     .details_button_center {
 		left			: 10px;
 		top				: 430px;
-		width			: 300px;
+		width			: 148px;
         height			: 50px;
         color 			: white;
 		border-radius	: 4px;
@@ -2281,6 +2281,23 @@
 		animation-duration: 1.3s;
 		animation-timing-function: ease-out;
 	}
+    .details_button_center_remind {
+		left			: 160px;
+		top				: 430px;
+		width			: 148px;
+        height			: 50px;
+        color 			: white;
+		border-radius	: 4px;
+		font-family		: "Roboto";
+		font-weight     : light;
+		font-size		: 22px;
+        background-image: linear-gradient(#3fabe1, #3fabee);
+		
+		animation-name: moveUp_transDetailsBtns;
+		animation-duration: 1.3s;
+		animation-timing-function: ease-out;
+	}
+
 
 	/**  Circle Buttons at the bottom ('Pay Back'  FB  Twitter  'Dispute' **/
 	.details_buttons {

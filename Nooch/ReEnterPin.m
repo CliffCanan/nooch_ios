@@ -237,9 +237,9 @@
         serve *checkValid = [serve new];
         checkValid.tagName = @"checkValid";
         checkValid.Delegate = self;
-        [checkValid pinCheck:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] pin:encryptedPIN];
+        [checkValid ValidatePinNumberToEnterForEnterForeground:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] pin:encryptedPIN];
     }
-#pragma mark 9jan
+#pragma mark 9jan 
     else if ([tagName isEqualToString:@"checkValid"]){
         if([[dictResult objectForKey:@"Result"] isEqualToString:@"Success"]){
             NSLog(@"%@",user);

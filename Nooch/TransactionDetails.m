@@ -252,8 +252,8 @@
             UIButton *pay = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [pay setStyleClass:@"details_button_left"];
 
-            UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-
+              UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+              UIButton *remind = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             if ([[self.trans objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
                 if (![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] && ![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
                     [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
@@ -262,8 +262,14 @@
                     [cancel setEnabled:YES];
                     [cancel addTarget:self action:@selector(cancel_request) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:cancel];
+                    [remind setTitle:@"Cancel" forState:UIControlStateNormal];
+                    [remind setStyleClass:@"details_button_center_remind"];
+                    [remind setTag:14];
+                    [remind setEnabled:YES];
+                    [remind addTarget:self action:@selector(remind_friend) forControlEvents:UIControlEventTouchUpInside];
+                    [self.view addSubview:remind];
                 }
-            } 
+            }
             else {
                 if (![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]&& ![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
                     [cancel setStyleClass:@"details_button_right"];
@@ -331,6 +337,12 @@
     serveOBJ.tagName=@"tranDetail";
     [serveOBJ setDelegate:self];
     [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
+}
+-(void)remind_friend{
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder" message:@"Send a reminder about this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+   
+    [av setTag:1012];
+     [av show];
 }
 -(void)Map_LightBox{
     overlay=[[UIView alloc]init];
@@ -667,7 +679,15 @@
 }
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (alertView.tag == 1) {
+    if (alertView.tag==1012 && buttonIndex==0) {
+        serve*serveObj=[serve new];
+        [serveObj setDelegate:self];
+        serveObj.tagName=@"remind";
+        [serveObj SendReminderToRecepient:[self.trans valueForKey:@"TransactionId"]];
+       
+    }
+    
+    else if (alertView.tag == 1) {
         if (buttonIndex == 0) {
             self.responseData = [NSMutableData data];
             NSMutableDictionary*dict=[[NSMutableDictionary alloc] init];            
@@ -713,7 +733,8 @@
         [serveObj setDelegate:self];
         serveObj.tagName=@"reject";
         [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Rejected"];
-    } 
+    }
+  
     else if (alertView.tag == 50 && buttonIndex == 1) {
         if (![MFMailComposeViewController canSendMail]){
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't seem to have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -741,7 +762,7 @@
         [alert show];
         [nav_ctrl popViewControllerAnimated:YES];
     }
-    if ([tagName isEqualToString:@"tranDetail"]) {
+    else if ([tagName isEqualToString:@"tranDetail"]) {
         [blankView removeFromSuperview];
         NSError *error;
 
@@ -993,6 +1014,11 @@
             [balance setStyleId:@"navbar_balance"];
             [self.navigationItem setRightBarButtonItem:Nil];
         }
+    }
+    else if ([tagName isEqualToString:@"remind"]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Success!" message:@"Reminder Sent Successfully!!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        
     }
 }
 - (void)didReceiveMemoryWarning {
