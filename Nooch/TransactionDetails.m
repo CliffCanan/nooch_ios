@@ -262,7 +262,7 @@
                     [cancel setEnabled:YES];
                     [cancel addTarget:self action:@selector(cancel_request) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:cancel];
-                    [remind setTitle:@"Cancel" forState:UIControlStateNormal];
+                    [remind setTitle:@"Remind" forState:UIControlStateNormal];
                     [remind setStyleClass:@"details_button_center_remind"];
                     [remind setTag:14];
                     [remind setEnabled:YES];

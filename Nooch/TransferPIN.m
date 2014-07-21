@@ -871,9 +871,12 @@
                 [input setObject:MemberId forKey:@"RecepientId"];
                 [input setObject:ResID forKey:@"MemberId"];
                 NSLog(@"%@",input);
+                [input setObject:dictResultTransfer[@"requestId"] forKey:@"TransactionId"];
                 // [input setObject:ResID forKey:@"SenderId"];
             }
-            [input setObject:dictResultTransfer[@"trnsactionId"] forKey:@"TransactionId"];
+            else if([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Send"]){
+                 [input setObject:dictResultTransfer[@"trnsactionId"] forKey:@"TransactionId"];
+            }
             if ([self.receiver objectForKey:@"nonuser"]) {
                 [input setObject:@"Invite" forKey:@"TransactionType"];
                 [input setObject:[self.receiver objectForKey:@"email"] forKey:@"InvitationSentTo"];
@@ -957,19 +960,21 @@
             transactionId=[dictResultTransfer valueForKey:@"requestId"];
     }
 
-    //TransactionId
-    if (![transactionId isKindOfClass:[NSNull class]] && transactionId!=NULL) {
-        [transactionInputTransfer setObject:transactionId forKey:@"TransactionId"];
-    }
+    
     if ([self.receiver valueForKey:@"FirstName"]!=NULL || [self.receiver valueForKey:@"LastName"]!=NULL) {
         [transactionInputTransfer setObject:[self.receiver valueForKey:@"FirstName"] forKey:@"FirstName"];
         [transactionInputTransfer setObject:[self.receiver valueForKey:@"LastName"] forKey:@"LastName"];
         
     }
     self.trans = [transactionInputTransfer copy];
+    resultValueTransfer = [dictResultTransfer valueForKey:@"TransferMoneyUsingKnoxResult"];
+     if ([[resultValueTransfer valueForKey:@"Result"] isEqualToString:@"Recepient does not have any active bank account."]) {
+         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Transfer Failed" message:@"Recepient does not have any active bank account." delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
+        
+         [av show];
 
-    resultValueTransfer = [dictResultTransfer valueForKey:@"TransferMoneyResult"];
-    if ([[resultValueTransfer valueForKey:@"Result"] isEqualToString:@"Your cash was sent successfully"]) {
+     }
+    else if ([[resultValueTransfer valueForKey:@"Result"] isEqualToString:@"Your cash was sent successfully"]) {
         [[assist shared] setTranferImage:nil];
         UIImage*imgempty=[UIImage imageNamed:@""];
         [[assist shared] setTranferImage:imgempty];
@@ -1024,6 +1029,7 @@
         transferFinished = YES;
         sendingMoney = NO;
         [av setTag:1];
+        
     }
     else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request processed successfully."]) {
         [[assist shared] setTranferImage:nil];
