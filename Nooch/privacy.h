@@ -10,7 +10,7 @@
 #import "serve.h"
 
 
-@interface privacy : UIViewController <serveD>
+@interface privacy : UIViewController <serveD,UIWebViewDelegate>
 
 @property(nonatomic, retain) IBOutlet UIWebView *privacyView;
 @property (retain,nonatomic) IBOutlet UIActivityIndicatorView *spinner;

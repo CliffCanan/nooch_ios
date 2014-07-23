@@ -50,12 +50,39 @@
     privacyView.opaque = 0;
     spinner.hidesWhenStopped = YES;
     [spinner startAnimating];
+    self.navigationItem.title = @"Privacy Policy";
+    NSURL *webURL = [NSURL URLWithString:@"https://www.nooch.com/privacy/"];
+    privacyView=[[UIWebView alloc]initWithFrame:self.view.frame];
+    privacyView.delegate = self;
+    
+    [privacyView loadRequest:[NSURLRequest requestWithURL:webURL]];
+    privacyView.scalesPageToFit = YES;
+    
+    privacyView.scrollView.hidden = NO;
+    [privacyView setMultipleTouchEnabled:YES];
+    [self.view addSubview:privacyView];
+    // Do any additional setup after loading the view.
+}
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    return YES;
+}
 
-    [self navCustomization];
 
-    serve *pp = [serve new];
-    pp.Delegate = self;
-    [pp privacyPolicy];
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    return ;
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = NO;
+}
+-(void)webViewDidStartLoad:(UIWebView *) portal {
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
+}
+-(void)webViewDidFinishLoad:(UIWebView *) portal{
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = NO;
+    [self.navigationItem setRightBarButtonItem:nil];
 }
 
 -(void)navCustomization

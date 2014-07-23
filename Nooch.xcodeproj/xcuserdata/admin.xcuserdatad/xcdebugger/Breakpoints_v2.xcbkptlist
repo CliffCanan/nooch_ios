@@ -393,7 +393,7 @@
                   symbolName = "-[Register renewFb]"
                   moduleName = "Nooch"
                   urlString = "file:///Users/admin/Desktop/nooch_JULY2014/nooch_ios/Nooch/Register.m"
-                  timestampString = "427634138.516712"
+                  timestampString = "427783357.948178"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "203"
@@ -407,7 +407,7 @@
                   symbolName = "__19-[Register renewFb]_block_invoke"
                   moduleName = "Nooch"
                   urlString = "file:///Users/admin/Desktop/nooch_JULY2014/nooch_ios/Nooch/Register.m"
-                  timestampString = "427634138.516906"
+                  timestampString = "427783357.948346"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "222"
@@ -632,27 +632,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/ReEnterPin.m"
-            timestampString = "427369747.940942"
+            timestampString = "427785137.023541"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "152"
-            endingLineNumber = "152"
-            landmarkName = "-listen:tagName:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nooch/ReEnterPin.m"
-            timestampString = "427369769.419836"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "244"
-            endingLineNumber = "244"
+            startingLineNumber = "245"
+            endingLineNumber = "245"
             landmarkName = "-listen:tagName:"
             landmarkType = "5">
          </BreakpointContent>

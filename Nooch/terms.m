@@ -46,19 +46,53 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-    spinner.hidesWhenStopped = YES;
-    [spinner startAnimating];
+    self.title=@"User Agreement";
+//    spinner.hidesWhenStopped = YES;
+//    [spinner startAnimating];
+//    
+//    termsView.backgroundColor = [UIColor clearColor];
+//    termsView.opaque = 0;
+//    
+//    [self navCustomization];
+//    self.navigationItem.title = @"Terms of Service";
+//
+//    serve *tos = [serve new];
+//    tos.Delegate = self;
+//    [tos tos];
+    NSURL *webURL = [NSURL URLWithString:@"https://www.nooch.com/tos"];
+    termsView=[[UIWebView alloc]initWithFrame:self.view.frame];
+    termsView.delegate = self;
     
-    termsView.backgroundColor = [UIColor clearColor];
-    termsView.opaque = 0;
-    
-    [self navCustomization];
-    self.navigationItem.title = @"Terms of Service";
-
-    serve *tos = [serve new];
-    tos.Delegate = self;
-    [tos tos];
+    [termsView loadRequest:[NSURLRequest requestWithURL:webURL]];
+    termsView.scalesPageToFit = YES;
+   
+    termsView.scrollView.hidden = NO;
+    [termsView setMultipleTouchEnabled:YES];
+    [self.view addSubview:termsView];
+    // Do any additional setup after loading the view.
 }
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    return YES;
+}
+
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    return ;
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = NO;
+}
+-(void)webViewDidStartLoad:(UIWebView *) portal {
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
+}
+-(void)webViewDidFinishLoad:(UIWebView *) portal{
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = NO;
+    [self.navigationItem setRightBarButtonItem:nil];
+}
+
 
 -(void)navCustomization
 {

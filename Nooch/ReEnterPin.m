@@ -48,11 +48,12 @@
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
     
-    //    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 280, 50)];
-    //    [self.prompt setNumberOfLines:2];
-    //    [self.prompt setText:@"Require Immediately is enabled, please enter your PIN to continue."];
-    //    [self.prompt setStyleClass:@"instruction_text"];
-    //    [self.view addSubview:self.prompt];
+//        self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 280, 50)];
+//        [self.prompt setNumberOfLines:2];
+//       // [self.prompt setText:@"Require Immediately is enabled, please enter your PIN to continue."];
+//        [self.prompt setText:@""];
+//        [self.prompt setStyleClass:@"instruction_text"];
+//        [self.view addSubview:self.prompt];
     
     self.pin = [UITextField new]; [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
     [self.pin setDelegate:self]; [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
@@ -254,80 +255,97 @@
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
                 NSLog(@"yuppppp");
-                // reqImm = NO;
+              
                 [self dismissViewControllerAnimated:YES completion:nil];
-                //[self dismissModalViewControllerAnimated:YES];
+                
                 return;
             }
         }
         
         else{
-            
+          
             [self.fourth_num setBackgroundColor:[UIColor clearColor]];
             [self.third_num setBackgroundColor:[UIColor clearColor]];
             [self.second_num setBackgroundColor:[UIColor clearColor]];
             [self.first_num setBackgroundColor:[UIColor clearColor]];
             self.pin.text=@"";
+            if([[dictResult objectForKey:@"Result"] isEqualToString:@"Invalid Pin"]){
+                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+                self.prompt.textColor = kNoochRed;
+                self.fourth_num.layer.borderColor = kNoochRed.CGColor;
+                self.third_num.layer.borderColor = kNoochRed.CGColor;
+                self.second_num.layer.borderColor = kNoochRed.CGColor;
+                self.first_num.layer.borderColor = kNoochRed.CGColor;
+                [self.fourth_num setStyleClass:@"shakePin4"];
+                [self.third_num setStyleClass:@"shakePin3"];
+                [self.second_num setStyleClass:@"shakePin2"];
+                [self.first_num setStyleClass:@"shakePin1"];
+                self.prompt.text=@"Invalid Pin.";
+                self.prompt.textColor = [UIColor colorWithRed:169.0/255.0 green:68/255.0 blue:66/255.0 alpha:1];
+                [spinner stopAnimating];
+                [spinner setHidden:YES];
+            }
+            
         }
         
-        if([[dictResult objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]){
-            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-            self.prompt.textColor = kNoochRed;
-            self.fourth_num.layer.borderColor = kNoochRed.CGColor;
-            self.third_num.layer.borderColor = kNoochRed.CGColor;
-            self.second_num.layer.borderColor = kNoochRed.CGColor;
-            self.first_num.layer.borderColor = kNoochRed.CGColor;
-            [self.fourth_num setStyleClass:@"shakePin4"];
-            [self.third_num setStyleClass:@"shakePin3"];
-            [self.second_num setStyleClass:@"shakePin2"];
-            [self.first_num setStyleClass:@"shakePin1"];
-            self.prompt.text=@"1 failed attempt.";
-            self.prompt.textColor = [UIColor colorWithRed:169.0/255.0 green:68/255.0 blue:66/255.0 alpha:1];
-            [spinner stopAnimating];
-            [spinner setHidden:YES];
-        }else if([[dictResult objectForKey:@"Result"]isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]){
-            [spinner stopAnimating];
-            [spinner setHidden:YES];
-            self.fourth_num.layer.borderColor = kNoochRed.CGColor;
-            self.third_num.layer.borderColor = kNoochRed.CGColor;
-            self.second_num.layer.borderColor = kNoochRed.CGColor;
-            self.first_num.layer.borderColor = kNoochRed.CGColor;
-            [self.fourth_num setStyleClass:@"shakePin4"];
-            [self.third_num setStyleClass:@"shakePin3"];
-            [self.second_num setStyleClass:@"shakePin2"];
-            [self.first_num setStyleClass:@"shakePin1"];
-            self.prompt.text=@"2nd failed attempt.";
-            UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:nil message:@"For security protection, your account will be suspended for 24 hours if you enter wrong PIN number again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            [suspendedAlert show];
-            
-        }else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))            {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
-            [av setTag:202320];
-            [av show];
-            [spinner stopAnimating];
-            [spinner setHidden:YES];
-            [[assist shared]setSusPended:YES];
-            self.fourth_num.layer.borderColor = kNoochRed.CGColor;
-            self.third_num.layer.borderColor = kNoochRed.CGColor;
-            self.second_num.layer.borderColor = kNoochRed.CGColor;
-            self.first_num.layer.borderColor = kNoochRed.CGColor;
-            [self.fourth_num setStyleClass:@"shakePin4"];
-            [self.third_num setStyleClass:@"shakePin3"];
-            [self.second_num setStyleClass:@"shakePin2"];
-            [self.first_num setStyleClass:@"shakePin1"];
-            self.prompt.text=@"Account suspended.";
-            
-        }else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])){
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
-
-            [av setTag:202320];
-            [av show];
-            [[assist shared]setSusPended:YES];
-            [spinner stopAnimating];
-            [spinner setHidden:YES];
-            self.prompt.text=@"Account suspended.";
-            
-        }
+//        if([[dictResult objectForKey:@"Result"] isEqualToString:@"Invalid Pin"]){
+//            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+//            self.prompt.textColor = kNoochRed;
+//            self.fourth_num.layer.borderColor = kNoochRed.CGColor;
+//            self.third_num.layer.borderColor = kNoochRed.CGColor;
+//            self.second_num.layer.borderColor = kNoochRed.CGColor;
+//            self.first_num.layer.borderColor = kNoochRed.CGColor;
+//            [self.fourth_num setStyleClass:@"shakePin4"];
+//            [self.third_num setStyleClass:@"shakePin3"];
+//            [self.second_num setStyleClass:@"shakePin2"];
+//            [self.first_num setStyleClass:@"shakePin1"];
+//            self.prompt.text=@"Invalid Pin.";
+//            self.prompt.textColor = [UIColor colorWithRed:169.0/255.0 green:68/255.0 blue:66/255.0 alpha:1];
+//            [spinner stopAnimating];
+//            [spinner setHidden:YES];
+//        }else if([[dictResult objectForKey:@"Result"]isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]){
+//            [spinner stopAnimating];
+//            [spinner setHidden:YES];
+//            self.fourth_num.layer.borderColor = kNoochRed.CGColor;
+//            self.third_num.layer.borderColor = kNoochRed.CGColor;
+//            self.second_num.layer.borderColor = kNoochRed.CGColor;
+//            self.first_num.layer.borderColor = kNoochRed.CGColor;
+//            [self.fourth_num setStyleClass:@"shakePin4"];
+//            [self.third_num setStyleClass:@"shakePin3"];
+//            [self.second_num setStyleClass:@"shakePin2"];
+//            [self.first_num setStyleClass:@"shakePin1"];
+//            self.prompt.text=@"2nd failed attempt.";
+//            UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:nil message:@"For security protection, your account will be suspended for 24 hours if you enter wrong PIN number again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+//            [suspendedAlert show];
+//            
+//        }else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))            {
+//            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
+//            [av setTag:202320];
+//            [av show];
+//            [spinner stopAnimating];
+//            [spinner setHidden:YES];
+//            [[assist shared]setSusPended:YES];
+//            self.fourth_num.layer.borderColor = kNoochRed.CGColor;
+//            self.third_num.layer.borderColor = kNoochRed.CGColor;
+//            self.second_num.layer.borderColor = kNoochRed.CGColor;
+//            self.first_num.layer.borderColor = kNoochRed.CGColor;
+//            [self.fourth_num setStyleClass:@"shakePin4"];
+//            [self.third_num setStyleClass:@"shakePin3"];
+//            [self.second_num setStyleClass:@"shakePin2"];
+//            [self.first_num setStyleClass:@"shakePin1"];
+//            self.prompt.text=@"Account suspended.";
+//            
+//        }else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])){
+//            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
+//
+//            [av setTag:202320];
+//            [av show];
+//            [[assist shared]setSusPended:YES];
+//            [spinner stopAnimating];
+//            [spinner setHidden:YES];
+//            self.prompt.text=@"Account suspended.";
+//            
+//        }
     }
 }
 #pragma mark - file paths
