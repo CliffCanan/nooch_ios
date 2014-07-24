@@ -48,9 +48,6 @@
     [[assist shared]setArray:[arrRecipientsForRequest copy]];
     arrRequestPersons=[[NSMutableArray alloc]init];
 
-    UIButton *location = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [location setStyleId:@"icon_location"];
-
    UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
    [self.navigationItem setRightBarButtonItem:loc];
     
@@ -155,8 +152,6 @@
         [self.navigationItem setHidesBackButton:NO];
         isUserByLocation=NO;
         [self.navigationItem setRightBarButtonItem:Nil];
-        UIButton *location = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [location setStyleId:@"icon_location"];
         [[assist shared]setRequestMultiple:NO];
         [self.completed_pending setSelectedSegmentIndex:0];
         self.location = NO;
@@ -171,7 +166,7 @@
         [UIView setAnimationDuration:1];
         //[search setHidden:NO];
         CGRect frame = self.contacts.frame;
-        frame.origin.y =82; frame.size.height = [[UIScreen mainScreen] bounds].size.height-146;
+        frame.origin.y =80; frame.size.height = [[UIScreen mainScreen] bounds].size.height-144;
         [self.contacts setFrame:frame];
         [UIView commitAnimations];
     }
@@ -1005,10 +1000,10 @@
              temp = [self.recents objectAtIndex:indexPath.row];
             NSLog(@"%@",temp);
         }
-        UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
+        UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 60, 60)];
         pic.clipsToBounds = YES;
         [cell.contentView addSubview:pic];
-        [pic setFrame:CGRectMake(17, 6, 58, 58)];
+        [pic setFrame:CGRectMake(15, 7, 58, 58)];
         pic.layer.cornerRadius = 29; pic.layer.borderColor = kNoochBlue.CGColor; pic.layer.borderWidth = 1;
         pic.clipsToBounds = YES;
         [pic setImageWithURL:[NSURL URLWithString:temp[@"Photo"]]
@@ -1052,7 +1047,7 @@
         [cell setIndentationLevel:1];
         pic.hidden=NO;
         cell.indentationWidth = 70;
-        [pic setFrame:CGRectMake(15, 6, 58, 58)];
+        [pic setFrame:CGRectMake(15, 7, 58, 58)];
         pic.layer.cornerRadius = 29; pic.layer.borderWidth = 1;
         pic.layer.borderColor = [Helpers hexColor:@"6D6E71"].CGColor;
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",info[@"FirstName"],info[@"LastName"]];
@@ -1097,7 +1092,7 @@
             placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
         pic.hidden=NO;
         cell.indentationWidth = 70;
-        [pic setFrame:CGRectMake(15, 6, 58, 58)];
+        [pic setFrame:CGRectMake(15, 7, 58, 58)];
         pic.layer.cornerRadius = 29; pic.layer.borderColor = [Helpers hexColor:@"6D6E71"].CGColor; pic.layer.borderWidth = 1;
         [cell setIndentationLevel:1];
         cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",[info[@"FirstName"] capitalizedString],[info[@"LastName"] capitalizedString]];
@@ -1138,7 +1133,7 @@
             placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
         pic.hidden=NO;
         cell.indentationWidth = 70;
-        [pic setFrame:CGRectMake(15, 6, 58, 58)];
+        [pic setFrame:CGRectMake(15, 7, 58, 58)];
         pic.layer.cornerRadius = 29; pic.layer.borderColor = [Helpers hexColor:@"6D6E71"].CGColor; pic.layer.borderWidth = 1;
         [cell setIndentationLevel:1];
         cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",info[@"FirstName"],info[@"LastName"]];
