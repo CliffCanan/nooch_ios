@@ -41,6 +41,7 @@
     self.web = [UIWebView new];
     [self.web setFrame:CGRectMake(0, -5, 320, [[UIScreen mainScreen] bounds].size.height)];
     [self.view addSubview:self.web];
+    [self.web.scrollView setScrollEnabled:YES];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
     
@@ -69,8 +70,10 @@
     serve*obj=[serve new];
     obj.tagName=@"saveMemberTransId";
     [obj setDelegate:self];
-    [obj saveMemberTransId:[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"]];
     
+    NSDictionary*dict=@{@"paymentID":[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"],@"BankName":[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"],@"BankImageURL":[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"],@"AccountName":[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"]};
+    
+    [obj saveMemberTransId:[dict mutableCopy]];
     
     [nav_ctrl popViewControllerAnimated:NO];
     ProfileInfo *profile = [ProfileInfo new];

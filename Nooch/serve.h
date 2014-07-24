@@ -114,7 +114,7 @@
 -(void)GetServerCurrentTime;
 -(void)storeFB:(NSString*)fb_id;
 -(void)get_favorites;
--(void)saveMemberTransId:(NSString*)trans_id;
+-(void)saveMemberTransId:(NSDictionary*)trans;
 -(void)resendSMS;
 -(void)resendEmail;
 -(void)show_in_search:(BOOL)show;

@@ -1724,7 +1724,7 @@ NSString *amnt;
 }
 
 
--(void)saveMemberTransId:(NSString*)trans_id
+-(void)saveMemberTransId:(NSDictionary*)trans
 {
     self.responseData = [[NSMutableData alloc] init];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
@@ -1738,11 +1738,8 @@ NSString *amnt;
     
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
-    NSMutableDictionary *knox_input = [NSMutableDictionary new];
-    [knox_input setObject:[defaults objectForKey:@"MemberId"] forKey:@"MemberId"];
-    [knox_input setObject:trans_id forKey:@"TransId"];
-    
-    [dictInv setObject:knox_input forKey:@"KNoxInput"];
+
+    [dictInv setObject:trans forKey:@"KNoxInput"];
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
     
     NSError *error;

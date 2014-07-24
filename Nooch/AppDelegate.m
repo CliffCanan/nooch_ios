@@ -254,13 +254,19 @@ void exceptionHandler(NSException *exception){
     NSArray *isPaid = [responseParse[0] componentsSeparatedByString:@"pst="][1];
       NSLog(@"%@",isPaid);
     NSString *paymentID = [responseParse[2] componentsSeparatedByString:@"pay_id="][1];
+    NSString *imageURL = [responseParse[5] componentsSeparatedByString:@"bank_image="][1];
+    NSString *bname = [responseParse[4] componentsSeparatedByString:@"bank_name="][1];
+    NSString *accountName = [responseParse[3] componentsSeparatedByString:@"account_name="][1];
     //Components of response are Logged here - you may want to store them in your Database or check to make sure the reponse includes "Paid"
-    NSLog(@"fired in Delegate - URL Encoded %@ %@", isPaid, paymentID);
+    NSLog(@"fired in Delegate - URL Encoded %@ %@ %@ %@ %@", isPaid, paymentID,accountName,imageURL,bname);
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     [defaults setObject:isPaid forKey:@"isPaid"];
-    [defaults setObject:paymentID forKey:@"paymentID"];
+     [defaults setObject:imageURL forKey:@"BankImageURL"];
+     [defaults setObject:bname forKey:@"BankName"];
+     [defaults setObject:accountName forKey:@"AccountName"];
+   [defaults setObject:paymentID forKey:@"paymentID"];
     [defaults synchronize];
-    //Handle the response using our private API
+        //Handle the response using our private API
     //    NSString *apiURL = [NSString stringWithFormat:@"http://paidez.com/api/trz.php?trans_id=%@",paymentID];
     //    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     //    [request setHTTPMethod:@"GET"];
