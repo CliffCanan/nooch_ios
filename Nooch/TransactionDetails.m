@@ -257,13 +257,13 @@
             if ([[self.trans objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
                 if (![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] && ![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
                     [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
-                    [cancel setStyleClass:@"details_button_center"];
+                    [cancel setStyleClass:@"details_button_right"];
                     [cancel setTag:13];
                     [cancel setEnabled:YES];
                     [cancel addTarget:self action:@selector(cancel_request) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:cancel];
                     [remind setTitle:@"Remind" forState:UIControlStateNormal];
-                    [remind setStyleClass:@"details_button_center_remind"];
+                    [remind setStyleClass:@"details_button_remind"];
                     [remind setTag:14];
                     [remind setEnabled:YES];
                     [remind addTarget:self action:@selector(remind_friend) forControlEvents:UIControlEventTouchUpInside];
@@ -339,7 +339,7 @@
     [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
 }
 -(void)remind_friend{
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder" message:@"Send a reminder about this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder" message:@"Do you want to send a reminder about this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
    
     [av setTag:1012];
      [av show];
@@ -409,29 +409,29 @@
     marker.map = mapView_;
 
     
-    UIView*desc_container=[[UIView alloc]initWithFrame:CGRectMake(10, 355, 280, 60)];
-    desc_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    UIView*desc_container=[[UIView alloc]initWithFrame:CGRectMake(10, 356, 280, 36)];
+    desc_container.backgroundColor=[UIColor colorWithRed:251.0f/255.0f green:251.0f/255.0f blue:252.0f/255.0f alpha:1.0];
     [mainView addSubview:desc_container];
     desc_container.layer.cornerRadius = 5;
-    desc_container.layer.borderColor=[[UIColor lightGrayColor]CGColor];
-    desc_container.layer.borderWidth=0.75;
-    UILabel*desc=[[UILabel alloc]initWithFrame:CGRectMake(15, 359, 270, 52)];
-    [desc setBackgroundColor:[UIColor clearColor]];
+    desc_container.layer.borderColor=[UIColor colorWithRed:197.0f/255.0f green:198.0f/255.0f blue:200.0f/255.0f alpha:1.0];
+    desc_container.layer.borderWidth=0.5;
     
-    desc.text=@"This shows the location of the user that initiated the transfer. You can adjuest the location settings at any time in your device settings.";
+    UILabel*desc=[[UILabel alloc]initWithFrame:CGRectMake(15, 356, 270, 36)];
+    [desc setBackgroundColor:[UIColor clearColor]];
+    desc.text=@"This shows the location of the user that initiated the transfer.";
     desc.font=[UIFont fontWithName:@"Roboto" size:12];
-    desc.textColor= kNoochGrayDark;
+    [desc setStyleId:@"mapLightBox_paraText"];
     desc.numberOfLines=0;
     [desc sizeToFit];
     [mainView addSubview:desc];
 
     UIView*line_container=[[UIView alloc]initWithFrame:CGRectMake(0, desc_container.frame.origin.y+desc_container.frame.size.height+5, 300, 1)];
-    line_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    line_container.backgroundColor=[UIColor colorWithRed:229.0f/255.0f green:229.0f/255.0f blue:229.0f/255.0f alpha:1.0];
     [mainView addSubview:line_container];
     
     UIButton *btnclose=[UIButton buttonWithType:UIButtonTypeCustom];
-    btnclose.frame=CGRectMake(160, desc_container.frame.origin.y+desc_container.frame.size.height+12, 120, 40);
     [btnclose setStyleClass:@"button_blue"];
+    btnclose.frame=CGRectMake(160, desc_container.frame.origin.y+desc_container.frame.size.height+13, 120, 46);
     [btnclose setTitle:@"Close" forState:UIControlStateNormal];
     [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
     [mainView addSubview:btnclose];
@@ -508,7 +508,7 @@
         return;
     }
     if ( ![[assist shared]isBankVerified]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before Proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Attach A Bank Account" message:@"Please validate your bank account before proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         return;
     }
@@ -562,12 +562,12 @@
     }
     if ( ![[[NSUserDefaults standardUserDefaults]
             objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
-        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Please Attach an Account" message:@"Before you can send or receive money, you must add a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Funding Source Needed" message:@"Before you can send or receive money, you must add a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [set show];
         return;
     }
     if ( ![[assist shared]isBankVerified]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please validate your Bank Account before proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Funding Source Needed" message:@"Please validate your bank account before proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         return;
     }
@@ -673,7 +673,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (void) dispute {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Sure About This?" message:@"To protect your money, if you dispute a transfer your Nooch account will be temporarily suspended while we investigate." delegate:self cancelButtonTitle:@"Yes - Dispute" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Confirm Dispute" message:@"To protect your money, if you dispute a transfer your Nooch account will be temporarily suspended while we investigate." delegate:self cancelButtonTitle:@"Yes - Dispute" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1];
 }
@@ -707,7 +707,7 @@
     }
     else if(alertView.tag==568 && buttonIndex==1) {
         if (![MFMailComposeViewController canSendMail]){
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [av show];
             return;
         }
@@ -758,7 +758,7 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName {
     if ([tagName isEqualToString:@"cancel_invite"]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Invitation Cancelled" message:@"You have withdrawn this invite/request successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Invitation Cancelled" message:@"You have withdrawn this transfer successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [nav_ctrl popViewControllerAnimated:YES];
     }
