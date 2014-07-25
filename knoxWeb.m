@@ -72,6 +72,7 @@
     [obj setDelegate:self];
     
     NSDictionary*dict=@{@"paymentID":[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"],@"BankName":[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"],@"BankImageURL":[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"],@"AccountName":[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"]};
+    NSLog(@"%@",dict);
     
     [obj saveMemberTransId:[dict mutableCopy]];
     
