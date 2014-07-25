@@ -748,18 +748,9 @@
 	table-view#select_recipient {
 		width				: 320px;
 		background-color	: #ffffff;
-		row-height			: 80px;
+		row-height			: 74px;
 		separator-style 	: single-line;
-		separator-color		: rgba(188,190,192,.65);	
-	}
-    
-	/**  The "Search by Location" icon on the Top Nav Bar (top-right corner).  **/
-	#icon_location {
-		left				: 277px;
-		width				: 20px;
-		height				: 33px;
-		background-image	: url(map-icon.png);
-		background-size		: 20px 33px;
+		separator-color		: rgba(188,190,192,.7);	
 	}
 
 	/**  Styles all the profile pictures of users that are returned in the Select Recipient Table.  **/
@@ -773,6 +764,8 @@
 	}
 
 	.select_recipient_name {
+		height:74px;
+		top:0px;
 		color: #313233;
 		font-family: "Roboto";
 		font-weight: Regular;
@@ -1927,7 +1920,7 @@
 		background-color	: #3fabe1;
 		border-color		: #3fabe1;
 		font-family			: "Roboto";
-		font-weight			: light;
+		font-weight			: regular;
 	}
     #dedicate_segcontrol {
 		width				: 270px;
@@ -1971,23 +1964,23 @@
 		left				: 16px;
 	}
 	  
-	/**  Left Side Main Text ("You Paid/Requested/Donated...")  **/
+	/**  Text ("You Paid/Requested/Donated...")  **/
 	.history_cell_transTypeLabel {
 		left				: 75px;
-		top					: 4px;
+		top					: 5px;
 		width				: 185px;
-		height				: 17px;
+		height				: 18px;
 		font-size			: 15px;
 		font-weight			: light;
 	}
 	
 	/**  Text in top row if table is empty  **/
 	.history_cell_textlabelEmpty { 
-		left				: 20px;
-		top					: 23px;
-		width				: 280px;
-		height				: 30px;
-		font-size			: 17px;
+		left				: 15px;
+		top					: 20px;
+		width				: 290px;
+		height				: 32px;
+		font-size			: 18px;
 		font-weight			: regular;
 		text-align			: center;
 	}
@@ -1995,18 +1988,18 @@
 	/**  Name of other party  **/
 	.history_cell_textlabel { 
 		left				: 75px;
-		top					: 23px;
+		top					: 22px;
 		width				: 185px;
-		height				: 30px;
-		font-size			: 17px;
+		height				: 29px;
+		font-size			: 20px;
 		font-weight			: regular;
 	}
 
 	/**  Date of the transfer ("2 days ago")  **/
 	.history_datetext {
 		width				: 150px;
-		height				: 14px;
-		top					: 55px;
+		height				: 15px;
+		top					: 50px;
 		left                : 75px;
 		font-family			: "Roboto";
 		font-weight         : light;
@@ -2234,65 +2227,61 @@
 		color 				: #d3d3d3;
 	}
 	.details_button_left {
-		left			: 5px;
+		left			: 8px;
 		top				: 430px;
-		width			: 152px;
+		width			: 148px;
         height			: 50px;
 		font-size		: 22px;
         color 			: white;
-		border-radius	: 4px;
+		border-radius	: 5px;
 		font-family		: "Roboto";
 		font-weight     : light;
         background-image: linear-gradient(#7fd034, #6ab029);
-		
 		animation-name: moveUp_transDetailsBtns;
 		animation-duration: 1.3s;
 		animation-timing-function: ease-out;
 	}
 	.details_button_right {
-		left				: 165px;
+		left				: 164px;
 		top					: 430px;
-		width				: 152px;
+		width				: 148px;
 		height				: 50px;
 		color 				: white;
-		border-radius		: 4px;
+		border-radius		: 5px;
 		font-family			: "Roboto";
 		font-weight         : light;
 		font-size			: 22px;
         background-image	: linear-gradient(#F5003D, #D21937);
-		
 		animation-name: moveUp_transDetailsBtns;
 		animation-duration: 1.3s;
 		animation-timing-function: ease-out;
 	}
     .details_button_center {
-		left			: 160px;
+		left			: 10px;
 		top				: 430px;
-		width			: 148px;
+		width			: 300px;
         height			: 50px;
         color 			: white;
-		border-radius	: 4px;
+		border-radius	: 5px;
 		font-family		: "Roboto";
 		font-weight     : light;
 		font-size		: 22px;
         background-image: linear-gradient(#F5003D, #D21937);
-		
 		animation-name: moveUp_transDetailsBtns;
 		animation-duration: 1.3s;
 		animation-timing-function: ease-out;
 	}
-    .details_button_center_remind {
-		left			: 10px;
+    .details_button_remind {
+		left			: 8px;
 		top				: 430px;
 		width			: 148px;
         height			: 50px;
         color 			: white;
-		border-radius	: 4px;
+		border-radius	: 5px;
 		font-family		: "Roboto";
 		font-weight     : light;
 		font-size		: 22px;
-        background-image: linear-gradient(#3fabe1, #3fabee);
-		
+        background-image: linear-gradient(#40a9de, #3b9cce);
 		animation-name: moveUp_transDetailsBtns;
 		animation-duration: 1.3s;
 		animation-timing-function: ease-out;
@@ -2341,6 +2330,8 @@
     #details_disp {left : 255px;}
 	#details_disp_donate {left : 255px;}
 
+	#mapLightBox_paraText {color:#464749;}
+	
  /**************************************
   ********    SETTINGS FLOW     ********
   **************************************/
@@ -2381,9 +2372,10 @@
         border: 1px solid;
         border-color: rgba(188, 190, 192, 0.85);
     }
+
     #linked_account_name {
         top			: 2px;
-        left		: 60px;
+        left		: 72px;
         width		: 200px;
         height		: 60px;
         font-family	: "Roboto";
@@ -2407,10 +2399,10 @@
 */
     #remove_account {
         color		: #a94442;
-        top			: 1px;
-        left		: 260px;
+        top			: 2px;
+        left		: 262px;
         width		: 50px;
-        height		: 62px;
+        height		: 60px;
         font-family	: "Roboto";
         font-weight	: regular;
         font-size	: 11px;
@@ -2857,89 +2849,89 @@
 			Move Up
   ============================= */
 @keyframes moveUp_transDetailsBtns {
-    0% {top: 550px;}
-    40% {top: 424px;}
-    60% {top: 436px;}
-    80% {top: 427px;}
-    100% {top: 430px;}
+    0% {top: 540px;}
+    40% {top: 448px;}
+    60% {top: 459px;}
+    80% {top: 450px;}
+    100% {top: 454px;}
 }
 /*=============================
 			SHAKE (For incorrect PIN entry)
   ============================= */
 @keyframes shakePin1 {
-  from	{left: 44px}
-  10%	{left: 37px}
-  20%	{left: 52px}
-  30%	{left: 34px}
-  40%	{left: 54px}
-  50%	{left: 34px}
-  60%	{left: 54px}
-  70%	{left: 34px}
-  80%	{left: 52px}
-  90%	{left: 37px}
-  to 	{left: 44px}
+  from	{left: 45px}
+  10%	{left: 38px}
+  20%	{left: 53px}
+  30%	{left: 35px}
+  40%	{left: 55px}
+  50%	{left: 35px}
+  60%	{left: 55px}
+  70%	{left: 35px}
+  80%	{left: 53px}
+  90%	{left: 38px}
+  to 	{left: 45px}
   }
 .shakePin1 {
 	animation-name: shakePin1;
-	animation-duration: 0.7s;
+	animation-duration: 0.75s;
 	animation-iteration-count: 1;
     animation-timing-function: ease;
 }
 
 @keyframes shakePin2 {
-  from	{left: 107px}
-  10%	{left: 100px}
-  20%	{left: 115px}
-  30%	{left: 97px}
-  40%	{left: 117px}
-  50%	{left: 97px}
-  60%	{left: 117px}
-  70%	{left: 97px}
-  80%	{left: 115px}
-  90%	{left: 100px}
-  to 	{left: 107px}
+  from	{left: 108px}
+  10%	{left: 101px}
+  20%	{left: 116px}
+  30%	{left: 98px}
+  40%	{left: 118px}
+  50%	{left: 98px}
+  60%	{left: 118px}
+  70%	{left: 98px}
+  80%	{left: 116px}
+  90%	{left: 101px}
+  to 	{left: 108px}
   }
 .shakePin2 {
 	animation-name: shakePin2;
-	animation-duration: 0.7s;
+	animation-duration: 0.75s;
 	animation-iteration-count: 1;
     animation-timing-function: ease;
 }
 @keyframes shakePin3 {
-  from	{left: 171px}
-  10%	{left: 164px}
-  20%	{left: 179px}
-  30%	{left: 161px}
-  40%	{left: 181px}
-  50%	{left: 161px}
-  60%	{left: 181px}
-  70%	{left: 161px}
-  80%	{left: 179px}
-  90%	{left: 164px}
-  to 	{left: 171px}
+  from	{left: 172px}
+  10%	{left: 165px}
+  20%	{left: 180px}
+  30%	{left: 162px}
+  40%	{left: 182px}
+  50%	{left: 162px}
+  60%	{left: 182px}
+  70%	{left: 162px}
+  80%	{left: 180px}
+  90%	{left: 165px}
+  to 	{left: 172px}
   }
 .shakePin3 {
 	animation-name: shakePin3;
-	animation-duration: 0.7s;
+	animation-duration: 0.75s;
 	animation-iteration-count: 1;
     animation-timing-function: ease;
 }
 @keyframes shakePin4 {
-  from	{left: 235px}
-  10%	{left: 228px}
-  20%	{left: 243px}
-  30%	{left: 225px}
-  40%	{left: 245px}
-  50%	{left: 225px}
-  60%	{left: 245px}
-  70%	{left: 225px}
-  80%	{left: 243px}
-  90%	{left: 228px}
-  to 	{left: 235px}
+  from	{left: 236px}
+  10%	{left: 229px}
+  20%	{left: 244px}
+  30%	{left: 226px}
+  40%	{left: 246px}
+  50%	{left: 226px}
+  60%	{left: 246px}
+  70%	{left: 226px}
+  80%	{left: 244px}
+  90%	{left: 229px}
+  to 	{left: 236px}
   }
 .shakePin4 {
 	animation-name: shakePin4;
-	animation-duration: 0.7s;
+	animation-duration: 0.75s;
 	animation-iteration-count: 1;
     animation-timing-function: ease;
 }
