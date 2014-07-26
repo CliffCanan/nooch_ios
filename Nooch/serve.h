@@ -114,6 +114,7 @@
 -(void)GetServerCurrentTime;
 -(void)storeFB:(NSString*)fb_id;
 -(void)get_favorites;
+-(void)GetKnoxBankAccountDetails;
 -(void)saveMemberTransId:(NSDictionary*)trans;
 -(void)resendSMS;
 -(void)resendEmail;

@@ -507,11 +507,11 @@
         [set show];
         return;
     }
-    if ( ![[assist shared]isBankVerified]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Attach A Bank Account" message:@"Please validate your bank account before proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-        [alert show];
-        return;
-    }
+//    if ( ![[assist shared]isBankVerified]) {
+//        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Attach A Bank Account" message:@"Please validate your bank account before proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+//        [alert show];
+//        return;
+//    }
     NSMutableDictionary *input = [self.trans mutableCopy];
     [input setValue:@"accept" forKey:@"response"];
     [[assist shared]setRequestMultiple:NO];

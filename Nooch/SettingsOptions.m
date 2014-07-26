@@ -12,7 +12,11 @@
 #import "NotificationSettings.h"
 #import "ECSlidingViewController.h"
 #import "knoxWeb.h"
-@interface SettingsOptions ()
+#import "UIImageView+WebCache.h"
+@interface SettingsOptions (){
+    UILabel *bank_name;
+    UIImageView*bank_image;
+}
 @property(atomic,weak)UIButton *logout;
 @end
 
@@ -33,6 +37,10 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [self.navigationItem setTitle:@"Settings"];
+    serve*  serveOBJ=[serve new];
+    serveOBJ.Delegate=self;
+    serveOBJ.tagName=@"knox_bank_info";
+    [serveOBJ GetKnoxBankAccountDetails];
 }
 - (void)viewDidLoad
 {
@@ -62,10 +70,13 @@
     UIView *linked_background = [UIView new];
     [linked_background setStyleId:@"account_background"];
     [self.view addSubview:linked_background];
-
-    UILabel *bank_name = [UILabel new];
+    
+    bank_image=[[UIImageView alloc]initWithFrame:CGRectMake(10, 50, 50, 50)];
+    [self.view addSubview:bank_image];
+    
+    bank_name = [UILabel new];
     [bank_name setStyleId:@"linked_account_name"];
-    [bank_name setText:@"Bank of America"];
+    [bank_name setText:@"Bank"];
     [linked_background addSubview:bank_name];
 
     UIButton *unlink_account = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -112,7 +123,8 @@
         [self.logout setStyleId:@"button_signout"];
     }
     [self.view addSubview: self.logout];
-}
+   
+     }
 
 -(void)attach_bank
 {
@@ -206,13 +218,14 @@
 }
 -(void)listen:(NSString *)result tagName:(NSString *)tagName{
     
-    NSError* error;
-    NSMutableDictionary*dictResponse = [NSJSONSerialization
-                                        JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                                        options:kNilOptions
-                                        error:&error];
+   
     if([tagName isEqualToString:@"logout"])
     {
+        NSError* error;
+        NSMutableDictionary*dictResponse = [NSJSONSerialization
+                                            JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                            options:kNilOptions
+                                            error:&error];
         if([dictResponse valueForKey:@"Result"])
         {
             if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"Success."]) {
@@ -230,6 +243,31 @@
             }
         }
     }
+    else if([tagName isEqualToString:@"knox_bank_info"])
+    {
+        NSError* error;
+        NSMutableDictionary*dictResponse = [NSJSONSerialization
+                                            JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                            options:kNilOptions
+                                            error:&error];
+        //            {"AccountName":"0885","BankImageURL":"https:\/\/knoxpayments.com\/admin\/style\/images\/cone1.jpg","BankName":"Capital One 360","MemberId":null,"TransId":null,"UserKey":null,"UserPass":null}        }
+//        
+        
+        if (![[dictResponse valueForKey:@"AccountName"] isKindOfClass:[NSNull class]]&& ![[dictResponse valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]] && ![[dictResponse valueForKey:@"BankName"] isKindOfClass:[NSNull class]]) {
+         [bank_image setImageWithURL:[NSURL URLWithString:[dictResponse valueForKey:@"BankImageURL"]] placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+            [bank_name setText:[dictResponse valueForKey:@"BankName"]];
+              [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
+        }
+        else{
+            [bank_image setImage:[UIImage imageNamed:@"RoundLoading.png"]];
+            [bank_name setText:[dictResponse valueForKey:@"NO Bank Attached"]];
+              [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
+        }
+    }
+    
+
+    
+    
 }
 
 #pragma mark - file paths

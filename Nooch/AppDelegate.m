@@ -266,6 +266,7 @@ void exceptionHandler(NSException *exception){
      [defaults setObject:accountName forKey:@"AccountName"];
    [defaults setObject:paymentID forKey:@"paymentID"];
     [defaults synchronize];
+    
         //Handle the response using our private API
     //    NSString *apiURL = [NSString stringWithFormat:@"http://paidez.com/api/trz.php?trans_id=%@",paymentID];
     //    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];

@@ -548,7 +548,7 @@ return customView;
         
         self.hud.delegate = self;
         
-        self.hud.labelText = @"Loading Transaction Histroy...";
+        self.hud.labelText = @"Loading Transaction History...";
         
         [self.hud show:YES];
         
@@ -1635,11 +1635,11 @@ return customView;
                     [set show];
                     return;
                 }
-                if ( ![[assist shared]isBankVerified]) {
-                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Attach an Account" message:@"Before you can send or receive money, you must add a bank account." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-                    [alert show];
-                    return;
-                }
+//                if ( ![[assist shared]isBankVerified]) {
+//                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Attach an Account" message:@"Before you can send or receive money, you must add a bank account." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+//                    [alert show];
+//                    return;
+//                }
                 NSMutableDictionary *input = [dictRecord mutableCopy];
                 [input setValue:@"accept" forKey:@"response"];
                 //NSLog(@"%@",input);

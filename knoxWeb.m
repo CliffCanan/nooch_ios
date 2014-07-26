@@ -71,7 +71,7 @@
     obj.tagName=@"saveMemberTransId";
     [obj setDelegate:self];
     
-    NSDictionary*dict=@{@"paymentID":[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"],@"BankName":[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"],@"BankImageURL":[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"],@"AccountName":[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"]};
+    NSDictionary*dict=@{@"TransId":[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"],@"BankName":[[NSUserDefaults standardUserDefaults] objectForKey:@"BankName"],@"BankImageURL":[[NSUserDefaults standardUserDefaults] objectForKey:@"BankImageURL"],@"AccountName":[[NSUserDefaults standardUserDefaults] objectForKey:@"AccountName"],@"MemberId":[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]};
     NSLog(@"%@",dict);
     
     [obj saveMemberTransId:[dict mutableCopy]];
