@@ -827,40 +827,40 @@ NSString *amnt;
         [defaults synchronize];
         
     }
-    else if ([tagName isEqualToString:@"banks"]) {
-        NSError* error;
-        NSArray* arrResponse=[NSJSONSerialization
-                              JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
-                              options:kNilOptions
-                              error:&error];
-        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"IsBankAvailable"];
-        
-        if ([arrResponse count]>0) {
-            
-            [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
-            NSLog(@"%@",[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"]);
-            if (![[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] isKindOfClass:[NSNull class]] && [[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"]!=NULL) {
-                NSLog(@"%@",[[[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
-                
-            }
-
-        if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]&& ![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue] )
-            {
-                [[assist shared]setBankVerified:YES];
-            }
-            else
-            {
-                [[assist shared]setBankVerified:NO];
-                
-            }
-            
-            }
-        else
-        {
-            [[assist shared]setBankVerified:NO];
-            [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
-        }
-    }
+//    else if ([tagName isEqualToString:@"banks"]) {
+//        NSError* error;
+//        NSArray* arrResponse=[NSJSONSerialization
+//                              JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
+//                              options:kNilOptions
+//                              error:&error];
+//        //[[NSUserDefaults standardUserDefaults]removeObjectForKey:@"IsBankAvailable"];
+//        
+//        if ([arrResponse count]>0) {
+//            
+//            [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
+//            NSLog(@"%@",[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"]);
+//            if (![[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] isKindOfClass:[NSNull class]] && [[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"]!=NULL) {
+//                NSLog(@"%@",[[[[arrResponse objectAtIndex:0] valueForKey:@"ExpirationDate"] componentsSeparatedByString:@" "] objectAtIndex:0]);
+//                
+//            }
+//
+//        if ([[[arrResponse objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[arrResponse objectAtIndex:0] valueForKey:@"IsVerified"] intValue]&& ![[[arrResponse objectAtIndex:0] valueForKey:@"IsDeleted"] intValue] )
+//            {
+//                [[assist shared]setBankVerified:YES];
+//            }
+//            else
+//            {
+//                [[assist shared]setBankVerified:NO];
+//                
+//            }
+//            
+//            }
+//        else
+//        {
+//            [[assist shared]setBankVerified:NO];
+//            [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
+//        }
+//    }
     else if ([tagName isEqualToString:@"login"]) {
         //converting the result into Dictionary
         NSError* error;

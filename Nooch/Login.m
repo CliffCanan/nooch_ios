@@ -212,7 +212,20 @@
             forgetful.Delegate = self; forgetful.tagName = @"ForgotPass";
             [forgetful forgotPass:emailField.text];   
         }
+        else
+        {
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Enter Valid Email ID" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+            alert.alertViewStyle=UIAlertViewStylePlainTextInput;
+            [alert setTag:220011];
+            [alert show];
+        }
+
+            }
+    else if (actionSheet.tag==220011 && buttonIndex==0)
+    {
+        [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
     }
+
     else if ((actionSheet.tag == 50 && buttonIndex == 1) || (actionSheet.tag == 500 && buttonIndex == 1) || (actionSheet.tag == 510 && buttonIndex == 1))
         {
             if (![MFMailComposeViewController canSendMail]){
@@ -233,14 +246,7 @@
             [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
             [self presentViewController:mailComposer animated:YES completion:nil];
         }
-        else
-        {
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Enter Valid Email ID" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
-            alert.alertViewStyle=UIAlertViewStylePlainTextInput;
-            [alert setTag:220011];
-            [alert show];
-        }
-}
+       }
 
 
 

@@ -48,9 +48,8 @@
     self.hud.delegate = self;
     self.hud.labelText = @"Preparing Secure Connection";
     //[self.hud show:YES];
-    NSString *body = [NSString stringWithFormat: @"amount=%@&api_key=%@&api_password=%@invoice_detail=%@&recurring=%@information_request=%@&redirect_url=%@", @".01",@"7068_59cd5c1f5a75c31",@"7068_da64134cc66a5f0",@"Onboard",@"ot",@"show_all",@"nooch://"];
+    NSString *body = [NSString stringWithFormat: @"amount=%@&api_key=%@&api_password=%@&invoice_detail=%@&recurring=%@&information_request=%@&redirect_url=%@", @".01",@"7068_59cd5c1f5a75c31",@"7068_da64134cc66a5f0",@"Onboard",@"ot",@"show_all",@"nooch://"];
 	NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@?%@",@"https://knoxpayments.com/nooch/index.php",body]];
-//    jsonString = [NSString stringWithFormat:@"{\n\"%@\":\"%@\",\n\"%@\":\"%@\",\n\"%@\":\"%@\",\n\"%@\":\"%@\",\n\"%@\":\"%@\",\n\"%@\":\"%@\",\n\"%@\":\"%@\"}",@"d_amout",@"0.01", @"api_key",@"7068_59cd5c1f5a75c31",@"api_pass",@"7068_da64134cc66a5f0",@"invoice_detail",@"testing",@"recur_status",@"ot",@"user_request",@"show_all",@"req_url",@"nooch://"];
 
     
     self.request = [[NSMutableURLRequest alloc]initWithURL: url];

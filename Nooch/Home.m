@@ -19,12 +19,14 @@
 #import "HowMuch.h"
 #import <QuartzCore/QuartzCore.h>
 #import "knoxWeb.h"
+#import <AddressBook/AddressBook.h>
 #define kButtonType     @"transaction_type"
 #define kButtonTitle    @"button_title"
 #define kButtonColor    @"button_background_color"
 
 NSMutableURLRequest *request;
 @interface Home ()
+@property(nonatomic,strong) NSMutableArray*arrRecords;
 @property(nonatomic,strong) NSArray *transaction_types;
 @property(nonatomic,strong) UIButton *balance;
 @property(nonatomic,strong) UITableView *news_feed;
@@ -40,7 +42,7 @@ NSMutableURLRequest *request;
 @end
 
 @implementation Home
-
+@synthesize arrRecords;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -184,7 +186,97 @@ NSMutableURLRequest *request;
     rect2.origin.y-=70;
     self.phone_incomplete.frame=rect2;
 }
+-(void)getAddressBookContacts{
+    
+        CFErrorRef err;
+    
+    ABAddressBookRef addressBook =  ABAddressBookCreateWithOptions(NULL, &err);
 
+    
+    __block BOOL accessGranted = NO;
+    
+    if (ABAddressBookRequestAccessWithCompletion != NULL) { // we're on iOS 6
+        dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+        
+        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+            accessGranted = granted;
+            dispatch_semaphore_signal(sema);
+        });
+        
+        dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+        dispatch_release(sema);
+    }
+    else { // we're on iOS 5 or older
+        accessGranted = YES;
+    }
+    
+    
+    if (accessGranted) {
+        
+        NSArray *thePeople = (__bridge_transfer NSArray*)ABAddressBookCopyArrayOfAllPeople(addressBook);
+        // Do whatever you need with thePeople...
+        NSLog(@"%@",thePeople);
+       arrRecords=[[NSMutableArray alloc]init];
+        NSMutableArray*arremailRecords=[[NSMutableArray alloc]init];
+        for (int i=0; i<[thePeople count]; i++) {
+            ABMutableMultiValueRef Emailref = ABRecordCopyValue((__bridge ABRecordRef)([thePeople objectAtIndex:i]), kABPersonEmailProperty);
+          
+            
+            CFIndex Count = ABMultiValueGetCount(Emailref);
+            NSLog(@"%ld",Count);
+            for(int k = 0; k < Count; k++)
+            {
+                
+                
+                CFStringRef EmailValue = ABMultiValueCopyValueAtIndex( Emailref, k );
+                
+                CFStringRef EmailValueLabel = ABMultiValueCopyLabelAtIndex(Emailref, k);
+                CFStringRef EmailValueLocalizedLabel = ABAddressBookCopyLocalizedLabel( EmailValueLabel );
+              
+                
+                [arremailRecords addObject:(NSString *)CFBridgingRelease(EmailValue)];
+                NSLog(@"%@",EmailValue);
+                NSLog(@"%@",EmailValueLocalizedLabel);
+            
+                CFRelease(EmailValueLocalizedLabel);
+                CFRelease(EmailValue);
+            }
+            UIImage*imgData=nil;
+            
+            imgData =[self imageForContact:(__bridge ABRecordRef)([thePeople objectAtIndex:i])];
+            NSLog(@"%@",imgData);
+            imgData=nil;
+            NSLog(@"%@",arremailRecords);
+            
+        }
+       
+        
+    }
+   //  NSLog(@"%@",arrRecords);
+}
+- (UIImage*)imageForContact: (ABRecordRef)contactRef {
+    UIImage *img = nil;
+    
+    // can't get image from a ABRecordRef copy
+    ABRecordID contactID = ABRecordGetRecordID(contactRef);
+    CFErrorRef err;
+    
+    ABAddressBookRef addressBook =  ABAddressBookCreateWithOptions(NULL, &err);
+    
+
+    ABRecordRef origContactRef = ABAddressBookGetPersonWithRecordID(addressBook, contactID);
+    
+    if (ABPersonHasImageData(origContactRef)) {
+        NSData *imgData = (__bridge NSData*)ABPersonCopyImageDataWithFormat(origContactRef, kABPersonImageFormatOriginalSize);
+        img = [UIImage imageWithData: imgData];
+        
+        [imgData release];
+    }
+    
+    CFRelease(addressBook);
+    
+    return img;
+}
 -(void)contact_support
 {
     if (![MFMailComposeViewController canSendMail]){
@@ -376,7 +468,7 @@ NSMutableURLRequest *request;
           [self.phone_incomplete removeFromSuperview];
       }
     [_carousel removeFromSuperview];
-    _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 50, 320, 150)];
+    _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 50, 320, 175)];
     _carousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _carousel.type = iCarouselTypeCylinder;
     
@@ -469,6 +561,7 @@ NSMutableURLRequest *request;
         [favorites setDelegate:self];
         [favorites get_favorites];
         //launch favorites call
+        [self getAddressBookContacts];
     }
 }
 
@@ -488,11 +581,12 @@ NSMutableURLRequest *request;
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view
 {
     UIImageView *imageView = nil;
+    UILabel*name=nil;;
     NSDictionary *favorite = [self.favorites objectAtIndex:index];
     //create new view if no view is available for recycling
     if (view == nil)
     {
-		view = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 200, 150)];
+		view = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 200, 175)];
             imageView = [[UIImageView alloc] initWithFrame:CGRectMake(50, 25, 100, 100)];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         imageView.layer.borderColor = kNoochBlue.CGColor;
@@ -501,7 +595,15 @@ NSMutableURLRequest *request;
         [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                                    placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
         [imageView setClipsToBounds:YES];
+        name=[[UILabel alloc] initWithFrame:CGRectMake(0.0f, 125.0f, 200, 20)];
+        name.textColor=[UIColor blackColor];
+        name.textAlignment=NSTextAlignmentCenter;
+        [name setFont:[UIFont fontWithName:@"Roboto-Bold" size:15]];
+        name.text= [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
+        
         [view addSubview:imageView];
+        [view addSubview:name];
+
         
     }
     else
@@ -523,10 +625,13 @@ NSMutableURLRequest *request;
 {
     if(carousel.scrolling == NO)
     {
+        NSLog(@"%d",index);
+        
         //[self carouselDidEndScrollingAnimation:carousel];
         NSMutableDictionary *favorite = [NSMutableDictionary new];
         [favorite addEntriesFromDictionary:[self.favorites objectAtIndex:index]];
         [favorite setObject:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
+         NSLog(@"%@",favorite);
         HowMuch *trans = [[HowMuch alloc] initWithReceiver:favorite];
         [self.navigationController pushViewController:trans animated:YES];
     }
@@ -541,14 +646,14 @@ NSMutableURLRequest *request;
         {
             return YES;
         }
-        case iCarouselOptionArc:
-        {
-            return 360;
-        }
-        case iCarouselOptionRadius:
-        {
-            return 160;
-        }
+//        case iCarouselOptionArc:
+//        {
+//            return 360;
+//        }
+//        case iCarouselOptionRadius:
+//        {
+//            return 160;
+//        }
         case iCarouselOptionSpacing:
         {
             return value * 1;
@@ -710,7 +815,7 @@ NSMutableURLRequest *request;
 - (void)send_request
 {
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    NSLog(@"bank verified? %d",[[assist shared]isBankVerified]);
+    //NSLog(@"bank verified? %d",[[assist shared]isBankVerified]);
 #pragma mark-9jan
     if ([[assist shared]getSuspended]) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];

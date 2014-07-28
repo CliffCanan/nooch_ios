@@ -36,22 +36,28 @@
     if (self) {
         // Custom initialization
         receiverFirst=[receiver valueForKey:@"FirstName"];
-        self.memo=[receiver valueForKey:@"memo"];
+        if ([receiver valueForKey:@"memo"]) {
+            self.memo=[receiver valueForKey:@"memo"];
+        }
+        else if ([receiver valueForKey:@"Memo"]) {
+            self.memo=[receiver valueForKey:@"Memo"];
+        }
+        
         self.type = type;
         self.receiver = receiver;
 
         self.amnt = amount;
         //NSLog(@"%@",receiver);
-        if ([type isEqualToString:@"donation"]) {
-            receiverFirst=[receiver valueForKey:@"OrganizationName"];
-        }
-        else if ([type isEqualToString:@"addfund"]|| [type isEqualToString:@"withdrawfund"] ){
-            receiverFirst=type;
-            self.memo=[receiver valueForKey:@"memo"];
-        }
-        else if ([type isEqualToString:@"nonuser"]){
-            // self.memo=@"";
-        }
+//        if ([type isEqualToString:@"donation"]) {
+//            receiverFirst=[receiver valueForKey:@"OrganizationName"];
+//        }
+//        else if ([type isEqualToString:@"addfund"]|| [type isEqualToString:@"withdrawfund"] ){
+//            receiverFirst=type;
+//            self.memo=[receiver valueForKey:@"memo"];
+//        }
+//        else if ([type isEqualToString:@"nonuser"]){
+//            // self.memo=@"";
+//        }
     }
     return self;
 }
@@ -166,6 +172,9 @@
     UILabel *memo_label = [[UILabel alloc] initWithFrame:CGRectMake(10, 230, 300, 30)];
     if ([[self.receiver objectForKey:@"memo"] length] > 0) {
         [memo_label setText:[self.receiver objectForKey:@"memo"]];
+    }
+    if ([[self.receiver objectForKey:@"Memo"] length] > 0) {
+        [memo_label setText:[self.receiver objectForKey:@"Memo"]];
     }
     else {
         [memo_label setText:@"No memo attached"];
@@ -874,13 +883,15 @@
                 [input setObject:dictResultTransfer[@"requestId"] forKey:@"TransactionId"];
                 // [input setObject:ResID forKey:@"SenderId"];
             }
-            else if([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Send"]){
+            else  if ([self.type isEqualToString:@"send"]) {
                  [input setObject:dictResultTransfer[@"trnsactionId"] forKey:@"TransactionId"];
             }
             if ([self.receiver objectForKey:@"nonuser"]) {
                 [input setObject:@"Invite" forKey:@"TransactionType"];
+                [input setObject:dictResultTransfer[@"trnsactionId"] forKey:@"TransactionId"];
                 [input setObject:[self.receiver objectForKey:@"email"] forKey:@"InvitationSentTo"];
             }
+              NSLog(@"%@",input);
             TransactionDetails *td = [[TransactionDetails alloc] initWithData:input];
             [nav_ctrl pushViewController:td animated:YES];
         }
@@ -954,6 +965,7 @@
     if ([self.type isEqualToString:@"send"]) {
         if (![[dictResultTransfer objectForKey:@"trnsactionId"] isKindOfClass:[NSNull class]])
             transactionId=[dictResultTransfer valueForKey:@"trnsactionId"];
+        NSLog(@"%@",transactionId);
     }
     else if([self.type isEqualToString:@"request"]) {
         if (![[dictResultTransfer objectForKey:@"requestId"] isKindOfClass:[NSNull class]])
@@ -1073,7 +1085,7 @@
             [av show];
         }
     }
-    else if([[[dictResultTransfer objectForKey:@"TransferMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]||[[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]||[[dictResultTransfer valueForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]
+    else if([[[dictResultTransfer objectForKey:@"TransferMoneyUsingKnoxResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]||[[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]||[[dictResultTransfer valueForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]
              || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]
              || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."])
     {
