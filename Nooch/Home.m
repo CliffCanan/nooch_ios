@@ -561,7 +561,8 @@ NSMutableURLRequest *request;
         [favorites setDelegate:self];
         [favorites get_favorites];
         //launch favorites call
-        [self getAddressBookContacts];
+        //working on it
+       // [self getAddressBookContacts];
     }
 }
 
