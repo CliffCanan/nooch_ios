@@ -71,7 +71,8 @@
     [linked_background setStyleId:@"account_background"];
     [self.view addSubview:linked_background];
     
-    bank_image=[[UIImageView alloc]initWithFrame:CGRectMake(10, 50, 50, 50)];
+    bank_image=[[UIImageView alloc]initWithFrame:CGRectMake(10, 50, 49, 48)];
+    bank_image.contentMode=UIViewContentModeScaleToFill;
     [self.view addSubview:bank_image];
     
     bank_name = [UILabel new];
@@ -136,7 +137,9 @@
 }
 
 -(void)remove_attached_bank {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Remove Account" message:@"Are you sure you wish to unlink this bank account from Nooch?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+
+    
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Remove Bank Account" message:@"If you remove this bank account, you will not be able to send or receive money. This cannot be undone. Are you sure you want to remove this bank account?" delegate:self cancelButtonTitle:@"Yes - Remove" otherButtonTitles:@"Cancel", nil];
     [av setTag:2];
     [av show];
 }

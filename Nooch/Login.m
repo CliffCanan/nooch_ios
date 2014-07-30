@@ -151,6 +151,7 @@
 
     self.stay_logged_in = [[UISwitch alloc] initWithFrame:CGRectMake(110, 321, 40, 40)];
     [self.stay_logged_in setStyleClass:@"login_switch"];
+    [self.stay_logged_in setOn:YES];
     self.stay_logged_in.transform = CGAffineTransformMakeScale(0.75, 0.75);
     [self.view addSubview:self.stay_logged_in];
     

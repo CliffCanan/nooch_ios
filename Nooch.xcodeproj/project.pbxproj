@@ -163,14 +163,11 @@
 		6B30385015FA597000056DAD /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B30384F15FA597000056DAD /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		6B30385215FA597700056DAD /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B30385115FA597700056DAD /* Twitter.framework */; };
 		6B33DC9A1635FB4700B8B8B6 /* noochLogo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B33DC991635FB4600B8B8B6 /* noochLogo1.png */; };
-		6B33DC9E1635FCA400B8B8B6 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B33DC9D1635FCA400B8B8B6 /* Default.png */; };
-		6B33DCA11639AE1D00B8B8B6 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B33DCA01639AE0C00B8B8B6 /* Default-568h@2x.png */; };
 		6B425A64165568420092B16A /* UIImage+ColorAtPixel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B425A62165568420092B16A /* UIImage+ColorAtPixel.m */; };
 		6B5265F816680D2400E5341F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B5265F716680D2400E5341F /* AVFoundation.framework */; };
 		6B5265FA16680D4600E5341F /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B5265F916680D4600E5341F /* CoreMedia.framework */; };
 		6B5265FC16680D5200E5341F /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B5265FB16680D5100E5341F /* CoreVideo.framework */; };
 		6B5265FE16680D8F00E5341F /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B5265FD16680D8F00E5341F /* OpenGLES.framework */; };
-		6B52661C1669635000E5341F /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B52661B1669634C00E5341F /* Default@2x.png */; };
 		6B5E18D71670014100EF1990 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5E18D61670013F00EF1990 /* Icon.png */; };
 		6B75E9F415FE74CA00B091D8 /* terms.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B75E9F315FE74CA00B091D8 /* terms.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		6B75E9FB15FE7EE300B091D8 /* main 2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B75E9FA15FE7EE300B091D8 /* main 2.m */; };
@@ -245,6 +242,11 @@
 		84C3EF1B187D101E004687F6 /* ReEnterPin.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C3EF1A187D101E004687F6 /* ReEnterPin.m */; };
 		84C3EF1D187D74C6004687F6 /* whitebg.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C3EF1C187D74C6004687F6 /* whitebg.png */; };
 		84D8794218BF3ED200A60A38 /* METoast.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D8794118BF3ED200A60A38 /* METoast.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		84F099521988AD840020A08F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F0994F1988AD840020A08F /* Default-568h@2x.png */; };
+		84F099531988AD840020A08F /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F099501988AD840020A08F /* Default.png */; };
+		84F099541988AD840020A08F /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F099511988AD840020A08F /* Default@2x.png */; };
+		84F099571988B61F0020A08F /* selectRecipientIntro_smallScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F099551988B61F0020A08F /* selectRecipientIntro_smallScreen.png */; };
+		84F099581988B61F0020A08F /* selectRecipientIntro.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F099561988B61F0020A08F /* selectRecipientIntro.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -468,15 +470,12 @@
 		6B30384F15FA597000056DAD /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		6B30385115FA597700056DAD /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		6B33DC991635FB4600B8B8B6 /* noochLogo1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = noochLogo1.png; path = ../noochLogo1.png; sourceTree = "<group>"; };
-		6B33DC9D1635FCA400B8B8B6 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../Default.png; sourceTree = "<group>"; };
-		6B33DCA01639AE0C00B8B8B6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		6B425A61165568420092B16A /* UIImage+ColorAtPixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ColorAtPixel.h"; sourceTree = "<group>"; };
 		6B425A62165568420092B16A /* UIImage+ColorAtPixel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ColorAtPixel.m"; sourceTree = "<group>"; };
 		6B5265F716680D2400E5341F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		6B5265F916680D4600E5341F /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		6B5265FB16680D5100E5341F /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		6B5265FD16680D8F00E5341F /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
-		6B52661B1669634C00E5341F /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "../Default@2x.png"; sourceTree = "<group>"; };
 		6B5E18D61670013F00EF1990 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../Icon.png; sourceTree = "<group>"; };
 		6B75E9F215FE74CA00B091D8 /* terms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = terms.h; sourceTree = "<group>"; };
 		6B75E9F315FE74CA00B091D8 /* terms.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = terms.m; sourceTree = "<group>"; };
@@ -645,6 +644,11 @@
 		84C3EF1C187D74C6004687F6 /* whitebg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whitebg.png; sourceTree = "<group>"; };
 		84D8794018BF3ED200A60A38 /* METoast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = METoast.h; sourceTree = "<group>"; };
 		84D8794118BF3ED200A60A38 /* METoast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = METoast.m; sourceTree = "<group>"; };
+		84F0994F1988AD840020A08F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		84F099501988AD840020A08F /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		84F099511988AD840020A08F /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		84F099551988B61F0020A08F /* selectRecipientIntro_smallScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectRecipientIntro_smallScreen.png; sourceTree = "<group>"; };
+		84F099561988B61F0020A08F /* selectRecipientIntro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectRecipientIntro.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -837,6 +841,9 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				84F0994F1988AD840020A08F /* Default-568h@2x.png */,
+				84F099501988AD840020A08F /* Default.png */,
+				84F099511988AD840020A08F /* Default@2x.png */,
 				01542900190FF5CE00A15AA0 /* noochIcon-96.png */,
 				01CABC5618A43B3200BBB935 /* green-arrow.png */,
 				84443CA618A0BD9E0097F6C0 /* empty-arrow.png */,
@@ -865,10 +872,7 @@
 				6BE13326176F65D8009763AC /* SplashPageBckgrnd-568h@2x.png */,
 				6B8E848817565A9D00B3D7B1 /* BackgroundMain@2x.png */,
 				6B5E18D61670013F00EF1990 /* Icon.png */,
-				6B52661B1669634C00E5341F /* Default@2x.png */,
 				6BDF1CC51654233000668CB6 /* Icon@2x.png */,
-				6B33DCA01639AE0C00B8B8B6 /* Default-568h@2x.png */,
-				6B33DC9D1635FCA400B8B8B6 /* Default.png */,
 				6B33DC991635FB4600B8B8B6 /* noochLogo1.png */,
 				01C26DFE1843E88A005179B7 /* 4k_image.png */,
 				01C26DFF1843E88A005179B7 /* 4KforCancer.png */,
@@ -1051,6 +1055,8 @@
 			isa = PBXGroup;
 			children = (
 				011B6CA919006D2A00169F1A /* fontawesome-webfont.ttf */,
+				84F099551988B61F0020A08F /* selectRecipientIntro_smallScreen.png */,
+				84F099561988B61F0020A08F /* selectRecipientIntro.png */,
 				16E4B1C0187054A80099D075 /* venturepact  */,
 				6B30372B15FA3FF300056DAD /* Nooch */,
 				6B30372415FA3FF300056DAD /* Frameworks */,
@@ -1545,9 +1551,11 @@
 				6BC5FECB1625F1B0007EAD7A /* Roboto-Black.ttf in Resources */,
 				6BC5FECD1625F1B0007EAD7A /* Roboto-BlackItalic.ttf in Resources */,
 				01C26DAD1843BB22005179B7 /* dispute-icon.png in Resources */,
+				84F099571988B61F0020A08F /* selectRecipientIntro_smallScreen.png in Resources */,
 				6BC5FECF1625F1B0007EAD7A /* Roboto-Bold.ttf in Resources */,
 				01C26DE11843C56C005179B7 /* Arrow.png in Resources */,
 				6BC5FED11625F1B0007EAD7A /* Roboto-BoldCondensed.ttf in Resources */,
+				84F099531988AD840020A08F /* Default.png in Resources */,
 				8420B39D187AC4BF00A77E2D /* green-pin.png in Resources */,
 				6BC5FED31625F1B0007EAD7A /* Roboto-BoldCondensedItalic.ttf in Resources */,
 				845C0BD81973F30200E17E52 /* whiteBack.png in Resources */,
@@ -1564,6 +1572,7 @@
 				014C4333185B9A4C00956A84 /* nonprofits-youtube.png in Resources */,
 				6BC5FEDF1625F1B0007EAD7A /* Roboto-LightItalic.ttf in Resources */,
 				84C3EF1D187D74C6004687F6 /* whitebg.png in Resources */,
+				84F099541988AD840020A08F /* Default@2x.png in Resources */,
 				8420B39F187AC4BF00A77E2D /* pink-pin.png in Resources */,
 				6BC5FEE11625F1B0007EAD7A /* Roboto-Medium.ttf in Resources */,
 				6BC5FEE31625F1B0007EAD7A /* Roboto-MediumItalic.ttf in Resources */,
@@ -1578,14 +1587,11 @@
 				16E4B1C818708C1D0099D075 /* tickR.png in Resources */,
 				6B33DC9A1635FB4700B8B8B6 /* noochLogo1.png in Resources */,
 				01C26DB41843BB22005179B7 /* Logo_with_line.png in Resources */,
-				6B33DC9E1635FCA400B8B8B6 /* Default.png in Resources */,
-				6B33DCA11639AE1D00B8B8B6 /* Default-568h@2x.png in Resources */,
 				010A993B185FA99F001DCE6B /* n_Icon_58x66.png in Resources */,
 				01C26DC11843BB22005179B7 /* stats-transfers-inactive.png in Resources */,
 				8420B3A0187AC4BF00A77E2D /* red-pin.png in Resources */,
 				014C432C185B9A4C00956A84 /* facebook-icon.png in Resources */,
 				0179E9EB17F355310027526C /* flat_storyboard.storyboard in Resources */,
-				6B52661C1669635000E5341F /* Default@2x.png in Resources */,
 				014C432A185B9A4C00956A84 /* dollar-sign.png in Resources */,
 				6B5E18D71670014100EF1990 /* Icon.png in Resources */,
 				6BDAF5CB1672BD45006D75A5 /* Icon@2x.png in Resources */,
@@ -1616,12 +1622,14 @@
 				6BC04C031677E25D005C68D6 /* AirshipConfig.plist in Resources */,
 				84443CB118A0BDF30097F6C0 /* RoundLoading.png in Resources */,
 				842B4198196BC081009BF8B7 /* map_icon.png in Resources */,
+				84F099521988AD840020A08F /* Default-568h@2x.png in Resources */,
 				014C433D185BC7EF00956A84 /* VarelaRound-Regular.ttf in Resources */,
 				6B8E848A17565A9E00B3D7B1 /* BackgroundMain@2x.png in Resources */,
 				8420B390187A69CC00A77E2D /* profile_picture.png in Resources */,
 				014C433B185BB9EE00956A84 /* default.css in Resources */,
 				8420B39E187AC4BF00A77E2D /* orange-pin.png in Resources */,
 				014C4331185B9A4C00956A84 /* nonprofits-twitter.png in Resources */,
+				84F099581988B61F0020A08F /* selectRecipientIntro.png in Resources */,
 				014C4339185B9A4C00956A84 /* withdrawfunds.png in Resources */,
 				01C26DEE1843C56C005179B7 /* NoFundingSource_Arrow.png in Resources */,
 				6BE13327176F65D8009763AC /* BackgroundMain-568h@2x.png in Resources */,

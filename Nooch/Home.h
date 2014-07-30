@@ -38,5 +38,9 @@ NSUserDefaults *user;
     UIView*blankView;
     NSDate*ServerDate;
     NSTimer*timerHome;
+    NSMutableArray *additions;
+    NSMutableArray *favorites;
 }
+//@property(nonatomic,strong) NSMutableArray *favorites;
+//@property (nonatomic, strong) NSMutableArray *additions;
 @end

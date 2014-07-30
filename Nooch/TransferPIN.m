@@ -173,7 +173,7 @@
     if ([[self.receiver objectForKey:@"memo"] length] > 0) {
         [memo_label setText:[self.receiver objectForKey:@"memo"]];
     }
-    if ([[self.receiver objectForKey:@"Memo"] length] > 0) {
+    else if ([[self.receiver objectForKey:@"Memo"] length] > 0) {
         [memo_label setText:[self.receiver objectForKey:@"Memo"]];
     }
     else {

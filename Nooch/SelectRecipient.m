@@ -11,6 +11,7 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import "MBProgressHUD.h"
+#define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
 @interface SelectRecipient ()
 @property(nonatomic,strong) UITableView *contacts;
 @property(nonatomic,strong) NSMutableArray *recents;
@@ -18,6 +19,7 @@
 @property(nonatomic) BOOL location;
 @property(nonatomic,strong) MBProgressHUD *hud;
 @property(nonatomic,strong) UISegmentedControl *completed_pending;
+@property(nonatomic,strong) UIImageView*noContact_img;
 @end
 
 @implementation SelectRecipient
@@ -77,7 +79,10 @@
     self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 82, 320, [[UIScreen mainScreen] bounds].size.height-146)];
     [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
     [self.contacts setSectionHeaderHeight:30];
-    [self.contacts setStyleId:@"select_recipient"];
+    [self.contacts setStyleId:@"select_recipientwithoutSeperator"];
+
+    
+    [self.contacts setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:self.contacts]; [self.contacts reloadData];
     img_recent=[[UIImageView alloc]initWithFrame:CGRectMake(30, 13, 15, 15)];
     img_recent.image=[UIImage imageNamed:@"clock_arrow_white.png"];
@@ -726,6 +731,7 @@
         
         if ([self.recents count]>0) {
             [self.contacts setHidden:NO];
+            [self.contacts setStyleId:@"select_recipient"];
             [self.contacts reloadData];
         }
         else {
@@ -733,13 +739,25 @@
             arrow = [UIImageView new];
             [arrow setStyleId:@"empltyRecentList"];
             [self.view addSubview:arrow];
+             self.noContact_img=[[UIImageView alloc] init];
+            if (IS_IPHONE_5) {
+                self.noContact_img.frame=CGRectMake(0, 93, 320, 405);
+                self.noContact_img.contentMode=UIViewContentModeScaleToFill;
+                self.noContact_img.image=[UIImage imageNamed:@"selectRecipientIntro.png"];
+            }
+            else{
+                self.noContact_img.frame=CGRectMake(0, 93, 320, 320);
+                self.noContact_img.contentMode=UIViewContentModeScaleToFill;
+                self.noContact_img.image=[UIImage imageNamed:@"selectRecipientIntro_smallScreen.png"];
+            }
+            [self.view addSubview:self.noContact_img];
             
-            em = [UILabel new]; [em setStyleClass:@"recentEmptytable_view_cell_detailtext_1"];
-            [em setTextAlignment:NSTextAlignmentCenter];
-            [em setBackgroundColor:[UIColor clearColor]];
-            em.numberOfLines=10;
-            [em setText:@"Hey There!\nUse this handy dandy search bar to easily find contacts to send or request money with.\n\n\nThe next time you come here, your most recent contacts will automatically appear."];
-            [self.view addSubview:em];
+//            em = [UILabel new]; [em setStyleClass:@"recentEmptytable_view_cell_detailtext_1"];
+//            [em setTextAlignment:NSTextAlignmentCenter];
+//            [em setBackgroundColor:[UIColor clearColor]];
+//            em.numberOfLines=10;
+//            [em setText:@"Hey There!\nUse this handy dandy search bar to easily find contacts to send or request money with.\n\n\nThe next time you come here, your most recent contacts will automatically appear."];
+//            [self.view addSubview:em];
         }
     }
     else if ([tagName isEqualToString:@"search"]) {
@@ -753,9 +771,14 @@
             if ([[assist shared]isRequestMultiple]) {
                 arrRequestPersons = [self.recents mutableCopy];
             }
-            [self.contacts reloadData];
+            
         }
-    } 
+        [self.noContact_img removeFromSuperview];
+        [self.contacts setStyleId:@"select_recipient"];
+        [self.contacts setHidden:NO];
+        [self.contacts reloadData];
+
+    }
     else if([tagName isEqualToString:@"emailCheck"]) {
         NSError* error;
         NSMutableDictionary *dictResult = [NSJSONSerialization

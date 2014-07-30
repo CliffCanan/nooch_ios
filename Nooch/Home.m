@@ -38,7 +38,7 @@ NSMutableURLRequest *request;
 @property(nonatomic,strong) UIView *phone_incomplete;
 @property(nonatomic,strong) UIView *phone_unverified;
 @property(nonatomic,strong) iCarousel *carousel;
-@property(nonatomic,strong) NSMutableArray *favorites;
+
 @end
 
 @implementation Home
@@ -60,7 +60,7 @@ NSMutableURLRequest *request;
     nav_ctrl = self.navigationController;
     [ self.navigationItem setLeftBarButtonItem:Nil];
     
-    self.favorites = [NSMutableArray new];
+   // self.favorites = [NSMutableArray new];
     
     user = [NSUserDefaults standardUserDefaults];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
@@ -186,6 +186,113 @@ NSMutableURLRequest *request;
     rect2.origin.y-=70;
     self.phone_incomplete.frame=rect2;
 }
+-(void)address_book  {
+    [additions removeAllObjects];
+     additions = [[NSMutableArray alloc]init];
+    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
+    CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
+    CFIndex nPeople = ABAddressBookGetPersonCount(addressBook);
+    for(int i=0; i<nPeople; i++)
+    {
+        NSMutableDictionary *curContact=[[NSMutableDictionary alloc] init];
+        ABRecordRef person=CFArrayGetValueAtIndex(people, i);
+        NSString *contacName = [[NSMutableString alloc] init];
+        contacName =(__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        NSString *firstName = [[NSString alloc] init];
+        NSString *lastName = [[NSString alloc] init];
+        firstName = (__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        if((__bridge NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty)) {
+            [contacName stringByAppendingString:[NSString stringWithFormat:@" %@", (__bridge NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty)]];
+            lastName = (__bridge NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty);
+        }
+        NSData *contactImage;
+        if(ABPersonHasImageData(person) > 0 ) {
+            contactImage = (__bridge NSData *)(ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail));
+        }
+        else {
+            contactImage = UIImageJPEGRepresentation([UIImage imageNamed:@"profile_picture.png"], 1);
+        }
+        ABMultiValueRef phoneNumber = ABRecordCopyValue(person, kABPersonPhoneProperty);
+        ABMultiValueRef emailInfo = ABRecordCopyValue(person, kABPersonEmailProperty);
+        NSString *emailId = (__bridge NSString *)ABMultiValueCopyValueAtIndex(emailInfo, 0);
+        if(emailId != NULL) {
+            [curContact setObject:emailId forKey:@"UserName"]; [curContact setObject:emailId forKey:@"emailAddy"];
+        }
+        if(contacName != NULL)  [curContact setObject:contacName forKey:@"Name"];
+        if(firstName != NULL) [curContact setObject:firstName forKey:@"FirstName"];
+        if(lastName != NULL)  [curContact setObject:lastName forKey:@"LastName"];
+        NSLog(@"%@",contactImage);
+        [curContact setObject:contactImage forKey:@"image"];
+        [curContact setObject:@"YES" forKey:@"addressbook"];
+          NSLog(@"%@",curContact);
+        NSString *phone,*phone2,*phone3;
+        if(ABMultiValueGetCount(phoneNumber)> 0)
+            phone =  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber, 0));
+        
+        if(ABMultiValueGetCount(phoneNumber)> 1) {
+            phone2=  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber, 1));
+            phone2 = [phone2 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone2 length])];
+            [curContact setObject:phone2 forKey:@"phoneNo2"];
+        }
+        if(ABMultiValueGetCount(phoneNumber)> 2) {
+            phone3 =  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber,2));
+            phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
+            [curContact setObject:phone3 forKey:@"phoneNo3"];
+        }
+        if(phone == NULL && (emailId == NULL || [emailId rangeOfString:@"facebook"].location != NSNotFound)) {
+            [additions addObject:curContact];
+        }else if( contacName == NULL) {
+        }
+        else {
+            NSString * strippedNumber = [phone stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone length])];
+            if([strippedNumber length] == 11){
+                strippedNumber = [strippedNumber substringFromIndex:1];
+            }
+            if(strippedNumber != NULL)
+                [curContact setObject:strippedNumber forKey:@"phoneNo"];
+            [additions addObject:curContact];
+        }
+    }
+    [[assist shared] addAssos:additions.mutableCopy];
+    NSMutableArray *get_ids_input = [NSMutableArray new];
+    for (NSDictionary *person in additions) {
+        NSMutableDictionary *person_input = [NSMutableDictionary new];
+        [person_input setObject:@"" forKey:@"memberId"];
+        if (person[@"phoneNo"]) [person_input setObject:person[@"phoneNo"] forKey:@"phoneNo"];
+        if (person[@"emailAddy"]) [person_input setObject:person[@"emailAddy"] forKey:@"emailAddy"];
+        else [person_input setObject:@"" forKey:@"emailAddy"];
+        if (person[@"phoneNo2"]) [person_input setObject:person[@"phoneNo2"] forKey:@"phoneNo2"];
+        if (person[@"phoneNo3"]) [person_input setObject:person[@"phoneNo3"] forKey:@"phoneNo3"];
+        [get_ids_input addObject:person_input];
+    }
+   
+    favorites = [[NSMutableArray alloc]init];
+    for (int i = 0; i<[additions count] ;i++)
+    {
+        if ([favorites count]==5) {
+            break;
+        }
+        else if(i>=[additions count]-1){
+            i=0;
+        }
+        NSUInteger randomIndex = arc4random() % [additions  count];
+        if ([favorites containsObject:[additions objectAtIndex:randomIndex]])
+        {
+            continue;
+        }
+        [favorites  addObject:[additions objectAtIndex:randomIndex]];
+        
+        
+    }
+    
+   serve *get_ids = [serve new];
+   [get_ids setDelegate:self];
+   [get_ids setTagName:@"getMemberIds"];
+   [get_ids getMemberIds:get_ids_input];
+    CFRelease(people);
+    CFRelease(addressBook);
+}
+
 -(void)getAddressBookContacts{
     
         CFErrorRef err;
@@ -490,6 +597,7 @@ NSMutableURLRequest *request;
         [locationManager startUpdatingLocation];
         
     }
+   
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -556,13 +664,13 @@ NSMutableURLRequest *request;
         [self.view addSubview:_carousel];
         [_carousel reloadData];
         
-        serve *favorites = [serve new];
-        [favorites setTagName:@"favorites"];
-        [favorites setDelegate:self];
-        [favorites get_favorites];
+        serve *favoritesOBJ = [serve new];
+        [favoritesOBJ setTagName:@"favorites"];
+        [favoritesOBJ setDelegate:self];
+        [favoritesOBJ get_favorites];
         //launch favorites call
-        //working on it
-       // [self getAddressBookContacts];
+        
+        
     }
 }
 
@@ -576,14 +684,14 @@ NSMutableURLRequest *request;
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
     //return the total number of items in the carousel
-    return [self.favorites count];
+    return [favorites count];
 }
 
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view
 {
     UIImageView *imageView = nil;
     UILabel*name=nil;;
-    NSDictionary *favorite = [self.favorites objectAtIndex:index];
+    NSDictionary *favorite = [favorites objectAtIndex:index];
     //create new view if no view is available for recycling
     if (view == nil)
     {
@@ -593,8 +701,22 @@ NSMutableURLRequest *request;
         imageView.layer.borderColor = kNoochBlue.CGColor;
         imageView.layer.borderWidth = 1;
         imageView.layer.cornerRadius = 50;
-        [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
-                                   placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+        if (favorite[@"MemberId"]) {
+            [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+                      placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+        }
+        else if (favorite[@"image"]){
+            [imageView setImage:[UIImage imageWithData:favorite[@"image"]]];
+            
+        }
+//        FirstName = Mohit;
+//        LastName = Sharma;
+//        Name = Mohit;
+//        UserName = "motm@hh.cij";
+//        addressbook = YES;
+//        emailAddy = "motm@hh.cij";
+//        image
+       
         [imageView setClipsToBounds:YES];
         name=[[UILabel alloc] initWithFrame:CGRectMake(0.0f, 125.0f, 200, 20)];
         name.textColor=[UIColor blackColor];
@@ -630,7 +752,7 @@ NSMutableURLRequest *request;
         
         //[self carouselDidEndScrollingAnimation:carousel];
         NSMutableDictionary *favorite = [NSMutableDictionary new];
-        [favorite addEntriesFromDictionary:[self.favorites objectAtIndex:index]];
+        [favorite addEntriesFromDictionary:[favorites objectAtIndex:index]];
         [favorite setObject:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
          NSLog(@"%@",favorite);
         HowMuch *trans = [[HowMuch alloc] initWithReceiver:favorite];
@@ -657,7 +779,7 @@ NSMutableURLRequest *request;
 //        }
         case iCarouselOptionSpacing:
         {
-            return value * 1;
+            return value * 1.3;
         }
         default:
         {
@@ -897,14 +1019,47 @@ NSMutableURLRequest *request;
 {
     if ([tagName isEqualToString:@"favorites"]) {
         NSError *error;
-        self.favorites = [NSMutableArray new];
-        self.favorites = [NSJSONSerialization
+       
+        favorites = [NSJSONSerialization
                                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                      options:kNilOptions
                                      error:&error];
-        NSLog(@"favorites %@",self.favorites);
-        [_carousel reloadData];
+        NSLog(@"favorites %@",favorites);
+        
+        if ([favorites count]==0) {
+            [self address_book];
+        }else{
+            [_carousel reloadData];
+        }
+        
+        
+        
+    
     }
+    else if ([tagName isEqualToString:@"getMemberIds"]) {
+        NSError *error;
+        NSMutableDictionary *temp = [NSJSONSerialization
+                                     JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                     options:kNilOptions
+                                     error:&error];
+        NSMutableArray *temp2 = [[temp objectForKey:@"GetMemberIdsResult"] objectForKey:@"phoneEmailList"];
+        NSMutableArray *AddressBookAdditions = [NSMutableArray new];
+        for (NSDictionary *dict in temp2) {
+            NSMutableDictionary *new = [NSMutableDictionary new];
+            for (NSString *key in dict.allKeys) {
+                if ([key isEqualToString:@"memberId"] && [dict[key] length] > 0)
+                    [new setObject:dict[key] forKey:@"MemberId"];
+                else if ([key isEqualToString:@"emailAddy"])
+                    [new setObject:dict[key] forKey:@"UserName"];
+                else
+                    [new setObject:dict[key] forKey:key];
+            }
+            if (new[@"MemberId"])
+                [AddressBookAdditions addObject:new];
+        }
+        NSLog(@"%@",AddressBookAdditions);
+    }
+
     else if ([tagName isEqualToString:@"fb"]) {
         NSError *error;
         NSMutableDictionary *temp = [NSJSONSerialization

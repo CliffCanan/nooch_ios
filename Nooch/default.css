@@ -752,7 +752,12 @@
 		separator-style 	: single-line;
 		separator-color		: rgba(188,190,192,.7);	
 	}
+table-view#select_recipientwithoutSeperator {
+		width				: 320px;
+		background-color	: #ffffff;
+		row-height			: 74px;
 
+	}
 	/**  Styles all the profile pictures of users that are returned in the Select Recipient Table.  **/
 	.list_userprofilepic {
 		width: 46px;

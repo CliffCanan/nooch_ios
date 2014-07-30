@@ -357,8 +357,8 @@
     [self.save addTarget:self action:@selector(save_changes) forControlEvents:UIControlEventTouchUpInside];
     [self.save setTitle:@"Save Profile" forState:UIControlStateNormal];
     [self.save setFrame:CGRectMake(0, 430+down, 0, 0)];
-    [self.save setStyleClass:@"button_green"];
-    [self.save setEnabled:YES];
+    [self.save setStyleClass:@"button_gray"];
+    [self.save setEnabled:NO];
     [self.view addSubview:self.save];
 
     self.name.text=@"";
@@ -480,7 +480,7 @@
 
     [self.save setEnabled:NO];
     [self.save setUserInteractionEnabled:NO];
-
+     [self.save setStyleClass:@"button_gray"];
     strPhoneNumber=self.phone.text;
     strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@"(" withString:@""];
     strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
@@ -854,7 +854,10 @@
 #pragma mark - UITextField delegation
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    [self.save setEnabled:YES];
+        [self.save setEnabled:YES];
+        [self.save setStyleClass:@"button_green"];
+        [self.save setUserInteractionEnabled:YES];
+    
     return YES;
 }
 
@@ -1005,8 +1008,8 @@
             NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
             [defaults setObject:@"YES" forKey:@"ProfileComplete"];
             [defaults synchronize];
-            [self.save setEnabled:YES];
-            [self.save setUserInteractionEnabled:YES];
+            [self.save setEnabled:NO];
+            [self.save setUserInteractionEnabled:NO];
             serve*serveOBJ=[serve new];
             serveOBJ.tagName=@"myset";
             [serveOBJ setDelegate:self];

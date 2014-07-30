@@ -807,6 +807,11 @@
                     [mapView_ setFrame:CGRectMake(165, 240, 150, 80)];
                     btnShowOverlay.frame=mainView.frame;
                 }
+                else{
+                    [mapView_ setFrame:CGRectMake(165, 240, 150, 160)];
+                    [imgTran setFrame:CGRectMake(5, 240, 150, 160)];
+                    btnShowOverlay.frame=CGRectMake(165, 240, 150, 160);
+                }
             }
             else {
                 
@@ -824,7 +829,7 @@
             }
            [self.view addSubview:mapView_];
             mapView_.myLocationEnabled = YES;
-            //mapView_.layer.borderWidth = 1;
+           
             if ([[assist shared]islocationAllowed]) {
                 [self.view addSubview:mapView_];
                 if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
@@ -845,13 +850,9 @@
             marker.position = CLLocationCoordinate2DMake(lat, lon);
             marker.map = mapView_;
             [self.view addSubview:btnShowOverlay];
-          //  btnShowOverlay.center=mapView_.center;
             [btnShowOverlay setBackgroundColor:[UIColor clearColor]];
             [self.view bringSubviewToFront:btnShowOverlay];
             [btnShowOverlay addTarget:self action:@selector(Map_LightBox) forControlEvents:UIControlEventTouchUpInside];
-            //Overlay on Tap
-          //  UITapGestureRecognizer*tap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(Map_LightBox)];
-            // [mapView_ addGestureRecognizer:tap];
             
         }
         if ([self.trans objectForKey:@"Amount"]!=NULL) {
