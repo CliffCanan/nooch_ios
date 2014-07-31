@@ -709,13 +709,6 @@ NSMutableURLRequest *request;
             [imageView setImage:[UIImage imageWithData:favorite[@"image"]]];
             
         }
-//        FirstName = Mohit;
-//        LastName = Sharma;
-//        Name = Mohit;
-//        UserName = "motm@hh.cij";
-//        addressbook = YES;
-//        emailAddy = "motm@hh.cij";
-//        image
        
         [imageView setClipsToBounds:YES];
         name=[[UILabel alloc] initWithFrame:CGRectMake(0.0f, 125.0f, 200, 20)];
@@ -723,7 +716,7 @@ NSMutableURLRequest *request;
         name.textAlignment=NSTextAlignmentCenter;
         [name setFont:[UIFont fontWithName:@"Roboto-Bold" size:15]];
         name.text= [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
-        
+        name.backgroundColor=[UIColor whiteColor];
         [view addSubview:imageView];
         [view addSubview:name];
 
@@ -746,11 +739,49 @@ NSMutableURLRequest *request;
 
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index
 {
+    
     if(carousel.scrolling == NO)
     {
-        NSLog(@"%d",index);
+        NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
         
-        //[self carouselDidEndScrollingAnimation:carousel];
+        
+        if ([[assist shared]getSuspended]) {
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+            [alert setTag:50];
+            [alert show];
+            return;
+        }
+        
+        if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Verify Your Email" message:@"Terribly sorry, but before you can send money, we need you to confirm your email address by clicking the link we emailed to the address you used to sign up." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            [alert show];
+            return;
+        }
+        
+        if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe" message:@"Please take 1 minute to validate your identity by completing your Nooch profile (just 4 fields)." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+            [alert setTag:147];
+            [alert show];
+            return;
+        }
+        
+        if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame Our Lawyers" message:@"To help keep Nooch safe, we ask that you validate your phone number before before sending money.\n \nIf you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
+            [alert setTag:148];
+            [alert show];
+            return;
+        }
+        
+        if ( ![[[NSUserDefaults standardUserDefaults]
+                objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
+            UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Connect Your Bank" message:@"Adding a bank account to fund Nooch payments is lightening quick. (You don't have to type a routing or account number!)  Would you like to take care of this now?." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
+            [set setTag:201];
+            [set show];
+            return;
+        }
+        
+
+        
         NSMutableDictionary *favorite = [NSMutableDictionary new];
         [favorite addEntriesFromDictionary:[favorites objectAtIndex:index]];
         [favorite setObject:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
@@ -938,8 +969,8 @@ NSMutableURLRequest *request;
 - (void)send_request
 {
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    //NSLog(@"bank verified? %d",[[assist shared]isBankVerified]);
-#pragma mark-9jan
+   
+
     if ([[assist shared]getSuspended]) {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
         [alert setTag:50];

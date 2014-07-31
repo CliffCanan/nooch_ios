@@ -230,9 +230,9 @@
 #pragma mark- Request Multiple case
 -(void)addRecipient:(id)sender{
     [[assist shared]setRequestMultiple:YES];
-   // isMutipleRequest=YES;
+  
     isAddRequest=YES;
-
+    NSLog(@"%@",self.receiver);
     if ([[[assist shared]getArray] count]==0) {
         arrRecipientsForRequest=[[NSMutableArray alloc] init];
         [arrRecipientsForRequest addObject:self.receiver];

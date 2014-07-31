@@ -13,6 +13,7 @@
 #import "ECSlidingViewController.h"
 #import "Register.h"
 #import "TransferPIN.h"
+#import "ProfileInfo.h"
 @interface HistoryFlat ()<GMSMapViewDelegate>
 {
     GMSMapView * mapView_;
@@ -52,6 +53,7 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
+    
     [self.navigationItem setTitle:@"History"];
    // [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
 }
@@ -1624,30 +1626,29 @@ return customView;
                     return;
                 }
                 if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
-                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Profile Not Complete" message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!" delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
-                    [alert setTag:147];
-                    [alert show];
-                    return;
+                    
+                        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Profile Not Complete" message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!" delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+                        [alert setTag:147];
+                        [alert show];
+                        return;
+                    
+                    
                 }
-                if ( ![[[NSUserDefaults standardUserDefaults]
+                else if ( ![[[NSUserDefaults standardUserDefaults]
                         objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
                     UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Please Attach an Account" message:@"Before you can send or receive money, you must add a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
                     [set show];
                     return;
                 }
-//                if ( ![[assist shared]isBankVerified]) {
-//                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Attach an Account" message:@"Before you can send or receive money, you must add a bank account." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-//                    [alert show];
-//                    return;
-//                }
+                else{
                 NSMutableDictionary *input = [dictRecord mutableCopy];
                 [input setValue:@"accept" forKey:@"response"];
-                //NSLog(@"%@",input);
-                // isMutipleRequest=NO;
+               
                 [[assist shared]setRequestMultiple:NO];
                 TransferPIN *trans = [[TransferPIN alloc] initWithReceiver:input type:@"requestRespond" amount:[[dictRecord objectForKey:@"Amount"] floatValue]];
                 [nav_ctrl pushViewController:trans animated:YES];
-            } 
+                }
+            }
             else {
                 //decline
                 self.responseDict = [dictRecord copy];
@@ -1975,7 +1976,6 @@ return customView;
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (actionSheet.tag == 11) {
         if (buttonIndex == 0) {
-            //nslog(@"Cancelled");
         }
         else {
             NSString * email = [[actionSheet textFieldAtIndex:0] text];
@@ -1984,7 +1984,13 @@ return customView;
             [s setDelegate:self];
             [s sendCsvTrasactionHistory:email];
         }
-    } 
+    }
+    else if (actionSheet.tag==147 && buttonIndex==1) {
+        ProfileInfo *prof = [ProfileInfo new];
+        isProfileOpenFromSideBar=NO;
+        [self.navigationController pushViewController:prof animated:YES];
+       
+    }
     else if (actionSheet.tag==1010 && buttonIndex==0) {
         serve*serveObj=[serve new];
         [serveObj setDelegate:self];

@@ -12,6 +12,7 @@
 #import "HowMuch.h"
 #import "TransferPIN.h"
 #import "SelectRecipient.h"
+#import "ProfileInfo.h"
 @interface TransactionDetails ()
 @property (nonatomic,strong) NSDictionary *trans;
 @property(nonatomic,strong) NSMutableData *responseData;
@@ -686,7 +687,12 @@
         [serveObj SendReminderToRecepient:[self.trans valueForKey:@"TransactionId"]];
        
     }
-    
+    else if (alertView.tag==147 && buttonIndex==1) {
+        ProfileInfo *prof = [ProfileInfo new];
+        isProfileOpenFromSideBar=NO;
+        [self.navigationController pushViewController:prof animated:YES];
+        
+    }
     else if (alertView.tag == 1) {
         if (buttonIndex == 0) {
             self.responseData = [NSMutableData data];

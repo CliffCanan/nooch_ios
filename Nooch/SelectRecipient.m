@@ -779,7 +779,7 @@
         [self.contacts reloadData];
 
     }
-    else if([tagName isEqualToString:@"emailCheck"]) {
+        else if([tagName isEqualToString:@"emailCheck"]) {
         NSError* error;
         NSMutableDictionary *dictResult = [NSJSONSerialization
                                            JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
@@ -830,9 +830,9 @@
             [self.navigationController pushViewController:how_much animated:YES];
             return;
             
-            UIAlertView *alertRedirectToProfileScreen=[[UIAlertView alloc]initWithTitle:@"Unknown" message:@"We at Nooch have no knowledge of this email address. Do you still want to Transfer to this mail address?" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES",nil];
-            [alertRedirectToProfileScreen setTag:20220];
-            [alertRedirectToProfileScreen show];
+//            UIAlertView *alertRedirectToProfileScreen=[[UIAlertView alloc]initWithTitle:@"Unknown" message:@"We at Nooch have no knowledge of this email address. Do you still want to Transfer to this mail address?" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES",nil];
+//            [alertRedirectToProfileScreen setTag:20220];
+//            [alertRedirectToProfileScreen show];
             [spinner stopAnimating];
             [spinner setHidden:YES];
             
@@ -1204,7 +1204,7 @@
         int loc =-1;
         for (int i=0; i<[arrRecipientsForRequest count]; i++) {
             NSDictionary*dictionary=[arrRecipientsForRequest objectAtIndex:i];
-            if ([[dictionary valueForKey:@"MemberId"]isEqualToString:receiver[@"MemberId"]]) {
+            if ([[dictionary valueForKey:@"UserName"]isEqualToString:receiver[@"UserName"]]) {
                 loc=1;
             }
             else
@@ -1242,6 +1242,24 @@
         [search setShowsCancelButton:NO];
 
         NSDictionary *receiver =  [arrSearchedRecords objectAtIndex:indexPath.row];
+         if ([[assist shared] assos][receiver[@"UserName"]][@"addressbook"]) {
+             if ([self.view.subviews containsObject:spinner]) {
+                 [spinner removeFromSuperview];
+             }
+             spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+             [self.view addSubview:spinner];
+             [spinner setHidden:NO];
+             spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+             [spinner startAnimating];
+             isphoneBook=YES;
+             emailphoneBook=receiver[@"UserName"];
+             
+             serve *emailCheck = [serve new];
+             emailCheck.Delegate = self;
+             emailCheck.tagName = @"emailCheck";
+             [emailCheck getMemIdFromuUsername:[receiver[@"UserName"] lowercaseString]];
+             return;
+         }
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
         [self.navigationController pushViewController:how_much animated:YES];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];

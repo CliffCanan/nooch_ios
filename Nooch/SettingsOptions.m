@@ -73,6 +73,7 @@
     
     bank_image=[[UIImageView alloc]initWithFrame:CGRectMake(10, 50, 49, 48)];
     bank_image.contentMode=UIViewContentModeScaleToFill;
+    bank_image.image=[UIImage imageNamed:@"bank.png"];
     [self.view addSubview:bank_image];
     
     bank_name = [UILabel new];
@@ -257,7 +258,7 @@
 //        
         
         if (![[dictResponse valueForKey:@"AccountName"] isKindOfClass:[NSNull class]]&& ![[dictResponse valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]] && ![[dictResponse valueForKey:@"BankName"] isKindOfClass:[NSNull class]]) {
-         [bank_image setImageWithURL:[NSURL URLWithString:[dictResponse valueForKey:@"BankImageURL"]] placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+         [bank_image setImageWithURL:[NSURL URLWithString:[dictResponse valueForKey:@"BankImageURL"]] placeholderImage:[UIImage imageNamed:@"bank.png"]];
             [bank_name setText:[dictResponse valueForKey:@"BankName"]];
               [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
         }

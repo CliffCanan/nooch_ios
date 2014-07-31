@@ -234,6 +234,7 @@
 		84443CAD18A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 84443CAA18A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		84443CB118A0BDF30097F6C0 /* RoundLoading.png in Resources */ = {isa = PBXBuildFile; fileRef = 84443CB018A0BDF30097F6C0 /* RoundLoading.png */; };
 		845C0BD81973F30200E17E52 /* whiteBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 845C0BD71973F30200E17E52 /* whiteBack.png */; };
+		8465B8D2198A075300921F8A /* bank.png in Resources */ = {isa = PBXBuildFile; fileRef = 8465B8D1198A075300921F8A /* bank.png */; };
 		847268CC1966A7C100D5E749 /* webView.m in Sources */ = {isa = PBXBuildFile; fileRef = 847268CB1966A7C100D5E749 /* webView.m */; };
 		849F6E8E18AB6D7F0016CD89 /* backbtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 849F6E8D18AB6D7F0016CD89 /* backbtn.png */; };
 		84B65A73188542E9009A5205 /* NSString+ASBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B65A72188542E9009A5205 /* NSString+ASBase64.m */; };
@@ -632,6 +633,7 @@
 		84443CAA18A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IdentifierAddition.m"; sourceTree = "<group>"; };
 		84443CB018A0BDF30097F6C0 /* RoundLoading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoundLoading.png; sourceTree = "<group>"; };
 		845C0BD71973F30200E17E52 /* whiteBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteBack.png; sourceTree = "<group>"; };
+		8465B8D1198A075300921F8A /* bank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bank.png; path = ../bank.png; sourceTree = "<group>"; };
 		847268CA1966A7C100D5E749 /* webView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = webView.h; sourceTree = "<group>"; };
 		847268CB1966A7C100D5E749 /* webView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = webView.m; sourceTree = "<group>"; };
 		849F6E8D18AB6D7F0016CD89 /* backbtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backbtn.png; sourceTree = "<group>"; };
@@ -841,6 +843,7 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				8465B8D1198A075300921F8A /* bank.png */,
 				84F0994F1988AD840020A08F /* Default-568h@2x.png */,
 				84F099501988AD840020A08F /* Default.png */,
 				84F099511988AD840020A08F /* Default@2x.png */,
@@ -1612,6 +1615,7 @@
 				6BC04B9C1677DE0E005C68D6 /* LICENSE in Resources */,
 				01C26DC21843BB22005179B7 /* twitter-icon.png in Resources */,
 				01C26DBE1843BB22005179B7 /* stats-profile-active.png in Resources */,
+				8465B8D2198A075300921F8A /* bank.png in Resources */,
 				01C26DBD1843BB22005179B7 /* stats-donations-inactive.png in Resources */,
 				01C26DEC1843C56C005179B7 /* LimitsAndFees_Icon.png in Resources */,
 				014C4335185B9A4C00956A84 /* quicktap_10.png in Resources */,
