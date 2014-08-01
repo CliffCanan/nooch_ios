@@ -59,7 +59,6 @@
 		0169E22D18D8D7C200442642 /* knoxWeb.m in Sources */ = {isa = PBXBuildFile; fileRef = 0169E22C18D8D7C200442642 /* knoxWeb.m */; };
 		0179E9EB17F355310027526C /* flat_storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0179E9EA17F355310027526C /* flat_storyboard.storyboard */; };
 		0179E9F017F35A740027526C /* SelectRecipient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0179E9EE17F35A740027526C /* SelectRecipient.m */; };
-		0179E9F917F35AA30027526C /* Home.m in Sources */ = {isa = PBXBuildFile; fileRef = 0179E9F817F35AA30027526C /* Home.m */; };
 		0179E9FC17F36C4C0027526C /* Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 0179E9FB17F36C4C0027526C /* Helpers.m */; };
 		017B107A19403F7B007CA7E1 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 017B107919403F7B007CA7E1 /* iCarousel.m */; };
 		018DA86318048309007B24FB /* SendInvite.m in Sources */ = {isa = PBXBuildFile; fileRef = 018DA86218048309007B24FB /* SendInvite.m */; };
@@ -235,6 +234,8 @@
 		84443CB118A0BDF30097F6C0 /* RoundLoading.png in Resources */ = {isa = PBXBuildFile; fileRef = 84443CB018A0BDF30097F6C0 /* RoundLoading.png */; };
 		845C0BD81973F30200E17E52 /* whiteBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 845C0BD71973F30200E17E52 /* whiteBack.png */; };
 		8465B8D2198A075300921F8A /* bank.png in Resources */ = {isa = PBXBuildFile; fileRef = 8465B8D1198A075300921F8A /* bank.png */; };
+		846EF0C8198B57D2009D5491 /* Home.m in Sources */ = {isa = PBXBuildFile; fileRef = 0179E9F817F35AA30027526C /* Home.m */; };
+		846EF0CB198B5F55009D5491 /* DisputeDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 846EF0CA198B5F55009D5491 /* DisputeDetail.m */; };
 		847268CC1966A7C100D5E749 /* webView.m in Sources */ = {isa = PBXBuildFile; fileRef = 847268CB1966A7C100D5E749 /* webView.m */; };
 		849F6E8E18AB6D7F0016CD89 /* backbtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 849F6E8D18AB6D7F0016CD89 /* backbtn.png */; };
 		84B65A73188542E9009A5205 /* NSString+ASBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B65A72188542E9009A5205 /* NSString+ASBase64.m */; };
@@ -634,6 +635,8 @@
 		84443CB018A0BDF30097F6C0 /* RoundLoading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoundLoading.png; sourceTree = "<group>"; };
 		845C0BD71973F30200E17E52 /* whiteBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteBack.png; sourceTree = "<group>"; };
 		8465B8D1198A075300921F8A /* bank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bank.png; path = ../bank.png; sourceTree = "<group>"; };
+		846EF0C9198B5F54009D5491 /* DisputeDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisputeDetail.h; sourceTree = "<group>"; };
+		846EF0CA198B5F55009D5491 /* DisputeDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisputeDetail.m; sourceTree = "<group>"; };
 		847268CA1966A7C100D5E749 /* webView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = webView.h; sourceTree = "<group>"; };
 		847268CB1966A7C100D5E749 /* webView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = webView.m; sourceTree = "<group>"; };
 		849F6E8D18AB6D7F0016CD89 /* backbtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backbtn.png; sourceTree = "<group>"; };
@@ -746,6 +749,8 @@
 				01085FC817FDFDB300A31F63 /* HistoryFlat.m */,
 				01085FCA17FF3DE500A31F63 /* TransactionDetails.h */,
 				01085FCB17FF3DE600A31F63 /* TransactionDetails.m */,
+				846EF0C9198B5F54009D5491 /* DisputeDetail.h */,
+				846EF0CA198B5F55009D5491 /* DisputeDetail.m */,
 			);
 			name = "History Controllers";
 			sourceTree = "<group>";
@@ -1688,17 +1693,18 @@
 				16E4B1B4187053F20099D075 /* SDWebImageDownloader.m in Sources */,
 				01B2CA9918B3CC20008E6901 /* SWCellScrollView.m in Sources */,
 				6B3037DE15FA478F00056DAD /* Constant.m in Sources */,
+				846EF0C8198B57D2009D5491 /* Home.m in Sources */,
 				01085FC317FDE5C700A31F63 /* LeftMenu.m in Sources */,
 				6B3037AD15FA45BB00056DAD /* NSData+AESCrypt.m in Sources */,
 				6B3037AF15FA45BB00056DAD /* NSString+AESCrypt.m in Sources */,
 				0103AEB118FC8B8D003225DA /* UIFont+FontAwesome.m in Sources */,
 				84193343187537A800D85FC4 /* GetLocation.m in Sources */,
-				0179E9F917F35AA30027526C /* Home.m in Sources */,
 				0103AEAF18FC8B8D003225DA /* FAImageView.m in Sources */,
 				16E4B1BA187053F20099D075 /* UIImage+MultiFormat.m in Sources */,
 				01085FB717FB6ABE00A31F63 /* ReferralCode.m in Sources */,
 				01085FF5180345D200A31F63 /* ResetPassword.m in Sources */,
 				16E4B1B0187053F20099D075 /* NSData+GIF.m in Sources */,
+				846EF0CB198B5F55009D5491 /* DisputeDetail.m in Sources */,
 				16E4B1B9187053F20099D075 /* UIImage+GIF.m in Sources */,
 				84D8794218BF3ED200A60A38 /* METoast.m in Sources */,
 				0169E22D18D8D7C200442642 /* knoxWeb.m in Sources */,

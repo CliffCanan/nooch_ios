@@ -319,7 +319,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "950"
             endingLineNumber = "950"
-            landmarkName = "-textFieldDidBeginEditing:"
+            landmarkName = "-textFieldShouldReturn:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -335,8 +335,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "966"
             endingLineNumber = "966"
-            landmarkName = "-animateTextField:up:"
-            landmarkType = "5">
+            landmarkName = "@implementation ProfileInfo"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -909,8 +909,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1427"
             endingLineNumber = "1427"
-            landmarkName = "-didReceiveMemoryWarning"
-            landmarkType = "5">
+            landmarkName = "@implementation ProfileInfo"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

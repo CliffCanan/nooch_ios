@@ -20,6 +20,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "knoxWeb.h"
 #import <AddressBook/AddressBook.h>
+
 #define kButtonType     @"transaction_type"
 #define kButtonTitle    @"button_title"
 #define kButtonColor    @"button_background_color"
@@ -780,14 +781,23 @@ NSMutableURLRequest *request;
             return;
         }
         
-
-        
         NSMutableDictionary *favorite = [NSMutableDictionary new];
         [favorite addEntriesFromDictionary:[favorites objectAtIndex:index]];
-        [favorite setObject:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
-         NSLog(@"%@",favorite);
-        HowMuch *trans = [[HowMuch alloc] initWithReceiver:favorite];
-        [self.navigationController pushViewController:trans animated:YES];
+        if (favorite[@"MemberId"]) {
+            [favorite setObject:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
+            NSLog(@"%@",favorite);
+            HowMuch *trans = [[HowMuch alloc] initWithReceiver:favorite];
+            [self.navigationController pushViewController:trans animated:YES];
+        }
+        else if (favorite[@"UserName"]){
+            emailID=favorite[@"UserName"];
+            
+            serve *emailCheck = [serve new];
+            emailCheck.Delegate = self;
+            emailCheck.tagName = @"emailCheck";
+            [emailCheck getMemIdFromuUsername:[favorite[@"UserName"] lowercaseString]];
+        }
+       
     }
 }
 
@@ -799,15 +809,15 @@ NSMutableURLRequest *request;
         case iCarouselOptionWrap:
         {
             return YES;
-        }
+      }
 //        case iCarouselOptionArc:
 //        {
-//            return 360;
+//            return 180;
 //        }
-//        case iCarouselOptionRadius:
-//        {
-//            return 160;
-//        }
+     case iCarouselOptionRadius:
+       {
+           return 160;
+       }
         case iCarouselOptionSpacing:
         {
             return value * 1.3;
@@ -1063,10 +1073,50 @@ NSMutableURLRequest *request;
             [_carousel reloadData];
         }
         
-        
-        
     
     }
+    else if([tagName isEqualToString:@"emailCheck"]) {
+        NSError* error;
+        NSMutableDictionary *dictResult = [NSJSONSerialization
+                                           JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                           options:kNilOptions
+                                           error:&error];
+        
+        if([dictResult objectForKey:@"Result"] != [NSNull null]) {
+            serve *getDetails = [serve new];
+            getDetails.Delegate = self;
+            getDetails.tagName = @"getMemberDetails";
+            [getDetails getDetails:[dictResult objectForKey:@"Result"]];
+        }
+        else {
+            
+            
+            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+            [dict setObject:emailID forKey:@"email"];
+            [dict setObject:@"nonuser" forKey:@"nonuser"];
+            HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
+            [self.navigationController pushViewController:how_much animated:YES];
+            return;
+            
+           
+            
+        }
+    }
+    else if([tagName isEqualToString:@"getMemberDetails"]) {
+        NSError* error;
+        //[spinner stopAnimating];
+       // [spinner setHidden:YES];
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        dict=[NSJSONSerialization
+         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+         options:kNilOptions
+         error:&error];
+
+            HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
+            [self.navigationController pushViewController:how_much animated:YES];
+        
+    }
+
     else if ([tagName isEqualToString:@"getMemberIds"]) {
         NSError *error;
         NSMutableDictionary *temp = [NSJSONSerialization

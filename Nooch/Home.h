@@ -40,6 +40,7 @@ NSUserDefaults *user;
     NSTimer*timerHome;
     NSMutableArray *additions;
     NSMutableArray *favorites;
+    NSString*emailID;
 }
 //@property(nonatomic,strong) NSMutableArray *favorites;
 //@property (nonatomic, strong) NSMutableArray *additions;

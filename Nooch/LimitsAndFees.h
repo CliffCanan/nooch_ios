@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "serve.h"
 
-@interface LimitsAndFees : UIViewController<serveD>
+@interface LimitsAndFees : UIViewController<serveD,UIWebViewDelegate>
+@property (retain,nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 
+@property(nonatomic, strong) IBOutlet UIWebView *LimitsAndFeesView;
 @end

@@ -257,8 +257,8 @@
     [spinner startAnimating];
 
     [self.navigationItem setTitle:@"Profile Info"];
+    
     serve *serveOBJ=[serve new ];
-
     serveOBJ.tagName=@"myset";
     [serveOBJ setDelegate:self];
     [serveOBJ getSettings];
@@ -680,6 +680,10 @@
         }
         NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square",[user objectForKey:@"facebook_id"]];
         [picture setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+        [self.save setEnabled:YES];
+        [self.save setStyleClass:@"button_green"];
+        [self.save setUserInteractionEnabled:YES];
+        [dictSavedInfo setObject:@"YES" forKey:@"ImageChanged"];
     }
     else if(buttonIndex == 1) {
         if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {

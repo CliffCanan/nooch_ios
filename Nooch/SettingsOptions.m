@@ -263,7 +263,7 @@
               [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
         }
         else{
-            [bank_image setImage:[UIImage imageNamed:@"RoundLoading.png"]];
+            [bank_image setImage:[UIImage imageNamed:@"bank.png"]];
             [bank_name setText:[dictResponse valueForKey:@"NO Bank Attached"]];
               [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
         }
