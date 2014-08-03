@@ -102,61 +102,72 @@
      .banner_header {
         top: 3px;
         left: 10px;
-        width: 310px;
-        height: 24px;
+        width: 300px;
+        height: 20px;
         font-family: "Roboto-Medium";
-        font-size: 18px;
+        font-size: 16px;
         text-align: center;
         color: white;
      }
      .banner_alert_glyph {
         top: 3px;
-        left: 40px;
+        left: 50px;
         width: 20px;
-        height: 24px;
-        font-family: "FontAwesome";
-        font-size: 18px;
-        text-align: center;
-        color: white;
-     }
-     .banner_info {
-        top: 30px;
-        left: 10px;
-        width: 220px;
-        height: 34px;
-        font-family : "Roboto-Light";
-        font-size: 10px;
-        text-align: center;
-        color: white;
-     }
-    .dismiss_banner {
-        top     : 6px;
-        left    : 292px;
-        width   : 18px;
-        height  : 18px;
+        height: 20px;
         font-family: "FontAwesome";
         font-size: 16px;
         text-align: center;
         color: white;
+     }
+     .banner_info {
+        top: 24px;
+        left: 22px;
+        width: 276px;
+        height: 18px;
+        font-family : "Roboto-Light";
+        font-size: 12px;
+        text-align: center;
+        color: white;
+     }
+    .dismiss_banner {
+        top     : 10px;
+        left    : 289px;
+        width   : 27px;
+        height  : 40px;
+        font-family: "FontAwesome";
+        font-size: 26px;
+        text-align: center;
+        color: white;
     }
+	.go_now_text {
+		top: 42px;
+        left: 50px;
+		width: 220px;
+		height: 12px;
+		color: white;
+		font-weight: medium;
+		font-family: "Roboto-Medium";
+		font-size: 10px;
+	}
+	/**  ".go_now" is for a blue button, may not use for design reasons, would use "go_now_text" above instead. **/
 	.go_now {
 		top: 35px;
         left: 224px;
 		width: 68px;
 		height: 30px;
 		color: white;
-		border-radius: 5px;
+		border-radius: 4px;
 		font-family: "Roboto";
-		font-weight: light;
+		font-weight: regular;
 		font-size: 14px;
 		background-image: linear-gradient(#6dbee8, #41abe1);
-		border: 1px solid #66AE3C;
+		border: 1px solid #29A1DE;
     }
     #suspended_home {
         top: 0px;
         left: 0px;
         width: 320px;
-        height: 70px;
+        height: 60px;
         background-image: linear-gradient(#D61915, #c41713);
 		border: 1px solid #C41713;
 		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.4);
@@ -164,7 +175,7 @@
     #email_unverified {
         left: 0px;
         width: 320px;
-        height: 70px;
+        height: 60px;
         background-image: linear-gradient(#D61915, #c41713);
 		border: 1px solid #C41713;
 		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.4);
@@ -172,7 +183,7 @@
     #phone_unverified {
         left: 0px;
         width: 320px;
-        height: 70px;
+        height: 60px;
         background-image: linear-gradient(#D61915, #c41713);
 		border: 1px solid #C41713;
 		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.4);
@@ -187,12 +198,12 @@
             background-image	: linear-gradient(#6dbee8, #41abe1);
             width				: 280px;
 			height				: 48px;
-			left                : 15px;
+			left                : 20px;
 			color 				: white;
 			border-radius		: 5px;
 			font-family			: "Roboto";
 			font-weight         : light;
-			font-size			: 22px;
+			font-size			: 21px;
 			border				: 1px solid #29A1DE;
         }
 		/****  GREEN BUTTON GRADIENT  ****/
@@ -204,7 +215,7 @@
 			border-radius		: 5px;
 			font-family			: "Roboto";
 			font-weight         : light;
-			font-size			: 22px;
+			font-size			: 21px;
             background-image	: linear-gradient(#7fd034, #6ab029);
 			border				: 1px solid #66AE3C;
 		}
@@ -217,7 +228,7 @@
 			border-radius		: 5px;
 			font-family			: "Roboto";
 			font-weight         : light;
-			font-size			: 22px;
+			font-size			: 21px;
             background-image	: linear-gradient(#c0c2c4, #b1b3b6);
 			border				: 1px solid #A7A9AC;
 		}
@@ -230,7 +241,7 @@
 			border-radius		: 5px;
 			font-family			: "Roboto";
 			font-weight         : light;
-			font-size			: 22px;
+			font-size			: 21px;
 			background-image	: linear-gradient(#c0c2c4, #b1b3b6);
 			border				: 1px solid #A7A9AC;
 		}
@@ -243,7 +254,7 @@
 			border-radius		: 5px;
 			font-family			: "Roboto";
 			font-weight         : light;
-			font-size			: 22px;
+			font-size			: 21px;
 			background-image	: linear gradient(#e02d33, #d2232a); 
 		}
 
@@ -525,11 +536,11 @@
 	.facebook_glyph {
         width			: 14px;
 		height			: 16px;
-		top				: 50px;
-		left			: 15px;
+		top				: 45px;
+		left			: 14px;
         color       	: #41ABE1;
         font-family 	: "FontAwesome";
-        font-size       : 14px;
+        font-size       : 13px;
     }
 		 
 	/****  Table Cell View Main Text Label (Left Side)  ****/
@@ -660,7 +671,6 @@
 		font-family			: "Roboto";
 		font-weight         : light;
 		font-size			: 28px;
-		font-stretch		: semi-expanded;
 		text-align       	: center;
 		color 				: #313233;
 		width				: 280px;
@@ -748,14 +758,14 @@
 	table-view#select_recipient {
 		width				: 320px;
 		background-color	: #ffffff;
-		row-height			: 74px;
+		row-height			: 64px;
 		separator-style 	: single-line;
 		separator-color		: rgba(188,190,192,.7);	
 	}
 table-view#select_recipientwithoutSeperator {
 		width				: 320px;
 		background-color	: #ffffff;
-		row-height			: 74px;
+		row-height			: 64px;
 
 	}
 	/**  Styles all the profile pictures of users that are returned in the Select Recipient Table.  **/
@@ -769,7 +779,7 @@ table-view#select_recipientwithoutSeperator {
 	}
 
 	.select_recipient_name {
-		height:74px;
+		height:62px;
 		top:0px;
 		color: #313233;
 		font-family: "Roboto";
@@ -793,8 +803,8 @@ table-view#select_recipientwithoutSeperator {
 	.addressbook-icons {
 		width			: 14px;
 		height			: 16px;
-		top				: 50px;
-		left			: 70px;
+		top				: 46px;
+		left			: 66px;
 		background-image: url(address-book-icon.png);
 	}
 
@@ -1972,11 +1982,11 @@ table-view#select_recipientwithoutSeperator {
 	/**  Text ("You Paid/Requested/Donated...")  **/
 	.history_cell_transTypeLabel {
 		left				: 75px;
-		top					: 5px;
+		top					: 12px;
 		width				: 185px;
-		height				: 18px;
-		font-size			: 15px;
-		font-weight			: light;
+		height				: 15px;
+		font-size			: 12px;
+		font-weight			: regular;
 	}
 	
 	/**  Text in top row if table is empty  **/
@@ -1995,16 +2005,16 @@ table-view#select_recipientwithoutSeperator {
 		left				: 75px;
 		top					: 22px;
 		width				: 185px;
-		height				: 29px;
-		font-size			: 20px;
+		height				: 28px;
+		font-size			: 21px;
 		font-weight			: regular;
 	}
 
 	/**  Date of the transfer ("2 days ago")  **/
 	.history_datetext {
 		width				: 150px;
-		height				: 15px;
-		top					: 50px;
+		height				: 13px;
+		top					: 49px;
 		left                : 75px;
 		font-family			: "Roboto";
 		font-weight         : light;
@@ -2021,19 +2031,19 @@ table-view#select_recipientwithoutSeperator {
 		left				: 250px;
 		font-family			: "Roboto";
 		font-weight         : regular;
-		font-size			: 18px;
+		font-size			: 19px;
 		text-align       	: right;
 	}
 
 	 /**  Amount of the PENDING Transfer on the right side of the row (Only on the Pending Tab)  **/
 	.history_pending_transferamount {
-		width				: 61px;
+		width				: 65px;
 		height				: 40px;
 		top					: 10px;
 		left				: 254px;
 		font-family			: "Roboto";
 		font-weight         : regular;
-		font-size			: 18px;
+		font-size			: 19px;
 		text-align       	: right;
 	}
 
@@ -2052,18 +2062,18 @@ table-view#select_recipientwithoutSeperator {
 		font-weight         : light;
 		font-size			: 12px;
 		text-align       	: right;
-		color 				: #58595b;
+		color 				: #58595b; /* GRAY */
 	}	
 	.history_RequestStatus {
 		width				: 60px;
 		height				: 15px;
-		top					: 46px;
+		top					: 44px;
 		left                : 255px;
 		font-family			: "Roboto";
 		font-weight         : regular;
 		font-size			: 12px;
 		text-align       	: right;
-		color 				: #c72127;
+		color 				: #c72127; /* RED */
 	}
 
 	 /**  Sets the other user's name to be bold for each row.  **/
