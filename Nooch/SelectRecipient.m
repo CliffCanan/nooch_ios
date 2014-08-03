@@ -984,7 +984,7 @@
     }
     [cell.detailTextLabel setText:@""];
     
-    UIImageView*pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 10, 60, 60)];
+    UIImageView*pic = [[UIImageView alloc] initWithFrame:CGRectMake(16, 6, 50, 50)];
     pic.clipsToBounds = YES;
     UIImageView* npic = [UIImageView new];
     npic.clipsToBounds = YES;
@@ -995,7 +995,7 @@
     
     if (self.location) {
         [cell.textLabel setTextColor:kNoochGrayLight];
-        cell.indentationLevel = 1; cell.indentationWidth = 70;
+        cell.indentationLevel = 1; cell.indentationWidth = 56;
         [cell.textLabel setStyleClass:@"select_recipient_name"];
 
         NSDictionary * temp;
@@ -1024,11 +1024,11 @@
              temp = [self.recents objectAtIndex:indexPath.row];
             NSLog(@"%@",temp);
         }
-        UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 60, 60)];
+        UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
         pic.clipsToBounds = YES;
         [cell.contentView addSubview:pic];
-        [pic setFrame:CGRectMake(15, 7, 58, 58)];
-        pic.layer.cornerRadius = 29; pic.layer.borderColor = kNoochBlue.CGColor; pic.layer.borderWidth = 1;
+        [pic setFrame:CGRectMake(16, 6, 50, 50)];
+        pic.layer.cornerRadius = 25; //pic.layer.borderColor = kNoochBlue.CGColor; pic.layer.borderWidth = 1;
         pic.clipsToBounds = YES;
         [pic setImageWithURL:[NSURL URLWithString:temp[@"Photo"]]
             placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
@@ -1061,8 +1061,8 @@
     else if (searching) {
         //Nooch User
         npic.hidden=NO;
-        [npic setFrame:CGRectMake(275, 19, 29, 33)];
-        [npic setImage:[UIImage imageNamed:@"n_Icon_58x66.png"]];
+        [npic setFrame:CGRectMake(278, 19, 23, 27)];
+        [npic setImage:[UIImage imageNamed:@"n_icon_46x54.png"]];
         [npic removeFromSuperview];
         
         NSDictionary *info = [arrSearchedRecords objectAtIndex:indexPath.row];
@@ -1070,10 +1070,10 @@
             placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
         [cell setIndentationLevel:1];
         pic.hidden=NO;
-        cell.indentationWidth = 70;
-        [pic setFrame:CGRectMake(15, 7, 58, 58)];
-        pic.layer.cornerRadius = 29; pic.layer.borderWidth = 1;
-        pic.layer.borderColor = [Helpers hexColor:@"6D6E71"].CGColor;
+        cell.indentationWidth = 56;
+        [pic setFrame:CGRectMake(16, 6, 50, 50)];
+        pic.layer.cornerRadius = 25; // pic.layer.borderWidth = 1;
+        // pic.layer.borderColor = [Helpers hexColor:@"6D6E71"].CGColor;
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",info[@"FirstName"],info[@"LastName"]];
         [cell.textLabel setStyleClass:@"select_recipient_name"];
         
@@ -1109,15 +1109,15 @@
     }
     else if ([[assist shared] isRequestMultiple]) {
 
-        [npic setFrame:CGRectMake(275, 19, 29, 33)];
-        [npic setImage:[UIImage imageNamed:@"n_Icon_58x66.png"]];
+        [npic setFrame:CGRectMake(278, 19, 23, 27)];
+        [npic setImage:[UIImage imageNamed:@"n_icon_46x54.png"]];
         NSDictionary *info = [arrRequestPersons objectAtIndex:indexPath.row];
         [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
             placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
         pic.hidden=NO;
-        cell.indentationWidth = 70;
-        [pic setFrame:CGRectMake(15, 7, 58, 58)];
-        pic.layer.cornerRadius = 29; pic.layer.borderColor = [Helpers hexColor:@"6D6E71"].CGColor; pic.layer.borderWidth = 1;
+        cell.indentationWidth = 56;
+        [pic setFrame:CGRectMake(16, 6, 50, 50)];
+        pic.layer.cornerRadius = 25; // pic.layer.borderColor = [Helpers hexColor:@"6D6E71"].CGColor; pic.layer.borderWidth = 1;
         [cell setIndentationLevel:1];
         cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",[info[@"FirstName"] capitalizedString],[info[@"LastName"] capitalizedString]];
         [cell.textLabel setStyleClass:@"select_recipient_name"];
@@ -1150,15 +1150,15 @@
     else if(isRecentList){
         //Recent List
         
-        [npic setFrame:CGRectMake(275, 19, 29, 33)];
-        [npic setImage:[UIImage imageNamed:@"n_Icon_58x66.png"]];
+        [npic setFrame:CGRectMake(278, 19, 23, 27)];
+        [npic setImage:[UIImage imageNamed:@"n_icon_46x54.png"]];
         NSDictionary *info = [self.recents objectAtIndex:indexPath.row];
         [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
             placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
         pic.hidden=NO;
-        cell.indentationWidth = 70;
-        [pic setFrame:CGRectMake(15, 7, 58, 58)];
-        pic.layer.cornerRadius = 29; pic.layer.borderColor = [Helpers hexColor:@"6D6E71"].CGColor; pic.layer.borderWidth = 1;
+        cell.indentationWidth = 56;
+        [pic setFrame:CGRectMake(16, 6, 50, 50)];
+        pic.layer.cornerRadius = 25; // pic.layer.borderColor = [Helpers hexColor:@"6D6E71"].CGColor; pic.layer.borderWidth = 1;
         [cell setIndentationLevel:1];
         cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",info[@"FirstName"],info[@"LastName"]];
         [cell.textLabel setStyleClass:@"select_recipient_name"];
