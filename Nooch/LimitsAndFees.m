@@ -37,7 +37,7 @@
     LimitsAndFeesView.opaque = 0;
     spinner.hidesWhenStopped = YES;
     [spinner startAnimating];
-    self.navigationItem.title = @"Privacy Policy";
+   
     NSURL *webURL = [NSURL URLWithString:@"https://www.nooch.com/2248-112188/"];
     LimitsAndFeesView=[[UIWebView alloc]initWithFrame:self.view.frame];
     LimitsAndFeesView.delegate = self;

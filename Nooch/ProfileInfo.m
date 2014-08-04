@@ -679,7 +679,14 @@
             return;
         }
         NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square",[user objectForKey:@"facebook_id"]];
-        [picture setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+        [picture setImage:[UIImage imageNamed:@"RoundLoading.png"]];
+        [picture setImageWithURL:[NSURL URLWithString:url] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+            if (image) {
+                [[assist shared]setTranferImage:image];
+
+            }
+        }];
+        
         [self.save setEnabled:YES];
         [self.save setStyleClass:@"button_green"];
         [self.save setUserInteractionEnabled:YES];

@@ -234,6 +234,7 @@
 		84443CB118A0BDF30097F6C0 /* RoundLoading.png in Resources */ = {isa = PBXBuildFile; fileRef = 84443CB018A0BDF30097F6C0 /* RoundLoading.png */; };
 		845C0BD81973F30200E17E52 /* whiteBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 845C0BD71973F30200E17E52 /* whiteBack.png */; };
 		8465B8D2198A075300921F8A /* bank.png in Resources */ = {isa = PBXBuildFile; fileRef = 8465B8D1198A075300921F8A /* bank.png */; };
+		846874C3198F40EF001223B8 /* n_icon_46x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 846874C2198F40EF001223B8 /* n_icon_46x54.png */; };
 		846EF0C8198B57D2009D5491 /* Home.m in Sources */ = {isa = PBXBuildFile; fileRef = 0179E9F817F35AA30027526C /* Home.m */; };
 		846EF0CB198B5F55009D5491 /* DisputeDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 846EF0CA198B5F55009D5491 /* DisputeDetail.m */; };
 		847268CC1966A7C100D5E749 /* webView.m in Sources */ = {isa = PBXBuildFile; fileRef = 847268CB1966A7C100D5E749 /* webView.m */; };
@@ -635,6 +636,7 @@
 		84443CB018A0BDF30097F6C0 /* RoundLoading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoundLoading.png; sourceTree = "<group>"; };
 		845C0BD71973F30200E17E52 /* whiteBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteBack.png; sourceTree = "<group>"; };
 		8465B8D1198A075300921F8A /* bank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bank.png; path = ../bank.png; sourceTree = "<group>"; };
+		846874C2198F40EF001223B8 /* n_icon_46x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_icon_46x54.png; sourceTree = "<group>"; };
 		846EF0C9198B5F54009D5491 /* DisputeDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisputeDetail.h; sourceTree = "<group>"; };
 		846EF0CA198B5F55009D5491 /* DisputeDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisputeDetail.m; sourceTree = "<group>"; };
 		847268CA1966A7C100D5E749 /* webView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = webView.h; sourceTree = "<group>"; };
@@ -848,6 +850,7 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				846874C2198F40EF001223B8 /* n_icon_46x54.png */,
 				8465B8D1198A075300921F8A /* bank.png */,
 				84F0994F1988AD840020A08F /* Default-568h@2x.png */,
 				84F099501988AD840020A08F /* Default.png */,
@@ -1630,6 +1633,7 @@
 				6BC04B9D1677DE0E005C68D6 /* README.rst in Resources */,
 				6BC04C031677E25D005C68D6 /* AirshipConfig.plist in Resources */,
 				84443CB118A0BDF30097F6C0 /* RoundLoading.png in Resources */,
+				846874C3198F40EF001223B8 /* n_icon_46x54.png in Resources */,
 				842B4198196BC081009BF8B7 /* map_icon.png in Resources */,
 				84F099521988AD840020A08F /* Default-568h@2x.png in Resources */,
 				014C433D185BC7EF00956A84 /* VarelaRound-Regular.ttf in Resources */,

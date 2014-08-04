@@ -56,6 +56,9 @@ NSMutableURLRequest *request;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
+    ABAddressBookRegisterExternalChangeCallback(addressBook, addressBookChanged, (__bridge void *)(self));
+    
 	// Do any additional setup after loading the view.
     
     nav_ctrl = self.navigationController;
@@ -175,8 +178,94 @@ NSMutableURLRequest *request;
     if ([user objectForKey:@"facebook_id"]) {
         [fb storeFB:[user objectForKey:@"facebook_id"]];
     }
+     [self address_book];
 }
-
+void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void *context) {
+   
+    NSMutableArray*additions = [[NSMutableArray alloc]init];
+   // ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
+    CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
+    CFIndex nPeople = ABAddressBookGetPersonCount(addressBook);
+    for(int i=0; i<nPeople; i++)
+    {
+        NSMutableDictionary *curContact=[[NSMutableDictionary alloc] init];
+        ABRecordRef person=CFArrayGetValueAtIndex(people, i);
+        NSString *contacName = [[NSMutableString alloc] init];
+        contacName =(__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        NSString *firstName = [[NSString alloc] init];
+        NSString *lastName = [[NSString alloc] init];
+        firstName = (__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        if((__bridge NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty)) {
+            [contacName stringByAppendingString:[NSString stringWithFormat:@" %@", (__bridge NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty)]];
+            lastName = (__bridge NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty);
+        }
+        NSData *contactImage;
+        if(ABPersonHasImageData(person) > 0 ) {
+            contactImage = (__bridge NSData *)(ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail));
+        }
+        else {
+            contactImage = UIImageJPEGRepresentation([UIImage imageNamed:@"profile_picture.png"], 1);
+        }
+        ABMultiValueRef phoneNumber = ABRecordCopyValue(person, kABPersonPhoneProperty);
+        ABMultiValueRef emailInfo = ABRecordCopyValue(person, kABPersonEmailProperty);
+        NSString *emailId = (__bridge NSString *)ABMultiValueCopyValueAtIndex(emailInfo, 0);
+        if(emailId != NULL) {
+            [curContact setObject:emailId forKey:@"UserName"]; [curContact setObject:emailId forKey:@"emailAddy"];
+        }
+        if(contacName != NULL)  [curContact setObject:contacName forKey:@"Name"];
+        if(firstName != NULL) [curContact setObject:firstName forKey:@"FirstName"];
+        if(lastName != NULL)  [curContact setObject:lastName forKey:@"LastName"];
+        NSLog(@"%@",contactImage);
+        [curContact setObject:contactImage forKey:@"image"];
+        [curContact setObject:@"YES" forKey:@"addressbook"];
+        NSLog(@"%@",curContact);
+        NSString *phone,*phone2,*phone3;
+        if(ABMultiValueGetCount(phoneNumber)> 0)
+            phone =  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber, 0));
+        
+        if(ABMultiValueGetCount(phoneNumber)> 1) {
+            phone2=  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber, 1));
+            phone2 = [phone2 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone2 length])];
+            [curContact setObject:phone2 forKey:@"phoneNo2"];
+        }
+        if(ABMultiValueGetCount(phoneNumber)> 2) {
+            phone3 =  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber,2));
+            phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
+            [curContact setObject:phone3 forKey:@"phoneNo3"];
+        }
+        if(phone == NULL && (emailId == NULL || [emailId rangeOfString:@"facebook"].location != NSNotFound)) {
+            [additions addObject:curContact];
+        }else if( contacName == NULL) {
+        }
+        else {
+            NSString * strippedNumber = [phone stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone length])];
+            if([strippedNumber length] == 11){
+                strippedNumber = [strippedNumber substringFromIndex:1];
+            }
+            if(strippedNumber != NULL)
+                [curContact setObject:strippedNumber forKey:@"phoneNo"];
+            [additions addObject:curContact];
+        }
+    }
+    [[assist shared] SaveAssos:additions.mutableCopy];
+    NSLog(@"ginto%d",[additions count]);
+    NSMutableArray *get_ids_input = [NSMutableArray new];
+    for (NSDictionary *person in additions) {
+        NSMutableDictionary *person_input = [NSMutableDictionary new];
+        [person_input setObject:@"" forKey:@"memberId"];
+        if (person[@"phoneNo"]) [person_input setObject:person[@"phoneNo"] forKey:@"phoneNo"];
+        if (person[@"emailAddy"]) [person_input setObject:person[@"emailAddy"] forKey:@"emailAddy"];
+        else [person_input setObject:@"" forKey:@"emailAddy"];
+        if (person[@"phoneNo2"]) [person_input setObject:person[@"phoneNo2"] forKey:@"phoneNo2"];
+        if (person[@"phoneNo3"]) [person_input setObject:person[@"phoneNo3"] forKey:@"phoneNo3"];
+        [get_ids_input addObject:person_input];
+    }
+    
+    
+    CFRelease(people);
+    CFRelease(addressBook);    NSLog(@"Recevied notification");
+    
+}
 -(void)dismiss_suspended_alert {
     [self.suspended removeFromSuperview];
     CGRect rect= self.profile_incomplete.frame;
@@ -254,7 +343,7 @@ NSMutableURLRequest *request;
             [additions addObject:curContact];
         }
     }
-    [[assist shared] addAssos:additions.mutableCopy];
+    [[assist shared] SaveAssos:additions.mutableCopy];
     NSMutableArray *get_ids_input = [NSMutableArray new];
     for (NSDictionary *person in additions) {
         NSMutableDictionary *person_input = [NSMutableDictionary new];
@@ -267,29 +356,7 @@ NSMutableURLRequest *request;
         [get_ids_input addObject:person_input];
     }
    
-    favorites = [[NSMutableArray alloc]init];
-    for (int i = 0; i<[additions count] ;i++)
-    {
-        if ([favorites count]==5) {
-            break;
-        }
-        else if(i>=[additions count]-1){
-            i=0;
-        }
-        NSUInteger randomIndex = arc4random() % [additions  count];
-        if ([favorites containsObject:[additions objectAtIndex:randomIndex]])
-        {
-            continue;
-        }
-        [favorites  addObject:[additions objectAtIndex:randomIndex]];
-        
-        
-    }
     
-   serve *get_ids = [serve new];
-   [get_ids setDelegate:self];
-   [get_ids setTagName:@"getMemberIds"];
-   [get_ids getMemberIds:get_ids_input];
     CFRelease(people);
     CFRelease(addressBook);
 }
@@ -598,7 +665,7 @@ NSMutableURLRequest *request;
         [locationManager startUpdatingLocation];
         
     }
-   
+  
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -1068,7 +1135,39 @@ NSMutableURLRequest *request;
         NSLog(@"favorites %@",favorites);
         
         if ([favorites count]==0) {
-            [self address_book];
+            [additions removeAllObjects];
+            additions=nil;
+            additions=[[NSMutableArray alloc]init];
+            
+            additions=[[[assist shared]assosAll] mutableCopy];
+            favorites = [[NSMutableArray alloc]init];
+            for (int i = 0; i<[additions count] ;i++)
+            {
+                if ([favorites count]==5) {
+                    break;
+                }
+                else if(i>=[additions count]-1){
+                    i=0;
+                }
+                NSUInteger randomIndex = arc4random() % [additions  count];
+                if ([favorites containsObject:[additions objectAtIndex:randomIndex]])
+                {
+                    continue;
+                }
+                if ([[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]) {
+                    [favorites  addObject:[additions objectAtIndex:randomIndex]];
+                }
+                
+                
+                
+            }
+             [_carousel reloadData];
+//            serve *get_ids = [serve new];
+//            [get_ids setDelegate:self];
+//            [get_ids setTagName:@"getMemberIds"];
+//            [get_ids getMemberIds:get_ids_input];
+            
+            
         }else{
             [_carousel reloadData];
         }

@@ -741,6 +741,12 @@ static assist * _sharedInstance = nil;
 -(NSMutableDictionary*)assos{
     return assosciateCache;
 }
+-(NSMutableArray*)assosAll{
+    return [ArrAllContacts mutableCopy];
+}
+-(void)SaveAssos:(NSMutableArray*)additions{
+    ArrAllContacts=[additions copy];
+}
 -(void)addAssos:(NSMutableArray*)additions{
     @try {
         if ([additions count] == 0)

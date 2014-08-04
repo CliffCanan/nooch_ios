@@ -39,6 +39,8 @@ NSString *histSearching;
     BOOL isSecondBankVerified;
     BOOL isPOP;
     NSString*passValue;
+    NSArray*ArrAllContacts;
+    
 }
 //@property(nonatomic,retain)NSTimer*timer;
 @property (nonatomic, retain) ACAccountStore *accountStore;
@@ -53,7 +55,9 @@ NSString *histSearching;
 -(NSMutableData*)pic;
 -(NSMutableArray*)allHist;
 -(NSMutableDictionary*)assos;
+-(NSMutableArray*)assosAll;
 -(void)addAssos:(NSMutableArray*)additions;
+-(void)SaveAssos:(NSMutableArray*)additions;
 -(NSMutableArray*)assosSearch:(NSString*)searchText;
 -(void)histPoll;
 -(void)histUpdate;
