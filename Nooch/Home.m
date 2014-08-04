@@ -455,7 +455,7 @@ NSMutableURLRequest *request;
         UILabel *sus_info = [UILabel new];
         [sus_info setStyleClass:@"banner_info"];
         [sus_info setNumberOfLines:0];
-        [sus_info setText:@"Your account will have limited functionality until you are unsuspended. Contact support for further inquiries."];
+        [sus_info setText:@"Your account will have limited functionality while you are suspended."];
         [self.suspended addSubview:sus_info];
 
         UILabel *sus_exclaim = [UILabel new];
@@ -464,8 +464,8 @@ NSMutableURLRequest *request;
         [self.suspended addSubview:sus_exclaim];
         
         UIButton *contact = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [contact setStyleClass:@"go_now"];
-        [contact setTitle:@"Contact" forState:UIControlStateNormal];
+        [contact setStyleClass:@"go_now_text"];
+        [contact setTitle:@"TAP TO CONTACT NOOCH" forState:UIControlStateNormal];
         [contact addTarget:self action:@selector(contact_support) forControlEvents:UIControlEventTouchUpInside];
         [self.suspended addSubview:contact];
         
@@ -488,7 +488,7 @@ NSMutableURLRequest *request;
        [self.profile_incomplete setStyleId:@"email_unverified"];
        if (bannerAlert>0) {
            CGRect rect= self.profile_incomplete.frame;
-           rect.origin.y+=70;
+           rect.origin.y+=60;
            self.profile_incomplete.frame=rect;
        }
         bannerAlert++;
@@ -510,8 +510,8 @@ NSMutableURLRequest *request;
         [self.profile_incomplete addSubview:em_info];
         
         UIButton *go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [go setStyleClass:@"go_now"];
-        [go setTitle:@"Go Now" forState:UIControlStateNormal];
+        [go setStyleClass:@"go_now_text"];
+        [go setTitle:@"TAP TO GO NOW" forState:UIControlStateNormal];
         [go addTarget:self action:@selector(go_profile) forControlEvents:UIControlEventTouchUpInside];
         [self.profile_incomplete addSubview:go];
         
@@ -537,7 +537,7 @@ NSMutableURLRequest *request;
           
           if (bannerAlert>0) {
               CGRect rect= self.phone_incomplete.frame;
-              rect.origin.y+=70;
+              rect.origin.y+=60;
               self.phone_incomplete.frame=rect;
           }
            bannerAlert++;
@@ -554,12 +554,12 @@ NSMutableURLRequest *request;
           UILabel *em_info = [UILabel new];
           [em_info setStyleClass:@"banner_info"];
           [em_info setNumberOfLines:0];
-          [em_info setText:@"Please verify your phone to unlock all \n features."];
+          [em_info setText:@"Please verify your phone to unlock all features."];
           [self.phone_incomplete addSubview:em_info];
           
           UIButton *go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-          [go setStyleClass:@"go_now"];
-          [go setTitle:@"Go Now" forState:UIControlStateNormal];
+          [go setStyleClass:@"go_now_text"];
+          [go setTitle:@"TAP TO GO NOW" forState:UIControlStateNormal];
           [go addTarget:self action:@selector(go_profile) forControlEvents:UIControlEventTouchUpInside];
           [self.phone_incomplete addSubview:go];
           
@@ -636,7 +636,7 @@ NSMutableURLRequest *request;
         [self.navigationController.view addSubview:self.hud];
         
         self.hud.delegate = self;
-        self.hud.labelText = @"Loading your Nooch account";
+        self.hud.labelText = @"Loading Your Nooch Account";
         [self.hud showWhileExecuting:@selector(myTask) onTarget:self withObject:nil animated:YES];
         }
         if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
@@ -747,14 +747,14 @@ NSMutableURLRequest *request;
         
         
         if ([[assist shared]getSuspended]) {
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com for more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
             [alert setTag:50];
             [alert show];
             return;
         }
         
         if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Verify Your Email" message:@"Terribly sorry, but before you can send money, we need you to confirm your email address by clicking the link we emailed to the address you used to sign up." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Verify Your Email" message:@"Terribly sorry, but before you send money, please just confirm your email address by clicking the link we sent to the email address you used to sign up." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
             [alert show];
             return;
         }
@@ -767,7 +767,7 @@ NSMutableURLRequest *request;
         }
         
         if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame Our Lawyers" message:@"To help keep Nooch safe, we ask that you validate your phone number before before sending money.\n \nIf you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame Our Lawyers" message:@"To keep Nooch safe, we ask all users to verify your phone number before before sending money.\n \nIf you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
             [alert setTag:148];
             [alert show];
             return;
@@ -989,20 +989,20 @@ NSMutableURLRequest *request;
     }
     
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Verify Your Email" message:@"Terribly sorry, but before you can send money, we need you to confirm your email address by clicking the link we emailed to the address you used to sign up." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Verify Your Email" message:@"Terribly sorry, but before you can send money, please confirm your email address by clicking the link we sent to the email address you used to sign up." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         return;
     }
     
     if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe" message:@"Please take 1 minute to validate your identity by completing your Nooch profile (just 4 fields)." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe" message:@"Please take 1 minute to verify your identity by completing your Nooch profile (just 4 fields)." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
         [alert setTag:147];
         [alert show];
         return;
     }
     
     if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame Our Lawyers" message:@"To help keep Nooch safe, we ask that you validate your phone number before before sending money.\n \nIf you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame Our Lawyers" message:@"To keep Nooch safe, we ask all users to verify a phone number before before sending money.\n \n If you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
         [alert setTag:148];
         [alert show];
         return;
@@ -1010,7 +1010,7 @@ NSMutableURLRequest *request;
     
     if ( ![[[NSUserDefaults standardUserDefaults]
         objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
-        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Connect Your Bank" message:@"Adding a bank account to fund Nooch payments is lightening quick. (You don't have to type a routing or account number!)  Would you like to take care of this now?." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
+        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Connect Your Bank" message:@"Adding a bank account to fund Nooch payments is lightening quick. (You don't have to type a routing or account number!)/n /n Would you like to take care of this now?." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
         [set setTag:201];
         [set show];
         return;
