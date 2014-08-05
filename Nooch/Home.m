@@ -665,6 +665,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [locationManager startUpdatingLocation];
         
     }
+    [[assist shared] setRequestMultiple:NO];
+ 
+    [[assist shared]setArray:nil];
+    
   
 }
 - (void)viewWillAppear:(BOOL)animated
@@ -853,8 +857,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if (favorite[@"MemberId"]) {
             [favorite setObject:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
             NSLog(@"%@",favorite);
+            isFromHome=YES;
             HowMuch *trans = [[HowMuch alloc] initWithReceiver:favorite];
             [self.navigationController pushViewController:trans animated:YES];
+            
         }
         else if (favorite[@"UserName"]){
             emailID=favorite[@"UserName"];
@@ -1127,7 +1133,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     if ([tagName isEqualToString:@"favorites"]) {
         NSError *error;
-       
+        favorites = [[NSMutableArray alloc]init];
         favorites = [NSJSONSerialization
                                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                      options:kNilOptions
@@ -1135,40 +1141,23 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         NSLog(@"favorites %@",favorites);
         
         if ([favorites count]==0) {
-            [additions removeAllObjects];
-            additions=nil;
-            additions=[[NSMutableArray alloc]init];
-            
-            additions=[[[assist shared]assosAll] mutableCopy];
-            favorites = [[NSMutableArray alloc]init];
-            for (int i = 0; i<[additions count] ;i++)
-            {
-                if ([favorites count]==5) {
-                    break;
-                }
-                else if(i>=[additions count]-1){
-                    i=0;
-                }
-                NSUInteger randomIndex = arc4random() % [additions  count];
-                if ([favorites containsObject:[additions objectAtIndex:randomIndex]])
-                {
-                    continue;
-                }
-                if ([[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]) {
-                    [favorites  addObject:[additions objectAtIndex:randomIndex]];
-                }
-                
-                
-                
-            }
-             [_carousel reloadData];
-//            serve *get_ids = [serve new];
-//            [get_ids setDelegate:self];
-//            [get_ids setTagName:@"getMemberIds"];
-//            [get_ids getMemberIds:get_ids_input];
-            
+            [self FavoriteContactsProcessing];
+            [_carousel reloadData];
+        
             
         }else{
+            favorites=[favorites mutableCopy];
+            for (int i=0; i<[favorites count]; i++) {
+                NSDictionary*dict = [favorites objectAtIndex:i];
+                if ([[dict valueForKey:@"MemberId"] caseInsensitiveCompare:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]==NSOrderedSame) {
+                    
+                    [favorites removeObjectAtIndex:i];
+                }
+
+            }
+            if ([favorites count]==0) {
+               [self FavoriteContactsProcessing];
+            }
             [_carousel reloadData];
         }
         
@@ -1193,6 +1182,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
             [dict setObject:emailID forKey:@"email"];
             [dict setObject:@"nonuser" forKey:@"nonuser"];
+              isFromHome=YES;
             HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
             return;
@@ -1210,7 +1200,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
          JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
          options:kNilOptions
          error:&error];
-
+         isFromHome=YES;
             HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
         
@@ -1349,7 +1339,35 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
      }
  
 }
+-(void)FavoriteContactsProcessing{
+    [additions removeAllObjects];
+    additions=nil;
+    additions=[[NSMutableArray alloc]init];
+    
+    additions=[[[assist shared]assosAll] mutableCopy];
+   // favorites = [[NSMutableArray alloc]init];
+    for (int i = 0; i<[additions count] ;i++)
+    {
+        if ([favorites count]==5) {
+            break;
+        }
+        else if(i>=[additions count]-1){
+            i=0;
+        }
+        NSUInteger randomIndex = arc4random() % [additions  count];
+        if ([favorites containsObject:[additions objectAtIndex:randomIndex]])
+        {
+            continue;
+        }
+        if ([[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]) {
+            [favorites  addObject:[additions objectAtIndex:randomIndex]];
+        }
+        
+        
+        
+    }
 
+}
 #pragma mark- Date From String
 - (NSDate*) dateFromString:(NSString*)aStr
 {

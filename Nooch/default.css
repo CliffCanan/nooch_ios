@@ -81,8 +81,8 @@
 		}
         #navbar_back {
             height         :40px;
-			width			: 80px;
-			left			: 0px;
+			width			:40px;
+			left			: -10px;
 		}
         #navbar_hamburger {
 			width       :  30px;

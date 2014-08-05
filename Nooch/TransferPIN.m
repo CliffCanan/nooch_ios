@@ -559,7 +559,7 @@
                     
                     [transactionInputTransfer setObject:[self.receiver objectForKey:@"email"] forKey:@"MoneySenderEmailId"];
                     transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"requestInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
-                    [transactionTransfer setObject:[self.receiver objectForKey:@"email"] forKey:@"MoneySenderEmailId"];
+                    //[transactionTransfer setObject:[self.receiver objectForKey:@"email"] forKey:@"MoneySenderEmailId"];
                 }
                 NSLog(@"%@ asdfasf %@",self.type,transactionTransfer);
                 postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
@@ -568,7 +568,7 @@
                 self.respData = [NSMutableData data];
                 urlStrTranfer = [[NSString alloc] initWithString:MyUrl];
                 if ([self.type isEqualToString:@"request"]) {
-                    urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyFromNonNoochUser"];
+                    urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyToNonNoochUserUsingKnox"];
                 } else {
                     urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserUsingKnox"];
                 }

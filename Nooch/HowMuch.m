@@ -48,7 +48,7 @@
     isEmailEntry=NO;
     [[assist shared]setRequestMultiple:NO];
     [arrRecipientsForRequest removeAllObjects];
-    [[assist shared]setArray:[arrRecipientsForRequest copy]];
+    [[assist shared]setArray:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)viewDidLoad
@@ -70,7 +70,16 @@
     back.layer.cornerRadius = 4;
     [back setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:back];
-
+    UIButton *back_button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [back_button setStyleId:@"navbar_back"];
+    [back_button setImage:[UIImage imageNamed:@"whiteBack30.png"] forState:UIControlStateNormal];
+    [back_button setImage:[UIImage imageNamed:@"whiteBack30.png"] forState:UIControlStateHighlighted];
+    
+    [back_button addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+    [self.navigationItem setLeftBarButtonItem:menu];
+    
+    
     self.recip_back=  [UILabel new];
     [self.recip_back setStyleClass:@"barbackground"];
     [self.recip_back setStyleClass:@"barbackground_gray"];
@@ -235,10 +244,28 @@
     NSLog(@"%@",self.receiver);
     if ([[[assist shared]getArray] count]==0) {
         arrRecipientsForRequest=[[NSMutableArray alloc] init];
+        NSLog(@"%@",self.receiver);
         [arrRecipientsForRequest addObject:self.receiver];
+        NSLog(@"%@",arrRecipientsForRequest);
         [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
     }
+    if (isFromHome) {
+        isAddRequest=YES;
+        SelectRecipient*selOBJ=[[SelectRecipient alloc]init];
+        
+        NSMutableArray*arrNav=[nav_ctrl.viewControllers mutableCopy];
+        NSLog(@"%@",arrNav);
+        [arrNav insertObject:selOBJ atIndex:1];
+        [self.navigationController setViewControllers:arrNav];
+        
+        [nav_ctrl setViewControllers:arrNav animated:NO];
+        [self.navigationController popViewControllerAnimated:YES];
+  
+    }
+    else
     [self.navigationController popViewControllerAnimated:YES];
+    
+    
 }
 
 #pragma mark - type of transaction

@@ -40,14 +40,20 @@
     self.navigationController.navigationBar.topItem.title = @"";
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-    [[assist shared]setRequestMultiple:NO];
+//    [[assist shared]setRequestMultiple:NO];
     isPayBack=NO;
     isEmailEntry=NO;
     isAddRequest=NO;
+    if ([[assist shared] isRequestMultiple]) {
+        isAddRequest=YES;
+    }
+    else{
+        [arrRecipientsForRequest removeAllObjects];
+        [[assist shared]setArray:[arrRecipientsForRequest copy]];
+    }
     isUserByLocation=NO;
     isphoneBook=NO;
-    [arrRecipientsForRequest removeAllObjects];
-    [[assist shared]setArray:[arrRecipientsForRequest copy]];
+    
     arrRequestPersons=[[NSMutableArray alloc]init];
     UIButton *location = [UIButton buttonWithType:UIButtonTypeRoundedRect];
       [location setStyleId:@"icon_location"];
@@ -135,6 +141,8 @@
         [search setShowsCancelButton:NO];
         if ([arrRequestPersons count]==0) {
             arrRequestPersons=[self.recents mutableCopy];
+            NSLog(@"%@",arrRequestPersons);
+            
         }
         else {
             int loc=-1;
@@ -142,7 +150,7 @@
                 NSDictionary*dict=[self.recents objectAtIndex:i];
                 for (int j=0;j<[arrRequestPersons count];j++) {
                    NSDictionary*dictSub=[arrRequestPersons objectAtIndex:j];
-                    if ([[dict valueForKey:@"MemberId"]isEqualToString:[dictSub valueForKey:@"MemberId"]])
+                     if ([[dict valueForKey:@"MemberId"]caseInsensitiveCompare:[dictSub valueForKey:@"MemberId"] ] ==NSOrderedSame)
                         loc=1;
                 }
                 if (loc==-1)
@@ -151,6 +159,7 @@
                     loc=-1;
             }
         }
+        NSLog(@"%@",arrRequestPersons);
         [self.contacts reloadData];
     }
     else {
@@ -193,6 +202,7 @@
         return;
     }
     isAddRequest=NO;
+     isFromHome=NO;
     HowMuch *how_much = [[HowMuch alloc] init];
     [self.navigationController pushViewController:how_much animated:YES];
 }
@@ -704,6 +714,8 @@
             
             [search setShowsCancelButton:NO];
             arrRequestPersons=[self.recents mutableCopy];
+            NSLog(@"%@",arrRequestPersons);
+            
             if ([arrRequestPersons count]==0) {
                 arrRequestPersons=[self.recents mutableCopy];
             }
@@ -715,7 +727,7 @@
                     for (int j=0;j<[arrRequestPersons count];j++) {
                         
                         NSDictionary*dictSub=[arrRequestPersons objectAtIndex:j];
-                        if ([[dict valueForKey:@"MemberId"]isEqualToString:[dictSub valueForKey:@"MemberId"]])
+                        if ([[dict valueForKey:@"MemberId"]caseInsensitiveCompare:[dictSub valueForKey:@"MemberId"] ] ==NSOrderedSame)
                             loc=1;
                     }
                     if (loc==-1) {
@@ -725,6 +737,8 @@
                         loc=-1;
                 }
             }
+            NSLog(@"%@",arrRequestPersons);
+            
             [self.contacts reloadData];
             return;
         }
@@ -826,6 +840,7 @@
                 [dict setObject:searchString forKey:@"email"];
             
             [dict setObject:@"nonuser" forKey:@"nonuser"];
+             isFromHome=NO;
             HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
             return;
@@ -878,6 +893,7 @@
                 [dict setObject:PhotoUrl forKey:@"Photo"];
                 [arrRequestPersons addObject:dict];
             }
+             isFromHome=NO;
             HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
         }
@@ -895,6 +911,7 @@
                 [dict setObject:searchString forKey:@"email"];
             
             [dict setObject:@"nonuser" forKey:@"nonuser"];
+             isFromHome=NO;
             HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
         }
@@ -1124,10 +1141,11 @@
         
         [npic removeFromSuperview];
         arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
+        NSLog(@"%@",arrRecipientsForRequest);
         int loc =-1;
         for (int i=0; i<[arrRecipientsForRequest count]; i++) {
             NSDictionary*dictionary=[arrRecipientsForRequest objectAtIndex:i];
-            if ([[dictionary valueForKey:@"MemberId"]isEqualToString:info[@"MemberId"]]) {
+            if ([[dictionary valueForKey:@"MemberId"]caseInsensitiveCompare:info[@"MemberId"]]==NSOrderedSame) {
                 loc=1;
             }
         }
@@ -1260,12 +1278,14 @@
              [emailCheck getMemIdFromuUsername:[receiver[@"UserName"] lowercaseString]];
              return;
          }
+        isFromHome=NO;
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
         [self.navigationController pushViewController:how_much animated:YES];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         [self.contacts reloadData];
     }
     else {
+         isFromHome=NO;
         NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
         [self.navigationController pushViewController:how_much animated:YES];

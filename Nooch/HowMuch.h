@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Home.h"
 #import "serve.h"
+BOOL isFromHome;
 BOOL isPayBack;
 BOOL isEmailEntry;
 BOOL isUserByLocation;
