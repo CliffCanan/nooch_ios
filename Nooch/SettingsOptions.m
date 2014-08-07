@@ -37,10 +37,20 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [self.navigationItem setTitle:@"Settings"];
+    [self getBankInfo];
+   }
+-(void)getBankInfo{
     serve*  serveOBJ=[serve new];
     serveOBJ.Delegate=self;
     serveOBJ.tagName=@"knox_bank_info";
     [serveOBJ GetKnoxBankAccountDetails];
+
+}
+-(void)RemoveKnoxBankAccount{
+    serve*  serveOBJ=[serve new];
+    serveOBJ.Delegate=self;
+    serveOBJ.tagName=@"RemoveKnoxBankAccount";
+    [serveOBJ RemoveKnoxBankAccount];
 }
 - (void)viewDidLoad
 {
@@ -247,6 +257,31 @@
             }
         }
     }
+    
+    else if([tagName isEqualToString:@"RemoveKnoxBankAccount"])
+    {
+        NSError* error;
+        NSMutableDictionary*dictResponse = [NSJSONSerialization
+                                            JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                            options:kNilOptions
+                                            error:&error];
+        if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"Bank account deleted successfully."]) {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Nooch" message:[dictResponse valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [av show];
+        }
+        else if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"No active bank account found for this user."]) {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Nooch" message:[dictResponse valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [av show];
+        }
+        else{
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Nooch" message:[dictResponse valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [av show];
+        }
+        
+        [self getBankInfo];
+    }
+
+    
     else if([tagName isEqualToString:@"knox_bank_info"])
     {
         NSError* error;
@@ -285,6 +320,7 @@
     if (alertView.tag == 2) {
         if (buttonIndex == 0) {
             //proceed to unlink
+            [self RemoveKnoxBankAccount];
             
         } else if (buttonIndex == 1) {
             //cancel

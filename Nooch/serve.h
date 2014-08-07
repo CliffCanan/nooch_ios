@@ -80,6 +80,7 @@
 -(void)withdrawFund:(NSString*)amount;
 //venturepact modification
 -(void)getBankList;
+-(void)RemoveKnoxBankAccount;
 -(void)login:(NSString*)email password:(NSString*)pass remember:(BOOL)isRem lat:(float)lat lon:(float)lng uid:(NSString*)strId;
 -(void)validateInviteCode:(NSString *)inviteCode;
 -(void)SendSMSApi:(NSString*)phoneNo msg:(NSString*)msgText;

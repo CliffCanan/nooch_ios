@@ -17,7 +17,9 @@ NSMutableArray*arrRecipientsForRequest;
 BOOL isAddRequest;
 @interface SelectRecipient : UIViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate,ABPeoplePickerNavigationControllerDelegate,UIActionSheetDelegate,MBProgressHUDDelegate>
 {
-    
+    NSMutableDictionary*facebook_info;
+    ACAccountStore*accountStore;
+    ACAccount*facebookAccount;
     UIView*loader;
     NSString*searchString;
     BOOL searching;

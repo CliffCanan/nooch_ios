@@ -77,6 +77,7 @@
     
     [nav_ctrl popViewControllerAnimated:NO];
     ProfileInfo *profile = [ProfileInfo new];
+    isProfileOpenFromSideBar=NO;
     [nav_ctrl pushViewController:profile animated:YES];
 }
 #pragma mark - server delegation

@@ -479,6 +479,12 @@ static assist * _sharedInstance = nil;
         
         NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         NSLog(@"user info %@",loginResult);
+        if ([loginResult valueForKey:@"FacebookAccountLogin"] && [[loginResult valueForKey:@"FacebookAccountLogin"]length]>0) {
+            [user setObject:[loginResult valueForKey:@"FacebookAccountLogin"] forKey:@"FacebookAccountID"];
+        }
+        else{
+            [user setObject:@"" forKey:@"FacebookAccountID"];
+        }
         if ([loginResult valueForKey:@"Status"]!=Nil  && ![[loginResult valueForKey:@"Status"] isKindOfClass:[NSNull class]]&& [loginResult valueForKey:@"Status"] !=NULL) {
             [user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"];
             if ([[loginResult valueForKey:@"Status"]isEqualToString:@"Suspended"]) {

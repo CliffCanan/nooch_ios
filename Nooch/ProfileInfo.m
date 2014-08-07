@@ -63,7 +63,6 @@
 }
 
 -(void)showMenu
-
 {
    
     [self savePrompt];
@@ -74,15 +73,15 @@
 
 }
 -(void)savePrompt2{
-    NSLog(@"%@",dictSavedInfo);
-    NSLog(@"%hhd",[[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]);
-    NSLog(@"%hhd",[[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]);
-
-    NSLog(@"%d",[[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]);
-
-    NSLog(@"%d",[[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]);
-    NSLog(@"%d",[[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]);
-
+//    NSLog(@"%@",dictSavedInfo);
+//    NSLog(@"%hhd",[[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]);
+//    NSLog(@"%hhd",[[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]);
+//
+//    NSLog(@"%d",[[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]);
+//
+//    NSLog(@"%d",[[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]);
+//    NSLog(@"%d",[[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]);
+//
    
     if ([self.recovery_email.text length]==0) {
         
@@ -631,8 +630,9 @@
     [transactionInput setObject:timezoneStandard forKey:@"TimeZoneKey"];
     
     if ([[assist shared] getTranferImage]) {
+        NSData *data;
        
-        NSData *data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
+       data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
         NSUInteger len = data.length;
         uint8_t *bytes = (uint8_t *)[data bytes];
         NSMutableString *result1 = [NSMutableString stringWithCapacity:len * 3];
@@ -644,8 +644,12 @@
         }
         NSArray*arr=[result1 componentsSeparatedByString:@","];
         [transactionInput setObject:arr forKey:@"Picture"];
+      
     }
     
+   
+    
+    NSLog(@"%@",transactionInput);
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
     
@@ -673,21 +677,37 @@
 }
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if(buttonIndex == 0) {
+  if(buttonIndex == 0) {
         if (![user objectForKey:@"facebook_id"]) {
             
             return;
         }
-        NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square",[user objectForKey:@"facebook_id"]];
-        [picture setImage:[UIImage imageNamed:@"RoundLoading.png"]];
-        [picture setImageWithURL:[NSURL URLWithString:url] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-            if (image) {
-                [[assist shared]setTranferImage:image];
+       NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square",[user objectForKey:@"facebook_id"]];
+      
+      
+      [picture setImageWithURL:[NSURL URLWithString:url]
+              placeholderImage:[UIImage imageNamed:@"placeholder.png"]
+                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                         [[assist shared]setTranferImage:image];
+                         
+                         
+                     }];
 
-            }
-        }];
+       UIImage* img=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
         
-        [self.save setEnabled:YES];
+        NSString  *pngPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Test.png"];
+      
+      // Write image to PNG
+        [UIImagePNGRepresentation(img) writeToFile:pngPath atomically:YES];
+      
+        // Point to Document directory
+       NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Test.png"];
+       UIImage *testImage = [UIImage imageWithContentsOfFile:documentsDirectory];
+        
+        [picture setImage:testImage];
+        [[assist shared]setTranferImage:nil];
+         [[assist shared]setTranferImage:testImage];
+              [self.save setEnabled:YES];
         [self.save setStyleClass:@"button_green"];
         [self.save setUserInteractionEnabled:YES];
         [dictSavedInfo setObject:@"YES" forKey:@"ImageChanged"];
@@ -748,7 +768,7 @@
 #pragma mark-ImagePicker
 
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info{
-    
+    option=1;
     UIImage *image=[info objectForKey:UIImagePickerControllerOriginalImage];
     image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(120,120) interpolationQuality:kCGInterpolationMedium];
     isPhotoUpdate=YES;

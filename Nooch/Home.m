@@ -58,7 +58,7 @@ NSMutableURLRequest *request;
     [super viewDidLoad];
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
     ABAddressBookRegisterExternalChangeCallback(addressBook, addressBookChanged, (__bridge void *)(self));
-    
+     [self address_book];
 	// Do any additional setup after loading the view.
     
     nav_ctrl = self.navigationController;
@@ -178,7 +178,7 @@ NSMutableURLRequest *request;
     if ([user objectForKey:@"facebook_id"]) {
         [fb storeFB:[user objectForKey:@"facebook_id"]];
     }
-     [self address_book];
+    
 }
 void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void *context) {
    
@@ -744,6 +744,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         
         
     }
+    {
+        [favorites removeAllObjects];
+         [_carousel reloadData];
+    }
 }
 
 #pragma mark - iCarousel methods
@@ -1139,7 +1143,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                      options:kNilOptions
                                      error:&error];
         NSLog(@"favorites %@",favorites);
-        
+        favorites=[favorites mutableCopy];
         if ([favorites count]==0) {
             [self FavoriteContactsProcessing];
             [_carousel reloadData];
@@ -1147,15 +1151,18 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             
         }else{
             favorites=[favorites mutableCopy];
-            for (int i=0; i<[favorites count]; i++) {
-                NSDictionary*dict = [favorites objectAtIndex:i];
-                if ([[dict valueForKey:@"MemberId"] caseInsensitiveCompare:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]==NSOrderedSame) {
-                    
-                    [favorites removeObjectAtIndex:i];
-                }
-
-            }
-            if ([favorites count]==0) {
+            
+            //Logic added on the server side
+            
+//            for (int i=0; i<[favorites count]; i++) {
+//                NSDictionary*dict = [favorites objectAtIndex:i];
+//                if ([[dict valueForKey:@"MemberId"] caseInsensitiveCompare:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]==NSOrderedSame) {
+//                    
+//                    [favorites removeObjectAtIndex:i];
+//                }
+//
+//            }
+            if ([favorites count]<5) {
                [self FavoriteContactsProcessing];
             }
             [_carousel reloadData];

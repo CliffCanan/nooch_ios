@@ -34,13 +34,19 @@
 }
 - (void)viewDidLoad  {
     [super viewDidLoad];
-
+    // [user setObject:[loginResult valueForKey:@"FacebookAccountLogin"] forKey:@"FacebookAccountID"];
+    if ([user valueForKey:@"FacebookAccountID"] && ![[user valueForKey:@"FacebookAccountID"] length]>0) {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connect with Facebook" message:@"Do you want to connect with your facebook friends?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Lator",nil];
+        [av show];
+        av.tag=6;
+    }
     self.location = NO;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     self.navigationController.navigationBar.topItem.title = @"";
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-//    [[assist shared]setRequestMultiple:NO];
+
+    
     isPayBack=NO;
     isEmailEntry=NO;
     isAddRequest=NO;
@@ -516,6 +522,7 @@
         [arrow setHidden:NO];
         [em setHidden:NO];
         [self.contacts setHidden:YES];
+        [self.view addSubview:  self.noContact_img];
     }
     // histSearch = NO;
     searching = NO;
@@ -557,6 +564,7 @@
         NSRange isRange = [searchBar.text  rangeOfString:[NSString stringWithFormat:@"@"] options:NSCaseInsensitiveSearch];
         NSRange isRange2 = [searchBar.text  rangeOfString:[NSString stringWithFormat:@"."] options:NSCaseInsensitiveSearch];
         if(isRange.location != NSNotFound && isRange2.location != NSNotFound){
+            [self.noContact_img removeFromSuperview];
             emailEntry = YES;
             isphoneBook=NO;
             searching = NO;
@@ -685,7 +693,25 @@
         }
         [[assist shared] addAssos:additions];
     }
-    
+    else if ([tagName isEqualToString:@"fb"]) {
+        NSError *error;
+        NSMutableDictionary *temp = [NSJSONSerialization
+                                     JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                     options:kNilOptions
+                                     error:&error];
+        NSLog(@"fb storing %@",temp);
+        if ([[temp valueForKey:@"Result"]isEqualToString:@"Success"]) {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"whoo!" message:@"You account has been connected to facebook successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+           
+            [av show];
+        }
+        else{
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"whoo!" message:[temp valueForKey:@"Result"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            
+            [av show];
+        }
+    }
+
     else if ([tagName isEqualToString:@"recents"]) {
         [spinner stopAnimating];
         [spinner setHidden:YES];
@@ -901,6 +927,14 @@
 }
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    if (alertView.tag==6) {
+        if (buttonIndex==0) {
+            [self connect_to_facebook];
+        }
+        else{
+            
+        }
+    }
     if (alertView.tag==20220) {
         if (buttonIndex==1) {
             NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
@@ -928,6 +962,108 @@
         [self.contacts reloadData];
     }
 }
+#pragma mark - facebook integration
+- (void)connect_to_facebook
+{
+    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]){
+        accountStore = [[ACAccountStore alloc] init];
+        facebookAccount = nil;
+        NSDictionary *options = @{
+                                  ACFacebookAppIdKey: @"198279616971457",
+                                  ACFacebookPermissionsKey: @[@"email",@"user_about_me"],
+                                  ACFacebookAudienceKey: ACFacebookAudienceOnlyMe
+                                  };
+        ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+        [accountStore requestAccessToAccountsWithType:facebookAccountType
+                                                   options:options completion:^(BOOL granted, NSError *e)
+         {
+             if (!granted) {
+                 NSLog(@"didnt grant because: %@",e.description);
+             }
+             else{
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+                     
+                     [self.navigationController.view addSubview:self.hud];
+                     
+                     self.hud.delegate = self;
+                     
+                     self.hud.labelText = @"Loading Facebook Info...";
+                     
+                     [self.hud show:YES];
+                     
+                 });
+                 NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
+                 facebookAccount = [accounts lastObject];
+              
+                 [self finishFb];
+             }
+         }];
+    }
+    else {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Not Available" message:@"You do not have a Facebook account attached to this phone." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [av show];
+    }
+}
+-(void)renewFb
+{
+    [accountStore renewCredentialsForAccount:(ACAccount *)facebookAccount completion:^(ACAccountCredentialRenewResult renewResult, NSError *error){
+        if(!error)
+        {
+            switch (renewResult) {
+                case ACAccountCredentialRenewResultRenewed:
+                    break;
+                case ACAccountCredentialRenewResultRejected:
+                    NSLog(@"User declined permission");
+                    break;
+                case ACAccountCredentialRenewResultFailed:
+                    NSLog(@"non-user-initiated cancel, you may attempt to retry");
+                    break;
+                default:
+                    break;
+            }
+            [self finishFb];
+        }
+        else{
+            //handle error gracefully
+            NSLog(@"error from renew credentials%@",error);
+        }
+    }];
+}
+-(void)finishFb
+{
+    NSString *acessToken = [NSString stringWithFormat:@"%@",facebookAccount.credential.oauthToken];
+    NSDictionary *parameters = @{@"access_token": acessToken,@"fields":@"id,username,first_name,last_name,email"};
+    NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me"];
+    SLRequest *feedRequest = [SLRequest
+                              requestForServiceType:SLServiceTypeFacebook
+                              requestMethod:SLRequestMethodGET
+                              URL:feedURL
+                              parameters:parameters];
+    feedRequest.account = facebookAccount;
+    facebook_info = [NSMutableDictionary new];
+    [feedRequest performRequestWithHandler:^(NSData *respData,
+                                             NSHTTPURLResponse *urlResponse, NSError *error)
+     {
+         facebook_info = [NSJSONSerialization
+                               JSONObjectWithData:respData //1
+                               options:kNilOptions
+                               error:&error];
+         dispatch_async(dispatch_get_main_queue(), ^{
+             [self.hud hide:YES];
+
+             [[NSUserDefaults standardUserDefaults] setObject:[facebook_info objectForKey:@"id"] forKey:@"facebook_id"];
+             serve *fb = [serve new];
+             [fb setDelegate:self];
+             [fb setTagName:@"fb"];
+             if ([facebook_info objectForKey:@"id"]) {
+                 [fb storeFB:[facebook_info objectForKey:@"id"]];
+             }
+         });
+         
+     }];
+}
+
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

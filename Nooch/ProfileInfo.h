@@ -15,7 +15,7 @@ BOOL isProfileOpenFromSideBar;
 @interface ProfileInfo : UIViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UIScrollViewDelegate,MBProgressHUDDelegate,UIAlertViewDelegate>
 {
     
-    int down;
+    int down,option;
     UIActivityIndicatorView*spinner;
     NSString *recoverMail;
     NSString *timezoneStandard;
