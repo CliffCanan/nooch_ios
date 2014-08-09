@@ -37,4 +37,5 @@ BOOL isProfileOpenFromSideBar;
     UIButton*crossbtn;
     NSMutableDictionary*dictSavedInfo;
 }
+@property(nonatomic,strong)UIImage *fbImage;
 @end

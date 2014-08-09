@@ -480,7 +480,7 @@ static assist * _sharedInstance = nil;
         NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         NSLog(@"user info %@",loginResult);
         if ([loginResult valueForKey:@"FacebookAccountLogin"] && [[loginResult valueForKey:@"FacebookAccountLogin"]length]>0) {
-            [user setObject:[loginResult valueForKey:@"FacebookAccountLogin"] forKey:@"FacebookAccountID"];
+            [user setObject:[loginResult valueForKey:@"FacebookAccountLogin"] forKey:@"facebook_id"];
         }
         else{
             [user setObject:@"" forKey:@"FacebookAccountID"];

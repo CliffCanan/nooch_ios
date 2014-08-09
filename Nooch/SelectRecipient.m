@@ -34,8 +34,8 @@
 }
 - (void)viewDidLoad  {
     [super viewDidLoad];
-    // [user setObject:[loginResult valueForKey:@"FacebookAccountLogin"] forKey:@"FacebookAccountID"];
-    if ([user valueForKey:@"FacebookAccountID"] && ![[user valueForKey:@"FacebookAccountID"] length]>0) {
+  
+    if ([user valueForKey:@"facebook_id"] && ![[user valueForKey:@"facebook_id"] length]>0) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connect with Facebook" message:@"Do you want to connect with your facebook friends?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Lator",nil];
         [av show];
         av.tag=6;

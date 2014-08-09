@@ -43,6 +43,7 @@ NSString *histSearching;
     
 }
 //@property(nonatomic,retain)NSTimer*timer;
+
 @property (nonatomic, retain) ACAccountStore *accountStore;
 @property (nonatomic, retain) ACAccount *facebookAccount;
 @property (nonatomic, retain) ACAccount *twitterAccount;

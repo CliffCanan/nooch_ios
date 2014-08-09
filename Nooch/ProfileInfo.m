@@ -36,7 +36,7 @@
 @property(nonatomic,strong) MBProgressHUD *hud;
 @end
 @implementation ProfileInfo
-
+@synthesize fbImage;
 @synthesize SavePhoneNumber;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -646,9 +646,7 @@
         [transactionInput setObject:arr forKey:@"Picture"];
       
     }
-    
-   
-    
+
     NSLog(@"%@",transactionInput);
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
@@ -685,13 +683,13 @@
        NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square",[user objectForKey:@"facebook_id"]];
       
       
-      [picture setImageWithURL:[NSURL URLWithString:url]
-              placeholderImage:[UIImage imageNamed:@"placeholder.png"]
-                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                         [[assist shared]setTranferImage:image];
-                         
-                         
-                     }];
+//      [picture setImageWithURL:[NSURL URLWithString:url]
+//              placeholderImage:[UIImage imageNamed:@"placeholder.png"]
+//                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+//                         [[assist shared]setTranferImage:image];
+//                         
+//                         
+//                     }];
 
        UIImage* img=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
         
@@ -702,12 +700,13 @@
       
         // Point to Document directory
        NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Test.png"];
-       UIImage *testImage = [UIImage imageWithContentsOfFile:documentsDirectory];
-        
-        [picture setImage:testImage];
+       fbImage = [UIImage imageWithContentsOfFile:documentsDirectory];
+     
+        [picture setImage:fbImage];
         [[assist shared]setTranferImage:nil];
-         [[assist shared]setTranferImage:testImage];
-              [self.save setEnabled:YES];
+         [[assist shared]setTranferImage:fbImage];
+      
+        [self.save setEnabled:YES];
         [self.save setStyleClass:@"button_green"];
         [self.save setUserInteractionEnabled:YES];
         [dictSavedInfo setObject:@"YES" forKey:@"ImageChanged"];
