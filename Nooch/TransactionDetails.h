@@ -18,6 +18,7 @@
     UIView*overlay,*mainView;
     double lat;
     double lon;
+    NSMutableDictionary *loginResult;
 }
 - (id)initWithData:(NSDictionary *)trans;
 

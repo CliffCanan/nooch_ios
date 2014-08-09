@@ -26,7 +26,7 @@ serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate,M
     BOOL ishistLoading;
     BOOL isEnd;
     BOOL isStart;
-    int index;
+    int  index;
     BOOL isFilter;
     BOOL isSearch;
     FPPopoverController*fp;

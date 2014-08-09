@@ -2434,6 +2434,17 @@ table-view#select_recipientwithoutSeperator {
 		separator-color	: rgba(188,190,192,0.9);
 		border			: 1px solid rgb(188,190,192);
 	}
+    table-view#settings2 {
+		width			: 322px;
+        height			: 150px;
+		top				: 145px;
+		left			: -1px;
+		background-color: white;
+		row-height		: 50px;
+		separator-style : single-line;
+		separator-color	: rgba(188,190,192,0.9);
+		border			: 1px solid rgb(188,190,192);
+	}
     table-view#settings_resetpw {
 		width				: 320px;
         height             : 150px;
@@ -2471,7 +2482,13 @@ table-view#select_recipientwithoutSeperator {
 		left				: 30px;
 		font-size			: 18px;
 	}
-	
+	 #button_signout_5 {
+		width				: 260px;
+		height				: 44px;
+		top					: 310px;
+		left				: 30px;
+		font-size			: 18px;
+	}
 	/**************************/
 	/****  Reset Password  ****/
 	/**************************/

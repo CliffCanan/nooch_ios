@@ -10,17 +10,21 @@
 #import "Home.h"
 #import "Register.h"
 @interface DisputeDetail ()
+@property(nonatomic,strong)UIButton*email_nooch;
+
 @property(nonatomic,strong) UITextField *txtStatus;
+@property(nonatomic,strong) UITextField *txtNotes;
 @property(nonatomic,strong) UITextField *txtDate;
 @property(nonatomic,strong) UITextField *txtID;
 @property(nonatomic,strong) UITextField *txtReviewDate;
 @property(nonatomic,strong) UITextField *txtResolvedD;
 @property(nonatomic,strong) UILabel *lblNotes;
 @property(nonatomic,strong) UITableView *list;
+@property (nonatomic,strong) NSDictionary *disputeDetails;
 @end
 
 @implementation DisputeDetail
-
+@synthesize email_nooch;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -29,19 +33,28 @@
     }
     return self;
 }
-
+- (id)initWithData:(NSDictionary *)trans {
+    self = [super initWithNibName:nil bundle:nil];
+    if (self) {
+        // Custom initialization
+        self.disputeDetails = trans;
+        NSLog(@"%@",self.disputeDetails);
+    }
+    return self;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+      self.navigationController.navigationBar.topItem.title = @"";
     self.title=@"Dispute Details";
-    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     self.txtStatus = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.txtStatus setTextAlignment:NSTextAlignmentRight];
     [self.txtStatus setBackgroundColor:[UIColor clearColor]];
     [self.txtStatus setPlaceholder:@"First & Last Name"];
     [self.txtStatus setDelegate:self];
     [self.txtStatus setStyleClass:@"table_view_cell_detailtext_1"];
-    [self.txtStatus setText:[NSString stringWithFormat:@"%@ %@",[[[NSUserDefaults standardUserDefaults] objectForKey:@"FirstName"] capitalizedString],[[[NSUserDefaults standardUserDefaults] objectForKey:@"LastName"] capitalizedString]]];
+    [self.txtStatus setText:[NSString stringWithFormat:@"%@ ",[self.disputeDetails valueForKey:@"DisputeStatus"]]];
     [self.txtStatus setUserInteractionEnabled:NO];
     [self.txtStatus setTag:0];
     [self.view addSubview:self.txtStatus];
@@ -53,7 +66,7 @@
     [self.txtID setDelegate:self];
     [self.txtID setKeyboardType:UIKeyboardTypeEmailAddress];
     [self.txtID setStyleClass:@"table_view_cell_detailtext_1"];
-    [self.txtStatus setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]];
+    [self.txtID setText:[self.disputeDetails valueForKey:@"DisputeId"]];
     [self.txtID setUserInteractionEnabled:NO];
     [self.txtID setTag:0];
     [self.view addSubview:self.txtID];
@@ -62,43 +75,120 @@
     self.txtDate = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.txtDate setTextAlignment:NSTextAlignmentRight];
     [self.txtDate setBackgroundColor:[UIColor clearColor]];
-    [self.txtDate setPlaceholder:@"(Optional)"];
+    //[self.txtDate setPlaceholder:@"(Optional)"];
     [self.txtDate setDelegate:self];
     [self.txtDate setKeyboardType:UIKeyboardTypeEmailAddress];
     [self.txtDate setStyleClass:@"table_view_cell_detailtext_1"];
     [self.txtDate setTag:1];
+    [self.txtDate setText:[self.disputeDetails valueForKey:@"DisputeReportedDate"]];
+
     [self.view addSubview:self.txtDate];
     
     self.txtReviewDate = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.txtReviewDate setTextAlignment:NSTextAlignmentRight];
     [self.txtReviewDate setBackgroundColor:[UIColor clearColor]];
-    [self.txtReviewDate setPlaceholder:@"555-555-5555"];
+    //[self.txtReviewDate setPlaceholder:@"555-555-5555"];
     [self.txtReviewDate setDelegate:self];
     [self.txtReviewDate setKeyboardType:UIKeyboardTypePhonePad];
     [self.txtReviewDate setStyleClass:@"table_view_cell_detailtext_1"];
     [self.txtReviewDate setTag:2];
+    [self.txtReviewDate setText:[self.disputeDetails valueForKey:@"DisputeReviewDate"]];
+
     [self.view addSubview:self.txtReviewDate];
     
     // Address
     self.txtResolvedD = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.txtResolvedD setTextAlignment:NSTextAlignmentRight];
     [self.txtResolvedD setBackgroundColor:[UIColor clearColor]];
-    [self.txtResolvedD setPlaceholder:@"123 Nooch Lane"];
+   // [self.txtResolvedD setPlaceholder:@"123 Nooch Lane"];
     [self.txtResolvedD setDelegate:self];
     [self.txtResolvedD setKeyboardType:UIKeyboardTypeDefault];
     [self.txtResolvedD setStyleClass:@"table_view_cell_detailtext_1"];
     [self.txtResolvedD setTag:3];
+    [self.txtResolvedD setText:[self.disputeDetails valueForKey:@"DisputeResolvedDate"]];
+
+    self.txtNotes = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
+    [self.txtNotes setTextAlignment:NSTextAlignmentRight];
+    [self.txtNotes setBackgroundColor:[UIColor clearColor]];
+    [self.txtNotes setPlaceholder:@"Notes"];
+    [self.txtNotes setDelegate:self];
+    [self.txtNotes setStyleClass:@"table_view_cell_detailtext_1"];
+    [self.txtNotes setText:[NSString stringWithFormat:@"%@ ",[self.disputeDetails valueForKey:@"AdminNotes"]]];
+    [self.txtNotes setUserInteractionEnabled:NO];
+    [self.txtNotes setTag:4];
+    [self.view addSubview:self.txtNotes];
+    
+    
     [self.view addSubview:self.txtResolvedD];
     self.list = [UITableView new];
-    [self.list setFrame:CGRectMake(0, 100, 320, 350)];
+    [self.list setFrame:CGRectMake(0, 50, 320, 300)];
     [self.list setDelegate:self];
     [self.list setDataSource:self];
     [self.list setRowHeight:50];
     [self.list setScrollEnabled:NO];
     [self.view addSubview:self.list];
-        
+    
+    email_nooch = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [email_nooch setFrame:CGRectMake(20, 365, 280,50)];
+    [email_nooch setTitle:@"Email Nooch" forState:UIControlStateNormal];
+    [email_nooch addTarget:self action:@selector(email_noochClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [email_nooch setStyleClass:@"button_blue"];
+    [email_nooch setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.view addSubview:email_nooch];
+
     // Do any additional setup after loading the view.
 }
+-(void)email_noochClicked:(id)sender{
+    if (![MFMailComposeViewController canSendMail]){
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [av show];
+        return;
+    }
+    MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+    mailComposer.mailComposeDelegate = self;
+    mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+    [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+    [mailComposer setMessageBody:@"" isHTML:NO];
+    [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+    [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+    [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+    [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+    [self presentViewController:mailComposer animated:YES completion:nil];
+}
+
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+    UIAlertView *alert = [[UIAlertView alloc] init];
+    [alert addButtonWithTitle:@"OK"];
+    [alert setDelegate:nil];
+    switch (result) {
+        case MFMailComposeResultCancelled:
+            NSLog(@"Mail cancelled");
+            break;
+            
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved");
+            [alert setTitle:@"Email Draft Saved"];
+            [alert show];
+            break;
+            
+        case MFMailComposeResultSent:
+            NSLog(@"Mail sent");
+            [alert setTitle:@"Email Sent Successfully"];
+            [alert show];
+            break;
+            
+        case MFMailComposeResultFailed:
+            [alert setTitle:[error localizedDescription]];
+            [alert show];
+            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    // Close the Mail Interface
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -109,7 +199,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 
 {
-    return 8;
+    return 6;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -130,6 +220,9 @@
         [Status setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:Status];
         [cell.contentView addSubview:self.txtStatus];
+        if ([self.txtStatus.text isEqualToString:@"Resolved"]) {
+            [self.txtStatus setTextColor:kNoochGreen];
+        }
         [cell setUserInteractionEnabled:NO];
     }
     else if (indexPath.row == 1) {
@@ -166,6 +259,15 @@
         [cell.contentView addSubview:ResolvedD];
         [cell.contentView addSubview:self.txtResolvedD];
     }
+    else if (indexPath.row == 5) {
+        UILabel *Note = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        [Note setBackgroundColor:[UIColor clearColor]];
+        [Note setText:@"Note"];
+        [Note setStyleClass:@"table_view_cell_textlabel_1"];
+        [cell.contentView addSubview:Note];
+        [cell.contentView addSubview:self.txtNotes];
+    }
+    
         return cell;
 }
 
@@ -198,7 +300,7 @@
         return;
     }
     if ([tagName isEqualToString:@"email_verify"]) {
-        NSString *response = [[NSJSONSerialization
+        NSString *responseResult = [[NSJSONSerialization
                                JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                options:kNilOptions
                                error:&error] objectForKey:@"Result"];

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "serve.h"
-@interface DisputeDetail : UIViewController<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD>
+#import <MessageUI/MessageUI.h>
+@interface DisputeDetail : UIViewController<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,MFMailComposeViewControllerDelegate>
 
+- (id)initWithData:(NSDictionary *)trans;
 @end

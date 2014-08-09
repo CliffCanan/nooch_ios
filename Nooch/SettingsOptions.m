@@ -16,6 +16,10 @@
 @interface SettingsOptions (){
     UILabel *bank_name;
     UIImageView*bank_image;
+    UITableView *menu;
+    UIView *linked_background;
+    UIButton *unlink_account;
+    UIButton *link_bank ;
 }
 @property(atomic,weak)UIButton *logout;
 @end
@@ -55,50 +59,65 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    isBankAttached=NO;
+    if ( ![[[NSUserDefaults standardUserDefaults]
+            objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
+        isBankAttached=NO;
+        
+    }
+    else
+        isBankAttached=YES;
+    
     
     [self.navigationItem setHidesBackButton:YES];
-    
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
     [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
     UIBarButtonItem *menu1 = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu1];
-
+    
 	// Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"Settings"];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-
+    
     [self.view setStyleClass:@"background_gray"];
-
+    
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 16, 0, 0)];
     [title setStyleClass:@"refer_header"];
     [title setText:@"Linked Bank Account"];
     [self.view addSubview:title];
+    if (isBankAttached) {
+       linked_background = [UIView new];
+        [linked_background setStyleId:@"account_background"];
+        [self.view addSubview:linked_background];
+        
+        bank_image=[[UIImageView alloc]initWithFrame:CGRectMake(10, 50, 49, 48)];
+        bank_image.contentMode=UIViewContentModeScaleToFill;
+        bank_image.image=[UIImage imageNamed:@"bank.png"];
+        [self.view addSubview:bank_image];
+        
+        bank_name = [UILabel new];
+        [bank_name setStyleId:@"linked_account_name"];
+        [bank_name setText:@"Bank"];
+        [linked_background addSubview:bank_name];
+        
+        unlink_account = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [unlink_account setStyleId:@"remove_account"];
+        [unlink_account setTitle:@"Remove" forState:UIControlStateNormal];
+        [unlink_account addTarget:self action:@selector(remove_attached_bank) forControlEvents:UIControlEventTouchUpInside];
+        [linked_background addSubview:unlink_account];
+ 
+    }
     
-    UIView *linked_background = [UIView new];
-    [linked_background setStyleId:@"account_background"];
-    [self.view addSubview:linked_background];
-    
-    bank_image=[[UIImageView alloc]initWithFrame:CGRectMake(10, 50, 49, 48)];
-    bank_image.contentMode=UIViewContentModeScaleToFill;
-    bank_image.image=[UIImage imageNamed:@"bank.png"];
-    [self.view addSubview:bank_image];
-    
-    bank_name = [UILabel new];
-    [bank_name setStyleId:@"linked_account_name"];
-    [bank_name setText:@"Bank"];
-    [linked_background addSubview:bank_name];
-
-    UIButton *unlink_account = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [unlink_account setStyleId:@"remove_account"];
-    [unlink_account setTitle:@"Remove" forState:UIControlStateNormal];
-    [unlink_account addTarget:self action:@selector(remove_attached_bank) forControlEvents:UIControlEventTouchUpInside];
-    [linked_background addSubview:unlink_account];
-
-    UIButton *link_bank = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+     link_bank = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [link_bank setFrame:CGRectMake(0, 125, 0, 0)];
+
+    if (!isBankAttached) {
+        [link_bank setFrame:CGRectMake(0, 70, 0, 0)];
+
+    }
     [link_bank setTitle:@"Link a New Bank" forState:UIControlStateNormal];
     UILabel *glyph = [UILabel new];
     [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:24]];
@@ -111,13 +130,17 @@
     [link_bank setStyleId:@"link_new_account"];
     [link_bank setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.view addSubview:link_bank];
-
-    UITableView *menu = [UITableView new];
-    [menu setStyleId:@"settings"];
+    
+    menu = [UITableView new];
+     [menu setStyleId:@"settings"];
+    if (!isBankAttached) {
+            [menu setStyleId:@"settings2"];
+    }
+   
     [menu setDelegate:self]; [menu setDataSource:self]; [menu setScrollEnabled:NO];
     [self.view addSubview:menu];
-    [menu reloadData];
-
+    //[menu reloadData];
+    
     self.logout = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.logout setTitle:@"Sign Out" forState:UIControlStateNormal];
     UILabel *glyphLogout = [UILabel new];
@@ -130,13 +153,15 @@
     [self.logout setStyleClass:@"button_gray"];
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
         [self.logout setStyleId:@"button_signout_4"];
-    } 
+    }
     else {
         [self.logout setStyleId:@"button_signout"];
     }
-    [self.view addSubview: self.logout];
-   
+     if (!isBankAttached) {
+      [self.logout setStyleId:@"button_signout_5"];
      }
+    [self.view addSubview: self.logout];
+}
 
 -(void)attach_bank
 {
@@ -149,7 +174,7 @@
 
 -(void)remove_attached_bank {
 
-    
+   
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Remove Bank Account" message:@"If you remove this bank account, you will not be able to send or receive money. This cannot be undone. Are you sure you want to remove this bank account?" delegate:self cancelButtonTitle:@"Yes - Remove" otherButtonTitles:@"Cancel", nil];
     [av setTag:2];
     [av show];
@@ -296,11 +321,60 @@
          [bank_image setImageWithURL:[NSURL URLWithString:[dictResponse valueForKey:@"BankImageURL"]] placeholderImage:[UIImage imageNamed:@"bank.png"]];
             [bank_name setText:[dictResponse valueForKey:@"BankName"]];
               [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
+            isBankAttached=YES;
+            if (isBankAttached) {
+                [linked_background removeFromSuperview];
+                [bank_image removeFromSuperview];;
+                [unlink_account removeFromSuperview];
+                linked_background = [UIView new];
+                [linked_background setStyleId:@"account_background"];
+                [self.view addSubview:linked_background];
+                
+                bank_image=[[UIImageView alloc]initWithFrame:CGRectMake(10, 50, 49, 48)];
+                bank_image.contentMode=UIViewContentModeScaleToFill;
+                bank_image.image=[UIImage imageNamed:@"bank.png"];
+                [self.view addSubview:bank_image];
+                
+                bank_name = [UILabel new];
+                [bank_name setStyleId:@"linked_account_name"];
+                [bank_name setText:@"Bank"];
+                [linked_background addSubview:bank_name];
+                
+                unlink_account = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                [unlink_account setStyleId:@"remove_account"];
+                [unlink_account setTitle:@"Remove" forState:UIControlStateNormal];
+                [unlink_account addTarget:self action:@selector(remove_attached_bank) forControlEvents:UIControlEventTouchUpInside];
+                [linked_background addSubview:unlink_account];
+                [link_bank setFrame:CGRectMake(0, 125, 0, 0)];
+                [menu setStyleId:@"settings"];
+                if ([[UIScreen mainScreen] bounds].size.height == 480) {
+                    [self.logout setStyleId:@"button_signout_4"];
+                }
+                else {
+                    [self.logout setStyleId:@"button_signout"];
+                }
+            }
+
         }
         else{
             [bank_image setImage:[UIImage imageNamed:@"bank.png"]];
             [bank_name setText:[dictResponse valueForKey:@"NO Bank Attached"]];
               [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
+            //NSLog(@"%@",NSStringFromCGRect(self.view.frame) );
+          isBankAttached=NO;
+            if (!isBankAttached) {
+                [linked_background removeFromSuperview];
+                [bank_image removeFromSuperview];;
+                [unlink_account removeFromSuperview];
+              
+                    [link_bank setFrame:CGRectMake(0, 70, 0, 0)];
+                    [menu setStyleId:@"settings2"];
+                    [self.logout setStyleId:@"button_signout_5"];
+                
+                
+            }
+            
+
         }
     }
     

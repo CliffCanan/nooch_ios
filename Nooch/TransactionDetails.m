@@ -13,6 +13,8 @@
 #import "TransferPIN.h"
 #import "SelectRecipient.h"
 #import "ProfileInfo.h"
+#import "DisputeDetail.h"
+
 @interface TransactionDetails ()
 @property (nonatomic,strong) NSDictionary *trans;
 @property(nonatomic,strong) NSMutableData *responseData;
@@ -93,6 +95,10 @@
         [payment setText:@"Invited to:"];
         [payment setStyleClass:@"details_intro_green"];
     }
+   else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"InviteRequest"]) {
+        [payment setText:@"Request Sent to:"];
+        [payment setStyleClass:@"details_intro_blue"];
+    }
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
         [payment setText:@"Donation To:"];
         [payment setStyleClass:@"details_intro_purple"];
@@ -105,6 +111,19 @@
 
     UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];
     if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
+        //details_othername_nonnooch
+        [other_party setStyleClass:@"details_othername_nonnooch"];
+        [other_party setText:[self.trans objectForKey:@"InvitationSentTo"]];
+        
+        UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
+        [cancel setStyleClass:@"details_button_center"];
+        [cancel setTag:13];
+        [cancel setEnabled:YES];
+        [cancel addTarget:self action:@selector(cancel_invite) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:cancel];
+    }
+    else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"InviteRequest"]) {
         //details_othername_nonnooch
         [other_party setStyleClass:@"details_othername_nonnooch"];
         [other_party setText:[self.trans objectForKey:@"InvitationSentTo"]];
@@ -772,7 +791,7 @@
         [blankView removeFromSuperview];
         NSError *error;
 
-        NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+      loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         if (![[self.trans objectForKey:@"Latitude"] intValue]==0&& ![[self.trans objectForKey:@"Longitude"] intValue]==0) {
             // self.trans=[loginResult mutableCopy];
             NSLog(@"%f",[[self.trans objectForKey:@"Latitude"] floatValue]);
@@ -865,6 +884,7 @@
             [amount setText:[NSString stringWithFormat:@"$%.02f",[[loginResult valueForKey:@"Amount"] floatValue]]];
         }
         [amount setStyleClass:@"details_amount"];
+        
         [amount setTextAlignment:NSTextAlignmentCenter];
 
         UILabel *location = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 320, 60)];
@@ -948,12 +968,32 @@
                 [status setStyleClass:@"green_text"];
             }
             else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"]) {
-                statusstr=@"Disputed on:";
-               [status setStyleClass:@"red_text"];
-            }
+                statusstr=@"Disputed:";
+                [status setStyleClass:@"red_text"];
+                UIButton *detailbutton = [UIButton buttonWithType:UIButtonTypeCustom];
+                [detailbutton addTarget:self
+                           action:@selector(DisputeDetailClicked:)
+                 forControlEvents:UIControlEventTouchUpInside];
+                [detailbutton setTitle:@"See Details" forState:UIControlStateNormal];
+                [detailbutton setTitle:@"See Details" forState:UIControlStateHighlighted];
+                   [detailbutton setTitle:@"See Details" forState:UIControlStateSelected];
+                detailbutton.frame = CGRectMake(97, 195, 120, 20);
+                detailbutton.titleLabel.font=[UIFont fontWithName:@"Roboto-Regular" size:15];
+                detailbutton.titleLabel.textColor=kNoochBlue;
+                [detailbutton setTitleColor:kNoochBlue forState:UIControlStateSelected];
+                 [detailbutton setTitleColor:kNoochBlue forState:UIControlStateNormal];
+                [self.view addSubview:detailbutton];
+                UIImageView*arrow_direction=[[UIImageView alloc]initWithFrame:CGRectMake(detailbutton.frame.origin.x+detailbutton.frame.size.width-15, 198, 12, 15)];
+                arrow_direction.image=[UIImage imageNamed:@"arrow-blue.png"];
+                [self.view addSubview:arrow_direction];
+                UIView*line=[[UIView alloc]initWithFrame:CGRectMake(118, 213, 78, 1)];
+                line.backgroundColor=kNoochBlue;
+                [self.view addSubview:line];
+                }
 
             [status setText:statusstr];
             [self.view addSubview:status];
+            if(![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"]) {
 
             NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
             UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(90, 190, 140, 30)];
@@ -961,6 +1001,7 @@
             [datelbl setTextColor:kNoochGrayDark];
             [self.view addSubview:datelbl];
             datelbl.text=[NSString stringWithFormat:@"%@ %@, %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]];
+            }
         }
 
         serve *info = [serve new];
@@ -996,21 +1037,21 @@
         [alert show];
         [alert setTag:568];
         [[assist shared]setSusPended:YES];
-        [nav_ctrl popToRootViewControllerAnimated:YES];
+       // [nav_ctrl popToRootViewControllerAnimated:YES];
     }
     else if([tagName isEqualToString:@"info"]){
         NSError *error;
-        NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        if ([loginResult valueForKey:@"Status"]!=Nil  && ![[loginResult valueForKey:@"Status"] isKindOfClass:[NSNull class]]&& [loginResult valueForKey:@"Status"] !=NULL) {
-            [user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"];
-            NSString*url=[loginResult valueForKey:@"PhotoUrl"];
+        NSMutableDictionary *Result = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        if ([Result valueForKey:@"Status"]!=Nil  && ![[Result valueForKey:@"Status"] isKindOfClass:[NSNull class]]&& [Result valueForKey:@"Status"] !=NULL) {
+            [user setObject:[Result valueForKey:@"Status"] forKey:@"Status"];
+            NSString*url=[Result valueForKey:@"PhotoUrl"];
             
-            [user setObject:[loginResult valueForKey:@"DateCreated"] forKey:@"DateCreated"];
+            [user setObject:[Result valueForKey:@"DateCreated"] forKey:@"DateCreated"];
             [user setObject:url forKey:@"Photo"];
             
         }
-        if(![[loginResult objectForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"BalanceAmount"] != NULL) {
-            [user setObject:[loginResult objectForKey:@"BalanceAmount"] forKey:@"Balance"];
+        if(![[Result objectForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]] && [Result objectForKey:@"BalanceAmount"] != NULL) {
+            [user setObject:[Result objectForKey:@"BalanceAmount"] forKey:@"Balance"];
             UIButton*balance = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             
             [balance setFrame:CGRectMake(0, 0, 60, 30)];
@@ -1027,6 +1068,13 @@
         [alert show];
         
     }
+
+}
+-(void)DisputeDetailClicked:(UIButton*)sender{
+    //[sender setTitle:@"See Details" forState:UIControlStateNormal];
+    //[sender setSelected:NO];
+    DisputeDetail*dd=[[DisputeDetail alloc]initWithData:loginResult];
+    [self.navigationController pushViewController:dd animated:YES];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

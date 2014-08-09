@@ -129,10 +129,12 @@
     [self.view addSubview:back];
     UIView *bar = [UIView new];
     [bar setStyleClass:@"pin_recipientname_bar"];
+    
     if ([self.type isEqualToString:@"send"]|| [self.type isEqualToString:@"addfund"]|| [self.type isEqualToString:@"withdrawfund"]||[self.receiver valueForKey:@"nonuser"]|| [self.type isEqualToString:@"requestRespond"]) {
         if ([self.type isEqualToString:@"request"] && [self.receiver valueForKey:@"nonuser"]) {
              [bar setStyleId:@"pin_recipientname_request"];
         }
+        else
         [bar setStyleId:@"pin_recipientname_send"];
     }
     else if ([self.type isEqualToString:@"request"] ) {
@@ -237,6 +239,7 @@
         if ([self.type isEqualToString:@"request"] && [self.receiver valueForKey:@"nonuser"]) {
             self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochBlue.CGColor;
         }
+        else
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;        
     }
     else if([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"]){
@@ -381,6 +384,9 @@
     else if([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"]){
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochBlue.CGColor;
     }
+    if ([self.type isEqualToString:@"request"] && [self.receiver valueForKey:@"nonuser"]) {
+        self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochBlue.CGColor;
+    }
     int len = [textField.text length] + [string length];
     if([string length] == 0) { //deleting {
         switch (len) {
@@ -409,9 +415,14 @@
         }
         else if([self.type isEqualToString:@"request"] ){
             which = kNoochBlue;
-        } 
-        else if ([self.type isEqualToString:@"donation"]|| [self.type isEqualToString:@"addfund"]||[self.type isEqualToString:@"withdrawfund"]|| [self.type isEqualToString:@"nonuser"]) {
+        }
+        
+        
+        else if ([self.type isEqualToString:@"donation"]|| [self.type isEqualToString:@"addfund"]||[self.type isEqualToString:@"withdrawfund"]|| [self.receiver valueForKey:@"nonuser"]) {
             which = kNoochGreen;
+        }
+         if ([self.type isEqualToString:@"request"] && [self.receiver valueForKey:@"nonuser"]) {
+            which = kNoochBlue;
         }
         switch (len) {
             case 5:
@@ -546,13 +557,18 @@
                     
                     [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
                     [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
-                    [transactionInputTransfer setValue:uid forKey:@"DeviceId"];
+                   // [transactionInputTransfer setValue:uid forKey:@"DeviceId"];
                     [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
                     [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lon] forKey:@"Longitude"];
                     [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
                     [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
                     [transactionInputTransfer setValue:city forKey:@"City"];
                     [transactionInputTransfer setValue:state forKey:@"State"];
+                    if ([self.type isEqualToString:@"request"]) {
+                     [transactionInputTransfer setValue:@"0.0" forKey:@"Altitude"];
+                          [transactionInputTransfer setValue:encryptedPINNonUser forKey:@"PinNumber"];
+                        [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
+                    }
                     [transactionInputTransfer setValue:country forKey:@"Country"];
                     [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
                     [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
@@ -568,7 +584,7 @@
                 self.respData = [NSMutableData data];
                 urlStrTranfer = [[NSString alloc] initWithString:MyUrl];
                 if ([self.type isEqualToString:@"request"]) {
-                    urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyToNonNoochUserUsingKnox"];
+                    urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyFromNonNoochUserUsingKnox"];
                 } else {
                     urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserUsingKnox"];
                 }
@@ -703,7 +719,7 @@
 
             [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
             [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
-            [transactionInputTransfer setValue:uid forKey:@"DeviceId"];
+            //[transactionInputTransfer setValue:uid forKey:@"DeviceId"];
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lon] forKey:@"Longitude"];
             [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
@@ -834,6 +850,7 @@
 
             transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
         }
+    
         postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
                                                        options:NSJSONWritingPrettyPrinted error:&error];
         postLengthTransfer = [NSString stringWithFormat:@"%d", [postTransfer length]];
@@ -887,9 +904,18 @@
                  [input setObject:dictResultTransfer[@"trnsactionId"] forKey:@"TransactionId"];
             }
             if ([self.receiver objectForKey:@"nonuser"]) {
-                [input setObject:@"Invite" forKey:@"TransactionType"];
-                [input setObject:dictResultTransfer[@"trnsactionId"] forKey:@"TransactionId"];
-                [input setObject:[self.receiver objectForKey:@"email"] forKey:@"InvitationSentTo"];
+                if ([self.type isEqualToString:@"request"]) {
+                    [input setObject:@"Invite" forKey:@"TransactionType"];
+                    [input setObject:dictResultTransfer[@"requestId"] forKey:@"TransactionId"];
+                    [input setObject:[self.receiver objectForKey:@"email"] forKey:@"InvitationSentTo"];
+                    //[input setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
+                }
+                else{
+                    [input setObject:@"InviteRequest" forKey:@"TransactionType"];
+                    [input setObject:dictResultTransfer[@"trnsactionId"] forKey:@"TransactionId"];
+                    [input setObject:[self.receiver objectForKey:@"email"] forKey:@"InvitationSentTo"];
+                }
+                
             }
               NSLog(@"%@",input);
             TransactionDetails *td = [[TransactionDetails alloc] initWithData:input];
@@ -960,6 +986,17 @@
             [av show];
             return;
         }
+        if ([[[dictResultTransfer valueForKey:@"RequestMoneyFromNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Request made successfully."]) {
+            [[assist shared] setTranferImage:nil];
+            UIImage*imgempty=[UIImage imageNamed:@""];
+            [[assist shared] setTranferImage:imgempty];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your Request was made successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",nil];
+            av.tag=1;
+            [av show];
+            return;
+        }
+        
+        
     }
     
     if ([self.type isEqualToString:@"send"]) {

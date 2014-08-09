@@ -761,6 +761,7 @@ return customView;
                         [cell.contentView addSubview:updated_balance];
                     }
                 
+                
 
                     NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -1829,6 +1830,7 @@ return customView;
         if ([histArray count]>0) {
             isEnd=NO;
             isStart=NO;
+        
             for (NSDictionary*dict in histArray) {
                 if ([[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Success"] ||
                     [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] ||
@@ -1839,6 +1841,7 @@ return customView;
                 }
                 
             }
+            
             int counter=0;
             for (NSDictionary*dict in histArray) {
                 if ([[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]) {
@@ -2060,7 +2063,6 @@ return customView;
         default:
             break;
     }
-    
     // Close the Mail Interface
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
