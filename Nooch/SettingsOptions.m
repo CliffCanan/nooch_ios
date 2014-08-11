@@ -88,36 +88,10 @@
     [title setStyleClass:@"refer_header"];
     [title setText:@"Linked Bank Account"];
     [self.view addSubview:title];
-    if (isBankAttached) {
-       linked_background = [UIView new];
-        [linked_background setStyleId:@"account_background"];
-        [self.view addSubview:linked_background];
-        
-        bank_image=[[UIImageView alloc]initWithFrame:CGRectMake(10, 50, 49, 48)];
-        bank_image.contentMode=UIViewContentModeScaleToFill;
-        bank_image.image=[UIImage imageNamed:@"bank.png"];
-        [self.view addSubview:bank_image];
-        
-        bank_name = [UILabel new];
-        [bank_name setStyleId:@"linked_account_name"];
-        [bank_name setText:@"Bank"];
-        [linked_background addSubview:bank_name];
-        
-        unlink_account = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [unlink_account setStyleId:@"remove_account"];
-        [unlink_account setTitle:@"Remove" forState:UIControlStateNormal];
-        [unlink_account addTarget:self action:@selector(remove_attached_bank) forControlEvents:UIControlEventTouchUpInside];
-        [linked_background addSubview:unlink_account];
- 
-    }
     
-     link_bank = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    link_bank = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [link_bank setFrame:CGRectMake(0, 125, 0, 0)];
 
-    if (!isBankAttached) {
-        [link_bank setFrame:CGRectMake(0, 70, 0, 0)];
-
-    }
     [link_bank setTitle:@"Link a New Bank" forState:UIControlStateNormal];
     UILabel *glyph = [UILabel new];
     [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:24]];
@@ -133,13 +107,10 @@
     
     menu = [UITableView new];
      [menu setStyleId:@"settings"];
-    if (!isBankAttached) {
-            [menu setStyleId:@"settings2"];
-    }
+
    
     [menu setDelegate:self]; [menu setDataSource:self]; [menu setScrollEnabled:NO];
     [self.view addSubview:menu];
-    //[menu reloadData];
     
     self.logout = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.logout setTitle:@"Sign Out" forState:UIControlStateNormal];
@@ -157,9 +128,7 @@
     else {
         [self.logout setStyleId:@"button_signout"];
     }
-     if (!isBankAttached) {
-      [self.logout setStyleId:@"button_signout_5"];
-     }
+
     [self.view addSubview: self.logout];
 }
 
@@ -314,12 +283,10 @@
                                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                             options:kNilOptions
                                             error:&error];
-        //            {"AccountName":"0885","BankImageURL":"https:\/\/knoxpayments.com\/admin\/style\/images\/cone1.jpg","BankName":"Capital One 360","MemberId":null,"TransId":null,"UserKey":null,"UserPass":null}        }
-//        
+        
         
         if (![[dictResponse valueForKey:@"AccountName"] isKindOfClass:[NSNull class]]&& ![[dictResponse valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]] && ![[dictResponse valueForKey:@"BankName"] isKindOfClass:[NSNull class]]) {
-         [bank_image setImageWithURL:[NSURL URLWithString:[dictResponse valueForKey:@"BankImageURL"]] placeholderImage:[UIImage imageNamed:@"bank.png"]];
-            [bank_name setText:[dictResponse valueForKey:@"BankName"]];
+        
               [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
             isBankAttached=YES;
             if (isBankAttached) {
@@ -353,15 +320,17 @@
                 else {
                     [self.logout setStyleId:@"button_signout"];
                 }
+                
             }
+            [bank_image setImageWithURL:[NSURL URLWithString:[dictResponse valueForKey:@"BankImageURL"]] placeholderImage:[UIImage imageNamed:@"bank.png"]];
+            [bank_name setText:[dictResponse valueForKey:@"BankName"]];
 
         }
         else{
-            [bank_image setImage:[UIImage imageNamed:@"bank.png"]];
-            [bank_name setText:[dictResponse valueForKey:@"NO Bank Attached"]];
+           
               [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
-            //NSLog(@"%@",NSStringFromCGRect(self.view.frame) );
-          isBankAttached=NO;
+           
+            isBankAttached=NO;
             if (!isBankAttached) {
                 [linked_background removeFromSuperview];
                 [bank_image removeFromSuperview];;
@@ -373,6 +342,8 @@
                 
                 
             }
+            [bank_image setImage:[UIImage imageNamed:@"bank.png"]];
+            [bank_name setText:[dictResponse valueForKey:@"NO Bank Attached"]];
             
 
         }
