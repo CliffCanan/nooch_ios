@@ -148,7 +148,7 @@
     mailComposer.mailComposeDelegate = self;
     mailComposer.navigationBar.tintColor=[UIColor whiteColor];
     [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-    [mailComposer setMessageBody:@"" isHTML:NO];
+    [mailComposer setMessageBody:[NSString stringWithFormat:@"Dispute ID: %@",[self.disputeDetails valueForKey:@"DisputeId"]] isHTML:NO];
     [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
     [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
     [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
@@ -219,10 +219,16 @@
         [Status setText:@"Status"];
         [Status setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:Status];
+    //    NSLog(@"%@",self.txtStatus.text);
+        
         [cell.contentView addSubview:self.txtStatus];
-        if ([self.txtStatus.text isEqualToString:@"Resolved"]) {
+        if ([self.txtStatus.text rangeOfString:@"Resolved"].location!=NSNotFound) {
             [self.txtStatus setTextColor:kNoochGreen];
         }
+        else if ([self.txtStatus.text rangeOfString:@"Pending"].location!=NSNotFound){
+              [self.txtStatus setTextColor:[UIColor yellowColor]];
+        }
+        
         [cell setUserInteractionEnabled:NO];
     }
     else if (indexPath.row == 1) {

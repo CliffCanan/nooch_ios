@@ -25,7 +25,7 @@ BOOL isProfileOpenFromSideBar;
     NSMutableDictionary*dictProfileinfo;
     
     NSDictionary*GMTTimezonesDictionary;
-    UIImageView *picture;
+   
     BOOL isPhotoUpdate;
     UITextView *memSincelbl;
     NSRange start,end;
@@ -37,5 +37,5 @@ BOOL isProfileOpenFromSideBar;
     UIButton*crossbtn;
     NSMutableDictionary*dictSavedInfo;
 }
-@property(nonatomic,strong)UIImage *fbImage;
+
 @end

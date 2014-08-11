@@ -501,6 +501,7 @@ static assist * _sharedInstance = nil;
             [user setObject:[loginResult valueForKey:@"DateCreated"] forKey:@"DateCreated"];
            
             [user setObject:url forKey:@"Photo"];
+            NSLog(@"%@",url);
             if ([[loginResult valueForKey:@"IsKnoxBankAdded"]boolValue]==YES) {
                    [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
             }

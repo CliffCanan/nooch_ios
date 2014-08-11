@@ -17,6 +17,7 @@
 #import "Register.h"
 #import "ECSlidingViewController.h"
 #import "UIImage+Resize.h"
+ UIImageView *picture;
 @interface ProfileInfo ()
 @property(nonatomic) UIImagePickerController *picker;
 @property(nonatomic,strong) UITextField *name;
@@ -36,7 +37,7 @@
 @property(nonatomic,strong) MBProgressHUD *hud;
 @end
 @implementation ProfileInfo
-@synthesize fbImage;
+
 @synthesize SavePhoneNumber;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -73,15 +74,6 @@
 
 }
 -(void)savePrompt2{
-//    NSLog(@"%@",dictSavedInfo);
-//    NSLog(@"%hhd",[[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]);
-//    NSLog(@"%hhd",[[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]);
-//
-//    NSLog(@"%d",[[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]);
-//
-//    NSLog(@"%d",[[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]);
-//    NSLog(@"%d",[[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]);
-//
    
     if ([self.recovery_email.text length]==0) {
         
@@ -682,34 +674,32 @@
         }
        NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square",[user objectForKey:@"facebook_id"]];
       
-      
-//      [picture setImageWithURL:[NSURL URLWithString:url]
-//              placeholderImage:[UIImage imageNamed:@"placeholder.png"]
-//                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-//                         [[assist shared]setTranferImage:image];
-//                         
-//                         
-//                     }];
-
-       UIImage* img=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
-        
-        NSString  *pngPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Test.png"];
-      
-      // Write image to PNG
-        [UIImagePNGRepresentation(img) writeToFile:pngPath atomically:YES];
-      
-        // Point to Document directory
-       NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Test.png"];
-       fbImage = [UIImage imageWithContentsOfFile:documentsDirectory];
+   
+     [picture setImageWithURL:[NSURL URLWithString:url]
+             placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]
+                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                        
+                        if (image) {
+                            [picture setImage:image];
+                            [[assist shared]setTranferImage:nil];
+                            [[assist shared]setTranferImage:image];
+                        }
+                        
+                        
+                        
+                    }];
+    
      
-        [picture setImage:fbImage];
-        [[assist shared]setTranferImage:nil];
-         [[assist shared]setTranferImage:fbImage];
       
         [self.save setEnabled:YES];
         [self.save setStyleClass:@"button_green"];
         [self.save setUserInteractionEnabled:YES];
         [dictSavedInfo setObject:@"YES" forKey:@"ImageChanged"];
+      SDImageCache *imageCache = [SDImageCache sharedImageCache];
+      [imageCache clearMemory];
+      [imageCache clearDisk];
+      [imageCache cleanDisk];
+      
     }
     else if(buttonIndex == 1) {
         if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
