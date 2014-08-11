@@ -39,7 +39,7 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     self.web = [UIWebView new];
-    [self.web setFrame:CGRectMake(0, -5, 320, [[UIScreen mainScreen] bounds].size.height)];
+    [self.web setFrame:CGRectMake(0, -2, 320, [[UIScreen mainScreen] bounds].size.height - 60)];
     [self.view addSubview:self.web];
     [self.web.scrollView setScrollEnabled:YES];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
