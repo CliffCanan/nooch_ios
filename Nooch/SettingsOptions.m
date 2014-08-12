@@ -201,17 +201,17 @@
 {
     isProfileOpenFromSideBar=NO;
     ProfileInfo *info = [ProfileInfo new];
-    [self performSelector:@selector(navigate_to:) withObject:info afterDelay:0.1];
+    [self performSelector:@selector(navigate_to:) withObject:info afterDelay:0.05];
 }
 - (void)pin
 {
     PINSettings *pin = [PINSettings new];
-    [self performSelector:@selector(navigate_to:) withObject:pin afterDelay:0.1];
+    [self performSelector:@selector(navigate_to:) withObject:pin afterDelay:0.05];
 }
 - (void)notifications
 {
     NotificationSettings *notes = [NotificationSettings new];
-    [self performSelector:@selector(navigate_to:) withObject:notes afterDelay:0.1];
+    [self performSelector:@selector(navigate_to:) withObject:notes afterDelay:0.05];
 }
 - (void) navigate_to:(id)view
 {
@@ -260,11 +260,11 @@
                                             options:kNilOptions
                                             error:&error];
         if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"Bank account deleted successfully."]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Nooch" message:[dictResponse valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Removed" message:@"This bank account is no longer linked to your Nooch account. To make or receive payments, you must re-link a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [av show];
         }
         else if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"No active bank account found for this user."]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Nooch" message:[dictResponse valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Not Found" message:[dictResponse valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [av show];
         }
         else{
@@ -297,10 +297,10 @@
                 [linked_background setStyleId:@"account_background"];
                 [self.view addSubview:linked_background];
                 
-                bank_image=[[UIImageView alloc]initWithFrame:CGRectMake(10, 50, 49, 48)];
+                bank_image=[[UIImageView alloc]initWithFrame:CGRectMake(10, 8, 49, 48)];
                 bank_image.contentMode=UIViewContentModeScaleToFill;
                 bank_image.image=[UIImage imageNamed:@"bank.png"];
-                [self.view addSubview:bank_image];
+                [linked_background addSubview:bank_image];
                 
                 bank_name = [UILabel new];
                 [bank_name setStyleId:@"linked_account_name"];
@@ -323,6 +323,9 @@
                 
             }
             [bank_image setImageWithURL:[NSURL URLWithString:[dictResponse valueForKey:@"BankImageURL"]] placeholderImage:[UIImage imageNamed:@"bank.png"]];
+            [bank_image setFrame:CGRectMake(10, 7, 50, 50)];
+            bank_image.layer.cornerRadius = 5;
+            bank_image.clipsToBounds = YES;
             [bank_name setText:[dictResponse valueForKey:@"BankName"]];
 
         }
@@ -348,9 +351,7 @@
 
         }
     }
-    
 
-    
     
 }
 
