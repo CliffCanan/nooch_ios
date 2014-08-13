@@ -511,7 +511,7 @@
     [UIView commitAnimations];
     
     if ([self.name.text length]==0) {
-        UIAlertView *av =[ [UIAlertView alloc] initWithTitle:@"Nooch Money!" message:@"Please Enter Name" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView *av =[ [UIAlertView alloc] initWithTitle:@"Need A Name" message:@"We can call you 'Blank' if you want, but it's probably better if you entered a name..." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [av show];
         return;
     }
@@ -519,26 +519,26 @@
     if (![self validateEmail:[self.email text]]) {
         self.email.text = @"";
         [self.email becomeFirstResponder];
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Valid Email ID" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Invalid Email Address" message:@"Hmm... please double check that you have entered a valid email address." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         return;
     }
 
     if ([self.address_one.text length]==0) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Address" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Missing An Address" message:@"Please enter your address to validate your profile." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [self.address_one becomeFirstResponder];
         return;
     }
 
     if ([self.city.text length]==0) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Your City" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"How Bout A City" message:@"It would be fantastic if you entered a city! ;-)" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [self.city becomeFirstResponder];
         return;
     }
 
-    UIAlertView *av =[ [UIAlertView alloc] initWithTitle:@"I don't see you!" message:@"You haven't set your profile picture, would you like to?" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
+    UIAlertView *av =[ [UIAlertView alloc] initWithTitle:@"I don't see you!" message:@"You haven't set your profile picture, would you like to?" delegate:self cancelButtonTitle:@"No Thanks" otherButtonTitles:@"Yes I do", nil];
     [av setTag:20];
     if([[me pic] isKindOfClass:[NSNull class]]){
         [av show];
@@ -556,15 +556,13 @@
     if (![self.SavePhoneNumber isEqualToString:strPhoneNumber] || [self.SavePhoneNumber length]==0) {
         if ([strPhoneNumber length]==10) {
             serve *req = [serve new];
-            [req SendSMSApi:strPhoneNumber msg:@"PLEASE RESPOND \"GO\" TO THE TEXT"];
+            [req SendSMSApi:strPhoneNumber msg:@"Reply with \"Go\" to this message to verify your phone number."];
         }
         else{
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Valid Phone Number" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Phone Number Trouble" message:@"Please double check that you entered a valid 10-digit phone number." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             return;
-
         }
-       
     }
     if([self.recovery_email.text length]==0) {
         self.recovery_email.text=@"";
@@ -579,16 +577,16 @@
 
     recoverMail = [[NSString alloc] init];
 
-    if([self.recovery_email.text length] > 0) {
-        if (![self validateEmail:[self.recovery_email text]]) {
-            // [me endWaitStat];
-            self.recovery_email.text = @"";
-            [self.recovery_email becomeFirstResponder];
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Valid Recovery Email ID" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-            return;
-        }
-    }
+//    if([self.recovery_email.text length] > 0){
+//        if (![self validateEmail:[self.recovery_email text]]) {
+//          [me endWaitStat];
+//          self.recovery_email.text = @"";
+//          [self.recovery_email becomeFirstResponder];
+//          UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Invalid Recovery Email" message:@"Please check to make sure your recovery email address is correct." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//          [alert show];
+//          return;
+//      }
+//  }
     
     if([self.recovery_email.text length] > 0){
         recoverMail = self.recovery_email.text;
@@ -892,7 +890,7 @@
     else if (indexPath.row == 4) {
         UILabel *addr1 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [addr1 setBackgroundColor:[UIColor clearColor]];
-        [addr1 setText:@"St Address"];
+        [addr1 setText:@"Address"];
         [addr1 setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:addr1];
         [cell.contentView addSubview:self.address_one];
@@ -908,7 +906,7 @@
     else if (indexPath.row == 6) {
         UILabel *z = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [z setBackgroundColor:[UIColor clearColor]];
-        [z setText:@"City*"];
+        [z setText:@"City"];
         [z setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:z];
         [cell.contentView addSubview:self.city];
@@ -916,7 +914,7 @@
     else if (indexPath.row == 7) {
         UILabel *z = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, 50)];
         [z setBackgroundColor:[UIColor clearColor]];
-        [z setText:@"ZIP*"];
+        [z setText:@"ZIP"];
         [z setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:z];
         [cell.contentView addSubview:self.zip];
