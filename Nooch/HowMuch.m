@@ -130,11 +130,11 @@
         [user_pic setHidden:NO];
         if (self.receiver[@"Photo"]) {
             [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
-                     placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+                     placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         }
         else {
             [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
-                     placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+                     placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         }
     }
     [self.view addSubview:user_pic];
@@ -356,12 +356,12 @@
             return;
     }
     if ([[self.amount text] length] < 3) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Amount" message:@"Please enter a valid amount." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Just A Little More" message:@"Please enter an amount greater than $1.00." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         return;
     }
     else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100) {   
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Now" message:[NSString stringWithFormat:@"Sorry, but to keep Nooch safe, please don’t %@ more than $100. It’s against the rules (and protects the account from abuse.)", @"send"] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Now" message:[NSString stringWithFormat:@"To keep Nooch safe, please don’t %@ more than $100. We hope to raise this limit very soon!", @"send"] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
         [alert show];
         return;
     }
@@ -370,7 +370,7 @@
     [transaction setObject:[self.memo text] forKey:@"memo"];
     float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
     if ([self.receiver valueForKey:@"nonuser"]) {
-        TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"nonuser" amount:input_amount];
+        TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"send" amount:input_amount];
         [self.navigationController pushViewController:pin animated:YES];
     }
     else {
@@ -380,18 +380,17 @@
 }
 #pragma mark  - alert view delegation
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if([actionSheet tag] == 2122 && buttonIndex==1) {
-    }
 }
+
 - (void) confirm_request {
    // isAddRequest=YES;
     if ([[self.amount text] length] < 3) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Amount" message:@"Please enter a valid amount" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Just A Little More" message:@"Please enter an amount greater than $1.00." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         return;
     }
     else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Big Spender" message:[NSString stringWithFormat:@"While we definitely appreciate your enthusiasm, we are limiting transfers to $100 for now in order to minimize our risk (and yours). We don't like it either, but as usual, it's the lawyers fault. We're working to raise the limit soon! "] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Big Spender" message:[NSString stringWithFormat:@"While we definitely appreciate your enthusiasm, we are limiting transfers to $100 for now in order to minimize our risk (and yours). We're working to raise the limit soon! "] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
         [alert show];
         return;
     }
@@ -500,7 +499,6 @@
     picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     
     [self presentViewController:picker animated:YES completion:NULL];
-    //[self.amount becomeFirstResponder];
 
     //[self cancel_photo];
 }
