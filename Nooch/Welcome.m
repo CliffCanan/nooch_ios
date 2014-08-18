@@ -80,30 +80,45 @@
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
     
-    UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 130, 280, 180)];
+    UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 180, 280, 160)];
     [prompt setTextColor:kNoochGrayDark]; [prompt setBackgroundColor:[UIColor clearColor]];
-    [prompt setText:@"Your account has been created.\n\nCheck your email for a message from us to confirm your email address.\n\nBefore you can start sending money you must validate your profile. Tap the green button to validate your profile now."]; [prompt setTextAlignment:NSTextAlignmentCenter];
+    [prompt setText:@"Your account has been created.\n\nCheck your email for a message from us to confirm your email address.\n\nBefore you can send money you'll need a funding source. Tap the green button to link your bank now."];
     [prompt setTextAlignment:NSTextAlignmentCenter];
     [prompt setFont:[UIFont systemFontOfSize:15]];
     prompt.numberOfLines=0;
     [prompt sizeToFit];
-    CGRect frame = prompt.frame;
-    frame.size.height += 150;
-    [prompt setFrame:frame];
+//  CGRect frame = prompt.frame;
+//  frame.size.height += 150;
+//  [prompt setFrame:frame];
     [self.view addSubview:prompt];
 
     UIButton *enter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [enter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [enter setTitle:@"Validate Profile" forState:UIControlStateNormal];
+    [enter setTitle:@"Link Funding Source" forState:UIControlStateNormal];
     [enter addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
     [enter setFrame:CGRectMake(10, 375, 300, 60)];
     [enter setStyleClass:@"button_green"];
     [self.view addSubview:enter];
 
+    UIButton *moreinfo = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [moreinfo setBackgroundColor:[UIColor clearColor]];
+    [moreinfo setTitle:@"   Tell me more" forState:UIControlStateNormal];
+    [moreinfo setFrame:CGRectMake(30, 335, 260, 22)];
+    [moreinfo setStyleClass:@"moreinfo_button"];
+    
+    UILabel *glyph = [UILabel new];
+    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
+    [glyph setFrame:CGRectMake(1, 2, 15, 18)];
+    [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-question-circle"]];
+    [glyph setTextColor:kNoochGrayLight];
+    [moreinfo addSubview:glyph];
+    [moreinfo addTarget:self action:@selector(moreinfo_lightBox) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:moreinfo];
+    
     UIButton *later = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [later setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
     [later setBackgroundColor:[UIColor clearColor]];
-    [later setTitle:@"I'll validate my profile later..." forState:UIControlStateNormal];
+    [later setTitle:@"I'll link a bank later..." forState:UIControlStateNormal];
     [later addTarget:self action:@selector(later) forControlEvents:UIControlEventTouchUpInside];
     [later setFrame:CGRectMake(10, 460, 300, 60)];
     [later setStyleClass:@"label_small"];
