@@ -105,13 +105,13 @@
         width: 300px;
         height: 20px;
         font-family: "Roboto-Medium";
-        font-size: 16px;
+        font-size: 17px;
         text-align: center;
         color: white;
      }
      .banner_alert_glyph {
         top: 3px;
-        left: 50px;
+        left: 44px;
         width: 20px;
         height: 20px;
         font-family: "FontAwesome";
@@ -121,8 +121,8 @@
      }
      .banner_info {
         top: 24px;
-        left: 22px;
-        width: 276px;
+        left: 12px;
+        width: 280px;
         height: 18px;
         font-family : "Roboto-Light";
         font-size: 12px;
@@ -143,7 +143,7 @@
 		top: 42px;
         left: 50px;
 		width: 220px;
-		height: 12px;
+		height: 15px;
 		color: white;
 		font-weight: medium;
 		font-family: "Roboto-Medium";
@@ -165,28 +165,31 @@
     }
     #suspended_home {
         top: 0px;
-        left: 0px;
-        width: 320px;
+        left: -1px;
+        width: 322px;
         height: 60px;
         background-image: linear-gradient(#D61915, #c41713);
 		border: 1px solid #C41713;
-		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.4);
+		border-radius: 3px;
+		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.45);
     }
     #email_unverified {
-        left: 0px;
-        width: 320px;
+        left: -1px;
+        width: 322px;
         height: 60px;
         background-image: linear-gradient(#D61915, #c41713);
 		border: 1px solid #C41713;
-		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.4);
+		border-radius: 3px;
+		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.45);
     }
     #phone_unverified {
-        left: 0px;
-        width: 320px;
+        left: -1px;
+        width: 322px;
         height: 60px;
         background-image: linear-gradient(#D61915, #c41713);
 		border: 1px solid #C41713;
-		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.4);
+		border-radius: 3px;
+		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.45);
     }
 
 	 /******************************/
@@ -612,14 +615,14 @@
 	.alertBackgroundRed { 
 		background-color: #D61915;
 		border: 1px solid #C41713;
-		box-shadow: 0px 2px 2px rgba(89, 10, 9, 0.3);
-		border-radius: 3px;
+		box-shadow: 0px 1px 2px rgba(89, 10, 9, 0.4);
+		border-radius: 4px;
 	}
 	.alertBackgroundGreen {
 		background-color: #1A981C;
 		border-color: #168218;
-		box-shadow: 0px 3px 2px -2px rgba(19, 108, 20, 0.6);
-		border-radius: 3px;
+		box-shadow: 0px 1px 2px rgba(19, 108, 20, 0.45);
+		border-radius: 4px;
 	}
 	.alertBannerTitle {
 		left        : 20px;
@@ -628,7 +631,7 @@
 		height		: 20px;
 		font-family	: "Roboto";
 		font-weight : Medium;
-		font-size	: 16px;
+		font-size	: 17px;
 		text-align  : center;
 		color 		: white;
 	}
@@ -688,6 +691,17 @@
 		font-size			: 16px;
 		text-align       	: center;
 		color 				: #414042;
+	}
+	#moreinfo_button {
+		left       : 30px;
+		top        : 335px;
+		width      : 260px;
+		height     : 22px;
+		font-family: "Roboto";
+		font-weight: light;
+		color      : #939598;
+		font-size  : 15px;
+		text-align : center;
 	}
 
 	/**  Text entry field for inputting a referral code. **/
@@ -1982,7 +1996,7 @@ table-view#select_recipientwithoutSeperator {
 	/**  Text ("You Paid/Requested/Donated...")  **/
 	.history_cell_transTypeLabel {
 		left				: 75px;
-		top					: 12px;
+		top					: 10px;
 		width				: 185px;
 		height				: 15px;
 		font-size			: 12px;
@@ -2025,25 +2039,25 @@ table-view#select_recipientwithoutSeperator {
 
 	/**  Amount of the Transfer on the right side of the row  **/
 	.history_transferamount {
-		width				: 67px;
-		height				: 25px;
+		width				: 70px;
+		height				: 26px;
 		top					: 15px;
-		left				: 250px;
+		left				: 245px;
 		font-family			: "Roboto";
-		font-weight         : regular;
-		font-size			: 19px;
+		font-weight         : medium;
+		font-size			: 20px;
 		text-align       	: right;
 	}
 
 	 /**  Amount of the PENDING Transfer on the right side of the row (Only on the Pending Tab)  **/
 	.history_pending_transferamount {
-		width				: 65px;
+		width				: 66px;
 		height				: 40px;
 		top					: 10px;
-		left				: 254px;
+		left				: 250px;
 		font-family			: "Roboto";
-		font-weight         : regular;
-		font-size			: 19px;
+		font-weight         : medium;
+		font-size			: 20px;
 		text-align       	: right;
 	}
 
