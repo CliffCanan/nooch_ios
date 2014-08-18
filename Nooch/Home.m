@@ -92,32 +92,31 @@ NSMutableURLRequest *request;
     UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
 
-    self.popup = [UIView new];
-    [self.popup setStyleId:@"news_popup"];
+//    self.popup = [UIView new];
+//    [self.popup setStyleId:@"news_popup"];
     
-    self.news_feed = [UITableView new];
-    [self.news_feed setDelegate:self];
-    [self.news_feed setDataSource:self];
-    [self.news_feed setStyleId:@"news_feed"];
-    self.news_feed.clipsToBounds = YES;
-    self.news_feed.layer.masksToBounds = YES;
-    [self.popup addSubview:self.news_feed];
+//    self.news_feed = [UITableView new];
+//    [self.news_feed setDelegate:self];
+//    [self.news_feed setDataSource:self];
+//    [self.news_feed setStyleId:@"news_feed"];
+//    self.news_feed.clipsToBounds = YES;
+//    self.news_feed.layer.masksToBounds = YES;
+//    [self.popup addSubview:self.news_feed];
     
-    self.close = [[FAImageView alloc] initWithFrame:CGRectMake(262.f, 35.f, 30.f, 40.f)];
-    self.close.image = nil;
+//    self.close = [[FAImageView alloc] initWithFrame:CGRectMake(262.f, 35.f, 30.f, 40.f)];
+//    self.close.image = nil;
     //[self.close setBackgroundColor:[UIColor whiteColor]];
-    [self.close setDefaultIconIdentifier:@"fa-caret-up"];
+ //   [self.close setDefaultIconIdentifier:@"fa-caret-up"];
     
-    UITapGestureRecognizer *tap = [UITapGestureRecognizer new];
-    [tap addTarget:self action:@selector(hide_news)];
-    [self.view addGestureRecognizer:tap];
+//    UITapGestureRecognizer *tap = [UITapGestureRecognizer new];
+//    [tap addTarget:self action:@selector(hide_news)];
+//    [self.view addGestureRecognizer:tap];
     
     UIButton *top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [top_button setStyleClass:@"button_blue"];
     
     UIButton *mid_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     UIButton *bot_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    [bot_button setStyleClass:@"button_green"];
     
     float height = [[UIScreen mainScreen] bounds].size.height;
     height -= 150; height /= 3;
@@ -917,25 +916,25 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 }
 
 #pragma mark - news feed
--(void)show_news
-{
-    [self.balance removeTarget:self action:@selector(show_news) forControlEvents:UIControlEventTouchUpInside];
-    [self.balance addTarget:self action:@selector(hide_news) forControlEvents:UIControlEventTouchUpInside];
+//-(void)show_news
+//{
+//    [self.balance removeTarget:self action:@selector(show_news) forControlEvents:UIControlEventTouchUpInside];
+//    [self.balance addTarget:self action:@selector(hide_news) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.navigationController.view addSubview:self.popup];
-    [self.navigationController.view addSubview:self.close];
+//    [self.navigationController.view addSubview:self.popup];
+//    [self.navigationController.view addSubview:self.close];
     
-    [self.news_feed reloadData];
-}
+//    [self.news_feed reloadData];
+//}
 
--(void)hide_news
-{
-    [self.balance removeTarget:self action:@selector(hide_news) forControlEvents:UIControlEventTouchUpInside];
-    [self.balance addTarget:self action:@selector(show_news) forControlEvents:UIControlEventTouchUpInside];
+//-(void)hide_news
+//{
+//    [self.balance removeTarget:self action:@selector(hide_news) forControlEvents:UIControlEventTouchUpInside];
+//    [self.balance addTarget:self action:@selector(show_news) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.popup removeFromSuperview];
-    [self.close removeFromSuperview];
-}
+//    [self.popup removeFromSuperview];
+//    [self.close removeFromSuperview];
+//}
 
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -968,7 +967,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [time setTextColor:kNoochGrayLight];
     [cell.contentView addSubview:time];
     
-    
     return cell;
 }
 
@@ -982,11 +980,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     [[assist shared]setneedsReload:NO];
     [self.slidingViewController anchorTopViewTo:ECRight];
-}
--(void)showFunds
-{
-    
-    [self.slidingViewController anchorTopViewTo:ECLeft];
 }
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -1152,16 +1145,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }else{
             favorites=[favorites mutableCopy];
             
-            //Logic added on the server side
-            
-//            for (int i=0; i<[favorites count]; i++) {
-//                NSDictionary*dict = [favorites objectAtIndex:i];
-//                if ([[dict valueForKey:@"MemberId"] caseInsensitiveCompare:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]]==NSOrderedSame) {
-//                    
-//                    [favorites removeObjectAtIndex:i];
-//                }
-//
-//            }
             if ([favorites count]<5) {
                [self FavoriteContactsProcessing];
             }
