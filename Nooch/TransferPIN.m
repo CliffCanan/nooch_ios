@@ -983,7 +983,7 @@
                 av = [[UIAlertView alloc] initWithTitle:@"Nooch Loves You" message:@"That is all. Pay it forward. \n \n ...get it?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",nil];
                 break;
             default:
-                av = [[UIAlertView alloc] initWithTitle:@"Nice Work" message:sentMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Nice Work" message:@"Your cash was sent successfully" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
                 break;
         }
         [av show];

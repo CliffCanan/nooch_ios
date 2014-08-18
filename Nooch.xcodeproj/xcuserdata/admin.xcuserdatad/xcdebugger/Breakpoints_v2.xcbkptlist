@@ -477,7 +477,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "885"
             endingLineNumber = "885"
-            landmarkName = "-alertView:clickedButtonAtIndex:"
+            landmarkName = "-connectionDidFinishLoading:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -493,7 +493,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "903"
             endingLineNumber = "903"
-            landmarkName = "-alertView:clickedButtonAtIndex:"
+            landmarkName = "-connectionDidFinishLoading:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

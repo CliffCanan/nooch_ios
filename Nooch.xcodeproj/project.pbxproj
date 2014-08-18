@@ -241,6 +241,8 @@
 		846EF0CB198B5F55009D5491 /* DisputeDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 846EF0CA198B5F55009D5491 /* DisputeDetail.m */; };
 		8471A10919960CB300047231 /* arrow-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 8471A10819960CB300047231 /* arrow-blue.png */; };
 		847268CC1966A7C100D5E749 /* webView.m in Sources */ = {isa = PBXBuildFile; fileRef = 847268CB1966A7C100D5E749 /* webView.m */; };
+		8481F08F19A1CA75007F6565 /* selectRecipientIntro.png in Resources */ = {isa = PBXBuildFile; fileRef = 8481F08D19A1CA75007F6565 /* selectRecipientIntro.png */; };
+		8481F09019A1CA75007F6565 /* selectRecipientIntro_smallScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 8481F08E19A1CA75007F6565 /* selectRecipientIntro_smallScreen.png */; };
 		849F6E8E18AB6D7F0016CD89 /* backbtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 849F6E8D18AB6D7F0016CD89 /* backbtn.png */; };
 		84B65A73188542E9009A5205 /* NSString+ASBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B65A72188542E9009A5205 /* NSString+ASBase64.m */; };
 		84BFD9321871270C001C0AAC /* cross_basic_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 84BFD9311871270C001C0AAC /* cross_basic_yellow.png */; };
@@ -251,8 +253,6 @@
 		84F099521988AD840020A08F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F0994F1988AD840020A08F /* Default-568h@2x.png */; };
 		84F099531988AD840020A08F /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F099501988AD840020A08F /* Default.png */; };
 		84F099541988AD840020A08F /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F099511988AD840020A08F /* Default@2x.png */; };
-		84F099571988B61F0020A08F /* selectRecipientIntro_smallScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F099551988B61F0020A08F /* selectRecipientIntro_smallScreen.png */; };
-		84F099581988B61F0020A08F /* selectRecipientIntro.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F099561988B61F0020A08F /* selectRecipientIntro.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -644,9 +644,11 @@
 		846874C2198F40EF001223B8 /* n_icon_46x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_icon_46x54.png; sourceTree = "<group>"; };
 		846EF0C9198B5F54009D5491 /* DisputeDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisputeDetail.h; sourceTree = "<group>"; };
 		846EF0CA198B5F55009D5491 /* DisputeDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisputeDetail.m; sourceTree = "<group>"; };
-		8471A10819960CB300047231 /* arrow-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-blue.png"; sourceTree = "<group>"; };
+		8471A10819960CB300047231 /* arrow-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "arrow-blue.png"; path = "../arrow-blue.png"; sourceTree = "<group>"; };
 		847268CA1966A7C100D5E749 /* webView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = webView.h; sourceTree = "<group>"; };
 		847268CB1966A7C100D5E749 /* webView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = webView.m; sourceTree = "<group>"; };
+		8481F08D19A1CA75007F6565 /* selectRecipientIntro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = selectRecipientIntro.png; path = ../selectRecipientIntro.png; sourceTree = "<group>"; };
+		8481F08E19A1CA75007F6565 /* selectRecipientIntro_smallScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = selectRecipientIntro_smallScreen.png; path = ../selectRecipientIntro_smallScreen.png; sourceTree = "<group>"; };
 		849F6E8D18AB6D7F0016CD89 /* backbtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backbtn.png; sourceTree = "<group>"; };
 		84B65A71188542E9009A5205 /* NSString+ASBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ASBase64.h"; sourceTree = "<group>"; };
 		84B65A72188542E9009A5205 /* NSString+ASBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ASBase64.m"; sourceTree = "<group>"; };
@@ -660,8 +662,6 @@
 		84F0994F1988AD840020A08F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		84F099501988AD840020A08F /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		84F099511988AD840020A08F /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		84F099551988B61F0020A08F /* selectRecipientIntro_smallScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectRecipientIntro_smallScreen.png; sourceTree = "<group>"; };
-		84F099561988B61F0020A08F /* selectRecipientIntro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectRecipientIntro.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -856,6 +856,9 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				8471A10819960CB300047231 /* arrow-blue.png */,
+				8481F08D19A1CA75007F6565 /* selectRecipientIntro.png */,
+				8481F08E19A1CA75007F6565 /* selectRecipientIntro_smallScreen.png */,
 				846874C2198F40EF001223B8 /* n_icon_46x54.png */,
 				8465B8D1198A075300921F8A /* bank.png */,
 				84F0994F1988AD840020A08F /* Default-568h@2x.png */,
@@ -1074,9 +1077,6 @@
 			isa = PBXGroup;
 			children = (
 				011B6CA919006D2A00169F1A /* fontawesome-webfont.ttf */,
-				84F099551988B61F0020A08F /* selectRecipientIntro_smallScreen.png */,
-				84F099561988B61F0020A08F /* selectRecipientIntro.png */,
-				8471A10819960CB300047231 /* arrow-blue.png */,
 				16E4B1C0187054A80099D075 /* venturepact  */,
 				6B30372B15FA3FF300056DAD /* Nooch */,
 				6B30372415FA3FF300056DAD /* Frameworks */,
@@ -1571,7 +1571,6 @@
 				6BC5FECB1625F1B0007EAD7A /* Roboto-Black.ttf in Resources */,
 				6BC5FECD1625F1B0007EAD7A /* Roboto-BlackItalic.ttf in Resources */,
 				01C26DAD1843BB22005179B7 /* dispute-icon.png in Resources */,
-				84F099571988B61F0020A08F /* selectRecipientIntro_smallScreen.png in Resources */,
 				6BC5FECF1625F1B0007EAD7A /* Roboto-Bold.ttf in Resources */,
 				01C26DE11843C56C005179B7 /* Arrow.png in Resources */,
 				6BC5FED11625F1B0007EAD7A /* Roboto-BoldCondensed.ttf in Resources */,
@@ -1638,6 +1637,7 @@
 				01C26DEC1843C56C005179B7 /* LimitsAndFees_Icon.png in Resources */,
 				014C4335185B9A4C00956A84 /* quicktap_10.png in Resources */,
 				01C26DF11843C56C005179B7 /* Notification_2.png in Resources */,
+				8481F09019A1CA75007F6565 /* selectRecipientIntro_smallScreen.png in Resources */,
 				014C4332185B9A4C00956A84 /* nonprofits-website.png in Resources */,
 				01C26DBA1843BB22005179B7 /* silhouette.png in Resources */,
 				6BC04B9D1677DE0E005C68D6 /* README.rst in Resources */,
@@ -1652,7 +1652,6 @@
 				014C433B185BB9EE00956A84 /* default.css in Resources */,
 				8420B39E187AC4BF00A77E2D /* orange-pin.png in Resources */,
 				014C4331185B9A4C00956A84 /* nonprofits-twitter.png in Resources */,
-				84F099581988B61F0020A08F /* selectRecipientIntro.png in Resources */,
 				014C4339185B9A4C00956A84 /* withdrawfunds.png in Resources */,
 				01C26DEE1843C56C005179B7 /* NoFundingSource_Arrow.png in Resources */,
 				6BE13327176F65D8009763AC /* BackgroundMain-568h@2x.png in Resources */,
@@ -1677,6 +1676,7 @@
 				01C26DC31843BB22005179B7 /* Twitter.png in Resources */,
 				849F6E8E18AB6D7F0016CD89 /* backbtn.png in Resources */,
 				84BFD9321871270C001C0AAC /* cross_basic_yellow.png in Resources */,
+				8481F08F19A1CA75007F6565 /* selectRecipientIntro.png in Resources */,
 				0129D8E81815B10D00BEAC30 /* Brandon_blk.otf in Resources */,
 				16E4B1BF187054A50099D075 /* placeholder.jpg in Resources */,
 				0129D8E91815B10D00BEAC30 /* Brandon_light.otf in Resources */,
