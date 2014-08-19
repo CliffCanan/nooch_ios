@@ -199,9 +199,13 @@
             [serveOBJ setDelegate:self];
             serveOBJ.tagName=@"validate";
             [serveOBJ getTotalReferralCode:self.code_field.text];
-            
+            self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+            [self.navigationController.view addSubview:self.hud];
+            self.hud.delegate = self;
             self.hud.labelText = @"Creating your Nooch account";
             [self.hud show:YES];
+
+        
         } else {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Code" message:@"The referall code you entered is invalid. Please try again or request a code if you do not have one." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
@@ -225,6 +229,7 @@
         }
         else
         {
+            [self.hud hide:YES];
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Sorry! Referral Code Expired" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             [enter setEnabled:YES];
@@ -259,7 +264,7 @@
         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         if([[[response objectForKey:@"MemberRegistrationResult"]objectForKey:@"Result"] isEqualToString:@"Thanks for registering! Check your email to complete activation."])
         {
-            [self.hud hide:YES];
+           // [self.hud hide:YES];
             //[decline setTag:1];
             [[NSUserDefaults standardUserDefaults] setObject:@"asdfa" forKey:@"setPrompt"];
             //[spinner stopAnimating];
@@ -273,6 +278,7 @@
         }
         else if([[[response objectForKey:@"MemberRegistrationResult"] objectForKey:@"Result"] isEqualToString:@"You are already a nooch member."])
         {
+            [self.hud hide:YES];
             UIAlertView *decline= [[UIAlertView alloc] initWithTitle:@"Well..." message:@"This address already exists in our system, we do not support cloning you."delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [decline show];
             [decline setTag:1];
@@ -291,6 +297,8 @@
         
     }
     if ([tagName isEqualToString:@"getMemId"]) {
+        [self.hud hide:YES];
+
         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         NSLog(@"%@",response);
         [[NSUserDefaults standardUserDefaults] setObject:[response objectForKey:@"Result"] forKey:@"MemberId"];

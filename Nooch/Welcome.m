@@ -141,7 +141,7 @@
      mainView=[[UIView alloc]init];
      mainView.layer.cornerRadius=5;
      
-     mainView.frame=CGRectMake(10, 70, 300, self.view.frame.size.height-75);
+     mainView.frame=CGRectMake(10, 50, 300, self.view.frame.size.height-75);
      mainView.backgroundColor=[UIColor whiteColor];
      
      [overlay addSubview:mainView];
