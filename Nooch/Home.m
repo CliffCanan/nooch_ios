@@ -426,7 +426,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
        
         
     }
-   //  NSLog(@"%@",arrRecords);
 }
 - (UIImage*)imageForContact: (ABRecordRef)contactRef {
     UIImage *img = nil;
@@ -437,7 +436,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     ABAddressBookRef addressBook =  ABAddressBookCreateWithOptions(NULL, &err);
     
-
     ABRecordRef origContactRef = ABAddressBookGetPersonWithRecordID(addressBook, contactID);
     
     if (ABPersonHasImageData(origContactRef)) {
@@ -482,8 +480,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 }
 -(void)dismiss_phone_unvalidated {
     [self.phone_unverified removeFromSuperview];
-    
-   
 }
 -(void)go_profile
 {
@@ -491,13 +487,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [self.navigationController pushViewController:info animated:YES];
 }
 
--(void)updateLoader{
-    self.balance = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    [self.balance.titleLabel setFont:[UIFont fontWithName:kFontAwesomeFamilyName size:24]];
-    [self.balance setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-flag"] forState:UIControlStateNormal];
-    [self.balance addTarget:self action:@selector(show_news) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
-    [self.navigationItem setRightBarButtonItem:funds];
+//-(void)updateLoader{
+//    self.balance = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+//    [self.balance.titleLabel setFont:[UIFont fontWithName:kFontAwesomeFamilyName size:24]];
+//    [self.balance setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-flag"] forState:UIControlStateNormal];
+//    [self.balance addTarget:self action:@selector(show_news) forControlEvents:UIControlEventTouchUpInside];
+//    UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
+//    [self.navigationItem setRightBarButtonItem:funds];
 }
 - (NSString *)autoLogin{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -691,9 +687,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
           }
     
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-        if (timerHome==nil) {
-             timerHome=[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateLoader) userInfo:nil repeats:YES];
-        }
+//        if (timerHome==nil) {
+//             timerHome=[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateLoader) userInfo:nil repeats:YES];
+//        }
     
     if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]]) {
         //push login
@@ -741,7 +737,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [favoritesOBJ get_favorites];
         //launch favorites call
         
-        
     }
     {
         [favorites removeAllObjects];
@@ -778,7 +773,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         imageView.layer.cornerRadius = 50;
         if (favorite[@"MemberId"]) {
             [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
-                      placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+                      placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         }
         else if (favorite[@"image"]){
             [imageView setImage:[UIImage imageWithData:favorite[@"image"]]];
@@ -795,7 +790,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [view addSubview:imageView];
         [view addSubview:name];
 
-        
     }
     else
     {
@@ -1150,7 +1144,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             }
             [_carousel reloadData];
         }
-        
     
     }
     else if([tagName isEqualToString:@"emailCheck"]) {
@@ -1168,7 +1161,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         else {
             
-            
             NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
             [dict setObject:emailID forKey:@"email"];
             [dict setObject:@"nonuser" forKey:@"nonuser"];
@@ -1176,9 +1168,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
             return;
-            
-           
-            
         }
     }
     else if([tagName isEqualToString:@"getMemberDetails"]) {
@@ -1234,18 +1223,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         
         [Alert show];
         
-        
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-        
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         
         [timer invalidate];
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
         
         [nav_ctrl performSelector:@selector(reset)];
-        //[self.navigationController popViewControllerAnimated:YES];
         Register *reg = [Register new];
         [nav_ctrl pushViewController:reg animated:YES];
         me = [core new];
