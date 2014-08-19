@@ -821,13 +821,12 @@
             }
             if ([self.receiver objectForKey:@"nonuser"]) {
                 if ([self.type isEqualToString:@"request"]) {
-                    [input setObject:@"Invite" forKey:@"TransactionType"];
+                    [input setObject:@"InviteRequest" forKey:@"TransactionType"];
                     [input setObject:dictResultTransfer[@"requestId"] forKey:@"TransactionId"];
                     [input setObject:[self.receiver objectForKey:@"email"] forKey:@"InvitationSentTo"];
-                    //[input setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
                 }
                 else{
-                    [input setObject:@"InviteRequest" forKey:@"TransactionType"];
+                    [input setObject:@"Invite" forKey:@"TransactionType"];
                     [input setObject:dictResultTransfer[@"trnsactionId"] forKey:@"TransactionId"];
                     [input setObject:[self.receiver objectForKey:@"email"] forKey:@"InvitationSentTo"];
                 }
