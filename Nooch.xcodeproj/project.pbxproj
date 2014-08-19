@@ -243,6 +243,9 @@
 		847268CC1966A7C100D5E749 /* webView.m in Sources */ = {isa = PBXBuildFile; fileRef = 847268CB1966A7C100D5E749 /* webView.m */; };
 		8481F08F19A1CA75007F6565 /* selectRecipientIntro.png in Resources */ = {isa = PBXBuildFile; fileRef = 8481F08D19A1CA75007F6565 /* selectRecipientIntro.png */; };
 		8481F09019A1CA75007F6565 /* selectRecipientIntro_smallScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 8481F08E19A1CA75007F6565 /* selectRecipientIntro_smallScreen.png */; };
+		849AF6BD19A3183000693385 /* close_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AF6BC19A3183000693385 /* close_button.png */; };
+		849AF6BF19A320EC00693385 /* KnoxInfo_Lightbox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AF6BE19A320EC00693385 /* KnoxInfo_Lightbox@2x.png */; };
+		849AF6C119A3217600693385 /* KnoxInfo_Lightbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AF6C019A3217600693385 /* KnoxInfo_Lightbox.png */; };
 		849F6E8E18AB6D7F0016CD89 /* backbtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 849F6E8D18AB6D7F0016CD89 /* backbtn.png */; };
 		84B65A73188542E9009A5205 /* NSString+ASBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B65A72188542E9009A5205 /* NSString+ASBase64.m */; };
 		84BFD9321871270C001C0AAC /* cross_basic_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 84BFD9311871270C001C0AAC /* cross_basic_yellow.png */; };
@@ -649,6 +652,9 @@
 		847268CB1966A7C100D5E749 /* webView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = webView.m; sourceTree = "<group>"; };
 		8481F08D19A1CA75007F6565 /* selectRecipientIntro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = selectRecipientIntro.png; path = ../selectRecipientIntro.png; sourceTree = "<group>"; };
 		8481F08E19A1CA75007F6565 /* selectRecipientIntro_smallScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = selectRecipientIntro_smallScreen.png; path = ../selectRecipientIntro_smallScreen.png; sourceTree = "<group>"; };
+		849AF6BC19A3183000693385 /* close_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_button.png; sourceTree = "<group>"; };
+		849AF6BE19A320EC00693385 /* KnoxInfo_Lightbox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "KnoxInfo_Lightbox@2x.png"; sourceTree = "<group>"; };
+		849AF6C019A3217600693385 /* KnoxInfo_Lightbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KnoxInfo_Lightbox.png; sourceTree = "<group>"; };
 		849F6E8D18AB6D7F0016CD89 /* backbtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backbtn.png; sourceTree = "<group>"; };
 		84B65A71188542E9009A5205 /* NSString+ASBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ASBase64.h"; sourceTree = "<group>"; };
 		84B65A72188542E9009A5205 /* NSString+ASBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ASBase64.m"; sourceTree = "<group>"; };
@@ -856,6 +862,9 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				849AF6C019A3217600693385 /* KnoxInfo_Lightbox.png */,
+				849AF6BE19A320EC00693385 /* KnoxInfo_Lightbox@2x.png */,
+				849AF6BC19A3183000693385 /* close_button.png */,
 				8471A10819960CB300047231 /* arrow-blue.png */,
 				8481F08D19A1CA75007F6565 /* selectRecipientIntro.png */,
 				8481F08E19A1CA75007F6565 /* selectRecipientIntro_smallScreen.png */,
@@ -1576,6 +1585,8 @@
 				6BC5FED11625F1B0007EAD7A /* Roboto-BoldCondensed.ttf in Resources */,
 				84F099531988AD840020A08F /* Default.png in Resources */,
 				8420B39D187AC4BF00A77E2D /* green-pin.png in Resources */,
+				849AF6C119A3217600693385 /* KnoxInfo_Lightbox.png in Resources */,
+				849AF6BD19A3183000693385 /* close_button.png in Resources */,
 				6BC5FED31625F1B0007EAD7A /* Roboto-BoldCondensedItalic.ttf in Resources */,
 				845C0BD81973F30200E17E52 /* whiteBack.png in Resources */,
 				6BC5FED51625F1B0007EAD7A /* Roboto-BoldItalic.ttf in Resources */,
@@ -1629,6 +1640,7 @@
 				014C432D185B9A4C00956A84 /* info-button.png in Resources */,
 				014C432B185B9A4C00956A84 /* encryption-lock.png in Resources */,
 				01542901190FF5CE00A15AA0 /* noochIcon-96.png in Resources */,
+				849AF6BF19A320EC00693385 /* KnoxInfo_Lightbox@2x.png in Resources */,
 				6BC04B9C1677DE0E005C68D6 /* LICENSE in Resources */,
 				01C26DC21843BB22005179B7 /* twitter-icon.png in Resources */,
 				01C26DBE1843BB22005179B7 /* stats-profile-active.png in Resources */,

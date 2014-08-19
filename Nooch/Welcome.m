@@ -8,7 +8,9 @@
 #import "Welcome.h"
 #import "Home.h"
 #import "ProfileInfo.h"
+#import "knoxWeb.h"
 #import "ECSlidingViewController.h"
+
 @interface Welcome ()
 @end
 @implementation Welcome
@@ -23,29 +25,28 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear: animated];
-    if (isSignup) {
-        [self.navigationController setNavigationBarHidden:NO];
-        [UIView animateWithDuration:0.75
-                         animations:^{
-                             [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                             [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
-                         }];
-        [self.navigationController popToRootViewControllerAnimated:NO];
-        [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
-        isSignup=NO;
-    }
+//    if (isSignup) {
+//        [self.navigationController setNavigationBarHidden:NO];
+//        [UIView animateWithDuration:0.75
+//                         animations:^{
+//                             [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//                             [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
+//                         }];
+//        [self.navigationController popToRootViewControllerAnimated:NO];
+//        [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
+//        isSignup=NO;
+//    }
+    [self.navigationController setNavigationBarHidden:YES];
+    
 }
 - (void)validate
 {
     //navigate to settings
-    
+    [overlay removeFromSuperview];
     [self.navigationController setNavigationBarHidden:NO];
-    ProfileInfo *profile = [ProfileInfo new];
-    isSignup=YES;
-    //[nav_ctrl performSelector:@selector(reenable)];
-    //  [nav_ctrl performSelector:@selector(ENABLE:) withObject:<#(id)#>]
-    // [self.navigationController presentModalViewController:profile animated:YES];
-    [self.navigationController presentViewController:profile animated:YES completion:Nil];
+    
+    knoxWeb *knox = [knoxWeb new];
+    [self.navigationController pushViewController:knox animated:YES];
     [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
 }
 
@@ -123,6 +124,79 @@
     [later setFrame:CGRectMake(10, 460, 300, 60)];
     [later setStyleClass:@"label_small"];
     [self.view addSubview:later];
+}
+-(void)moreinfo_lightBox{
+     overlay=[[UIView alloc]init];
+     overlay.frame=CGRectMake(0, 0, 320, self.view.frame.size.height);
+     overlay.backgroundColor=[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+     
+     [UIView transitionWithView:self.navigationController.view
+     duration:0.4
+     options:UIViewAnimationOptionTransitionCrossDissolve
+     animations:^{
+     [self.navigationController.view addSubview:overlay];
+     }
+     completion:nil];
+     
+     mainView=[[UIView alloc]init];
+     mainView.layer.cornerRadius=5;
+     
+     mainView.frame=CGRectMake(10, 70, 300, self.view.frame.size.height-75);
+     mainView.backgroundColor=[UIColor whiteColor];
+     
+     [overlay addSubview:mainView];
+     mainView.layer.masksToBounds = NO;
+     mainView.layer.cornerRadius = 5;
+     mainView.layer.shadowOffset = CGSizeMake(0, 2);
+     mainView.layer.shadowRadius = 4;
+     mainView.layer.shadowOpacity = 0.5;
+     
+    
+     UIView*head_container=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 300, 44)];
+     head_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+     [mainView addSubview:head_container];
+     head_container.layer.cornerRadius = 10;
+     
+     UILabel*title=[[UILabel alloc]initWithFrame:CGRectMake(0, 10, 300, 30)];
+     [title setBackgroundColor:[UIColor clearColor]];
+     title.textAlignment=NSTextAlignmentCenter;
+     [title setText:@"Connect Your Bank"];
+     title.font=[UIFont fontWithName:@"Arial" size:20];
+     [title setTextColor:kNoochBlue];
+     [head_container addSubview:title];
+    
+     UIView*space_container=[[UIView alloc]initWithFrame:CGRectMake(0, 34, 300, 10)];
+     space_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+     [mainView addSubview:space_container];
+     
+     UIView*container=[[UIView alloc]initWithFrame:CGRectMake(10, 50, 280, 300)];
+     
+     UIImageView*imageShow=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 280, self.view.frame.size.height-175)];
+     imageShow.image=[UIImage imageNamed:@"KnoxInfo_Lightbox.png"];
+     imageShow.contentMode=UIViewContentModeScaleAspectFit;
+     [container addSubview:imageShow];
+     [mainView addSubview:container];
+     
+     
+     UIButton *btnLink=[UIButton buttonWithType:UIButtonTypeCustom];
+     [btnLink setStyleClass:@"button_green_welcome"];
+     btnLink.frame=CGRectMake(10,mainView.frame.size.height-55, 280, 50);
+     [btnLink setTitle:@"Link Now" forState:UIControlStateNormal];
+     [btnLink addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
+     [mainView addSubview:btnLink];
+     
+     UIButton *btnclose=[UIButton buttonWithType:UIButtonTypeCustom];
+     btnclose.frame=CGRectMake(mainView.frame.size.width-27,head_container.frame.origin.y-13, 35, 35);
+     [btnclose setImage:[UIImage imageNamed:@"close_button.png"] forState:UIControlStateNormal] ;
+     
+     [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
+     [mainView addSubview:btnclose];
+
+    
+
+}
+-(void)close_lightBox{
+    [overlay removeFromSuperview];
 }
 
 - (void)didReceiveMemoryWarning {

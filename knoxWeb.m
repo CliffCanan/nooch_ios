@@ -9,7 +9,7 @@
 #import "knoxWeb.h"
 #import "ProfileInfo.h"
 #import "Home.h"
-@interface knoxWeb ()<serveD>
+@interface knoxWeb ()<serveD,UIWebViewDelegate>
 {
     NSString *jsonString;
 }
@@ -39,6 +39,7 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     self.web = [UIWebView new];
+    [self.web setDelegate:self];
     [self.web setFrame:CGRectMake(0, -2, 320, [[UIScreen mainScreen] bounds].size.height - 60)];
     [self.view addSubview:self.web];
     [self.web.scrollView setScrollEnabled:YES];
@@ -47,7 +48,7 @@
     
     self.hud.delegate = self;
     self.hud.labelText = @"Preparing Secure Connection";
-    //[self.hud show:YES];
+    [self.hud show:YES];
     NSString *body = [NSString stringWithFormat: @"amount=%@&api_key=%@&api_password=%@&invoice_detail=%@&recurring=%@&information_request=%@&redirect_url=%@", @".01",@"7068_59cd5c1f5a75c31",@"7068_da64134cc66a5f0",@"Onboard",@"ot",@"show_all",@"nooch://"];
 	NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@?%@",@"https://knoxpayments.com/nooch/index.php",body]];
 

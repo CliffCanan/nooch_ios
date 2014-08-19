@@ -560,11 +560,15 @@
         return;
     }
     if ([searchText length]>0) {
+        if ([self.view.subviews containsObject:self.noContact_img]) {
+             [self.noContact_img removeFromSuperview];
+        }
+       
         searching = YES;
         NSRange isRange = [searchBar.text  rangeOfString:[NSString stringWithFormat:@"@"] options:NSCaseInsensitiveSearch];
         NSRange isRange2 = [searchBar.text  rangeOfString:[NSString stringWithFormat:@"."] options:NSCaseInsensitiveSearch];
         if(isRange.location != NSNotFound && isRange2.location != NSNotFound){
-            [self.noContact_img removeFromSuperview];
+            
             emailEntry = YES;
             isphoneBook=NO;
             searching = NO;

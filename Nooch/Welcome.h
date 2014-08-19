@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 BOOL isSignup;
 @interface Welcome : UIViewController
-
+{
+    UIView*overlay,*mainView;
+}
 @end

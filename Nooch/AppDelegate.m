@@ -22,8 +22,8 @@ static NSString *const kTrackingId = @"UA-36976317-2";
 bool modal;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    inBack = NO;
-    [GMSServices provideAPIKey:@"AIzaSyDC-JeglFaO1kbXc2Z3ztCgh1AnwfIla-8"];
+    inBack = NO;//AIzaSyDC-JeglFaO1kbXc2Z3ztCgh1AnwfIla-8
+    [GMSServices provideAPIKey:@"AIzaSyC4wAna1yxgCUsnqHmazama92ZTSz1qrIA"];
     inactiveDate = [NSDate date];
     [NSUserDefaults resetStandardUserDefaults];
     [self.window setUserInteractionEnabled:YES];

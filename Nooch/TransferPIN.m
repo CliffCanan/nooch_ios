@@ -14,6 +14,7 @@
 {
     GetLocation*getlocation;
 }
+@property(nonatomic,strong) MBProgressHUD *hud;
 @property(nonatomic,strong)NSMutableData*respData;
 @property(nonatomic,strong) NSString *memo;
 @property(nonatomic,strong) NSString *type;
@@ -379,10 +380,19 @@
     }
     
     if (len==4) {
-        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        [self.view addSubview:spinner];
-        spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-        [spinner startAnimating];
+        NSString*textLoading=@"";
+        if ([self.type isEqualToString:@"send"])
+           textLoading=@"Sending...";
+        else if([self.type isEqualToString:@"request"])
+            textLoading=@"Requesting...";
+            
+
+        
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:self.hud];
+        self.hud.delegate = self;
+        self.hud.labelText = textLoading;
+        [self.hud show:YES];
         serve *pin = [serve new];
         pin.Delegate = self;
         pin.tagName = @"ValidatePinNumber";
@@ -879,8 +889,7 @@
 	NSLog(@"Connection failed: %@", [error description]);
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    [spinner stopAnimating];
-    [spinner setHidden:YES];
+    [self.hud hide:YES];
     responseString= [[NSString alloc] initWithData:self.respData encoding:NSASCIIStringEncoding];
     NSError* error;
     dictResultTransfer= [NSJSONSerialization

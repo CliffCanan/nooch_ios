@@ -222,6 +222,19 @@
             background-image	: linear-gradient(#7fd034, #6ab029);
 			border				: 1px solid #66AE3C;
 		}
+        .button_green_welcome:normal {
+			width				: 280px;
+			height				: 48px;
+			left                : 10px;
+			color 				: white;
+			border-radius		: 5px;
+			font-family			: "Roboto";
+			font-weight         : light;
+			font-size			: 21px;
+            background-image	: linear-gradient(#7fd034, #6ab029);
+			border				: 1px solid #66AE3C;
+		}
+
 		/****  Disabled GREEN GRADIENT  ****/
 		.button_green:disabled {
             width				: 280px;
