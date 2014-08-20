@@ -88,28 +88,25 @@
     [prompt setFont:[UIFont systemFontOfSize:15]];
     prompt.numberOfLines=0;
     [prompt sizeToFit];
-//  CGRect frame = prompt.frame;
-//  frame.size.height += 150;
-//  [prompt setFrame:frame];
     [self.view addSubview:prompt];
 
     UIButton *enter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [enter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [enter setTitle:@"Link Funding Source" forState:UIControlStateNormal];
     [enter addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
-    [enter setFrame:CGRectMake(10, 375, 300, 60)];
+    [enter setFrame:CGRectMake(10, 385, 300, 60)];
     [enter setStyleClass:@"button_green"];
     [self.view addSubview:enter];
 
     UIButton *moreinfo = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [moreinfo setBackgroundColor:[UIColor clearColor]];
-    [moreinfo setTitle:@"   Tell me more" forState:UIControlStateNormal];
-    [moreinfo setFrame:CGRectMake(30, 335, 260, 22)];
+    [moreinfo setTitle:@" Tell me more" forState:UIControlStateNormal];
+    [moreinfo setFrame:CGRectMake(90, 332, 140, 22)];
     [moreinfo setStyleClass:@"moreinfo_button"];
     
     UILabel *glyph = [UILabel new];
-    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
-    [glyph setFrame:CGRectMake(1, 2, 15, 18)];
+    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+    [glyph setFrame:CGRectMake(2, 2, 15, 18)];
     [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-question-circle"]];
     [glyph setTextColor:kNoochGrayLight];
     [moreinfo addSubview:glyph];
@@ -121,7 +118,7 @@
     [later setBackgroundColor:[UIColor clearColor]];
     [later setTitle:@"I'll link a bank later..." forState:UIControlStateNormal];
     [later addTarget:self action:@selector(later) forControlEvents:UIControlEventTouchUpInside];
-    [later setFrame:CGRectMake(10, 460, 300, 60)];
+    [later setFrame:CGRectMake(10, 450, 300, 60)];
     [later setStyleClass:@"label_small"];
     [self.view addSubview:later];
 }
@@ -131,7 +128,7 @@
      overlay.backgroundColor=[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
      
      [UIView transitionWithView:self.navigationController.view
-     duration:0.4
+     duration:0.5
      options:UIViewAnimationOptionTransitionCrossDissolve
      animations:^{
      [self.navigationController.view addSubview:overlay];
@@ -140,7 +137,6 @@
      
      mainView=[[UIView alloc]init];
      mainView.layer.cornerRadius=5;
-     
      mainView.frame=CGRectMake(10, 50, 300, self.view.frame.size.height-75);
      mainView.backgroundColor=[UIColor whiteColor];
      
@@ -149,8 +145,7 @@
      mainView.layer.cornerRadius = 5;
      mainView.layer.shadowOffset = CGSizeMake(0, 2);
      mainView.layer.shadowRadius = 4;
-     mainView.layer.shadowOpacity = 0.5;
-     
+     mainView.layer.shadowOpacity = 0.6;
     
      UIView*head_container=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 300, 44)];
      head_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
@@ -161,7 +156,7 @@
      [title setBackgroundColor:[UIColor clearColor]];
      title.textAlignment=NSTextAlignmentCenter;
      [title setText:@"Connect Your Bank"];
-     title.font=[UIFont fontWithName:@"Arial" size:20];
+     title.font=[UIFont fontWithName:@"Roboto" size:20];
      [title setTextColor:kNoochBlue];
      [head_container addSubview:title];
     
@@ -169,10 +164,10 @@
      space_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
      [mainView addSubview:space_container];
      
-     UIView*container=[[UIView alloc]initWithFrame:CGRectMake(10, 50, 280, 300)];
+     UIView*container=[[UIView alloc]initWithFrame:CGRectMake(2, 48, 296, 300)];
      
-     UIImageView*imageShow=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 280, self.view.frame.size.height-175)];
-     imageShow.image=[UIImage imageNamed:@"KnoxInfo_Lightbox.png"];
+     UIImageView*imageShow=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 296, self.view.frame.size.height-175)];
+     imageShow.image=[UIImage imageNamed:@"KnoxInfo_Lightbox@2x.png"];
      imageShow.contentMode=UIViewContentModeScaleAspectFit;
      [container addSubview:imageShow];
      [mainView addSubview:container];
@@ -180,19 +175,16 @@
      
      UIButton *btnLink=[UIButton buttonWithType:UIButtonTypeCustom];
      [btnLink setStyleClass:@"button_green_welcome"];
-     btnLink.frame=CGRectMake(10,mainView.frame.size.height-55, 280, 50);
+     btnLink.frame=CGRectMake(10,mainView.frame.size.height-60, 280, 50);
      [btnLink setTitle:@"Link Now" forState:UIControlStateNormal];
      [btnLink addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
      [mainView addSubview:btnLink];
      
      UIButton *btnclose=[UIButton buttonWithType:UIButtonTypeCustom];
-     btnclose.frame=CGRectMake(mainView.frame.size.width-27,head_container.frame.origin.y-13, 35, 35);
+     btnclose.frame=CGRectMake(mainView.frame.size.width-28,head_container.frame.origin.y-15, 35, 35);
      [btnclose setImage:[UIImage imageNamed:@"close_button.png"] forState:UIControlStateNormal] ;
-     
      [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
      [mainView addSubview:btnclose];
-
-    
 
 }
 -(void)close_lightBox{
