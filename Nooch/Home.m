@@ -1036,42 +1036,42 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
    
 
-//    if ([[assist shared]getSuspended]) {
-//        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
-//        [alert setTag:50];
-//        [alert show];
-//        return;
-//    }
-//    
-//    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
-//        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Verify Your Email" message:@"Terribly sorry, but before you can send money, please confirm your email address by clicking the link we sent to the email address you used to sign up." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-//        [alert show];
-//        return;
-//    }
+    if ([[assist shared]getSuspended]) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+        [alert setTag:50];
+        [alert show];
+        return;
+    }
     
-//    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
-//        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe" message:@"Please take 1 minute to verify your identity by completing your Nooch profile (just 4 fields)." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
-//        [alert setTag:147];
-//        [alert show];
-//        return;
-//    }
-//    
-//    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-//        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame The Lawyers" message:@"To keep Nooch safe, we ask all users to verify a phone number before before sending money.\n \n If you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
-//        [alert setTag:148];
-//        [alert show];
-//        return;
-//    }
+    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Verify Your Email" message:@"Terribly sorry, but before you can send money, please confirm your email address by clicking the link we sent to the email address you used to sign up." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        return;
+    }
+  
+    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe" message:@"Please take 1 minute to verify your identity by completing your Nooch profile (just 4 fields)." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+        [alert setTag:147];
+        [alert show];
+        return;
+    }
     
-//    if ( ![[[NSUserDefaults standardUserDefaults]
-//        objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
-//        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Connect Your Bank" message:@"Adding a bank account to fund Nooch payments is lightening quick. (You don't have to type a routing or account number!)\n \n Would you like to take care of this now?" delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
-//        [set setTag:201];
-//        [set show];
-//        return;
-//    }
-//    
+    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame The Lawyers" message:@"To keep Nooch safe, we ask all users to verify a phone number before before sending money.\n \n If you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
+        [alert setTag:148];
+        [alert show];
+        return;
+    }
+  
+    if ( ![[[NSUserDefaults standardUserDefaults]
+        objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
+        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Connect Your Bank" message:@"Adding a bank account to fund Nooch payments is lightening quick. (You don't have to type a routing or account number!)\n \n Would you like to take care of this now?" delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
+        [set setTag:201];
+        [set show];
+        return;
+    }
     
+  
     if (NSClassFromString(@"SelectRecipient")) {
         
         Class aClass = NSClassFromString(@"SelectRecipient");
