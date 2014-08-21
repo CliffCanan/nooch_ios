@@ -44,7 +44,7 @@
     //navigate to settings
     [overlay removeFromSuperview];
     [self.navigationController setNavigationBarHidden:NO];
-    
+    isSignup=YES;
     knoxWeb *knox = [knoxWeb new];
     [self.navigationController pushViewController:knox animated:YES];
     [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];

@@ -556,10 +556,12 @@
                 self.prompt.textColor = [UIColor colorWithRed:169 green:68 blue:66 alpha:1];
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
+                [self.hud hide:YES];
             }
             else if([[dictResult objectForKey:@"Result"]isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]){
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
+                [self.hud hide:YES];
                 self.fourth_num.layer.borderColor = kNoochRed.CGColor;
                 self.third_num.layer.borderColor = kNoochRed.CGColor;
                 self.second_num.layer.borderColor = kNoochRed.CGColor;
@@ -577,6 +579,7 @@
                 [[assist shared] setSusPended:YES];
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
+                [self.hud hide:YES];
                 self.fourth_num.layer.borderColor = kNoochRed.CGColor;
                 self.third_num.layer.borderColor = kNoochRed.CGColor;
                 self.second_num.layer.borderColor = kNoochRed.CGColor;
@@ -594,6 +597,7 @@
                 [[assist shared] setSusPended:YES];
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
+                [self.hud hide:YES];
                 self.prompt.text=@"Account suspended.";
             }
         }

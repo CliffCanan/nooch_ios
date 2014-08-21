@@ -9,6 +9,7 @@
 #import "knoxWeb.h"
 #import "ProfileInfo.h"
 #import "Home.h"
+#import "Welcome.h"
 @interface knoxWeb ()<serveD,UIWebViewDelegate>
 {
     NSString *jsonString;
@@ -37,6 +38,14 @@
     self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setTitle:@"Connect Bank"];
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeCustom];
+    [hamburger setStyleId:@"navbar_back"];
+    [hamburger setImage:[UIImage imageNamed:@"whiteBack.png"] forState:UIControlStateNormal];
+    [hamburger setImage:[UIImage imageNamed:@"whiteBack.png"] forState:UIControlStateHighlighted];
+    
+    [hamburger addTarget:self action:@selector(backToHome) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+    [self.navigationItem setLeftBarButtonItem:menu];
     
     self.web = [UIWebView new];
     [self.web setDelegate:self];
@@ -65,7 +74,23 @@
                                                  name:@"KnoxResponse"
                                                object:nil];
 }
+-(void)backToHome{
+   
+       if (isSignup) {
+           [self.navigationController setNavigationBarHidden:NO];
+           [UIView animateWithDuration:0.75
+                            animations:^{
+                                [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                                [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
+                            }];
+           [self.navigationController popToRootViewControllerAnimated:NO];
+           [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
+           isSignup=NO;
+       }
+    else
+        [self.navigationController popViewControllerAnimated:YES];
 
+}
 - (void)resignView {
     serve*obj=[serve new];
     obj.tagName=@"saveMemberTransId";
