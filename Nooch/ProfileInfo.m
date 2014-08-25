@@ -434,6 +434,8 @@
     [self.view addSubview:self.zip];
 
     self.save = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.save setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    self.save.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [self.save addTarget:self action:@selector(save_changes) forControlEvents:UIControlEventTouchUpInside];
     [self.save setTitle:@"Save Profile" forState:UIControlStateNormal];
     [self.save setFrame:CGRectMake(0, 430+down, 0, 0)];
@@ -705,21 +707,19 @@
                             [[assist shared]setTranferImage:nil];
                             [[assist shared]setTranferImage:image];
                         }
-                        
-                        
-                        
+
                     }];
     
-     
-      
         [self.save setEnabled:YES];
         [self.save setStyleClass:@"button_green"];
+        [self.save setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
+        self.save.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [self.save setUserInteractionEnabled:YES];
         [dictSavedInfo setObject:@"YES" forKey:@"ImageChanged"];
-      SDImageCache *imageCache = [SDImageCache sharedImageCache];
-      [imageCache clearMemory];
-      [imageCache clearDisk];
-      [imageCache cleanDisk];
+        SDImageCache *imageCache = [SDImageCache sharedImageCache];
+        [imageCache clearMemory];
+        [imageCache clearDisk];
+        [imageCache cleanDisk];
       
     }
     else if(buttonIndex == 1) {
@@ -853,6 +853,8 @@
             [resend_mail setStyleClass:@"button_green_sm"];
             [resend_mail addTarget:self action:@selector(resend_email) forControlEvents:UIControlEventTouchUpInside];
             [resend_mail setTitle:@"Resend Email" forState:UIControlStateNormal];
+            [resend_mail setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
+            resend_mail .titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [cell.contentView addSubview:resend_mail];
         }
         UILabel *mail = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
@@ -890,6 +892,8 @@
             [resend_phone addTarget:self action:@selector(resend_SMS) forControlEvents:UIControlEventTouchUpInside];
             [resend_phone setFrame:CGRectMake(200, 60, 110, 30)];
             [resend_phone setStyleClass:@"button_green_sm"];
+            [resend_phone setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
+            resend_phone .titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [cell.contentView addSubview:resend_phone];
             
             [self.phone setUserInteractionEnabled:NO];

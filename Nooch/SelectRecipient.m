@@ -1188,7 +1188,7 @@
         pic.layer.cornerRadius = 25; //pic.layer.borderColor = kNoochBlue.CGColor; pic.layer.borderWidth = 1;
         pic.clipsToBounds = YES;
         [pic setImageWithURL:[NSURL URLWithString:temp[@"Photo"]]
-            placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+            placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         NSString * name = [NSString stringWithFormat:@"   %@ %@",[[temp objectForKey:@"FirstName"] capitalizedString],[[temp objectForKey:@"LastName"] capitalizedString]];
         [cell.textLabel setText:name];
         
@@ -1224,7 +1224,7 @@
         
         NSDictionary *info = [arrSearchedRecords objectAtIndex:indexPath.row];
         [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
-            placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+            placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         [cell setIndentationLevel:1];
         pic.hidden=NO;
         cell.indentationWidth = 56;
@@ -1270,7 +1270,7 @@
         [npic setImage:[UIImage imageNamed:@"n_icon_46x54.png"]];
         NSDictionary *info = [arrRequestPersons objectAtIndex:indexPath.row];
         [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
-            placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+            placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         pic.hidden=NO;
         cell.indentationWidth = 56;
         [pic setFrame:CGRectMake(16, 6, 50, 50)];
@@ -1312,7 +1312,7 @@
         [npic setImage:[UIImage imageNamed:@"n_icon_46x54.png"]];
         NSDictionary *info = [self.recents objectAtIndex:indexPath.row];
         [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
-            placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+            placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         pic.hidden=NO;
         cell.indentationWidth = 56;
         [pic setFrame:CGRectMake(16, 6, 50, 50)];

@@ -195,15 +195,18 @@
     [self.choose_pic setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     if ([[self.user objectForKey:@"facebook"] objectForKey:@"image"]) {
         [self.choose_pic setStyleClass:@"button_green"];
+        [self.choose_pic setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
+        self.choose_pic.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [self.choose_pic setTitle:@"Change Picture" forState:UIControlStateNormal];
     }
     else{
         [self.choose_pic setStyleClass:@"button_gray"];
+        [self.choose_pic setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+        self.choose_pic.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [self.choose_pic setTitle:@"Choose Picture" forState:UIControlStateNormal];
     }
     [self.choose_pic addTarget:self action:@selector(change_pic) forControlEvents:UIControlEventTouchUpInside];
     [self.choose_pic setFrame:CGRectMake(10, 390, 300, 60)];
-    [self.choose_pic setStyleClass:@"button_gray"];
     [subview addSubview:self.choose_pic];
     
     self.next_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];

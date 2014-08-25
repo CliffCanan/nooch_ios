@@ -260,9 +260,16 @@
             // Pay & Cancel Buttons
             UIButton *pay = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [pay setStyleClass:@"details_button_left"];
+            [pay setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
+            pay.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
 
             UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [cancel setTitleShadowColor:Rgb2UIColor(36, 22, 19, 0.3) forState:UIControlStateNormal];
+            cancel.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+
             UIButton *remind = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [remind setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+            remind.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
 
             if (![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] && ![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
     			if ([[self.trans objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {

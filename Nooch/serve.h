@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by Preston Hults on 2/6/13.
-//  Copyright (c) 2013 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -47,7 +47,6 @@
 -(void)deleteCard:(NSString*)cardId;
 -(void)forgotPass:(NSString *)email;
 -(void)getBanks;
--(void)getCards;
 -(void)getSettings;
 -(void)getEncrypt:(NSString *)input;
 -(void)getDetails:(NSString*)username;
@@ -55,7 +54,6 @@
 -(void)getMemIdFromuUsername:(NSString*)username;
 -(void)getMemberIds:(NSArray*)input;
 -(void)getNoteSettings;
--(void)getTargus;
 -(void)getRecents;
 -(void)privacyPolicy;
 -(void)tos;
@@ -63,7 +61,6 @@
 //-(void)login:(NSString*)email password:(NSString*)pass;
 
 -(void)makeBankPrimary:(NSString*)bankId;
--(void)makeCardPrimary:(NSString*)cardId;
 -(void)memberDevice:(NSString *)deviceToken;
 -(void)setEmailSets:(NSDictionary*)notificationDictionary;
 -(void)setPushSets:(NSDictionary*)notificationDictionary;
@@ -72,8 +69,6 @@
 -(void)resetPassword:(NSString*)old new:(NSString*)new;
 -(void)resetPIN:(NSString*)old new:(NSString*)new;
 -(void)saveBank:(NSMutableDictionary *)bankDetails;
--(void)saveCard:(NSMutableDictionary*)cardDetails;
-//-(void)sendInvite:(NSString)
 -(void)setSharing:(NSString*)sharingValue;
 -(void)pinCheck:(NSString*)memId pin:(NSString*)pin;
 -(void)verifyBank:(NSString *)bankAcctId microOne:(NSString *)microOne microTwo:(NSString *)microTwo;
@@ -91,16 +86,15 @@
 -(void)getTotalReferralCode:(NSString *)inviteCode;
 -(void)GetFeaturedNonprofit;
 -(void)GetNonProfiltList;
--(void) GetAllWithdrawalFrequency;
+-(void)GetAllWithdrawalFrequency;
 -(void)getAutoWithDrawalSelectedOption;
 -(void)GetAllWithdrawalTrigger;
 -(void)SaveFrequency:(NSString*) withdrawalId type:(NSString*) type frequency: (float)withdrawalFrequency;
 -(void)GetNonProfiltDetail:(NSString*)npId memberId:(NSString*)memberId;
 -(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len subType:(NSString*)subType;
 -(void)histMoreSerachbyName:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len name:(NSString*)name subType:(NSString*)subType;
--(void) LogOutRequest:(NSString*) memberId;
+-(void)LogOutRequest:(NSString*) memberId;
 -(void)GetTransactionDetail:(NSString*)transactionId;
-//-(void)SendEmailToNonNooch:(NSString*)emai;
 -(void)MemberNotificationSettings:(NSDictionary*) memberNotificationSettings type:(NSString*)type;
 -(void)MemberNotificationSettingsInput;
 -(void)GetMemberStats:(NSString*)query;

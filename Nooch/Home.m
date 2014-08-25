@@ -114,6 +114,8 @@ NSMutableURLRequest *request;
     
     UIButton *top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [top_button setStyleClass:@"button_blue"];
+    [top_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    top_button.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     
     UIButton *mid_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     UIButton *bot_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -495,6 +497,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     int bannerAlert=0;
+    
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(71, 8, 7, .4);
+    shadow.shadowOffset = CGSizeMake(0, 1);
+    NSDictionary * textAttributes =
+            @{NSShadowAttributeName: shadow };
+    
     if ([[user objectForKey:@"Status"] isEqualToString:@"Suspended"]) {
         bannerAlert++;
         [self.suspended removeFromSuperview];
@@ -503,13 +512,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         UILabel *sus_header = [UILabel new];
         [sus_header setStyleClass:@"banner_header"];
-        [sus_header setText:@"Account Suspended"];
+        sus_header.attributedText = [[NSAttributedString alloc] initWithString:@"Account Suspended"
+                                                               attributes:textAttributes];
         [self.suspended addSubview:sus_header];
 
         UILabel *sus_info = [UILabel new];
         [sus_info setStyleClass:@"banner_info"];
         [sus_info setNumberOfLines:0];
-        [sus_info setText:@"Your account will have limited functionality while you are suspended."];
+        sus_info.attributedText = [[NSAttributedString alloc] initWithString:@"Your account will have limited functionality while you are suspended."
+                                                                    attributes:textAttributes];
         [self.suspended addSubview:sus_info];
 
         UILabel *sus_exclaim = [UILabel new];
@@ -520,6 +531,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         UIButton *contact = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [contact setStyleClass:@"go_now_text"];
         [contact setTitle:@"TAP TO CONTACT NOOCH" forState:UIControlStateNormal];
+        [contact setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.45) forState:UIControlStateNormal];
+        contact.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [contact addTarget:self action:@selector(contact_support) forControlEvents:UIControlEventTouchUpInside];
         [self.suspended addSubview:contact];
         
@@ -549,7 +562,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
       
         UILabel *em = [UILabel new];
         [em setStyleClass:@"banner_header"];
-        [em setText:@"Profile Not Validated"];
+        em.attributedText = [[NSAttributedString alloc] initWithString:@"Profile Not Validated"
+                                                                   attributes:textAttributes];
         [self.profile_incomplete addSubview:em];
         
         UILabel *em_exclaim = [UILabel new];
@@ -560,12 +574,16 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         UILabel *em_info = [UILabel new];
         [em_info setStyleClass:@"banner_info"];
         [em_info setNumberOfLines:0];
-        [em_info setText:@"Please complete your profile to unlock all features."];
+        em_info.attributedText = [[NSAttributedString alloc] initWithString:@"Complete your profile to unlock all features."
+                                                         attributes:textAttributes];
+       
         [self.profile_incomplete addSubview:em_info];
         
         UIButton *go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [go setStyleClass:@"go_now_text"];
         [go setTitle:@"TAP TO GO NOW" forState:UIControlStateNormal];
+        [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.45) forState:UIControlStateNormal];
+        go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [go addTarget:self action:@selector(go_profile) forControlEvents:UIControlEventTouchUpInside];
         [self.profile_incomplete addSubview:go];
         
@@ -597,7 +615,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
            bannerAlert++;
           UILabel *em = [UILabel new];
           [em setStyleClass:@"banner_header"];
-          [em setText:@"Phone Not Verified"];
+          em.attributedText = [[NSAttributedString alloc] initWithString:@"Phone Number Not Verified"
+                                                              attributes:textAttributes];
           [self.phone_incomplete addSubview:em];
           
           UILabel *em_exclaim = [UILabel new];
@@ -608,12 +627,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
           UILabel *em_info = [UILabel new];
           [em_info setStyleClass:@"banner_info"];
           [em_info setNumberOfLines:0];
-          [em_info setText:@"Please verify your phone to unlock all features."];
+          em_info.attributedText = [[NSAttributedString alloc] initWithString:@"Please verify your phone - respond 'Go' to the SMS."
+                                                            attributes:textAttributes];
           [self.phone_incomplete addSubview:em_info];
           
           UIButton *go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
           [go setStyleClass:@"go_now_text"];
           [go setTitle:@"TAP TO GO NOW" forState:UIControlStateNormal];
+          [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.45) forState:UIControlStateNormal];
+          go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
           [go addTarget:self action:@selector(go_profile) forControlEvents:UIControlEventTouchUpInside];
           [self.phone_incomplete addSubview:go];
           
@@ -662,52 +684,37 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     [self.navigationItem setTitle:@"Nooch"];
 
-      if (![[assist shared]isPOP]) {
-//          if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
-//              [self.navigationItem setRightBarButtonItem:Nil];
-//              UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
-//              [self.navigationItem setRightBarButtonItem:funds];
-//          }
-//          else
-//          {
-//              UIActivityIndicatorView*act=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-//              [act setFrame:CGRectMake(14, 5, 20, 20)];
-//              [act startAnimating];
-//              
-//              UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:act];
-//              [self.navigationItem setRightBarButtonItem:funds];
-//          }
+    if (![[assist shared]isPOP]) {
     
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
 
     
-    if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]]) {
-        //push login
-        return;
-    }
-    if ([[assist shared]needsReload]) {
-        [blankView removeFromSuperview];
-        blankView=[[UIView alloc]initWithFrame:CGRectMake(40, (self.view.frame.size.height/2)-40, 240, 90)];
-        blankView.backgroundColor=[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8];
-        UIActivityIndicatorView*act=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        blankView.layer.borderColor=[[UIColor blackColor]CGColor];
-        blankView.layer.cornerRadius=10;
-        blankView.layer.borderWidth=1;
-        [act setFrame:CGRectMake(100, 5, 40, 40)];
-         //act.center=blankView.center;
-        [act startAnimating];
-        [blankView addSubview:act];
+        if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]]) {
+            //push login
+            return;
+        }
+        if ([[assist shared]needsReload]) {
+            [blankView removeFromSuperview];
+            blankView=[[UIView alloc]initWithFrame:CGRectMake(40, (self.view.frame.size.height/2)-40, 240, 90)];
+            blankView.backgroundColor=[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8];
+            UIActivityIndicatorView*act=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+            blankView.layer.borderColor=[[UIColor blackColor]CGColor];
+            blankView.layer.cornerRadius=10;
+            blankView.layer.borderWidth=1;
+            [act setFrame:CGRectMake(100, 5, 40, 40)];
+            [act startAnimating];
+            [blankView addSubview:act];
         
-        UILabel*fromLabel =[[UILabel alloc]initWithFrame:CGRectMake(5,50, 230,20)];
-        fromLabel.text = @"Loading Your Nooch Account";
-        fromLabel.font =[UIFont fontWithName:@"Roboto-Regular" size:15];
+            UILabel*fromLabel =[[UILabel alloc]initWithFrame:CGRectMake(5,50, 230,20)];
+            fromLabel.text = @"Loading Your Nooch Account";
+            fromLabel.font =[UIFont fontWithName:@"Roboto-Regular" size:15];
         
-        fromLabel.backgroundColor =[UIColor clearColor];
-        fromLabel.textColor =[UIColor whiteColor];fromLabel.textAlignment =NSTextAlignmentCenter;
-        [blankView addSubview:fromLabel];
-        [self.navigationController.view addSubview:blankView];
-        [self performSelector:@selector(myTask) withObject:nil afterDelay:3];
-     //        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+            fromLabel.backgroundColor =[UIColor clearColor];
+            fromLabel.textColor =[UIColor whiteColor];fromLabel.textAlignment =NSTextAlignmentCenter;
+            [blankView addSubview:fromLabel];
+            [self.navigationController.view addSubview:blankView];
+            [self performSelector:@selector(myTask) withObject:nil afterDelay:3];
+//        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
 //        [self.navigationController.view addSubview:self.hud];
 //        
 //        self.hud.delegate = self;
@@ -719,13 +726,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [serveOBJ setTagName:@"sets"];
             [serveOBJ getSettings];
         }
-//        if ([[assist shared]needsReload]) {
-//            [[assist shared]setneedsReload:NO];
-//            serve *banks = [serve new];
-//            banks.Delegate = self;
-//            banks.tagName = @"banks";
-//            [banks getBanks];
-//        }
+
     }
     else
     {

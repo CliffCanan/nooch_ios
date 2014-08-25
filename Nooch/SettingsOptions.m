@@ -88,11 +88,13 @@
     [title setStyleClass:@"refer_header"];
     [title setText:@"Linked Bank Account"];
     [self.view addSubview:title];
-    
+
     link_bank = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [link_bank setFrame:CGRectMake(0, 125, 0, 0)];
-
     [link_bank setTitle:@"Link a New Bank" forState:UIControlStateNormal];
+    [link_bank setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    link_bank.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+
     UILabel *glyph = [UILabel new];
     [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:24]];
     [glyph setFrame:CGRectMake(25, 9, 30, 30)];
@@ -114,11 +116,15 @@
     
     self.logout = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.logout setTitle:@"Sign Out" forState:UIControlStateNormal];
+    [self.logout setTitleShadowColor:Rgb2UIColor(33, 34, 34, 0.35) forState:UIControlStateNormal];
+    self.logout.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    
     UILabel *glyphLogout = [UILabel new];
     [glyphLogout setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
     [glyphLogout setFrame:CGRectMake(60, 7, 30, 30)];
     [glyphLogout setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-sign-out"]];
     [glyphLogout setTextColor:[UIColor whiteColor]];
+
     [self.logout addSubview:glyphLogout];
     [self.logout addTarget:self action:@selector(sign_out) forControlEvents:UIControlEventTouchUpInside];
     [self.logout setStyleClass:@"button_gray"];
