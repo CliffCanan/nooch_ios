@@ -159,7 +159,7 @@
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(64, 65, 66, .6);
     shadow.shadowOffset = CGSizeMake(0, 1);
-    
+
     NSDictionary * textAttributes =
     @{NSShadowAttributeName: shadow };
     if (section == 0) {

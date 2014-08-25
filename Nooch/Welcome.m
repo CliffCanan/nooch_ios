@@ -175,6 +175,8 @@
      
      UIButton *btnLink=[UIButton buttonWithType:UIButtonTypeCustom];
      [btnLink setStyleClass:@"button_green_welcome"];
+     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
+     btnLink .titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
      btnLink.frame=CGRectMake(10,mainView.frame.size.height-60, 280, 50);
      [btnLink setTitle:@"Link Now" forState:UIControlStateNormal];
      [btnLink addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];

@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by crks on 10/7/13.
-//  Copyright (c) 2013 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch. All rights reserved.
 //
 
 #import "ResetPIN.h"
@@ -68,7 +68,8 @@
     [self.view addSubview:title];
     
     self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 245, 300, 30)];
-    [self.prompt setText:@""]; [self.prompt setTextAlignment:NSTextAlignmentCenter];
+    [self.prompt setText:@""];
+    [self.prompt setTextAlignment:NSTextAlignmentCenter];
     [self.prompt setStyleId:@"pin_instructiontext_send"];
     [self.view addSubview:self.prompt];
     
@@ -118,9 +119,8 @@
             default:
                 break;
         }
-    }else{
-        
-        
+    }
+    else{
         which = kNoochGreen;
         switch (len) {
             case 5:
