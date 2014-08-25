@@ -111,9 +111,7 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    //me=[core new];
-    // assist*assistOBJ=[assist new];
-    //clear Image cache
+
     [self.name setText:[[user objectForKey:@"firstName"] capitalizedString]];
     [self.balance setText:[[user objectForKey:@"lastName"] capitalizedString]];
     
@@ -124,6 +122,11 @@
         user_pic.clipsToBounds = YES;
         user_pic.layer.cornerRadius = 30;
         user_pic.layer.borderWidth = 2; user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
+        user_pic.layer.shadowColor = [UIColor blackColor].CGColor;
+        user_pic.layer.shadowOffset = CGSizeMake(3, 3);
+        user_pic.layer.shadowOpacity = 0.97;
+        user_pic.layer.shadowRadius = 3.0;
+
         [user_pic setUserInteractionEnabled:YES];
     }
 }
@@ -152,14 +155,24 @@
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake (10,0,300,22)];
     [title setFont:[UIFont fontWithName:@"Roboto-Regular" size:15]];
     title.textColor = [UIColor whiteColor];
+    
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(64, 65, 66, .6);
+    shadow.shadowOffset = CGSizeMake(0, 1);
+    
+    NSDictionary * textAttributes =
+    @{NSShadowAttributeName: shadow };
     if (section == 0) {
-        title.text = @"ACCOUNT";
+        title.attributedText = [[NSAttributedString alloc] initWithString:@"ACCOUNT"
+                                                               attributes:textAttributes];
     }
     else if(section == 1){
-        title.text = @"SOCIAL";
+        title.attributedText = [[NSAttributedString alloc] initWithString:@"SOCIAL"
+                                                               attributes:textAttributes];
     }
     else if(section == 2){
-        title.text = @"ABOUT";
+        title.attributedText = [[NSAttributedString alloc] initWithString:@"ABOUT"
+                                                               attributes:textAttributes];
     }
     else{
         title.text = @"";
@@ -170,6 +183,7 @@
     [headerView setStyleClass:@"sectionheader_bckgrnd"];
     return headerView;
 }
+/*
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     if (section == 0) {
         return @"ACCOUNT";
@@ -186,7 +200,7 @@
     else{
         return @"";
     }
-}
+} */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (section == 0) {
         return 3;
@@ -228,54 +242,73 @@
     [cell.contentView addSubview:arrow];
     
     UILabel *iv = [UILabel new];
+
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = kLeftMenuShadow;
+    shadow.shadowOffset = CGSizeMake(0, 1);
+    
+    NSDictionary * textAttributes =
+    @{NSShadowAttributeName: shadow };
+    
     [iv setStyleClass:@"lside_menu_icons"];
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            cell.textLabel.text = @"Home";
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Home"
+                                                                            attributes:textAttributes];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-home"];
         }
         else if(indexPath.row == 1){
             cell.textLabel.text = @"Transaction History";
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Transaction History"
+                                                                            attributes:textAttributes];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"];
         }
         else if (indexPath.row == 2){
-            cell.textLabel.text = @"Statistics";
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Statistics"
+                                                                            attributes:textAttributes];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-tachometer"];
         }
     }
     else if(indexPath.section == 9) {
         if (indexPath.row == 0) {
-            cell.textLabel.text = @"Donate to a Cause";
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Donate to a Cause"
+                                                                            attributes:textAttributes];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-globe"];
         }
     }
     else if(indexPath.section == 1) {
         if (indexPath.row == 0) {
-            cell.textLabel.text = @"Refer a Friend";
-            //[iv setFrame:CGRectMake(7, 7, 30, 30)];
-            [iv setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Refer a Friend"
+                                                                            attributes:textAttributes];
+            [iv setFont:[UIFont fontWithName:@"FontAwesome" size:12]];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"];
         }
         else if(indexPath.row == 1){
-            cell.textLabel.text = @"Rate Nooch";
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-star"];
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Rate Nooch"
+                                                                attributes:textAttributes];
         }
     }
     else if(indexPath.section == 2) {
         if (indexPath.row == 0) {
-            cell.textLabel.text = @"How Nooch Works";
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"How Nooch Works"
+                                                                            attributes:textAttributes];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-question"];
         }
         else if(indexPath.row == 1){
-            cell.textLabel.text = @"Contact Support";
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Contact Support"
+                                                                            attributes:textAttributes];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope"];
         }
         else if(indexPath.row == 2){
-            cell.textLabel.text =  @"Limits & Fees";
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Limits & Fees"
+                                                                            attributes:textAttributes];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-usd"];
         }
         else if(indexPath.row == 3) {
             cell.textLabel.text = @"Legal Info";
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Legal Info"
+                                                                            attributes:textAttributes];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-gavel"];
         }
     }

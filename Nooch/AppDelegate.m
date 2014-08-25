@@ -65,12 +65,12 @@ bool modal;
         [self.window setUserInteractionEnabled:YES];
     }else if(![self.window.subviews containsObject:noConnectionView] && netStat == NotReachable){
         noConnectionView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, [[UIScreen mainScreen] bounds].size.height)];
-        noConnectionView.image = [UIImage imageNamed:@"No.png"];
+        noConnectionView.image = [UIImage imageNamed:@"No-Internet-Full-Screen.png"];
         [self.window addSubview:noConnectionView];
         [self.window setUserInteractionEnabled:NO];
     }
 }
-
+/*
 -(void)addRainbow{
     [self.window addSubview:rainbowTop];
 }
@@ -81,7 +81,7 @@ bool modal;
 
 -(void)remTopRainbow{
     [rainbowTop removeFromSuperview];
-}
+} */
 
 -(void)showWait:(NSString*)label{
     loadingView = [[UIView alloc] initWithFrame:CGRectMake(75,( [[UIScreen mainScreen] bounds].size.height/2)-165, 170, 130)];
@@ -95,7 +95,6 @@ bool modal;
     loadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 60, 130, 50)];
     loadingLabel.backgroundColor = [UIColor clearColor];
     loadingLabel.textColor = [UIColor whiteColor];
-    //[loadingLabel setFont:[core nFont:@"Medium" size:15]];
     [loadingLabel setNumberOfLines:2];
     loadingLabel.textAlignment = NSTextAlignmentCenter;
     loadingLabel.text = @"Loading...";
@@ -261,33 +260,12 @@ void exceptionHandler(NSException *exception){
     NSLog(@"fired in Delegate - URL Encoded %@ %@ %@ %@ %@", isPaid, paymentID,accountName,imageURL,bname);
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     [defaults setObject:isPaid forKey:@"isPaid"];
-     [defaults setObject:imageURL forKey:@"BankImageURL"];
-     [defaults setObject:bname forKey:@"BankName"];
-     [defaults setObject:accountName forKey:@"AccountName"];
-   [defaults setObject:paymentID forKey:@"paymentID"];
+    [defaults setObject:imageURL forKey:@"BankImageURL"];
+    [defaults setObject:bname forKey:@"BankName"];
+    [defaults setObject:accountName forKey:@"AccountName"];
+    [defaults setObject:paymentID forKey:@"paymentID"];
     [defaults synchronize];
     
-        //Handle the response using our private API
-    //    NSString *apiURL = [NSString stringWithFormat:@"http://paidez.com/api/trz.php?trans_id=%@",paymentID];
-    //    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    //    [request setHTTPMethod:@"GET"];
-    //    [request setURL:[NSURL URLWithString:apiURL]];
-    //
-    //    NSError *error = [[NSError alloc] init];
-    //    NSHTTPURLResponse *responseCode = nil;
-    //
-    //    NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
-    //
-    //    if([responseCode statusCode] != 200){
-    //        NSLog(@"Error getting %@, HTTP status code %li", apiURL, (long)[responseCode statusCode]);
-    //    }
-    //
-    //    NSString *knoxpayments = [[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding];
-    //
-    //    NSData *data = [knoxpayments dataUsingEncoding:NSUTF8StringEncoding];
-    //
-    //    NSError *e = nil;
-    //    NSLog(@"%@",data);
     //Send Notification to WebView so it can resign itself and to the parent view if desired to handle response and give success notification etc.
     [[NSNotificationCenter defaultCenter]
      postNotificationName:@"KnoxResponse" object:self];

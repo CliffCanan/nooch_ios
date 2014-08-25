@@ -306,7 +306,6 @@
         [[UIApplication sharedApplication]setStatusBarHidden:NO];
         
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"firstName"];
-        // NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
         NSString *udid=[[UIDevice currentDevice] uniqueDeviceIdentifier];
         //nslog(@"%@",udid);
         [[assist shared]setlocationAllowed:YES];

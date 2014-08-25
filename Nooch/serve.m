@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by Preston Hults on 2/6/13.
-//  Copyright (c) 2013 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch. All rights reserved.
 //
 
 #import "serve.h"
@@ -57,7 +57,6 @@ NSMutableURLRequest *requestSet;
 NSData *postDataSet;
 NSString *postLengthSet;
 NSString *urlStrSet;
-NSMutableURLRequest *requestgetCards;
 NSMutableURLRequest *requestgetbanks;
 NSMutableURLRequest *requestdup;
 NSMutableURLRequest *requestnewUser;
@@ -185,15 +184,6 @@ NSString *amnt;
     
     
 }
--(void)getCards{
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    self.responseData = [NSMutableData data];
-    requestgetCards = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&accessToken=%@", ServerUrl, @"GetCardAccountCollection", [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"],[defaults valueForKey:@"OAuthToken"]]]];
-    NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:requestgetCards delegate:self];
-    if (!connection)
-        NSLog(@"connect error");
-    
-}
 -(void)getEncrypt:(NSString *)input {
     NSString *encodedString = [NSString encodeBase64String:input];
     
@@ -267,15 +257,6 @@ NSString *amnt;
     if (!connection)
         NSLog(@"connect error");
 }
--(void)getTargus{
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
-    self.responseData = [[NSMutableData alloc] init];
-    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetMemberTargusScores?memberId=%@&accessToken=%@",ServerUrl,[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],[defaults valueForKey:@"OAuthToken"]]]];
-    NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:request delegate:self];
-    if (!connection)
-        NSLog(@"connect error");
-}
 -(void)getRecents{
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
@@ -334,13 +315,6 @@ NSString *amnt;
 -(void)makeBankPrimary:(NSString*)bankId{
     self.responseData = [[NSMutableData alloc] init];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&cardAcctId=%@", ServerUrl, @"MakeBankAccountAsPrimary", [[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"], bankId]]];
-    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-    if (!connection)
-        NSLog(@"connect error");
-}
--(void)makeCardPrimary:(NSString*)cardId{
-    self.responseData = [[NSMutableData alloc] init];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&cardAcctId=%@", ServerUrl, @"MakeCardAccountAsPrimary", [[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"], cardId]]];
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     if (!connection)
         NSLog(@"connect error");
@@ -519,30 +493,6 @@ NSString *amnt;
     if (!connection)
         NSLog(@"connect error");
 }
--(void)saveCard:(NSMutableDictionary*)cardDetails{
-    self.responseData = [NSMutableData data];
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
-    [cardDetails setValue:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
-    
-    NSError *error;
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:cardDetails
-                                                       options:NSJSONWritingPrettyPrinted error:&error];
-    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
-    NSString *urlStr = [[NSString alloc] initWithString:ServerUrl];
-    urlStr = [urlStr stringByAppendingFormat:@"/%@", @"SaveCardAccountDetails"];
-    NSURL *url = [NSURL URLWithString:urlStr];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setHTTPBody:postData];
-    [request setTimeoutInterval:3600];
-    NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
-    if (!connection)
-        NSLog(@"connect error");
-}
-//-(void)sendInvite:(NSString)
 -(void)setSharing:(NSString*)sharingValue{
     self.responseData = [NSMutableData data];
     NSMutableURLRequest *requestObject = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@",ServerUrl,@"SetAllowSharing",@"memberID",[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"],@"allow",sharingValue]]];
@@ -1857,7 +1807,7 @@ NSString *amnt;
     if (!connectionList)
         NSLog(@"connect error");
 }
--(void)SendReminderToRecepient:(NSString *)transactionId {
+-(void)SendReminderToRecepient:(NSString *)transactionId memberId:(NSString*)memberId{
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];

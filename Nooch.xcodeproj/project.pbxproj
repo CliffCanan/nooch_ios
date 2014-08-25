@@ -37,21 +37,15 @@
 		0129D8E81815B10D00BEAC30 /* Brandon_blk.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0129D8E41815B10D00BEAC30 /* Brandon_blk.otf */; };
 		0129D8E91815B10D00BEAC30 /* Brandon_light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0129D8E51815B10D00BEAC30 /* Brandon_light.otf */; };
 		0129D8EA1815B10D00BEAC30 /* Brandon_med.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0129D8E61815B10D00BEAC30 /* Brandon_med.otf */; };
-		014C4327185B9A4C00956A84 /* addfunds.png in Resources */ = {isa = PBXBuildFile; fileRef = 014C4313185B9A4C00956A84 /* addfunds.png */; };
 		014C432A185B9A4C00956A84 /* dollar-sign.png in Resources */ = {isa = PBXBuildFile; fileRef = 014C4316185B9A4C00956A84 /* dollar-sign.png */; };
 		014C432B185B9A4C00956A84 /* encryption-lock.png in Resources */ = {isa = PBXBuildFile; fileRef = 014C4317185B9A4C00956A84 /* encryption-lock.png */; };
 		014C432C185B9A4C00956A84 /* facebook-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 014C4318185B9A4C00956A84 /* facebook-icon.png */; };
 		014C432D185B9A4C00956A84 /* info-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 014C4319185B9A4C00956A84 /* info-button.png */; };
 		014C432F185B9A4C00956A84 /* n_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 014C431B185B9A4C00956A84 /* n_Icon.png */; };
-		014C4330185B9A4C00956A84 /* nonprofits-fb.png in Resources */ = {isa = PBXBuildFile; fileRef = 014C431C185B9A4C00956A84 /* nonprofits-fb.png */; };
-		014C4331185B9A4C00956A84 /* nonprofits-twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 014C431D185B9A4C00956A84 /* nonprofits-twitter.png */; };
-		014C4332185B9A4C00956A84 /* nonprofits-website.png in Resources */ = {isa = PBXBuildFile; fileRef = 014C431E185B9A4C00956A84 /* nonprofits-website.png */; };
-		014C4333185B9A4C00956A84 /* nonprofits-youtube.png in Resources */ = {isa = PBXBuildFile; fileRef = 014C431F185B9A4C00956A84 /* nonprofits-youtube.png */; };
 		014C4334185B9A4C00956A84 /* quicktap_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 014C4320185B9A4C00956A84 /* quicktap_5.png */; };
 		014C4335185B9A4C00956A84 /* quicktap_10.png in Resources */ = {isa = PBXBuildFile; fileRef = 014C4321185B9A4C00956A84 /* quicktap_10.png */; };
 		014C4336185B9A4C00956A84 /* quicktap_25.png in Resources */ = {isa = PBXBuildFile; fileRef = 014C4322185B9A4C00956A84 /* quicktap_25.png */; };
 		014C4337185B9A4C00956A84 /* quicktap_50.png in Resources */ = {isa = PBXBuildFile; fileRef = 014C4323185B9A4C00956A84 /* quicktap_50.png */; };
-		014C4339185B9A4C00956A84 /* withdrawfunds.png in Resources */ = {isa = PBXBuildFile; fileRef = 014C4325185B9A4C00956A84 /* withdrawfunds.png */; };
 		014C433B185BB9EE00956A84 /* default.css in Resources */ = {isa = PBXBuildFile; fileRef = 014C433A185BB9EE00956A84 /* default.css */; };
 		014C433D185BC7EF00956A84 /* VarelaRound-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 014C433C185BC7EF00956A84 /* VarelaRound-Regular.ttf */; };
 		01542901190FF5CE00A15AA0 /* noochIcon-96.png in Resources */ = {isa = PBXBuildFile; fileRef = 01542900190FF5CE00A15AA0 /* noochIcon-96.png */; };
@@ -90,20 +84,16 @@
 		01C26DC21843BB22005179B7 /* twitter-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DA71843BB22005179B7 /* twitter-icon.png */; };
 		01C26DC31843BB22005179B7 /* Twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DA81843BB22005179B7 /* Twitter.png */; };
 		01C26DC41843BB22005179B7 /* YouTube.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DA91843BB22005179B7 /* YouTube.png */; };
-		01C26DE01843C56C005179B7 /* Apt_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DC61843C56C005179B7 /* Apt_Icon.png */; };
 		01C26DE11843C56C005179B7 /* Arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DC71843C56C005179B7 /* Arrow.png */; };
 		01C26DE21843C56C005179B7 /* Bank_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DC81843C56C005179B7 /* Bank_Icon.png */; };
 		01C26DE71843C56C005179B7 /* Facebook_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DCD1843C56C005179B7 /* Facebook_Icon.png */; };
 		01C26DEC1843C56C005179B7 /* LimitsAndFees_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DD21843C56C005179B7 /* LimitsAndFees_Icon.png */; };
-		01C26DEE1843C56C005179B7 /* NoFundingSource_Arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DD41843C56C005179B7 /* NoFundingSource_Arrow.png */; };
 		01C26DEF1843C56C005179B7 /* nooch_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DD51843C56C005179B7 /* nooch_Logo.png */; };
 		01C26DF01843C56C005179B7 /* Notification_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DD61843C56C005179B7 /* Notification_1.png */; };
 		01C26DF11843C56C005179B7 /* Notification_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DD71843C56C005179B7 /* Notification_2.png */; };
 		01C26DF61843C56C005179B7 /* Stats_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DDC1843C56C005179B7 /* Stats_Icon.png */; };
 		01C26DFB1843E676005179B7 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C26DFA1843E676005179B7 /* Reachability.m */; };
 		01C26DFD1843E85C005179B7 /* Preston.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DFC1843E85C005179B7 /* Preston.png */; };
-		01C26E001843E88A005179B7 /* 4k_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DFE1843E88A005179B7 /* 4k_image.png */; };
-		01C26E011843E88A005179B7 /* 4KforCancer.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DFF1843E88A005179B7 /* 4KforCancer.png */; };
 		01C49AEA18D8C83500BACE23 /* fontawesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 01C49AE118D8C83500BACE23 /* fontawesome.ttf */; };
 		01C49AEC18D8C83500BACE23 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C49AE518D8C83500BACE23 /* MBProgressHUD.m */; };
 		01C83E7B17F4D726009CABBF /* HowMuch.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C83E7917F4D726009CABBF /* HowMuch.m */; };
@@ -126,11 +116,11 @@
 		16E4B1BB187053F20099D075 /* UIImage+WebP.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E4B1AB187053F20099D075 /* UIImage+WebP.m */; };
 		16E4B1BC187053F20099D075 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E4B1AD187053F20099D075 /* UIImageView+WebCache.m */; };
 		16E4B1BD187053F20099D075 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E4B1AF187053F20099D075 /* MKAnnotationView+WebCache.m */; };
-		16E4B1BF187054A50099D075 /* placeholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 16E4B1BE187054A50099D075 /* placeholder.jpg */; };
 		16E4B1C3187078880099D075 /* tick.png in Resources */ = {isa = PBXBuildFile; fileRef = 16E4B1C1187078880099D075 /* tick.png */; };
 		16E4B1C61870832B0099D075 /* untick.png in Resources */ = {isa = PBXBuildFile; fileRef = 16E4B1C51870832B0099D075 /* untick.png */; };
 		16E4B1C818708C1D0099D075 /* tickR.png in Resources */ = {isa = PBXBuildFile; fileRef = 16E4B1C718708C1D0099D075 /* tickR.png */; };
 		16E4B1CA1870A2C90099D075 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16E4B1C91870A2C90099D075 /* MessageUI.framework */; };
+		5CFDFA9219AACFD40094E290 /* No-Internet-Full-Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CFDFA9119AACFD40094E290 /* No-Internet-Full-Screen.png */; };
 		6B01F1B2179D994A00E34C49 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B1179D994A00E34C49 /* GoogleMaps.framework */; };
 		6B01F1B4179DA78B00E34C49 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B3179DA78B00E34C49 /* CoreText.framework */; };
 		6B01F1B6179DA79B00E34C49 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B5179DA79B00E34C49 /* GLKit.framework */; };
@@ -310,21 +300,15 @@
 		0129D8E41815B10D00BEAC30 /* Brandon_blk.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_blk.otf; sourceTree = "<group>"; };
 		0129D8E51815B10D00BEAC30 /* Brandon_light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_light.otf; sourceTree = "<group>"; };
 		0129D8E61815B10D00BEAC30 /* Brandon_med.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_med.otf; sourceTree = "<group>"; };
-		014C4313185B9A4C00956A84 /* addfunds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addfunds.png; sourceTree = "<group>"; };
 		014C4316185B9A4C00956A84 /* dollar-sign.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dollar-sign.png"; sourceTree = "<group>"; };
 		014C4317185B9A4C00956A84 /* encryption-lock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "encryption-lock.png"; sourceTree = "<group>"; };
 		014C4318185B9A4C00956A84 /* facebook-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook-icon.png"; sourceTree = "<group>"; };
 		014C4319185B9A4C00956A84 /* info-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info-button.png"; sourceTree = "<group>"; };
 		014C431B185B9A4C00956A84 /* n_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_Icon.png; sourceTree = "<group>"; };
-		014C431C185B9A4C00956A84 /* nonprofits-fb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nonprofits-fb.png"; sourceTree = "<group>"; };
-		014C431D185B9A4C00956A84 /* nonprofits-twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nonprofits-twitter.png"; sourceTree = "<group>"; };
-		014C431E185B9A4C00956A84 /* nonprofits-website.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nonprofits-website.png"; sourceTree = "<group>"; };
-		014C431F185B9A4C00956A84 /* nonprofits-youtube.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nonprofits-youtube.png"; sourceTree = "<group>"; };
 		014C4320185B9A4C00956A84 /* quicktap_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quicktap_5.png; sourceTree = "<group>"; };
 		014C4321185B9A4C00956A84 /* quicktap_10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quicktap_10.png; sourceTree = "<group>"; };
 		014C4322185B9A4C00956A84 /* quicktap_25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quicktap_25.png; sourceTree = "<group>"; };
 		014C4323185B9A4C00956A84 /* quicktap_50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quicktap_50.png; sourceTree = "<group>"; };
-		014C4325185B9A4C00956A84 /* withdrawfunds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = withdrawfunds.png; sourceTree = "<group>"; };
 		014C433A185BB9EE00956A84 /* default.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = default.css; sourceTree = "<group>"; };
 		014C433C185BC7EF00956A84 /* VarelaRound-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "VarelaRound-Regular.ttf"; sourceTree = "<group>"; };
 		01542900190FF5CE00A15AA0 /* noochIcon-96.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "noochIcon-96.png"; sourceTree = "<group>"; };
@@ -377,12 +361,10 @@
 		01C26DA71843BB22005179B7 /* twitter-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter-icon.png"; sourceTree = "<group>"; };
 		01C26DA81843BB22005179B7 /* Twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Twitter.png; sourceTree = "<group>"; };
 		01C26DA91843BB22005179B7 /* YouTube.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YouTube.png; sourceTree = "<group>"; };
-		01C26DC61843C56C005179B7 /* Apt_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Apt_Icon.png; sourceTree = "<group>"; };
 		01C26DC71843C56C005179B7 /* Arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Arrow.png; sourceTree = "<group>"; };
 		01C26DC81843C56C005179B7 /* Bank_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bank_Icon.png; sourceTree = "<group>"; };
 		01C26DCD1843C56C005179B7 /* Facebook_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Facebook_Icon.png; sourceTree = "<group>"; };
 		01C26DD21843C56C005179B7 /* LimitsAndFees_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LimitsAndFees_Icon.png; sourceTree = "<group>"; };
-		01C26DD41843C56C005179B7 /* NoFundingSource_Arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NoFundingSource_Arrow.png; sourceTree = "<group>"; };
 		01C26DD51843C56C005179B7 /* nooch_Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nooch_Logo.png; sourceTree = "<group>"; };
 		01C26DD61843C56C005179B7 /* Notification_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Notification_1.png; sourceTree = "<group>"; };
 		01C26DD71843C56C005179B7 /* Notification_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Notification_2.png; sourceTree = "<group>"; };
@@ -390,8 +372,6 @@
 		01C26DF91843E676005179B7 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		01C26DFA1843E676005179B7 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		01C26DFC1843E85C005179B7 /* Preston.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Preston.png; sourceTree = "<group>"; };
-		01C26DFE1843E88A005179B7 /* 4k_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4k_image.png; sourceTree = "<group>"; };
-		01C26DFF1843E88A005179B7 /* 4KforCancer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4KforCancer.png; sourceTree = "<group>"; };
 		01C49AE118D8C83500BACE23 /* fontawesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontawesome.ttf; sourceTree = "<group>"; };
 		01C49AE218D8C83500BACE23 /* knoxWeb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = knoxWeb.h; sourceTree = "<group>"; };
 		01C49AE418D8C83500BACE23 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
@@ -435,11 +415,11 @@
 		16E4B1AD187053F20099D075 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		16E4B1AE187053F20099D075 /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 		16E4B1AF187053F20099D075 /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
-		16E4B1BE187054A50099D075 /* placeholder.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = placeholder.jpg; sourceTree = "<group>"; };
 		16E4B1C1187078880099D075 /* tick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tick.png; sourceTree = "<group>"; };
 		16E4B1C51870832B0099D075 /* untick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = untick.png; sourceTree = "<group>"; };
 		16E4B1C718708C1D0099D075 /* tickR.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tickR.png; sourceTree = "<group>"; };
 		16E4B1C91870A2C90099D075 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		5CFDFA9119AACFD40094E290 /* No-Internet-Full-Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "No-Internet-Full-Screen.png"; path = "../../../../Dropbox/Preston Hults/Design Elements/No-Internet-Full-Screen.png"; sourceTree = "<group>"; };
 		6B01F1B1179D994A00E34C49 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
 		6B01F1B3179DA78B00E34C49 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		6B01F1B5179DA79B00E34C49 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
@@ -882,39 +862,30 @@
 				010A993D185FC5E7001DCE6B /* back-arrow.png */,
 				010A9937185FA99F001DCE6B /* choose-pic-icon.png */,
 				010A9938185FA99F001DCE6B /* n_Icon_58x66.png */,
-				014C4313185B9A4C00956A84 /* addfunds.png */,
 				014C4316185B9A4C00956A84 /* dollar-sign.png */,
 				014C4317185B9A4C00956A84 /* encryption-lock.png */,
 				014C4318185B9A4C00956A84 /* facebook-icon.png */,
 				014C4319185B9A4C00956A84 /* info-button.png */,
 				014C431B185B9A4C00956A84 /* n_Icon.png */,
-				014C431C185B9A4C00956A84 /* nonprofits-fb.png */,
-				014C431D185B9A4C00956A84 /* nonprofits-twitter.png */,
-				014C431E185B9A4C00956A84 /* nonprofits-website.png */,
-				014C431F185B9A4C00956A84 /* nonprofits-youtube.png */,
 				014C4320185B9A4C00956A84 /* quicktap_5.png */,
 				014C4321185B9A4C00956A84 /* quicktap_10.png */,
 				014C4322185B9A4C00956A84 /* quicktap_25.png */,
 				014C4323185B9A4C00956A84 /* quicktap_50.png */,
-				014C4325185B9A4C00956A84 /* withdrawfunds.png */,
 				6BE13320176F65D8009763AC /* BackgroundMain-568h@2x.png */,
 				6BE13326176F65D8009763AC /* SplashPageBckgrnd-568h@2x.png */,
 				6B8E848817565A9D00B3D7B1 /* BackgroundMain@2x.png */,
 				6B5E18D61670013F00EF1990 /* Icon.png */,
 				6BDF1CC51654233000668CB6 /* Icon@2x.png */,
 				6B33DC991635FB4600B8B8B6 /* noochLogo1.png */,
-				01C26DFE1843E88A005179B7 /* 4k_image.png */,
-				01C26DFF1843E88A005179B7 /* 4KforCancer.png */,
 				01C26DFC1843E85C005179B7 /* Preston.png */,
-				01C26DC61843C56C005179B7 /* Apt_Icon.png */,
 				01C26DC71843C56C005179B7 /* Arrow.png */,
 				01C26DC81843C56C005179B7 /* Bank_Icon.png */,
 				01C26DCD1843C56C005179B7 /* Facebook_Icon.png */,
 				01C26DD21843C56C005179B7 /* LimitsAndFees_Icon.png */,
-				01C26DD41843C56C005179B7 /* NoFundingSource_Arrow.png */,
 				01C26DD51843C56C005179B7 /* nooch_Logo.png */,
 				01C26DD61843C56C005179B7 /* Notification_1.png */,
 				01C26DD71843C56C005179B7 /* Notification_2.png */,
+				5CFDFA9119AACFD40094E290 /* No-Internet-Full-Screen.png */,
 				01C26DDC1843C56C005179B7 /* Stats_Icon.png */,
 				01C26D8F1843BB22005179B7 /* address-book-icon.png */,
 				01C26D921843BB22005179B7 /* dispute-icon.png */,
@@ -1052,7 +1023,6 @@
 				16E4B1C51870832B0099D075 /* untick.png */,
 				16E4B1C718708C1D0099D075 /* tickR.png */,
 				84443CB018A0BDF30097F6C0 /* RoundLoading.png */,
-				16E4B1BE187054A50099D075 /* placeholder.jpg */,
 				84C3EF1C187D74C6004687F6 /* whitebg.png */,
 				16E4B1C1187078880099D075 /* tick.png */,
 				842B4199196BC2D3009BF8B7 /* map_icon_blue.png */,
@@ -1575,7 +1545,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				01C26DF01843C56C005179B7 /* Notification_1.png in Resources */,
-				01C26DE01843C56C005179B7 /* Apt_Icon.png in Resources */,
 				6B30373015FA3FF300056DAD /* InfoPlist.strings in Resources */,
 				6BC5FECB1625F1B0007EAD7A /* Roboto-Black.ttf in Resources */,
 				6BC5FECD1625F1B0007EAD7A /* Roboto-BlackItalic.ttf in Resources */,
@@ -1591,7 +1560,6 @@
 				845C0BD81973F30200E17E52 /* whiteBack.png in Resources */,
 				6BC5FED51625F1B0007EAD7A /* Roboto-BoldItalic.ttf in Resources */,
 				6BC5FED71625F1B0007EAD7A /* Roboto-Condensed.ttf in Resources */,
-				01C26E001843E88A005179B7 /* 4k_image.png in Resources */,
 				84443CAB18A0BD9E0097F6C0 /* empty-arrow.png in Resources */,
 				6BC5FED91625F1B0007EAD7A /* Roboto-CondensedItalic.ttf in Resources */,
 				6BC5FEDB1625F1B0007EAD7A /* Roboto-Italic.ttf in Resources */,
@@ -1599,7 +1567,6 @@
 				842B4196196BB3C7009BF8B7 /* clock_arrow_white.png in Resources */,
 				01C26DB81843BB22005179B7 /* nooch-logo.png in Resources */,
 				6BC5FEDD1625F1B0007EAD7A /* Roboto-Light.ttf in Resources */,
-				014C4333185B9A4C00956A84 /* nonprofits-youtube.png in Resources */,
 				6BC5FEDF1625F1B0007EAD7A /* Roboto-LightItalic.ttf in Resources */,
 				84C3EF1D187D74C6004687F6 /* whitebg.png in Resources */,
 				84F099541988AD840020A08F /* Default@2x.png in Resources */,
@@ -1650,7 +1617,6 @@
 				014C4335185B9A4C00956A84 /* quicktap_10.png in Resources */,
 				01C26DF11843C56C005179B7 /* Notification_2.png in Resources */,
 				8481F09019A1CA75007F6565 /* selectRecipientIntro_smallScreen.png in Resources */,
-				014C4332185B9A4C00956A84 /* nonprofits-website.png in Resources */,
 				01C26DBA1843BB22005179B7 /* silhouette.png in Resources */,
 				6BC04B9D1677DE0E005C68D6 /* README.rst in Resources */,
 				6BC04C031677E25D005C68D6 /* AirshipConfig.plist in Resources */,
@@ -1663,21 +1629,16 @@
 				8420B390187A69CC00A77E2D /* profile_picture.png in Resources */,
 				014C433B185BB9EE00956A84 /* default.css in Resources */,
 				8420B39E187AC4BF00A77E2D /* orange-pin.png in Resources */,
-				014C4331185B9A4C00956A84 /* nonprofits-twitter.png in Resources */,
-				014C4339185B9A4C00956A84 /* withdrawfunds.png in Resources */,
-				01C26DEE1843C56C005179B7 /* NoFundingSource_Arrow.png in Resources */,
 				6BE13327176F65D8009763AC /* BackgroundMain-568h@2x.png in Resources */,
-				014C4327185B9A4C00956A84 /* addfunds.png in Resources */,
-				014C4330185B9A4C00956A84 /* nonprofits-fb.png in Resources */,
 				6BE1332D176F65D8009763AC /* SplashPageBckgrnd-568h@2x.png in Resources */,
 				8420B39B187AC4BF00A77E2D /* Black-pin.png in Resources */,
 				6B01F1BE179DA8E800E34C49 /* GoogleMaps.bundle in Resources */,
 				0106773C1860F68400E11F3D /* take-pic-icon.png in Resources */,
 				01C26DFD1843E85C005179B7 /* Preston.png in Resources */,
+				5CFDFA9219AACFD40094E290 /* No-Internet-Full-Screen.png in Resources */,
 				84C3EF18187D0E82004687F6 /* mapBack.png in Resources */,
 				01CABC5718A43B3200BBB935 /* green-arrow.png in Resources */,
 				014C4336185B9A4C00956A84 /* quicktap_25.png in Resources */,
-				01C26E011843E88A005179B7 /* 4KforCancer.png in Resources */,
 				01C26DB21843BB22005179B7 /* fb-icon-90x90.png in Resources */,
 				011B6CAA19006D2A00169F1A /* fontawesome-webfont.ttf in Resources */,
 				845631B61990AD45005B90F6 /* whiteBack30.png in Resources */,
@@ -1690,7 +1651,6 @@
 				84BFD9321871270C001C0AAC /* cross_basic_yellow.png in Resources */,
 				8481F08F19A1CA75007F6565 /* selectRecipientIntro.png in Resources */,
 				0129D8E81815B10D00BEAC30 /* Brandon_blk.otf in Resources */,
-				16E4B1BF187054A50099D075 /* placeholder.jpg in Resources */,
 				0129D8E91815B10D00BEAC30 /* Brandon_light.otf in Resources */,
 				845631B71990AD45005B90F6 /* whiteBack30@2x.png in Resources */,
 				16E4B1C61870832B0099D075 /* untick.png in Resources */,
@@ -1890,8 +1850,8 @@
 		6B30375815FA3FF600056DAD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Pratham Mittal (4LU7D3AWZ8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Pratham Mittal (4LU7D3AWZ8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1915,7 +1875,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "fb93f6ef-6e49-432b-b58e-61fa50b9474a";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "fb93f6ef-6e49-432b-b58e-61fa50b9474a";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1924,8 +1884,8 @@
 		6B30375915FA3FF600056DAD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Pratham Mittal (4LU7D3AWZ8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Pratham Mittal (4LU7D3AWZ8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1948,7 +1908,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "fb93f6ef-6e49-432b-b58e-61fa50b9474a";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "fb93f6ef-6e49-432b-b58e-61fa50b9474a";
 				WRAPPER_EXTENSION = app;
 			};
