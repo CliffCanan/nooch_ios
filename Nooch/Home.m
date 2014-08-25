@@ -663,51 +663,69 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [self.navigationItem setTitle:@"Nooch"];
 
       if (![[assist shared]isPOP]) {
-          if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
-              [self.navigationItem setRightBarButtonItem:Nil];
-              UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
-              [self.navigationItem setRightBarButtonItem:funds];
-          }
-          else
-          {
-              UIActivityIndicatorView*act=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-              [act setFrame:CGRectMake(14, 5, 20, 20)];
-              [act startAnimating];
-              
-              UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:act];
-              [self.navigationItem setRightBarButtonItem:funds];
-          }
+//          if ([user objectForKey:@"Balance"] && ![[user objectForKey:@"Balance"] isKindOfClass:[NSNull class]]&& [user objectForKey:@"Balance"]!=NULL) {
+//              [self.navigationItem setRightBarButtonItem:Nil];
+//              UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:self.balance];
+//              [self.navigationItem setRightBarButtonItem:funds];
+//          }
+//          else
+//          {
+//              UIActivityIndicatorView*act=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+//              [act setFrame:CGRectMake(14, 5, 20, 20)];
+//              [act startAnimating];
+//              
+//              UIBarButtonItem *funds = [[UIBarButtonItem alloc] initWithCustomView:act];
+//              [self.navigationItem setRightBarButtonItem:funds];
+//          }
     
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-//        if (timerHome==nil) {
-//             timerHome=[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateLoader) userInfo:nil repeats:YES];
-//        }
+
     
     if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]]) {
         //push login
         return;
     }
     if ([[assist shared]needsReload]) {
-       
-        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-        [self.navigationController.view addSubview:self.hud];
+        [blankView removeFromSuperview];
+        blankView=[[UIView alloc]initWithFrame:CGRectMake(40, (self.view.frame.size.height/2)-40, 240, 90)];
+        blankView.backgroundColor=[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8];
+        UIActivityIndicatorView*act=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        blankView.layer.borderColor=[[UIColor blackColor]CGColor];
+        blankView.layer.cornerRadius=10;
+        blankView.layer.borderWidth=1;
+        [act setFrame:CGRectMake(100, 5, 40, 40)];
+         //act.center=blankView.center;
+        [act startAnimating];
+        [blankView addSubview:act];
         
-        self.hud.delegate = self;
-        self.hud.labelText = @"Loading Your Nooch Account";
-        [self.hud showWhileExecuting:@selector(myTask) onTarget:self withObject:nil animated:YES];
+        UILabel*fromLabel =[[UILabel alloc]initWithFrame:CGRectMake(5,50, 230,20)];
+        fromLabel.text = @"Loading Your Nooch Account";
+        fromLabel.font =[UIFont fontWithName:@"Roboto-Regular" size:15];
+        
+        fromLabel.backgroundColor =[UIColor clearColor];
+        fromLabel.textColor =[UIColor whiteColor];fromLabel.textAlignment =NSTextAlignmentCenter;
+        [blankView addSubview:fromLabel];
+        [self.navigationController.view addSubview:blankView];
+        [self performSelector:@selector(myTask) withObject:nil afterDelay:3];
+     //        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+//        [self.navigationController.view addSubview:self.hud];
+//        
+//        self.hud.delegate = self;
+//        self.hud.labelText = @"Loading Your Nooch Account";
+//        [self.hud showWhileExecuting:@selector(myTask) onTarget:self withObject:nil animated:YES];
         }
         if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
             serve *serveOBJ=[serve new ];
             [serveOBJ setTagName:@"sets"];
             [serveOBJ getSettings];
         }
-        if ([[assist shared]needsReload]) {
-            [[assist shared]setneedsReload:NO];
-            serve *banks = [serve new];
-            banks.Delegate = self;
-            banks.tagName = @"banks";
-            [banks getBanks];
-        }
+//        if ([[assist shared]needsReload]) {
+//            [[assist shared]setneedsReload:NO];
+//            serve *banks = [serve new];
+//            banks.Delegate = self;
+//            banks.tagName = @"banks";
+//            [banks getBanks];
+//        }
     }
     else
     {
@@ -891,13 +909,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 }
 
 - (void)myTask {
+    [blankView removeFromSuperview];
 	// This just increases the progress indicator in a loop
-	float progress = 0.0f;
-	while (progress < 1.0f) {
-		progress += 0.01f;
-		self.hud.progress = progress;
-		usleep(50000);
-	}
+//	float progress = 0.0f;
+//	while (progress < 1.0f) {
+//		progress += 0.01f;
+//		//self.hud.progress = progress;
+//		usleep(50000);
+//	}
 }
 
 #pragma mark - news feed
@@ -1056,12 +1075,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         return;
     }
     
-    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame The Lawyers" message:@"To keep Nooch safe, we ask all users to verify a phone number before before sending money.\n \n If you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
-        [alert setTag:148];
-        [alert show];
-        return;
-    }
+//    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+//        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame The Lawyers" message:@"To keep Nooch safe, we ask all users to verify a phone number before before sending money.\n \n If you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
+//        [alert setTag:148];
+//        [alert show];
+//        return;
+//    }
   
     if ( ![[[NSUserDefaults standardUserDefaults]
         objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
@@ -1227,82 +1246,82 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         me = [core new];
         return;
     }
-    if ([tagName isEqualToString:@"bDelete"]) {
-        
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Bank Deleted" message:@"Your Bank Account was not verified for 21 days.\n \n Nooch has deleted your bank Account." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-        [alert show];
-    }
-
-     else if ([tagName isEqualToString:@"banks"]) {
-         
-         NSError *error = nil;
-         //bank Data
-         NSMutableArray *bankResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-         [blankView removeFromSuperview];
-         
-         //Get Server Date info
-          NSString *urlString = [NSString stringWithFormat:@"%@"@"/%@", @"https://192.203.102.254/NoochService/NoochService.svc", @"GetServerCurrentTime"];
-        [[NSURLCache sharedURLCache] removeAllCachedResponses];
-        request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[[NSString stringWithFormat:@"%@",urlString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
-                  NSHTTPURLResponse* urlResponse = nil;
-        
-         NSData *newData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&error];
-        
-       
-        if (nil == urlResponse ) {
-            if (error)
-            {
-                ServerDate=[NSDate date];
-            }
-        }else{
-            
-                    
-               NSString *responseString = [[NSString alloc] initWithData:newData encoding:NSUTF8StringEncoding];
-                 NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-                   ServerDate=[self dateFromString:[jsonObject valueForKey:@"Result"] ];
-            
-        }
-     
-     if ([bankResult count]>0) {
+//    if ([tagName isEqualToString:@"bDelete"]) {
+//        
+//        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Bank Deleted" message:@"Your Bank Account was not verified for 21 days.\n \n Nooch has deleted your bank Account." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+//        [alert show];
+//    }
+//
+//     else if ([tagName isEqualToString:@"banks"]) {
+//         
+//         NSError *error = nil;
+//         //bank Data
+//         NSMutableArray *bankResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+//         [blankView removeFromSuperview];
+//         
+//         //Get Server Date info
+//          NSString *urlString = [NSString stringWithFormat:@"%@"@"/%@", @"https://192.203.102.254/NoochService/NoochService.svc", @"GetServerCurrentTime"];
+//        [[NSURLCache sharedURLCache] removeAllCachedResponses];
+//        request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[[NSString stringWithFormat:@"%@",urlString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+//                  NSHTTPURLResponse* urlResponse = nil;
+//        
+//         NSData *newData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&error];
+//        
+//       
+//        if (nil == urlResponse ) {
+//            if (error)
+//            {
+//                ServerDate=[NSDate date];
+//            }
+//        }else{
+//            
+//                    
+//               NSString *responseString = [[NSString alloc] initWithData:newData encoding:NSUTF8StringEncoding];
+//                 NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+//                   ServerDate=[self dateFromString:[jsonObject valueForKey:@"Result"] ];
+//            
+//        }
+//     
+//     if ([bankResult count]>0) {
+//    
+//     if ([[[bankResult objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[bankResult objectAtIndex:0] valueForKey:@"IsVerified"] intValue]) {
+//     
+//     
+//     }
+//     else
+//     {
+//         if ([bankResult count]==2) {
+//             [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"AddBank"];
+//         }
+//         else
+//         {
+//             [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"AddBank"];
+//         }
+//         for (int i=0; i<[bankResult count]; i++) {
+//             NSString*datestr=[[bankResult objectAtIndex:i] valueForKey:@"ExpirationDate"];
+//             NSLog(@"%@",datestr);
+//             
+//             NSDate *addeddate = [self dateFromString:datestr];
+//             
+//             NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+//             NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
+//                                                                 fromDate:addeddate
+//                                                                   toDate:ServerDate
+//                                                                  options:0];
+//             
+//             NSLog(@"%ld", (long)[components day]);
+//             if ([components day]>21) {
+//                 
+//                 
+//                 serve *bank = [serve new];
+//                 bank.tagName = @"bDelete";
+//                 bank.Delegate = self;
+//                 [bank deleteBank:[[bankResult objectAtIndex:i] valueForKey:@"BankAccountId"]];
+//             }
+//         }
+//     }}
     
-     if ([[[bankResult objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[bankResult objectAtIndex:0] valueForKey:@"IsVerified"] intValue]) {
-     
-     
-     }
-     else
-     {
-         if ([bankResult count]==2) {
-             [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"AddBank"];
-         }
-         else
-         {
-             [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"AddBank"];
-         }
-         for (int i=0; i<[bankResult count]; i++) {
-             NSString*datestr=[[bankResult objectAtIndex:i] valueForKey:@"ExpirationDate"];
-             NSLog(@"%@",datestr);
-             
-             NSDate *addeddate = [self dateFromString:datestr];
-             
-             NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-             NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
-                                                                 fromDate:addeddate
-                                                                   toDate:ServerDate
-                                                                  options:0];
-             
-             NSLog(@"%ld", (long)[components day]);
-             if ([components day]>21) {
-                 
-                 
-                 serve *bank = [serve new];
-                 bank.tagName = @"bDelete";
-                 bank.Delegate = self;
-                 [bank deleteBank:[[bankResult objectAtIndex:i] valueForKey:@"BankAccountId"]];
-             }
-         }
-     }}
-     
-     }
+    // }
  
 }
 -(void)FavoriteContactsProcessing{

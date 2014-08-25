@@ -2008,10 +2008,11 @@ return customView;
     }
 	// ADDED BY CLIFF Edited By Baljeet
 	else if (actionSheet.tag==1012 && buttonIndex==0) {
+        NSString * memId1 = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
         serve*serveObj=[serve new];
         [serveObj setDelegate:self];
         serveObj.tagName=@"remind";
-        [serveObj SendReminderToRecepient:[self.responseDict valueForKey:@"TransactionId"]];
+        [serveObj SendReminderToRecepient:[self.responseDict valueForKey:@"TransactionId"] memberId:memId1];
         // NEED TO ADD SERVER CALL
     }
     else if (actionSheet.tag == 50 && buttonIndex == 1) {
