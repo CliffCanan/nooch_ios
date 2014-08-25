@@ -60,6 +60,8 @@
     [self.save setFrame:CGRectMake(0, 205, 0, 0)];
     [self.save setStyleClass:@"button_green"];
     [self.save setTitle:@"Change Password" forState:UIControlStateNormal];
+    [self.save setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
+    self.save.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [self.save addTarget:self action:@selector(finishResetPassword:) forControlEvents:UIControlEventTouchUpInside];
     [self.save setEnabled:YES];
     [self.view addSubview:self.save];
@@ -169,7 +171,25 @@
     [alert setTag:220011];
     [alert show];
 }
-
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(actionSheet.tag==220011&& buttonIndex==1){
+        UITextField *emailField = [actionSheet textFieldAtIndex:0];
+        if ([emailField.text length] > 0 && [emailField.text  rangeOfString:@"@"].location != NSNotFound && [emailField.text  rangeOfString:@"."].location != NSNotFound){
+            serve *forgetful = [serve new];
+            forgetful.Delegate = self;
+            forgetful.tagName = @"ForgotPass";
+            [forgetful forgotPass:emailField.text];
+        }
+        else
+        {
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Enter Valid Email ID" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+            alert.alertViewStyle=UIAlertViewStylePlainTextInput;
+            [alert setTag:220011];
+            [alert show];
+        }
+        
+    }
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 3;
 }
@@ -217,7 +237,12 @@
 
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName  {
-    if([tagName isEqualToString:@"resetPasswordDetails"]){
+    if([tagName isEqualToString:@"ForgotPass"]){
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Please check your email for a reset password link." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av show];
+    }
+
+    else if([tagName isEqualToString:@"resetPasswordDetails"]){
         BOOL isResult = [result boolValue];
         if(isResult == 0) {
             isPasswordChanged=YES;
