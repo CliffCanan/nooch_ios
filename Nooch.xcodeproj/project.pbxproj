@@ -1890,8 +1890,8 @@
 		6B30375815FA3FF600056DAD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Pratham Mittal (4LU7D3AWZ8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Pratham Mittal (4LU7D3AWZ8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Baljeet Singh (HE787S955W)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Baljeet Singh (HE787S955W)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1915,8 +1915,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "fb93f6ef-6e49-432b-b58e-61fa50b9474a";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "fb93f6ef-6e49-432b-b58e-61fa50b9474a";
+				PROVISIONING_PROFILE = "6733b8c5-4e3f-42da-ada3-6803affe1835";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6733b8c5-4e3f-42da-ada3-6803affe1835";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1924,8 +1924,8 @@
 		6B30375915FA3FF600056DAD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Pratham Mittal (4LU7D3AWZ8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Pratham Mittal (4LU7D3AWZ8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Baljeet Singh (HE787S955W)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Baljeet Singh (HE787S955W)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1948,8 +1948,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "fb93f6ef-6e49-432b-b58e-61fa50b9474a";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "fb93f6ef-6e49-432b-b58e-61fa50b9474a";
+				PROVISIONING_PROFILE = "6733b8c5-4e3f-42da-ada3-6803affe1835";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6733b8c5-4e3f-42da-ada3-6803affe1835";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

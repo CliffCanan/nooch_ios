@@ -70,7 +70,21 @@
     
 }
 -(void)GoBackOnce{
-    [self.navigationController popViewControllerAnimated:YES];
+    if (isSignup) {
+        [self.navigationController setNavigationBarHidden:NO];
+        [UIView animateWithDuration:0.75
+                         animations:^{
+                             [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                             [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
+                         }];
+        [self.navigationController popToRootViewControllerAnimated:NO];
+        [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
+        isSignup=NO;
+    }
+    else
+        [self.navigationController popViewControllerAnimated:YES];
+    
+    
 
 }
 -(void)savePrompt2{
@@ -79,7 +93,7 @@
         
         if ([self.phone.text length]==0) {
             if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]|| ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]){
-                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Do you want to save the changes in your profile?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
+                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Do you want to save the changes in your profile ?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
                 [alert setTag:5021];
                 [alert show];
                 
@@ -260,29 +274,29 @@
     
     down=0;
 
-    if (isSignup) {
-        down=64;
-        navBar=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
-        [navBar setBackgroundColor:[UIColor colorWithRed:82.0f/255.0f green:176.0f/255.0f blue:235.0f/255.0f alpha:1.0f]];
-        [self.view addSubview:navBar];
-        lbl=[[UILabel alloc]initWithFrame:CGRectMake(120, 20,150, 30)];
-        [lbl setText:@"Profile Info"];
-        [lbl setFont:[UIFont systemFontOfSize:22]];
-        [lbl setTextColor:[UIColor whiteColor]];
-        [self.view addSubview:lbl];
-        crossbtn=[UIButton buttonWithType:UIButtonTypeCustom];
-        crossbtn.frame=CGRectMake(10,20, 70,30);
-        [crossbtn setStyleClass:@"smscrossbuttn-icon"];
-        [crossbtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [crossbtn setTitle:@"Cancel" forState:UIControlStateNormal];
-        [crossbtn addTarget:self action:@selector(crossClicked) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:crossbtn];
-    }
-    else {
-        [crossbtn removeFromSuperview];
-        [navBar removeFromSuperview];
-        [lbl removeFromSuperview];
-    }
+//    if (isSignup) {
+//        down=64;
+//        navBar=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
+//        [navBar setBackgroundColor:[UIColor colorWithRed:82.0f/255.0f green:176.0f/255.0f blue:235.0f/255.0f alpha:1.0f]];
+//        [self.view addSubview:navBar];
+//        lbl=[[UILabel alloc]initWithFrame:CGRectMake(120, 20,150, 30)];
+//        [lbl setText:@"Profile Info"];
+//        [lbl setFont:[UIFont systemFontOfSize:22]];
+//        [lbl setTextColor:[UIColor whiteColor]];
+//        [self.view addSubview:lbl];
+//        crossbtn=[UIButton buttonWithType:UIButtonTypeCustom];
+//        crossbtn.frame=CGRectMake(10,20, 70,30);
+//        [crossbtn setStyleClass:@"smscrossbuttn-icon"];
+//        [crossbtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//        [crossbtn setTitle:@"Cancel" forState:UIControlStateNormal];
+//        [crossbtn addTarget:self action:@selector(crossClicked) forControlEvents:UIControlEventTouchUpInside];
+//        [self.view addSubview:crossbtn];
+//    }
+//    else {
+//        [crossbtn removeFromSuperview];
+//        [navBar removeFromSuperview];
+//        [lbl removeFromSuperview];
+//    }
     UIView *member_since_back = [UIView new];
     [member_since_back setFrame:CGRectMake(0, 0+down, 320, 70)];
     [member_since_back setStyleId:@"profileTopSectionBackground"];
@@ -317,10 +331,10 @@
     memSincelbl.selectable=NO;
     [memSincelbl setUserInteractionEnabled:NO];
     [memSincelbl setBackgroundColor:[UIColor clearColor]];
-    if (isSignup) {
-        [memSincelbl setStyleClass:@"memtable_view_cell_textlabel_1_64"];
-    }
-    else
+//    if (isSignup) {
+//        [memSincelbl setStyleClass:@"memtable_view_cell_textlabel_1_64"];
+//    }
+//    else
         [memSincelbl setStyleClass:@"memtable_view_cell_textlabel_1"];
 
     [self.view addSubview:memSincelbl];
@@ -857,7 +871,7 @@
         [cell.contentView addSubview:self.recovery_email];
     }
     else if (indexPath.row == 3) {
-        if (![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"]) {
+        if (![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"]&& [[dictSavedInfo valueForKey:@"phoneno"]length]>0) {
             
             UIView *unverified_phone = [[UIView alloc] initWithFrame:CGRectMake(0,0,320,100)];
             [unverified_phone setAlpha:0.4];
@@ -940,7 +954,7 @@
         [self.list beginUpdates];
         [self.list endUpdates];
     } 
-    else if (indexPath.row == 3 && ![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"]) {
+    else if (indexPath.row == 3 && ![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"] && [[dictSavedInfo valueForKey:@"phoneno"]length]>0) {
         self.disclose = YES;
         self.expand_path = indexPath;
         [self.list beginUpdates];
@@ -1183,7 +1197,9 @@
                 NSString* phone = [self.phone.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                 self.address_one.text=phone;
              [dictSavedInfo setObject:self.phone.text forKey:@"phoneno"];
+                
             }
+            [self.list reloadData];
         }
         
         else

@@ -1857,7 +1857,7 @@ NSString *amnt;
     if (!connectionList)
         NSLog(@"connect error");
 }
--(void)SendReminderToRecepient:(NSString *)transactionId {
+-(void)SendReminderToRecepient:(NSString *)transactionId memberId:(NSString*)memberId{
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];

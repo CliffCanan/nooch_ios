@@ -76,18 +76,18 @@
 }
 -(void)backToHome{
    
-       if (isSignup) {
-           [self.navigationController setNavigationBarHidden:NO];
-           [UIView animateWithDuration:0.75
-                            animations:^{
-                                [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                                [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
-                            }];
-           [self.navigationController popToRootViewControllerAnimated:NO];
-           [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
-           isSignup=NO;
-       }
-    else
+//       if (isSignup) {
+//           [self.navigationController setNavigationBarHidden:NO];
+//           [UIView animateWithDuration:0.75
+//                            animations:^{
+//                                [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//                                [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
+//                            }];
+//           [self.navigationController popToRootViewControllerAnimated:NO];
+//           [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
+//           isSignup=NO;
+//       }
+//    else
         [self.navigationController popViewControllerAnimated:YES];
 
 }
