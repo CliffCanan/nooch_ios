@@ -731,8 +731,8 @@
         serve*serveObj=[serve new];
         [serveObj setDelegate:self];
         serveObj.tagName=@"cancel";
-        //      [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Cancelled"];
-        //  [serveObj CancelMoneyRequestForExistingNoochUser:[self.trans valueForKey:@"TransactionId"] memberId:memId];
+//      [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Cancelled"];
+      //  [serveObj CancelMoneyRequestForExistingNoochUser:[self.trans valueForKey:@"TransactionId"] memberId:memId];
     }
     else if(alertView.tag==1011 && buttonIndex==0) {
         serve*serveObj=[serve new];
