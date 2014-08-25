@@ -727,12 +727,12 @@
         [self presentViewController:mailComposer animated:YES completion:nil];
            }
     else if(alertView.tag==1010 && buttonIndex==0) {
-//        NSString * memId = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
+        NSString * memId = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
         serve*serveObj=[serve new];
         [serveObj setDelegate:self];
         serveObj.tagName=@"cancel";
-      [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Cancelled"];
-//        [serveObj CancelMoneyRequestForExistingNoochUser:[self.trans valueForKey:@"TransactionId"] memberId:memId1];
+        //      [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Cancelled"];
+        //  [serveObj CancelMoneyRequestForExistingNoochUser:[self.trans valueForKey:@"TransactionId"] memberId:memId];
     }
     else if(alertView.tag==1011 && buttonIndex==0) {
         serve*serveObj=[serve new];
