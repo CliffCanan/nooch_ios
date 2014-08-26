@@ -734,7 +734,7 @@
         [self presentViewController:mailComposer animated:YES completion:nil];
            }
     else if(alertView.tag==1010 && buttonIndex==0) {
-        NSString * memId = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
+      //  NSString * memId = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
         serve*serveObj=[serve new];
         [serveObj setDelegate:self];
         serveObj.tagName=@"cancel";

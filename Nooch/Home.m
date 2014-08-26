@@ -714,12 +714,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [blankView addSubview:fromLabel];
             [self.navigationController.view addSubview:blankView];
             [self performSelector:@selector(myTask) withObject:nil afterDelay:3];
-//        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-//        [self.navigationController.view addSubview:self.hud];
-//        
-//        self.hud.delegate = self;
-//        self.hud.labelText = @"Loading Your Nooch Account";
-//        [self.hud showWhileExecuting:@selector(myTask) onTarget:self withObject:nil animated:YES];
+
         }
         if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
             serve *serveOBJ=[serve new ];
@@ -736,7 +731,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         return;
     }
     
-   // if ([[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
+  
         //do carousel
         [self.view addSubview:_carousel];
         [_carousel reloadData];
@@ -745,14 +740,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [favoritesOBJ setTagName:@"favorites"];
         [favoritesOBJ setDelegate:self];
         [favoritesOBJ get_favorites];
-        //launch favorites call
-//        
-//    }
-//    {
-//        [favorites removeAllObjects];
-//         [_carousel reloadData];
-//    }
-}
+        }
 
 #pragma mark - iCarousel methods
 

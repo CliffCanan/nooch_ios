@@ -493,8 +493,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "595"
             endingLineNumber = "595"
-            landmarkName = "-post_to_fb"
-            landmarkType = "5">
+            landmarkName = "@implementation TransactionDetails"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -541,7 +541,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "535"
             endingLineNumber = "535"
-            landmarkName = "-cancel_request"
+            landmarkName = "-decline_request"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -717,7 +717,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "246"
             endingLineNumber = "246"
-            landmarkName = "-addRecipient:"
+            landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
