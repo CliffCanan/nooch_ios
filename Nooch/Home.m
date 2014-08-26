@@ -477,11 +477,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
    
     
     CGRect rect2= self.phone_incomplete.frame;
-    rect2.origin.y-=70;
+    rect2.origin.y-=60;
     self.phone_incomplete.frame=rect2;
 }
 -(void)dismiss_phone_unvalidated {
-    [self.phone_unverified removeFromSuperview];
+    [self.phone_incomplete removeFromSuperview];
 }
 -(void)go_profile
 {
