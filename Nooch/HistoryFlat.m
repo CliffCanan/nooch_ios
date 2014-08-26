@@ -159,7 +159,7 @@
 
     //Export History
     exportHistory=[UIButton buttonWithType:UIButtonTypeCustom];
-    [exportHistory setTitle:@" Export History" forState:UIControlStateNormal];
+    [exportHistory setTitle:@"    Export History" forState:UIControlStateNormal];
     [exportHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
     exportHistory.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [exportHistory setFrame:CGRectMake(10, 420, 150, 20)];
@@ -170,7 +170,7 @@
     }
     UILabel *glyph = [UILabel new];
     [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
-    [glyph setFrame:CGRectMake(3, 7, 15, 15)];
+    [glyph setFrame:CGRectMake(5, 7, 15, 15)];
     [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cloud-download"]];
     [glyph setTextColor:[UIColor whiteColor]];
     [exportHistory addSubview:glyph];
@@ -231,7 +231,7 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
     imgV.clipsToBounds = YES;
 
     NSString*urlImage=[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Photo"];
-    [imgV setImageWithURL:[NSURL URLWithString:urlImage] placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+    [imgV setImageWithURL:[NSURL URLWithString:urlImage] placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
     [customView addSubview:imgV];
 
     NSString*TransactionType=@"";
@@ -511,7 +511,7 @@ return customView;
     fp.border = NO;
     fp.tint = FPPopoverWhiteTint;
     fp.arrowDirection = FPPopoverArrowDirectionUp;
-    fp.contentSize = CGSizeMake(200, 335);
+    fp.contentSize = CGSizeMake(200, 295);
     [fp presentPopoverFromPoint:CGPointMake(280, 45)];
     
 }
@@ -545,26 +545,13 @@ return customView;
 
 -(void)loadHist:(NSString*)filter index:(int)ind len:(int)len subType:(NSString*)subType{
     
-    //if (![self.navigationController.view.subviews containsObject:self.hud]) {
-        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         
-        [self.navigationController.view addSubview:self.hud];
-        
-        self.hud.delegate = self;
-        
-        self.hud.labelText = @"Loading Transaction History...";
-        
-        [self.hud show:YES];
-        
+    [self.navigationController.view addSubview:self.hud];
+    self.hud.delegate = self;
+    self.hud.labelText = @"Loading Transaction History";
+    [self.hud show:YES];
 
-   // }
-    
-    
-//    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-//    spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-//    [spinner setHidden:NO];
-//    [self.view addSubview:spinner];
-//    [spinner startAnimating];
     isSearch=NO;
     isLocalSearch=NO;
     serve*serveOBJ=[serve new];
@@ -572,6 +559,7 @@ return customView;
     serveOBJ.tagName=@"hist";
     [serveOBJ histMore:filter sPos:ind len:len subType:subTypestr];
 }
+
 #pragma mark - transaction type switching
 - (void) completed_or_pending:(id)sender
 {
@@ -853,7 +841,7 @@ return customView;
 							[transferTypeLabel setTextColor:kNoochRed];
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                             [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                                placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                                placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                         }
                     }
                     else {  //transfer RECEIVED
@@ -862,7 +850,7 @@ return customView;
 							[transferTypeLabel setTextColor: kNoochGreen];
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                             [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                                placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                                placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                         }
                     }
 
@@ -871,20 +859,20 @@ return customView;
 						[transferTypeLabel setTextColor: kNoochPurple];
                         [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                            placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                            placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]&& [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]){
                         if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"RecepientId"]]) {
                             [transferTypeLabel setText:@"Request sent to"];
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                             [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                                placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                                placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                         }
                         else {
                             [transferTypeLabel setText:@"Request from"];
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                             [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                                placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                                placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                         }
 						[transferTypeLabel setTextColor:kNoochBlue];
                         [updated_balance setStyleClass:@"history_RequestStatus"];
@@ -896,13 +884,13 @@ return customView;
                             [transferTypeLabel setText:@"Request sent to"];
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                             [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                                placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                                placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                         }
                         else {
                             [transferTypeLabel setText:@"Request from"];
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                             [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                                placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                                placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                         }
 						[transferTypeLabel setTextColor:kNoochBlue];
                         [updated_balance setStyleClass:@"history_RequestStatus"];
@@ -910,7 +898,7 @@ return customView;
                         [cell.contentView addSubview:updated_balance];
                     }
                     else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL){
-                        [pic setImage:[UIImage imageNamed:@"RoundLoading"]];
+                        [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
                          [transferTypeLabel setText:@"Invite sent to"];
 						 [transferTypeLabel setTextColor:kNoochGrayDark];
                          [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
@@ -1084,7 +1072,7 @@ return customView;
 						[transferTypeLabel setTextColor:kNoochRed];
                         [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                            placeholderImage:[UIImage imageNamed:@"RoundLoading"]];   
+                            placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                     }
                 }
                 else {
@@ -1093,7 +1081,7 @@ return customView;
 						[transferTypeLabel setTextColor:kNoochGreen];
 						[name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"] capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                            placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                            placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                     }
                 }
                 if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Donation"]){
@@ -1101,10 +1089,10 @@ return customView;
 					[transferTypeLabel setTextColor:kNoochPurple];
                     [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                     [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                        placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                        placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 }
                 else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL){
-                    [pic setImage:[UIImage imageNamed:@"RoundLoading"]];
+                    [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
                     [transferTypeLabel setText:@"Invite sent to"];
 					[transferTypeLabel setTextColor:kNoochGrayDark];
                     [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
@@ -1114,13 +1102,13 @@ return customView;
                         [transferTypeLabel setText:@"Request sent to"];
                         [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                            placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                            placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                     }
                     else {
                         [transferTypeLabel setText:@"Request from"];
                         [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                            placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                            placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                     }
 					[transferTypeLabel setTextColor:kNoochBlue];
                 }
@@ -1129,13 +1117,13 @@ return customView;
                         [transferTypeLabel setText:@"Request sent to"];
                         [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                            placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                            placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                     }
                     else {
                         [transferTypeLabel setText:@"Request from"];
                         [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"FirstName"]capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                            placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                            placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                     }
 					[transferTypeLabel setTextColor:kNoochBlue];
                 }
@@ -1317,7 +1305,7 @@ return customView;
                     pic.clipsToBounds = YES;
                     [cell.contentView addSubview:pic];
                     [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                        placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                        placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 }
             }
 
@@ -1474,7 +1462,7 @@ return customView;
                 pic.clipsToBounds = YES;
                 [cell.contentView addSubview:pic];
                 [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                    placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+                    placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
 
 			}
         }

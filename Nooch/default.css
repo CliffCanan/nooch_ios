@@ -24,7 +24,7 @@
 		background-image : url(noochIcon-96.png);
 		height : 48px;
 		width : 48px;
-		position : 136px 50px;
+		position : 136px 48px;
 	}
 
      #emptyRecentList {
@@ -34,6 +34,14 @@
 		left   : 20px;
         top    :50px;
 	}
+    
+    .lightbox_title {
+        font-family: "Roboto";
+        font-weight: regular;
+        font-size: 20px;
+        color: #3fabe1;
+        text-align: center;
+    }
 
 	#loading {
 		style : small;
@@ -100,58 +108,60 @@
 	 /******	 BANNERS	********/
 	 /******************************/
      .banner_header {
-        top: 3px;
+        top: 2px;
         left: 10px;
         width: 300px;
-        height: 20px;
-        font-family: "Roboto-Medium";
-        font-size: 17px;
+        height: 18px;
+        font-family: "Roboto";
+        font-weight: regular;
+        font-size: 14px;
         text-align: center;
         color: white;
      }
      .banner_alert_glyph {
-        top: 3px;
-        left: 30px;
+        top: 2px;
+        left: 40px;
         width: 20px;
-        height: 20px;
+        height: 18px;
         font-family: "FontAwesome";
-        font-size: 16px;
+        font-size: 14px;
         text-align: center;
         color: white;
      }
      .banner_info {
-        top: 24px;
+        top: 20px;
         left: 2px;
         width: 292px;
-        height: 17px;
-        font-family : "Roboto-Light";
+        height: 18px;
+        font-family : "Roboto";
+        font-weight: regular;
         font-size: 12px;
         text-align: center;
         color: white;
      }
     .dismiss_banner {
-        top     : 10px;
-        left    : 292px;
-        width   : 27px;
-        height  : 40px;
+        top     : 3px;
+        left    : 294px;
+        width   : 26px;
+        height  : 50px;
         font-family: "FontAwesome";
-        font-size: 26px;
+        font-size: 22px;
         text-align: center;
         color: white;
     }
 	.go_now_text {
-		top: 42px;
-        left: 50px;
-		width: 220px;
-		height: 15px;
+		top: 35px;
+        left: 15px;
+		width: 290px;
+		height: 22px;
 		color: white;
 		font-weight: medium;
-		font-family: "Roboto-Medium";
+		font-family: "Roboto";
 		font-size: 10px;
 	}
 	/**  ".go_now" is for a blue button, may not use for design reasons, would use "go_now_text" above instead. **/
 	.go_now {
-		top: 35px;
+		top: 30px;
         left: 224px;
 		width: 68px;
 		height: 30px;
@@ -167,28 +177,28 @@
         top: 0px;
         left: -1px;
         width: 322px;
-        height: 60px;
+        height: 56px;
         background-image: linear-gradient(#D61915, #c41713);
 		border: 1px solid #C41713;
-		border-radius: 3px;
+		border-radius: 4px;
 		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.45);
     }
     #email_unverified {
         left: -1px;
         width: 322px;
-        height: 60px;
+        height: 56px;
         background-image: linear-gradient(#D61915, #c41713);
 		border: 1px solid #C41713;
-		border-radius: 3px;
+		border-radius: 4px;
 		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.45);
     }
     #phone_unverified {
         left: -1px;
         width: 322px;
-        height: 60px;
+        height: 56px;
         background-image: linear-gradient(#D61915, #c41713);
 		border: 1px solid #C41713;
-		border-radius: 3px;
+		border-radius: 4px;
 		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.45);
     }
 
@@ -212,7 +222,8 @@
 		.button_blue_closeLightbox {
             background-image	: linear-gradient(#6dbee8, #41abe1);
             width				: 110px;
-			height				: 40px;
+			top                 : 410;
+            height				: 40px;
 			left                : 170px;
 			color 				: white;
 			border-radius		: 5px;
@@ -609,6 +620,11 @@
 		left            : 20px;
 		height			: 70px;
 	}
+
+    .pin_entry_feedback {
+        text-align: center;
+        font-size: 14px;
+    }
 
 	/****  Raised Box - This adds a drop-shadow. ****/
 	.raised_view {
@@ -2944,7 +2960,7 @@ table-view#select_recipientwithoutSeperator {
   }
 .shakePin1 {
 	animation-name: shakePin1;
-	animation-duration: 0.75s;
+	animation-duration: 0.5s;
 	animation-iteration-count: 1;
     animation-timing-function: ease;
 }
@@ -2964,7 +2980,7 @@ table-view#select_recipientwithoutSeperator {
   }
 .shakePin2 {
 	animation-name: shakePin2;
-	animation-duration: 0.75s;
+	animation-duration: 0.5s;
 	animation-iteration-count: 1;
     animation-timing-function: ease;
 }
@@ -2983,7 +2999,7 @@ table-view#select_recipientwithoutSeperator {
   }
 .shakePin3 {
 	animation-name: shakePin3;
-	animation-duration: 0.75s;
+	animation-duration: 0.5s;
 	animation-iteration-count: 1;
     animation-timing-function: ease;
 }
@@ -3002,7 +3018,7 @@ table-view#select_recipientwithoutSeperator {
   }
 .shakePin4 {
 	animation-name: shakePin4;
-	animation-duration: 0.75s;
+	animation-duration: 0.5s;
 	animation-iteration-count: 1;
     animation-timing-function: ease;
 }

@@ -93,6 +93,8 @@
     UIButton *enter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [enter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [enter setTitle:@"Link Funding Source" forState:UIControlStateNormal];
+    [enter setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
+    enter.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [enter addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
     [enter setFrame:CGRectMake(10, 385, 300, 60)];
     [enter setStyleClass:@"button_green"];
@@ -154,10 +156,8 @@
      
      UILabel*title=[[UILabel alloc]initWithFrame:CGRectMake(0, 10, 300, 30)];
      [title setBackgroundColor:[UIColor clearColor]];
-     title.textAlignment=NSTextAlignmentCenter;
      [title setText:@"Connect Your Bank"];
-     title.font=[UIFont fontWithName:@"Roboto" size:20];
-     [title setTextColor:kNoochBlue];
+     [title setStyleClass:@"lightbox_title"];
      [head_container addSubview:title];
     
      UIView*space_container=[[UIView alloc]initWithFrame:CGRectMake(0, 34, 300, 10)];
@@ -172,11 +172,10 @@
      [container addSubview:imageShow];
      [mainView addSubview:container];
      
-     
      UIButton *btnLink=[UIButton buttonWithType:UIButtonTypeCustom];
      [btnLink setStyleClass:@"button_green_welcome"];
      [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
-     btnLink .titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
      btnLink.frame=CGRectMake(10,mainView.frame.size.height-60, 280, 50);
      [btnLink setTitle:@"Link Now" forState:UIControlStateNormal];
      [btnLink addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];

@@ -70,42 +70,57 @@
     UILabel *payment = [UILabel new];
     [payment setStyleClass:@"details_intro"];
 
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(32, 63, 63, .35);
+    shadow.shadowOffset = CGSizeMake(0, 1);
+    
+    NSDictionary * textAttributes =
+    @{NSShadowAttributeName: shadow };
+    
     if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
 	    if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
-	        [payment setText:@"Paid To:"];
+	        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Paid To:"
+                                                                   attributes:textAttributes];
             [payment setStyleClass:@"details_intro_red"];
         }
 		else {
-            [payment setText:@"Payment From:"];
+            payment.attributedText = [[NSAttributedString alloc] initWithString:@"Payment From:"
+                                                                   attributes:textAttributes];
             [payment setStyleClass:@"details_intro_green"];
         }
 	}
     else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
         if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]]) {
-            [payment setText:@"Request Sent To:"];
+            payment.attributedText = [[NSAttributedString alloc] initWithString:@"Request Sent To:"
+                                                                   attributes:textAttributes];
         }
         else {
-            [payment setText:@"Request From:"];
+            payment.attributedText = [[NSAttributedString alloc] initWithString:@"Request From:"
+                                                                   attributes:textAttributes];
         }
         [payment setStyleClass:@"details_intro_blue"];
     }
     else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
-        [payment setText:@"Invite Sent To:"];
+        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Invite Sent To:"
+                                                               attributes:textAttributes];
         [payment setStyleClass:@"details_intro_green"];
     }
     else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"InviteRequest"] ||
 	        ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] && [[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]])) {
-        [payment setText:@"Request Sent To:"];
+        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Request Sent To:"
+                                                               attributes:textAttributes];
         [payment setStyleClass:@"details_intro_blue"];
     }
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
-        [payment setText:@"Donation To:"];
+        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Donation To:"
+                                                               attributes:textAttributes];
         [payment setStyleClass:@"details_intro_purple"];
     }
-//  else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"]) {
-//      [payment setText:@"Disputed:"];
-//      [payment setStyleClass:@"details_intro_red"];
-//  }
+  else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"]) {
+      payment.attributedText = [[NSAttributedString alloc] initWithString:@"Disputed Transfer:"
+                                                               attributes:textAttributes];
+      [payment setStyleClass:@"details_intro_red"];
+  }
     [self.view addSubview:payment];
 
     UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];
@@ -372,7 +387,7 @@
     mainView.layer.cornerRadius=5;
     mapView_.layer.borderColor=[[UIColor blackColor]CGColor];
     mapView_.layer.borderWidth=1;
-    mainView.frame=CGRectMake(10, 70, 300, self.view.frame.size.height-25);
+    mainView.frame=CGRectMake(10, 70, 300, self.view.frame.size.height-35);
     mainView.backgroundColor=[UIColor whiteColor];
     
     [overlay addSubview:mainView];
@@ -389,10 +404,8 @@
 
     UILabel*title=[[UILabel alloc]initWithFrame:CGRectMake(0, 10, 300, 30)];
     [title setBackgroundColor:[UIColor clearColor]];
-    title.textAlignment=NSTextAlignmentCenter;
     [title setText:@"Transfer Location"];
-    title.font=[UIFont fontWithName:@"Roboto" size:20];
-    [title setTextColor:kNoochBlue];
+    [title setStyleClass:@"lightbox_title"];
     [mainView addSubview:title];
 
     UIView*space_container=[[UIView alloc]initWithFrame:CGRectMake(0, 34, 300, 10)];
@@ -413,6 +426,8 @@
     mapView_ = [GMSMapView mapWithFrame:CGRectMake(11, 51, 278, 298) camera:camera];
     [mapView_ setFrame:CGRectMake(11, 51, 278, 298)];
     [mainView addSubview:mapView_];
+    mapView_.layer.cornerRadius=5;
+    mapView_.clipsToBounds=YES;
     mapView_.myLocationEnabled = YES;
     // Creates a marker in the center of the map.
     GMSMarker *marker = [[GMSMarker alloc] init];
@@ -434,13 +449,15 @@
     desc.numberOfLines=0;
     [desc_container addSubview:desc];
 
-    UIView*line_container=[[UIView alloc]initWithFrame:CGRectMake(0, desc_container.frame.origin.y+desc_container.frame.size.height+5, 300, 1)];
+    UIView*line_container=[[UIView alloc]initWithFrame:CGRectMake(0, desc_container.frame.origin.y+desc_container.frame.size.height+6, 300, 1)];
     line_container.backgroundColor=[UIColor colorWithRed:229.0f/255.0f green:229.0f/255.0f blue:229.0f/255.0f alpha:1.0];
     [mainView addSubview:line_container];
     
     UIButton *btnclose=[UIButton buttonWithType:UIButtonTypeCustom];
     [btnclose setStyleClass:@"button_blue_closeLightbox"];
     [btnclose setTitle:@"Close" forState:UIControlStateNormal];
+    [btnclose setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.4) forState:UIControlStateNormal];
+    btnclose.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
     [mainView addSubview:btnclose];
 
