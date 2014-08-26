@@ -7,6 +7,7 @@
 //
 
 #import "webView.h"
+#import "Home.h"
 
 @interface webView ()<UIWebViewDelegate>
 
@@ -26,10 +27,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [hamburger setStyleId:@"navbar_hamburger"];
+    [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+    [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
+    UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+    [self.navigationItem setLeftBarButtonItem:menu];
+    
     NSURL *webURL = [NSURL URLWithString:@"http://support.nooch.com"];
     mywebview=[[UIWebView alloc]initWithFrame:self.view.frame];
-    mywebview.delegate = self;
-    
+    [mywebview setFrame:CGRectMake(0, -2, 320, [[UIScreen mainScreen] bounds].size.height - 60)];
     [mywebview loadRequest:[NSURLRequest requestWithURL:webURL]];
     mywebview.scalesPageToFit = YES;
     mywebview.delegate=self;
@@ -42,8 +50,11 @@
 {
     return YES;
 }
-
-
+-(void)showMenu
+{
+    [[assist shared]setneedsReload:NO];
+    [self.slidingViewController anchorTopViewTo:ECRight];
+}
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     return ;
