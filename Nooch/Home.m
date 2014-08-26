@@ -477,11 +477,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
    
     
     CGRect rect2= self.phone_incomplete.frame;
-    rect2.origin.y-=70;
+    rect2.origin.y-=60;
     self.phone_incomplete.frame=rect2;
 }
 -(void)dismiss_phone_unvalidated {
-    [self.phone_unverified removeFromSuperview];
+    [self.phone_incomplete removeFromSuperview];
 }
 -(void)go_profile
 {
@@ -714,12 +714,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [blankView addSubview:fromLabel];
             [self.navigationController.view addSubview:blankView];
             [self performSelector:@selector(myTask) withObject:nil afterDelay:3];
-//        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-//        [self.navigationController.view addSubview:self.hud];
-//        
-//        self.hud.delegate = self;
-//        self.hud.labelText = @"Loading Your Nooch Account";
-//        [self.hud showWhileExecuting:@selector(myTask) onTarget:self withObject:nil animated:YES];
+
         }
         if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
             serve *serveOBJ=[serve new ];
@@ -736,7 +731,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         return;
     }
     
-   // if ([[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
+  
         //do carousel
         [self.view addSubview:_carousel];
         [_carousel reloadData];
@@ -745,14 +740,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [favoritesOBJ setTagName:@"favorites"];
         [favoritesOBJ setDelegate:self];
         [favoritesOBJ get_favorites];
-        //launch favorites call
-//        
-//    }
-//    {
-//        [favorites removeAllObjects];
-//         [_carousel reloadData];
-//    }
-}
+        }
 
 #pragma mark - iCarousel methods
 
@@ -1075,14 +1063,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [alert show];
         return;
     }
-    
-//    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
-//        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame The Lawyers" message:@"To keep Nooch safe, we ask all users to verify a phone number before before sending money.\n \n If you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
-//        [alert setTag:148];
-//        [alert show];
-//        return;
-//    }
   
+    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame The Lawyers" message:@"To keep Nooch safe, we ask all users to verify a phone number before before sending money.\n \n If you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
+        [alert setTag:148];
+        [alert show];
+        return;
+    }
+
     if ( ![[[NSUserDefaults standardUserDefaults]
         objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
         UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Connect Your Bank" message:@"Adding a bank account to fund Nooch payments is lightening quick. (You don't have to type a routing or account number!)\n \n Would you like to take care of this now?" delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];

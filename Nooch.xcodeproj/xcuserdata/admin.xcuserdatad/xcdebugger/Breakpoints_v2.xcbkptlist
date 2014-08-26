@@ -207,7 +207,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1559"
             endingLineNumber = "1559"
-            landmarkName = "-ReferalCodeRequest:"
+            landmarkName = "-RaiseDispute:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -241,36 +241,6 @@
             endingLineNumber = "203"
             landmarkName = "-renewFb"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[Register renewFb]"
-                  moduleName = "Nooch"
-                  urlString = "file:///Users/admin/Desktop/nooch_JULY2014/nooch_ios/Nooch/Register.m"
-                  timestampString = "430650085.386434"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "203"
-                  endingLineNumber = "203"
-                  offsetFromSymbolStart = "8">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__19-[Register renewFb]_block_invoke"
-                  moduleName = "Nooch"
-                  urlString = "file:///Users/admin/Desktop/nooch_JULY2014/nooch_ios/Nooch/Register.m"
-                  timestampString = "430650085.386599"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "204"
-                  endingLineNumber = "204"
-                  offsetFromSymbolStart = "16">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -333,8 +303,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1768"
             endingLineNumber = "1768"
-            landmarkName = "-saveMemberTransId:"
-            landmarkType = "5">
+            landmarkName = "@implementation serve"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -493,8 +463,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "595"
             endingLineNumber = "595"
-            landmarkName = "-post_to_fb"
-            landmarkType = "5">
+            landmarkName = "@implementation TransactionDetails"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -541,7 +511,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "535"
             endingLineNumber = "535"
-            landmarkName = "-cancel_request"
+            landmarkName = "-decline_request"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -584,11 +554,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/Home.m"
-            timestampString = "430378306.267274"
+            timestampString = "430723139.690858"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1196"
-            endingLineNumber = "1196"
+            startingLineNumber = "1184"
+            endingLineNumber = "1184"
             landmarkName = "-listen:tagName:"
             landmarkType = "5">
          </BreakpointContent>
@@ -621,8 +591,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1823"
             endingLineNumber = "1823"
-            landmarkName = "-resendEmail"
-            landmarkType = "5">
+            landmarkName = "@implementation serve"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -717,7 +687,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "246"
             endingLineNumber = "246"
-            landmarkName = "-addRecipient:"
+            landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -845,7 +815,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1813"
             endingLineNumber = "1813"
-            landmarkName = "-resendSMS"
+            landmarkName = "-SendReminderToRecepient:memberId:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -925,7 +895,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1548"
             endingLineNumber = "1548"
-            landmarkName = "-GetTransactionDetail:"
+            landmarkName = "-RaiseDispute:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -967,22 +937,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Nooch/Welcome.m"
-            timestampString = "430123511.014271"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
-            landmarkName = "-validate"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Nooch/TransferPIN.m"
             timestampString = "430127216.122459"
             startingColumnNumber = "9223372036854775807"
@@ -1015,29 +969,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Nooch/Home.m"
-            timestampString = "430378306.267274"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "913"
-            endingLineNumber = "913"
-            landmarkName = "-myTask"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Nooch/serve.m"
             timestampString = "430637257.662437"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1101"
             endingLineNumber = "1101"
-            landmarkName = "-getInvitedMemberList:"
+            landmarkName = "-sendCsvTrasactionHistory:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1070,6 +1008,54 @@
             startingLineNumber = "73"
             endingLineNumber = "73"
             landmarkName = "-GoBackOnce"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/Welcome.m"
+            timestampString = "430718792.93056"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
+            landmarkName = "-moreinfo_lightBox"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/serve.m"
+            timestampString = "430719134.316305"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "316"
+            endingLineNumber = "316"
+            landmarkName = "-makeBankPrimary:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/Home.m"
+            timestampString = "430723220.122168"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "484"
+            endingLineNumber = "484"
+            landmarkName = "-dismiss_phone_unvalidated"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

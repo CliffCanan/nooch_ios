@@ -33,5 +33,5 @@ bool inBack;
 -(void)endWait;
 -(void)addRainbow;
 -(void)remRainbow;
--(void)remTopRainbow;
+//-(void)remTopRainbow;
 @end

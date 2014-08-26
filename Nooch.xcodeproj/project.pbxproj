@@ -120,7 +120,6 @@
 		16E4B1C61870832B0099D075 /* untick.png in Resources */ = {isa = PBXBuildFile; fileRef = 16E4B1C51870832B0099D075 /* untick.png */; };
 		16E4B1C818708C1D0099D075 /* tickR.png in Resources */ = {isa = PBXBuildFile; fileRef = 16E4B1C718708C1D0099D075 /* tickR.png */; };
 		16E4B1CA1870A2C90099D075 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16E4B1C91870A2C90099D075 /* MessageUI.framework */; };
-		5CFDFA9219AACFD40094E290 /* No-Internet-Full-Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CFDFA9119AACFD40094E290 /* No-Internet-Full-Screen.png */; };
 		6B01F1B2179D994A00E34C49 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B1179D994A00E34C49 /* GoogleMaps.framework */; };
 		6B01F1B4179DA78B00E34C49 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B3179DA78B00E34C49 /* CoreText.framework */; };
 		6B01F1B6179DA79B00E34C49 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B5179DA79B00E34C49 /* GLKit.framework */; };
@@ -419,7 +418,6 @@
 		16E4B1C51870832B0099D075 /* untick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = untick.png; sourceTree = "<group>"; };
 		16E4B1C718708C1D0099D075 /* tickR.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tickR.png; sourceTree = "<group>"; };
 		16E4B1C91870A2C90099D075 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		5CFDFA9119AACFD40094E290 /* No-Internet-Full-Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "No-Internet-Full-Screen.png"; path = "../../../../Dropbox/Preston Hults/Design Elements/No-Internet-Full-Screen.png"; sourceTree = "<group>"; };
 		6B01F1B1179D994A00E34C49 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
 		6B01F1B3179DA78B00E34C49 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		6B01F1B5179DA79B00E34C49 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
@@ -885,7 +883,6 @@
 				01C26DD51843C56C005179B7 /* nooch_Logo.png */,
 				01C26DD61843C56C005179B7 /* Notification_1.png */,
 				01C26DD71843C56C005179B7 /* Notification_2.png */,
-				5CFDFA9119AACFD40094E290 /* No-Internet-Full-Screen.png */,
 				01C26DDC1843C56C005179B7 /* Stats_Icon.png */,
 				01C26D8F1843BB22005179B7 /* address-book-icon.png */,
 				01C26D921843BB22005179B7 /* dispute-icon.png */,
@@ -1635,7 +1632,6 @@
 				6B01F1BE179DA8E800E34C49 /* GoogleMaps.bundle in Resources */,
 				0106773C1860F68400E11F3D /* take-pic-icon.png in Resources */,
 				01C26DFD1843E85C005179B7 /* Preston.png in Resources */,
-				5CFDFA9219AACFD40094E290 /* No-Internet-Full-Screen.png in Resources */,
 				84C3EF18187D0E82004687F6 /* mapBack.png in Resources */,
 				01CABC5718A43B3200BBB935 /* green-arrow.png in Resources */,
 				014C4336185B9A4C00956A84 /* quicktap_25.png in Resources */,
@@ -1865,7 +1861,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Nooch/CardIO\"",
 					"\"$(SRCROOT)/Airship\"",
 					"\"$(SRCROOT)/Nooch/Library\"",
 				);
@@ -1898,7 +1893,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Nooch/CardIO\"",
 					"\"$(SRCROOT)/Airship\"",
 					"\"$(SRCROOT)/Nooch/Library\"",
 				);
