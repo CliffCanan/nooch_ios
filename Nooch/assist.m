@@ -209,9 +209,7 @@ static assist * _sharedInstance = nil;
     [self getSettings];
     [self getAcctInfo];
     //[self getBanks];
-    //[self getCards];
-    
-}/*}}}*/
+}
 -(void)renewFb{
     [accountStore renewCredentialsForAccount:(ACAccount *)facebookAccount completion:^(ACAccountCredentialRenewResult renewResult, NSError *error){
         if(!error)
@@ -410,12 +408,6 @@ static assist * _sharedInstance = nil;
     banks.Delegate = self;
     banks.tagName = @"banks";
     [banks getBanks];
-}
--(void)getCards{
-    serve *cards = [serve new];
-    cards.Delegate = self;
-    cards.tagName = @"cards";
-    [cards getCards];
 }
 -(void)getSettings{
     serve *sets = [serve new];

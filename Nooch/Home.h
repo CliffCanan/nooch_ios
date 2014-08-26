@@ -26,6 +26,8 @@ core *me;
 #define kNoochGrayDark  [Helpers hexColor:@"414042"]
 #define kNoochLight     [Helpers hexColor:@"EBEBEB"]
 #define kNoochMenu      [Helpers hexColor:@"58595b"]
+#define kLeftMenuShadow [Helpers hexColor:@"202122"]
+#define Rgb2UIColor(r, g, b, a)  [UIColor colorWithRed:((r) / 255.0) green:((g) / 255.0) blue:((b) / 255.0) alpha:(a)]
 #define kNoochFontBold [UIFont fontWithName:@"BrandonGrotesque-Bold" size:22]
 #define kNoochFontMed [UIFont fontWithName:@"BrandonGrotesque-Medium" size:16]
 #define kNoochFontLt [UIFont fontWithName:@"BrandonGrotesque-Light" size:18]

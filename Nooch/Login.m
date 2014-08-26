@@ -41,7 +41,6 @@
 
 - (void)check_credentials
 {
-    
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [self.view addSubview:spinner];
     spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
@@ -57,7 +56,7 @@
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
     //nslog(@"Error : %@",error);
     if ([error code] == kCLErrorDenied){
-        //nslog(@"Error : %@",error);
+        NSLog(@"Error : %@",error);
     }
 }
 
@@ -103,12 +102,8 @@
     [self.email setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     [self.email setAutocorrectionType:UITextAutocorrectionTypeNo];
     [self.email setKeyboardType:UIKeyboardTypeEmailAddress];
-    //[self.email setTextColor:kNoochLight];
     [self.email setTextAlignment:NSTextAlignmentRight];
     [self.email setDelegate:self];
-    //self.email.layer.borderColor = kNoochLight.CGColor; self.email.layer.borderWidth = 1;
-    //self.email.layer.opacity = 0.75;
-    //self.email.layer.cornerRadius = 1;
     [self.email setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.email];
     
@@ -117,7 +112,7 @@
     [self.view addSubview:div];
 
     UILabel *em = [UILabel new]; [em setStyleClass:@"table_view_cell_textlabel_1"];
-    CGRect frame = em.frame; frame.origin.y = 160; //frame = CGRectMake(10, 100, 300, 30);
+    CGRect frame = em.frame; frame.origin.y = 160;
     [em setBackgroundColor:[UIColor clearColor]];
     [em setFrame:frame];
     [em setText:@"Email"];
@@ -126,11 +121,7 @@
     self.password = [[UITextField alloc] initWithFrame:CGRectMake(30, 199, 260, 40)];
     [self.password setBackgroundColor:[UIColor clearColor]]; [self.password setPlaceholder:@"Password"];
     [self.password setSecureTextEntry:YES]; [self.password setTextAlignment:NSTextAlignmentRight];
-    //[self.password setTextColor:kNoochLight];
     [self.password setDelegate:self];
-    //self.password.layer.borderColor = kNoochLight.CGColor; self.password.layer.borderWidth = 1;
-    //self.password.layer.opacity = 0.75;
-    //self.password.layer.cornerRadius = 1;
     [self.password setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.password];
 
@@ -141,6 +132,8 @@
     [self.view addSubview:pass];
 
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.login setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    self.login.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [self.login setBackgroundColor:kNoochGreen]; [self.login setTitle:@"Log In" forState:UIControlStateNormal];
     [self.login setFrame:CGRectMake(10, 260, 300, 60)];
     self.login.layer.cornerRadius=5.0f;
@@ -171,15 +164,6 @@
     [forgot addTarget:self action:@selector(forgot_pass) forControlEvents:UIControlEventTouchUpInside];
     [forgot setStyleId:@"label_forgotpw"];
     [self.view addSubview:forgot];
-    
-    /*UIButton *back = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-     [back addTarget:self action:@selector(go_back) forControlEvents:UIControlEventTouchUpInside];
-     [back setBackgroundColor:[UIColor clearColor]];
-     [back setTitle:@"<" forState:UIControlStateNormal];
-     [back setTitleColor:kNoochBlue forState:UIControlStateNormal];
-     [back.titleLabel setFont:[UIFont fontWithName:@"Roboto-Bold" size:40]];
-     [back setFrame:CGRectMake(10, 20, 40, 40)];
-     [self.view addSubview:back];*/
 
     UILabel *encryption; [encryption setStyleId:@"label_encryption"];
     [self.view addSubview:encryption];
@@ -189,10 +173,6 @@
     [self.view addSubview:encrypt_icon];
 }
 
-- (void) go_back
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
 
 - (void) forgot_pass
 {
@@ -221,7 +201,7 @@
             [alert show];
         }
 
-            }
+    }
     else if (actionSheet.tag==220011 && buttonIndex==0)
     {
         [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
@@ -247,7 +227,7 @@
             [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
             [self presentViewController:mailComposer animated:YES completion:nil];
         }
-       }
+}
 
 
 
@@ -306,7 +286,6 @@
         [[UIApplication sharedApplication]setStatusBarHidden:NO];
         
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"firstName"];
-        // NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
         NSString *udid=[[UIDevice currentDevice] uniqueDeviceIdentifier];
         //nslog(@"%@",udid);
         [[assist shared]setlocationAllowed:YES];

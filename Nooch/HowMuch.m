@@ -56,6 +56,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.navigationController.navigationBar.topItem.title = @"";
+    
+    NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 [UIColor whiteColor], UITextAttributeTextColor,
+                                 Rgb2UIColor(19, 32, 38, .25), UITextAttributeTextShadowColor,
+                                 [NSValue valueWithUIOffset:UIOffsetMake(0.0, 1.0)], UITextAttributeTextShadowOffset,
+                                 nil];
+    [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
+    
     [self.navigationItem setTitle:@"How Much"];
 
     [[assist shared] setTranferImage:nil];
@@ -168,11 +176,15 @@
     self.send = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.send setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.send setTitle:@"Send" forState:UIControlStateNormal];
+    [self.send setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    self.send.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [self.send addTarget:self action:@selector(initialize_send) forControlEvents:UIControlEventTouchUpInside];
 
     self.request = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.request setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.request setTitle:@"Request" forState:UIControlStateNormal];
+    [self.request setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    self.request.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [self.request addTarget:self action:@selector(initialize_request) forControlEvents:UIControlEventTouchUpInside];
     [self.request setStyleId:@"howmuch_request"];
     [self.request setFrame:CGRectMake(10, 160, 150, 50)];

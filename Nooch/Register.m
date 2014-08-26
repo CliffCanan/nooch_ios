@@ -60,6 +60,8 @@
     [self.view addSubview:signup];
 
     self.facebook = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.facebook setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    self.facebook.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [self.facebook setTitle:@"Facebook" forState:UIControlStateNormal];
     [self.facebook setFrame:CGRectMake(0, 180, 0, 0)];
     if ([[UIScreen mainScreen] bounds].size.height < 520) {
@@ -133,8 +135,12 @@
         [self.password_field setFrame:CGRectMake(0, 330, 0, 0)];
     }
 
-    self.cont = [UIButton buttonWithType:UIButtonTypeRoundedRect]; [self.cont setTitle:@"Continue" forState:UIControlStateNormal];
-    [self.cont setFrame:CGRectMake(10, 420, 300, 60)]; [self.cont addTarget:self action:@selector(continue_to_signup) forControlEvents:UIControlEventTouchUpInside];
+    self.cont = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.cont setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    self.cont.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    [self.cont setTitle:@"Continue" forState:UIControlStateNormal];
+    [self.cont setFrame:CGRectMake(10, 420, 300, 60)];
+    [self.cont addTarget:self action:@selector(continue_to_signup) forControlEvents:UIControlEventTouchUpInside];
     [self.cont setStyleClass:@"button_green"];
     [self.view addSubview:self.cont];
     [self.cont setEnabled:NO];

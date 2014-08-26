@@ -1818,11 +1818,11 @@ table-view#select_recipientwithoutSeperator {
 	
 	.lside_menu_icons {
         font-family	: "FontAwesome";
-        font-size	: 24px;
-        left		: 9px;
+        font-size	: 20px;
+        left		: 8px;
         top			: 8px;
-        width		: 27px;
-        height		: 27px;
+        width		: 28px;
+        height		: 28px;
         color		: white;
         text-align	: center;
     }
