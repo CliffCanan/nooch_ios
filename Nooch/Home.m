@@ -59,7 +59,35 @@ NSMutableURLRequest *request;
     
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
     ABAddressBookRegisterExternalChangeCallback(addressBook, addressBookChanged, (__bridge void *)(self));
-    
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
+        ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted){
+        
+        NSLog(@"Denied");
+    } else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized){
+        
+        NSLog(@"Authorized");
+        if ([[[assist shared]assosAll] count]==0) {
+            [self address_book];
+        }
+    } else{
+        ABAddressBookRequestAccessWithCompletion(ABAddressBookCreateWithOptions(NULL, nil), ^(bool granted, CFErrorRef error) {
+            if (!granted){
+                
+                NSLog(@"Just denied");
+                return;
+            }
+            
+            if ([[[assist shared]assosAll] count]==0) {
+                [self address_book];
+                
+            }
+            
+            NSLog(@"Just authorized");
+        });
+        
+        NSLog(@"Not determined");
+    }
+
 	// Do any additional setup after loading the view.
     
     nav_ctrl = self.navigationController;
@@ -679,33 +707,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
  
     [[assist shared]setArray:nil];
     
-    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
-        ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted){
-        
-        NSLog(@"Denied");
-    } else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized){
-        
-        NSLog(@"Authorized");
-        if ([[[assist shared]assosAll] count]==0) {
-            [self address_book];
-        }
-    } else{
-        ABAddressBookRequestAccessWithCompletion(ABAddressBookCreateWithOptions(NULL, nil), ^(bool granted, CFErrorRef error) {
-            if (!granted){
-               
-                NSLog(@"Just denied");
-                return;
-            }
-            
-            if ([[[assist shared]assosAll] count]==0) {
-                 [self address_book];
-            }
-           
-            NSLog(@"Just authorized");
-        });
-        
-        NSLog(@"Not determined");
-    }
     
 
 }
