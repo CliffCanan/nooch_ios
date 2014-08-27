@@ -56,9 +56,10 @@ NSMutableURLRequest *request;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
     ABAddressBookRegisterExternalChangeCallback(addressBook, addressBookChanged, (__bridge void *)(self));
-     [self address_book];
+    
 	// Do any additional setup after loading the view.
     
     nav_ctrl = self.navigationController;
@@ -678,7 +679,35 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
  
     [[assist shared]setArray:nil];
     
-  
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
+        ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted){
+        
+        NSLog(@"Denied");
+    } else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized){
+        
+        NSLog(@"Authorized");
+        if ([[[assist shared]assosAll] count]==0) {
+            [self address_book];
+        }
+    } else{
+        ABAddressBookRequestAccessWithCompletion(ABAddressBookCreateWithOptions(NULL, nil), ^(bool granted, CFErrorRef error) {
+            if (!granted){
+               
+                NSLog(@"Just denied");
+                return;
+            }
+            
+            if ([[[assist shared]assosAll] count]==0) {
+                 [self address_book];
+            }
+           
+            NSLog(@"Just authorized");
+        });
+        
+        NSLog(@"Not determined");
+    }
+    
+
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -1131,9 +1160,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         NSLog(@"favorites %@",favorites);
         favorites=[favorites mutableCopy];
         if ([favorites count]==0) {
-            [self FavoriteContactsProcessing];
-            [_carousel reloadData];
-        
+              [self FavoriteContactsProcessing];
+          
             
         }else{
             favorites=[favorites mutableCopy];
@@ -1141,7 +1169,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             if ([favorites count]<5) {
                [self FavoriteContactsProcessing];
             }
-            [_carousel reloadData];
+//            [_carousel reloadData];
         }
     
     }
@@ -1235,82 +1263,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         me = [core new];
         return;
     }
-//    if ([tagName isEqualToString:@"bDelete"]) {
-//        
-//        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Bank Deleted" message:@"Your Bank Account was not verified for 21 days.\n \n Nooch has deleted your bank Account." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-//        [alert show];
-//    }
-//
-//     else if ([tagName isEqualToString:@"banks"]) {
-//         
-//         NSError *error = nil;
-//         //bank Data
-//         NSMutableArray *bankResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-//         [blankView removeFromSuperview];
-//         
-//         //Get Server Date info
-//          NSString *urlString = [NSString stringWithFormat:@"%@"@"/%@", @"https://192.203.102.254/NoochService/NoochService.svc", @"GetServerCurrentTime"];
-//        [[NSURLCache sharedURLCache] removeAllCachedResponses];
-//        request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[[NSString stringWithFormat:@"%@",urlString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
-//                  NSHTTPURLResponse* urlResponse = nil;
-//        
-//         NSData *newData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&error];
-//        
-//       
-//        if (nil == urlResponse ) {
-//            if (error)
-//            {
-//                ServerDate=[NSDate date];
-//            }
-//        }else{
-//            
-//                    
-//               NSString *responseString = [[NSString alloc] initWithData:newData encoding:NSUTF8StringEncoding];
-//                 NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-//                   ServerDate=[self dateFromString:[jsonObject valueForKey:@"Result"] ];
-//            
-//        }
-//     
-//     if ([bankResult count]>0) {
-//    
-//     if ([[[bankResult objectAtIndex:0] valueForKey:@"IsPrimary"] intValue]&& [[[bankResult objectAtIndex:0] valueForKey:@"IsVerified"] intValue]) {
-//     
-//     
-//     }
-//     else
-//     {
-//         if ([bankResult count]==2) {
-//             [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"AddBank"];
-//         }
-//         else
-//         {
-//             [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"AddBank"];
-//         }
-//         for (int i=0; i<[bankResult count]; i++) {
-//             NSString*datestr=[[bankResult objectAtIndex:i] valueForKey:@"ExpirationDate"];
-//             NSLog(@"%@",datestr);
-//             
-//             NSDate *addeddate = [self dateFromString:datestr];
-//             
-//             NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-//             NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
-//                                                                 fromDate:addeddate
-//                                                                   toDate:ServerDate
-//                                                                  options:0];
-//             
-//             NSLog(@"%ld", (long)[components day]);
-//             if ([components day]>21) {
-//                 
-//                 
-//                 serve *bank = [serve new];
-//                 bank.tagName = @"bDelete";
-//                 bank.Delegate = self;
-//                 [bank deleteBank:[[bankResult objectAtIndex:i] valueForKey:@"BankAccountId"]];
-//             }
-//         }
-//     }}
-    
-    // }
  
 }
 -(void)FavoriteContactsProcessing{
@@ -1338,7 +1290,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
 
     }
-
+  [_carousel reloadData];
 }
 #pragma mark- Date From String
 - (NSDate*) dateFromString:(NSString*)aStr

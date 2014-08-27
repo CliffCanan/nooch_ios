@@ -193,7 +193,32 @@
     }
 }
 -(void)viewDidAppear:(BOOL)animated  {
-    [self address_book];
+    
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
+        ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted){
+        
+        NSLog(@"Denied");
+    } else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized){
+        
+        NSLog(@"Authorized");
+        
+            [self address_book];
+        
+    } else{
+        ABAddressBookRequestAccessWithCompletion(ABAddressBookCreateWithOptions(NULL, nil), ^(bool granted, CFErrorRef error) {
+            if (!granted){
+              
+                NSLog(@"Just denied");
+                return;
+            }
+               [self address_book];
+                NSLog(@"Just authorized");
+        });
+        
+        NSLog(@"Not determined");
+    }
+    
+
     [self facebook];
     serve *recents = [serve new];
     [recents setTagName:@"recents"];
