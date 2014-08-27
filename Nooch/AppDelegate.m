@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by Preston Hults on 9/7/12.
-//  Copyright (c) 2012 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch. All rights reserved.
 //
 
 #import "AppDelegate.h"
@@ -22,7 +22,7 @@ static NSString *const kTrackingId = @"UA-36976317-2";
 bool modal;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    inBack = NO;//AIzaSyDC-JeglFaO1kbXc2Z3ztCgh1AnwfIla-8
+    inBack = NO;
     [GMSServices provideAPIKey:@"AIzaSyC4wAna1yxgCUsnqHmazama92ZTSz1qrIA"];
     inactiveDate = [NSDate date];
     [NSUserDefaults resetStandardUserDefaults];

@@ -56,9 +56,38 @@ NSMutableURLRequest *request;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
     ABAddressBookRegisterExternalChangeCallback(addressBook, addressBookChanged, (__bridge void *)(self));
-     [self address_book];
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
+        ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted){
+        
+        NSLog(@"Denied");
+    } else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized){
+        
+        NSLog(@"Authorized");
+        if ([[[assist shared]assosAll] count]==0) {
+            [self address_book];
+        }
+    } else{
+        ABAddressBookRequestAccessWithCompletion(ABAddressBookCreateWithOptions(NULL, nil), ^(bool granted, CFErrorRef error) {
+            if (!granted){
+                
+                NSLog(@"Just denied");
+                return;
+            }
+            
+            if ([[[assist shared]assosAll] count]==0) {
+                [self address_book];
+                
+            }
+            
+            NSLog(@"Just authorized");
+        });
+        
+        NSLog(@"Not determined");
+    }
+    
 	// Do any additional setup after loading the view.
     
     nav_ctrl = self.navigationController;
@@ -1119,7 +1148,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         favorites=[favorites mutableCopy];
         if ([favorites count]==0) {
             [self FavoriteContactsProcessing];
-            [_carousel reloadData];
         }
         else
         {
@@ -1128,7 +1156,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             if ([favorites count]<5) {
                [self FavoriteContactsProcessing];
             }
-            [_carousel reloadData];
+//          [_carousel reloadData];
         }
     
     }
@@ -1247,10 +1275,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if ([[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]) {
             [favorites  addObject:[additions objectAtIndex:randomIndex]];
         }
-
     }
-
+    
+    [_carousel reloadData];
 }
+
 #pragma mark- Date From String
 - (NSDate*) dateFromString:(NSString*)aStr
 {
