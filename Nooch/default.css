@@ -2040,7 +2040,7 @@ table-view#select_recipientwithoutSeperator {
 		top					: 10px;
 		width				: 185px;
 		height				: 15px;
-		font-size			: 12px;
+		font-size			: 11px;
 		font-weight			: regular;
 	}
 	
@@ -2068,12 +2068,12 @@ table-view#select_recipientwithoutSeperator {
 	/**  Date of the transfer ("2 days ago")  **/
 	.history_datetext {
 		width				: 150px;
-		height				: 13px;
-		top					: 49px;
+		height				: 12px;
+		top					: 48px;
 		left                : 75px;
 		font-family			: "Roboto";
 		font-weight         : light;
-		font-size			: 11px;
+		font-size			: 10px;
 		text-align       	: left;
 		color 				: #58595b;
 	}
@@ -2108,27 +2108,16 @@ table-view#select_recipientwithoutSeperator {
 	.history_transferamount_neutral {color	: #3fabe1;}
 
 	/**  The small running tally of the user's balance directly beneath the transfer amount for each row.  **/
-	.history_updatedbalance {
+	.transfer_status {
 		width				: 60px;
 		height				: 15px;
-		top					: 44px;
+		top					: 40px;
 		left                : 253px;
 		font-family			: "Roboto";
 		font-weight         : light;
-		font-size			: 12px;
+		font-size			: 11px;
 		text-align       	: right;
 		color 				: #58595b; /* GRAY */
-	}	
-	.history_RequestStatus {
-		width				: 60px;
-		height				: 15px;
-		top					: 44px;
-		left                : 255px;
-		font-family			: "Roboto";
-		font-weight         : regular;
-		font-size			: 12px;
-		text-align       	: right;
-		color 				: #c72127; /* RED */
 	}
 
 	 /**  Sets the other user's name to be bold for each row.  **/

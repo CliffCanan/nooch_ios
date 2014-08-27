@@ -54,8 +54,8 @@
     user_picture.clipsToBounds = YES;
 
     if([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"] ||         // for Transfers to Non-Noochers
-	   [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"InviteRequest"] ||  // for Requests to Non-Noochers coming straight from PIN screen
-	  ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] && [[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]])) {  //for Requests to Non-Noochers
+	    [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"InviteRequest"] ||  // for Requests to Non-Noochers coming straight from PIN screen
+	  ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] && ![[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]])) {  //for Requests to Non-Noochers
              [user_picture setImage:[UIImage imageNamed:@"profile_picture.png"]];
     }
     else {  // for transfers with an existing Nooch user
@@ -106,41 +106,28 @@
         [payment setStyleClass:@"details_intro_green"];
     }
     else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"InviteRequest"] ||
-	        ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] && [[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]])) {
+	         ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] && [[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]])) {
         payment.attributedText = [[NSAttributedString alloc] initWithString:@"Request Sent To:"
                                                                attributes:textAttributes];
         [payment setStyleClass:@"details_intro_blue"];
     }
-    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
-        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Donation To:"
+    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"]) {
+        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Disputed Transfer:"
                                                                attributes:textAttributes];
-        [payment setStyleClass:@"details_intro_purple"];
+        [payment setStyleClass:@"details_intro_red"];
     }
-  else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"]) {
-      payment.attributedText = [[NSAttributedString alloc] initWithString:@"Disputed Transfer:"
-                                                               attributes:textAttributes];
-      [payment setStyleClass:@"details_intro_red"];
-  }
     [self.view addSubview:payment];
 
     UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];
-
-	if([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || 
-	   [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"InviteRequest"] || 
-	  ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] && [[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]])) {
+    
+    if([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"] ||
+	    [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"InviteRequest"] ||
+	   ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] && ![[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]]) ) {
         //Invite - SENDING or REQUESTING to a Non-Nooch User
         [other_party setStyleClass:@"details_othername_nonnooch"];
         [other_party setText:[self.trans objectForKey:@"InvitationSentTo"]];
-        
-        UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
-        [cancel setStyleClass:@"details_button_center"];
-        [cancel setTag:13];
-        [cancel setEnabled:YES];
-        [cancel addTarget:self action:@selector(cancel_invite) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:cancel];
     }
-     else{
+     else {
         [other_party setText:[[self.trans objectForKey:@"Name"] capitalizedString]];
         [other_party setStyleClass:@"details_othername"];
      }
@@ -170,6 +157,7 @@
     [self.view addSubview:memo];
 
     if(![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"] && ![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"]) {
+        
         UIButton *pay_back = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [pay_back setTitle:@"" forState:UIControlStateNormal];
         [pay_back setStyleCSS:@"background-image : url(pay-back-icon.png)"];
@@ -270,8 +258,9 @@
             [disp_text setStyleClass:@"details_buttons_labels"];
         }
         [disp_text setText:@"Dispute"];
-
-        if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Request"]) {
+        
+        if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Request"])
+        {
             // Pay & Cancel Buttons
             UIButton *pay = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [pay setStyleClass:@"details_button_left"];
@@ -286,8 +275,10 @@
             [remind setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
             remind.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
 
-            if (![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] && ![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
-    			if ([[self.trans objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
+            if ( ![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] &&
+                 ![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"])
+            {
+    			    if ([[self.trans objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
                     [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
                     [cancel setStyleClass:@"details_button_right"];
                     [cancel setTag:13];
@@ -311,15 +302,50 @@
                 }
             }
         }
-        else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Donation"]){
-            [self.view addSubview:disp];
-            [self.view addSubview:disp_text];
-            [self.view addSubview:fb];
-            [self.view addSubview:fb_text];
-            [self.view addSubview:twit];
-            [self.view addSubview:twit_text];
+ /*     else if ( [[self.trans valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"] &&
+            ![[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Dispute"] )
+        {
+            if ([[self.trans objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
+                
+                UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
+                [cancel setStyleClass:@"details_button_center"];
+                [cancel setTag:13];
+                [cancel setEnabled:YES];
+                [cancel addTarget:self action:@selector(cancel_invite) forControlEvents:UIControlEventTouchUpInside];
+                [self.view addSubview:cancel];
+                
+            }
+        }  */
+        else if ( [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
+                  [[self.trans valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"] )
+        {
+            if ([[self.trans objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
+                
+                UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                [cancel setTitleShadowColor:Rgb2UIColor(36, 22, 19, 0.3) forState:UIControlStateNormal];
+                cancel.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+                [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
+                [cancel setStyleClass:@"details_button_right"];
+                [cancel setTag:13];
+                [cancel setEnabled:YES];
+                [cancel addTarget:self action:@selector(cancel_invite) forControlEvents:UIControlEventTouchUpInside];
+                [self.view addSubview:cancel];
+                
+                UIButton *remind = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                [remind setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+                remind.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+                [remind setTitle:@"Remind" forState:UIControlStateNormal];
+                [remind setStyleClass:@"details_button_remind"];
+                [remind setTag:14];
+                [remind setEnabled:YES];
+                [remind addTarget:self action:@selector(remind_friend) forControlEvents:UIControlEventTouchUpInside];
+                [self.view addSubview:remind];
+            }
         }
-        else if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Transfer"]) {
+
+        else if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Transfer"]) {
+            
             if([[self.trans objectForKey:@"MemberId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
                 [self.view addSubview:disp];
                 [self.view addSubview:disp_text]; 
@@ -338,6 +364,8 @@
             [self.view addSubview:twit_text];
         }
     }
+    
+    
     
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
         UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
@@ -919,10 +947,12 @@
 
         //Set Status
         UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 320, 30)];
-        [status setTag:13];
+        [status setTag:12];
         [status setStyleClass:@"details_label"];
         [status setStyleId:@"details_status"];
+
         if ([loginResult objectForKey:@"TransactionDate"]!=NULL) {
+
             NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
             [dateFormatter setAMSymbol:@"AM"];
@@ -933,8 +963,11 @@
             [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
 
             NSString*statusstr;
-            if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
-                if ([[loginResult objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
+
+            if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Request"])
+            {
+                if ([[loginResult objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]])
+                {
                     if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
                         statusstr=@"Cancelled";
                         [status setStyleClass:@"red_text"];
@@ -963,18 +996,27 @@
                     }
                 }
             }
-            else if([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"] ||
-			        [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Donation"] ||
-					[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]||
-					[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"]) {
+            else if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"])
+            {
+                statusstr=@"Cancelled";
+                [status setStyleClass:@"red_text"];
+            }
+            else if([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]     ||
+                    [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Donation"] ||
+					    [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]  ||
+					    [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
+            {
                 statusstr=@"Completed";
                 [status setStyleClass:@"green_text"];
             }
-            else if ([[loginResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
+            else if ([[loginResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
+                     [[loginResult valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
+            {
                 statusstr=@"Invited";
                 [status setStyleClass:@"green_text"];
             }
-            else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"]) {
+            else if ( ![[self.trans valueForKey:@"DisputeId"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"DisputeId"]!=NULL )
+            {
                 statusstr=@"Disputed:";
                 [status setStyleClass:@"red_text"];
 
@@ -1002,16 +1044,20 @@
 
             [status setText:statusstr];
             [self.view addSubview:status];
-            if(![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"]) {
+            
+            if ( [[self.trans valueForKey:@"DisputeId"] isKindOfClass:[NSNull class]] || [self.trans valueForKey:@"DisputeId"] == NULL )
+            {
 
                 NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
                 UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(90, 190, 140, 30)];
                 [datelbl setTextAlignment:NSTextAlignmentCenter]; 
-				[datelbl setFont:[UIFont fontWithName:@"Roboto-Light" size:16]];
+				   [datelbl setFont:[UIFont fontWithName:@"Roboto-Light" size:16]];
                 [datelbl setTextColor:kNoochGrayDark];
                 [self.view addSubview:datelbl];
                 datelbl.text=[NSString stringWithFormat:@"%@ %@, %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]];
+
             }
+
         }
 
         serve *info = [serve new];
@@ -1032,7 +1078,7 @@
         for (UIView *subview in self.view.subviews) {
             if (subview.tag == 13)  // Remove 'Cancel' Button
                 [subview removeFromSuperview];
-			if (subview.tag == 14)  // Remove 'Remind' Button
+            if (subview.tag == 14)  // Remove 'Remind' Button
                 [subview removeFromSuperview];
         }
         UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 320, 30)];
@@ -1047,6 +1093,13 @@
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Transfer Disputed" message:@"Thanks for letting us know. We will investigate and may contact you for more information.\n\nIf you would like to tell us more please contact Nooch Support." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
         [alert show];
         [alert setTag:568];
+        UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 320, 30)];
+        [status setStyleClass:@"details_label"];
+        [status setStyleId:@"details_status"];
+        NSString *statusstr=@"Disputed";
+        [status setStyleClass:@"red_text"];
+        [status setText:statusstr];
+        [self.view addSubview:status];
         [[assist shared]setSusPended:YES];
     }
     else if([tagName isEqualToString:@"info"]){
