@@ -35,7 +35,5 @@ BOOL isAddRequest;
     UILabel *em;
     NSArray *emailAddresses;
     NSMutableArray*arrRequestPersons;
-    UIImageView*img_recent;
-    UIImageView*img_location;
 }
 @end

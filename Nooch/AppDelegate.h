@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by Preston Hults on 9/7/12.
-//  Copyright (c) 2012 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -31,7 +31,4 @@ bool inBack;
 
 -(void)showWait:(NSString*)label;
 -(void)endWait;
--(void)addRainbow;
--(void)remRainbow;
-//-(void)remTopRainbow;
 @end

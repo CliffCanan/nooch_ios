@@ -839,9 +839,16 @@ table-view#select_recipientwithoutSeperator {
 		color: #313233;
 		font-family: "Roboto";
 		font-weight: Regular;
-		font-size: 18px;
+		font-size: 19px;
 		text-align: left;
 	}
+    
+    .select_recipient_pending_name {
+        height: 52px;
+        top: 0px;
+        color: #313233;
+        font-size: 19px;
+    }
 	
 	.first_name { font-weight: regular;}
 
