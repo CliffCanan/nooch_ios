@@ -32,11 +32,12 @@ bool modal;
     hostReach = [Reachability reachabilityWithHostName:@"www.google.com"];
     internetReach = [Reachability reachabilityForInternetConnection];
     [internetReach startNotifier];
+
     //google analytics
     [GAI sharedInstance].debug = NO;
-    [GAI sharedInstance].dispatchInterval = 120;
+    [GAI sharedInstance].dispatchInterval = 30;
     [GAI sharedInstance].trackUncaughtExceptions = YES;
-    self.tracker = [[GAI sharedInstance] trackerWithTrackingId:kTrackingId];
+    [[GAI sharedInstance] trackerWithTrackingId:@"UA-36976317-2"];
 
     // Override point for customization after application launch.
     NSMutableDictionary *takeOffOptions = [[NSMutableDictionary alloc] init];
