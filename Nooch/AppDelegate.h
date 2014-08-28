@@ -31,5 +31,4 @@ bool inBack;
 
 -(void)showWait:(NSString*)label;
 -(void)endWait;
--(void)addRainbow;
 @end
