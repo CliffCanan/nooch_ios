@@ -41,6 +41,8 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [self.navigationItem setTitle:@"Settings"];
+      self.trackedViewName = @"SettingsOptions Screen";
+    
     [self getBankInfo];
    }
 -(void)getBankInfo{

@@ -13,7 +13,7 @@ BOOL isFromHome;
 BOOL isPayBack;
 BOOL isEmailEntry;
 BOOL isUserByLocation;
-@interface HowMuch : UIViewController<UITextFieldDelegate,serveD,UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface HowMuch : GAITrackedViewController<UITextFieldDelegate,serveD,UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 - (id)initWithReceiver:(NSDictionary *)receiver;
 @property(nonatomic,strong)UIButton*balance;

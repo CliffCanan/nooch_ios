@@ -15,7 +15,7 @@
 #import <MessageUI/MessageUI.h>
 BOOL isHistFilter;
 NSString*listType;
-@interface HistoryFlat : UIViewController<UITableViewDataSource,UITableViewDelegate,
+@interface HistoryFlat : GAITrackedViewController<UITableViewDataSource,UITableViewDelegate,
 serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate,MBProgressHUDDelegate,MFMailComposeViewControllerDelegate>
 {
     UISegmentedControl *completed_pending;

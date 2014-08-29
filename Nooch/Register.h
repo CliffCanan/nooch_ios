@@ -11,7 +11,8 @@
 #import <Social/Social.h>
 #import "serve.h"
 #import "MBProgressHUD.h"
-@interface Register : UIViewController<UITextFieldDelegate,serveD,MBProgressHUDDelegate>
+
+@interface Register : GAITrackedViewController<UITextFieldDelegate,serveD,MBProgressHUDDelegate>
 {
     UIActivityIndicatorView*spinner;
 }

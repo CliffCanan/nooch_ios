@@ -119,6 +119,9 @@
 
 -(void)viewWillAppear:(BOOL)animated  {
     [super viewWillAppear:animated];
+   
+    self.trackedViewName = @"SelectRecipient Screen";
+
     if ([[assist shared] isRequestMultiple] && isAddRequest)
     {
         self.location = NO;
@@ -223,11 +226,13 @@
             }
             [self address_book];
             NSLog(@"Just authorized");
+
         });
         
         NSLog(@"Not determined");
     }
     
+
     [self facebook];
     serve *recents = [serve new];
     [recents setTagName:@"recents"];

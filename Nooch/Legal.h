@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "serve.h"
 
-@interface Legal : UIViewController<serveD>
+@interface Legal : GAITrackedViewController<serveD>
 
 @end

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "serve.h"
 
-@interface LimitsAndFees : UIViewController<serveD,UIWebViewDelegate>
+@interface LimitsAndFees : GAITrackedViewController<serveD,UIWebViewDelegate>
 @property (retain,nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 
 @property(nonatomic, strong) IBOutlet UIWebView *LimitsAndFeesView;

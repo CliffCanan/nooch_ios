@@ -227,6 +227,7 @@
 		847268CC1966A7C100D5E749 /* webView.m in Sources */ = {isa = PBXBuildFile; fileRef = 847268CB1966A7C100D5E749 /* webView.m */; };
 		8481F08F19A1CA75007F6565 /* selectRecipientIntro.png in Resources */ = {isa = PBXBuildFile; fileRef = 8481F08D19A1CA75007F6565 /* selectRecipientIntro.png */; };
 		8481F09019A1CA75007F6565 /* selectRecipientIntro_smallScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 8481F08E19A1CA75007F6565 /* selectRecipientIntro_smallScreen.png */; };
+		84830DD019B03DB400E29A4C /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84830DCF19B03DB400E29A4C /* MapKit.framework */; };
 		849AF6BD19A3183000693385 /* close_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AF6BC19A3183000693385 /* close_button.png */; };
 		849AF6BF19A320EC00693385 /* KnoxInfo_Lightbox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AF6BE19A320EC00693385 /* KnoxInfo_Lightbox@2x.png */; };
 		849AF6C119A3217600693385 /* KnoxInfo_Lightbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AF6C019A3217600693385 /* KnoxInfo_Lightbox.png */; };
@@ -620,6 +621,7 @@
 		847268CB1966A7C100D5E749 /* webView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = webView.m; sourceTree = "<group>"; };
 		8481F08D19A1CA75007F6565 /* selectRecipientIntro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = selectRecipientIntro.png; path = ../selectRecipientIntro.png; sourceTree = "<group>"; };
 		8481F08E19A1CA75007F6565 /* selectRecipientIntro_smallScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = selectRecipientIntro_smallScreen.png; path = ../selectRecipientIntro_smallScreen.png; sourceTree = "<group>"; };
+		84830DCF19B03DB400E29A4C /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		849AF6BC19A3183000693385 /* close_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_button.png; sourceTree = "<group>"; };
 		849AF6BE19A320EC00693385 /* KnoxInfo_Lightbox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "KnoxInfo_Lightbox@2x.png"; sourceTree = "<group>"; };
 		849AF6C019A3217600693385 /* KnoxInfo_Lightbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KnoxInfo_Lightbox.png; sourceTree = "<group>"; };
@@ -643,6 +645,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84830DD019B03DB400E29A4C /* MapKit.framework in Frameworks */,
 				6B30380215FA48F900056DAD /* AudioToolbox.framework in Frameworks */,
 				6B30380115FA48F900056DAD /* AddressBookUI.framework in Frameworks */,
 				6B30380015FA48F900056DAD /* AddressBook.framework in Frameworks */,
@@ -1836,8 +1839,8 @@
 		6B30375815FA3FF600056DAD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Baljeet Singh (HE787S955W)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Baljeet Singh (HE787S955W)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1870,8 +1873,8 @@
 		6B30375915FA3FF600056DAD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Baljeet Singh (HE787S955W)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Baljeet Singh (HE787S955W)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",

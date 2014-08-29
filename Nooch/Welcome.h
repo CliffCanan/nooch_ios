@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 BOOL isSignup;
-@interface Welcome : UIViewController
+@interface Welcome : GAITrackedViewController
 {
     UIView*overlay,*mainView;
 }

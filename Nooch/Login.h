@@ -11,7 +11,7 @@
 #import "serve.h"
 #import <MessageUI/MessageUI.h>
 
-@interface Login : UIViewController<UIAlertViewDelegate,UITextFieldDelegate,serveD,CLLocationManagerDelegate,MFMailComposeViewControllerDelegate>
+@interface Login : GAITrackedViewController<UIAlertViewDelegate,UITextFieldDelegate,serveD,CLLocationManagerDelegate,MFMailComposeViewControllerDelegate>
 {
     float lat;
     float lon;

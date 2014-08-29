@@ -74,7 +74,10 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+     self.trackedViewName = @"Login Screen";
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];

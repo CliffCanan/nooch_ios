@@ -93,7 +93,7 @@ NSMutableURLRequest *request;
         
         NSLog(@"Not determined");
     }
-    
+
 	// Do any additional setup after loading the view.
     
     nav_ctrl = self.navigationController;
@@ -718,13 +718,18 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
 
     [[assist shared] setRequestMultiple:NO];
+
     [[assist shared] setArray:nil];
-  
+ 
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    self.trackedViewName = @"Home Screen";
     [self.navigationItem setTitle:@"Nooch"];
+
+   
 
     if (![[assist shared]isPOP]) {
     
@@ -1173,12 +1178,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         else
         {
+
             favorites=[favorites mutableCopy];
             
             if ([favorites count]<5) {
                [self FavoriteContactsProcessing];
             }
-//          [_carousel reloadData];
+
         }
     
     }
@@ -1278,6 +1284,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         me = [core new];
         return;
     }
+
 }
 
 -(void)FavoriteContactsProcessing
@@ -1305,6 +1312,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [favorites  addObject:[additions objectAtIndex:randomIndex]];
         }
     }
+
     
     [_carousel reloadData];
 }

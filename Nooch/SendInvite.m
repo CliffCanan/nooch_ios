@@ -32,6 +32,10 @@
 {
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.trackedViewName = @"Send Invite Screen";
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];

@@ -21,6 +21,10 @@
     }
     return self;
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.trackedViewName = @"Limit & Fees Screen";
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];

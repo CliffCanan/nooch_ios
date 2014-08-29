@@ -10,7 +10,7 @@
 #import "Home.h"
 #import "ECSlidingViewController.h"
 #import <MessageUI/MessageUI.h>
-@interface LeftMenu : UIViewController<UINavigationControllerDelegate,UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,MFMailComposeViewControllerDelegate>
+@interface LeftMenu : GAITrackedViewController<UINavigationControllerDelegate,UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,MFMailComposeViewControllerDelegate>
 {
     UIImageView *user_pic;
 }

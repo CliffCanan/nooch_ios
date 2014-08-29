@@ -12,7 +12,7 @@
 
 //@class signin;
 
-@interface terms : UIViewController <serveD,UIWebViewDelegate>
+@interface terms : GAITrackedViewController <serveD,UIWebViewDelegate>
 
 
 @property(nonatomic,retain) IBOutlet UIActivityIndicatorView *spinner;

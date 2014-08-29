@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CreatePIN : UIViewController<UITextFieldDelegate>
+@interface CreatePIN : GAITrackedViewController<UITextFieldDelegate>
 
 - (id)initWithData:(NSDictionary *)usr;
 

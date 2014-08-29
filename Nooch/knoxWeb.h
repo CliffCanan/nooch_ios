@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
 
-@interface knoxWeb : UIViewController<MBProgressHUDDelegate>
+@interface knoxWeb : GAITrackedViewController<MBProgressHUDDelegate>
 
 @end

@@ -245,8 +245,13 @@
     }
 }
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.trackedViewName = @"HowMuch Screen";
     [self.amount becomeFirstResponder];
     [self.navigationItem setTitle:@"How Much?"];
+  
+  
+
 }
 #pragma mark- Request Multiple case
 -(void)addRecipient:(id)sender{

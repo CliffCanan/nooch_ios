@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "serve.h"
 
-@interface Statistics : UIViewController<serveD,UITableViewDataSource,UITableViewDelegate>
+@interface Statistics : GAITrackedViewController<serveD,UITableViewDataSource,UITableViewDelegate>
 {
     NSDictionary*dictResult;
     NSMutableDictionary*dictAllStats;

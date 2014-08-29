@@ -23,7 +23,9 @@ bool modal;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+
     inBack = NO;
+
     [GMSServices provideAPIKey:@"AIzaSyDC-JeglFaO1kbXc2Z3ztCgh1AnwfIla-8"];
     inactiveDate = [NSDate date];
     [NSUserDefaults resetStandardUserDefaults];

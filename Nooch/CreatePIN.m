@@ -34,6 +34,9 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.pin_check = @"";
+ 
+    self.trackedViewName = @"CreatePin Screen";
+
     [self.pin setText:@""];
     [self.first_num setBackgroundColor:[UIColor clearColor]];
     [self.second_num setBackgroundColor:[UIColor clearColor]];

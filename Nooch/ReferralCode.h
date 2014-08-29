@@ -10,7 +10,7 @@
 #import "serve.h"
 #import "MBProgressHUD.h"
 
-@interface ReferralCode : UIViewController<serveD,UITextFieldDelegate,MBProgressHUDDelegate>
+@interface ReferralCode : GAITrackedViewController<serveD,UITextFieldDelegate,MBProgressHUDDelegate>
 {
     NSString*getEncryptedPassword;
     float lat,lon;
