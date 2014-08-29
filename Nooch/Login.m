@@ -183,10 +183,14 @@
     [alert show];
 }
 
-- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{    
-    if(actionSheet.tag==220011&& buttonIndex==1){
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(actionSheet.tag==220011&& buttonIndex==1)
+    {
         UITextField *emailField = [actionSheet textFieldAtIndex:0];
-        if ([emailField.text length] > 0 && [emailField.text  rangeOfString:@"@"].location != NSNotFound && [emailField.text  rangeOfString:@"."].location != NSNotFound){
+        
+        if ([emailField.text length] > 0 && [emailField.text  rangeOfString:@"@"].location != NSNotFound && [emailField.text  rangeOfString:@"."].location != NSNotFound)
+        {
             [spinner startAnimating];
             [spinner setHidden:NO];
             serve *forgetful = [serve new];
@@ -277,7 +281,6 @@
     else if ([tagName isEqualToString:@"encrypt"]) {
         NSError *error;
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        //nslog(@"json test %@",loginResult);
         self.encrypted_pass = [[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]];
         
         serve *log = [serve new];
@@ -287,14 +290,13 @@
         
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"firstName"];
         NSString *udid=[[UIDevice currentDevice] uniqueDeviceIdentifier];
-        //nslog(@"%@",udid);
         [[assist shared]setlocationAllowed:YES];
         [[NSUserDefaults standardUserDefaults] setObject:self.email.text forKey:@"email"];
 
         if ([self.stay_logged_in isOn]) {
             [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:YES lat:lat lon:lon uid:udid];
         }
-        else{
+        else {
             [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:NO lat:lat lon:lon uid:udid];
         }
         
@@ -312,24 +314,28 @@
             [getDetails getMemIdFromuUsername:[self.email.text lowercaseString]];
         }
         
-        else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] && loginResult != nil){
+        else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] && loginResult != nil)
+        {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Invalid Email or Password" message:@"We don't recognize that information, please double check your email is entered correctly and try again." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             [spinner stopAnimating];
         }
-        else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && loginResult != nil){
+        else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && loginResult != nil)
+        {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"This Is Awkward" message:@"That doesn't appear to be the correct password. Please try again or contact us for futher help." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
             [alert setTag:510];
             [alert show];
             [spinner stopAnimating];
         }
-        else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil){
+        else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil)
+        {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
             [alert setTag:500];
             [alert show];
             [spinner stopAnimating];
         }
-        else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] && loginResult != nil){
+        else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] && loginResult != nil)
+        {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been temporarily suspended.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
             [alert show];
             [alert setTag:50];
@@ -338,16 +344,19 @@
     }
     
     
-    else if([tagName isEqualToString:@"getMemberId"]){
+    else if([tagName isEqualToString:@"getMemberId"])
+    {
         NSError *error;
         
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
         user = [NSUserDefaults standardUserDefaults];
+        
         if (![self.stay_logged_in isOn]) {
             [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-        }else{
+        }
+        else {
             NSMutableDictionary *automatic = [[NSMutableDictionary alloc] init];
             [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
             [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
@@ -378,9 +387,6 @@
     
     else if ([tagName isEqualToString:@"info"]) {
         
-       // NSError *error;
-       // NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        //nslog(@"User response: %@",loginResult);
         [self.navigationItem setHidesBackButton:YES];
         [nav_ctrl setNavigationBarHidden:NO];
         [nav_ctrl.navigationItem setLeftBarButtonItem:nil];

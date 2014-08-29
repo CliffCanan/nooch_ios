@@ -7,12 +7,12 @@
 #import "ReferralCode.h"
 #import "Home.h"
 #import "Welcome.h"
-#import "GetLocation.h"
+//#import "GetLocation.h"
 #import "Register.h"
 #import "ECSlidingViewController.h"
-@interface ReferralCode ()<GetLocationDelegate>
+@interface ReferralCode ()//<GetLocationDelegate>
 {
-    GetLocation*getLocation;
+    //GetLocation*getLocation;
 }
 @property(nonatomic,strong) NSMutableDictionary *user;
 @property(nonatomic,strong) UITextField *code_field;
@@ -33,7 +33,8 @@
 -(void) BackClicked:(id) sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     UIButton* btnback=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -45,9 +46,9 @@
     [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnback];
 
-    getLocation = [[GetLocation alloc] init];
-	getLocation.delegate = self;
-	[getLocation.locationManager startUpdatingLocation];
+ //   getLocation = [[GetLocation alloc] init];
+//	getLocation.delegate = self;
+//	[getLocation.locationManager startUpdatingLocation];
 
 	// Do any additional setup after loading the view.
     UIImageView *logo = [UIImageView new];
@@ -110,35 +111,38 @@
     self.code_field.layer.cornerRadius = 12;
     [self.view addSubview:self.code_field];
 }
+
 #pragma mark-Location Tracker Delegates
 
-- (void)locationUpdate:(CLLocation *)location{
+/*- (void)locationUpdate:(CLLocation *)location{
     [[assist shared]setlocationAllowed:YES];
     lat=location.coordinate.latitude;
     lon=location.coordinate.longitude;
     [getLocation.locationManager stopUpdatingLocation];;
 }
+*/
 -(void)locationError:(NSError *)error{
     [[assist shared]setlocationAllowed:NO];
 }
 - (void)enter_code
 {
-    if ([self.code_field.text length]==0) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Enter Referral Code" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    if ([self.code_field.text length]==0)
+    {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Enter Invite Code" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [enter setEnabled:YES];
         return;
     }
     
     NSString*get4chr=[self.code_field.text substringToIndex:3];
-    if ([[get4chr uppercaseStringWithLocale:[NSLocale currentLocale]]isEqualToString:get4chr]) {
-        //ServiceType=@"invitecheck";
+    
+    if ([[get4chr uppercaseStringWithLocale:[NSLocale currentLocale]]isEqualToString:get4chr])
+    {
         [enter setEnabled:NO];
         spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [self.view addSubview:spinner];
         spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
         [spinner startAnimating];
-        
         
         serve *inv_code = [serve new];
         [inv_code setDelegate:self];
@@ -154,19 +158,11 @@
     }
     else
     {
-        
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Please Check Your Referral Code" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Not Quite Right" message:@"Please check your referral code to make sure you entered it correctly.  If you do not have a code, you can request one." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:@"Request Code", nil];
+        [alert setTag:88];
         [alert show];
         [enter setEnabled:YES];
-        
     }
-    
-    
-    ///delete when server communication is done
-    //Welcome *welc = [Welcome new];
-    //[self.navigationController pushViewController:welc animated:YES];
-    ///end delete
-    
     
 }
 
@@ -178,27 +174,26 @@
     [serveobj setDelegate:self];
     serveobj.tagName=@"requestcode";
     [serveobj ReferalCodeRequest:[self.user valueForKey:@"email"]];
-    
 }
 
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     NSError *error;
-    if ([tagName isEqualToString:@"requestcode"]) {
-        self.slidingViewController.panGesture.enabled=NO;
-        
+    
+    if ([tagName isEqualToString:@"requestcode"])
+    {
+        self.slidingViewController.panGesture.enabled = NO;
         [nav_ctrl performSelector:@selector(reset)];
-        
         Register *reg = [Register new];
-        
-        
         [nav_ctrl pushViewController:reg animated:YES];
     }
-    else if ([tagName isEqualToString:@"inv_check"]) {
+    else if ([tagName isEqualToString:@"inv_check"])
+    {
         [self.hud hide:YES];
         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        if ([[response objectForKey:@"validateInvitationCodeResult"] boolValue]) {
-            
+        
+        if ([[response objectForKey:@"validateInvitationCodeResult"] boolValue])
+        {
             serve * serveOBJ=[serve new];
             [serveOBJ setDelegate:self];
             serveOBJ.tagName=@"validate";
@@ -208,28 +203,28 @@
             self.hud.delegate = self;
             self.hud.labelText = @"Creating your Nooch account";
             [self.hud show:YES];
-
-        
-        } else {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Invalid Code" message:@"The referall code you entered is invalid. Please try again or request a code if you do not have one." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [av show];
+        }
+        else
+        {
+            UIAlertView*avInvalidCode=[[UIAlertView alloc]initWithTitle:@"Not Quite Right" message:@"Please check your referral code to make sure you entered it correctly.  If you do not have a code, you can request one." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Request Code", nil];
+            [avInvalidCode setTag:88];
+            [avInvalidCode show];
             [enter setEnabled:YES];
             [spinner stopAnimating];
             [spinner setHidden:YES];
         }
     }
-    if ([tagName isEqualToString:@"validate"]) {
-        
+    if ([tagName isEqualToString:@"validate"])
+    {
         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        if ([[[response valueForKey:@"getTotalReferralCodeResult"] valueForKey:@"Result"] isEqualToString:@"True"]) {
-            
+        
+        if ([[[response valueForKey:@"getTotalReferralCodeResult"] valueForKey:@"Result"] isEqualToString:@"True"])
+        {
             serve *create = [serve new];
             [create setDelegate:self];
             [create setTagName:@"encrypt"];
             [[assist shared]setPassValue:[self.user objectForKey:@"password"]];
             [create getEncrypt:[self.user objectForKey:@"password"]];
-            
-            
         }
         else
         {
@@ -265,17 +260,15 @@
     else if ([tagName isEqualToString:@"create_account"])
     {
         NSLog(@"login result %@",result);
+        
         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        
         if([[[response objectForKey:@"MemberRegistrationResult"]objectForKey:@"Result"] isEqualToString:@"Thanks for registering! Check your email to complete activation."])
         {
-           // [self.hud hide:YES];
-            //[decline setTag:1];
             [[NSUserDefaults standardUserDefaults] setObject:@"asdfa" forKey:@"setPrompt"];
-            //[spinner stopAnimating];
             serve *login = [serve new];
             login.Delegate = self;
             login.tagName = @"login";
-            
         
             NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
             [login login:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"] password:getEncryptedPassword remember:YES lat:lat lon:lon uid:udid];
@@ -283,7 +276,7 @@
         else if([[[response objectForKey:@"MemberRegistrationResult"] objectForKey:@"Result"] isEqualToString:@"You are already a nooch member."])
         {
             [self.hud hide:YES];
-            UIAlertView *decline= [[UIAlertView alloc] initWithTitle:@"Well..." message:@"This address already exists in our system, we do not support cloning you."delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *decline= [[UIAlertView alloc] initWithTitle:@"Well..." message:@"This address already exists in our system, we are not able to clone you, our apologies." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [decline show];
             [decline setTag:1];
             [enter setEnabled:YES];
@@ -293,20 +286,22 @@
             return;
         }
     }
-    else if ([tagName isEqualToString:@"login"]) {
+    else if ([tagName isEqualToString:@"login"])
+    {
         serve *req = [[serve alloc] init];
         req.Delegate = self;
         req.tagName = @"getMemId";
         [req getMemIdFromuUsername:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]];
         
     }
-    if ([tagName isEqualToString:@"getMemId"]) {
+
+    if ([tagName isEqualToString:@"getMemId"])
+    {
         [self.hud hide:YES];
 
         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         NSLog(@"%@",response);
         [[NSUserDefaults standardUserDefaults] setObject:[response objectForKey:@"Result"] forKey:@"MemberId"];
-        //  [spinner stopAnimating];
         me = [core new];
         [me birth];
         [me stamp];
@@ -318,34 +313,41 @@
         [decline show];
     }
 }
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (alertView.tag == 1) {
-        if (buttonIndex == 0) {
-            [[me usr] setObject:@"NO" forKey:@"requiredImmediately"];
-        }else{
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    if (alertView.tag == 88)
+    {
+        if (buttonIndex == 0)
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"Thank you! We will be in touch with an invite code soon." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
+            serve*serveobj=[serve new];
+            [serveobj setDelegate:self];
+            serveobj.tagName=@"requestcode";
+            [serveobj ReferalCodeRequest:[self.user valueForKey:@"email"]];
+        }
+        else
+        {
             [[me usr] setObject:@"YES" forKey:@"requiredImmediately"];
         }
         
         [self dismissViewControllerAnimated:YES completion:nil];
         
-    }else if(alertView.tag == 2){
+    }
+    else if (alertView.tag == 2)
+    {
         [self dismissViewControllerAnimated:YES completion:nil];
-        //[self dismissModalViewControllerAnimated:YES];
     }
     else if (alertView.tag==2022)
     {
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-        
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-        
-        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
-        
         me = [core new];
-        
     }
 }
+
 #pragma mark - file paths
 - (NSString *)autoLogin{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -354,8 +356,8 @@
     
 }
 #pragma mark - UITextField delegation
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-    //int len = [textField.text length] + [string length];
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
     if([string length] == 0) //deleting
     {
         

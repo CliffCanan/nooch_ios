@@ -120,6 +120,7 @@
 		16E4B1C61870832B0099D075 /* untick.png in Resources */ = {isa = PBXBuildFile; fileRef = 16E4B1C51870832B0099D075 /* untick.png */; };
 		16E4B1C818708C1D0099D075 /* tickR.png in Resources */ = {isa = PBXBuildFile; fileRef = 16E4B1C718708C1D0099D075 /* tickR.png */; };
 		16E4B1CA1870A2C90099D075 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16E4B1C91870A2C90099D075 /* MessageUI.framework */; };
+		5C2F756819AFD4C600159D0B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C2F756719AFD4C600159D0B /* MapKit.framework */; };
 		6B01F1B2179D994A00E34C49 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B1179D994A00E34C49 /* GoogleMaps.framework */; };
 		6B01F1B4179DA78B00E34C49 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B3179DA78B00E34C49 /* CoreText.framework */; };
 		6B01F1B6179DA79B00E34C49 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B5179DA79B00E34C49 /* GLKit.framework */; };
@@ -171,7 +172,6 @@
 		6BC04B9D1677DE0E005C68D6 /* README.rst in Resources */ = {isa = PBXBuildFile; fileRef = 6BC04AF21677DE0C005C68D6 /* README.rst */; };
 		6BC04C031677E25D005C68D6 /* AirshipConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6BC04C021677E25D005C68D6 /* AirshipConfig.plist */; };
 		6BC04C041677E740005C68D6 /* libUAirshipPush-1.3.7.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BC04AF01677DE0C005C68D6 /* libUAirshipPush-1.3.7.a */; };
-		6BC04C061677E7A7005C68D6 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BC04C051677E7A7005C68D6 /* StoreKit.framework */; };
 		6BC5FECB1625F1B0007EAD7A /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BC5FEBB1625F1B0007EAD7A /* Roboto-Black.ttf */; };
 		6BC5FECD1625F1B0007EAD7A /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BC5FEBC1625F1B0007EAD7A /* Roboto-BlackItalic.ttf */; };
 		6BC5FECF1625F1B0007EAD7A /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BC5FEBD1625F1B0007EAD7A /* Roboto-Bold.ttf */; };
@@ -413,6 +413,7 @@
 		16E4B1C51870832B0099D075 /* untick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = untick.png; sourceTree = "<group>"; };
 		16E4B1C718708C1D0099D075 /* tickR.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tickR.png; sourceTree = "<group>"; };
 		16E4B1C91870A2C90099D075 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		5C2F756719AFD4C600159D0B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		6B01F1B1179D994A00E34C49 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
 		6B01F1B3179DA78B00E34C49 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		6B01F1B5179DA79B00E34C49 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
@@ -547,7 +548,6 @@
 		6BC04AF11677DE0C005C68D6 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		6BC04AF21677DE0C005C68D6 /* README.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.rst; sourceTree = "<group>"; };
 		6BC04C021677E25D005C68D6 /* AirshipConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = AirshipConfig.plist; sourceTree = "<group>"; };
-		6BC04C051677E7A7005C68D6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		6BC5FEBB1625F1B0007EAD7A /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
 		6BC5FEBC1625F1B0007EAD7A /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BlackItalic.ttf"; sourceTree = "<group>"; };
 		6BC5FEBD1625F1B0007EAD7A /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
@@ -656,7 +656,6 @@
 				6BD38F2F169F8238006B9AE1 /* AdSupport.framework in Frameworks */,
 				6B30385015FA597000056DAD /* Accounts.framework in Frameworks */,
 				6BF90A5F169B79C5009486E7 /* libsqlite3.0.dylib in Frameworks */,
-				6BC04C061677E7A7005C68D6 /* StoreKit.framework in Frameworks */,
 				6BC04A8E1677DD1B005C68D6 /* CoreTelephony.framework in Frameworks */,
 				6BD38F3316A476DE006B9AE1 /* libz.1.1.3.dylib in Frameworks */,
 				6B5265FE16680D8F00E5341F /* OpenGLES.framework in Frameworks */,
@@ -666,6 +665,7 @@
 				6B5265F816680D2400E5341F /* AVFoundation.framework in Frameworks */,
 				6B30385215FA597700056DAD /* Twitter.framework in Frameworks */,
 				6B3037FC15FA48F900056DAD /* CoreLocation.framework in Frameworks */,
+				5C2F756819AFD4C600159D0B /* MapKit.framework in Frameworks */,
 				6B3037FE15FA48F900056DAD /* CoreData.framework in Frameworks */,
 				6B3037FF15FA48F900056DAD /* SystemConfiguration.framework in Frameworks */,
 				6B30380315FA48F900056DAD /* Security.framework in Frameworks */,
@@ -1056,6 +1056,7 @@
 		6B30372415FA3FF300056DAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5C2F756719AFD4C600159D0B /* MapKit.framework */,
 				0154290219100AFC00A15AA0 /* PixateFreestyle.framework */,
 				841CC8E018A1EBCB0075245C /* Device Identifier */,
 				840CADDD1887E02700BC5FED /* NSString+ASBase */,
@@ -1072,7 +1073,6 @@
 				6BD38F3016A09CE2006B9AE1 /* Social.framework */,
 				6BD38F2E169F8238006B9AE1 /* AdSupport.framework */,
 				6BF90A5E169B79C5009486E7 /* libsqlite3.0.dylib */,
-				6BC04C051677E7A7005C68D6 /* StoreKit.framework */,
 				6BC04A8F1677DE0C005C68D6 /* Airship */,
 				6BC04A8D1677DD1B005C68D6 /* CoreTelephony.framework */,
 				6BC04A8B1677DD0B005C68D6 /* libsqlite3.dylib */,
@@ -1499,9 +1499,13 @@
 				ORGANIZATIONNAME = Nooch;
 				TargetAttributes = {
 					6B30372015FA3FF200056DAD = {
+						DevelopmentTeam = 3GDWQ778SF;
 						SystemCapabilities = {
-							com.apple.iOS = {
+							com.apple.InAppPurchase = {
 								enabled = 0;
+							};
+							com.apple.iOS = {
+								enabled = 1;
 							};
 						};
 					};
@@ -1856,7 +1860,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "2215c201-9d3a-4bc3-b842-258662f6cf7b";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2215c201-9d3a-4bc3-b842-258662f6cf7b";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

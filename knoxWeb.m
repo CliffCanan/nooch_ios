@@ -36,7 +36,15 @@
     // Do any additional setup after loading the view.
     
     self.navigationController.navigationBar.topItem.title = @"";
+    NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  [UIColor whiteColor], UITextAttributeTextColor,
+                                  Rgb2UIColor(19, 32, 38, .25), UITextAttributeTextShadowColor,
+                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, 1.0)], UITextAttributeTextShadowOffset,
+                                  nil];
+    [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
+
     [self.navigationItem setTitle:@"Connect Bank"];
+    
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeCustom];
     [hamburger setStyleId:@"navbar_back"];
