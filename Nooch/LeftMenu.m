@@ -112,6 +112,8 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
 
+    self.trackedViewName = @"LeftMenu Screen";
+
     [self.name setText:[[user objectForKey:@"firstName"] capitalizedString]];
     [self.balance setText:[[user objectForKey:@"lastName"] capitalizedString]];
     

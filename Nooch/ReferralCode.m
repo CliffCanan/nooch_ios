@@ -33,6 +33,11 @@
 -(void) BackClicked:(id) sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.trackedViewName = @"ReferralCode Screen";
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
 

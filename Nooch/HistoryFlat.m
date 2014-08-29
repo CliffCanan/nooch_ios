@@ -55,6 +55,10 @@
 {
     
     [self.navigationItem setTitle:@"History"];
+  
+    [super viewWillAppear:animated];
+    self.trackedViewName = @"HistoryFlat Screen";
+
    // [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
 }
 -(void)showMenu

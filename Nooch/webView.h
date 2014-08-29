@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface webView : UIViewController
+@interface webView : GAITrackedViewController
 @property (strong, nonatomic)  UIWebView *mywebview;
 @end

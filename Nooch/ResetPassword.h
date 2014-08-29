@@ -13,7 +13,7 @@ BOOL isPasswordChanged;
 #import "serve.h"
 #import "GetEncryptionValue.h"
 
-@interface ResetPassword : UIViewController<UITextFieldDelegate,serveD,UITableViewDelegate,UITableViewDataSource,GetEncryptionValueDelegate>
+@interface ResetPassword : GAITrackedViewController<UITextFieldDelegate,serveD,UITableViewDelegate,UITableViewDataSource,GetEncryptionValueDelegate>
 {
     NSString* passwordReset;
     NSString*getEncryptedPasswordValue;

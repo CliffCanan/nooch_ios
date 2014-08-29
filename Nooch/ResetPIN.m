@@ -38,6 +38,9 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+  
+    self.trackedViewName = @"ResetPin Screen";
+
     pinchangeProgress=1;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIView*navBar=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];

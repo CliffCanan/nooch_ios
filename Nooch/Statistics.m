@@ -31,7 +31,10 @@
     }
     return self;
 }
-
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.trackedViewName = @"Statistics Screen";
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];

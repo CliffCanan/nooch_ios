@@ -119,6 +119,9 @@
 
 -(void)viewWillAppear:(BOOL)animated  {
     [super viewWillAppear:animated];
+   
+    self.trackedViewName = @"SelectRecipient Screen";
+
     if ([[assist shared] isRequestMultiple] && isAddRequest)
     {
         self.location = NO;

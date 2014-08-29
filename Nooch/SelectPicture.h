@@ -10,7 +10,7 @@
 #import "Home.h"
 #import "Helpers.h"
 
-@interface SelectPicture : UIViewController<UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate>
+@interface SelectPicture : GAITrackedViewController<UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate>
 
 - (id)initWithData:(NSDictionary *)user;
 

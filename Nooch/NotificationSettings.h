@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "serve.h"
 
-@interface NotificationSettings : UIViewController<UITableViewDataSource,UITableViewDelegate,serveD,UIScrollViewDelegate>
+@interface NotificationSettings : GAITrackedViewController<UITableViewDataSource,UITableViewDelegate,serveD,UIScrollViewDelegate>
 {
     NSString*serviceType;
     NSDictionary*dictInput;

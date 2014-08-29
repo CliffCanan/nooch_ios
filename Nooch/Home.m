@@ -729,7 +729,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    self.trackedViewName = @"Home Screen";
     [self.navigationItem setTitle:@"Nooch"];
+
+   
 
     if (![[assist shared]isPOP]) {
     

@@ -12,7 +12,7 @@
 #import "serve.h"
 #import <MessageUI/MessageUI.h>
 
-@interface TransferPIN : UIViewController<UITextFieldDelegate,serveD,NSURLConnectionDelegate,MFMailComposeViewControllerDelegate,MBProgressHUDDelegate>
+@interface TransferPIN : GAITrackedViewController<UITextFieldDelegate,serveD,NSURLConnectionDelegate,MFMailComposeViewControllerDelegate,MBProgressHUDDelegate>
 {
     
     NSString*Altitude;

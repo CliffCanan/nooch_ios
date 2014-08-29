@@ -51,6 +51,11 @@
     }
     return self;
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.trackedViewName = @"TransferPin Screen";
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
