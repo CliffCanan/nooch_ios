@@ -3,8 +3,7 @@
 //  Nooch
 //
 //  Created by crks on 9/25/13.
-//  Copyright (c) 2013 Nooch. All rights reserved.
-// 333b42
+//  Copyright (c) 2014 Nooch. All rights reserved.
 
 #import <UIKit/UIKit.h>
 #import "Helpers.h"

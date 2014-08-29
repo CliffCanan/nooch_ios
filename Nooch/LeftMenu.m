@@ -106,7 +106,7 @@
     else {
         [version setStyleId:@"version_label"];
     }
-    [version setText:@"version 1.1.1."];
+    [version setText:[NSString stringWithFormat:@"Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
     [self.view addSubview:version];
 }
 -(void)viewWillAppear:(BOOL)animated{
@@ -122,8 +122,8 @@
         user_pic.clipsToBounds = YES;
         user_pic.layer.cornerRadius = 30;
         user_pic.layer.borderWidth = 2; user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
-        user_pic.layer.shadowColor = [UIColor blackColor].CGColor;
-        user_pic.layer.shadowOffset = CGSizeMake(3, 3);
+        user_pic.layer.shadowColor = [UIColor redColor].CGColor;
+        user_pic.layer.shadowOffset = CGSizeMake(5, 3);
         user_pic.layer.shadowOpacity = 0.97;
         user_pic.layer.shadowRadius = 3.0;
 

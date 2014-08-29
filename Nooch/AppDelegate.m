@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by Preston Hults on 9/7/12.
-//  Copyright (c) 2012 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch. All rights reserved.
 //
 
 #import "AppDelegate.h"
@@ -20,9 +20,12 @@ static NSString *const kTrackingId = @"UA-36976317-2";
 @synthesize tracker = tracker_;
 @synthesize inactiveDate;
 bool modal;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    inBack = NO;//
+
+    inBack = NO;
+
     [GMSServices provideAPIKey:@"AIzaSyDC-JeglFaO1kbXc2Z3ztCgh1AnwfIla-8"];
     inactiveDate = [NSDate date];
     [NSUserDefaults resetStandardUserDefaults];
@@ -31,11 +34,12 @@ bool modal;
     hostReach = [Reachability reachabilityWithHostName:@"www.google.com"];
     internetReach = [Reachability reachabilityForInternetConnection];
     [internetReach startNotifier];
+
     //google analytics
     [GAI sharedInstance].debug = NO;
-    [GAI sharedInstance].dispatchInterval = 120;
+    [GAI sharedInstance].dispatchInterval = 30;
     [GAI sharedInstance].trackUncaughtExceptions = YES;
-    self.tracker = [[GAI sharedInstance] trackerWithTrackingId:kTrackingId];
+    [[GAI sharedInstance] trackerWithTrackingId:@"UA-36976317-2"];
 
     // Override point for customization after application launch.
     NSMutableDictionary *takeOffOptions = [[NSMutableDictionary alloc] init];
@@ -70,18 +74,6 @@ bool modal;
         [self.window setUserInteractionEnabled:NO];
     }
 }
-/*
--(void)addRainbow{
-    [self.window addSubview:rainbowTop];
-}
-
--(void)remRainbow{
-    [rainbowTop removeFromSuperview];
-}
-
--(void)remTopRainbow{
-    [rainbowTop removeFromSuperview];
-} */
 
 -(void)showWait:(NSString*)label{
     loadingView = [[UIView alloc] initWithFrame:CGRectMake(75,( [[UIScreen mainScreen] bounds].size.height/2)-165, 170, 130)];
@@ -192,25 +184,18 @@ void exceptionHandler(NSException *exception){
     [[NSUserDefaults standardUserDefaults] setValue:@"123456" forKey:@"DeviceToken"];
 
 }
+
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
     NSLog(@"%@",notification.userInfo);
-    if ([notification.userInfo valueForKey:@"Profile1"]|| [notification.userInfo valueForKey:@"Profile2"]||[notification.userInfo valueForKey:@"Profile3"]||[notification.userInfo valueForKey:@"Profile4"]) {
+    
+    if ([notification.userInfo valueForKey:@"Profile1"] || [notification.userInfo valueForKey:@"Profile2"] || [notification.userInfo valueForKey:@"Profile3"] || [notification.userInfo valueForKey:@"Profile4"])
+    {
         [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"NotificationPush"];
         [nav_ctrl popToRootViewControllerAnimated:YES];
-//        [UIView animateWithDuration:0.75
-//                         animations:^{
-//                             [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-//                             [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:nav_ctrl.view cache:NO];
-//                         }];
-//        
-//        [nav_ctrl.view addGestureRecognizer:nav_ctrl.slidingViewController.panGesture];
-//        
-       // [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:profile animated:YES completion:^{
-            
-       // }];
         
     }
 }
+
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
     NSLog(@"userInfo%@", userInfo);
     UIApplicationState state = [application applicationState];

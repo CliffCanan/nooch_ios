@@ -150,7 +150,7 @@
     }
 
     UIButton *login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [login setBackgroundColor:[UIColor clearColor]]; //[login setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
+    [login setBackgroundColor:[UIColor clearColor]];
     [login setTitle:@"Already a Member? Sign in." forState:UIControlStateNormal];
     [login setFrame:CGRectMake(0, 510, 320, 20)]; [login addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
     [login setStyleClass:@"label_small"];
@@ -179,18 +179,13 @@
              if (!granted) {
                  NSLog(@"didnt grant because: %@",e.description);
              }
-             else{
+             else {
                  dispatch_async(dispatch_get_main_queue(), ^{
                      self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-                     
                      [self.navigationController.view addSubview:self.hud];
-                     
                      self.hud.delegate = self;
-                     
                      self.hud.labelText = @"Loading Facebook Info...";
-                     
                      [self.hud show:YES];
-
                  });
                                  NSArray *accounts = [self.accountStore accountsWithAccountType:facebookAccountType];
                  self.facebookAccount = [accounts lastObject];

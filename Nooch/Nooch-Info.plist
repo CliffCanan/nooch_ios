@@ -14,6 +14,8 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
+				<string>Icon</string>
+				<string>whiteBack</string>
 				<string>Icon.png</string>
 				<string>Icon@2x.png</string>
 				<string>Icon@2x.png</string>
@@ -48,8 +50,12 @@
 	<string>1.6</string>
 	<key>FacebookAppID</key>
 	<string>198279616971457</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSContactsUsageDescription</key>
+	<string>Contacts are used to identify recipients so users can send or request money using an email address.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Roboto-Italic.ttf</string>
@@ -67,8 +73,6 @@
 	<string>flat_storyboard</string>
 	<key>UIMainStoryboardFile~ipad</key>
 	<string>flat_storyboard</string>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
 	<key>UIPrerenderedIcon</key>
 	<true/>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -88,11 +92,11 @@
 			<key>TintColor</key>
 			<dict>
 				<key>Blue</key>
-				<real>0.3018251061439514</real>
+				<real>0.30182510614395142</real>
 				<key>Green</key>
 				<real>0.2811298668384552</real>
 				<key>Red</key>
-				<real>0.2481201738119125</real>
+				<real>0.24812017381191251</real>
 			</dict>
 			<key>Translucent</key>
 			<false/>
@@ -106,7 +110,5 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>NSContactsUsageDescription</key>
-	<string>Contacts are used to identify recipients so users can send or request money using an email address.</string>
 </dict>
 </plist>

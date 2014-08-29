@@ -31,11 +31,14 @@
     }
     return self;
 }
-- (void)viewDidLoad {
+
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.navigationController.navigationBar.topItem.title = @"";
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+
     UIActivityIndicatorView*act=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [act setFrame:CGRectMake(14, 5, 20, 20)];
     [act startAnimating];
@@ -47,22 +50,30 @@
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
-	// SET PICTURE OF OTHER USER
-    UIImageView *user_picture = [[UIImageView alloc] initWithFrame:CGRectMake(10, 27, 78, 78)];
-    user_picture.layer.borderWidth = 1; user_picture.layer.borderColor = kNoochGrayDark.CGColor;
+    UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];  // Other user's NAME
+    UIImageView *user_picture = [[UIImageView alloc] initWithFrame:CGRectMake(10, 27, 78, 78)];  // Other user's PICTURE
+//    user_picture.layer.borderWidth = 1;
+//    user_picture.layer.borderColor = kNoochGrayDark.CGColor;
     user_picture.layer.cornerRadius = 39;
     user_picture.clipsToBounds = YES;
 
-    if([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"] ||         // for Transfers to Non-Noochers
-	   [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"InviteRequest"] ||  // for Requests to Non-Noochers coming straight from PIN screen
-	  ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] && [[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]])) {  //for Requests to Non-Noochers
-             [user_picture setImage:[UIImage imageNamed:@"profile_picture.png"]];
+    if( [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"] ||         // Transfers to Non-Noochers
+        [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"InviteRequest"] ||  // Requests to Non-Noochers coming straight from PIN screen
+	   ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
+       !([self.trans valueForKey:@"InvitationSentTo"] == NULL || [[self.trans objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])))
+    {
+        [other_party setStyleClass:@"details_othername_nonnooch"];
+        [other_party setText:[self.trans objectForKey:@"InvitationSentTo"]];
+        [user_picture setImage:[UIImage imageNamed:@"profile_picture.png"]];
     }
-    else {  // for transfers with an existing Nooch user
+    else // transfers with an existing Nooch user
+    {
+        [other_party setText:[[self.trans objectForKey:@"Name"] capitalizedString]];
+        [other_party setStyleClass:@"details_othername"];
         [user_picture setImageWithURL:[NSURL URLWithString:[self.trans objectForKey:@"Photo"]]
              placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
     }
-
+    [self.view addSubview:other_party];
     [self.view addSubview:user_picture];
 
 	
@@ -70,66 +81,59 @@
     UILabel *payment = [UILabel new];
     [payment setStyleClass:@"details_intro"];
 
-    if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(32, 63, 63, .35);
+    shadow.shadowOffset = CGSizeMake(0, 1);
+    
+    NSDictionary * textAttributes =
+    @{NSShadowAttributeName: shadow };
+    
+    if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"])
+    {
 	    if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
-	        [payment setText:@"Paid To:"];
+	        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Paid To:"
+                                                                   attributes:textAttributes];
             [payment setStyleClass:@"details_intro_red"];
         }
 		else {
-            [payment setText:@"Payment From:"];
+            payment.attributedText = [[NSAttributedString alloc] initWithString:@"Payment From:"
+                                                                   attributes:textAttributes];
             [payment setStyleClass:@"details_intro_green"];
         }
 	}
-    else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
+    else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"])
+    {
         if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]]) {
-            [payment setText:@"Request Sent To:"];
+            payment.attributedText = [[NSAttributedString alloc] initWithString:@"Request Sent To:"
+                                                                   attributes:textAttributes];
         }
         else {
-            [payment setText:@"Request From:"];
+            payment.attributedText = [[NSAttributedString alloc] initWithString:@"Request From:"
+                                                                   attributes:textAttributes];
         }
         [payment setStyleClass:@"details_intro_blue"];
     }
-    else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
-        [payment setText:@"Invite Sent To:"];
+    else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"])
+    {
+        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Invite Sent To:"
+                                                               attributes:textAttributes];
         [payment setStyleClass:@"details_intro_green"];
     }
     else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"InviteRequest"] ||
-	        ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] && [[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]])) {
-        [payment setText:@"Request Sent To:"];
+	         ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] && [[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]]))
+    {
+        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Request Sent To:"
+                                                               attributes:textAttributes];
         [payment setStyleClass:@"details_intro_blue"];
     }
-    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
-        [payment setText:@"Donation To:"];
-        [payment setStyleClass:@"details_intro_purple"];
+    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"])
+    {
+        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Disputed Transfer:"
+                                                               attributes:textAttributes];
+        [payment setStyleClass:@"details_intro_red"];
     }
-//  else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"]) {
-//      [payment setText:@"Disputed:"];
-//      [payment setStyleClass:@"details_intro_red"];
-//  }
     [self.view addSubview:payment];
 
-    UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];
-
-	if([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || 
-	   [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"InviteRequest"] || 
-	  ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] && [[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]])) {
-        //Invite - SENDING or REQUESTING to a Non-Nooch User
-        [other_party setStyleClass:@"details_othername_nonnooch"];
-        [other_party setText:[self.trans objectForKey:@"InvitationSentTo"]];
-        
-        UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
-        [cancel setStyleClass:@"details_button_center"];
-        [cancel setTag:13];
-        [cancel setEnabled:YES];
-        [cancel addTarget:self action:@selector(cancel_invite) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:cancel];
-    }
-     else{
-        [other_party setText:[[self.trans objectForKey:@"Name"] capitalizedString]];
-        [other_party setStyleClass:@"details_othername"];
-     }
-    [self.view addSubview:other_party];
 
     amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 60, 320, 60)];
     [amount setStyleClass:@"details_amount"];
@@ -137,8 +141,10 @@
     [self.view addSubview:amount];
 
     UILabel *memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 116, 320, 60)];
-    if (![[self.trans valueForKey:@"Memo"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Memo"]!=NULL) {
-        if ([[self.trans valueForKey:@"Memo"] length]==0 || [[self.trans valueForKey:@"Memo"] isEqualToString:@"\"\""]) {
+    if (![[self.trans valueForKey:@"Memo"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Memo"]!=NULL)
+    {
+        if ([[self.trans valueForKey:@"Memo"] length]==0 || [[self.trans valueForKey:@"Memo"] isEqualToString:@"\"\""])
+        {
             memo.text=@"No memo attached";
         } 
         else
@@ -154,177 +160,206 @@
     [memo setStyleClass:@"italic_font"];
     [self.view addSubview:memo];
 
-    if(![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Withdraw"] && ![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Deposit"]) {
-        UIButton *pay_back = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [pay_back setTitle:@"" forState:UIControlStateNormal];
-        [pay_back setStyleCSS:@"background-image : url(pay-back-icon.png)"];
-        [pay_back setStyleId:@"details_payback"];
-        [pay_back addTarget:self action:@selector(pay_back) forControlEvents:UIControlEventTouchUpInside];
-        if ([[UIScreen mainScreen] bounds].size.height == 480) {
+        
+    UIButton *pay_back = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [pay_back setTitle:@"" forState:UIControlStateNormal];
+    [pay_back setStyleCSS:@"background-image : url(pay-back-icon.png)"];
+    [pay_back setStyleId:@"details_payback"];
+    [pay_back addTarget:self action:@selector(pay_back) forControlEvents:UIControlEventTouchUpInside];
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
             [pay_back setStyleClass:@"details_buttons_4"];
         } 
-        else {
-            [pay_back setStyleClass:@"details_buttons"];
-        }
+    else {
+        [pay_back setStyleClass:@"details_buttons"];
+    }
 
-        UILabel *pay_text = [UILabel new];
-        [pay_text setFrame:pay_back.frame];
-        if ([[UIScreen mainScreen] bounds].size.height == 480) {
-            [pay_text setStyleClass:@"details_buttons_labels_4"];
-        } 
-        else {
-            [pay_text setStyleClass:@"details_buttons_labels"];
-        }
-        [pay_text setText:@"Pay Back"];
+    UILabel *pay_text = [UILabel new];
+    [pay_text setFrame:pay_back.frame];
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+        [pay_text setStyleClass:@"details_buttons_labels_4"];
+    }
+    else {
+        [pay_text setStyleClass:@"details_buttons_labels"];
+    }
+    [pay_text setText:@"Pay Back"];
 
-        UIButton *fb = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [fb setTitle:@"" forState:UIControlStateNormal];
-        [fb setStyleCSS:@"background-image : url(fb-icon-90x90.png)"];
-        if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
-            [fb setStyleId:@"details_fb_donate"];
-        }
-        else
-            [fb setStyleId:@"details_fb"];
-        [fb addTarget:self action:@selector(post_to_fb) forControlEvents:UIControlEventTouchUpInside];
-        if ([[UIScreen mainScreen] bounds].size.height == 480) {
-            [fb setStyleClass:@"details_buttons_4"];
-        }
-        else {
-            [fb setStyleClass:@"details_buttons"];
-        }
+    UIButton *fb = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [fb setTitle:@"" forState:UIControlStateNormal];
+    [fb setStyleCSS:@"background-image : url(fb-icon-90x90.png)"];
+    if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
+        [fb setStyleId:@"details_fb_donate"];
+    }
+    else {
+        [fb setStyleId:@"details_fb"];
+    }
+    [fb addTarget:self action:@selector(post_to_fb) forControlEvents:UIControlEventTouchUpInside];
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+        [fb setStyleClass:@"details_buttons_4"];
+    }
+    else {
+        [fb setStyleClass:@"details_buttons"];
+    }
 
-        UILabel *fb_text = [UILabel new];
-        [fb_text setFrame:fb.frame];
-        if ([[UIScreen mainScreen] bounds].size.height == 480) {
+    UILabel *fb_text = [UILabel new];
+    [fb_text setFrame:fb.frame];
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
             [fb_text setStyleClass:@"details_buttons_labels_4"];
         } 
-        else {
-            [fb_text setStyleClass:@"details_buttons_labels"];
-        }
-        [fb_text setText:@"Share"];
+    else {
+        [fb_text setStyleClass:@"details_buttons_labels"];
+    }
+    [fb_text setText:@"Share"];
 
-        UIButton *twit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [twit setTitle:@"" forState:UIControlStateNormal];
-        [twit setStyleCSS:@"background-image : url(twitter-icon.png)"];
-        if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
-            [twit setStyleId:@"details_twit_donate"];
-        }
-        else
-            [twit setStyleId:@"details_twit"];
-        [twit addTarget:self action:@selector(post_to_twitter) forControlEvents:UIControlEventTouchUpInside];
-        if ([[UIScreen mainScreen] bounds].size.height == 480) {
-            [twit setStyleClass:@"details_buttons_4"];
-        }
-        else {
-            [twit setStyleClass:@"details_buttons"];
-        }
+    UIButton *twit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [twit setTitle:@"" forState:UIControlStateNormal];
+    [twit setStyleCSS:@"background-image : url(twitter-icon.png)"];
+    if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
+        [twit setStyleId:@"details_twit_donate"];
+    }
+    else {
+        [twit setStyleId:@"details_twit"];
+    }
+    [twit addTarget:self action:@selector(post_to_twitter) forControlEvents:UIControlEventTouchUpInside];
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+        [twit setStyleClass:@"details_buttons_4"];
+    }
+    else {
+        [twit setStyleClass:@"details_buttons"];
+    }
 
-        UILabel *twit_text = [UILabel new];
-        [twit_text setFrame:twit.frame];
-        if ([[UIScreen mainScreen] bounds].size.height == 480) {
-            [twit_text setStyleClass:@"details_buttons_labels_4"];
-        }
-        else {
-            [twit_text setStyleClass:@"details_buttons_labels"];
-        }
-        [twit_text setText:@"Tweet"];
+    UILabel *twit_text = [UILabel new];
+    [twit_text setFrame:twit.frame];
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+        [twit_text setStyleClass:@"details_buttons_labels_4"];
+    }
+    else {
+        [twit_text setStyleClass:@"details_buttons_labels"];
+    }
+    [twit_text setText:@"Tweet"];
 
-        UIButton *disp = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [disp setTitle:@"" forState:UIControlStateNormal];
-        [disp setStyleCSS:@"background-image : url(dispute-icon.png)"];
-        if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
-            [disp setStyleId:@"details_disp_donate"];
-        }
-        else
-            [disp setStyleId:@"details_disp"];
+    UIButton *disp = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [disp setTitle:@"" forState:UIControlStateNormal];
+    [disp setStyleCSS:@"background-image : url(dispute-icon.png)"];
+    if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
+        [disp setStyleId:@"details_disp_donate"];
+    }
+    else
+        [disp setStyleId:@"details_disp"];
         
-        [disp addTarget:self action:@selector(dispute) forControlEvents:UIControlEventTouchUpInside];
-        if ([[UIScreen mainScreen] bounds].size.height == 480) {
-            [disp setStyleClass:@"details_buttons_4"];
-        }
-        else {
-            [disp setStyleClass:@"details_buttons"];
-        }
+    [disp addTarget:self action:@selector(dispute) forControlEvents:UIControlEventTouchUpInside];
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+        [disp setStyleClass:@"details_buttons_4"];
+    }
+    else {
+        [disp setStyleClass:@"details_buttons"];
+    }
 
-        UILabel *disp_text = [UILabel new];
-        [disp_text setFrame:disp.frame];
-        if ([[UIScreen mainScreen] bounds].size.height == 480) {
-            [disp_text setStyleClass:@"details_buttons_labels_4"];
-        }
-        else {
-            [disp_text setStyleClass:@"details_buttons_labels"];
-        }
-        [disp_text setText:@"Dispute"];
+    UILabel *disp_text = [UILabel new];
+    [disp_text setFrame:disp.frame];
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+        [disp_text setStyleClass:@"details_buttons_labels_4"];
+    }
+    else {
+        [disp_text setStyleClass:@"details_buttons_labels"];
+    }
+    [disp_text setText:@"Dispute"];
+        
+    if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Request"])
+    {
+        // Pay & Cancel Buttons
+        UIButton *pay = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [pay setStyleClass:@"details_button_left"];
+        [pay setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
+        pay.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
 
-        if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Request"]) {
-            // Pay & Cancel Buttons
-            UIButton *pay = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [pay setStyleClass:@"details_button_left"];
-            [pay setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
-            pay.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+        UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [cancel setTitleShadowColor:Rgb2UIColor(36, 22, 19, 0.3) forState:UIControlStateNormal];
+        cancel.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
 
+        UIButton *remind = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [remind setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+        remind.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+
+        if ( ![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] &&
+             ![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"])
+        {
+            if ([[self.trans objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]])
+            {
+                [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
+                [cancel setStyleClass:@"details_button_right"];
+                [cancel setTag:13];
+                [cancel setEnabled:YES];
+                [cancel addTarget:self action:@selector(cancel_request) forControlEvents:UIControlEventTouchUpInside];
+                [self.view addSubview:cancel];
+                [remind setTitle:@"Remind" forState:UIControlStateNormal];
+                [remind setStyleClass:@"details_button_remind"];
+                [remind setTag:14];
+                [remind setEnabled:YES];
+                [remind addTarget:self action:@selector(remind_friend) forControlEvents:UIControlEventTouchUpInside];
+                [self.view addSubview:remind];
+            }
+            else {
+                [cancel setStyleClass:@"details_button_right"];
+                [pay setTitle:@"Pay" forState:UIControlStateNormal];
+                [pay addTarget:self action:@selector(fulfill_request) forControlEvents:UIControlEventTouchUpInside];
+                [cancel setTitle:@"Decline" forState:UIControlStateNormal];
+                [cancel addTarget:self action:@selector(decline_request) forControlEvents:UIControlEventTouchUpInside];
+                [self.view addSubview:pay]; [self.view addSubview:cancel];
+            }
+        }
+    }
+
+    else if ( [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
+              [[self.trans valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"] )
+    {
+        if ([[self.trans objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]])
+        {
             UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [cancel setTitleShadowColor:Rgb2UIColor(36, 22, 19, 0.3) forState:UIControlStateNormal];
             cancel.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-
+            [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
+            [cancel setStyleClass:@"details_button_right"];
+            [cancel setTag:13];
+            [cancel setEnabled:YES];
+            [cancel addTarget:self action:@selector(cancel_invite) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:cancel];
+                
             UIButton *remind = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [remind setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
             remind.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-
-            if (![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] && ![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
-    			if ([[self.trans objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
-                    [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
-                    [cancel setStyleClass:@"details_button_right"];
-                    [cancel setTag:13];
-                    [cancel setEnabled:YES];
-                    [cancel addTarget:self action:@selector(cancel_request) forControlEvents:UIControlEventTouchUpInside];
-                    [self.view addSubview:cancel];
-                    [remind setTitle:@"Remind" forState:UIControlStateNormal];
-                    [remind setStyleClass:@"details_button_remind"];
-                    [remind setTag:14];
-                    [remind setEnabled:YES];
-                    [remind addTarget:self action:@selector(remind_friend) forControlEvents:UIControlEventTouchUpInside];
-                    [self.view addSubview:remind];
-                }
-                else {
-                    [cancel setStyleClass:@"details_button_right"];
-                    [pay setTitle:@"Pay" forState:UIControlStateNormal];
-                    [pay addTarget:self action:@selector(fulfill_request) forControlEvents:UIControlEventTouchUpInside];
-                    [cancel setTitle:@"Decline" forState:UIControlStateNormal];
-                    [cancel addTarget:self action:@selector(decline_request) forControlEvents:UIControlEventTouchUpInside];
-                    [self.view addSubview:pay]; [self.view addSubview:cancel];
-                }
-            }
-        }
-        else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Donation"]){
-            [self.view addSubview:disp];
-            [self.view addSubview:disp_text];
-            [self.view addSubview:fb];
-            [self.view addSubview:fb_text];
-            [self.view addSubview:twit];
-            [self.view addSubview:twit_text];
-        }
-        else if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Transfer"]) {
-            if([[self.trans objectForKey:@"MemberId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
-                [self.view addSubview:disp];
-                [self.view addSubview:disp_text]; 
-            }
-            else {
-                [fb setStyleId:@"details_twit_donate"];
-                [fb_text setFrame:fb.frame];
-                [twit setStyleId:@"details_disp"];
-                [twit_text setFrame:twit.frame];
-            }
-            [self.view addSubview:pay_back];
-            [self.view addSubview:pay_text];
-            [self.view addSubview:fb];
-            [self.view addSubview:fb_text];
-            [self.view addSubview:twit];
-            [self.view addSubview:twit_text];
+            [remind setTitle:@"Remind" forState:UIControlStateNormal];
+            [remind setStyleClass:@"details_button_remind"];
+            [remind setTag:14];
+            [remind setEnabled:YES];
+            [remind addTarget:self action:@selector(remind_friend) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:remind];
         }
     }
+
+    else if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
+    {
+            
+        if ([[self.trans objectForKey:@"MemberId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
+            [self.view addSubview:disp];
+            [self.view addSubview:disp_text];
+        }
+        else {
+            [fb setStyleId:@"details_twit_donate"];
+            [fb_text setFrame:fb.frame];
+            [twit setStyleId:@"details_disp"];
+            [twit_text setFrame:twit.frame];
+        }
+        [self.view addSubview:pay_back];
+        [self.view addSubview:pay_text];
+        [self.view addSubview:fb];
+        [self.view addSubview:fb_text];
+        [self.view addSubview:twit];
+        [self.view addSubview:twit_text];
+    }
     
-    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+    
+    if ([[UIScreen mainScreen] bounds].size.height == 480)
+    {
         UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
                                                                               [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
         [scroll setDelegate:self];
@@ -349,12 +384,14 @@
     [serveOBJ setDelegate:self];
     [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
 }
+
 -(void)remind_friend{
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder" message:@"Do you want to send a reminder about this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
    
     [av setTag:1012];
     [av show];
 }
+
 -(void)Map_LightBox{
     overlay=[[UIView alloc]init];
     overlay.frame=CGRectMake(0, 0, 320, 568);
@@ -372,7 +409,7 @@
     mainView.layer.cornerRadius=5;
     mapView_.layer.borderColor=[[UIColor blackColor]CGColor];
     mapView_.layer.borderWidth=1;
-    mainView.frame=CGRectMake(10, 70, 300, self.view.frame.size.height-25);
+    mainView.frame=CGRectMake(10, 70, 300, self.view.frame.size.height-35);
     mainView.backgroundColor=[UIColor whiteColor];
     
     [overlay addSubview:mainView];
@@ -389,10 +426,8 @@
 
     UILabel*title=[[UILabel alloc]initWithFrame:CGRectMake(0, 10, 300, 30)];
     [title setBackgroundColor:[UIColor clearColor]];
-    title.textAlignment=NSTextAlignmentCenter;
     [title setText:@"Transfer Location"];
-    title.font=[UIFont fontWithName:@"Roboto" size:20];
-    [title setTextColor:kNoochBlue];
+    [title setStyleClass:@"lightbox_title"];
     [mainView addSubview:title];
 
     UIView*space_container=[[UIView alloc]initWithFrame:CGRectMake(0, 34, 300, 10)];
@@ -410,9 +445,12 @@
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:lat
                                                             longitude:lon
                                                                  zoom:10];
+    
     mapView_ = [GMSMapView mapWithFrame:CGRectMake(11, 51, 278, 298) camera:camera];
     [mapView_ setFrame:CGRectMake(11, 51, 278, 298)];
     [mainView addSubview:mapView_];
+    mapView_.layer.cornerRadius=5;
+    mapView_.clipsToBounds=YES;
     mapView_.myLocationEnabled = YES;
     // Creates a marker in the center of the map.
     GMSMarker *marker = [[GMSMarker alloc] init];
@@ -434,13 +472,15 @@
     desc.numberOfLines=0;
     [desc_container addSubview:desc];
 
-    UIView*line_container=[[UIView alloc]initWithFrame:CGRectMake(0, desc_container.frame.origin.y+desc_container.frame.size.height+5, 300, 1)];
+    UIView*line_container=[[UIView alloc]initWithFrame:CGRectMake(0, desc_container.frame.origin.y+desc_container.frame.size.height+6, 300, 1)];
     line_container.backgroundColor=[UIColor colorWithRed:229.0f/255.0f green:229.0f/255.0f blue:229.0f/255.0f alpha:1.0];
     [mainView addSubview:line_container];
     
     UIButton *btnclose=[UIButton buttonWithType:UIButtonTypeCustom];
     [btnclose setStyleClass:@"button_blue_closeLightbox"];
     [btnclose setTitle:@"Close" forState:UIControlStateNormal];
+    [btnclose setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.4) forState:UIControlStateNormal];
+    btnclose.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
     [mainView addSubview:btnclose];
 
@@ -515,11 +555,7 @@
         [set show];
         return;
     }
-//    if ( ![[assist shared]isBankVerified]) {
-//        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Attach A Bank Account" message:@"Please validate your bank account before proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-//        [alert show];
-//        return;
-//    }
+
     NSMutableDictionary *input = [self.trans mutableCopy];
     [input setValue:@"accept" forKey:@"response"];
     [[assist shared]setRequestMultiple:NO];
@@ -574,11 +610,7 @@
         [set show];
         return;
     }
-//    if ( ![[assist shared]isBankVerified]) {
-//        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Funding Source Needed" message:@"Please validate your bank account before proceeding." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-//        [alert show];
-//        return;
-//    }
+
     NSMutableDictionary *input = [self.trans mutableCopy];
     if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
         NSString*MemberId=[input valueForKey:@"RecepientId"];
@@ -680,43 +712,50 @@
 -(void)finishedPosting {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-- (void) dispute {
+
+- (void) dispute
+{
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Confirm Dispute" message:@"To protect your money, if you dispute a transfer your Nooch account will be temporarily suspended while we investigate." delegate:self cancelButtonTitle:@"Yes - Dispute" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1];
 }
 
-- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (alertView.tag==1012 && buttonIndex==0) {
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag==1012 && buttonIndex==0)  // REMIND
+    {
         NSString * memId1 = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
         serve*serveObj=[serve new];
         [serveObj setDelegate:self];
         serveObj.tagName=@"remind";
         [serveObj SendReminderToRecepient:[self.trans valueForKey:@"TransactionId"] memberId:memId1];
     }
-    else if (alertView.tag==147 && buttonIndex==1) {
+    
+    else if (alertView.tag==147 && buttonIndex==1)  // PROFILE INCOMPLETE, GO TO PROFILE
+    {
         ProfileInfo *prof = [ProfileInfo new];
         isProfileOpenFromSideBar=NO;
         [self.navigationController pushViewController:prof animated:YES];
-        
     }
-    else if (alertView.tag == 1) {
-        if (buttonIndex == 0) {
-            self.responseData = [NSMutableData data];
-            NSMutableDictionary*dict=[[NSMutableDictionary alloc] init];            
-            NSString * memId = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
-            [dict setObject :memId forKey:@"MemberId"];
-            [ dict setObject:[self.trans valueForKey:@"RecepientId"] forKey:@"RecepientId"];
-            [ dict setObject:[self.trans valueForKey:@"TransactionId"] forKey:@"TransactionId"];
-            [ dict setObject:@"SENT" forKey:@"ListType"];
-            //NSLog(@"%@",dict);
-            serve*serveobj=[serve new];
-            [serveobj setDelegate:self];
-            serveobj.tagName=@"dispute";
-            [serveobj RaiseDispute:dict];
-        }
+    
+    else if (alertView.tag == 1 && buttonIndex == 0)  // DISPUTE
+    {
+        self.responseData = [NSMutableData data];
+        NSMutableDictionary*dict=[[NSMutableDictionary alloc] init];
+        NSString * memId = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
+        [dict setObject :memId forKey:@"MemberId"];
+        [dict setObject:[self.trans valueForKey:@"RecepientId"] forKey:@"RecepientId"];
+        [dict setObject:[self.trans valueForKey:@"TransactionId"] forKey:@"TransactionId"];
+        [dict setObject:@"SENT" forKey:@"ListType"];
+        //NSLog(@"%@",dict);
+        serve*serveobj=[serve new];
+        [serveobj setDelegate:self];
+        serveobj.tagName=@"dispute";
+        [serveobj RaiseDispute:dict];
     }
-    else if(alertView.tag==568 && buttonIndex==1) {
+    
+    else if(alertView.tag == 568 && buttonIndex == 1)  // USER DISPUTED A TRANSFER, SELECTED "CONTACT SUPPORT" IN ALERT
+    {
         if (![MFMailComposeViewController canSendMail]){
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [av show];
@@ -733,7 +772,9 @@
         [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
         [self presentViewController:mailComposer animated:YES completion:nil];
            }
-    else if(alertView.tag==1010 && buttonIndex==0) {
+    
+    else if(alertView.tag==1010 && buttonIndex==0)  // CANCEL
+    {
       //  NSString * memId = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
         serve*serveObj=[serve new];
         [serveObj setDelegate:self];
@@ -741,15 +782,18 @@
 //      [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Cancelled"];
       //  [serveObj CancelMoneyRequestForExistingNoochUser:[self.trans valueForKey:@"TransactionId"] memberId:memId];
     }
-    else if(alertView.tag==1011 && buttonIndex==0) {
+    
+    else if(alertView.tag==1011 && buttonIndex==0)  // REJECT
+    {
         serve*serveObj=[serve new];
         [serveObj setDelegate:self];
         serveObj.tagName=@"reject";
         [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Rejected"];
     }
   
-    else if (alertView.tag == 50 && buttonIndex == 1) {
-        if (![MFMailComposeViewController canSendMail]){
+    else if (alertView.tag == 50 && buttonIndex == 1)  // IF USER IS SUSPENDED, & TAPS "CONTACT SUPPORT" IN ALERT
+    {
+        if (![MFMailComposeViewController canSendMail]) {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't seem to have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [av show];
             return;
@@ -769,34 +813,40 @@
 }
 
 #pragma mark - server delegation
-- (void) listen:(NSString *)result tagName:(NSString *)tagName {
-    if ([tagName isEqualToString:@"cancel_invite"]) {
+- (void) listen:(NSString *)result tagName:(NSString *)tagName
+{
+    if ([tagName isEqualToString:@"cancel_invite"])
+    {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Invitation Cancelled" message:@"You have withdrawn this transfer successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [nav_ctrl popViewControllerAnimated:YES];
     }
-    else if ([tagName isEqualToString:@"tranDetail"]) {
+    
+    else if ([tagName isEqualToString:@"tranDetail"])
+    {
         [blankView removeFromSuperview];
         NSError *error;
 
-      loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        if (![[self.trans objectForKey:@"Latitude"] intValue]==0&& ![[self.trans objectForKey:@"Longitude"] intValue]==0) {
+        loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        
+        if (![[self.trans objectForKey:@"Latitude"] intValue] == 0 && ![[self.trans objectForKey:@"Longitude"] intValue] == 0)
+        {
             // self.trans=[loginResult mutableCopy];
             NSLog(@"%f",[[self.trans objectForKey:@"Latitude"] floatValue]);
-             NSLog(@"%f",[[self.trans objectForKey:@"Longitude"] floatValue]);
+            NSLog(@"%f",[[self.trans objectForKey:@"Longitude"] floatValue]);
             
-             lat = [[self.trans objectForKey:@"Latitude"] floatValue];
-             lon = [[self.trans objectForKey:@"Longitude"] floatValue];
+            lat = [[self.trans objectForKey:@"Latitude"] floatValue];
+            lon = [[self.trans objectForKey:@"Longitude"] floatValue];
             
             GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:lat
                                                                     longitude:lon
                                                                          zoom:11];
             
-            
             UIButton*btnShowOverlay=[[UIButton alloc]init];
             
             UIImageView*imgTran;
-            if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
+            if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL)
+            {
                 NSArray* bytedata = [loginResult valueForKey:@"Picture"];
                 unsigned c = bytedata.count;
                 uint8_t *bytes = malloc(sizeof(*bytes) * c);
@@ -868,11 +918,13 @@
             [btnShowOverlay addTarget:self action:@selector(Map_LightBox) forControlEvents:UIControlEventTouchUpInside];
             
         }
-        if ([self.trans objectForKey:@"Amount"]!=NULL) {
+
+        if ([self.trans objectForKey:@"Amount"] != NULL)
+        {
             [amount setText:[NSString stringWithFormat:@"$%.02f",[[loginResult valueForKey:@"Amount"] floatValue]]];
         }
-        [amount setStyleClass:@"details_amount"];
         
+        [amount setStyleClass:@"details_amount"];
         [amount setTextAlignment:NSTextAlignmentCenter];
 
         UILabel *location = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 320, 60)];
@@ -884,28 +936,38 @@
         }
         location.numberOfLines=2;
         [location setStyleClass:@"details_label_location"];
+        
         if ([[UIScreen mainScreen] bounds].size.height == 480) {
             [location setStyleClass:@"details_label_location_4"];
         }
-        if ([self.trans objectForKey:@"AddressLine1"]!=NULL && [self.trans objectForKey:@"City"]!=NULL && [[assist shared]islocationAllowed] ) {
-
+        
+        if ([self.trans objectForKey:@"AddressLine1"] != NULL &&
+            [self.trans objectForKey:@"City"] != NULL &&
+            [[assist shared]islocationAllowed] )
+        {
 			NSString*address=[[self.trans objectForKey:@"AddressLine1"] stringByReplacingOccurrencesOfString:@"," withString:@""];
-            if ([self.trans objectForKey:@"AddressLine2"]!=NULL) {
+            
+            if ([self.trans objectForKey:@"AddressLine2"] != NULL)
+            {
                 address=[address stringByAppendingString:[self.trans objectForKey:@"AddressLine2"]];
                 [location setText:[NSString stringWithFormat:@"%@",address]];
                 [self.view addSubview:location];
             }
-            if ([[self.trans objectForKey:@"AddressLine1"]length]==0 && [[self.trans objectForKey:@"City"]length]==0) {
+            
+            if ([[self.trans objectForKey:@"AddressLine1"]length] == 0 && [[self.trans objectForKey:@"City"]length] == 0)
+            {
                 [location setText:@""];
             }
         }
 
         //Set Status
         UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 320, 30)];
-        [status setTag:13];
+        [status setTag:12];
         [status setStyleClass:@"details_label"];
         [status setStyleId:@"details_status"];
-        if ([loginResult objectForKey:@"TransactionDate"]!=NULL) {
+
+        if ([loginResult objectForKey:@"TransactionDate"]!=NULL)
+        {
             NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
             [dateFormatter setAMSymbol:@"AM"];
@@ -916,48 +978,43 @@
             [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
 
             NSString*statusstr;
-            if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
-                if ([[loginResult objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
-                    if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-                        statusstr=@"Cancelled";
-                        [status setStyleClass:@"red_text"];
-                    }
-                    else if ([[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
-                        statusstr=@"Rejected";
-                        [status setStyleClass:@"red_text"];
-                    }
-                    else {
-                        statusstr=@"Pending";
-                        [status setStyleClass:@"yellow_text"];
-                    }
+
+            if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Request"])
+            {
+                if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
+                    statusstr=@"Cancelled";
+                    [status setStyleClass:@"red_text"];
+                }
+                else if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
+                    statusstr=@"Rejected";
+                    [status setStyleClass:@"red_text"];
                 }
                 else {
-                    if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-                        statusstr=@"Cancelled";
-                        [status setStyleClass:@"red_text"];
-                    }
-                    else if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
-                        statusstr=@"Rejected";
-                        [status setStyleClass:@"red_text"];
-                    }
-                    else {
-                        statusstr=@"Pending";
-                        [status setStyleClass:@"yellow_text"];
-                    }
+                    statusstr=@"Pending";
+                    [status setStyleClass:@"yellow_text"];
                 }
             }
-            else if([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"] ||
-			        [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Donation"] ||
-					[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]||
-					[[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"]) {
+            else if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"])
+            {
+                statusstr=@"Cancelled";
+                [status setStyleClass:@"red_text"];
+            }
+            else if([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]     ||
+                    [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Donation"] ||
+                    [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]  ||
+                    [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
+            {
                 statusstr=@"Completed";
                 [status setStyleClass:@"green_text"];
             }
-            else if ([[loginResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
-                statusstr=@"Invited";
-                [status setStyleClass:@"green_text"];
+            else if ([[loginResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
+                     [[loginResult valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
+            {
+                statusstr=@"Invited - Pending";
+                [status setStyleClass:@"yellow_text"];
             }
-            else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"]) {
+            else if ( ![[self.trans valueForKey:@"DisputeId"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"DisputeId"]!=NULL )
+            {
                 statusstr=@"Disputed:";
                 [status setStyleClass:@"red_text"];
 
@@ -985,16 +1042,18 @@
 
             [status setText:statusstr];
             [self.view addSubview:status];
-            if(![[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"]) {
-
-                NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
+            
+            if ( [[self.trans valueForKey:@"DisputeId"] isKindOfClass:[NSNull class]] || [self.trans valueForKey:@"DisputeId"] == NULL )
+            {
+                NSArray *arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
                 UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(90, 190, 140, 30)];
                 [datelbl setTextAlignment:NSTextAlignmentCenter]; 
-				[datelbl setFont:[UIFont fontWithName:@"Roboto-Light" size:16]];
+                [datelbl setFont:[UIFont fontWithName:@"Roboto-Light" size:16]];
                 [datelbl setTextColor:kNoochGrayDark];
-                [self.view addSubview:datelbl];
                 datelbl.text=[NSString stringWithFormat:@"%@ %@, %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]];
+                [self.view addSubview:datelbl];
             }
+
         }
 
         serve *info = [serve new];
@@ -1004,18 +1063,24 @@
         NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
         [info getDetails:[defaults valueForKey:@"MemberId"]];
     }
-    if ([tagName isEqualToString:@"reject"]) {
+
+    if ([tagName isEqualToString:@"reject"])
+    {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Request Rejected" message:@"No problem, you have rejected this request successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [nav_ctrl popToRootViewControllerAnimated:YES];
     }
-    else if ([tagName isEqualToString:@"cancel"]) {
+
+    else if ([tagName isEqualToString:@"cancel"])
+    {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Request Cancelled" message:@"You got it. That request has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-        for (UIView *subview in self.view.subviews) {
+        
+        for (UIView *subview in self.view.subviews)
+        {
             if (subview.tag == 13)  // Remove 'Cancel' Button
                 [subview removeFromSuperview];
-			if (subview.tag == 14)  // Remove 'Remind' Button
+            if (subview.tag == 14)  // Remove 'Remind' Button
                 [subview removeFromSuperview];
         }
         UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 320, 30)];
@@ -1026,16 +1091,31 @@
         [status setText:statusstr];
         [self.view addSubview:status];
     }
-    else if ([tagName isEqualToString:@"dispute"]) {
+    
+    else if ([tagName isEqualToString:@"dispute"])
+    {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Transfer Disputed" message:@"Thanks for letting us know. We will investigate and may contact you for more information.\n\nIf you would like to tell us more please contact Nooch Support." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
         [alert show];
         [alert setTag:568];
+        UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 320, 30)];
+        [status setStyleClass:@"details_label"];
+        [status setStyleId:@"details_status"];
+        NSString *statusstr=@"Disputed";
+        [status setStyleClass:@"red_text"];
+        [status setText:statusstr];
+        [self.view addSubview:status];
         [[assist shared]setSusPended:YES];
     }
-    else if([tagName isEqualToString:@"info"]){
+    
+    else if([tagName isEqualToString:@"info"])
+    {
         NSError *error;
         NSMutableDictionary *Result = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        if ([Result valueForKey:@"Status"]!=Nil  && ![[Result valueForKey:@"Status"] isKindOfClass:[NSNull class]]&& [Result valueForKey:@"Status"] !=NULL) {
+        
+        if ([Result valueForKey:@"Status"] != Nil &&
+           ![[Result valueForKey:@"Status"] isKindOfClass:[NSNull class]] &&
+            [Result valueForKey:@"Status"] != NULL)
+        {
             [user setObject:[Result valueForKey:@"Status"] forKey:@"Status"];
             NSString*url=[Result valueForKey:@"PhotoUrl"];
             
@@ -1043,18 +1123,22 @@
             [user setObject:url forKey:@"Photo"];
         }
     }
-    else if ([tagName isEqualToString:@"remind"]) {
+    
+    else if ([tagName isEqualToString:@"remind"])
+    {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Reminder Sent Successfully" message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
 
 }
+
 -(void)DisputeDetailClicked:(UIButton*)sender{
     //[sender setTitle:@"See Details" forState:UIControlStateNormal];
     //[sender setSelected:NO];
     DisputeDetail*dd=[[DisputeDetail alloc]initWithData:loginResult];
     [self.navigationController pushViewController:dd animated:YES];
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
