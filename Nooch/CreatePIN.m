@@ -144,6 +144,13 @@
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
 
+    NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  [UIColor whiteColor], UITextAttributeTextColor,
+                                  Rgb2UIColor(19, 32, 38, .25), UITextAttributeTextShadowColor,
+                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, 1.0)], UITextAttributeTextShadowOffset,
+                                  nil];
+    [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
+    
     [self.navigationItem setTitle:@"Create PIN"];
 
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 140, 300, 40)];

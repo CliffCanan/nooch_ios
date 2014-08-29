@@ -24,9 +24,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    [self.navigationItem setTitle:@"Limits and Fees"];   
+
+    [self.navigationItem setTitle:@"Limits and Fees"];
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
@@ -42,7 +43,6 @@
     self.hud.labelText = @"Loading...";
     [self.hud show:YES];
 
-   
     NSURL *webURL = [NSURL URLWithString:@"https://www.nooch.com/2248-112188/"];
     LimitsAndFeesView=[[UIWebView alloc]initWithFrame:self.view.frame];
     LimitsAndFeesView.delegate = self;
@@ -85,7 +85,6 @@
 }
 
 
-
 - (void)viewDidUnload {
     self.hud=nil;
     
@@ -97,7 +96,7 @@
 
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
-{   
+{
 }
 - (void)didReceiveMemoryWarning
 {

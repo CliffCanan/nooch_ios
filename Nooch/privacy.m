@@ -2,8 +2,8 @@
 //  privacy.m
 //  Nooch
 //
-//  Created by administrator on 12/05/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Created by administrator on 6/05/14.
+//  Copyright 2014 Nooch Inc. All rights reserved.
 //
 
 #import "privacy.h"
@@ -40,29 +40,28 @@
     [self setSpinner:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     privacyView.backgroundColor = [UIColor clearColor];
     privacyView.opaque = 0;
     spinner.hidesWhenStopped = YES;
     [spinner startAnimating];
     self.navigationItem.title = @"Privacy Policy";
-    NSURL *webURL = [NSURL URLWithString:@"https://www.nooch.com/privacy/"];
-    privacyView=[[UIWebView alloc]initWithFrame:self.view.frame];
-    privacyView.delegate = self;
     
+    NSURL *webURL = [NSURL URLWithString:@"https://www.nooch.com/privacy/"];
+    privacyView=[[UIWebView alloc]initWithFrame:CGRectMake(0, -2, 320, [[UIScreen mainScreen] bounds].size.height - 62)];
+    privacyView.delegate = self;
     [privacyView loadRequest:[NSURLRequest requestWithURL:webURL]];
     privacyView.scalesPageToFit = YES;
-    
     privacyView.scrollView.hidden = NO;
     [privacyView setMultipleTouchEnabled:YES];
     [self.view addSubview:privacyView];
-    // Do any additional setup after loading the view.
 }
+
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     return YES;
@@ -95,8 +94,6 @@
     //[navCtrl dismissModalViewControllerAnimated:YES];
 }
 
-
-
 # pragma mark - serve delegation
 
 -(void)listen:(NSString *)result tagName:(NSString*)tagName
@@ -114,14 +111,11 @@
             [subView flashScrollIndicators];
         }
     }
-
 }
-
 
 - (IBAction)continueButtonAction
 {
    //[navCtrl dismissModalViewControllerAnimated:YES];
 }
-
 
 @end

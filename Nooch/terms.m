@@ -2,8 +2,8 @@
 //  terms.m
 //  Nooch
 //
-//  Created by administrator on 12/05/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Created by administrator on 6/05/14.
+//  Copyright 2014 Nooch Inc. All rights reserved.
 //
 
 #import "terms.h"
@@ -15,7 +15,6 @@
 @synthesize termsView,spinner;
 
 # pragma mark - View lifecycle
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil value:(NSString *)sendValue
 {
@@ -47,20 +46,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title=@"User Agreement";
-//    spinner.hidesWhenStopped = YES;
-//    [spinner startAnimating];
-//    
-//    termsView.backgroundColor = [UIColor clearColor];
-//    termsView.opaque = 0;
-//    
-//    [self navCustomization];
-//    self.navigationItem.title = @"Terms of Service";
-//
-//    serve *tos = [serve new];
-//    tos.Delegate = self;
-//    [tos tos];
+
     NSURL *webURL = [NSURL URLWithString:@"https://www.nooch.com/tos"];
-    termsView=[[UIWebView alloc]initWithFrame:self.view.frame];
+    termsView=[[UIWebView alloc]initWithFrame:CGRectMake(0, -2, 320, [[UIScreen mainScreen] bounds].size.height - 62)];
     termsView.delegate = self;
     
     [termsView loadRequest:[NSURLRequest requestWithURL:webURL]];
@@ -69,13 +57,12 @@
     termsView.scrollView.hidden = NO;
     [termsView setMultipleTouchEnabled:YES];
     [self.view addSubview:termsView];
-    // Do any additional setup after loading the view.
 }
+
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     return YES;
 }
-
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
@@ -92,7 +79,6 @@
     app.networkActivityIndicatorVisible = NO;
     [self.navigationItem setRightBarButtonItem:nil];
 }
-
 
 -(void)navCustomization
 {
@@ -114,6 +100,7 @@
     NSDictionary *template = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
     [termsView loadHTMLString:[template objectForKey:@"Result"] baseURL:nil];
     [spinner stopAnimating];
+    
     for (id subView in [termsView subviews]) {
         if ([subView respondsToSelector:@selector(flashScrollIndicators)]) {
             [subView flashScrollIndicators];
