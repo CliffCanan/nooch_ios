@@ -35,7 +35,7 @@
     [super viewWillAppear:animated];
     self.pin_check = @"";
  
-    self.trackedViewName = @"CreatePin Screen";
+    self.trackedViewName = @"Create Pin Screen";
 
     [self.pin setText:@""];
     [self.first_num setBackgroundColor:[UIColor clearColor]];
@@ -68,15 +68,18 @@
                 break;
         }
     }
-    else{
+    else
+    {
         UIColor *which = kNoochGreen;
-        switch (len) {
+        switch (len)
+        {
             case 5:
                 return NO;
                 break;
             case 4:
                 [self.fourth_num setBackgroundColor:which];
-                if ([self.pin_check length] != 4) {
+                if ([self.pin_check length] != 4)
+                {
                     self.pin_check = [NSString stringWithFormat:@"%@%@",textField.text,string];
                     [self.prompt setText:@"Confirm Your PIN"];
                     [self.pin setText:@""];
@@ -86,13 +89,17 @@
                     [self.fourth_num setBackgroundColor:[UIColor clearColor]];
                     return NO;
                 }
-                else{
-                    if ([self.pin_check isEqualToString:[NSString stringWithFormat:@"%@%@",textField.text,string]]) {
+                else
+                {
+                    if ([self.pin_check isEqualToString:[NSString stringWithFormat:@"%@%@",textField.text,string]])
+                    {
                         [self.user setObject:[NSString stringWithFormat:@"%@%@",textField.text,string] forKey:@"pin_number"];
                         //push invite code
                         ReferralCode *code_entry = [[ReferralCode alloc] initWithData:self.user];
                         [self.navigationController pushViewController:code_entry animated:YES];
-                    }else{
+                    }
+                    else
+                    {
                         self.pin_check = @"";
                         [self.pin setText:@""];
                         [self.prompt setText:@"The PINs you entered did not match! Please try again."];
@@ -157,6 +164,14 @@
     [self.navigationItem setTitle:@"Create PIN"];
 
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 140, 300, 40)];
+    if ([[UIScreen mainScreen] bounds].size.height == 480)
+    {
+        CGRect frame = title.frame;
+        frame.origin.y = 133;
+        frame.origin.x = 10;
+        title.frame = frame;
+        // UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 140, 300, 40)];
+    }
     [title setText:@"Create your PIN"];
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
@@ -164,7 +179,14 @@
     self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 175, 280, 50)];
     [self.prompt setNumberOfLines:2];
     [self.prompt setText:@"You'll be asked to enter this PIN anytime you send or request money."];
-    [self.prompt setStyleClass:@"instruction_text"];
+    
+    
+    if ([UIScreen mainScreen].bounds.size.height > 500) {
+        [self.prompt setStyleClass:@"instruction_text"];
+    }
+    else {
+        [self.prompt setStyleClass:@"instruction_text_smscrn"];
+    }
     [self.view addSubview:self.prompt];
     
     self.pin = [UITextField new]; [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
@@ -176,18 +198,21 @@
     self.third_num = [[UIView alloc] initWithFrame:CGRectMake(168,250,30,30)];
     self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(214,250,30,30)];
 
-    if ([[UIScreen mainScreen] bounds].size.height == 480) {
-        self.first_num = [[UIView alloc] initWithFrame:CGRectMake(76,230,30,30)];
-        self.second_num = [[UIView alloc] initWithFrame:CGRectMake(122,230,30,30)];
-        self.third_num = [[UIView alloc] initWithFrame:CGRectMake(168,230,30,30)];
-        self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(214,230,30,30)];
-    }
-
-    //self.first_num.alpha = self.second_num.alpha = self.third_num.alpha = self.fourth_num.alpha = 0.5;
     self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 15;
+    
+    if ([[UIScreen mainScreen] bounds].size.height == 480)
+    {
+        self.first_num = [[UIView alloc] initWithFrame:CGRectMake(73,225,24,24)];
+        self.second_num = [[UIView alloc] initWithFrame:CGRectMake(121,225,24,24)];
+        self.third_num = [[UIView alloc] initWithFrame:CGRectMake(169,225,24,24)];
+        self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(217,225,24,24)];
+        self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 12;
+    }
+    
     self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor clearColor];
-    self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 4;
+    self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
     self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
+    
     [self.view addSubview:self.first_num];
     [self.view addSubview:self.second_num];
     [self.view addSubview:self.third_num];

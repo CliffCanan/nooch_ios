@@ -182,6 +182,7 @@
 		border: 1px solid #C41713;
 		border-radius: 4px;
 		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.45);
+        opacity: .92;
     }
     #email_unverified {
         left: -1px;
@@ -191,6 +192,7 @@
 		border: 1px solid #C41713;
 		border-radius: 4px;
 		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.45);
+        opacity: .92;
     }
     #phone_unverified {
         left: -1px;
@@ -200,6 +202,7 @@
 		border: 1px solid #C41713;
 		border-radius: 4px;
 		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.45);
+        opacity: .92;
     }
 
 	 /******************************/
@@ -232,6 +235,19 @@
 			font-size			: 19px;
 			border				: 1px solid #29A1DE;
 		}
+        .button_blue_closeLightbox_smscrn {
+            background-image	: linear-gradient(#6dbee8, #41abe1);
+            width				: 110px;
+			top                 : 402;
+            height				: 37px;
+			left                : 170px;
+			color 				: white;
+			border-radius		: 5px;
+			font-family			: "Roboto";
+			font-weight         : regular;
+			font-size			: 18px;
+			border				: 1px solid #29A1DE;
+        }
 		/****  GREEN BUTTON GRADIENT  ****/
 		.button_green:normal {
 			width				: 280px;
@@ -620,6 +636,16 @@
 		left            : 20px;
 		height			: 70px;
 	}
+    .instruction_text_smscrn {
+		font-family		: "Roboto";
+		font-weight     : regular;
+		font-size		: 15px;
+		text-align      : center;
+		color 			: #313233;
+		width			: 280px;
+		left            : 20px;
+		height			: 39px;
+	}
 
     .pin_entry_feedback {
         text-align: center;
@@ -876,11 +902,20 @@ table-view#select_recipientwithoutSeperator {
 
 	/**  Background box for all the content of the How Much? screen.  This element should also be assigned the ".raised_view" class. **/  
 	.howmuch_mainbox {
-		left				: 9px;
+		left				: 8px;
 		top					: 10px;
-		width				: 302px;
+		width				: 304px;
 		height				: 250px;
 		border-radius		: 4px;
+        box-shadow			: 0 2px 2px rgba(109,110,113,0.6);
+	}
+    .howmuch_mainbox_smscrn {
+		left				: 8px;
+		top					: 4px;
+		width				: 304px;
+		height				: 250px;
+		border-radius		: 4px;
+        box-shadow			: 0 2px 2px rgba(109,110,113,0.6);
 	}
 	
 	/**  Just the text "To:"  **/
@@ -963,7 +998,7 @@ table-view#select_recipientwithoutSeperator {
 	}
     #howmuch_amountfield_4 {
 		left                : 120px;
-		top					: 53px;
+		top					: 52px;
 		width				: 180px;
 		height				: 50px;
 		font-family			: "Roboto";
@@ -976,7 +1011,6 @@ table-view#select_recipientwithoutSeperator {
 	/**  Send and Request buttons. **/ 
 	.howmuch_buttons {
 		width				: 149px;
-		height				: 56px;
 		font-family			: "Roboto";
 		font-size			: 21px;
 		font-weight         : light;
@@ -987,13 +1021,15 @@ table-view#select_recipientwithoutSeperator {
 
 	/**  Sets the position for the Request Button. **/
 	#howmuch_request {
-		background-image: linear-gradient(#6dbee8, #41abe1);
+		height: 56px;
+        background-image: linear-gradient(#6dbee8, #41abe1);
 		border-bottom-left-radius: 4px;
 		left: 9px;
 		top: 204px;
         opacity : 1;
 	}
     #howmuch_request_4 {
+        height				: 50px;
 		background-image: linear-gradient(#6dbee8, #41abe1);
 		border-bottom-left-radius: 4px;
 		left: 9px;
@@ -1001,6 +1037,7 @@ table-view#select_recipientwithoutSeperator {
 	}
 	/**  Sets the position for the Send Button. **/
 	#howmuch_send {
+        height: 56px;
 		background-image: linear-gradient(#7fd034, #6ab029);
 		left: 162px;
 		top: 204px; 
@@ -1008,6 +1045,7 @@ table-view#select_recipientwithoutSeperator {
         opacity : 1;
 	}
     #howmuch_send_4 {
+        height: 50px;
 		background-image: linear-gradient(#7fd034, #6ab029);
 		left: 162px;
 		top: 139px;
@@ -1166,7 +1204,7 @@ table-view#select_recipientwithoutSeperator {
 		top     		: 154px;
 		border 			: 1px solid;
 		border-color	: #939598;
-		border-radius	: 2px;
+		border-radius	: 3px;
         text-align      : center;
 		font-family 	: "Roboto";
 		font-weight 	: light;
@@ -1174,17 +1212,17 @@ table-view#select_recipientwithoutSeperator {
 		color           : #414042px;
 	}
     #howmuch_memo_4 {
-		width 			: 284px;
-		left    		: 18px;
+		width 			: 210px;
+		left    		: 92px;
 		top     		: 104px;
         height      	: 30px;
 		border 			: 1px solid;
 		border-color	: #939598;
-		border-radius	: 2px;
+		border-radius	: 3px;
         text-align      : center;
 		font-family 	: "Roboto";
 		font-weight 	: light;
-		font-size       : 16px;
+		font-size       : 15px;
 		color           : #414042px;
 	}
 	
@@ -2710,7 +2748,7 @@ table-view#select_recipientwithoutSeperator {
     .refer_name {
 		width				: 160px;
 		height				: 58px;
-		left                : 70px;
+		left                : 69px;
 		top                 : 1px;
 		font-family			: "Roboto";
 		font-weight         : regular;
@@ -2721,7 +2759,7 @@ table-view#select_recipientwithoutSeperator {
 	.refer_datetext {
 		width				: 85px;
 		height				: 58px;
-		left                : 212px;
+		left                : 209px;
         top                 : 1px;
 		font-family			: "Roboto";
 		font-weight         : light;

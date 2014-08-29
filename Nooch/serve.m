@@ -207,8 +207,10 @@ NSString *amnt;
         NSLog(@"connect error");
     
 }
+
 //-(void)getLatestTrans
--(void)getMemIdFromuUsername:(NSString*)username{
+-(void)getMemIdFromuUsername:(NSString*)username
+{
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
@@ -218,6 +220,7 @@ NSString *amnt;
     if (!connection)
         NSLog(@"connect error");
 }
+
 -(void)getMemberIds:(NSMutableArray*)input{
     self.responseData = [[NSMutableData alloc] init];
     for (NSMutableDictionary *temp in input) {

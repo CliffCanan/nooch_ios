@@ -291,8 +291,16 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
 }
 
--(void)dismiss_suspended_alert {
-    [self.suspended removeFromSuperview];
+-(void)dismiss_suspended_alert
+{
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.45];
+    
+    CGRect frame = self.suspended.frame;
+    frame.origin.y = -58;
+    [self.suspended setFrame:frame];
+    
+//    [self.suspended removeFromSuperview];
     CGRect rect= self.profile_incomplete.frame;
     rect.origin.y-=54;
     self.profile_incomplete.frame=rect;
@@ -300,18 +308,37 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     CGRect rect2 = self.phone_incomplete.frame;
     rect2.origin.y-=54;
     self.phone_incomplete.frame=rect2;
+    [UIView commitAnimations];
 }
 
--(void)dismiss_profile_unvalidated {
-    [self.profile_incomplete removeFromSuperview];
+-(void)dismiss_profile_unvalidated
+{
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.45];
+    
+    CGRect frame = self.profile_incomplete.frame;
+    frame.origin.y = -58;
+    [self.profile_incomplete setFrame:frame];
     
     CGRect rect2 = self.phone_incomplete.frame;
     rect2.origin.y-=54;
     self.phone_incomplete.frame=rect2;
+
+    [UIView commitAnimations];
+    //[self.profile_incomplete removeFromSuperview];
 }
 
--(void)dismiss_phone_unvalidated {
-    [self.phone_incomplete removeFromSuperview];
+-(void)dismiss_phone_unvalidated
+{
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.45];
+    
+    CGRect frame = self.phone_incomplete.frame;
+    frame.origin.y = -58;
+    [self.phone_incomplete setFrame:frame];
+    
+    [UIView commitAnimations];
+  // [self.phone_incomplete removeFromSuperview];
 }
 
 -(void)address_book
@@ -861,28 +888,31 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     {
         NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
         
-        
-        if ([[assist shared]getSuspended]) {
+        if ([[assist shared]getSuspended])
+        {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com for more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
             [alert setTag:50];
             [alert show];
             return;
         }
         
-        if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
+        if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] )
+        {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Verify Your Email" message:@"Terribly sorry, but before you send money, please just confirm your email address by clicking the link we sent to the email address you used to sign up." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
             [alert show];
             return;
         }
         
-        if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
+        if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
+        {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe" message:@"Please take 1 minute to validate your identity by completing your Nooch profile (just 4 fields)." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
             [alert setTag:147];
             [alert show];
             return;
         }
         
-        if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+        if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
+        {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame Our Lawyers" message:@"To keep Nooch safe, we ask all users to verify your phone number before before sending money.\n \nIf you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
             [alert setTag:148];
             [alert show];
@@ -912,13 +942,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         else if (favorite[@"UserName"])
         {
             emailID=favorite[@"UserName"];
-            
             serve *emailCheck = [serve new];
             emailCheck.Delegate = self;
             emailCheck.tagName = @"emailCheck";
             [emailCheck getMemIdFromuUsername:[favorite[@"UserName"] lowercaseString]];
         }
-       
     }
 }
 
@@ -977,7 +1005,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
+/*    if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     for(UIView *subview in cell.contentView.subviews)
@@ -996,8 +1024,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [time setText:@"2 days ago"];
     [time setTextColor:kNoochGrayLight];
     [cell.contentView addSubview:time];
-    
+  */
     return cell;
+
 }
 
 #pragma mark - table view delegate
@@ -1178,7 +1207,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         else
         {
-
             favorites=[favorites mutableCopy];
             
             if ([favorites count]<5) {

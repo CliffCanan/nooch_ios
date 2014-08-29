@@ -33,6 +33,11 @@
 -(void) BackClicked:(id) sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.trackedViewName = @"ReferralCode Screen";
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -158,7 +163,7 @@
     }
     else
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Not Quite Right" message:@"Please check your referral code to make sure you entered it correctly.  If you do not have a code, you can request one." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:@"Request Code", nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Not Quite Right" message:@"Please check your referral code to make sure you entered it correctly.  If you do not have a code, you can request one." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Request Code", nil];
         [alert setTag:88];
         [alert show];
         [enter setEnabled:YES];
@@ -309,8 +314,6 @@
         [spinner setHidden:YES];
         Welcome *welc = [Welcome new];
         [self.navigationController pushViewController:welc animated:YES];
-        UIAlertView *decline= [[UIAlertView alloc] initWithTitle:@"Welcome" message:@"Thanks for joining us here at Nooch!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [decline show];
     }
 }
 
@@ -318,7 +321,7 @@
     
     if (alertView.tag == 88)
     {
-        if (buttonIndex == 0)
+        if (buttonIndex == 1)
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"Thank you! We will be in touch with an invite code soon." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];

@@ -68,11 +68,11 @@
 
 -(void)showMenu
 {
-   
     [self savePrompt];
-    
 }
--(void)GoBackOnce{
+
+-(void)GoBackOnce
+{
     if (isSignup) {
         [self.navigationController setNavigationBarHidden:NO];
         [UIView animateWithDuration:0.75
@@ -84,22 +84,22 @@
         [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
         isSignup=NO;
     }
-    else
+    else {
         [self.navigationController popViewControllerAnimated:YES];
-    
-    
-
+    }
 }
--(void)savePrompt2{
-   
-    if ([self.recovery_email.text length]==0) {
+
+-(void)savePrompt2
+{
+    if ([self.recovery_email.text length]==0)
+    {
         
-        if ([self.phone.text length]==0) {
+        if ([self.phone.text length]==0)
+        {
             if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]|| ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]){
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Do you want to save the changes in your profile ?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
                 [alert setTag:5021];
                 [alert show];
-                
                 
                 return;
             }
@@ -107,97 +107,104 @@
                 [self performSelector:@selector(GoBackOnce) withObject:nil ];
           
         }
-        else if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]|| ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]|| ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]) {
+        else if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]|| ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]|| ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text])
+        {
             
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Do you want to save the changes in your profile?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
             [alert setTag:5021];
             [alert show];
             
-            
             return;
         }
-        else
+        else {
           [self performSelector:@selector(GoBackOnce) withObject:nil];
+        }
     }
-    else{
-        if ([self.phone.text length]==0) {
+    else
+    {
+        if ([self.phone.text length]==0)
+        {
             if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]|| ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]||![[dictSavedInfo valueForKey:@"recovery_email"]isEqualToString:self.recovery_email.text]){
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Do you want to save the changes in your profile?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
                 [alert setTag:5021];
                 [alert show];
-                
-                
+
                 return;
             }
-            else
+            else {
               [self performSelector:@selector(GoBackOnce) withObject:nil];
-            
+            }
         }
         
-        else if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]||![[dictSavedInfo valueForKey:@"recovery_email"]isEqualToString:self.recovery_email.text]|| ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]|| ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]) {
+        else if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]||![[dictSavedInfo valueForKey:@"recovery_email"]isEqualToString:self.recovery_email.text]|| ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]|| ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text])
+        {
             
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Do you want to save the changes in your profile?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
             [alert setTag:5021];
             [alert show];
             
-            
             return;
         }
-        else
+        else {
          [self performSelector:@selector(GoBackOnce) withObject:nil];
-        
+        }
     }
 }
--(void)savePrompt{
-    if ([self.recovery_email.text length]==0) {
-        if ([self.phone.text length]==0) {
+
+-(void)savePrompt
+{
+    if ([self.recovery_email.text length]==0)
+    {
+        if ([self.phone.text length]==0)
+        {
             if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]|| ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]){
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Do you want to save the changes in your profile?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
                 [alert setTag:5021];
                 [alert show];
-                
-                
+
                 return;
             }
-            else
+            else {
                 [self.slidingViewController anchorTopViewTo:ECRight];
-            
+            }
         }
         
-        else if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]|| ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]|| ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]) {
+        else if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]|| ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]|| ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text])
+        {
             
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Do you want to save the changes in your profile?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
             [alert setTag:5020];
             [alert show];
-            
-            
+
             return;
         }
-        else
-        [self.slidingViewController anchorTopViewTo:ECRight];
+        else {
+            [self.slidingViewController anchorTopViewTo:ECRight];
+        }
     }
-    else{
-        if ([self.phone.text length]==0) {
+    else
+    {
+        if ([self.phone.text length]==0)
+        {
             if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]|| ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]||![[dictSavedInfo valueForKey:@"recovery_email"]isEqualToString:self.recovery_email.text]){
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Do you want to save the changes in your profile?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
                 [alert setTag:5021];
                 [alert show];
-                
-                
+
                 return;
             }
-            else
+            else {
                 [self.slidingViewController anchorTopViewTo:ECRight];
-            
+            }
         }
 
-        else if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]||![[dictSavedInfo valueForKey:@"recovery_email"]isEqualToString:self.recovery_email.text]|| ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]|| ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]) {
+        else if ([[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"]||![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]||![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]||![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]||![[dictSavedInfo valueForKey:@"recovery_email"]isEqualToString:self.recovery_email.text]|| ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]|| ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text])
+        {
             
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Do you want to save the changes in your profile?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
             [alert setTag:5020];
             [alert show];
-            
-            
+
             return;
         }
         else
@@ -205,7 +212,9 @@
         
     }
 }
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if (alertView.tag==5020 && buttonIndex==0) {
         [self save_changes];
     }
@@ -229,8 +238,8 @@
     self.disclose = NO;
     [self.navigationItem setHidesBackButton:YES];
     
-    if (isProfileOpenFromSideBar) {
-       
+    if (isProfileOpenFromSideBar)
+    {
         UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [hamburger setStyleId:@"navbar_hamburger"];
         [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
@@ -238,7 +247,8 @@
         UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
         [self.navigationItem setLeftBarButtonItem:menu];
     }
-    else{
+    else
+    {
         UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeCustom];
         [hamburger setStyleId:@"navbar_back"];
         [hamburger setImage:[UIImage imageNamed:@"whiteBack.png"] forState:UIControlStateNormal];
@@ -277,29 +287,6 @@
     
     down=0;
 
-//    if (isSignup) {
-//        down=64;
-//        navBar=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
-//        [navBar setBackgroundColor:[UIColor colorWithRed:82.0f/255.0f green:176.0f/255.0f blue:235.0f/255.0f alpha:1.0f]];
-//        [self.view addSubview:navBar];
-//        lbl=[[UILabel alloc]initWithFrame:CGRectMake(120, 20,150, 30)];
-//        [lbl setText:@"Profile Info"];
-//        [lbl setFont:[UIFont systemFontOfSize:22]];
-//        [lbl setTextColor:[UIColor whiteColor]];
-//        [self.view addSubview:lbl];
-//        crossbtn=[UIButton buttonWithType:UIButtonTypeCustom];
-//        crossbtn.frame=CGRectMake(10,20, 70,30);
-//        [crossbtn setStyleClass:@"smscrossbuttn-icon"];
-//        [crossbtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//        [crossbtn setTitle:@"Cancel" forState:UIControlStateNormal];
-//        [crossbtn addTarget:self action:@selector(crossClicked) forControlEvents:UIControlEventTouchUpInside];
-//        [self.view addSubview:crossbtn];
-//    }
-//    else {
-//        [crossbtn removeFromSuperview];
-//        [navBar removeFromSuperview];
-//        [lbl removeFromSuperview];
-//    }
     UIView *member_since_back = [UIView new];
     [member_since_back setFrame:CGRectMake(0, 0+down, 320, 70)];
     [member_since_back setStyleId:@"profileTopSectionBackground"];
@@ -312,6 +299,7 @@
     [picture addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(change_pic)]];
     [picture setUserInteractionEnabled:YES];
     [self.view addSubview:picture];
+    [picture setStyleClass:@"animate_bubble"];
 
     start = [[user valueForKey:@"DateCreated"] rangeOfString:@"("];
     end = [[user valueForKey:@"DateCreated"] rangeOfString:@")"];
@@ -360,6 +348,7 @@
     [self.email setPlaceholder:@"email@email.com"];
     [self.email setDelegate:self];
     [self.email setKeyboardType:UIKeyboardTypeEmailAddress];
+    self.email.returnKeyType = UIReturnKeyNext;
     [self.email setStyleClass:@"table_view_cell_detailtext_1"];
     [self.name setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]];
     [self.email setUserInteractionEnabled:NO];
@@ -373,6 +362,7 @@
     [self.recovery_email setPlaceholder:@"(Optional)"];
     [self.recovery_email setDelegate:self];
     [self.recovery_email setKeyboardType:UIKeyboardTypeEmailAddress];
+    self.recovery_email.returnKeyType = UIReturnKeyNext;
     [self.recovery_email setStyleClass:@"table_view_cell_detailtext_1"];
     [self.recovery_email setTag:1];
     [self.view addSubview:self.recovery_email];
@@ -382,7 +372,8 @@
     [self.phone setBackgroundColor:[UIColor clearColor]];
     [self.phone setPlaceholder:@"555-555-5555"];
     [self.phone setDelegate:self];
-    [self.phone setKeyboardType:UIKeyboardTypePhonePad];
+    [self.phone setKeyboardType:UIKeyboardTypeNumberPad];
+    self.phone.returnKeyType = UIReturnKeyNext;
     [self.phone setStyleClass:@"table_view_cell_detailtext_1"];
     [self.phone setTag:2];
     [self.view addSubview:self.phone];
@@ -394,6 +385,7 @@
     [self.address_one setPlaceholder:@"123 Nooch Lane"];
     [self.address_one setDelegate:self];
     [self.address_one setKeyboardType:UIKeyboardTypeDefault];
+    self.address_one.returnKeyType = UIReturnKeyNext;
     [self.address_one setStyleClass:@"table_view_cell_detailtext_1"];
     [self.address_one setTag:3];
     [self.view addSubview:self.address_one];
@@ -405,6 +397,7 @@
     [self.address_two setPlaceholder:@"(Optional)"];
     [self.address_two setDelegate:self];
     [self.address_two setKeyboardType:UIKeyboardTypeDefault];
+    self.address_two.returnKeyType = UIReturnKeyNext;
     [self.address_two setStyleClass:@"table_view_cell_detailtext_1"];
     [self.address_two setTag:4];
     [self.view addSubview:self.address_two];
@@ -417,6 +410,7 @@
     [self.city setDelegate:self];
      [self.city setTag:5];
     [self.city setKeyboardType:UIKeyboardTypeDefault];
+    self.city.returnKeyType = UIReturnKeyNext;
     [self.city setStyleClass:@"table_view_cell_detailtext_1"];
     
     [self.view addSubview:self.city];
@@ -472,15 +466,16 @@
     [self.list setRowHeight:50];
     [self.list setScrollEnabled:NO];
     [self.view addSubview:self.list];
-    
-    
 }
+
 -(void)crossClicked{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
--(void)handleTap:(UIGestureRecognizer *)gestureRecognizer{
+
+-(void)handleTap:(UIGestureRecognizer *)gestureRecognizer
+{
     [self.name resignFirstResponder];
-    [self.email  resignFirstResponder];
+    [self.email resignFirstResponder];
     [self.recovery_email resignFirstResponder];
     [self.phone resignFirstResponder];
     [self.address_one resignFirstResponder];
@@ -529,13 +524,15 @@
     [self.view setFrame:CGRectMake(0,64, 320, 600)];
     [UIView commitAnimations];
     
-    if ([self.name.text length]==0) {
+    if ([self.name.text length]==0)
+    {
         UIAlertView *av =[ [UIAlertView alloc] initWithTitle:@"Need A Name" message:@"We can call you 'Blank' if you want, but it's probably better if you entered a name..." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [av show];
         return;
     }
     
-    if (![self validateEmail:[self.email text]]) {
+    if (![self validateEmail:[self.email text]])
+    {
         self.email.text = @"";
         [self.email becomeFirstResponder];
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Invalid Email Address" message:@"Hmm... please double check that you have entered a valid email address." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -543,14 +540,16 @@
         return;
     }
 
-    if ([self.address_one.text length]==0) {
+    if ([self.address_one.text length]==0)
+    {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Missing An Address" message:@"Please enter your address to validate your profile." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [self.address_one becomeFirstResponder];
         return;
     }
 
-    if ([self.city.text length]==0) {
+    if ([self.city.text length]==0)
+    {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"How Bout A City" message:@"It would be fantastic if you entered a city! ;-)" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [self.city becomeFirstResponder];
@@ -565,25 +564,29 @@
 
     [self.save setEnabled:NO];
     [self.save setUserInteractionEnabled:NO];
-     [self.save setStyleClass:@"button_gray"];
+    [self.save setStyleClass:@"button_gray"];
+    
     strPhoneNumber=self.phone.text;
     strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@"(" withString:@""];
     strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
     strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@")" withString:@""];
     strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@" " withString:@""];
     
-    if (![self.SavePhoneNumber isEqualToString:strPhoneNumber] || [self.SavePhoneNumber length]==0) {
-        if ([strPhoneNumber length]==10) {
+    if (![self.SavePhoneNumber isEqualToString:strPhoneNumber] || [self.SavePhoneNumber length]==0)
+    {
+        if ([strPhoneNumber length]==10)
+        {
             serve *req = [serve new];
             [req SendSMSApi:strPhoneNumber msg:@"Reply with \"Go\" to this message to verify your phone number."];
         }
-        else{
+        else
+        {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Phone Number Trouble" message:@"Please double check that you entered a valid 10-digit phone number." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             return;
         }
     }
-    if([self.recovery_email.text length]==0) {
+    if ([self.recovery_email.text length]==0) {
         self.recovery_email.text=@"";
     }
 
@@ -591,7 +594,6 @@
     timezoneStandard = [[timezoneStandard componentsSeparatedByString:@", "] objectAtIndex:0];
     timezoneStandard = [GMTTimezonesDictionary objectForKey:timezoneStandard];
     timezoneStandard = @"";
-
    
 
     recoverMail = [[NSString alloc] init];
@@ -624,10 +626,12 @@
     
     NSArray*arrdivide=[self.name.text componentsSeparatedByString:@" "];
     
-    if ([arrdivide count]==2) {
+    if ([arrdivide count]==2)
+    {
         transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[arrdivide objectAtIndex:0],@"FirstName",[arrdivide objectAtIndex:1],@"LastName",self.email.text,@"UserName",nil];
     }
-    else {
+    else
+    {
         transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",self.name.text,@"FirstName",@" ",@"LastName",self.email.text,@"UserName",nil];
     }
 
@@ -670,7 +674,7 @@
     [self.navigationController.view addSubview:self.hud];
     
     self.hud.delegate = self;
-    self.hud.labelText = @"Saving your profile";
+    self.hud.labelText = @"Saving Your Profile";
     [self.hud show:YES];
     
     transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"mySettings", nil];
@@ -693,7 +697,8 @@
 }
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-  if(buttonIndex == 0) {
+  if(buttonIndex == 0)
+  {
         if (![user objectForKey:@"facebook_id"]) {
             
             return;
@@ -725,7 +730,8 @@
         [imageCache cleanDisk];
       
     }
-    else if(buttonIndex == 1) {
+    else if(buttonIndex == 1)
+    {
         if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
             UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                   message:@"Device has no camera"
@@ -743,7 +749,8 @@
         self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         [self presentViewController:self.picker animated:YES completion:Nil];
     }
-    else if(buttonIndex == 2) {
+    else if(buttonIndex == 2)
+    {
         self.picker=[UIImagePickerController new];
         self.picker.delegate = self;
         self.picker.allowsEditing = YES;
@@ -752,7 +759,8 @@
         }
 }
 
--(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size{
+-(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size
+{
     float actualHeight = image.size.height;
     float actualWidth = image.size.width;
     float imgRatio = actualWidth/actualHeight;
@@ -780,7 +788,8 @@
 
 #pragma mark-ImagePicker
 
-- (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info{
+- (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
     option=1;
     UIImage *image=[info objectForKey:UIImagePickerControllerOriginalImage];
     image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(120,120) interpolationQuality:kCGInterpolationMedium];
@@ -820,14 +829,17 @@
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
+    
+    if (cell == nil)
+    {
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:CellIdentifier];
         [cell.textLabel setTextColor:kNoochGrayLight];
         cell.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         cell.clipsToBounds = YES;
     }
-    if (indexPath.row == 0) {
+    if (indexPath.row == 0)
+    {
         UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [name setBackgroundColor:[UIColor clearColor]];
         [name setText:@"Name"];
@@ -836,9 +848,10 @@
         [cell.contentView addSubview:self.name];
         [cell setUserInteractionEnabled:NO];
     }
-    else if (indexPath.row == 1) {
-        if (![[user valueForKey:@"Status"] isEqualToString:@"Active"]) {
-            
+    else if (indexPath.row == 1)
+    {
+        if (![[user valueForKey:@"Status"] isEqualToString:@"Active"])
+        {
             UIView *email_not_validated = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
             [email_not_validated setBackgroundColor:kNoochRed];
             [email_not_validated setAlpha:0.4];
@@ -867,7 +880,8 @@
         [cell.contentView addSubview:mail];
         [cell.contentView addSubview:self.email];
     }
-    else if (indexPath.row == 2) {
+    else if (indexPath.row == 2)
+    {
         UILabel *recover = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [recover setBackgroundColor:[UIColor clearColor]];
         [recover setText:@"Recovery Email"];
@@ -875,7 +889,8 @@
         [cell.contentView addSubview:recover];
         [cell.contentView addSubview:self.recovery_email];
     }
-    else if (indexPath.row == 3) {
+    else if (indexPath.row == 3)
+    {
         if (![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"]&& [[dictSavedInfo valueForKey:@"phoneno"]length]>0) {
             
             UIView *unverified_phone = [[UIView alloc] initWithFrame:CGRectMake(0,0,320,100)];
@@ -908,7 +923,8 @@
         [cell.contentView addSubview:num];
         [cell.contentView addSubview:self.phone];
     }
-    else if (indexPath.row == 4) {
+    else if (indexPath.row == 4)
+    {
         UILabel *addr1 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [addr1 setBackgroundColor:[UIColor clearColor]];
         [addr1 setText:@"Address"];
@@ -916,7 +932,8 @@
         [cell.contentView addSubview:addr1];
         [cell.contentView addSubview:self.address_one];
     }
-    else if (indexPath.row == 5) {
+    else if (indexPath.row == 5)
+    {
         UILabel *addr2 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [addr2 setBackgroundColor:[UIColor clearColor]];
         [addr2 setText:@"Address 2"];
@@ -924,7 +941,8 @@
         [cell.contentView addSubview:addr2];
         [cell.contentView addSubview:self.address_two];
     }
-    else if (indexPath.row == 6) {
+    else if (indexPath.row == 6)
+    {
         UILabel *z = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [z setBackgroundColor:[UIColor clearColor]];
         [z setText:@"City"];
@@ -932,7 +950,8 @@
         [cell.contentView addSubview:z];
         [cell.contentView addSubview:self.city];
     }
-    else if (indexPath.row == 7) {
+    else if (indexPath.row == 7)
+    {
         UILabel *z = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, 50)];
         [z setBackgroundColor:[UIColor clearColor]];
         [z setText:@"ZIP"];
@@ -955,13 +974,15 @@
     [self.city resignFirstResponder];
     [self.zip resignFirstResponder];
 
-    if (indexPath.row == 1 && ![[user valueForKey:@"Status"]isEqualToString:@"Active"]) {
+    if (indexPath.row == 1 && ![[user valueForKey:@"Status"]isEqualToString:@"Active"])
+    {
         self.disclose = YES;
         self.expand_path = indexPath;
         [self.list beginUpdates];
         [self.list endUpdates];
     } 
-    else if (indexPath.row == 3 && ![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"] && [[dictSavedInfo valueForKey:@"phoneno"]length]>0) {
+    else if (indexPath.row == 3 && ![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"] && [[dictSavedInfo valueForKey:@"phoneno"]length]>0)
+    {
         self.disclose = YES;
         self.expand_path = indexPath;
         [self.list beginUpdates];
@@ -970,6 +991,7 @@
     }
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if(indexPath.row == self.expand_path.row && self.disclose) {
         return 100;
@@ -989,6 +1011,31 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    if (textField == _email)
+    {
+        [_recovery_email becomeFirstResponder];
+    }
+    else if (textField == _recovery_email)
+    {
+        [_phone becomeFirstResponder];
+    }
+    else if (textField == _phone)
+    {
+        [_address_one becomeFirstResponder];
+    }
+    else if (textField == _address_one)
+    {
+        [_address_two becomeFirstResponder];
+    }
+    else if (textField == _address_two)
+    {
+        [_city becomeFirstResponder];
+    }
+    else if (textField == _city )
+    {
+        [_zip becomeFirstResponder];
+    }
+    
     [textField resignFirstResponder];
     return YES;
 }

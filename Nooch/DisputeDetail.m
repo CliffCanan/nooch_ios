@@ -288,8 +288,9 @@
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     //[self.hud hide:YES];
-    NSError* error;
-    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
+    //NSError* error;
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
+    {
         UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [Alert show];
         
@@ -297,9 +298,9 @@
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         [timer invalidate];
-        // timer=nil;
         [nav_ctrl performSelector:@selector(disable)];
         [nav_ctrl performSelector:@selector(reset)];
+        
         NSMutableArray*arrNav=[nav_ctrl.viewControllers mutableCopy];
         for (int i=[arrNav count]; i>1; i--) {
             [arrNav removeLastObject];
@@ -307,23 +308,21 @@
         
         [nav_ctrl setViewControllers:arrNav animated:NO];
         Register *reg = [Register new];
+        
         [nav_ctrl pushViewController:reg animated:YES];
         me = [core new];
         return;
     }
-    if ([tagName isEqualToString:@"email_verify"]) {
-        NSString *responseResult = [[NSJSONSerialization
-                               JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                               options:kNilOptions
-                               error:&error] objectForKey:@"Result"];
-            }
 }
+
 #pragma mark - file paths
-- (NSString *)autoLogin{
+- (NSString *)autoLogin
+{
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
         return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
-    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

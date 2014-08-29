@@ -395,14 +395,15 @@
     [av show];
 }
 
--(void)Map_LightBox{
+-(void)Map_LightBox
+{
     overlay=[[UIView alloc]init];
     overlay.frame=CGRectMake(0, 0, 320, 568);
     overlay.backgroundColor=[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
     
     [UIView transitionWithView:self.navigationController.view
-                      duration:0.5
-                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    duration:0.5
+                    options:UIViewAnimationOptionTransitionCrossDissolve
                     animations:^{
                         [self.navigationController.view addSubview:overlay];
                     }
@@ -412,7 +413,13 @@
     mainView.layer.cornerRadius=5;
     mapView_.layer.borderColor=[[UIColor blackColor]CGColor];
     mapView_.layer.borderWidth=1;
-    mainView.frame=CGRectMake(10, 70, 300, self.view.frame.size.height-35);
+    
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        mainView.frame = CGRectMake(10, 30, 300, 443);
+    }
+    else {
+        mainView.frame = CGRectMake(10, 70, 300, self.view.frame.size.height-35);
+    }
     mainView.backgroundColor=[UIColor whiteColor];
     
     [overlay addSubview:mainView];
@@ -480,11 +487,16 @@
     [mainView addSubview:line_container];
     
     UIButton *btnclose=[UIButton buttonWithType:UIButtonTypeCustom];
-    [btnclose setStyleClass:@"button_blue_closeLightbox"];
     [btnclose setTitle:@"Close" forState:UIControlStateNormal];
     [btnclose setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.4) forState:UIControlStateNormal];
     btnclose.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        [btnclose setStyleClass:@"button_blue_closeLightbox_smscrn"];
+    }
+    else {
+        [btnclose setStyleClass:@"button_blue_closeLightbox"];
+    }
     [mainView addSubview:btnclose];
 
 }
@@ -1002,8 +1014,8 @@
                 statusstr=@"Cancelled";
                 [status setStyleClass:@"red_text"];
             }
-            else if([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]     ||
-                    [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Donation"] ||
+            else if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]     ||
+                    [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Donation"]  ||
                     [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]  ||
                     [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
             {
