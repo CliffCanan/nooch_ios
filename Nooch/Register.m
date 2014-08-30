@@ -170,7 +170,7 @@
     UIButton *login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [login setBackgroundColor:[UIColor clearColor]];
     [login setTitle:@"Already a Member? Sign in." forState:UIControlStateNormal];
-    [login setFrame:CGRectMake(0, 510, 320, 20)];
+    [login setFrame:CGRectMake(0, 504, 320, 20)];
     [login addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
     [login setStyleClass:@"label_small"];
     [self.view addSubview:login];
@@ -292,7 +292,7 @@
     
     if ([[[self.name_field.text componentsSeparatedByString:@" "] objectAtIndex:0]length] < 3)
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:nil message:@"Our system is currently only able to handle names greater than 3 letters. Please email us if your first or last name has fewer than 3." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Need a Full Name" message:@"Nooch is currently only able to handle names greater than 3 letters.\n\nIf your first or last name has fewer than 3, please contact us and we'll be happy to manually create your account." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [self.name_field becomeFirstResponder];
         return;

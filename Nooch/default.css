@@ -98,6 +98,12 @@
 			font-family : "FontAwesome";
 			font-size     : 24px;
         }
+        .navbar_rightside_icon {
+            width: 30px;
+            height: 30px;
+			font-family : "FontAwesome";
+            font-size:20px;
+        }
         #navbar_back {
 			width       :  30px;
             height      : 30px;
@@ -797,8 +803,6 @@
 		text-align			: left;
 		color				: #939598;
 		width				: 140px;
-		height				: 16px;
-		top					: 328px;
 		left				: 19px;
 	}
 	/**  Text "Forgot Password?" **/
@@ -809,8 +813,6 @@
 		text-align			: right;
 		color				: #939598;
 		width				: 150px;
-		height				: 16px;
-		top					: 328px;
 		left				: 170px;
 	}
 	#login_switch {
@@ -818,8 +820,6 @@
 		height				: 21px;
 		background-color 	: #939598;
 		border-radius   	: 14px;
-		left              	: 110px;
-		top              	: 321px;
 	}
 	
 	#login_switch thumb { color: white; }
@@ -2511,6 +2511,12 @@ table-view#select_recipientwithoutSeperator {
         font-weight	: regular;
         font-size	: 11px;
 		text-align	: right;
+    }
+    .divider {
+        left: 40px;
+        width: 270px;
+        height: 1px;
+        background-color: rgba(188,190,192,0.4);
     }
 	table-view#settings {
 		width			: 322px;

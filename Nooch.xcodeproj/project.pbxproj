@@ -120,7 +120,6 @@
 		16E4B1C61870832B0099D075 /* untick.png in Resources */ = {isa = PBXBuildFile; fileRef = 16E4B1C51870832B0099D075 /* untick.png */; };
 		16E4B1C818708C1D0099D075 /* tickR.png in Resources */ = {isa = PBXBuildFile; fileRef = 16E4B1C718708C1D0099D075 /* tickR.png */; };
 		16E4B1CA1870A2C90099D075 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16E4B1C91870A2C90099D075 /* MessageUI.framework */; };
-		5C2F756819AFD4C600159D0B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C2F756719AFD4C600159D0B /* MapKit.framework */; };
 		6B01F1B2179D994A00E34C49 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B1179D994A00E34C49 /* GoogleMaps.framework */; };
 		6B01F1B4179DA78B00E34C49 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B3179DA78B00E34C49 /* CoreText.framework */; };
 		6B01F1B6179DA79B00E34C49 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B5179DA79B00E34C49 /* GLKit.framework */; };
@@ -414,7 +413,6 @@
 		16E4B1C51870832B0099D075 /* untick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = untick.png; sourceTree = "<group>"; };
 		16E4B1C718708C1D0099D075 /* tickR.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tickR.png; sourceTree = "<group>"; };
 		16E4B1C91870A2C90099D075 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		5C2F756719AFD4C600159D0B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		6B01F1B1179D994A00E34C49 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
 		6B01F1B3179DA78B00E34C49 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		6B01F1B5179DA79B00E34C49 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
@@ -668,7 +666,6 @@
 				6B5265F816680D2400E5341F /* AVFoundation.framework in Frameworks */,
 				6B30385215FA597700056DAD /* Twitter.framework in Frameworks */,
 				6B3037FC15FA48F900056DAD /* CoreLocation.framework in Frameworks */,
-				5C2F756819AFD4C600159D0B /* MapKit.framework in Frameworks */,
 				6B3037FE15FA48F900056DAD /* CoreData.framework in Frameworks */,
 				6B3037FF15FA48F900056DAD /* SystemConfiguration.framework in Frameworks */,
 				6B30380315FA48F900056DAD /* Security.framework in Frameworks */,
@@ -1059,7 +1056,7 @@
 		6B30372415FA3FF300056DAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5C2F756719AFD4C600159D0B /* MapKit.framework */,
+				84830DCF19B03DB400E29A4C /* MapKit.framework */,
 				0154290219100AFC00A15AA0 /* PixateFreestyle.framework */,
 				841CC8E018A1EBCB0075245C /* Device Identifier */,
 				840CADDD1887E02700BC5FED /* NSString+ASBase */,

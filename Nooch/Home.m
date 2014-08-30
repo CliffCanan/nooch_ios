@@ -605,13 +605,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.view addSubview:self.suspended];
     }
     
-    else if(![[user objectForKey:@"Status"] isEqualToString:@"Suspended"] && ![[user objectForKey:@"Status"] isEqualToString:@"Registered"]&& [[user valueForKey:@"Status"]isEqualToString:@"Active"])
+    else if(![[user objectForKey:@"Status"] isEqualToString:@"Suspended"] && ![[user objectForKey:@"Status"] isEqualToString:@"Registered"] && [[user valueForKey:@"Status"]isEqualToString:@"Active"])
     {
         [self.suspended removeFromSuperview];
         bannerAlert--;
     }
     
-    else if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] || [[user objectForKey:@"Status"] isEqualToString:@"Registered"])
+    else if ([[user objectForKey:@"Status"] isEqualToString:@"Registered"])
     {
         [self.profile_incomplete removeFromSuperview];
         self.profile_incomplete = [UIView new];

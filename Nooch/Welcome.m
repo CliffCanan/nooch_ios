@@ -52,7 +52,6 @@
                      }];
     [self.navigationController popToRootViewControllerAnimated:NO];
     [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
-    
 }
 
 - (void)viewDidLoad
@@ -116,7 +115,9 @@
     [later setStyleClass:@"label_small"];
     [self.view addSubview:later];
 }
--(void)moreinfo_lightBox{
+
+-(void)moreinfo_lightBox
+{
      overlay=[[UIView alloc]init];
      overlay.frame=CGRectMake(0, 0, 320, self.view.frame.size.height);
      overlay.backgroundColor=[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
