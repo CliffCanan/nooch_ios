@@ -500,29 +500,38 @@
 		height				: 40px;
 	}
 	.memtable_view_cell_textlabel_1 {
-		top                 : 8px;
-		font-family			: "Roboto";
-		font-weight         : regular;
-		font-size			: 16px;
-		text-align       	: center;
-		color 				: #313233;
-		width				: 200px;
-		left                : 90px;
-		height				: 60px;
-	}		
+		left            : 90px;
+        top             : 8px;
+        width			: 200px;
+		height			: 38px;
+		font-family		: "Roboto";
+		font-size		: 16px;
+		text-align     	: center;
+		color 			: #313233;
+	}
+    #profile_DateText {
+		left            : 90px;
+        top             : 26px;
+		width			: 200px;
+		height			: 32px;
+        font-family		: "Roboto";
+		font-weight     : light;
+		font-size		: 15px;
+		text-align     	: center;
+		color 			: #313233;
+	}
 	.memtable_view_cell_textlabel_1_64 {
-		top                 : 72px;
-		font-family			: "Roboto";
-		font-weight         : regular;
-		font-size			: 16px;
-		text-align       	: center;
-		color 				: #313233;
-		width				: 200px;
-		left                : 90px;
-		height				: 60px;
+		left            : 90px;
+		top             : 72px;
+		font-family		: "Roboto";
+		font-weight     : regular;
+		font-size		: 16px;
+		text-align      : center;
+		color 			: #313233;
+		width			: 200px;
+		height			: 60px;
 	}       
 	#icon_RequestMultiple {
-		/*top					: 29px;*/
 		left				: 290px;
 		width				: 80px;
 		height				: 40px;
@@ -902,12 +911,12 @@ table-view#select_recipientwithoutSeperator {
 
 	/**  Background box for all the content of the How Much? screen.  This element should also be assigned the ".raised_view" class. **/  
 	.howmuch_mainbox {
-		left				: 8px;
+		left				: 9px;
 		top					: 10px;
-		width				: 304px;
+		width				: 302px;
 		height				: 250px;
 		border-radius		: 4px;
-        box-shadow			: 0 2px 2px rgba(109,110,113,0.6);
+        box-shadow			: 0 2px 2px rgba(88,90,92,0.45);
 	}
     .howmuch_mainbox_smscrn {
 		left				: 8px;
@@ -915,7 +924,7 @@ table-view#select_recipientwithoutSeperator {
 		width				: 304px;
 		height				: 250px;
 		border-radius		: 4px;
-        box-shadow			: 0 2px 2px rgba(109,110,113,0.6);
+        box-shadow			: 0 2px 2px rgba(88,90,92,0.45);
 	}
 	
 	/**  Just the text "To:"  **/

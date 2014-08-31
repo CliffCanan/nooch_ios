@@ -221,7 +221,6 @@
 didTapInfoWindowOfMarker:(GMSMarker *)marker
 {
     NSDictionary*dictRecord=[histArrayCommon objectAtIndex:[[marker title]intValue]];
-    //NSDictionary *transaction = [NSDictionary new];
     TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
     [self.navigationController pushViewController:details animated:YES];
 }
@@ -383,8 +382,9 @@ return customView;
 
 -(void)mapPoints{
     
-    if (self.completed_selected) {
-        if ([histShowArrayCompleted count]==0) {
+    if (self.completed_selected)
+    {
+        if ([histShowArrayCompleted count] == 0) {
             for (GMSMarker*marker in mapView_.markers ) {
                 marker.map=nil;
             }
@@ -392,8 +392,9 @@ return customView;
         }
         histArrayCommon=[histShowArrayCompleted copy];
     }
-    else {
-        if ([histShowArrayPending count]==0) {
+    else
+    {
+        if ([histShowArrayPending count] == 0) {
             for (GMSMarker*marker in mapView_.markers ) {
                 marker.map=nil;
             }
@@ -471,29 +472,6 @@ return customView;
      ////nslog(@"%f",finalX);
      CGFloat finalY = firstY;// translatedPoint.y + (.35*[(UIPanGestureRecognizer*)sender velocityInView:self.view].y);
      
-     //      if (UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
-     //          if (finalX < 0) {
-     //              //finalX = 0;
-     //          } else if (finalX > 768) {
-     //              //finalX = 768;
-     //          }
-     //          if (finalY < 0) {
-     //              finalY = 0;
-     //          } else if (finalY > 1024) {
-     //              finalY = 1024;
-     //          }
-     //      } else {
-     //          if (finalX < 0) {
-     //              //finalX = 0;
-     //          } else if (finalX > 1024) {
-     //              //finalX = 768;
-     //          }
-     //          if (finalY < 0) {
-     //              finalY = 0;
-     //          } else if (finalY > 768) {
-     //              finalY = 1024;
-     //          }
-     //      }
      
      CGFloat animationDuration = (ABS(velocityX)*.0002)+.2;
      
@@ -508,8 +486,9 @@ return customView;
      [UIView commitAnimations];
      }*/
 }
--(void)FilterHistory:(id)sender{
-    
+
+-(void)FilterHistory:(id)sender
+{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissFP:) name:@"dismissPopOver" object:nil];
     isHistFilter=YES;
     popSelect *popOver = [[popSelect alloc] init];
@@ -520,9 +499,10 @@ return customView;
     fp.arrowDirection = FPPopoverArrowDirectionUp;
     fp.contentSize = CGSizeMake(200, 295);
     [fp presentPopoverFromPoint:CGPointMake(280, 45)];
-    
 }
--(void)dismissFP:(NSNotification *)notification{
+
+-(void)dismissFP:(NSNotification *)notification
+{
     [fp dismissPopoverAnimated:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"dismissPopOver" object:nil];
     isSearch=NO;
@@ -578,7 +558,8 @@ return customView;
     [self.view bringSubviewToFront:exportHistory];
     
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
-    if ([segmentedControl selectedSegmentIndex] == 0) {
+    if ([segmentedControl selectedSegmentIndex] == 0)
+    {
         subTypestr=@"Success";
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
@@ -587,7 +568,8 @@ return customView;
         countRows=0;
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
     }
-    else {
+    else
+    {
         subTypestr=@"Pending";
         self.completed_selected = NO;
         [histShowArrayCompleted removeAllObjects];
@@ -622,7 +604,8 @@ return customView;
             return [histTempCompleted count]+1;
         }
         return [histShowArrayCompleted count]+1;
-    } else {
+    }
+    else {
         if (isLocalSearch) {
             return [histTempPending count]+1;
         }
@@ -642,7 +625,8 @@ return customView;
     NSMutableArray *leftUtilityButtons = [NSMutableArray new];
     NSMutableArray *rightUtilityButtons = [NSMutableArray new];
         
-    if (self.completed_selected) {
+    if (self.completed_selected)
+    {
         cell = [[SWTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                           reuseIdentifier:cellIdentifier
                                       containingTableView:self.list // For row height and selection
@@ -659,8 +643,8 @@ return customView;
             temp = [histShowArrayPending mutableCopy];
         }
 
-        if ([temp count]>indexPath.row) {
-            NSDictionary*dictRecord=[temp objectAtIndex:indexPath.row];
+        if ([temp count] > indexPath.row) {
+            NSDictionary *dictRecord = [temp objectAtIndex:indexPath.row];
             
             if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"] ||
                [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] )
@@ -849,8 +833,8 @@ return customView;
                             toDate:ServerDate
                             options:0];
 
-                    if ((long)[components day]>3) {
-                        
+                    if ((long)[components day] > 3)
+                    {
                         NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
                         //Set the AM and PM symbols
                         [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
@@ -865,13 +849,13 @@ return customView;
                         [cell.contentView addSubview:date];
                         
                     }
-                    else if ((long)[components day]==0) {
+                    else if ((long)[components day] == 0) {
                         NSDateComponents *components = [gregorianCalendar components:NSHourCalendarUnit 
                                 fromDate:addeddate
                                 toDate:ServerDate      
                                 options:0];
                         ////nslog(@"%ld  %ld", (long)[components hour],(long)[components minute]);
-                        if ((long)[components hour]==0) {
+                        if ((long)[components hour] == 0) {
                             NSDateComponents *components = [gregorianCalendar components:NSMinuteCalendarUnit
                                 fromDate:addeddate
                                 toDate:ServerDate
@@ -1026,7 +1010,7 @@ return customView;
 					[transferTypeLabel setTextColor:kNoochBlue];
                 
                 }
-                else if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL)
+                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL)
                 {
                     //ADDED BY CLIFF
                     if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
@@ -1044,6 +1028,17 @@ return customView;
 					[transferTypeLabel setTextColor:kNoochGrayDark];
                     [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"]]];
                 }
+                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Dispute"])
+                {
+                    [amount setStyleClass:@"history_transferamount_neutral"];
+                    [indicator setStyleClass:@"history_sidecolor_neutral"];
+                    [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                    [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
+                    [transferTypeLabel setText:@"DIPSUTE sent to"];
+					[transferTypeLabel setTextColor:kNoochGrayDark];
+                    [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
+                }
+
                 
                 [cell.contentView addSubview:amount];
                 [cell.contentView addSubview:indicator];
@@ -1073,7 +1068,8 @@ return customView;
                                                                     fromDate:addeddate
                                                                       toDate:[NSDate date]
                                                                      options:0];
-                if ((long)[components day]>3) {
+                if ((long)[components day] > 3)
+                {
                     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
                     //Set the AM and PM symbols
                      [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
@@ -1087,19 +1083,20 @@ return customView;
                     [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
                     [cell.contentView addSubview:date];
                 }
-                else if ((long)[components day]==0) {
+                else if ((long)[components day] == 0)
+                {
                     NSDateComponents *components = [gregorianCalendar components:NSHourCalendarUnit
                             fromDate:addeddate
                             toDate:ServerDate
                             options:0];
                     ////nslog(@"%ld  %ld", (long)[components hour],(long)[components minute]);
-                    if ((long)[components hour]==0) {
+                    if ((long)[components hour] == 0) {
                         NSDateComponents *components = [gregorianCalendar components:NSMinuteCalendarUnit
                             fromDate:addeddate
                             toDate:ServerDate
                             options:0];
                         ////nslog(@"%ld ",(long)[components minute]);
-                        if ((long)[components minute]==0) {
+                        if ((long)[components minute] == 0) {
                             NSDateComponents *components = [gregorianCalendar components:NSSecondCalendarUnit                                
                                 fromDate:addeddate
                                 toDate:ServerDate
@@ -1107,14 +1104,14 @@ return customView;
                             [date setText:[NSString stringWithFormat:@"%ld seconds ago",(long)[components second]]];
                             [cell.contentView addSubview:date];
                         }
-                        else if ((long)[components minute]==1)
+                        else if ((long)[components minute] == 1)
                             [date setText:[NSString stringWithFormat:@"%ld minute ago",(long)[components minute]]];
                         else
                             [date setText:[NSString stringWithFormat:@"%ld minutes ago",(long)[components minute]]];
                         [cell.contentView addSubview:date];
                     }
                     else {
-                        if ((long)[components hour]==1)
+                        if ((long)[components hour] == 1)
                             [date setText:[NSString stringWithFormat:@"%ld hour ago",(long)[components hour]]];
                         else
                             [date setText:[NSString stringWithFormat:@"%ld hours ago",(long)[components hour]]];
@@ -1122,7 +1119,7 @@ return customView;
                     }
                 }
                 else {
-                    if ((long)[components day]==1)
+                    if ((long)[components day] == 1)
                         [date setText:[NSString stringWithFormat:@"%ld day ago",(long)[components day]]];
                     else
                         [date setText:[NSString stringWithFormat:@"%ld days ago",(long)[components day]]];
@@ -1131,16 +1128,16 @@ return customView;
 
             }
         }
-        else if (indexPath.row==[histShowArrayCompleted count])
+        else if (indexPath.row == [histShowArrayCompleted count])
         {
-            if(isEnd==YES)
+            if (isEnd == YES)
             {
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabelEmpty"];
                 [name setStyleClass:@"history_recipientname"];
-                if (indexPath.row==0)
+                if (indexPath.row == 0)
                     [name setText:@"No payments to report yet."];
-                else if (indexPath.row==0){
+                else if (indexPath.row == 0){
                     [name setText:@":("];
                 }
                 else {
@@ -1148,7 +1145,8 @@ return customView;
                 }
                 [cell.contentView addSubview:name];
             }
-            else {
+            else
+            {
                 if (isSearch)
                 {
                     UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -1161,7 +1159,7 @@ return customView;
                 }
                 else
                 {
-                    if (indexPath.row!=0) {
+                    if (indexPath.row != 0) {
                     UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
                     activityIndicator.center = CGPointMake(cell.contentView.frame.size.width / 2, cell.contentView.frame.size.height / 2);
                     [activityIndicator startAnimating];
@@ -1179,9 +1177,9 @@ return customView;
     {
         if (isLocalSearch)
         {
-            if ([histTempPending count]>indexPath.row)
+            if ([histTempPending count] > indexPath.row)
             {
-                NSDictionary*dictRecord=[histTempPending objectAtIndex:indexPath.row];
+                NSDictionary *dictRecord=[histTempPending objectAtIndex:indexPath.row];
                 ////nslog(@"%@",dictRecord);
                 if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]) {
                     UIView *indicator = [UIView new];
@@ -1237,7 +1235,7 @@ return customView;
                             [transferTypeLabel setTextColor:kNoochRed];
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
                         }
-                        }
+                    }
 
                     else {
                         [name setText:@""];
@@ -1255,7 +1253,6 @@ return customView;
                            fromDate:addeddate                                               
                            toDate:ServerDate
                            options:0];
-                    //nslog(@"%ld", (long)[components day]);
                     if ((long)[components day]>3) {
                         NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
                          [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
@@ -1270,7 +1267,8 @@ return customView;
                         [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
                         [cell.contentView addSubview:date];                        
                     }
-                    else if ((long)[components day]==0) {
+                    else if ((long)[components day]==0)
+                    {
                         NSDateComponents *components = [gregorianCalendar components:NSHourCalendarUnit
                                 fromDate:addeddate
                                 toDate:ServerDate
@@ -1304,7 +1302,8 @@ return customView;
                             [cell.contentView addSubview:date];
                         }
                     }
-                    else {
+                    else
+                    {
                         if ((long)[components day]==1)
                             [date setText:[NSString stringWithFormat:@"%ld day ago",(long)[components day]]];
                         else
@@ -1322,7 +1321,8 @@ return customView;
                 }
             }
 
-            else if (indexPath.row==[histTempPending count]) {
+            else if (indexPath.row==[histTempPending count])
+            {
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabel"];
                 [name setStyleClass:@"history_recipientname"];
@@ -1341,9 +1341,10 @@ return customView;
             return cell;
         }
 
-        if ([histShowArrayPending count]>indexPath.row) {
+        if ([histShowArrayPending count] > indexPath.row)
+        {
             
-            NSDictionary*dictRecord=[histShowArrayPending objectAtIndex:indexPath.row];
+            NSDictionary *dictRecord=[histShowArrayPending objectAtIndex:indexPath.row];
             
             if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
             {
@@ -1511,7 +1512,7 @@ return customView;
         }
         else if (indexPath.row==[histShowArrayPending count])
         {
-            if(isEnd==YES)
+            if(isEnd == YES)
             {
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabel"];
@@ -1523,7 +1524,7 @@ return customView;
                 [cell.contentView addSubview:name];
                 return cell;
             }
-            else if (isStart==YES)
+            else if (isStart == YES)
             {
                 UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
                 activityIndicator.center = CGPointMake(cell.contentView.frame.size.width / 2, cell.contentView.frame.size.height / 2);
@@ -1564,12 +1565,9 @@ return customView;
 {   
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
-    //[dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss a"];
     [dateFormatter setAMSymbol:@"AM"];
     [dateFormatter setPMSymbol:@"PM"];
     dateFormatter.dateFormat = @"M/dd/yyyy hh:mm:ss a";
-    //[dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
- // [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:-5]];
     
     NSLog(@"%@", aStr);
     NSDate   *aDate = [dateFormatter dateFromString:aStr];
@@ -1582,38 +1580,40 @@ return customView;
 {
     return 70.0;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-   
-    
-    if (self.completed_selected) {
-        if (isLocalSearch) {
-            NSDictionary*dictRecord=[histTempCompleted objectAtIndex:indexPath.row];
-            //NSDictionary *transaction = [NSDictionary new];
+
+    if (self.completed_selected)
+    {
+        if (isLocalSearch)
+        {
+            NSDictionary *dictRecord = [histTempCompleted objectAtIndex:indexPath.row];
             TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
             [self.navigationController pushViewController:details animated:YES];
             return;
         }
-        if ([histShowArrayCompleted count]>indexPath.row) {
-            NSDictionary*dictRecord=[histShowArrayCompleted objectAtIndex:indexPath.row];
-            //NSDictionary *transaction = [NSDictionary new];
+        if ([histShowArrayCompleted count]>indexPath.row)
+        {
+            NSDictionary *dictRecord = [histShowArrayCompleted objectAtIndex:indexPath.row];
             TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
             NSLog(@"%@",details);
             [self.navigationController pushViewController:details animated:YES];
         }
     }
-    else {
-        if (isLocalSearch) {
-            NSDictionary*dictRecord=[histTempPending objectAtIndex:indexPath.row];
-            //NSDictionary *transaction = [NSDictionary new];
+    else
+    {
+        if (isLocalSearch)
+        {
+            NSDictionary *dictRecord=[histTempPending objectAtIndex:indexPath.row];
             TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
             [self.navigationController pushViewController:details animated:YES];
             return;
         }
-        if ([histShowArrayPending count]>indexPath.row) {
+        if ([histShowArrayPending count] > indexPath.row)
+        {
             NSDictionary*dictRecord=[histShowArrayPending objectAtIndex:indexPath.row];
-            //NSDictionary *transaction = [NSDictionary new];
             TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
             [self.navigationController pushViewController:details animated:YES];
         }
@@ -1621,7 +1621,8 @@ return customView;
 
 }
 
-- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)ind {
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)ind
+{
     NSMutableArray *temp = [NSMutableArray new];
     if (isLocalSearch) {
         temp = [histTempPending mutableCopy];
@@ -1630,18 +1631,21 @@ return customView;
         temp = [histShowArrayPending mutableCopy];
     }
     NSDictionary*dictRecord=[temp objectAtIndex:[self.list indexPathForCell:cell].row];
-    if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"]) {
-        if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]]) {
-			
+    if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
+    {
+        if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
+        {
 			// ADDED BY CLIFF
-			if (ind == 0) {
+			if (ind == 0)
+            {
                 //remind
 				self.responseDict = [dictRecord copy];
 				UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder" message:@"Send a reminder about this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
 				[av show];
 				[av setTag:1012];
 			}
-			else {
+			else
+            {
 				//cancel
 				self.responseDict = [dictRecord copy];
 				UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel Request" message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
@@ -1649,9 +1653,11 @@ return customView;
 				[av setTag:1010];
 			}
         }
-        else {
+        else
+        {
             //accept/decline
-            if (ind == 0) {
+            if (ind == 0)
+            {
                 //accept
                 NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
                 
@@ -1672,8 +1678,6 @@ return customView;
                         [alert setTag:147];
                         [alert show];
                         return;
-                    
-                    
                 }
                 else if ( ![[[NSUserDefaults standardUserDefaults]
                         objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
@@ -1681,7 +1685,7 @@ return customView;
                     [set show];
                     return;
                 }
-                else{
+                else {
                 NSMutableDictionary *input = [dictRecord mutableCopy];
                 [input setValue:@"accept" forKey:@"response"];
                
@@ -1690,7 +1694,8 @@ return customView;
                 [nav_ctrl pushViewController:trans animated:YES];
                 }
             }
-            else {
+            else
+            {
                 //decline
                 self.responseDict = [dictRecord copy];
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to reject this request?" delegate:self cancelButtonTitle:@"Yes - Reject" otherButtonTitles:@"No", nil];
@@ -1704,11 +1709,10 @@ return customView;
 #pragma mark - SWTableView
 
 #pragma mark - searching
--(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
-
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
     [searchBar setShowsCancelButton:NO];
     [self.search resignFirstResponder];
-    //if ([searchBar.text length]>0) {
     isSearch=NO;
     isFilter=NO;
     listType=@"ALL";
@@ -1726,8 +1730,10 @@ return customView;
     [self loadHist:listType index:index len:20 subType:subTypestr];
 }
 
--(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-    if ([searchBar.text length]>0) {
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    if ([searchBar.text length] > 0)
+    {
         listType=@"ALL";
         SearchStirng=[self.search.text lowercaseString];
         [histShowArrayCompleted removeAllObjects];
@@ -1746,11 +1752,13 @@ return customView;
     }
     [self.search resignFirstResponder];
 }
+
 - (void) searchTableView
 {
     [histTempCompleted removeAllObjects];
     [histTempPending removeAllObjects];
-    if ([subTypestr isEqualToString:@"Success"]) {
+    if ([subTypestr isEqualToString:@"Success"])
+    {
         for (NSMutableDictionary *tableViewBind in histShowArrayCompleted)
         {
             NSComparisonResult result = [[tableViewBind valueForKey:@"FirstName"] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
@@ -1760,7 +1768,8 @@ return customView;
             }
         }
     }
-    else {
+    else
+    {
         for (NSMutableDictionary *tableViewBind in histShowArrayPending) {
             NSComparisonResult result = [[tableViewBind valueForKey:@"FirstName"] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
             NSComparisonResult result2 = [[tableViewBind valueForKey:@"LastName"] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
@@ -1769,7 +1778,6 @@ return customView;
             }
         }
     }
-    //[self loadSearchByName];
     [self.list reloadData];
 }
 
@@ -1832,7 +1840,8 @@ return customView;
     [imageCache clearMemory];
     [imageCache clearDisk];
     [imageCache cleanDisk];
-    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
+    {
         UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Login Detected From New Device" message:@"It seems like you have logged in from another device, which automatically signs you out of any other active devices." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [Alert show];
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
@@ -1847,28 +1856,29 @@ return customView;
         me = [core new];
         return;
     }
-    if ([tagName isEqualToString:@"csv"]) {
+    if ([tagName isEqualToString:@"csv"])
+    {
         NSDictionary*dictResponse=[NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         if ([[[dictResponse valueForKey:@"sendTransactionInCSVResult"]valueForKey:@"Result"]isEqualToString:@"1"]) {
             UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Export Successful" message:@"Your personalized transaction report has been emailed to you." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
             [alert show];
         }
     }
-    else if ([tagName isEqualToString:@"hist"]) {
+    else if ([tagName isEqualToString:@"hist"])
+    {
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.hud hide:YES];
-            // do work here
         });
         
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
-        if ([histArray count]>0)
+        if ([histArray count] > 0)
         {
-            isEnd=NO;
-            isStart=NO;
+            isEnd = NO;
+            isStart = NO;
         
-            for (NSDictionary*dict in histArray)
+            for (NSDictionary *dict in histArray)
             {
                 if ( [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]   ||
                      [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] ||
@@ -1880,11 +1890,12 @@ return customView;
                 }
             }
             
-            int counter=0;
-            for (NSDictionary*dict in histArray)
+            int counter = 0;
+            for (NSDictionary *dict in histArray)
             {
-                if ( //![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"] &&
-                      [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
+                if (  ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] && ![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"]) ||
+                      (([[dict valueForKey:@"TransactionType"]isEqualToString:@"Inivite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
+                        [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
                 {
                     [histShowArrayPending addObject:dict];
                     if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
@@ -1892,15 +1903,15 @@ return customView;
                     }
                 }
             }
-            if (counter>0) {
-                
+            if (counter > 0)
+            {
                 [completed_pending setTitle:[NSString stringWithFormat:@"Pending (%d)",counter]forSegmentAtIndex:1];
-                
             }
-           }
+        }
         else {
             isEnd=YES;
         }
+
         if (isMapOpen) {
             [self mapPoints];
         }
@@ -1909,10 +1920,10 @@ return customView;
         [serveOBJ setTagName:@"time"];
         [serveOBJ GetServerCurrentTime];
     }
-    else if ([tagName isEqualToString:@"time"]){
-        
+    else if ([tagName isEqualToString:@"time"])
+    {
         //ServerDate
-         NSDictionary*dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         ServerDate=[self dateFromString:[dict valueForKey:@"Result"] ];
         [self.list removeFromSuperview];
         self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
@@ -1932,11 +1943,13 @@ return customView;
 
         //[self.list scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.list numberOfRowsInSection:0]-4 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
     }
-    else if([tagName isEqualToString:@"search"]){
-         [self.hud hide:YES];
+    else if([tagName isEqualToString:@"search"])
+    {
+        [self.hud hide:YES];
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
-        if ([histArray count]>0) {
+        if ([histArray count]>0)
+        {
             isEnd=NO;
             isStart=NO;
             
@@ -1962,7 +1975,8 @@ return customView;
         [serveOBJ setTagName:@"time"];
         [serveOBJ GetServerCurrentTime];
     } 
-    else if ([tagName isEqualToString:@"reject"]) {
+    else if ([tagName isEqualToString:@"reject"])
+    {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Request Rejected" message:@"No problem, you have rejected this request successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         subTypestr=@"Pending";
@@ -1981,15 +1995,16 @@ return customView;
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
 
     }
-    else if ([tagName isEqualToString:@"cancel"]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Request Cancelled" message:@"You got it. That request has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    else if ([tagName isEqualToString:@"cancel"])
+    {
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Request Cancelled" message:@"You got it. That request has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         subTypestr=@"Pending";
         self.completed_selected = NO;
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
-        index=1;
-        countRows=0;
+        index = 1;
+        countRows = 0;
         [self.list removeFromSuperview];
         self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
         [self.list setStyleId:@"history"]; [self.list setRowHeight:70];
@@ -1998,7 +2013,8 @@ return customView;
         [self.view bringSubviewToFront:exportHistory];
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
     }
-    else if ([tagName isEqualToString:@"remind"]) {
+    else if ([tagName isEqualToString:@"remind"])
+    {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Success!" message:@"Reminder Sent Successfully!!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         
@@ -2007,7 +2023,8 @@ return customView;
 }
 
 #pragma mark Exporting History
-- (IBAction)ExportHistory:(id)sender {
+- (IBAction)ExportHistory:(id)sender
+{
     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Export Transfer Data" message:@"Where should we email your data?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil];
     [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
     UITextField *textField = [alert textFieldAtIndex:0];
@@ -2015,26 +2032,26 @@ return customView;
     alert.tag = 11;
     [alert show];
 }
+
 #pragma mark - alert view delegation
-- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (actionSheet.tag == 11) {
-        if (buttonIndex == 0) {
-        }
-        else {
-            NSString * email = [[actionSheet textFieldAtIndex:0] text];
-            serve * s = [[serve alloc] init];
-            [s setTagName:@"csv"];
-            [s setDelegate:self];
-            [s sendCsvTrasactionHistory:email];
-        }
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet.tag == 11 && buttonIndex == 1)
+    {
+        NSString * email = [[actionSheet textFieldAtIndex:0] text];
+        serve * s = [[serve alloc] init];
+        [s setTagName:@"csv"];
+        [s setDelegate:self];
+        [s sendCsvTrasactionHistory:email];
     }
-    else if (actionSheet.tag==147 && buttonIndex==1) {
+    else if (actionSheet.tag==147 && buttonIndex==1)
+    {
         ProfileInfo *prof = [ProfileInfo new];
         isProfileOpenFromSideBar=NO;
         [self.navigationController pushViewController:prof animated:YES];
-       
     }
-    else if (actionSheet.tag==1010 && buttonIndex==0) {
+    else if (actionSheet.tag==1010 && buttonIndex==0)
+    {
         serve*serveObj=[serve new];
         [serveObj setDelegate:self];
         serveObj.tagName=@"cancel";
@@ -2047,14 +2064,16 @@ return customView;
         [serveObj CancelRejectTransaction:[self.responseDict valueForKey:@"TransactionId"] resp:@"Rejected"];
     }
 	// ADDED BY CLIFF Edited By Baljeet
-	else if (actionSheet.tag==1012 && buttonIndex==0) {
+	else if (actionSheet.tag==1012 && buttonIndex==0)
+    {
         NSString * memId1 = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
         serve*serveObj=[serve new];
         [serveObj setDelegate:self];
         serveObj.tagName=@"remind";
         [serveObj SendReminderToRecepient:[self.responseDict valueForKey:@"TransactionId"] memberId:memId1];
     }
-    else if (actionSheet.tag == 50 && buttonIndex == 1) {
+    else if (actionSheet.tag == 50 && buttonIndex == 1)
+    {
         if (![MFMailComposeViewController canSendMail]){
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [av show];
@@ -2072,6 +2091,7 @@ return customView;
         [self presentViewController:mailComposer animated:YES completion:nil];
     }
 }
+
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc] init];

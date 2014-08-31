@@ -274,18 +274,21 @@
 
     [spinner startAnimating];
 
+    NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  [UIColor whiteColor], UITextAttributeTextColor,
+                                  Rgb2UIColor(19, 32, 38, .26), UITextAttributeTextShadowColor,
+                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, 1.0)], UITextAttributeTextShadowOffset, nil];
+    [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
     [self.navigationItem setTitle:@"Profile Info"];
     
-    serve *serveOBJ=[serve new ];
+    serve *serveOBJ = [serve new ];
     serveOBJ.tagName=@"myset";
     [serveOBJ setDelegate:self];
     [serveOBJ getSettings];
 
-    // Do any additional setup after loading the view.
-
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
-    down=0;
+    down = 0;
 
     UIView *member_since_back = [UIView new];
     [member_since_back setFrame:CGRectMake(0, 0+down, 320, 70)];
@@ -304,32 +307,42 @@
     start = [[user valueForKey:@"DateCreated"] rangeOfString:@"("];
     end = [[user valueForKey:@"DateCreated"] rangeOfString:@")"];
 
-    if (start.location != NSNotFound && end.location != NSNotFound && end.location > start.location){
+    if (start.location != NSNotFound && end.location != NSNotFound && end.location > start.location)
+    {
         betweenBraces = [[user valueForKey:@"DateCreated"] substringWithRange:NSMakeRange(start.location+1, end.location-(start.location+1))];
     }
 
     newString = [betweenBraces substringToIndex:[betweenBraces length]-8];
 
-    NSTimeInterval _interval=[newString doubleValue];
+    NSTimeInterval _interval = [newString doubleValue];
 
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:_interval];
     NSDateFormatter *_formatter=[[NSDateFormatter alloc]init];
-    [_formatter setDateFormat:@"MM/dd/yyyy"];
+    [_formatter setDateFormat:@"M/d/yyyy"];
     NSString *_date=[_formatter stringFromDate:date];
-    memSincelbl = [[UITextView alloc] initWithFrame:CGRectMake(20, 20+down, 200, 30)];
-    [memSincelbl setText:[NSString stringWithFormat:@"Member Since %@",_date]];
-    memSincelbl.userInteractionEnabled=NO;
-    memSincelbl.selectable=NO;
-    [memSincelbl setUserInteractionEnabled:NO];
+    
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(229, 242, 248, .3);
+    shadow.shadowOffset = CGSizeMake(0, 1);
+    
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
+
+    memSincelbl = [[UITextView alloc] initWithFrame:CGRectMake(20, 20, 200, 30)];
+    memSincelbl.attributedText = [[NSAttributedString alloc] initWithString:@"Member Since"
+                                                                 attributes:textAttributes];
+    memSincelbl.userInteractionEnabled = NO;
+    memSincelbl.selectable = NO;
     [memSincelbl setBackgroundColor:[UIColor clearColor]];
-//    if (isSignup) {
-//        [memSincelbl setStyleClass:@"memtable_view_cell_textlabel_1_64"];
-//    }
-//    else
-        [memSincelbl setStyleClass:@"memtable_view_cell_textlabel_1"];
-
+    [memSincelbl setStyleClass:@"memtable_view_cell_textlabel_1"];
     [self.view addSubview:memSincelbl];
-
+    
+    dateText = [[UITextView alloc] initWithFrame:CGRectMake(20, 34, 200, 24)];
+    dateText.userInteractionEnabled = NO;
+    dateText.selectable = NO;
+    [dateText setBackgroundColor:[UIColor clearColor]];
+    [dateText setText:[NSString stringWithFormat:@"%@",_date]];
+    [dateText setStyleId:@"profile_DateText"];
+    [self.view addSubview:dateText];
 
     self.name = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.name setTextAlignment:NSTextAlignmentRight];
