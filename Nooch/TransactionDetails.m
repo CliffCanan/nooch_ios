@@ -1093,26 +1093,32 @@
         
         for (UIView *subview in self.view.subviews)
         {
-            if (subview.tag == 13)  // Remove 'Cancel' Button
+            if (subview.tag == 12 || (subview.tag == 13) || (subview.tag == 14)) {  // Remove 'Cancel' Button, Dispute Button, "Pending" status
                 [subview removeFromSuperview];
-            if (subview.tag == 14)  // Remove 'Remind' Button
-                [subview removeFromSuperview];
+            }
         }
-        UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 320, 30)];
-        [status setStyleClass:@"details_label"];
-        [status setStyleId:@"details_status"];
-        NSString *statusstr=@"Cancelled";
-        [status setStyleClass:@"red_text"];
+        UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 320, 30)];
+        [status setStyleClass: @"details_label"];
+        [status setStyleId: @"details_status"];
+        NSString *statusstr = @"Cancelled";
+        [status setStyleClass: @"red_text"];
         [status setText:statusstr];
         [self.view addSubview:status];
     }
     
     else if ([tagName isEqualToString:@"dispute"])
     {
+        for (UIView *subview in self.view.subviews)
+        {
+            if (subview.tag == 12)  // Remove "Completed" Status
+                [subview removeFromSuperview];
+        }
+        
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Transfer Disputed" message:@"Thanks for letting us know. We will investigate and may contact you for more information.\n\nIf you would like to tell us more please contact Nooch Support." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
         [alert show];
         [alert setTag:568];
-        UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 320, 30)];
+        
+        UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 320, 30)];
         [status setStyleClass:@"details_label"];
         [status setStyleId:@"details_status"];
         NSString *statusstr=@"Disputed";
