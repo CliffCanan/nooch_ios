@@ -31,11 +31,12 @@
     return self;
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     self.pin_check = @"";
  
-    self.trackedViewName = @"Create Pin Screen";
+    self.trackedViewName = @"Create PIN Screen";
 
     [self.pin setText:@""];
     [self.first_num setBackgroundColor:[UIColor clearColor]];
@@ -46,9 +47,13 @@
 }
 
 #pragma mark - UITextField delegation
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
     int len = [textField.text length] + [string length];
-    if([string length] == 0) { //deleting {
+    
+//    [self.prompt setText:@""];
+    
+    if([string length] == 0) { //deleting
         switch (len) {
             case 4:
                 [self.fourth_num setBackgroundColor:[UIColor clearColor]];
@@ -103,6 +108,7 @@
                         self.pin_check = @"";
                         [self.pin setText:@""];
                         [self.prompt setText:@"The PINs you entered did not match! Please try again."];
+                        [self.prompt setTextColor:kNoochRed];
                         [self.first_num setBackgroundColor:[UIColor clearColor]];
                         [self.second_num setBackgroundColor:[UIColor clearColor]];
                         [self.third_num setBackgroundColor:[UIColor clearColor]];
@@ -144,7 +150,7 @@
 
     [btnback setImage:[UIImage imageNamed:@"back-arrow-blue.png"] forState:UIControlStateNormal];
     [btnback setStyleClass:@"back_button-icon"];
-    btnback.frame=CGRectMake(0, 7, 50, 30);
+    btnback.frame = CGRectMake(0, 7, 50, 30);
     [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnback];
     self.pin_check = @"";
@@ -170,7 +176,6 @@
         frame.origin.y = 133;
         frame.origin.x = 10;
         title.frame = frame;
-        // UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 140, 300, 40)];
     }
     [title setText:@"Create your PIN"];
     [title setStyleClass:@"header_signupflow"];

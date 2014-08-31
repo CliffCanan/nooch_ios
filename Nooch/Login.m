@@ -32,8 +32,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        //[self.navigationItem setHidesBackButton:YES];
-        
         // Custom initialization
     }
     return self;
@@ -47,11 +45,6 @@
     self.hud.delegate = self;
     self.hud.labelText = @"Checking Login Credentials...";
     [self.hud show:YES];
-    
-//    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-//    [self.view addSubview:spinner];
-//    spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-//    [spinner startAnimating];
 
     serve *log = [serve new];
     [log setDelegate:self];
@@ -61,7 +54,8 @@
 }
 
 # pragma mark - CLLocationManager Delegate Methods
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
     //nslog(@"Error : %@",error);
     if ([error code] == kCLErrorDenied){
         NSLog(@"Error : %@",error);
@@ -152,7 +146,7 @@
     [self.view addSubview:pass];
 
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.login setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    [self.login setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     self.login.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [self.login setBackgroundColor:kNoochGreen];
     [self.login setTitle:@"Log In" forState:UIControlStateNormal];
@@ -160,6 +154,14 @@
     self.login.layer.cornerRadius=5.0f;
     [self.login addTarget:self action:@selector(check_credentials) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"button_green"];
+    
+    UILabel *glyphLogin = [UILabel new];
+    [glyphLogin setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
+    [glyphLogin setFrame:CGRectMake(185, 9, 30, 30)];
+    [glyphLogin setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-sign-in"]];
+    [glyphLogin setTextColor:[UIColor whiteColor]];
+    
+    [self.login addSubview:glyphLogin];
     [self.view addSubview:self.login];
     [self.login setEnabled:NO];
 
@@ -459,7 +461,11 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == _password)
+    if (textField == _email)
+    {
+        [self.password becomeFirstResponder];
+    }
+    else if (textField == _password)
     {
         [self check_credentials];
     }

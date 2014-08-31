@@ -2,8 +2,8 @@
 //  main.m
 //  Nooch
 //
-//  Created by administrator on 28/04/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Created by administrator on 08/01/13.
+//  Copyright 2014 Nooch Inc. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

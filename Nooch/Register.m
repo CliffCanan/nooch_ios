@@ -62,7 +62,7 @@
     [self.view addSubview:signup];
 
     self.facebook = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.facebook setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    [self.facebook setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     self.facebook.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [self.facebook setTitle:@"Facebook" forState:UIControlStateNormal];
     [self.facebook setFrame:CGRectMake(0, 180, 0, 0)];
@@ -154,7 +154,7 @@
     }
 
     self.cont = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.cont setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    [self.cont setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     self.cont.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [self.cont setTitle:@"Continue" forState:UIControlStateNormal];
     [self.cont setFrame:CGRectMake(10, 420, 300, 60)];

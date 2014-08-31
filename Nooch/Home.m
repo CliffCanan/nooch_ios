@@ -129,7 +129,7 @@ NSMutableURLRequest *request;
     
     UIButton *top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [top_button setStyleClass:@"button_blue"];
-    [top_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    [top_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     top_button.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     
     UIButton *mid_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -555,14 +555,21 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    int bannerAlert=0;
     
+    NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  [UIColor whiteColor], UITextAttributeTextColor,
+                                  Rgb2UIColor(19, 32, 38, .26), UITextAttributeTextShadowColor,
+                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, 1.0)], UITextAttributeTextShadowOffset, nil];
+    [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
+
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(71, 8, 7, .4);
     shadow.shadowOffset = CGSizeMake(0, 1);
     NSDictionary * textAttributes =
             @{NSShadowAttributeName: shadow };
     
+    int bannerAlert=0;
+
     if ([[user objectForKey:@"Status"] isEqualToString:@"Suspended"])
     {
         bannerAlert++;
@@ -591,7 +598,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         UIButton *contact = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [contact setStyleClass:@"go_now_text"];
         [contact setTitle:@"TAP TO CONTACT NOOCH" forState:UIControlStateNormal];
-        [contact setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.45) forState:UIControlStateNormal];
+        [contact setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
         contact.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [contact addTarget:self action:@selector(contact_support) forControlEvents:UIControlEventTouchUpInside];
         [self.suspended addSubview:contact];
@@ -647,7 +654,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         UIButton *go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [go setStyleClass:@"go_now_text"];
         [go setTitle:@"TAP TO FIX NOW" forState:UIControlStateNormal];
-        [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.45) forState:UIControlStateNormal];
+        [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
         go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [go addTarget:self action:@selector(go_profile) forControlEvents:UIControlEventTouchUpInside];
         [self.profile_incomplete addSubview:go];
@@ -703,7 +710,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
           UIButton *go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
           [go setStyleClass:@"go_now_text"];
           [go setTitle:@"TAP TO ADD NUMBER" forState:UIControlStateNormal];
-          [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.45) forState:UIControlStateNormal];
+          [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
           go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
           [go addTarget:self action:@selector(go_profile) forControlEvents:UIControlEventTouchUpInside];
           [self.phone_incomplete addSubview:go];
@@ -741,7 +748,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
         locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
         [locationManager startUpdatingLocation];
-        
     }
 
     [[assist shared] setRequestMultiple:NO];
@@ -755,8 +761,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [super viewWillAppear:animated];
     self.trackedViewName = @"Home Screen";
     [self.navigationItem setTitle:@"Nooch"];
-
-   
 
     if (![[assist shared]isPOP]) {
     

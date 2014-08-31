@@ -33,9 +33,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.navigationController.navigationBar.topItem.title = @"";
-    [self.navigationItem setTitle:@"Reset PIN"];
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -44,19 +41,30 @@
   
     self.trackedViewName = @"Reset Pin Screen";
 
-    pinchangeProgress=1;
+    pinchangeProgress = 1;
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    UIView*navBar=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
+
+    UIView *navBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundColor:[UIColor colorWithRed:82.0f/255.0f green:176.0f/255.0f blue:235.0f/255.0f alpha:1.0f]];
     [self.view addSubview:navBar];
-    UIButton*back=[UIButton buttonWithType:UIButtonTypeCustom];
+
+    UIButton *back = [UIButton buttonWithType:UIButtonTypeCustom];
     [back setStyleClass:@"backbutton"];
     [back setTitle:@"Cancel" forState:UIControlStateNormal];
+    [back setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.276) forState:UIControlStateNormal];
+    back.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [back addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
     [back setFrame:CGRectMake(0,5, 70, 30)];
     [navBar addSubview:back];
-    UILabel*lbl=[[UILabel alloc]initWithFrame:CGRectMake(105, 20, 200, 30)];
-    [lbl setText:@"Reset PIN"];
+
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(19, 32, 38, .25);
+    shadow.shadowOffset = CGSizeMake(0, 1);
+    
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
+    UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(105, 20, 200, 30)];
+    lbl.attributedText = [[NSAttributedString alloc] initWithString:@"Reset PIN"
+                                                           attributes:textAttributes];
     [lbl setFont:[UIFont systemFontOfSize:22]];
     [lbl setTextColor:[UIColor whiteColor]];
     [navBar addSubview:lbl];
@@ -103,7 +111,7 @@
 {
     self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
     int len = [textField.text length] + [string length];
-
+    self.prompt.text = @"";
     UIColor *which;
     if([string length] == 0) //deleting
     {
@@ -165,7 +173,7 @@
         pin.tagName = @"ValidatePinNumber";
         [pin getEncrypt:[NSString stringWithFormat:@"%@%@",textField.text,string]];
     }
-    else if (len==4 && pinchangeProgress==2)
+    else if (len == 4 && pinchangeProgress == 2)
     {
         [self.fourth_num setBackgroundColor:which];
         if ([newPinString length] != 4)
@@ -193,7 +201,8 @@
             [self.first_num setBackgroundColor:[UIColor clearColor]];
             self.pin.text = @"";
             newPinString = @"";
-            self.prompt.text = @"PINs don't match! Try Again...";
+            self.prompt.text = @"PINs didn't match - try again";
+            self.prompt.textColor = kNoochRed;
             pinchangeProgress = 2;
             title.text = @"Enter new Pin";
             return NO;
@@ -202,10 +211,9 @@
         {
             serve *req = [[serve alloc] init];
             req.Delegate = self;
-            req.tagName=@"GetEncryptedData";
+            req.tagName = @"GetEncryptedData";
             [req getEncrypt:[NSString stringWithFormat:@"%@%@",textField.text,string]];
         }
-        
     }
     return YES;
 }
@@ -240,13 +248,13 @@
     }
     else if ([tagName isEqualToString:@"resetpin"])
     {
-        NSString *statusData= (NSString *)[dictResult objectForKey:@"Result"];
+        NSString *statusData = (NSString *)[dictResult objectForKey:@"Result"];
         NSLog(@"Status %@", statusData);
         [self pinChanged:statusData];
     }
     else if ([tagName isEqualToString:@"ValidatePinNumber"])
     {
-        encryptedPIN=[dictResult valueForKey:@"Status"];
+        encryptedPIN = [dictResult valueForKey:@"Status"];
         serve *checkValid = [serve new];
         checkValid.tagName = @"checkValid";
         checkValid.Delegate = self;
@@ -263,9 +271,9 @@
             [self.third_num setBackgroundColor:[UIColor clearColor]];
             [self.second_num setBackgroundColor:[UIColor clearColor]];
             [self.first_num setBackgroundColor:[UIColor clearColor]];
-            self.pin.text=@"";
-            self.prompt.text=@"";
-            title.text=@"Enter New Pin";
+            self.pin.text = @"";
+            self.prompt.text = @"";
+            title.text = @"Enter New Pin";
         }
         else
         {
@@ -273,7 +281,7 @@
             [self.third_num setBackgroundColor:[UIColor clearColor]];
             [self.second_num setBackgroundColor:[UIColor clearColor]];
             [self.first_num setBackgroundColor:[UIColor clearColor]];
-            self.pin.text=@"";
+            self.pin.text = @"";
         }
         
         if([[dictResult objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."])
@@ -288,8 +296,8 @@
             [self.third_num setStyleClass:@"shakePin3"];
             [self.second_num setStyleClass:@"shakePin2"];
             [self.first_num setStyleClass:@"shakePin1"];
-            self.prompt.text=@"1 failed attempt.";
-            self.prompt.textColor = [UIColor colorWithRed:169 green:68 blue:66 alpha:1];
+            self.prompt.text = @"1 Failed Attempt";
+            self.prompt.textColor = kNoochRed;
             [spinner stopAnimating];
             [spinner setHidden:YES];
         }
@@ -305,10 +313,12 @@
             [self.third_num setStyleClass:@"shakePin3"];
             [self.second_num setStyleClass:@"shakePin2"];
             [self.first_num setStyleClass:@"shakePin1"];
-            self.prompt.text=@"2nd failed attempt.";
+            
+            self.prompt.text = @"2 Failed Attempts";
+            self.prompt.textColor = kNoochRed;
+            
             UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:nil message:@"Your account will be suspended for 24 hours if you enter another incorrect PIN." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
             [suspendedAlert show];
-            
         }
         else if (([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))
         {
@@ -343,6 +353,7 @@
     }
     
 }
+
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag==202320 && buttonIndex==0)

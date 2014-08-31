@@ -441,10 +441,10 @@
 		width			: 70px;
 		left			: 5px;
 		top             : 25px;
-		height          : 25px;
+		height          : 24px;
 		font-family		: "Roboto";
-		font-weight		: light;
-		font-size		: 21px;
+		font-weight		: regular;
+		font-size		: 20px;
 		text-align		: left;
 	}
 	.plusbutton {

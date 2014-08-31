@@ -1925,7 +1925,7 @@ return customView;
             for (NSDictionary *dict in histArray)
             {
                 if (  ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] && ![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"]) ||
-                      (([[dict valueForKey:@"TransactionType"]isEqualToString:@"Inivite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
+                      (([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
                         [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
                 {
                     [histShowArrayPending addObject:dict];

@@ -165,7 +165,7 @@
     NSArray *array = [[self.user objectForKey:@"name"] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     array = [array filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF != ''"]];
     
-    UILabel *welcome = [[UILabel alloc] initWithFrame:CGRectMake(0, 135, 320, 25)];
+    UILabel *welcome = [[UILabel alloc] initWithFrame:CGRectMake(0, 131, 320, 25)];
     [welcome setText:[NSString stringWithFormat:@"Hey %@!",[[self.user objectForKey:@"first_name" ] capitalizedString]]]; [welcome setBackgroundColor:[UIColor clearColor]];
     [welcome setStyleClass:@"header_signupflow"];
     [subview addSubview:welcome];
@@ -184,7 +184,7 @@
     }
     [subview addSubview:self.pic];
     
-    self.message = [[UILabel alloc] initWithFrame:CGRectMake(20, 315, 280, 70)];
+    self.message = [[UILabel alloc] initWithFrame:CGRectMake(15, 315, 290, 70)];
     [self.message setBackgroundColor:[UIColor clearColor]];
     
     if ([self.user objectForKey:@"image"]) {
@@ -199,18 +199,15 @@
     
     self.choose_pic = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.choose_pic setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.choose_pic setStyleClass:@"button_green"];
+    [self.choose_pic setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.26) forState:UIControlStateNormal];
+    self.choose_pic.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     if ([[self.user objectForKey:@"facebook"] objectForKey:@"image"])
     {
-        [self.choose_pic setStyleClass:@"button_green"];
-        [self.choose_pic setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
-        self.choose_pic.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [self.choose_pic setTitle:@"Change Picture" forState:UIControlStateNormal];
     }
     else
     {
-        [self.choose_pic setStyleClass:@"button_gray"];
-        [self.choose_pic setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
-        self.choose_pic.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [self.choose_pic setTitle:@"Choose Picture" forState:UIControlStateNormal];
     }
     [self.choose_pic addTarget:self action:@selector(change_pic) forControlEvents:UIControlEventTouchUpInside];

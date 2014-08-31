@@ -70,22 +70,28 @@
     else
         isBankAttached=YES;
     
+    NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  [UIColor whiteColor], UITextAttributeTextColor,
+                                  Rgb2UIColor(19, 32, 38, .25), UITextAttributeTextShadowColor,
+                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, 1.0)], UITextAttributeTextShadowOffset, nil];
     
+    [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
     [self.navigationItem setHidesBackButton:YES];
+
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
     [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
     UIBarButtonItem *menu1 = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu1];
-    
+
 	// Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"Settings"];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-    
+
     [self.view setStyleClass:@"background_gray"];
-    
+
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 16, 0, 0)];
     [title setStyleClass:@"refer_header"];
     [title setText:@"Linked Bank Account"];
@@ -94,11 +100,11 @@
     link_bank = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [link_bank setFrame:CGRectMake(0, 125, 0, 0)];
     [link_bank setTitle:@"Link a New Bank" forState:UIControlStateNormal];
-    [link_bank setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    [link_bank setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     link_bank.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
 
     UILabel *glyph = [UILabel new];
-    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:24]];
+    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
     [glyph setFrame:CGRectMake(25, 9, 30, 30)];
     [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"]];
     [glyph setTextColor:[UIColor whiteColor]];
@@ -110,15 +116,15 @@
     [self.view addSubview:link_bank];
     
     menu = [UITableView new];
-     [menu setStyleId:@"settings"];
-
-   
-    [menu setDelegate:self]; [menu setDataSource:self]; [menu setScrollEnabled:NO];
+    [menu setStyleId:@"settings"];
+    [menu setDelegate:self];
+    [menu setDataSource:self];
+    [menu setScrollEnabled:NO];
     [self.view addSubview:menu];
     
     self.logout = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.logout setTitle:@"Sign Out" forState:UIControlStateNormal];
-    [self.logout setTitleShadowColor:Rgb2UIColor(33, 34, 34, 0.35) forState:UIControlStateNormal];
+    [self.logout setTitleShadowColor:Rgb2UIColor(33, 34, 34, 0.26) forState:UIControlStateNormal];
     self.logout.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     
     UILabel *glyphLogout = [UILabel new];
