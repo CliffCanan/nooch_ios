@@ -2030,7 +2030,7 @@ table-view#select_recipientwithoutSeperator {
 		width				: 25px;
 		height				: 25px;
 		font-family	: "FontAwesome";
-		font-size			: 24px;
+		font-size			: 22px;
 		text-align       	: right;
 		color 				: #ffffff;
 	}
@@ -2124,7 +2124,7 @@ table-view#select_recipientwithoutSeperator {
 		width				: 150px;
 		height				: 12px;
 		top					: 48px;
-		left                : 75px;
+		left                : 88px;
 		font-family			: "Roboto";
 		font-weight         : light;
 		font-size			: 10px;

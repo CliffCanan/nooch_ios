@@ -488,7 +488,7 @@ return customView;
 -(void)FilterHistory:(id)sender
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissFP:) name:@"dismissPopOver" object:nil];
-    isHistFilter=YES;
+    isHistFilter = YES;
     popSelect *popOver = [[popSelect alloc] init];
     popOver.title = nil;
     fp =  [[FPPopoverController alloc] initWithViewController:popOver];
@@ -857,6 +857,13 @@ return customView;
                     
                     UILabel *date = [UILabel new];
                     [date setStyleClass:@"history_datetext"];
+                    
+                    UILabel *glyphDate = [UILabel new];
+                    [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
+                    [glyphDate setFrame:CGRectMake(75, 48, 14, 12)];
+                    [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
+                    [glyphDate setTextColor:kNoochGrayLight];
+                    [cell.contentView addSubview:glyphDate];
 
                     //  'updated_balance' now for displaying transfer STATUS, only if status is "cancelled" or "rejected"
                     //  (this used to display the user's updated balance, which no longer exists)
@@ -1111,6 +1118,13 @@ return customView;
                 UILabel *date = [UILabel new];
                 [date setStyleClass:@"history_datetext"];
                 
+                UILabel *glyphDate = [UILabel new];
+                [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
+                [glyphDate setFrame:CGRectMake(75, 48, 14, 12)];
+                [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
+                [glyphDate setTextColor:kNoochGrayLight];
+                [cell.contentView addSubview:glyphDate];
+                
 				//  'updated_balance' now for displaying transfer STATUS, only if status is "cancelled" or "rejected"
                 //  (this used to display the user's updated balance, which no longer exists)
                 
@@ -1317,6 +1331,13 @@ return customView;
 
                     UILabel *date = [UILabel new];
                     [date setStyleClass:@"history_datetext"];
+                    
+                    UILabel *glyphDate = [UILabel new];
+                    [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
+                    [glyphDate setFrame:CGRectMake(75, 48, 14, 12)];
+                    [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
+                    [glyphDate setTextColor:kNoochGrayLight];
+                    [cell.contentView addSubview:glyphDate];
 
                     NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -1324,8 +1345,9 @@ return customView;
                            fromDate:addeddate                                               
                            toDate:ServerDate
                            options:0];
-                    if ((long)[components day]>3) {
-                        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+                    if ((long)[components day]>3)
+                    {
+                        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
                          [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
                         //Set the AM and PM symbols
                         [dateFormatter setAMSymbol:@"AM"];
@@ -1513,6 +1535,14 @@ return customView;
 
                 UILabel *date = [UILabel new];
                 [date setStyleClass:@"history_datetext"];
+                
+                UILabel *glyphDate = [UILabel new];
+                [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
+                [glyphDate setFrame:CGRectMake(75, 48, 14, 12)];
+                [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
+                [glyphDate setTextColor:kNoochGrayLight];
+                [cell.contentView addSubview:glyphDate];
+                
                 NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                 NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
                 NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
@@ -1682,7 +1712,7 @@ return customView;
         }
         if ([histShowArrayPending count] > indexPath.row)
         {
-            NSDictionary*dictRecord=[histShowArrayPending objectAtIndex:indexPath.row];
+            NSDictionary *dictRecord=[histShowArrayPending objectAtIndex:indexPath.row];
             TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
             [self.navigationController pushViewController:details animated:YES];
         }

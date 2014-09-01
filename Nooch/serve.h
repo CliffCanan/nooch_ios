@@ -105,6 +105,7 @@
 -(void)RaiseDispute:(NSDictionary*)Input;
 -(void)saveShareToFB_Twiitter:(NSString*)PostTo;
 -(void)UpDateLatLongOfUser:(NSString*)lat lng:(NSString*)lng;
+-(void)CancelMoneyRequestForExistingNoochUser:(NSString*)transactionId;
 -(void)CancelRejectTransaction:(NSString*)transactionId resp:(NSString*)userResponse;
 -(void)GetServerCurrentTime;
 -(void)storeFB:(NSString*)fb_id;
@@ -114,7 +115,8 @@
 -(void)resendSMS;
 -(void)resendEmail;
 -(void)show_in_search:(BOOL)show;
--(void)cancel_invite:(NSString*)transaction;
+-(void)CancelMoneyTransferToNonMemberForSender:(NSString *)transactionId;
+-(void)CancelMoneyRequestForNonNoochUser:(NSString*)transactionId;
 -(void)SendReminderToRecepient:(NSString *)transactionId memberId:(NSString*)memberId;
 -(void)ValidatePinNumberToEnterForEnterForeground:(NSString*)memId pin:(NSString*)pin;
 @end
