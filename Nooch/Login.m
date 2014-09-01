@@ -115,9 +115,9 @@
     [self.email setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.email];
     
-    UIView *div = [[UIView alloc] initWithFrame:CGRectMake(10, 191, 290, 1)];
-    [div setStyleClass:@"divider"];
-    [self.view addSubview:div];
+//    UIView *div = [[UIView alloc] initWithFrame:CGRectMake(10, 191, 290, 1)];
+//    [div setStyleClass:@"divider"];
+//    [self.view addSubview:div];
 
     UILabel *em = [UILabel new];
     [em setStyleClass:@"table_view_cell_textlabel_1"];
@@ -148,10 +148,8 @@
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.login setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     self.login.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-    [self.login setBackgroundColor:kNoochGreen];
-    [self.login setTitle:@"Log In" forState:UIControlStateNormal];
+    [self.login setTitle:@"Log In   " forState:UIControlStateNormal];
     [self.login setFrame:CGRectMake(10, 252, 300, 60)];
-    self.login.layer.cornerRadius=5.0f;
     [self.login addTarget:self action:@selector(check_credentials) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"button_green"];
     
@@ -167,23 +165,19 @@
 
     self.stay_logged_in = [[UISwitch alloc] initWithFrame:CGRectMake(110, 312, 40, 40)];
     [self.stay_logged_in setStyleClass:@"login_switch"];
-    [self.stay_logged_in setOn:YES];
+    [self.stay_logged_in setOn: YES];
     self.stay_logged_in.transform = CGAffineTransformMakeScale(0.75, 0.75);
     [self.view addSubview:self.stay_logged_in];
     
-    UILabel *remember_me = [[UILabel alloc] initWithFrame:CGRectMake(20, 315, 100, 30)];
+    UILabel *remember_me = [[UILabel alloc] initWithFrame:CGRectMake(20, 313, 100, 30)];
     [remember_me setText:@"Remember Me"];
-    [remember_me setFont:[UIFont fontWithName:@"Roboto-Regular" size:12]];
-    [remember_me setTextColor:kNoochGrayLight];
     [remember_me setStyleId:@"label_rememberme"];
     [self.view addSubview:remember_me];
     
     UIButton *forgot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [forgot setBackgroundColor:[UIColor clearColor]];
     [forgot setTitle:@"Forgot Password?" forState:UIControlStateNormal];
-    [forgot setFrame:CGRectMake(190, 315, 120, 30)];
-    [forgot.titleLabel setFont:[UIFont fontWithName:@"Roboto-Regular" size:12]];
-    [forgot setTitleColor:kNoochGrayLight forState:UIControlStateNormal];
+    [forgot setFrame:CGRectMake(190, 313, 120, 30)];
     [forgot addTarget:self action:@selector(forgot_pass) forControlEvents:UIControlEventTouchUpInside];
     [forgot setStyleId:@"label_forgotpw"];
     [self.view addSubview:forgot];

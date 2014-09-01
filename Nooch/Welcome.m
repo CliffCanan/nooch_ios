@@ -77,7 +77,7 @@
     [prompt setText:@"Your account has been created.\n\nCheck your email for a message from us to confirm your email address.\n\nBefore you can send money you'll need a funding source. Tap the green button to link your bank now."];
     [prompt setTextAlignment:NSTextAlignmentCenter];
     [prompt setFont:[UIFont systemFontOfSize:15]];
-    prompt.numberOfLines=0;
+    prompt.numberOfLines = 0;
     [prompt sizeToFit];
     [self.view addSubview:prompt];
 

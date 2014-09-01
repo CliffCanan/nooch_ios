@@ -64,13 +64,21 @@
     self.facebook = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.facebook setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     self.facebook.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-    [self.facebook setTitle:@"Facebook" forState:UIControlStateNormal];
+    [self.facebook setTitle:@"  Facebook" forState:UIControlStateNormal];
     [self.facebook setFrame:CGRectMake(0, 180, 0, 0)];
     if ([[UIScreen mainScreen] bounds].size.height < 520) {
         [self.facebook setFrame:CGRectMake(0, 165, 0, 0)];
     }
     [self.facebook addTarget:self action:@selector(connect_to_facebook) forControlEvents:UIControlEventTouchUpInside];
     [self.facebook setStyleClass:@"button_blue"];
+    
+    UILabel *glyphFB = [UILabel new];
+    [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
+    [glyphFB setFrame:CGRectMake(60, 8, 30, 30)];
+    [glyphFB setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]];
+    [glyphFB setTextColor:[UIColor whiteColor]];
+    
+    [self.facebook addSubview:glyphFB];
     [self.view addSubview:self.facebook];
 
     UILabel *or = [[UILabel alloc] initWithFrame:CGRectMake(0, 240, 320, 15)];

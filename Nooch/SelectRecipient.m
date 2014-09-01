@@ -1581,8 +1581,8 @@
              [spinner setHidden:NO];
              spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
              [spinner startAnimating];
-             isphoneBook=YES;
-             emailphoneBook=receiver[@"UserName"];
+             isphoneBook = YES;
+             emailphoneBook = receiver[@"UserName"];
              
              serve *emailCheck = [serve new];
              emailCheck.Delegate = self;
@@ -1590,7 +1590,7 @@
              [emailCheck getMemIdFromuUsername:[receiver[@"UserName"] lowercaseString]];
              return;
          }
-        isFromHome=NO;
+        isFromHome = NO;
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
         [self.navigationController pushViewController:how_much animated:YES];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -1598,7 +1598,7 @@
     }
     else
     {
-        isFromHome=NO;
+        isFromHome = NO;
         NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
         [self.navigationController pushViewController:how_much animated:YES];

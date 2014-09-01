@@ -131,28 +131,28 @@
     [title setStyleClass:@"lightbox_title"];
     [head_container addSubview:title];
     
-    UIView*space_container=[[UIView alloc]initWithFrame:CGRectMake(0, 34, 300, 10)];
+    UIView *space_container = [[UIView alloc]initWithFrame:CGRectMake(0, 34, 300, 10)];
     space_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
     [mainView addSubview:space_container];
     
-    UIView*container=[[UIView alloc]initWithFrame:CGRectMake(2, 48, 296, 300)];
+    UIView *container = [[UIView alloc]initWithFrame:CGRectMake(2, 48, 296, 300)];
     
-    UIImageView*imageShow=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 296, self.view.frame.size.height-175)];
-    imageShow.image=[UIImage imageNamed:@"KnoxInfo_Lightbox@2x.png"];
-    imageShow.contentMode=UIViewContentModeScaleAspectFit;
+    UIImageView *imageShow = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 296, self.view.frame.size.height-175)];
+    imageShow.image = [UIImage imageNamed:@"KnoxInfo_Lightbox@2x.png"];
+    imageShow.contentMode = UIViewContentModeScaleAspectFit;
     [container addSubview:imageShow];
     [mainView addSubview:container];
     
-    UIButton *btnLink=[UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnLink setStyleClass:@"button_green_welcome"];
     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-    btnLink.frame=CGRectMake(10,mainView.frame.size.height-60, 280, 50);
-    [btnLink setTitle:@"Link Now" forState:UIControlStateNormal];
+    btnLink.frame = CGRectMake(10,mainView.frame.size.height-60, 280, 50);
+    [btnLink setTitle:@"Continue" forState:UIControlStateNormal];
     [btnLink addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
     [mainView addSubview:btnLink];
     
-    UIButton *btnclose=[UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *btnclose = [UIButton buttonWithType:UIButtonTypeCustom];
     btnclose.frame=CGRectMake(mainView.frame.size.width-28,head_container.frame.origin.y-15, 35, 35);
     [btnclose setImage:[UIImage imageNamed:@"close_button.png"] forState:UIControlStateNormal] ;
     [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
@@ -167,16 +167,11 @@
                        options:UIViewAnimationOptionTransitionCrossDissolve
                     animations:^{
                         [overlay removeFromSuperview];
-                        //[self.navigationController.view removeFromSuperview:overlay];
                     }
                     completion:nil];
 }
 
 -(void)backToHome {
-//           [UIView animateWithDuration:0.75
-//                            animations:^{
-//                                [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-//                                [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight
         [self.navigationController popViewControllerAnimated:YES];
 }
 

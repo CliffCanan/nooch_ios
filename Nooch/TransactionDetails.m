@@ -301,13 +301,17 @@
                 [remind addTarget:self action:@selector(remind_friend) forControlEvents:UIControlEventTouchUpInside];
                 [self.view addSubview:remind];
             }
-            else {
+            else
+            {
                 [cancel setStyleClass:@"details_button_right"];
                 [pay setTitle:@"Pay" forState:UIControlStateNormal];
                 [pay addTarget:self action:@selector(fulfill_request) forControlEvents:UIControlEventTouchUpInside];
-                [cancel setTitle:@"Decline" forState:UIControlStateNormal];
+                [pay setTag:23];
+                [cancel setTitle:@"Reject" forState:UIControlStateNormal];
                 [cancel addTarget:self action:@selector(decline_request) forControlEvents:UIControlEventTouchUpInside];
-                [self.view addSubview:pay]; [self.view addSubview:cancel];
+                [cancel setTag:24];
+                [self.view addSubview:pay];
+                [self.view addSubview:cancel];
             }
         }
     }
@@ -374,7 +378,7 @@
         [self.view addSubview:scroll];
     }
     
-    blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
+    blankView = [[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
     [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
     UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
@@ -382,8 +386,9 @@
     [blankView addSubview:actv];
     [self.view addSubview:blankView];
     [self.view bringSubviewToFront:blankView];
-    serve *serveOBJ=[serve new ];
-    serveOBJ.tagName=@"tranDetail";
+    
+    serve *serveOBJ = [serve new ];
+    serveOBJ.tagName = @"tranDetail";
     [serveOBJ setDelegate:self];
     [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
 }
@@ -397,9 +402,9 @@
 
 -(void)Map_LightBox
 {
-    overlay=[[UIView alloc]init];
-    overlay.frame=CGRectMake(0, 0, 320, 568);
-    overlay.backgroundColor=[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+    overlay = [[UIView alloc]init];
+    overlay.frame = CGRectMake(0, 0, 320, 568);
+    overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
     
     [UIView transitionWithView:self.navigationController.view
                     duration:0.5
@@ -409,7 +414,7 @@
                     }
                     completion:nil];
 
-    mainView=[[UIView alloc]init];
+    mainView = [[UIView alloc]init];
     mainView.layer.cornerRadius=5;
     mapView_.layer.borderColor=[[UIColor blackColor]CGColor];
     mapView_.layer.borderWidth=1;
@@ -578,14 +583,11 @@
     [nav_ctrl pushViewController:trans animated:YES];
 }
 
-- (void) decline_request {
+- (void) decline_request
+{
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to reject this request?" delegate:self cancelButtonTitle:@"Yes - Reject" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1011];
-    //    NSMutableDictionary *input = [self.trans mutableCopy];
-    //    [input setValue:@"deny" forKey:@"response"];
-    //    TransferPIN *trans = [[TransferPIN alloc] initWithReceiver:input type:@"requestRespond" amount:[[self.trans objectForKey:@"Amount"] floatValue]];
-    //    [nav_ctrl pushViewController:trans animated:YES];
 }
 
 - (void) cancel_request {
@@ -668,7 +670,8 @@
     }
 }
 
-- (void) post_to_twitter {
+- (void) post_to_twitter
+{
     SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
     [controller setInitialText:[NSString stringWithFormat:@"I just Nooch'ed %@!",[self.trans objectForKey:@"Name"]]];
     [controller addURL:[NSURL URLWithString:@"https://www.nooch.com"]];
@@ -694,10 +697,11 @@
         }
         [controller dismissViewControllerAnimated:YES completion:Nil];
     };
-    controller.completionHandler =myBlock;
+    controller.completionHandler = myBlock;
 }
 
--(void)post {
+-(void)post
+{
     SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
     [controller setInitialText:[NSString stringWithFormat:@"I just Nooch'ed %@!",[self.trans objectForKey:@"Name"]]];
     [controller addURL:[NSURL URLWithString:@"https://www.nooch.com"]];
@@ -737,7 +741,7 @@
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag==1012 && buttonIndex==0)  // REMIND
+    if (alertView.tag == 1012 && buttonIndex == 0)  // REMIND
     {
         NSString * memId1 = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
         serve*serveObj=[serve new];
@@ -746,7 +750,7 @@
         [serveObj SendReminderToRecepient:[self.trans valueForKey:@"TransactionId"] memberId:memId1];
     }
     
-    else if (alertView.tag==147 && buttonIndex==1)  // PROFILE INCOMPLETE, GO TO PROFILE
+    else if (alertView.tag == 147 && buttonIndex == 1)  // PROFILE INCOMPLETE, GO TO PROFILE
     {
         ProfileInfo *prof = [ProfileInfo new];
         isProfileOpenFromSideBar=NO;
@@ -756,20 +760,21 @@
     else if (alertView.tag == 1 && buttonIndex == 0)  // DISPUTE
     {
         self.responseData = [NSMutableData data];
-        NSMutableDictionary*dict=[[NSMutableDictionary alloc] init];
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+
         NSString * memId = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
         [dict setObject :memId forKey:@"MemberId"];
         [dict setObject:[self.trans valueForKey:@"RecepientId"] forKey:@"RecepientId"];
         [dict setObject:[self.trans valueForKey:@"TransactionId"] forKey:@"TransactionId"];
         [dict setObject:@"SENT" forKey:@"ListType"];
-        //NSLog(@"%@",dict);
-        serve*serveobj=[serve new];
+
+        serve *serveobj = [serve new];
         [serveobj setDelegate:self];
-        serveobj.tagName=@"dispute";
+        serveobj.tagName = @"dispute";
         [serveobj RaiseDispute:dict];
     }
     
-    else if(alertView.tag == 568 && buttonIndex == 1)  // USER DISPUTED A TRANSFER, SELECTED "CONTACT SUPPORT" IN ALERT
+    else if (alertView.tag == 568 && buttonIndex == 1)  // USER DISPUTED A TRANSFER, SELECTED "CONTACT SUPPORT" IN ALERT
     {
         if (![MFMailComposeViewController canSendMail]){
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -786,9 +791,9 @@
         [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
         [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
         [self presentViewController:mailComposer animated:YES completion:nil];
-           }
+    }
     
-    else if(alertView.tag==1010 && buttonIndex==0)  // CANCEL
+    else if (alertView.tag == 1010 && buttonIndex == 0)  // CANCEL
     {
       //  NSString * memId = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
         serve*serveObj=[serve new];
@@ -798,11 +803,11 @@
       //  [serveObj CancelMoneyRequestForExistingNoochUser:[self.trans valueForKey:@"TransactionId"] memberId:memId];
     }
     
-    else if(alertView.tag==1011 && buttonIndex==0)  // REJECT
+    else if (alertView.tag == 1011 && buttonIndex == 0)  // REJECT
     {
-        serve*serveObj=[serve new];
+        serve *serveObj = [serve new];
         [serveObj setDelegate:self];
-        serveObj.tagName=@"reject";
+        serveObj.tagName = @"reject";
         [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Rejected"];
     }
   
@@ -857,12 +862,14 @@
                                                                     longitude:lon
                                                                          zoom:11];
             
-            UIButton*btnShowOverlay=[[UIButton alloc]init];
+            UIButton *btnShowOverlay = [[UIButton alloc]init];
             
-            UIImageView*imgTran;
-            if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL)
+            UIImageView *imgTran;
+            
+            // if picture is attached
+            if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"] != NULL)
             {
-                NSArray* bytedata = [loginResult valueForKey:@"Picture"];
+                NSArray *bytedata = [loginResult valueForKey:@"Picture"];
                 unsigned c = bytedata.count;
                 uint8_t *bytes = malloc(sizeof(*bytes) * c);
                 
@@ -875,58 +882,67 @@
 
                 NSData *datos = [NSData dataWithBytes:bytes length:c];
 
-                imgTran=[[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
+                imgTran = [[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
                 [imgTran setImage:[UIImage imageWithData:datos]];
-              
-                
+
                 mapView_ = [GMSMapView mapWithFrame:CGRectMake(165, 240, 150, 160) camera:camera];
-                if ([[UIScreen mainScreen] bounds].size.height == 480) {
-                    [imgTran setFrame:CGRectMake(5, 240, 150, 80)];
-                    [mapView_ setFrame:CGRectMake(165, 240, 150, 80)];
-                    btnShowOverlay.frame=mainView.frame;
+                if ([[UIScreen mainScreen] bounds].size.height == 480)
+                {
+                    [imgTran setFrame:CGRectMake(5, 240, 150, 90)];
+                    [mapView_ setFrame:CGRectMake(165, 240, 150, 90)];
+                    btnShowOverlay.frame = mapView_.frame;
                 }
-                else{
-                    [mapView_ setFrame:CGRectMake(165, 240, 150, 160)];
+                else
+                {
                     [imgTran setFrame:CGRectMake(5, 240, 150, 160)];
-                    btnShowOverlay.frame=CGRectMake(165, 240, 150, 160);
+                    [mapView_ setFrame:CGRectMake(165, 240, 150, 160)];
+                    btnShowOverlay.frame = CGRectMake(165, 240, 150, 160);
                 }
             }
-            else {
-                
+            else  // if no picture is attached
+            {
                 mapView_ = [GMSMapView mapWithFrame:CGRectMake(-1, 240, 322, 160) camera:camera];
-                if ([[UIScreen mainScreen] bounds].size.height == 480) {
+                if ([[UIScreen mainScreen] bounds].size.height == 480)
+                {
                     [mapView_ setFrame:CGRectMake(-1, 240, 322, 80)];
-                    btnShowOverlay.frame=CGRectMake(-1, 240, 322, 80);
+                    btnShowOverlay.frame = CGRectMake(-1, 240, 322, 80);
                 }
                 else
                 {
                   [mapView_ setFrame:CGRectMake(-1, 240, 322, 160)];
-                    btnShowOverlay.frame=CGRectMake(-1, 240, 322, 160);
+                    btnShowOverlay.frame = CGRectMake(-1, 240, 322, 160);
                 }
                 
             }
            [self.view addSubview:mapView_];
             mapView_.myLocationEnabled = YES;
            
-            if ([[assist shared]islocationAllowed]) {
+            if ([[assist shared]islocationAllowed])
+            {
                 [self.view addSubview:mapView_];
-                if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
+                if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"] != NULL)
+                {
                     [self.view addSubview:imgTran];
                 }
             }
-            else {
-                if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
-                    imgTran.frame=CGRectMake(5, 240, 310, 160);
-                    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+            else
+            {
+                if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"] != NULL)
+                {
+                    imgTran.frame = CGRectMake(5, 240, 310, 160);
+                    if ([[UIScreen mainScreen] bounds].size.height == 480)
+                    {
                         [imgTran setFrame:CGRectMake(5, 240, 150, 80)];
                     }
                     [self.view addSubview:imgTran];
                 }
             }
+            
             // Creates a marker in the center of the map.
             GMSMarker *marker = [[GMSMarker alloc] init];
             marker.position = CLLocationCoordinate2DMake(lat, lon);
             marker.map = mapView_;
+            
             [self.view addSubview:btnShowOverlay];
             [btnShowOverlay setBackgroundColor:[UIColor clearColor]];
             [self.view bringSubviewToFront:btnShowOverlay];
@@ -944,12 +960,13 @@
 
         UILabel *location = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 320, 60)];
         CGRect frame = location.frame;
-        if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"]!=NULL) {
+        if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"] != NULL)
+        {
             frame.origin.x = 165;
             frame.size.width = 155;
             [location setFrame:frame];
         }
-        location.numberOfLines=2;
+        location.numberOfLines = 1;
         [location setStyleClass:@"details_label_location"];
         
         if ([[UIScreen mainScreen] bounds].size.height == 480) {
@@ -960,11 +977,11 @@
             [self.trans objectForKey:@"City"] != NULL &&
             [[assist shared]islocationAllowed] )
         {
-			NSString*address=[[self.trans objectForKey:@"AddressLine1"] stringByReplacingOccurrencesOfString:@"," withString:@""];
+            NSString *address = [[self.trans objectForKey:@"AddressLine1"] stringByReplacingOccurrencesOfString:@"," withString:@""];
             
             if ([self.trans objectForKey:@"AddressLine2"] != NULL)
             {
-                address=[address stringByAppendingString:[self.trans objectForKey:@"AddressLine2"]];
+                address = [address stringByAppendingString:[self.trans objectForKey:@"AddressLine2"]];
                 [location setText:[NSString stringWithFormat:@"%@",address]];
                 [self.view addSubview:location];
             }
@@ -972,6 +989,7 @@
             if ([[self.trans objectForKey:@"AddressLine1"]length] == 0 && [[self.trans objectForKey:@"City"]length] == 0)
             {
                 [location setText:@""];
+                [location removeFromSuperview];
             }
         }
 
@@ -981,37 +999,38 @@
         [status setStyleClass:@"details_label"];
         [status setStyleId:@"details_status"];
 
-        if ([loginResult objectForKey:@"TransactionDate"]!=NULL)
+        if ([loginResult objectForKey:@"TransactionDate"] != NULL)
         {
-            NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
             [dateFormatter setAMSymbol:@"AM"];
             [dateFormatter setPMSymbol:@"PM"];
             dateFormatter.dateFormat = @"M/d/yyyy h:mm:ss a";
+            
             NSDate *yourDate = [dateFormatter dateFromString:[loginResult valueForKey:@"TransactionDate"]];
             dateFormatter.dateFormat = @"dd-MMMM-yyyy";
             [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
 
-            NSString*statusstr;
+            NSString *statusstr;
 
             if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Request"])
             {
                 if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-                    statusstr=@"Cancelled";
+                    statusstr = @"Cancelled";
                     [status setStyleClass:@"red_text"];
                 }
                 else if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
-                    statusstr=@"Rejected";
+                    statusstr = @"Rejected";
                     [status setStyleClass:@"red_text"];
                 }
                 else {
-                    statusstr=@"Pending";
+                    statusstr = @"Pending";
                     [status setStyleClass:@"yellow_text"];
                 }
             }
             else if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"])
             {
-                statusstr=@"Cancelled";
+                statusstr = @"Cancelled";
                 [status setStyleClass:@"red_text"];
             }
             else if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]     ||
@@ -1019,18 +1038,18 @@
                     [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]  ||
                     [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
             {
-                statusstr=@"Completed";
+                statusstr = @"Completed";
                 [status setStyleClass:@"green_text"];
             }
             else if ([[loginResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
                      [[loginResult valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
             {
-                statusstr=@"Invited - Pending";
+                statusstr = @"Invited - Pending";
                 [status setStyleClass:@"yellow_text"];
             }
             else if ( ![[self.trans valueForKey:@"DisputeId"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"DisputeId"]!=NULL )
             {
-                statusstr=@"Disputed:";
+                statusstr = @"Disputed:";
                 [status setStyleClass:@"red_text"];
 
 				UIButton *detailbutton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -1047,10 +1066,11 @@
                 [detailbutton setTitleColor:kNoochBlue forState:UIControlStateNormal];
                 [self.view addSubview:detailbutton];
 
-				UIImageView*arrow_direction=[[UIImageView alloc]initWithFrame:CGRectMake(detailbutton.frame.origin.x+detailbutton.frame.size.width-15, 198, 12, 15)];
-                arrow_direction.image=[UIImage imageNamed:@"arrow-blue.png"];
+				UIImageView *arrow_direction = [[UIImageView alloc]initWithFrame:CGRectMake(detailbutton.frame.origin.x+detailbutton.frame.size.width - 15, 198, 12, 15)];
+                arrow_direction.image = [UIImage imageNamed:@"arrow-blue.png"];
                 [self.view addSubview:arrow_direction];
-                UIView*line=[[UIView alloc]initWithFrame:CGRectMake(118, 213, 78, 1)];
+
+                UIView *line = [[UIView alloc]initWithFrame:CGRectMake(118, 213, 78, 1)];
                 line.backgroundColor=kNoochBlue;
                 [self.view addSubview:line];
             }
@@ -1060,12 +1080,12 @@
             
             if ( [[self.trans valueForKey:@"DisputeId"] isKindOfClass:[NSNull class]] || [self.trans valueForKey:@"DisputeId"] == NULL )
             {
-                NSArray *arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
-                UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(90, 190, 140, 30)];
+                NSArray *arrdate = [[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
+                UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(80, 190, 160, 30)];
                 [datelbl setTextAlignment:NSTextAlignmentCenter]; 
                 [datelbl setFont:[UIFont fontWithName:@"Roboto-Light" size:16]];
                 [datelbl setTextColor:kNoochGrayDark];
-                datelbl.text=[NSString stringWithFormat:@"%@ %@, %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]];
+                datelbl.text = [NSString stringWithFormat:@"%@ %@, %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]];
                 [self.view addSubview:datelbl];
             }
 
@@ -1081,14 +1101,28 @@
 
     if ([tagName isEqualToString:@"reject"])
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Request Rejected" message:@"No problem, you have rejected this request successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Request Rejected" message:@"You got it, you have rejected that request successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-        [nav_ctrl popToRootViewControllerAnimated:YES];
+    //  [nav_ctrl popViewControllerAnimated:YES];
+        
+        for (UIView *subview in self.view.subviews)
+        {
+            if (subview.tag == 12 || (subview.tag == 23) || (subview.tag == 24)) {  // Remove 'Cancel' Button, Dispute Button, "Pending" status
+                [subview removeFromSuperview];
+            }
+        }
+        UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 320, 30)];
+        [status setStyleClass: @"details_label"];
+        [status setStyleId: @"details_status"];
+        NSString *statusstr = @"Rejected";
+        [status setStyleClass: @"red_text"];
+        [status setText:statusstr];
+        [self.view addSubview:status];
     }
 
     else if ([tagName isEqualToString:@"cancel"])
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Request Cancelled" message:@"You got it. That request has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Request Cancelled" message:@"You got it. That request has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         
         for (UIView *subview in self.view.subviews)

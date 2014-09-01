@@ -211,17 +211,18 @@ NSString *amnt;
 //-(void)getLatestTrans
 -(void)getMemIdFromuUsername:(NSString*)username
 {
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+ //   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
-    requestmemid=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetMemberIdByUsername?userName=%@",ServerUrl,username
+    requestmemid = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetMemberIdByUsername?userName=%@",ServerUrl,username
                                                                            ]]];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestmemid delegate:self];
     if (!connection)
         NSLog(@"connect error");
 }
 
--(void)getMemberIds:(NSMutableArray*)input{
+-(void)getMemberIds:(NSMutableArray*)input
+{
     self.responseData = [[NSMutableData alloc] init];
     for (NSMutableDictionary *temp in input) {
         for (NSString *key in temp.allKeys) {
@@ -248,7 +249,8 @@ NSString *amnt;
     if (!connection)
         NSLog(@"connect error");
 }
--(void)getNoteSettings{
+-(void)getNoteSettings
+{
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
@@ -260,7 +262,7 @@ NSString *amnt;
     if (!connection)
         NSLog(@"connect error");
 }
--(void)getRecents{
+-(void)getRecents {
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
@@ -1251,7 +1253,8 @@ NSString *amnt;
         
         NSLog(@"connect error");
 }
--(void)GetNonProfiltDetail:(NSString*)npId memberId:(NSString*)memberId{
+-(void)GetNonProfiltDetail:(NSString*)npId memberId:(NSString*)memberId
+{
     self.responseData = [[NSMutableData alloc] init];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
@@ -1264,8 +1267,8 @@ NSString *amnt;
     if (!connectionList)
         NSLog(@"connect error");
 }
--(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len subType:(NSString*)subType{
-    
+-(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len subType:(NSString*)subType
+{
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     responseData = [NSMutableData data];
@@ -1276,7 +1279,6 @@ NSString *amnt;
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
-    
 }
 -(void)histMoreSerachbyName:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len name:(NSString*)name subType:(NSString*)subType{
     //histSafe=NO;

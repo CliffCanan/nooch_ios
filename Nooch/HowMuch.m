@@ -190,13 +190,21 @@
         [self.camera setFrame:CGRectMake(270, 110, 28, 24)];
     }
     else {
-        [self.camera.titleLabel setFont:[UIFont fontWithName:@"FontAwesome" size:24]];
+        [self.camera.titleLabel setFont:[UIFont fontWithName:@"FontAwesome" size:22]];
         [self.camera setFrame:CGRectMake(268, 161, 30, 26)];
     }
     [self.camera addTarget:self action:@selector(attach_pic) forControlEvents:UIControlEventTouchUpInside];
-    [self.camera.titleLabel setFont:[UIFont fontWithName:@"FontAwesome" size:24]];
+    
     [self.camera setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-camera"] forState:UIControlStateNormal];
-    [self.camera setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
+    [self.camera setTitleColor:kNoochGrayLight forState:UIControlStateNormal];
+    
+    UILabel *glyphFB = [UILabel new];
+    [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:12]];
+    [glyphFB setFrame:CGRectMake(23, -4, 15, 15)];
+    [glyphFB setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus"]];
+    [glyphFB setTextColor:kNoochBlue];
+    
+    [self.camera addSubview:glyphFB];
     [self.view addSubview:self.camera];
     
     self.send = [UIButton buttonWithType:UIButtonTypeRoundedRect];

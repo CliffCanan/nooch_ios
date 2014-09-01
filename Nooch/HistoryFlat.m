@@ -156,6 +156,20 @@
     
     [completed_pending setSelectedSegmentIndex:0];
     
+    UILabel *glyph_recent = [UILabel new];
+    [glyph_recent setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+    [glyph_recent setFrame:CGRectMake(21, 12, 22, 16)];
+    [glyph_recent setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+    [glyph_recent setTextColor:[UIColor whiteColor]];
+    [self.view addSubview:glyph_recent];
+    
+    UILabel *glyph_location = [UILabel new];
+    [glyph_location setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+    [glyph_location setFrame:CGRectMake(178, 12, 20, 16)];
+    [glyph_location setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+    [glyph_location setTextColor: kNoochBlue];
+    [self.view addSubview:glyph_location];
+    
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     [imageCache clearMemory];
     [imageCache clearDisk];
@@ -171,7 +185,8 @@
     [exportHistory setFrame:CGRectMake(10, 420, 150, 20)];
     if ([UIScreen mainScreen].bounds.size.height > 500) {
         [exportHistory setStyleClass:@"exportHistorybutton"];
-    } else {
+    }
+    else {
         [exportHistory setStyleClass:@"exportHistorybutton_4"];
     }
     UILabel *glyph = [UILabel new];
@@ -546,22 +561,50 @@ return customView;
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     if ([segmentedControl selectedSegmentIndex] == 0)
     {
-        subTypestr=@"";
+        UILabel *glyph_recent = [UILabel new];
+        [glyph_recent setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+        [glyph_recent setFrame:CGRectMake(21, 12, 22, 16)];
+        [glyph_recent setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+        [glyph_recent setTextColor:[UIColor whiteColor]];
+        [self.view addSubview:glyph_recent];
+        
+        UILabel *glyph_location = [UILabel new];
+        [glyph_location setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+        [glyph_location setFrame:CGRectMake(178, 12, 20, 16)];
+        [glyph_location setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+        [glyph_location setTextColor: kNoochBlue];
+        [self.view addSubview:glyph_location];
+        
+        subTypestr = @"";
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
         self.completed_selected = YES;
-        index=1;
-        countRows=0;
+        index = 1;
+        countRows = 0;
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
     }
     else
     {
-        subTypestr=@"Pending";
+        UILabel *glyph_recent = [UILabel new];
+        [glyph_recent setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+        [glyph_recent setFrame:CGRectMake(21, 12, 22, 16)];
+        [glyph_recent setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+        [glyph_recent setTextColor: kNoochBlue];
+        [self.view addSubview:glyph_recent];
+        
+        UILabel *glyph_location = [UILabel new];
+        [glyph_location setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+        [glyph_location setFrame:CGRectMake(178, 12, 20, 16)];
+        [glyph_location setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+        [glyph_location setTextColor: [UIColor whiteColor]];
+        [self.view addSubview:glyph_location];
+        
+        subTypestr = @"Pending";
         self.completed_selected = NO;
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
-         index=1;
-          countRows=0;
+         index = 1;
+          countRows = 0;
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
     }
 }
@@ -651,7 +694,7 @@ return customView;
                     title:@"Accept"];
                     [rightUtilityButtons sw_addUtilityButtonWithColor:
                     [UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
-                    title:@"Decline"];
+                    title:@"Reject"];
                 }
             }
         }
@@ -1983,8 +2026,8 @@ return customView;
 
         if ([histArray count]>0)
         {
-            isEnd=NO;
-            isStart=NO;
+            isEnd = NO;
+            isStart = NO;
             
             for (NSDictionary*dict in histArray) {
                 if ([[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]) {
@@ -1998,32 +2041,36 @@ return customView;
             }
         }
         else {
-            isEnd=YES;
+            isEnd = YES;
         }
         if (isMapOpen) {
             [self mapPoints];
         }
-        serve*serveOBJ=[serve new];
+        serve *serveOBJ = [serve new];
         [serveOBJ setDelegate:self];
         [serveOBJ setTagName:@"time"];
         [serveOBJ GetServerCurrentTime];
     } 
     else if ([tagName isEqualToString:@"reject"])
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Request Rejected" message:@"No problem, you have rejected this request successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Request Rejected" message:@"No problem, you have rejected this request successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-        subTypestr=@"Pending";
+        subTypestr = @"Pending";
         self.completed_selected = NO;
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
-        index=1;
-        countRows=0;
+        index = 1;
+        countRows = 0;
 
         [self.list removeFromSuperview];
         self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
-        [self.list setStyleId:@"history"]; [self.list setRowHeight:70];
-        [self.list setDataSource:self]; [self.list setDelegate:self]; [self.list setSectionHeaderHeight:0];
-        [self.view addSubview:self.list]; [self.list reloadData];
+        [self.list setStyleId:@"history"];
+        [self.list setRowHeight:70];
+        [self.list setDataSource:self];
+        [self.list setDelegate:self];
+        [self.list setSectionHeaderHeight:0];
+        [self.view addSubview:self.list];
+        [self.list reloadData];
         [self.view bringSubviewToFront:exportHistory];
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
 
