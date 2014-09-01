@@ -41,15 +41,15 @@
     self = [super init];
     
     if (self) {
-        backgroundColor_ = [[UIColor colorWithRed:0 green:0 blue:0 alpha:1.0]
+        backgroundColor_ = [[UIColor colorWithRed:100.0/255.0 green:196.0/255.0 blue:43.0/255.0 alpha:0.9]
                             retain];
-        borderColor_ = [[UIColor colorWithRed:.3 green:.3 blue:.3 alpha:1.0]
+        borderColor_ = [[UIColor colorWithRed:67.0/255.0 green:132.0/255.0 blue:29.0/255.0 alpha:0.92]
                         retain];
         textColor_ = [[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0]
                       retain];
         textFont_ = [[UIFont systemFontOfSize:14.0f] retain];
         location_ = METoastLocationBottom;
-        borderWidth_ = 2.0f;
+        borderWidth_ = 1.0f;
     }
     
     return self;

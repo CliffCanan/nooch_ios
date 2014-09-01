@@ -18,6 +18,7 @@
 @property(nonatomic,strong) __block NSMutableDictionary *facebook_info;
 @property(nonatomic,strong) UIButton *facebook;
 @property(nonatomic,strong) UIButton *cont;
+@property(nonatomic,strong) MBProgressHUD *hud;
 @end
 @implementation Register
 
@@ -53,50 +54,65 @@
     [self.view addSubview:logo];
 
     UILabel *signup = [[UILabel alloc] initWithFrame:CGRectMake(0, 115, 320, 15)];
-    if ([[UIScreen mainScreen] bounds].size.height < 520) {
-        [signup setFrame:CGRectMake(0, 105, 0, 0)];
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        [signup setFrame:CGRectMake(0, 109, 0, 0)];
     }
     [signup setText:@"Sign Up Below With"];
     [signup setStyleClass:@"instruction_text"];
     [self.view addSubview:signup];
 
     self.facebook = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.facebook setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    [self.facebook setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     self.facebook.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-    [self.facebook setTitle:@"Facebook" forState:UIControlStateNormal];
+    [self.facebook setTitle:@"  Facebook" forState:UIControlStateNormal];
     [self.facebook setFrame:CGRectMake(0, 180, 0, 0)];
     if ([[UIScreen mainScreen] bounds].size.height < 520) {
         [self.facebook setFrame:CGRectMake(0, 165, 0, 0)];
     }
     [self.facebook addTarget:self action:@selector(connect_to_facebook) forControlEvents:UIControlEventTouchUpInside];
     [self.facebook setStyleClass:@"button_blue"];
+    
+    UILabel *glyphFB = [UILabel new];
+    [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
+    [glyphFB setFrame:CGRectMake(60, 8, 30, 30)];
+    [glyphFB setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]];
+    [glyphFB setTextColor:[UIColor whiteColor]];
+    
+    [self.facebook addSubview:glyphFB];
     [self.view addSubview:self.facebook];
 
-    UILabel *or = [[UILabel alloc] initWithFrame:CGRectMake(0, 240, 320, 15)]; [or setBackgroundColor:[UIColor clearColor]];
-    if ([[UIScreen mainScreen] bounds].size.height < 520) {
-        [or setFrame:CGRectMake(0, 220, 0, 0)];
+    UILabel *or = [[UILabel alloc] initWithFrame:CGRectMake(0, 240, 320, 15)];
+    [or setBackgroundColor:[UIColor clearColor]];
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        [or setFrame:CGRectMake(0, 218, 0, 0)];
     }
-    [or setTextAlignment:NSTextAlignmentCenter]; [or setText:@"Or..."];
+    [or setTextAlignment:NSTextAlignmentCenter];
+    [or setText:@"Or..."];
     [or setStyleClass:@"label_small"];
     [self.view addSubview:or];
 
     UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(20, 285, 60, 20)];
-    [name setBackgroundColor:[UIColor clearColor]]; [name setTextColor:kNoochBlue]; [name setText:@"Name"];
+    [name setBackgroundColor:[UIColor clearColor]];
+    [name setTextColor:kNoochBlue];
+    [name setText:@"Name"];
     [name setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:name];
 
     self.name_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 285, 200, 30)];
-    [self.name_field setBackgroundColor:[UIColor clearColor]]; [self.name_field setDelegate:self];
+    [self.name_field setBackgroundColor:[UIColor clearColor]];
+    [self.name_field setDelegate:self];
     [self.name_field setPlaceholder:@"First and Last Name"];
-    [self.name_field setKeyboardType:UIKeyboardTypeAlphabet]; [self.name_field setTag:1];
+    [self.name_field setKeyboardType:UIKeyboardTypeAlphabet];
+    self.name_field .returnKeyType = UIReturnKeyNext;
+    [self.name_field setTag:1];
     [self.name_field setAutocorrectionType:UITextAutocorrectionTypeNo];
     [self.name_field setStyleClass:@"table_view_cell_detailtext_1"];
     [self.name_field setAutocapitalizationType:UITextAutocapitalizationTypeWords];
     [self.view addSubview:self.name_field];
 
-    if ([[UIScreen mainScreen] bounds].size.height < 520) {
-        [name setFrame:CGRectMake(0, 250, 0, 0)];
-        [self.name_field setFrame:CGRectMake(0, 250, 0, 0)];
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        [name setFrame:CGRectMake(0, 246, 0, 0)];
+        [self.name_field setFrame:CGRectMake(0, 246, 0, 0)];
     }
 
     UILabel *email = [[UILabel alloc] initWithFrame:CGRectMake(20, 325, 60, 20)];
@@ -105,39 +121,48 @@
     [self.view addSubview:email];
 
     self.email_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 325, 200, 30)];
-    [self.email_field setBackgroundColor:[UIColor clearColor]]; [self.email_field setDelegate:self];
+    [self.email_field setBackgroundColor:[UIColor clearColor]];
+    [self.email_field setDelegate:self];
     [self.email_field setPlaceholder:@"Email Address"];
-    [self.email_field setKeyboardType:UIKeyboardTypeEmailAddress]; [self.email_field setTag:2];
+    [self.email_field setKeyboardType:UIKeyboardTypeEmailAddress];
+    self.email_field .returnKeyType = UIReturnKeyNext;
+    [self.email_field setTag:2];
     [self.email_field setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     [self.email_field setAutocorrectionType:UITextAutocorrectionTypeNo];
     [self.email_field setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.email_field];
 
-    if ([[UIScreen mainScreen] bounds].size.height < 520) {
-        [email setFrame:CGRectMake(0, 290, 0, 0)];
-        [self.email_field setFrame:CGRectMake(0, 290, 0, 0)];
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        [email setFrame:CGRectMake(0, 286, 0, 0)];
+        [self.email_field setFrame:CGRectMake(0, 286, 0, 0)];
     }
 
     UILabel *password = [[UILabel alloc] initWithFrame:CGRectMake(20, 365, 80, 20)];
-    [password setBackgroundColor:[UIColor clearColor]]; [password setTextColor:kNoochBlue]; [password setText:@"Password"];
+    [password setBackgroundColor:[UIColor clearColor]];
+    [password setTextColor:kNoochBlue];
+    [password setText:@"Password"];
     [password setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:password];
 
     self.password_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 365, 200, 30)];
-    [self.password_field setBackgroundColor:[UIColor clearColor]]; [self.password_field setDelegate:self];
-    [self.password_field setPlaceholder:@"Password"]; [self.password_field setKeyboardType:UIKeyboardTypeAlphabet];
-    [self.password_field setSecureTextEntry:YES]; [self.password_field setTag:3];
+    [self.password_field setBackgroundColor:[UIColor clearColor]];
+    [self.password_field setDelegate:self];
+    [self.password_field setPlaceholder:@"Password"];
+    [self.password_field setKeyboardType:UIKeyboardTypeAlphabet];
+    self.password_field .returnKeyType = UIReturnKeyGo;
+    [self.password_field setSecureTextEntry:YES];
+    [self.password_field setTag:3];
     [self.password_field setAutocorrectionType:UITextAutocorrectionTypeNo];
     [self.password_field setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.password_field];
 
-    if ([[UIScreen mainScreen] bounds].size.height < 520) {
-        [password setFrame:CGRectMake(0, 330, 0, 0)];
-        [self.password_field setFrame:CGRectMake(0, 330, 0, 0)];
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        [password setFrame:CGRectMake(0, 326, 0, 0)];
+        [self.password_field setFrame:CGRectMake(0, 326, 0, 0)];
     }
 
     self.cont = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.cont setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    [self.cont setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     self.cont.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [self.cont setTitle:@"Continue" forState:UIControlStateNormal];
     [self.cont setFrame:CGRectMake(10, 420, 300, 60)];
@@ -153,12 +178,13 @@
     UIButton *login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [login setBackgroundColor:[UIColor clearColor]];
     [login setTitle:@"Already a Member? Sign in." forState:UIControlStateNormal];
-    [login setFrame:CGRectMake(0, 510, 320, 20)]; [login addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
+    [login setFrame:CGRectMake(0, 504, 320, 20)];
+    [login addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
     [login setStyleClass:@"label_small"];
     [self.view addSubview:login];
     
     if ([[UIScreen mainScreen] bounds].size.height < 520) {
-        [login setFrame:CGRectMake(0, 445, 320, 20)];
+        [login setFrame:CGRectMake(0, 438, 320, 20)];
     }
 }
 
@@ -272,34 +298,50 @@
     [self.view setFrame:CGRectMake(0,0, 320, 600)];
     [UIView commitAnimations];
     
-    if ([[[self.name_field.text componentsSeparatedByString:@" "] objectAtIndex:0]length]<3) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:nil message:@"Our system is currently only able to handle names greater than 3 letters. Please email us if your first or last name has fewer than 3." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    if ([[[self.name_field.text componentsSeparatedByString:@" "] objectAtIndex:0]length] < 3)
+    {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Need a Full Name" message:@"Nooch is currently only able to handle names greater than 3 letters.\n\nIf your first or last name has fewer than 3, please contact us and we'll be happy to manually create your account." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        [self.name_field becomeFirstResponder];
         return;
     }
-    if (([self.password_field.text length] == 0) || ([self.name_field.text length] == 0) || ([self.email_field.text length] == 0)) {
+    if (([self.password_field.text length] == 0) || ([self.name_field.text length] == 0) || ([self.email_field.text length] == 0))
+    {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Eager Beaver" message:@"You have not filled out the sign up form!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
+        [self.name_field becomeFirstResponder];
         return;
     }
     NSCharacterSet* digitsCharSet = [NSCharacterSet decimalDigitCharacterSet];
     NSCharacterSet* lettercaseCharSet = [NSCharacterSet letterCharacterSet];
-    if([self.password_field.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound){
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Sooo Close" message:@"For sucurity reasons, et cetera, et cetera... we ask that passwords contain at LEAST 1 number. We know it's annoying, but just trying to look out for you. Keep it safe!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    if ([self.password_field.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound)
+    {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"So Close" message:@"For sucurity reasons, et cetera, we ask that passwords contain at least 1 number.\n\nWe know it's annoying, but we're just looking out for you. Keep it safe!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
+        [self.password_field becomeFirstResponder];
         return;
     }
-    else if([self.password_field.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound){
+    else if([self.password_field.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound)
+    {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Letters Are Fun Too" message:@"Regrettably, your Nooch password must contain at least one actual letter." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
+        [self.password_field becomeFirstResponder];
         return;
     }
-    else{
+    else
+    {
         spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [self.view addSubview:spinner];
         spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
         [spinner startAnimating];
 
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:self.hud];
+        
+        self.hud.delegate = self;
+        self.hud.labelText = @"Registering your account";
+        [self.hud show:YES];
+        
         serve *check_duplicate = [serve new];
         [check_duplicate setTagName:@"check_dup"];
         [check_duplicate setDelegate:self];
@@ -316,10 +358,13 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    if ([tagName isEqualToString:@"check_dup"]) {
+    if ([tagName isEqualToString:@"check_dup"])
+    {
+        [self.hud hide:YES];
         NSError *error;
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        if (![[loginResult objectForKey:@"Result"] isEqualToString:@"Not a nooch member."]) {
+        if (![[loginResult objectForKey:@"Result"] isEqualToString:@"Not a nooch member."])
+        {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Email in Use" message:@"The email address you are attempting to sign up with is already in use." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
             [spinner stopAnimating];
@@ -346,7 +391,8 @@
                      @"last_name":last_name,
                      @"email":[self.email_field.text lowercaseString],
                      @"password":self.password_field.text};
-        }else{
+        }
+        else{
             user = @{@"first_name":first_name,
                      @"last_name":last_name,
                      @"email":self.email_field.text,
@@ -364,22 +410,17 @@
 #pragma mark - UITextField delegation
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    //int len = [textField.text length] + [string length];
-    //NSString *new_string;
-    if([string length] == 0) //deleting
-    {
-        //new_string = [textField.text substringToIndex:[textField.text length]-1];
-    }else{
-        
-    }
     if ([self.name_field.text length] > 0 && [self.email_field.text length] > 0 && [self.email_field.text  rangeOfString:@"@"].location != NSNotFound && [self.email_field.text  rangeOfString:@"."].location != NSNotFound
-        && [self.password_field.text length] > 6) {
+        && [self.password_field.text length] > 6)
+    {
         [self.cont setEnabled:YES];
-    }else {
+    }
+    else {
         [self.cont setEnabled:NO];
     }
     return YES;
 }
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     //[textField resignFirstResponder];
@@ -391,7 +432,7 @@
             [self.password_field becomeFirstResponder];
             break;
         case 3:
-            [textField resignFirstResponder];
+            [self continue_to_signup];
             break;
         default:
             break;
@@ -404,7 +445,8 @@
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (textField== self.password_field) {
+    if (textField== self.password_field)
+    {
         [UIView beginAnimations:@"bucketsOff" context:nil];
         [UIView setAnimationDuration:0.4];
         [UIView setAnimationDelegate:self];

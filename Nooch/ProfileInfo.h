@@ -28,6 +28,7 @@ BOOL isProfileOpenFromSideBar;
    
     BOOL isPhotoUpdate;
     UITextView *memSincelbl;
+    UITextView *dateText;
     NSRange start,end;
     NSString*newString;
     NSString *betweenBraces;

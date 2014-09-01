@@ -398,7 +398,99 @@ typedef NS_ENUM(NSInteger, FAIcon) {
 	FAWheelchair,
 	FAVimeoSquare,
 	FATry,
-	FAPlusSquareO
+	FAPlusSquareO,
+    
+    /* FontAwesome ver 4.1.0 */
+	FAautomobile,
+	FAbank,
+	FAbehance,
+	FAbehanceSquare,
+	FAbomb,
+	FAbuilding,
+	FAcab,
+	FAcar,
+	FAchild,
+	FAcircleONotch,
+	FAcircleThin,
+	FAcodepen,
+	FAcube,
+	FAcubes,
+	FAdatabase,
+	FAdelicious,
+	FAdeviantart,
+	FAdigg,
+	FAdrupal,
+	FAempire,
+	FAenvelopeSquare,
+	FAfax,
+	FAfileArchiveO,
+	FAfileAudioO,
+	FAfileCodeO,
+	FAfileExcelO,
+	FAfileImageO,
+	FAfileMovieO,
+	FAfilePdfO,
+	FAfilePhotoO,
+	FAfilePictureO,
+	FAfilePowerpointO,
+	FAfileSoundO,
+	FAfileVideoO,
+	FAfileWordO,
+	FAfileZipO,
+	FAge,
+	FAgit,
+	FAgitSquare,
+	FAgoogle,
+	FAgraduationCap,
+	FAhackerNews,
+	FAheader,
+	FAhistory,
+	FAinstitution,
+	FAjoomla,
+	FAjsfiddle,
+	FAlanguage,
+	FAlifeBouy,
+	FAlifeRing,
+	FAlifeSaver,
+	FAmortarBoard,
+	FAopenid,
+	FApaperPlane,
+	FApaperPlaneO,
+	FAparagraph,
+	FApaw,
+	FApiedPiper,
+	FApiedPiperalt,
+	FApiedPipersquare,
+	FAqq,
+	FAra,
+	FArebel,
+	FArecycle,
+	FAreddit,
+	FAredditSquare,
+	FAsend,
+	FAsendO,
+	FAshareAlt,
+	FAshareAltSquare,
+	FAslack,
+	FAsliders,
+	FAsoundcloud,
+	FAspaceShuttle,
+	FAspoon,
+	FAspotify,
+	FAsteam,
+	FAsteamSquare,
+	FAstumbleupon,
+	FAstumbleuponCircle,
+	FAsupport,
+	FAtaxi,
+	FAtencentWeibo,
+	FAtree,
+	FAuniversity,
+	FAvine,
+	FAwechat,
+	FAweixin,
+	FAwordpress,
+	FAyahoo
 };
 
 
@@ -407,16 +499,16 @@ typedef NS_ENUM(NSInteger, FAIcon) {
 
 /**
  @abstract Returns the correct enum for a font-awesome icon.
- @discussion The list of identifiers can be found here: http://fortawesome.github.com/Font-Awesome/#all-icons 
+ @discussion The list of identifiers can be found here: http://fortawesome.github.com/Font-Awesome/#all-icons
  */
 + (FAIcon)fontAwesomeEnumForIconIdentifier:(NSString*)string;
 
 /**
- @abstract Returns the font-awesome character associated to the icon enum passed as argument 
+ @abstract Returns the font-awesome character associated to the icon enum passed as argument
  */
 + (NSString*)fontAwesomeIconStringForEnum:(FAIcon)value;
 
-/* 
+/*
  @abstract Returns the font-awesome character associated to the font-awesome identifier.
  @discussion The list of identifiers can be found here: http://fortawesome.github.com/Font-Awesome/#all-icons
  */
