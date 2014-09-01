@@ -8,7 +8,7 @@
 BOOL isBankAttached;
 #import <UIKit/UIKit.h>
 #import "serve.h"
-@interface SettingsOptions : UIViewController<UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate,serveD>
+@interface SettingsOptions : GAITrackedViewController<UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate,serveD>
 {
     UIView* blankView;
     

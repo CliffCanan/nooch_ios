@@ -3,15 +3,15 @@
 //  Nooch
 //
 //  Created by crks on 10/7/13.
-//  Copyright (c) 2013 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-//#import "Server.h"
 #import "serve.h"
+#import "MBProgressHUD.h"
 #import <MessageUI/MessageUI.h>
 
-@interface Login : UIViewController<UIAlertViewDelegate,UITextFieldDelegate,serveD,CLLocationManagerDelegate,MFMailComposeViewControllerDelegate>
+@interface Login : GAITrackedViewController<UIAlertViewDelegate,UITextFieldDelegate,serveD,CLLocationManagerDelegate,MFMailComposeViewControllerDelegate,MBProgressHUDDelegate>
 {
     float lat;
     float lon;

@@ -28,29 +28,43 @@
     }
     return self;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.navigationController.navigationBar.topItem.title = @"";
-    [self.navigationItem setTitle:@"Reset PIN"];
-    
 }
--(void)viewWillAppear:(BOOL)animated{
+
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
-    pinchangeProgress=1;
+  
+    self.trackedViewName = @"Reset Pin Screen";
+
+    pinchangeProgress = 1;
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    UIView*navBar=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
+
+    UIView *navBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
     [navBar setBackgroundColor:[UIColor colorWithRed:82.0f/255.0f green:176.0f/255.0f blue:235.0f/255.0f alpha:1.0f]];
     [self.view addSubview:navBar];
-    UIButton*back=[UIButton buttonWithType:UIButtonTypeCustom];
+
+    UIButton *back = [UIButton buttonWithType:UIButtonTypeCustom];
     [back setStyleClass:@"backbutton"];
     [back setTitle:@"Cancel" forState:UIControlStateNormal];
+    [back setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.276) forState:UIControlStateNormal];
+    back.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [back addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
     [back setFrame:CGRectMake(0,5, 70, 30)];
     [navBar addSubview:back];
-    UILabel*lbl=[[UILabel alloc]initWithFrame:CGRectMake(105, 20, 200, 30)];
-    [lbl setText:@"Reset PIN"];
+
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(19, 32, 38, .25);
+    shadow.shadowOffset = CGSizeMake(0, 1);
+    
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
+    UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(105, 20, 200, 30)];
+    lbl.attributedText = [[NSAttributedString alloc] initWithString:@"Reset PIN"
+                                                           attributes:textAttributes];
     [lbl setFont:[UIFont systemFontOfSize:22]];
     [lbl setTextColor:[UIColor whiteColor]];
     [navBar addSubview:lbl];
@@ -87,17 +101,17 @@
     [self.view addSubview:self.third_num];
     [self.view addSubview:self.fourth_num];
 }
--(void)goBack{
+
+-(void)goBack
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
     int len = [textField.text length] + [string length];
-    //    if ([self.pin.text isEqualToString:@""]) {
-    //        len=1;
-    //       // pinchangeProgress=0;
-    //    }
+    self.prompt.text = @"";
     UIColor *which;
     if([string length] == 0) //deleting
     {
@@ -120,7 +134,8 @@
                 break;
         }
     }
-    else{
+    else
+    {
         which = kNoochGreen;
         switch (len) {
             case 5:
@@ -146,7 +161,8 @@
         }
     }
     
-    if (len==4 && pinchangeProgress==1) {
+    if (len == 4 && pinchangeProgress == 1)
+    {
         spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [self.view addSubview:spinner];
         spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
@@ -157,11 +173,12 @@
         pin.tagName = @"ValidatePinNumber";
         [pin getEncrypt:[NSString stringWithFormat:@"%@%@",textField.text,string]];
     }
-    else if (len==4 && pinchangeProgress==2) {
-        
+    else if (len == 4 && pinchangeProgress == 2)
+    {
         [self.fourth_num setBackgroundColor:which];
-        if ([newPinString length] != 4) {
-            pinchangeProgress=3;
+        if ([newPinString length] != 4)
+        {
+            pinchangeProgress = 3;
             self.prompt.text=@"";
             newPinString = [NSString stringWithFormat:@"%@%@",textField.text,string];
             [title setText:@"Confirm your PIN"];
@@ -174,85 +191,79 @@
         }
         
     }
-    else if (len==4 && pinchangeProgress==3) {
-        if (![newPinString isEqualToString:[NSString stringWithFormat:@"%@%@",textField.text,string]]) {
+    else if (len == 4 && pinchangeProgress == 3)
+    {
+        if (![newPinString isEqualToString:[NSString stringWithFormat:@"%@%@",textField.text,string]])
+        {
             [self.fourth_num setBackgroundColor:[UIColor clearColor]];
             [self.third_num setBackgroundColor:[UIColor clearColor]];
             [self.second_num setBackgroundColor:[UIColor clearColor]];
             [self.first_num setBackgroundColor:[UIColor clearColor]];
-            self.pin.text=@"";
-            newPinString=@"";
-            self.prompt.text=@"Pin doesn't matched.";
-            pinchangeProgress=2;
-            title.text=@"Enter new Pin";
+            self.pin.text = @"";
+            newPinString = @"";
+            self.prompt.text = @"PINs didn't match - try again";
+            self.prompt.textColor = kNoochRed;
+            pinchangeProgress = 2;
+            title.text = @"Enter new Pin";
             return NO;
         }
         else
         {
             serve *req = [[serve alloc] init];
             req.Delegate = self;
-            req.tagName=@"GetEncryptedData";
+            req.tagName = @"GetEncryptedData";
             [req getEncrypt:[NSString stringWithFormat:@"%@%@",textField.text,string]];
         }
-        
     }
     return YES;
 }
+
 -(void)pinChanged:(NSString*)status
 {
     if([status isEqualToString:@"Pin changed successfully."])
     {
-        
         UIAlertView *showAlertMessage = [[UIAlertView alloc] initWithTitle:nil message:@"Your PIN number has been changed successfully!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        //  [showAlertMessage setTag:2];
-        // [showAlertMessage setDelegate:self];
         [showAlertMessage show];
         [self dismissViewControllerAnimated:YES completion:nil];
     }
-    
 }
-
 
 -(void)listen:(NSString *)result tagName:(NSString *)tagName
 {
-    
     NSError* error;
     
     dictResult= [NSJSONSerialization
-                 
                  JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                 
                  options:kNilOptions
-                 
                  error:&error];
     
     NSLog(@"%@",dictResult);
-    if ([tagName isEqualToString:@"GetEncryptedData"]) {
+    if ([tagName isEqualToString:@"GetEncryptedData"])
+    {
         newEncryptedPIN=[dictResult objectForKey:@"Status"];
         serve *resPin = [[serve alloc] init];
         resPin.Delegate = self;
         resPin.tagName = @"resetpin";
         [resPin resetPIN:encryptedPIN new:newEncryptedPIN];
     }
-    else if ([tagName isEqualToString:@"resetpin"]) {
-        
-        // NSDictionary *loginResult = [result JSONValue];
-        NSString *statusData= (NSString *)[dictResult objectForKey:@"Result"];
+    else if ([tagName isEqualToString:@"resetpin"])
+    {
+        NSString *statusData = (NSString *)[dictResult objectForKey:@"Result"];
         NSLog(@"Status %@", statusData);
         [self pinChanged:statusData];
-        
-        
     }
-    else if ([tagName isEqualToString:@"ValidatePinNumber"]) {
-        encryptedPIN=[dictResult valueForKey:@"Status"];
-        
+    else if ([tagName isEqualToString:@"ValidatePinNumber"])
+    {
+        encryptedPIN = [dictResult valueForKey:@"Status"];
         serve *checkValid = [serve new];
         checkValid.tagName = @"checkValid";
         checkValid.Delegate = self;
         [checkValid pinCheck:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] pin:encryptedPIN];
     }
-    else if ([tagName isEqualToString:@"checkValid"]){
-        if([[dictResult objectForKey:@"Result"] isEqualToString:@"Success"]){
+    else if ([tagName isEqualToString:@"checkValid"])
+    {
+        if ([[dictResult objectForKey:@"Result"] isEqualToString:@"Success"])
+        {
             [spinner stopAnimating];
             [spinner setHidden:YES];
             pinchangeProgress=2;
@@ -260,22 +271,21 @@
             [self.third_num setBackgroundColor:[UIColor clearColor]];
             [self.second_num setBackgroundColor:[UIColor clearColor]];
             [self.first_num setBackgroundColor:[UIColor clearColor]];
-            self.pin.text=@"";
-            self.prompt.text=@"";
-            title.text=@"Enter New Pin";
+            self.pin.text = @"";
+            self.prompt.text = @"";
+            title.text = @"Enter New Pin";
         }
-        
-        
-        else{
-            
+        else
+        {
             [self.fourth_num setBackgroundColor:[UIColor clearColor]];
             [self.third_num setBackgroundColor:[UIColor clearColor]];
             [self.second_num setBackgroundColor:[UIColor clearColor]];
             [self.first_num setBackgroundColor:[UIColor clearColor]];
-            self.pin.text=@"";
+            self.pin.text = @"";
         }
         
-        if([[dictResult objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]){
+        if([[dictResult objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."])
+        {
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
             self.prompt.textColor = kNoochRed;
             self.fourth_num.layer.borderColor = kNoochRed.CGColor;
@@ -286,11 +296,13 @@
             [self.third_num setStyleClass:@"shakePin3"];
             [self.second_num setStyleClass:@"shakePin2"];
             [self.first_num setStyleClass:@"shakePin1"];
-            self.prompt.text=@"1 failed attempt.";
-            self.prompt.textColor = [UIColor colorWithRed:169 green:68 blue:66 alpha:1];
+            self.prompt.text = @"1 Failed Attempt";
+            self.prompt.textColor = kNoochRed;
             [spinner stopAnimating];
             [spinner setHidden:YES];
-        }else if([[dictResult objectForKey:@"Result"]isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]){
+        }
+        else if ([[dictResult objectForKey:@"Result"]isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."])
+        {
             [spinner stopAnimating];
             [spinner setHidden:YES];
             self.fourth_num.layer.borderColor = kNoochRed.CGColor;
@@ -301,11 +313,15 @@
             [self.third_num setStyleClass:@"shakePin3"];
             [self.second_num setStyleClass:@"shakePin2"];
             [self.first_num setStyleClass:@"shakePin1"];
-            self.prompt.text=@"2nd failed attempt.";
+            
+            self.prompt.text = @"2 Failed Attempts";
+            self.prompt.textColor = kNoochRed;
+            
             UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:nil message:@"Your account will be suspended for 24 hours if you enter another incorrect PIN." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
             [suspendedAlert show];
-            
-        }else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))            {
+        }
+        else if (([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))
+        {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
             [av setTag:202320];
             
@@ -322,7 +338,9 @@
             [spinner stopAnimating];
             [spinner setHidden:YES];
             self.prompt.text=@"Account suspended.";
-        }else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])){
+        }
+        else if (([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))
+        {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
             [av setTag:202320];
             [av show];
@@ -335,14 +353,18 @@
     }
     
 }
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (alertView.tag==202320 && buttonIndex==0) {
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag==202320 && buttonIndex==0)
+    {
         [nav_ctrl popToRootViewControllerAnimated:YES];
     }
-    
-    else if (alertView.tag == 202320 && buttonIndex == 1) {
-        if (![MFMailComposeViewController canSendMail]){
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    else if (alertView.tag == 202320 && buttonIndex == 1)
+    {
+        if (![MFMailComposeViewController canSendMail])
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [av show];
             return;
         }
@@ -359,22 +381,19 @@
         [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
         [self presentViewController:mailComposer animated:YES completion:nil];
     }
-    else if (alertView.tag == 1) {
+    else if (alertView.tag == 1)
+    {
         if (buttonIndex == 0) {
             [user setObject:@"YES" forKey:@"requiredImmediately"];
-            // [[me usr] setObject:@"NO" forKey:@"requiredImmediately"];
-        }else{
-            [user setObject:@"YES" forKey:@"requiredImmediately"];
-            //[[me usr] setObject:@"YES" forKey:@"requiredImmediately"];
         }
-        NSLog(@"%@",[me usr]);
-        //reqImm = NO;
+        else {
+            [user setObject:@"YES" forKey:@"requiredImmediately"];
+        }
         
-        // [navCtrl popToRootViewControllerAnimated:NO];
         [self dismissViewControllerAnimated:YES completion:nil];
-        //  [self dismissModalViewControllerAnimated:YES];
     }
 }
+
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc] init];

@@ -23,7 +23,9 @@ bool modal;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+
     inBack = NO;
+
     [GMSServices provideAPIKey:@"AIzaSyDC-JeglFaO1kbXc2Z3ztCgh1AnwfIla-8"];
     inactiveDate = [NSDate date];
     [NSUserDefaults resetStandardUserDefaults];
@@ -57,7 +59,8 @@ bool modal;
     return YES;
 }
 
--(void)connectCheck:(NSNotification *)notice{
+-(void)connectCheck:(NSNotification *)notice
+{
     Reachability* curReach = [notice object];
     NSParameterAssert([curReach isKindOfClass: [Reachability class]]);
     NetworkStatus netStat = [curReach currentReachabilityStatus];
@@ -65,15 +68,17 @@ bool modal;
     if ([self.window.subviews containsObject:noConnectionView] && (netStat == ReachableViaWWAN || netStat == ReachableViaWiFi)) {
         [noConnectionView removeFromSuperview];
         [self.window setUserInteractionEnabled:YES];
-    }else if(![self.window.subviews containsObject:noConnectionView] && netStat == NotReachable){
-        noConnectionView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, [[UIScreen mainScreen] bounds].size.height)];
+    }
+    else if (![self.window.subviews containsObject:noConnectionView] && netStat == NotReachable){
+        noConnectionView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20, 320, [[UIScreen mainScreen] bounds].size.height-30)];
         noConnectionView.image = [UIImage imageNamed:@"No-Internet-Full-Screen.png"];
         [self.window addSubview:noConnectionView];
         [self.window setUserInteractionEnabled:NO];
     }
 }
 
--(void)showWait:(NSString*)label{
+-(void)showWait:(NSString*)label
+{
     loadingView = [[UIView alloc] initWithFrame:CGRectMake(75,( [[UIScreen mainScreen] bounds].size.height/2)-165, 170, 130)];
     loadingView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.8];
     loadingView.clipsToBounds = YES;
@@ -130,22 +135,26 @@ void exceptionHandler(NSException *exception){
     }
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application{
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     NSTimeInterval timeAway = [inactiveDate timeIntervalSinceNow];
     [splashView removeFromSuperview];
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] length] > 0) {
-        if (timeAway > 30 || timeAway < -30) {
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] length] > 0)
+    {
+        if (timeAway > 30 || timeAway < -30)
+        {
             [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"pincheck"];
             //init requireImmediately
-            if (![[NSUserDefaults standardUserDefaults] objectForKey:@"requiredImmediately"]) {
+            if (![[NSUserDefaults standardUserDefaults] objectForKey:@"requiredImmediately"])
+            {
                 ReEnterPin *pin = [ReEnterPin new];
                 [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:pin animated:YES completion:^{
                     
                 }];
             }
-            else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"requiredImmediately"] boolValue]){
-                
+            else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"requiredImmediately"] boolValue])
+            {
                 [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"pincheck"];
                 ReEnterPin *pin = [ReEnterPin new];
                 [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:pin animated:YES completion:^{
@@ -168,7 +177,8 @@ void exceptionHandler(NSException *exception){
     [UAirship land];
 }
 
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
     NSString *deviceTokens = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     deviceTokens = [deviceTokens stringByReplacingOccurrencesOfString:@" " withString:@""];
     [[UAPush shared] registerDeviceToken:deviceToken];
@@ -177,7 +187,8 @@ void exceptionHandler(NSException *exception){
     
 }
 
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
     NSLog(@"Error in registration. Error: %@", error);
     [[NSUserDefaults standardUserDefaults] setValue:@"123456" forKey:@"DeviceToken"];
 
@@ -194,11 +205,12 @@ void exceptionHandler(NSException *exception){
     }
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
     NSLog(@"userInfo%@", userInfo);
     UIApplicationState state = [application applicationState];
-    if (state == UIApplicationStateActive) {
-        
+    if (state == UIApplicationStateActive)
+    {
         NSString *message = [[userInfo valueForKey:@"aps"] valueForKey:@"alert"];
         [METoast resetToastAttribute];
         [METoast toastWithMessage:message];
@@ -206,7 +218,8 @@ void exceptionHandler(NSException *exception){
         
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     }
-    else{
+    else
+    {
     [[UAPush shared] handleNotification:userInfo
                        applicationState:application.applicationState];
     // Reset the badge if you are using that functionality
@@ -217,8 +230,7 @@ void exceptionHandler(NSException *exception){
         
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[UIApplication sharedApplication] applicationIconBadgeNumber]+1]; 
     }// zero badge after push received
-   
-    
+
 }
 
 -(BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation

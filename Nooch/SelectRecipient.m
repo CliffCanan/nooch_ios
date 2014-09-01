@@ -46,7 +46,6 @@
     self.navigationController.navigationBar.topItem.title = @"";
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-
     
     isPayBack=NO;
     isEmailEntry=NO;
@@ -54,7 +53,7 @@
     if ([[assist shared] isRequestMultiple]) {
         isAddRequest=YES;
     }
-    else{
+    else {
         [arrRecipientsForRequest removeAllObjects];
         [[assist shared]setArray:[arrRecipientsForRequest copy]];
     }
@@ -119,6 +118,9 @@
 
 -(void)viewWillAppear:(BOOL)animated  {
     [super viewWillAppear:animated];
+   
+    self.trackedViewName = @"SelectRecipient Screen";
+
     if ([[assist shared] isRequestMultiple] && isAddRequest)
     {
         self.location = NO;
@@ -176,7 +178,8 @@
         NSLog(@"%@",arrRequestPersons);
         [self.contacts reloadData];
     }
-    else {
+    else
+    {
         [self.navigationItem setTitle:@"Select Recipient"];
         [self.navigationItem setHidesBackButton:NO];
         isUserByLocation=NO;
@@ -223,11 +226,12 @@
             }
             [self address_book];
             NSLog(@"Just authorized");
+
         });
         
         NSLog(@"Not determined");
     }
-    
+
     [self facebook];
     serve *recents = [serve new];
     [recents setTagName:@"recents"];
@@ -421,7 +425,6 @@
     
     if (sender.selectedSegmentIndex == 0)
     {
-        
         UILabel *glyph_recent = [UILabel new];
         [glyph_recent setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
         [glyph_recent setFrame:CGRectMake(32, 12, 22, 18)];
@@ -531,7 +534,8 @@
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Uh Oh" message:@"No email address has been specified. Please try again." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
             [alert show];
         }
-        else if ([emailAddresses count]==1){
+        else if ([emailAddresses count]==1)
+        {
             //  search.text=[emailAddresses objectAtIndex:0];
             // [search setShowsCancelButton:YES];
             // [search becomeFirstResponder];
@@ -539,7 +543,8 @@
             isphoneBook=YES;
             [self getMemberIdByUsingUserNameFromPhoneBook];
         }
-        else {
+        else
+        {
             UIActionSheet *actionSheet=[[UIActionSheet alloc]init];
             [actionSheet setDelegate:self];
             for (int i=0 ; i<[emailAddresses count];i++) {
@@ -560,6 +565,7 @@
         }
     }
 }
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     if ([actionSheet tag]==1111) {
@@ -610,9 +616,10 @@
 #pragma mark - searching
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    if ([self.recents count]==0) {
+    if ([self.recents count]==0)
+    {
         [self.contacts setHidden:YES];
-        [self.view addSubview:  self.noContact_img];
+        [self.view addSubview: self.noContact_img];
     }
     // histSearch = NO;
     searching = NO;
@@ -624,17 +631,21 @@
     [searchBar setShowsCancelButton:NO];
     [self.contacts reloadData];
 }
--(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
     [searchBar resignFirstResponder];
     [searchBar setShowsCancelButton:NO];
     [self.contacts reloadData];
 }
--(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
     //histSearch = YES;
     [searchBar becomeFirstResponder];
-    // [searchBar becomeFirstResponder];
     [searchBar setShowsCancelButton:YES];
 }
+
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     return YES;
 }
@@ -737,6 +748,7 @@
         [emailCheck getMemIdFromuUsername:[search.text lowercaseString]];
     }
 }
+
 #pragma mark - file paths
 - (NSString *)autoLogin{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -1569,8 +1581,8 @@
              [spinner setHidden:NO];
              spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
              [spinner startAnimating];
-             isphoneBook=YES;
-             emailphoneBook=receiver[@"UserName"];
+             isphoneBook = YES;
+             emailphoneBook = receiver[@"UserName"];
              
              serve *emailCheck = [serve new];
              emailCheck.Delegate = self;
@@ -1578,7 +1590,7 @@
              [emailCheck getMemIdFromuUsername:[receiver[@"UserName"] lowercaseString]];
              return;
          }
-        isFromHome=NO;
+        isFromHome = NO;
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
         [self.navigationController pushViewController:how_much animated:YES];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -1586,7 +1598,7 @@
     }
     else
     {
-        isFromHome=NO;
+        isFromHome = NO;
         NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
         [self.navigationController pushViewController:how_much animated:YES];

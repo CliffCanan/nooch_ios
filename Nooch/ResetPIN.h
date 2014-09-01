@@ -12,7 +12,7 @@
 #import "Home.h"
 #import <MessageUI/MessageUI.h>
 
-@interface ResetPIN : UIViewController<serveD,MFMailComposeViewControllerDelegate>
+@interface ResetPIN : GAITrackedViewController<serveD,MFMailComposeViewControllerDelegate>
 {
     UIActivityIndicatorView*spinner;
     NSDictionary*dictResult;

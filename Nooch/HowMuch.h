@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by crks on 9/26/13.
-//  Copyright (c) 2013 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -13,7 +13,7 @@ BOOL isFromHome;
 BOOL isPayBack;
 BOOL isEmailEntry;
 BOOL isUserByLocation;
-@interface HowMuch : UIViewController<UITextFieldDelegate,serveD,UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface HowMuch : GAITrackedViewController<UITextFieldDelegate,serveD,UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 - (id)initWithReceiver:(NSDictionary *)receiver;
 @property(nonatomic,strong)UIButton*balance;

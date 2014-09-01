@@ -32,7 +32,6 @@
 		010A993A185FA99F001DCE6B /* choose-pic-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 010A9937185FA99F001DCE6B /* choose-pic-icon.png */; };
 		010A993B185FA99F001DCE6B /* n_Icon_58x66.png in Resources */ = {isa = PBXBuildFile; fileRef = 010A9938185FA99F001DCE6B /* n_Icon_58x66.png */; };
 		010A993E185FC5E7001DCE6B /* back-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 010A993D185FC5E7001DCE6B /* back-arrow.png */; };
-		011B6CAA19006D2A00169F1A /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 011B6CA919006D2A00169F1A /* fontawesome-webfont.ttf */; };
 		0129D8E71815B10D00BEAC30 /* Brandon_bld.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0129D8E31815B10D00BEAC30 /* Brandon_bld.otf */; };
 		0129D8E81815B10D00BEAC30 /* Brandon_blk.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0129D8E41815B10D00BEAC30 /* Brandon_blk.otf */; };
 		0129D8E91815B10D00BEAC30 /* Brandon_light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0129D8E51815B10D00BEAC30 /* Brandon_light.otf */; };
@@ -94,7 +93,6 @@
 		01C26DF61843C56C005179B7 /* Stats_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DDC1843C56C005179B7 /* Stats_Icon.png */; };
 		01C26DFB1843E676005179B7 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C26DFA1843E676005179B7 /* Reachability.m */; };
 		01C26DFD1843E85C005179B7 /* Preston.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DFC1843E85C005179B7 /* Preston.png */; };
-		01C49AEA18D8C83500BACE23 /* fontawesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 01C49AE118D8C83500BACE23 /* fontawesome.ttf */; };
 		01C49AEC18D8C83500BACE23 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C49AE518D8C83500BACE23 /* MBProgressHUD.m */; };
 		01C83E7B17F4D726009CABBF /* HowMuch.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C83E7917F4D726009CABBF /* HowMuch.m */; };
 		01C83E8017F9FF9E009CABBF /* TransferPIN.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C83E7E17F9FF9E009CABBF /* TransferPIN.m */; };
@@ -120,14 +118,13 @@
 		16E4B1C61870832B0099D075 /* untick.png in Resources */ = {isa = PBXBuildFile; fileRef = 16E4B1C51870832B0099D075 /* untick.png */; };
 		16E4B1C818708C1D0099D075 /* tickR.png in Resources */ = {isa = PBXBuildFile; fileRef = 16E4B1C718708C1D0099D075 /* tickR.png */; };
 		16E4B1CA1870A2C90099D075 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16E4B1C91870A2C90099D075 /* MessageUI.framework */; };
-		5C2F756819AFD4C600159D0B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C2F756719AFD4C600159D0B /* MapKit.framework */; };
-		6B01F1B2179D994A00E34C49 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B1179D994A00E34C49 /* GoogleMaps.framework */; };
+		5C2F757019B2E2BC00159D0B /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C2F756F19B2E2BC00159D0B /* GoogleMaps.framework */; };
+		5C9B7B3219B3E51E006DD9B8 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C9B7B3119B3E51E006DD9B8 /* FontAwesome.ttf */; };
 		6B01F1B4179DA78B00E34C49 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B3179DA78B00E34C49 /* CoreText.framework */; };
 		6B01F1B6179DA79B00E34C49 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B5179DA79B00E34C49 /* GLKit.framework */; };
 		6B01F1B8179DA7AD00E34C49 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B7179DA7AD00E34C49 /* ImageIO.framework */; };
 		6B01F1BA179DA7BC00E34C49 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B9179DA7BC00E34C49 /* libc++.dylib */; };
 		6B01F1BC179DA7CA00E34C49 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1BB179DA7CA00E34C49 /* libicucore.dylib */; };
-		6B01F1BE179DA8E800E34C49 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6B01F1BD179DA8E800E34C49 /* GoogleMaps.bundle */; };
 		6B0DFB2217A2DF2E007DA8B0 /* popup.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B0DFB2117A2DF2E007DA8B0 /* popup.m */; };
 		6B30373015FA3FF300056DAD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6B30372E15FA3FF300056DAD /* InfoPlist.strings */; };
 		6B30373615FA3FF400056DAD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B30373515FA3FF400056DAD /* AppDelegate.m */; };
@@ -227,6 +224,7 @@
 		847268CC1966A7C100D5E749 /* webView.m in Sources */ = {isa = PBXBuildFile; fileRef = 847268CB1966A7C100D5E749 /* webView.m */; };
 		8481F08F19A1CA75007F6565 /* selectRecipientIntro.png in Resources */ = {isa = PBXBuildFile; fileRef = 8481F08D19A1CA75007F6565 /* selectRecipientIntro.png */; };
 		8481F09019A1CA75007F6565 /* selectRecipientIntro_smallScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 8481F08E19A1CA75007F6565 /* selectRecipientIntro_smallScreen.png */; };
+		84830DD019B03DB400E29A4C /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84830DCF19B03DB400E29A4C /* MapKit.framework */; };
 		849AF6BD19A3183000693385 /* close_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AF6BC19A3183000693385 /* close_button.png */; };
 		849AF6BF19A320EC00693385 /* KnoxInfo_Lightbox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AF6BE19A320EC00693385 /* KnoxInfo_Lightbox@2x.png */; };
 		849AF6C119A3217600693385 /* KnoxInfo_Lightbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AF6C019A3217600693385 /* KnoxInfo_Lightbox.png */; };
@@ -289,7 +287,6 @@
 		010A9937185FA99F001DCE6B /* choose-pic-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "choose-pic-icon.png"; sourceTree = "<group>"; };
 		010A9938185FA99F001DCE6B /* n_Icon_58x66.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_Icon_58x66.png; sourceTree = "<group>"; };
 		010A993D185FC5E7001DCE6B /* back-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-arrow.png"; sourceTree = "<group>"; };
-		011B6CA919006D2A00169F1A /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		0129D8E31815B10D00BEAC30 /* Brandon_bld.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_bld.otf; sourceTree = "<group>"; };
 		0129D8E41815B10D00BEAC30 /* Brandon_blk.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_blk.otf; sourceTree = "<group>"; };
 		0129D8E51815B10D00BEAC30 /* Brandon_light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_light.otf; sourceTree = "<group>"; };
@@ -366,7 +363,6 @@
 		01C26DF91843E676005179B7 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		01C26DFA1843E676005179B7 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		01C26DFC1843E85C005179B7 /* Preston.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Preston.png; sourceTree = "<group>"; };
-		01C49AE118D8C83500BACE23 /* fontawesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontawesome.ttf; sourceTree = "<group>"; };
 		01C49AE218D8C83500BACE23 /* knoxWeb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = knoxWeb.h; sourceTree = "<group>"; };
 		01C49AE418D8C83500BACE23 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		01C49AE518D8C83500BACE23 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
@@ -413,14 +409,13 @@
 		16E4B1C51870832B0099D075 /* untick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = untick.png; sourceTree = "<group>"; };
 		16E4B1C718708C1D0099D075 /* tickR.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tickR.png; sourceTree = "<group>"; };
 		16E4B1C91870A2C90099D075 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		5C2F756719AFD4C600159D0B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		6B01F1B1179D994A00E34C49 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
+		5C2F756F19B2E2BC00159D0B /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
+		5C9B7B3119B3E51E006DD9B8 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
 		6B01F1B3179DA78B00E34C49 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		6B01F1B5179DA79B00E34C49 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		6B01F1B7179DA7AD00E34C49 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		6B01F1B9179DA7BC00E34C49 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		6B01F1BB179DA7CA00E34C49 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
-		6B01F1BD179DA8E800E34C49 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
 		6B0DFB2017A2DF2E007DA8B0 /* popup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = popup.h; sourceTree = "<group>"; };
 		6B0DFB2117A2DF2E007DA8B0 /* popup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = popup.m; sourceTree = "<group>"; };
 		6B30372115FA3FF300056DAD /* Nooch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nooch.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -620,6 +615,7 @@
 		847268CB1966A7C100D5E749 /* webView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = webView.m; sourceTree = "<group>"; };
 		8481F08D19A1CA75007F6565 /* selectRecipientIntro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = selectRecipientIntro.png; path = ../selectRecipientIntro.png; sourceTree = "<group>"; };
 		8481F08E19A1CA75007F6565 /* selectRecipientIntro_smallScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = selectRecipientIntro_smallScreen.png; path = ../selectRecipientIntro_smallScreen.png; sourceTree = "<group>"; };
+		84830DCF19B03DB400E29A4C /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		849AF6BC19A3183000693385 /* close_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_button.png; sourceTree = "<group>"; };
 		849AF6BE19A320EC00693385 /* KnoxInfo_Lightbox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "KnoxInfo_Lightbox@2x.png"; sourceTree = "<group>"; };
 		849AF6C019A3217600693385 /* KnoxInfo_Lightbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KnoxInfo_Lightbox.png; sourceTree = "<group>"; };
@@ -643,11 +639,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84830DD019B03DB400E29A4C /* MapKit.framework in Frameworks */,
 				6B30380215FA48F900056DAD /* AudioToolbox.framework in Frameworks */,
 				6B30380115FA48F900056DAD /* AddressBookUI.framework in Frameworks */,
 				6B30380015FA48F900056DAD /* AddressBook.framework in Frameworks */,
 				16E4B1CA1870A2C90099D075 /* MessageUI.framework in Frameworks */,
 				6B01F1BC179DA7CA00E34C49 /* libicucore.dylib in Frameworks */,
+				5C2F757019B2E2BC00159D0B /* GoogleMaps.framework in Frameworks */,
 				6B01F1BA179DA7BC00E34C49 /* libc++.dylib in Frameworks */,
 				6B01F1B8179DA7AD00E34C49 /* ImageIO.framework in Frameworks */,
 				6B01F1B6179DA79B00E34C49 /* GLKit.framework in Frameworks */,
@@ -665,7 +663,6 @@
 				6B5265F816680D2400E5341F /* AVFoundation.framework in Frameworks */,
 				6B30385215FA597700056DAD /* Twitter.framework in Frameworks */,
 				6B3037FC15FA48F900056DAD /* CoreLocation.framework in Frameworks */,
-				5C2F756819AFD4C600159D0B /* MapKit.framework in Frameworks */,
 				6B3037FE15FA48F900056DAD /* CoreData.framework in Frameworks */,
 				6B3037FF15FA48F900056DAD /* SystemConfiguration.framework in Frameworks */,
 				6B30380315FA48F900056DAD /* Security.framework in Frameworks */,
@@ -678,7 +675,6 @@
 				6B30380A15FA48F900056DAD /* Foundation.framework in Frameworks */,
 				6B30380B15FA48F900056DAD /* CoreGraphics.framework in Frameworks */,
 				6BF90A5C169B6AA2009486E7 /* libGoogleAnalytics.a in Frameworks */,
-				6B01F1B2179D994A00E34C49 /* GoogleMaps.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -938,7 +934,7 @@
 		01C49ADF18D8C83500BACE23 /* fontawesome */ = {
 			isa = PBXGroup;
 			children = (
-				01C49AE118D8C83500BACE23 /* fontawesome.ttf */,
+				5C9B7B3119B3E51E006DD9B8 /* FontAwesome.ttf */,
 			);
 			path = fontawesome;
 			sourceTree = "<group>";
@@ -1037,7 +1033,6 @@
 		6B30371615FA3FF200056DAD = {
 			isa = PBXGroup;
 			children = (
-				011B6CA919006D2A00169F1A /* fontawesome-webfont.ttf */,
 				16E4B1C0187054A80099D075 /* venturepact  */,
 				6B30372B15FA3FF300056DAD /* Nooch */,
 				6B30372415FA3FF300056DAD /* Frameworks */,
@@ -1056,19 +1051,18 @@
 		6B30372415FA3FF300056DAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5C2F756719AFD4C600159D0B /* MapKit.framework */,
+				5C2F756F19B2E2BC00159D0B /* GoogleMaps.framework */,
+				84830DCF19B03DB400E29A4C /* MapKit.framework */,
 				0154290219100AFC00A15AA0 /* PixateFreestyle.framework */,
 				841CC8E018A1EBCB0075245C /* Device Identifier */,
 				840CADDD1887E02700BC5FED /* NSString+ASBase */,
 				16E4B1C91870A2C90099D075 /* MessageUI.framework */,
 				16E4B192187053C40099D075 /* SD WebImage Framework */,
-				6B01F1BD179DA8E800E34C49 /* GoogleMaps.bundle */,
 				6B01F1BB179DA7CA00E34C49 /* libicucore.dylib */,
 				6B01F1B9179DA7BC00E34C49 /* libc++.dylib */,
 				6B01F1B7179DA7AD00E34C49 /* ImageIO.framework */,
 				6B01F1B5179DA79B00E34C49 /* GLKit.framework */,
 				6B01F1B3179DA78B00E34C49 /* CoreText.framework */,
-				6B01F1B1179D994A00E34C49 /* GoogleMaps.framework */,
 				6BD38F3216A476DD006B9AE1 /* libz.1.1.3.dylib */,
 				6BD38F3016A09CE2006B9AE1 /* Social.framework */,
 				6BD38F2E169F8238006B9AE1 /* AdSupport.framework */,
@@ -1589,7 +1583,6 @@
 				01C26DE21843C56C005179B7 /* Bank_Icon.png in Resources */,
 				8471A10919960CB300047231 /* arrow-blue.png in Resources */,
 				01C26DB01843BB22005179B7 /* email-icon.png in Resources */,
-				01C49AEA18D8C83500BACE23 /* fontawesome.ttf in Resources */,
 				014C432D185B9A4C00956A84 /* info-button.png in Resources */,
 				014C432B185B9A4C00956A84 /* encryption-lock.png in Resources */,
 				01542901190FF5CE00A15AA0 /* noochIcon-96.png in Resources */,
@@ -1617,14 +1610,12 @@
 				6BE13327176F65D8009763AC /* BackgroundMain-568h@2x.png in Resources */,
 				6BE1332D176F65D8009763AC /* SplashPageBckgrnd-568h@2x.png in Resources */,
 				8420B39B187AC4BF00A77E2D /* Black-pin.png in Resources */,
-				6B01F1BE179DA8E800E34C49 /* GoogleMaps.bundle in Resources */,
 				0106773C1860F68400E11F3D /* take-pic-icon.png in Resources */,
 				01C26DFD1843E85C005179B7 /* Preston.png in Resources */,
 				84C3EF18187D0E82004687F6 /* mapBack.png in Resources */,
 				01CABC5718A43B3200BBB935 /* green-arrow.png in Resources */,
 				014C4336185B9A4C00956A84 /* quicktap_25.png in Resources */,
 				01C26DB21843BB22005179B7 /* fb-icon-90x90.png in Resources */,
-				011B6CAA19006D2A00169F1A /* fontawesome-webfont.ttf in Resources */,
 				845631B61990AD45005B90F6 /* whiteBack30.png in Resources */,
 				0129D8E71815B10D00BEAC30 /* Brandon_bld.otf in Resources */,
 				01C26DEF1843C56C005179B7 /* nooch_Logo.png in Resources */,
@@ -1635,6 +1626,7 @@
 				84BFD9321871270C001C0AAC /* cross_basic_yellow.png in Resources */,
 				8481F08F19A1CA75007F6565 /* selectRecipientIntro.png in Resources */,
 				0129D8E81815B10D00BEAC30 /* Brandon_blk.otf in Resources */,
+				5C9B7B3219B3E51E006DD9B8 /* FontAwesome.ttf in Resources */,
 				0129D8E91815B10D00BEAC30 /* Brandon_light.otf in Resources */,
 				845631B71990AD45005B90F6 /* whiteBack30@2x.png in Resources */,
 				16E4B1C61870832B0099D075 /* untick.png in Resources */,
@@ -1836,12 +1828,13 @@
 		6B30375815FA3FF600056DAD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Baljeet Singh (HE787S955W)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Baljeet Singh (HE787S955W)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
+					"/Users/cliffcanan/Downloads/GoogleMaps-iOS-1.8.1",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1870,12 +1863,13 @@
 		6B30375915FA3FF600056DAD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Baljeet Singh (HE787S955W)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Baljeet Singh (HE787S955W)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
+					"/Users/cliffcanan/Downloads/GoogleMaps-iOS-1.8.1",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Nooch/Nooch-Prefix.pch";

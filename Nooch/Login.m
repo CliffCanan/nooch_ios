@@ -23,6 +23,7 @@
 @property(nonatomic,strong) UIButton *login;
 @property(nonatomic,strong) UIActivityIndicatorView *loading;
 @property(nonatomic,strong) NSString *encrypted_pass;
+@property(nonatomic,strong) MBProgressHUD *hud;
 @end
 
 @implementation Login
@@ -31,8 +32,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        //[self.navigationItem setHidesBackButton:YES];
-        
         // Custom initialization
     }
     return self;
@@ -41,10 +40,12 @@
 
 - (void)check_credentials
 {
-    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [self.view addSubview:spinner];
-    spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-    [spinner startAnimating];
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.hud];
+    self.hud.delegate = self;
+    self.hud.labelText = @"Checking Login Credentials...";
+    [self.hud show:YES];
+
     serve *log = [serve new];
     [log setDelegate:self];
     [log setTagName:@"encrypt"];
@@ -53,7 +54,8 @@
 }
 
 # pragma mark - CLLocationManager Delegate Methods
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
     //nslog(@"Error : %@",error);
     if ([error code] == kCLErrorDenied){
         NSLog(@"Error : %@",error);
@@ -74,7 +76,10 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+     self.trackedViewName = @"Login Screen";
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -97,70 +102,82 @@
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
 
-    self.email = [[UITextField alloc] initWithFrame:CGRectMake(30, 160, 300, 40)];
-    [self.email setBackgroundColor:[UIColor clearColor]]; [self.email setPlaceholder:@"Email"];
+    self.email = [[UITextField alloc] initWithFrame:CGRectMake(30, 150, 300, 40)];
+    [self.email setBackgroundColor:[UIColor clearColor]];
+    [self.email setPlaceholder:@"Email"];
     [self.email setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     [self.email setAutocorrectionType:UITextAutocorrectionTypeNo];
     [self.email setKeyboardType:UIKeyboardTypeEmailAddress];
+    [self.email setReturnKeyType:UIReturnKeyNext];
     [self.email setTextAlignment:NSTextAlignmentRight];
+    [self.email becomeFirstResponder];
     [self.email setDelegate:self];
     [self.email setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.email];
     
-    UIView *div = [[UIView alloc] initWithFrame:CGRectMake(0, 195, 0, 0)];
-    [div setStyleId:@"divider"];
-    [self.view addSubview:div];
+//    UIView *div = [[UIView alloc] initWithFrame:CGRectMake(10, 191, 290, 1)];
+//    [div setStyleClass:@"divider"];
+//    [self.view addSubview:div];
 
-    UILabel *em = [UILabel new]; [em setStyleClass:@"table_view_cell_textlabel_1"];
-    CGRect frame = em.frame; frame.origin.y = 160;
-    [em setBackgroundColor:[UIColor clearColor]];
+    UILabel *em = [UILabel new];
+    [em setStyleClass:@"table_view_cell_textlabel_1"];
+    CGRect frame = em.frame;
+    frame.origin.y = 150;
     [em setFrame:frame];
+    [em setBackgroundColor:[UIColor clearColor]];
     [em setText:@"Email"];
     [self.view addSubview:em];
 
-    self.password = [[UITextField alloc] initWithFrame:CGRectMake(30, 199, 260, 40)];
-    [self.password setBackgroundColor:[UIColor clearColor]]; [self.password setPlaceholder:@"Password"];
-    [self.password setSecureTextEntry:YES]; [self.password setTextAlignment:NSTextAlignmentRight];
+    self.password = [[UITextField alloc] initWithFrame:CGRectMake(30, 192, 260, 40)];
+    [self.password setBackgroundColor:[UIColor clearColor]];
+    [self.password setPlaceholder:@"Password"];
+    [self.password setSecureTextEntry:YES];
+    [self.password setTextAlignment:NSTextAlignmentRight];
+    [self.password setReturnKeyType:UIReturnKeyGo];
     [self.password setDelegate:self];
     [self.password setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.password];
 
-    UILabel *pass = [UILabel new]; [pass setStyleClass:@"table_view_cell_textlabel_1"];
-    frame = pass.frame; frame.origin.y = 199;
+    UILabel *pass = [UILabel new];
+    [pass setStyleClass:@"table_view_cell_textlabel_1"];
+    frame = pass.frame; frame.origin.y = 192;
     [pass setFrame:frame];
     [pass setText:@"Password"];
     [self.view addSubview:pass];
 
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.login setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    [self.login setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     self.login.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-    [self.login setBackgroundColor:kNoochGreen]; [self.login setTitle:@"Log In" forState:UIControlStateNormal];
-    [self.login setFrame:CGRectMake(10, 260, 300, 60)];
-    self.login.layer.cornerRadius=5.0f;
+    [self.login setTitle:@"Log In   " forState:UIControlStateNormal];
+    [self.login setFrame:CGRectMake(10, 252, 300, 60)];
     [self.login addTarget:self action:@selector(check_credentials) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"button_green"];
+    
+    UILabel *glyphLogin = [UILabel new];
+    [glyphLogin setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
+    [glyphLogin setFrame:CGRectMake(185, 9, 30, 30)];
+    [glyphLogin setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-sign-in"]];
+    [glyphLogin setTextColor:[UIColor whiteColor]];
+    
+    [self.login addSubview:glyphLogin];
     [self.view addSubview:self.login];
     [self.login setEnabled:NO];
 
-    self.stay_logged_in = [[UISwitch alloc] initWithFrame:CGRectMake(110, 321, 40, 40)];
+    self.stay_logged_in = [[UISwitch alloc] initWithFrame:CGRectMake(110, 312, 40, 40)];
     [self.stay_logged_in setStyleClass:@"login_switch"];
-    [self.stay_logged_in setOn:YES];
+    [self.stay_logged_in setOn: YES];
     self.stay_logged_in.transform = CGAffineTransformMakeScale(0.75, 0.75);
     [self.view addSubview:self.stay_logged_in];
     
-    UILabel *remember_me = [[UILabel alloc] initWithFrame:CGRectMake(20, 330, 100, 35)];
+    UILabel *remember_me = [[UILabel alloc] initWithFrame:CGRectMake(20, 313, 100, 30)];
     [remember_me setText:@"Remember Me"];
-    [remember_me setFont:[UIFont fontWithName:@"Roboto-Regular" size:12]];
-    [remember_me setTextColor:kNoochGrayLight];
     [remember_me setStyleId:@"label_rememberme"];
     [self.view addSubview:remember_me];
     
     UIButton *forgot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [forgot setBackgroundColor:[UIColor clearColor]];
     [forgot setTitle:@"Forgot Password?" forState:UIControlStateNormal];
-    [forgot setFrame:CGRectMake(190, 330, 120, 30)];
-    [forgot.titleLabel setFont:[UIFont fontWithName:@"Roboto-Regular" size:12]];
-    [forgot setTitleColor:kNoochGrayLight forState:UIControlStateNormal];
+    [forgot setFrame:CGRectMake(190, 313, 120, 30)];
     [forgot addTarget:self action:@selector(forgot_pass) forControlEvents:UIControlEventTouchUpInside];
     [forgot setStyleId:@"label_forgotpw"];
     [self.view addSubview:forgot];
@@ -234,7 +251,6 @@
 }
 
 
-
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc] init];
@@ -270,15 +286,19 @@
     // Close the Mail Interface
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
--(void)listen:(NSString *)result tagName:(NSString *)tagName{
-    if([tagName isEqualToString:@"ForgotPass"]){
+
+-(void)listen:(NSString *)result tagName:(NSString *)tagName
+{
+    if([tagName isEqualToString:@"ForgotPass"])
+    {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Please check your email for a reset password link." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         [spinner stopAnimating];
         [spinner setHidden:YES];
     }
     
-    else if ([tagName isEqualToString:@"encrypt"]) {
+    else if ([tagName isEqualToString:@"encrypt"])
+    {
         NSError *error;
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         self.encrypted_pass = [[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]];
@@ -304,9 +324,9 @@
     else if ([tagName isEqualToString:@"login"])
     {
         NSError *error;
-        
+        [self.hud hide:YES];
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        if([loginResult objectForKey:@"Result"] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil)
+        if ([loginResult objectForKey:@"Result"] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil)
         {
             serve *getDetails = [serve new];
             getDetails.Delegate = self;
@@ -314,27 +334,27 @@
             [getDetails getMemIdFromuUsername:[self.email.text lowercaseString]];
         }
         
-        else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] && loginResult != nil)
+        else if ([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] && loginResult != nil)
         {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Invalid Email or Password" message:@"We don't recognize that information, please double check your email is entered correctly and try again." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             [spinner stopAnimating];
         }
-        else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && loginResult != nil)
+        else if ([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && loginResult != nil)
         {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"This Is Awkward" message:@"That doesn't appear to be the correct password. Please try again or contact us for futher help." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
             [alert setTag:510];
             [alert show];
             [spinner stopAnimating];
         }
-        else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil)
+        else if ([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil)
         {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
             [alert setTag:500];
             [alert show];
             [spinner stopAnimating];
         }
-        else if([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] && loginResult != nil)
+        else if ([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] && loginResult != nil)
         {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been temporarily suspended.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
             [alert show];
@@ -342,7 +362,6 @@
             [spinner stopAnimating];
         }        
     }
-    
     
     else if([tagName isEqualToString:@"getMemberId"])
     {
@@ -374,18 +393,16 @@
         [enc_user getEncrypt:[self.email.text lowercaseString]];
     } 
     
-    else if ([tagName isEqualToString:@"username"]) {
-        
-       // NSError *error;
-        //NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        //nslog(@"test: %@",loginResult);
+    else if ([tagName isEqualToString:@"username"])
+    {
         serve *details = [serve new];
         [details setDelegate:self];
         [details setTagName:@"info"];
         [details getDetails:[user objectForKey:@"MemberId"]];
     }
     
-    else if ([tagName isEqualToString:@"info"]) {
+    else if ([tagName isEqualToString:@"info"])
+    {
         
         [self.navigationItem setHidesBackButton:YES];
         [nav_ctrl setNavigationBarHidden:NO];
@@ -411,6 +428,7 @@
     
     
 }
+
 #pragma mark - file paths
 - (NSString *)autoLogin{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -420,11 +438,14 @@
 }
 
 #pragma mark - UITextField delegation
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
     if ([self.email.text length] > 0 && [self.email.text  rangeOfString:@"@"].location != NSNotFound && [self.email.text  rangeOfString:@"."].location != NSNotFound
-        && [self.password.text length] > 5) {
+        && [self.password.text length] > 5)
+    {
         [self.login setEnabled:YES];
-    }else {
+    }
+    else {
         [self.login setEnabled:NO];
     }
     
@@ -432,8 +453,18 @@
 }
 
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [textField resignFirstResponder];    
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == _email)
+    {
+        [self.password becomeFirstResponder];
+    }
+    else if (textField == _password)
+    {
+        [self check_credentials];
+    }
+    
+    [textField resignFirstResponder];
     return YES;
 }
 

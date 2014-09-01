@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "serve.h"
 #import <MessageUI/MessageUI.h>
-@interface DisputeDetail : UIViewController<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,MFMailComposeViewControllerDelegate>
+@interface DisputeDetail : GAITrackedViewController<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,MFMailComposeViewControllerDelegate>
 
 - (id)initWithData:(NSDictionary *)trans;
 @end

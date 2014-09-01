@@ -25,17 +25,9 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear: animated];
-//    if (isSignup) {
-//        [self.navigationController setNavigationBarHidden:NO];
-//        [UIView animateWithDuration:0.75
-//                         animations:^{
-//                             [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-//                             [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
-//                         }];
-//        [self.navigationController popToRootViewControllerAnimated:NO];
-//        [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
-//        isSignup=NO;
-//    }
+
+    self.trackedViewName = @"Welcome Screen";
+
     [self.navigationController setNavigationBarHidden:YES];
     
 }
@@ -60,7 +52,6 @@
                      }];
     [self.navigationController popToRootViewControllerAnimated:NO];
     [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
-    
 }
 
 - (void)viewDidLoad
@@ -86,18 +77,26 @@
     [prompt setText:@"Your account has been created.\n\nCheck your email for a message from us to confirm your email address.\n\nBefore you can send money you'll need a funding source. Tap the green button to link your bank now."];
     [prompt setTextAlignment:NSTextAlignmentCenter];
     [prompt setFont:[UIFont systemFontOfSize:15]];
-    prompt.numberOfLines=0;
+    prompt.numberOfLines = 0;
     [prompt sizeToFit];
     [self.view addSubview:prompt];
 
     UIButton *enter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [enter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [enter setTitle:@"Link Funding Source" forState:UIControlStateNormal];
-    [enter setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
+    [enter setTitle:@"  Link Funding Source" forState:UIControlStateNormal];
+    [enter setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.26) forState:UIControlStateNormal];
     enter.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [enter addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
     [enter setFrame:CGRectMake(10, 385, 300, 60)];
     [enter setStyleClass:@"button_green"];
+    
+    UILabel *glyphBank = [UILabel new];
+    [glyphBank setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
+    [glyphBank setFrame:CGRectMake(14, 8, 30, 30)];
+    [glyphBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bank"]];
+    [glyphBank setTextColor:[UIColor whiteColor]];
+    
+    [enter addSubview:glyphBank];
     [self.view addSubview:enter];
 
     UIButton *moreinfo = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -124,7 +123,9 @@
     [later setStyleClass:@"label_small"];
     [self.view addSubview:later];
 }
--(void)moreinfo_lightBox{
+
+-(void)moreinfo_lightBox
+{
      overlay=[[UIView alloc]init];
      overlay.frame=CGRectMake(0, 0, 320, self.view.frame.size.height);
      overlay.backgroundColor=[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
@@ -174,7 +175,7 @@
      
      UIButton *btnLink=[UIButton buttonWithType:UIButtonTypeCustom];
      [btnLink setStyleClass:@"button_green_welcome"];
-     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
+     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.26) forState:UIControlStateNormal];
      btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
      btnLink.frame=CGRectMake(10,mainView.frame.size.height-60, 280, 50);
      [btnLink setTitle:@"Link Now" forState:UIControlStateNormal];

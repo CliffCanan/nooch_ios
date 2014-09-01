@@ -13,6 +13,7 @@
 @end
 @implementation LimitsAndFees
 @synthesize LimitsAndFeesView,spinner;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -21,6 +22,12 @@
     }
     return self;
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.trackedViewName = @"Limit & Fees Screen";
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -55,15 +62,16 @@
     [LimitsAndFeesView setMultipleTouchEnabled:YES];
     [self.view addSubview:LimitsAndFeesView];
 }
+
 -(void)showMenu
 {
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
+
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     return YES;
 }
-
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
@@ -71,27 +79,24 @@
     UIApplication* app = [UIApplication sharedApplication];
     app.networkActivityIndicatorVisible = NO;
 }
+
 -(void)webViewDidStartLoad:(UIWebView *) portal {
     UIApplication* app = [UIApplication sharedApplication];
     app.networkActivityIndicatorVisible = YES;
 }
+
 -(void)webViewDidFinishLoad:(UIWebView *) portal{
     UIApplication* app = [UIApplication sharedApplication];
     app.networkActivityIndicatorVisible = NO;
     [self.hud hide:YES];
-    
-    
     [self.navigationItem setRightBarButtonItem:nil];
 }
 
-
-- (void)viewDidUnload {
+- (void)viewDidUnload
+{
     self.hud=nil;
-    
     [self setSpinner:nil];
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 #pragma mark - server delegation

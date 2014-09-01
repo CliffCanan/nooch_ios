@@ -30,20 +30,26 @@
     }
     return self;
 }
-
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.trackedViewName = @"Select Picture Screen";
+}
 - (void)change_pic {
     UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Use Facebook Picture", @"Use Camera", @"From iPhone Library", nil];
     actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
     [actionSheetObject showInView:self.view];
 }
 
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
-    if(buttonIndex == 0) {
+    if(buttonIndex == 0)
+    {
         self.pic.layer.borderColor = kNoochBlue.CGColor;
         [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
     }
-    else if(buttonIndex == 1) {
+    else if(buttonIndex == 1)
+    {
         if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
             UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                   message:@"Device has no camera"
@@ -55,26 +61,26 @@
         }
         self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         [self presentViewController:self.picker animated:YES completion:Nil];
-        // [self presentModalViewController:self.picker animated:YES];
     }
-    else if(buttonIndex == 2) {
+    else if(buttonIndex == 2)
+    {
         self.picker.allowsEditing = YES;
         [self.picker.view setStyleClass:@"pickerstyle"];
         
-        //  [self.picker setModalInPopover:YES];
         self.picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
         [self presentViewController:self.picker animated:YES completion:Nil];
-        //   [self presentModalViewController:self.picker animated:YES];
     }
 }
--(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size{
+
+-(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size
+{
     float actualHeight = image.size.height;
     float actualWidth = image.size.width;
     float imgRatio = actualWidth/actualHeight;
     float maxRatio = 75.0/115.0;
     
     if(imgRatio!=maxRatio){
-        if(imgRatio < maxRatio){
+        if (imgRatio < maxRatio){
             imgRatio = 115.0 / actualHeight;
             actualWidth = imgRatio * actualWidth;
             actualHeight = 115.0;
@@ -93,7 +99,8 @@
     return img;
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info{
+- (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
 
     UIImage *image=[info objectForKey:UIImagePickerControllerOriginalImage];
     image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(120, 120) interpolationQuality:kCGInterpolationMedium];
@@ -109,14 +116,14 @@
     [self.next_button setStyleClass:@"button_green"];
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker1{
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker1
+{
     [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
     self.slidingViewController.panGesture.enabled=NO;
     [self dismissViewControllerAnimated:YES completion:Nil];
 }
 
 - (void)next {
-    //[self.user setObject:self.pic.image forKey:@"image"];
     CreatePIN *create_pin = [[CreatePIN alloc] initWithData:self.user];
     [self.navigationController pushViewController:create_pin animated:YES];
 }
@@ -133,7 +140,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    //[nav_ctrl performSelector:@selector(disable)];
     [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
     self.slidingViewController.panGesture.enabled=NO;
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -159,7 +165,7 @@
     NSArray *array = [[self.user objectForKey:@"name"] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     array = [array filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF != ''"]];
     
-    UILabel *welcome = [[UILabel alloc] initWithFrame:CGRectMake(0, 135, 320, 25)];
+    UILabel *welcome = [[UILabel alloc] initWithFrame:CGRectMake(0, 131, 320, 25)];
     [welcome setText:[NSString stringWithFormat:@"Hey %@!",[[self.user objectForKey:@"first_name" ] capitalizedString]]]; [welcome setBackgroundColor:[UIColor clearColor]];
     [welcome setStyleClass:@"header_signupflow"];
     [subview addSubview:welcome];
@@ -178,13 +184,13 @@
     }
     [subview addSubview:self.pic];
     
-    self.message = [[UILabel alloc] initWithFrame:CGRectMake(20, 315, 280, 70)];
+    self.message = [[UILabel alloc] initWithFrame:CGRectMake(15, 315, 290, 70)];
     [self.message setBackgroundColor:[UIColor clearColor]];
     
     if ([self.user objectForKey:@"image"]) {
         [self.message setText:@"Great Pic! If you're happy with it tap \"Continue\" or if you wish to change it tap \"Change Picture\""];
     }
-    else{
+    else {
         [self.message setText:@"Add a picture so people will be able to identify you better when sending you money."];
     }
     [self.message setStyleClass:@"instruction_text"];
@@ -193,16 +199,15 @@
     
     self.choose_pic = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.choose_pic setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    if ([[self.user objectForKey:@"facebook"] objectForKey:@"image"]) {
-        [self.choose_pic setStyleClass:@"button_green"];
-        [self.choose_pic setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
-        self.choose_pic.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    [self.choose_pic setStyleClass:@"button_green"];
+    [self.choose_pic setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.26) forState:UIControlStateNormal];
+    self.choose_pic.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    if ([[self.user objectForKey:@"facebook"] objectForKey:@"image"])
+    {
         [self.choose_pic setTitle:@"Change Picture" forState:UIControlStateNormal];
     }
-    else{
-        [self.choose_pic setStyleClass:@"button_gray"];
-        [self.choose_pic setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
-        self.choose_pic.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    else
+    {
         [self.choose_pic setTitle:@"Choose Picture" forState:UIControlStateNormal];
     }
     [self.choose_pic addTarget:self action:@selector(change_pic) forControlEvents:UIControlEventTouchUpInside];
@@ -213,15 +218,18 @@
     [self.next_button setFrame:CGRectMake(10, 460, 300, 60)];
     [self.next_button addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
-        [self.next_button setFrame:CGRectMake(10, 450, 300, 60)];
+        [self.next_button setFrame:CGRectMake(10, 447, 300, 60)];
     }
-    if ([self.user objectForKey:@"image"]) {
+    
+    if ([self.user objectForKey:@"image"])
+    {
         [self.next_button setTitle:@"Continue" forState:UIControlStateNormal];
         [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
         [self.next_button addTarget:self action:@selector(cont) forControlEvents:UIControlEventTouchUpInside];
         [self.next_button setStyleClass:@"button_green"];
     }
-    else{
+    else
+    {
         [self.next_button setBackgroundColor:[UIColor clearColor]];
         [self.next_button setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
         [self.next_button setTitle:@"I don't want to add a picture now..." forState:UIControlStateNormal];

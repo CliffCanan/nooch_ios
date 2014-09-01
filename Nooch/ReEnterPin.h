@@ -10,7 +10,7 @@
 #import "Helpers.h"
 #import "Home.h"
 #import <MessageUI/MessageUI.h>
-@interface ReEnterPin : UIViewController<serveD,UIAlertViewDelegate,MFMailComposeViewControllerDelegate>
+@interface ReEnterPin : GAITrackedViewController<serveD,UIAlertViewDelegate,MFMailComposeViewControllerDelegate>
 {
     UIActivityIndicatorView*spinner;
     NSDictionary*dictResult;

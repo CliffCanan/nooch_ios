@@ -35,7 +35,7 @@
     UIButton *change_pin = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [change_pin setFrame:CGRectMake(20, 30, 280, 60)];
     [change_pin setTitle:@"Change PIN" forState:UIControlStateNormal];
-    [change_pin setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    [change_pin setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     change_pin.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [change_pin addTarget:self action:@selector(changepin) forControlEvents:UIControlEventTouchUpInside];
     [change_pin setStyleClass:@"button_blue"];
@@ -70,7 +70,7 @@
     [change_password setFrame:CGRectMake(0, 240, 0, 0)];
     [change_password setStyleClass:@"button_blue"];
     [change_password setTitle:@"Change Password" forState:UIControlStateNormal];
-    [change_password setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    [change_password setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     change_password.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [change_password addTarget:self action:@selector(changepass) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:change_password];
@@ -103,6 +103,7 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [self.navigationItem setTitle:@"Security Settings"];
+      self.trackedViewName = @"PinSettings Screen";
 }
 
 - (void)changepass{

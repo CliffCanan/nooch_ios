@@ -43,6 +43,7 @@
     [super viewDidAppear:animated];
     [self.amount becomeFirstResponder];
 }
+
 -(void)backPressed:(id)sender{
     isphoneBook=NO;
     isEmailEntry=NO;
@@ -51,6 +52,7 @@
     [[assist shared]setArray:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -59,9 +61,8 @@
     
     NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
                                  [UIColor whiteColor], UITextAttributeTextColor,
-                                 Rgb2UIColor(19, 32, 38, .25), UITextAttributeTextShadowColor,
-                                 [NSValue valueWithUIOffset:UIOffsetMake(0.0, 1.0)], UITextAttributeTextShadowOffset,
-                                 nil];
+                                 Rgb2UIColor(19, 32, 38, .26), UITextAttributeTextShadowColor,
+                                 [NSValue valueWithUIOffset:UIOffsetMake(0.0, 1.0)], UITextAttributeTextShadowOffset, nil];
     [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
     
     [self.navigationItem setTitle:@"How Much"];
@@ -78,32 +79,44 @@
     back.layer.cornerRadius = 4;
     [back setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:back];
+    
     UIButton *back_button = [UIButton buttonWithType:UIButtonTypeCustom];
     [back_button setStyleId:@"navbar_back"];
     [back_button setImage:[UIImage imageNamed:@"whiteBack30.png"] forState:UIControlStateNormal];
     [back_button setImage:[UIImage imageNamed:@"whiteBack30.png"] forState:UIControlStateHighlighted];
-    
     [back_button addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
     UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
     [self.navigationItem setLeftBarButtonItem:menu];
     
-    
-    self.recip_back=  [UILabel new];
+    self.recip_back = [UILabel new];
     [self.recip_back setStyleClass:@"barbackground"];
     [self.recip_back setStyleClass:@"barbackground_gray"];
     [self.view addSubview:self.recip_back];
 
-    UILabel *to = [UILabel new]; [to setText:@"To: "];
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(64, 65, 66, .3);
+    shadow.shadowOffset = CGSizeMake(0, 1);
+    
+    NSDictionary * textAttributes =
+    @{NSShadowAttributeName: shadow };
+    
+    UILabel *to = [UILabel new];
+    to.attributedText = [[NSAttributedString alloc] initWithString:@"To: "
+                                                           attributes:textAttributes];
     [to setStyleId:@"label_howmuch_to"];
     [self.view addSubview:to];
 
     UILabel *to_label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
-    if ([self.receiver valueForKey:@"nonuser"]) {
+    if ([self.receiver valueForKey:@"nonuser"])
+    {
         [to_label setStyleId:@"label_howmuch_recipientnamenonuser"];
         [to_label setText:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"email"]]];
     }
-    else {
-        if ([[assist shared]isRequestMultiple]) {
+    else
+    {
+        if ([[assist shared]isRequestMultiple])
+        {
             NSString*strMultiple=@"";
             for (NSDictionary *dictRecord in [[assist shared]getArray]) {
                 strMultiple=[strMultiple stringByAppendingString:[NSString stringWithFormat:@", %@",[dictRecord[@"FirstName"] capitalizedString]]];
@@ -112,29 +125,34 @@
             strMultiple=[strMultiple substringFromIndex:1];
             [to_label setText:strMultiple];
         }
-        else {
+        else
+        {
             [to_label setStyleId:@"label_howmuch_recipientname"];
             [to_label setText:[NSString stringWithFormat:@"%@ %@",[[self.receiver objectForKey:@"FirstName"] capitalizedString],[[self.receiver objectForKey:@"LastName"] capitalizedString]]];
         }
     }
     [self.view addSubview:to_label];
 
-    if (![self.receiver valueForKey:@"nonuser"]  && !isUserByLocation) {
+    if (![self.receiver valueForKey:@"nonuser"]  && !isUserByLocation)
+    {
         UIButton*add=[[UIButton alloc]initWithFrame:CGRectMake(266, 16, 28, 28)];
         [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];
         [add setStyleClass:@"addbutton_request"];
         [add setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"] forState:UIControlStateNormal];
         [self.view addSubview:add];
     }
+    
     UIImageView *user_pic = [UIImageView new];
     [user_pic setFrame:CGRectMake(28, 58, 84, 84)];
     user_pic.layer.borderColor = [Helpers hexColor:@"939598"].CGColor;
-    user_pic.layer.borderWidth = 1; user_pic.clipsToBounds = YES;
+    user_pic.layer.borderWidth = 1;
+    user_pic.clipsToBounds = YES;
     user_pic.layer.cornerRadius = 42;
     if ([self.receiver valueForKey:@"nonuser"]) {
-        [user_pic setImage:[UIImage imageNamed:@"silhouette.png"]];
+        [user_pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
     }
-    else {
+    else
+    {
         [user_pic setHidden:NO];
         if (self.receiver[@"Photo"]) {
             [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
@@ -148,8 +166,10 @@
     [self.view addSubview:user_pic];
 
     self.amount = [[UITextField alloc] initWithFrame:CGRectMake(120, 40, 260, 80)];
-    [self.amount setTextAlignment:NSTextAlignmentRight]; [self.amount setPlaceholder:@"$ 0.00"];
-    [self.amount setDelegate:self]; [self.amount setTag:1];
+    [self.amount setTextAlignment:NSTextAlignmentRight];
+    [self.amount setPlaceholder:@"$ 0.00"];
+    [self.amount setDelegate:self];
+    [self.amount setTag:1];
     [self.amount setKeyboardType:UIKeyboardTypeNumberPad];
     [self.amount setStyleId:@"howmuch_amountfield"];
     [self.view addSubview:self.amount];
@@ -157,46 +177,62 @@
 
     self.memo = [[UITextField alloc] initWithFrame:CGRectMake(10, 120, 260, 40)];
     [self.memo setPlaceholder:@"Enter a memo"];
-    [self.memo setDelegate:self]; [self.memo setTag:2];
-    [self.memo setKeyboardType:UIKeyboardTypeDefault];
+    [self.memo setDelegate:self];
     [self.memo setStyleId:@"howmuch_memo"];
+    [self.memo setTag:2];
+    [self.memo setKeyboardType:UIKeyboardTypeDefault];
     [self.view addSubview:self.memo];
 
     self.camera = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.camera setFrame:CGRectMake(268, 161, 30, 26)];
-    if ([[UIScreen mainScreen] bounds].size.height == 480) {
-        [self.camera setFrame:CGRectMake(275, 71, 27, 22)];
+    
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        [self.camera.titleLabel setFont:[UIFont fontWithName:@"FontAwesome" size:21]];
+        [self.camera setFrame:CGRectMake(270, 110, 28, 24)];
+    }
+    else {
+        [self.camera.titleLabel setFont:[UIFont fontWithName:@"FontAwesome" size:22]];
+        [self.camera setFrame:CGRectMake(268, 161, 30, 26)];
     }
     [self.camera addTarget:self action:@selector(attach_pic) forControlEvents:UIControlEventTouchUpInside];
-    [self.camera.titleLabel setFont:[UIFont fontWithName:@"FontAwesome" size:24]];
+    
     [self.camera setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-camera"] forState:UIControlStateNormal];
-    [self.camera setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
+    [self.camera setTitleColor:kNoochGrayLight forState:UIControlStateNormal];
+    
+    UILabel *glyphFB = [UILabel new];
+    [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:12]];
+    [glyphFB setFrame:CGRectMake(23, -4, 15, 15)];
+    [glyphFB setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus"]];
+    [glyphFB setTextColor:kNoochBlue];
+    
+    [self.camera addSubview:glyphFB];
     [self.view addSubview:self.camera];
     
     self.send = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.send setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.send setTitle:@"Send" forState:UIControlStateNormal];
-    [self.send setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    [self.send setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.29) forState:UIControlStateNormal];
     self.send.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [self.send addTarget:self action:@selector(initialize_send) forControlEvents:UIControlEventTouchUpInside];
 
     self.request = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.request setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.request setTitle:@"Request" forState:UIControlStateNormal];
-    [self.request setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    [self.request setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.28) forState:UIControlStateNormal];
     self.request.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [self.request addTarget:self action:@selector(initialize_request) forControlEvents:UIControlEventTouchUpInside];
     [self.request setStyleId:@"howmuch_request"];
     [self.request setFrame:CGRectMake(10, 160, 150, 50)];
     [self.view addSubview:self.request];
 
-    if ([[assist shared]isRequestMultiple]) {
+    if ([[assist shared]isRequestMultiple])
+    {
         [self.send removeFromSuperview];
         [self.request setStyleClass:@"howmuch_buttons"];
         [self.request setStyleId:@"howmuch_request_mult_expand"];
         [self.request setFrame:CGRectMake(10, 160, 300, 50)];
     }
-    else {
+    else
+    {
         [self.send setStyleClass:@"howmuch_buttons"];
         [self.send setStyleId:@"howmuch_send"];
         [self.send setFrame:CGRectMake(160, 160, 150, 50)];
@@ -211,7 +247,9 @@
 
     self.reset_type = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	[self.reset_type setFrame:CGRectMake(0, 160, 30, 56)];
-	[self.reset_type setBackgroundColor:[UIColor clearColor]]; 
+	[self.reset_type setBackgroundColor:[UIColor clearColor]];
+    
+    
     if ([UIScreen mainScreen].bounds.size.height > 500) {
         [self.reset_type setStyleId:@"cancel_hidden"];
     } 
@@ -230,38 +268,57 @@
 
     [self.navigationItem setRightBarButtonItem:Nil];
     
-    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+    if ([[UIScreen mainScreen] bounds].size.height == 480)
+    {
+      //  CGRect frame = back.frame;
+      //  frame.size.height = 175;
+      //  [back setFrame:CGRectMake(10, 2, 300, 249)];
         CGRect frame = back.frame;
         frame.size.height = 175;
         back.frame = frame;
+        [back setStyleClass:@"raised_view"];
+        [back setStyleClass:@"howmuch_mainbox_smscrn"];
+        
         [self.send setStyleId:@"howmuch_send_4"];
         [self.request setStyleId:@"howmuch_request_4"];
         [self.divider setStyleId:@"howmuch_divider_4"];
-        [user_pic setFrame:CGRectMake(28, 55, 46, 46)];
-        user_pic.layer.cornerRadius = 23;
+        
+        [user_pic setFrame:CGRectMake(16, 55, 72, 72)];
+        user_pic.layer.cornerRadius = 36;
+        
         [self.amount setStyleId:@"howmuch_amountfield_4"];
         [self.memo setStyleId:@"howmuch_memo_4"];
         [self.camera setStyleId:@"howmuch_camera_4"];
     }
+    
 }
-- (void)viewWillAppear:(BOOL)animated {
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.trackedViewName = @"HowMuch Screen";
     [self.amount becomeFirstResponder];
     [self.navigationItem setTitle:@"How Much?"];
 }
+
 #pragma mark- Request Multiple case
--(void)addRecipient:(id)sender{
+-(void)addRecipient:(id)sender
+{
     [[assist shared]setRequestMultiple:YES];
   
     isAddRequest=YES;
     NSLog(@"%@",self.receiver);
-    if ([[[assist shared]getArray] count]==0) {
+    
+    if ([[[assist shared]getArray] count]==0)
+    {
         arrRecipientsForRequest=[[NSMutableArray alloc] init];
         NSLog(@"%@",self.receiver);
         [arrRecipientsForRequest addObject:self.receiver];
         NSLog(@"%@",arrRecipientsForRequest);
         [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
     }
-    if (isFromHome) {
+    if (isFromHome)
+    {
         isAddRequest=YES;
         SelectRecipient*selOBJ=[[SelectRecipient alloc]init];
         
@@ -276,13 +333,11 @@
     }
     else
     [self.navigationController popViewControllerAnimated:YES];
-    
-    
 }
 
 #pragma mark - type of transaction
-
-- (void) initialize_send {
+- (void) initialize_send
+{
     [self.recip_back setStyleClass:@"barbackground_green"];
     
     CGRect origin = self.reset_type.frame;
@@ -298,11 +353,8 @@
     origin.origin.x = 9;
 
     [self.send addTarget:self action:@selector(confirm_send) forControlEvents:UIControlEventTouchUpInside];
-
     [self.reset_type setAlpha:1];
-
     [self.send setTitle:@"Confirm Send" forState:UIControlStateNormal];
-    
     [self.send setStyleId:@"howmuch_send_expand"];
     [self.request setStyleId:@"howmuch_request_hide"];
     [self.reset_type setStyleId:@"cancel_request"];
@@ -311,17 +363,16 @@
     [self.divider setStyleClass:@"animate_roll_left"];
 }
 
-- (void) initialize_request {
+- (void) initialize_request
+{
     [self.recip_back setStyleClass:@"barbackground_blue"];
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.6];
 
     [self.request addTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
-
     [self.reset_type setAlpha:1];
     [self.request setTitle:@"Confirm Request" forState:UIControlStateNormal];
-    
     [self.send setStyleId:@"howmuch_send_hide"];
     [self.request setStyleId:@"howmuch_request_expand"];
     [self.reset_type setStyleId:@"cancel_send"];
@@ -428,7 +479,8 @@
 }
 
 #pragma mark - picture attaching
-- (void) attach_pic {
+- (void) attach_pic
+{
     self.shade = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, [UIScreen mainScreen].bounds.size.height)];
     [self.shade setBackgroundColor:kNoochGrayDark]; 
     [self.shade setAlpha:0.0];
@@ -486,17 +538,20 @@
     
     [UIView commitAnimations];
 }
-- (void) cancel_photo  {
+
+- (void) cancel_photo
+{
     [UIView beginAnimations:Nil context:nil];
     [UIView setAnimationDuration:1];
-    //[self.shade removeFromSuperview];
     [self.choose removeFromSuperview];
     [self.shade setAlpha:0.0];
     [UIView commitAnimations];
 }
-- (void) take_photo  {
-    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
 
+- (void) take_photo
+{
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
         UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
                                                               message:@"Device has no camera"
                                                              delegate:nil
@@ -511,9 +566,8 @@
     picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     
     [self presentViewController:picker animated:YES completion:NULL];
-
-    //[self cancel_photo];
 }
+
 - (void) from_album
 {
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
@@ -523,20 +577,20 @@
 
     [self presentViewController:picker animated:YES completion:NULL];
 }
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
     [self cancel_photo];
    
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
     chosenImage = [chosenImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(150,150) interpolationQuality:kCGInterpolationMedium];
     [self.camera setTitleColor:kNoochBlue forState:UIControlStateNormal];
 
-    //camera 22 22
     [[assist shared]setTranferImage:chosenImage];
     [picker dismissViewControllerAnimated:YES completion:^{
-        // [self close:nil];
     }];
-
 }
+
 -(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size{
     float actualHeight = image.size.height;
     float actualWidth = image.size.width;
@@ -563,19 +617,19 @@
     return img;
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
     [self cancel_photo];
     [self.camera setStyleId:@"howmuch_camera"];
     [picker dismissViewControllerAnimated:YES completion:^{
-        // [self close:nil];
     }];
-    // [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UITextField delegation
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if (textField.tag == 1) {
+    if (textField.tag == 1)
+    {
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
         [formatter setGeneratesDecimalNumbers:YES];
@@ -584,12 +638,13 @@
         [formatter setGroupingSeparator:groupingSeparator];
         [formatter setGroupingSize:3];
         
-        if([string length] == 0){ //backspace
+        if([string length] == 0) //backspace
+        {
             if ([self.amnt length] > 0) {
                 self.amnt = [[self.amnt substringToIndex:[self.amnt length]-1] mutableCopy];
             }
         }
-        else{
+        else {
             NSString *temp = [self.amnt stringByAppendingString:string];
             self.amnt = [temp mutableCopy];
         }
@@ -607,12 +662,14 @@
         }
         return NO;
     }
-    if (textField.tag == 2) {
+    if (textField.tag == 2)
+    {
         NSUInteger newLength = [textField.text length] + [string length] - range.length;
         return (newLength > 50) ? NO : YES;
     }
     return YES;
 }
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField  {
     [textField resignFirstResponder];
     return YES;
@@ -622,6 +679,7 @@
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     SDImageCache *imageCache = [SDImageCache sharedImageCache];

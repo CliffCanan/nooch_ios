@@ -32,6 +32,10 @@
 {
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.trackedViewName = @"Refer a Friend Screen";
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -59,7 +63,6 @@
 
     code = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, 320, 100)];
     [code setStyleId:@"refer_invitecode"];
-    //[code setText:@"MIKE123"];
     [self.view addSubview:code];
 
     UILabel *with = [[UILabel alloc] initWithFrame:CGRectMake(20, 130, 170, 40)];
@@ -148,10 +151,12 @@
 
 #pragma mark - server Delegation
 
--(void) listen:(NSString *)result tagName:(NSString *)tagName{
+-(void) listen:(NSString *)result tagName:(NSString *)tagName
+{
     NSError* error;
 
-    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
+    {
         UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
         [Alert show];
@@ -172,8 +177,8 @@
         return;
     }
     
-    if ([tagName isEqualToString:@"recents"]) {
-        
+    if ([tagName isEqualToString:@"recents"])
+    {
         self.recents = [NSJSONSerialization
                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
@@ -181,7 +186,8 @@
         [self.contacts reloadData];
     }
 
-    else if ([tagName isEqualToString:@"ReferralCode"]) {
+    else if ([tagName isEqualToString:@"ReferralCode"])
+    {
         [blankView removeFromSuperview];
         
         dictResponse=[NSJSONSerialization
@@ -194,41 +200,40 @@
         [defaults synchronize];
         code.text=[NSString stringWithFormat:@"%@",[[dictResponse valueForKey:@"getReferralCodeResult"] valueForKey:@"Result"]];
     }
-    else if ([tagName isEqualToString:@"GetReffereduser"]) {
+    else if ([tagName isEqualToString:@"GetReffereduser"])
+    {
         dictInviteUserList=[[NSMutableDictionary alloc]init];
         dictInviteUserList=[NSJSONSerialization
                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                             options:kNilOptions
                             error:&error];
-        if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"]count]>0) {
-            UIView*view_table=[[UIView alloc]initWithFrame:CGRectMake(10, self.view.frame.size.height-210, 300, 200)];
+        if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"]count] > 0)
+        {
+            UIView*view_table=[[UIView alloc]initWithFrame:CGRectMake(10, 296, 300, 200)];
             view_table.backgroundColor=[UIColor whiteColor];
-             [self.view addSubview:view_table];
+            [self.view addSubview:view_table];
             self.contacts = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 300, 190)];
-            [self.contacts setDataSource:self]; [self.contacts setDelegate:self];
-//      [self.contacts setStyleClass:@"raised_view"];
-//      [self.contacts setStyleId:@"refer"];
-//      if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] count]==1) {
+            [self.contacts setDataSource:self];
+            [self.contacts setDelegate:self];
 
-           view_table.layer.masksToBounds = NO;
-           view_table.layer.cornerRadius = 0; // if you like rounded corners
-           view_table.layer.shadowOffset = CGSizeMake(0, 2);
-           view_table.layer.shadowRadius = 2;
-           view_table.layer.shadowOpacity = 0.4;
+            view_table.layer.masksToBounds = NO;
+            view_table.layer.cornerRadius = 0;
+            view_table.layer.shadowOffset = CGSizeMake(0, 2);
+            view_table.layer.shadowRadius = 2;
+            view_table.layer.shadowOpacity = 0.4;
             
-            self.contacts.backgroundColor=[UIColor clearColor];
+            self.contacts.backgroundColor = [UIColor clearColor];
             [self.contacts setSeparatorStyle:UITableViewCellSeparatorStyleNone];
             self.contacts.separatorColor = [UIColor clearColor];
-            //[self.contacts setStyleClass:@"raised_view"];
-            [view_table addSubview:self.contacts]; [self.contacts reloadData];
+            [view_table addSubview:self.contacts];
+            [self.contacts reloadData];
 
-            UILabel *invited = [[UILabel alloc] initWithFrame:CGRectMake(20, 265, 170, 40)];
+            UILabel *invited = [[UILabel alloc] initWithFrame:CGRectMake(20, 262, 170, 40)];
             [invited setStyleClass:@"refer_header"];
             [invited setText:@"Friends you referred:"];
             [self.view addSubview:invited];
-            [self.contacts  setHidden:NO];
+            [self.contacts setHidden:NO];
             [self.contacts reloadData];
-
         }
         else
             [self.contacts  setHidden:YES];
@@ -238,7 +243,8 @@
         [serveOBJ setDelegate:self];
         [serveOBJ GetReferralCode:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]];
     }
-    else if ([tagName isEqualToString:@"SMS"]) {
+    else if ([tagName isEqualToString:@"SMS"])
+    {
         [self.navigationController setNavigationBarHidden:NO];
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDelegate:self];
@@ -282,10 +288,10 @@
     user_pic.layer.borderColor = [Helpers hexColor:@"6d6e71"].CGColor;
     if ([dict objectForKey:@"Photo"]!=NULL && ![[dict objectForKey:@"Photo"] isKindOfClass:[NSNull class]]) {
         [user_pic setImageWithURL:[NSURL URLWithString:[dict objectForKey:@"Photo"]]
-                 placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+                 placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
     }
     else
-        [user_pic setImage:[UIImage imageNamed:@"RoundLoading.png"]];
+        [user_pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
     [cell.contentView addSubview:user_pic];
     
     UILabel *name = [UILabel new];
@@ -303,7 +309,7 @@
     NSTimeInterval _interval=[newString doubleValue];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:_interval];
     NSDateFormatter *_formatter=[[NSDateFormatter alloc]init];
-    [_formatter setDateFormat:@"MM/dd/yy"];
+    [_formatter setDateFormat:@"M/d/yy"];
     NSString *_date=[_formatter stringFromDate:date];
 
     UILabel *datelbl = [UILabel new];

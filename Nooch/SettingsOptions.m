@@ -41,6 +41,8 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [self.navigationItem setTitle:@"Settings"];
+      self.trackedViewName = @"SettingsOptions Screen";
+    
     [self getBankInfo];
    }
 -(void)getBankInfo{
@@ -68,22 +70,28 @@
     else
         isBankAttached=YES;
     
+    NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  [UIColor whiteColor], UITextAttributeTextColor,
+                                  Rgb2UIColor(19, 32, 38, .25), UITextAttributeTextShadowColor,
+                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, 1.0)], UITextAttributeTextShadowOffset, nil];
     
+    [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
     [self.navigationItem setHidesBackButton:YES];
+
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
     [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
     UIBarButtonItem *menu1 = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu1];
-    
+
 	// Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"Settings"];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-    
+
     [self.view setStyleClass:@"background_gray"];
-    
+
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 16, 0, 0)];
     [title setStyleClass:@"refer_header"];
     [title setText:@"Linked Bank Account"];
@@ -92,11 +100,11 @@
     link_bank = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [link_bank setFrame:CGRectMake(0, 125, 0, 0)];
     [link_bank setTitle:@"Link a New Bank" forState:UIControlStateNormal];
-    [link_bank setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    [link_bank setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     link_bank.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
 
     UILabel *glyph = [UILabel new];
-    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:24]];
+    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
     [glyph setFrame:CGRectMake(25, 9, 30, 30)];
     [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"]];
     [glyph setTextColor:[UIColor whiteColor]];
@@ -108,15 +116,15 @@
     [self.view addSubview:link_bank];
     
     menu = [UITableView new];
-     [menu setStyleId:@"settings"];
-
-   
-    [menu setDelegate:self]; [menu setDataSource:self]; [menu setScrollEnabled:NO];
+    [menu setStyleId:@"settings"];
+    [menu setDelegate:self];
+    [menu setDataSource:self];
+    [menu setScrollEnabled:NO];
     [self.view addSubview:menu];
     
     self.logout = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.logout setTitle:@"Sign Out" forState:UIControlStateNormal];
-    [self.logout setTitleShadowColor:Rgb2UIColor(33, 34, 34, 0.35) forState:UIControlStateNormal];
+    [self.logout setTitleShadowColor:Rgb2UIColor(33, 34, 34, 0.26) forState:UIControlStateNormal];
     self.logout.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     
     UILabel *glyphLogout = [UILabel new];
@@ -140,16 +148,21 @@
 
 -(void)attach_bank
 {
-    // SelectBank *add = [SelectBank new];
-    // [self.navigationController pushViewController:add animated:YES];
-    
-    knoxWeb *knox = [knoxWeb new];
-    [self.navigationController pushViewController:knox animated:YES];
+    if (isBankAttached)
+    {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Attach New Bank Account" message:@"You can only have one bank account attached at a time.  If you link a new account, that will replace your current bank account. This cannot be undone.\n\nAre you sure you want to replace this bank account?" delegate:self cancelButtonTitle:@"Yes - Replace" otherButtonTitles:@"Cancel", nil];
+        [av setTag:32];
+        [av show];
+    }
+    else
+    {
+        knoxWeb *knox = [knoxWeb new];
+        [self.navigationController pushViewController:knox animated:YES];
+    }
 }
 
--(void)remove_attached_bank {
-
-   
+-(void)remove_attached_bank
+{
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Remove Bank Account" message:@"If you remove this bank account, you will not be able to send or receive money. This cannot be undone. Are you sure you want to remove this bank account?" delegate:self cancelButtonTitle:@"Yes - Remove" otherButtonTitles:@"Cancel", nil];
     [av setTag:2];
     [av show];
@@ -158,7 +171,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 3;
 }
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -191,14 +205,18 @@
     [cell.contentView addSubview:glyph];
     return cell;
 }
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     if (indexPath.row == 0) {
         [self profile];
     }
     else if (indexPath.row == 1) {
         [self pin];
-    }else if(indexPath.row == 2){
+    }
+    else if(indexPath.row == 2){
         [self notifications];
     }
 }
@@ -209,30 +227,35 @@
     ProfileInfo *info = [ProfileInfo new];
     [self performSelector:@selector(navigate_to:) withObject:info afterDelay:0.05];
 }
+
 - (void)pin
 {
     PINSettings *pin = [PINSettings new];
     [self performSelector:@selector(navigate_to:) withObject:pin afterDelay:0.05];
 }
+
 - (void)notifications
 {
     NotificationSettings *notes = [NotificationSettings new];
     [self performSelector:@selector(navigate_to:) withObject:notes afterDelay:0.05];
 }
+
 - (void) navigate_to:(id)view
 {
     [self.navigationController pushViewController:view animated:YES];
 }
+
 - (void)sign_out
 {
     NSLog(@"%@",nav_ctrl.viewControllers);
     
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Sign Out" message:@"Are you sure you want to sign out?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"I'm Sure", nil];
+    [av setTag:15];
     [av show];
 }
--(void)listen:(NSString *)result tagName:(NSString *)tagName{
-    
-   
+
+-(void)listen:(NSString *)result tagName:(NSString *)tagName
+{
     if([tagName isEqualToString:@"logout"])
     {
         NSError* error;
@@ -266,21 +289,20 @@
                                             options:kNilOptions
                                             error:&error];
         if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"Bank account deleted successfully."]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Removed" message:@"This bank account is no longer linked to your Nooch account. To make or receive payments, you must re-link a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Removed" message:@"This bank account is no longer linked to your Nooch account. To make or receive payments, you must link a new bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [av show];
         }
         else if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"No active bank account found for this user."]) {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Not Found" message:[dictResponse valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [av show];
         }
-        else{
+        else {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Nooch" message:[dictResponse valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [av show];
         }
         
         [self getBankInfo];
     }
-
     
     else if([tagName isEqualToString:@"knox_bank_info"])
     {
@@ -291,11 +313,14 @@
                                             error:&error];
         
         
-        if (![[dictResponse valueForKey:@"AccountName"] isKindOfClass:[NSNull class]]&& ![[dictResponse valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]] && ![[dictResponse valueForKey:@"BankName"] isKindOfClass:[NSNull class]]) {
+        if (![[dictResponse valueForKey:@"AccountName"] isKindOfClass:[NSNull class]]&& ![[dictResponse valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]] && ![[dictResponse valueForKey:@"BankName"] isKindOfClass:[NSNull class]])
+        {
         
-              [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
+            [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
             isBankAttached=YES;
-            if (isBankAttached) {
+            
+            if (isBankAttached)
+            {
                 [linked_background removeFromSuperview];
                 [bank_image removeFromSuperview];;
                 [unlink_account removeFromSuperview];
@@ -335,66 +360,78 @@
             [bank_name setText:[dictResponse valueForKey:@"BankName"]];
 
         }
-        else{
-           
-              [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
+        else
+        {
+            [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
            
             isBankAttached=NO;
-            if (!isBankAttached) {
+            if (!isBankAttached)
+            {
                 [linked_background removeFromSuperview];
                 [bank_image removeFromSuperview];;
                 [unlink_account removeFromSuperview];
               
-                    [link_bank setFrame:CGRectMake(0, 70, 0, 0)];
-                    [menu setStyleId:@"settings2"];
-                    [self.logout setStyleId:@"button_signout_5"];
-                
-                
+                [link_bank setFrame:CGRectMake(0, 70, 0, 0)];
+                [menu setStyleId:@"settings2"];
+                [self.logout setStyleId:@"button_signout_5"];
             }
             [bank_image setImage:[UIImage imageNamed:@"bank.png"]];
             [bank_name setText:[dictResponse valueForKey:@"NO Bank Attached"]];
-            
-
         }
     }
     
 }
 
 #pragma mark - file paths
-- (NSString *)autoLogin{
+- (NSString *)autoLogin
+{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
 }
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag == 2) {
-        if (buttonIndex == 0) {
+    if (alertView.tag == 2)
+    {
+        if (buttonIndex == 0)
+        {
             //proceed to unlink
             [self RemoveKnoxBankAccount];
-            
-        } else if (buttonIndex == 1) {
-            //cancel
+        }
+        return;
+    }
+    
+    if (alertView.tag == 32)
+    {
+        if (buttonIndex == 0)
+        {
+            knoxWeb *knox = [knoxWeb new];
+            [self.navigationController pushViewController:knox animated:YES];
         }
         return;
     }
 
-    if (buttonIndex == 1) {
-        blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
-        [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
-        UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
-        [actv startAnimating];
-        [blankView addSubview:actv];
-        [self .view addSubview:blankView];
-        [self.view bringSubviewToFront:blankView];
-        [[assist shared]setisloggedout:YES];
-        [timer invalidate];
-        timer=nil;
-        serve*  serveOBJ=[serve new];
-        serveOBJ.Delegate=self;
-        serveOBJ.tagName=@"logout";
-        [serveOBJ LogOutRequest:[[NSUserDefaults standardUserDefaults ]valueForKey:@"MemberId"]];
+    if (alertView.tag == 15)
+    {
+        if (buttonIndex == 1)
+        {
+            blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
+            [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
+            UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+            [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
+            [actv startAnimating];
+            [blankView addSubview:actv];
+            [self .view addSubview:blankView];
+            [self.view bringSubviewToFront:blankView];
+            [[assist shared]setisloggedout:YES];
+            [timer invalidate];
+            timer=nil;
+            serve*  serveOBJ=[serve new];
+            serveOBJ.Delegate=self;
+            serveOBJ.tagName=@"logout";
+            [serveOBJ LogOutRequest:[[NSUserDefaults standardUserDefaults ]valueForKey:@"MemberId"]];
+        }
     }
 }
 

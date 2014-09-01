@@ -10,7 +10,7 @@
 #import <MessageUI/MessageUI.h>
 #import "serve.h"
 
-@interface SendInvite : UIViewController<UITableViewDataSource,UITableViewDelegate,serveD,MFMailComposeViewControllerDelegate,UITextFieldDelegate>
+@interface SendInvite : GAITrackedViewController<UITableViewDataSource,UITableViewDelegate,serveD,MFMailComposeViewControllerDelegate,UITextFieldDelegate>
 {
     NSMutableDictionary*dictResponse;
     NSMutableDictionary*dictInviteUserList;
