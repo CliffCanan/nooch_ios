@@ -42,6 +42,7 @@ NSUserDefaults *user;
     NSMutableArray *additions;
     NSMutableArray *favorites;
     NSString*emailID;
+    UIButton *top_button;
 }
 //@property(nonatomic,strong) NSMutableArray *favorites;
 //@property (nonatomic, strong) NSMutableArray *additions;

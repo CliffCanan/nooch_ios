@@ -705,7 +705,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
     
     NSLog(@"Banner Alert Value is: %d",bannerAlert);
-    UIButton *top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [top_button removeFromSuperview];
+     top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [top_button setStyleClass:@"button_blue"];
     [top_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     top_button.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
