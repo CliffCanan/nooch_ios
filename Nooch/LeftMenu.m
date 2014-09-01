@@ -162,21 +162,20 @@
     shadow.shadowColor = Rgb2UIColor(64, 65, 66, .6);
     shadow.shadowOffset = CGSizeMake(0, 1);
 
-    NSDictionary * textAttributes =
-    @{NSShadowAttributeName: shadow };
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
     if (section == 0) {
         title.attributedText = [[NSAttributedString alloc] initWithString:@"ACCOUNT"
-                                                               attributes:textAttributes];
+            attributes:textAttributes];
     }
     else if(section == 1){
         title.attributedText = [[NSAttributedString alloc] initWithString:@"SOCIAL"
-                                                               attributes:textAttributes];
+            attributes:textAttributes];
     }
     else if(section == 2){
         title.attributedText = [[NSAttributedString alloc] initWithString:@"ABOUT"
-                                                               attributes:textAttributes];
+            attributes:textAttributes];
     }
-    else{
+    else {
         title.text = @"";
     }
 

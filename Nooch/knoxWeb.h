@@ -10,5 +10,7 @@
 #import "MBProgressHUD.h"
 
 @interface knoxWeb : GAITrackedViewController<MBProgressHUDDelegate>
-
+{
+    UIView*overlay,*mainView;
+}
 @end
