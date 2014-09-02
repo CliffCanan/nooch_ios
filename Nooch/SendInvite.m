@@ -502,18 +502,27 @@
     // Get the first street address among all addresses of the selected contact.
     ABMultiValueRef addressRef = ABRecordCopyValue(person, kABPersonAddressProperty);
     if (ABMultiValueGetCount(addressRef) > 0) {
-        NSDictionary *addressDict = (__bridge NSDictionary *)ABMultiValueCopyValueAtIndex(addressRef, 0);
-
-        [contactInfoDict setObject:[addressDict objectForKey:(NSString *)kABPersonAddressStreetKey] forKey:@"address"];
+        CFTypeRef addressDictV = ABRecordCopyValue(person, kABPersonAddressProperty);
+        NSDictionary *addressDict =(__bridge NSDictionary *)(addressDictV);
+          [contactInfoDict setObject:[addressDict objectForKey:(NSString *)kABPersonAddressStreetKey] forKey:@"address"];
         [contactInfoDict setObject:[addressDict objectForKey:(NSString *)kABPersonAddressZIPKey] forKey:@"zipCode"];
         [contactInfoDict setObject:[addressDict objectForKey:(NSString *)kABPersonAddressCityKey] forKey:@"city"];
+        CFRelease(addressDictV);
+       // NSDictionary *addressDict = (__bridge NSDictionary *)ABMultiValueCopyValueAtIndex(addressRef, 0);
+
+      
+      
     }
     CFRelease(addressRef);
 
     // If the contact has an image then get it too.
     if (ABPersonHasImageData(person)) {
-        NSData *contactImageData = (__bridge NSData *)ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
-        [contactInfoDict setObject:contactImageData forKey:@"image"];
+        CFTypeRef contactImageV = ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
+         NSData *contactImageData = (__bridge NSData *)(contactImageV);
+          [contactInfoDict setObject:contactImageData forKey:@"image"];
+        CFRelease(contactImageV);
+       //NSData *contactImageData = (__bridge NSData *)ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
+      
     }
 
     // Initialize the array if it's not yet initialized.

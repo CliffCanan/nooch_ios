@@ -161,7 +161,7 @@
 
 -(void)close_lightBox
 {
-    [overlay removeFromSuperview];
+    //[overlay removeFromSuperview];
     [UIView transitionWithView:self.navigationController.view
                       duration:0.3
                        options:UIViewAnimationOptionTransitionCrossDissolve
