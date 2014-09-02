@@ -112,6 +112,16 @@
     [filter addTarget:self action:@selector(FilterHistory:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *filt = [[UIBarButtonItem alloc] initWithCustomView:filter];
 
+    UIButton *glyph_map = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [glyph_map setStyleId:@"glyph_map"];
+    [glyph_map setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-map-marker"] forState:UIControlStateNormal];
+    [glyph_map addTarget:self action:@selector(toggleMapByNavBtn) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *map = [[UIBarButtonItem alloc] initWithCustomView:glyph_map];
+    
+    NSArray *topRightBtns = @[map,filt];
+    [self.navigationItem setRightBarButtonItems:topRightBtns animated:YES ];
+    
     self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
     [self.list setStyleId:@"history"];
     [self.list setRowHeight:70];
