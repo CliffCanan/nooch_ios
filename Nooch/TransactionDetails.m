@@ -520,11 +520,6 @@
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to cancel this transfer?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:310];
-    
- /*   serve *canc = [serve new];
-    [canc setTagName:@"cancel_invite"];
-    [canc setDelegate:self];
-    [canc cancel_invite:self.trans[@"TransactionId"]];  */
 }
 
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
@@ -598,60 +593,65 @@
 
 - (void) decline_request
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to reject this request?" delegate:self cancelButtonTitle:@"Yes - Reject" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Reject Request" message:@"Are you sure you want to reject this request?" delegate:self cancelButtonTitle:@"Yes - Reject" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1011];
 }
 
 - (void)cancel_request_to_existing
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel Request" message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1010];
 }
 
 - (void)cancel_request_to_nonNoochUser
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel Request" message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:2010];
 }
 
-- (void) pay_back {
+- (void) pay_back
+{
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
 
-    if ([[assist shared]getSuspended]) {
+    if ([[assist shared]getSuspended])
+    {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
         [alert setTag:50];
         [alert show];
         return;
     }
-    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
+    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] )
+    {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Email Verification Needed" message:@"Please click the link sent to your email to verify your email address." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         return;
     }
-    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
+    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
+    {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Profile Not Complete" message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!" delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
         [alert setTag:147];
         [alert show];
         return;
     }
-    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
+    {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Phone Not Verified" message:@"Please validate your phone number before sending money." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
         [alert show];
         return;
     }
-    if ( ![[[NSUserDefaults standardUserDefaults]
-            objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
+    if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    {
         UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Funding Source Needed" message:@"Before you can send or receive money, you must add a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [set show];
         return;
     }
 
-    NSMutableDictionary *input = [self.trans mutableCopy];
+    NSMutableDictionary * input = [self.trans mutableCopy];
     if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
-        NSString*MemberId=[input valueForKey:@"RecepientId"];
+        NSString * MemberId = [input valueForKey:@"RecepientId"];
         [input setObject:MemberId forKey:@"MemberId"];
     }
 
@@ -849,7 +849,7 @@
         self.hud.labelText = @"Cancelling this transfer...";
         [self.hud show:YES];
         
-        serve *serveObj = [serve new];
+        serve * serveObj = [serve new];
         [serveObj setDelegate:self];
         serveObj.tagName = @"CancelMoneyTransferToNonMemberForSender";  // Cancel Request for Existing User
         [serveObj CancelMoneyTransferToNonMemberForSender:[self.trans valueForKey:@"TransactionId"]];
@@ -857,7 +857,7 @@
     
     else if (alertView.tag == 1011 && buttonIndex == 0)  // REJECT
     {
-        serve *serveObj = [serve new];
+        serve * serveObj = [serve new];
         [serveObj setDelegate:self];
         serveObj.tagName = @"reject";
         [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Rejected"];
@@ -1192,7 +1192,8 @@
         [status setText:statusstr];
         [self.view addSubview:status];
     }
-    else if ([tagName isEqualToString:@"CancelMoneyTransferToNonMemberForSender"]) {
+    else if ([tagName isEqualToString:@"CancelMoneyTransferToNonMemberForSender"])
+    {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Transfer Cancelled" message:@"Aye aye. That transfer has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         

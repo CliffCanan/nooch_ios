@@ -277,8 +277,8 @@
              self.email_field.text = [self.facebook_info objectForKey:@"email"];
              NSString *imageURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", [self.facebook_info objectForKey:@"id"]];
              [[NSUserDefaults standardUserDefaults] setObject:[self.facebook_info objectForKey:@"id"] forKey:@"facebook_id"];
-            // NSData *imgData = [NSData new];
-             NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURL]];
+             NSData *imgData = [NSData new];
+             imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURL]];
              NSMutableDictionary *d = [self.facebook_info mutableCopy];
              [d setObject:imgData forKey:@"image"];
              self.facebook_info = [d mutableCopy];

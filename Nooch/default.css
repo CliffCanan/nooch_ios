@@ -2096,13 +2096,13 @@ table-view#select_recipientwithoutSeperator {
     .historyMap_marker_amnt {
         font-family: "Roboto";
         font-weight: medium;
-        font-size: 23px;
+        font-size: 24px;
         text-align: center;
     }
     .historyMap_marker_memo {
         font-family: "Roboto";
         font-weight: regular;
-        font-size: 15px;
+        font-size: 14px;
         text-align: center;
     }
     .historyMap_marker_dateIntro {
