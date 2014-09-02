@@ -62,20 +62,20 @@ NSMutableURLRequest*requestEncryption;
     NSError* error;
     
     // SBJsonParser *parser = [[[SBJsonParser alloc] init] autorelease];
-    id object = [NSJSONSerialization
-                 JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
-                 options:kNilOptions
-                 error:&error];;
+//    id object = [NSJSONSerialization
+//                 JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
+//                 options:kNilOptions
+//                 error:&error];;
     
-    NSMutableArray *transResult;
+  //  NSMutableArray *transResult;
     
-    if (object != nil) {
-        // Success!
-        transResult = [NSJSONSerialization
-                       JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
-                       options:kNilOptions
-                       error:&error];;
-    }
+//    if (object != nil) {
+//        // Success!
+//        transResult = [NSJSONSerialization
+//                       JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
+//                       options:kNilOptions
+//                       error:&error];;
+//    }
     
     NSMutableDictionary *loginResult = [NSJSONSerialization
                                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
