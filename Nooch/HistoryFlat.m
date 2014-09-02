@@ -25,6 +25,7 @@
 @property(nonatomic,strong) UITableView *list;
 @property(nonatomic,strong) UIButton *completed;
 @property(nonatomic,strong) UIButton *pending;
+@property(nonatomic,strong) UIButton *glyph_map;
 @property(nonatomic) BOOL completed_selected;
 @property(nonatomic,strong) NSDictionary *responseDict;
 @end
@@ -39,33 +40,35 @@
     }
     return self;
 }
--(void)viewDidDisappear:(BOOL)animated{
+-(void)viewDidDisappear:(BOOL)animated
+{
     [super viewDidDisappear:animated];
-    if (isMapOpen) {
+    if (isMapOpen)
+    {
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDelegate:self];
-        [UIView setAnimationDuration:0.1];
-        self.list.frame=CGRectMake(-276, 84, 320, self.view.frame.size.height);
-        mapArea.frame=CGRectMake(0, 84,320,self.view.frame.size.height);
-        // mapArea.frame=CGRectMake(0, 84,320,self.view.frame.size.height);
+        [UIView setAnimationDuration:0.3];
+        
+        self.list.frame = CGRectMake(-276, 84, 320, self.view.frame.size.height);
+        mapArea.frame = CGRectMake(0, 84,320,self.view.frame.size.height);
         [UIView commitAnimations];
     }
 }
+
 -(void)viewWillAppear:(BOOL)animated
 {
-    
     [self.navigationItem setTitle:@"History"];
-  
+
     [super viewWillAppear:animated];
     self.trackedViewName = @"HistoryFlat Screen";
-
-   // [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
 }
+
 -(void)showMenu
 {
     [self.search resignFirstResponder];
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -108,7 +111,6 @@
     [filter setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-filter"] forState:UIControlStateNormal];
     [filter addTarget:self action:@selector(FilterHistory:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *filt = [[UIBarButtonItem alloc] initWithCustomView:filter];
-    [self.navigationItem setRightBarButtonItem:filt];
 
     self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
     [self.list setStyleId:@"history"];
@@ -199,7 +201,33 @@
     [self.view addSubview:exportHistory];
     [self.view bringSubviewToFront:exportHistory];
     // Row count for scrolling
-    countRows=0;
+    countRows = 0;
+}
+
+-(void)toggleMapByNavBtn
+{
+    if (!self.completed_selected) {
+        return;
+    }
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDuration:0.5];
+    
+    if (!isMapOpen) {
+        self.list.frame = CGRectMake(-276, 84, 320, self.view.frame.size.height);
+        mapArea.frame = CGRectMake(0, 84,320,self.view.frame.size.height);
+        isMapOpen = YES;
+        [self mapPoints];
+    }
+    else {
+        self.list.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
+        [self.view bringSubviewToFront:self.list];
+        mapArea.frame = CGRectMake(0, 84,320,self.view.frame.size.height);
+        isMapOpen = NO;
+    }
+    [UIView commitAnimations];
+    [self.view bringSubviewToFront:exportHistory];
+    
 }
 
 -(void)sideright:(id)sender
@@ -243,152 +271,146 @@ didTapInfoWindowOfMarker:(GMSMarker *)marker
 
 - (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(GMSMarker *)marker
 {
-    UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 100)];
-    customView.layer.borderColor=[[UIColor whiteColor]CGColor];
-    customView.layer.borderWidth=1.0f;
+    UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 220, 226)];
+    customView.layer.borderColor = [[UIColor whiteColor]CGColor];
+    customView.layer.borderWidth = 1.0f;
+    customView.layer.cornerRadius = 6;
+    [customView setStyleClass:@"raised_view"];
+//    customView.layer.shadowOffset = CGSizeMake(1,2);
+//    customView.layer.shadowRadius = 3.0f;
     customView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mapBack.png"]];
 
-    UIImageView*imgV=[[UIImageView alloc]initWithFrame:CGRectMake(5, 8, 52, 52)];
-    imgV.layer.cornerRadius = 26; imgV.layer.borderColor = [UIColor whiteColor].CGColor; imgV.layer.borderWidth = 2;
+    UIImageView *imgV = [[UIImageView alloc]initWithFrame:CGRectMake(68, 10, 82, 82)];
+    imgV.layer.cornerRadius = 41;
+    imgV.layer.borderColor = [UIColor whiteColor].CGColor;
+    imgV.layer.borderWidth = 2;
     imgV.clipsToBounds = YES;
 
     NSString*urlImage=[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Photo"];
     [imgV setImageWithURL:[NSURL URLWithString:urlImage] placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
     [customView addSubview:imgV];
 
-    NSString*TransactionType=@"";
+    NSString *TransactionType = @"";
 
-        if ([[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"MemberId"]]) {
-            if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
-                TransactionType=@"Paid to :";
-            }
+    UILabel *lblTitle = [[UILabel alloc]initWithFrame:CGRectMake(5, 94, 210, 17)];
+    lblTitle.text = [NSString stringWithFormat:@"%@",TransactionType];
+    [lblTitle setStyleClass:@"historyMap_marker_title"];
+    [customView addSubview:lblTitle];
+    
+    UILabel *lblName=[[UILabel alloc]initWithFrame:CGRectMake(2, 112, 216, 20)];
+    lblName.text = [NSString stringWithFormat:@"%@ %@",[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"FirstName"] capitalizedString],[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"LastName"]];
+    [lblName setStyleClass:@"historyMap_marker_name"];
+    [customView addSubview:lblName];
+
+    UILabel *lblAmt = [[UILabel alloc]initWithFrame:CGRectMake(5, 134, 210, 26)];
+    lblAmt.text = [NSString stringWithFormat:@"$%.02f",[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Amount"] floatValue]];
+    lblAmt.textColor = kNoochGreen;
+    [lblAmt setStyleClass:@"historyMap_marker_amnt"];
+    [customView addSubview:lblAmt];
+
+    if (  [[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Memo"] != NULL &&
+        ![[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Memo"] isKindOfClass:[NSNull class]] )
+    {
+        UILabel *lblmemo = [[UILabel alloc]initWithFrame:CGRectMake(1, 158, 218, 30)];
+        [lblmemo setStyleClass:@"historyMap_marker_memo"];
+        lblmemo.textColor = [UIColor lightGrayColor];
+        lblmemo.numberOfLines = 2;
+        lblmemo.text = [NSString stringWithFormat:@"\"%@\"",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Memo"]];
+        
+        if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Memo"] length] == 0)
+        {
+            lblmemo.text = @"";
+        }
+        
+        [customView addSubview:lblmemo];
+    }
+    
+    UILabel *lblloc = [[UILabel alloc]initWithFrame:CGRectMake(15, 190, 190, 16)];
+    lblloc.textColor = [UIColor whiteColor];
+    [lblloc setStyleClass:@"historyMap_marker_dateIntro"];
+    [customView addSubview:lblloc];
+
+    NSString *statusstr;
+    
+    
+    if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"])
+    {
+        if ([[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"MemberId"]])
+        {
+            TransactionType = @"Sent to:";
         }
         else {
-            if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]) {
-                TransactionType=@"Payment From :";
-            }
-        }
-        if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Donation"]){
-            TransactionType=@"Donate to :";   
-        }
-        else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Request"]){
-            if ([[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"RecepientId"]])
-                TransactionType=@"Request Sent to:";
-            else
-                TransactionType=@"Request From:";
-        }
-        else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Invite"]){
-            TransactionType=@"Invited to :";
-        }
-
-        UILabel*lblTitle=[[UILabel alloc]initWithFrame:CGRectMake(66, 8, 135, 16)];
-        lblTitle.text=[NSString stringWithFormat:@"%@",TransactionType];
-        lblTitle.textAlignment=NSTextAlignmentCenter;
-        lblTitle.textColor=[UIColor whiteColor];
-        lblTitle.font=[UIFont systemFontOfSize:14];
-        [customView addSubview:lblTitle];
-    
-        UILabel*lblName=[[UILabel alloc]initWithFrame:CGRectMake(66, 26, 135, 16)];
-        lblName.text=[NSString stringWithFormat:@"%@ %@",[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"FirstName"] capitalizedString],[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"LastName"]];
-        lblName.textAlignment=NSTextAlignmentCenter;
-        lblName.font=[UIFont systemFontOfSize:12];
-        lblName.textColor=kNoochBlue;
-        [customView addSubview:lblName];
-
-        UILabel*lblAmt=[[UILabel alloc]initWithFrame:CGRectMake(66, 43, 135, 20)];
-        lblAmt.text=[NSString stringWithFormat:@"$%.02f",[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Amount"] floatValue]];
-        lblAmt.textColor= kNoochGreen;
-        lblAmt.textAlignment=NSTextAlignmentCenter;
-        lblAmt.font=[UIFont systemFontOfSize:18];
-        [customView addSubview:lblAmt];
-
-        UILabel*lblmemo=[[UILabel alloc]initWithFrame:CGRectMake(66, 60, 135, 25)];
-        lblmemo.font=[UIFont systemFontOfSize:11];
-        lblmemo.textAlignment=NSTextAlignmentCenter;
-        lblmemo.numberOfLines=2;
-        lblmemo.textAlignment=NSTextAlignmentCenter;
-
-    if ([[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Memo"]!=NULL && ![[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Memo"] isKindOfClass:[NSNull class]]) {
-        lblmemo.text=[NSString stringWithFormat:@"\"%@\"",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Memo"]];
-        if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Memo"] length]==0) {
-            lblmemo.text=@"";
+            TransactionType = @"Payment From:";
         }
     }
-    else {
-        lblmemo.text=@"";
-    }
-    lblmemo.textColor=[UIColor lightGrayColor];
-    [customView addSubview:lblmemo];
-
-    UILabel*lblloc=[[UILabel alloc]initWithFrame:CGRectMake(15, 75, 170, 30)];
-    lblloc.textColor=[UIColor whiteColor];
-    lblloc.font=[UIFont systemFontOfSize:10.0f];
-    [customView addSubview:lblloc];
-     NSString*statusstr;
-    
-    if ([[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionDate"]!=NULL)
+    else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Request"])
     {
-        ////nslog(@"%@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionDate"]);
-
-        if ([[[histArrayCommon objectAtIndex:[[marker title]intValue] ]valueForKey:@"TransactionType"] isEqualToString:@"Request"]) {
-            if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
-                if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]]valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-                    statusstr=@"Cancelled:";
-                    [lblloc setStyleClass:@"red_text"];
-                }
-                else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
-                    statusstr=@"Rejected:";
-                    [lblloc setStyleClass:@"red_text"];
-                }
-                else {
-                    statusstr=@"Pending:";
-                    [lblloc setStyleClass:@"green_text"];
-                }
+        if ([[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"RecepientId"]])
+        {
+            if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]]valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
+                statusstr = @"Cancelled:";
+                [lblloc setStyleClass:@"red_text"];
+            }
+            else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
+                statusstr = @"Rejected:";
+                [lblloc setStyleClass:@"red_text"];
             }
             else {
-                if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-                    statusstr=@"Cancelled:";
-                    [lblloc setStyleClass:@"red_text"];
-                }
-                else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
-                    statusstr=@"Rejected:";
-                    [lblloc setStyleClass:@"red_text"];
-                }
-				else {
-					statusstr=@"Pending:";
-					[lblloc setStyleClass:@"green_text"];
-				}
-			} 
-		}
+                statusstr = @"Pending:";
+                [lblloc setStyleClass:@"green_text"];
+            }
+            
+            TransactionType = @"Request Sent to:";
+        }
+        else {
+            TransactionType = @"Request From:";
+        }
+        
+        if (  [[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"InvitationSentTo"] != NULL &&
+            ![[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]] )
+        {
+            [imgV setImage:[UIImage imageNamed:@"profile_picture.png"]];
+            lblName.text = [NSString stringWithFormat:@"%@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"InvitationSentTo"]];
+        }
     }
-    else if([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Donation"]||[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Sent"]||[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Received"]||[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Transfer"]){
-        statusstr=@"Completed on:";
+    else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
+        TransactionType = @"Sent To:";
+        [imgV setImage:[UIImage imageNamed:@"profile_picture.png"]];
+        statusstr = @"Invited on:";
         [lblloc setStyleClass:@"green_text"];
     }
-    else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Invite"]) {  
-        statusstr=@"Invited on:";
+    
+    if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Donation"] ||
+             [[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Sent"]     ||
+             [[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Received"] ||
+             [[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Transfer"] )
+    {
+        statusstr = @"Completed on:";
         [lblloc setStyleClass:@"green_text"];
-    }      
+    }
+    
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     //Set the AM and PM symbols
     [dateFormatter setAMSymbol:@"AM"];
     [dateFormatter setPMSymbol:@"PM"];
     dateFormatter.dateFormat = @"MM/dd/yyyy hh:mm:ss a";
+    
     NSDate *yourDate = [dateFormatter dateFromString:[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionDate"]];
     dateFormatter.dateFormat = @"dd-MMMM-yyyy";
     [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+
     //nslog(@"%@",[dateFormatter stringFromDate:yourDate]);
     NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
 
     if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Request"])
     {
-        //details_label1
         [lblloc setText:[NSString stringWithFormat:@"%@",statusstr]];
-        UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(60, 75, 150, 30)];
+        
+        UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 198, 200, 22)];
         [datelbl setTextColor:[UIColor lightGrayColor]];
         [customView addSubview:datelbl];
-        [datelbl setFont:[UIFont systemFontOfSize:10.0f]];
-        datelbl.text=[NSString stringWithFormat:@"(Sent on %@ %@,%@)",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]]; 
+        [datelbl setStyleClass:@"historyMap_marker_date"];
+        datelbl.text = [NSString stringWithFormat:@"(Sent on %@ %@,%@)",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]];
     }
     else {
         [lblloc setText:[NSString stringWithFormat:@"%@ %@ %@,%@",statusstr,[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]]];
@@ -430,25 +452,22 @@ return customView;
         markerOBJ.position = CLLocationCoordinate2DMake([[tempDict objectForKey:@"Latitude"] floatValue], [[tempDict objectForKey:@"Longitude"] floatValue]);
         [markerOBJ setTitle:[NSString stringWithFormat:@"%d",i]];
 
-        if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]&&[[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:i] valueForKey:@"MemberId"]]) {
-            markerOBJ.icon=[UIImage imageNamed:@"blue-pin.png"];
+        if ( [[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"] &&
+             [[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:i] valueForKey:@"MemberId"]] )
+        {
+            markerOBJ.icon = [UIImage imageNamed:@"blue-pin.png"];
         }
-        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"]&&[[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:i] valueForKey:@"RecepientId"]]) {
-            markerOBJ.icon=[UIImage imageNamed:@"orange-pin.png"];
+        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"] &&
+                 [[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:i] valueForKey:@"RecepientId"]])
+        {
+            markerOBJ.icon = [UIImage imageNamed:@"orange-pin.png"];
         }
-        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Requested"]) {
-            markerOBJ.icon=[UIImage imageNamed:@"green-pin.png"];
+        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Requested"])
+        {
+            markerOBJ.icon = [UIImage imageNamed:@"green-pin.png"];
         }
-        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Donation"]) {
-            markerOBJ.icon=[UIImage imageNamed:@"red-pin.png"];
-        }
-        //        marker.title = [tempDict objectForKey:@"fname"];
-        //        marker.snippet = [tempDict objectForKey:@"lname"];
-        //        marker.icon=[UIImage imageNamed:@"crossblue.png"];
-        //        marker.userData = [tempDict objectForKey:@"lname"];
-        //        marker.infoWindowAnchor = CGPointMake(0.5, 0.25);
-        //        marker.groundAnchor = CGPointMake(0.5, 1.0);
-        markerOBJ.animated=YES;
+
+        markerOBJ.animated = YES;
         markerOBJ.map = mapView_;
     }
 }
@@ -491,12 +510,13 @@ return customView;
     isHistFilter = YES;
     popSelect *popOver = [[popSelect alloc] init];
     popOver.title = nil;
+    
     fp =  [[FPPopoverController alloc] initWithViewController:popOver];
     fp.border = NO;
-    fp.tint = FPPopoverWhiteTint;
+    fp.tint = FPPopoverDefaultTint;
     fp.arrowDirection = FPPopoverArrowDirectionUp;
-    fp.contentSize = CGSizeMake(200, 295);
-    [fp presentPopoverFromPoint:CGPointMake(280, 45)];
+    fp.contentSize = CGSizeMake(160, 303);
+    [fp presentPopoverFromPoint:CGPointMake(258, 50)];
 }
 
 -(void)dismissFP:(NSNotification *)notification
@@ -2137,9 +2157,10 @@ return customView;
 {
     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Export Transfer Data" message:@"Where should we email your data?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil];
     [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+    alert.tag = 11;
+
     UITextField *textField = [alert textFieldAtIndex:0];
     textField.text= [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
-    alert.tag = 11;
     [alert show];
 }
 

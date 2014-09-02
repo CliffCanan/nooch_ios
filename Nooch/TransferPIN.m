@@ -413,19 +413,26 @@
                  JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                  options:kNilOptions
                  error:&error];
-    if ([self.receiver valueForKey:@"nonuser"]){
-        if ([tagName isEqualToString:@"ValidatePinNumber"]) {
-            encryptedPINNonUser=[dictResult valueForKey:@"Status"];
+
+    if ([self.receiver valueForKey:@"nonuser"])
+    {
+        if ([tagName isEqualToString:@"ValidatePinNumber"])
+        {
+            encryptedPINNonUser = [dictResult valueForKey:@"Status"];
             serve *checkValid = [serve new];
             checkValid.tagName = @"checkValid";
             checkValid.Delegate = self;
             [checkValid pinCheck:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] pin:encryptedPINNonUser];
         }
-        else if ([tagName isEqualToString:@"checkValid"]){
-            if([[dictResult objectForKey:@"Result"] isEqualToString:@"Success"]){
+        else if ([tagName isEqualToString:@"checkValid"])
+        {
+            if ([[dictResult objectForKey:@"Result"] isEqualToString:@"Success"])
+            {
                 transactionInputTransfer=[[NSMutableDictionary alloc]init];
                 [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
-                if ([[assist shared] getTranferImage]) {
+
+                if ([[assist shared] getTranferImage])
+                {
                     NSData *data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
                     NSUInteger len = data.length;
                     uint8_t *bytes = (uint8_t *)[data bytes];
@@ -462,13 +469,17 @@
                 [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
                 
                 transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken",@"personal",@"inviteType",[self.receiver objectForKey:@"email"],@"receiverEmailId", nil];
-                if ([self.type isEqualToString:@"request"]) {
+                
+                if ([self.type isEqualToString:@"request"])
+                {
                     transactionInputTransfer=[[NSMutableDictionary alloc]init];
-                    if ([[assist shared] getTranferImage]) {
+                    if ([[assist shared] getTranferImage])
+                    {
                         NSData *data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
                         NSUInteger len = data.length;
                         uint8_t *bytes = (uint8_t *)[data bytes];
                         NSMutableString *result1 = [NSMutableString stringWithCapacity:len * 3];
+                        
                         for (NSUInteger i = 0; i < len; i++) {
                             if (i) {
                                 [result1 appendString:@","];
@@ -482,7 +493,7 @@
                     [transactionInputTransfer setValue:[dictResult valueForKey:@"Status"] forKey:@"PinNumber"];
                     [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
                     [transactionInputTransfer setValue:@"" forKey:@"SenderId"];
-                    [transactionInputTransfer setValue:@"Pending" forKey:@"Status"];
+                    [transactionInputTransfer setValue:@"Pending" forKey:@"TransactionStatus"];
                     
                     NSString *receiveName = [self.receiver valueForKey:@"email"];
                     [transactionInputTransfer setValue:receiveName forKey:@"Name"];
@@ -501,7 +512,9 @@
                     [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
                     [transactionInputTransfer setValue:city forKey:@"City"];
                     [transactionInputTransfer setValue:state forKey:@"State"];
-                    if ([self.type isEqualToString:@"request"]) {
+                    
+                    if ([self.type isEqualToString:@"request"])
+                    {
                         [transactionInputTransfer setValue:@"0.0" forKey:@"Altitude"];
                         [transactionInputTransfer setValue:encryptedPINNonUser forKey:@"PinNumber"];
 						
@@ -546,7 +559,9 @@
                 [self.first_num setBackgroundColor:[UIColor clearColor]];
                 self.pin.text=@"";
             }
-            if([[dictResult objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."]){
+            
+            if ([[dictResult objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."])
+            {
                 AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
                 self.prompt.textColor = kNoochRed;
                 self.fourth_num.layer.borderColor = kNoochRed.CGColor;
@@ -563,7 +578,8 @@
                 [spinner setHidden:YES];
                 [self.hud hide:YES];
             }
-            else if([[dictResult objectForKey:@"Result"]isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]){
+            else if([[dictResult objectForKey:@"Result"]isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."])
+            {
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
                 [self.hud hide:YES];
@@ -584,6 +600,7 @@
                 [[assist shared] setSusPended:YES];
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
+                
                 [self.hud hide:YES];
                 self.fourth_num.layer.borderColor = kNoochRed.CGColor;
                 self.third_num.layer.borderColor = kNoochRed.CGColor;
@@ -595,7 +612,8 @@
                 [self.first_num setStyleClass:@"shakePin1"];
                 self.prompt.text=@"Account suspended.";
             }
-            else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])){
+            else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))
+            {
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
                 [av setTag:50];
                 [av show];
@@ -603,7 +621,7 @@
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
                 [self.hud hide:YES];
-                self.prompt.text=@"Account suspended.";
+                self.prompt.text = @"Account suspended.";
             }
         }
     }
@@ -645,9 +663,10 @@
                 }
                 else
                     [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"SenderId"];
-                    [transactionInputTransfer setValue:@"Pending" forKey:@"Status"];
+                    [transactionInputTransfer setValue:@"Pending" forKey:@"TransactionStatus"];
             }
-            else {
+            else
+            {
                 [transactionInputTransfer setValue:@"Transfer" forKey:@"TransactionType"];
                 [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
             }
