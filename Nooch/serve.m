@@ -580,8 +580,8 @@ NSString *amnt;
                           
                           options:0
                           error:&error];
-    NSArray *placemark = [NSArray new];
-    placemark = [json objectForKey:@"results"];
+   
+    NSArray *placemark = placemark = [json objectForKey:@"results"];
     NSString *addr = [[placemark objectAtIndex:0] objectForKey:@"formatted_address"];
     NSArray *addrParse = [addr componentsSeparatedByString:@","];
     NSLog(@"loc %@",addrParse);

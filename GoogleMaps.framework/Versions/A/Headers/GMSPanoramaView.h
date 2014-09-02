@@ -11,7 +11,9 @@
 #import <CoreLocation/CoreLocation.h>
 
 #import <GoogleMaps/GMSOrientation.h>
+#import <GoogleMaps/GMSPanoramaLayer.h>
 
+@class GMSMarker;
 @class GMSPanorama;
 @class GMSPanoramaCamera;
 @class GMSPanoramaCameraUpdate;
@@ -74,6 +76,13 @@
  * consumed (taps may be consumed by e.g., tapping on a navigation arrow).
  */
 - (void)panoramaView:(GMSPanoramaView *)panoramaView didTap:(CGPoint)point;
+
+/**
+ * Called after a marker has been tapped.  May return YES to indicate the event
+ * has been fully handled and suppress any default behavior.
+ */
+- (BOOL)panoramaView:(GMSPanoramaView *)panoramaView
+        didTapMarker:(GMSMarker *)marker;
 
 @end
 
@@ -152,6 +161,11 @@
 @property(nonatomic, strong) GMSPanoramaCamera *camera;
 
 /**
+ * Accessor for the custom CALayer type used for the layer.
+ */
+@property(nonatomic, readonly, retain) GMSPanoramaLayer *layer;
+
+/**
  * Animates the camera of this GMSPanoramaView to |camera|, over |duration|
  * (specified in seconds).
  */
@@ -178,6 +192,13 @@
 - (void)moveNearCoordinate:(CLLocationCoordinate2D)coordinate;
 
 /**
+ * Similar to moveNearCoordinate: but allows specifying a search radius (meters)
+ * around |coordinate|.
+ */
+- (void)moveNearCoordinate:(CLLocationCoordinate2D)coordinate
+                    radius:(NSUInteger)radius;
+
+/**
  * Requests a panorama with |panoramaID|.
  * Upon successful completion panoramaView:didMoveToPanorama: will be sent to
  * GMSPanoramaViewDelegate.
@@ -185,6 +206,7 @@
  * Repeated calls to moveToPanoramaID: result in the previous pending
  * (incomplete) transitions being cancelled -- only the most recent of
  * moveNearCoordinate: and moveToPanoramaId: will proceed and generate events.
+ * Only panoramaIDs obtained from the Google Maps SDK for iOS are supported.
  */
 - (void)moveToPanoramaID:(NSString *)panoramaID;
 
@@ -213,5 +235,14 @@
  */
 + (instancetype)panoramaWithFrame:(CGRect)frame
                    nearCoordinate:(CLLocationCoordinate2D)coordinate;
+
+/**
+ * Similar to panoramaWithFrame:nearCoordinate: but allows specifying a
+ * search radius (meters) around |coordinate|.
+ */
++ (instancetype)panoramaWithFrame:(CGRect)frame
+                   nearCoordinate:(CLLocationCoordinate2D)coordinate
+                           radius:(NSUInteger)radius;
+
 
 @end

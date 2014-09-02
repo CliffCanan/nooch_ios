@@ -118,7 +118,6 @@
 		16E4B1C61870832B0099D075 /* untick.png in Resources */ = {isa = PBXBuildFile; fileRef = 16E4B1C51870832B0099D075 /* untick.png */; };
 		16E4B1C818708C1D0099D075 /* tickR.png in Resources */ = {isa = PBXBuildFile; fileRef = 16E4B1C718708C1D0099D075 /* tickR.png */; };
 		16E4B1CA1870A2C90099D075 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16E4B1C91870A2C90099D075 /* MessageUI.framework */; };
-		5C2F757019B2E2BC00159D0B /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C2F756F19B2E2BC00159D0B /* GoogleMaps.framework */; };
 		5C9B7B3219B3E51E006DD9B8 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C9B7B3119B3E51E006DD9B8 /* FontAwesome.ttf */; };
 		6B01F1B4179DA78B00E34C49 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B3179DA78B00E34C49 /* CoreText.framework */; };
 		6B01F1B6179DA79B00E34C49 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B5179DA79B00E34C49 /* GLKit.framework */; };
@@ -231,6 +230,8 @@
 		849AF6C119A3217600693385 /* KnoxInfo_Lightbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AF6C019A3217600693385 /* KnoxInfo_Lightbox.png */; };
 		849F6E8E18AB6D7F0016CD89 /* backbtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 849F6E8D18AB6D7F0016CD89 /* backbtn.png */; };
 		84B65A73188542E9009A5205 /* NSString+ASBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B65A72188542E9009A5205 /* NSString+ASBase64.m */; };
+		84BD1A3419B5A0AE00ECC983 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84BD1A3319B5A0AE00ECC983 /* GoogleMaps.framework */; };
+		84BD1A3619B5A0C600ECC983 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 84BD1A3519B5A0C600ECC983 /* GoogleMaps.bundle */; };
 		84BFD9321871270C001C0AAC /* cross_basic_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 84BFD9311871270C001C0AAC /* cross_basic_yellow.png */; };
 		84C3EF18187D0E82004687F6 /* mapBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C3EF17187D0E82004687F6 /* mapBack.png */; };
 		84C3EF1B187D101E004687F6 /* ReEnterPin.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C3EF1A187D101E004687F6 /* ReEnterPin.m */; };
@@ -410,7 +411,6 @@
 		16E4B1C51870832B0099D075 /* untick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = untick.png; sourceTree = "<group>"; };
 		16E4B1C718708C1D0099D075 /* tickR.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tickR.png; sourceTree = "<group>"; };
 		16E4B1C91870A2C90099D075 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		5C2F756F19B2E2BC00159D0B /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
 		5C9B7B3119B3E51E006DD9B8 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
 		6B01F1B3179DA78B00E34C49 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		6B01F1B5179DA79B00E34C49 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
@@ -624,6 +624,8 @@
 		849F6E8D18AB6D7F0016CD89 /* backbtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backbtn.png; sourceTree = "<group>"; };
 		84B65A71188542E9009A5205 /* NSString+ASBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ASBase64.h"; sourceTree = "<group>"; };
 		84B65A72188542E9009A5205 /* NSString+ASBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ASBase64.m"; sourceTree = "<group>"; };
+		84BD1A3319B5A0AE00ECC983 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
+		84BD1A3519B5A0C600ECC983 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GoogleMaps.bundle; sourceTree = "<group>"; };
 		84BFD9311871270C001C0AAC /* cross_basic_yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cross_basic_yellow.png; sourceTree = "<group>"; };
 		84C3EF17187D0E82004687F6 /* mapBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapBack.png; sourceTree = "<group>"; };
 		84C3EF19187D101E004687F6 /* ReEnterPin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReEnterPin.h; sourceTree = "<group>"; };
@@ -647,7 +649,7 @@
 				6B30380015FA48F900056DAD /* AddressBook.framework in Frameworks */,
 				16E4B1CA1870A2C90099D075 /* MessageUI.framework in Frameworks */,
 				6B01F1BC179DA7CA00E34C49 /* libicucore.dylib in Frameworks */,
-				5C2F757019B2E2BC00159D0B /* GoogleMaps.framework in Frameworks */,
+				84BD1A3419B5A0AE00ECC983 /* GoogleMaps.framework in Frameworks */,
 				6B01F1BA179DA7BC00E34C49 /* libc++.dylib in Frameworks */,
 				6B01F1B8179DA7AD00E34C49 /* ImageIO.framework in Frameworks */,
 				6B01F1B6179DA79B00E34C49 /* GLKit.framework in Frameworks */,
@@ -1053,7 +1055,8 @@
 		6B30372415FA3FF300056DAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5C2F756F19B2E2BC00159D0B /* GoogleMaps.framework */,
+				84BD1A3519B5A0C600ECC983 /* GoogleMaps.bundle */,
+				84BD1A3319B5A0AE00ECC983 /* GoogleMaps.framework */,
 				84830DCF19B03DB400E29A4C /* MapKit.framework */,
 				0154290219100AFC00A15AA0 /* PixateFreestyle.framework */,
 				841CC8E018A1EBCB0075245C /* Device Identifier */,
@@ -1533,6 +1536,7 @@
 				01C26DF01843C56C005179B7 /* Notification_1.png in Resources */,
 				6B30373015FA3FF300056DAD /* InfoPlist.strings in Resources */,
 				6BC5FECB1625F1B0007EAD7A /* Roboto-Black.ttf in Resources */,
+				84BD1A3619B5A0C600ECC983 /* GoogleMaps.bundle in Resources */,
 				6BC5FECD1625F1B0007EAD7A /* Roboto-BlackItalic.ttf in Resources */,
 				01C26DAD1843BB22005179B7 /* dispute-icon.png in Resources */,
 				6BC5FECF1625F1B0007EAD7A /* Roboto-Bold.ttf in Resources */,

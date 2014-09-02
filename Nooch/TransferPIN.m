@@ -269,8 +269,8 @@
     
 }
 -(void)setLocation{
-    NSArray *placemark = [NSArray new];
-    placemark = [jsonDictionary  objectForKey:@"results"];
+   // NSArray *placemark = [NSArray new];
+     NSArray *placemark = [jsonDictionary  objectForKey:@"results"];
     if ([placemark count]>0) {
         NSString *addr = [[placemark  objectAtIndex:1]objectForKey:@"formatted_address"];
         

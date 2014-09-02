@@ -129,7 +129,7 @@
     [self.list setDelegate:self];
     [self.list setSectionHeaderHeight:0];
     [self.view addSubview:self.list];
-    [self.list reloadData];
+//    [self.list reloadData];
 
     UISwipeGestureRecognizer * recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideright:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
@@ -161,7 +161,7 @@
     [mapArea addSubview:mapView_];
 
     NSArray *seg_items = @[@"Completed",@"Pending"];
-     completed_pending = [[UISegmentedControl alloc] initWithItems:seg_items];
+    completed_pending = [[UISegmentedControl alloc] initWithItems:seg_items];
     [completed_pending setStyleId:@"history_segcontrol"];
     [completed_pending addTarget:self action:@selector(completed_or_pending:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:completed_pending];
@@ -188,7 +188,10 @@
     [imageCache cleanDisk];
     
    [self loadHist:@"ALL" index:index len:20 subType:subTypestr];
-
+    serve *serveOBJ = [serve new];
+    [serveOBJ setDelegate:self];
+    serveOBJ.tagName = @"histPending";
+    [serveOBJ histMore:@"ALL" sPos:1 len:20 subType:@"Pending"];
     //Export History
     exportHistory=[UIButton buttonWithType:UIButtonTypeCustom];
     [exportHistory setTitle:@"     Export History" forState:UIControlStateNormal];
@@ -434,9 +437,10 @@ return customView;
     if (self.completed_selected)
     {
         if ([histShowArrayCompleted count] == 0) {
-            for (GMSMarker*marker in mapView_.markers ) {
-                marker.map=nil;
-            }
+            [mapView_ clear];
+//            for (GMSMarker*marker in mapView_.markers ) {
+//                marker.map=nil;
+//            }
             return;
         }
         histArrayCommon=[histShowArrayCompleted copy];
@@ -444,16 +448,20 @@ return customView;
     else
     {
         if ([histShowArrayPending count] == 0) {
-            for (GMSMarker*marker in mapView_.markers ) {
-                marker.map=nil;
-            }
+            [mapView_ clear];
+
+//            for (GMSMarker*marker in mapView_.markers ) {
+//                marker.map=nil;
+//            }
             return;
         }
         histArrayCommon=[histShowArrayPending copy];
     }
-    for (GMSMarker*marker in mapView_.markers ) {
-        marker.map=nil;
-    }
+    [mapView_ clear];
+
+//    for (GMSMarker*marker in mapView_.markers ) {
+//        marker.map=nil;
+//    }
     for (int i=0; i<histArrayCommon.count; i++) {
         //Latitude = 0;
 
@@ -680,6 +688,7 @@ return customView;
 {
     static NSString *cellIdentifier = @"Cell";
     SWTableViewCell *cell = (SWTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    NSLog(@"%@",cell);
     
     NSMutableArray *leftUtilityButtons = [NSMutableArray new];
     NSMutableArray *rightUtilityButtons = [NSMutableArray new];
@@ -694,7 +703,7 @@ return customView;
     }
     else
     {
-        NSMutableArray *temp = [NSMutableArray new];
+        NSMutableArray *temp;
         if (isLocalSearch) {
             temp = [histTempPending mutableCopy];
         }
@@ -1752,7 +1761,7 @@ return customView;
 
 - (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)ind
 {
-    NSMutableArray *temp = [NSMutableArray new];
+    NSMutableArray *temp;// = [NSMutableArray new];
     if (isLocalSearch) {
         temp = [histTempPending mutableCopy];
     }
@@ -1997,6 +2006,37 @@ return customView;
             [alert show];
         }
     }
+    else if ([tagName isEqualToString:@"histPending"]){
+         [self.hud hide:YES];
+        histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        
+        if ([histArray count] > 0)
+        {
+            isEnd = NO;
+            isStart = NO;
+            int counter = 0;
+            for (NSDictionary *dict in histArray)
+            {
+                if (![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]&& ![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
+                    if (  ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] && ![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"]) ||
+                        (([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
+                         [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
+                    {
+                        [histShowArrayPending addObject:dict];
+                        
+                        if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
+                            counter++;
+                        }
+                    }
+                   
+                }
+                
+            }
+            [completed_pending setTitle:[NSString stringWithFormat:@"Pending (%d)",counter]forSegmentAtIndex:1];
+
+        }
+
+    }
     else if ([tagName isEqualToString:@"hist"])
     {
 
@@ -2010,7 +2050,7 @@ return customView;
         {
             isEnd = NO;
             isStart = NO;
-        
+          int counter = 0;
             for (NSDictionary *dict in histArray)
             {
                 if ( [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]   ||
@@ -2021,27 +2061,32 @@ return customView;
                 {
                     [histShowArrayCompleted addObject:dict];
                 }
-                NSLog(@"%@",dict);
-            }
-            
-            int counter = 0;
-            for (NSDictionary *dict in histArray)
-            {
-                if (  ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] && ![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"]) ||
-                      (([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
-                        [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
-                {
-                    [histShowArrayPending addObject:dict];
-                    
-                    if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
-                        counter++;
+                if (completed_pending.selectedSegmentIndex==1 &&![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]&& ![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
+                    if (  ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] && ![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"]) ||
+                        (([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
+                         [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
+                    {
+                        NSLog(@"%@",dict);
+                        [histShowArrayPending addObject:dict];
+                        
+                        if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
+                            counter++;
+                        }
                     }
-                }
-                if (counter > 0)
-                {
                     [completed_pending setTitle:[NSString stringWithFormat:@"Pending (%d)",counter]forSegmentAtIndex:1];
+                    
+                    
                 }
+                
+             //   NSLog(@"%@",dict);
             }
+          
+          
+//            for (NSDictionary *dict in histArray)
+//            {
+//               
+//               
+//            }
             
         }
         else {

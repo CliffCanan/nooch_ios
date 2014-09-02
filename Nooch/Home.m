@@ -20,7 +20,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "knoxWeb.h"
 #import <AddressBook/AddressBook.h>
-
+#import <AddressBook/ABAddressBook.h>
 #define kButtonType     @"transaction_type"
 #define kButtonTitle    @"button_title"
 #define kButtonColor    @"button_background_color"
@@ -183,29 +183,59 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     {
         NSMutableDictionary *curContact=[[NSMutableDictionary alloc] init];
         ABRecordRef person=CFArrayGetValueAtIndex(people, i);
-        NSString *contacName = [[NSMutableString alloc] init];
-        contacName =(__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
-        NSString *firstName = [[NSString alloc] init];
-        NSString *lastName = [[NSString alloc] init];
-        firstName = (__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
         
-        if((__bridge NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty))
+        NSString *contacName ;//= [[NSMutableString alloc] init];
+        // contacName =(__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        
+        CFTypeRef contacNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        contacName = [[NSString stringWithFormat:@"%@", contacNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        CFRelease(contacNameValue);
+        
+        
+        NSString *firstName ;//= [[NSString alloc] init];
+        NSString *lastName;// = [[NSString alloc] init];
+        // firstName = (__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        
+        //Get FirstName Ref
+        CFTypeRef firstNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        firstName = [[NSString stringWithFormat:@"%@", firstNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        CFRelease(firstNameValue);
+        
+        //Get LastName Ref
+        CFTypeRef LastNameValue = ABRecordCopyValue(person, kABPersonLastNameProperty);
+        
+        if(LastNameValue)
         {
-            [contacName stringByAppendingString:[NSString stringWithFormat:@" %@", (__bridge NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty)]];
-            lastName = (__bridge NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty);
+            [contacName stringByAppendingString:[NSString stringWithFormat:@" %@", LastNameValue]];
+            
+            lastName = [[NSString stringWithFormat:@"%@", LastNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            CFRelease(LastNameValue);
         }
         NSData *contactImage;
-        
+        //Get Contact Image Ref
         if(ABPersonHasImageData(person) > 0 ) {
-            contactImage = (__bridge NSData *)(ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail));
+            CFTypeRef contactImageValue = ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
+            contactImage = (__bridge NSData *)(contactImageValue);
+            [curContact setObject:contactImage forKey:@"image"];
+            CFRelease(contactImageValue);
+            
         }
         else {
             contactImage = UIImageJPEGRepresentation([UIImage imageNamed:@"profile_picture.png"], 1);
+            [curContact setObject:contactImage forKey:@"image"];
         }
         
         ABMultiValueRef phoneNumber = ABRecordCopyValue(person, kABPersonPhoneProperty);
         ABMultiValueRef emailInfo = ABRecordCopyValue(person, kABPersonEmailProperty);
-        NSString *emailId = (__bridge NSString *)ABMultiValueCopyValueAtIndex(emailInfo, 0);
+        //Get emailInfo Ref
+        CFTypeRef emailIdValue = ABMultiValueCopyValueAtIndex(emailInfo, 0);
+        NSString *emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if (emailIdValue) {
+            CFRelease(emailIdValue);
+        }
+        if (emailInfo) {
+            CFRelease(emailInfo);
+        }
         
         if(emailId != NULL) {
             [curContact setObject:emailId forKey:@"UserName"]; [curContact setObject:emailId forKey:@"emailAddy"];
@@ -213,21 +243,32 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if(contacName != NULL)  [curContact setObject:contacName forKey:@"Name"];
         if(firstName != NULL) [curContact setObject:firstName forKey:@"FirstName"];
         if(lastName != NULL)  [curContact setObject:lastName forKey:@"LastName"];
-        NSLog(@"%@",contactImage);
-        [curContact setObject:contactImage forKey:@"image"];
+        
+        
         [curContact setObject:@"YES" forKey:@"addressbook"];
-        NSLog(@"%@",curContact);
+        
         NSString *phone,*phone2,*phone3;
         if (ABMultiValueGetCount(phoneNumber) > 0)
-            phone =  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber, 0));
+        {
+            //Get phoneValue Ref
+            CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 0);
+            phone = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            CFRelease(phoneValue);
+        }
         
         if (ABMultiValueGetCount(phoneNumber) > 1) {
-            phone2=  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber, 1));
+            CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 1);
+            phone2 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            CFRelease(phoneValue);
+            
             phone2 = [phone2 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone2 length])];
             [curContact setObject:phone2 forKey:@"phoneNo2"];
         }
         if (ABMultiValueGetCount(phoneNumber) > 2) {
-            phone3 =  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber,2));
+            CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 2);
+            phone3 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            CFRelease(phoneValue);
+            
             phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
             [curContact setObject:phone3 forKey:@"phoneNo3"];
         }
@@ -245,9 +286,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 [curContact setObject:strippedNumber forKey:@"phoneNo"];
             [additions addObject:curContact];
         }
+        if (phoneNumber)
+            CFRelease(phoneNumber);
     }
-
+   
     [[assist shared] SaveAssos:additions.mutableCopy];
+    
     NSLog(@"ginto%d",[additions count]);
     NSMutableArray *get_ids_input = [NSMutableArray new];
     for (NSDictionary *person in additions)
@@ -329,66 +373,110 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     {
         NSMutableDictionary *curContact=[[NSMutableDictionary alloc] init];
         ABRecordRef person=CFArrayGetValueAtIndex(people, i);
-        NSString *contacName = [[NSMutableString alloc] init];
-        contacName =(__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
-        NSString *firstName = [[NSString alloc] init];
-        NSString *lastName = [[NSString alloc] init];
-        firstName = (__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
         
-        if ((__bridge NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty)) {
-            [contacName stringByAppendingString:[NSString stringWithFormat:@" %@", (__bridge NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty)]];
-            lastName = (__bridge NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty);
+        NSString *contacName ;//= [[NSMutableString alloc] init];
+        
+        CFTypeRef contacNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        contacName = [[NSString stringWithFormat:@"%@", contacNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        CFRelease(contacNameValue);
+        
+        
+        NSString *firstName ;//= [[NSString alloc] init];
+        NSString *lastName;// = [[NSString alloc] init];
+        // firstName = (__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        
+        //Get FirstName Ref
+        CFTypeRef firstNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        firstName = [[NSString stringWithFormat:@"%@", firstNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        CFRelease(firstNameValue);
+        
+        //Get LastName Ref
+        CFTypeRef LastNameValue = ABRecordCopyValue(person, kABPersonLastNameProperty);
+        
+        if(LastNameValue)
+        {
+            [contacName stringByAppendingString:[NSString stringWithFormat:@" %@", LastNameValue]];
+        
+            lastName = [[NSString stringWithFormat:@"%@", LastNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            CFRelease(LastNameValue);
         }
         NSData *contactImage;
-        if (ABPersonHasImageData(person) > 0 ) {
-            contactImage = (__bridge NSData *)(ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail));
+         //Get Contact Image Ref
+        if(ABPersonHasImageData(person) > 0 ) {
+            CFTypeRef contactImageValue = ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
+            contactImage = (__bridge NSData *)(contactImageValue);
+            [curContact setObject:contactImage forKey:@"image"];
+            CFRelease(contactImageValue);
+            
         }
         else {
             contactImage = UIImageJPEGRepresentation([UIImage imageNamed:@"profile_picture.png"], 1);
+            [curContact setObject:contactImage forKey:@"image"];
         }
+        
         ABMultiValueRef phoneNumber = ABRecordCopyValue(person, kABPersonPhoneProperty);
         ABMultiValueRef emailInfo = ABRecordCopyValue(person, kABPersonEmailProperty);
-        NSString *emailId = (__bridge NSString *)ABMultiValueCopyValueAtIndex(emailInfo, 0);
-        if (emailId != NULL) {
+         //Get emailInfo Ref
+        CFTypeRef emailIdValue = ABMultiValueCopyValueAtIndex(emailInfo, 0);
+        NSString *emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if (emailIdValue) {
+            CFRelease(emailIdValue);
+        }
+        if (emailInfo) {
+             CFRelease(emailInfo);
+        }
+       
+        if(emailId != NULL) {
             [curContact setObject:emailId forKey:@"UserName"]; [curContact setObject:emailId forKey:@"emailAddy"];
         }
-        if (contacName != NULL)  [curContact setObject:contacName forKey:@"Name"];
-        if (firstName != NULL) [curContact setObject:firstName forKey:@"FirstName"];
-        if (lastName != NULL)  [curContact setObject:lastName forKey:@"LastName"];
-        NSLog(@"%@",contactImage);
-        [curContact setObject:contactImage forKey:@"image"];
+        if(contacName != NULL)  [curContact setObject:contacName forKey:@"Name"];
+        if(firstName != NULL) [curContact setObject:firstName forKey:@"FirstName"];
+        if(lastName != NULL)  [curContact setObject:lastName forKey:@"LastName"];
+        
+        
         [curContact setObject:@"YES" forKey:@"addressbook"];
-        NSLog(@"%@",curContact);
+       
         NSString *phone,*phone2,*phone3;
+        if (ABMultiValueGetCount(phoneNumber) > 0)
+        {
+             //Get phoneValue Ref
+            CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 0);
+            phone = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            CFRelease(phoneValue);
+        }
         
-        if (ABMultiValueGetCount(phoneNumber)> 0)
-            phone =  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber, 0));
-        
-        if (ABMultiValueGetCount(phoneNumber)> 1) {
-            phone2=  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber, 1));
+        if (ABMultiValueGetCount(phoneNumber) > 1) {
+            CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 1);
+            phone2 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            CFRelease(phoneValue);
+           
             phone2 = [phone2 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone2 length])];
             [curContact setObject:phone2 forKey:@"phoneNo2"];
         }
-        if (ABMultiValueGetCount(phoneNumber)> 2) {
-            phone3 =  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber,2));
+        if (ABMultiValueGetCount(phoneNumber) > 2) {
+            CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 2);
+            phone3 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            CFRelease(phoneValue);
+            
             phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
             [curContact setObject:phone3 forKey:@"phoneNo3"];
         }
-        if (phone == NULL && (emailId == NULL || [emailId rangeOfString:@"facebook"].location != NSNotFound)) {
+        if(phone == NULL && (emailId == NULL || [emailId rangeOfString:@"facebook"].location != NSNotFound)) {
             [additions addObject:curContact];
         }
-        else if (contacName == NULL) {
+        else if( contacName == NULL) {
         }
-        else
-        {
+        else {
             NSString * strippedNumber = [phone stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone length])];
-            if([strippedNumber length] == 11){
+            if([strippedNumber length] == 11) {
                 strippedNumber = [strippedNumber substringFromIndex:1];
             }
             if(strippedNumber != NULL)
                 [curContact setObject:strippedNumber forKey:@"phoneNo"];
             [additions addObject:curContact];
         }
+        if (phoneNumber)
+       CFRelease(phoneNumber);
     }
     [[assist shared] SaveAssos:additions.mutableCopy];
     NSMutableArray *get_ids_input = [NSMutableArray new];
@@ -408,91 +496,91 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     CFRelease(addressBook);
 }
 
--(void)getAddressBookContacts
-{
-    CFErrorRef err;
-    
-    ABAddressBookRef addressBook =  ABAddressBookCreateWithOptions(NULL, &err);
+//-(void)getAddressBookContacts
+//{
+//    CFErrorRef err;
+//    
+//    ABAddressBookRef addressBook =  ABAddressBookCreateWithOptions(NULL, &err);
+//
+//    __block BOOL accessGranted = NO;
+//    
+//    if (ABAddressBookRequestAccessWithCompletion != NULL) { // we're on iOS 6
+//        dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+//        
+//        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+//            accessGranted = granted;
+//            dispatch_semaphore_signal(sema);
+//        });
+//        
+//        dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+//        dispatch_release(sema);
+//    }
+//    else { // we're on iOS 5 or older
+//        accessGranted = YES;
+//    }
+//    
+//    
+//    if (accessGranted)
+//    {
+//        NSArray *thePeople = (__bridge_transfer NSArray*)ABAddressBookCopyArrayOfAllPeople(addressBook);
+//
+//        NSLog(@"%@",thePeople);
+//        arrRecords=[[NSMutableArray alloc]init];
+//        NSMutableArray*arremailRecords=[[NSMutableArray alloc]init];
+//        
+//        for (int i=0; i<[thePeople count]; i++) {
+//            ABMutableMultiValueRef Emailref = ABRecordCopyValue((__bridge ABRecordRef)([thePeople objectAtIndex:i]), kABPersonEmailProperty);
+//          
+//            
+//            CFIndex Count = ABMultiValueGetCount(Emailref);
+//            NSLog(@"%ld",Count);
+//            for(int k = 0; k < Count; k++)
+//            {
+//                
+//                CFStringRef EmailValue = ABMultiValueCopyValueAtIndex( Emailref, k );
+//                CFStringRef EmailValueLabel = ABMultiValueCopyLabelAtIndex(Emailref, k);
+//                CFStringRef EmailValueLocalizedLabel = ABAddressBookCopyLocalizedLabel( EmailValueLabel );
+//                
+//                [arremailRecords addObject:(NSString *)CFBridgingRelease(EmailValue)];
+//                NSLog(@"%@",EmailValue);
+//                NSLog(@"%@",EmailValueLocalizedLabel);
+//            
+//                CFRelease(EmailValueLocalizedLabel);
+//                CFRelease(EmailValue);
+//            }
+//            UIImage*imgData=nil;
+//            
+//            imgData =[self imageForContact:(__bridge ABRecordRef)([thePeople objectAtIndex:i])];
+//            NSLog(@"%@",imgData);
+//            imgData=nil;
+//            NSLog(@"%@",arremailRecords);
+//            
+//        }
+//        
+//    }
+//}
 
-    __block BOOL accessGranted = NO;
-    
-    if (ABAddressBookRequestAccessWithCompletion != NULL) { // we're on iOS 6
-        dispatch_semaphore_t sema = dispatch_semaphore_create(0);
-        
-        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
-            accessGranted = granted;
-            dispatch_semaphore_signal(sema);
-        });
-        
-        dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
-        dispatch_release(sema);
-    }
-    else { // we're on iOS 5 or older
-        accessGranted = YES;
-    }
-    
-    
-    if (accessGranted)
-    {
-        NSArray *thePeople = (__bridge_transfer NSArray*)ABAddressBookCopyArrayOfAllPeople(addressBook);
-
-        NSLog(@"%@",thePeople);
-        arrRecords=[[NSMutableArray alloc]init];
-        NSMutableArray*arremailRecords=[[NSMutableArray alloc]init];
-        
-        for (int i=0; i<[thePeople count]; i++) {
-            ABMutableMultiValueRef Emailref = ABRecordCopyValue((__bridge ABRecordRef)([thePeople objectAtIndex:i]), kABPersonEmailProperty);
-          
-            
-            CFIndex Count = ABMultiValueGetCount(Emailref);
-            NSLog(@"%ld",Count);
-            for(int k = 0; k < Count; k++)
-            {
-                
-                CFStringRef EmailValue = ABMultiValueCopyValueAtIndex( Emailref, k );
-                CFStringRef EmailValueLabel = ABMultiValueCopyLabelAtIndex(Emailref, k);
-                CFStringRef EmailValueLocalizedLabel = ABAddressBookCopyLocalizedLabel( EmailValueLabel );
-                
-                [arremailRecords addObject:(NSString *)CFBridgingRelease(EmailValue)];
-                NSLog(@"%@",EmailValue);
-                NSLog(@"%@",EmailValueLocalizedLabel);
-            
-                CFRelease(EmailValueLocalizedLabel);
-                CFRelease(EmailValue);
-            }
-            UIImage*imgData=nil;
-            
-            imgData =[self imageForContact:(__bridge ABRecordRef)([thePeople objectAtIndex:i])];
-            NSLog(@"%@",imgData);
-            imgData=nil;
-            NSLog(@"%@",arremailRecords);
-            
-        }
-        
-    }
-}
-
-- (UIImage*)imageForContact: (ABRecordRef)contactRef {
-    UIImage *img = nil;
-    
-    // can't get image from a ABRecordRef copy
-    ABRecordID contactID = ABRecordGetRecordID(contactRef);
-    CFErrorRef err;
-    
-    ABAddressBookRef addressBook =  ABAddressBookCreateWithOptions(NULL, &err);
-    ABRecordRef origContactRef = ABAddressBookGetPersonWithRecordID(addressBook, contactID);
-    
-    if (ABPersonHasImageData(origContactRef)) {
-        NSData *imgData = (__bridge NSData*)ABPersonCopyImageDataWithFormat(origContactRef, kABPersonImageFormatOriginalSize);
-        img = [UIImage imageWithData: imgData];
-        
-        [imgData release];
-    }
-    
-    CFRelease(addressBook);
-    
-    return img;
-}
+//- (UIImage*)imageForContact: (ABRecordRef)contactRef {
+//    UIImage *img = nil;
+//    
+//    // can't get image from a ABRecordRef copy
+//    ABRecordID contactID = ABRecordGetRecordID(contactRef);
+//    CFErrorRef err;
+//    
+//    ABAddressBookRef addressBook =  ABAddressBookCreateWithOptions(NULL, &err);
+//    ABRecordRef origContactRef = ABAddressBookGetPersonWithRecordID(addressBook, contactID);
+//    
+//    if (ABPersonHasImageData(origContactRef)) {
+//        NSData *imgData = (__bridge NSData*)ABPersonCopyImageDataWithFormat(origContactRef, kABPersonImageFormatOriginalSize);
+//        img = [UIImage imageWithData: imgData];
+//        
+//        [imgData release];
+//    }
+//    
+//    CFRelease(addressBook);
+//    
+//    return img;
+//}
 
 -(void)contact_support
 {
@@ -878,12 +966,17 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         name.textColor = [UIColor blackColor];
         name.textAlignment = NSTextAlignmentCenter;
         [name setFont:[UIFont fontWithName:@"Roboto-Bold" size:15]];
-        name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
+        if (favorite[@"LastName"]) {
+           name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
+        }
+        else
+             name.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
+       
 //        name.backgroundColor = [UIColor whiteColor];
         [view addSubview:imageView];
         [view addSubview:name];
 
-    }
+  }
     else
     {
         imageView = (UIImageView *)[view viewWithTag:1];
@@ -1229,7 +1322,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             if ([favorites count]<5) {
                [self FavoriteContactsProcessing];
             }
-
+           [_carousel reloadData];
         }
     
     }
@@ -1264,8 +1357,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         NSError* error;
         //[spinner stopAnimating];
        // [spinner setHidden:YES];
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-        dict=[NSJSONSerialization
+        //NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+         NSMutableDictionary *dict=[NSJSONSerialization
          JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
          options:kNilOptions
          error:&error];
@@ -1353,7 +1446,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         {
             continue;
         }
-        if ([[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]) {
+        if ([[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]&& ![[[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]isEqualToString:@"(null)"]&& ![[[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]isKindOfClass:[NSNull class]]) {
             [favorites  addObject:[additions objectAtIndex:randomIndex]];
         }
     }

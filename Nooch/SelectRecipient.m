@@ -296,8 +296,8 @@
          NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
          NSMutableArray *temp2 = [[NSMutableArray alloc] init];
          NSMutableArray *temp3 = [[NSMutableArray alloc] init];
-         NSMutableArray *fbFriendsTemp = [[NSMutableArray alloc] init];
-         NSMutableArray *fbNoochFriendsTemp = [[NSMutableArray alloc] init];
+         NSMutableArray *fbFriendsTemp;// = [[NSMutableArray alloc] init];
+         NSMutableArray *fbNoochFriendsTemp;// = [[NSMutableArray alloc] init];
          for(int i= 0; i<[temp count];i++){
              NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
              if([[temp objectAtIndex:i] objectForKey:@"first_name"] != NULL)[dict setObject:[NSString stringWithFormat:@"%@",[[temp objectAtIndex:i] objectForKey:@"first_name"]] forKey:@"FirstName"];
@@ -335,66 +335,111 @@
     {
         NSMutableDictionary *curContact=[[NSMutableDictionary alloc] init];
         ABRecordRef person=CFArrayGetValueAtIndex(people, i);
-        NSString *contacName = [[NSMutableString alloc] init];
-        contacName =(__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
-        NSString *firstName = [[NSString alloc] init];
-        NSString *lastName = [[NSString alloc] init];
-        firstName = (__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
-        if((__bridge NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty)) {
-            [contacName stringByAppendingString:[NSString stringWithFormat:@" %@", (__bridge NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty)]];
-            lastName = (__bridge NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty);
+        
+        NSString *contacName ;//= [[NSMutableString alloc] init];
+        // contacName =(__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        
+        CFTypeRef contacNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        contacName = [[NSString stringWithFormat:@"%@", contacNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        CFRelease(contacNameValue);
+        
+        
+        NSString *firstName ;//= [[NSString alloc] init];
+        NSString *lastName;// = [[NSString alloc] init];
+        // firstName = (__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        
+        //Get FirstName Ref
+        CFTypeRef firstNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        firstName = [[NSString stringWithFormat:@"%@", firstNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        CFRelease(firstNameValue);
+        
+        //Get LastName Ref
+        CFTypeRef LastNameValue = ABRecordCopyValue(person, kABPersonLastNameProperty);
+        
+        if(LastNameValue)
+        {
+            [contacName stringByAppendingString:[NSString stringWithFormat:@" %@", LastNameValue]];
+            
+            lastName = [[NSString stringWithFormat:@"%@", LastNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            CFRelease(LastNameValue);
         }
         NSData *contactImage;
+        //Get Contact Image Ref
         if(ABPersonHasImageData(person) > 0 ) {
-            contactImage = (__bridge NSData *)(ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail));
+            CFTypeRef contactImageValue = ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
+            contactImage = (__bridge NSData *)(contactImageValue);
+            [curContact setObject:contactImage forKey:@"image"];
+            CFRelease(contactImageValue);
+            
         }
         else {
             contactImage = UIImageJPEGRepresentation([UIImage imageNamed:@"profile_picture.png"], 1);
+            [curContact setObject:contactImage forKey:@"image"];
         }
+        
         ABMultiValueRef phoneNumber = ABRecordCopyValue(person, kABPersonPhoneProperty);
         ABMultiValueRef emailInfo = ABRecordCopyValue(person, kABPersonEmailProperty);
-        NSString *emailId = (__bridge NSString *)ABMultiValueCopyValueAtIndex(emailInfo, 0);
+        //Get emailInfo Ref
+        CFTypeRef emailIdValue = ABMultiValueCopyValueAtIndex(emailInfo, 0);
+        NSString *emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if (emailIdValue) {
+            CFRelease(emailIdValue);
+        }
+        if (emailInfo) {
+            CFRelease(emailInfo);
+        }
+        
         if(emailId != NULL) {
             [curContact setObject:emailId forKey:@"UserName"]; [curContact setObject:emailId forKey:@"emailAddy"];
         }
         if(contacName != NULL)  [curContact setObject:contacName forKey:@"Name"];
         if(firstName != NULL) [curContact setObject:firstName forKey:@"FirstName"];
         if(lastName != NULL)  [curContact setObject:lastName forKey:@"LastName"];
-        //[curContact setObject:contactImage forKey:@"image"];
-        [curContact setObject:@"YES" forKey:@"addressbook"];
-        NSString *phone,*phone2,*phone3;
-        if(ABMultiValueGetCount(phoneNumber)> 0)
-            phone =  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber, 0));
         
-        if(ABMultiValueGetCount(phoneNumber)> 1)
+        
+        [curContact setObject:@"YES" forKey:@"addressbook"];
+        
+        NSString *phone,*phone2,*phone3;
+        if (ABMultiValueGetCount(phoneNumber) > 0)
         {
-            phone2=  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber, 1));
+            //Get phoneValue Ref
+            CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 0);
+            phone = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            CFRelease(phoneValue);
+        }
+        
+        if (ABMultiValueGetCount(phoneNumber) > 1) {
+            CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 1);
+            phone2 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            CFRelease(phoneValue);
+            
             phone2 = [phone2 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone2 length])];
             [curContact setObject:phone2 forKey:@"phoneNo2"];
         }
-        if(ABMultiValueGetCount(phoneNumber)> 2)
-        {
-            phone3 =  (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneNumber,2));
+        if (ABMultiValueGetCount(phoneNumber) > 2) {
+            CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 2);
+            phone3 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            CFRelease(phoneValue);
+            
             phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
             [curContact setObject:phone3 forKey:@"phoneNo3"];
         }
-        if(phone == NULL && (emailId == NULL || [emailId rangeOfString:@"facebook"].location != NSNotFound))
-        {
+        if(phone == NULL && (emailId == NULL || [emailId rangeOfString:@"facebook"].location != NSNotFound)) {
             [additions addObject:curContact];
-        }else if( contacName == NULL)
-        {
         }
-        else
-        {
+        else if( contacName == NULL) {
+        }
+        else {
             NSString * strippedNumber = [phone stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone length])];
-            if([strippedNumber length] == 11)
-            {
+            if([strippedNumber length] == 11) {
                 strippedNumber = [strippedNumber substringFromIndex:1];
             }
             if(strippedNumber != NULL)
                 [curContact setObject:strippedNumber forKey:@"phoneNo"];
             [additions addObject:curContact];
         }
+        if (phoneNumber)
+            CFRelease(phoneNumber);
     }
     [[assist shared] addAssos:additions.mutableCopy];
     NSMutableArray *get_ids_input = [NSMutableArray new];
