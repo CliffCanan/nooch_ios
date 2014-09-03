@@ -189,6 +189,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         
         CFTypeRef contacNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
         contacName = [[NSString stringWithFormat:@"%@", contacNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if (contacNameValue)
         CFRelease(contacNameValue);
         
         
@@ -199,6 +200,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         //Get FirstName Ref
         CFTypeRef firstNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
         firstName = [[NSString stringWithFormat:@"%@", firstNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+         if (firstNameValue)
         CFRelease(firstNameValue);
         
         //Get LastName Ref
@@ -209,6 +211,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [contacName stringByAppendingString:[NSString stringWithFormat:@" %@", LastNameValue]];
             
             lastName = [[NSString stringWithFormat:@"%@", LastNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            if (LastNameValue)
             CFRelease(LastNameValue);
         }
         NSData *contactImage;
@@ -217,6 +220,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             CFTypeRef contactImageValue = ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
             contactImage = (__bridge NSData *)(contactImageValue);
             [curContact setObject:contactImage forKey:@"image"];
+            if (contactImageValue)
             CFRelease(contactImageValue);
             
         }
@@ -253,12 +257,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             //Get phoneValue Ref
             CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 0);
             phone = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+             if (phoneValue)
             CFRelease(phoneValue);
         }
         
         if (ABMultiValueGetCount(phoneNumber) > 1) {
             CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 1);
             phone2 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            if (phoneValue)
             CFRelease(phoneValue);
             
             phone2 = [phone2 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone2 length])];
@@ -267,6 +273,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if (ABMultiValueGetCount(phoneNumber) > 2) {
             CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 2);
             phone3 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+             if (phoneValue)
             CFRelease(phoneValue);
             
             phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
@@ -305,8 +312,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if (person[@"phoneNo3"]) [person_input setObject:person[@"phoneNo3"] forKey:@"phoneNo3"];
         [get_ids_input addObject:person_input];
     }
-    
+      if (people)
     CFRelease(people);
+      if (addressBook)
     CFRelease(addressBook);
     NSLog(@"Recevied notification");
 }
@@ -378,6 +386,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         
         CFTypeRef contacNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
         contacName = [[NSString stringWithFormat:@"%@", contacNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if (contacNameValue)
         CFRelease(contacNameValue);
         
         
@@ -388,6 +397,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         //Get FirstName Ref
         CFTypeRef firstNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
         firstName = [[NSString stringWithFormat:@"%@", firstNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if (firstNameValue)
         CFRelease(firstNameValue);
         
         //Get LastName Ref
@@ -398,6 +408,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [contacName stringByAppendingString:[NSString stringWithFormat:@" %@", LastNameValue]];
         
             lastName = [[NSString stringWithFormat:@"%@", LastNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            if (LastNameValue)
             CFRelease(LastNameValue);
         }
         NSData *contactImage;
@@ -406,6 +417,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             CFTypeRef contactImageValue = ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
             contactImage = (__bridge NSData *)(contactImageValue);
             [curContact setObject:contactImage forKey:@"image"];
+             if (contactImageValue)
             CFRelease(contactImageValue);
             
         }
@@ -442,12 +454,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
              //Get phoneValue Ref
             CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 0);
             phone = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            if (phoneValue)
             CFRelease(phoneValue);
         }
         
         if (ABMultiValueGetCount(phoneNumber) > 1) {
             CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 1);
             phone2 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            if (phoneValue)
             CFRelease(phoneValue);
            
             phone2 = [phone2 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone2 length])];
@@ -456,6 +470,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if (ABMultiValueGetCount(phoneNumber) > 2) {
             CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 2);
             phone3 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+             if (phoneValue)
             CFRelease(phoneValue);
             
             phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
@@ -491,8 +506,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if (person[@"phoneNo3"]) [person_input setObject:person[@"phoneNo3"] forKey:@"phoneNo3"];
         [get_ids_input addObject:person_input];
     }
-
+    if (people)
     CFRelease(people);
+     if (addressBook)
     CFRelease(addressBook);
 }
 
