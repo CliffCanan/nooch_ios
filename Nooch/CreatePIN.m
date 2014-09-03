@@ -146,19 +146,38 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIButton* btnback=[UIButton buttonWithType:UIButtonTypeCustom];
-
-    [btnback setImage:[UIImage imageNamed:@"back-arrow-blue.png"] forState:UIControlStateNormal];
-    [btnback setStyleClass:@"back_button-icon"];
-    btnback.frame = CGRectMake(0, 7, 50, 30);
+    
+    //back button
+    UIButton *btnback = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btnback setBackgroundColor:[UIColor clearColor]];
+    [btnback setFrame:CGRectMake(12, 30, 35, 35)];
     [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UILabel *glyph_back = [UILabel new];
+    [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:22]];
+    [glyph_back setFrame:CGRectMake(0, 0, 30, 30)];
+    [glyph_back setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-o-left"]];
+    [glyph_back setTextColor:kNoochBlue];
+    [btnback addSubview:glyph_back];
+    
     [self.view addSubview:btnback];
-    self.pin_check = @"";
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-
-    UIImageView *logo = [UIImageView new];
+    
+    UIImageView * logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
+    
+    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        [slogan setFrame:CGRectMake(0, 218, 0, 0)];
+    }
+    [slogan setBackgroundColor:[UIColor clearColor]];
+    [slogan setText:@"Money Made Simple"];
+    [slogan setFont:[UIFont fontWithName:@"VarelaRound-regular" size:15]];
+    [slogan setStyleClass:@"prelogin_slogan"];
+    [self.view addSubview:slogan];
+    
+    self.pin_check = @"";
+    [self.view setBackgroundColor:[UIColor whiteColor]];
 
     NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [UIColor whiteColor], UITextAttributeTextColor,
@@ -169,7 +188,7 @@
     
     [self.navigationItem setTitle:@"Create PIN"];
 
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 140, 300, 40)];
+    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, 300, 40)];
     if ([[UIScreen mainScreen] bounds].size.height == 480)
     {
         CGRect frame = title.frame;
@@ -181,10 +200,9 @@
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
 
-    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 175, 280, 50)];
+    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 280, 50)];
     [self.prompt setNumberOfLines:2];
     [self.prompt setText:@"You'll be asked to enter this PIN anytime you send or request money."];
-    
     
     if ([UIScreen mainScreen].bounds.size.height > 500) {
         [self.prompt setStyleClass:@"instruction_text"];
