@@ -27,7 +27,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    popList = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 250, 270)];
+    popList = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 250, 290)];
     [popList setRowHeight:44];
     [popList setUserInteractionEnabled:YES];
     [popList setScrollEnabled:NO];
@@ -48,7 +48,8 @@
     return 6;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
@@ -76,24 +77,6 @@
         }
         return cell;
     }
-/*    if (!memoList) {
-        [cell.textLabel setTextAlignment:NSTextAlignmentCenter];
-        if (indexPath.row == 0) {
-            cell.textLabel.text = @"ALL";
-        } else if(indexPath.row == 1){
-            cell.textLabel.text = @"Sent";
-        } else if(indexPath.row == 2){
-            cell.textLabel.text = @"Received";
-        } else if(indexPath.row == 3){
-            cell.textLabel.text = @"Requests";
-        } else if(indexPath.row == 4){
-            cell.textLabel.text = @"Disputes";
-        } else if(indexPath.row == 5){
-            cell.textLabel.text = @"Cancel";
-        }
-        return cell;
-    } 
- */
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

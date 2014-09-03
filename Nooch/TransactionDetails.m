@@ -18,6 +18,7 @@
 @interface TransactionDetails ()
 @property (nonatomic,strong) NSDictionary *trans;
 @property(nonatomic,strong) NSMutableData *responseData;
+@property(nonatomic,strong) MBProgressHUD *hud;
 @end
 
 @implementation TransactionDetails
@@ -63,7 +64,7 @@
     if( [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"] ||         // Transfers to Non-Noochers
         [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"InviteRequest"] ||  // Requests to Non-Noochers coming straight from PIN screen
 	   ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
-       !([self.trans valueForKey:@"InvitationSentTo"] == NULL || [[self.trans objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])))
+       !([self.trans valueForKey:@"InvitationSentTo"] == NULL || [[self.trans objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]]) ) )
     {
         [other_party setStyleClass:@"details_othername_nonnooch"];
         [other_party setText:[self.trans objectForKey:@"InvitationSentTo"]];
@@ -146,18 +147,18 @@
     UILabel *memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 116, 320, 60)];
     if (![[self.trans valueForKey:@"Memo"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Memo"]!=NULL)
     {
-        if ([[self.trans valueForKey:@"Memo"] length]==0 || [[self.trans valueForKey:@"Memo"] isEqualToString:@"\"\""])
+        if ([[self.trans valueForKey:@"Memo"] length] == 0 || [[self.trans valueForKey:@"Memo"] isEqualToString:@"\"\""])
         {
-            memo.text=@"No memo attached";
+            memo.text = @"No memo attached";
         } 
         else
             [memo setText:[NSString stringWithFormat:@"\"%@\"",[self.trans valueForKey:@"Memo"]]];
     }
     else  {
-        memo.text=@"No memo attached";
+        memo.text = @"No memo attached";
     }
 
-    memo.numberOfLines=2;
+    memo.numberOfLines = 2;
     [memo setStyleClass:@"details_label_memo"];
     [memo setStyleClass:@"blue_text"];
     [memo setStyleClass:@"italic_font"];
@@ -169,9 +170,10 @@
     [pay_back setStyleCSS:@"background-image : url(pay-back-icon.png)"];
     [pay_back setStyleId:@"details_payback"];
     [pay_back addTarget:self action:@selector(pay_back) forControlEvents:UIControlEventTouchUpInside];
+    
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
             [pay_back setStyleClass:@"details_buttons_4"];
-        } 
+    }
     else {
         [pay_back setStyleClass:@"details_buttons"];
     }
@@ -266,47 +268,63 @@
         [disp_text setStyleClass:@"details_buttons_labels"];
     }
     [disp_text setText:@"Dispute"];
-        
-    if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Request"])
+    
+    if ( [[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
     {
         // Pay & Cancel Buttons
         UIButton *pay = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [pay setStyleClass:@"details_button_left"];
-        [pay setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
+        [pay setTitle:@"Pay" forState:UIControlStateNormal];
+        [pay setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.26) forState:UIControlStateNormal];
         pay.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
 
         UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [cancel setTitleShadowColor:Rgb2UIColor(36, 22, 19, 0.3) forState:UIControlStateNormal];
+        [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
+        [cancel setStyleClass:@"details_button_right"];
+        [cancel setTitleShadowColor:Rgb2UIColor(36, 22, 19, 0.26) forState:UIControlStateNormal];
         cancel.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
 
         UIButton *remind = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [remind setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+        [remind setTitle:@"Remind" forState:UIControlStateNormal];
+        [remind setStyleClass:@"details_button_remind"];
+        [remind setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
         remind.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-
-        if ( ![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] &&
-             ![[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"])
+// go back to HERE
+        
+        if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Request"] ||
+            [[self.trans objectForKey:@"TransactionType"] isEqualToString:@"InviteRequest"])
         {
-            if ([[self.trans objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]])
+            if ([[self.trans objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]] ||
+                [[self.trans objectForKey:@"TransactionType"] isEqualToString:@"InviteRequest"] )
             {
-                [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
-                [cancel setStyleClass:@"details_button_right"];
                 [cancel setTag:13];
                 [cancel setEnabled:YES];
-                [cancel addTarget:self action:@selector(cancel_request) forControlEvents:UIControlEventTouchUpInside];
-                [self.view addSubview:cancel];
-                [remind setTitle:@"Remind" forState:UIControlStateNormal];
-                [remind setStyleClass:@"details_button_remind"];
+
                 [remind setTag:14];
                 [remind setEnabled:YES];
-                [remind addTarget:self action:@selector(remind_friend) forControlEvents:UIControlEventTouchUpInside];
-                [self.view addSubview:remind];
+                
+                if (([self.trans valueForKey:@"InvitationSentTo"] == NULL || [[self.trans objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]]) )
+                {  // Requests to Existing Users
+                    [cancel addTarget:self action:@selector(cancel_request_to_existing) forControlEvents:UIControlEventTouchUpInside];
+                    [self.view addSubview:cancel];
+                    
+                    [remind addTarget:self action:@selector(remind_friend) forControlEvents:UIControlEventTouchUpInside];
+                    [self.view addSubview:remind];
+                }
+                else
+                {  // Requests to Non-Nooch Users
+                    [cancel addTarget:self action:@selector(cancel_request_to_nonNoochUser) forControlEvents:UIControlEventTouchUpInside];
+                    [self.view addSubview:cancel];
+                    
+                    [remind addTarget:self action:@selector(remind_friend) forControlEvents:UIControlEventTouchUpInside];
+                    [self.view addSubview:remind];
+                }
             }
             else
             {
-                [cancel setStyleClass:@"details_button_right"];
-                [pay setTitle:@"Pay" forState:UIControlStateNormal];
                 [pay addTarget:self action:@selector(fulfill_request) forControlEvents:UIControlEventTouchUpInside];
                 [pay setTag:23];
+
                 [cancel setTitle:@"Reject" forState:UIControlStateNormal];
                 [cancel addTarget:self action:@selector(decline_request) forControlEvents:UIControlEventTouchUpInside];
                 [cancel setTag:24];
@@ -314,28 +332,14 @@
                 [self.view addSubview:cancel];
             }
         }
-    }
-
-    else if ( [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
-              [[self.trans valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"] )
-    {
-        if ([[self.trans objectForKey:@"RecepientId"] isEqualToString:[user objectForKey:@"MemberId"]])
+        else if ( [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
+                 [[self.trans valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"] )
         {
-            UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [cancel setTitleShadowColor:Rgb2UIColor(36, 22, 19, 0.3) forState:UIControlStateNormal];
-            cancel.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-            [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
-            [cancel setStyleClass:@"details_button_right"];
             [cancel setTag:13];
             [cancel setEnabled:YES];
             [cancel addTarget:self action:@selector(cancel_invite) forControlEvents:UIControlEventTouchUpInside];
             [self.view addSubview:cancel];
-                
-            UIButton *remind = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [remind setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
-            remind.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-            [remind setTitle:@"Remind" forState:UIControlStateNormal];
-            [remind setStyleClass:@"details_button_remind"];
+            
             [remind setTag:14];
             [remind setEnabled:YES];
             [remind addTarget:self action:@selector(remind_friend) forControlEvents:UIControlEventTouchUpInside];
@@ -380,8 +384,8 @@
     
     blankView = [[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
     [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
-    UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
+    UIActivityIndicatorView *actv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [actv setFrame:CGRectMake(140,(self.view.frame.size.height / 2) -5, 40, 40)];
     [actv startAnimating];
     [blankView addSubview:actv];
     [self.view addSubview:blankView];
@@ -393,7 +397,8 @@
     [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
 }
 
--(void)remind_friend{
+-(void)remind_friend
+{
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder" message:@"Do you want to send a reminder about this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
    
     [av setTag:1012];
@@ -505,14 +510,16 @@
     [mainView addSubview:btnclose];
 
 }
+
 -(void)close_lightBox{
     [overlay removeFromSuperview];
 }
--(void) cancel_invite {
-    serve *canc = [serve new];
-    [canc setTagName:@"cancel_invite"];
-    [canc setDelegate:self];
-    [canc cancel_invite:self.trans[@"TransactionId"]];
+
+-(void) cancel_invite
+{
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to cancel this transfer?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    [av show];
+    [av setTag:310];
 }
 
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
@@ -548,7 +555,8 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
-- (void) fulfill_request {
+- (void) fulfill_request
+{
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     if ([[assist shared]getSuspended]) {
@@ -585,52 +593,65 @@
 
 - (void) decline_request
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to reject this request?" delegate:self cancelButtonTitle:@"Yes - Reject" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Reject Request" message:@"Are you sure you want to reject this request?" delegate:self cancelButtonTitle:@"Yes - Reject" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1011];
 }
 
-- (void) cancel_request {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+- (void)cancel_request_to_existing
+{
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel Request" message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1010];
 }
 
-- (void) pay_back {
+- (void)cancel_request_to_nonNoochUser
+{
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel Request" message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    [av show];
+    [av setTag:2010];
+}
+
+- (void) pay_back
+{
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
 
-    if ([[assist shared]getSuspended]) {
+    if ([[assist shared]getSuspended])
+    {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
         [alert setTag:50];
         [alert show];
         return;
     }
-    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
+    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] )
+    {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Email Verification Needed" message:@"Please click the link sent to your email to verify your email address." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         return;
     }
-    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
+    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
+    {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Profile Not Complete" message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!" delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
         [alert setTag:147];
         [alert show];
         return;
     }
-    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ) {
+    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
+    {
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Phone Not Verified" message:@"Please validate your phone number before sending money." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
         [alert show];
         return;
     }
-    if ( ![[[NSUserDefaults standardUserDefaults]
-            objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
+    if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    {
         UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Funding Source Needed" message:@"Before you can send or receive money, you must add a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [set show];
         return;
     }
 
-    NSMutableDictionary *input = [self.trans mutableCopy];
+    NSMutableDictionary * input = [self.trans mutableCopy];
     if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
-        NSString*MemberId=[input valueForKey:@"RecepientId"];
+        NSString * MemberId = [input valueForKey:@"RecepientId"];
         [input setObject:MemberId forKey:@"MemberId"];
     }
 
@@ -759,6 +780,12 @@
     
     else if (alertView.tag == 1 && buttonIndex == 0)  // DISPUTE
     {
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:self.hud];
+        self.hud.delegate = self;
+        self.hud.labelText = @"Disputing this transfer...";
+        [self.hud show:YES];
+        
         self.responseData = [NSMutableData data];
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 
@@ -774,7 +801,7 @@
         [serveobj RaiseDispute:dict];
     }
     
-    else if (alertView.tag == 568 && buttonIndex == 1)  // USER DISPUTED A TRANSFER, SELECTED "CONTACT SUPPORT" IN ALERT
+    else if (alertView.tag == 568 && buttonIndex == 1)  // User Disputed a Transfer, then selected "Contact Support" in Alert
     {
         if (![MFMailComposeViewController canSendMail]){
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -793,19 +820,44 @@
         [self presentViewController:mailComposer animated:YES completion:nil];
     }
     
-    else if (alertView.tag == 1010 && buttonIndex == 0)  // CANCEL
+    else if ((alertView.tag == 1010 || alertView.tag == 2010) && buttonIndex == 0) // CANCEL Request
     {
-      //  NSString * memId = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
-        serve*serveObj=[serve new];
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:self.hud];
+        self.hud.delegate = self;
+        self.hud.labelText = @"Cancelling this request...";
+        [self.hud show:YES];
+        
+        serve *serveObj = [serve new];
         [serveObj setDelegate:self];
-        serveObj.tagName=@"cancel";
-//      [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Cancelled"];
-      //  [serveObj CancelMoneyRequestForExistingNoochUser:[self.trans valueForKey:@"TransactionId"] memberId:memId];
+        
+        if (alertView.tag == 1010) {
+            serveObj.tagName = @"cancelRequestToExisting";  // Cancel Request for Existing User
+            [serveObj CancelMoneyRequestForExistingNoochUser:[self.trans valueForKey:@"TransactionId"]];
+        }
+        else if (alertView.tag == 2010) {  // CANCEL Request to NonNoochUser
+            serveObj.tagName = @"cancelRequestToNonNoochUser";
+            [serveObj CancelMoneyRequestForExistingNoochUser:[self.trans valueForKey:@"TransactionId"]];
+        }
+    }
+    
+    else if (alertView.tag == 310 && buttonIndex == 0) // CANCEL Transfer (Send) Invite
+    {
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:self.hud];
+        self.hud.delegate = self;
+        self.hud.labelText = @"Cancelling this transfer...";
+        [self.hud show:YES];
+        
+        serve * serveObj = [serve new];
+        [serveObj setDelegate:self];
+        serveObj.tagName = @"CancelMoneyTransferToNonMemberForSender";  // Cancel Request for Existing User
+        [serveObj CancelMoneyTransferToNonMemberForSender:[self.trans valueForKey:@"TransactionId"]];
     }
     
     else if (alertView.tag == 1011 && buttonIndex == 0)  // REJECT
     {
-        serve *serveObj = [serve new];
+        serve * serveObj = [serve new];
         [serveObj setDelegate:self];
         serveObj.tagName = @"reject";
         [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Rejected"];
@@ -835,9 +887,10 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
+    [self.hud hide:YES];
     if ([tagName isEqualToString:@"cancel_invite"])
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Invitation Cancelled" message:@"You have withdrawn this transfer successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Invitation Cancelled" message:@"You have withdrawn this transfer successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [nav_ctrl popViewControllerAnimated:YES];
     }
@@ -1120,7 +1173,7 @@
         [self.view addSubview:status];
     }
 
-    else if ([tagName isEqualToString:@"cancel"])
+    else if ([tagName isEqualToString:@"cancelRequestToExisting"] || [tagName isEqualToString:@"cancelRequestToNonNoochUser"])
     {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Request Cancelled" message:@"You got it. That request has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -1139,7 +1192,25 @@
         [status setText:statusstr];
         [self.view addSubview:status];
     }
-    
+    else if ([tagName isEqualToString:@"CancelMoneyTransferToNonMemberForSender"])
+    {
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Transfer Cancelled" message:@"Aye aye. That transfer has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        
+        for (UIView *subview in self.view.subviews)
+        {
+            if (subview.tag == 12 || (subview.tag == 13) || (subview.tag == 14)) {  // Remove 'Cancel' Button, Remind Button, "Pending" status
+                [subview removeFromSuperview];
+            }
+        }
+        UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 320, 30)];
+        [status setStyleClass: @"details_label"];
+        [status setStyleId: @"details_status"];
+        NSString *statusstr = @"Cancelled";
+        [status setStyleClass: @"red_text"];
+        [status setText:statusstr];
+        [self.view addSubview:status];
+    }
     else if ([tagName isEqualToString:@"dispute"])
     {
         for (UIView *subview in self.view.subviews)

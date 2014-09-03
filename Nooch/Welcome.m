@@ -60,28 +60,41 @@
 	// Do any additional setup after loading the view.
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    
-    UIImageView *logo = [UIImageView new];
+
+    UIImageView * logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
     
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 140, 300, 40)];
-    [title setTextColor:kNoochGrayDark]; [title setBackgroundColor:[UIColor clearColor]];
-    [title setText:@"Congratulations!"]; [title setTextAlignment:NSTextAlignmentCenter];
+    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        [slogan setFrame:CGRectMake(0, 218, 0, 0)];
+    }
+    [slogan setBackgroundColor:[UIColor clearColor]];
+    [slogan setText:@"Money Made Simple"];
+    [slogan setFont:[UIFont fontWithName:@"VarelaRound-regular" size:15]];
+    [slogan setStyleClass:@"prelogin_slogan"];
+    [self.view addSubview:slogan];
+    
+    UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, 300, 40)];
+    [title setTextColor:kNoochGrayDark];
+    [title setBackgroundColor:[UIColor clearColor]];
+    [title setText:@"Congratulations!"];
+    [title setTextAlignment:NSTextAlignmentCenter];
     [title setFont:[UIFont systemFontOfSize:24]];
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
     
-    UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 180, 280, 160)];
-    [prompt setTextColor:kNoochGrayDark]; [prompt setBackgroundColor:[UIColor clearColor]];
-    [prompt setText:@"Your account has been created.\n\nCheck your email for a message from us to confirm your email address.\n\nBefore you can send money you'll need a funding source. Tap the green button to link your bank now."];
+    UILabel * prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 180, 280, 160)];
+    [prompt setTextColor:kNoochGrayDark];
+    [prompt setBackgroundColor:[UIColor clearColor]];
+    [prompt setText:@"Account Created Successfully\n\nNext: \n\n1. Confirm your email address (we sent a link)\n\n2. Link a funding source \n\n\nTap the green button to link your bank now."];
     [prompt setTextAlignment:NSTextAlignmentCenter];
-    [prompt setFont:[UIFont systemFontOfSize:15]];
+    [prompt setFont:[UIFont fontWithName:@"Roboto" size:15]];
     prompt.numberOfLines = 0;
     [prompt sizeToFit];
     [self.view addSubview:prompt];
 
-    UIButton *enter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton * enter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [enter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [enter setTitle:@"  Link Funding Source" forState:UIControlStateNormal];
     [enter setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.26) forState:UIControlStateNormal];
@@ -90,9 +103,9 @@
     [enter setFrame:CGRectMake(10, 385, 300, 60)];
     [enter setStyleClass:@"button_green"];
     
-    UILabel *glyphBank = [UILabel new];
-    [glyphBank setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
-    [glyphBank setFrame:CGRectMake(14, 8, 30, 30)];
+    UILabel * glyphBank = [UILabel new];
+    [glyphBank setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+    [glyphBank setFrame:CGRectMake(15, 8, 30, 30)];
     [glyphBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bank"]];
     [glyphBank setTextColor:[UIColor whiteColor]];
     
@@ -126,21 +139,21 @@
 
 -(void)moreinfo_lightBox
 {
-     overlay=[[UIView alloc]init];
-     overlay.frame=CGRectMake(0, 0, 320, self.view.frame.size.height);
-     overlay.backgroundColor=[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+     overlay = [[UIView alloc]init];
+     overlay.frame = CGRectMake(0, 0, 320, self.view.frame.size.height);
+     overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
      
      [UIView transitionWithView:self.navigationController.view
      duration:0.5
      options:UIViewAnimationOptionTransitionCrossDissolve
      animations:^{
-     [self.navigationController.view addSubview:overlay];
+         [self.navigationController.view addSubview:overlay];
      }
      completion:nil];
      
-     mainView=[[UIView alloc]init];
+     mainView = [[UIView alloc]init];
      mainView.layer.cornerRadius=5;
-     mainView.frame=CGRectMake(10, 50, 300, self.view.frame.size.height-75);
+     mainView.frame = CGRectMake(6, 40, 308, self.view.frame.size.height-80);
      mainView.backgroundColor=[UIColor whiteColor];
      
      [overlay addSubview:mainView];
@@ -150,40 +163,40 @@
      mainView.layer.shadowRadius = 4;
      mainView.layer.shadowOpacity = 0.6;
     
-     UIView*head_container=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 300, 44)];
-     head_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+     UIView * head_container = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 308, 44)];
+     head_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
      [mainView addSubview:head_container];
      head_container.layer.cornerRadius = 10;
      
-     UILabel*title=[[UILabel alloc]initWithFrame:CGRectMake(0, 10, 300, 30)];
+     UILabel * title = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 308, 30)];
      [title setBackgroundColor:[UIColor clearColor]];
      [title setText:@"Connect Your Bank"];
      [title setStyleClass:@"lightbox_title"];
      [head_container addSubview:title];
     
-     UIView*space_container=[[UIView alloc]initWithFrame:CGRectMake(0, 34, 300, 10)];
-     space_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+     UIView * space_container = [[UIView alloc]initWithFrame:CGRectMake(0, 34, 308, 10)];
+     space_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
      [mainView addSubview:space_container];
      
-     UIView*container=[[UIView alloc]initWithFrame:CGRectMake(2, 48, 296, 300)];
+     UIView * container = [[UIView alloc]initWithFrame:CGRectMake(2, 44, 304, 300)];
      
-     UIImageView*imageShow=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 296, self.view.frame.size.height-175)];
-     imageShow.image=[UIImage imageNamed:@"KnoxInfo_Lightbox@2x.png"];
-     imageShow.contentMode=UIViewContentModeScaleAspectFit;
+     UIImageView * imageShow = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 304, self.view.frame.size.height-175)];
+     imageShow.image = [UIImage imageNamed:@"KnoxInfo_Lightbox@2x.png"];
+     imageShow.contentMode = UIViewContentModeScaleAspectFit;
      [container addSubview:imageShow];
      [mainView addSubview:container];
      
-     UIButton *btnLink=[UIButton buttonWithType:UIButtonTypeCustom];
+     UIButton * btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
      [btnLink setStyleClass:@"button_green_welcome"];
      [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.26) forState:UIControlStateNormal];
      btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-     btnLink.frame=CGRectMake(10,mainView.frame.size.height-60, 280, 50);
+     btnLink.frame = CGRectMake(10,mainView.frame.size.height-60, 280, 50);
      [btnLink setTitle:@"Link Now" forState:UIControlStateNormal];
      [btnLink addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
      [mainView addSubview:btnLink];
      
-     UIButton *btnclose=[UIButton buttonWithType:UIButtonTypeCustom];
-     btnclose.frame=CGRectMake(mainView.frame.size.width-28,head_container.frame.origin.y-15, 35, 35);
+     UIButton * btnclose = [UIButton buttonWithType:UIButtonTypeCustom];
+     btnclose.frame = CGRectMake(mainView.frame.size.width-28,head_container.frame.origin.y-15, 35, 35);
      [btnclose setImage:[UIImage imageNamed:@"close_button.png"] forState:UIControlStateNormal] ;
      [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
      [mainView addSubview:btnclose];

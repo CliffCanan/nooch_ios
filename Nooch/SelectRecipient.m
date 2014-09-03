@@ -1345,22 +1345,22 @@
         {
             temp = [arrRequestPersons objectAtIndex:indexPath.row];
             arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
-            int loc =-1;
+            int loc = -1;
             
-            for (int i=0; i<[arrRecipientsForRequest count]; i++)
+            for (int i = 0; i<[arrRecipientsForRequest count]; i++)
             {
-                NSDictionary*dictionary=[arrRecipientsForRequest objectAtIndex:i];
+                NSDictionary *dictionary = [arrRecipientsForRequest objectAtIndex:i];
                 if ([[dictionary valueForKey:@"MemberId"]isEqualToString:temp[@"MemberId"]]) {
-                    loc=1;
+                    loc = 1;
                 }
                 
             }
-            if (loc==1) {
-                cell.accessoryType=UITableViewCellAccessoryCheckmark;
+            if (loc == 1) {
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
             }
             else {
-                loc=-1;
-                cell.accessoryType=UITableViewCellAccessoryNone;
+ //               loc =- 1;
+                cell.accessoryType = UITableViewCellAccessoryNone;
             }
             
         }
@@ -1484,11 +1484,12 @@
         
         for (int i = 0; i < [arrRecipientsForRequest count]; i++)
         {
-            NSDictionary*dictionary=[arrRecipientsForRequest objectAtIndex:i];
+            NSDictionary *dictionary=[arrRecipientsForRequest objectAtIndex:i];
             if ([[dictionary valueForKey:@"MemberId"]caseInsensitiveCompare:info[@"MemberId"]]==NSOrderedSame) {
-                loc=1;
+                loc = 1;
             }
         }
+
         if (loc == 1)
         {
              cell.accessoryType=UITableViewCellAccessoryCheckmark;
@@ -1498,6 +1499,7 @@
             loc=-1;
             cell.accessoryType=UITableViewCellAccessoryNone;
         }
+
         if ([[[assist shared] assos] objectForKey:info[@"UserName"]])
         {
             if ([[assist shared] assos][info[@"UserName"]][@"addressbook"])
@@ -1569,24 +1571,24 @@
         
         arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
         NSLog(@"%@",arrRecipientsForRequest);
-        int loc =-1;
-        for (int i=0; i<[arrRecipientsForRequest count]; i++) {
-            NSDictionary*dictionary=[arrRecipientsForRequest objectAtIndex:i];
+        int loc = -1;
+        for (int i = 0; i<[arrRecipientsForRequest count]; i++) {
+            NSDictionary *dictionary=[arrRecipientsForRequest objectAtIndex:i];
             if ([[dictionary valueForKey:@"UserName"]isEqualToString:receiver[@"UserName"]]) {
-                loc=1;
+                loc = 1;
             }
             else
-                loc=-1;
+                loc = -1;
         }
-        if (loc==1)
+        if (loc == 1)
         {
             [arrRecipientsForRequest removeObject:receiver];
             [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
         }
         else
         {
-            if ([[[assist shared]getArray] count]==10) {
-                UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You can't request more than 10 Users!" delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+            if ([[[assist shared]getArray] count] == 10) {
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You can't request more than 10 Users!" delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
                 [alert show];
                 return;
             }

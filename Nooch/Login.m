@@ -85,22 +85,40 @@
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    UIButton* btnback=[UIButton buttonWithType:UIButtonTypeCustom];
-
-    [btnback setImage:[UIImage imageNamed:@"back-arrow-blue.png"] forState:UIControlStateNormal];
-    [btnback setStyleClass:@"back_button-icon"];
-    btnback.frame=CGRectMake(0, 7, 50, 30);
     
+    //back button
+    UIButton *btnback = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btnback setBackgroundColor:[UIColor clearColor]];
+    [btnback setFrame:CGRectMake(10, 50, 30, 30)];
     [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UILabel *glyph_back = [UILabel new];
+    [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:24]];
+    [glyph_back setFrame:CGRectMake(0, 0, 30, 30)];
+    [glyph_back setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-left"]];
+    [glyph_back setTextColor:kNoochBlue];
+    [btnback addSubview:glyph_back];
+    
     [self.view addSubview:btnback];
+    
+    UIImageView * logo = [UIImageView new];
+    [logo setStyleId:@"prelogin_logo"];
+    [logo setStyleClass:@"animate_bubble_logo"];
+    [self.view addSubview:logo];
+    
+    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        [slogan setFrame:CGRectMake(0, 218, 0, 0)];
+    }
+    [slogan setBackgroundColor:[UIColor clearColor]];
+    [slogan setText:@"Money Made Simple"];
+    [slogan setFont:[UIFont fontWithName:@"VarelaRound-regular" size:15]];
+    [slogan setStyleClass:@"prelogin_slogan"];
+    [self.view addSubview:slogan];
 
     [self.navigationItem setTitle:@"LogIn"];
     self.loading = [UIActivityIndicatorView new];
     [self.loading setStyleId:@"loading"];
-
-    UIImageView *logo = [UIImageView new];
-    [logo setStyleId:@"prelogin_logo"];
-    [self.view addSubview:logo];
 
     self.email = [[UITextField alloc] initWithFrame:CGRectMake(30, 150, 300, 40)];
     [self.email setBackgroundColor:[UIColor clearColor]];
@@ -202,7 +220,7 @@
 
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(actionSheet.tag==220011&& buttonIndex==1)
+    if(actionSheet.tag == 220011 && buttonIndex == 1)
     {
         UITextField *emailField = [actionSheet textFieldAtIndex:0];
         
@@ -223,6 +241,7 @@
         }
 
     }
+
     else if (actionSheet.tag==220011 && buttonIndex==0)
     {
         [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
