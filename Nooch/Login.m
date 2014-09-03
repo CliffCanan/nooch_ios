@@ -103,7 +103,6 @@
     
     UIImageView * logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
-    [logo setStyleClass:@"animate_bubble_logo"];
     [self.view addSubview:logo];
     
     UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
