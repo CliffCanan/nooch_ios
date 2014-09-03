@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by crks on 10/3/13.
-//  Copyright (c) 2013 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -20,9 +20,9 @@ serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate,M
 {
     UISegmentedControl *completed_pending;
     int countRows;
-    NSMutableArray*histArray;
-    NSMutableArray*histShowArrayCompleted;
-    NSMutableArray*histShowArrayPending;
+    NSMutableArray *histArray;
+    NSMutableArray *histShowArrayCompleted;
+    NSMutableArray *histShowArrayPending;
     BOOL ishistLoading;
     BOOL isEnd;
     BOOL isStart;

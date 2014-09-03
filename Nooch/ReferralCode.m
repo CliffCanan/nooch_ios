@@ -42,27 +42,38 @@
 {
     [super viewDidLoad];
 
-    UIButton* btnback=[UIButton buttonWithType:UIButtonTypeCustom];
-
-    [btnback setImage:[UIImage imageNamed:@"back-arrow-blue.png"] forState:UIControlStateNormal];
-    [btnback setStyleClass:@"back_button-icon"];
-    btnback.frame=CGRectMake(0, 7, 50, 30);
-
+    //back button
+    UIButton *btnback = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btnback setBackgroundColor:[UIColor clearColor]];
+    [btnback setFrame:CGRectMake(12, 38, 35, 35)];
     [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UILabel *glyph_back = [UILabel new];
+    [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:22]];
+    [glyph_back setFrame:CGRectMake(0, 0, 30, 30)];
+    [glyph_back setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-o-left"]];
+    [glyph_back setTextColor:kNoochBlue];
+    [btnback addSubview:glyph_back];
+    
     [self.view addSubview:btnback];
-
- //   getLocation = [[GetLocation alloc] init];
-//	getLocation.delegate = self;
-//	[getLocation.locationManager startUpdatingLocation];
-
-	// Do any additional setup after loading the view.
-    UIImageView *logo = [UIImageView new];
+    
+    UIImageView * logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
+    
+    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        [slogan setFrame:CGRectMake(0, 218, 0, 0)];
+    }
+    [slogan setBackgroundColor:[UIColor clearColor]];
+    [slogan setText:@"Money Made Simple"];
+    [slogan setFont:[UIFont fontWithName:@"VarelaRound-regular" size:15]];
+    [slogan setStyleClass:@"prelogin_slogan"];
+    [self.view addSubview:slogan];
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 140, 300, 40)];
+    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, 300, 40)];
     [title setTextColor:kNoochGrayDark];
     [title setBackgroundColor:[UIColor clearColor]];
     [title setText:@"Enter Referral Code"];
@@ -71,7 +82,7 @@
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
 
-    UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 175, 280, 70)];
+    UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 280, 70)];
     [prompt setTextColor:kNoochGrayDark];
     [prompt setBackgroundColor:[UIColor clearColor]];
     [prompt setNumberOfLines:3];

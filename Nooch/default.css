@@ -14,25 +14,30 @@
 	}
 
 	#prelogin_logo {
-		background-image : url(Logo_with_line.png);
-		height : 120px;
-		width : 200px;
-		position : 60 10;
+		background-image : url(nooch_logo_color.png);
+		height : 65px;
+		width : 202px;
+		position : 59 18;
 	}
+    
+    .prelogin_slogan {
+        font-family: "VarelaRound-regular";
+        font-size: 15px;
+        text-align: right;
+        color	: #5a538d;
+    }
+    .animate_prelogin_slogan {
+        animation-name: fade_slogan;
+        animation-duration: 2s;
+		animation-timing-function: ease-out;
+		animation-iteration-count: 1;
+    }
 	
 	#requireImmediatelyLogo {
 		background-image : url(noochIcon-96.png);
 		height : 48px;
 		width : 48px;
 		position : 136px 48px;
-	}
-
-     #emptyRecentList {
-		background-image : url(empty-arrow.png);
-		height : 204px;
-		width : 122px;
-		left   : 20px;
-        top    :50px;
 	}
     
     .lightbox_title {
@@ -644,7 +649,7 @@
 	.instruction_text {
 		font-family		: "Roboto";
 		font-weight     : regular;
-		font-size		: 15px;
+		font-size		: 16px;
 		text-align      : center;
 		color 			: #313233;
 		width			: 280px;
@@ -755,7 +760,7 @@
   	.header_signupflow {
 		font-family			: "Roboto";
 		font-weight         : light;
-		font-size			: 28px;
+		font-size			: 29px;
 		text-align       	: center;
 		color 				: #313233;
 		width				: 280px;
@@ -1149,7 +1154,7 @@ table-view#select_recipientwithoutSeperator {
     }
     .animate_bubble {
         animation-name: bubble;
-        animation-duration: 1.3s;
+        animation-duration: 1.35s;
 		animation-timing-function: ease;
 		animation-iteration-count: 1;
     }
@@ -2030,7 +2035,16 @@ table-view#select_recipientwithoutSeperator {
 		width				: 25px;
 		height				: 25px;
 		font-family	: "FontAwesome";
-		font-size			: 24px;
+		font-size			: 22px;
+		text-align       	: left;
+		color 				: #ffffff;
+	}
+
+    #glyph_map {
+        width				: 25px;
+		height				: 25px;
+		font-family	: "FontAwesome";
+		font-size			: 22px;
 		text-align       	: right;
 		color 				: #ffffff;
 	}
@@ -2069,6 +2083,46 @@ table-view#select_recipientwithoutSeperator {
 
 	}
     #history_search {background-color : #dcddde;}
+
+    .historyMap_marker_name {
+        font-family: "Roboto";
+        font-weight: regular;
+        font-size: 18px;
+        color: white;
+        text-align: center;
+    }
+    .historyMap_marker_title {
+        font-family: "Roboto";
+        font-weight: light;
+        font-size: 12px;
+        color: white;
+        text-align: center;
+    }
+    .historyMap_marker_amnt {
+        font-family: "Roboto";
+        font-weight: medium;
+        font-size: 24px;
+        text-align: center;
+    }
+    .historyMap_marker_memo {
+        font-family: "Roboto";
+        font-weight: regular;
+        font-size: 14px;
+        text-align: center;
+    }
+    .historyMap_marker_dateIntro {
+        font-family: "Roboto";
+        font-weight: regular;
+        font-size: 12px;
+        text-align: center;
+    }
+    .historyMap_marker_date {
+        font-family: "Roboto";
+        font-weight: regular;
+        font-size: 12px;
+        text-align: center;
+    }
+    
 
 	/**  Table View for the entire main history table - for row-height & separator-color)  **/
 	table-view#history {
@@ -2124,7 +2178,7 @@ table-view#select_recipientwithoutSeperator {
 		width				: 150px;
 		height				: 12px;
 		top					: 48px;
-		left                : 75px;
+		left                : 88px;
 		font-family			: "Roboto";
 		font-weight         : light;
 		font-size			: 10px;
@@ -2969,6 +3023,46 @@ table-view#select_recipientwithoutSeperator {
 		85% {scale: .93;}
 		to {opacity: 1;
 			scale: 1;
+		}
+	}
+    .animate_bubble_logo {
+        animation-name: bubble;
+        animation-duration: 2.2s;
+		animation-timing-function: ease;
+		animation-iteration-count: 1;
+    }
+    @keyframes bubble_logo {
+		from {
+			opacity: .2;
+			scale: .1;
+		}
+		45% {scale: 1.18;}
+		62% {scale: .82;}
+		77% {scale: 1.1;}
+		84% {scale: .94;}
+		to {opacity: 1;
+			scale: 1;
+		}
+	}
+    @keyframes fade_slogan {
+		from {
+			opacity: 0;
+			scale: .8;
+            left: -50px;
+		}
+		50% {
+            opacity: .2;
+            scale: 1.05;
+        }
+		70% {
+            opacity: .6;
+            scale: .96;
+            left: 200px;
+        }
+		to {
+            opacity: 1;
+			scale: 1;
+            left: 160px;
 		}
 	}
 	
