@@ -32,7 +32,8 @@
     }
     return self;
 }
-- (void)viewDidLoad  {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
   
     if ([user valueForKey:@"facebook_id"] && ![[user valueForKey:@"facebook_id"] length] > 0)
@@ -41,15 +42,16 @@
         [av show];
         av.tag=6;
     }
+
     self.location = NO;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     self.navigationController.navigationBar.topItem.title = @"";
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     
-    isPayBack=NO;
-    isEmailEntry=NO;
-    isAddRequest=NO;
+    isPayBack = NO;
+    isEmailEntry = NO;
+    isAddRequest = NO;
     if ([[assist shared] isRequestMultiple]) {
         isAddRequest=YES;
     }
@@ -57,16 +59,10 @@
         [arrRecipientsForRequest removeAllObjects];
         [[assist shared]setArray:[arrRecipientsForRequest copy]];
     }
-    isUserByLocation=NO;
-    isphoneBook=NO;
+    isUserByLocation = NO;
+    isphoneBook = NO;
     
-    arrRequestPersons=[[NSMutableArray alloc]init];
-
-    UIButton *location = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [location setStyleId:@"icon_location"];
-
-    UIBarButtonItem *loc = [[UIBarButtonItem alloc] initWithCustomView:location];
-    [self.navigationItem setRightBarButtonItem:loc];
+    arrRequestPersons = [[NSMutableArray alloc]init];
     
     NSArray *seg_items = @[@"Recent",@"    Find by Location"];
     self.completed_pending = [[UISegmentedControl alloc] initWithItems:seg_items];
@@ -116,63 +112,64 @@
     [self.hud show:YES];   
 }
 
--(void)viewWillAppear:(BOOL)animated  {
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
-   [search setHidden:NO];
+    [search setHidden:NO];
     self.trackedViewName = @"SelectRecipient Screen";
 
     if ([[assist shared] isRequestMultiple] && isAddRequest)
     {
         self.location = NO;
+        [self.navigationItem setHidesBackButton:YES];
+
         [self.completed_pending setSelectedSegmentIndex:0];
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Add Recipients" message:@"To request money from more than one person, search for friends then tap each additional person (up to 10). Tap 'Done' when finished." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Add Recipients" message:@"To request money from more than one person, search for friends then tap each additional person (up to 10).\n\nTap 'Done' when finished." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         [self.navigationItem setTitle:@"Group Request"];
         [self.navigationItem setRightBarButtonItem:Nil];
         
-        UIButton *Done = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        Done.frame=CGRectMake(307, 25, 40, 35);
+        UIButton * Done = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        Done.frame = CGRectMake(307, 25, 16, 35);
         [Done setStyleId:@"icon_RequestMultiple"];
         [Done setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [Done setTitle:@"     Done" forState:UIControlStateNormal];
-        [Done setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+        [Done setTitle:@"    Done" forState:UIControlStateNormal];
+        [Done setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
         Done.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [Done addTarget:self action:@selector(DoneEditing_RequestMultiple:) forControlEvents:UIControlEventTouchUpInside];
 
-        [self.navigationItem setHidesBackButton:YES];
-        UIBarButtonItem *DoneItem = [[UIBarButtonItem alloc] initWithCustomView:Done];
+        UIBarButtonItem * DoneItem = [[UIBarButtonItem alloc] initWithCustomView:Done];
         [self.navigationItem setRightBarButtonItem:DoneItem];
-        isRecentList=NO;
+        isRecentList = NO;
         searching = NO;
-        emailEntry=NO;
-        isRecentList=YES;
-        isphoneBook=NO;
+        emailEntry = NO;
+        isRecentList = YES;
+        isphoneBook = NO;
         [search resignFirstResponder];
         [search setText:@""];
         [search setShowsCancelButton:NO];
         
-        if ([arrRequestPersons count]==0)
+        if ([arrRequestPersons count] == 0)
         {
-            arrRequestPersons=[self.recents mutableCopy];
-            NSLog(@"Hello PERSON!!!!  %@",arrRequestPersons);
-            
+            arrRequestPersons = [self.recents mutableCopy];
         }
         else
         {
-            int loc=-1;
-            for (int i=0;i<[self.recents count];i++)
+            int loc =-1;
+            for (int i = 0; i < [self.recents count] ; i++)
             {
-                NSDictionary*dict=[self.recents objectAtIndex:i];
-                for (int j=0;j<[arrRequestPersons count];j++)
+                NSDictionary * dict = [self.recents objectAtIndex:i];
+                for (int j = 0; j < [arrRequestPersons count]; j++)
                 {
-                   NSDictionary*dictSub=[arrRequestPersons objectAtIndex:j];
+                   NSDictionary * dictSub = [arrRequestPersons objectAtIndex:j];
                      if ([[dict valueForKey:@"MemberId"]caseInsensitiveCompare:[dictSub valueForKey:@"MemberId"] ] == NSOrderedSame)
                         loc=1;
                 }
-                if (loc==-1)
+                if (loc == -1)
                     [arrRequestPersons addObject:dict];
                 else
-                    loc=-1;
+                    loc =-1;
             }
         }
         NSLog(@"%@",arrRequestPersons);
@@ -247,14 +244,15 @@
         [alert show];
         return;
     }
-    isAddRequest=NO;
-     isFromHome=NO;
-    HowMuch *how_much = [[HowMuch alloc] init];
+    isAddRequest = NO;
+    isFromHome = NO;
+    HowMuch * how_much = [[HowMuch alloc] init];
     [self.navigationController pushViewController:how_much animated:YES];
 }
 
--(void) facebook {
-    NSDictionary *options = @{
+-(void) facebook
+{
+    NSDictionary * options = @{
             ACFacebookAppIdKey: @"198279616971457",
             ACFacebookPermissionsKey: @[@"friends_about_me"],
             ACFacebookAudienceKey: ACFacebookAudienceFriends
@@ -336,8 +334,7 @@
         NSMutableDictionary *curContact=[[NSMutableDictionary alloc] init];
         ABRecordRef person=CFArrayGetValueAtIndex(people, i);
         
-        NSString *contacName ;//= [[NSMutableString alloc] init];
-        // contacName =(__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        NSString *contacName ;
         
         CFTypeRef contacNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
         contacName = [[NSString stringWithFormat:@"%@", contacNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -345,9 +342,8 @@
         CFRelease(contacNameValue);
         
         
-        NSString *firstName ;//= [[NSString alloc] init];
-        NSString *lastName;// = [[NSString alloc] init];
-        // firstName = (__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        NSString *firstName ;
+        NSString *lastName;
         
         //Get FirstName Ref
         CFTypeRef firstNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
@@ -676,11 +672,10 @@
         [self.contacts setHidden:YES];
         [self.view addSubview: self.noContact_img];
     }
-    // histSearch = NO;
     searching = NO;
-    emailEntry=NO;
-    isRecentList=YES;
-    isphoneBook=NO;
+    emailEntry = NO;
+    isRecentList = YES;
+    isphoneBook = NO;
     [searchBar resignFirstResponder];
     [searchBar setText:@""];
     [searchBar setShowsCancelButton:NO];
@@ -696,7 +691,6 @@
 
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
-    //histSearch = YES;
     [searchBar becomeFirstResponder];
     [searchBar setShowsCancelButton:YES];
 }
@@ -1022,7 +1016,6 @@
             {
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
-                // histSearch = NO;
                 searching = NO;
                 emailEntry=NO;
                 isRecentList=NO;
@@ -1407,6 +1400,7 @@
             {
                 UIImageView *ab = [UIImageView new];
                 [ab setStyleClass:@"addressbook-icons"];
+                ab.layer.cornerRadius = 4;
                 [cell.contentView addSubview:ab];
                 break;
             }
@@ -1618,7 +1612,6 @@
     
     if (searching)
     {
-        // histSearch = NO;
         searching = NO;
         emailEntry=NO;
         isRecentList=YES;

@@ -89,13 +89,13 @@
     //back button
     UIButton *btnback = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnback setBackgroundColor:[UIColor clearColor]];
-    [btnback setFrame:CGRectMake(10, 50, 30, 30)];
+    [btnback setFrame:CGRectMake(12, 30, 35, 35)];
     [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *glyph_back = [UILabel new];
-    [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:24]];
-    [glyph_back setFrame:CGRectMake(0, 0, 30, 30)];
-    [glyph_back setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-left"]];
+    [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:23]];
+    [glyph_back setFrame:CGRectMake(0, 14, 30, 30)];
+    [glyph_back setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-o-left"]];
     [glyph_back setTextColor:kNoochBlue];
     [btnback addSubview:glyph_back];
     
@@ -103,7 +103,6 @@
     
     UIImageView * logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
-    [logo setStyleClass:@"animate_bubble_logo"];
     [self.view addSubview:logo];
     
     UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
@@ -166,14 +165,14 @@
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.login setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     self.login.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-    [self.login setTitle:@"Log In   " forState:UIControlStateNormal];
+    [self.login setTitle:@"Log In  " forState:UIControlStateNormal];
     [self.login setFrame:CGRectMake(10, 252, 300, 60)];
     [self.login addTarget:self action:@selector(check_credentials) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"button_green"];
     
     UILabel *glyphLogin = [UILabel new];
     [glyphLogin setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
-    [glyphLogin setFrame:CGRectMake(185, 9, 30, 30)];
+    [glyphLogin setFrame:CGRectMake(180, 9, 26, 30)];
     [glyphLogin setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-sign-in"]];
     [glyphLogin setTextColor:[UIColor whiteColor]];
     

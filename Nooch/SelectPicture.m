@@ -144,9 +144,10 @@
     [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
     self.slidingViewController.panGesture.enabled=NO;
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    UIView*subview=[[UIView alloc]init];
-    subview.frame=self.view.frame;
-    subview.backgroundColor=[UIColor clearColor];
+    
+    UIView * subview = [[UIView alloc]init];
+    subview.frame = self.view.frame;
+    subview.backgroundColor = [UIColor clearColor];
     [self.view addSubview:subview];
     
     //back button
@@ -156,8 +157,8 @@
     [btnback addTarget:self action:@selector(BackClicked1:) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *glyph_back = [UILabel new];
-    [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:22]];
-    [glyph_back setFrame:CGRectMake(0, 0, 30, 30)];
+    [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:23]];
+    [glyph_back setFrame:CGRectMake(0, 14, 30, 30)];
     [glyph_back setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-o-left"]];
     [glyph_back setTextColor:kNoochBlue];
     [btnback addSubview:glyph_back];
