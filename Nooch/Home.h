@@ -32,7 +32,7 @@ core *me;
 #define kNoochFontLt [UIFont fontWithName:@"BrandonGrotesque-Light" size:18]
 UINavigationController *nav_ctrl;
 NSUserDefaults *user;
-@interface Home : GAITrackedViewController<serveD,CLLocationManagerDelegate,MBProgressHUDDelegate,UITableViewDataSource,UITableViewDelegate,MFMailComposeViewControllerDelegate,iCarouselDataSource,iCarouselDelegate,UIAlertViewDelegate>
+@interface Home : GAITrackedViewController<serveD,CLLocationManagerDelegate,MBProgressHUDDelegate,MFMailComposeViewControllerDelegate,iCarouselDataSource,iCarouselDelegate,UIAlertViewDelegate>
 {
     CLLocationManager*locationManager;
     float lat,lon;
@@ -43,6 +43,7 @@ NSUserDefaults *user;
     NSMutableArray *favorites;
     NSString*emailID;
     UIButton *top_button;
+    NSMutableArray *histArray;
 }
 //@property(nonatomic,strong) NSMutableArray *favorites;
 //@property (nonatomic, strong) NSMutableArray *additions;

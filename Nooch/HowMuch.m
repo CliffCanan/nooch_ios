@@ -65,7 +65,7 @@
                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, 1.0)], UITextAttributeTextShadowOffset, nil];
     [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
     
-    [self.navigationItem setTitle:@"How Much"];
+    [self.navigationItem setTitle:@"How Much?"];
 
     [[assist shared] setTranferImage:nil];
     

@@ -1328,10 +1328,11 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 
--(void)getLocationBasedSearch:(NSString *)radius {
+-(void)getLocationBasedSearch:(NSString *)radius
+{
     ServiceType = @"LocationSearch";
     self.responseData = [[NSMutableData alloc] init];
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     NSString * memId = [defaults objectForKey:@"MemberId"];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSString *urlString = [NSString stringWithFormat:@"%@/GetLocationSearch?MemberId=%@&accessToken=%@&Radius=%@",ServerUrl,memId,[defaults valueForKey:@"OAuthToken"],radius];

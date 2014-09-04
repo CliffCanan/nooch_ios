@@ -152,7 +152,8 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 23;
 }
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake (10,0,300,22)];
     [title setFont:[UIFont fontWithName:@"Roboto-Regular" size:15]];
@@ -184,24 +185,7 @@
     [headerView setStyleClass:@"sectionheader_bckgrnd"];
     return headerView;
 }
-/*
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    if (section == 0) {
-        return @"ACCOUNT";
-    }
-    else if(section == 1){
-        return @"DISCOVER";
-    }
-    else if(section == 2){
-        return @"SOCIAL";
-    }
-    else if(section == 3){
-        return @"ABOUT";
-    }
-    else{
-        return @"";
-    }
-} */
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (section == 0) {
         return 3;
@@ -216,17 +200,21 @@
         return 0;
     }
 }
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
+    
+    if (cell == nil)
+    {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [cell setAccessoryType:UITableViewCellAccessoryNone];
         UIView *selectionColor = [[UIView alloc] init];
         selectionColor.backgroundColor = kNoochGrayLight;
         cell.selectedBackgroundView = selectionColor;
     }
-    if ([cell.contentView subviews]){
+    if ([cell.contentView subviews])
+    {
         for (UIView *subview in [cell.contentView subviews]) {
             [subview removeFromSuperview];
         }
@@ -239,7 +227,7 @@
 
     UILabel *arrow = [UILabel new];
     [arrow setStyleClass:@"lside_arrow"];
-    arrow.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-right"];
+    arrow.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-right"];
     [cell.contentView addSubview:arrow];
     
     UILabel *iv = [UILabel new];
@@ -252,7 +240,8 @@
     @{NSShadowAttributeName: shadow };
     
     [iv setStyleClass:@"lside_menu_icons"];
-    if (indexPath.section == 0) {
+    if (indexPath.section == 0)
+    {
         if (indexPath.row == 0) {
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Home"
                                                                             attributes:textAttributes];
@@ -270,14 +259,16 @@
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-tachometer"];
         }
     }
-    else if(indexPath.section == 9) {
+    else if(indexPath.section == 9)
+    {
         if (indexPath.row == 0) {
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Donate to a Cause"
                                                                             attributes:textAttributes];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-globe"];
         }
     }
-    else if(indexPath.section == 1) {
+    else if(indexPath.section == 1)
+    {
         if (indexPath.row == 0) {
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Refer a Friend"
                                                                             attributes:textAttributes];
@@ -290,7 +281,8 @@
                                                                 attributes:textAttributes];
         }
     }
-    else if(indexPath.section == 2) {
+    else if(indexPath.section == 2)
+    {
         if (indexPath.row == 0) {
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"How Nooch Works"
                                                                             attributes:textAttributes];
@@ -316,7 +308,9 @@
     [cell.contentView addSubview:iv];
     return cell;
 }
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{ //72bf44
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     if (indexPath.section == 0)
     {
         if (indexPath.row == 0) {
@@ -350,7 +344,8 @@
             //rate nooch
         }
     }
-    else if(indexPath.section == 2) {
+    else if(indexPath.section == 2)
+    {
         if (indexPath.row == 0) {
             //tutorial
         }
@@ -361,12 +356,14 @@
             [actionSheetObject setTag:1];
             [actionSheetObject showInView:self.view];
         }
-        else if(indexPath.row == 2) {
+        else if(indexPath.row == 2)
+        {
             LimitsAndFees *laf = [LimitsAndFees new];
             [nav_ctrl pushViewController:laf animated:NO];
             [self.slidingViewController resetTopView];
         }
-        else if(indexPath.row == 3) {
+        else if(indexPath.row == 3)
+        {
             UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"User Agreement", @"Privacy Policy", nil];
             actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
             [actionSheetObject setTag:2];
@@ -378,9 +375,12 @@
 
 #pragma mark actionsheet delegation
 
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if ([actionSheet tag] == 1) {
-        if(buttonIndex == 0) {
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ([actionSheet tag] == 1)
+    {
+        if(buttonIndex == 0)
+        {
             //report bug
             if (![MFMailComposeViewController canSendMail]){
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -400,7 +400,8 @@
             [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
             [self presentViewController:mailComposer animated:YES completion:nil];
         }
-        else if(buttonIndex == 1) {
+        else if(buttonIndex == 1)
+        {
             //email support
             if (![MFMailComposeViewController canSendMail]){
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -418,7 +419,8 @@
             [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
             [self presentViewController:mailComposer animated:YES completion:nil];
         }
-        else if(buttonIndex == 2) {
+        else if(buttonIndex == 2)
+        {
             //support center
             webView*wb=[[webView alloc]init];
             [nav_ctrl pushViewController:wb animated:NO];
@@ -440,6 +442,7 @@
         }
     }    
 }
+
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc] init];

@@ -30,7 +30,6 @@ NSMutableURLRequest *request;
 @property(nonatomic,strong) NSMutableArray*arrRecords;
 @property(nonatomic,strong) NSArray *transaction_types;
 @property(nonatomic,strong) UIButton *balance;
-@property(nonatomic,strong) UITableView *news_feed;
 @property(nonatomic,strong) FAImageView *close;
 @property(nonatomic,strong) UIView *popup;
 @property(nonatomic,strong) MBProgressHUD *hud;
@@ -69,7 +68,7 @@ NSMutableURLRequest *request;
     {
         
         NSLog(@"Authorized");
-        if ([[[assist shared]assosAll] count]==0) {
+        if ([[[assist shared]assosAll] count] == 0) {
             [self address_book];
         }
     }
@@ -83,7 +82,7 @@ NSMutableURLRequest *request;
                 return;
             }
             
-            if ([[[assist shared]assosAll] count]==0) {
+            if ([[[assist shared]assosAll] count] == 0) {
                 [self address_book];
             }
             
@@ -164,7 +163,7 @@ NSMutableURLRequest *request;
         ReEnterPin*pin=[ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
     }
-   
+    
     serve *fb = [serve new];
     [fb setDelegate:self];
     [fb setTagName:@"fb"];
@@ -184,18 +183,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         NSMutableDictionary *curContact=[[NSMutableDictionary alloc] init];
         ABRecordRef person=CFArrayGetValueAtIndex(people, i);
         
-        NSString *contacName ;//= [[NSMutableString alloc] init];
-        // contacName =(__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        NSString *contacName;
         
         CFTypeRef contacNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
         contacName = [[NSString stringWithFormat:@"%@", contacNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         if (contacNameValue)
         CFRelease(contacNameValue);
-        
-        
-        NSString *firstName ;//= [[NSString alloc] init];
-        NSString *lastName;// = [[NSString alloc] init];
-        // firstName = (__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+
+        NSString *firstName ;
+        NSString *lastName;
         
         //Get FirstName Ref
         CFTypeRef firstNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
@@ -206,7 +202,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         //Get LastName Ref
         CFTypeRef LastNameValue = ABRecordCopyValue(person, kABPersonLastNameProperty);
         
-        if(LastNameValue)
+        if (LastNameValue)
         {
             [contacName stringByAppendingString:[NSString stringWithFormat:@" %@", LastNameValue]];
             
@@ -216,15 +212,16 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         NSData *contactImage;
         //Get Contact Image Ref
-        if(ABPersonHasImageData(person) > 0 ) {
+        if (ABPersonHasImageData(person) > 0 )
+        {
             CFTypeRef contactImageValue = ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
             contactImage = (__bridge NSData *)(contactImageValue);
             [curContact setObject:contactImage forKey:@"image"];
             if (contactImageValue)
             CFRelease(contactImageValue);
-            
         }
-        else {
+        else
+        {
             contactImage = UIImageJPEGRepresentation([UIImage imageNamed:@"profile_picture.png"], 1);
             [curContact setObject:contactImage forKey:@"image"];
         }
@@ -242,12 +239,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         
         if(emailId != NULL) {
-            [curContact setObject:emailId forKey:@"UserName"]; [curContact setObject:emailId forKey:@"emailAddy"];
+            [curContact setObject:emailId forKey:@"UserName"];
+            [curContact setObject:emailId forKey:@"emailAddy"];
         }
         if(contacName != NULL)  [curContact setObject:contacName forKey:@"Name"];
         if(firstName != NULL) [curContact setObject:firstName forKey:@"FirstName"];
         if(lastName != NULL)  [curContact setObject:lastName forKey:@"LastName"];
-        
         
         [curContact setObject:@"YES" forKey:@"addressbook"];
         
@@ -261,7 +258,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             CFRelease(phoneValue);
         }
         
-        if (ABMultiValueGetCount(phoneNumber) > 1) {
+        if (ABMultiValueGetCount(phoneNumber) > 1)
+        {
             CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 1);
             phone2 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             if (phoneValue)
@@ -270,7 +268,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             phone2 = [phone2 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone2 length])];
             [curContact setObject:phone2 forKey:@"phoneNo2"];
         }
-        if (ABMultiValueGetCount(phoneNumber) > 2) {
+        
+        if (ABMultiValueGetCount(phoneNumber) > 2)
+        {
             CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 2);
             phone3 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
              if (phoneValue)
@@ -279,7 +279,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
             [curContact setObject:phone3 forKey:@"phoneNo3"];
         }
-        if(phone == NULL && (emailId == NULL || [emailId rangeOfString:@"facebook"].location != NSNotFound)) {
+        
+        if (phone == NULL && (emailId == NULL || [emailId rangeOfString:@"facebook"].location != NSNotFound)) {
             [additions addObject:curContact];
         }
         else if( contacName == NULL) {
@@ -300,10 +301,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [[assist shared] SaveAssos:additions.mutableCopy];
     
     NSLog(@"ginto%d",[additions count]);
-    NSMutableArray *get_ids_input = [NSMutableArray new];
-    for (NSDictionary *person in additions)
+    NSMutableArray * get_ids_input = [NSMutableArray new];
+    for (NSDictionary * person in additions)
     {
-        NSMutableDictionary *person_input = [NSMutableDictionary new];
+        NSMutableDictionary * person_input = [NSMutableDictionary new];
         [person_input setObject:@"" forKey:@"memberId"];
         if (person[@"phoneNo"]) [person_input setObject:person[@"phoneNo"] forKey:@"phoneNo"];
         if (person[@"emailAddy"]) [person_input setObject:person[@"emailAddy"] forKey:@"emailAddy"];
@@ -377,12 +378,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
     CFIndex nPeople = ABAddressBookGetPersonCount(addressBook);
     
-    for(int i=0; i<nPeople; i++)
+    for (int i = 0; i < nPeople; i++)
     {
         NSMutableDictionary *curContact=[[NSMutableDictionary alloc] init];
         ABRecordRef person=CFArrayGetValueAtIndex(people, i);
         
-        NSString *contacName ;//= [[NSMutableString alloc] init];
+        NSString *contacName;
         
         CFTypeRef contacNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
         contacName = [[NSString stringWithFormat:@"%@", contacNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -390,9 +391,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         CFRelease(contacNameValue);
         
         
-        NSString *firstName ;//= [[NSString alloc] init];
-        NSString *lastName;// = [[NSString alloc] init];
-        // firstName = (__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        NSString *firstName ;
+        NSString *lastName;
         
         //Get FirstName Ref
         CFTypeRef firstNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
@@ -413,7 +413,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         NSData *contactImage;
          //Get Contact Image Ref
-        if(ABPersonHasImageData(person) > 0 ) {
+        if (ABPersonHasImageData(person) > 0 )
+        {
             CFTypeRef contactImageValue = ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
             contactImage = (__bridge NSData *)(contactImageValue);
             [curContact setObject:contactImage forKey:@"image"];
@@ -428,7 +429,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         
         ABMultiValueRef phoneNumber = ABRecordCopyValue(person, kABPersonPhoneProperty);
         ABMultiValueRef emailInfo = ABRecordCopyValue(person, kABPersonEmailProperty);
-         //Get emailInfo Ref
+
+        //Get emailInfo Ref
         CFTypeRef emailIdValue = ABMultiValueCopyValueAtIndex(emailInfo, 0);
         NSString *emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         if (emailIdValue) {
@@ -458,7 +460,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             CFRelease(phoneValue);
         }
         
-        if (ABMultiValueGetCount(phoneNumber) > 1) {
+        if (ABMultiValueGetCount(phoneNumber) > 1)
+        {
             CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 1);
             phone2 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             if (phoneValue)
@@ -467,7 +470,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             phone2 = [phone2 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone2 length])];
             [curContact setObject:phone2 forKey:@"phoneNo2"];
         }
-        if (ABMultiValueGetCount(phoneNumber) > 2) {
+
+        if (ABMultiValueGetCount(phoneNumber) > 2)
+        {
             CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 2);
             phone3 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
              if (phoneValue)
@@ -476,6 +481,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
             [curContact setObject:phone3 forKey:@"phoneNo3"];
         }
+
         if(phone == NULL && (emailId == NULL || [emailId rangeOfString:@"facebook"].location != NSNotFound)) {
             [additions addObject:curContact];
         }
@@ -808,7 +814,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
           [self.phone_incomplete removeFromSuperview];
     }
     
-    NSLog(@"Banner Alert Value is: %d",bannerAlert);
     [top_button removeFromSuperview];
      top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [top_button setStyleClass:@"button_blue"];
@@ -890,7 +895,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         if ([[assist shared]needsReload])
         {
-            [blankView removeFromSuperview];
+            
+            self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+            [self.navigationController.view addSubview:self.hud];
+            
+            self.hud.delegate = self;
+            self.hud.labelText = @"Loading your Nooch account";
+            [self.hud show:YES];
+            
+/*            [blankView removeFromSuperview];
             blankView=[[UIView alloc]initWithFrame:CGRectMake(40, (self.view.frame.size.height/2)-40, 240, 90)];
             blankView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.8];
             UIActivityIndicatorView*act = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -911,6 +924,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [blankView addSubview:fromLabel];
             [self.navigationController.view addSubview:blankView];
             [self performSelector:@selector(myTask) withObject:nil afterDelay:3];
+ */
         }
 
         if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
@@ -927,7 +941,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         me = [core new];
         return;
     }
-  
+
+    // for the red notification bubble if a user has a pending RECEIVED Request
+    serve *serveOBJ = [serve new];
+    [serveOBJ setDelegate:self];
+    serveOBJ.tagName = @"histPending";
+    [serveOBJ histMore:@"ALL" sPos:1 len:20 subType:@"Pending"];
+
     //do carousel
     [self.view addSubview:_carousel];
     [_carousel reloadData];
@@ -1060,15 +1080,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         {
             [favorite setObject:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
             NSLog(@"%@",favorite);
-            isFromHome=YES;
-            HowMuch *trans = [[HowMuch alloc] initWithReceiver:favorite];
+            isFromHome = YES;
+            HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
             [self.navigationController pushViewController:trans animated:YES];
             
         }
         else if (favorite[@"UserName"])
         {
             emailID = favorite[@"UserName"];
-            serve *emailCheck = [serve new];
+            serve * emailCheck = [serve new];
             emailCheck.Delegate = self;
             emailCheck.tagName = @"emailCheck";
             [emailCheck getMemIdFromuUsername:[favorite[@"UserName"] lowercaseString]];
@@ -1084,10 +1104,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             return YES;
         }
         case iCarouselOptionRadius: {
-           return 160;
+           return 260;
         }
         case iCarouselOptionSpacing: {
-            return value * 1.3;
+            return value * 1.7;
+        }
+        case iCarouselOptionArc:
+        {
+            return 2.4;
         }
         default: {
             return value;
@@ -1097,68 +1121,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 - (void)myTask {
     [blankView removeFromSuperview];
-}
-
-#pragma mark - news feed
-//-(void)show_news
-//{
-//    [self.balance removeTarget:self action:@selector(show_news) forControlEvents:UIControlEventTouchUpInside];
-//    [self.balance addTarget:self action:@selector(hide_news) forControlEvents:UIControlEventTouchUpInside];
-    
-//    [self.navigationController.view addSubview:self.popup];
-//    [self.navigationController.view addSubview:self.close];
-    
-//    [self.news_feed reloadData];
-//}
-
-//-(void)hide_news
-//{
-//    [self.balance removeTarget:self action:@selector(hide_news) forControlEvents:UIControlEventTouchUpInside];
-//    [self.balance addTarget:self action:@selector(show_news) forControlEvents:UIControlEventTouchUpInside];
-    
-//    [self.popup removeFromSuperview];
-//    [self.close removeFromSuperview];
-//}
-
-#pragma mark - Table view data source
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-    return 4;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-/*    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-    }
-    for(UIView *subview in cell.contentView.subviews)
-        [subview removeFromSuperview];
-    // Configure the cell...
-    
-    UILabel *test = [[UILabel alloc] initWithFrame:CGRectMake(70, 15, 150, 30)];
-    [test setFont:[UIFont fontWithName:@"Roboto-Regular" size:12]];
-    [test setBackgroundColor:[UIColor clearColor]];
-    [test setNumberOfLines:0];
-    [test setText:@"Paid you $1bil with the force, Yoda did"];
-    [cell.contentView addSubview:test];
-    
-    UILabel *time = [[UILabel alloc] initWithFrame:CGRectMake(70, 45, 150, 20)];
-    [time setFont:[UIFont fontWithName:@"Roboto-Light" size:10]];
-    [time setText:@"2 days ago"];
-    [time setTextColor:kNoochGrayLight];
-    [cell.contentView addSubview:time];
-  */
-    return cell;
-
-}
-
-#pragma mark - table view delegate
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 -(void)showMenu
@@ -1319,8 +1281,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    if ([tagName isEqualToString:@"favorites"]) {
-        NSError *error;
+    if ([tagName isEqualToString:@"favorites"])
+    {
+        [self.hud hide:YES];
+        NSError * error;
         favorites = [[NSMutableArray alloc]init];
         favorites = [NSJSONSerialization
                                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
@@ -1328,20 +1292,71 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                      error:&error];
         NSLog(@"favorites %@",favorites);
         favorites=[favorites mutableCopy];
-        if ([favorites count]==0) {
+        if ([favorites count] == 0) {
             [self FavoriteContactsProcessing];
         }
         else
         {
             favorites=[favorites mutableCopy];
             
-            if ([favorites count]<5) {
+            if ([favorites count] < 5) {
                [self FavoriteContactsProcessing];
             }
            [_carousel reloadData];
         }
-    
     }
+    
+    else if ([tagName isEqualToString:@"histPending"])
+    {
+        NSError *error;
+        [self.hud hide:YES];
+        histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+
+        if ([histArray count] > 0)
+        {
+            int counter = 0;
+            for (NSDictionary * dict in histArray)
+            {
+                if ( ( [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
+                      [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"] ) &&
+                     ![[dict valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
+                {
+                    counter++;
+                }
+            }
+            NSLog(@"The COUNTER IS: =====  %d   ======== ",counter);
+            [self.navigationItem setLeftBarButtonItem:nil];
+            
+            if (counter > 0)
+            {
+                UILabel * pending_notif = [UILabel new];
+                [pending_notif setText:[NSString stringWithFormat:@"%d",counter]];
+                CGRect button_frame = CGRectMake(16, -2, 20, 20);
+                [pending_notif setFrame:button_frame];
+                [pending_notif setStyleId:@"pending_notif"];
+            
+                UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                [hamburger setStyleId:@"navbar_hamburger"];
+                [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+                [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
+                [hamburger addSubview:pending_notif];
+            
+                UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+                [self.navigationItem setLeftBarButtonItem:menu];
+            }
+            else
+            {
+                UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                [hamburger setStyleId:@"navbar_hamburger"];
+                [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+                [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
+                
+                UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+                [self.navigationItem setLeftBarButtonItem:menu];
+            }
+        }
+    }
+
     else if([tagName isEqualToString:@"emailCheck"])
     {
         NSError* error;
@@ -1370,18 +1385,16 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     else if([tagName isEqualToString:@"getMemberDetails"])
     {
-        NSError* error;
-        //[spinner stopAnimating];
-       // [spinner setHidden:YES];
-        //NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-         NSMutableDictionary *dict=[NSJSONSerialization
-         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-         options:kNilOptions
-         error:&error];
-         isFromHome=YES;
-            HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
-            [self.navigationController pushViewController:how_much animated:YES];
+        NSError * error;
         
+        NSMutableDictionary * dict = [NSJSONSerialization
+        JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+        options:kNilOptions
+        error:&error];
+        isFromHome = YES;
+        
+        HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
+        [self.navigationController pushViewController:how_much animated:YES];
     }
 
     else if ([tagName isEqualToString:@"getMemberIds"])
@@ -1393,9 +1406,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                      error:&error];
         NSMutableArray *temp2 = [[temp objectForKey:@"GetMemberIdsResult"] objectForKey:@"phoneEmailList"];
         NSMutableArray *AddressBookAdditions = [NSMutableArray new];
-        for (NSDictionary *dict in temp2) {
+        
+        for (NSDictionary *dict in temp2)
+        {
             NSMutableDictionary *new = [NSMutableDictionary new];
-            for (NSString *key in dict.allKeys) {
+            
+            for (NSString *key in dict.allKeys)
+            {
                 if ([key isEqualToString:@"memberId"] && [dict[key] length] > 0)
                     [new setObject:dict[key] forKey:@"MemberId"];
                 else if ([key isEqualToString:@"emailAddy"])
@@ -1421,7 +1438,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
     {
-        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"New Device Detected" message:@"It looks like you have logged in from a new device.  To protect your account, we will just log you out of all other devices." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView * Alert=[[UIAlertView alloc]initWithTitle:@"New Device Detected" message:@"It looks like you have logged in from a new device.  To protect your account, we will just log you out of all other devices." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
         [Alert show];
         
@@ -1444,30 +1461,33 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 -(void)FavoriteContactsProcessing
 {
     [additions removeAllObjects];
-    additions=nil;
-    additions=[[NSMutableArray alloc]init];
+    additions = nil;
+    additions = [[NSMutableArray alloc]init];
     
-    additions=[[[assist shared]assosAll] mutableCopy];
+    additions = [[[assist shared]assosAll] mutableCopy];
    // favorites = [[NSMutableArray alloc]init];
-    for (int i = 0; i<[additions count] ;i++)
+
+    for (int i = 0; i < [additions count] ;i++)
     {
-        if ([favorites count]==5) {
+        if ([favorites count] == 6) {
             break;
         }
-        else if(i>=[additions count]-1){
-            i=0;
+        else if (i >= [additions count]-1) {
+            i = 0;
         }
         NSUInteger randomIndex = arc4random() % [additions  count];
         if ([favorites containsObject:[additions objectAtIndex:randomIndex]])
         {
             continue;
         }
-        if ([[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]&& ![[[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]isEqualToString:@"(null)"]&& ![[[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]isKindOfClass:[NSNull class]]) {
-            [favorites  addObject:[additions objectAtIndex:randomIndex]];
+        if (  [[additions objectAtIndex:randomIndex] valueForKey:@"UserName"] &&
+            ![[[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]isEqualToString:@"(null)"] &&
+            ![[[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
+        {
+            [favorites addObject:[additions objectAtIndex:randomIndex]];
         }
     }
 
-    
     [_carousel reloadData];
 }
 
