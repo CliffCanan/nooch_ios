@@ -215,6 +215,19 @@
 		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.45);
         opacity: .92;
     }
+    #pending_notif {
+        width           : 18px;
+        height          : 18px;
+        background-color: red;
+        border          : 1px solid white;
+        border-radius   : 9px;
+        box-shadow      : 0px 1px 1px rgba(26, 32, 38, 0.45);
+        color           : white;
+        font-family     : "Roboto";
+        font-weight     : medium;
+        font-size       : 11px;
+        text-align      : center;
+    }
 
 	 /******************************/
 	 /******	 BUTTONS	********/
@@ -905,8 +918,11 @@ table-view#select_recipientwithoutSeperator {
 	.addressbook-icons {
 		width			: 14px;
 		height			: 16px;
-		top				: 46px;
-		left			: 66px;
+		top				: 45px;
+		left			: 57px;
+        border          : 1px solid;
+        border-color    : white;
+        border-radius   : 3px;
 		background-image: url(address-book-icon.png);
 	}
 
@@ -1904,13 +1920,13 @@ table-view#select_recipientwithoutSeperator {
     
     .lside_arrow {
         left        : 240px;
-        top         : 9px;
+        top         : 8px;
         width       : 20px;
-        height      : 30px;
+        height      : 28px;
         color       : white;
-		opacity		: .5;
+		opacity		: .6;
         font-family : "FontAwesome";
-        font-size	: 21px;
+        font-size	: 23px;
 		text-align	: right;
     }
 	
@@ -2364,24 +2380,24 @@ table-view#select_recipientwithoutSeperator {
 		font-size			: 20px;
     }
     .details_label_location {
-		font-family			: "Roboto";
-		font-weight         : bold;
+		top					: 160px;
+        height				: 20px;
+        font-family			: "Roboto";
+		font-weight         : medium;
 		font-size			: 12px;
 		text-align          : center;
 		color 				: white;
-        background-color 	: rgba(0,0,0,0.7);
-        top                	: 380px;
-		height				: 20px;
+        background-color 	: rgba(0,0,0,0.65);
 	}
     .details_label_location_4 {
-		font-family			: "Roboto";
+        top					: 80px;
+        height				: 20px;
+        font-family			: "Roboto";
 		font-weight         : bold;
 		font-size			: 12px;
 		text-align          : center;
 		color				: white;
-        background-color	: rgba(0,0,0,0.7);
-        top					: 300px;
-		height				: 20px;
+        background-color	: rgba(0,0,0,0.65);
 	}
     .details_label1 {
 		left                : 20px;

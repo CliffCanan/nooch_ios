@@ -154,8 +154,8 @@
     [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *glyph_back = [UILabel new];
-    [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:22]];
-    [glyph_back setFrame:CGRectMake(0, 0, 30, 30)];
+    [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:23]];
+    [glyph_back setFrame:CGRectMake(0, 14, 30, 30)];
     [glyph_back setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-o-left"]];
     [glyph_back setTextColor:kNoochBlue];
     [btnback addSubview:glyph_back];

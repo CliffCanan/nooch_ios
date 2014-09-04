@@ -384,14 +384,15 @@
         }
     }
     
-    if (len==4) {
-        NSString*textLoading=@"";
-        if ([self.type isEqualToString:@"send"])
-           textLoading=@"Sending...";
-        else if([self.type isEqualToString:@"request"])
-            textLoading=@"Requesting...";
-            
-
+    if (len == 4)
+    {
+        NSString * textLoading=@"";
+        if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"]) {
+           textLoading = @"Sending your payment...";
+        }
+        else if([self.type isEqualToString:@"request"]) {
+            textLoading = @"Generating your request...";
+        }
         
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
@@ -528,7 +529,7 @@
                     [transactionInputTransfer setObject:[self.receiver objectForKey:@"email"] forKey:@"MoneySenderEmailId"];
                     transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"requestInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
                 }
-                NSLog(@"%@ asdfasf %@",self.type,transactionTransfer);
+                NSLog(@"Type: %@ - %@",self.type,transactionTransfer);
                 postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
                                                                options:NSJSONWritingPrettyPrinted error:&error];;
                 postLengthTransfer = [NSString stringWithFormat:@"%d", [postTransfer length]];

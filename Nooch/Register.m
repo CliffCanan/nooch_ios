@@ -178,7 +178,7 @@
     
     UILabel *glyph_login = [UILabel new];
     [glyph_login setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
-    [glyph_login setFrame:CGRectMake(264, 0, 16, 30)];
+    [glyph_login setFrame:CGRectMake(262, 0, 16, 30)];
     [glyph_login setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-right"]];
     [glyph_login setTextColor:kNoochBlue];
     [login addSubview:glyph_login];
@@ -328,7 +328,7 @@
     NSCharacterSet* lettercaseCharSet = [NSCharacterSet letterCharacterSet];
     if ([self.password_field.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound)
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"So Close" message:@"For sucurity reasons, et cetera, we ask that passwords contain at least 1 number.\n\nWe know it's annoying, but we're just looking out for you. Keep it safe!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"So Close" message:@"For security reasons, et cetera, we ask that passwords contain at least 1 number.\n\nWe know it's annoying, but we're just looking out for you. Keep it safe!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         [self.password_field becomeFirstResponder];
         return;

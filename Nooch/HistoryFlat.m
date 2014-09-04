@@ -194,7 +194,7 @@
     [serveOBJ histMore:@"ALL" sPos:1 len:20 subType:@"Pending"];
 
     //Export History
-    exportHistory=[UIButton buttonWithType:UIButtonTypeCustom];
+    exportHistory = [UIButton buttonWithType:UIButtonTypeCustom];
     [exportHistory setTitle:@"     Export History" forState:UIControlStateNormal];
     [exportHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
     exportHistory.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
@@ -634,13 +634,13 @@ return customView;
         [glyph_location setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
         [glyph_location setTextColor: [UIColor whiteColor]];
         [self.view addSubview:glyph_location];
-        
+
         subTypestr = @"Pending";
         self.completed_selected = NO;
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
-         index = 1;
-          countRows = 0;
+        index = 1;
+        countRows = 0;
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
     }
 }
@@ -745,7 +745,8 @@ return customView;
     }
     [cell setDelegate:self];
 
-    if ([cell.contentView subviews]){
+    if ([cell.contentView subviews])
+    {
         for (UIView *subview in [cell.contentView subviews]) {
             [subview removeFromSuperview];
         }
@@ -1302,7 +1303,7 @@ return customView;
         {
             if ([histTempPending count] > indexPath.row)
             {
-                NSDictionary *dictRecord=[histTempPending objectAtIndex:indexPath.row];
+                NSDictionary * dictRecord = [histTempPending objectAtIndex:indexPath.row];
                 ////nslog(@"%@",dictRecord);
                 if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]) {
                     UIView *indicator = [UIView new];
@@ -1492,9 +1493,6 @@ return customView;
                 [amount setStyleClass:@"history_transferamount_neutral"];
                 [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
 
-                [cell.contentView addSubview:amount];
-                [cell.contentView addSubview:indicator];
-
                 UILabel *transferTypeLabel = [UILabel new];
                 [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
 
@@ -1530,6 +1528,12 @@ return customView;
                     }
                     else
                     {
+                        UIView * bgcolor = [[UIView alloc] init];
+                        bgcolor.backgroundColor = Rgb2UIColor(240, 250, 30, .4);
+                        
+                        cell.backgroundView = bgcolor;
+                        [cell.contentView addSubview:bgcolor];
+                        
                         [transferTypeLabel setText:@"Request from"];
                         [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
@@ -1566,7 +1570,8 @@ return customView;
                     [name setText:@""];
                 }
                 
-                
+                [cell.contentView addSubview:amount];
+                [cell.contentView addSubview:indicator];
                 [cell.contentView addSubview:transferTypeLabel];
                 [cell.contentView addSubview:name];
                 [cell.contentView addSubview:pic];
@@ -1647,9 +1652,9 @@ return customView;
 
 			}
         }
-        else if (indexPath.row==[histShowArrayPending count])
+        else if (indexPath.row == [histShowArrayPending count])
         {
-            if(isEnd == YES)
+            if (isEnd == YES)
             {
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabel"];
@@ -1676,14 +1681,15 @@ return customView;
                     activityIndicator.center = CGPointMake(cell.contentView.frame.size.width / 2, cell.contentView.frame.size.height / 2);
                     [activityIndicator startAnimating];
                     [cell.contentView addSubview:activityIndicator];
-                    ishistLoading=YES;
+                    ishistLoading = YES;
                     index++;
                     [self loadSearchByName];
                 }
-                else {
-                    if (indexPath.row!=0)
+                else
+                {
+                    if (indexPath.row != 0)
                     {
-                        UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                        UIActivityIndicatorView * activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
                         activityIndicator.center = CGPointMake(cell.contentView.frame.size.width / 2, cell.contentView.frame.size.height / 2);
                         [activityIndicator startAnimating];
                         [cell.contentView addSubview:activityIndicator];
@@ -2011,7 +2017,7 @@ return customView;
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     NSError *error;
-    [self.hud hide:YES];
+
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     [imageCache clearMemory];
     [imageCache clearDisk];
@@ -2043,7 +2049,7 @@ return customView;
         }
     }
     
-    else if ([tagName isEqualToString:@"histPending"])
+/*    else if ([tagName isEqualToString:@"histPending"])
     {
         [self.hud hide:YES];
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
@@ -2066,15 +2072,12 @@ return customView;
                             counter++;
                         }
                     }
-                   
                 }
-                
             }
             [completed_pending setTitle:[NSString stringWithFormat:@"Pending (%d)",counter]forSegmentAtIndex:1];
 
         }
-
-    }
+    } */
     
     else if ([tagName isEqualToString:@"hist"])
     {
@@ -2089,7 +2092,7 @@ return customView;
         {
             isEnd = NO;
             isStart = NO;
-          int counter = 0;
+            int counter = 0;
             for (NSDictionary *dict in histArray)
             {
                 if ( [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]   ||
@@ -2100,7 +2103,7 @@ return customView;
                 {
                     [histShowArrayCompleted addObject:dict];
                 }
-                if (completed_pending.selectedSegmentIndex==1 &&![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]&& ![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
+                if (completed_pending.selectedSegmentIndex == 1 &&![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]&& ![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
                     if (  ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] && ![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"]) ||
                         (([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
                          [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
@@ -2114,7 +2117,6 @@ return customView;
                     }
                     [completed_pending setTitle:[NSString stringWithFormat:@"Pending (%d)",counter]forSegmentAtIndex:1];
                     
-                    
                 }
             }
             
@@ -2126,7 +2128,7 @@ return customView;
         if (isMapOpen) {
             [self mapPoints];
         }
-        serve*serveOBJ=[serve new];
+        serve * serveOBJ = [serve new];
         [serveOBJ setDelegate:self];
         [serveOBJ setTagName:@"time"];
         [serveOBJ GetServerCurrentTime];
@@ -2135,7 +2137,7 @@ return customView;
     else if ([tagName isEqualToString:@"time"])
     {
         //ServerDate
-         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         ServerDate=[self dateFromString:[dict valueForKey:@"Result"] ];
         [self.list removeFromSuperview];
         self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
@@ -2143,17 +2145,17 @@ return customView;
         [self.list setDataSource:self]; [self.list setDelegate:self]; [self.list setSectionHeaderHeight:0];
         [self.view addSubview:self.list];
         [self.list reloadData];
-         if ([subTypestr isEqualToString:@"Pending"]) {
-             [self.list scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:countRows inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-         countRows=[histShowArrayPending count];
-         }
-         else{
+        if ([subTypestr isEqualToString:@"Pending"])
+        {
             [self.list scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:countRows inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-        countRows=[histShowArrayCompleted count];
+            countRows = [histShowArrayPending count];
+        }
+        else
+        {
+            [self.list scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:countRows inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+             countRows = [histShowArrayCompleted count];
         }
         [self.view bringSubviewToFront:exportHistory];
-
-        //[self.list scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.list numberOfRowsInSection:0]-4 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
     }
     
     else if([tagName isEqualToString:@"search"])

@@ -42,21 +42,6 @@
 {
     [super viewDidLoad];
 
-    //back button
-    UIButton *btnback = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btnback setBackgroundColor:[UIColor clearColor]];
-    [btnback setFrame:CGRectMake(12, 38, 35, 35)];
-    [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-    UILabel *glyph_back = [UILabel new];
-    [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:22]];
-    [glyph_back setFrame:CGRectMake(0, 0, 30, 30)];
-    [glyph_back setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-o-left"]];
-    [glyph_back setTextColor:kNoochBlue];
-    [btnback addSubview:glyph_back];
-    
-    [self.view addSubview:btnback];
-    
     UIImageView * logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
@@ -106,7 +91,7 @@
     [request setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     request.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [request setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [request setTitle:@"Don't Have a Code" forState:UIControlStateNormal];
+    [request setTitle:@"I Don't Have a Code" forState:UIControlStateNormal];
     [request addTarget:self action:@selector(request_code) forControlEvents:UIControlEventTouchUpInside];
     [request setStyleClass:@"button_gray"];
     [self.view addSubview:request];

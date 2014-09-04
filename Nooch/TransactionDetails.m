@@ -289,7 +289,6 @@
         [remind setStyleClass:@"details_button_remind"];
         [remind setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
         remind.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-// go back to HERE
         
         if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Request"] ||
             [[self.trans objectForKey:@"TransactionType"] isEqualToString:@"InviteRequest"])
@@ -749,6 +748,7 @@
     };
     controller.completionHandler =myBlock;
 }
+
 -(void)finishedPosting {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -954,16 +954,17 @@
             }
             else  // if no picture is attached
             {
-                mapView_ = [GMSMapView mapWithFrame:CGRectMake(-1, 240, 322, 160) camera:camera];
+                mapView_ = [GMSMapView mapWithFrame:CGRectMake(-1, 226, 322, 180) camera:camera];
+
                 if ([[UIScreen mainScreen] bounds].size.height == 480)
                 {
-                    [mapView_ setFrame:CGRectMake(-1, 240, 322, 80)];
-                    btnShowOverlay.frame = CGRectMake(-1, 240, 322, 80);
+                    [mapView_ setFrame:CGRectMake(-1, 226, 322, 100)];
+                    btnShowOverlay.frame = CGRectMake(-1, 226, 322, 100);
                 }
                 else
                 {
-                  [mapView_ setFrame:CGRectMake(-1, 240, 322, 160)];
-                    btnShowOverlay.frame = CGRectMake(-1, 240, 322, 160);
+                    [mapView_ setFrame:CGRectMake(-1, 226, 322, 180)];
+                    btnShowOverlay.frame = CGRectMake(-1, 226, 322, 180);
                 }
                 
             }
@@ -982,7 +983,7 @@
             {
                 if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"] != NULL)
                 {
-                    imgTran.frame = CGRectMake(5, 240, 310, 160);
+                    imgTran.frame = CGRectMake(5, 226, 310, 180);
                     if ([[UIScreen mainScreen] bounds].size.height == 480)
                     {
                         [imgTran setFrame:CGRectMake(5, 240, 150, 80)];
@@ -1011,8 +1012,9 @@
         [amount setStyleClass:@"details_amount"];
         [amount setTextAlignment:NSTextAlignmentCenter];
 
-        UILabel *location = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 320, 60)];
+        UILabel * location = [[UILabel alloc] initWithFrame:CGRectMake(-1, 180, 322, 20)];
         CGRect frame = location.frame;
+
         if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"] != NULL)
         {
             frame.origin.x = 165;
@@ -1025,19 +1027,16 @@
         if ([[UIScreen mainScreen] bounds].size.height == 480) {
             [location setStyleClass:@"details_label_location_4"];
         }
-        
+
         if ([self.trans objectForKey:@"AddressLine1"] != NULL &&
-            [self.trans objectForKey:@"City"] != NULL &&
-            [[assist shared]islocationAllowed] )
+            [self.trans objectForKey:@"City"] != NULL) // && [[assist shared]islocationAllowed] )
         {
-            NSString *address = [[self.trans objectForKey:@"AddressLine1"] stringByReplacingOccurrencesOfString:@"," withString:@""];
-            
-            if ([self.trans objectForKey:@"AddressLine2"] != NULL)
-            {
-                address = [address stringByAppendingString:[self.trans objectForKey:@"AddressLine2"]];
-                [location setText:[NSString stringWithFormat:@"%@",address]];
-                [self.view addSubview:location];
-            }
+            NSString * address = [[self.trans objectForKey:@"AddressLine1"] stringByReplacingOccurrencesOfString:@"," withString:@" "];
+
+            NSLog(@"ADDRESS LINE 1 IS: %@",[self.trans objectForKey:@"AddressLine1"]);
+            address = [address stringByAppendingString:[self.trans objectForKey:@"City"]];
+            [location setText:[NSString stringWithFormat:@"%@",address]];
+            [mapView_ addSubview:location];
             
             if ([[self.trans objectForKey:@"AddressLine1"]length] == 0 && [[self.trans objectForKey:@"City"]length] == 0)
             {
