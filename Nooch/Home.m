@@ -482,8 +482,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     CFRelease(people);
      if (addressBook)
     CFRelease(addressBook);
-    
-  
 }
 
 //-(void)getAddressBookContacts
