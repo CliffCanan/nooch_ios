@@ -1013,7 +1013,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         name = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 125.0f, 200, 20)];
         name.textColor = [UIColor blackColor];
         name.textAlignment = NSTextAlignmentCenter;
-        [name setFont:[UIFont fontWithName:@"Roboto-Bold" size:15]];
+        [name setFont:[UIFont fontWithName:@"Roboto-Medium" size:15]];
         if (favorite[@"LastName"]) {
            name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
         }
