@@ -2049,7 +2049,7 @@ return customView;
         }
     }
     
-/*    else if ([tagName isEqualToString:@"histPending"])
+    else if ([tagName isEqualToString:@"histPending"])
     {
         [self.hud hide:YES];
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
@@ -2061,10 +2061,11 @@ return customView;
             int counter = 0;
             for (NSDictionary *dict in histArray)
             {
-                if (![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]&& ![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
-                    if (  ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] && ![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"]) ||
+                if (![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]&& ![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"])
+                {
+                    if ( ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] && ![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"]) ||
                         (([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
-                         [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
+                          [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
                     {
                         [histShowArrayPending addObject:dict];
                         
@@ -2077,7 +2078,7 @@ return customView;
             [completed_pending setTitle:[NSString stringWithFormat:@"Pending (%d)",counter]forSegmentAtIndex:1];
 
         }
-    } */
+    }
     
     else if ([tagName isEqualToString:@"hist"])
     {
@@ -2193,6 +2194,7 @@ return customView;
     
     else if ([tagName isEqualToString:@"reject"])
     {
+        [self.hud hide:YES];
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Request Rejected" message:@"No problem, you have rejected this request successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         subTypestr = @"Pending";
@@ -2217,6 +2219,7 @@ return customView;
 
     else if ([tagName isEqualToString:@"CancelMoneyTransferToNonMemberForSender"])
     {
+        [self.hud hide:YES];
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Transfer Cancelled" message:@"Aye aye. That transfer has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     
@@ -2237,6 +2240,7 @@ return customView;
 
     else if ([tagName isEqualToString:@"cancelRequestToExisting"] || [tagName isEqualToString:@"cancelRequestToNonNoochUser"])
     {
+        [self.hud hide:YES];
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Request Cancelled" message:@"You got it. That request has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         

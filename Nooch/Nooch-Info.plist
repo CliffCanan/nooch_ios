@@ -42,13 +42,17 @@
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>To add a profile picture and for attaching images to your transfers.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Contacts are used to identify recipients so users can send or request money using an email address.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Your location is used to find nearby friends using Nooch and for security.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To add a profile picture and for attaching images to your transfers.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Roboto-Italic.ttf</string>
-		<string>Roboto-Thin.ttf</string>
-		<string>Roboto-Black.ttf</string>
 		<string>Roboto-Regular.ttf</string>
 		<string>Roboto-Bold.ttf</string>
 		<string>Roboto-Medium.ttf</string>
