@@ -1336,7 +1336,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                     counter++;
                 }
             }
-            NSLog(@"The COUNTER IS: =====  %d   ======== ",counter);
+            NSLog(@"The counter is: ==  %d  == ",counter);
             [self.navigationItem setLeftBarButtonItem:nil];
             
             if (counter > 0)
@@ -1450,6 +1450,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
     {
+        [self.hud hide:YES];
         UIAlertView * Alert=[[UIAlertView alloc]initWithTitle:@"New Device Detected" message:@"It looks like you have logged in from a new device.  To protect your account, we will just log you out of all other devices." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
         [Alert show];

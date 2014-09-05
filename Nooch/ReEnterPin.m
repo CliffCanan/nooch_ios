@@ -34,12 +34,13 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 }
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
   
-    self.trackedViewName = @"ReEnterPin Screen";
+    self.trackedViewName = @"ReEnter Pin Screen";
 
     UIImageView *logoicon = [UIImageView new];
     [logoicon setStyleId:@"requireImmediatelyLogo"];
@@ -148,17 +149,19 @@
     
     NSError* error;
     
-    dictResult= [NSJSONSerialization
+    dictResult = [NSJSONSerialization
                  JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                  options:kNilOptions
                  error:&error];
     
     NSLog(@"%@",dictResult);
-    if ([tagName isEqualToString:@"infopin"]) {
+    
+    if ([tagName isEqualToString:@"infopin"])
+    {
         [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"pincheck"];
-        if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
-            
-            UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Looks like you have logged in from a different device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil , nil];
+        if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
+        {
+            UIAlertView *Alert = [[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Looks like you have logged in from a different device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil , nil];
             
             [Alert show];
             
@@ -177,7 +180,8 @@
             }];
             
         }
-        else if ([[dictResult valueForKey:@"Status"]isEqualToString:@"Suspended"]) {
+        else if ([[dictResult valueForKey:@"Status"]isEqualToString:@"Suspended"])
+        {
             [spinner stopAnimating];
             [spinner setHidden:YES];
             [self.fourth_num setBackgroundColor:[UIColor clearColor]];

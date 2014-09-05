@@ -32,18 +32,14 @@ NSMutableURLRequest*requestList;
 NSURLConnection*connectionList;
 NSMutableURLRequest *requestS;
 NSMutableDictionary*dictValidate;
-//
 NSDictionary*Dictresponse;
 
 NSMutableURLRequest *requestMem;
-//
 NSMutableURLRequest *requestLogin;
 NSURLConnection *connectionLogin;
-//
 NSData *postDataBNK;
 NSString *postLengthBNK;
 NSMutableURLRequest *requestBNK;
-//
 NSMutableDictionary*dictInv;
 
 NSData *postDataInv;
@@ -51,7 +47,6 @@ NSData *postDataInv;
 NSString *postLengthInv;
 NSMutableURLRequest *requestInv;
 NSURLConnection *connectionInv;
-//
 NSString *postSet;
 NSMutableURLRequest *requestSet;
 NSData *postDataSet;
@@ -61,7 +56,6 @@ NSMutableURLRequest *requestgetbanks;
 NSMutableURLRequest *requestdup;
 NSMutableURLRequest *requestnewUser;
 NSMutableURLRequest *requestEncryption;
-//
 NSMutableDictionary*dictRef;
 
 NSData *postDataRef;
@@ -69,7 +63,7 @@ NSData *postDataRef;
 NSString *postLengthRef;
 NSMutableURLRequest *requestRef;
 NSURLConnection *connectionRef;
-//
+
 NSMutableDictionary*dictSMS;
 NSString*ServiceType;
 NSData *postDataSMS;
@@ -87,7 +81,6 @@ NSString *responseString;
 //NSString * const ServerUrl = @"https://192.203.102.254/NoochService.svc"; //development server
 //NSString * const ServerUrl =@"https://noochweb.venturepact.com/noochservice/noochservice.svc";
 //http://noochweb.venturepact.com/NoochService.svc
-//NSString * const ServerUrl = @"https://192.203.102.254/noochservice/NoochService.svc";
 NSString * const ServerUrl = @"https://192.203.102.254/NoochService/NoochService.svc";
 //NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
 //NSString * const ServerUrl = @"https://10.200.1.40/noochservice/NoochService.svc";
@@ -208,10 +201,8 @@ NSString *amnt;
     
 }
 
-//-(void)getLatestTrans
 -(void)getMemIdFromuUsername:(NSString*)username
 {
- //   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     requestmemid = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetMemberIdByUsername?userName=%@",ServerUrl,username
