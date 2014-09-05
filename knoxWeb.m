@@ -94,11 +94,12 @@
                                                  name:@"KnoxResponse"
                                                object:nil];
 }
+
 -(void)moreinfo_lightBox
 {
     overlay = [[UIView alloc]init];
-    overlay.frame=CGRectMake(0, 0, 320, 568);
-    overlay.backgroundColor=[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+    overlay.frame = CGRectMake(0, 0, 320, 568);
+    overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
     
     [UIView transitionWithView:self.navigationController.view
                       duration:0.5
@@ -110,7 +111,7 @@
     
     mainView = [[UIView alloc]init];
     mainView.layer.cornerRadius = 5;
-    mainView.frame = CGRectMake(10, 45, 300, self.view.frame.size.height-45);
+    mainView.frame = CGRectMake(8, 45, 302, self.view.frame.size.height-45);
     mainView.backgroundColor = [UIColor whiteColor];
     
     [overlay addSubview:mainView];
@@ -120,24 +121,24 @@
     mainView.layer.shadowRadius = 4;
     mainView.layer.shadowOpacity = 0.6;
     
-    UIView*head_container=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 300, 44)];
-    head_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    UIView * head_container = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 302, 44)];
+    head_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
     [mainView addSubview:head_container];
     head_container.layer.cornerRadius = 10;
     
-    UILabel*title=[[UILabel alloc]initWithFrame:CGRectMake(0, 10, 300, 28)];
+    UILabel * title = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 302, 28)];
     [title setBackgroundColor:[UIColor clearColor]];
     [title setText:@"Connecting Your Bank"];
     [title setStyleClass:@"lightbox_title"];
     [head_container addSubview:title];
     
     UIView *space_container = [[UIView alloc]initWithFrame:CGRectMake(0, 34, 300, 10)];
-    space_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    space_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
     [mainView addSubview:space_container];
     
-    UIView *container = [[UIView alloc]initWithFrame:CGRectMake(2, 48, 296, 300)];
+    UIView *container = [[UIView alloc]initWithFrame:CGRectMake(1, 48, 300, 300)];
     
-    UIImageView *imageShow = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 296, self.view.frame.size.height-175)];
+    UIImageView *imageShow = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 300, self.view.frame.size.height-170)];
     imageShow.image = [UIImage imageNamed:@"KnoxInfo_Lightbox@2x.png"];
     imageShow.contentMode = UIViewContentModeScaleAspectFit;
     [container addSubview:imageShow];

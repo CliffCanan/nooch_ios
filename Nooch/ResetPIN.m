@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by crks on 10/7/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch Inc. All rights reserved.
 //
 
 #import "ResetPIN.h"
@@ -51,15 +51,15 @@
     UIButton *back = [UIButton buttonWithType:UIButtonTypeCustom];
     [back setStyleClass:@"backbutton"];
     [back setTitle:@"Cancel" forState:UIControlStateNormal];
-    [back setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.276) forState:UIControlStateNormal];
-    back.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    [back setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
+    back.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [back addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
     [back setFrame:CGRectMake(0,5, 70, 30)];
     [navBar addSubview:back];
 
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(19, 32, 38, .25);
-    shadow.shadowOffset = CGSizeMake(0, 1);
+    shadow.shadowOffset = CGSizeMake(0, -1);
     
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
     UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(105, 20, 200, 30)];

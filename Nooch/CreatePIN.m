@@ -182,7 +182,7 @@
     NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [UIColor whiteColor], UITextAttributeTextColor,
                                   Rgb2UIColor(19, 32, 38, .25), UITextAttributeTextShadowColor,
-                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, 1.0)], UITextAttributeTextShadowOffset,
+                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, -1.0)], UITextAttributeTextShadowOffset,
                                   nil];
     [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
     
@@ -216,12 +216,12 @@
     [self.pin setDelegate:self]; [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
     [self.view addSubview:self.pin]; [self.pin becomeFirstResponder];
 
-    self.first_num = [[UIView alloc] initWithFrame:CGRectMake(76,250,30,30)];
-    self.second_num = [[UIView alloc] initWithFrame:CGRectMake(122,250,30,30)];
-    self.third_num = [[UIView alloc] initWithFrame:CGRectMake(168,250,30,30)];
-    self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(214,250,30,30)];
+    self.first_num = [[UIView alloc] initWithFrame:CGRectMake(73,240,28,28)];
+    self.second_num = [[UIView alloc] initWithFrame:CGRectMake(121,240,28,28)];
+    self.third_num = [[UIView alloc] initWithFrame:CGRectMake(169,240,28,28)];
+    self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(217,240,28,28)];
 
-    self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 15;
+    self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 14;
     
     if ([[UIScreen mainScreen] bounds].size.height == 480)
     {

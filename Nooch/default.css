@@ -351,13 +351,10 @@
 		}
 
 		.notVerifiedLabel {
-			left                : 25px;
-			width				: 130px;
-			height				: 30px;
-			color 				: #c41713;
+			color 				: #b90e0a;
 			font-family			: "Roboto";
 			font-weight         : regular;
-			font-size			: 18px;
+			font-size			: 16px;
 		}
 		
 		.infobutton {
@@ -793,13 +790,9 @@
 		color 				: #414042;
 	}
 	#moreinfo_button {
-		left       : 30px;
-		top        : 335px;
-		width      : 260px;
-		height     : 22px;
 		font-family: "Roboto";
 		font-weight: light;
-		color      : #939598;
+		color      : #66686a;
 		font-size  : 15px;
 		text-align : center;
 	}
@@ -2878,17 +2871,17 @@ table-view#select_recipientwithoutSeperator {
 		background-color: white;
 		row-height		: 46px;
 		separator-style : single-line;
-		separator-color : rgba(188,190,192,.65);
+		separator-color : rgba(188,190,192,.6);
 	}
 	.stats_header {
 		width			: 300px;
-		height			: 25px;
-		top				: 100px;
+		height			: 30px;
+		top				: 0px;
 		left			: 0px;
 		color			: #414042;
 		font-family		: "Roboto";
-		font-weight		: medium;
-		font-size		: 22px;
+		font-weight		: regular;
+		font-size		: 20px;
 		text-align		: center;
 	}
 	.stats_table_left_lable {
@@ -2935,7 +2928,7 @@ table-view#select_recipientwithoutSeperator {
         left						: 33px;
         background-image			: url(stats-profile-active.png);
 		animation-name				: floatingStatsCircle;
-		animation-duration			: 2s;	
+		animation-duration			: 3s;
 		animation-iteration-count	: infinite;
 		animation-timing-function	: ease;
     }
@@ -3084,11 +3077,12 @@ table-view#select_recipientwithoutSeperator {
 	
 /**  FLOATING Stats Circle Icon **/
 @keyframes floatingStatsCircle {
-	0% {top: 15px;}
-	25% {top: 8px;}	
-	50% {top: 15px;}	
-	75% {top: 8px;}	
-	100% {top: 15px;}			
+	0% {top: 34px;}
+	20% {top: 42px;}
+	40% {top: 34px;}
+	60% {top: 42px;}
+	80% {top: 34px;}
+    100% {top: 42px;}
 }
 
 /*=============================

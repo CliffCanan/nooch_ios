@@ -45,6 +45,7 @@
     [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
     if(buttonIndex == 0)
     {
+        self.pic.layer.borderWidth = 3;
         self.pic.layer.borderColor = kNoochBlue.CGColor;
         [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
     }
@@ -101,15 +102,23 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-
-    UIImage *image=[info objectForKey:UIImagePickerControllerOriginalImage];
+    UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
     image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(120, 120) interpolationQuality:kCGInterpolationMedium];
     [self.pic setImage:image];
     [[assist shared]setTranferImage:image];
     [self dismissViewControllerAnimated:YES completion:^{
-        self.slidingViewController.panGesture.enabled=NO;
+        self.slidingViewController.panGesture.enabled = NO;
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
     }];
+    
+    self.pic.layer.borderWidth = 3;
+    self.pic.layer.borderColor = kNoochBlue.CGColor;
+    [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
+
+    [self.message setText:@"Great Pic! If you're happy with it tap \"Continue\" or if you wish to change it tap \"Change Picture\""];
+
+    [self.choose_pic setTitle:@"Change Picture" forState:UIControlStateNormal];
+
     [self.next_button setTitle:@"Continue" forState:UIControlStateNormal];
     [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.next_button addTarget:self action:@selector(cont) forControlEvents:UIControlEventTouchUpInside];
@@ -180,16 +189,17 @@
     [self.view addSubview:slogan];
 
     UILabel *welcome = [[UILabel alloc] initWithFrame:CGRectMake(0, 120, 320, 25)];
-    [welcome setText:[NSString stringWithFormat:@"Hey %@!",[[self.user objectForKey:@"first_name" ] capitalizedString]]]; [welcome setBackgroundColor:[UIColor clearColor]];
+    [welcome setText:[NSString stringWithFormat:@"Hey %@!",[[self.user objectForKey:@"first_name" ] capitalizedString]]];
+    [welcome setBackgroundColor:[UIColor clearColor]];
     [welcome setStyleClass:@"header_signupflow"];
     [subview addSubview:welcome];
     
     self.pic = [[UIImageView alloc] initWithFrame:CGRectMake(89, 170, 144, 144)];
-    self.pic.layer.borderColor = kNoochLight.CGColor;
-    self.pic.layer.borderWidth = 4;
     self.pic.layer.cornerRadius = 72;
     self.pic.clipsToBounds = YES;
-    if ([self.user objectForKey:@"image"]) {
+    if ([self.user objectForKey:@"image"])
+    {
+        self.pic.layer.borderWidth = 3;
         self.pic.layer.borderColor = kNoochBlue.CGColor;
         [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
     }
@@ -215,17 +225,26 @@
     [self.choose_pic setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.choose_pic setStyleClass:@"button_green"];
     [self.choose_pic setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.26) forState:UIControlStateNormal];
-    self.choose_pic.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    self.choose_pic.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+
     if ([[self.user objectForKey:@"facebook"] objectForKey:@"image"])
     {
-        [self.choose_pic setTitle:@"Change Picture" forState:UIControlStateNormal];
+        [self.choose_pic setTitle:@"  Change Picture" forState:UIControlStateNormal];
     }
     else
     {
-        [self.choose_pic setTitle:@"Choose Picture" forState:UIControlStateNormal];
+        [self.choose_pic setTitle:@"  Choose Picture" forState:UIControlStateNormal];
     }
     [self.choose_pic addTarget:self action:@selector(change_pic) forControlEvents:UIControlEventTouchUpInside];
     [self.choose_pic setFrame:CGRectMake(10, 390, 300, 60)];
+
+    UILabel * glyphcamera = [UILabel new];
+    [glyphcamera setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+    [glyphcamera setFrame:CGRectMake(40, 10, 26, 28)];
+    [glyphcamera setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-camera"]];
+    [glyphcamera setTextColor:[UIColor whiteColor]];
+    
+    [self.choose_pic addSubview:glyphcamera];
     [subview addSubview:self.choose_pic];
     
     self.next_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];

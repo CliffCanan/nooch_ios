@@ -2,7 +2,7 @@
 //  Nooch
 //
 //  Created by crks on 10/7/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch Inc. All rights reserved.
 
 #import "SettingsOptions.h"
 #import "Home.h"
@@ -73,7 +73,7 @@
     NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [UIColor whiteColor], UITextAttributeTextColor,
                                   Rgb2UIColor(19, 32, 38, .25), UITextAttributeTextShadowColor,
-                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, 1.0)], UITextAttributeTextShadowOffset, nil];
+                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, -1.0)], UITextAttributeTextShadowOffset, nil];
     
     [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
     [self.navigationItem setHidesBackButton:YES];
@@ -101,7 +101,7 @@
     [link_bank setFrame:CGRectMake(0, 125, 0, 0)];
     [link_bank setTitle:@"Link a New Bank" forState:UIControlStateNormal];
     [link_bank setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
-    link_bank.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    link_bank.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
     UILabel *glyph = [UILabel new];
     [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
@@ -124,8 +124,8 @@
     
     self.logout = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.logout setTitle:@"Sign Out" forState:UIControlStateNormal];
-    [self.logout setTitleShadowColor:Rgb2UIColor(33, 34, 34, 0.26) forState:UIControlStateNormal];
-    self.logout.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    [self.logout setTitleShadowColor:Rgb2UIColor(33, 34, 34, 0.24) forState:UIControlStateNormal];
+    self.logout.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     
     UILabel *glyphLogout = [UILabel new];
     [glyphLogout setFont:[UIFont fontWithName:@"FontAwesome" size:18]];

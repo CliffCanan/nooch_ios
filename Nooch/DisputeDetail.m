@@ -136,8 +136,8 @@
     [email_nooch setTitle:@"Email Nooch" forState:UIControlStateNormal];
     [email_nooch addTarget:self action:@selector(email_noochClicked:) forControlEvents:UIControlEventTouchUpInside];
     [email_nooch setStyleClass:@"button_blue"];
-    [email_nooch setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
-    email_nooch.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    [email_nooch setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
+    email_nooch.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [email_nooch setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.view addSubview:email_nooch];
 

@@ -40,7 +40,7 @@
     
     NSURL *webURL = [NSURL URLWithString:@"http://support.nooch.com"];
     mywebview=[[UIWebView alloc]initWithFrame:self.view.frame];
-    [mywebview setFrame:CGRectMake(0, -2, 320, [[UIScreen mainScreen] bounds].size.height - 60)];
+    [mywebview setFrame:CGRectMake(0, -40, 320, [[UIScreen mainScreen] bounds].size.height - 18)];
     [mywebview loadRequest:[NSURLRequest requestWithURL:webURL]];
     mywebview.scalesPageToFit = YES;
     mywebview.delegate=self;

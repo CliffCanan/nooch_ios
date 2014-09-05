@@ -103,7 +103,7 @@
 -(void)SaveImmediateRequire:(BOOL)IsRequiredImmediatley;
 -(void)ReferalCodeRequest:(NSString*)email;
 -(void)RaiseDispute:(NSDictionary*)Input;
--(void)saveShareToFB_Twiitter:(NSString*)PostTo;
+-(void)saveShareToFB_Twitter:(NSString*)PostTo;
 -(void)UpDateLatLongOfUser:(NSString*)lat lng:(NSString*)lng;
 -(void)CancelMoneyRequestForExistingNoochUser:(NSString*)transactionId;
 -(void)CancelRejectTransaction:(NSString*)transactionId resp:(NSString*)userResponse;

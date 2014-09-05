@@ -276,19 +276,19 @@
         [pay setStyleClass:@"details_button_left"];
         [pay setTitle:@"Pay" forState:UIControlStateNormal];
         [pay setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.26) forState:UIControlStateNormal];
-        pay.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+        pay.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
         UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
         [cancel setStyleClass:@"details_button_right"];
         [cancel setTitleShadowColor:Rgb2UIColor(36, 22, 19, 0.26) forState:UIControlStateNormal];
-        cancel.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+        cancel.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
         UIButton *remind = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [remind setTitle:@"Remind" forState:UIControlStateNormal];
         [remind setStyleClass:@"details_button_remind"];
         [remind setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
-        remind.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+        remind.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         
         if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Request"] ||
             [[self.trans objectForKey:@"TransactionType"] isEqualToString:@"InviteRequest"])
@@ -497,8 +497,8 @@
     
     UIButton *btnclose=[UIButton buttonWithType:UIButtonTypeCustom];
     [btnclose setTitle:@"Close" forState:UIControlStateNormal];
-    [btnclose setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.4) forState:UIControlStateNormal];
-    btnclose.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    [btnclose setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.26) forState:UIControlStateNormal];
+    btnclose.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
     if ([[UIScreen mainScreen] bounds].size.height < 500) {
         [btnclose setStyleClass:@"button_blue_closeLightbox_smscrn"];

@@ -19,6 +19,7 @@
 @property(nonatomic,retain) UIImageView *profile;
 @property(nonatomic,retain) UIImageView *transfers;
 @property(nonatomic,retain) UIImageView *donations;
+@property(nonatomic,strong) MBProgressHUD *hud;
 @end
 
 @implementation Statistics
@@ -31,17 +32,23 @@
     }
     return self;
 }
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.trackedViewName = @"Statistics Screen";
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setHidesBackButton:YES];
     [self.navigationController.view removeGestureRecognizer:self.navigationController.slidingViewController.panGesture];
-    [self.view setStyleClass:@"background_gray"];
+    
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
+    backgroundImage.alpha = .5;
+    [self.view addSubview:backgroundImage];
+    
     dictAllStats=[[NSMutableDictionary alloc]init];
     
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -51,11 +58,11 @@
     UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
 
-    serve*serveOBJ=[serve new];
+    serve * serveOBJ = [serve new];
     [serveOBJ setDelegate:self];
-    serveOBJ.tagName=@"Total_P2P_transfers";
+    serveOBJ.tagName = @"Total_P2P_transfers";
     [serveOBJ GetMemberStats:@"Total_P2P_transfers"];
-	// Do any additional setup after loading the view.
+    
     [self.navigationItem setTitle:@"Statistics"];
 
     self.selected = 1;
@@ -89,42 +96,38 @@
     [self.profile setStyleClass:@"stats_circle"];
     [self.profile setStyleId:@"stats_circle_profile_active"];
     [self.back_profile addSubview:self.profile];
-    self.profile.userInteractionEnabled=YES;
-   
+    self.profile.userInteractionEnabled = YES;
     
     UIImageView *inactive_trans = [UIImageView new];
     [inactive_trans setStyleClass:@"stats_circle"];
     [inactive_trans setStyleId:@"stats_circle_transfers_inactive"];
-    inactive_trans.userInteractionEnabled=YES;
+    inactive_trans.userInteractionEnabled = YES;
     [self.back_profile addSubview:inactive_trans];
     UITapGestureRecognizer*tap_trans=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(trans_tap)];
     [inactive_trans addGestureRecognizer:tap_trans];
-    
     
     UIImageView *inactive_donate = [UIImageView new];
     [inactive_donate setStyleClass:@"stats_circle"];
     [inactive_donate setStyleId:@"stats_circle_donations_inactive"];
     [self.back_profile addSubview:inactive_donate];
-    inactive_donate.userInteractionEnabled=YES;
-    UITapGestureRecognizer*tap_donate=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(donate_tap)];
+    inactive_donate.userInteractionEnabled = YES;
+    UITapGestureRecognizer*tap_donate = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(donate_tap)];
     [inactive_donate addGestureRecognizer:tap_donate];
 
     self.transfers = [UIImageView new];
     [self.transfers setStyleClass:@"stats_circle"];
     [self.transfers setStyleId:@"stats_circle_transfers_active"];
     [self.back_transfer addSubview:self.transfers];
-    self.transfers.userInteractionEnabled=YES;
-   
+    self.transfers.userInteractionEnabled = YES;
     
     UIImageView *inactive_profile = [UIImageView new];
     [inactive_profile setStyleClass:@"stats_circle"];
     [inactive_profile setStyleId:@"stats_circle_profile_inactive"];
     [self.back_transfer addSubview:inactive_profile];
-    inactive_profile.userInteractionEnabled=YES;
+    inactive_profile.userInteractionEnabled = YES;
     
     UITapGestureRecognizer*tap_profile2=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(Profile_tap)];
     [inactive_profile addGestureRecognizer:tap_profile2];
-    
     
     UIImageView *temp1 = [UIImageView new];
     [temp1 setStyleClass:@"stats_circle"];
@@ -134,13 +137,11 @@
     UITapGestureRecognizer*tap_donation2=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(donate_tap_Fromtran)];
     [temp1 addGestureRecognizer:tap_donation2];
     
-
     self.donations = [UIImageView new];
     [self.donations setStyleClass:@"stats_circle"];
     [self.donations setStyleId:@"stats_circle_donations_active"];
     [self.back_donation addSubview:self.donations];
     self.donations .userInteractionEnabled=YES;
-    
 
     UIImageView *temp2 = [UIImageView new];
     [temp2 setStyleClass:@"stats_circle"];
@@ -160,7 +161,7 @@
     UITapGestureRecognizer*tap_profile3=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(profileRev)];
     [temp3 addGestureRecognizer:tap_profile3];
     
-    UILabel *profile_header = [UILabel new];
+/*    UILabel *profile_header = [UILabel new];
     [profile_header setStyleClass:@"stats_header"];
     [profile_header setText:@"Profile Stats"];
     [self.back_profile addSubview:profile_header];
@@ -173,7 +174,7 @@
     UILabel *donation_header = [UILabel new];
     [donation_header setStyleClass:@"stats_header"];
     [donation_header setText:@"Donation Stats"];
-    [self.back_donation addSubview:donation_header];
+    [self.back_donation addSubview:donation_header];  */
     
     self.profile_stats = [UITableView new];
     [self.profile_stats setDelegate:self]; [self.profile_stats setDataSource:self];
@@ -208,18 +209,19 @@
         [self.view addSubview:scroll];
     }
 
-    blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
-    [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
-    UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
-    [actv startAnimating];
-    [blankView addSubview:actv];
-    [self .view addSubview:blankView];
-    [self.view bringSubviewToFront:blankView];
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.hud];
+    
+    self.hud.delegate = self;
+    self.hud.labelText = @"Grabbing your account stats...";
+    [self.hud show:YES];
+
 }
--(void)donate_tap{
+
+-(void)donate_tap
+{
     CGRect frame;
-     [UIView beginAnimations:nil context:nil];
+    [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.4];
     [self.donations setStyleId:@"stats_circle_donations_active"];
     self.selected++;
@@ -235,9 +237,11 @@
     [self.back_donation setFrame:frame];
      [UIView commitAnimations];
 }
--(void)donate_tap_Fromtran{
+
+-(void)donate_tap_Fromtran
+{
     CGRect frame;
-     [UIView beginAnimations:nil context:nil];
+    [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.4];
     [self.donations setStyleId:@"stats_circle_donations_active"];
     self.selected++;
@@ -253,10 +257,12 @@
     [self.back_donation setFrame:frame];
     [UIView commitAnimations];
 }
--(void)trans_tap{
+
+-(void)trans_tap
+{
     CGRect frame;
-     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.4];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.5];
     [self.transfers setStyleId:@"stats_circle_transfers_active"];
     self.selected++;
     titlestr=@"Transfer Stats";
@@ -269,12 +275,14 @@
     frame = self.back_donation.frame;
     frame.origin.x -= 320;
     [self.back_donation setFrame:frame];
-     [UIView commitAnimations];
+    [UIView commitAnimations];
 }
--(void)Profile_tap{
+
+-(void)Profile_tap
+{
     CGRect frame;
-     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.4];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.5];
     [self.profile setStyleId:@"stats_circle_profile_active"];
     self.selected--;
     titlestr=@"Profile Stats";
@@ -287,13 +295,14 @@
     frame = self.back_donation.frame;
     frame.origin.x += 320;
     [self.back_donation setFrame:frame];
-      [UIView commitAnimations];
+    [UIView commitAnimations];
 }
--(void)profileRev{
 
+-(void)profileRev
+{
     CGRect frame;
-     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.4];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.5];
     [self.profile setStyleId:@"stats_circle_profile_active"];
     self.selected--;
     titlestr=@"Profile Stats";
@@ -307,12 +316,13 @@
     frame.origin.x += 640;
     [self.back_donation setFrame:frame];
     [UIView commitAnimations];
-    
 }
--(void)transRev_tap{
+
+-(void)transRev_tap
+{
     CGRect frame;
-     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.4];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.5];
     [self.profile setStyleId:@"stats_circle_profile_active"];
     self.selected--;
     titlestr=@"Profile Stats";
@@ -334,9 +344,12 @@
 {
     [UIView beginAnimations:nil context:nil];
     CGRect frame;
-    [UIView setAnimationDuration:0.4];
-    if (slide.direction == UISwipeGestureRecognizerDirectionLeft) {
-        if (self.selected == 0) {
+    [UIView setAnimationDuration:0.5];
+    
+    if (slide.direction == UISwipeGestureRecognizerDirectionLeft)
+    {
+        if (self.selected == 0)
+        {
             [self.transfers setStyleId:@"stats_circle_transfers_active"];
             self.selected++;
             titlestr=@"Transfer Stats";
@@ -349,7 +362,9 @@
             frame = self.back_donation.frame;
             frame.origin.x -= 320;
             [self.back_donation setFrame:frame];
-        } else if (self.selected == 1) {
+        }
+        else if (self.selected == 1)
+        {
             [self.donations setStyleId:@"stats_circle_donations_active"];
             self.selected++;
             titlestr=@"Donation Stats";
@@ -363,8 +378,11 @@
             frame.origin.x -= 320;
             [self.back_donation setFrame:frame];
         }
-    } else if (slide.direction == UISwipeGestureRecognizerDirectionRight) {
-        if (self.selected == 1) {
+    }
+    else if (slide.direction == UISwipeGestureRecognizerDirectionRight)
+    {
+        if (self.selected == 1)
+        {
             [self.profile setStyleId:@"stats_circle_profile_active"];
             self.selected--;
             titlestr=@"Profile Stats";
@@ -377,7 +395,9 @@
             frame = self.back_donation.frame;
             frame.origin.x += 320;
             [self.back_donation setFrame:frame];
-        } else if (self.selected == 2) {
+        }
+        else if (self.selected == 2)
+        {
             [self.transfers setStyleId:@"stats_circle_transfers_active"];
             self.selected--;
             titlestr=@"Transfer Stats";
@@ -397,12 +417,14 @@
 }
 
 #pragma mark - UITableViewDataSource
--(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    UIView*view=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 50)];
-    view.backgroundColor=[UIColor clearColor];
-    UILabel*Title=[UILabel new];
-    [Title setStyleClass:@"titlelbl"];
-    Title.text=titlestr;
+-(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView * view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 50)];
+    view.backgroundColor = [UIColor clearColor];
+    UILabel * Title = [UILabel new];
+    [Title setStyleClass:@"stats_header"];
+    Title.text = titlestr;
+
     if (tableView == self.profile_stats) {
         Title.text = @"Profile Stats";
     } else if (tableView == self.donation_stats) {
@@ -413,13 +435,17 @@
     [view addSubview:Title];
     return view;    
 }
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
     return 25;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 7;
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
@@ -427,7 +453,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:CellIdentifier];
-        [cell.textLabel setTextColor:kNoochGrayLight];
+     //   [cell.textLabel setTextColor:kNoochGrayLight];
     }
     if ([cell.contentView subviews]){
         for (UIView *subview in [cell.contentView subviews]) {
@@ -481,83 +507,96 @@
 
     else if (tableView == self.transfer_stats) { //transfers
 
-        if (indexPath.row == 0) {
-            [title setText:@"Total # of Transfers"];
+        if (indexPath.row == 0)
+        {
+            [title setText:@"Total No. of Transfers"];
             if ([dictAllStats valueForKey:@"Total_P2P_transfers"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_P2P_transfers"]  valueForKey:@"Result"]];
             }
-            if ([[[dictAllStats valueForKey:@"Total_P2P_transfers"]valueForKey:@"Result"] length]==0) {
+            if ([[[dictAllStats valueForKey:@"Total_P2P_transfers"]valueForKey:@"Result"] length] == 0) {
                 [statistic setText:@"0"];
             }
         }
-        else if (indexPath.row == 1) {
+        else if (indexPath.row == 1)
+        {
             [title setText:@"Transfers Sent"];
             [statistic setText:[[dictAllStats valueForKey:@"Total_no_of_transfer_Sent"]  valueForKey:@"Result"]];
             if ([[[dictAllStats valueForKey:@"Total_no_of_transfer_Sent"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
             }
         }
-        else if (indexPath.row == 2) {
+        else if (indexPath.row == 2)
+        {
             [title setText:@"Transfers Received"];
             [statistic setText:[[dictAllStats valueForKey:@"Total_no_of_transfer_Received"]  valueForKey:@"Result"]];
             if ([[[dictAllStats valueForKey:@"Total_no_of_transfer_Received"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
             }
         }
-        else if (indexPath.row == 3) {
-            [title setText:@"$ Amount Sent"];
-            [statistic setText:[[dictAllStats valueForKey:@"Total_$_Sent"]  valueForKey:@"Result"]];
+        else if (indexPath.row == 3)
+        {
+            [title setText:@"Total Sent"];
+            [statistic setText:[NSString stringWithFormat:@"$ %@",[[dictAllStats valueForKey:@"Total_$_Sent"]  valueForKey:@"Result"]]];
+            
             if ([[[dictAllStats valueForKey:@"Total_$_Sent"]valueForKey:@"Result"] length]==0) {
-                [statistic setText:@"0"];
+                [statistic setText:@"$ 0"];
             }
         }
-        else if (indexPath.row == 4) {
-            [title setText:@"$ Amount Received"];
-            [statistic setText:[[dictAllStats valueForKey:@"Total_$_Received"] valueForKey:@"Result"]];
-            if ([[[dictAllStats valueForKey:@"Total_$_Received"]valueForKey:@"Result"] length]==0) {
-                [statistic setText:@"0"];
+        else if (indexPath.row == 4)
+        {
+            [title setText:@"Total Received"];
+            [statistic setText:[NSString stringWithFormat:@"$ %@",[[dictAllStats valueForKey:@"Total_$_Received"]  valueForKey:@"Result"]]];
+            if ([[[dictAllStats valueForKey:@"Total_$_Received"]valueForKey:@"Result"] length] == 0) {
+                [statistic setText:@"$ 0"];
             }
         }
-        else if (indexPath.row == 5) {
+        else if (indexPath.row == 5)
+        {
             [title setText:@"Largest Transfer Sent"];
-            [statistic setText:[[dictAllStats valueForKey:@"Largest_sent_transfer"]  valueForKey:@"Result"]];
-            if ([[[dictAllStats valueForKey:@"Largest_sent_transfer"]valueForKey:@"Result"] length]==0) {
+            [statistic setText:[NSString stringWithFormat:@"$ %@",[[dictAllStats valueForKey:@"Largest_sent_transfer"]  valueForKey:@"Result"]]];
+            if ([[[dictAllStats valueForKey:@"Largest_sent_transfer"]valueForKey:@"Result"] length] == 0) {
                 [statistic setText:@"0"];
             }
         }
-        else if (indexPath.row == 6) {
+        else if (indexPath.row == 6)
+        {
             [title setText:@"Largest Transfer Received"];
-            [statistic setText:[[dictAllStats valueForKey:@"Largest_received_transfer"]  valueForKey:@"Result"]];
-            if ([[[dictAllStats valueForKey:@"Largest_received_transfer"]valueForKey:@"Result"] length]==0) {
+            [statistic setText:[NSString stringWithFormat:@"$ %@",[[dictAllStats valueForKey:@"Largest_received_transfer"]  valueForKey:@"Result"]]];
+            if ([[[dictAllStats valueForKey:@"Largest_received_transfer"]valueForKey:@"Result"] length] == 0) {
                 [statistic setText:@"0"];
             }
         }
     } 
 
-    else if (tableView == self.donation_stats) { //donations
-        if (indexPath.row == 0) {
-            [title setText:@"Total $ Donated"];
+    else if (tableView == self.donation_stats)  //donations
+    {
+        if (indexPath.row == 0)
+        {
+            [title setText:@"Total Donated"];
             [statistic setText:[[dictAllStats valueForKey:@"Total_$_Donated"]  valueForKey:@"Result"]];
-            if ([[[dictAllStats valueForKey:@"Total_$_Donated"]valueForKey:@"Result"] length]==0) {
-                [statistic setText:@"0"];
+            if ([[[dictAllStats valueForKey:@"Total_$_Donated"]valueForKey:@"Result"] length] == 0) {
+                [statistic setText:@"$ 0"];
             }
         }
-        else if (indexPath.row == 1) {
+        else if (indexPath.row == 1)
+        {
             [title setText:@"Total Donations"];
             [statistic setText:[[dictAllStats valueForKey:@"Total_Donations_Count"]  valueForKey:@"Result"]];
-            if ([[[dictAllStats valueForKey:@"Total_Donations_Count"]valueForKey:@"Result"] length]==0) {
+            if ([[[dictAllStats valueForKey:@"Total_Donations_Count"]valueForKey:@"Result"] length] == 0) {
                 [statistic setText:@"0"];
             }
         }
-        else if (indexPath.row == 2) {
+        else if (indexPath.row == 2)
+        {
             [title setText:@"Causes Donated to"];
-            [statistic setStyleClass:@"stats_table_right_lable1"];
+          //  [statistic setStyleClass:@"stats_table_right_lable1"];
             [statistic setText:[[[dictAllStats valueForKey:@"DonatedTo"]  valueForKey:@"Result"] capitalizedString]];
             if ([[[dictAllStats valueForKey:@"DonatedTo"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
             }
         }
-        else if (indexPath.row == 3) {
+        else if (indexPath.row == 3)
+        {
             [title setText:@"Largest Donation"];
             [statistic setText:[[dictAllStats valueForKey:@"Largest_Donation_Made"]  valueForKey:@"Result"]];
             if ([[[dictAllStats valueForKey:@"Largest_Donation_Made"]valueForKey:@"Result"] length]==0) {
@@ -577,8 +616,9 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    NSError* error;
-    dictResult= [NSJSONSerialization
+    [self.hud hide:YES];
+    NSError * error;
+    dictResult = [NSJSONSerialization
                  JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                  options:kNilOptions
                  error:&error];
