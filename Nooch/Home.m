@@ -58,46 +58,9 @@ NSMutableURLRequest *request;
     
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
     ABAddressBookRegisterExternalChangeCallback(addressBook, addressBookChanged, (__bridge void *)(self));
-    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
-        ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted)
-    {
-        
-        NSLog(@"Denied");
-    }
-    else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
-    {
-        
-        NSLog(@"Authorized");
-        if ([[[assist shared]assosAll] count] == 0) {
-            [self address_book];
-        }
-    }
-    else
-    {
-        ABAddressBookRequestAccessWithCompletion(ABAddressBookCreateWithOptions(NULL, nil), ^(bool granted, CFErrorRef error)
-        {
-            if (!granted){
-                
-                NSLog(@"Just denied");
-                return;
-            }
-            
-            if ([[[assist shared]assosAll] count] == 0) {
-                [self address_book];
-            }
-            
-            NSLog(@"Just authorized");
-        });
-        
-        NSLog(@"Not determined");
-    }
 
-	// Do any additional setup after loading the view.
-    
     nav_ctrl = self.navigationController;
     [ self.navigationItem setLeftBarButtonItem:Nil];
-    
-   // self.favorites = [NSMutableArray new];
     
     user = [NSUserDefaults standardUserDefaults];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
@@ -519,6 +482,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     CFRelease(people);
      if (addressBook)
     CFRelease(addressBook);
+    
+  
 }
 
 //-(void)getAddressBookContacts
@@ -853,6 +818,49 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         carouselTop = 50;
     }
     
+    // Address Book Authorization grant
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
+        ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted)
+    {
+        
+        NSLog(@"Denied");
+    }
+    else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+    {
+        
+        NSLog(@"Authorized");
+        if ([[[assist shared]assosAll] count]==0) {
+            [self address_book];
+            
+        }
+         [self GetFavorite];
+    }
+    else
+    {
+        ABAddressBookRequestAccessWithCompletion(ABAddressBookCreateWithOptions(NULL, nil), ^(bool granted, CFErrorRef error)
+                                                 {
+                                                     if (!granted){
+                                                         
+                                                         NSLog(@"Just denied");
+                                                         return;
+                                                     }
+                                                     
+                                                     if ([[[assist shared]assosAll] count]==0) {
+                                                         [self address_book];
+                                                         
+                                                     }
+                                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                                         [self GetFavorite];
+                                                     });
+                                                     
+                                                     NSLog(@"Just authorized");
+                                                 });
+        
+        NSLog(@"Not determined");
+    }
+    
+
+    
     [_carousel removeFromSuperview];
     _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, carouselTop, 320, 175)];
     _carousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -880,7 +888,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [[assist shared] setArray:nil];
  
 }
-
+-(void)GetFavorite{
+    
+    serve *favoritesOBJ = [serve new];
+    [favoritesOBJ setTagName:@"favorites"];
+    [favoritesOBJ setDelegate:self];
+    [favoritesOBJ get_favorites];
+}
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -955,10 +969,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [self.view addSubview:_carousel];
     [_carousel reloadData];
     // [favorites removeAllObjects];
-    serve *favoritesOBJ = [serve new];
-    [favoritesOBJ setTagName:@"favorites"];
-    [favoritesOBJ setDelegate:self];
-    [favoritesOBJ get_favorites];
+   
 }
 
 #pragma mark - iCarousel methods
