@@ -2,7 +2,7 @@
 //  Nooch
 //
 //  Created by crks on 10/7/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch Inc. All rights reserved.
 
 #import "PINSettings.h"
 #import "Home.h"
@@ -36,7 +36,7 @@
     [change_pin setFrame:CGRectMake(20, 30, 280, 60)];
     [change_pin setTitle:@"Change PIN" forState:UIControlStateNormal];
     [change_pin setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
-    change_pin.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    change_pin.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [change_pin addTarget:self action:@selector(changepin) forControlEvents:UIControlEventTouchUpInside];
     [change_pin setStyleClass:@"button_blue"];
     [self.view addSubview:change_pin];
@@ -55,12 +55,12 @@
     [self.view addSubview:self.ri];
 
     UILabel *info = [UILabel new];
-    [info setFrame:CGRectMake(15, 160, 290, 42)];
+    [info setFrame:CGRectMake(15, 158, 290, 30)];
     [info setNumberOfLines:0];
     [info setTextAlignment:NSTextAlignmentCenter];
     [info setFont:[UIFont fontWithName:@"Roboto-Light" size:14]];
     [info setTextColor:[Helpers hexColor:@"939598"]];
-    [info setText:@"Require a passcode even when switching apps for a short time"];
+    [info setText:@"Require your PIN to enter the app."];
     [self.view addSubview:info];
     if ([[user objectForKey:@"requiredImmediately"] boolValue]) {
         [self.ri setOn:YES];
@@ -71,7 +71,7 @@
     [change_password setStyleClass:@"button_blue"];
     [change_password setTitle:@"Change Password" forState:UIControlStateNormal];
     [change_password setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
-    change_password.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    change_password.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [change_password addTarget:self action:@selector(changepass) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:change_password];
     

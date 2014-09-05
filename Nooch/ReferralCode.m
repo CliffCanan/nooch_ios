@@ -78,7 +78,7 @@
 
     enter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [enter setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.26) forState:UIControlStateNormal];
-    enter.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    enter.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [enter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [enter setTitle:@"Continue" forState:UIControlStateNormal];
     [enter addTarget:self action:@selector(enter_code) forControlEvents:UIControlEventTouchUpInside];
@@ -88,8 +88,8 @@
 
     UIButton *request = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [request setFrame:CGRectMake(10, 420, 300, 60)];
-    [request setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
-    request.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    [request setTitleShadowColor:Rgb2UIColor(32, 33, 34, 0.22) forState:UIControlStateNormal];
+    request.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [request setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [request setTitle:@"I Don't Have a Code" forState:UIControlStateNormal];
     [request addTarget:self action:@selector(request_code) forControlEvents:UIControlEventTouchUpInside];

@@ -1,7 +1,7 @@
 //  ResetPassword.m
 //  Nooch
 //
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch Inc. All rights reserved.
 
 #import "ResetPassword.h"
 #import "Home.h"
@@ -73,8 +73,8 @@
     [self.changepwbtn setFrame:CGRectMake(0, 205, 0, 0)];
     [self.changepwbtn setStyleClass:@"button_green"];
     [self.changepwbtn setTitle:@"Change Password" forState:UIControlStateNormal];
-    [self.changepwbtn setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
-    self.changepwbtn.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    [self.changepwbtn setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.26) forState:UIControlStateNormal];
+    self.changepwbtn.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.changepwbtn addTarget:self action:@selector(finishResetPassword:) forControlEvents:UIControlEventTouchUpInside];
     [self.changepwbtn setEnabled:NO];
     [self.view addSubview:self.changepwbtn];

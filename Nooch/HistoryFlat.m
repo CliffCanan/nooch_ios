@@ -196,8 +196,8 @@
     //Export History
     exportHistory = [UIButton buttonWithType:UIButtonTypeCustom];
     [exportHistory setTitle:@"     Export History" forState:UIControlStateNormal];
-    [exportHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
-    exportHistory.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    [exportHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
+    exportHistory.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [exportHistory setFrame:CGRectMake(10, 420, 150, 20)];
     if ([UIScreen mainScreen].bounds.size.height > 500) {
         [exportHistory setStyleClass:@"exportHistorybutton"];

@@ -164,7 +164,7 @@
 
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.login setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
-    self.login.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    self.login.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.login setTitle:@"Log In  " forState:UIControlStateNormal];
     [self.login setFrame:CGRectMake(10, 252, 300, 60)];
     [self.login addTarget:self action:@selector(check_credentials) forControlEvents:UIControlEventTouchUpInside];

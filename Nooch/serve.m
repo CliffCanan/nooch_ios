@@ -1411,10 +1411,11 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 
--(void)GetMemberStats:(NSString*)query{
+-(void)GetMemberStats:(NSString*)query
+{
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     NSString * memId = [defaults objectForKey:@"MemberId"];
     
     NSString *urlString = [NSString stringWithFormat:@"%@/GetMemberStats?memberId=%@&query=%@&accessToken=%@",ServerUrl,memId,query,[defaults valueForKey:@"OAuthToken"]];
@@ -1569,10 +1570,10 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 
--(void)saveShareToFB_Twiitter:(NSString*)PostTo
+-(void)saveShareToFB_Twitter:(NSString*)PostTo
 {
     self.responseData = [[NSMutableData alloc] init];
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     NSString * memId = [defaults objectForKey:@"MemberId"];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSString *urlString = [NSString stringWithFormat:@"%@/SaveSocialMediaPost?MemberId=%@&PostTo=%@&PostContent=%@&accessToken=%@",ServerUrl,memId,PostTo,PostTo,[defaults valueForKey:@"OAuthToken"]];
@@ -1583,9 +1584,8 @@ NSString *amnt;
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
-    
-    
 }
+
 -(void)UpDateLatLongOfUser:(NSString*)lat lng:(NSString*)lng
 {
     self.responseData = [[NSMutableData alloc] init];

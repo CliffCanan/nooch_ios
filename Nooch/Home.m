@@ -117,6 +117,9 @@ NSMutableURLRequest *request;
                                ];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
+    backgroundImage.alpha = .25;
+    [self.view addSubview:backgroundImage];
     
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
@@ -645,7 +648,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [UIColor whiteColor], UITextAttributeTextColor,
                                   Rgb2UIColor(19, 32, 38, .26), UITextAttributeTextShadowColor,
-                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, 1.0)], UITextAttributeTextShadowOffset, nil];
+                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, -1.0)], UITextAttributeTextShadowOffset, nil];
     [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
 
     NSShadow * shadow = [[NSShadow alloc] init];
@@ -818,7 +821,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
      top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [top_button setStyleClass:@"button_blue"];
     [top_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
-    top_button.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    top_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     
     CGRect button_frame = CGRectMake(20, 245, 280, 60);
     [top_button setFrame:button_frame];

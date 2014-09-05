@@ -75,7 +75,7 @@
 
     self.facebook = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.facebook setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
-    self.facebook.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    self.facebook.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.facebook setTitle:@"  Facebook" forState:UIControlStateNormal];
     [self.facebook setFrame:CGRectMake(0, 160, 0, 0)];
     if ([[UIScreen mainScreen] bounds].size.height < 520) {
@@ -160,7 +160,7 @@
 
     self.cont = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.cont setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
-    self.cont.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    self.cont.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.cont setTitle:@"Continue" forState:UIControlStateNormal];
     [self.cont setFrame:CGRectMake(10, 406, 300, 60)];
     [self.cont addTarget:self action:@selector(continue_to_signup) forControlEvents:UIControlEventTouchUpInside];
@@ -342,11 +342,6 @@
     }
     else
     {
-        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        [self.view addSubview:spinner];
-        spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-        [spinner startAnimating];
-
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
         
@@ -380,8 +375,6 @@
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Email in Use" message:@"The email address you are attempting to sign up with is already in use." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
-            [spinner stopAnimating];
-            [spinner setHidden:YES];
             return;
         }
 
@@ -413,8 +406,7 @@
                      @"facebook_id":[self.facebook_info objectForKey:@"id"],
                      @"image":[self.facebook_info objectForKey:@"image"]};
         }
-        [spinner stopAnimating];
-        [spinner setHidden:YES];
+
         SelectPicture *picture = [[SelectPicture alloc] initWithData:user];
         [self.navigationController pushViewController:picture animated:YES];
     }

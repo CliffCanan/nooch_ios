@@ -62,10 +62,21 @@
     [self.balance setStyleId:@"lside_balance"];
     [self.view addSubview:self.balance];
 
+    UIView * shadowUnder = [[UIView alloc] initWithFrame:CGRectMake(18, 21, 61, 61)];
+    shadowUnder .backgroundColor = [Helpers hexColor:@"505257"];
+    shadowUnder.layer.cornerRadius = 30;
+    shadowUnder.layer.shadowColor = [UIColor blackColor].CGColor;
+    shadowUnder.layer.shadowOffset = CGSizeMake(0, 2);
+    shadowUnder.layer.shadowOpacity = 0.75;
+    shadowUnder.layer.shadowRadius = 3.5;
+    shadowUnder.alpha = .8;
+    [user_bar addSubview:shadowUnder];
+    
     user_pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 20, 60, 60)];
     user_pic.clipsToBounds = YES;
     user_pic.layer.cornerRadius = 30;
-    user_pic.layer.borderWidth = 2; user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
+    user_pic.layer.borderWidth = 2;
+    user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
     [user_pic setUserInteractionEnabled:YES];
     [user_bar addSubview:user_pic];
     [user_pic addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profile)]];
@@ -109,30 +120,30 @@
     [version setText:[NSString stringWithFormat:@"Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
     [self.view addSubview:version];
 }
--(void)viewWillAppear:(BOOL)animated{
+
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
 
-    self.trackedViewName = @"LeftMenu Screen";
+    self.trackedViewName = @"Left Menu Screen";
 
     [self.name setText:[[user objectForKey:@"firstName"] capitalizedString]];
     [self.balance setText:[[user objectForKey:@"lastName"] capitalizedString]];
     
-    if ([[user objectForKey:@"Photo"] length]>0 && [user objectForKey:@"Photo"]!=nil) {
+    if ([[user objectForKey:@"Photo"] length] > 0 && [user objectForKey:@"Photo"] != nil)
+    {
         [user_pic setStyleId:@"lside_userpic"];
         [user_pic setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
         placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
-        user_pic.clipsToBounds = YES;
         user_pic.layer.cornerRadius = 30;
-        user_pic.layer.borderWidth = 2; user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
-        user_pic.layer.shadowColor = [UIColor redColor].CGColor;
-        user_pic.layer.shadowOffset = CGSizeMake(5, 3);
-        user_pic.layer.shadowOpacity = 0.97;
-        user_pic.layer.shadowRadius = 3.0;
-
+        user_pic.layer.borderWidth = 2;
+        user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
+        user_pic.clipsToBounds = YES;
         [user_pic setUserInteractionEnabled:YES];
     }
 }
--(void) go_profile {
+-(void) go_profile
+{
     isProfileOpenFromSideBar=YES;
     ProfileInfo *prof = [ProfileInfo new];
     [nav_ctrl pushViewController:prof animated:YES];

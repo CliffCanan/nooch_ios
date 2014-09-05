@@ -136,7 +136,7 @@
         [Done setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [Done setTitle:@"    Done" forState:UIControlStateNormal];
         [Done setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
-        Done.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+        Done.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         [Done addTarget:self action:@selector(DoneEditing_RequestMultiple:) forControlEvents:UIControlEventTouchUpInside];
 
         UIBarButtonItem * DoneItem = [[UIBarButtonItem alloc] initWithCustomView:Done];
