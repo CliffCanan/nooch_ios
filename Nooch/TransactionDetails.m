@@ -22,7 +22,7 @@
 @end
 
 @implementation TransactionDetails
-
+@synthesize accountStore,twitterAllowed,twitterAccount;
 - (id)initWithData:(NSDictionary *)trans {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
@@ -692,32 +692,34 @@
 
 - (void) post_to_twitter
 {
-    SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-    [controller setInitialText:[NSString stringWithFormat:@"I just Nooch'ed %@!",[self.trans objectForKey:@"Name"]]];
-    [controller addURL:[NSURL URLWithString:@"https://www.nooch.com"]];
-    [self presentViewController:controller animated:YES completion:Nil];
-    
-    SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result){
-        NSString *output= nil;
-        switch (result) {
-            case SLComposeViewControllerResultCancelled:
-                NSLog (@"cancelled");
-                break;
-            case SLComposeViewControllerResultDone:
-                output= @"Post Succesfull";
-                NSLog (@"success");
-                break;
-            default:
-                break;
-        }
-        if ([output isEqualToString:@"Post Succesfull"]) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Twitter" message:output delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-            [alert setTag:11];
-        }
-        [controller dismissViewControllerAnimated:YES completion:Nil];
-    };
-    controller.completionHandler = myBlock;
+
+           SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+           [controller setInitialText:[NSString stringWithFormat:@"I just Nooch'ed %@!",[self.trans objectForKey:@"Name"]]];
+           [controller addURL:[NSURL URLWithString:@"https://www.nooch.com"]];
+           [self presentViewController:controller animated:YES completion:Nil];
+           
+           SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result){
+               NSString *output= nil;
+               switch (result) {
+                   case SLComposeViewControllerResultCancelled:
+                       NSLog (@"cancelled");
+                       break;
+                   case SLComposeViewControllerResultDone:
+                       output= @"Post Succesfull";
+                       NSLog (@"success");
+                       break;
+                   default:
+                       break;
+               }
+               if ([output isEqualToString:@"Post Succesfull"]) {
+                   UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Twitter" message:output delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                   [alert show];
+                   [alert setTag:11];
+               }
+               [controller dismissViewControllerAnimated:YES completion:Nil];
+           };
+           controller.completionHandler = myBlock;
+   
 }
 
 -(void)post
