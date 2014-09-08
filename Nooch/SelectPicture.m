@@ -102,9 +102,10 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    image= [info objectForKey:UIImagePickerControllerOriginalImage];
     image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(120, 120) interpolationQuality:kCGInterpolationMedium];
     [self.pic setImage:image];
+    
     [[assist shared]setTranferImage:image];
     [self dismissViewControllerAnimated:YES completion:^{
         self.slidingViewController.panGesture.enabled = NO;
@@ -113,7 +114,7 @@
     
     self.pic.layer.borderWidth = 3;
     self.pic.layer.borderColor = kNoochBlue.CGColor;
-    [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
+   // [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
 
     [self.message setText:@"Great Pic! If you're happy with it tap \"Continue\" or if you wish to change it tap \"Change Picture\""];
 

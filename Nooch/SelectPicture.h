@@ -11,7 +11,9 @@
 #import "Helpers.h"
 
 @interface SelectPicture : GAITrackedViewController<UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate>
-
+{
+    UIImage * image;
+}
 - (id)initWithData:(NSDictionary *)user;
 
 @end

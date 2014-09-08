@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "Home.h"
 #import "Register.h"
+
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
 @implementation assist
@@ -186,23 +187,23 @@ static assist * _sharedInstance = nil;
      }else{
      fbAllowed = NO;
      }
-     
-//     if([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]){
-//     ACAccountType *twitterAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-//     twitterAccount = nil;
-//     [accountStore requestAccessToAccountsWithType:twitterAccountType options:nil completion:^(BOOL granted, NSError *e){
-//     if (granted) {
-//     NSArray *accounts = [accountStore accountsWithAccountType:twitterAccountType];
-//     twitterAccount = [accounts lastObject];
-//     twitterAllowed = YES;
-//     //nslog(@"twitter granted");
-//     }else{
-//     twitterAllowed = NO;
-//     //nslog(@"twitter not granted");
-//     }
-//     }];
-//     }
-    
+   
+     if([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]){
+     ACAccountType *twitterAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+     twitterAccount = nil;
+     [accountStore requestAccessToAccountsWithType:twitterAccountType options:nil completion:^(BOOL granted, NSError *e){
+     if (granted) {
+     NSArray *accounts = [accountStore accountsWithAccountType:twitterAccountType];
+     twitterAccount = [accounts lastObject];
+     twitterAllowed = YES;
+     //nslog(@"twitter granted");
+     }else{
+     twitterAllowed = NO;
+     //nslog(@"twitter not granted");
+     }
+     }];
+     }
+  
     timer= [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
 #pragma mark 9jan
     [[assist shared]setneedsReload:YES];
