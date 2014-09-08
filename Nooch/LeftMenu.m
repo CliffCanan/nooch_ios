@@ -22,7 +22,7 @@
 @property(nonatomic,strong) UITableView *menu;
 @property(nonatomic) NSIndexPath *selected;
 @property(nonatomic,strong) UILabel *name;
-@property(nonatomic,strong) UILabel *balance;
+@property(nonatomic,strong) UILabel *lastName;
 @end
 @implementation LeftMenu
 
@@ -58,9 +58,9 @@
     [self.name setText:[[user objectForKey:@"firstName"] capitalizedString]];
     [user_bar addSubview:self.name];
 
-    self.balance = [[UILabel alloc] initWithFrame:CGRectMake(60, 48, 150, 10)];
-    [self.balance setStyleId:@"lside_balance"];
-    [self.view addSubview:self.balance];
+    self.lastName = [[UILabel alloc] initWithFrame:CGRectMake(60, 48, 150, 10)];
+    [self.lastName setStyleId:@"lside_lastName"];
+    [self.view addSubview:self.lastName];
 
     UIView * shadowUnder = [[UIView alloc] initWithFrame:CGRectMake(18, 21, 61, 61)];
     shadowUnder .backgroundColor = [Helpers hexColor:@"505257"];
@@ -128,7 +128,7 @@
     self.trackedViewName = @"Left Menu Screen";
 
     [self.name setText:[[user objectForKey:@"firstName"] capitalizedString]];
-    [self.balance setText:[[user objectForKey:@"lastName"] capitalizedString]];
+    [self.lastName setText:[[user objectForKey:@"lastName"] capitalizedString]];
     
     if ([[user objectForKey:@"Photo"] length] > 0 && [user objectForKey:@"Photo"] != nil)
     {
@@ -141,7 +141,15 @@
         user_pic.clipsToBounds = YES;
         [user_pic setUserInteractionEnabled:YES];
     }
+
+    if ([[user valueForKey:@"Status"]isEqualToString:@"Registered"] ||
+        [[user valueForKey:@"Status"]isEqualToString:@"Suspended"] )
+    {
+        user_pic.layer.borderWidth = 3;
+        user_pic.layer.borderColor = kNoochRed.CGColor;
+    }
 }
+
 -(void) go_profile
 {
     isProfileOpenFromSideBar=YES;
@@ -158,7 +166,7 @@
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 4;
+    return 3;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 23;
@@ -171,8 +179,8 @@
     title.textColor = [UIColor whiteColor];
     
     NSShadow * shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = Rgb2UIColor(64, 65, 66, .6);
-    shadow.shadowOffset = CGSizeMake(0, 1);
+    shadow.shadowColor = Rgb2UIColor(19, 32, 38, .3);
+    shadow.shadowOffset = CGSizeMake(0, -1);
 
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
     if (section == 0) {

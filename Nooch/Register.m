@@ -40,6 +40,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.hud hide:YES];
     [[UIApplication sharedApplication]setStatusBarHidden:YES];
     [nav_ctrl performSelector:@selector(disable)];
     

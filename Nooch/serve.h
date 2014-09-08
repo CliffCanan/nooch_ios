@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
+#import "MBProgressHUD.h"
+
 @protocol serveD
 @required
 -(void)listen:(NSString *)result tagName:(NSString *)tagName;
@@ -42,6 +44,7 @@
 @property (retain) id<serveD> Delegate;
 @property (nonatomic, retain) NSMutableData *responseData;
 @property (nonatomic, retain) NSString *tagName;
+@property(nonatomic,strong) MBProgressHUD *hud;
 -(void)addFund:(NSString*)amount;
 -(void)deleteBank:(NSString*)bankId;
 -(void)deleteCard:(NSString*)cardId;
