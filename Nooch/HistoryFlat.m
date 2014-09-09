@@ -155,7 +155,11 @@
     camera = [GMSCameraPosition cameraWithLatitude:39.952360
                                          longitude:-75.163602
                                               zoom:7];
-    mapView_ = [GMSMapView mapWithFrame:self.view.frame camera:camera];
+    
+    mapView_=[GMSMapView mapWithFrame:self.view.frame camera:camera];
+    [mapView_ animateToZoom:10];
+    [mapView_ animateToViewingAngle:10];
+
     mapView_.myLocationEnabled = YES;
     mapView_.delegate=self;
     [mapArea addSubview:mapView_];
