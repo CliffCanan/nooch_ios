@@ -1434,27 +1434,28 @@ table-view#select_recipientwithoutSeperator {
 	/**  The text of the recipient's name in the recipient box.  **/
 	.pin_recipientname_text {
 		top					: 198px;
-		left				: 81px;
-		width				: 226px;
+		left				: 69px;
+		width				: 244px;
 		height				: 38px;
 		font-family			: "Roboto";
 		font-size			: 20px;
 		font-weight			: regular;
-		text-align			: left;
+		text-align			: center;
 		color				: #ffffff;
 	}
 
 	/**  The text of the memo if one was attached.  **/ 
 	.pin_memotext {
 		top					: 235px;
-		left				: 81px;
-		width				: 226px;
+		left				: 69px;
+		width				: 244px;
 		height				: 33px;
 		font-family			: "Roboto";
 		font-size			: 15px;
 		font-weight			: light;
 		text-align			: left;
 		color				: #5a538d;
+        text-align          : center;
 	}
   
  /*******************************************
