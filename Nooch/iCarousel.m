@@ -429,7 +429,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
 }
 
 
-
+#pragma mark -
 #pragma mark View layout
 
 - (CGFloat)alphaForItemWithOffset:(CGFloat)offset
