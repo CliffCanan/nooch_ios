@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by Preston Hults on 1/26/13.
-//  Copyright (c) 2013 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch Inc. All rights reserved.
 //
 
 #import "core.h"

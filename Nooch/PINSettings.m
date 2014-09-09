@@ -120,7 +120,7 @@
 -(void)show_in_search
 {
     self.search.isOn ? [user setObject:@"YES" forKey:@"show_in_search"] : [user setObject:@"NO" forKey:@"show_in_search"];
-    serve *set_search = [serve new];
+    serve * set_search = [serve new];
     [set_search setDelegate:self];
     [set_search setTagName:@"set_search"];
     [set_search show_in_search:self.search.isOn ? YES : NO];
@@ -130,16 +130,15 @@
 {
     if ([self.ri isOn])
     {
-        serve*serveOBJ=[serve new];
+        serve * serveOBJ = [serve new];
         [serveOBJ setTagName:@"requiredImmediately"];
         [serveOBJ setDelegate:self];
         [serveOBJ SaveImmediateRequire:[self.ri isOn]];
-        //SaveImmediateRequire
         [user setObject:@"YES" forKey:@"requiredImmediately"];
     }
     else
     {
-        serve*serveOBJ=[serve new];
+        serve * serveOBJ = [serve new];
         [serveOBJ setTagName:@"requiredImmediately"];
         [serveOBJ setDelegate:self];
         [serveOBJ SaveImmediateRequire:[self.ri isOn]];

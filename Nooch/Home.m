@@ -67,7 +67,7 @@ NSMutableURLRequest *request;
     [[assist shared]isPOP];
     self.transaction_types = @[
                                @{kButtonType: @"send_request",
-                                 kButtonTitle: @"Send or Request",
+                                 kButtonTitle: @"Search For More Friends",
                                  kButtonColor: [UIColor clearColor]},
                                
                                @{kButtonType: @"pay_in_person",
@@ -484,92 +484,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     CFRelease(addressBook);
 }
 
-//-(void)getAddressBookContacts
-//{
-//    CFErrorRef err;
-//    
-//    ABAddressBookRef addressBook =  ABAddressBookCreateWithOptions(NULL, &err);
-//
-//    __block BOOL accessGranted = NO;
-//    
-//    if (ABAddressBookRequestAccessWithCompletion != NULL) { // we're on iOS 6
-//        dispatch_semaphore_t sema = dispatch_semaphore_create(0);
-//        
-//        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
-//            accessGranted = granted;
-//            dispatch_semaphore_signal(sema);
-//        });
-//        
-//        dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
-//        dispatch_release(sema);
-//    }
-//    else { // we're on iOS 5 or older
-//        accessGranted = YES;
-//    }
-//    
-//    
-//    if (accessGranted)
-//    {
-//        NSArray *thePeople = (__bridge_transfer NSArray*)ABAddressBookCopyArrayOfAllPeople(addressBook);
-//
-//        NSLog(@"%@",thePeople);
-//        arrRecords=[[NSMutableArray alloc]init];
-//        NSMutableArray*arremailRecords=[[NSMutableArray alloc]init];
-//        
-//        for (int i=0; i<[thePeople count]; i++) {
-//            ABMutableMultiValueRef Emailref = ABRecordCopyValue((__bridge ABRecordRef)([thePeople objectAtIndex:i]), kABPersonEmailProperty);
-//          
-//            
-//            CFIndex Count = ABMultiValueGetCount(Emailref);
-//            NSLog(@"%ld",Count);
-//            for(int k = 0; k < Count; k++)
-//            {
-//                
-//                CFStringRef EmailValue = ABMultiValueCopyValueAtIndex( Emailref, k );
-//                CFStringRef EmailValueLabel = ABMultiValueCopyLabelAtIndex(Emailref, k);
-//                CFStringRef EmailValueLocalizedLabel = ABAddressBookCopyLocalizedLabel( EmailValueLabel );
-//                
-//                [arremailRecords addObject:(NSString *)CFBridgingRelease(EmailValue)];
-//                NSLog(@"%@",EmailValue);
-//                NSLog(@"%@",EmailValueLocalizedLabel);
-//            
-//                CFRelease(EmailValueLocalizedLabel);
-//                CFRelease(EmailValue);
-//            }
-//            UIImage*imgData=nil;
-//            
-//            imgData =[self imageForContact:(__bridge ABRecordRef)([thePeople objectAtIndex:i])];
-//            NSLog(@"%@",imgData);
-//            imgData=nil;
-//            NSLog(@"%@",arremailRecords);
-//            
-//        }
-//        
-//    }
-//}
-
-//- (UIImage*)imageForContact: (ABRecordRef)contactRef {
-//    UIImage *img = nil;
-//    
-//    // can't get image from a ABRecordRef copy
-//    ABRecordID contactID = ABRecordGetRecordID(contactRef);
-//    CFErrorRef err;
-//    
-//    ABAddressBookRef addressBook =  ABAddressBookCreateWithOptions(NULL, &err);
-//    ABRecordRef origContactRef = ABAddressBookGetPersonWithRecordID(addressBook, contactID);
-//    
-//    if (ABPersonHasImageData(origContactRef)) {
-//        NSData *imgData = (__bridge NSData*)ABPersonCopyImageDataWithFormat(origContactRef, kABPersonImageFormatOriginalSize);
-//        img = [UIImage imageWithData: imgData];
-//        
-//        [imgData release];
-//    }
-//    
-//    CFRelease(addressBook);
-//    
-//    return img;
-//}
-
 -(void)contact_support
 {
     if (![MFMailComposeViewController canSendMail]){
@@ -857,7 +771,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         NSLog(@"Not determined");
     }
     
-
     
     [_carousel removeFromSuperview];
     _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, carouselTop, 320, 175)];
@@ -886,13 +799,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [[assist shared] setArray:nil];
  
 }
--(void)GetFavorite{
-    
+
+-(void)GetFavorite
+{
     serve *favoritesOBJ = [serve new];
     [favoritesOBJ setTagName:@"favorites"];
     [favoritesOBJ setDelegate:self];
     [favoritesOBJ get_favorites];
 }
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -917,29 +832,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             self.hud.delegate = self;
             self.hud.labelText = @"Loading your Nooch account";
             [self.hud show:YES];
-            
-/*            [blankView removeFromSuperview];
-            blankView=[[UIView alloc]initWithFrame:CGRectMake(40, (self.view.frame.size.height/2)-40, 240, 90)];
-            blankView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.8];
-            UIActivityIndicatorView*act = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-            blankView.layer.borderColor = [[UIColor blackColor]CGColor];
-            blankView.layer.cornerRadius = 10;
-            blankView.layer.borderWidth = 1;
-            [act setFrame:CGRectMake(100, 5, 40, 40)];
-            [act startAnimating];
-            [blankView addSubview:act];
-        
-            UILabel*fromLabel =[[UILabel alloc]initWithFrame:CGRectMake(5,50, 230,20)];
-            fromLabel.text = @"Loading Your Nooch Account";
-            fromLabel.font =[UIFont fontWithName:@"Roboto-Regular" size:15];
-        
-            fromLabel.backgroundColor = [UIColor clearColor];
-            fromLabel.textColor = [UIColor whiteColor];
-            fromLabel.textAlignment = NSTextAlignmentCenter;
-            [blankView addSubview:fromLabel];
-            [self.navigationController.view addSubview:blankView];
-            [self performSelector:@selector(myTask) withObject:nil afterDelay:3];
- */
+
         }
 
         if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
@@ -967,7 +860,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [self.view addSubview:_carousel];
     [_carousel reloadData];
     // [favorites removeAllObjects];
-   
 }
 
 #pragma mark - iCarousel methods
@@ -992,45 +884,60 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     if (view == nil)
     {
-		view = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 200, 175)];
-        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(50, 25, 100, 100)];
+		view = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 150, 175)];
+        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(25, 25, 100, 100)];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
-        imageView.layer.borderColor = kNoochBlue.CGColor;
-//        imageView.layer.borderWidth = 1;
+//        view.layer.borderColor = kNoochBlue.CGColor;
+//        view.layer.borderWidth = 1;
         imageView.layer.cornerRadius = 50;
 
         if (favorite[@"MemberId"])
         {
             [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                       placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
+            
+            UILabel * glyph_fav = [UILabel new];
+            [glyph_fav setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
+            [glyph_fav setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-star-o"]];
+            glyph_fav.textAlignment = NSTextAlignmentCenter;
+            [glyph_fav setFrame:CGRectMake(68, 148, 14, 16)];
+            [glyph_fav setTextColor:kNoochGrayLight];
+            [view addSubview:glyph_fav];
         }
         else if (favorite[@"image"])
         {
             [imageView setImage:[UIImage imageWithData:favorite[@"image"]]];
+
+            UIImageView *glyph_adressBook = [UIImageView new];
+            [glyph_adressBook setStyleClass:@"addressbook-icons"];
+            glyph_adressBook.layer.borderWidth = 1;
+            glyph_adressBook.layer.borderColor = (__bridge CGColorRef)([UIColor whiteColor]);
+            glyph_adressBook.layer.cornerRadius = 3;
+            [glyph_adressBook setFrame:CGRectMake(68, 149, 14, 16)];
+            [view addSubview:glyph_adressBook];
         }
-       
         [imageView setClipsToBounds:YES];
-        name = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 125.0f, 200, 20)];
+        
+        name = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 130.0f, 150, 20)];
         name.textColor = [UIColor blackColor];
         name.textAlignment = NSTextAlignmentCenter;
-        [name setFont:[UIFont fontWithName:@"Roboto-Medium" size:15]];
-        if (favorite[@"LastName"]) {
-           name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
+        [name setFont:[UIFont fontWithName:@"Roboto-regular" size:15]];
+        if (favorite[@"LastName"])
+        {
+            name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
         }
-        else
-             name.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
-       
-//        name.backgroundColor = [UIColor whiteColor];
+        else {
+            name.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
+        }
         [view addSubview:imageView];
         [view addSubview:name];
 
-  }
+    }
     else
     {
         imageView = (UIImageView *)[view viewWithTag:1];
     }
     
-    //set image
     return view;
 }
 
@@ -1116,14 +1023,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             return YES;
         }
         case iCarouselOptionRadius: {
-           return 260;
+           return 310;
         }
         case iCarouselOptionSpacing: {
             return value * 1.7;
         }
         case iCarouselOptionArc:
         {
-            return 2.4;
+            return 2.5;
         }
         default: {
             return value;
@@ -1212,7 +1119,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 - (void)send_request
 {
-   
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
    
     if ([[assist shared]getSuspended])
@@ -1336,7 +1242,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                     counter++;
                 }
             }
-            NSLog(@"The COUNTER IS: =====  %d   ======== ",counter);
+            NSLog(@"The counter is: ==  %d  == ",counter);
             [self.navigationItem setLeftBarButtonItem:nil];
             
             if (counter > 0)
@@ -1388,7 +1294,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
             [dict setObject:emailID forKey:@"email"];
             [dict setObject:@"nonuser" forKey:@"nonuser"];
-              isFromHome=YES;
+            isFromHome = YES;
             HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
             return;
@@ -1450,6 +1356,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
     {
+        [self.hud hide:YES];
         UIAlertView * Alert=[[UIAlertView alloc]initWithTitle:@"New Device Detected" message:@"It looks like you have logged in from a new device.  To protect your account, we will just log you out of all other devices." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
         [Alert show];
@@ -1506,9 +1413,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 #pragma mark- Date From String
 - (NSDate*) dateFromString:(NSString*)aStr
 {
-    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-     [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
    
     [dateFormatter setAMSymbol:@"AM"];
     [dateFormatter setPMSymbol:@"PM"];
@@ -1519,6 +1425,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     NSLog(@"%@", aDate);
     return aDate;
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
