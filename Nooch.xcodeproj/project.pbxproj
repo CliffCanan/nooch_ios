@@ -48,7 +48,6 @@
 		0179E9EB17F355310027526C /* flat_storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0179E9EA17F355310027526C /* flat_storyboard.storyboard */; };
 		0179E9F017F35A740027526C /* SelectRecipient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0179E9EE17F35A740027526C /* SelectRecipient.m */; };
 		0179E9FC17F36C4C0027526C /* Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 0179E9FB17F36C4C0027526C /* Helpers.m */; };
-		017B107A19403F7B007CA7E1 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 017B107919403F7B007CA7E1 /* iCarousel.m */; };
 		018DA86318048309007B24FB /* SendInvite.m in Sources */ = {isa = PBXBuildFile; fileRef = 018DA86218048309007B24FB /* SendInvite.m */; };
 		01B2CA9818B3CC20008E6901 /* NSMutableArray+SWUtilityButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B2CA8C18B3CC20008E6901 /* NSMutableArray+SWUtilityButtons.m */; };
 		01B2CA9918B3CC20008E6901 /* SWCellScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B2CA8E18B3CC20008E6901 /* SWCellScrollView.m */; };
@@ -209,6 +208,7 @@
 		849AF6BF19A320EC00693385 /* KnoxInfo_Lightbox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AF6BE19A320EC00693385 /* KnoxInfo_Lightbox@2x.png */; };
 		849AF6C119A3217600693385 /* KnoxInfo_Lightbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AF6C019A3217600693385 /* KnoxInfo_Lightbox.png */; };
 		84B65A73188542E9009A5205 /* NSString+ASBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B65A72188542E9009A5205 /* NSString+ASBase64.m */; };
+		84B79FFF19BEDEB50081A2AF /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B79FFE19BEDEB50081A2AF /* iCarousel.m */; };
 		84BD1A3419B5A0AE00ECC983 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84BD1A3319B5A0AE00ECC983 /* GoogleMaps.framework */; };
 		84BD1A3619B5A0C600ECC983 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 84BD1A3519B5A0C600ECC983 /* GoogleMaps.bundle */; };
 		84C3EF18187D0E82004687F6 /* mapBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C3EF17187D0E82004687F6 /* mapBack.png */; };
@@ -286,8 +286,6 @@
 		0179E9F817F35AA30027526C /* Home.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Home.m; sourceTree = "<group>"; };
 		0179E9FA17F36C4C0027526C /* Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helpers.h; sourceTree = "<group>"; };
 		0179E9FB17F36C4C0027526C /* Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Helpers.m; sourceTree = "<group>"; };
-		017B107819403F7B007CA7E1 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
-		017B107919403F7B007CA7E1 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		018DA86118048309007B24FB /* SendInvite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendInvite.h; sourceTree = "<group>"; };
 		018DA86218048309007B24FB /* SendInvite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendInvite.m; sourceTree = "<group>"; };
 		01B2CA8B18B3CC20008E6901 /* NSMutableArray+SWUtilityButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+SWUtilityButtons.h"; sourceTree = "<group>"; };
@@ -580,6 +578,8 @@
 		849AF6C019A3217600693385 /* KnoxInfo_Lightbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KnoxInfo_Lightbox.png; sourceTree = "<group>"; };
 		84B65A71188542E9009A5205 /* NSString+ASBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ASBase64.h"; sourceTree = "<group>"; };
 		84B65A72188542E9009A5205 /* NSString+ASBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ASBase64.m"; sourceTree = "<group>"; };
+		84B79FFD19BEDEB50081A2AF /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
+		84B79FFE19BEDEB50081A2AF /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		84BD1A3319B5A0AE00ECC983 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
 		84BD1A3519B5A0C600ECC983 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GoogleMaps.bundle; sourceTree = "<group>"; };
 		84C3EF17187D0E82004687F6 /* mapBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapBack.png; sourceTree = "<group>"; };
@@ -1056,14 +1056,14 @@
 		6B30372C15FA3FF300056DAD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				84B79FFD19BEDEB50081A2AF /* iCarousel.h */,
+				84B79FFE19BEDEB50081A2AF /* iCarousel.m */,
 				0103AEA918FC8B8D003225DA /* FAImageView.h */,
 				0103AEAA18FC8B8D003225DA /* FAImageView.m */,
 				0103AEAB18FC8B8D003225DA /* NSString+FontAwesome.h */,
 				0103AEAC18FC8B8D003225DA /* NSString+FontAwesome.m */,
 				0103AEAD18FC8B8D003225DA /* UIFont+FontAwesome.h */,
 				0103AEAE18FC8B8D003225DA /* UIFont+FontAwesome.m */,
-				017B107819403F7B007CA7E1 /* iCarousel.h */,
-				017B107919403F7B007CA7E1 /* iCarousel.m */,
 				01C49ADF18D8C83500BACE23 /* fontawesome */,
 				01C49AE418D8C83500BACE23 /* MBProgressHUD.h */,
 				01C49AE518D8C83500BACE23 /* MBProgressHUD.m */,
@@ -1582,6 +1582,7 @@
 				0103AEAF18FC8B8D003225DA /* FAImageView.m in Sources */,
 				16E4B1BA187053F20099D075 /* UIImage+MultiFormat.m in Sources */,
 				01085FB717FB6ABE00A31F63 /* ReferralCode.m in Sources */,
+				84B79FFF19BEDEB50081A2AF /* iCarousel.m in Sources */,
 				01085FF5180345D200A31F63 /* ResetPassword.m in Sources */,
 				16E4B1B0187053F20099D075 /* NSData+GIF.m in Sources */,
 				846EF0CB198B5F55009D5491 /* DisputeDetail.m in Sources */,
@@ -1599,7 +1600,6 @@
 				6B75E9F415FE74CA00B091D8 /* terms.m in Sources */,
 				01085FCC17FF3DE600A31F63 /* TransactionDetails.m in Sources */,
 				6B75E9FB15FE7EE300B091D8 /* main 2.m in Sources */,
-				017B107A19403F7B007CA7E1 /* iCarousel.m in Sources */,
 				01B2CA9C18B3CC20008E6901 /* SWUtilityButtonTapGestureRecognizer.m in Sources */,
 				84C3EF1B187D101E004687F6 /* ReEnterPin.m in Sources */,
 				01085FAE17FB4BFA00A31F63 /* SelectPicture.m in Sources */,
@@ -1752,7 +1752,6 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
-					"/Users/cliffcanan/Downloads/GoogleMaps-iOS-1.8.1",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1789,7 +1788,6 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
-					"/Users/cliffcanan/Downloads/GoogleMaps-iOS-1.8.1",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Nooch/Nooch-Prefix.pch";

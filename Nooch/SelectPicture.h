@@ -12,7 +12,7 @@
 
 @interface SelectPicture : GAITrackedViewController<UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate>
 {
-    UIImage * image;
+    UIImage * imageShow;
 }
 - (id)initWithData:(NSDictionary *)user;
 
