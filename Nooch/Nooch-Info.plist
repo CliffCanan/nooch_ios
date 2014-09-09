@@ -45,7 +45,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>To add a profile picture and for attaching images to your transfers.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>Contacts are used to identify recipients so users can send or request money using an email address.</string>
+	<string>Contacts are used to let you send or request money to a friend using their email address.</string>
 	<key>NSLocationUsageDescription</key>
 	<string>Your location is used to find nearby friends using Nooch and for security.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

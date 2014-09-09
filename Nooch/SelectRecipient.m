@@ -547,7 +547,7 @@
         [search setHidden:YES];
 
         serve * ser = [serve new];
-        ser.tagName=@"search";
+        ser.tagName = @"searchByLocation";
         [ser setDelegate:self];
         [ser getLocationBasedSearch:@"10"];
 
@@ -966,7 +966,7 @@
         }
     }
     
-    else if ([tagName isEqualToString:@"search"])
+    else if ([tagName isEqualToString:@"searchByLocation"])
     {
         NSError* error;
         self.recents = [NSJSONSerialization
@@ -974,8 +974,11 @@
                       options:kNilOptions
                       error:&error];
         [[assist shared] addAssos:[self.recents mutableCopy]];
-        if ([self.recents count]!=0) {
-            if ([[assist shared]isRequestMultiple]) {
+
+        if ([self.recents count] != 0 )
+        {
+            if ([[assist shared]isRequestMultiple])
+            {
                 arrRequestPersons = [self.recents mutableCopy];
             }
             

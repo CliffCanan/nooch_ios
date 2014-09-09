@@ -31,7 +31,6 @@
 		01086009180349F600A31F63 /* LimitsAndFees.m in Sources */ = {isa = PBXBuildFile; fileRef = 01086008180349F600A31F63 /* LimitsAndFees.m */; };
 		010A993A185FA99F001DCE6B /* choose-pic-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 010A9937185FA99F001DCE6B /* choose-pic-icon.png */; };
 		010A993B185FA99F001DCE6B /* n_Icon_58x66.png in Resources */ = {isa = PBXBuildFile; fileRef = 010A9938185FA99F001DCE6B /* n_Icon_58x66.png */; };
-		010A993E185FC5E7001DCE6B /* back-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 010A993D185FC5E7001DCE6B /* back-arrow.png */; };
 		0129D8E71815B10D00BEAC30 /* Brandon_bld.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0129D8E31815B10D00BEAC30 /* Brandon_bld.otf */; };
 		0129D8E81815B10D00BEAC30 /* Brandon_blk.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0129D8E41815B10D00BEAC30 /* Brandon_blk.otf */; };
 		0129D8E91815B10D00BEAC30 /* Brandon_light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0129D8E51815B10D00BEAC30 /* Brandon_light.otf */; };
@@ -99,6 +98,10 @@
 		16E4B1CA1870A2C90099D075 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16E4B1C91870A2C90099D075 /* MessageUI.framework */; };
 		5C6917DB19B69AD90044BF2B /* nooch_logo_color.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C6917DA19B69AD90044BF2B /* nooch_logo_color.png */; };
 		5C9B7B3219B3E51E006DD9B8 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C9B7B3119B3E51E006DD9B8 /* FontAwesome.ttf */; };
+		5CC1A77819BA7A8A0000C2C7 /* Icon29.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77419BA7A8A0000C2C7 /* Icon29.png */; };
+		5CC1A77919BA7A8A0000C2C7 /* Icon58.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77519BA7A8A0000C2C7 /* Icon58.png */; };
+		5CC1A77A19BA7A8A0000C2C7 /* Icon80.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77619BA7A8A0000C2C7 /* Icon80.png */; };
+		5CC1A77B19BA7A8A0000C2C7 /* Icon120.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77719BA7A8A0000C2C7 /* Icon120.png */; };
 		6B01F1B4179DA78B00E34C49 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B3179DA78B00E34C49 /* CoreText.framework */; };
 		6B01F1B6179DA79B00E34C49 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B5179DA79B00E34C49 /* GLKit.framework */; };
 		6B01F1B8179DA7AD00E34C49 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B7179DA7AD00E34C49 /* ImageIO.framework */; };
@@ -262,7 +265,6 @@
 		01086008180349F600A31F63 /* LimitsAndFees.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LimitsAndFees.m; sourceTree = "<group>"; };
 		010A9937185FA99F001DCE6B /* choose-pic-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "choose-pic-icon.png"; sourceTree = "<group>"; };
 		010A9938185FA99F001DCE6B /* n_Icon_58x66.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_Icon_58x66.png; sourceTree = "<group>"; };
-		010A993D185FC5E7001DCE6B /* back-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-arrow.png"; sourceTree = "<group>"; };
 		0129D8E31815B10D00BEAC30 /* Brandon_bld.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_bld.otf; sourceTree = "<group>"; };
 		0129D8E41815B10D00BEAC30 /* Brandon_blk.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_blk.otf; sourceTree = "<group>"; };
 		0129D8E51815B10D00BEAC30 /* Brandon_light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_light.otf; sourceTree = "<group>"; };
@@ -366,6 +368,10 @@
 		16E4B1C91870A2C90099D075 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		5C6917DA19B69AD90044BF2B /* nooch_logo_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nooch_logo_color.png; sourceTree = "<group>"; };
 		5C9B7B3119B3E51E006DD9B8 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
+		5CC1A77419BA7A8A0000C2C7 /* Icon29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon29.png; sourceTree = "<group>"; };
+		5CC1A77519BA7A8A0000C2C7 /* Icon58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon58.png; sourceTree = "<group>"; };
+		5CC1A77619BA7A8A0000C2C7 /* Icon80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon80.png; sourceTree = "<group>"; };
+		5CC1A77719BA7A8A0000C2C7 /* Icon120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon120.png; sourceTree = "<group>"; };
 		6B01F1B3179DA78B00E34C49 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		6B01F1B5179DA79B00E34C49 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		6B01F1B7179DA7AD00E34C49 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -777,6 +783,10 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				5CC1A77419BA7A8A0000C2C7 /* Icon29.png */,
+				5CC1A77519BA7A8A0000C2C7 /* Icon58.png */,
+				5CC1A77619BA7A8A0000C2C7 /* Icon80.png */,
+				5CC1A77719BA7A8A0000C2C7 /* Icon120.png */,
 				5C6917DA19B69AD90044BF2B /* nooch_logo_color.png */,
 				849AF6C019A3217600693385 /* KnoxInfo_Lightbox.png */,
 				849AF6BE19A320EC00693385 /* KnoxInfo_Lightbox@2x.png */,
@@ -791,7 +801,6 @@
 				84F099511988AD840020A08F /* Default@2x.png */,
 				01542900190FF5CE00A15AA0 /* noochIcon-96.png */,
 				0106773B1860F68400E11F3D /* take-pic-icon.png */,
-				010A993D185FC5E7001DCE6B /* back-arrow.png */,
 				010A9937185FA99F001DCE6B /* choose-pic-icon.png */,
 				010A9938185FA99F001DCE6B /* n_Icon_58x66.png */,
 				014C4316185B9A4C00956A84 /* dollar-sign.png */,
@@ -1483,6 +1492,7 @@
 				01C26DC01843BB22005179B7 /* stats-transfers-active.png in Resources */,
 				6BC5FEE51625F1B0007EAD7A /* Roboto-Regular.ttf in Resources */,
 				01C26DB61843BB22005179B7 /* memo-nonprofits.png in Resources */,
+				5CC1A77B19BA7A8A0000C2C7 /* Icon120.png in Resources */,
 				6BC5FEE71625F1B0007EAD7A /* Roboto-Thin.ttf in Resources */,
 				6BC5FEE91625F1B0007EAD7A /* Roboto-ThinItalic.ttf in Resources */,
 				010A993B185FA99F001DCE6B /* n_Icon_58x66.png in Resources */,
@@ -1503,6 +1513,7 @@
 				014C432B185B9A4C00956A84 /* encryption-lock.png in Resources */,
 				01542901190FF5CE00A15AA0 /* noochIcon-96.png in Resources */,
 				849AF6BF19A320EC00693385 /* KnoxInfo_Lightbox@2x.png in Resources */,
+				5CC1A77A19BA7A8A0000C2C7 /* Icon80.png in Resources */,
 				6BC04B9C1677DE0E005C68D6 /* LICENSE in Resources */,
 				01C26DC21843BB22005179B7 /* twitter-icon.png in Resources */,
 				01C26DBE1843BB22005179B7 /* stats-profile-active.png in Resources */,
@@ -1536,13 +1547,14 @@
 				0129D8E81815B10D00BEAC30 /* Brandon_blk.otf in Resources */,
 				5C9B7B3219B3E51E006DD9B8 /* FontAwesome.ttf in Resources */,
 				0129D8E91815B10D00BEAC30 /* Brandon_light.otf in Resources */,
+				5CC1A77819BA7A8A0000C2C7 /* Icon29.png in Resources */,
+				5CC1A77919BA7A8A0000C2C7 /* Icon58.png in Resources */,
 				845631B71990AD45005B90F6 /* whiteBack30@2x.png in Resources */,
 				0129D8EA1815B10D00BEAC30 /* Brandon_med.otf in Resources */,
 				01C26DAE1843BB22005179B7 /* Dollar_Symbol.png in Resources */,
 				014C432F185B9A4C00956A84 /* n_Icon.png in Resources */,
 				01C26DB31843BB22005179B7 /* fb-icon100x100.png in Resources */,
 				01C26DB91843BB22005179B7 /* pay-back-icon.png in Resources */,
-				010A993E185FC5E7001DCE6B /* back-arrow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -202,8 +202,8 @@
     [btnLink addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
 
     UILabel * glyphLink = [UILabel new];
-    [glyphLink setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
-    [glyphLink setFrame:CGRectMake(180, 9, 30, 30)];
+    [glyphLink setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+    [glyphLink setFrame:CGRectMake(186, 9, 30, 30)];
     [glyphLink setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-link"]];
     [glyphLink setTextColor:[UIColor whiteColor]];
     

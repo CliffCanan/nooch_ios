@@ -146,30 +146,30 @@
     else {
         [memo_label setText:@"No memo attached"];
     }
-    [memo_label setTextAlignment:NSTextAlignmentCenter];
     [memo_label setStyleClass:@"pin_memotext"];
     [self.view addSubview:memo_label];
 
     UIImageView *user_pic = [UIImageView new];
-    [user_pic setFrame:CGRectMake(10, 205, 56, 56)];
+    [user_pic setFrame:CGRectMake(10, 205, 58, 58)];
 
     if ([self.receiver valueForKey:@"nonuser"]) {
-        [user_pic setImage:[UIImage imageNamed:@"RoundLoading.png"]];
+        [user_pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
     }
     else {
         [user_pic setHidden:NO];
         if (self.receiver[@"Photo"]) {
             [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
-                     placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+                     placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         }
         else {
             [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
-                     placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]];
+                     placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         }
     }
     user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
-    user_pic.layer.borderWidth = 2; user_pic.clipsToBounds = YES;
-    user_pic.layer.cornerRadius = 27;
+    user_pic.layer.borderWidth = 2;
+    user_pic.clipsToBounds = YES;
+    user_pic.layer.cornerRadius = 29;
     [self.view addSubview:user_pic];
 
     UILabel *total = [[UILabel alloc] initWithFrame:CGRectMake(10, 200, 290, 30)];
