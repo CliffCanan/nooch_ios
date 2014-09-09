@@ -6,6 +6,7 @@
 
 #import "MBProgressHUD.h"
 #import <tgmath.h>
+#define Rgb2UIColor(r, g, b, a)  [UIColor colorWithRed:((r) / 255.0) green:((g) / 255.0) blue:((b) / 255.0) alpha:(a)]
 
 
 #if __has_feature(objc_arc)
@@ -176,23 +177,23 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	self = [super initWithFrame:frame];
 	if (self) {
 		// Set default values for properties
-		self.animationType = MBProgressHUDAnimationFade;
+		self.animationType = MBProgressHUDAnimationZoomOut;
 		self.mode = MBProgressHUDModeIndeterminate;
 		self.labelText = nil;
 		self.detailsLabelText = nil;
 		self.opacity = 0.8f;
-        self.color = nil;
+        self.color = Rgb2UIColor(24, 158, 225, .88);
 		self.labelFont = [UIFont boldSystemFontOfSize:kLabelFontSize];
         self.labelColor = [UIColor whiteColor];
 		self.detailsLabelFont = [UIFont boldSystemFontOfSize:kDetailsLabelFontSize];
         self.detailsLabelColor = [UIColor whiteColor];
 		self.xOffset = 0.0f;
-		self.yOffset = 0.0f;
+		self.yOffset = -18.0f;
 		self.dimBackground = NO;
-		self.margin = 20.0f;
+		self.margin = 16.0f;
         self.cornerRadius = 10.0f;
 		self.graceTime = 0.0f;
-		self.minShowTime = 0.0f;
+		self.minShowTime = 0.25f;
 		self.removeFromSuperViewOnHide = NO;
 		self.minSize = CGSizeZero;
 		self.square = NO;
@@ -313,9 +314,9 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 
 - (void)showUsingAnimation:(BOOL)animated {
 	if (animated && animationType == MBProgressHUDAnimationZoomIn) {
-		self.transform = CGAffineTransformConcat(rotationTransform, CGAffineTransformMakeScale(0.5f, 0.5f));
+		self.transform = CGAffineTransformConcat(rotationTransform, CGAffineTransformMakeScale(0.85f, 0.85f));
 	} else if (animated && animationType == MBProgressHUDAnimationZoomOut) {
-		self.transform = CGAffineTransformConcat(rotationTransform, CGAffineTransformMakeScale(1.5f, 1.5f));
+		self.transform = CGAffineTransformConcat(rotationTransform, CGAffineTransformMakeScale(1.1f, 1.1f));
 	}
 	self.showStarted = [NSDate date];
 	// Fade in
@@ -343,9 +344,9 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		// 0.02 prevents the hud from passing through touches during the animation the hud will get completely hidden
 		// in the done method
 		if (animationType == MBProgressHUDAnimationZoomIn) {
-			self.transform = CGAffineTransformConcat(rotationTransform, CGAffineTransformMakeScale(1.5f, 1.5f));
+			self.transform = CGAffineTransformConcat(rotationTransform, CGAffineTransformMakeScale(1.15f, 1.15f));
 		} else if (animationType == MBProgressHUDAnimationZoomOut) {
-			self.transform = CGAffineTransformConcat(rotationTransform, CGAffineTransformMakeScale(0.5f, 0.5f));
+			self.transform = CGAffineTransformConcat(rotationTransform, CGAffineTransformMakeScale(0.85f, 0.85f));
 		}
 
 		self.alpha = 0.02f;
