@@ -977,13 +977,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [_carousel scrollToItemAtIndex:index.intValue animated:YES];
 }
 
-- (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel
+- (NSInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
     //return the total number of items in the carousel
     return [favorites count];
 }
 
-- (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view
+- (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSInteger)index reusingView:(UIView *)view
 {
     UIImageView *imageView = nil;
     UILabel *name=nil;;

@@ -102,11 +102,11 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    image= [info objectForKey:UIImagePickerControllerOriginalImage];
-    image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(120, 120) interpolationQuality:kCGInterpolationMedium];
-    [self.pic setImage:image];
+    imageShow= [info objectForKey:UIImagePickerControllerOriginalImage];
+    imageShow = [imageShow resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(120, 120) interpolationQuality:kCGInterpolationMedium];
+    [self.pic setImage:imageShow];
     
-    [[assist shared]setTranferImage:image];
+    [[assist shared]setTranferImage:imageShow];
     [self dismissViewControllerAnimated:YES completion:^{
         self.slidingViewController.panGesture.enabled = NO;
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
