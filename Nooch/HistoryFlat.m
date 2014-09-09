@@ -597,6 +597,22 @@ return customView;
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     if ([segmentedControl selectedSegmentIndex] == 0)
     {
+        UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [filter setStyleClass:@"label_filter"];
+        [filter setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-filter"] forState:UIControlStateNormal];
+        [filter addTarget:self action:@selector(FilterHistory:) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *filt = [[UIBarButtonItem alloc] initWithCustomView:filter];
+        
+        UIButton *glyph_map = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [glyph_map setStyleId:@"glyph_map"];
+        [glyph_map setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-map-marker"] forState:UIControlStateNormal];
+        [glyph_map addTarget:self action:@selector(toggleMapByNavBtn) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *map = [[UIBarButtonItem alloc] initWithCustomView:glyph_map];
+        
+        NSArray *topRightBtns = @[map,filt];
+        [self.navigationItem setRightBarButtonItems:topRightBtns animated:NO ];
+        
         UILabel *glyph_recent = [UILabel new];
         [glyph_recent setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
         [glyph_recent setFrame:CGRectMake(21, 12, 22, 16)];
@@ -621,6 +637,16 @@ return customView;
     }
     else
     {
+        [self.navigationItem setRightBarButtonItems:nil];
+
+        UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [filter setStyleClass:@"label_filter"];
+        [filter setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-filter"] forState:UIControlStateNormal];
+        [filter addTarget:self action:@selector(FilterHistory:) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *filt = [[UIBarButtonItem alloc] initWithCustomView:filter];
+        
+        [self.navigationItem setRightBarButtonItem:filt animated:NO ];
+        
         UILabel *glyph_recent = [UILabel new];
         [glyph_recent setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
         [glyph_recent setFrame:CGRectMake(21, 12, 22, 16)];
