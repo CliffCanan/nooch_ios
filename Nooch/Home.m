@@ -67,7 +67,7 @@ NSMutableURLRequest *request;
     [[assist shared]isPOP];
     self.transaction_types = @[
                                @{kButtonType: @"send_request",
-                                 kButtonTitle: @"Search More Friends",
+                                 kButtonTitle: @"Search For More Friends",
                                  kButtonColor: [UIColor clearColor]},
                                
                                @{kButtonType: @"pay_in_person",
@@ -899,7 +899,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             UILabel * glyph_fav = [UILabel new];
             [glyph_fav setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
             [glyph_fav setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-star-o"]];
-            [glyph_fav setFrame:CGRectMake(65, 148, 20, 16)];
+            glyph_fav.textAlignment = NSTextAlignmentCenter;
+            [glyph_fav setFrame:CGRectMake(68, 148, 14, 16)];
             [glyph_fav setTextColor:kNoochGrayLight];
             [view addSubview:glyph_fav];
         }
@@ -912,7 +913,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             glyph_adressBook.layer.borderWidth = 1;
             glyph_adressBook.layer.borderColor = (__bridge CGColorRef)([UIColor whiteColor]);
             glyph_adressBook.layer.cornerRadius = 3;
-            
             [glyph_adressBook setFrame:CGRectMake(68, 149, 14, 16)];
             [view addSubview:glyph_adressBook];
         }
