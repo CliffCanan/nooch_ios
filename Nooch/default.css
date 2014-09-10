@@ -139,6 +139,16 @@
         text-align: center;
         color: white;
      }
+     .banner_alert_glyph_sm {
+        top: 2px;
+        left: 48px;
+        width: 10px;
+        height: 10px;
+        font-family: "FontAwesome";
+        font-size: 8px;
+        text-align: center;
+        color: white;
+     }
      .banner_info {
         top: 20px;
         left: 2px;
@@ -297,7 +307,18 @@
             background-image	: linear-gradient(#7fd034, #6ab029);
 			border				: 1px solid #66AE3C;
 		}
-
+        #button_green_home {
+            width				: 280px;
+			height				: 54px;
+			left                : 20px;
+			color 				: white;
+			border-radius		: 5px;
+			font-family			: "Roboto";
+			font-weight         : regular;
+			font-size			: 19px;
+            background-image	: linear-gradient(#7fd034, #6ab029);
+			border				: 1px solid #66AE3C;
+        }
 		/****  Disabled GREEN GRADIENT  ****/
 		.button_green:disabled {
             width				: 280px;
@@ -353,8 +374,8 @@
 		.notVerifiedLabel {
 			color 				: #b90e0a;
 			font-family			: "Roboto";
-			font-weight         : regular;
-			font-size			: 16px;
+			font-weight         : medium;
+			font-size			: 15px;
 		}
 		
 		.infobutton {
@@ -746,6 +767,14 @@
 	.alertIcon {
 		/*left should be set inline based on the title's length*/
 		top: 3px;
+	}
+    .nav_top_right  {
+		width			: 50px;
+		height			: 25px;
+		font-family     : "Roboto";
+		font-size		: 18px;
+		text-align     	: center;
+		color 			: #ffffff;
 	}
 	/*****************************************************************/
 	/*****************************************************************/
@@ -1169,28 +1198,28 @@ table-view#select_recipientwithoutSeperator {
     }
 	.animate_roll_left {
 		animation-name				: howmuch_roll_left;
-		animation-duration			: 0.75s;
+		animation-duration			: 0.8s;
 		animation-fill-mode			: forwards;
 		animation-timing-function	: ease-out;
 		animation-iteration-count	: 1;
 	}
     .animate_roll_left_return {
         animation-name				: howmuch_roll_left_return;
-		animation-duration			: 0.75s;
+		animation-duration			: 0.8s;
 		animation-fill-mode			: forwards;
 		animation-timing-function	: ease-out;
 		animation-iteration-count	: 1;
     }
 	.animate_roll_right {
 		animation-name				: howmuch_roll_right;
-		animation-duration			: 0.75s;
+		animation-duration			: 0.8s;
 		animation-fill-mode			: forwards;
 		animation-timing-function	: ease-out;
 		animation-iteration-count	: 1;
 	}
     .animate_roll_right_return {
         animation-name				: howmuch_roll_right_return;
-		animation-duration			: 0.75s;
+		animation-duration			: 0.8s;
 		animation-fill-mode			: forwards;
 		animation-timing-function	: ease-out;
 		animation-iteration-count	: 1;
@@ -1911,7 +1940,10 @@ table-view#select_recipientwithoutSeperator {
         color		: white;
         text-align	: center;
     }
-    
+    .lside_menu_icons_sm {
+        font-family	: "FontAwesome";
+        font-size: 16px;
+    }
     .lside_arrow {
         left        : 240px;
         top         : 8px;
@@ -2210,10 +2242,10 @@ table-view#select_recipientwithoutSeperator {
 
 	 /**  Amount of the PENDING Transfer on the right side of the row (Only on the Pending Tab)  **/
 	.history_pending_transferamount {
-		width				: 66px;
+		width				: 78px;
 		height				: 40px;
 		top					: 10px;
-		left				: 250px;
+		left				: 235px;
 		font-family			: "Roboto";
 		font-weight         : medium;
 		font-size			: 20px;
@@ -2973,10 +3005,16 @@ table-view#select_recipientwithoutSeperator {
 			scale: 1;
             opacity : 1;
 		}
-		100% {
+	/*	10% {
+			left: 146px;
+            rotation  : 1;
+			scale: 1;
+            opacity: 1;
+		} */
+        100% {
 			left: 5px;
-            rotation  : -4;
-			scale: .1;
+            rotation  : -5;
+			scale: .2;
             opacity: 0;
 		}
 	}
@@ -3003,8 +3041,8 @@ table-view#select_recipientwithoutSeperator {
 		}
 		100% {
 			left: 310px;
-            rotation  : 4;
-			scale: .1;
+            rotation  : 5;
+			scale: .2;
             opacity : 0;
 		}
     }

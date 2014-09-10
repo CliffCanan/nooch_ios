@@ -78,6 +78,8 @@
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+    [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+    hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
     UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
@@ -109,12 +111,16 @@
 
     UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [filter setStyleClass:@"label_filter"];
+    [filter setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+    filter.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [filter setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-filter"] forState:UIControlStateNormal];
     [filter addTarget:self action:@selector(FilterHistory:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *filt = [[UIBarButtonItem alloc] initWithCustomView:filter];
 
     UIButton *glyph_map = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [glyph_map setStyleId:@"glyph_map"];
+    [glyph_map setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+    glyph_map.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [glyph_map setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-map-marker"] forState:UIControlStateNormal];
     [glyph_map addTarget:self action:@selector(toggleMapByNavBtn) forControlEvents:UIControlEventTouchUpInside];
     
@@ -600,12 +606,16 @@ return customView;
         UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [filter setStyleClass:@"label_filter"];
         [filter setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-filter"] forState:UIControlStateNormal];
+        [filter setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+        filter.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         [filter addTarget:self action:@selector(FilterHistory:) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *filt = [[UIBarButtonItem alloc] initWithCustomView:filter];
         
         UIButton *glyph_map = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [glyph_map setStyleId:@"glyph_map"];
         [glyph_map setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-map-marker"] forState:UIControlStateNormal];
+        [glyph_map setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+        glyph_map.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         [glyph_map addTarget:self action:@selector(toggleMapByNavBtn) forControlEvents:UIControlEventTouchUpInside];
         
         UIBarButtonItem *map = [[UIBarButtonItem alloc] initWithCustomView:glyph_map];
@@ -642,17 +652,19 @@ return customView;
         UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [filter setStyleClass:@"label_filter"];
         [filter setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-filter"] forState:UIControlStateNormal];
+        [filter setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+        filter.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         [filter addTarget:self action:@selector(FilterHistory:) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *filt = [[UIBarButtonItem alloc] initWithCustomView:filter];
         
         [self.navigationItem setRightBarButtonItem:filt animated:NO ];
         
-        UILabel *glyph_recent = [UILabel new];
-        [glyph_recent setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-        [glyph_recent setFrame:CGRectMake(21, 12, 22, 16)];
-        [glyph_recent setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
-        [glyph_recent setTextColor: kNoochBlue];
-        [self.view addSubview:glyph_recent];
+        UILabel *glyph_checkmark = [UILabel new];
+        [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+        [glyph_checkmark setFrame:CGRectMake(21, 12, 22, 16)];
+        [glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+        [glyph_checkmark setTextColor: kNoochBlue];
+        [self.view addSubview:glyph_checkmark];
         
         UILabel *glyph_location = [UILabel new];
         [glyph_location setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
