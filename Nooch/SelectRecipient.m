@@ -973,15 +973,19 @@
                       JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                       options:kNilOptions
                       error:&error];
-        [[assist shared] addAssos:[self.recents mutableCopy]];
-
-        if ([self.recents count] != 0 )
+         self.recents=[ self.recents mutableCopy];
+        for(int i = 0; i < [ self.recents count]; i++)
         {
-            if ([[assist shared]isRequestMultiple])
+            for(int j = i+1; j < [ self.recents count]; j++)
             {
-                arrRequestPersons = [self.recents mutableCopy];
-            }
-            
+                NSDictionary *recordOne = [ self.recents objectAtIndex:i];
+                NSDictionary *recordTwo = [ self.recents objectAtIndex:j];
+                
+                if([[recordOne valueForKey:@"Miles"] floatValue] > [[recordTwo valueForKey:@"Miles"] floatValue])
+                {
+                    [ self.recents exchangeObjectAtIndex:i withObjectAtIndex:j];
+                }
+            }   
         }
         [self.noContact_img removeFromSuperview];
         [self.contacts setStyleId:@"select_recipient"];
@@ -1388,6 +1392,7 @@
         [cell.textLabel setText:name];
         
         NSString * miles;
+        
         if ([[temp objectForKey:@"Miles"] intValue] < 1) {
             miles = [NSString stringWithFormat:@"    %.0f feet",([[temp objectForKey:@"Miles"] floatValue] * 5280)];
         }
