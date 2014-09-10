@@ -209,6 +209,8 @@
         [hamburger setStyleId:@"navbar_hamburger"];
         [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
         [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
+        [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+        hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
         [self.navigationItem setLeftBarButtonItem:menu];
     }
@@ -241,7 +243,7 @@
 
     NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [UIColor whiteColor], UITextAttributeTextColor,
-                                  Rgb2UIColor(19, 32, 38, .26), UITextAttributeTextShadowColor,
+                                  Rgb2UIColor(19, 32, 38, .2), UITextAttributeTextShadowColor,
                                   [NSValue valueWithUIOffset:UIOffsetMake(0.0, -1.0)], UITextAttributeTextShadowOffset, nil];
     [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
     [self.navigationItem setTitle:@"Profile Info"];
@@ -264,8 +266,8 @@
     shadowUnder.backgroundColor = Rgb2UIColor(63, 171, 225, .4);
     shadowUnder.layer.cornerRadius = 30;
     shadowUnder.layer.shadowColor = [UIColor blackColor].CGColor;
-    shadowUnder.layer.shadowOffset = CGSizeMake(0, 2);
-    shadowUnder.layer.shadowOpacity = 0.5;
+    shadowUnder.layer.shadowOffset = CGSizeMake(0, 2.5);
+    shadowUnder.layer.shadowOpacity = 0.4;
     shadowUnder.layer.shadowRadius = 3.5;
     [shadowUnder setStyleClass:@"animate_bubble"];
     [self.view addSubview:shadowUnder];
@@ -299,7 +301,7 @@
     NSString *_date=[_formatter stringFromDate:date];
     
     NSShadow * shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = Rgb2UIColor(229, 242, 248, .3);
+    shadow.shadowColor = Rgb2UIColor(229, 242, 248, .38);
     shadow.shadowOffset = CGSizeMake(0, 1);
     
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
@@ -420,15 +422,16 @@
     [self.view addSubview:self.zip];
 
     self.save = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.save setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.3) forState:UIControlStateNormal];
+    [self.save setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
     self.save.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.save addTarget:self action:@selector(save_changes) forControlEvents:UIControlEventTouchUpInside];
-    [self.save setTitle:@"Save Profile" forState:UIControlStateNormal];
-    [self.save setFrame:CGRectMake(0, 430+down, 0, 0)];
-    [self.save setStyleClass:@"button_gray"];
+    [self.save setTitle:@"Save" forState:UIControlStateNormal];
+    [self.save setStyleClass:@"nav_top_right"];
     [self.save setEnabled:NO];
     [self.view addSubview:self.save];
-
+    UIBarButtonItem *nav_save = [[UIBarButtonItem alloc] initWithCustomView:self.save];
+    [self.navigationItem setRightBarButtonItem:nav_save animated:NO ];
+    
     self.name.text=@"";
     self.email.text=@"";
     self.recovery_email.text=@"";
@@ -449,11 +452,11 @@
                               nil];
     
     self.list = [UITableView new];
-    [self.list setFrame:CGRectMake(0, 70+down, 320, 350)];
+    [self.list setFrame:CGRectMake(0, 70+down, 320, 390)];
     [self.list setDelegate:self];
     [self.list setDataSource:self];
-    [self.list setRowHeight:50];
-    [self.list setScrollEnabled:NO];
+    [self.list setRowHeight:60];
+    [self.list setScrollEnabled:YES];
     [self.view addSubview:self.list];
 }
 
@@ -549,7 +552,6 @@
 
     [self.save setEnabled:NO];
     [self.save setUserInteractionEnabled:NO];
-    [self.save setStyleClass:@"button_gray"];
     
     strPhoneNumber=self.phone.text;
     strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@"(" withString:@""];
@@ -681,17 +683,17 @@
     [actionSheetObject showInView:self.view];
 }
 
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-  if(buttonIndex == 0)
-  {
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 0)
+    {
         if (![user objectForKey:@"facebook_id"]) {
-            
             return;
         }
-       NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square",[user objectForKey:@"facebook_id"]];
+        NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square",[user objectForKey:@"facebook_id"]];
       
    
-     [picture setImageWithURL:[NSURL URLWithString:url]
+        [picture setImageWithURL:[NSURL URLWithString:url]
              placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]
                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
                         
@@ -700,14 +702,13 @@
                             [[assist shared]setTranferImage:nil];
                             [[assist shared]setTranferImage:image];
                         }
-
-                    }];
+        }];
     
         [self.save setEnabled:YES];
-        [self.save setStyleClass:@"button_green"];
-        [self.save setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
+        [self.save setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
         self.save.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [self.save setUserInteractionEnabled:YES];
+        
         [dictSavedInfo setObject:@"YES" forKey:@"ImageChanged"];
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         [imageCache clearMemory];
@@ -841,7 +842,7 @@
             [email_not_validated setBackgroundColor:Rgb2UIColor(246, 8, 3, .4)];
             [cell.contentView addSubview:email_not_validated];
         
-            UILabel *emailVerifiedStatus = [[UILabel alloc] initWithFrame:CGRectMake(25, 50, 130, 30)];
+            UILabel *emailVerifiedStatus = [[UILabel alloc] initWithFrame:CGRectMake(15, 50, 130, 30)];
             [emailVerifiedStatus setBackgroundColor:[UIColor clearColor]];
             [emailVerifiedStatus setStyleClass:@"notVerifiedLabel"];
             [cell.contentView addSubview:emailVerifiedStatus];
@@ -850,7 +851,7 @@
             shadow.shadowColor = Rgb2UIColor(255, 252, 249, .25);
             shadow.shadowOffset = CGSizeMake(0, 1);
             NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
-            emailVerifiedStatus.attributedText = [[NSAttributedString alloc] initWithString:@"NOT VERIFIED"
+            emailVerifiedStatus.attributedText = [[NSAttributedString alloc] initWithString:@"Not Verified"
                                                                        attributes:textAttributes];
 
             UIButton *resend_mail = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -858,7 +859,7 @@
             [resend_mail setStyleClass:@"button_green_sm"];
             [resend_mail addTarget:self action:@selector(resend_email) forControlEvents:UIControlEventTouchUpInside];
             [resend_mail setTitle:@"Resend Email" forState:UIControlStateNormal];
-            [resend_mail setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.26) forState:UIControlStateNormal];
+            [resend_mail setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
             resend_mail.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
             [cell.contentView addSubview:resend_mail];
         }
@@ -887,7 +888,7 @@
             [unverified_phone setBackgroundColor:kNoochRed];
             [cell.contentView addSubview:unverified_phone];
             
-            UILabel *phoneVerifiedStatus = [[UILabel alloc] initWithFrame:CGRectMake(25, 50, 130, 30)];
+            UILabel *phoneVerifiedStatus = [[UILabel alloc] initWithFrame:CGRectMake(15, 50, 130, 30)];
             [phoneVerifiedStatus setBackgroundColor:[UIColor clearColor]];
             [phoneVerifiedStatus setStyleClass:@"notVerifiedLabel"];
             [cell.contentView addSubview:phoneVerifiedStatus];
@@ -902,7 +903,7 @@
             UIButton *resend_phone = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [resend_phone setTitle:@"Resend SMS" forState:UIControlStateNormal];
             [resend_phone addTarget:self action:@selector(resend_SMS) forControlEvents:UIControlEventTouchUpInside];
-            [resend_phone setFrame:CGRectMake(200, 60, 110, 30)];
+            [resend_phone setFrame:CGRectMake(200, 50, 105, 30)];
             [resend_phone setStyleClass:@"button_green_sm"];
             [resend_phone setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.25) forState:UIControlStateNormal];
             resend_phone.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -991,14 +992,13 @@
     if(indexPath.row == self.expand_path.row && self.disclose) {
         return 88;
     }
-    return 44;
+    return 50;
 }
 
 #pragma mark - UITextField delegation
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
         [self.save setEnabled:YES];
-        [self.save setStyleClass:@"button_green"];
         [self.save setUserInteractionEnabled:YES];
     
     return YES;

@@ -343,7 +343,7 @@
     CGRect origin = self.reset_type.frame;
     origin.origin.x = 10;
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.6];
+    [UIView setAnimationDuration:0.8];
 
     origin.size.width = 149;
     origin.origin.x = 162;
@@ -368,7 +368,7 @@
     [self.recip_back setStyleClass:@"barbackground_blue"];
     
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.6];
+    [UIView setAnimationDuration:0.8];
 
     [self.request addTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
     [self.reset_type setAlpha:1];
@@ -392,7 +392,7 @@
     }
 
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.6];
+    [UIView setAnimationDuration:0.3];
     
     [self.send setStyleId:@"howmuch_send"];
     [self.request setStyleId:@"howmuch_request"];
@@ -408,31 +408,35 @@
     [self.send setTitle:@"Send" forState:UIControlStateNormal];
     [self.request setTitle:@"Request" forState:UIControlStateNormal];
     [UIView commitAnimations];
-
-    
 }
 
-- (void) confirm_send {
-    if ([self.amnt floatValue] == 0) {
+- (void) confirm_send
+{
+    if ([self.amnt floatValue] == 0)
+    {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!" message:@"Please enter a value over $0.00. We'd love to send a negative amount, but it's actually pretty difficult." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
             [alert show];
             return;
     }
-    if ([[self.amount text] length] < 3) {
+    if ([[self.amount text] length] < 3)
+    {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Just A Little More" message:@"Please enter an amount greater than $1.00." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         return;
     }
-    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100) {   
+    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100)
+    {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Now" message:[NSString stringWithFormat:@"To keep Nooch safe, please don’t %@ more than $100. We hope to raise this limit very soon!", @"send"] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
         [alert show];
         return;
     }
-    //[user objectForKey:@"Balance"]
+
     NSMutableDictionary *transaction = [self.receiver mutableCopy];
     [transaction setObject:[self.memo text] forKey:@"memo"];
     float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
-    if ([self.receiver valueForKey:@"nonuser"]) {
+    
+    if ([self.receiver valueForKey:@"nonuser"])
+    {
         TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"send" amount:input_amount];
         [self.navigationController pushViewController:pin animated:YES];
     }
@@ -441,37 +445,45 @@
         [self.navigationController pushViewController:pin animated:YES];
     }
 }
+
 #pragma mark  - alert view delegation
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
 }
 
-- (void) confirm_request {
-   // isAddRequest=YES;
-    if ([[self.amount text] length] < 3) {
+- (void) confirm_request
+{
+    if ([[self.amount text] length] < 3)
+    {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Just A Little More" message:@"Please enter an amount greater than $1.00." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         return;
     }
-    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100) {
+    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100)
+    {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Big Spender" message:[NSString stringWithFormat:@"While we definitely appreciate your enthusiasm, we are limiting transfers to $100 for now in order to minimize our risk (and yours). We're working to raise the limit soon! "] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
         [alert show];
         return;
     }
-    if ([[assist shared]isRequestMultiple]) {
+
+    if ([[assist shared]isRequestMultiple])
+    {
         NSMutableDictionary *transaction = [[NSMutableDictionary alloc]init];
         [transaction setObject:[self.memo text] forKey:@"memo"];
         float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
         TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"request" amount:input_amount];
         [self.navigationController pushViewController:pin animated:YES];
     }
-    else {
+    else
+    {
         NSMutableDictionary *transaction = [self.receiver mutableCopy];
         [transaction setObject:[self.memo text] forKey:@"memo"];
         float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
         TransferPIN *pin;
+        
         if ([self.receiver valueForKey:@"nonuser"]) {
             pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"request" amount:input_amount];
-        } else {
+        }
+        else {
             pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"request" amount:input_amount];
         }
         [self.navigationController pushViewController:pin animated:YES];

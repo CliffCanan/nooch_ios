@@ -96,11 +96,11 @@
 		16E4B1BD187053F20099D075 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E4B1AF187053F20099D075 /* MKAnnotationView+WebCache.m */; };
 		16E4B1CA1870A2C90099D075 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16E4B1C91870A2C90099D075 /* MessageUI.framework */; };
 		5C6917DB19B69AD90044BF2B /* nooch_logo_color.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C6917DA19B69AD90044BF2B /* nooch_logo_color.png */; };
-		5C9B7B3219B3E51E006DD9B8 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C9B7B3119B3E51E006DD9B8 /* FontAwesome.ttf */; };
 		5CC1A77819BA7A8A0000C2C7 /* Icon29.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77419BA7A8A0000C2C7 /* Icon29.png */; };
 		5CC1A77919BA7A8A0000C2C7 /* Icon58.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77519BA7A8A0000C2C7 /* Icon58.png */; };
 		5CC1A77A19BA7A8A0000C2C7 /* Icon80.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77619BA7A8A0000C2C7 /* Icon80.png */; };
 		5CC1A77B19BA7A8A0000C2C7 /* Icon120.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77719BA7A8A0000C2C7 /* Icon120.png */; };
+		5CF1760C19C0178A004C7427 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5CF1760B19C0178A004C7427 /* FontAwesome.ttf */; };
 		6B01F1B4179DA78B00E34C49 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B3179DA78B00E34C49 /* CoreText.framework */; };
 		6B01F1B6179DA79B00E34C49 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B5179DA79B00E34C49 /* GLKit.framework */; };
 		6B01F1B8179DA7AD00E34C49 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B7179DA7AD00E34C49 /* ImageIO.framework */; };
@@ -278,7 +278,7 @@
 		014C433C185BC7EF00956A84 /* VarelaRound-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "VarelaRound-Regular.ttf"; sourceTree = "<group>"; };
 		01542900190FF5CE00A15AA0 /* noochIcon-96.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "noochIcon-96.png"; sourceTree = "<group>"; };
 		0154290219100AFC00A15AA0 /* PixateFreestyle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PixateFreestyle.framework; sourceTree = "<group>"; };
-		0169E22C18D8D7C200442642 /* knoxWeb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = knoxWeb.m; path = ../knoxWeb.m; sourceTree = "<group>"; };
+		0169E22C18D8D7C200442642 /* knoxWeb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = knoxWeb.m; path = ../knoxWeb.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0179E9EA17F355310027526C /* flat_storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = flat_storyboard.storyboard; sourceTree = "<group>"; };
 		0179E9ED17F35A740027526C /* SelectRecipient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectRecipient.h; sourceTree = "<group>"; };
 		0179E9EE17F35A740027526C /* SelectRecipient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectRecipient.m; sourceTree = "<group>"; };
@@ -365,11 +365,11 @@
 		16E4B1AF187053F20099D075 /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
 		16E4B1C91870A2C90099D075 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		5C6917DA19B69AD90044BF2B /* nooch_logo_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nooch_logo_color.png; sourceTree = "<group>"; };
-		5C9B7B3119B3E51E006DD9B8 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
 		5CC1A77419BA7A8A0000C2C7 /* Icon29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon29.png; sourceTree = "<group>"; };
 		5CC1A77519BA7A8A0000C2C7 /* Icon58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon58.png; sourceTree = "<group>"; };
 		5CC1A77619BA7A8A0000C2C7 /* Icon80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon80.png; sourceTree = "<group>"; };
 		5CC1A77719BA7A8A0000C2C7 /* Icon120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon120.png; sourceTree = "<group>"; };
+		5CF1760B19C0178A004C7427 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
 		6B01F1B3179DA78B00E34C49 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		6B01F1B5179DA79B00E34C49 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		6B01F1B7179DA7AD00E34C49 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -875,7 +875,7 @@
 		01C49ADF18D8C83500BACE23 /* fontawesome */ = {
 			isa = PBXGroup;
 			children = (
-				5C9B7B3119B3E51E006DD9B8 /* FontAwesome.ttf */,
+				5CF1760B19C0178A004C7427 /* FontAwesome.ttf */,
 			);
 			path = fontawesome;
 			sourceTree = "<group>";
@@ -1465,6 +1465,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6B30373015FA3FF300056DAD /* InfoPlist.strings in Resources */,
+				5CF1760C19C0178A004C7427 /* FontAwesome.ttf in Resources */,
 				6BC5FECB1625F1B0007EAD7A /* Roboto-Black.ttf in Resources */,
 				84BD1A3619B5A0C600ECC983 /* GoogleMaps.bundle in Resources */,
 				6BC5FECD1625F1B0007EAD7A /* Roboto-BlackItalic.ttf in Resources */,
@@ -1545,7 +1546,6 @@
 				8420B39C187AC4BF00A77E2D /* blue-pin.png in Resources */,
 				8481F08F19A1CA75007F6565 /* selectRecipientIntro.png in Resources */,
 				0129D8E81815B10D00BEAC30 /* Brandon_blk.otf in Resources */,
-				5C9B7B3219B3E51E006DD9B8 /* FontAwesome.ttf in Resources */,
 				0129D8E91815B10D00BEAC30 /* Brandon_light.otf in Resources */,
 				5CC1A77819BA7A8A0000C2C7 /* Icon29.png in Resources */,
 				5CC1A77919BA7A8A0000C2C7 /* Icon58.png in Resources */,
@@ -1746,8 +1746,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Baljeet Singh (HE787S955W)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Baljeet Singh (HE787S955W)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1770,8 +1770,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "2613ab82-35a1-46a9-93b9-4a7734cf5b80";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2613ab82-35a1-46a9-93b9-4a7734cf5b80";
+				PROVISIONING_PROFILE = "b3cc5a9c-f0fc-46b8-afc5-a3cb39debaa4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b3cc5a9c-f0fc-46b8-afc5-a3cb39debaa4";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1782,8 +1782,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Baljeet Singh (HE787S955W)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Baljeet Singh (HE787S955W)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1805,7 +1805,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "2613ab82-35a1-46a9-93b9-4a7734cf5b80";
+				PROVISIONING_PROFILE = "b3cc5a9c-f0fc-46b8-afc5-a3cb39debaa4";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2613ab82-35a1-46a9-93b9-4a7734cf5b80";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

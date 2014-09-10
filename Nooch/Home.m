@@ -67,7 +67,7 @@ NSMutableURLRequest *request;
     [[assist shared]isPOP];
     self.transaction_types = @[
                                @{kButtonType: @"send_request",
-                                 kButtonTitle: @"Search For More Friends",
+                                 kButtonTitle: @"   Search For More Friends",
                                  kButtonColor: [UIColor clearColor]},
                                
                                @{kButtonType: @"pay_in_person",
@@ -87,6 +87,8 @@ NSMutableURLRequest *request;
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+    [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+    hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
     UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
@@ -663,9 +665,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
           
           UILabel *em_exclaim = [UILabel new];
           [em_exclaim setStyleClass:@"banner_alert_glyph"];
-          [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
+          [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-phone"]];
           [self.phone_incomplete addSubview:em_exclaim];
-          
+        
+        UILabel *glyph_phone = [UILabel new];
+        [glyph_phone setStyleClass:@"banner_alert_glyph_sm"];
+        [glyph_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
+        [self.phone_incomplete addSubview:glyph_phone];
+        
           UILabel *em_info = [UILabel new];
           [em_info setStyleClass:@"banner_info"];
           [em_info setNumberOfLines:0];
@@ -691,16 +698,16 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
           [self.view addSubview:self.phone_incomplete];
       }
     else {
-          [self.phone_incomplete removeFromSuperview];
+        [self.phone_incomplete removeFromSuperview];
     }
     
     [top_button removeFromSuperview];
      top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [top_button setStyleClass:@"button_blue"];
-    [top_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
+    [top_button setStyleId:@"button_green_home"];
+    [top_button setTitleShadowColor:Rgb2UIColor(26, 38, 32, 0.2) forState:UIControlStateNormal];
     top_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     
-    CGRect button_frame = CGRectMake(20, 245, 280, 60);
+    CGRect button_frame = CGRectMake(20, 250, 280, 60);
     [top_button setFrame:button_frame];
     
     [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
@@ -711,19 +718,26 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     //  [mid_button setTitle:[[self.transaction_types objectAtIndex:1] objectForKey:kButtonTitle] forState:UIControlStateNormal];
     //  [bot_button setTitle:[[self.transaction_types objectAtIndex:2] objectForKey:kButtonTitle] forState:UIControlStateNormal];
     
+    UILabel * glyph_search = [UILabel new];
+    [glyph_search setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+    [glyph_search setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-search"]];
+    [glyph_search setFrame:CGRectMake(14, 0, 15, 53)];
+    [glyph_search setTextColor:[UIColor whiteColor]];
+    [top_button addSubview:glyph_search];
+
     [self.view addSubview:top_button];
 
     int carouselTop;
     if (bannerAlert == 1)
     {
         carouselTop = 90;
-        CGRect button_frame = CGRectMake(20, 265, 280, 60);
+        CGRect button_frame = CGRectMake(20, 270, 280, 60);
         [top_button setFrame:button_frame];
     }
     else if (bannerAlert == 2)
     {
         carouselTop = 120;
-        CGRect button_frame = CGRectMake(20, 300, 280, 60);
+        CGRect button_frame = CGRectMake(20, 306, 280, 60);
         [top_button setFrame:button_frame];
     }
     else {
@@ -949,13 +963,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index
 {
     
-//    if(carousel.scrolling == NO)
-//    {
-        NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+
         
         if ([[assist shared]getSuspended])
         {
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com for more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com for more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
             [alert setTag:50];
             [alert show];
             return;
@@ -975,15 +988,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [alert show];
             return;
         }
-        
-//        if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
-//        {
-//            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame Our Lawyers" message:@"To keep Nooch safe, we ask all users to verify your phone number before before sending money.\n \nIf you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
-//            [alert setTag:148];
-//            [alert show];
-//            return;
-//        }
-    
+      
+        if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
+        {
+            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame Our Lawyers" message:@"To keep Nooch safe, we ask all users to verify your phone number before before sending money.\n \nIf you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
+            [alert setTag:148];
+            [alert show];
+            return;
+        }
+  
         if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
         {
             UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Connect Your Bank" message:@"Adding a bank account to fund Nooch payments is lightening quick. (You don't have to type a routing or account number!)  Would you like to take care of this now?." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
@@ -1002,7 +1015,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             isFromHome = YES;
             HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
             [self.navigationController pushViewController:trans animated:YES];
-            
+            return;
         }
         else if (favorite[@"UserName"])
         {
@@ -1011,8 +1024,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             emailCheck.Delegate = self;
             emailCheck.tagName = @"emailCheck";
             [emailCheck getMemIdFromuUsername:[favorite[@"UserName"] lowercaseString]];
+            return;
         }
-  //  }
+  
 }
 
 - (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value
@@ -1023,14 +1037,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             return YES;
         }
         case iCarouselOptionRadius: {
-           return 310;
+           return 300;
         }
         case iCarouselOptionSpacing: {
-            return value * 1.7;
+            return value * 1.9;
         }
         case iCarouselOptionArc:
         {
-            return 2.5;
+            return 2.2;
         }
         default: {
             return value;
@@ -1257,6 +1271,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 [hamburger setStyleId:@"navbar_hamburger"];
                 [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
                 [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
+                [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+                hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
                 [hamburger addSubview:pending_notif];
             
                 UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
@@ -1268,7 +1284,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 [hamburger setStyleId:@"navbar_hamburger"];
                 [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
                 [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
-                
+                [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+                hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
                 UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
                 [self.navigationItem setLeftBarButtonItem:menu];
             }

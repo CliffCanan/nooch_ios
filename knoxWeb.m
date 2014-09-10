@@ -52,6 +52,7 @@
     [self.navigationItem setTitle:@"Connect Bank"];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
+
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeCustom];
     [hamburger setStyleId:@"navbar_back"];
     [hamburger setImage:[UIImage imageNamed:@"whiteBack.png"] forState:UIControlStateNormal];
@@ -146,7 +147,7 @@
     
     UIButton *btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnLink setStyleClass:@"button_green_welcome"];
-    [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.3) forState:UIControlStateNormal];
+    [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     btnLink.frame = CGRectMake(10,mainView.frame.size.height-60, 280, 50);
     [btnLink setTitle:@"Continue" forState:UIControlStateNormal];

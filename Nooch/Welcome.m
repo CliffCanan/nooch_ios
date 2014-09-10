@@ -104,7 +104,7 @@
     UIButton * enter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [enter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [enter setTitle:@"   Link Funding Source" forState:UIControlStateNormal];
-    [enter setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.26) forState:UIControlStateNormal];
+    [enter setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     enter.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [enter addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
     [enter setFrame:CGRectMake(10, 385, 300, 60)];
@@ -122,12 +122,12 @@
     UIButton * moreinfo = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [moreinfo setBackgroundColor:[UIColor clearColor]];
     [moreinfo setTitle:@" Tell me more" forState:UIControlStateNormal];
-    [moreinfo setFrame:CGRectMake(92, 325, 136, 20)];
+    [moreinfo setFrame:CGRectMake(95, 325, 130, 20)];
     [moreinfo setStyleId:@"moreinfo_button"];
     
     UILabel * glyphinfo = [UILabel new];
-    [glyphinfo setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-    [glyphinfo setFrame:CGRectMake(3, 1, 15, 18)];
+    [glyphinfo setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
+    [glyphinfo setFrame:CGRectMake(4, 1, 15, 18)];
     [glyphinfo setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-question-circle"]];
     [glyphinfo setTextColor:kNoochPurple];
     [moreinfo addSubview:glyphinfo];
@@ -195,7 +195,7 @@
      
     UIButton * btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnLink setStyleClass:@"button_green_welcome"];
-    [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.26) forState:UIControlStateNormal];
+    [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     btnLink.frame = CGRectMake(10,mainView.frame.size.height-57, 280, 50);
     [btnLink setTitle:@"Link Now" forState:UIControlStateNormal];

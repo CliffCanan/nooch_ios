@@ -549,7 +549,7 @@
         serve * ser = [serve new];
         ser.tagName = @"searchByLocation";
         [ser setDelegate:self];
-        [ser getLocationBasedSearch:@"10"];
+        [ser getLocationBasedSearch:@"15"];
 
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
@@ -1409,6 +1409,7 @@
                 UIImageView *ab = [UIImageView new];
                 [ab setStyleClass:@"addressbook-icons"];
                 ab.layer.cornerRadius = 4;
+                [ab setStyleClass:@"animate_bubble"];
                 [cell.contentView addSubview:ab];
                 break;
             }
@@ -1455,6 +1456,7 @@
             if ([[assist shared] assos][info[@"UserName"]][@"addressbook"]) {
                 UIImageView *ab = [UIImageView new];
                 [ab setStyleClass:@"addressbook-icons"];
+                [ab setStyleClass:@"animate_bubble"];
                 [cell.contentView addSubview:ab];
             }
         }
@@ -1546,6 +1548,7 @@
             if ([[assist shared] assos][info[@"UserName"]][@"addressbook"]) {
                 UIImageView *ab = [UIImageView new];
                 [ab setStyleClass:@"addressbook-icons"];
+                [ab setStyleClass:@"animate_bubble"];
                 [cell.contentView addSubview:ab];
             }
         }

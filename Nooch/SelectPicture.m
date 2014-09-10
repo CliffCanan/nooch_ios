@@ -225,7 +225,7 @@
     self.choose_pic = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.choose_pic setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.choose_pic setStyleClass:@"button_green"];
-    [self.choose_pic setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.26) forState:UIControlStateNormal];
+    [self.choose_pic setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     self.choose_pic.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
     if ([[self.user objectForKey:@"facebook"] objectForKey:@"image"])
