@@ -776,25 +776,10 @@
 		text-align     	: center;
 		color 			: #ffffff;
 	}
-	/*****************************************************************/
-	/*****************************************************************/
-	/* 				    ICONS TO USE FOR ALERTS:  					**
-			(These should all work, I checked each icon's 
-			    class in the Font-Awesome.plist file.)
-	
-	"ok-sign"  			-->   Profile Validated  (+ .alertGreenBackground)
-	'envelope-alt'      -->   Email Verification Resent  AND  Email Verified  (+ .alertGreenBackground)
-	'mobile-phone'		-->   Phone Verification Resent  AND  Phone Verified  (+ .alertGreenBackground)
-	'exclamation-sign'	-->   Profile Not Verified  (+ .alertRedBackground)
-
-	/***********************************************************************/
-	/***********************************************************************/
 
 	
  /*******************************************
-  *******************************************
   ********  	PRE-LOGIN FLOW	     ********
-  *******************************************
   *******************************************/
   	.header_signupflow {
 		font-family			: "Roboto";
@@ -2236,10 +2221,10 @@ table-view#select_recipientwithoutSeperator {
 
 	/**  Amount of the Transfer on the right side of the row  **/
 	.history_transferamount {
-		width				: 70px;
-		height				: 26px;
+		left				: 237px;
 		top					: 15px;
-		left				: 245px;
+		width				: 78px;
+		height				: 26px;
 		font-family			: "Roboto";
 		font-weight         : medium;
 		font-size			: 20px;
@@ -2248,13 +2233,13 @@ table-view#select_recipientwithoutSeperator {
 
 	 /**  Amount of the PENDING Transfer on the right side of the row (Only on the Pending Tab)  **/
 	.history_pending_transferamount {
-		width				: 78px;
+		left				: 230px;
+		top					: 15px;
+		width				: 83px;
 		height				: 40px;
-		top					: 10px;
-		left				: 235px;
 		font-family			: "Roboto";
 		font-weight         : medium;
-		font-size			: 20px;
+		font-size			: 21px;
 		text-align       	: right;
 	}
 

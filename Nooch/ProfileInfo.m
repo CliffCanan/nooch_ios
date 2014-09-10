@@ -534,9 +534,9 @@
     [self.view setFrame:CGRectMake(0,64, 320, 600)];
     [UIView commitAnimations];
     
-    if ([self.name.text length]==0)
+    if ([self.name.text length] == 0)
     {
-        UIAlertView *av =[ [UIAlertView alloc] initWithTitle:@"Need A Name" message:@"We can call you 'Blank' if you want, but it's probably better if you entered a name..." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Need A Name" message:@"We can call you 'Blank' if you want, but it's probably better if you entered a name..." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [av show];
         return;
     }
@@ -545,30 +545,31 @@
     {
         self.email.text = @"";
         [self.email becomeFirstResponder];
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Invalid Email Address" message:@"Hmm... please double check that you have entered a valid email address." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Invalid Email Address" message:@"Hmm... please double check that you have entered a valid email address." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         return;
     }
 
-    if ([self.address_one.text length]==0)
+    if ([self.address_one.text length] == 0)
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Missing An Address" message:@"Please enter your address to validate your profile." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Missing An Address" message:@"Please enter your address to validate your profile." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [self.address_one becomeFirstResponder];
         return;
     }
 
-    if ([self.city.text length]==0)
+    if ([self.city.text length] == 0)
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"How Bout A City" message:@"It would be fantastic if you entered a city! ;-)" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"How Bout A City" message:@"It would be fantastic if you entered a city! ;-)" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [self.city becomeFirstResponder];
         return;
     }
 
-    UIAlertView *av =[ [UIAlertView alloc] initWithTitle:@"I don't see you!" message:@"You haven't set your profile picture, would you like to?" delegate:self cancelButtonTitle:@"No Thanks" otherButtonTitles:@"Yes I do", nil];
+    UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"I don't see you!" message:@"You haven't set your profile picture, would you like to?" delegate:self cancelButtonTitle:@"No Thanks" otherButtonTitles:@"Yes I do", nil];
     [av setTag:20];
-    if([[me pic] isKindOfClass:[NSNull class]]){
+    
+    if ([[me pic] isKindOfClass:[NSNull class]]) {
         [av show];
     }
 
@@ -1022,9 +1023,22 @@
 #pragma mark - UITextField delegation
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-        [self.save setEnabled:YES];
-        [self.save setUserInteractionEnabled:YES];
+    [self.save setEnabled:YES];
+    [self.save setUserInteractionEnabled:YES];
     
+    if (textField == self.phone)
+    {
+        if ([self.phone.text length] == 9 &&
+            [self.phone.text rangeOfString:@"-"].location == NSNotFound &&
+            [self.phone.text rangeOfString:@"("].location == NSNotFound)
+        {
+            self.phone.text = [NSString stringWithFormat:@"(%@) %@-%@",
+                               [self.phone.text substringWithRange:NSMakeRange(0, 3)],
+                               [self.phone.text substringWithRange:NSMakeRange(3, 3)],
+                               [self.phone.text substringWithRange:NSMakeRange(6, 3)]];
+        }
+    }
+
     return YES;
 }
 
@@ -1059,20 +1073,31 @@
     return YES;
 }
 
+- (IBAction)doneClicked:(id)sender
+{
+    NSLog(@"Done Clicked.");
+    [self.view endEditing:YES];
+}
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     [self animateTextField:textField up:YES];
+    
+    UIToolbar * keyboardDoneButtonView = [[UIToolbar alloc] init];
+    [keyboardDoneButtonView sizeToFit];
+    UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    UIBarButtonItem * doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+                                                                   style:UIBarButtonItemStyleDone target:self
+                                                                  action:@selector(doneClicked:)];
+
+    [keyboardDoneButtonView setItems:[NSArray arrayWithObjects:flex, doneButton, nil] animated:YES];
+    
+    textField.inputAccessoryView = keyboardDoneButtonView;
 }
+
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (textField == self.phone)
-    {
-        if ([self.phone.text length] == 10)
-        {
-            self.phone.text = [NSString stringWithFormat:@"(%@) %@-%@",[self.phone.text substringWithRange:NSMakeRange(0, 3)],[self.phone.text substringWithRange:NSMakeRange(3, 3)],[self.phone.text substringWithRange:NSMakeRange(6, 4)]];
-        }
-    }
     [self animateTextField:textField up:NO];
 }
 
@@ -1085,6 +1110,7 @@
     [UIView beginAnimations: @"anim" context: nil];
     [UIView setAnimationBeginsFromCurrentState: YES];
     [UIView setAnimationDuration: movementDuration];
+    
     if ([UIScreen mainScreen].bounds.size.height == 480)
     {
         for (UIScrollView *scroll in self.view.subviews)
@@ -1266,9 +1292,9 @@
 
     }
 
-    else if ([tagName isEqualToString:@"myset"]) {        
-        
-        dictProfileinfo=[NSJSONSerialization
+    else if ([tagName isEqualToString:@"myset"])
+    {
+        dictProfileinfo = [NSJSONSerialization
                          JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                          options:kNilOptions
                          error:&error];
@@ -1277,15 +1303,18 @@
         {
             
             if ([dictProfileinfo valueForKey:@"ContactNumber"] != NULL && ![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]]) {
-                self.SavePhoneNumber=[dictProfileinfo valueForKey:@"ContactNumber"];
+                self.SavePhoneNumber = [dictProfileinfo valueForKey:@"ContactNumber"];
             }
             else {
-                self.SavePhoneNumber=@"";
+                self.SavePhoneNumber = @"";
             }
 
             if ([[dictProfileinfo valueForKey:@"ContactNumber"] length] == 10)
             {
-                self.phone.text = [NSString stringWithFormat:@"(%@) %@-%@",[[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(0, 3)],[[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(3, 3)],[[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(6, 4)]];
+                self.phone.text = [NSString stringWithFormat:@"(%@) %@-%@",
+                                   [[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(0, 3)],
+                                   [[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(3, 3)],
+                                   [[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(6, 4)]];
                 NSString * phone = [self.phone.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                 self.phone.text = phone;
                 
@@ -1295,7 +1324,7 @@
             {
                 self.phone.text=[dictProfileinfo valueForKey:@"ContactNumber"];
                 NSString* phone = [self.phone.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                self.address_one.text=phone;
+                self.address_one.text = phone;
                 [dictSavedInfo setObject:self.phone.text forKey:@"phoneno"];
             }
             [self.list reloadData];
@@ -1312,7 +1341,7 @@
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Address"]];
         }
-        else if(![[dictProfileinfo valueForKey:@"City"] isKindOfClass:[NSNull class]])
+        else if (![[dictProfileinfo valueForKey:@"City"] isKindOfClass:[NSNull class]])
         {
             self.ServiceType = @"City";
             Decryption *decry = [[Decryption alloc] init];
@@ -1320,7 +1349,7 @@
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"City"]];
         }
-        else if(![[dictProfileinfo valueForKey:@"State"] isKindOfClass:[NSNull class]])
+        else if (![[dictProfileinfo valueForKey:@"State"] isKindOfClass:[NSNull class]])
         {
             self.ServiceType = @"State";
             Decryption *decry = [[Decryption alloc] init];
@@ -1328,9 +1357,9 @@
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"State"]];
         }
-        else if(![[dictProfileinfo valueForKey:@"Zipcode"] isKindOfClass:[NSNull class]])
+        else if (![[dictProfileinfo valueForKey:@"Zipcode"] isKindOfClass:[NSNull class]])
         {
-         self.ServiceType=@"zip";
+         self.ServiceType = @"zip";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -1338,7 +1367,7 @@
         }
         else if (![[dictProfileinfo valueForKey:@"FirstName"] isKindOfClass:[NSNull class]])
         {
-            self.ServiceType=@"name";
+            self.ServiceType = @"name";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -1346,7 +1375,7 @@
         }
         else if (![[dictProfileinfo valueForKey:@"LastName"] isKindOfClass:[NSNull class]])
         {
-            self.ServiceType=@"lastname";
+            self.ServiceType = @"lastname";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -1354,7 +1383,7 @@
         }
         else if (![[dictProfileinfo valueForKey:@"UserName"] isKindOfClass:[NSNull class]])
         {
-            self.ServiceType=@"email";
+            self.ServiceType = @"email";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -1385,29 +1414,30 @@
 {
     if ([self.ServiceType isEqualToString:@"Address"])
     {
-        self.ServiceType=@"City";
-        NSArray*arr=[[sourceData objectForKey:@"Status"] componentsSeparatedByString:@"/"];
+        self.ServiceType = @"City";
+        NSArray * arr = [[sourceData objectForKey:@"Status"] componentsSeparatedByString:@"/"];
         
-        if ([arr count]==2)
+        if ([arr count] == 2)
         {
-            self.address_one.text=[arr objectAtIndex:0];
-            self.address_two.text=[arr objectAtIndex:1];
+            self.address_one.text = [arr objectAtIndex:0];
+            self.address_two.text = [arr objectAtIndex:1];
         }
         
         else
         {
-            self.address_one.text=[arr objectAtIndex:0];
-            self.address_two.text=@"";
+            self.address_one.text = [arr objectAtIndex:0];
+            self.address_two.text = @"";
         }
-        NSString* address1 = [self.address_one.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        self.address_one.text=address1;
+        NSString * address1 = [self.address_one.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        self.address_one.text = [address1 capitalizedString];
         NSString* address2 = [self.address_two.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        self.address_two.text=address2;
-
+        self.address_two.text = [address2 capitalizedString];
         
         [dictSavedInfo setObject:self.address_one.text forKey:@"Address1"];
         [dictSavedInfo setObject:self.address_two.text forKey:@"Address2"];
-        if (![[dictProfileinfo objectForKey:@"City"] isKindOfClass:[NSNull class]]) {
+        
+        if (![[dictProfileinfo objectForKey:@"City"] isKindOfClass:[NSNull class]])
+        {
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -1417,14 +1447,15 @@
     
     else if ([self.ServiceType isEqualToString:@"City"])
     {
-        self.ServiceType=@"State";
-        self.city.text=[sourceData objectForKey:@"Status"];
-        NSString* city = [self.city.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        self.city.text=city;
+        self.ServiceType = @"State";
+        self.city.text = [sourceData objectForKey:@"Status"];
+        NSString * city = [self.city.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        self.city.text = [city capitalizedString];
 
         [dictSavedInfo setObject:self.city.text forKey:@"City"];
        
-        if (![[dictProfileinfo objectForKey:@"State"] isKindOfClass:[NSNull class]]) {
+        if (![[dictProfileinfo objectForKey:@"State"] isKindOfClass:[NSNull class]])
+        {
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -1432,7 +1463,7 @@
         }
         
         else if (![[dictProfileinfo objectForKey:@"Zipcode"] isKindOfClass:[NSNull class]]) {
-            self.ServiceType=@"zip";
+            self.ServiceType = @"zip";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -1442,7 +1473,7 @@
     
     else if ([self.ServiceType isEqualToString:@"State"])
     {
-        self.ServiceType=@"zip";
+        self.ServiceType = @"zip";
         
         if (![[dictProfileinfo objectForKey:@"Zipcode"] isKindOfClass:[NSNull class]])
         {
@@ -1454,7 +1485,7 @@
         
         else
         {
-            self.ServiceType=@"name";
+            self.ServiceType = @"name";
             if (![[dictProfileinfo objectForKey:@"FirstName"] isKindOfClass:[NSNull class]])
             {
                 Decryption *decry = [[Decryption alloc] init];
@@ -1467,25 +1498,23 @@
     
     else  if ([self.ServiceType isEqualToString:@"zip"])
     {
-        self.ServiceType=@"name";
-        self.zip.text=[sourceData objectForKey:@"Status"];
+        self.ServiceType = @"name";
+        self.zip.text = [sourceData objectForKey:@"Status"];
         NSString * zip = [self.zip.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        self.zip.text=zip;
+        self.zip.text = zip;
         
         [dictSavedInfo setObject:self.zip.text forKey:@"zip"];
         
         if (![[dictProfileinfo objectForKey:@"FirstName"] isKindOfClass:[NSNull class]])
         {
-            Decryption *decry = [[Decryption alloc] init];
-            
+            Decryption * decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
-            
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"FirstName"]];
         }
     }
     
-    else  if ([self.ServiceType isEqualToString:@"name"])
+    else  if ([self.ServiceType isEqualToString:@"name"]) // first name
     {
         self.ServiceType = @"lastname";
         
@@ -1493,24 +1522,24 @@
         {
             NSString * letterA = [[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
 
-            self.name.text=[NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
+            self.name.text = [NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
+            
             NSString * name = [self.name.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            self.name.text=name;
+            self.name.text = [name capitalizedString];
 
             [dictSavedInfo setObject:self.name.text forKey:@"name"];
 
             if (![[dictProfileinfo objectForKey:@"LastName"] isKindOfClass:[NSNull class]])
             {
-                self.ServiceType=@"lastname";
-                Decryption *decry = [[Decryption alloc] init];
+                self.ServiceType = @"lastname";
+                Decryption * decry = [[Decryption alloc] init];
                 decry.Delegate = self;
                 decry->tag = [NSNumber numberWithInteger:2];
                 [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"LastName"]];
             }
             else if (![[dictProfileinfo objectForKey:@"UserName"] isKindOfClass:[NSNull class]])
             {
-                self.ServiceType=@"email";
-                Decryption *decry = [[Decryption alloc] init];
+                Decryption * decry = [[Decryption alloc] init];
                 decry.Delegate = self;
                 decry->tag = [NSNumber numberWithInteger:2];
                 [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"UserName"]];
@@ -1518,21 +1547,23 @@
         }
     }
 
-    else  if ([self.ServiceType isEqualToString:@"lastname"])
+    else  if ([self.ServiceType isEqualToString:@"lastname"]) //last name
     {
-        self.ServiceType=@"email";
+        self.ServiceType = @"email";
         
         if ([[sourceData objectForKey:@"Status"] length] > 0)
         {
-            NSString* letterA = [[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
-            self.name.text=[self.name.text stringByAppendingString:[NSString stringWithFormat:@" %@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]]];
+            NSString * letterA = [[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
+            self.name.text = [self.name.text stringByAppendingString:[NSString stringWithFormat:@" %@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]]];
+            
             NSString * name = [self.name.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             self.name.text = [name capitalizedString];
             
             [dictSavedInfo setObject:self.name.text forKey:@"name"];
         }
         
-        if (![[dictProfileinfo objectForKey:@"UserName"] isKindOfClass:[NSNull class]]) {
+        if (![[dictProfileinfo objectForKey:@"UserName"] isKindOfClass:[NSNull class]])
+        {
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -1542,12 +1573,14 @@
     
     else  if ([self.ServiceType isEqualToString:@"email"])
     {
-        self.email.text = [[sourceData objectForKey:@"Status"] capitalizedString];
-        NSString* email = [self.email.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        self.email.text = [sourceData objectForKey:@"Status"];
+//        NSString* email = [self.email.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
-        if (![[dictProfileinfo objectForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]]&& [dictProfileinfo objectForKey:@"RecoveryMail"]!=NULL && ![[dictProfileinfo objectForKey:@"RecoveryMail"] isEqualToString:@""])
+        if (![[dictProfileinfo objectForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]] &&
+              [dictProfileinfo objectForKey:@"RecoveryMail"] != NULL &&
+            ![[dictProfileinfo objectForKey:@"RecoveryMail"] isEqualToString:@""])
         {
-            self.ServiceType=@"recovery";
+            self.ServiceType = @"recovery";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -1558,11 +1591,12 @@
         {
             self.recovery_email.text = @"";
             self.ServiceType = @"pwd";
+
             if (![[dictProfileinfo objectForKey:@"Password"] isKindOfClass:[NSNull class]])
             {
                 Decryption *decry = [[Decryption alloc] init];
                 decry.Delegate = self;
-                self.ServiceType=@"pwd";
+                self.ServiceType = @"pwd";
                 decry->tag = [NSNumber numberWithInteger:2];
                 [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Password"]];
             }
@@ -1570,15 +1604,17 @@
     }
     else if ([self.ServiceType isEqualToString:@"recovery"])
     {
-        self.ServiceType=@"pwd";
+        self.ServiceType = @"pwd";
         self.recovery_email.text = [[NSString stringWithFormat:@"%@",[sourceData objectForKey:@"Status"]] lowercaseString];
-        NSString* recovery_email = [self.recovery_email.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        
+        NSString * recovery_email = [self.recovery_email.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         self.recovery_email.text = [recovery_email lowercaseString];
         
         [dictSavedInfo setObject:self.recovery_email.text forKey:@"recovery_email"];
 
-        if ([self.recovery_email.text isKindOfClass:[NSNull class]]) {
-            self.recovery_email.text=@"";
+        if ([self.recovery_email.text isKindOfClass:[NSNull class]] ||
+            [self.recovery_email.text isEqualToString:@"declined"]) {
+            self.recovery_email.text = @"";
         }
     }
 }
