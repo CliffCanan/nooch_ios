@@ -77,7 +77,7 @@
     [self.view addSubview:prompt];
 
     enter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [enter setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.26) forState:UIControlStateNormal];
+    [enter setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     enter.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [enter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [enter setTitle:@"Continue" forState:UIControlStateNormal];

@@ -82,6 +82,8 @@
     [hamburger setStyleId:@"navbar_hamburger"];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
     [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
+    [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+    hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     UIBarButtonItem *menu1 = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu1];
 

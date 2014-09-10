@@ -275,7 +275,7 @@
         UIButton *pay = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [pay setStyleClass:@"details_button_left"];
         [pay setTitle:@"Pay" forState:UIControlStateNormal];
-        [pay setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.26) forState:UIControlStateNormal];
+        [pay setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
         pay.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
         UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -1030,14 +1030,21 @@
             [location setStyleClass:@"details_label_location_4"];
         }
 
-        if ([self.trans objectForKey:@"AddressLine1"] != NULL &&
-            [self.trans objectForKey:@"City"] != NULL) // && [[assist shared]islocationAllowed] )
+        if ([self.trans objectForKey:@"City"] != NULL &&
+            [self.trans objectForKey:@"State"] != NULL)
         {
-            NSString * address = [[self.trans objectForKey:@"AddressLine1"] stringByReplacingOccurrencesOfString:@"," withString:@" "];
-
-            NSLog(@"ADDRESS LINE 1 IS: %@",[self.trans objectForKey:@"AddressLine1"]);
-            address = [address stringByAppendingString:[self.trans objectForKey:@"City"]];
-            [location setText:[NSString stringWithFormat:@"%@",address]];
+//          NSLog(@"ADDRESS LINE 1 IS: %@",[self.trans objectForKey:@"AddressLine1"]);
+ 
+            if (![[self.trans objectForKey:@"State"] isEqualToString:@""]) {
+                NSString * address = [self.trans objectForKey:@"City"]; //stringByReplacingOccurrencesOfString:@"," withString:@" "];
+                address = [address stringByAppendingString:[self.trans objectForKey:@"State"]];
+                [location setText:[NSString stringWithFormat:@"%@",address]];
+            }
+            else {
+                NSString * address = [self.trans objectForKey:@"AddressLine1"];
+                address = [address stringByAppendingString:[self.trans objectForKey:@"City"]];
+                [location setText:[NSString stringWithFormat:@"%@",address]];
+            }
             [mapView_ addSubview:location];
             
             if ([[self.trans objectForKey:@"AddressLine1"]length] == 0 && [[self.trans objectForKey:@"City"]length] == 0)

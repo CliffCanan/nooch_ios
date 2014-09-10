@@ -99,6 +99,8 @@
     }
     [settings setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cogs"] forState:UIControlStateNormal];
     [settings addTarget:self action:@selector(go_settings) forControlEvents:UIControlEventTouchUpInside];
+    [settings setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.25) forState:UIControlStateNormal];
+    settings.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.view addSubview:settings];
     
     UIImageView *logo = [UIImageView new];
@@ -210,7 +212,7 @@
         return 3;
     }
     else if(section == 1){
-        return 2;
+        return 1;
     }
     else if(section == 2){
         return 4;
@@ -275,7 +277,8 @@
         else if (indexPath.row == 2){
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Statistics"
                                                                             attributes:textAttributes];
-            iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-tachometer"];
+            iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-line-chart"];
+            [iv setStyleClass:@"lside_menu_icons_sm"];
         }
     }
     else if(indexPath.section == 9)
@@ -291,14 +294,14 @@
         if (indexPath.row == 0) {
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Refer a Friend"
                                                                             attributes:textAttributes];
-            [iv setFont:[UIFont fontWithName:@"FontAwesome" size:12]];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"];
+            [iv setStyleClass:@"lside_menu_icons_sm"];
         }
-        else if(indexPath.row == 1){
+/*        else if(indexPath.row == 1){
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-star"];
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Rate Nooch"
                                                                 attributes:textAttributes];
-        }
+        } */
     }
     else if(indexPath.section == 2)
     {
@@ -311,6 +314,7 @@
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Contact Support"
                                                                             attributes:textAttributes];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope"];
+            [iv setStyleClass:@"lside_menu_icons_sm"];
         }
         else if(indexPath.row == 2){
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Limits & Fees"
@@ -353,7 +357,8 @@
             [self.slidingViewController resetTopView];
         }
     }
-    else if(indexPath.section == 1) {
+    else if(indexPath.section == 1)
+    {
         if (indexPath.row == 0) {
             SendInvite *inv = [SendInvite new];
             [nav_ctrl pushViewController:inv animated:NO];

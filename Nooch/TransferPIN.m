@@ -117,9 +117,9 @@
     }
     else {
         if ([[assist shared] isRequestMultiple]) {
-            NSString*strMultiple=@"";
+            NSString * strMultiple = @"";
             for (NSDictionary *dictRecord in [[assist shared]getArray]) {
-                strMultiple=[strMultiple stringByAppendingString:[NSString stringWithFormat:@", %@",[dictRecord[@"FirstName"] capitalizedString]]];
+                strMultiple = [strMultiple stringByAppendingString:[NSString stringWithFormat:@", %@",[dictRecord[@"FirstName"] capitalizedString]]];
             }
             strMultiple=[strMultiple substringFromIndex:1];
             [to_label setText:strMultiple];
@@ -249,8 +249,10 @@
     lon=location.coordinate.longitude;
     latitude=[NSString stringWithFormat:@"%f",lat];
     longitude=[NSString stringWithFormat:@"%f",lon];
+    NSLog(@"THE LOCATION'S LATTY AND LONGY IS:   %@%@",longitude,latitude);
     [self updateLocation:[NSString stringWithFormat:@"%f",lat] longitudeField:[NSString stringWithFormat:@"%f",lon]];
 }
+
 -(void) updateLocation:(NSString*)latitudeField longitudeField:(NSString*)longitudeField{
 
     // NSLog(@"%@%@",longitudeField,latitudeField);
@@ -268,31 +270,38 @@
     }];
     
 }
--(void)setLocation{
-   // NSArray *placemark = [NSArray new];
-     NSArray *placemark = [jsonDictionary  objectForKey:@"results"];
-    if ([placemark count]>0) {
+
+-(void)setLocation
+{
+    NSArray *placemark = [jsonDictionary  objectForKey:@"results"];
+    
+    if ([placemark count] > 0)
+    {
         NSString *addr = [[placemark  objectAtIndex:1]objectForKey:@"formatted_address"];
-        
+        NSLog(@"Location 1ST ONE: %@",addr);
+
         NSArray *addrParse = [addr componentsSeparatedByString:@","];
-        //NSLog(@"loc %@",addrParse);
-        if ([addrParse count] == 4) {
+        NSLog(@"Location NUMERO 2: %@",addrParse);
+    
+        if ([addrParse count] == 4)
+        {
             addressLine1 = [addrParse objectAtIndex:0];
             city = [addrParse objectAtIndex:1];
             state = [[addrParse objectAtIndex:2] substringToIndex:3];
             zipcode = [[addrParse objectAtIndex:2] substringFromIndex:3];
             country = [addrParse objectAtIndex:3];
         }
-        else if ([addrParse count]>4) {
+        else if ([addrParse count] > 4)
+        {
             addressLine1 = [addrParse objectAtIndex:0];
             addressLine2 = [addrParse objectAtIndex:1];
             city = [addrParse objectAtIndex:2];
             state = [[addrParse objectAtIndex:3] substringToIndex:3];
             zipcode = [[addrParse objectAtIndex:3] substringFromIndex:3];
             country = [addrParse objectAtIndex:4];
-
         }
-        else {
+        else
+        {
             addressLine1 = [addrParse objectAtIndex:0];
             addressLine2 = @"";
             city = [addrParse objectAtIndex:1];
@@ -406,6 +415,7 @@
     }
     return YES;
 }
+
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
@@ -427,6 +437,7 @@
         }
         else if ([tagName isEqualToString:@"checkValid"])
         {
+            NSLog(@"THIS IS THE CHECKBALID METHOD*************************************");
             if ([[dictResult objectForKey:@"Result"] isEqualToString:@"Success"])
             {
                 transactionInputTransfer=[[NSMutableDictionary alloc]init];
@@ -699,7 +710,7 @@
                 transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
             }
         }
-        NSLog(@"%@",transactionTransfer);
+        NSLog(@"THIS IS THE TRANSACTION TRANSFER: %@",transactionTransfer);
         postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
                                                        options:NSJSONWritingPrettyPrinted error:&error];;
         postLengthTransfer = [NSString stringWithFormat:@"%d", [postTransfer length]];
@@ -1081,17 +1092,19 @@
     }
     else if ([[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request made successfully."]) {
         [[assist shared] setTranferImage:nil];
-        UIImage*imgempty=[UIImage imageNamed:@""];
+        UIImage * imgempty = [UIImage imageNamed:@""];
         [[assist shared] setTranferImage:imgempty];
 
-        if ([[assist shared]isRequestMultiple]) {
+        if ([[assist shared]isRequestMultiple])
+        {
             [[assist shared]setRequestMultiple:NO];
-            NSString*strMultiple=@"";
-            for (NSDictionary *dictRecord in [[assist shared]getArray]) {
-                strMultiple=[strMultiple stringByAppendingString:[NSString stringWithFormat:@", %@",[dictRecord[@"FirstName"] capitalizedString]]];
+            NSString * strMultiple = @"";
+            for (NSDictionary *dictRecord in [[assist shared]getArray])
+            {
+                strMultiple = [strMultiple stringByAppendingString:[NSString stringWithFormat:@", %@",[dictRecord[@"FirstName"] capitalizedString]]];
             }
 
-            strMultiple=[strMultiple substringFromIndex:1];
+            strMultiple = [strMultiple substringFromIndex:1];
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Pay Me" message:[NSString stringWithFormat:@"You requested $%.02f from %@ successfully.",self.amnt,strMultiple] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
             [av setTag:1];
             [av show];
