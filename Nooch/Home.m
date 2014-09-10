@@ -1158,13 +1158,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         return;
     }
 
-//    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
-//    {
-//        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame The Lawyers" message:@"To keep Nooch safe, we ask all users to verify a phone number before before sending money.\n \n If you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
-//        [alert setTag:148];
-//        [alert show];
-//        return;
-//    }
+    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
+    {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame The Lawyers" message:@"To keep Nooch safe, we ask all users to verify a phone number before before sending money.\n \n If you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
+        [alert setTag:148];
+        [alert show];
+        return;
+    }
 
     if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
