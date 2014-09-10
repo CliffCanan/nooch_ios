@@ -963,9 +963,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index
 {
     
-    if(carousel.scrolling == NO)
-    {
-        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+
         
         if ([[assist shared]getSuspended])
         {
@@ -989,7 +988,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [alert show];
             return;
         }
-        
+      
         if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
         {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame Our Lawyers" message:@"To keep Nooch safe, we ask all users to verify your phone number before before sending money.\n \nIf you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
@@ -997,7 +996,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [alert show];
             return;
         }
-        
+  
         if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
         {
             UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Connect Your Bank" message:@"Adding a bank account to fund Nooch payments is lightening quick. (You don't have to type a routing or account number!)  Would you like to take care of this now?." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
@@ -1027,7 +1026,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [emailCheck getMemIdFromuUsername:[favorite[@"UserName"] lowercaseString]];
             return;
         }
-    }
+  
 }
 
 - (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value
