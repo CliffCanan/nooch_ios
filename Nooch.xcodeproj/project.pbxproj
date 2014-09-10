@@ -55,7 +55,6 @@
 		01B2CA9B18B3CC20008E6901 /* SWTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B2CA9318B3CC20008E6901 /* SWTableViewCell.m */; };
 		01B2CA9C18B3CC20008E6901 /* SWUtilityButtonTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B2CA9518B3CC20008E6901 /* SWUtilityButtonTapGestureRecognizer.m */; };
 		01B2CA9D18B3CC20008E6901 /* SWUtilityButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B2CA9718B3CC20008E6901 /* SWUtilityButtonView.m */; };
-		01BD43D8181F096300062315 /* Legal.m in Sources */ = {isa = PBXBuildFile; fileRef = 01BD43D7181F096300062315 /* Legal.m */; };
 		01C26DAA1843BB22005179B7 /* address-book-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26D8F1843BB22005179B7 /* address-book-icon.png */; };
 		01C26DAD1843BB22005179B7 /* dispute-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26D921843BB22005179B7 /* dispute-icon.png */; };
 		01C26DAE1843BB22005179B7 /* Dollar_Symbol.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26D931843BB22005179B7 /* Dollar_Symbol.png */; };
@@ -301,8 +300,6 @@
 		01B2CA9518B3CC20008E6901 /* SWUtilityButtonTapGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWUtilityButtonTapGestureRecognizer.m; sourceTree = "<group>"; };
 		01B2CA9618B3CC20008E6901 /* SWUtilityButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWUtilityButtonView.h; sourceTree = "<group>"; };
 		01B2CA9718B3CC20008E6901 /* SWUtilityButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWUtilityButtonView.m; sourceTree = "<group>"; };
-		01BD43D6181F096300062315 /* Legal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Legal.h; sourceTree = "<group>"; };
-		01BD43D7181F096300062315 /* Legal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Legal.m; sourceTree = "<group>"; };
 		01C26D8F1843BB22005179B7 /* address-book-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "address-book-icon.png"; sourceTree = "<group>"; };
 		01C26D921843BB22005179B7 /* dispute-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dispute-icon.png"; sourceTree = "<group>"; };
 		01C26D931843BB22005179B7 /* Dollar_Symbol.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Dollar_Symbol.png; sourceTree = "<group>"; };
@@ -755,8 +752,10 @@
 		01086003180349CF00A31F63 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
-				01BD43D6181F096300062315 /* Legal.h */,
-				01BD43D7181F096300062315 /* Legal.m */,
+				6BA6C0AD16BC3B8A00A89D7D /* privacy.h */,
+				6BA6C0AE16BC3B8B00A89D7D /* privacy.m */,
+				6B75E9F215FE74CA00B091D8 /* terms.h */,
+				6B75E9F315FE74CA00B091D8 /* terms.m */,
 				01086004180349E100A31F63 /* Statistics.h */,
 				01086005180349E100A31F63 /* Statistics.m */,
 				01086007180349F600A31F63 /* LimitsAndFees.h */,
@@ -1072,12 +1071,8 @@
 				01CABC5218A2BD9500BBB935 /* ECSlidingViewController */,
 				01C26DF91843E676005179B7 /* Reachability.h */,
 				01C26DFA1843E676005179B7 /* Reachability.m */,
-				6BA6C0AD16BC3B8A00A89D7D /* privacy.h */,
-				6BA6C0AE16BC3B8B00A89D7D /* privacy.m */,
 				6BF90A52169B6A77009486E7 /* Google Analytics */,
 				6B425A60165568420092B16A /* UIImage+ColorAtPixel */,
-				6B75E9F215FE74CA00B091D8 /* terms.h */,
-				6B75E9F315FE74CA00B091D8 /* terms.m */,
 				6B3037D715FA472800056DAD /* Constant.h */,
 				6B3037D815FA472900056DAD /* Constant.m */,
 				6B30376615FA440500056DAD /* Encryption */,
@@ -1611,7 +1606,6 @@
 				841A3E0D18A61491001DAAA2 /* UIImage+Alpha.m in Sources */,
 				01085FA917FB2D2100A31F63 /* Register.m in Sources */,
 				01085FD81803337C00A31F63 /* PINSettings.m in Sources */,
-				01BD43D8181F096300062315 /* Legal.m in Sources */,
 				6B425A64165568420092B16A /* UIImage+ColorAtPixel.m in Sources */,
 				16E4B1B6187053F20099D075 /* SDWebImageManager.m in Sources */,
 				6BA6C0AF16BC3B8B00A89D7D /* privacy.m in Sources */,

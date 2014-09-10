@@ -11,7 +11,6 @@
 #import "LimitsAndFees.h"
 #import "Statistics.h"
 #import "SendInvite.h"
-#import "Legal.h"
 #import "ProfileInfo.h"
 #import "UIImageView+WebCache.h"
 #import "assist.h"
@@ -453,7 +452,8 @@
            // [[UIApplication sharedApplication] openURL: webURL];
         }
     }
-    else if ([actionSheet tag] == 2) {
+    else if ([actionSheet tag] == 2)
+    {
         if (buttonIndex == 0) {
             terms *term = [terms new];
             [nav_ctrl pushViewController:term animated:NO];

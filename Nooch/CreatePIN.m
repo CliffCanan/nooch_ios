@@ -167,9 +167,6 @@
     [self.view addSubview:logo];
     
     UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
-    if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        [slogan setFrame:CGRectMake(0, 218, 0, 0)];
-    }
     [slogan setBackgroundColor:[UIColor clearColor]];
     [slogan setText:@"Money Made Simple"];
     [slogan setFont:[UIFont fontWithName:@"VarelaRound-regular" size:15]];
@@ -189,13 +186,6 @@
     [self.navigationItem setTitle:@"Create PIN"];
 
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, 300, 40)];
-    if ([[UIScreen mainScreen] bounds].size.height == 480)
-    {
-        CGRect frame = title.frame;
-        frame.origin.y = 133;
-        frame.origin.x = 10;
-        title.frame = frame;
-    }
     [title setText:@"Create your PIN"];
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
@@ -203,15 +193,8 @@
     self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 280, 50)];
     [self.prompt setNumberOfLines:2];
     [self.prompt setText:@"You'll be asked to enter this PIN anytime you send or request money."];
-    
-    if ([UIScreen mainScreen].bounds.size.height > 500) {
-        [self.prompt setStyleClass:@"instruction_text"];
-    }
-    else {
-        [self.prompt setStyleClass:@"instruction_text_smscrn"];
-    }
-    [self.view addSubview:self.prompt];
-    
+    [self.prompt setStyleClass:@"instruction_text"];
+
     self.pin = [UITextField new]; [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
     [self.pin setDelegate:self]; [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
     [self.view addSubview:self.pin]; [self.pin becomeFirstResponder];
@@ -225,17 +208,19 @@
     
     if ([[UIScreen mainScreen] bounds].size.height == 480)
     {
-        self.first_num = [[UIView alloc] initWithFrame:CGRectMake(73,225,24,24)];
-        self.second_num = [[UIView alloc] initWithFrame:CGRectMake(121,225,24,24)];
-        self.third_num = [[UIView alloc] initWithFrame:CGRectMake(169,225,24,24)];
-        self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(217,225,24,24)];
-        self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 12;
+        [self.prompt setStyleClass:@"instruction_text_smscrn"];
+        self.first_num = [[UIView alloc] initWithFrame:CGRectMake(73,220,26,26)];
+        self.second_num = [[UIView alloc] initWithFrame:CGRectMake(121,220,26,26)];
+        self.third_num = [[UIView alloc] initWithFrame:CGRectMake(169,220,26,26)];
+        self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(217,220,26,26)];
+        self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 13;
     }
     
     self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor clearColor];
     self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
     self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
     
+    [self.view addSubview:self.prompt];
     [self.view addSubview:self.first_num];
     [self.view addSubview:self.second_num];
     [self.view addSubview:self.third_num];

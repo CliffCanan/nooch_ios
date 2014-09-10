@@ -695,7 +695,7 @@
 		color 			: #313233;
 		width			: 280px;
 		left            : 20px;
-		height			: 39px;
+		height			: 44px;
 	}
 
     .pin_entry_feedback {
@@ -1193,6 +1193,12 @@ table-view#select_recipientwithoutSeperator {
     .animate_bubble {
         animation-name: bubble;
         animation-duration: 1.35s;
+		animation-timing-function: ease;
+		animation-iteration-count: 1;
+    }
+    .animate_bubble_slow {
+        animation-name: bubble;
+        animation-duration: 2.0s;
 		animation-timing-function: ease;
 		animation-iteration-count: 1;
     }

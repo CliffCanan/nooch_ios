@@ -21,7 +21,6 @@
 @property(nonatomic,strong) UITextField *password;
 @property(nonatomic,strong) UISwitch *stay_logged_in;
 @property(nonatomic,strong) UIButton *login;
-@property(nonatomic,strong) UIActivityIndicatorView *loading;
 @property(nonatomic,strong) NSString *encrypted_pass;
 @property(nonatomic,strong) MBProgressHUD *hud;
 @end
@@ -106,9 +105,6 @@
     [self.view addSubview:logo];
     
     UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
-    if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        [slogan setFrame:CGRectMake(0, 218, 0, 0)];
-    }
     [slogan setBackgroundColor:[UIColor clearColor]];
     [slogan setText:@"Money Made Simple"];
     [slogan setFont:[UIFont fontWithName:@"VarelaRound-regular" size:15]];
@@ -116,10 +112,8 @@
     [self.view addSubview:slogan];
 
     [self.navigationItem setTitle:@"LogIn"];
-    self.loading = [UIActivityIndicatorView new];
-    [self.loading setStyleId:@"loading"];
 
-    self.email = [[UITextField alloc] initWithFrame:CGRectMake(30, 150, 300, 40)];
+    self.email = [[UITextField alloc] initWithFrame:CGRectMake(30, 140, 300, 40)];
     [self.email setBackgroundColor:[UIColor clearColor]];
     [self.email setPlaceholder:@"Email"];
     [self.email setAutocapitalizationType:UITextAutocapitalizationTypeNone];
@@ -131,21 +125,17 @@
     [self.email setDelegate:self];
     [self.email setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.email];
-    
-//    UIView *div = [[UIView alloc] initWithFrame:CGRectMake(10, 191, 290, 1)];
-//    [div setStyleClass:@"divider"];
-//    [self.view addSubview:div];
 
     UILabel *em = [UILabel new];
     [em setStyleClass:@"table_view_cell_textlabel_1"];
     CGRect frame = em.frame;
-    frame.origin.y = 150;
+    frame.origin.y = 140;
     [em setFrame:frame];
     [em setBackgroundColor:[UIColor clearColor]];
     [em setText:@"Email"];
     [self.view addSubview:em];
 
-    self.password = [[UITextField alloc] initWithFrame:CGRectMake(30, 192, 260, 40)];
+    self.password = [[UITextField alloc] initWithFrame:CGRectMake(30, 182, 260, 40)];
     [self.password setBackgroundColor:[UIColor clearColor]];
     [self.password setPlaceholder:@"Password"];
     [self.password setSecureTextEntry:YES];
@@ -157,7 +147,8 @@
 
     UILabel *pass = [UILabel new];
     [pass setStyleClass:@"table_view_cell_textlabel_1"];
-    frame = pass.frame; frame.origin.y = 192;
+    frame = pass.frame;
+    frame.origin.y = 182;
     [pass setFrame:frame];
     [pass setText:@"Password"];
     [self.view addSubview:pass];
@@ -166,7 +157,7 @@
     [self.login setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     self.login.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.login setTitle:@"Log In  " forState:UIControlStateNormal];
-    [self.login setFrame:CGRectMake(10, 252, 300, 60)];
+    [self.login setFrame:CGRectMake(10, 244, 300, 60)];
     [self.login addTarget:self action:@selector(check_credentials) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"button_green"];
     
@@ -180,13 +171,13 @@
     [self.view addSubview:self.login];
     [self.login setEnabled:NO];
 
-    self.stay_logged_in = [[UISwitch alloc] initWithFrame:CGRectMake(110, 312, 40, 40)];
+    self.stay_logged_in = [[UISwitch alloc] initWithFrame:CGRectMake(110, 302, 34, 21)];
     [self.stay_logged_in setStyleClass:@"login_switch"];
     [self.stay_logged_in setOn: YES];
     self.stay_logged_in.transform = CGAffineTransformMakeScale(0.75, 0.75);
     [self.view addSubview:self.stay_logged_in];
     
-    UILabel *remember_me = [[UILabel alloc] initWithFrame:CGRectMake(20, 313, 100, 30)];
+    UILabel *remember_me = [[UILabel alloc] initWithFrame:CGRectMake(19, 303, 140, 30)];
     [remember_me setText:@"Remember Me"];
     [remember_me setStyleId:@"label_rememberme"];
     [self.view addSubview:remember_me];
@@ -194,7 +185,7 @@
     UIButton *forgot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [forgot setBackgroundColor:[UIColor clearColor]];
     [forgot setTitle:@"Forgot Password?" forState:UIControlStateNormal];
-    [forgot setFrame:CGRectMake(190, 313, 120, 30)];
+    [forgot setFrame:CGRectMake(190, 303, 120, 30)];
     [forgot addTarget:self action:@selector(forgot_pass) forControlEvents:UIControlEventTouchUpInside];
     [forgot setStyleId:@"label_forgotpw"];
     [self.view addSubview:forgot];
@@ -205,13 +196,33 @@
     UIImageView *encrypt_icon;
     [encrypt_icon setStyleId:@"icon_encryption"];
     [self.view addSubview:encrypt_icon];
+    
+    // Height adjustments for 3.5" screens
+    if ([[UIScreen mainScreen] bounds].size.height < 500)
+    {
+        [em setFrame:CGRectMake(20, 110, 100, 20)];
+        [pass setFrame:CGRectMake(20, 142, 102, 20)];
+        
+        CGRect frameEmailTextField = self.email.frame;
+        frameEmailTextField.origin.y = 110;
+        [self.email setFrame:frameEmailTextField];
+
+        CGRect framePassTextField = self.password.frame;
+        framePassTextField.origin.y = 142;
+        [self.password setFrame:framePassTextField];
+
+        [self.login setFrame:CGRectMake(20, 185, 300, 60)];
+        [forgot setFrame:CGRectMake(190, 236, 120, 30)];
+        [remember_me setFrame:CGRectMake(19, 236, 140, 30)];
+        [self.stay_logged_in setFrame:CGRectMake(110, 240, 34, 21)];
+    }
 }
 
 
 - (void) forgot_pass
 {
-    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Please enter your email and we will send you a reset link." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
-    alert.alertViewStyle=UIAlertViewStylePlainTextInput;
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Please enter your email and we will send you a reset link." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [[alert textFieldAtIndex:0] setText:self.email.text];
     [alert setTag:220011];
     [alert show];
@@ -441,9 +452,6 @@
         [UIView commitAnimations];
         return;
     }
-    
-#pragma mark LOGIN CHECK.
-    
     
 }
 

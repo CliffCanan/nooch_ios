@@ -234,12 +234,13 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
     isPhotoUpdate = NO;
-
-    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [self.view addSubview:spinner];
-    spinner.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2) - 15);
-
-    [spinner startAnimating];
+    
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.hud];
+    
+    self.hud.delegate = self;
+    self.hud.labelText = @"Loading your profile...";
+    [self.hud show:YES];
 
     NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [UIColor whiteColor], UITextAttributeTextColor,
@@ -282,6 +283,23 @@
     [picture setUserInteractionEnabled:YES];
     [self.view addSubview:picture];
     [picture setStyleClass:@"animate_bubble"];
+    
+    NSShadow * shadow_edit = [[NSShadow alloc] init];
+    shadow_edit.shadowColor = Rgb2UIColor(33, 34, 35, .35);
+    shadow_edit.shadowOffset = CGSizeMake(0, 1);
+    
+    NSDictionary * textAttributes =
+    @{NSShadowAttributeName: shadow_edit };
+
+    UILabel *edit_label = [UILabel new];
+    [edit_label setBackgroundColor:[UIColor clearColor]];
+    edit_label.attributedText = [[NSAttributedString alloc] initWithString:@"edit"
+                                                                 attributes:textAttributes];
+    [edit_label setFont:[UIFont fontWithName:@"Roboto-regular" size:11]];
+    [edit_label setFrame:CGRectMake(8, 42, 44, 12)];
+    [edit_label setTextAlignment:NSTextAlignmentCenter];
+    [edit_label setTextColor:[UIColor whiteColor]];
+    [picture addSubview:edit_label];
 
     start = [[user valueForKey:@"DateCreated"] rangeOfString:@"("];
     end = [[user valueForKey:@"DateCreated"] rangeOfString:@")"];
@@ -304,11 +322,11 @@
     shadow.shadowColor = Rgb2UIColor(229, 242, 248, .38);
     shadow.shadowOffset = CGSizeMake(0, 1);
     
-    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
+    NSDictionary * textAttributes_memberSince = @{NSShadowAttributeName: shadow };
 
     memSincelbl = [[UITextView alloc] initWithFrame:CGRectMake(20, 20, 200, 30)];
     memSincelbl.attributedText = [[NSAttributedString alloc] initWithString:@"Member Since"
-                                                                 attributes:textAttributes];
+                                                                 attributes:textAttributes_memberSince];
     memSincelbl.userInteractionEnabled = NO;
     memSincelbl.selectable = NO;
     [memSincelbl setBackgroundColor:[UIColor clearColor]];
@@ -414,8 +432,10 @@
 
     // ZIP
     self.zip = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
-    [self.zip setTextAlignment:NSTextAlignmentRight]; [self.zip setBackgroundColor:[UIColor clearColor]];
-    [self.zip setPlaceholder:@"12345"]; [self.zip setDelegate:self];
+    [self.zip setTextAlignment:NSTextAlignmentRight];
+    [self.zip setBackgroundColor:[UIColor clearColor]];
+    [self.zip setPlaceholder:@"12345"];
+    [self.zip setDelegate:self];
     [self.zip setKeyboardType:UIKeyboardTypeNumberPad];
     [self.zip setStyleClass:@"table_view_cell_detailtext_1"];
     [self.zip setTag:6];
@@ -453,6 +473,8 @@
     
     self.list = [UITableView new];
     [self.list setFrame:CGRectMake(0, 70+down, 320, 390)];
+    self.list.layer.borderWidth = 1;
+    self.list.layer.borderColor = (__bridge CGColorRef)([UIColor redColor]);
     [self.list setDelegate:self];
     [self.list setDataSource:self];
     [self.list setRowHeight:60];
@@ -573,7 +595,8 @@
             return;
         }
     }
-    if ([self.recovery_email.text length]==0) {
+
+    if ([self.recovery_email.text length] == 0) {
         self.recovery_email.text=@"";
     }
 
@@ -596,24 +619,24 @@
 //      }
 //  }
     
-    if([self.recovery_email.text length] > 0){
+    if ([self.recovery_email.text length] > 0){
         recoverMail = self.recovery_email.text;
     }
     else
         recoverMail = @"";
     
-    if([self.address_two.text length] != 0){
+    if ([self.address_two.text length] != 0){
         [[me usr] setObject:self.address_two.text forKey:@"Addr2"];
         [[me usr] setObject:self.address_two.text forKey:@"Addr1"];
     }
     else {
         [[me usr] removeObjectForKey:@"Addr2"];
     }
-    self.name.text=[self.name.text lowercaseString];
+    self.name.text = [self.name.text lowercaseString];
     
-    NSArray*arrdivide=[self.name.text componentsSeparatedByString:@" "];
+    NSArray *arrdivide = [self.name.text componentsSeparatedByString:@" "];
     
-    if ([arrdivide count]==2)
+    if ([arrdivide count] == 2)
     {
         transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[arrdivide objectAtIndex:0],@"FirstName",[arrdivide objectAtIndex:1],@"LastName",self.email.text,@"UserName",nil];
     }
@@ -875,6 +898,7 @@
         UILabel *recover = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [recover setBackgroundColor:[UIColor clearColor]];
         [recover setText:@"Recovery Email"];
+
         [recover setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:recover];
         [cell.contentView addSubview:self.recovery_email];
@@ -1160,22 +1184,27 @@
             self.disclose = NO;
             [self.list beginUpdates];
             [self.list endUpdates];
-        } else if ([response isEqualToString:@"Not a nooch member."]) {
+        }
+        else if ([response isEqualToString:@"Not a nooch member."]) {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"An error occurred when attempting to fulfill this request, please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
-        } else if ([response isEqualToString:@"Success"]) {
+        }
+        else if ([response isEqualToString:@"Success"]) {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"A verifiction SMS has been sent to your phone." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
             self.disclose = NO;
             [self.list beginUpdates];
             [self.list endUpdates];
-        } else if ([response isEqualToString:@"Failure"]) {
+        }
+        else if ([response isEqualToString:@"Failure"]) {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"An error occurred when attempting to fulfill this request, please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
-        } else if ([response isEqualToString:@"Temporarily_Blocked"]) {
+        }
+        else if ([response isEqualToString:@"Temporarily_Blocked"]) {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account is currently suspended, please attempt to verify your phone number when you are no longer suspended." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
-        } else if ([response isEqualToString:@"Suspended"]) {
+        }
+        else if ([response isEqualToString:@"Suspended"]) {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account is currently suspended, please attempt to verify your phone number when you are no longer suspended." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
         }
@@ -1221,8 +1250,6 @@
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         [av setTag:9];
-        [spinner stopAnimating];
-        [spinner setHidden:YES];
         
         if (isSignup)
         {
@@ -1349,7 +1376,6 @@
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Password"]];
         }
-        [spinner stopAnimating];
     }
 }
 
@@ -1461,7 +1487,7 @@
     
     else  if ([self.ServiceType isEqualToString:@"name"])
     {
-        self.ServiceType=@"lastname";
+        self.ServiceType = @"lastname";
         
         if ([[sourceData objectForKey:@"Status"] length] > 0)
         {
@@ -1500,8 +1526,8 @@
         {
             NSString* letterA = [[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
             self.name.text=[self.name.text stringByAppendingString:[NSString stringWithFormat:@" %@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]]];
-            NSString* name = [self.name.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            self.name.text=name;
+            NSString * name = [self.name.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            self.name.text = [name capitalizedString];
             
             [dictSavedInfo setObject:self.name.text forKey:@"name"];
         }
@@ -1516,9 +1542,8 @@
     
     else  if ([self.ServiceType isEqualToString:@"email"])
     {
-        self.email.text=[sourceData objectForKey:@"Status"];
+        self.email.text = [[sourceData objectForKey:@"Status"] capitalizedString];
         NSString* email = [self.email.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        self.email.text=email;
         
         if (![[dictProfileinfo objectForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]]&& [dictProfileinfo objectForKey:@"RecoveryMail"]!=NULL && ![[dictProfileinfo objectForKey:@"RecoveryMail"] isEqualToString:@""])
         {
@@ -1546,9 +1571,9 @@
     else if ([self.ServiceType isEqualToString:@"recovery"])
     {
         self.ServiceType=@"pwd";
-        self.recovery_email.text=[NSString stringWithFormat:@"%@",[sourceData objectForKey:@"Status"]];
+        self.recovery_email.text = [[NSString stringWithFormat:@"%@",[sourceData objectForKey:@"Status"]] lowercaseString];
         NSString* recovery_email = [self.recovery_email.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        self.recovery_email.text=recovery_email;
+        self.recovery_email.text = [recovery_email lowercaseString];
         
         [dictSavedInfo setObject:self.recovery_email.text forKey:@"recovery_email"];
 
