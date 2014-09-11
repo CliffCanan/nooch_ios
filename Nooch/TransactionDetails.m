@@ -939,8 +939,16 @@
 
                 imgTran = [[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
                 [imgTran setImage:[UIImage imageWithData:datos]];
+                imgTran.layer.cornerRadius = 6;
+                imgTran.layer.borderWidth = 1;
+                imgTran.clipsToBounds = YES;
+                imgTran.layer.borderColor = [UIColor whiteColor].CGColor;
 
                 mapView_ = [GMSMapView mapWithFrame:CGRectMake(165, 240, 150, 160) camera:camera];
+                mapView_.layer.cornerRadius = 6;
+                mapView_.layer.borderWidth = 1;
+                mapView_.clipsToBounds = YES;
+
                 if ([[UIScreen mainScreen] bounds].size.height == 480)
                 {
                     [imgTran setFrame:CGRectMake(5, 240, 150, 90)];

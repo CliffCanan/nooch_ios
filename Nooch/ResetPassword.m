@@ -68,6 +68,7 @@
     [self.confirm setDelegate:self];
     [self.confirm setPlaceholder:@"Confirm Password"];
     [self.confirm setSecureTextEntry:YES];
+    self.confirm.returnKeyType = UIReturnKeyDone;
 
     self.changepwbtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.changepwbtn setFrame:CGRectMake(0, 205, 0, 0)];

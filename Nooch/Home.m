@@ -949,7 +949,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
     else
     {
-        imageView = (UIImageView *)[view viewWithTag:1];
+//        imageView = (UIImageView *)[view viewWithTag:1];
     }
     
     return view;

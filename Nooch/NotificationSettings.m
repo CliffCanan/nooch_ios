@@ -198,7 +198,8 @@
         
         [cell.textLabel setTextColor:kNoochBlue];
         //[cell.detailTextLabel setTextColor:kNoochGrayLight];
-        cell.indentationLevel = 1; cell.indentationWidth = 10;
+        cell.indentationLevel = 1;
+        cell.indentationWidth = 10;
         [cell.textLabel setFont:kNoochFontMed];
     }
 

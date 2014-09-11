@@ -11,6 +11,6 @@ BOOL isBankAttached;
 @interface SettingsOptions : GAITrackedViewController<UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate,serveD>
 {
     UIView* blankView;
-    
+    UIButton * arrow;
 }
 @end

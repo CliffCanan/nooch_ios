@@ -203,7 +203,7 @@
         UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
                                                                               [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
         [scroll setDelegate:self];
-        [scroll setContentSize:CGSizeMake(320, 550)];
+        [scroll setContentSize:CGSizeMake(320, 520)];
         for (UIView *subview in self.view.subviews) {
             [subview removeFromSuperview];
             [scroll addSubview:subview];

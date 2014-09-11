@@ -99,7 +99,7 @@
 -(void)moreinfo_lightBox
 {
     overlay = [[UIView alloc]init];
-    overlay.frame = CGRectMake(0, 0, 320, 568);
+    overlay.frame = CGRectMake(0, 0, 320, [[UIScreen mainScreen] bounds].size.height);
     overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
     
     [UIView transitionWithView:self.navigationController.view
@@ -114,13 +114,8 @@
     mainView.layer.cornerRadius = 5;
     mainView.frame = CGRectMake(8, 45, 302, self.view.frame.size.height-45);
     mainView.backgroundColor = [UIColor whiteColor];
-    
-    [overlay addSubview:mainView];
     mainView.layer.masksToBounds = NO;
     mainView.layer.cornerRadius = 5;
-    mainView.layer.shadowOffset = CGSizeMake(0, 2);
-    mainView.layer.shadowRadius = 4;
-    mainView.layer.shadowOpacity = 0.6;
     
     UIView * head_container = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 302, 44)];
     head_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
@@ -139,7 +134,11 @@
     
     UIView *container = [[UIView alloc]initWithFrame:CGRectMake(1, 48, 300, 300)];
     
-    UIImageView *imageShow = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 300, self.view.frame.size.height-170)];
+    UIImageView *imageShow = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 300, self.view.frame.size.height-150)];
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        mainView.frame = CGRectMake(8, 42, 302, 430);
+        imageShow.frame = CGRectMake(0, 0, 300, 320);
+    }
     imageShow.image = [UIImage imageNamed:@"KnoxInfo_Lightbox@2x.png"];
     imageShow.contentMode = UIViewContentModeScaleAspectFit;
     [container addSubview:imageShow];
@@ -159,6 +158,8 @@
     [btnclose setImage:[UIImage imageNamed:@"close_button.png"] forState:UIControlStateNormal] ;
     [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
     [mainView addSubview:btnclose];
+    
+    [overlay addSubview:mainView];
 }
 
 -(void)close_lightBox

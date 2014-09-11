@@ -180,9 +180,6 @@
     [self.view addSubview:logo];
     
     UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
-    if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        [slogan setFrame:CGRectMake(0, 218, 0, 0)];
-    }
     [slogan setBackgroundColor:[UIColor clearColor]];
     [slogan setText:@"Money Made Simple"];
     [slogan setFont:[UIFont fontWithName:@"VarelaRound-regular" size:15]];
@@ -252,7 +249,7 @@
     [self.next_button setFrame:CGRectMake(10, 460, 300, 60)];
     [self.next_button addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
-        [self.next_button setFrame:CGRectMake(10, 447, 300, 60)];
+        [self.next_button setFrame:CGRectMake(10, 443, 300, 60)];
     }
     
     if ([self.user objectForKey:@"image"])
