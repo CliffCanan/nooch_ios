@@ -259,11 +259,9 @@
     [serveOBJ getSettings];
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    
-    down = 0;
 
     UIView *member_since_back = [UIView new];
-    [member_since_back setFrame:CGRectMake(0, 0+down, 320, 70)];
+    [member_since_back setFrame:CGRectMake(0, 0, 320, 70)];
     [member_since_back setStyleId:@"profileTopSectionBackground"];
     [self.view addSubview:member_since_back];
 
@@ -278,7 +276,7 @@
     [self.view addSubview:shadowUnder];
 
     picture = [UIImageView new];
-    [picture setFrame:CGRectMake(20, 5+down, 60, 60)];
+    [picture setFrame:CGRectMake(20, 5, 60, 60)];
     picture.layer.cornerRadius = 30;
     picture.layer.borderColor = [UIColor whiteColor].CGColor;
     picture.layer.borderWidth = 2;
@@ -476,7 +474,7 @@ NSLog(@"%@",transactionInput);
                               nil];
     
     self.list = [UITableView new];
-    [self.list setFrame:CGRectMake(0, 70+down, 320, 390)];
+    [self.list setFrame:CGRectMake(0, 70, 320, 390)];
     self.list.layer.borderWidth = 1;
     self.list.layer.borderColor = (__bridge CGColorRef)([UIColor redColor]);
     [self.list setDelegate:self];
@@ -1145,10 +1143,8 @@ NSLog(@"%@",transactionInput);
 {
     [self.hud hide:YES];
     NSError* error;
-    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
-//        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//        [Alert show];
-        
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
+    {
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
@@ -1302,16 +1298,9 @@ NSLog(@"%@",transactionInput);
                          JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                          options:kNilOptions
                          error:&error];
-NSLog(@"DICT PROFILE INFO IS:  %@",dictProfileinfo);
-        if (![[dictProfileinfo valueForKey:@"FirstName"] isKindOfClass:[NSNull class]])
-        {
-            self.ServiceType = @"name";
-            Decryption *decry = [[Decryption alloc] init];
-            decry.Delegate = self;
-            decry->tag = [NSNumber numberWithInteger:2];
-            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"FirstName"]];
-        }
         
+        NSLog(@"dictProfileinfo is: %@",dictProfileinfo);
+
         if (![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]])
         {
             

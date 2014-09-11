@@ -2332,6 +2332,12 @@ table-view#select_recipientwithoutSeperator {
 	/*****    TRANSFER DETAILS   *****/
 	/*********************************/
 
+    #transDetailsTopSectionBG {
+		background-color: rgba(228,229,230,.3);
+        border: 1px solid rgba(207,210,212,.9);
+	/*	box-shadow: 0px 1px rgba(207,210,212,.9); */
+	}
+
 	/***** Intro Text - "Payment from"  or  "Request From"  etc.  ****/
 	.details_intro {
 		width			: 300px;
@@ -2384,9 +2390,11 @@ table-view#select_recipientwithoutSeperator {
 		font-size			: 40px;
 		text-align       	: center;
 		color 				: #3fabe1;
+        animation-name: bubble;
+        animation-duration: 2.05s;
+		animation-timing-function: ease;
+		animation-iteration-count: 1;
 	}
-	
-	.details_amount_donation { }
 
 	/**  Memo & Location Text **/
     .details_label_memo {

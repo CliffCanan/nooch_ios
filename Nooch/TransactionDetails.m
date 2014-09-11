@@ -43,7 +43,7 @@
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
 
-    UIActivityIndicatorView*act=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    UIActivityIndicatorView * act = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [act setFrame:CGRectMake(14, 5, 20, 20)];
     [act startAnimating];
 
@@ -53,6 +53,20 @@
     [self.navigationItem setTitle:@"Transfer Details"];
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
+
+    UIView *member_since_back = [UIView new];
+    [member_since_back setFrame:CGRectMake(-1, -1, 322, 110)];
+    [member_since_back setStyleId:@"transDetailsTopSectionBG"];
+    [self.view addSubview:member_since_back];
+
+    UIView * shadowUnder = [[UIView alloc] initWithFrame:CGRectMake(11, 28, 76, 76)];
+    shadowUnder.backgroundColor = Rgb2UIColor(207, 210, 213, .5);
+    shadowUnder.layer.cornerRadius = 38;
+    shadowUnder.layer.shadowColor = [UIColor blackColor].CGColor;
+    shadowUnder.layer.shadowOffset = CGSizeMake(0, 1.0);
+    shadowUnder.layer.shadowOpacity = 0.45;
+    shadowUnder.layer.shadowRadius = 2.5;
+    [self.view addSubview:shadowUnder];
 
     UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];  // Other user's NAME
     UIImageView *user_picture = [[UIImageView alloc] initWithFrame:CGRectMake(10, 27, 78, 78)];  // Other user's PICTURE
@@ -1041,18 +1055,19 @@
         if ([self.trans objectForKey:@"City"] != NULL &&
             [self.trans objectForKey:@"State"] != NULL)
         {
-//          NSLog(@"ADDRESS LINE 1 IS: %@",[self.trans objectForKey:@"AddressLine1"]);
- 
-            if (![[self.trans objectForKey:@"State"] isEqualToString:@""]) {
+            if (![[self.trans objectForKey:@"State"] isEqualToString:@""])
+            {
                 NSString * address = [self.trans objectForKey:@"City"]; //stringByReplacingOccurrencesOfString:@"," withString:@" "];
-                address = [address stringByAppendingString:[self.trans objectForKey:@"State"]];
+                address = [address stringByAppendingString:[NSString stringWithFormat:@", %@",[self.trans objectForKey:@"State"]]];
                 [location setText:[NSString stringWithFormat:@"%@",address]];
             }
-            else {
+            else
+            {
                 NSString * address = [self.trans objectForKey:@"AddressLine1"];
                 address = [address stringByAppendingString:[self.trans objectForKey:@"City"]];
                 [location setText:[NSString stringWithFormat:@"%@",address]];
             }
+
             [mapView_ addSubview:location];
             
             if ([[self.trans objectForKey:@"AddressLine1"]length] == 0 && [[self.trans objectForKey:@"City"]length] == 0)
