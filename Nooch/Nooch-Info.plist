@@ -47,7 +47,7 @@
 	<key>NSContactsUsageDescription</key>
 	<string>Contacts are used to let you send or request money to a friend using their email address.</string>
 	<key>NSLocationUsageDescription</key>
-	<string>Your location is used to find nearby friends using Nooch and for security.</string>
+	<string>Your location is used to find nearby friends who use Nooch and so you can see the location of your payment.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To add a profile picture and for attaching images to your transfers.</string>
 	<key>UIAppFonts</key>

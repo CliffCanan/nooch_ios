@@ -160,7 +160,7 @@
     // Google map
     camera = [GMSCameraPosition cameraWithLatitude:39.952360
                                          longitude:-75.163602
-                                              zoom:7];
+                                              zoom:8];
     mapView_ = [GMSMapView mapWithFrame:self.view.frame camera:camera];
     mapView_.myLocationEnabled = YES;
     mapView_.delegate=self;
@@ -284,8 +284,7 @@
     [self.view bringSubviewToFront:exportHistory];
 }
 
-- (void)mapView:(GMSMapView *)mapView
-didTapInfoWindowOfMarker:(GMSMarker *)marker
+- (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker
 {
     NSDictionary*dictRecord=[histArrayCommon objectAtIndex:[[marker title]intValue]];
     TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];

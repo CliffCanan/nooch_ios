@@ -56,9 +56,7 @@
     [self.view addSubview:logo];
 
     UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
-    if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        [slogan setFrame:CGRectMake(0, 218, 0, 0)];
-    }
+
     [slogan setBackgroundColor:[UIColor clearColor]];
     [slogan setText:@"Money Made Simple"];
     [slogan setFont:[UIFont fontWithName:@"VarelaRound-regular" size:15]];
@@ -67,9 +65,6 @@
     [self.view addSubview:slogan];
 
     UILabel *signup = [[UILabel alloc] initWithFrame:CGRectMake(0, 94, 320, 15)];
-    if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        [signup setFrame:CGRectMake(0, 90, 0, 0)];
-    }
     [signup setText:@"Sign Up Below With"];
     [signup setStyleClass:@"instruction_text"];
     [self.view addSubview:signup];

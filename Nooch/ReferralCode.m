@@ -47,9 +47,6 @@
     [self.view addSubview:logo];
     
     UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
-    if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        [slogan setFrame:CGRectMake(0, 218, 0, 0)];
-    }
     [slogan setBackgroundColor:[UIColor clearColor]];
     [slogan setText:@"Money Made Simple"];
     [slogan setFont:[UIFont fontWithName:@"VarelaRound-regular" size:15]];
@@ -116,13 +113,6 @@
 
 #pragma mark-Location Tracker Delegates
 
-/*- (void)locationUpdate:(CLLocation *)location{
-    [[assist shared]setlocationAllowed: YES];
-    lat = location.coordinate.latitude;
-    lon = location.coordinate.longitude;
-    [getLocation.locationManager stopUpdatingLocation];;
-}
-*/
 -(void)locationError:(NSError *)error{
     [[assist shared]setlocationAllowed:NO];
 }

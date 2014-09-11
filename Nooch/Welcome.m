@@ -66,9 +66,6 @@
     [self.view addSubview:logo];
     
     UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
-    if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        [slogan setFrame:CGRectMake(0, 218, 0, 0)];
-    }
     [slogan setBackgroundColor:[UIColor clearColor]];
     [slogan setText:@"Money Made Simple"];
     [slogan setFont:[UIFont fontWithName:@"VarelaRound-regular" size:15]];
@@ -90,6 +87,7 @@
     [success_header setText:@"Account Created Successfully"];
     [success_header setTextAlignment:NSTextAlignmentCenter];
     [success_header setFont:[UIFont fontWithName:@"Roboto-regular" size:19]];
+    [success_header setStyleClass:@"animate_bubble_slow"];
     [self.view addSubview:success_header];
     
     UILabel * prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 200, 280, 122)];
