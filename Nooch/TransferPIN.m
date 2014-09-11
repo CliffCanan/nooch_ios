@@ -201,9 +201,12 @@
     
     if ([[assist shared] getTranferImage])
     {
-        UIImageView *trans_image = [[UIImageView alloc] initWithFrame:CGRectMake(251, 206, 54, 54)];
+        [memo_label setStyleClass:@"pin_memotext_wPic"];
+        [to_label setStyleClass:@"pin_recipientname_text_wPic"];
+        UIImageView *trans_image = [[UIImageView alloc] initWithFrame:CGRectMake(252, 205, 56, 56)];
         trans_image.layer.cornerRadius = 5;
-        trans_image.layer.borderWidth = 1; trans_image.clipsToBounds = YES;
+        trans_image.layer.borderWidth = 1;
+        trans_image.clipsToBounds = YES;
         trans_image.layer.borderColor = [UIColor whiteColor].CGColor;
         [trans_image setImage:[[assist shared] getTranferImage]];
         [self.view addSubview:trans_image];

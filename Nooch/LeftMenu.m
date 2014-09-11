@@ -143,11 +143,19 @@
         [user_pic setUserInteractionEnabled:YES];
     }
 
-    if ([[user valueForKey:@"Status"]isEqualToString:@"Registered"] ||
-        [[user valueForKey:@"Status"]isEqualToString:@"Suspended"] )
+    if ( ([[user valueForKey:@"Status"]isEqualToString:@"Registered"]   ||
+          [[user valueForKey:@"Status"]isEqualToString:@"Suspended"] )  ||
+         ( [user valueForKey:@"FirstName"] == NULL || [user valueForKey:@"LastName"] == NULL) )
     {
         user_pic.layer.borderWidth = 3;
         user_pic.layer.borderColor = kNoochRed.CGColor;
+    }
+    
+    if ([[user valueForKey:@"FirstName"] length] < 1 && [[user valueForKey:@"LastName"] length] < 1)
+    {
+        NSLog(@"THE 'FirstName VALUE IS..... : %@",[user valueForKey:@"FirstName"]);
+        [self.name setText:[NSString stringWithFormat:@"Some"]];
+        [self.lastName setText:[NSString stringWithFormat:@"Person"]];
     }
 }
 
@@ -244,12 +252,15 @@
     cell.textLabel.textColor = [UIColor whiteColor];
     [cell setBackgroundColor:kNoochMenu];
     cell.textLabel.font = [UIFont fontWithName:@"Roboto-Light" size:18];
-
-    UILabel *arrow = [UILabel new];
-    [arrow setStyleClass:@"lside_arrow"];
-    arrow.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-right"];
-    [cell.contentView addSubview:arrow];
     
+    arrow = [UIButton buttonWithType:UIButtonTypeCustom];
+    [arrow setFrame:CGRectMake(242, 14, 16, 18)];
+    [arrow setStyleClass:@"lside_arrow"];
+    [arrow setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-right"] forState:UIControlStateNormal];
+    [arrow setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.4) forState:UIControlStateNormal];
+    arrow.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [cell.contentView addSubview:arrow];
+
     UILabel *iv = [UILabel new];
 
     NSShadow * shadow = [[NSShadow alloc] init];

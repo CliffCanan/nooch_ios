@@ -14,12 +14,13 @@
 #import "knoxWeb.h"
 #import "UIImageView+WebCache.h"
 @interface SettingsOptions (){
-    UILabel *bank_name;
-    UIImageView*bank_image;
-    UITableView *menu;
-    UIView *linked_background;
-    UIButton *unlink_account;
-    UIButton *link_bank ;
+    UILabel * bank_name;
+    UILabel * lastFour_label;
+    UIImageView * bank_image;
+    UITableView * menu;
+    UIView * linked_background;
+    UIButton * unlink_account;
+    UIButton * link_bank ;
 }
 @property(atomic,weak)UIButton *logout;
 @end
@@ -173,9 +174,11 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 3;
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
@@ -184,27 +187,36 @@
         selectionColor.backgroundColor = kNoochGrayLight;
         cell.selectedBackgroundView = selectionColor;
     }
+    
     UILabel *title = [UILabel new];
     [title setStyleClass:@"settings_table_label"];
-    UILabel *arrow = [UILabel new];
-    [arrow setStyleClass:@"table_arrow"];
-    [arrow setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-chevron-right"]];
-    [cell.contentView addSubview:arrow];
-    
+
     UILabel *glyph = [UILabel new];
     [glyph setStyleClass:@"table_glyph"];
+
     if(indexPath.row == 0){
         title.text = @"Profile Info";
         [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-user"]];
-    }else if(indexPath.row == 1){
+    }
+    else if(indexPath.row == 1){
         title.text = @"Security Settings";
         [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
-    }else if(indexPath.row == 2){
+    }
+    else if(indexPath.row == 2){
         title.text = @"Notification Settings";
         [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bell"]];
     }
+
+    arrow = [UIButton buttonWithType:UIButtonTypeCustom];
+    [arrow setStyleClass:@"table_arrow"];
+    [arrow setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-right"] forState:UIControlStateNormal];
+    [arrow setTitleShadowColor:Rgb2UIColor(3, 5, 8, 0.1) forState:UIControlStateNormal];
+    arrow.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+
     [cell.contentView addSubview:title];
     [cell.contentView addSubview:glyph];
+    [cell.contentView addSubview:arrow];
+    
     return cell;
 }
 
@@ -306,20 +318,22 @@
         [self getBankInfo];
     }
     
-    else if([tagName isEqualToString:@"knox_bank_info"])
+    else if ([tagName isEqualToString:@"knox_bank_info"])
     {
-        NSError* error;
+        NSError * error;
         NSMutableDictionary*dictResponse = [NSJSONSerialization
                                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                             options:kNilOptions
                                             error:&error];
-        
-        
-        if (![[dictResponse valueForKey:@"AccountName"] isKindOfClass:[NSNull class]]&& ![[dictResponse valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]] && ![[dictResponse valueForKey:@"BankName"] isKindOfClass:[NSNull class]])
+
+        if (![[dictResponse valueForKey:@"AccountName"] isKindOfClass:[NSNull class]] &&
+            ![[dictResponse valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]] &&
+            ![[dictResponse valueForKey:@"BankName"] isKindOfClass:[NSNull class]])
         {
-        
             [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
-            isBankAttached=YES;
+            isBankAttached = YES;
+            
+            NSLog(@"Account Name is: %@  ....   BankName is: %@ .....",[dictResponse valueForKey:@"AccountName"],[dictResponse valueForKey:@"BankName"]);
             
             if (isBankAttached)
             {
@@ -330,9 +344,9 @@
                 [linked_background setStyleId:@"account_background"];
                 [self.view addSubview:linked_background];
                 
-                bank_image=[[UIImageView alloc]initWithFrame:CGRectMake(10, 8, 49, 48)];
-                bank_image.contentMode=UIViewContentModeScaleToFill;
-                bank_image.image=[UIImage imageNamed:@"bank.png"];
+                bank_image = [[UIImageView alloc]initWithFrame:CGRectMake(10, 8, 49, 48)];
+                bank_image.contentMode = UIViewContentModeScaleToFill;
+                bank_image.image = [UIImage imageNamed:@"bank.png"];
                 [linked_background addSubview:bank_image];
                 
                 bank_name = [UILabel new];
@@ -340,6 +354,11 @@
                 [bank_name setText:@"Bank"];
                 [linked_background addSubview:bank_name];
                 
+                lastFour_label = [UILabel new];
+                [lastFour_label setStyleId:@"linked_account_last4"];
+                [lastFour_label setText:@"**** **** **** ****"];
+                [linked_background addSubview:lastFour_label];
+
                 unlink_account = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                 [unlink_account setStyleId:@"remove_account"];
                 [unlink_account setTitle:@"Remove" forState:UIControlStateNormal];
@@ -360,6 +379,8 @@
             bank_image.layer.cornerRadius = 5;
             bank_image.clipsToBounds = YES;
             [bank_name setText:[dictResponse valueForKey:@"BankName"]];
+            [lastFour_label setText:@"**** **** **** %@"];
+            [lastFour_label setText:[NSString stringWithFormat:@"**** **** **** %@",[dictResponse valueForKey:@"AccountName"]  ]];
 
         }
         else

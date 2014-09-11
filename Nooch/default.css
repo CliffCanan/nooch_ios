@@ -465,13 +465,13 @@
 	.Repin_instructiontext {
 		width			: 300px;
 		left			: 10px;
-		top             : 80px;
+		top             : 90px;
 		height          : 20px;
 		font-family		: "Roboto";
-		font-weight		: medium;
-		font-size		: 16px;
+		font-weight		: regular;
+		font-size		: 18px;
 		text-align		: center;
-		color			: #14171a;
+		color			: #313233;
 	}
   .backbutton {
 		width			: 70px;
@@ -1463,12 +1463,35 @@ table-view#select_recipientwithoutSeperator {
 		text-align			: center;
 		color				: #ffffff;
 	}
+    .pin_recipientname_text_wPic {
+		top					: 198px;
+		left				: 69px;
+		width				: 181px;
+		height				: 38px;
+		font-family			: "Roboto";
+		font-size			: 20px;
+		font-weight			: regular;
+		text-align			: center;
+		color				: #ffffff;
+	}
 
 	/**  The text of the memo if one was attached.  **/ 
 	.pin_memotext {
 		top					: 235px;
 		left				: 69px;
 		width				: 244px;
+		height				: 33px;
+		font-family			: "Roboto";
+		font-size			: 15px;
+		font-weight			: light;
+		text-align			: left;
+		color				: #5a538d;
+        text-align          : center;
+	}
+    .pin_memotext_wPic {
+		top					: 235px;
+		left				: 69px;
+		width				: 181px;
 		height				: 33px;
 		font-family			: "Roboto";
 		font-size			: 15px;
@@ -1936,12 +1959,8 @@ table-view#select_recipientwithoutSeperator {
         font-size: 16px;
     }
     .lside_arrow {
-        left        : 240px;
-        top         : 8px;
-        width       : 20px;
-        height      : 28px;
         color       : white;
-		opacity		: .6;
+		opacity		: .7;
         font-family : "FontAwesome";
         font-size	: 23px;
 		text-align	: right;
@@ -2546,7 +2565,7 @@ table-view#select_recipientwithoutSeperator {
         width      : 22px;
         height      : 30px;
         font-family : "FontAwesome";
-        font-size       : 24px;
+        font-size       : 20px;
         color       : #3fabe1;
 		text-align: center;
     }	
@@ -2555,9 +2574,9 @@ table-view#select_recipientwithoutSeperator {
         top         : 10px;
         width       : 20px;
         height      : 30px;
-        color        :  rgba(63,171,225,.7);
+        color       :  rgba(63,171,225,.8);
         font-family : "FontAwesome";
-        font-size       : 22px;
+        font-size       : 23px;
 		text-align: right;
     }
 
@@ -2574,29 +2593,29 @@ table-view#select_recipientwithoutSeperator {
     }
 
     #linked_account_name {
-        top			: 2px;
+        top			: 6px;
         left		: 72px;
         width		: 200px;
-        height		: 60px;
+        height		: 32px;
         font-family	: "Roboto";
-        font-weight	: bold;
-        font-size	: 16px;
+        font-weight	: medium;
+        font-size	: 17px;
         text-align	: left;
         color		: #313233;
     }
-/*
-    #linked_account_number {
-        top			: 34px;
-        left		: 60px;
+
+    #linked_account_last4 {
+        top			: 35px;
+        left		: 72px;
         width		: 200px;
-        height		: 20px;
+        height		: 16px;
         font-family	: "Roboto";
-        font-weight	: regular;
+        font-weight	: light;
         font-size	: 14px;
         text-align	: left;
         color		: #313233;
     }
-*/
+
     #remove_account {
         color		: #a94442;
         top			: 2px;

@@ -186,11 +186,15 @@
     if ((alertView.tag == 5020 || alertView.tag == 5021) && buttonIndex == 0) {
         [self save_changes];
     }
-    else if(alertView.tag == 5020 && buttonIndex == 1){
+    else if (alertView.tag == 5020 && buttonIndex == 1){
         [self.slidingViewController anchorTopViewTo:ECRight];
     }
-    else if(alertView.tag == 5021 && buttonIndex == 1){
+    else if (alertView.tag == 5021 && buttonIndex == 1){
         [self.navigationController popViewControllerAnimated:YES];
+    }
+    else if (alertView.tag == 1001 && buttonIndex == 0) {
+        [self.name setUserInteractionEnabled:YES];
+        [self.name becomeFirstResponder];
     }
 }
 
@@ -340,7 +344,7 @@
     [dateText setText:[NSString stringWithFormat:@"%@",_date]];
     [dateText setStyleId:@"profile_DateText"];
     [self.view addSubview:dateText];
-
+NSLog(@"%@",transactionInput);
     self.name = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.name setTextAlignment:NSTextAlignmentRight];
 //    [self.name setBackgroundColor:[UIColor clearColor]];
@@ -639,11 +643,11 @@
     
     if ([arrdivide count] == 2)
     {
-        transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[arrdivide objectAtIndex:0],@"FirstName",[arrdivide objectAtIndex:1],@"LastName",self.email.text,@"UserName",nil];
+        transactionInput = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[arrdivide objectAtIndex:0],@"FirstName",[arrdivide objectAtIndex:1],@"LastName",self.email.text,@"UserName",nil];
     }
     else
     {
-        transactionInput  =[[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",self.name.text,@"FirstName",@" ",@"LastName",self.email.text,@"UserName",nil];
+        transactionInput = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",self.name.text,@"FirstName",@" ",@"LastName",self.email.text,@"UserName",nil];
     }
 
     [transactionInput setObject:[NSString stringWithFormat:@"%@/%@",self.address_one.text,self.address_two.text] forKey:@"Address"];
@@ -1298,7 +1302,16 @@
                          JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                          options:kNilOptions
                          error:&error];
-       
+NSLog(@"DICT PROFILE INFO IS:  %@",dictProfileinfo);
+        if (![[dictProfileinfo valueForKey:@"FirstName"] isKindOfClass:[NSNull class]])
+        {
+            self.ServiceType = @"name";
+            Decryption *decry = [[Decryption alloc] init];
+            decry.Delegate = self;
+            decry->tag = [NSNumber numberWithInteger:2];
+            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"FirstName"]];
+        }
+        
         if (![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]])
         {
             
@@ -1412,6 +1425,7 @@
 
 -(void)decryptionDidFinish:(NSMutableDictionary *) sourceData TValue:(NSNumber *) tagValue
 {
+    
     if ([self.ServiceType isEqualToString:@"Address"])
     {
         self.ServiceType = @"City";
@@ -1518,9 +1532,12 @@
     {
         self.ServiceType = @"lastname";
         
+        NSLog(@"THIS STATUS FIELD THING IS...:  %lu",(unsigned long)[[sourceData objectForKey:@"Status"] length]);
+        
         if ([[sourceData objectForKey:@"Status"] length] > 0)
         {
             NSString * letterA = [[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
+            NSLog(@"LETTER 'A' IS %@",letterA);
 
             self.name.text = [NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
             
@@ -1544,6 +1561,11 @@
                 decry->tag = [NSNumber numberWithInteger:2];
                 [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"UserName"]];
             }
+        }
+        else {
+            UIAlertView * newUserNoName = [[UIAlertView alloc] initWithTitle:@"Nice To Meet You" message:@"Thanks for joining Nooch! Please complete your profile to get started." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [newUserNoName show];
+            [newUserNoName setTag:1001];
         }
     }
 

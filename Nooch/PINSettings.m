@@ -42,9 +42,9 @@
     [self.view addSubview:change_pin];
     
     UILabel *req_imm = [[UILabel alloc] initWithFrame:CGRectMake(-1, 100, 322, 56)];
-    [req_imm setFont:[UIFont fontWithName:@"Roboto-Light" size:17]];
-    [req_imm setText:@"       Require PIN Immediately"];
-    [req_imm setTextColor:kNoochBlue];
+    [req_imm setFont:[UIFont fontWithName:@"Roboto-regular" size:17]];
+    [req_imm setText:@"    Require PIN Immediately"];
+    [req_imm setTextColor:[Helpers hexColor:@"313233"]];
     req_imm.layer.borderColor = [Helpers hexColor:@"BCBEC0"].CGColor;
     req_imm.layer.borderWidth = 1;
     [self.view addSubview:req_imm];
@@ -59,7 +59,7 @@
     [info setNumberOfLines:0];
     [info setTextAlignment:NSTextAlignmentCenter];
     [info setFont:[UIFont fontWithName:@"Roboto-Light" size:14]];
-    [info setTextColor:[Helpers hexColor:@"939598"]];
+    [info setTextColor:[Helpers hexColor:@"7f8185"]];
     [info setText:@"Require your PIN to enter the app."];
     [self.view addSubview:info];
     if ([[user objectForKey:@"requiredImmediately"] boolValue]) {
@@ -76,9 +76,11 @@
     [self.view addSubview:change_password];
     
     UILabel *show_search = [[UILabel alloc] initWithFrame:CGRectMake(-1, 310, 322, 56)];
-    [show_search setFont:[UIFont fontWithName:@"Roboto-Light" size:17]];
-    [show_search setText:@"       Show in Search"];
-    [show_search setTextColor:kNoochBlue]; show_search.layer.borderColor = [Helpers hexColor:@"BCBEC0"].CGColor; show_search.layer.borderWidth = 1;
+    [show_search setFont:[UIFont fontWithName:@"Roboto-regular" size:17]];
+    [show_search setText:@"    Show in Search"];
+    [show_search setTextColor:[Helpers hexColor:@"313233"]];
+    show_search.layer.borderColor = [Helpers hexColor:@"BCBEC0"].CGColor;
+    show_search.layer.borderWidth = 1;
     [self.view addSubview:show_search];
     
     self.search = [[UISwitch alloc] initWithFrame:CGRectMake(260, 323, 40, 40)];
@@ -96,7 +98,7 @@
     [info2 setNumberOfLines:0];
     [info2 setTextAlignment:NSTextAlignmentCenter];
     [info2 setFont:[UIFont fontWithName:@"Roboto-Light" size:14]];
-    [info2 setTextColor:[Helpers hexColor:@"939598"]];
+    [info2 setTextColor:[Helpers hexColor:@"7f8185"]];
     [info2 setText:@"Show up when users search Nooch for other members."];
     [self.view addSubview:info2];
 }
