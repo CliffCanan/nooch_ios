@@ -174,12 +174,12 @@
     
     [completed_pending setSelectedSegmentIndex:0];
     
-    UILabel *glyph_recent = [UILabel new];
-    [glyph_recent setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-    [glyph_recent setFrame:CGRectMake(21, 12, 22, 16)];
-    [glyph_recent setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
-    [glyph_recent setTextColor:[UIColor whiteColor]];
-    [self.view addSubview:glyph_recent];
+    UILabel *glyph_checkmark = [UILabel new];
+    [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+    [glyph_checkmark setFrame:CGRectMake(21, 12, 22, 16)];
+    [glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+    [glyph_checkmark setTextColor:[UIColor whiteColor]];
+    [self.view addSubview:glyph_checkmark];
     
     UILabel *glyph_location = [UILabel new];
     [glyph_location setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
@@ -194,11 +194,12 @@
     [imageCache cleanDisk];
     
     [self loadHist:@"ALL" index:index len:20 subType:subTypestr];
-    serve *serveOBJ = [serve new];
+ 
+/*    serve *serveOBJ = [serve new];
     [serveOBJ setDelegate:self];
     serveOBJ.tagName = @"histPending";
     [serveOBJ histMore:@"ALL" sPos:1 len:20 subType:@"Pending"];
-
+*/
     //Export History
     exportHistory = [UIButton buttonWithType:UIButtonTypeCustom];
     [exportHistory setTitle:@"     Export History" forState:UIControlStateNormal];
@@ -622,12 +623,12 @@ return customView;
         NSArray *topRightBtns = @[map,filt];
         [self.navigationItem setRightBarButtonItems:topRightBtns animated:NO ];
         
-        UILabel *glyph_recent = [UILabel new];
-        [glyph_recent setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-        [glyph_recent setFrame:CGRectMake(21, 12, 22, 16)];
-        [glyph_recent setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
-        [glyph_recent setTextColor:[UIColor whiteColor]];
-        [self.view addSubview:glyph_recent];
+        UILabel *glyph_checkmark = [UILabel new];
+        [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+        [glyph_checkmark setFrame:CGRectMake(21, 12, 22, 16)];
+        [glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+        [glyph_checkmark setTextColor:[UIColor whiteColor]];
+        [self.view addSubview:glyph_checkmark];
         
         UILabel *glyph_location = [UILabel new];
         [glyph_location setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
@@ -1320,14 +1321,11 @@ return customView;
                 }
                 else
                 {
-                    if (indexPath.row != 0) {
-                    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-                    activityIndicator.center = CGPointMake(cell.contentView.frame.size.width / 2, cell.contentView.frame.size.height / 2);
-                    [activityIndicator startAnimating];
-                    [cell.contentView addSubview:activityIndicator];
-                    ishistLoading=YES;
-                    index++;
-                    [self loadHist:listType index:index len:20 subType:subTypestr];
+                    if (indexPath.row > 6)
+                    {
+                        ishistLoading=YES;
+                        index++;
+                        [self loadHist:listType index:index len:20 subType:subTypestr];
                     }
                 }
             }
@@ -1341,7 +1339,7 @@ return customView;
             if ([histTempPending count] > indexPath.row)
             {
                 NSDictionary * dictRecord = [histTempPending objectAtIndex:indexPath.row];
-                ////nslog(@"%@",dictRecord);
+
                 if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]) {
                     UIView *indicator = [UIView new];
                     [indicator setStyleClass:@"history_sidecolor"];
@@ -1696,7 +1694,7 @@ return customView;
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabel"];
                 [name setStyleClass:@"history_recipientname"];
-                if (indexPath.row==0)
+                if (indexPath.row == 0)
                     [name setText:@"No Payments To Display"];
                 else
                     [name setText:@""];
@@ -1704,12 +1702,7 @@ return customView;
                 return cell;
             }
             else if (isStart == YES)
-            {
-                UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-                activityIndicator.center = CGPointMake(cell.contentView.frame.size.width / 2, cell.contentView.frame.size.height / 2);
-                [activityIndicator startAnimating];
-                [cell.contentView addSubview:activityIndicator];
-            }
+            {}
             else
             {
                 if (isSearch)
@@ -1724,12 +1717,8 @@ return customView;
                 }
                 else
                 {
-                    if (indexPath.row != 0)
+                    if (indexPath.row > 5)
                     {
-                        UIActivityIndicatorView * activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-                        activityIndicator.center = CGPointMake(cell.contentView.frame.size.width / 2, cell.contentView.frame.size.height / 2);
-                        [activityIndicator startAnimating];
-                        [cell.contentView addSubview:activityIndicator];
                         ishistLoading=YES;
                         index++;
                         [self loadHist:listType index:index len:20 subType:subTypestr];

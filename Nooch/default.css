@@ -2519,7 +2519,7 @@ table-view#select_recipientwithoutSeperator {
 	.details_buttons {
 		width: 50px;
 		height: 50px;
-		top: 420px;
+		top: 428px;
 	}
     .details_buttons_4 {
 		width: 50px;
@@ -2532,11 +2532,11 @@ table-view#select_recipientwithoutSeperator {
 		width				: 55px;
         text-align          : center;
 		height				: 14px;
-		top					: 480px;
+		top					: 482px;
 		font-family			: "Roboto";
-		font-weight         : regular;
+		font-weight         : light;
 		font-size			: 12px;
-		color 				: #6d6e71;
+		color 				: #5a5b5d;
 	}
     .details_buttons_labels_4 {
 		width				: 55px;
@@ -2546,7 +2546,7 @@ table-view#select_recipientwithoutSeperator {
 		font-family			: "Roboto";
 		font-weight         : regular;
 		font-size			: 12px;
-		color 				: #6d6e71;
+		color 				: #5a5b5d;
 	}
 
     #details_payback {left : 15px;}

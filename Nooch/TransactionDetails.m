@@ -1097,27 +1097,19 @@
 
             NSString *statusstr;
 
-            if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Request"])
-            {
-                if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-                    statusstr = @"Cancelled";
-                    [status setStyleClass:@"red_text"];
-                }
-                else if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
-                    statusstr = @"Rejected";
-                    [status setStyleClass:@"red_text"];
-                }
-                else {
-                    statusstr = @"Pending";
-                    [status setStyleClass:@"yellow_text"];
-                }
-            }
-            else if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"])
-            {
+            if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
                 statusstr = @"Cancelled";
                 [status setStyleClass:@"red_text"];
             }
-            else if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]     ||
+            else if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
+                statusstr = @"Rejected";
+                [status setStyleClass:@"red_text"];
+            }
+            else {
+                statusstr = @"Pending";
+                [status setStyleClass:@"yellow_text"];
+            }
+            if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]     ||
                     [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Donation"]  ||
                     [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]  ||
                     [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
