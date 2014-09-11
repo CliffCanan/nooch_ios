@@ -2055,7 +2055,7 @@ return customView;
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     NSError *error;
-
+ [self.hud hide:YES];
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     [imageCache clearMemory];
     [imageCache clearDisk];

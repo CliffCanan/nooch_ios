@@ -38,6 +38,7 @@ NSString *histSearching;
     BOOL isMutipleRequest;
     BOOL isSecondBankVerified;
     BOOL isPOP;
+     BOOL isLoginFromOther;
     NSString*passValue;
     NSArray*ArrAllContacts;
     
@@ -62,6 +63,8 @@ NSString *histSearching;
 -(NSMutableArray*)assosSearch:(NSString*)searchText;
 -(void)histPoll;
 -(void)histUpdate;
+-(BOOL)isloginFromOther;
+-(void)setIsloginFromOther:(BOOL)islog;
 -(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len;
 -(NSMutableArray*)histFilter:(NSString*)filterPick;
 -(void)birth;
