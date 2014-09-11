@@ -655,9 +655,13 @@ NSString *amnt;
               [[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"])
         {
             [self.hud hide:YES];
-            UIAlertView * Alert = [[UIAlertView alloc]initWithTitle:@"New Device Detected" message:@"It looks like you have logged in from a new device.  To protect your account, we will just log you out of all other devices." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            
-            [Alert show];
+            if (![[assist shared]isloginFromOther]) {
+                UIAlertView * Alert = [[UIAlertView alloc]initWithTitle:@"New Device Detected" message:@"It looks like you have logged in from a new device.  To protect your account, we will just log you out of all other devices." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                
+                [Alert show];
+                [[assist shared]setIsloginFromOther:YES];
+            }
+           
 
             [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];

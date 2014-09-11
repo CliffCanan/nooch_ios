@@ -74,6 +74,15 @@ static assist * _sharedInstance = nil;
 {
     islogout=islog;
 }
+-(BOOL)isloginFromOther
+{
+    return isLoginFromOther;
+}
+-(void)setIsloginFromOther:(BOOL)islog
+{
+    isLoginFromOther=islog;
+}
+
 -(BOOL)isPOP{
     return isPOP;
 }

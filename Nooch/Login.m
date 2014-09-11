@@ -432,7 +432,7 @@
     
     else if ([tagName isEqualToString:@"info"])
     {
-        
+        [[assist shared]setIsloginFromOther:NO];
         [self.navigationItem setHidesBackButton:YES];
         [nav_ctrl setNavigationBarHidden:NO];
         [nav_ctrl.navigationItem setLeftBarButtonItem:nil];

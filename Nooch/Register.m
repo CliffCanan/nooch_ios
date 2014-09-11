@@ -344,7 +344,7 @@
         self.hud.delegate = self;
         self.hud.labelText = @"Registering your account";
         [self.hud show:YES];
-        
+        [[assist shared]setIsloginFromOther:NO];
         serve *check_duplicate = [serve new];
         [check_duplicate setTagName:@"check_dup"];
         [check_duplicate setDelegate:self];
