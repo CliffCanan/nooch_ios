@@ -299,12 +299,12 @@ NSString *amnt;
 
     self.responseData = [[NSMutableData alloc] init];
     if (isRem) {
-        requestLogin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&rememberMeEnabled=true&lat=%f&lng=%f&udid=%@&devicetoken=%@", ServerUrl, @"LoginRequest", @"name", email, @"pwd", pass,lat,lng,strId,[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"]]]];
+        requestLogin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&rememberMeEnabled=true&lat=%f&lng=%f&udid=%@&devicetoken=%@", ServerUrl, @"LoginRequest", @"name", email, @"pwd", pass,lat,lng,[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"],[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"]]]];
         
     }
     else
     {
-        requestLogin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&rememberMeEnabled=false&lat=%f&lng=%f&udid=%@&devicetoken=%@", ServerUrl, @"LoginRequest", @"name", email, @"pwd", pass,lat,lng,strId,[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"]]]];
+        requestLogin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&rememberMeEnabled=false&lat=%f&lng=%f&udid=%@&devicetoken=%@", ServerUrl, @"LoginRequest", @"name", email, @"pwd", pass,lat,lng,[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"],[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"]]]];
     }
     [requestLogin setTimeoutInterval:10000];
     connectionLogin = [[NSURLConnection alloc] initWithRequest:requestLogin delegate:self];
@@ -376,8 +376,8 @@ NSString *amnt;
     [dictnew setObject:pin forKey:@"PinNumber"];
     //inviteCode
     [dictnew setObject:inv forKey:@"inviteCode"];
-    NSString *udid=[[UIDevice currentDevice] uniqueDeviceIdentifier];
-    [dictnew setObject:udid forKey:@"deviceTokenId"];
+   // NSString *udid=[[UIDevice currentDevice] uniqueDeviceIdentifier];
+    [dictnew setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"] forKey:@"deviceTokenId"];
     //    [dictnew setObject:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"udId"];
     [dictnew setObject:@"" forKey:@"friendRequestId"];
     [dictnew setObject:@"" forKey:@"invitedFriendFacebookId"];
@@ -401,6 +401,7 @@ NSString *amnt;
         [dictnew setObject:arr forKey:@"Picture"];
     }
     NSDictionary*memDetails=[NSDictionary dictionaryWithObjectsAndKeys:dictnew,@"MemberDetails", nil];
+    NSLog(@"%@",memDetails);
     UIImage*img=[UIImage imageNamed:@""];
     [[assist shared]setTranferImage:img];
     [[assist shared]setTranferImage:nil];
