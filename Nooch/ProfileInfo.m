@@ -342,10 +342,11 @@
     [dateText setText:[NSString stringWithFormat:@"%@",_date]];
     [dateText setStyleId:@"profile_DateText"];
     [self.view addSubview:dateText];
-NSLog(@"%@",transactionInput);
+    
+    NSLog(@"%@",transactionInput);
+
     self.name = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.name setTextAlignment:NSTextAlignmentRight];
-//    [self.name setBackgroundColor:[UIColor clearColor]];
     [self.name setPlaceholder:@"First & Last Name"];
     [self.name setDelegate:self];
     [self.name setStyleClass:@"table_view_cell_detailtext_1"];
@@ -356,7 +357,6 @@ NSLog(@"%@",transactionInput);
 
     self.email = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.email setTextAlignment:NSTextAlignmentRight];
-//    [self.email setBackgroundColor:[UIColor clearColor]];
     [self.email setPlaceholder:@"email@email.com"];
     [self.email setDelegate:self];
     [self.email setKeyboardType:UIKeyboardTypeEmailAddress];
@@ -426,12 +426,6 @@ NSLog(@"%@",transactionInput);
     
     [self.view addSubview:self.city];
 
-    // City label
-//    UILabel *cit = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, 44)];
-//    [cit setBackgroundColor:[UIColor clearColor]]; [cit setText:@"City:"];
-//    [cit setStyleClass:@"table_view_cell_textlabel_1"];
-   // [self.view addSubview:cit];
-
     // ZIP
     self.zip = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.zip setTextAlignment:NSTextAlignmentRight];
@@ -440,7 +434,12 @@ NSLog(@"%@",transactionInput);
     [self.zip setDelegate:self];
     [self.zip setKeyboardType:UIKeyboardTypeNumberPad];
     [self.zip setStyleClass:@"table_view_cell_detailtext_1"];
-    [self.zip setTag:6];
+    if ([UIScreen mainScreen].bounds.size.height == 480) {
+        [self.zip setTag:6];
+    }
+    else {
+        [self.zip setTag:5];
+    }
     [self.view addSubview:self.zip];
 
     self.save = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -1106,15 +1105,18 @@ NSLog(@"%@",transactionInput);
 #pragma mark - adjusting for textfield view
 - (void) animateTextField: (UITextField*) textField up: (BOOL) up
 {
-    const int movementDistance = textField.tag * 50; // tweak as needed
+    const int movementDistance = textField.tag * 48; // tweak as needed
     const float movementDuration = 0.3f; // tweak as needed
+
     int movement = (up ? movementDistance : -movementDistance);
+
     [UIView beginAnimations: @"anim" context: nil];
     [UIView setAnimationBeginsFromCurrentState: YES];
     [UIView setAnimationDuration: movementDuration];
     
     if ([UIScreen mainScreen].bounds.size.height == 480)
     {
+        movement += 24;
         for (UIScrollView *scroll in self.view.subviews)
         {
             if ([scroll isKindOfClass:[UIScrollView class]])
@@ -1125,8 +1127,9 @@ NSLog(@"%@",transactionInput);
             }
         }
     }
-    else
+    else {
         self.view.frame = CGRectOffset(self.view.frame, 0, -movement);
+    }
     [UIView commitAnimations];
 }
 

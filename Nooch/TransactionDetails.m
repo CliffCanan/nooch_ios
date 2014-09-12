@@ -186,7 +186,7 @@
     [pay_back addTarget:self action:@selector(pay_back) forControlEvents:UIControlEventTouchUpInside];
     
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
-            [pay_back setStyleClass:@"details_buttons_4"];
+        [pay_back setStyleClass:@"details_buttons_4"];
     }
     else {
         [pay_back setStyleClass:@"details_buttons"];
@@ -287,22 +287,29 @@
     {
         // Pay & Cancel Buttons
         UIButton *pay = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [pay setStyleClass:@"details_button_left"];
+        [pay setStyleClass:@"details_btn_left"];
         [pay setTitle:@"Pay" forState:UIControlStateNormal];
         [pay setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
         pay.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
         UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
-        [cancel setStyleClass:@"details_button_right"];
+        [cancel setStyleClass:@"details_btn_right"];
         [cancel setTitleShadowColor:Rgb2UIColor(36, 22, 19, 0.26) forState:UIControlStateNormal];
         cancel.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
         UIButton *remind = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [remind setTitle:@"Remind" forState:UIControlStateNormal];
-        [remind setStyleClass:@"details_button_remind"];
+        [remind setStyleClass:@"details_btn_remind"];
         [remind setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
         remind.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        
+        if ([[UIScreen mainScreen] bounds].size.height == 480)
+        {
+            [pay setStyleClass:@"details_btn_left_4"];
+            [cancel setStyleClass:@"details_btn_right_4"];
+            [remind setStyleClass:@"details_btn_remind_4"];
+        }
         
         if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Request"] ||
             [[self.trans objectForKey:@"TransactionType"] isEqualToString:@"InviteRequest"])
@@ -321,15 +328,15 @@
                     [cancel addTarget:self action:@selector(cancel_request_to_existing) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:cancel];
                     
-                    [remind addTarget:self action:@selector(remind_friend) forControlEvents:UIControlEventTouchUpInside];
+                    [remind addTarget:self action:@selector(remind_request) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:remind];
                 }
                 else
                 {  // Requests to Non-Nooch Users
-                    [cancel addTarget:self action:@selector(cancel_request_to_nonNoochUser) forControlEvents:UIControlEventTouchUpInside];
+                    [cancel addTarget:self action:@selector(cancel_request) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:cancel];
                     
-                    [remind addTarget:self action:@selector(remind_friend) forControlEvents:UIControlEventTouchUpInside];
+                    [remind addTarget:self action:@selector(remind_request_newuser) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:remind];
                 }
             }
@@ -355,7 +362,7 @@
             
             [remind setTag:14];
             [remind setEnabled:YES];
-            [remind addTarget:self action:@selector(remind_friend) forControlEvents:UIControlEventTouchUpInside];
+            [remind addTarget:self action:@selector(remind_invite_newuser) forControlEvents:UIControlEventTouchUpInside];
             [self.view addSubview:remind];
         }
     }
@@ -381,24 +388,10 @@
         [self.view addSubview:twit_text];
     }
     
-    
-    if ([[UIScreen mainScreen] bounds].size.height == 480)
-    {
-        UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
-                                                                              [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
-        [scroll setDelegate:self];
-        [scroll setContentSize:CGSizeMake(320, 550)];
-        for (UIView *subview in self.view.subviews) {
-            [subview removeFromSuperview];
-            [scroll addSubview:subview];
-        }
-        [self.view addSubview:scroll];
-    }
-    
     blankView = [[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
     [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
     UIActivityIndicatorView *actv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [actv setFrame:CGRectMake(140,(self.view.frame.size.height / 2) -5, 40, 40)];
+    [actv setFrame:CGRectMake(140,(self.view.frame.size.height / 2) - 15, 40, 40)];
     [actv startAnimating];
     [blankView addSubview:actv];
     [self.view addSubview:blankView];
@@ -410,10 +403,16 @@
     [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
 }
 
--(void)remind_friend
+-(void)remind_invite_newuser
+{
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder" message:@"Do you want to send a reminder about this transfer?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    [av setTag:1012];
+    [av show];
+}
+
+-(void)remind_request
 {
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder" message:@"Do you want to send a reminder about this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
-   
     [av setTag:1012];
     [av show];
 }
@@ -781,9 +780,9 @@
     if (alertView.tag == 1012 && buttonIndex == 0)  // REMIND
     {
         NSString * memId1 = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
-        serve*serveObj=[serve new];
+        serve * serveObj = [serve new];
         [serveObj setDelegate:self];
-        serveObj.tagName=@"remind";
+        serveObj.tagName = @"remind";
         [serveObj SendReminderToRecepient:[self.trans valueForKey:@"TransactionId"] memberId:memId1];
     }
     
@@ -982,8 +981,8 @@
 
                 if ([[UIScreen mainScreen] bounds].size.height == 480)
                 {
-                    [mapView_ setFrame:CGRectMake(-1, 226, 322, 100)];
-                    btnShowOverlay.frame = CGRectMake(-1, 226, 322, 100);
+                    [mapView_ setFrame:CGRectMake(-1, 220, 322, 116)];
+                    btnShowOverlay.frame = CGRectMake(-1, 220, 322, 116);
                 }
                 else
                 {
