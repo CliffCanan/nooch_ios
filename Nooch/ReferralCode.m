@@ -256,7 +256,8 @@
             login.Delegate = self;
             login.tagName = @"login";
         
-            NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+         //   NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+            NSString *udid=[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"];
             [login login:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"] password:getEncryptedPassword remember:YES lat:lat lon:lon uid:udid];
         }
         else if([[[response objectForKey:@"MemberRegistrationResult"] objectForKey:@"Result"] isEqualToString:@"You are already a nooch member."])
