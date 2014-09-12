@@ -43,7 +43,7 @@
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
 
-    UIActivityIndicatorView*act=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    UIActivityIndicatorView * act = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [act setFrame:CGRectMake(14, 5, 20, 20)];
     [act startAnimating];
 
@@ -53,6 +53,20 @@
     [self.navigationItem setTitle:@"Transfer Details"];
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
+
+    UIView *member_since_back = [UIView new];
+    [member_since_back setFrame:CGRectMake(-1, -1, 322, 110)];
+    [member_since_back setStyleId:@"transDetailsTopSectionBG"];
+    [self.view addSubview:member_since_back];
+
+    UIView * shadowUnder = [[UIView alloc] initWithFrame:CGRectMake(11, 28, 76, 76)];
+    shadowUnder.backgroundColor = Rgb2UIColor(207, 210, 213, .5);
+    shadowUnder.layer.cornerRadius = 38;
+    shadowUnder.layer.shadowColor = [UIColor blackColor].CGColor;
+    shadowUnder.layer.shadowOffset = CGSizeMake(0, 1.0);
+    shadowUnder.layer.shadowOpacity = 0.45;
+    shadowUnder.layer.shadowRadius = 2.5;
+    [self.view addSubview:shadowUnder];
 
     UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];  // Other user's NAME
     UIImageView *user_picture = [[UIImageView alloc] initWithFrame:CGRectMake(10, 27, 78, 78)];  // Other user's PICTURE
@@ -172,7 +186,7 @@
     [pay_back addTarget:self action:@selector(pay_back) forControlEvents:UIControlEventTouchUpInside];
     
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
-            [pay_back setStyleClass:@"details_buttons_4"];
+        [pay_back setStyleClass:@"details_buttons_4"];
     }
     else {
         [pay_back setStyleClass:@"details_buttons"];
@@ -273,22 +287,29 @@
     {
         // Pay & Cancel Buttons
         UIButton *pay = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [pay setStyleClass:@"details_button_left"];
+        [pay setStyleClass:@"details_btn_left"];
         [pay setTitle:@"Pay" forState:UIControlStateNormal];
         [pay setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
         pay.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
         UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
-        [cancel setStyleClass:@"details_button_right"];
+        [cancel setStyleClass:@"details_btn_right"];
         [cancel setTitleShadowColor:Rgb2UIColor(36, 22, 19, 0.26) forState:UIControlStateNormal];
         cancel.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
         UIButton *remind = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [remind setTitle:@"Remind" forState:UIControlStateNormal];
-        [remind setStyleClass:@"details_button_remind"];
+        [remind setStyleClass:@"details_btn_remind"];
         [remind setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
         remind.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        
+        if ([[UIScreen mainScreen] bounds].size.height == 480)
+        {
+            [pay setStyleClass:@"details_btn_left_4"];
+            [cancel setStyleClass:@"details_btn_right_4"];
+            [remind setStyleClass:@"details_btn_remind_4"];
+        }
         
         if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Request"] ||
             [[self.trans objectForKey:@"TransactionType"] isEqualToString:@"InviteRequest"])
@@ -307,15 +328,15 @@
                     [cancel addTarget:self action:@selector(cancel_request_to_existing) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:cancel];
                     
-                    [remind addTarget:self action:@selector(remind_friend) forControlEvents:UIControlEventTouchUpInside];
+                    [remind addTarget:self action:@selector(remind_request) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:remind];
                 }
                 else
                 {  // Requests to Non-Nooch Users
-                    [cancel addTarget:self action:@selector(cancel_request_to_nonNoochUser) forControlEvents:UIControlEventTouchUpInside];
+                    [cancel addTarget:self action:@selector(cancel_request) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:cancel];
                     
-                    [remind addTarget:self action:@selector(remind_friend) forControlEvents:UIControlEventTouchUpInside];
+                    [remind addTarget:self action:@selector(remind_request_newuser) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:remind];
                 }
             }
@@ -341,7 +362,7 @@
             
             [remind setTag:14];
             [remind setEnabled:YES];
-            [remind addTarget:self action:@selector(remind_friend) forControlEvents:UIControlEventTouchUpInside];
+            [remind addTarget:self action:@selector(remind_invite_newuser) forControlEvents:UIControlEventTouchUpInside];
             [self.view addSubview:remind];
         }
     }
@@ -367,24 +388,10 @@
         [self.view addSubview:twit_text];
     }
     
-    
-    if ([[UIScreen mainScreen] bounds].size.height == 480)
-    {
-        UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
-                                                                              [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
-        [scroll setDelegate:self];
-        [scroll setContentSize:CGSizeMake(320, 550)];
-        for (UIView *subview in self.view.subviews) {
-            [subview removeFromSuperview];
-            [scroll addSubview:subview];
-        }
-        [self.view addSubview:scroll];
-    }
-    
     blankView = [[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
     [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
     UIActivityIndicatorView *actv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [actv setFrame:CGRectMake(140,(self.view.frame.size.height / 2) -5, 40, 40)];
+    [actv setFrame:CGRectMake(140,(self.view.frame.size.height / 2) - 15, 40, 40)];
     [actv startAnimating];
     [blankView addSubview:actv];
     [self.view addSubview:blankView];
@@ -396,10 +403,16 @@
     [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
 }
 
--(void)remind_friend
+-(void)remind_invite_newuser
+{
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder" message:@"Do you want to send a reminder about this transfer?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    [av setTag:1012];
+    [av show];
+}
+
+-(void)remind_request
 {
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder" message:@"Do you want to send a reminder about this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
-   
     [av setTag:1012];
     [av show];
 }
@@ -767,9 +780,9 @@
     if (alertView.tag == 1012 && buttonIndex == 0)  // REMIND
     {
         NSString * memId1 = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
-        serve*serveObj=[serve new];
+        serve * serveObj = [serve new];
         [serveObj setDelegate:self];
-        serveObj.tagName=@"remind";
+        serveObj.tagName = @"remind";
         [serveObj SendReminderToRecepient:[self.trans valueForKey:@"TransactionId"] memberId:memId1];
     }
     
@@ -968,8 +981,8 @@
 
                 if ([[UIScreen mainScreen] bounds].size.height == 480)
                 {
-                    [mapView_ setFrame:CGRectMake(-1, 226, 322, 100)];
-                    btnShowOverlay.frame = CGRectMake(-1, 226, 322, 100);
+                    [mapView_ setFrame:CGRectMake(-1, 220, 322, 116)];
+                    btnShowOverlay.frame = CGRectMake(-1, 220, 322, 116);
                 }
                 else
                 {
@@ -1041,18 +1054,19 @@
         if ([self.trans objectForKey:@"City"] != NULL &&
             [self.trans objectForKey:@"State"] != NULL)
         {
-//          NSLog(@"ADDRESS LINE 1 IS: %@",[self.trans objectForKey:@"AddressLine1"]);
- 
-            if (![[self.trans objectForKey:@"State"] isEqualToString:@""]) {
+            if (![[self.trans objectForKey:@"State"] isEqualToString:@""])
+            {
                 NSString * address = [self.trans objectForKey:@"City"]; //stringByReplacingOccurrencesOfString:@"," withString:@" "];
-                address = [address stringByAppendingString:[self.trans objectForKey:@"State"]];
+                address = [address stringByAppendingString:[NSString stringWithFormat:@", %@",[self.trans objectForKey:@"State"]]];
                 [location setText:[NSString stringWithFormat:@"%@",address]];
             }
-            else {
+            else
+            {
                 NSString * address = [self.trans objectForKey:@"AddressLine1"];
                 address = [address stringByAppendingString:[self.trans objectForKey:@"City"]];
                 [location setText:[NSString stringWithFormat:@"%@",address]];
             }
+
             [mapView_ addSubview:location];
             
             if ([[self.trans objectForKey:@"AddressLine1"]length] == 0 && [[self.trans objectForKey:@"City"]length] == 0)
@@ -1082,27 +1096,19 @@
 
             NSString *statusstr;
 
-            if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Request"])
-            {
-                if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-                    statusstr = @"Cancelled";
-                    [status setStyleClass:@"red_text"];
-                }
-                else if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
-                    statusstr = @"Rejected";
-                    [status setStyleClass:@"red_text"];
-                }
-                else {
-                    statusstr = @"Pending";
-                    [status setStyleClass:@"yellow_text"];
-                }
-            }
-            else if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"])
-            {
+            if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
                 statusstr = @"Cancelled";
                 [status setStyleClass:@"red_text"];
             }
-            else if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]     ||
+            else if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
+                statusstr = @"Rejected";
+                [status setStyleClass:@"red_text"];
+            }
+            else {
+                statusstr = @"Pending";
+                [status setStyleClass:@"yellow_text"];
+            }
+            if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]     ||
                     [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Donation"]  ||
                     [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]  ||
                     [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])

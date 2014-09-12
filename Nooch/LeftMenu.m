@@ -145,15 +145,14 @@
 
     if ( ([[user valueForKey:@"Status"]isEqualToString:@"Registered"]   ||
           [[user valueForKey:@"Status"]isEqualToString:@"Suspended"] )  ||
-         ( [user valueForKey:@"FirstName"] == NULL || [user valueForKey:@"LastName"] == NULL) )
+         ( [[user valueForKey:@"firstName"] length] < 1 || [[user valueForKey:@"lastName"] length] < 1) )
     {
         user_pic.layer.borderWidth = 3;
         user_pic.layer.borderColor = kNoochRed.CGColor;
     }
     
-    if ([[user valueForKey:@"FirstName"] length] < 1 && [[user valueForKey:@"LastName"] length] < 1)
+    if ([[user valueForKey:@"firstName"] length] < 1 && [[user valueForKey:@"lastName"] length] < 1)
     {
-        NSLog(@"THE 'FirstName VALUE IS..... : %@",[user valueForKey:@"FirstName"]);
         [self.name setText:[NSString stringWithFormat:@"Some"]];
         [self.lastName setText:[NSString stringWithFormat:@"Person"]];
     }

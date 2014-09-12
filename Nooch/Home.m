@@ -898,11 +898,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     if (view == nil)
     {
-		view = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 150, 175)];
-        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(25, 25, 100, 100)];
+		view = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 140, 175)];
+        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 25, 100, 100)];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
 //        view.layer.borderColor = kNoochBlue.CGColor;
-//        view.layer.borderWidth = 1;
+//        view.layer.borderWidth = 3;
         imageView.layer.cornerRadius = 50;
 
         if (favorite[@"MemberId"])
@@ -914,7 +914,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [glyph_fav setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
             [glyph_fav setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-star-o"]];
             glyph_fav.textAlignment = NSTextAlignmentCenter;
-            [glyph_fav setFrame:CGRectMake(68, 148, 14, 16)];
+            [glyph_fav setFrame:CGRectMake(68, 160, 14, 16)];
             [glyph_fav setTextColor:kNoochGrayLight];
             [view addSubview:glyph_fav];
         }
@@ -927,12 +927,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             glyph_adressBook.layer.borderWidth = 1;
             glyph_adressBook.layer.borderColor = (__bridge CGColorRef)([UIColor whiteColor]);
             glyph_adressBook.layer.cornerRadius = 3;
-            [glyph_adressBook setFrame:CGRectMake(68, 149, 14, 16)];
+            [glyph_adressBook setFrame:CGRectMake(63, 149, 14, 16)];
             [view addSubview:glyph_adressBook];
         }
         [imageView setClipsToBounds:YES];
         
-        name = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 130.0f, 150, 20)];
+        name = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 130.0f, 140, 20)];
         name.textColor = [UIColor blackColor];
         name.textAlignment = NSTextAlignmentCenter;
         [name setFont:[UIFont fontWithName:@"Roboto-regular" size:15]];
@@ -1037,14 +1037,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             return YES;
         }
         case iCarouselOptionRadius: {
-           return 300;
+           return 310;
         }
         case iCarouselOptionSpacing: {
             return value * 1.9;
         }
         case iCarouselOptionArc:
         {
-            return 2.2;
+            return 2.25;
         }
         default: {
             return value;

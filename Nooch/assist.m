@@ -438,36 +438,24 @@ static assist * _sharedInstance = nil;
     
 }
 
--(void)listen:(NSString *)result tagName:(NSString *)tagName{
-    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
+-(void)listen:(NSString *)result tagName:(NSString *)tagName
+{
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound) {
         
         if (timer!=nil) {
             [timer invalidate];
             timer=nil;
         }
-        
-        
     }
-       else if([tagName isEqualToString:@"cards"]){
-        NSError *error;
-        
-        NSMutableArray *cardResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        // NSMutableArray *cardResult = [result JSONValue];
-        
-        if ([cardResult isKindOfClass:[NSNull class]] || cardResult == nil) {
-            cardResult = [NSMutableArray new];
-        }
-        
-        [usr setObject:cardResult forKey:@"cards"];
-    }else if([tagName isEqualToString:@"sets"]){
+    else if([tagName isEqualToString:@"sets"])
+    {
         NSError *error;
         NSMutableDictionary *setsResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         
-        //nslog(@"%@",setsResult);
-        
         [usr setObject:setsResult forKey:@"sets"];
     }
-    else if([tagName isEqualToString:@"info"]){
+    else if([tagName isEqualToString:@"info"])
+    {
         NSError *error;
         
         NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
@@ -501,7 +489,6 @@ static assist * _sharedInstance = nil;
             else{
                    [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
             }
-            
             
         }
         

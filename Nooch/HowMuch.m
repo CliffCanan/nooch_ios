@@ -23,6 +23,8 @@
 @property(nonatomic,strong) UIView *choose;
 @property(nonatomic,strong) UIImageView *divider;
 @property(nonatomic,strong) UILabel *recip_back;
+@property(nonatomic,strong) UIView *back;
+
 @end
 
 @implementation HowMuch
@@ -73,12 +75,18 @@
     self.decimals = YES;
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
-    UIView *back = [[UIView alloc] initWithFrame:CGRectMake(10, 10, 300, 248)];
-    [back setStyleClass:@"raised_view"];
-    [back setStyleClass:@"howmuch_mainbox"];
-    back.layer.cornerRadius = 4;
-    [back setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:back];
+    self.back = [[UIView alloc] initWithFrame:CGRectMake(10, 10, 300, 248)];
+    [self.back setStyleClass:@"raised_view"];
+
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+        [self.back setStyleClass:@"howmuch_mainbox_smscrn"];
+    }
+    else {
+        [self.back setStyleClass:@"howmuch_mainbox"];
+    }
+    self.back.layer.cornerRadius = 4;
+    [self.back setBackgroundColor:[UIColor whiteColor]];
+    [self.view addSubview:self.back];
     
     UIButton *back_button = [UIButton buttonWithType:UIButtonTypeCustom];
     [back_button setStyleId:@"navbar_back"];
@@ -92,7 +100,7 @@
     self.recip_back = [UILabel new];
     [self.recip_back setStyleClass:@"barbackground"];
     [self.recip_back setStyleClass:@"barbackground_gray"];
-    [self.view addSubview:self.recip_back];
+    [self.back addSubview:self.recip_back];
 
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(64, 65, 66, .3);
@@ -105,7 +113,7 @@
     to.attributedText = [[NSAttributedString alloc] initWithString:@"To: "
                                                            attributes:textAttributes];
     [to setStyleId:@"label_howmuch_to"];
-    [self.view addSubview:to];
+    [self.back addSubview:to];
 
     UILabel *to_label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
     if ([self.receiver valueForKey:@"nonuser"])
@@ -131,7 +139,7 @@
             [to_label setText:[NSString stringWithFormat:@"%@ %@",[[self.receiver objectForKey:@"FirstName"] capitalizedString],[[self.receiver objectForKey:@"LastName"] capitalizedString]]];
         }
     }
-    [self.view addSubview:to_label];
+    [self.back addSubview:to_label];
 
     if (![self.receiver valueForKey:@"nonuser"]  && !isUserByLocation)
     {
@@ -143,7 +151,7 @@
     }
     
     UIImageView *user_pic = [UIImageView new];
-    [user_pic setFrame:CGRectMake(28, 58, 84, 84)];
+    [user_pic setFrame:CGRectMake(18, 48, 84, 84)];
     user_pic.layer.borderColor = [Helpers hexColor:@"939598"].CGColor;
     user_pic.layer.borderWidth = 1;
     user_pic.clipsToBounds = YES;
@@ -163,49 +171,49 @@
                      placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         }
     }
-    [self.view addSubview:user_pic];
+    [self.back addSubview:user_pic];
 
-    self.amount = [[UITextField alloc] initWithFrame:CGRectMake(120, 40, 260, 80)];
+    self.amount = [[UITextField alloc] initWithFrame:CGRectMake(110, 30, 260, 80)];
     [self.amount setTextAlignment:NSTextAlignmentRight];
     [self.amount setPlaceholder:@"$ 0.00"];
     [self.amount setDelegate:self];
     [self.amount setTag:1];
     [self.amount setKeyboardType:UIKeyboardTypeNumberPad];
     [self.amount setStyleId:@"howmuch_amountfield"];
-    [self.view addSubview:self.amount];
+    [self.back addSubview:self.amount];
     [self.amount becomeFirstResponder];
 
-    self.memo = [[UITextField alloc] initWithFrame:CGRectMake(10, 120, 260, 40)];
+    self.memo = [[UITextField alloc] initWithFrame:CGRectMake(10, 120, 260, 38)];
     [self.memo setPlaceholder:@"Enter a memo"];
     [self.memo setDelegate:self];
     [self.memo setStyleId:@"howmuch_memo"];
     [self.memo setTag:2];
     [self.memo setKeyboardType:UIKeyboardTypeDefault];
-    [self.view addSubview:self.memo];
+    [self.back addSubview:self.memo];
 
     self.camera = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     
     if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        [self.camera.titleLabel setFont:[UIFont fontWithName:@"FontAwesome" size:21]];
-        [self.camera setFrame:CGRectMake(270, 110, 28, 24)];
+        [self.camera.titleLabel setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
+        [self.camera setFrame:CGRectMake(260, 105, 28, 24)];
     }
     else {
-        [self.camera.titleLabel setFont:[UIFont fontWithName:@"FontAwesome" size:22]];
-        [self.camera setFrame:CGRectMake(268, 161, 30, 26)];
+        [self.camera.titleLabel setFont:[UIFont fontWithName:@"FontAwesome" size:21]];
+        [self.camera setFrame:CGRectMake(259, 154, 30, 26)];
     }
     [self.camera addTarget:self action:@selector(attach_pic) forControlEvents:UIControlEventTouchUpInside];
     
     [self.camera setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-camera"] forState:UIControlStateNormal];
     [self.camera setTitleColor:kNoochGrayLight forState:UIControlStateNormal];
     
-    UILabel *glyphFB = [UILabel new];
-    [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:12]];
-    [glyphFB setFrame:CGRectMake(23, -4, 15, 15)];
-    [glyphFB setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus"]];
-    [glyphFB setTextColor:kNoochBlue];
+    UILabel *glyph_plus = [UILabel new];
+    [glyph_plus setFont:[UIFont fontWithName:@"FontAwesome" size:12]];
+    [glyph_plus setFrame:CGRectMake(23, -4, 15, 15)];
+    [glyph_plus setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus"]];
+    [glyph_plus setTextColor:kNoochBlue];
     
-    [self.camera addSubview:glyphFB];
-    [self.view addSubview:self.camera];
+    [self.camera addSubview:glyph_plus];
+    [self.back addSubview:self.camera];
     
     self.send = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.send setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -222,33 +230,35 @@
     [self.request addTarget:self action:@selector(initialize_request) forControlEvents:UIControlEventTouchUpInside];
     [self.request setStyleId:@"howmuch_request"];
     [self.request setFrame:CGRectMake(10, 160, 150, 50)];
-    [self.view addSubview:self.request];
+    [self.back addSubview:self.request];
 
     if ([[assist shared]isRequestMultiple])
     {
         [self.send removeFromSuperview];
         [self.request setStyleClass:@"howmuch_buttons"];
         [self.request setStyleId:@"howmuch_request_mult_expand"];
-        [self.request setFrame:CGRectMake(10, 160, 300, 50)];
     }
     else
     {
         [self.send setStyleClass:@"howmuch_buttons"];
         [self.send setStyleId:@"howmuch_send"];
         [self.send setFrame:CGRectMake(160, 160, 150, 50)];
-        [self.view addSubview:self.send];
+        [self.back addSubview:self.send];
 
         [self.request setStyleClass:@"howmuch_buttons"];
 
         self.divider = [UIImageView new];
         [self.divider setStyleId:@"howmuch_divider"];
-        [self.view addSubview:self.divider];
+        [self.back addSubview:self.divider];
     }
 
     self.reset_type = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	[self.reset_type setFrame:CGRectMake(0, 160, 30, 56)];
 	[self.reset_type setBackgroundColor:[UIColor clearColor]];
-    
+    [self.reset_type setStyleId:@"reset_glyph"];
+    [self.reset_type setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"] forState:UIControlStateNormal];
+    [self.reset_type setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+    self.reset_type.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     
     if ([UIScreen mainScreen].bounds.size.height > 500) {
         [self.reset_type setStyleId:@"cancel_hidden"];
@@ -257,40 +267,25 @@
         [self.reset_type setStyleId:@"cancel_hidden_4"];
     }
 
-    UILabel *glyph = [UILabel new];
-    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:24]];
-    [glyph setFrame:CGRectMake(5, 0, 24, 56)];
-    [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
-    [glyph setTextColor:[UIColor whiteColor]];
-    [self.reset_type addSubview:glyph];
     [self.reset_type addTarget:self action:@selector(reset_send_request) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.reset_type];
+    [self.back addSubview:self.reset_type];
 
     [self.navigationItem setRightBarButtonItem:Nil];
     
     if ([[UIScreen mainScreen] bounds].size.height == 480)
     {
-      //  CGRect frame = back.frame;
-      //  frame.size.height = 175;
-      //  [back setFrame:CGRectMake(10, 2, 300, 249)];
-        CGRect frame = back.frame;
-        frame.size.height = 175;
-        back.frame = frame;
-        [back setStyleClass:@"raised_view"];
-        [back setStyleClass:@"howmuch_mainbox_smscrn"];
-        
         [self.send setStyleId:@"howmuch_send_4"];
         [self.request setStyleId:@"howmuch_request_4"];
         [self.divider setStyleId:@"howmuch_divider_4"];
         
-        [user_pic setFrame:CGRectMake(16, 55, 72, 72)];
+        [user_pic setFrame:CGRectMake(6, 45, 72, 72)];
         user_pic.layer.cornerRadius = 36;
         
         [self.amount setStyleId:@"howmuch_amountfield_4"];
         [self.memo setStyleId:@"howmuch_memo_4"];
         [self.camera setStyleId:@"howmuch_camera_4"];
     }
-    
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -343,7 +338,7 @@
     CGRect origin = self.reset_type.frame;
     origin.origin.x = 10;
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.8];
+    [UIView setAnimationDuration:0.7];
 
     origin.size.width = 149;
     origin.origin.x = 162;
@@ -353,11 +348,13 @@
     origin.origin.x = 9;
 
     [self.send addTarget:self action:@selector(confirm_send) forControlEvents:UIControlEventTouchUpInside];
-    [self.reset_type setAlpha:1];
     [self.send setTitle:@"Confirm Send" forState:UIControlStateNormal];
-    [self.send setStyleId:@"howmuch_send_expand"];
     [self.request setStyleId:@"howmuch_request_hide"];
+    [self.send setStyleId:@"howmuch_send_expand"];
+    [self.reset_type setAlpha:1];
     [self.reset_type setStyleId:@"cancel_request"];
+    [self.back bringSubviewToFront:self.reset_type];
+
     [UIView commitAnimations];
 
     [self.divider setStyleClass:@"animate_roll_left"];
@@ -368,14 +365,16 @@
     [self.recip_back setStyleClass:@"barbackground_blue"];
     
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.8];
+    [UIView setAnimationDuration:0.7];
 
     [self.request addTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
-    [self.reset_type setAlpha:1];
     [self.request setTitle:@"Confirm Request" forState:UIControlStateNormal];
     [self.send setStyleId:@"howmuch_send_hide"];
     [self.request setStyleId:@"howmuch_request_expand"];
+    [self.reset_type setAlpha:1];
     [self.reset_type setStyleId:@"cancel_send"];
+    [self.back bringSubviewToFront:self.reset_type];
+
     [UIView commitAnimations];
 
     [self.divider setStyleClass:@"animate_roll_right"];
@@ -388,14 +387,24 @@
         self.divider = [UIImageView new];
         [self.divider setStyleId:@"howmuch_divider"];
         [self.divider setAlpha:0];
-        [self.view addSubview:self.divider];
+        [self.back addSubview:self.divider];
     }
 
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.3];
-    
-    [self.send setStyleId:@"howmuch_send"];
-    [self.request setStyleId:@"howmuch_request"];
+    [UIView setAnimationDuration:0.25];
+    [self.send setTitle:@"Send" forState:UIControlStateNormal];
+    [self.request setTitle:@"Request" forState:UIControlStateNormal];
+
+    if ([[UIScreen mainScreen] bounds].size.height == 480)
+    {
+        [self.send setStyleId:@"howmuch_send_4"];
+        [self.request setStyleId:@"howmuch_request_4"];
+        [self.divider setStyleId:@"howmuch_divider_4"];
+    }
+    else {
+        [self.send setStyleId:@"howmuch_send"];
+        [self.request setStyleId:@"howmuch_request"];
+    }
 
     [self.send removeTarget:self action:@selector(confirm_send) forControlEvents:UIControlEventTouchUpInside];
     [self.request removeTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
@@ -404,10 +413,8 @@
 
     [self.divider setAlpha:1];
     [self.reset_type setAlpha:0];
-    [self.reset_type setTitle:@"" forState:UIControlStateNormal];
-    [self.send setTitle:@"Send" forState:UIControlStateNormal];
-    [self.request setTitle:@"Request" forState:UIControlStateNormal];
     [UIView commitAnimations];
+
 }
 
 - (void) confirm_send
