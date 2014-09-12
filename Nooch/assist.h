@@ -77,7 +77,6 @@ NSString *histSearching;
 -(id)cleanForSave:(id)array;
 -(UIFont *)nFont:(NSString*)weight size:(int)size;
 -(void)fetchPic;
-//-(void)getCards;
 -(void)getBanks;
 -(void)getSettings;
 

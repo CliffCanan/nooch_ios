@@ -259,11 +259,9 @@
     [serveOBJ getSettings];
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    
-    down = 0;
 
     UIView *member_since_back = [UIView new];
-    [member_since_back setFrame:CGRectMake(0, 0+down, 320, 70)];
+    [member_since_back setFrame:CGRectMake(0, 0, 320, 70)];
     [member_since_back setStyleId:@"profileTopSectionBackground"];
     [self.view addSubview:member_since_back];
 
@@ -278,7 +276,7 @@
     [self.view addSubview:shadowUnder];
 
     picture = [UIImageView new];
-    [picture setFrame:CGRectMake(20, 5+down, 60, 60)];
+    [picture setFrame:CGRectMake(20, 5, 60, 60)];
     picture.layer.cornerRadius = 30;
     picture.layer.borderColor = [UIColor whiteColor].CGColor;
     picture.layer.borderWidth = 2;
@@ -344,10 +342,11 @@
     [dateText setText:[NSString stringWithFormat:@"%@",_date]];
     [dateText setStyleId:@"profile_DateText"];
     [self.view addSubview:dateText];
-NSLog(@"%@",transactionInput);
+    
+    NSLog(@"%@",transactionInput);
+
     self.name = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.name setTextAlignment:NSTextAlignmentRight];
-//    [self.name setBackgroundColor:[UIColor clearColor]];
     [self.name setPlaceholder:@"First & Last Name"];
     [self.name setDelegate:self];
     [self.name setStyleClass:@"table_view_cell_detailtext_1"];
@@ -358,7 +357,6 @@ NSLog(@"%@",transactionInput);
 
     self.email = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.email setTextAlignment:NSTextAlignmentRight];
-//    [self.email setBackgroundColor:[UIColor clearColor]];
     [self.email setPlaceholder:@"email@email.com"];
     [self.email setDelegate:self];
     [self.email setKeyboardType:UIKeyboardTypeEmailAddress];
@@ -428,12 +426,6 @@ NSLog(@"%@",transactionInput);
     
     [self.view addSubview:self.city];
 
-    // City label
-//    UILabel *cit = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, 44)];
-//    [cit setBackgroundColor:[UIColor clearColor]]; [cit setText:@"City:"];
-//    [cit setStyleClass:@"table_view_cell_textlabel_1"];
-   // [self.view addSubview:cit];
-
     // ZIP
     self.zip = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.zip setTextAlignment:NSTextAlignmentRight];
@@ -442,7 +434,12 @@ NSLog(@"%@",transactionInput);
     [self.zip setDelegate:self];
     [self.zip setKeyboardType:UIKeyboardTypeNumberPad];
     [self.zip setStyleClass:@"table_view_cell_detailtext_1"];
-    [self.zip setTag:6];
+    if ([UIScreen mainScreen].bounds.size.height == 480) {
+        [self.zip setTag:6];
+    }
+    else {
+        [self.zip setTag:5];
+    }
     [self.view addSubview:self.zip];
 
     self.save = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -476,7 +473,7 @@ NSLog(@"%@",transactionInput);
                               nil];
     
     self.list = [UITableView new];
-    [self.list setFrame:CGRectMake(0, 70+down, 320, 390)];
+    [self.list setFrame:CGRectMake(0, 70, 320, 390)];
     self.list.layer.borderWidth = 1;
     self.list.layer.borderColor = (__bridge CGColorRef)([UIColor redColor]);
     [self.list setDelegate:self];
@@ -1108,15 +1105,18 @@ NSLog(@"%@",transactionInput);
 #pragma mark - adjusting for textfield view
 - (void) animateTextField: (UITextField*) textField up: (BOOL) up
 {
-    const int movementDistance = textField.tag * 50; // tweak as needed
+    const int movementDistance = textField.tag * 48; // tweak as needed
     const float movementDuration = 0.3f; // tweak as needed
+
     int movement = (up ? movementDistance : -movementDistance);
+
     [UIView beginAnimations: @"anim" context: nil];
     [UIView setAnimationBeginsFromCurrentState: YES];
     [UIView setAnimationDuration: movementDuration];
     
     if ([UIScreen mainScreen].bounds.size.height == 480)
     {
+        movement += 24;
         for (UIScrollView *scroll in self.view.subviews)
         {
             if ([scroll isKindOfClass:[UIScrollView class]])
@@ -1127,8 +1127,9 @@ NSLog(@"%@",transactionInput);
             }
         }
     }
-    else
+    else {
         self.view.frame = CGRectOffset(self.view.frame, 0, -movement);
+    }
     [UIView commitAnimations];
 }
 
@@ -1145,10 +1146,8 @@ NSLog(@"%@",transactionInput);
 {
     [self.hud hide:YES];
     NSError* error;
-    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound) {
-//        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//        [Alert show];
-        
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
+    {
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
@@ -1302,16 +1301,9 @@ NSLog(@"%@",transactionInput);
                          JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                          options:kNilOptions
                          error:&error];
-NSLog(@"DICT PROFILE INFO IS:  %@",dictProfileinfo);
-        if (![[dictProfileinfo valueForKey:@"FirstName"] isKindOfClass:[NSNull class]])
-        {
-            self.ServiceType = @"name";
-            Decryption *decry = [[Decryption alloc] init];
-            decry.Delegate = self;
-            decry->tag = [NSNumber numberWithInteger:2];
-            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"FirstName"]];
-        }
         
+        NSLog(@"dictProfileinfo is: %@",dictProfileinfo);
+
         if (![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]])
         {
             
