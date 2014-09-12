@@ -333,10 +333,10 @@
                 }
                 else
                 {  // Requests to Non-Nooch Users
-                    [cancel addTarget:self action:@selector(cancel_request) forControlEvents:UIControlEventTouchUpInside];
+                    [cancel addTarget:self action:@selector(cancel_request_to_nonNoochUser) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:cancel];
                     
-                    [remind addTarget:self action:@selector(remind_request_newuser) forControlEvents:UIControlEventTouchUpInside];
+                    [remind addTarget:self action:@selector(remind_invite_newuser) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:remind];
                 }
             }
