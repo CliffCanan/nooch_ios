@@ -2187,8 +2187,8 @@ table-view#select_recipientwithoutSeperator {
 	/**  Table View for the entire main history table - for row-height & separator-color)  **/
 	table-view#history {
 		width				: 320px;
-		background-color	: #ffffff;
-		row-height			: 76px;
+	/*	background-color	: #ffffff;*/
+		row-height			: 72px;
 		separator-style 	: single-line;
 		separator-color		: rgba(188,190,192,.65);	
 	}
@@ -2205,11 +2205,16 @@ table-view#select_recipientwithoutSeperator {
 	/**  Text ("You Paid/Requested/Donated...")  **/
 	.history_cell_transTypeLabel {
 		left				: 75px;
-		top					: 10px;
-		width				: 185px;
-		height				: 15px;
-		font-size			: 11px;
+		top					: 8px;
+		width				: 62px;
+		height				: 10px;
+		font-size			: 8px;
 		font-weight			: regular;
+        background-color    : rgba(232,233,234,.96);
+        color               : white;
+        border-radius       : 4px;
+        text-align          : center;
+        opacity             : .85;
 	}
 	
 	/**  Text in top row if table is empty  **/
@@ -2228,20 +2233,24 @@ table-view#select_recipientwithoutSeperator {
 		left				: 75px;
 		top					: 22px;
 		width				: 185px;
-		height				: 28px;
-		font-size			: 21px;
+		height				: 22px;
+		font-size			: 14px;
 		font-weight			: regular;
+	}
+    .history_cell_textlabel_wMemo {
+		top					: 21px;
+		height				: 20px;
 	}
 
 	/**  Date of the transfer ("2 days ago")  **/
 	.history_datetext {
+		left                : 158px;
+		top					: 8px;
 		width				: 150px;
-		height				: 12px;
-		top					: 48px;
-		left                : 88px;
+		height				: 10px;
 		font-family			: "Roboto";
+		font-size			: 9px;
 		font-weight         : light;
-		font-size			: 10px;
 		text-align       	: left;
 		color 				: #58595b;
 	}
@@ -2249,13 +2258,26 @@ table-view#select_recipientwithoutSeperator {
 	/**  Amount of the Transfer on the right side of the row  **/
 	.history_transferamount {
 		left				: 237px;
-		top					: 15px;
+		top					: 21px;
 		width				: 78px;
-		height				: 26px;
+		height				: 21px;
 		font-family			: "Roboto";
 		font-weight         : medium;
-		font-size			: 20px;
+		font-size			: 19px;
 		text-align       	: right;
+	}
+
+    .history_memo {
+		left				: 75px;
+		top					: 44px;
+		width				: 242px;
+		height				: 15px;
+		font-family			: "Roboto";
+		font-weight         : light;
+		font-size			: 12px;
+        font-style          : italic;
+		text-align       	: left;
+        opacity             : .8;
 	}
 
 	 /**  Amount of the PENDING Transfer on the right side of the row (Only on the Pending Tab)  **/
@@ -2296,8 +2318,12 @@ table-view#select_recipientwithoutSeperator {
 	.history_sidecolor {
 		top				: 1px;
 		left			: 0px;
-		height			: 68px;
+		height			: 66px;
 		width			: 6px;
+	}
+    .history_sidecolor_wMemo {
+		top				: 1px;
+		height			: 73px;
 	}
 	.titlelbl{
        width				: 300px;
