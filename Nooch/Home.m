@@ -156,27 +156,28 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         CFTypeRef contacNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
         contacName = [[NSString stringWithFormat:@"%@", contacNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         if (contacNameValue)
-        CFRelease(contacNameValue);
-
+            CFRelease(contacNameValue);
+        
+        
         NSString *firstName ;
         NSString *lastName;
         
         //Get FirstName Ref
         CFTypeRef firstNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
         firstName = [[NSString stringWithFormat:@"%@", firstNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-         if (firstNameValue)
-        CFRelease(firstNameValue);
+        if (firstNameValue)
+            CFRelease(firstNameValue);
         
         //Get LastName Ref
         CFTypeRef LastNameValue = ABRecordCopyValue(person, kABPersonLastNameProperty);
         
-        if (LastNameValue)
+        if(LastNameValue)
         {
             [contacName stringByAppendingString:[NSString stringWithFormat:@" %@", LastNameValue]];
             
             lastName = [[NSString stringWithFormat:@"%@", LastNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             if (LastNameValue)
-            CFRelease(LastNameValue);
+                CFRelease(LastNameValue);
         }
         NSData *contactImage;
         //Get Contact Image Ref
@@ -186,33 +187,22 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             contactImage = (__bridge NSData *)(contactImageValue);
             [curContact setObject:contactImage forKey:@"image"];
             if (contactImageValue)
-            CFRelease(contactImageValue);
+                CFRelease(contactImageValue);
+            
         }
-        else
-        {
+        else {
             contactImage = UIImageJPEGRepresentation([UIImage imageNamed:@"profile_picture.png"], 1);
             [curContact setObject:contactImage forKey:@"image"];
         }
         
         ABMultiValueRef phoneNumber = ABRecordCopyValue(person, kABPersonPhoneProperty);
         ABMultiValueRef emailInfo = ABRecordCopyValue(person, kABPersonEmailProperty);
-        //Get emailInfo Ref
-        CFTypeRef emailIdValue = ABMultiValueCopyValueAtIndex(emailInfo, 0);
-        NSString *emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        if (emailIdValue) {
-            CFRelease(emailIdValue);
-        }
-        if (emailInfo) {
-            CFRelease(emailInfo);
-        }
         
-        if(emailId != NULL) {
-            [curContact setObject:emailId forKey:@"UserName"];
-            [curContact setObject:emailId forKey:@"emailAddy"];
-        }
+        
         if(contacName != NULL)  [curContact setObject:contacName forKey:@"Name"];
         if(firstName != NULL) [curContact setObject:firstName forKey:@"FirstName"];
         if(lastName != NULL)  [curContact setObject:lastName forKey:@"LastName"];
+        
         
         [curContact setObject:@"YES" forKey:@"addressbook"];
         
@@ -222,8 +212,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             //Get phoneValue Ref
             CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 0);
             phone = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-             if (phoneValue)
-            CFRelease(phoneValue);
+            if (phoneValue)
+                CFRelease(phoneValue);
         }
         
         if (ABMultiValueGetCount(phoneNumber) > 1)
@@ -231,7 +221,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 1);
             phone2 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             if (phoneValue)
-            CFRelease(phoneValue);
+                CFRelease(phoneValue);
             
             phone2 = [phone2 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone2 length])];
             [curContact setObject:phone2 forKey:@"phoneNo2"];
@@ -241,17 +231,36 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         {
             CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 2);
             phone3 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-             if (phoneValue)
-            CFRelease(phoneValue);
+            if (phoneValue)
+                CFRelease(phoneValue);
             
             phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
             [curContact setObject:phone3 forKey:@"phoneNo3"];
         }
-        
-        if (phone == NULL && (emailId == NULL || [emailId rangeOfString:@"facebook"].location != NSNotFound)) {
-            [additions addObject:curContact];
+        //Get emailInfo Ref
+        for (int j=0; j<ABMultiValueGetCount(emailInfo); j++) {
+            CFTypeRef emailIdValue = ABMultiValueCopyValueAtIndex(emailInfo, j);
+            NSString *emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            if(emailId != NULL) {
+                [curContact setObject:emailId forKey:@"UserName"];
+                
+                [curContact setObject:emailId forKey:[NSString stringWithFormat:@"emailAdday%d",j]];
+                [curContact setObject:[NSString stringWithFormat:@"%d",j+1] forKey:@"emailCount"];
+                
+            }
+            if (emailIdValue) {
+                CFRelease(emailIdValue);
+            }
+            
         }
-        else if( contacName == NULL) {
+        
+        
+        if (emailInfo) {
+            CFRelease(emailInfo);
+        }
+        [additions addObject:curContact];
+        
+        if( contacName == NULL) {
         }
         else {
             NSString * strippedNumber = [phone stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone length])];
@@ -398,19 +407,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         ABMultiValueRef phoneNumber = ABRecordCopyValue(person, kABPersonPhoneProperty);
         ABMultiValueRef emailInfo = ABRecordCopyValue(person, kABPersonEmailProperty);
 
-        //Get emailInfo Ref
-        CFTypeRef emailIdValue = ABMultiValueCopyValueAtIndex(emailInfo, 0);
-        NSString *emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        if (emailIdValue) {
-            CFRelease(emailIdValue);
-        }
-        if (emailInfo) {
-             CFRelease(emailInfo);
-        }
        
-        if(emailId != NULL) {
-            [curContact setObject:emailId forKey:@"UserName"]; [curContact setObject:emailId forKey:@"emailAddy"];
-        }
         if(contacName != NULL)  [curContact setObject:contacName forKey:@"Name"];
         if(firstName != NULL) [curContact setObject:firstName forKey:@"FirstName"];
         if(lastName != NULL)  [curContact setObject:lastName forKey:@"LastName"];
@@ -449,11 +446,30 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
             [curContact setObject:phone3 forKey:@"phoneNo3"];
         }
-
-        if(phone == NULL && (emailId == NULL || [emailId rangeOfString:@"facebook"].location != NSNotFound)) {
-            [additions addObject:curContact];
+        //Get emailInfo Ref
+        for (int j=0; j<ABMultiValueGetCount(emailInfo); j++) {
+            CFTypeRef emailIdValue = ABMultiValueCopyValueAtIndex(emailInfo, j);
+            NSString *emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            if(emailId != NULL) {
+                [curContact setObject:emailId forKey:@"UserName"];
+                
+                [curContact setObject:emailId forKey:[NSString stringWithFormat:@"emailAdday%d",j]];
+                [curContact setObject:[NSString stringWithFormat:@"%d",j+1] forKey:@"emailCount"];
+                
+            }
+            if (emailIdValue) {
+                CFRelease(emailIdValue);
+            }
+            
         }
-        else if( contacName == NULL) {
+        
+       
+        if (emailInfo) {
+            CFRelease(emailInfo);
+        }
+         [additions addObject:curContact];
+        
+       if( contacName == NULL) {
         }
         else {
             NSString * strippedNumber = [phone stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone length])];
@@ -468,6 +484,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
        CFRelease(phoneNumber);
     }
     [[assist shared] SaveAssos:additions.mutableCopy];
+  //  NSLog(@"%@",additions);
     NSMutableArray *get_ids_input = [NSMutableArray new];
     for (NSDictionary *person in additions)
     {
@@ -988,7 +1005,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [alert show];
             return;
         }
-      
+    
         if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
         {
             UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame Our Lawyers" message:@"To keep Nooch safe, we ask all users to verify your phone number before before sending money.\n \nIf you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
@@ -1019,16 +1036,44 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         else if (favorite[@"UserName"])
         {
-            emailID = favorite[@"UserName"];
-            serve * emailCheck = [serve new];
-            emailCheck.Delegate = self;
-            emailCheck.tagName = @"emailCheck";
-            [emailCheck getMemIdFromuUsername:[favorite[@"UserName"] lowercaseString]];
+            if ([favorite[@"emailCount"]intValue]>1) {
+                UIActionSheet *actionSheetObject = [[UIActionSheet alloc] init];
+                for (int j=0; j<[favorite[@"emailCount"]intValue]; j++) {
+                    [actionSheetObject addButtonWithTitle:[favorite[[NSString stringWithFormat:@"emailAdday%d",j]] lowercaseString]];
+                    
+                }
+                actionSheetObject.cancelButtonIndex=[actionSheetObject addButtonWithTitle:@"Cancel"];
+                actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
+                [actionSheetObject setTag:1];
+                actionSheetObject.delegate=self;
+                [actionSheetObject showInView:self.view];
+            }
+            else{
+                emailID=favorite[@"UserName"];
+                serve * emailCheck = [serve new];
+                emailCheck.Delegate = self;
+                emailCheck.tagName = @"emailCheck";
+                [emailCheck getMemIdFromuUsername:[emailID lowercaseString]];
+            }
+            
+            
+
             return;
         }
   
 }
-
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+     NSString *title = [actionSheet buttonTitleAtIndex:buttonIndex];
+       emailID=title;
+    if (![title isEqualToString:@"Cancel"]) {
+        serve * emailCheck = [serve new];
+        emailCheck.Delegate = self;
+        emailCheck.tagName = @"emailCheck";
+        [emailCheck getMemIdFromuUsername:[title lowercaseString]];
+    }
+    
+}
 - (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value
 {
     switch (option)
