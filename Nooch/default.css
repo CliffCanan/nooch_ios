@@ -2313,7 +2313,6 @@ table-view#select_recipientwithoutSeperator {
 	.history_transferamount_neg {color		: #d2232a;}
 	.history_transferamount_neutral {color	: #3fabe1;}
 
-	/**  The small running tally of the user's balance directly beneath the transfer amount for each row.  **/
 	.transfer_status {
 		left                : 254px;
 		top					: 41px;
@@ -2323,7 +2322,6 @@ table-view#select_recipientwithoutSeperator {
 		font-weight         : regular;
 		font-size			: 11px;
 		text-align       	: right;
-		color 				: #58595b; /* GRAY */
 	}
 
 	.history_sidecolor {
