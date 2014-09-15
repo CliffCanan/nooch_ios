@@ -2,7 +2,7 @@
 //  Nooch
 //
 //  Created by crks on 10/4/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch Inc. All rights reserved.
 
 #import "TransactionDetails.h"
 #import <QuartzCore/QuartzCore.h>
@@ -32,10 +32,12 @@
     }
     return self;
 }
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.trackedViewName = @"TransactionDetail Screen";
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -70,8 +72,6 @@
 
     UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];  // Other user's NAME
     UIImageView *user_picture = [[UIImageView alloc] initWithFrame:CGRectMake(10, 27, 78, 78)];  // Other user's PICTURE
-//    user_picture.layer.borderWidth = 1;
-//    user_picture.layer.borderColor = kNoochGrayDark.CGColor;
     user_picture.layer.cornerRadius = 39;
     user_picture.clipsToBounds = YES;
 
@@ -367,7 +367,8 @@
         }
     }
 
-    else if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
+    else if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Transfer"] ||
+             [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Invite"] )
     {
             
         if ([[self.trans objectForKey:@"MemberId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
@@ -1104,14 +1105,20 @@
                 statusstr = @"Rejected";
                 [status setStyleClass:@"red_text"];
             }
-            else {
+            else if (![[loginResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
+                      [[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Pending"]){
                 statusstr = @"Pending";
                 [status setStyleClass:@"yellow_text"];
             }
-            if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]     ||
-                    [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Donation"]  ||
-                    [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]  ||
-                    [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
+            else if ([[loginResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
+                     [[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Success"])
+            {
+                statusstr = @"Complete (Payment Accepted)";
+                [status setStyleClass:@"green_text"];
+            }
+            else if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]     ||
+                     [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]  ||
+                     [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
             {
                 statusstr = @"Completed";
                 [status setStyleClass:@"green_text"];
@@ -1280,9 +1287,8 @@
 
 }
 
--(void)DisputeDetailClicked:(UIButton*)sender{
-    //[sender setTitle:@"See Details" forState:UIControlStateNormal];
-    //[sender setSelected:NO];
+-(void)DisputeDetailClicked:(UIButton*)sender
+{
     DisputeDetail*dd=[[DisputeDetail alloc]initWithData:loginResult];
     [self.navigationController pushViewController:dd animated:YES];
 }

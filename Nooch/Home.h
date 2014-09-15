@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by crks on 9/25/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch Inc. All rights reserved.
 
 #import <UIKit/UIKit.h>
 #import "Helpers.h"
@@ -19,7 +19,7 @@
 core *me;
 #define kNoochBlue      [Helpers hexColor:@"41ABE1"]
 #define kNoochGreen     [Helpers hexColor:@"72BF44"]
-#define kNoochRed       [Helpers hexColor:@"EA2C28"]
+#define kNoochRed       [Helpers hexColor:@"D2232A"]
 #define kNoochPurple    [Helpers hexColor:@"5A538D"]
 #define kNoochGrayLight [Helpers hexColor:@"939598"]
 #define kNoochGrayDark  [Helpers hexColor:@"414042"]
@@ -45,6 +45,4 @@ NSUserDefaults *user;
     UIButton *top_button;
     NSMutableArray *histArray;
 }
-//@property(nonatomic,strong) NSMutableArray *favorites;
-//@property (nonatomic, strong) NSMutableArray *additions;
 @end

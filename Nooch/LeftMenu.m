@@ -189,8 +189,8 @@
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(19, 32, 38, .3);
     shadow.shadowOffset = CGSizeMake(0, -1);
-
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
+    
     if (section == 0) {
         title.attributedText = [[NSAttributedString alloc] initWithString:@"ACCOUNT"
             attributes:textAttributes];

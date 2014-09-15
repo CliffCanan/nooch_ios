@@ -16,8 +16,8 @@
 @property(nonatomic,retain) UITableView *transfer_stats;
 @property(nonatomic,retain) UITableView *donation_stats;
 @property(nonatomic) int selected;
-@property(nonatomic,retain) UIImageView *profile;
-@property(nonatomic,retain) UIImageView *transfers;
+@property(nonatomic,retain) UIImageView *profileIcon;
+@property(nonatomic,retain) UIImageView *transfersIcon;
 @property(nonatomic,retain) UIImageView *donations;
 @property(nonatomic,strong) MBProgressHUD *hud;
 @end
@@ -49,7 +49,7 @@
     backgroundImage.alpha = .5;
     [self.view addSubview:backgroundImage];
     
-    dictAllStats=[[NSMutableDictionary alloc]init];
+    dictAllStats = [[NSMutableDictionary alloc]init];
     
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
@@ -67,7 +67,7 @@
     
     [self.navigationItem setTitle:@"Statistics"];
 
-    self.selected = 1;
+    self.selected = 0;
     UISwipeGestureRecognizer *left = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(change_stats:)];
     [left setDirection:UISwipeGestureRecognizerDirectionLeft];
     [self.view addGestureRecognizer:left];
@@ -75,68 +75,70 @@
     UISwipeGestureRecognizer *right = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(change_stats:)];
     [right setDirection:UISwipeGestureRecognizerDirectionRight];
     [self.view addGestureRecognizer:right];
-    
-    self.back_profile = [UIView new];
-    [self.back_profile setBackgroundColor:[UIColor whiteColor]];
-    [self.back_profile setFrame:CGRectMake(-310, 10, 300, 400)];
-    [self.back_profile setStyleClass:@"raised_view"];
-    [self.view addSubview:self.back_profile];
-    
+
     self.back_transfer = [UIView new];
     [self.back_transfer setBackgroundColor:[UIColor whiteColor]];
     [self.back_transfer setFrame:CGRectMake(10, 10, 300, 400)];
     [self.back_transfer setStyleClass:@"raised_view"];
     [self.view addSubview:self.back_transfer];
+
+    self.back_profile = [UIView new];
+    [self.back_profile setBackgroundColor:[UIColor whiteColor]];
+    [self.back_profile setFrame:CGRectMake(330, 10, 300, 400)];
+    [self.back_profile setStyleClass:@"raised_view"];
+    [self.view addSubview:self.back_profile];
     
     self.back_donation = [UIView new];
     [self.back_donation setBackgroundColor:[UIColor whiteColor]];
-    [self.back_donation setFrame:CGRectMake(330, 10, 300, 400)];
+    [self.back_donation setFrame:CGRectMake(650, 10, 300, 400)];
     [self.back_donation setStyleClass:@"raised_view"];
     [self.view addSubview:self.back_donation];
 
-    self.profile = [UIImageView new];
-    [self.profile setStyleClass:@"stats_circle"];
-    [self.profile setStyleId:@"stats_circle_profile_active"];
-    [self.back_profile addSubview:self.profile];
-    self.profile.userInteractionEnabled = YES;
+    self.profileIcon = [UIImageView new];
+    [self.profileIcon setStyleClass:@"stats_circle"];
+    [self.profileIcon setStyleId:@"stats_circle_profile_active"];
+    [self.back_profile addSubview:self.profileIcon];
+    self.profileIcon.userInteractionEnabled = YES;
     
-    UIImageView *inactive_trans = [UIImageView new];
+    UIImageView * inactive_trans = [UIImageView new];
     [inactive_trans setStyleClass:@"stats_circle"];
     [inactive_trans setStyleId:@"stats_circle_transfers_inactive"];
     inactive_trans.userInteractionEnabled = YES;
     [self.back_profile addSubview:inactive_trans];
-    UITapGestureRecognizer*tap_trans=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(trans_tap)];
+
+    UITapGestureRecognizer * tap_trans = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(trans_tap)];
     [inactive_trans addGestureRecognizer:tap_trans];
     
-    UIImageView *inactive_donate = [UIImageView new];
+    UIImageView * inactive_donate = [UIImageView new];
     [inactive_donate setStyleClass:@"stats_circle"];
     [inactive_donate setStyleId:@"stats_circle_donations_inactive"];
     [self.back_profile addSubview:inactive_donate];
     inactive_donate.userInteractionEnabled = YES;
+
     UITapGestureRecognizer*tap_donate = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(donate_tap)];
     [inactive_donate addGestureRecognizer:tap_donate];
 
-    self.transfers = [UIImageView new];
-    [self.transfers setStyleClass:@"stats_circle"];
-    [self.transfers setStyleId:@"stats_circle_transfers_active"];
-    [self.back_transfer addSubview:self.transfers];
-    self.transfers.userInteractionEnabled = YES;
+    self.transfersIcon = [UIImageView new];
+    [self.transfersIcon setStyleClass:@"stats_circle"];
+    [self.transfersIcon setStyleId:@"stats_circle_transfers_active"];
+    [self.back_transfer addSubview:self.transfersIcon];
+    self.transfersIcon.userInteractionEnabled = YES;
     
-    UIImageView *inactive_profile = [UIImageView new];
-    [inactive_profile setStyleClass:@"stats_circle"];
-    [inactive_profile setStyleId:@"stats_circle_profile_inactive"];
-    [self.back_transfer addSubview:inactive_profile];
-    inactive_profile.userInteractionEnabled = YES;
+    UIImageView * inactive_profileIcon = [UIImageView new];
+    [inactive_profileIcon setStyleClass:@"stats_circle"];
+    [inactive_profileIcon setStyleId:@"stats_circle_profile_inactive"];
+    [self.back_transfer addSubview:inactive_profileIcon];
+    inactive_profileIcon.userInteractionEnabled = YES;
     
     UITapGestureRecognizer*tap_profile2=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(Profile_tap)];
-    [inactive_profile addGestureRecognizer:tap_profile2];
+    [inactive_profileIcon addGestureRecognizer:tap_profile2];
     
     UIImageView *temp1 = [UIImageView new];
     [temp1 setStyleClass:@"stats_circle"];
     [temp1 setStyleId:@"stats_circle_donations_inactive"];
     [self.back_transfer addSubview:temp1];
-    temp1.userInteractionEnabled=YES;
-    UITapGestureRecognizer*tap_donation2=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(donate_tap_Fromtran)];
+    temp1.userInteractionEnabled = YES;
+    UITapGestureRecognizer * tap_donation2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(donate_tap_Fromtran)];
     [temp1 addGestureRecognizer:tap_donation2];
     
     self.donations = [UIImageView new];
@@ -145,55 +147,45 @@
     [self.back_donation addSubview:self.donations];
     self.donations .userInteractionEnabled=YES;
 
-    UIImageView *temp2 = [UIImageView new];
-    [temp2 setStyleClass:@"stats_circle"];
-    [temp2 setStyleId:@"stats_circle_transfers_inactive"];
-    UIImageView *temp3 = [UIImageView new];
+    UIImageView * transfersIcon_inactive = [UIImageView new];
+    [transfersIcon_inactive setStyleClass:@"stats_circle"];
+    [transfersIcon_inactive setStyleId:@"stats_circle_transfers_inactive"];
+    transfersIcon_inactive.userInteractionEnabled = YES;
+
+    UIImageView * temp3 = [UIImageView new];
     [temp3 setStyleClass:@"stats_circle"];
     [temp3 setStyleId:@"stats_circle_profile_inactive"];
-    temp2.userInteractionEnabled=YES;
-    temp3.userInteractionEnabled=YES;
-    [self.back_donation addSubview:temp2];
+    temp3.userInteractionEnabled = YES;
+
+    [self.back_donation addSubview:transfersIcon_inactive];
     
     
     UITapGestureRecognizer*tap_tran3=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(transRev_tap)];
-    [temp2 addGestureRecognizer:tap_tran3];
+    [transfersIcon_inactive addGestureRecognizer:tap_tran3];
     
     [self.back_donation addSubview:temp3];
     UITapGestureRecognizer*tap_profile3=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(profileRev)];
     [temp3 addGestureRecognizer:tap_profile3];
     
-/*    UILabel *profile_header = [UILabel new];
-    [profile_header setStyleClass:@"stats_header"];
-    [profile_header setText:@"Profile Stats"];
-    [self.back_profile addSubview:profile_header];
-    
-    UILabel *transfer_header = [UILabel new];
-    [transfer_header setStyleClass:@"stats_header"];
-    [transfer_header setText:@"Transfer Stats"];
-    [self.back_transfer addSubview:transfer_header];
-    
-    UILabel *donation_header = [UILabel new];
-    [donation_header setStyleClass:@"stats_header"];
-    [donation_header setText:@"Donation Stats"];
-    [self.back_donation addSubview:donation_header];  */
-    
     self.profile_stats = [UITableView new];
-    [self.profile_stats setDelegate:self]; [self.profile_stats setDataSource:self];
+    [self.profile_stats setDelegate:self];
+    [self.profile_stats setDataSource:self];
     [self.profile_stats setStyleClass:@"stats"];
     [self.back_profile addSubview:self.profile_stats];
     [self.profile_stats setUserInteractionEnabled:NO];
     [self.profile_stats reloadData];
     
     self.transfer_stats = [UITableView new];
-    [self.transfer_stats setDelegate:self]; [self.transfer_stats setDataSource:self];
+    [self.transfer_stats setDelegate:self];
+    [self.transfer_stats setDataSource:self];
     [self.transfer_stats setStyleClass:@"stats"];
     [self.back_transfer addSubview:self.transfer_stats];
     [self.transfer_stats setUserInteractionEnabled:NO];
     [self.transfer_stats reloadData];
     
     self.donation_stats = [UITableView new];
-    [self.donation_stats setDelegate:self]; [self.donation_stats setDataSource:self];
+    [self.donation_stats setDelegate:self];
+    [self.donation_stats setDataSource:self];
     [self.donation_stats setStyleClass:@"stats"];
     [self.back_donation addSubview:self.donation_stats];
     [self.donation_stats setUserInteractionEnabled:NO];
@@ -213,21 +205,41 @@
 
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
-    
+
     self.hud.delegate = self;
     self.hud.labelText = @"Grabbing your account stats...";
     [self.hud show:YES];
 
 }
 
--(void)donate_tap
+-(void)donate_tap  // 3rd panel (far right)
 {
     CGRect frame;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.4];
     [self.donations setStyleId:@"stats_circle_donations_active"];
     self.selected++;
-    titlestr=@"Donation Stats";
+    titlestr = @"Donation Stats";
+    frame = self.back_profile.frame;
+    frame.origin.x -= 320;
+    [self.back_profile setFrame:frame];
+    frame = self.back_transfer.frame;
+    frame.origin.x -= 320;
+    [self.back_transfer setFrame:frame];
+    frame = self.back_donation.frame;
+    frame.origin.x -= 320;
+    [self.back_donation setFrame:frame];
+     [UIView commitAnimations];
+}
+
+-(void)donate_tap_Fromtran
+{
+    CGRect frame;
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.65];
+    [self.donations setStyleId:@"stats_circle_donations_active"];
+    self.selected++;
+    titlestr = @"Donation Stats";
     frame = self.back_profile.frame;
     frame.origin.x -= 640;
     [self.back_profile setFrame:frame];
@@ -237,17 +249,17 @@
     frame = self.back_donation.frame;
     frame.origin.x -= 640;
     [self.back_donation setFrame:frame];
-     [UIView commitAnimations];
+    [UIView commitAnimations];
 }
 
--(void)donate_tap_Fromtran
+-(void)Profile_tap
 {
     CGRect frame;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.4];
-    [self.donations setStyleId:@"stats_circle_donations_active"];
+    [self.transfersIcon setStyleId:@"stats_circle_transfers_active"];
     self.selected++;
-    titlestr=@"Donation Stats";
+    titlestr = @"Transfer Stats";
     frame = self.back_profile.frame;
     frame.origin.x -= 320;
     [self.back_profile setFrame:frame];
@@ -264,30 +276,10 @@
 {
     CGRect frame;
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.5];
-    [self.transfers setStyleId:@"stats_circle_transfers_active"];
-    self.selected++;
-    titlestr=@"Transfer Stats";
-    frame = self.back_profile.frame;
-    frame.origin.x -= 320;
-    [self.back_profile setFrame:frame];
-    frame = self.back_transfer.frame;
-    frame.origin.x -= 320;
-    [self.back_transfer setFrame:frame];
-    frame = self.back_donation.frame;
-    frame.origin.x -= 320;
-    [self.back_donation setFrame:frame];
-    [UIView commitAnimations];
-}
-
--(void)Profile_tap
-{
-    CGRect frame;
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.5];
-    [self.profile setStyleId:@"stats_circle_profile_active"];
+    [UIView setAnimationDuration:0.4];
+    [self.profileIcon setStyleId:@"stats_circle_profile_active"];
     self.selected--;
-    titlestr=@"Profile Stats";
+    titlestr = @"Profile Stats";
     frame = self.back_profile.frame;
     frame.origin.x += 320;
     [self.back_profile setFrame:frame];
@@ -304,18 +296,18 @@
 {
     CGRect frame;
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.5];
-    [self.profile setStyleId:@"stats_circle_profile_active"];
+    [UIView setAnimationDuration:0.4];
+    [self.profileIcon setStyleId:@"stats_circle_profile_active"];
     self.selected--;
-    titlestr=@"Profile Stats";
+    titlestr = @"Profile Stats";
     frame = self.back_profile.frame;
-    frame.origin.x += 640;
+    frame.origin.x += 320;
     [self.back_profile setFrame:frame];
     frame = self.back_transfer.frame;
-    frame.origin.x += 640;
+    frame.origin.x += 320;
     [self.back_transfer setFrame:frame];
     frame = self.back_donation.frame;
-    frame.origin.x += 640;
+    frame.origin.x += 320;
     [self.back_donation setFrame:frame];
     [UIView commitAnimations];
 }
@@ -324,18 +316,18 @@
 {
     CGRect frame;
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.5];
-    [self.profile setStyleId:@"stats_circle_profile_active"];
+    [UIView setAnimationDuration:0.65];
+    [self.profileIcon setStyleId:@"stats_circle_profile_active"];
     self.selected--;
-    titlestr=@"Profile Stats";
+    titlestr = @"Profile Stats";
     frame = self.back_profile.frame;
-    frame.origin.x += 320;
+    frame.origin.x += 640;
     [self.back_profile setFrame:frame];
     frame = self.back_transfer.frame;
-    frame.origin.x += 320;
+    frame.origin.x += 640;
     [self.back_transfer setFrame:frame];
     frame = self.back_donation.frame;
-    frame.origin.x += 320;
+    frame.origin.x += 640;
     [self.back_donation setFrame:frame];
     [UIView commitAnimations];
 }
@@ -352,9 +344,9 @@
     {
         if (self.selected == 0)
         {
-            [self.transfers setStyleId:@"stats_circle_transfers_active"];
+            [self.transfersIcon setStyleId:@"stats_circle_transfers_active"];
             self.selected++;
-            titlestr=@"Transfer Stats";
+            titlestr = @"Transfer Stats";
             frame = self.back_profile.frame;
             frame.origin.x -= 320;
             [self.back_profile setFrame:frame];
@@ -369,7 +361,7 @@
         {
             [self.donations setStyleId:@"stats_circle_donations_active"];
             self.selected++;
-            titlestr=@"Donation Stats";
+            titlestr = @"Donation Stats";
             frame = self.back_profile.frame;
             frame.origin.x -= 320;
             [self.back_profile setFrame:frame];
@@ -385,9 +377,9 @@
     {
         if (self.selected == 1)
         {
-            [self.profile setStyleId:@"stats_circle_profile_active"];
+            [self.profileIcon setStyleId:@"stats_circle_profile_active"];
             self.selected--;
-            titlestr=@"Profile Stats";
+            titlestr = @"Profile Stats";
             frame = self.back_profile.frame;
             frame.origin.x += 320;
             [self.back_profile setFrame:frame];
@@ -400,9 +392,9 @@
         }
         else if (self.selected == 2)
         {
-            [self.transfers setStyleId:@"stats_circle_transfers_active"];
+            [self.transfersIcon setStyleId:@"stats_circle_transfers_active"];
             self.selected--;
-            titlestr=@"Transfer Stats";
+            titlestr = @"Transfer Stats";
             frame = self.back_profile.frame;
             frame.origin.x += 320;
             [self.back_profile setFrame:frame];
@@ -429,9 +421,11 @@
 
     if (tableView == self.profile_stats) {
         Title.text = @"Profile Stats";
-    } else if (tableView == self.donation_stats) {
+    }
+    else if (tableView == self.donation_stats) {
         Title.text = @"Donation Stats";
-    } else if (tableView == self.transfer_stats) {
+    }
+    else if (tableView == self.transfer_stats) {
         Title.text = @"Transfer Stats";
     }
     [view addSubview:Title];
@@ -511,7 +505,7 @@
 
         if (indexPath.row == 0)
         {
-            [title setText:@"Total No. of Transfers"];
+            [title setText:@"Total Completed Payments"];
             if ([dictAllStats valueForKey:@"Total_P2P_transfers"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_P2P_transfers"]  valueForKey:@"Result"]];
             }
@@ -521,27 +515,27 @@
         }
         else if (indexPath.row == 1)
         {
-            [title setText:@"Transfers Sent"];
+            [title setText:@"Payments Sent"];
             [statistic setText:[[dictAllStats valueForKey:@"Total_no_of_transfer_Sent"]  valueForKey:@"Result"]];
-            if ([[[dictAllStats valueForKey:@"Total_no_of_transfer_Sent"]valueForKey:@"Result"] length]==0) {
+            if ([[[dictAllStats valueForKey:@"Total_no_of_transfer_Sent"]valueForKey:@"Result"] length] == 0) {
                 [statistic setText:@"0"];
             }
         }
         else if (indexPath.row == 2)
         {
-            [title setText:@"Transfers Received"];
-            [statistic setText:[[dictAllStats valueForKey:@"Total_no_of_transfer_Received"]  valueForKey:@"Result"]];
-            if ([[[dictAllStats valueForKey:@"Total_no_of_transfer_Received"]valueForKey:@"Result"] length]==0) {
-                [statistic setText:@"0"];
+            [title setText:@"Total Sent"];
+            [statistic setText:[NSString stringWithFormat:@"$ %@",[[dictAllStats valueForKey:@"Total_$_Sent"]  valueForKey:@"Result"]]];
+            
+            if ([[[dictAllStats valueForKey:@"Total_$_Sent"]valueForKey:@"Result"] length] == 0) {
+                [statistic setText:@"$ 0"];
             }
         }
         else if (indexPath.row == 3)
         {
-            [title setText:@"Total Sent"];
-            [statistic setText:[NSString stringWithFormat:@"$ %@",[[dictAllStats valueForKey:@"Total_$_Sent"]  valueForKey:@"Result"]]];
-            
-            if ([[[dictAllStats valueForKey:@"Total_$_Sent"]valueForKey:@"Result"] length]==0) {
-                [statistic setText:@"$ 0"];
+            [title setText:@"Payments Received"];
+            [statistic setText:[[dictAllStats valueForKey:@"Total_no_of_transfer_Received"]  valueForKey:@"Result"]];
+            if ([[[dictAllStats valueForKey:@"Total_no_of_transfer_Received"]valueForKey:@"Result"] length] == 0) {
+                [statistic setText:@"0"];
             }
         }
         else if (indexPath.row == 4)
@@ -591,7 +585,6 @@
         else if (indexPath.row == 2)
         {
             [title setText:@"Causes Donated to"];
-          //  [statistic setStyleClass:@"stats_table_right_lable1"];
             [statistic setText:[[[dictAllStats valueForKey:@"DonatedTo"]  valueForKey:@"Result"] capitalizedString]];
             if ([[[dictAllStats valueForKey:@"DonatedTo"]valueForKey:@"Result"] length]==0) {
                 [statistic setText:@"0"];
@@ -732,13 +725,13 @@
     else if ([tagName isEqualToString:@"Total_Donations_Count"]) {
         serve*serveOBJ=[serve new];
         [serveOBJ setDelegate:self];
-        serveOBJ.tagName=@"Total_$_Donated";
+        serveOBJ.tagName = @"Total_$_Donated";
         [serveOBJ GetMemberStats:@"Total_$_Donated"];
     }
     else if ([tagName isEqualToString:@"Total_$_Donated"]) {
-        serve*serveOBJ=[serve new];
+        serve * serveOBJ = [serve new];
         [serveOBJ setDelegate:self];
-        serveOBJ.tagName=@"DonatedTo";
+        serveOBJ.tagName = @"DonatedTo";
         [serveOBJ GetMemberStats:@"DonatedTo"];
         [blankView removeFromSuperview];
         [self.profile_stats reloadData];

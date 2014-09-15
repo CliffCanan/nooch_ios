@@ -21,17 +21,11 @@
 #import "knoxWeb.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBook/ABAddressBook.h>
-#define kButtonType     @"transaction_type"
-#define kButtonTitle    @"button_title"
-#define kButtonColor    @"button_background_color"
 
 NSMutableURLRequest *request;
 @interface Home ()
-@property(nonatomic,strong) NSMutableArray*arrRecords;
+@property(nonatomic,strong) NSMutableArray *arrRecords;
 @property(nonatomic,strong) NSArray *transaction_types;
-@property(nonatomic,strong) UIButton *balance;
-@property(nonatomic,strong) FAImageView *close;
-@property(nonatomic,strong) UIView *popup;
 @property(nonatomic,strong) MBProgressHUD *hud;
 @property(nonatomic,strong) UIView *suspended;
 @property(nonatomic,strong) UIView *profile_incomplete;
@@ -65,23 +59,10 @@ NSMutableURLRequest *request;
     user = [NSUserDefaults standardUserDefaults];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[assist shared]isPOP];
-    self.transaction_types = @[
-                               @{kButtonType: @"send_request",
-                                 kButtonTitle: @"   Search For More Friends",
-                                 kButtonColor: [UIColor clearColor]},
-                               
-                               @{kButtonType: @"pay_in_person",
-                                 kButtonTitle: @"Pay in Person",
-                                 kButtonColor: [UIColor clearColor]},
-                               
-                               @{kButtonType: @"donate",
-                                 kButtonTitle: @"Donate to a Cause",
-                                 kButtonColor: [UIColor clearColor]}
-                               ];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
-    backgroundImage.alpha = .25;
+    backgroundImage.alpha = .3;
     [self.view addSubview:backgroundImage];
     
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -97,7 +78,8 @@ NSMutableURLRequest *request;
     NSMutableDictionary *loadInfo;
     if ([core isAlive:[self autoLogin]])
     {
-        if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"NotificationPush"]intValue]==1) {
+        if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"NotificationPush"]intValue] == 1)
+        {
             ProfileInfo *prof = [ProfileInfo new];
             [nav_ctrl pushViewController:prof animated:YES];
             [self.slidingViewController resetTopView];
@@ -123,12 +105,12 @@ NSMutableURLRequest *request;
     //if they have required immediately turned on or haven't selected the option yet, redirect them to PIN screen
     if (![user objectForKey:@"requiredImmediately"])
     {
-        ReEnterPin*pin=[ReEnterPin new];
+        ReEnterPin * pin = [ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
     }
     else if([[user objectForKey:@"requiredImmediately"] boolValue])
     {
-        ReEnterPin*pin=[ReEnterPin new];
+        ReEnterPin * pin = [ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
     }
     
@@ -447,22 +429,20 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [curContact setObject:phone3 forKey:@"phoneNo3"];
         }
         //Get emailInfo Ref
-        for (int j=0; j<ABMultiValueGetCount(emailInfo); j++) {
+        for (int j = 0; j < ABMultiValueGetCount(emailInfo); j++)
+        {
             CFTypeRef emailIdValue = ABMultiValueCopyValueAtIndex(emailInfo, j);
             NSString *emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            if(emailId != NULL) {
+            if(emailId != NULL)
+            {
                 [curContact setObject:emailId forKey:@"UserName"];
-                
                 [curContact setObject:emailId forKey:[NSString stringWithFormat:@"emailAdday%d",j]];
                 [curContact setObject:[NSString stringWithFormat:@"%d",j+1] forKey:@"emailCount"];
-                
             }
             if (emailIdValue) {
                 CFRelease(emailIdValue);
             }
-            
         }
-        
        
         if (emailInfo) {
             CFRelease(emailInfo);
@@ -663,77 +643,71 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
     {
-          [self.phone_incomplete removeFromSuperview];
-          self.phone_incomplete = [UIView new];
-          [self.phone_incomplete setStyleId:@"phone_unverified"];
+        [self.phone_incomplete removeFromSuperview];
+        self.phone_incomplete = [UIView new];
+        [self.phone_incomplete setStyleId:@"phone_unverified"];
           
-          if (bannerAlert > 0) {
-              CGRect rect= self.phone_incomplete.frame;
-              rect.origin.y+=54;
-              self.phone_incomplete.frame=rect;
-          }
-          bannerAlert++;
+        if (bannerAlert > 0) {
+            CGRect rect= self.phone_incomplete.frame;
+            rect.origin.y+=54;
+            self.phone_incomplete.frame=rect;
+        }
+        bannerAlert++;
         
-          UILabel *em = [UILabel new];
-          [em setStyleClass:@"banner_header"];
-          em.attributedText = [[NSAttributedString alloc] initWithString:@"Phone Number Not Verified"
+        UILabel *em = [UILabel new];
+        [em setStyleClass:@"banner_header"];
+        em.attributedText = [[NSAttributedString alloc] initWithString:@"Phone Number Not Verified"
                                                               attributes:textAttributes];
-          [self.phone_incomplete addSubview:em];
+        [self.phone_incomplete addSubview:em];
           
-          UILabel *em_exclaim = [UILabel new];
-          [em_exclaim setStyleClass:@"banner_alert_glyph"];
-          [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-phone"]];
-          [self.phone_incomplete addSubview:em_exclaim];
+        UILabel *em_exclaim = [UILabel new];
+        [em_exclaim setStyleClass:@"banner_alert_glyph"];
+        [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-phone"]];
+        [self.phone_incomplete addSubview:em_exclaim];
         
         UILabel *glyph_phone = [UILabel new];
         [glyph_phone setStyleClass:@"banner_alert_glyph_sm"];
         [glyph_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
         [self.phone_incomplete addSubview:glyph_phone];
         
-          UILabel *em_info = [UILabel new];
-          [em_info setStyleClass:@"banner_info"];
-          [em_info setNumberOfLines:0];
-          em_info.attributedText = [[NSAttributedString alloc] initWithString:@"Please verify your phone - respond 'Go' to the SMS."
+        UILabel *em_info = [UILabel new];
+        [em_info setStyleClass:@"banner_info"];
+        [em_info setNumberOfLines:0];
+        em_info.attributedText = [[NSAttributedString alloc] initWithString:@"Please verify your phone - respond 'Go' to the SMS."
                                                             attributes:textAttributes];
-          [self.phone_incomplete addSubview:em_info];
-          
-          UIButton *go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-          [go setStyleClass:@"go_now_text"];
-          [go setTitle:@"TAP TO ADD NUMBER" forState:UIControlStateNormal];
-          [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
-          go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-          [go addTarget:self action:@selector(go_profile) forControlEvents:UIControlEventTouchUpInside];
-          [self.phone_incomplete addSubview:go];
-          
-          UIButton *dis = [UIButton buttonWithType:UIButtonTypeCustom];
-          [dis setStyleClass:@"dismiss_banner"];
-          [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
-          [dis addTarget:self action:@selector(dismiss_phone_unvalidated) forControlEvents:UIControlEventTouchUpInside];
-          
-          [self.phone_incomplete addSubview:dis];
-          
-          [self.view addSubview:self.phone_incomplete];
+        [self.phone_incomplete addSubview:em_info];
+
+        UIButton *go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [go setStyleClass:@"go_now_text"];
+        [go setTitle:@"TAP TO ADD NUMBER" forState:UIControlStateNormal];
+        [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
+        go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+        [go addTarget:self action:@selector(go_profile) forControlEvents:UIControlEventTouchUpInside];
+        [self.phone_incomplete addSubview:go];
+
+        UIButton *dis = [UIButton buttonWithType:UIButtonTypeCustom];
+        [dis setStyleClass:@"dismiss_banner"];
+        [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
+        [dis addTarget:self action:@selector(dismiss_phone_unvalidated) forControlEvents:UIControlEventTouchUpInside];
+
+        [self.phone_incomplete addSubview:dis];
+
+        [self.view addSubview:self.phone_incomplete];
       }
     else {
         [self.phone_incomplete removeFromSuperview];
     }
     
     [top_button removeFromSuperview];
-     top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [top_button setStyleId:@"button_green_home"];
     [top_button setTitleShadowColor:Rgb2UIColor(26, 38, 32, 0.2) forState:UIControlStateNormal];
     top_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     
-    CGRect button_frame = CGRectMake(20, 250, 280, 60);
+    CGRect button_frame = CGRectMake(20, 255, 280, 60);
     [top_button setFrame:button_frame];
-    
     [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
-    //  [mid_button addTarget:self action:@selector(pay_in_person) forControlEvents:UIControlEventTouchUpInside];
-    //  [bot_button addTarget:self action:@selector(donate) forControlEvents:UIControlEventTouchUpInside];
-    
-    [top_button setTitle:[[self.transaction_types objectAtIndex:0] objectForKey:kButtonTitle] forState:UIControlStateNormal];
-    //  [mid_button setTitle:[[self.transaction_types objectAtIndex:1] objectForKey:kButtonTitle] forState:UIControlStateNormal];
-    //  [bot_button setTitle:[[self.transaction_types objectAtIndex:2] objectForKey:kButtonTitle] forState:UIControlStateNormal];
+    [top_button setTitle:@"   Search For More Friends" forState:UIControlStateNormal];
     
     UILabel * glyph_search = [UILabel new];
     [glyph_search setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
@@ -747,14 +721,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     int carouselTop;
     if (bannerAlert == 1)
     {
-        carouselTop = 90;
-        CGRect button_frame = CGRectMake(20, 270, 280, 60);
+        carouselTop = 70;
+        CGRect button_frame = CGRectMake(20, 275, 280, 60);
         [top_button setFrame:button_frame];
     }
     else if (bannerAlert == 2)
     {
-        carouselTop = 120;
-        CGRect button_frame = CGRectMake(20, 306, 280, 60);
+        carouselTop = 100;
+        CGRect button_frame = CGRectMake(20, 305, 280, 60);
         [top_button setFrame:button_frame];
     }
     else {
@@ -813,7 +787,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     _carousel.dataSource = self;
     [self.view addSubview:_carousel];
     
-    if (![[assist shared]isPOP]) {
+    if (![[assist shared]isPOP])
+    {
         self.slidingViewController.panGesture.enabled=YES;
         [self.view addGestureRecognizer:self.slidingViewController.panGesture];
         
@@ -826,7 +801,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
 
     [[assist shared] setRequestMultiple:NO];
-
     [[assist shared] setArray:nil];
  
 }
@@ -856,14 +830,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         if ([[assist shared]needsReload])
         {
-            
             self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
             [self.navigationController.view addSubview:self.hud];
             
             self.hud.delegate = self;
             self.hud.labelText = @"Loading your Nooch account";
             [self.hud show:YES];
-
         }
 
         if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
@@ -890,7 +862,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     //do carousel
     [self.view addSubview:_carousel];
     [_carousel reloadData];
-    // [favorites removeAllObjects];
 }
 
 #pragma mark - iCarousel methods
@@ -908,61 +879,70 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSInteger)index reusingView:(UIView *)view
 {
-    UIImageView *imageView = nil;
-    UILabel *name=nil;;
-    NSDictionary *favorite = [favorites objectAtIndex:index];
+    UIImageView * imageView = nil;
+    UILabel * name = nil;
+    NSDictionary * favorite = [favorites objectAtIndex:index];
+
     //create new view if no view is available for recycling
-    
     if (view == nil)
     {
-		view = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 140, 175)];
+		view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 140, 175)];
         imageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 25, 100, 100)];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
-//        view.layer.borderColor = kNoochBlue.CGColor;
-//        view.layer.borderWidth = 3;
         imageView.layer.cornerRadius = 50;
+
+        name = [[UILabel alloc] initWithFrame:CGRectMake(0, 132, 140, 20)];
+        name.textColor = [Helpers hexColor:@"313233"];
+        name.textAlignment = NSTextAlignmentCenter;
+        [name setFont:[UIFont fontWithName:@"Roboto-regular" size:19]];
 
         if (favorite[@"MemberId"])
         {
             [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                       placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
-            
+
+            name.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
+
             UILabel * glyph_fav = [UILabel new];
             [glyph_fav setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
-            [glyph_fav setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-star-o"]];
+            [glyph_fav setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-star"]];
             glyph_fav.textAlignment = NSTextAlignmentCenter;
-            [glyph_fav setFrame:CGRectMake(68, 160, 14, 16)];
-            [glyph_fav setTextColor:kNoochGrayLight];
+            [glyph_fav setFrame:CGRectMake(62, 155, 16, 17)];
+            [glyph_fav setTextColor:kNoochBlue];
             [view addSubview:glyph_fav];
         }
         else if (favorite[@"image"])
         {
             [imageView setImage:[UIImage imageWithData:favorite[@"image"]]];
 
-            UIImageView *glyph_adressBook = [UIImageView new];
+            UILabel * lastname = nil;
+            lastname = [[UILabel alloc] initWithFrame:CGRectMake(0, 152, 140, 20)];
+            lastname.textColor = [UIColor blackColor];
+            lastname.textAlignment = NSTextAlignmentCenter;
+            [lastname setFont:[UIFont fontWithName:@"Roboto-light" size:15]];
+
+            UIImageView * glyph_adressBook = [UIImageView new];
             [glyph_adressBook setStyleClass:@"addressbook-icons"];
             glyph_adressBook.layer.borderWidth = 1;
             glyph_adressBook.layer.borderColor = (__bridge CGColorRef)([UIColor whiteColor]);
             glyph_adressBook.layer.cornerRadius = 3;
-            [glyph_adressBook setFrame:CGRectMake(63, 149, 14, 16)];
+
+            if (!favorite[@"LastName"]) {
+                name.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
+                [glyph_adressBook setFrame:CGRectMake(63, 156, 14, 16)];
+            }
+            else {
+                name.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
+                lastname.text = [NSString stringWithFormat:@"%@",favorite[@"LastName"]];
+                [glyph_adressBook setFrame:CGRectMake(63, 173, 14, 16)];
+            }
+            [view addSubview:lastname];
             [view addSubview:glyph_adressBook];
         }
         [imageView setClipsToBounds:YES];
-        
-        name = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 130.0f, 140, 20)];
-        name.textColor = [UIColor blackColor];
-        name.textAlignment = NSTextAlignmentCenter;
-        [name setFont:[UIFont fontWithName:@"Roboto-regular" size:15]];
-        if (favorite[@"LastName"])
-        {
-            name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
-        }
-        else {
-            name.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
-        }
+
         [view addSubview:imageView];
         [view addSubview:name];
-
     }
     else
     {
@@ -1055,25 +1035,24 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 emailCheck.tagName = @"emailCheck";
                 [emailCheck getMemIdFromuUsername:[emailID lowercaseString]];
             }
-            
-            
 
             return;
         }
-  
 }
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
      NSString *title = [actionSheet buttonTitleAtIndex:buttonIndex];
-       emailID=title;
-    if (![title isEqualToString:@"Cancel"]) {
+       emailID = title;
+    if (![title isEqualToString:@"Cancel"])
+    {
         serve * emailCheck = [serve new];
         emailCheck.Delegate = self;
         emailCheck.tagName = @"emailCheck";
         [emailCheck getMemIdFromuUsername:[title lowercaseString]];
     }
-    
 }
+
 - (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value
 {
     switch (option)
@@ -1301,7 +1280,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                     counter++;
                 }
             }
-            NSLog(@"The counter is: ==  %d  == ",counter);
             [self.navigationItem setLeftBarButtonItem:nil];
             
             if (counter > 0)

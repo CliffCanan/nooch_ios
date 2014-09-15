@@ -190,7 +190,7 @@
         search.text=@"";
         [search setShowsCancelButton:NO];
         [search resignFirstResponder];
-        [self.contacts reloadData];
+//        [self.contacts reloadData];
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:1];
         CGRect frame = self.contacts.frame;
@@ -329,10 +329,11 @@
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
     CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
     CFIndex nPeople = ABAddressBookGetPersonCount(addressBook);
-    for(int i=0; i<nPeople; i++)
+
+    for(int i = 0; i < nPeople; i++)
     {
-        NSMutableDictionary *curContact=[[NSMutableDictionary alloc] init];
-        ABRecordRef person=CFArrayGetValueAtIndex(people, i);
+        NSMutableDictionary *curContact = [[NSMutableDictionary alloc] init];
+        ABRecordRef person = CFArrayGetValueAtIndex(people, i);
         
         NSString *contacName;
         
@@ -341,17 +342,17 @@
         if (contacNameValue)
             CFRelease(contacNameValue);
         
-        
-        NSString *firstName ;
-        NSString *lastName;
-        
-        //Get FirstName Ref
+        NSString * firstName;
+        NSString * lastName;
+        NSData *contactImage;
+
+        // Get FirstName Ref
         CFTypeRef firstNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
         firstName = [[NSString stringWithFormat:@"%@", firstNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         if (firstNameValue)
             CFRelease(firstNameValue);
         
-        //Get LastName Ref
+        // Get LastName Ref
         CFTypeRef LastNameValue = ABRecordCopyValue(person, kABPersonLastNameProperty);
         
         if(LastNameValue)
@@ -362,8 +363,8 @@
             if (LastNameValue)
                 CFRelease(LastNameValue);
         }
-        NSData *contactImage;
-        //Get Contact Image Ref
+
+        // Get Contact Image Ref
         if (ABPersonHasImageData(person) > 0 )
         {
             CFTypeRef contactImageValue = ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
@@ -378,21 +379,18 @@
             [curContact setObject:contactImage forKey:@"image"];
         }
         
+        if (contacName != NULL) [curContact setObject:contacName forKey:@"Name"];
+        if (firstName != NULL) [curContact setObject:firstName forKey:@"FirstName"];
+        if (lastName != NULL) [curContact setObject:lastName forKey:@"LastName"];
+        [curContact setObject:@"YES" forKey:@"addressbook"];
+
         ABMultiValueRef phoneNumber = ABRecordCopyValue(person, kABPersonPhoneProperty);
         ABMultiValueRef emailInfo = ABRecordCopyValue(person, kABPersonEmailProperty);
         
-        
-        if(contacName != NULL)  [curContact setObject:contacName forKey:@"Name"];
-        if(firstName != NULL) [curContact setObject:firstName forKey:@"FirstName"];
-        if(lastName != NULL)  [curContact setObject:lastName forKey:@"LastName"];
-        
-        
-        [curContact setObject:@"YES" forKey:@"addressbook"];
-        
+        // Get phoneValue Ref
         NSString *phone,*phone2,*phone3;
         if (ABMultiValueGetCount(phoneNumber) > 0)
         {
-            //Get phoneValue Ref
             CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 0);
             phone = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             if (phoneValue)
@@ -420,21 +418,22 @@
             phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
             [curContact setObject:phone3 forKey:@"phoneNo3"];
         }
+
         //Get emailInfo Ref
-        for (int j=0; j<ABMultiValueGetCount(emailInfo); j++) {
+        for (int j = 0; j < ABMultiValueGetCount(emailInfo); j++)
+        {
             CFTypeRef emailIdValue = ABMultiValueCopyValueAtIndex(emailInfo, j);
             NSString *emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            if(emailId != NULL) {
+
+            if (emailId != NULL)
+            {
                 [curContact setObject:emailId forKey:@"UserName"];
-                
                 [curContact setObject:emailId forKey:[NSString stringWithFormat:@"emailAdday%d",j]];
                 [curContact setObject:[NSString stringWithFormat:@"%d",j+1] forKey:@"emailCount"];
-                
             }
             if (emailIdValue) {
                 CFRelease(emailIdValue);
             }
-            
         }
         
         
@@ -443,30 +442,40 @@
         }
         [additions addObject:curContact];
         
-        if( contacName == NULL) {
-        }
-        else {
+        if (contacName != NULL)
+        {
             NSString * strippedNumber = [phone stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone length])];
-            if([strippedNumber length] == 11) {
+
+            if ([strippedNumber length] == 11) {
                 strippedNumber = [strippedNumber substringFromIndex:1];
             }
-            if(strippedNumber != NULL)
+
+            if (strippedNumber != NULL)
                 [curContact setObject:strippedNumber forKey:@"phoneNo"];
             [additions addObject:curContact];
         }
+        
         if (phoneNumber)
             CFRelease(phoneNumber);
     }
+
     [[assist shared] addAssos:additions.mutableCopy];
     NSMutableArray *get_ids_input = [NSMutableArray new];
-    for (NSDictionary *person in additions) {
+
+    for (NSDictionary *person in additions)
+    {
         NSMutableDictionary *person_input = [NSMutableDictionary new];
         [person_input setObject:@"" forKey:@"memberId"];
+
         if (person[@"phoneNo"]) [person_input setObject:person[@"phoneNo"] forKey:@"phoneNo"];
+
         if (person[@"emailAddy"]) [person_input setObject:person[@"emailAddy"] forKey:@"emailAddy"];
         else [person_input setObject:@"" forKey:@"emailAddy"];
+        
         if (person[@"phoneNo2"]) [person_input setObject:person[@"phoneNo2"] forKey:@"phoneNo2"];
+        
         if (person[@"phoneNo3"]) [person_input setObject:person[@"phoneNo3"] forKey:@"phoneNo3"];
+        
         [get_ids_input addObject:person_input];
     }
 
@@ -474,6 +483,7 @@
     [get_ids setDelegate:self];
     [get_ids setTagName:@"getMemberIds"];
     [get_ids getMemberIds:get_ids_input];
+
      if (people)
     CFRelease(people);
      if (addressBook)
@@ -630,22 +640,25 @@
     }
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-    if ([actionSheet tag]==1111) {
-        if (![[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Cancel"]) {
-            
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ([actionSheet tag] == 1111)
+    {
+        if (![[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Cancel"])
+        {
             emailphoneBook= [actionSheet buttonTitleAtIndex:buttonIndex];
             isphoneBook=YES;
             [self getMemberIdByUsingUserNameFromPhoneBook];
         }
     }
-    else if ([actionSheet tag]==1122){
-        
+    else if ([actionSheet tag] == 1122)
+    {
         NSString *title = [actionSheet buttonTitleAtIndex:buttonIndex];
-        emailphoneBook=title;
-        isphoneBook=YES;
-        if (![title isEqualToString:@"Cancel"]) {
+        emailphoneBook = title;
+        isphoneBook = YES;
+
+        if (![title isEqualToString:@"Cancel"])
+        {
             spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             [self.view addSubview:spinner];
             [spinner setHidden:NO];
@@ -663,6 +676,7 @@
 -(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier{
     return YES;
 }
+
 -(void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker{
     isphoneBook=NO;
     [_addressBookController dismissViewControllerAnimated:YES completion:nil];
@@ -1033,7 +1047,7 @@
                                            options:kNilOptions
                                            error:&error];
 
-        if([dictResult objectForKey:@"Result"] != [NSNull null])
+        if ([dictResult objectForKey:@"Result"] != [NSNull null])
         {
             if ([self.view.subviews containsObject:spinner]) {
                 [spinner removeFromSuperview];
@@ -1072,14 +1086,14 @@
                 [dict setObject:searchString forKey:@"email"];
             
             [dict setObject:@"nonuser" forKey:@"nonuser"];
-             isFromHome=NO;
+            isFromHome = NO;
             HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
-            return;
             
             [spinner stopAnimating];
             [spinner setHidden:YES];
-            
+    
+            return;
         }
     }
     
@@ -1655,8 +1669,8 @@
     if (searching)
     {
         searching = NO;
-        emailEntry=NO;
-        isRecentList=YES;
+        emailEntry = NO;
+        isRecentList = YES;
         [search resignFirstResponder];
         [search setText:@""];
         [search setShowsCancelButton:NO];
@@ -1665,41 +1679,42 @@
         
         if ([[assist shared] assos][receiver[@"UserName"]][@"addressbook"])
         {
-             if ([self.view.subviews containsObject:spinner]) {
-                 [spinner removeFromSuperview];
-             }
-              emailphoneBook = receiver[@"UserName"];
-             isphoneBook = YES;
-            if ([receiver[@"emailCount"]intValue]>1) {
+            if ([self.view.subviews containsObject:spinner]) {
+                [spinner removeFromSuperview];
+            }
+            emailphoneBook = receiver[@"UserName"];
+            isphoneBook = YES;
+
+            if ([receiver[@"emailCount"]intValue] > 1)
+            {
                 UIActionSheet *actionSheetObject = [[UIActionSheet alloc] init];
                 for (int j=0; j<[receiver[@"emailCount"]intValue]; j++) {
                     [actionSheetObject addButtonWithTitle:[receiver[[NSString stringWithFormat:@"emailAdday%d",j]] lowercaseString]];
-                    
                 }
-                actionSheetObject.cancelButtonIndex=[actionSheetObject addButtonWithTitle:@"Cancel"];
+                
+                actionSheetObject.cancelButtonIndex = [actionSheetObject addButtonWithTitle:@"Cancel"];
                 actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
                 [actionSheetObject setTag:1122];
-                actionSheetObject.delegate=self;
+                actionSheetObject.delegate = self;
                 [actionSheetObject showInView:self.view];
             }
-            else{
+            else
+            {
                 spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
                 [self.view addSubview:spinner];
                 [spinner setHidden:NO];
                 spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
                 [spinner startAnimating];
                
-                
-                
                 serve *emailCheck = [serve new];
                 emailCheck.Delegate = self;
                 emailCheck.tagName = @"emailCheck";
                 [emailCheck getMemIdFromuUsername:[receiver[@"UserName"] lowercaseString]];
             }
-
             
-             return;
+            return;
          }
+
         isFromHome = NO;
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
         [self.navigationController pushViewController:how_much animated:YES];
