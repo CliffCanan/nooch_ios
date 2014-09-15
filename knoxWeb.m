@@ -186,12 +186,15 @@
     self.hud.labelText = @"Finishing up...";
     [self.hud show:YES];
 
-    serve*obj=[serve new];
-    obj.tagName=@"saveMemberTransId";
+    serve * obj = [serve new];
+    obj.tagName = @"saveMemberTransId";
     [obj setDelegate:self];
     
-    NSDictionary*dict=@{@"TransId":[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"],@"BankName":[[NSUserDefaults standardUserDefaults] objectForKey:@"BankName"],@"BankImageURL":[[NSUserDefaults standardUserDefaults] objectForKey:@"BankImageURL"],@"AccountName":[[NSUserDefaults standardUserDefaults] objectForKey:@"AccountName"],@"MemberId":[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]};
-    NSLog(@"%@",dict);
+    NSDictionary * dict = @{@"TransId":[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"],
+                            @"BankName":[[NSUserDefaults standardUserDefaults] objectForKey:@"BankName"],
+                            @"BankImageURL":[[NSUserDefaults standardUserDefaults] objectForKey:@"BankImageURL"],
+                            @"AccountName":[[NSUserDefaults standardUserDefaults] objectForKey:@"AccountName"],
+                            @"MemberId":[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]};
     
     [obj saveMemberTransId:[dict mutableCopy]];
     

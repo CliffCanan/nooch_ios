@@ -2,7 +2,7 @@
 //  Nooch
 //
 //  Created by crks on 10/7/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch Inc. All rights reserved.
 //
 
 #import "ProfileInfo.h"
@@ -17,7 +17,7 @@
 #import "Register.h"
 #import "ECSlidingViewController.h"
 #import "UIImage+Resize.h"
- UIImageView *picture;
+UIImageView *picture;
 @interface ProfileInfo ()
 @property(nonatomic) UIImagePickerController *picker;
 @property(nonatomic,strong) UITextField *name;
@@ -35,6 +35,7 @@
 @property(nonatomic) BOOL disclose;
 @property(nonatomic) NSIndexPath *expand_path;
 @property(nonatomic,strong) MBProgressHUD *hud;
+@property(nonatomic,strong) UIView *member_since_back;
 @end
 @implementation ProfileInfo
 
@@ -56,9 +57,15 @@
     self.trackedViewName = @"Profile Screen";
 
     [self.navigationItem setTitle:@"Profile Info"];
-    if ([[user objectForKey:@"Photo"] length]>0 && [user objectForKey:@"Photo"]!=nil && !isPhotoUpdate) {
+    if ([[user objectForKey:@"Photo"] length] > 0 && [user objectForKey:@"Photo"] != nil && !isPhotoUpdate)
+    {
         [picture setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
                 placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+    }
+    
+    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"])
+    {
+        [self.member_since_back setStyleId:@"profileTopSectionBg_susp"];
     }
 }
 
@@ -260,10 +267,10 @@
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
-    UIView *member_since_back = [UIView new];
-    [member_since_back setFrame:CGRectMake(0, 0, 320, 70)];
-    [member_since_back setStyleId:@"profileTopSectionBackground"];
-    [self.view addSubview:member_since_back];
+    self.member_since_back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 70)];
+    [self.member_since_back setFrame:CGRectMake(0, 0, 320, 70)];
+    [self.member_since_back setStyleId:@"profileTopSectionBg"];
+    [self.view addSubview:self.member_since_back];
 
     UIView * shadowUnder = [[UIView alloc] initWithFrame:CGRectMake(20, 5, 60, 61)];
     shadowUnder.backgroundColor = Rgb2UIColor(63, 171, 225, .4);
@@ -321,7 +328,7 @@
     NSString *_date=[_formatter stringFromDate:date];
     
     NSShadow * shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = Rgb2UIColor(229, 242, 248, .38);
+    shadow.shadowColor = Rgb2UIColor(229, 242, 248, .3);
     shadow.shadowOffset = CGSizeMake(0, 1);
     
     NSDictionary * textAttributes_memberSince = @{NSShadowAttributeName: shadow };

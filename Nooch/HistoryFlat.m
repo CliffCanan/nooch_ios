@@ -24,8 +24,8 @@
 @property (strong, nonatomic) GMSMapView *mapView;
 @property(nonatomic,strong) UISearchBar *search;
 @property(nonatomic,strong) UITableView *list;
-@property(nonatomic,strong) UIButton *completed;
-@property(nonatomic,strong) UIButton *pending;
+//@property(nonatomic,strong) UIButton *completed;
+//@property(nonatomic,strong) UIButton *pending;
 @property(nonatomic,strong) UIButton *glyph_map;
 @property(nonatomic) BOOL completed_selected;
 @property(nonatomic,strong) NSDictionary *responseDict;
@@ -225,7 +225,6 @@
     // Row count for scrolling
     countRows = 0;
 
-    
 }
 
 -(void)toggleMapByNavBtn
@@ -592,7 +591,6 @@ return customView;
     [self.list removeFromSuperview];
     self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
     [self.list setStyleId:@"history"];
-//    [self.list setRowHeight:68];
     [self.list setDataSource:self];
     [self.list setDelegate:self];
     [self.list setSectionHeaderHeight:0];
@@ -729,7 +727,13 @@ return customView;
         if ([histShowArrayCompleted count] > indexPath.row)
         {
             NSDictionary * dictRecord_complete = [histShowArrayCompleted objectAtIndex:indexPath.row];
-            return ([[dictRecord_complete valueForKey:@"Memo"] length] > 1)?75.0f:68.0f;
+            
+            if ([[dictRecord_complete valueForKey:@"Memo"] length] < 2) {
+                return 72;
+            }
+            else if ([[dictRecord_complete valueForKey:@"Memo"] length] > 32) {
+                return 84;
+            }
         }
     }
     else
@@ -737,11 +741,17 @@ return customView;
         if ([histShowArrayPending count] > indexPath.row)
         {
             NSDictionary * dictRecord_pending = [histShowArrayPending objectAtIndex:indexPath.row];
-            return ([[dictRecord_pending valueForKey:@"Memo"] length] > 1)?75.0f:68.0f;
+
+            if ([[dictRecord_pending valueForKey:@"Memo"] length] < 2) {
+                return 72;
+            }
+            else if ([[dictRecord_pending valueForKey:@"Memo"] length] > 32) {
+                return 78;
+            }
         }
     }
 
-    return 68;
+    return 72;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -775,26 +785,26 @@ return customView;
         if ([temp count] > indexPath.row) {
             NSDictionary *dictRecord = [temp objectAtIndex:indexPath.row];
             
-            if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"] ||
-               [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] )
+            if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"] ||
+                [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] )
             {
                 if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
                 {
                     //cancel or remind
                     [rightUtilityButtons sw_addUtilityButtonWithColor:kNoochBlue
-                    title:@"Remind"];
+                                                                title:@"Remind"];
                     [rightUtilityButtons sw_addUtilityButtonWithColor:
                         [UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
-                    title:@"Cancel"];
+                        title:@"Cancel"];
                 }
                 else
                 {
                     //accept or decline
                     [rightUtilityButtons sw_addUtilityButtonWithColor:kNoochGreen
-                    title:@"Accept"];
+                                                                 icon:[UIImage imageNamed:@"check.png"]];
                     [rightUtilityButtons sw_addUtilityButtonWithColor:
-                    [UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
-                    title:@"Reject"];
+                        [UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
+                                                                 icon:[UIImage imageNamed:@"cross.png"]];
                 }
             }
         }
@@ -830,6 +840,12 @@ return customView;
                     
                     UIView *indicator = [UIView new];
                     [indicator setStyleClass:@"history_sidecolor"];
+                    indicator.layer.cornerRadius = 3;
+                    
+                    UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 9, 10, 9)];
+                    [statusIndicator setBackgroundColor:[UIColor clearColor]];
+                    [statusIndicator setTextAlignment:NSTextAlignmentCenter];
+                    [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
 
                     UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
                     [amount setBackgroundColor:[UIColor clearColor]];
@@ -837,22 +853,33 @@ return customView;
                     [amount setFont:[UIFont fontWithName:@"Roboto-Medium" size:18]];
                     [amount setStyleClass:@"history_transferamount"];
                     
-                    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(14, 8, 52, 52)];
-                    pic.layer.borderColor = kNoochGrayDark.CGColor;
-                    pic.layer.borderWidth = 1;
-                    pic.layer.cornerRadius = 26;
+                    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 9, 50, 50)];
+                    pic.layer.cornerRadius = 25;
                     pic.clipsToBounds = YES;
                     [cell.contentView addSubview:pic];
                     
                     UILabel *transferTypeLabel = [UILabel new];
                     [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
-                    transferTypeLabel.layer.cornerRadius = 4;
+                    transferTypeLabel.layer.cornerRadius = 3;
                     transferTypeLabel .clipsToBounds = YES;
                     
                     UILabel *name = [UILabel new];
                     [name setStyleClass:@"history_cell_textlabel"];
                     [name setStyleClass:@"history_recipientname"];
-                    
+
+                    if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
+                        [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-minus-circle"]];
+                        [statusIndicator setTextColor:kNoochRed];
+                    }
+                    else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
+                        [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
+                        [statusIndicator setTextColor:kNoochRed];
+                    }
+                    else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]) {
+                        [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"]];
+                        [statusIndicator setTextColor:kNoochGreen];
+                    }
+
                     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"])
                     {
                         if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
@@ -885,14 +912,14 @@ return customView;
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                     {
-                        
-                        [amount setStyleClass:@"history_transferamount_neutral"];
+                        [amount setTextColor:kNoochGrayDark];
                         [indicator setStyleClass:@"history_sidecolor_neutral"];
                         [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                         
                         if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"RecepientId"]])
                         {
                             [transferTypeLabel setText:@"Request sent to"];
+                            [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_wider"];
                             
                             if ([dictRecord valueForKey:@"InvitationSentTo"] == NULL || [[dictRecord objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])
                             {
@@ -916,22 +943,23 @@ return customView;
                         [transferTypeLabel setBackgroundColor:kNoochBlue];
                         
                     }
-                    else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL)
+                    else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
+                              [dictRecord valueForKey:@"InvitationSentTo"] != NULL)
                     {
                         //ADDED BY CLIFF
                         if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-                            [amount setStyleClass:@"history_transferamount_neutral"];
+                            [amount setTextColor:kNoochGrayDark];
                             [indicator setStyleClass:@"history_sidecolor_neutral"];
                             [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                         }
                         else {
-                            [amount setStyleClass:@"history_transferamount_pos"];
+                            [amount setStyleClass:@"history_transferamount_neg"];
                             [indicator setStyleClass:@"history_sidecolor_neg"];
                             [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                         }
                         [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
                         [transferTypeLabel setText:@"Invite sent to"];
-                        [transferTypeLabel setBackgroundColor:kNoochGrayDark];
+                        [transferTypeLabel setBackgroundColor:kNoochGrayLight];
                         [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"]]];
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
@@ -945,16 +973,17 @@ return customView;
                         }
                         
                         [indicator setStyleClass:@"history_sidecolor_neutral"];
-                        [amount setStyleClass:@"history_transferamount_neutral"];
+                        [amount setTextColor:kNoochGrayDark];
                         [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                        [transferTypeLabel setBackgroundColor:kNoochGrayDark];
+                        [transferTypeLabel setBackgroundColor:kNoochRed];
                         [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                             placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                     }
                     
                     [cell.contentView addSubview:amount];
-                    [cell.contentView addSubview:indicator];
+                    // [cell.contentView addSubview:indicator];
+                    [cell.contentView addSubview:statusIndicator];
                     [cell.contentView addSubview:transferTypeLabel];
                     [cell.contentView addSubview:name];
                     
@@ -963,7 +992,7 @@ return customView;
                     
                     UILabel *glyphDate = [UILabel new];
                     [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                    [glyphDate setFrame:CGRectMake(148, 9, 14, 10)];
+                    [glyphDate setFrame:CGRectMake(147, 9, 14, 10)];
                     [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                     [glyphDate setTextColor:kNoochGrayLight];
                     [cell.contentView addSubview:glyphDate];
@@ -1062,32 +1091,31 @@ return customView;
                         ![[dictRecord objectForKey:@"Memo"] isKindOfClass:[NSNull class]] &&
                         ![[dictRecord valueForKey:@"Memo"] isEqualToString:@""] )
                     {
-                   //     [self.list setRowHeight:78];
-                        
                         UILabel *label_memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
                         [label_memo setBackgroundColor:[UIColor clearColor]];
                         [label_memo setTextAlignment:NSTextAlignmentRight];
-                        [label_memo setText:[NSString stringWithFormat:@" %@ ",[dictRecord valueForKey:@"Memo"]]];
-                        [label_memo setFont:[UIFont fontWithName:@"Roboto-regular" size:14]];
+                        label_memo.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"For  \"%@\" ",[dictRecord valueForKey:@"Memo"]]
+                                                                                    attributes:nil];
+                        label_memo.numberOfLines = 0;
+                        label_memo.lineBreakMode = NSLineBreakByTruncatingTail;
                         [label_memo setStyleClass:@"history_memo"];
-                        [cell.contentView addSubview:label_memo];
                         
-                        [indicator setStyleClass:@"history_sidecolor_wMemo"];
-                        [name setStyleClass:@"history_cell_textlabel_wMemo"];
-                    }
+                        if (label_memo.attributedText.length > 36) {
+                            [label_memo setStyleClass:@"history_memo_long"];
+                        }
+                        [cell.contentView addSubview:label_memo];
+                        [name setStyleClass:@"history_cell_textlabel_wMemo"];                    }
                 }
             }
             else if ([histTempCompleted count] == indexPath.row)
             {
                 UILabel *name = [UILabel new];
+                [self.list setStyleId:@"emptyTable"];
                 [name setStyleClass:@"history_cell_textlabelEmpty"];
                 [name setStyleClass:@"history_recipientname"];
                 if (indexPath.row == 0)
-                    [name setText:@"No payments to display here yet!"];
-                else if (indexPath.row == 1) {
-                    [name setText:@":("];
-				}
-				else {
+                    [name setText:@"No payments found for that name..."];
+                else {
                     [name setText:@""];
 				}
                 [cell.contentView addSubview:name];
@@ -1105,31 +1133,47 @@ return customView;
                 [[dictRecord valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"] )
             {
 
-                UIView *indicator = [UIView new];
+                UIView * indicator = [UIView new];
                 [indicator setStyleClass:@"history_sidecolor"];
+                indicator.layer.cornerRadius = 3;
+                
+                UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 9, 10, 9)];
+                [statusIndicator setBackgroundColor:[UIColor clearColor]];
+                [statusIndicator setTextAlignment:NSTextAlignmentCenter];
+                [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
 
-                UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
+                UILabel * amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
                 [amount setBackgroundColor:[UIColor clearColor]];
                 [amount setTextAlignment:NSTextAlignmentRight];
                 [amount setFont:[UIFont fontWithName:@"Roboto-Medium" size:18]];
                 [amount setStyleClass:@"history_transferamount"];
                 
-                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(14, 8, 52, 52)];
-                pic.layer.borderColor = kNoochGrayDark.CGColor;
-                pic.layer.borderWidth = 1;
-                pic.layer.cornerRadius = 26;
+                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 9, 50, 50)];
+                pic.layer.cornerRadius = 25;
                 pic.clipsToBounds = YES;
                 [cell.contentView addSubview:pic];
                 
 				UILabel *transferTypeLabel = [UILabel new];
                 [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
-                transferTypeLabel.layer.cornerRadius = 4;
+                transferTypeLabel.layer.cornerRadius = 3;
                 transferTypeLabel .clipsToBounds = YES;
                 
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabel"];
                 [name setStyleClass:@"history_recipientname"];
                 
+                if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
+                    [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-minus-circle"]];
+                    [statusIndicator setTextColor:kNoochRed];
+                }
+                else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
+                    [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
+                    [statusIndicator setTextColor:kNoochRed];
+                }
+                else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]) {
+                    [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"]];
+                    [statusIndicator setTextColor:kNoochGreen];
+                }
                 
                 if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"])
                 {
@@ -1141,7 +1185,7 @@ return customView;
                         [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                         [transferTypeLabel setText:@"Transfer to"];
 						[transferTypeLabel setBackgroundColor:kNoochRed];
-                        [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
+                        [name setText:[NSString stringWithFormat:@"%@",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                             placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                     }
@@ -1163,14 +1207,14 @@ return customView;
                 }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                 {
-                    
-                    [amount setStyleClass:@"history_transferamount_neutral"];
+                    [amount setTextColor:kNoochGrayDark];
                     [indicator setStyleClass:@"history_sidecolor_neutral"];
                     [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                    
+
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"RecepientId"]])
                     {
                         [transferTypeLabel setText:@"Request sent to"];
+                        [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_wider"];
                         
                         if ([dictRecord valueForKey:@"InvitationSentTo"] == NULL || [[dictRecord objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])
                         {
@@ -1194,16 +1238,17 @@ return customView;
 					[transferTypeLabel setBackgroundColor:kNoochBlue];
                 
                 }
-                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL)
+                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
+                          [dictRecord valueForKey:@"InvitationSentTo"] != NULL)
                 {
                     //ADDED BY CLIFF
                     if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-                        [amount setStyleClass:@"history_transferamount_neutral"];
+                        [amount setTextColor:kNoochGrayDark];
                         [indicator setStyleClass:@"history_sidecolor_neutral"];
                         [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                     }
                     else {
-                        [amount setStyleClass:@"history_transferamount_pos"];
+                        [amount setStyleClass:@"history_transferamount_neg"];
                         [indicator setStyleClass:@"history_sidecolor_neg"];
                         [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                     }
@@ -1223,8 +1268,7 @@ return customView;
                     }
 
                     [indicator setStyleClass:@"history_sidecolor_neutral"];
-                    [amount setStyleClass:@"history_transferamount_neutral"];
-                    [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                    [amount setTextColor:kNoochGrayDark];
 					[transferTypeLabel setTextColor:kNoochGrayDark];
                     [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
                     [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
@@ -1237,7 +1281,7 @@ return customView;
                 
                 UILabel *glyphDate = [UILabel new];
                 [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                [glyphDate setFrame:CGRectMake(148, 9, 14, 10)];
+                [glyphDate setFrame:CGRectMake(146, 9, 14, 10)];
                 [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                 [glyphDate setTextColor:kNoochGrayLight];
 
@@ -1251,7 +1295,15 @@ return customView;
                 {
                     [updated_balance setStyleClass:@"transfer_status"];
                     [updated_balance setText:[NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"TransactionStatus"]]];
-                    [updated_balance setTextColor:kNoochRed];
+                    [updated_balance setTextColor:kNoochGrayLight];
+                    [cell.contentView addSubview:updated_balance];
+                }
+                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Success"] &&
+                         [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] )
+                {
+                    [updated_balance setText:@"Accepted"];
+                    [updated_balance setTextColor:kNoochGreen];
+                    [updated_balance setStyleClass:@"transfer_status"];
                     [cell.contentView addSubview:updated_balance];
                 }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] &&
@@ -1331,23 +1383,26 @@ return customView;
                     ![[dictRecord objectForKey:@"Memo"] isKindOfClass:[NSNull class]] &&
                     ![[dictRecord valueForKey:@"Memo"] isEqualToString:@""] )
                 {
-               //     [self.list setRowHeight:78];
-                    
                     UILabel *label_memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
                     [label_memo setBackgroundColor:[UIColor clearColor]];
                     [label_memo setTextAlignment:NSTextAlignmentRight];
-                    [label_memo setText:[NSString stringWithFormat:@"For \"%@\" ",[dictRecord valueForKey:@"Memo"]]];
-                    [label_memo setFont:[UIFont fontWithName:@"Roboto-regular" size:14]];
+                    label_memo.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"For  \"%@\" ",[dictRecord valueForKey:@"Memo"]]
+                                                                           attributes:nil];
+                    label_memo.numberOfLines = 0;
+                    label_memo.lineBreakMode = NSLineBreakByTruncatingTail;
                     [label_memo setStyleClass:@"history_memo"];
-                    [cell.contentView addSubview:label_memo];
                     
-                    [indicator setStyleClass:@"history_sidecolor_wMemo"];
+                    if (label_memo.attributedText.length > 36) {
+                        [label_memo setStyleClass:@"history_memo_long"];
+                    }
+                    [cell.contentView addSubview:label_memo];
                     [name setStyleClass:@"history_cell_textlabel_wMemo"];
                 }
 
                 [cell.contentView addSubview:glyphDate];
                 [cell.contentView addSubview:amount];
-                [cell.contentView addSubview:indicator];
+                [cell.contentView addSubview:statusIndicator];
+       //         [cell.contentView addSubview:indicator];
                 [cell.contentView addSubview:transferTypeLabel];
                 [cell.contentView addSubview:name];
 
@@ -1357,14 +1412,12 @@ return customView;
         {
             if (isEnd == YES)
             {
+                [self.list setStyleId:@"emptyTable"];
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabelEmpty"];
                 [name setStyleClass:@"history_recipientname"];
                 if (indexPath.row == 0)
                     [name setText:@"No payments to display here yet!"];
-                else if (indexPath.row == 0){
-                    [name setText:@":("];
-                }
                 else {
                     [name setText:@""];
                 }
@@ -1378,7 +1431,7 @@ return customView;
                     activityIndicator.center = CGPointMake(cell.contentView.frame.size.width / 2, cell.contentView.frame.size.height / 2);
                     [activityIndicator startAnimating];
                     [cell.contentView addSubview:activityIndicator];
-                    ishistLoading=YES;
+                    ishistLoading = YES;
                     index++;
                     [self loadSearchByName];
                 }
@@ -1403,9 +1456,11 @@ return customView;
             {
                 NSDictionary * dictRecord = [histTempPending objectAtIndex:indexPath.row];
 
-                if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]) {
+                if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
+                {
                     UIView *indicator = [UIView new];
-                    [indicator setStyleClass:@"history_sidecolor"];
+                    [indicator setStyleClass:@"history_sidecolor_pending"];
+                    indicator.layer.cornerRadius = 3;
 
                     UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
                     [amount setBackgroundColor:[UIColor clearColor]];
@@ -1413,7 +1468,6 @@ return customView;
                     [amount setFont:[UIFont fontWithName:@"Roboto-Medium" size:18]];
                     [amount setStyleClass:@"history_pending_transferamount"];
 
-                    [indicator setStyleClass:@"history_sidecolor_neutral"];
                     [amount setStyleClass:@"history_transferamount_neutral"];
                     [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                     [cell.contentView addSubview:amount];
@@ -1421,8 +1475,15 @@ return customView;
 
                     UILabel *transferTypeLabel = [UILabel new];
                     [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
-                    transferTypeLabel.layer.cornerRadius = 4;
+                    transferTypeLabel.layer.cornerRadius = 3;
                     transferTypeLabel .clipsToBounds = YES;
+
+                    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 9, 50, 50)];
+                    pic.layer.cornerRadius = 25;
+                    pic.clipsToBounds = YES;
+                    [cell.contentView addSubview:pic];
+                    [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                        placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
 
                     UILabel *name = [UILabel new];
                     [name setStyleClass:@"history_cell_textlabel"];
@@ -1433,6 +1494,7 @@ return customView;
                         if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
                         {
                             [transferTypeLabel setText:@"Request sent to"];
+                            [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_wider"];
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
                         }
                         else {
@@ -1473,7 +1535,7 @@ return customView;
                     
                     UILabel *glyphDate = [UILabel new];
                     [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                    [glyphDate setFrame:CGRectMake(148, 9, 14, 10)];
+                    [glyphDate setFrame:CGRectMake(147, 9, 14, 10)];
                     [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                     [glyphDate setTextColor:kNoochGrayLight];
                     [cell.contentView addSubview:glyphDate];
@@ -1542,46 +1604,38 @@ return customView;
                             [date setText:[NSString stringWithFormat:@"%ld days ago",(long)[components day]]];
                         [cell.contentView addSubview:date];
                     }
-                    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(14, 9, 52, 52)];
-                    pic.layer.borderColor = kNoochGrayDark.CGColor;
-                    pic.layer.borderWidth = 1;
-                    pic.layer.cornerRadius = 26;
-                    pic.clipsToBounds = YES;
-                    [cell.contentView addSubview:pic];
-                    [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                        placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                     
                     if ( [dictRecord valueForKey:@"Memo"] != NULL &&
                         ![[dictRecord objectForKey:@"Memo"] isKindOfClass:[NSNull class]] &&
                         ![[dictRecord valueForKey:@"Memo"] isEqualToString:@""] )
                     {
-                //        [self.list setRowHeight:78];
-                        
                         UILabel *label_memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
                         [label_memo setBackgroundColor:[UIColor clearColor]];
                         [label_memo setTextAlignment:NSTextAlignmentRight];
-                        [label_memo setText:[NSString stringWithFormat:@" %@ ",[dictRecord valueForKey:@"Memo"]]];
-                        [label_memo setFont:[UIFont fontWithName:@"Roboto-regular" size:14]];
+                        label_memo.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"For  \"%@\" ",[dictRecord valueForKey:@"Memo"]]
+                                                                                    attributes:nil];
+                        label_memo.numberOfLines = 0;
+                        label_memo.lineBreakMode = NSLineBreakByTruncatingTail;
                         [label_memo setStyleClass:@"history_memo"];
-                        [cell.contentView addSubview:label_memo];
                         
-                        [indicator setStyleClass:@"history_sidecolor_wMemo"];
+                        if (label_memo.attributedText.length > 42) {
+                            [label_memo setStyleClass:@"history_memo_long"];
+                        }
+                        [cell.contentView addSubview:label_memo];
                         [name setStyleClass:@"history_cell_textlabel_wMemo"];
                     }
                 }
             }
 
-            else if (indexPath.row==[histTempPending count])
+            else if (indexPath.row == [histTempPending count])
             {
+                [self.list setStyleId:@"emptyTable"];
                 UILabel *name = [UILabel new];
-                [name setStyleClass:@"history_cell_textlabel"];
+                [name setStyleClass:@"history_cell_textlabelEmpty"];
                 [name setStyleClass:@"history_recipientname"];
 
-                if (indexPath.row==0) {
-                    [name setText:@"No payments to display yet."];
-				}
-				else if (indexPath.row==1) {
-                    [name setText:@":("];
+                if (indexPath.row == 0) {
+                    [name setText:@"No pending payments found."];
 				}
 				else {
                     [name setText:@""];
@@ -1593,14 +1647,12 @@ return customView;
 
         if ([histShowArrayPending count] > indexPath.row)
         {
-            
-            NSDictionary *dictRecord=[histShowArrayPending objectAtIndex:indexPath.row];
+            NSDictionary *dictRecord = [histShowArrayPending objectAtIndex:indexPath.row];
             
             if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
             {
 				UIView *indicator = [UIView new];
-                [indicator setStyleClass:@"history_sidecolor"];
-                [indicator setStyleClass:@"history_sidecolor_neutral"];
+                [indicator setStyleClass:@"history_sidecolor_pending"];
 
                 UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
                 [amount setBackgroundColor:[UIColor clearColor]];
@@ -1612,26 +1664,45 @@ return customView;
 
                 UILabel *transferTypeLabel = [UILabel new];
                 [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
-                transferTypeLabel.layer.cornerRadius = 4;
+                transferTypeLabel.layer.cornerRadius = 3;
                 transferTypeLabel .clipsToBounds = YES;
 
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabel"];
                 [name setStyleClass:@"history_recipientname"];
                 
-                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 52, 52)];
-                pic.layer.borderColor = kNoochGrayDark.CGColor;
-                pic.layer.borderWidth = 1;
-                pic.layer.cornerRadius = 26;
+                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(8, 9, 50, 50)];
+                pic.layer.cornerRadius = 25;
                 pic.clipsToBounds = YES;
 
+                UILabel *label_memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
+                if ( [dictRecord valueForKey:@"Memo"] != NULL &&
+                    ![[dictRecord objectForKey:@"Memo"] isKindOfClass:[NSNull class]] &&
+                    ![[dictRecord valueForKey:@"Memo"] isEqualToString:@""] )
+                {
+                    
+                    [label_memo setBackgroundColor:[UIColor clearColor]];
+                    [label_memo setTextAlignment:NSTextAlignmentRight];
+                    label_memo.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"For  \"%@\" ",[dictRecord valueForKey:@"Memo"]]
+                                                                                attributes:nil];
+                    label_memo.numberOfLines = 0;
+                    label_memo.lineBreakMode = NSLineBreakByTruncatingTail;
+                    [label_memo setStyleClass:@"history_memo"];
+                    
+                    if (label_memo.attributedText.length > 42) {
+                        [label_memo setStyleClass:@"history_memo_long"];
+                    }
+                    [name setStyleClass:@"history_cell_textlabel_wMemo"];
+                }
 
-                if([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
+                if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                 {
                     if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
                     {
                         
                         [transferTypeLabel setText:@"Request sent to"];
+                        [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_wider"];
+
 
                         if ([dictRecord valueForKey:@"InvitationSentTo"] == NULL || [[dictRecord objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])
                         {
@@ -1650,7 +1721,11 @@ return customView;
                         UIView * bgcolor = [[UIView alloc] init];
                         bgcolor.backgroundColor = Rgb2UIColor(240, 250, 30, .4);
                         
-                        cell.backgroundView = bgcolor;
+                        if (label_memo.attributedText.length > 42) {
+                            //bgcolor.backgroundColor = Rgb2UIColor(240, 20, 30, .74);
+                            [bgcolor setFrame:CGRectMake(0, 0, 320, 76)];
+                        }
+                     //   cell.backgroundView = bgcolor;
                         [cell.contentView addSubview:bgcolor];
                         
                         [transferTypeLabel setText:@"Request from"];
@@ -1664,7 +1739,7 @@ return customView;
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL)
                 {
                         [transferTypeLabel setText:@"You invited"];
-                        [transferTypeLabel setBackgroundColor:kNoochGrayDark];
+                        [transferTypeLabel setBackgroundColor:kNoochGrayLight];
                         [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
                         [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
                 }
@@ -1692,7 +1767,7 @@ return customView;
                 
                 UILabel *glyphDate = [UILabel new];
                 [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                [glyphDate setFrame:CGRectMake(148, 9, 14, 10)];
+                [glyphDate setFrame:CGRectMake(147, 9, 14, 10)];
                 [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                 [glyphDate setTextColor:kNoochGrayLight];
                 [cell.contentView addSubview:glyphDate];
@@ -1760,30 +1835,13 @@ return customView;
                         [date setText:[NSString stringWithFormat:@"%ld days ago",(long)[components day]]];
                     [cell.contentView addSubview:date];   
                 }
-                
-                if ( [dictRecord valueForKey:@"Memo"] != NULL &&
-                    ![[dictRecord objectForKey:@"Memo"] isKindOfClass:[NSNull class]] &&
-                    ![[dictRecord valueForKey:@"Memo"] isEqualToString:@""] )
-                {
-               //     [self.list setRowHeight:78];
-                    
-                    UILabel *label_memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
-                    [label_memo setBackgroundColor:[UIColor clearColor]];
-                    [label_memo setTextAlignment:NSTextAlignmentRight];
-                    [label_memo setText:[NSString stringWithFormat:@" %@ ",[dictRecord valueForKey:@"Memo"]]];
-                    [label_memo setFont:[UIFont fontWithName:@"Roboto-regular" size:14]];
-                    [label_memo setStyleClass:@"history_memo"];
-                    [cell.contentView addSubview:label_memo];
-                    
-                    [indicator setStyleClass:@"history_sidecolor_wMemo"];
-                    [name setStyleClass:@"history_cell_textlabel_wMemo"];
-                }
-                
+
                 [cell.contentView addSubview:amount];
                 [cell.contentView addSubview:indicator];
                 [cell.contentView addSubview:transferTypeLabel];
                 [cell.contentView addSubview:name];
                 [cell.contentView addSubview:pic];
+                [cell.contentView addSubview:label_memo];
 
 			}
         }
@@ -1791,11 +1849,12 @@ return customView;
         {
             if (isEnd == YES)
             {
+                [self.list setStyleId:@"emptyTable"];
                 UILabel *name = [UILabel new];
-                [name setStyleClass:@"history_cell_textlabel"];
+                [name setStyleClass:@"history_cell_textlabelEmpty"];
                 [name setStyleClass:@"history_recipientname"];
                 if (indexPath.row == 0)
-                    [name setText:@"No Payments To Display"];
+                    [name setText:@"No pending payments right now!"];
                 else
                     [name setText:@""];
                 [cell.contentView addSubview:name];
@@ -2004,6 +2063,12 @@ return customView;
             [av setTag:310];
         }
     }
+}
+
+- (BOOL)swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:(SWTableViewCell *)cell
+{
+    // allow just one cell's utility button to be open at once
+    return YES;
 }
 
 #pragma mark - SWTableView
