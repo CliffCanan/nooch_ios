@@ -829,10 +829,8 @@ return customView;
                 {
                     
                     UIView *indicator = [UIView new];
-                    [indicator setStyleClass:@"history_sidecolor"];
-                    indicator.layer.cornerRadius = 3;
                     
-                    UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 9, 10, 10)];
+                    UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 8, 10, 11)];
                     [statusIndicator setBackgroundColor:[UIColor clearColor]];
                     [statusIndicator setTextAlignment:NSTextAlignmentCenter];
                     [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
@@ -972,7 +970,6 @@ return customView;
                     }
                     
                     [cell.contentView addSubview:amount];
-                    // [cell.contentView addSubview:indicator];
                     [cell.contentView addSubview:statusIndicator];
                     [cell.contentView addSubview:transferTypeLabel];
                     [cell.contentView addSubview:name];
@@ -987,7 +984,7 @@ return customView;
                     [glyphDate setTextColor:kNoochGrayLight];
                     [cell.contentView addSubview:glyphDate];
 
-                    //  'updated_balance' now for displaying transfer STATUS, only if status is "cancelled" or "rejected"
+                    //  'updated_balance' now for displaying transfer STATUS, only if status is "cancelled" or "rejected" or "success" (for invites)
                     //  (this used to display the user's updated balance, which no longer exists)
                     
                     UILabel *updated_balance = [UILabel new];
@@ -997,7 +994,15 @@ return customView;
                     {
                         [updated_balance setStyleClass:@"transfer_status"];
                         [updated_balance setText:[NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"TransactionStatus"]]];
-                        [updated_balance setTextColor:kNoochRed];
+                        [updated_balance setTextColor:kNoochGrayLight];
+                        [cell.contentView addSubview:updated_balance];
+                    }
+                    else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"] &&
+                             [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] )
+                    {
+                        [updated_balance setText:@"Accepted"];
+                        [updated_balance setStyleClass:@"transfer_status"];
+                        [updated_balance setTextColor:kNoochGreen];
                         [cell.contentView addSubview:updated_balance];
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] &&
@@ -1008,7 +1013,6 @@ return customView;
                         [updated_balance setTextColor:kNoochGreen];
                         [cell.contentView addSubview:updated_balance];
                     }
-                
 
                     NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -1124,10 +1128,8 @@ return customView;
             {
 
                 UIView * indicator = [UIView new];
-                [indicator setStyleClass:@"history_sidecolor"];
-                indicator.layer.cornerRadius = 3;
                 
-                UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 9, 10, 10)];
+                UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 8, 10, 11)];
                 [statusIndicator setBackgroundColor:[UIColor clearColor]];
                 [statusIndicator setTextAlignment:NSTextAlignmentCenter];
                 [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
@@ -1288,12 +1290,12 @@ return customView;
                     [updated_balance setTextColor:kNoochGrayLight];
                     [cell.contentView addSubview:updated_balance];
                 }
-                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Success"] &&
+                else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"] &&
                          [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] )
                 {
                     [updated_balance setText:@"Accepted"];
-                    [updated_balance setTextColor:kNoochGreen];
                     [updated_balance setStyleClass:@"transfer_status"];
+                    [updated_balance setTextColor:kNoochGreen];
                     [cell.contentView addSubview:updated_balance];
                 }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] &&
@@ -1313,9 +1315,9 @@ return customView;
                                                                      options:0];
                 if ((long)[components day] > 3)
                 {
-                    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+                    NSDateFormatter * dateFormatter = [[NSDateFormatter alloc] init];
                     //Set the AM and PM symbols
-                     [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+                    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
                     [dateFormatter setAMSymbol:@"AM"];
                     [dateFormatter setPMSymbol:@"PM"];
                     dateFormatter.dateFormat = @"MM/dd/yyyy hh:mm:ss a";
@@ -1392,7 +1394,6 @@ return customView;
                 [cell.contentView addSubview:glyphDate];
                 [cell.contentView addSubview:amount];
                 [cell.contentView addSubview:statusIndicator];
-       //         [cell.contentView addSubview:indicator];
                 [cell.contentView addSubview:transferTypeLabel];
                 [cell.contentView addSubview:name];
 
@@ -1469,10 +1470,10 @@ return customView;
                     transferTypeLabel.layer.cornerRadius = 3;
                     transferTypeLabel .clipsToBounds = YES;
 
-                    UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 9, 10, 10)];
+                    UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 8, 10, 11)];
                     [statusIndicator setBackgroundColor:[UIColor clearColor]];
                     [statusIndicator setTextAlignment:NSTextAlignmentCenter];
-                    [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
+                    [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
                     [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-o"]];
                     [statusIndicator setTextColor:kNoochBlue];
                     [cell.contentView addSubview:statusIndicator];
@@ -1671,10 +1672,10 @@ return customView;
                 transferTypeLabel.layer.cornerRadius = 3;
                 transferTypeLabel .clipsToBounds = YES;
                 
-                UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 9, 10, 10)];
+                UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 8, 10, 11)];
                 [statusIndicator setBackgroundColor:[UIColor clearColor]];
                 [statusIndicator setTextAlignment:NSTextAlignmentCenter];
-                [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
+                [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
                 [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-o"]];
                 [statusIndicator setTextColor:kNoochBlue];
 
