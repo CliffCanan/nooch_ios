@@ -24,8 +24,6 @@
 @property (strong, nonatomic) GMSMapView *mapView;
 @property(nonatomic,strong) UISearchBar *search;
 @property(nonatomic,strong) UITableView *list;
-//@property(nonatomic,strong) UIButton *completed;
-//@property(nonatomic,strong) UIButton *pending;
 @property(nonatomic,strong) UIButton *glyph_map;
 @property(nonatomic) BOOL completed_selected;
 @property(nonatomic,strong) NSDictionary *responseDict;
@@ -131,7 +129,6 @@
     
     self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
     [self.list setStyleId:@"history"];
- //   [self.list setRowHeight:68];
     [self.list setDataSource:self];
     [self.list setDelegate:self];
     [self.list setSectionHeaderHeight:0];
@@ -181,12 +178,12 @@
     [glyph_checkmark setTextColor:[UIColor whiteColor]];
     [self.view addSubview:glyph_checkmark];
     
-    UILabel *glyph_location = [UILabel new];
-    [glyph_location setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-    [glyph_location setFrame:CGRectMake(178, 12, 20, 16)];
-    [glyph_location setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
-    [glyph_location setTextColor: kNoochBlue];
-    [self.view addSubview:glyph_location];
+    UILabel *glyph_pending = [UILabel new];
+    [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+    [glyph_pending setFrame:CGRectMake(178, 12, 20, 16)];
+    [glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+    [glyph_pending setTextColor: kNoochBlue];
+    [self.view addSubview:glyph_pending];
     
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     [imageCache clearMemory];
@@ -590,7 +587,6 @@ return customView;
 {
     [self.list removeFromSuperview];
     self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
-    [self.list setStyleId:@"history"];
     [self.list setDataSource:self];
     [self.list setDelegate:self];
     [self.list setSectionHeaderHeight:0];
@@ -601,6 +597,7 @@ return customView;
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     if ([segmentedControl selectedSegmentIndex] == 0)
     {
+        [self.list setStyleId:@"history"];
         UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [filter setStyleClass:@"label_filter"];
         [filter setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-filter"] forState:UIControlStateNormal];
@@ -628,12 +625,12 @@ return customView;
         [glyph_checkmark setTextColor:[UIColor whiteColor]];
         [self.view addSubview:glyph_checkmark];
         
-        UILabel *glyph_location = [UILabel new];
-        [glyph_location setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-        [glyph_location setFrame:CGRectMake(178, 12, 20, 16)];
-        [glyph_location setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
-        [glyph_location setTextColor: kNoochBlue];
-        [self.view addSubview:glyph_location];
+        UILabel *glyph_pending = [UILabel new];
+        [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+        [glyph_pending setFrame:CGRectMake(178, 12, 20, 16)];
+        [glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+        [glyph_pending setTextColor: kNoochBlue];
+        [self.view addSubview:glyph_pending];
         
         subTypestr = @"";
         [histShowArrayCompleted removeAllObjects];
@@ -646,7 +643,7 @@ return customView;
     else
     {
         [self.navigationItem setRightBarButtonItems:nil];
-
+        [self.list setStyleId:@"history"];
         UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [filter setStyleClass:@"label_filter"];
         [filter setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-filter"] forState:UIControlStateNormal];
@@ -664,12 +661,12 @@ return customView;
         [glyph_checkmark setTextColor: kNoochBlue];
         [self.view addSubview:glyph_checkmark];
         
-        UILabel *glyph_location = [UILabel new];
-        [glyph_location setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-        [glyph_location setFrame:CGRectMake(178, 12, 20, 16)];
-        [glyph_location setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
-        [glyph_location setTextColor: [UIColor whiteColor]];
-        [self.view addSubview:glyph_location];
+        UILabel *glyph_pending = [UILabel new];
+        [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+        [glyph_pending setFrame:CGRectMake(178, 12, 20, 16)];
+        [glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+        [glyph_pending setTextColor: [UIColor whiteColor]];
+        [self.view addSubview:glyph_pending];
 
         subTypestr = @"Pending";
         self.completed_selected = NO;
@@ -732,22 +729,14 @@ return customView;
                 return 72;
             }
             else if ([[dictRecord_complete valueForKey:@"Memo"] length] > 32) {
-                return 84;
+                return 85;
             }
         }
     }
     else
     {
-        if ([histShowArrayPending count] > indexPath.row)
-        {
-            NSDictionary * dictRecord_pending = [histShowArrayPending objectAtIndex:indexPath.row];
-
-            if ([[dictRecord_pending valueForKey:@"Memo"] length] < 2) {
-                return 72;
-            }
-            else if ([[dictRecord_pending valueForKey:@"Memo"] length] > 32) {
-                return 78;
-            }
+        if ([histShowArrayPending count] > indexPath.row) {
+            return 80;
         }
     }
 
@@ -782,7 +771,8 @@ return customView;
             temp = [histShowArrayPending mutableCopy];
         }
 
-        if ([temp count] > indexPath.row) {
+        if ([temp count] > indexPath.row)
+        {
             NSDictionary *dictRecord = [temp objectAtIndex:indexPath.row];
             
             if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"] ||
@@ -842,10 +832,10 @@ return customView;
                     [indicator setStyleClass:@"history_sidecolor"];
                     indicator.layer.cornerRadius = 3;
                     
-                    UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 9, 10, 9)];
+                    UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 9, 10, 10)];
                     [statusIndicator setBackgroundColor:[UIColor clearColor]];
                     [statusIndicator setTextAlignment:NSTextAlignmentCenter];
-                    [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
+                    [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
 
                     UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
                     [amount setBackgroundColor:[UIColor clearColor]];
@@ -1137,10 +1127,10 @@ return customView;
                 [indicator setStyleClass:@"history_sidecolor"];
                 indicator.layer.cornerRadius = 3;
                 
-                UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 9, 10, 9)];
+                UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 9, 10, 10)];
                 [statusIndicator setBackgroundColor:[UIColor clearColor]];
                 [statusIndicator setTextAlignment:NSTextAlignmentCenter];
-                [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
+                [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
 
                 UILabel * amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
                 [amount setBackgroundColor:[UIColor clearColor]];
@@ -1458,9 +1448,11 @@ return customView;
 
                 if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
                 {
-                    UIView *indicator = [UIView new];
+                    UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(0, 313, 7, 72)];
+                    [indicator setBackgroundColor:[UIColor clearColor]];
+                    [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:12]];
+                    [indicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-left"]];
                     [indicator setStyleClass:@"history_sidecolor_pending"];
-                    indicator.layer.cornerRadius = 3;
 
                     UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
                     [amount setBackgroundColor:[UIColor clearColor]];
@@ -1471,12 +1463,19 @@ return customView;
                     [amount setStyleClass:@"history_transferamount_neutral"];
                     [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                     [cell.contentView addSubview:amount];
-                    [cell.contentView addSubview:indicator];
 
                     UILabel *transferTypeLabel = [UILabel new];
                     [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
                     transferTypeLabel.layer.cornerRadius = 3;
                     transferTypeLabel .clipsToBounds = YES;
+
+                    UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 9, 10, 10)];
+                    [statusIndicator setBackgroundColor:[UIColor clearColor]];
+                    [statusIndicator setTextAlignment:NSTextAlignmentCenter];
+                    [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
+                    [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-o"]];
+                    [statusIndicator setTextColor:kNoochBlue];
+                    [cell.contentView addSubview:statusIndicator];
 
                     UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 9, 50, 50)];
                     pic.layer.cornerRadius = 25;
@@ -1624,6 +1623,8 @@ return customView;
                         [cell.contentView addSubview:label_memo];
                         [name setStyleClass:@"history_cell_textlabel_wMemo"];
                     }
+                    [cell.contentView addSubview:indicator];
+
                 }
             }
 
@@ -1651,7 +1652,10 @@ return customView;
             
             if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
             {
-				UIView *indicator = [UIView new];
+				UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(0, 313, 7, 72)];
+                [indicator setBackgroundColor:[UIColor clearColor]];
+                [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:12]];
+                [indicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-left"]];
                 [indicator setStyleClass:@"history_sidecolor_pending"];
 
                 UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
@@ -1666,12 +1670,19 @@ return customView;
                 [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
                 transferTypeLabel.layer.cornerRadius = 3;
                 transferTypeLabel .clipsToBounds = YES;
+                
+                UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 9, 10, 10)];
+                [statusIndicator setBackgroundColor:[UIColor clearColor]];
+                [statusIndicator setTextAlignment:NSTextAlignmentCenter];
+                [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
+                [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-o"]];
+                [statusIndicator setTextColor:kNoochBlue];
 
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabel"];
                 [name setStyleClass:@"history_recipientname"];
                 
-                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(8, 9, 50, 50)];
+                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 9, 50, 50)];
                 pic.layer.cornerRadius = 25;
                 pic.clipsToBounds = YES;
 
@@ -1703,7 +1714,6 @@ return customView;
                         [transferTypeLabel setText:@"Request sent to"];
                         [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_wider"];
 
-
                         if ([dictRecord valueForKey:@"InvitationSentTo"] == NULL || [[dictRecord objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])
                         {
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
@@ -1722,10 +1732,9 @@ return customView;
                         bgcolor.backgroundColor = Rgb2UIColor(240, 250, 30, .4);
                         
                         if (label_memo.attributedText.length > 42) {
-                            //bgcolor.backgroundColor = Rgb2UIColor(240, 20, 30, .74);
                             [bgcolor setFrame:CGRectMake(0, 0, 320, 76)];
                         }
-                     //   cell.backgroundView = bgcolor;
+                        cell.backgroundView = bgcolor;
                         [cell.contentView addSubview:bgcolor];
                         
                         [transferTypeLabel setText:@"Request from"];
@@ -1837,6 +1846,7 @@ return customView;
                 }
 
                 [cell.contentView addSubview:amount];
+                [cell.contentView addSubview:statusIndicator];
                 [cell.contentView addSubview:indicator];
                 [cell.contentView addSubview:transferTypeLabel];
                 [cell.contentView addSubview:name];
@@ -1898,9 +1908,8 @@ return customView;
     [dateFormatter setPMSymbol:@"PM"];
     dateFormatter.dateFormat = @"M/dd/yyyy hh:mm:ss a";
     
-    NSLog(@"%@", aStr);
     NSDate   *aDate = [dateFormatter dateFromString:aStr];
-      NSLog(@"%@", aDate);
+    NSLog(@"%@", aDate);
     return aDate;
 }
 
@@ -1921,7 +1930,6 @@ return customView;
         {
             NSDictionary *dictRecord = [histShowArrayCompleted objectAtIndex:indexPath.row];
             TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
-            NSLog(@"%@",details);
             [self.navigationController pushViewController:details animated:YES];
         }
     }
@@ -2394,7 +2402,6 @@ return customView;
         [self.list removeFromSuperview];
         self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
         [self.list setStyleId:@"history"];
-   //     [self.list setRowHeight:68];
         [self.list setDataSource:self];
         [self.list setDelegate:self];
         [self.list setSectionHeaderHeight:0];
@@ -2418,7 +2425,7 @@ return customView;
         countRows = 0;
         [self.list removeFromSuperview];
         self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
-        [self.list setStyleId:@"history"]; //[self.list setRowHeight:68];
+        [self.list setStyleId:@"history"];
         [self.list setDataSource:self]; [self.list setDelegate:self]; [self.list setSectionHeaderHeight:0];
         [self.view addSubview:self.list]; [self.list reloadData];
         [self.view bringSubviewToFront:exportHistory];
@@ -2440,7 +2447,6 @@ return customView;
         [self.list removeFromSuperview];
         self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
         [self.list setStyleId:@"history"];
-        [self.list setRowHeight:68];
         [self.list setDataSource:self];
         [self.list setDelegate:self];
         [self.list setSectionHeaderHeight:0];
