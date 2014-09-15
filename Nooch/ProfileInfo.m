@@ -1531,12 +1531,10 @@ UIImageView *picture;
     {
         self.ServiceType = @"lastname";
         
-        NSLog(@"THIS STATUS FIELD THING IS...:  %lu",(unsigned long)[[sourceData objectForKey:@"Status"] length]);
-        
         if ([[sourceData objectForKey:@"Status"] length] > 0)
         {
             NSString * letterA = [[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
-            NSLog(@"LETTER 'A' IS %@",letterA);
+         // NSLog(@"LETTER 'A' IS %@",letterA);
 
             self.name.text = [NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
             
