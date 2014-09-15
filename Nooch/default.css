@@ -2192,7 +2192,7 @@ table-view#select_recipientwithoutSeperator {
 	table-view#history {
 		width				: 320px;
 		background-color	: #ffffff;
-		row-height			: 72px;
+		row-height			: 80px;
 		separator-style 	: single-line;
 		separator-color		: rgba(188,190,192,.6);
 	}
@@ -2247,7 +2247,7 @@ table-view#select_recipientwithoutSeperator {
 		top					: 22px;
 		width				: 185px;
 		height				: 21px;
-		font-size			: 14px;
+		font-size			: 15px;
 		font-weight			: regular;
 	}
     .history_cell_textlabel_wMemo {
@@ -2280,6 +2280,18 @@ table-view#select_recipientwithoutSeperator {
 		text-align       	: right;
 	}
 
+    /**  Amount of the PENDING Transfer on the right side of the row (Only on the Pending Tab)  **/
+	.history_pending_transferamount {
+		left				: 228px;
+		top					: 20px;
+		width				: 81px;
+		height				: 20px;
+		font-family			: "Roboto";
+		font-weight         : medium;
+		font-size			: 20px;
+		text-align       	: right;
+	}
+
     .history_memo {
 		left				: 72px;
 		top					: 42px;
@@ -2294,18 +2306,6 @@ table-view#select_recipientwithoutSeperator {
     .history_memo_long {
         top					: 41px;
 		height				: 31px;
-	}
-
-	 /**  Amount of the PENDING Transfer on the right side of the row (Only on the Pending Tab)  **/
-	.history_pending_transferamount {
-		left				: 230px;
-		top					: 20px;
-		width				: 83px;
-		height				: 22px;
-		font-family			: "Roboto";
-		font-weight         : medium;
-		font-size			: 20px;
-		text-align       	: right;
 	}
 
 	/**  Next 3 classes set the color the amount depending if the transfer increased/decreased the user's balance  **/
@@ -2326,11 +2326,6 @@ table-view#select_recipientwithoutSeperator {
 		color 				: #58595b; /* GRAY */
 	}
 
-	 /**  Sets the other user's name to be bold for each row.  **/
-	.history_recipientname { 
-        font-weight	: regular;
-        color		: #313233;
-    }
 	.history_sidecolor {
 		top				: 8px;
 		left			: 5px;
@@ -2338,9 +2333,7 @@ table-view#select_recipientwithoutSeperator {
 		height			: 6px;
         border-radius   : 3px;
 	}
-    .history_sidecolor_wMemo {
-		height			: 79px;
-	}
+
     /**  Next 4 classes set the color of .history_sidecolor depending on the type of transfer.  **/
 	.history_sidecolor_pos {background-color		: #72bf44;}
 	.history_sidecolor_neg {background-color		: #d2232a;}
@@ -2348,15 +2341,16 @@ table-view#select_recipientwithoutSeperator {
 	.history_sidecolor_donate {background-color	: #5a538d;}
 
     .history_sidecolor_pending {
-        top				: 7px;
-		left			: 5px;
-		width			: 8px;
-		height			: 8px;
-        border          : 1px solid #3fabe1;
-        border-radius   : 4px;
+        top                 : 0px;
+		left                : 313px;
+		width               : 7px;
+		height              : 80px;
+        background-color	: #3fabe1;
+        color               : #fff;
+        text-align          : center;
     }
 
-	.titlelbl{
+	.titlelbl {
        width				: 300px;
 		height				: 38px;
 		top					: 0px;
