@@ -238,7 +238,6 @@
             {
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
-                NSLog(@"yuppppp");
               
                 [self dismissViewControllerAnimated:YES completion:nil];
                 

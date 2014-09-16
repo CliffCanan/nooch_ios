@@ -112,53 +112,64 @@
     
     mainView = [[UIView alloc]init];
     mainView.layer.cornerRadius = 5;
-    mainView.frame = CGRectMake(8, 45, 302, self.view.frame.size.height-45);
+    mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 5);
     mainView.backgroundColor = [UIColor whiteColor];
     mainView.layer.masksToBounds = NO;
     mainView.layer.cornerRadius = 5;
-    
+
     UIView * head_container = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 302, 44)];
     head_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
     [mainView addSubview:head_container];
     head_container.layer.cornerRadius = 10;
-    
-    UILabel * title = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 302, 28)];
-    [title setBackgroundColor:[UIColor clearColor]];
-    [title setText:@"Connecting Your Bank"];
-    [title setStyleClass:@"lightbox_title"];
-    [head_container addSubview:title];
-    
-    UIView *space_container = [[UIView alloc]initWithFrame:CGRectMake(0, 34, 300, 10)];
+
+    UIView * space_container = [[UIView alloc]initWithFrame:CGRectMake(0, 34, 302, 10)];
     space_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
     [mainView addSubview:space_container];
-    
-    UIView *container = [[UIView alloc]initWithFrame:CGRectMake(1, 48, 300, 300)];
-    
-    UIImageView *imageShow = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 300, self.view.frame.size.height-150)];
-    if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        mainView.frame = CGRectMake(8, 42, 302, 430);
-        imageShow.frame = CGRectMake(0, 0, 300, 320);
-    }
-    imageShow.image = [UIImage imageNamed:@"KnoxInfo_Lightbox@2x.png"];
+
+    UILabel * title = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 302, 28)];
+    [title setBackgroundColor:[UIColor clearColor]];
+    [title setText:@"Connect An Account"];
+    [title setStyleClass:@"lightbox_title"];
+    [head_container addSubview:title];
+
+    UILabel * glyph_lock = [UILabel new];
+    [glyph_lock setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
+    [glyph_lock setFrame:CGRectMake(29, 10, 22, 29)];
+    [glyph_lock setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
+    [glyph_lock setTextColor:kNoochBlue];
+    [head_container addSubview:glyph_lock];
+
+    UIImageView * imageShow = [[UIImageView alloc]initWithFrame:CGRectMake(1, 50, 300, 380)];
+    imageShow.image = [UIImage imageNamed:@"Knox_lightbox.png"];
     imageShow.contentMode = UIViewContentModeScaleAspectFit;
-    [container addSubview:imageShow];
-    [mainView addSubview:container];
-    
-    UIButton *btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
+
+    UIButton * btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnLink setStyleClass:@"button_green_welcome"];
     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
-    btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-    btnLink.frame = CGRectMake(10,mainView.frame.size.height-60, 280, 50);
+    btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    btnLink.frame = CGRectMake(10,mainView.frame.size.height-56, 280, 50);
     [btnLink setTitle:@"Continue" forState:UIControlStateNormal];
     [btnLink addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
-    [mainView addSubview:btnLink];
+    
+    if ([[UIScreen mainScreen] bounds].size.height < 500)
+    {
+        mainView.frame = CGRectMake(8, 40, 302, 430);
+        head_container.frame = CGRectMake(0, 0, 302, 38);
+        space_container.frame = CGRectMake(0, 28, 302, 10);
+        glyph_lock.frame = CGRectMake(29, 5, 22, 29);
+        title.frame = CGRectMake(0, 5, 302, 28);
+        imageShow.frame = CGRectMake(1, 43, 300, 340);
+        btnLink.frame = CGRectMake(10,mainView.frame.size.height-51, 280, 44);
+    }
     
     UIButton *btnclose = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnclose.frame=CGRectMake(mainView.frame.size.width-28,head_container.frame.origin.y-15, 35, 35);
+    btnclose.frame = CGRectMake(mainView.frame.size.width - 28, head_container.frame.origin.y - 15, 35, 35);
     [btnclose setImage:[UIImage imageNamed:@"close_button.png"] forState:UIControlStateNormal] ;
     [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
+
     [mainView addSubview:btnclose];
-    
+    [mainView addSubview:imageShow];
+    [mainView addSubview:btnLink];
     [overlay addSubview:mainView];
 }
 
