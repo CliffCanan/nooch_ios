@@ -2693,7 +2693,7 @@ table-view#select_recipientwithoutSeperator {
         height		: 60px;
         font-family	: "Roboto";
         font-weight	: regular;
-        font-size	: 11px;
+        font-size	: 12px;
 		text-align	: right;
     }
     #remove_account_glyph {

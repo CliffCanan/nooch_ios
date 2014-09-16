@@ -338,7 +338,7 @@
         UILabel * glyph_shield = [[UILabel alloc] initWithFrame:CGRectMake(73, 6, 13, 32)];
         [glyph_shield setBackgroundColor:[UIColor clearColor]];
         [glyph_shield setTextAlignment:NSTextAlignmentLeft];
-        [glyph_shield setFont:[UIFont fontWithName:@"FontAwesome" size:12]];
+        [glyph_shield setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
         [glyph_shield setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
 
 
@@ -376,7 +376,6 @@
                 
                 lastFour_label = [UILabel new];
                 [lastFour_label setStyleId:@"linked_account_last4"];
-                [lastFour_label setText:@"**** **** **** ****"];
                 [linked_background addSubview:lastFour_label];
 
                 unlink_account = [UIButton buttonWithType:UIButtonTypeRoundedRect];

@@ -447,6 +447,9 @@ NSString *amnt;
     [requestSet setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [requestSet setHTTPBody:postDataSet];
     [requestSet setTimeoutInterval:3600];
+    
+    NSLog(@"%@  ........ %@",url,urlStrSet);
+    
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestSet delegate:self];
     if (!connection)
         NSLog(@"connect error");
