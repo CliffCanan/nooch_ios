@@ -573,11 +573,10 @@ UIImageView *picture;
         [self.city becomeFirstResponder];
         return;
     }
-
-    UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"I don't see you!" message:@"You haven't set your profile picture, would you like to?" delegate:self cancelButtonTitle:@"No Thanks" otherButtonTitles:@"Yes I do", nil];
-    [av setTag:20];
     
     if ([[me pic] isKindOfClass:[NSNull class]]) {
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"I don't see you!" message:@"You haven't set your profile picture, would you like to?" delegate:self cancelButtonTitle:@"No Thanks" otherButtonTitles:@"Yes I do", nil];
+        [av setTag:20];
         [av show];
     }
 
@@ -590,9 +589,9 @@ UIImageView *picture;
     strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@")" withString:@""];
     strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@" " withString:@""];
     
-    if (![self.SavePhoneNumber isEqualToString:strPhoneNumber] || [self.SavePhoneNumber length]==0)
+    if (![self.SavePhoneNumber isEqualToString:strPhoneNumber] || [self.SavePhoneNumber length] == 0)
     {
-        if ([strPhoneNumber length]==10)
+        if ([strPhoneNumber length] == 10)
         {
             serve *req = [serve new];
             [req SendSMSApi:strPhoneNumber msg:@"Reply with \"Go\" to this message to verify your phone number."];
@@ -606,7 +605,7 @@ UIImageView *picture;
     }
 
     if ([self.recovery_email.text length] == 0) {
-        self.recovery_email.text=@"";
+        self.recovery_email.text = @"";
     }
 
     timezoneStandard = [NSString stringWithFormat:@"%@",[NSTimeZone localTimeZone]];
@@ -617,24 +616,24 @@ UIImageView *picture;
 
     recoverMail = [[NSString alloc] init];
 
-//    if([self.recovery_email.text length] > 0){
-//        if (![self validateEmail:[self.recovery_email text]]) {
-//          [me endWaitStat];
-//          self.recovery_email.text = @"";
-//          [self.recovery_email becomeFirstResponder];
-//          UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Invalid Recovery Email" message:@"Please check to make sure your recovery email address is correct." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//          [alert show];
-//          return;
-//      }
-//  }
+/*    if([self.recovery_email.text length] > 0){
+        if (![self validateEmail:[self.recovery_email text]]) {
+          [me endWaitStat];
+          self.recovery_email.text = @"";
+          [self.recovery_email becomeFirstResponder];
+          UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Invalid Recovery Email" message:@"Please check to make sure your recovery email address is correct." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+          [alert show];
+          return;
+      }
+  }  */
     
-    if ([self.recovery_email.text length] > 0){
+    if ([self.recovery_email.text length] > 0) {
         recoverMail = self.recovery_email.text;
     }
     else
         recoverMail = @"";
     
-    if ([self.address_two.text length] != 0){
+    if ([self.address_two.text length] != 0) {
         [[me usr] setObject:self.address_two.text forKey:@"Addr2"];
         [[me usr] setObject:self.address_two.text forKey:@"Addr1"];
     }
@@ -683,28 +682,26 @@ UIImageView *picture;
             }
             [result1 appendFormat:@"%d", bytes[i]];
         }
-        NSArray*arr=[result1 componentsSeparatedByString:@","];
+        NSArray * arr = [result1 componentsSeparatedByString:@","];
         [transactionInput setObject:arr forKey:@"Picture"];
-      
     }
 
-    NSLog(@"%@",transactionInput);
+//    NSLog(@"%@",transactionInput);
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
-    
     self.hud.delegate = self;
     self.hud.labelText = @"Saving Your Profile";
     [self.hud show:YES];
     
     transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"mySettings", nil];
-    serve *req=[serve new];
+    serve * req = [serve new];
     req.Delegate = self;
-    req.tagName=@"MySettingsResult";
+    req.tagName = @"MySettingsResult";
     [req setSets:transaction];
-    NSArray*arr=[self.name.text componentsSeparatedByString:@" "];
-
-    if ([arr count]==2) {
-        self.name.text=[NSString stringWithFormat:@"%@ %@",[[arr objectAtIndex:0] capitalizedString],[[arr objectAtIndex:1] capitalizedString]];
+    
+    NSArray * arr = [self.name.text componentsSeparatedByString:@" "];
+    if ([arr count] == 2) {
+        self.name.text = [NSString stringWithFormat:@"%@ %@",[[arr objectAtIndex:0] capitalizedString],[[arr objectAtIndex:1] capitalizedString]];
     }
 }
 
@@ -717,13 +714,13 @@ UIImageView *picture;
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(buttonIndex == 0)
+    if (buttonIndex == 0)
     {
         if (![user objectForKey:@"facebook_id"]) {
             return;
         }
-        NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square",[user objectForKey:@"facebook_id"]];
-      
+        NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal",[user objectForKey:@"facebook_id"]];
+        NSLog(@"FACEBOOK ID IS......:%@", [user objectForKey:@"facebook_id"]);
    
         [picture setImageWithURL:[NSURL URLWithString:url]
              placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]
@@ -748,9 +745,10 @@ UIImageView *picture;
         [imageCache cleanDisk];
       
     }
-    else if(buttonIndex == 1)
+    else if (buttonIndex == 1)
     {
-        if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        {
             UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                   message:@"Device has no camera"
                                                                  delegate:nil
@@ -760,21 +758,21 @@ UIImageView *picture;
             return;
         }
         
-        self.picker=[UIImagePickerController new];
+        self.picker = [UIImagePickerController new];
         self.picker.delegate = self;
         self.picker.allowsEditing = YES;
         self.picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
         self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         [self presentViewController:self.picker animated:YES completion:Nil];
     }
-    else if(buttonIndex == 2)
+    else if (buttonIndex == 2)
     {
-        self.picker=[UIImagePickerController new];
+        self.picker = [UIImagePickerController new];
         self.picker.delegate = self;
         self.picker.allowsEditing = YES;
         self.picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         [self presentViewController:self.picker animated:YES completion:Nil];
-        }
+    }
 }
 
 -(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size
@@ -783,22 +781,28 @@ UIImageView *picture;
     float actualWidth = image.size.width;
     float imgRatio = actualWidth/actualHeight;
     float maxRatio = 75.0/115.0;
-    if(imgRatio!=maxRatio){
+
+    if (imgRatio != maxRatio)
+    {
         
-        if(imgRatio < maxRatio){
+        if (imgRatio < maxRatio)
+        {
             imgRatio = 115.0 / actualHeight;
             actualWidth = imgRatio * actualWidth;
             actualHeight = 115.0;
         }
-        else {
+        else
+        {
             imgRatio = 75.0 / actualWidth;
             actualHeight = imgRatio * actualHeight;
             actualWidth = 75.0;
         }
     }
+
     CGRect rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight);
     UIGraphicsBeginImageContext(rect.size);
     [image drawInRect:rect];
+    
     UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return img;
@@ -808,17 +812,19 @@ UIImageView *picture;
 
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    option=1;
-    UIImage *image=[info objectForKey:UIImagePickerControllerOriginalImage];
+    option = 1;
+    UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
     image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(120,120) interpolationQuality:kCGInterpolationMedium];
-    isPhotoUpdate=YES;
-    [self.save setEnabled:YES];
-    [self.save setStyleClass:@"button_green"];
-    [self.save setUserInteractionEnabled:YES];
-     [dictSavedInfo setObject:@"YES" forKey:@"ImageChanged"];
     [picture setImage:image];
-
     [[assist shared]setTranferImage:image];
+
+    isPhotoUpdate = YES;
+
+    [self.save setEnabled:YES];
+    [self.save setStyleClass:@"nav_top_right"];
+    [self.save setUserInteractionEnabled:YES];
+    [dictSavedInfo setObject:@"YES" forKey:@"ImageChanged"];
+
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     [imageCache clearMemory];
     [imageCache clearDisk];
@@ -1245,17 +1251,19 @@ UIImageView *picture;
             [av show];
         }
     }
-    else if([tagName isEqualToString:@"MySettingsResult"])
+    else if ([tagName isEqualToString:@"MySettingsResult"])
     {
-        dictProfileinfo=[NSJSONSerialization
+
+        dictProfileinfo = [NSJSONSerialization
                          JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                          options:kNilOptions
                          error:&error];
         [dictSavedInfo setObject:@"NO" forKey:@"ImageChanged"];
         NSDictionary *resultValue = [dictProfileinfo valueForKey:@"MySettingsResult"];
-        getEncryptionOldPassword= [dictProfileinfo objectForKey:@"Password"];
-        
-        if([[resultValue valueForKey:@"Result"] isEqualToString:@"Your details have been updated successfully."])
+        getEncryptionOldPassword = [dictProfileinfo objectForKey:@"Password"];
+        NSLog(@"MY SETTINGS RESULT IS........: %@",[resultValue valueForKey:@"Result"]);
+
+        if ([[resultValue valueForKey:@"Result"] isEqualToString:@"Your details have been updated successfully."])
         {
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
             [defaults setObject:@"YES" forKey:@"ProfileComplete"];
@@ -1531,12 +1539,10 @@ UIImageView *picture;
     {
         self.ServiceType = @"lastname";
         
-        NSLog(@"THIS STATUS FIELD THING IS...:  %lu",(unsigned long)[[sourceData objectForKey:@"Status"] length]);
-        
         if ([[sourceData objectForKey:@"Status"] length] > 0)
         {
             NSString * letterA = [[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
-            NSLog(@"LETTER 'A' IS %@",letterA);
+         // NSLog(@"LETTER 'A' IS %@",letterA);
 
             self.name.text = [NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
             

@@ -42,7 +42,7 @@
     
     .lightbox_title {
         font-family: "Roboto";
-        font-weight: regular;
+        font-weight: light;
         font-size: 20px;
         color: #3fabe1;
         text-align: center;
@@ -297,7 +297,7 @@
 		}
         .button_green_welcome:normal {
 			width				: 280px;
-			height				: 48px;
+			height				: 45px;
 			left                : 10px;
 			color 				: white;
 			border-radius		: 5px;
@@ -2662,8 +2662,8 @@ table-view#select_recipientwithoutSeperator {
     }
 
     #linked_account_name {
+        left		: 86px;
         top			: 6px;
-        left		: 72px;
         width		: 200px;
         height		: 32px;
         font-family	: "Roboto";
@@ -2674,8 +2674,8 @@ table-view#select_recipientwithoutSeperator {
     }
 
     #linked_account_last4 {
+        left		: 73px;
         top			: 35px;
-        left		: 72px;
         width		: 200px;
         height		: 16px;
         font-family	: "Roboto";
@@ -2693,8 +2693,15 @@ table-view#select_recipientwithoutSeperator {
         height		: 60px;
         font-family	: "Roboto";
         font-weight	: regular;
-        font-size	: 11px;
+        font-size	: 12px;
 		text-align	: right;
+    }
+    #remove_account_glyph {
+        font-family : "FontAwesome";
+        font-size   : 23px;
+        animation-name				: zoom;
+		animation-duration			: 0.8s;
+		animation-timing-function	: ease;
     }
     .divider {
         left: 40px;
@@ -2876,9 +2883,9 @@ table-view#select_recipientwithoutSeperator {
 		text-transform	: uppercase;
 	}
 	.refer_header {
+		left			: 15px;
 		width			: 250px;
 		height			: 25px;
-		left			: 15px;
 		color			: #313233;
 		font-family		: "Roboto";
 		font-weight		: regular;
@@ -3190,6 +3197,17 @@ table-view#select_recipientwithoutSeperator {
             opacity: 1;
 			scale: 1;
             left: 160px;
+		}
+	}
+
+    @keyframes zoom {
+		from {
+			opacity: .3;
+			scale: .1;
+		}
+		82% {scale: 1.15;}
+		to {opacity: 1;
+			scale: 1;
 		}
 	}
 	

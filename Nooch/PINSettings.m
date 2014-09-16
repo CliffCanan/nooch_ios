@@ -152,23 +152,25 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    if ([tagName isEqualToString:@"requiredImmediately"]) {
+    if ([tagName isEqualToString:@"requiredImmediately"])
+    {
         NSError* error;
         Dictresponse = [NSJSONSerialization
                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
         NSLog(@"%@",Dictresponse);
-        if ([[Dictresponse valueForKey:@"Result"] isEqualToString:@"success"]) {
-            
-        }
     }
-    NSError* error;
-    Dictresponse = [NSJSONSerialization
-                    JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                    options:kNilOptions
-                    error:&error];
-    NSLog(@"%@",Dictresponse);
+    if ([tagName isEqualToString:@"set_search"])
+    {
+        NSError* error;
+        Dictresponse = [NSJSONSerialization
+                        JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                        options:kNilOptions
+                        error:&error];
+        NSLog(@"%@",Dictresponse);
+    }
+
 }
 
 - (void)didReceiveMemoryWarning
