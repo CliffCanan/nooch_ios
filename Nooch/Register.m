@@ -8,6 +8,7 @@
 #import "Home.h"
 #import "SelectPicture.h"
 #import "Login.h"
+#import "terms.h"
 
 @interface Register ()
 @property(nonatomic,strong) UITextField *name_field;
@@ -56,7 +57,6 @@
     [self.view addSubview:logo];
 
     UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
-
     [slogan setBackgroundColor:[UIColor clearColor]];
     [slogan setText:@"Money Made Simple"];
     [slogan setFont:[UIFont fontWithName:@"VarelaRound-regular" size:15]];
@@ -154,11 +154,48 @@
     [self.password_field setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.password_field];
 
+    UILabel * checkbox_box = [UILabel new];
+    [checkbox_box setFrame:CGRectMake(34, 386, 20, 20)];
+    [checkbox_box setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
+    [checkbox_box setTextAlignment:NSTextAlignmentCenter];
+    [checkbox_box setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-square-o"]];
+    [checkbox_box setTextColor:kNoochBlue];
+    [self.view addSubview:checkbox_box];
+
+    UIButton *checkbox_dot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [checkbox_dot setBackgroundColor:[UIColor clearColor]];
+    [checkbox_dot setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"] forState:UIControlStateNormal];
+    [checkbox_dot setFrame:CGRectMake(35, 387, 18, 18)];
+    [checkbox_dot setStyleId:@"checkbox_dot"];
+    [self.view addSubview:checkbox_dot];
+    [checkbox_dot addTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+    
+    UILabel * termsText1 = [UILabel new];
+    [termsText1 setFont:[UIFont fontWithName:@"Roboto-light" size:13]];
+    [termsText1 setFrame:CGRectMake(63, 388, 55, 14)];
+    [termsText1 setText:@"I agree to "];
+    [termsText1 setTextColor:kNoochGrayDark];
+    [self.view addSubview:termsText1];
+
+    UIButton * termsText2 = [UIButton buttonWithType:UIButtonTypeCustom];
+    [termsText2 setFrame:CGRectMake(120, 388, 150, 14)];
+    [termsText2 setBackgroundColor:[UIColor clearColor]];
+    [termsText2 setTitle:@"Nooch's Terms of Service." forState:UIControlStateNormal];
+    [termsText2 setStyleClass:@"termsCheckText"];
+    [termsText2 addTarget:self action:@selector(open_terms_webview) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:termsText2];
+    
+    UIView * blankView = [UIView new];
+    blankView.frame = CGRectMake(0, 13, 147, 1);
+    [blankView setBackgroundColor:kNoochGrayDark];
+    [blankView setAlpha:0.6];
+    [termsText2 addSubview:blankView];
+    
     self.cont = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.cont setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     self.cont.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.cont setTitle:@"Continue" forState:UIControlStateNormal];
-    [self.cont setFrame:CGRectMake(10, 406, 300, 60)];
+    [self.cont setFrame:CGRectMake(10, 415, 300, 60)];
     [self.cont addTarget:self action:@selector(continue_to_signup) forControlEvents:UIControlEventTouchUpInside];
     [self.cont setStyleClass:@"button_green"];
     [self.view addSubview:self.cont];
@@ -190,10 +227,17 @@
         [password setFrame:CGRectMake(0, 326, 0, 0)];
         [self.password_field setFrame:CGRectMake(0, 326, 0, 0)];
         
-        [self.cont setFrame:CGRectMake(0, 375, 0, 0)];
+        [self.cont setFrame:CGRectMake(0, 379, 0, 0)];
         
         [login setFrame:CGRectMake(0, 438, 320, 20)];
     }
+}
+
+- (void)open_terms_webview
+{
+    terms *term = [terms new];
+    [nav_ctrl presentViewController:term animated:YES completion: nil];
+  //  [self.slidingViewController resetTopView];
 }
 
 #pragma mark - facebook integration

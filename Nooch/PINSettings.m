@@ -109,12 +109,12 @@
 }
 
 - (void)changepass{
-    ResetPassword *reset = [ResetPassword new];
-    [self.navigationController pushViewController:reset animated:YES];
+    ResetPassword * reset = [ResetPassword new];
+    [self.navigationController presentViewController:reset animated:YES completion:nil];
 }
 
 -(void)changepin{
-    ResetPIN*reset=[ResetPIN new];
+    ResetPIN * reset = [ResetPIN new];
     [self.navigationController presentViewController:reset animated:YES completion:nil];
     
 }

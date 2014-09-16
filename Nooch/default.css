@@ -24,7 +24,19 @@
         font-family: "VarelaRound-regular";
         font-size: 15px;
         text-align: right;
-        color	: #5a538d;
+        color: #5a538d;
+    }
+    .termsCheckText {
+        font-family: "Roboto";
+        font-weight: light;
+        font-size: 13px;
+        color	: #414042;
+    }
+    #checkbox_dot {
+        color       : #72BF44;
+        font-family : "FontAwesome";
+        font-size   : 11px;
+		text-align  : center;
     }
     .animate_prelogin_slogan {
         animation-name: fade_slogan;
