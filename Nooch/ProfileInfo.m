@@ -722,7 +722,7 @@ UIImageView *picture;
         if (![user objectForKey:@"facebook_id"]) {
             return;
         }
-        NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square",[user objectForKey:@"facebook_id"]];
+        NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large",[user objectForKey:@"facebook_id"]];
       
    
         [picture setImageWithURL:[NSURL URLWithString:url]

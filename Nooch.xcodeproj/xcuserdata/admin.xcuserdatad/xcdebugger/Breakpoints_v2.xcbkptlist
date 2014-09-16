@@ -631,22 +631,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Nooch/ProfileInfo.m"
-            timestampString = "430986944.703603"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "500"
-            endingLineNumber = "500"
-            landmarkName = "-save_changes"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Nooch/serve.m"
             timestampString = "432191535.906909"
             startingColumnNumber = "9223372036854775807"
@@ -812,22 +796,6 @@
             startingLineNumber = "1157"
             endingLineNumber = "1157"
             landmarkName = "-listen:tagName:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nooch/ProfileInfo.m"
-            timestampString = "430986944.703603"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
-            landmarkName = "-GoBackOnce"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
