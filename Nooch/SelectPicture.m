@@ -10,6 +10,7 @@
 #import "assist.h"
 #import "ECSlidingViewController.h"
 #import "UIImage+Resize.h"
+#import "UIImageView+WebCache.h"
 @interface SelectPicture ()
 @property(nonatomic,strong) NSMutableDictionary *user;
 @property(nonatomic,strong) UIImageView *pic;
@@ -48,6 +49,29 @@
         self.pic.layer.borderWidth = 3;
         self.pic.layer.borderColor = kNoochBlue.CGColor;
         [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
+        if (![self.user objectForKey:@"image"]) {
+            if (![user objectForKey:@"facebook_id"]) {
+                return;
+            }
+            
+            NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal",[user objectForKey:@"facebook_id"]];
+            
+            NSLog(@"FACEBOOK ID IS......:%@", [user objectForKey:@"facebook_id"]);
+            
+            
+            [self.pic setImageWithURL:[NSURL URLWithString:url]
+                    placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]
+                           completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                               
+                               if (image) {
+                                   
+                                   [[assist shared]setTranferImage:nil];
+                                   [[assist shared]setTranferImage:image];
+                               }
+                           }];
+        }
+       
+
     }
     else if(buttonIndex == 1)
     {

@@ -247,13 +247,40 @@
 }
 - (void)open_terms_webview
 {
-   // [self.navigationController setNavigationBarHidden:NO];
+ 
     isfromRegister=YES;
     terms *term = [terms new];
-    [nav_ctrl presentViewController:term animated:YES completion: nil];
-  //  [self.slidingViewController resetTopView];
-}
+  
+    CGRect rect= term.view.frame;
+    rect.origin.y=self.view.frame.size.height;
+    term.view.frame=rect;
+     [self.view addSubview:term.view];
+    [self addChildViewController:term];
+    [UIView beginAnimations:@"bucketsOff" context:nil];
+    [UIView setAnimationDuration:0.4];
+    [UIView setAnimationDelegate:self];
+    term.view.frame = self.view.frame;
+    [UIView commitAnimations];
 
+}
+-(void)removeChild:(UIViewController *) child {
+    
+    [UIView animateWithDuration:.4
+                     animations:^{
+                         CGRect rect= self.view.frame;
+                         rect.origin.y=self.view.frame.size.height;
+                         child.view.frame=rect;
+                     }
+                     completion:^(BOOL finished){
+                         NSLog(@"completion block");
+                         [child didMoveToParentViewController:nil];
+                         [child.view removeFromSuperview];
+                         [child removeFromParentViewController];
+                     }];
+    
+
+
+}
 #pragma mark - facebook integration
 - (void)connect_to_facebook
 {
