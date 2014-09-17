@@ -480,6 +480,7 @@
     else if ([actionSheet tag] == 2)
     {
         if (buttonIndex == 0) {
+            isfromRegister=NO;
             terms *term = [terms new];
             [nav_ctrl pushViewController:term animated:NO];
             [self.slidingViewController resetTopView];

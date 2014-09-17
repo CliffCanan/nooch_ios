@@ -15,5 +15,6 @@
 @interface Register : GAITrackedViewController<UITextFieldDelegate,serveD,MBProgressHUDDelegate>
 {
     UIActivityIndicatorView*spinner;
+    BOOL isTermsChecked;
 }
 @end

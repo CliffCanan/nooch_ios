@@ -41,6 +41,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
     [self.hud hide:YES];
     [[UIApplication sharedApplication]setStatusBarHidden:YES];
     [nav_ctrl performSelector:@selector(disable)];
@@ -168,7 +169,8 @@
     [checkbox_dot setFrame:CGRectMake(35, 387, 19, 18)];
     [checkbox_dot setStyleId:@"checkbox_dot"];
     [self.view addSubview:checkbox_dot];
-    [checkbox_dot addTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+    [checkbox_dot addTarget:self action:@selector(termsAndConditions:) forControlEvents:UIControlEventTouchUpInside];
+    isTermsChecked=YES;
     
     UILabel * termsText1 = [UILabel new];
     [termsText1 setFont:[UIFont fontWithName:@"Roboto-light" size:13]];
@@ -232,9 +234,21 @@
         [login setFrame:CGRectMake(0, 438, 320, 20)];
     }
 }
-
+-(void)termsAndConditions:(UIButton*)sender{
+    if (isTermsChecked) {
+         isTermsChecked=NO;
+         [sender setTitle:@"" forState:UIControlStateNormal];
+    }
+    else{
+        isTermsChecked=YES;
+        [sender setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"] forState:UIControlStateNormal];
+        [sender setStyleId:@"checkbox_dot"];
+    }
+}
 - (void)open_terms_webview
 {
+   // [self.navigationController setNavigationBarHidden:NO];
+    isfromRegister=YES;
     terms *term = [terms new];
     [nav_ctrl presentViewController:term animated:YES completion: nil];
   //  [self.slidingViewController resetTopView];
@@ -344,6 +358,11 @@
 #pragma mark - navigation
 - (void)continue_to_signup
 {
+    if (!isTermsChecked) {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Nooch" message:@"Please check Nooch's terms of service to proceed." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [av show];
+         return;
+    }
     [UIView beginAnimations:@"bucketsOff" context:nil];
     [UIView setAnimationDuration:0.4];
     [UIView setAnimationDelegate:self];

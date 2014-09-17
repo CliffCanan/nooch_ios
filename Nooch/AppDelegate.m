@@ -142,7 +142,7 @@ void exceptionHandler(NSException *exception){
     [splashView removeFromSuperview];
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] length] > 0)
     {
-        if (timeAway > 30 || timeAway < -30)
+        if (timeAway > 30 || timeAway <-30)
         {
             [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"pincheck"];
             //init requireImmediately
