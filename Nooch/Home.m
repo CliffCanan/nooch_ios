@@ -15,6 +15,7 @@
 #import "ProfileInfo.h"
 #import "serve.h"
 #import "iCarousel.h"
+#import "SIAlertView.h"
 #import "UIImageView+WebCache.h"
 #import "HowMuch.h"
 #import <QuartzCore/QuartzCore.h>
@@ -62,7 +63,7 @@ NSMutableURLRequest *request;
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
-    backgroundImage.alpha = .3;
+    backgroundImage.alpha = .28;
     [self.view addSubview:backgroundImage];
     
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -818,7 +819,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [super viewWillAppear:animated];
     self.trackedViewName = @"Home Screen";
     [self.navigationItem setTitle:@"Nooch"];
-
+    
     if (![[assist shared]isPOP])
     {
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
@@ -965,9 +966,18 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         
         if ([[assist shared]getSuspended])
         {
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com for more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
-            [alert setTag:50];
-            [alert show];
+            SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Account Temporarily Suspended" andMessage:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com for more information."];
+            [alertView addButtonWithTitle:@"Ok" type:SIAlertViewButtonTypeCancel handler:nil];
+            [alertView addButtonWithTitle:@"Contact Nooch" type:SIAlertViewButtonTypeDefault
+                                  handler:^(SIAlertView *alert) {
+                                      [self contact_support];
+                                  }];
+            [[SIAlertView appearance] setButtonColor:kNoochBlue];
+
+            alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+            alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+            [alertView show];
+            //[alertView setTag:50];
             return;
         }
         
@@ -1281,15 +1291,16 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 }
             }
             [self.navigationItem setLeftBarButtonItem:nil];
-            
+
+            NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
+
             if (counter > 0)
             {
                 UILabel * pending_notif = [UILabel new];
                 [pending_notif setText:[NSString stringWithFormat:@"%d",counter]];
-                CGRect button_frame = CGRectMake(16, -2, 20, 20);
-                [pending_notif setFrame:button_frame];
+                [pending_notif setFrame:CGRectMake(16, -2, 20, 20)];
                 [pending_notif setStyleId:@"pending_notif"];
-            
+
                 UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                 [hamburger setStyleId:@"navbar_hamburger"];
                 [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
@@ -1297,9 +1308,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
                 hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
                 [hamburger addSubview:pending_notif];
-            
+
                 UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
                 [self.navigationItem setLeftBarButtonItem:menu];
+
+                [defaults setBool:true forKey:@"hasPendingItems"];
             }
             else
             {
@@ -1311,7 +1324,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
                 UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
                 [self.navigationItem setLeftBarButtonItem:menu];
+
+                [defaults setBool:false forKey:@"hasPendingItems"];
             }
+            NSString * count;
+            count = [NSString stringWithFormat:@"%d", counter];
+
+            [defaults setValue: count forKey:@"Pending_count"];
+            [defaults synchronize];
         }
     }
 

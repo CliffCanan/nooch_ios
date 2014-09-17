@@ -16,6 +16,7 @@
 #import "NSString+FontAwesome.h"
 #import "FAImageView.h"
 #import "iCarousel.h"
+#import "SIAlertView/SIAlertView.h"
 core *me;
 #define kNoochBlue      [Helpers hexColor:@"41ABE1"]
 #define kNoochGreen     [Helpers hexColor:@"72BF44"]

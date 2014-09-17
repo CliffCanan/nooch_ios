@@ -31,6 +31,9 @@
     [self.navigationItem setTitle:@"Security Settings"];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
+    backgroundImage.alpha = .25;
+    [self.view addSubview:backgroundImage];
     
     UIButton *change_pin = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [change_pin setFrame:CGRectMake(20, 30, 280, 60)];
@@ -42,10 +45,11 @@
     [self.view addSubview:change_pin];
     
     UILabel *req_imm = [[UILabel alloc] initWithFrame:CGRectMake(-1, 100, 322, 56)];
+    [req_imm setBackgroundColor:[UIColor whiteColor]];
     [req_imm setFont:[UIFont fontWithName:@"Roboto-regular" size:17]];
     [req_imm setText:@"    Require PIN Immediately"];
     [req_imm setTextColor:[Helpers hexColor:@"313233"]];
-    req_imm.layer.borderColor = [Helpers hexColor:@"BCBEC0"].CGColor;
+    req_imm.layer.borderColor = Rgb2UIColor(188, 190, 192, 0.85).CGColor;
     req_imm.layer.borderWidth = 1;
     [self.view addSubview:req_imm];
     
@@ -76,10 +80,11 @@
     [self.view addSubview:change_password];
     
     UILabel *show_search = [[UILabel alloc] initWithFrame:CGRectMake(-1, 310, 322, 56)];
+    [show_search setBackgroundColor:[UIColor whiteColor]];
     [show_search setFont:[UIFont fontWithName:@"Roboto-regular" size:17]];
     [show_search setText:@"    Show in Search"];
     [show_search setTextColor:[Helpers hexColor:@"313233"]];
-    show_search.layer.borderColor = [Helpers hexColor:@"BCBEC0"].CGColor;
+    show_search.layer.borderColor = Rgb2UIColor(188, 190, 192, 0.85).CGColor;
     show_search.layer.borderWidth = 1;
     [self.view addSubview:show_search];
     

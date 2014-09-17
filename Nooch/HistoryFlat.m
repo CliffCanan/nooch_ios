@@ -100,32 +100,12 @@
     if (!histTempPending) {
         histTempPending=[[NSMutableArray alloc]init];
     }
-    subTypestr=@"Success";
-    listType=@"ALL";
-    index=1;
-    isStart=YES;
-    isLocalSearch=NO;
-    self.completed_selected = YES;
-
-    UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [filter setStyleClass:@"label_filter"];
-    [filter setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
-    filter.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    [filter setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-filter"] forState:UIControlStateNormal];
-    [filter addTarget:self action:@selector(FilterHistory:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *filt = [[UIBarButtonItem alloc] initWithCustomView:filter];
-
-    UIButton *glyph_map = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [glyph_map setStyleId:@"glyph_map"];
-    [glyph_map setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
-    glyph_map.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    [glyph_map setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-map-marker"] forState:UIControlStateNormal];
-    [glyph_map addTarget:self action:@selector(toggleMapByNavBtn) forControlEvents:UIControlEventTouchUpInside];
     
-    UIBarButtonItem *map = [[UIBarButtonItem alloc] initWithCustomView:glyph_map];
-    
-    NSArray *topRightBtns = @[map,filt];
-    [self.navigationItem setRightBarButtonItems:topRightBtns animated:YES ];
+    NSArray *seg_items = @[@"Completed",@"Pending"];
+    completed_pending = [[UISegmentedControl alloc] initWithItems:seg_items];
+    [completed_pending setStyleId:@"history_segcontrol"];
+    [completed_pending addTarget:self action:@selector(completed_or_pending:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:completed_pending];
     
     self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
     [self.list setStyleId:@"history"];
@@ -134,6 +114,128 @@
     [self.list setSectionHeaderHeight:0];
     [self.view addSubview:self.list];
 
+    self.search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 40, 320, 40)];
+    [self.search setStyleId:@"history_search"];
+    [self.search setDelegate:self];
+    self.search.searchBarStyle=UISearchBarIconSearch;
+    [self.search setPlaceholder:@"Search Transaction History"];
+    [self.view addSubview:self.search];
+    
+    UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [filter setStyleClass:@"label_filter"];
+    [filter setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+    filter.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [filter setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-filter"] forState:UIControlStateNormal];
+    [filter addTarget:self action:@selector(FilterHistory:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *filt = [[UIBarButtonItem alloc] initWithCustomView:filter];
+    
+    listType = @"ALL";
+    index = 1;
+    isStart = YES;
+    isLocalSearch = NO;
+
+    NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
+
+    if ([defaults valueForKey:@"hasPendingItems"] == 0)
+    {
+        NSLog(@"HASPENDING ITEMS VALUE IS.....: %@",[defaults valueForKey:@"hasPendingItems"]);
+        [completed_pending setSelectedSegmentIndex:1];
+        
+        [self.navigationItem setRightBarButtonItem:filt animated:NO ];
+        
+        UILabel *glyph_checkmark = [UILabel new];
+        [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+        [glyph_checkmark setFrame:CGRectMake(21, 12, 22, 16)];
+        [glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+        [glyph_checkmark setTextColor: kNoochBlue];
+        [self.view addSubview:glyph_checkmark];
+        
+        UILabel *glyph_pending = [UILabel new];
+        [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+        [glyph_pending setFrame:CGRectMake(178, 12, 20, 16)];
+        [glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+        [glyph_pending setTextColor: [UIColor whiteColor]];
+        [self.view addSubview:glyph_pending];
+        
+        SDImageCache *imageCache = [SDImageCache sharedImageCache];
+        [imageCache clearMemory];
+        [imageCache clearDisk];
+        [imageCache cleanDisk];
+
+        subTypestr = @"Pending";
+        self.completed_selected = NO;
+        [histShowArrayCompleted removeAllObjects];
+        [histShowArrayPending removeAllObjects];
+        countRows = 0;
+        [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
+
+    }
+    else
+    {
+        subTypestr = @"";
+        self.completed_selected = YES;
+
+        UIButton *glyph_map = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [glyph_map setStyleId:@"glyph_map"];
+        [glyph_map setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+        glyph_map.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        [glyph_map setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-map-marker"] forState:UIControlStateNormal];
+        [glyph_map addTarget:self action:@selector(toggleMapByNavBtn) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *map = [[UIBarButtonItem alloc] initWithCustomView:glyph_map];
+        
+        NSArray *topRightBtns = @[map,filt];
+        [self.navigationItem setRightBarButtonItems:topRightBtns animated:YES ];
+
+        [completed_pending setSelectedSegmentIndex:0];
+    
+        UILabel *glyph_checkmark = [UILabel new];
+        [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+        [glyph_checkmark setFrame:CGRectMake(21, 12, 22, 16)];
+        [glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+        [glyph_checkmark setTextColor:[UIColor whiteColor]];
+        [self.view addSubview:glyph_checkmark];
+        
+        UILabel *glyph_pending = [UILabel new];
+        [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+        [glyph_pending setFrame:CGRectMake(178, 12, 20, 16)];
+        [glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+        [glyph_pending setTextColor: kNoochBlue];
+        [self.view addSubview:glyph_pending];
+    
+        SDImageCache *imageCache = [SDImageCache sharedImageCache];
+        [imageCache clearMemory];
+        [imageCache clearDisk];
+        [imageCache cleanDisk];
+    
+        [self loadHist:@"ALL" index:index len:20 subType:subTypestr];
+
+        //Export History
+        exportHistory = [UIButton buttonWithType:UIButtonTypeCustom];
+        [exportHistory setTitle:@"     Export History" forState:UIControlStateNormal];
+        [exportHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
+        exportHistory.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        [exportHistory setFrame:CGRectMake(10, 420, 150, 20)];
+        if ([UIScreen mainScreen].bounds.size.height > 500) {
+            [exportHistory setStyleClass:@"exportHistorybutton"];
+        }
+        else {
+            [exportHistory setStyleClass:@"exportHistorybutton_4"];
+        }
+
+        UILabel *glyph = [UILabel new];
+        [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
+        [glyph setFrame:CGRectMake(7, 7, 15, 15)];
+        [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cloud-download"]];
+        [glyph setTextColor:[UIColor whiteColor]];
+        [exportHistory addSubview:glyph];
+        [exportHistory addTarget:self action:@selector(ExportHistory:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:exportHistory];
+        [self.view bringSubviewToFront:exportHistory];
+        
+        // Row count for scrolling
+        countRows = 0;
+    }
     UISwipeGestureRecognizer * recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideright:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self.view addGestureRecognizer:recognizer];
@@ -141,19 +243,12 @@
     UISwipeGestureRecognizer * recognizer2 = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideleft:)];
     [recognizer2 setDirection:(UISwipeGestureRecognizerDirectionLeft)];
     [self.view addGestureRecognizer:recognizer2];
-
-    self.search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 40, 320, 40)];
-    [self.search setStyleId:@"history_search"];
-    [self.search setDelegate:self];
-    self.search.searchBarStyle=UISearchBarIconSearch;
-    [self.search setPlaceholder:@"Search Transaction History"];
-    [self.view addSubview:self.search];
-
+    
     mapArea = [[UIView alloc]initWithFrame:CGRectMake(0, 84, 320, self.view.frame.size.height)];
     [mapArea setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:mapArea];
     [self.view bringSubviewToFront:self.list];
-
+    
     // Google map
     camera = [GMSCameraPosition cameraWithLatitude:39.952360
                                          longitude:-75.163602
@@ -162,66 +257,6 @@
     mapView_.myLocationEnabled = YES;
     mapView_.delegate=self;
     [mapArea addSubview:mapView_];
-
-    NSArray *seg_items = @[@"Completed",@"Pending"];
-    completed_pending = [[UISegmentedControl alloc] initWithItems:seg_items];
-    [completed_pending setStyleId:@"history_segcontrol"];
-    [completed_pending addTarget:self action:@selector(completed_or_pending:) forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:completed_pending];
-    
-    [completed_pending setSelectedSegmentIndex:0];
-    
-    UILabel *glyph_checkmark = [UILabel new];
-    [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-    [glyph_checkmark setFrame:CGRectMake(21, 12, 22, 16)];
-    [glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
-    [glyph_checkmark setTextColor:[UIColor whiteColor]];
-    [self.view addSubview:glyph_checkmark];
-    
-    UILabel *glyph_pending = [UILabel new];
-    [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-    [glyph_pending setFrame:CGRectMake(178, 12, 20, 16)];
-    [glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
-    [glyph_pending setTextColor: kNoochBlue];
-    [self.view addSubview:glyph_pending];
-    
-    SDImageCache *imageCache = [SDImageCache sharedImageCache];
-    [imageCache clearMemory];
-    [imageCache clearDisk];
-    [imageCache cleanDisk];
-    
-    [self loadHist:@"ALL" index:index len:20 subType:subTypestr];
- 
-/*    serve *serveOBJ = [serve new];
-    [serveOBJ setDelegate:self];
-    serveOBJ.tagName = @"histPending";
-    [serveOBJ histMore:@"ALL" sPos:1 len:20 subType:@"Pending"];
-*/
-    //Export History
-    exportHistory = [UIButton buttonWithType:UIButtonTypeCustom];
-    [exportHistory setTitle:@"     Export History" forState:UIControlStateNormal];
-    [exportHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
-    exportHistory.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    [exportHistory setFrame:CGRectMake(10, 420, 150, 20)];
-    if ([UIScreen mainScreen].bounds.size.height > 500) {
-        [exportHistory setStyleClass:@"exportHistorybutton"];
-    }
-    else {
-        [exportHistory setStyleClass:@"exportHistorybutton_4"];
-    }
-
-    UILabel *glyph = [UILabel new];
-    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
-    [glyph setFrame:CGRectMake(7, 7, 15, 15)];
-    [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cloud-download"]];
-    [glyph setTextColor:[UIColor whiteColor]];
-    [exportHistory addSubview:glyph];
-    [exportHistory addTarget:self action:@selector(ExportHistory:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:exportHistory];
-    [self.view bringSubviewToFront:exportHistory];
-    // Row count for scrolling
-    countRows = 0;
-
 }
 
 -(void)toggleMapByNavBtn
@@ -511,7 +546,6 @@ return customView;
     CGFloat velocityX = (0.0*[(UIPanGestureRecognizer*)sender velocityInView:self.view].x);
     
     CGFloat finalX = translatedPoint.x + velocityX;
-    ////nslog(@"%f",finalX);
     CGFloat finalY = firstY;
     [[sender view] setCenter:translatedPoint];
     [UIView beginAnimations:nil context:NULL];
@@ -576,6 +610,7 @@ return customView;
 
     isSearch = NO;
     isLocalSearch = NO;
+
     serve *serveOBJ = [serve new];
     [serveOBJ setDelegate:self];
     serveOBJ.tagName = @"hist";
@@ -594,10 +629,11 @@ return customView;
     [self.list reloadData];
     [self.view bringSubviewToFront:exportHistory];
     
+    [self.list setStyleId:@"history"];
+    
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     if ([segmentedControl selectedSegmentIndex] == 0)
     {
-        [self.list setStyleId:@"history"];
         UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [filter setStyleClass:@"label_filter"];
         [filter setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-filter"] forState:UIControlStateNormal];
@@ -636,14 +672,12 @@ return customView;
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
         self.completed_selected = YES;
-        index = 1;
         countRows = 0;
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
     }
     else
     {
         [self.navigationItem setRightBarButtonItems:nil];
-        [self.list setStyleId:@"history"];
         UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [filter setStyleClass:@"label_filter"];
         [filter setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-filter"] forState:UIControlStateNormal];
@@ -672,7 +706,6 @@ return customView;
         self.completed_selected = NO;
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
-        index = 1;
         countRows = 0;
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
     }
@@ -748,7 +781,7 @@ return customView;
     static NSString *cellIdentifier = @"Cell";
     SWTableViewCell *cell = (SWTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
-    NSLog(@"%@",cell);
+    // NSLog(@"The CELL is:  %@",cell);
     
     NSMutableArray *leftUtilityButtons = [NSMutableArray new];
     NSMutableArray *rightUtilityButtons = [NSMutableArray new];
@@ -854,6 +887,16 @@ return customView;
                     UILabel *name = [UILabel new];
                     [name setStyleClass:@"history_cell_textlabel"];
                     [name setStyleClass:@"history_recipientname"];
+                    
+                    UILabel *date = [UILabel new];
+                    [date setStyleClass:@"history_datetext"];
+                    
+                    UILabel *glyphDate = [UILabel new];
+                    [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
+                    [glyphDate setFrame:CGRectMake(147, 9, 14, 10)];
+                    [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
+                    [glyphDate setTextColor:kNoochGrayLight];
+                    [cell.contentView addSubview:glyphDate];
 
                     if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
                         [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-minus-circle"]];
@@ -959,11 +1002,14 @@ return customView;
                         else {
                             [transferTypeLabel setText:@"Transfer disputed by"];
                         }
-                        
+
+                        [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_evenWider"];
+                        [transferTypeLabel setBackgroundColor:Rgb2UIColor(108, 109, 111, 1)];
+                        [date setStyleClass:@"history_datetext_wide"];
+                        [glyphDate setFrame:CGRectMake(173, 9, 14, 10)];
                         [indicator setStyleClass:@"history_sidecolor_neutral"];
                         [amount setTextColor:kNoochGrayDark];
                         [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                        [transferTypeLabel setBackgroundColor:kNoochRed];
                         [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
                         [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                             placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
@@ -973,16 +1019,6 @@ return customView;
                     [cell.contentView addSubview:statusIndicator];
                     [cell.contentView addSubview:transferTypeLabel];
                     [cell.contentView addSubview:name];
-                    
-                    UILabel *date = [UILabel new];
-                    [date setStyleClass:@"history_datetext"];
-                    
-                    UILabel *glyphDate = [UILabel new];
-                    [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                    [glyphDate setFrame:CGRectMake(147, 9, 14, 10)];
-                    [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
-                    [glyphDate setTextColor:kNoochGrayLight];
-                    [cell.contentView addSubview:glyphDate];
 
                     //  'updated_balance' now for displaying transfer STATUS, only if status is "cancelled" or "rejected" or "success" (for invites)
                     //  (this used to display the user's updated balance, which no longer exists)
@@ -1153,6 +1189,16 @@ return customView;
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabel"];
                 [name setStyleClass:@"history_recipientname"];
+
+                UILabel *date = [UILabel new];
+                [date setStyleClass:@"history_datetext"];
+
+                UILabel *glyphDate = [UILabel new];
+                [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
+                [glyphDate setFrame:CGRectMake(147, 9, 14, 10)];
+                [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
+                [glyphDate setTextColor:kNoochGrayLight];
+                [cell.contentView addSubview:glyphDate];
                 
                 if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
                     [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-minus-circle"]];
@@ -1258,24 +1304,17 @@ return customView;
                     else {
                         [transferTypeLabel setText:@"Transfer disputed by"];
                     }
-
+                    
+                    [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_evenWider"];
+                    [transferTypeLabel setBackgroundColor:Rgb2UIColor(108, 109, 111, 1)];
+                    [date setStyleClass:@"history_datetext_wide"];
+                    [glyphDate setFrame:CGRectMake(173, 9, 14, 10)];
                     [indicator setStyleClass:@"history_sidecolor_neutral"];
                     [amount setTextColor:kNoochGrayDark];
-					[transferTypeLabel setTextColor:kNoochGrayDark];
                     [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
                     [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                         placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 }
-
-                
-                UILabel *date = [UILabel new];
-                [date setStyleClass:@"history_datetext"];
-                
-                UILabel *glyphDate = [UILabel new];
-                [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                [glyphDate setFrame:CGRectMake(146, 9, 14, 10)];
-                [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
-                [glyphDate setTextColor:kNoochGrayLight];
 
 				//  'updated_balance' now for displaying transfer STATUS, only if status is "cancelled" or "rejected"
                 //  (this used to display the user's updated balance, which no longer exists)
@@ -1334,13 +1373,11 @@ return customView;
                             fromDate:addeddate
                             toDate:ServerDate
                             options:0];
-                    ////nslog(@"%ld  %ld", (long)[components hour],(long)[components minute]);
                     if ((long)[components hour] == 0) {
                         NSDateComponents *components = [gregorianCalendar components:NSMinuteCalendarUnit
                             fromDate:addeddate
                             toDate:ServerDate
                             options:0];
-                        ////nslog(@"%ld ",(long)[components minute]);
                         if ((long)[components minute] == 0) {
                             NSDateComponents *components = [gregorianCalendar components:NSSecondCalendarUnit                                
                                 fromDate:addeddate
@@ -1488,6 +1525,16 @@ return customView;
                     UILabel *name = [UILabel new];
                     [name setStyleClass:@"history_cell_textlabel"];
                     [name setStyleClass:@"history_recipientname"];
+                    
+                    UILabel *date = [UILabel new];
+                    [date setStyleClass:@"history_datetext"];
+                    
+                    UILabel *glyphDate = [UILabel new];
+                    [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
+                    [glyphDate setFrame:CGRectMake(147, 9, 14, 10)];
+                    [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
+                    [glyphDate setTextColor:kNoochGrayLight];
+                    [cell.contentView addSubview:glyphDate];
 					
                     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                     {
@@ -1520,6 +1567,11 @@ return customView;
                             [transferTypeLabel setText:@"Transfer disputed by"];
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
                         }
+                        
+                        [statusIndicator setTextColor:kNoochRed];
+                        [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_evenWider"];
+                        [date setStyleClass:@"history_datetext_wide"];
+                        [glyphDate setFrame:CGRectMake(173, 9, 14, 10)];
                         [transferTypeLabel setBackgroundColor:kNoochRed];
                     }
 
@@ -1529,16 +1581,6 @@ return customView;
                     
                     [cell.contentView addSubview:transferTypeLabel];
                     [cell.contentView addSubview:name];
-
-                    UILabel *date = [UILabel new];
-                    [date setStyleClass:@"history_datetext"];
-                    
-                    UILabel *glyphDate = [UILabel new];
-                    [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                    [glyphDate setFrame:CGRectMake(147, 9, 14, 10)];
-                    [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
-                    [glyphDate setTextColor:kNoochGrayLight];
-                    [cell.contentView addSubview:glyphDate];
 
                     NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -1567,13 +1609,11 @@ return customView;
                                 fromDate:addeddate
                                 toDate:ServerDate
                                 options:0];
-                        //nslog(@"%ld  %ld", (long)[components hour],(long)[components minute]);
                         if ((long)[components hour]==0) {
                             NSDateComponents *components = [gregorianCalendar components:NSMinuteCalendarUnit                            
                                     fromDate:addeddate
                                     toDate:ServerDate
                                     options:0];
-                            //nslog(@"%ld ",(long)[components minute]);
                             if ((long)[components minute]==0) {
                                 NSDateComponents *components = [gregorianCalendar components:NSSecondCalendarUnit
                                       fromDate:addeddate                                                                
@@ -1671,7 +1711,7 @@ return customView;
                 [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
                 transferTypeLabel.layer.cornerRadius = 3;
                 transferTypeLabel .clipsToBounds = YES;
-                
+
                 UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 8, 10, 11)];
                 [statusIndicator setBackgroundColor:[UIColor clearColor]];
                 [statusIndicator setTextAlignment:NSTextAlignmentCenter];
@@ -1682,7 +1722,17 @@ return customView;
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabel"];
                 [name setStyleClass:@"history_recipientname"];
-                
+
+                UILabel *date = [UILabel new];
+                [date setStyleClass:@"history_datetext"];
+
+                UILabel *glyphDate = [UILabel new];
+                [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
+                [glyphDate setFrame:CGRectMake(147, 9, 14, 10)];
+                [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
+                [glyphDate setTextColor:kNoochGrayLight];
+                [cell.contentView addSubview:glyphDate];
+
                 UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 9, 50, 50)];
                 pic.layer.cornerRadius = 25;
                 pic.clipsToBounds = YES;
@@ -1763,6 +1813,10 @@ return customView;
                     else {
                         [transferTypeLabel setText:@"Transfer disputed by"];
                     }
+                    [statusIndicator setTextColor:kNoochRed];
+                    [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_evenWider"];
+                    [date setStyleClass:@"history_datetext_wide"];
+                    [glyphDate setFrame:CGRectMake(173, 9, 14, 10)];
                     [transferTypeLabel setBackgroundColor:kNoochRed];
                     [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
                     [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
@@ -1771,16 +1825,6 @@ return customView;
                 else {
                     [name setText:@""];
                 }
-
-                UILabel *date = [UILabel new];
-                [date setStyleClass:@"history_datetext"];
-                
-                UILabel *glyphDate = [UILabel new];
-                [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                [glyphDate setFrame:CGRectMake(147, 9, 14, 10)];
-                [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
-                [glyphDate setTextColor:kNoochGrayLight];
-                [cell.contentView addSubview:glyphDate];
                 
                 NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                 NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -1810,7 +1854,6 @@ return customView;
                             fromDate:addeddate
                             toDate:ServerDate
                             options:0];
-                    //nslog(@"%ld  %ld", (long)[components hour],(long)[components minute]);
                     if ((long)[components hour]==0) {
                         NSDateComponents *components = [gregorianCalendar components:NSMinuteCalendarUnit                  
                                     fromDate:addeddate
@@ -1897,6 +1940,9 @@ return customView;
             }
         }
     }
+    
+    //NSLog(@"The CELL is:  %@",cell);
+
     return cell;
 }
 
@@ -2030,8 +2076,7 @@ return customView;
                         [alert show];
                         return;
                 }
-                else if ( ![[[NSUserDefaults standardUserDefaults]
-                        objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
+                else if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
                     UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Please Attach an Account" message:@"Before you can send or receive money, you must add a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
                     [set show];
                     return;
@@ -2090,7 +2135,6 @@ return customView;
     isSearch = NO;
     isFilter = NO;
     listType = @"ALL";
-    index = 1;
     [histShowArrayCompleted removeAllObjects];
     [histShowArrayPending removeAllObjects];
     self.search.text=@"";
@@ -2100,7 +2144,7 @@ return customView;
     [imageCache cleanDisk];
     countRows = 0;
     [self.search resignFirstResponder];
-    [self loadHist:listType index:index len:20 subType:subTypestr];
+    [self loadHist:listType index:1 len:20 subType:subTypestr];
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -2243,7 +2287,7 @@ return customView;
         }
     }
     
-    else if ([tagName isEqualToString:@"histPending"])
+/*    else if ([tagName isEqualToString:@"histPending"])
     {
         [self.hud hide:YES];
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
@@ -2273,7 +2317,7 @@ return customView;
 
         }
     }
-    
+*/
     else if ([tagName isEqualToString:@"hist"])
     {
 
@@ -2298,22 +2342,24 @@ return customView;
                 {
                     [histShowArrayCompleted addObject:dict];
                 }
-                if (completed_pending.selectedSegmentIndex == 1 &&![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]&& ![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
+                
+              //  else if ( completed_pending.selectedSegmentIndex == 1 ) //&& ![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]  &&  ![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"])
+              //  {
                     if (  ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] && ![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"]) ||
                         (([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
                          [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
                     {
-                        NSLog(@"%@",dict);
+                        // NSLog(@"%@",dict);
                         [histShowArrayPending addObject:dict];
-                        
+                
                         if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
                             counter++;
                         }
                     }
-                    [completed_pending setTitle:[NSString stringWithFormat:@"Pending (%d)",counter]forSegmentAtIndex:1];
-                    
-                }
+              //  }
             }
+            NSLog(@"The Pending COUNTER is: %d",counter);
+            [completed_pending setTitle:[NSString stringWithFormat:@"Pending (%d)",counter]forSegmentAtIndex:1];
             
         }
         else {

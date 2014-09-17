@@ -155,7 +155,7 @@
     [self.view addSubview:self.password_field];
 
     UILabel * checkbox_box = [UILabel new];
-    [checkbox_box setFrame:CGRectMake(34, 386, 20, 20)];
+    [checkbox_box setFrame:CGRectMake(34, 386, 21, 20)];
     [checkbox_box setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
     [checkbox_box setTextAlignment:NSTextAlignmentCenter];
     [checkbox_box setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-square-o"]];
@@ -165,7 +165,7 @@
     UIButton *checkbox_dot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [checkbox_dot setBackgroundColor:[UIColor clearColor]];
     [checkbox_dot setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"] forState:UIControlStateNormal];
-    [checkbox_dot setFrame:CGRectMake(35, 387, 18, 18)];
+    [checkbox_dot setFrame:CGRectMake(35, 387, 19, 18)];
     [checkbox_dot setStyleId:@"checkbox_dot"];
     [self.view addSubview:checkbox_dot];
     [checkbox_dot addTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];

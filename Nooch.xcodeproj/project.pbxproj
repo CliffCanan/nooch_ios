@@ -99,6 +99,8 @@
 		5C6917DB19B69AD90044BF2B /* nooch_logo_color.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C6917DA19B69AD90044BF2B /* nooch_logo_color.png */; };
 		5C69CFA719C777D800EB406F /* Knox_lightbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFA519C777D800EB406F /* Knox_lightbox.png */; };
 		5C69CFA819C777D800EB406F /* Knox_lightbox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFA619C777D800EB406F /* Knox_lightbox@2x.png */; };
+		5C69CFBC19C8F20F00EB406F /* SIAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69CFB819C8F20F00EB406F /* SIAlertView.m */; };
+		5C69CFBD19C8F20F00EB406F /* UIWindow+SIUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69CFBA19C8F20F00EB406F /* UIWindow+SIUtils.m */; };
 		5CC1A77819BA7A8A0000C2C7 /* Icon29.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77419BA7A8A0000C2C7 /* Icon29.png */; };
 		5CC1A77919BA7A8A0000C2C7 /* Icon58.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77519BA7A8A0000C2C7 /* Icon58.png */; };
 		5CC1A77A19BA7A8A0000C2C7 /* Icon80.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77619BA7A8A0000C2C7 /* Icon80.png */; };
@@ -368,6 +370,10 @@
 		5C6917DA19B69AD90044BF2B /* nooch_logo_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nooch_logo_color.png; sourceTree = "<group>"; };
 		5C69CFA519C777D800EB406F /* Knox_lightbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Knox_lightbox.png; sourceTree = "<group>"; };
 		5C69CFA619C777D800EB406F /* Knox_lightbox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Knox_lightbox@2x.png"; sourceTree = "<group>"; };
+		5C69CFB719C8F20F00EB406F /* SIAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIAlertView.h; sourceTree = "<group>"; };
+		5C69CFB819C8F20F00EB406F /* SIAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIAlertView.m; sourceTree = "<group>"; };
+		5C69CFB919C8F20F00EB406F /* UIWindow+SIUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+SIUtils.h"; sourceTree = "<group>"; };
+		5C69CFBA19C8F20F00EB406F /* UIWindow+SIUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+SIUtils.m"; sourceTree = "<group>"; };
 		5CC1A77419BA7A8A0000C2C7 /* Icon29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon29.png; sourceTree = "<group>"; };
 		5CC1A77519BA7A8A0000C2C7 /* Icon58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon58.png; sourceTree = "<group>"; };
 		5CC1A77619BA7A8A0000C2C7 /* Icon80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon80.png; sourceTree = "<group>"; };
@@ -951,6 +957,17 @@
 			name = "venturepact ";
 			sourceTree = "<group>";
 		};
+		5C69CFB519C8F20F00EB406F /* SIAlertView */ = {
+			isa = PBXGroup;
+			children = (
+				5C69CFB719C8F20F00EB406F /* SIAlertView.h */,
+				5C69CFB819C8F20F00EB406F /* SIAlertView.m */,
+				5C69CFB919C8F20F00EB406F /* UIWindow+SIUtils.h */,
+				5C69CFBA19C8F20F00EB406F /* UIWindow+SIUtils.m */,
+			);
+			path = SIAlertView;
+			sourceTree = "<group>";
+		};
 		6B1C157C16D4306000FBEFBB /* Custom Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -1063,6 +1080,7 @@
 			children = (
 				84B79FFD19BEDEB50081A2AF /* iCarousel.h */,
 				84B79FFE19BEDEB50081A2AF /* iCarousel.m */,
+				5C69CFB519C8F20F00EB406F /* SIAlertView */,
 				0103AEA918FC8B8D003225DA /* FAImageView.h */,
 				0103AEAA18FC8B8D003225DA /* FAImageView.m */,
 				0103AEAB18FC8B8D003225DA /* NSString+FontAwesome.h */,
@@ -1627,6 +1645,7 @@
 				6B89276016DEA49C00F9100F /* FPPopoverController.m in Sources */,
 				01085FB317FB59AB00A31F63 /* CreatePIN.m in Sources */,
 				84B65A73188542E9009A5205 /* NSString+ASBase64.m in Sources */,
+				5C69CFBD19C8F20F00EB406F /* UIWindow+SIUtils.m in Sources */,
 				6B89276116DEA49C00F9100F /* FPPopoverView.m in Sources */,
 				841A3E0F18A61491001DAAA2 /* UIImage+RoundedCorner.m in Sources */,
 				16E4B1BB187053F20099D075 /* UIImage+WebP.m in Sources */,
@@ -1643,6 +1662,7 @@
 				018DA86318048309007B24FB /* SendInvite.m in Sources */,
 				01C83E8017F9FF9E009CABBF /* TransferPIN.m in Sources */,
 				0179E9F017F35A740027526C /* SelectRecipient.m in Sources */,
+				5C69CFBC19C8F20F00EB406F /* SIAlertView.m in Sources */,
 				16E4B1B2187053F20099D075 /* SDWebImageCompat.m in Sources */,
 				16E4B1B1187053F20099D075 /* SDImageCache.m in Sources */,
 				16E4B1B5187053F20099D075 /* SDWebImageDownloaderOperation.m in Sources */,

@@ -720,7 +720,6 @@ UIImageView *picture;
             return;
         }
         NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal",[user objectForKey:@"facebook_id"]];
-        NSLog(@"FACEBOOK ID IS......:%@", [user objectForKey:@"facebook_id"]);
    
         [picture setImageWithURL:[NSURL URLWithString:url]
              placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]

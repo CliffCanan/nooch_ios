@@ -33,7 +33,9 @@
     return self;
 }
 
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.navigationItem setTitle:@"Transfer Details"];
     [super viewWillAppear:animated];
     self.trackedViewName = @"TransactionDetail Screen";
 }
@@ -1129,7 +1131,8 @@
                 statusstr = @"Invited - Pending";
                 [status setStyleClass:@"yellow_text"];
             }
-            else if ( ![[self.trans valueForKey:@"DisputeId"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"DisputeId"]!=NULL )
+            
+            if ( ![[self.trans valueForKey:@"DisputeId"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"DisputeId"]!=NULL )
             {
                 statusstr = @"Disputed:";
                 [status setStyleClass:@"red_text"];
