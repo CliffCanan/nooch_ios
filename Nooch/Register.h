@@ -18,4 +18,5 @@
     UIActivityIndicatorView*spinner;
     BOOL isTermsChecked;
 }
+-(void)removeChild:(UIViewController *) child;
 @end
