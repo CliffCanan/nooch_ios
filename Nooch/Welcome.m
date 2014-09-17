@@ -145,7 +145,7 @@
 -(void)moreinfo_lightBox
 {
     overlay = [[UIView alloc]init];
-    overlay.frame = CGRectMake(0, 0, 320, self.view.frame.size.height);
+    overlay.frame = CGRectMake(0, 0, 320, [[UIScreen mainScreen] bounds].size.height);
     overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
     
     [UIView transitionWithView:self.navigationController.view
@@ -158,10 +158,9 @@
      
     mainView = [[UIView alloc]init];
     mainView.layer.cornerRadius = 5;
-    mainView.frame = CGRectMake(8, 40, 304, self.view.frame.size.height - 5);
+    mainView.frame = CGRectMake(8, 40, 304, 504);
     mainView.backgroundColor = [UIColor whiteColor];
      
-    [overlay addSubview:mainView];
     mainView.layer.masksToBounds = NO;
     mainView.layer.cornerRadius = 5;
     mainView.layer.shadowOffset = CGSizeMake(0, 2);
@@ -228,6 +227,8 @@
 
     [mainView addSubview:imageShow];
     [mainView addSubview:btnclose];
+    [overlay addSubview:mainView];
+
 }
 
 -(void)close_lightBox{

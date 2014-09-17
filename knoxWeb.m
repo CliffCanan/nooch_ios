@@ -122,7 +122,6 @@
     mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 5);
     mainView.backgroundColor = [UIColor whiteColor];
     mainView.layer.masksToBounds = NO;
-    mainView.layer.cornerRadius = 5;
 
     UIView * head_container = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 302, 44)];
     head_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];

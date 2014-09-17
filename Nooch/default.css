@@ -21,7 +21,8 @@
 	}
     
     .prelogin_slogan {
-        font-family: "VarelaRound-regular";
+        font-family: "VarelaRound";
+        font-weight: normal;
         font-size: 15px;
         text-align: right;
         color: #5a538d;
@@ -54,7 +55,7 @@
     
     .lightbox_title {
         font-family: "Roboto";
-        font-weight: light;
+        font-weight: regular;
         font-size: 20px;
         color: #3fabe1;
         text-align: center;
@@ -239,16 +240,16 @@
         opacity: .92;
     }
     #pending_notif {
-        width           : 18px;
-        height          : 18px;
+        width           : 22px;
+        height          : 22px;
         background-color: red;
         border          : 1px solid white;
-        border-radius   : 9px;
-        box-shadow      : 0px 1px 1px rgba(26, 32, 38, 0.45);
+        border-radius   : 11px;
+        box-shadow      : 0px 1px 2px rgba(26, 32, 38, 0.5);
         color           : white;
         font-family     : "Roboto";
         font-weight     : medium;
-        font-size       : 11px;
+        font-size       : 12px;
         text-align      : center;
     }
     #pending_notif_lsideMenu {
@@ -819,7 +820,7 @@
 		height				: 30px;
 		font-family			: "Roboto";
 		font-weight         : light;
-		font-size			: 16px;
+		font-size			: 17px;
 		text-align       	: center;
 		color 				: #414042;
 	}
