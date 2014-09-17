@@ -290,7 +290,7 @@
             {
                 UILabel * pending_notif = [UILabel new];
                 [pending_notif setText:[NSString stringWithFormat:@"%@",[defaults objectForKey:@"Pending_count"]]];
-                [pending_notif setFrame:CGRectMake(212, 13, 20, 20)];
+                [pending_notif setFrame:CGRectMake(212, 10, 22, 22)];
                 [pending_notif setStyleId:@"pending_notif"];
                 [pending_notif setStyleId:@"pending_notif_lsideMenu"];
                 [cell.contentView addSubview:pending_notif];

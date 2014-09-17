@@ -57,15 +57,7 @@
     [logo setStyleClass:@"animate_bubble_logo"];
     [self.view addSubview:logo];
 
-    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
-    [slogan setBackgroundColor:[UIColor clearColor]];
-    [slogan setText:@"Money Made Simple"];
-    [slogan setFont:[UIFont fontWithName:@"VarelaRound-regular" size:15]];
-    [slogan setStyleClass:@"prelogin_slogan"];
-    [slogan setStyleClass:@"animate_prelogin_slogan"];
-    [self.view addSubview:slogan];
-
-    UILabel *signup = [[UILabel alloc] initWithFrame:CGRectMake(0, 94, 320, 15)];
+    UILabel *signup = [[UILabel alloc] initWithFrame:CGRectMake(0, 88, 320, 15)];
     [signup setText:@"Sign Up Below With"];
     [signup setStyleClass:@"instruction_text"];
     [self.view addSubview:signup];
@@ -74,9 +66,9 @@
     [self.facebook setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     self.facebook.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.facebook setTitle:@"  Facebook" forState:UIControlStateNormal];
-    [self.facebook setFrame:CGRectMake(0, 158, 0, 0)];
+    [self.facebook setFrame:CGRectMake(0, 153, 0, 0)];
     if ([[UIScreen mainScreen] bounds].size.height < 520) {
-        [self.facebook setFrame:CGRectMake(0, 165, 0, 0)];
+        [self.facebook setFrame:CGRectMake(0, 145, 0, 0)];
     }
     [self.facebook addTarget:self action:@selector(connect_to_facebook) forControlEvents:UIControlEventTouchUpInside];
     [self.facebook setStyleClass:@"button_blue"];
@@ -156,7 +148,7 @@
     [self.view addSubview:self.password_field];
 
     UILabel * checkbox_box = [UILabel new];
-    [checkbox_box setFrame:CGRectMake(36, 385, 21, 20)];
+    [checkbox_box setFrame:CGRectMake(36, 386, 21, 20)];
     [checkbox_box setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
     [checkbox_box setTextAlignment:NSTextAlignmentCenter];
     [checkbox_box setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-square-o"]];
@@ -165,8 +157,8 @@
 
     UIButton *checkbox_dot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [checkbox_dot setBackgroundColor:[UIColor clearColor]];
-    [checkbox_dot setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"] forState:UIControlStateNormal];
-    [checkbox_dot setFrame:CGRectMake(31, 380, 31, 30)];
+    [checkbox_dot setTitle:@"  " forState:UIControlStateNormal];
+    [checkbox_dot setFrame:CGRectMake(31, 381, 31, 30)];
     [checkbox_dot setStyleId:@"checkbox_dot"];
     [self.view addSubview:checkbox_dot];
     [checkbox_dot addTarget:self action:@selector(termsAndConditions:) forControlEvents:UIControlEventTouchUpInside];
@@ -174,13 +166,13 @@
     
     UILabel * termsText1 = [UILabel new];
     [termsText1 setFont:[UIFont fontWithName:@"Roboto-light" size:13]];
-    [termsText1 setFrame:CGRectMake(65, 387, 55, 14)];
+    [termsText1 setFrame:CGRectMake(65, 388, 55, 14)];
     [termsText1 setText:@"I agree to "];
     [termsText1 setTextColor:kNoochGrayDark];
     [self.view addSubview:termsText1];
 
     UIButton * termsText2 = [UIButton buttonWithType:UIButtonTypeCustom];
-    [termsText2 setFrame:CGRectMake(122, 387, 150, 14)];
+    [termsText2 setFrame:CGRectMake(122, 388, 150, 14)];
     [termsText2 setBackgroundColor:[UIColor clearColor]];
     [termsText2 setTitle:@"Nooch's Terms of Service." forState:UIControlStateNormal];
     [termsText2 setStyleClass:@"termsCheckText"];
@@ -197,7 +189,7 @@
     [self.cont setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     self.cont.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.cont setTitle:@"Continue" forState:UIControlStateNormal];
-    [self.cont setFrame:CGRectMake(10, 418, 300, 60)];
+    [self.cont setFrame:CGRectMake(10, 424, 300, 60)];
     [self.cont addTarget:self action:@selector(continue_to_signup) forControlEvents:UIControlEventTouchUpInside];
     [self.cont setStyleClass:@"button_green"];
     [self.view addSubview:self.cont];
@@ -205,17 +197,17 @@
 
     UIButton *login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [login setBackgroundColor:[UIColor clearColor]];
-    [login setTitle:@"Already a Member?  Sign in here" forState:UIControlStateNormal];
-    [login setFrame:CGRectMake(10, 484, 280, 30)];
+    [login setTitle:@"Already a Member?  Sign in here " forState:UIControlStateNormal];
+    [login setFrame:CGRectMake(10, 490, 280, 30)];
     [login addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
     [login setStyleClass:@"label_small"];
     [self.view addSubview:login];
     
     UILabel *glyph_login = [UILabel new];
-    [glyph_login setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-    [glyph_login setFrame:CGRectMake(264, 0, 16, 30)];
+    [glyph_login setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
+    [glyph_login setFrame:CGRectMake(264, 0, 18, 30)];
     [glyph_login setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-right"]];
-    [glyph_login setTextColor:kNoochBlue];
+    [glyph_login setTextColor:kNoochGreen];
     [login addSubview:glyph_login];
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)

@@ -199,7 +199,8 @@
     self.pin.inputAccessoryView = [[UIView alloc] init];
     [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
     [self.pin setDelegate:self];
-    [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
+    [self.pin setTextColor:[UIColor clearColor]];
+    [self.pin setFrame:CGRectMake(200, -100, 10, 10)];
     [self.view addSubview:self.pin];
     [self.pin becomeFirstResponder];
 

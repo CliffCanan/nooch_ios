@@ -137,9 +137,8 @@
 
     NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
 
-    if ([defaults valueForKey:@"hasPendingItems"] == 0)
+    if ([defaults boolForKey:@"hasPendingItems"] == true)
     {
-        NSLog(@"HASPENDING ITEMS VALUE IS.....: %@",[defaults valueForKey:@"hasPendingItems"]);
         [completed_pending setSelectedSegmentIndex:1];
         
         [self.navigationItem setRightBarButtonItem:filt animated:NO ];
@@ -679,7 +678,7 @@ return customView;
         [histShowArrayPending removeAllObjects];
         self.completed_selected = YES;
         countRows = 0;
-        [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
+        [self loadHist:@"ALL" index:1 len:28 subType:subTypestr];
     }
     else
     {
@@ -2365,7 +2364,7 @@ return customView;
               //  }
             }
             NSLog(@"The Pending COUNTER is: %d",counter);
-            [completed_pending setTitle:[NSString stringWithFormat:@"Pending (%d)",counter]forSegmentAtIndex:1];
+            [completed_pending setTitle:[NSString stringWithFormat:@"Pending  (%d)",counter]forSegmentAtIndex:1];
             
         }
         else {
