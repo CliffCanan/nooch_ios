@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "serve.h"
-
+BOOL isfromRegister;
 
 //@class signin;
 
