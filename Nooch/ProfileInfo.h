@@ -11,6 +11,8 @@
 #import "Decryption.h"
 #import "GetEncryptionValue.h"
 #import "MBProgressHUD.h"
+#import "SpinKit/RTSpinKitView.h"
+
 BOOL isProfileOpenFromSideBar;
 @interface ProfileInfo : GAITrackedViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UIScrollViewDelegate,MBProgressHUDDelegate,UIAlertViewDelegate>
 {

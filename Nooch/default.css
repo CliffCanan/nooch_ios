@@ -35,7 +35,7 @@
     #checkbox_dot {
         color       : #72BF44;
         font-family : "FontAwesome";
-        font-size   : 11px;
+        font-size   : 12px;
 		text-align  : center;
     }
     .animate_prelogin_slogan {
@@ -79,6 +79,7 @@
 	.green_text	{color		: #72bf44; }	
 	
     .italic_font {font-style  : italic;}
+    .bold {font-weight: medium;}
 
 	 /***************************/
 	 /****		NAV BAR		*****/
@@ -249,6 +250,9 @@
         font-weight     : medium;
         font-size       : 11px;
         text-align      : center;
+    }
+    #pending_notif_lsideMenu {
+        box-shadow      : 0px 1px 2px rgba(26, 32, 38, .7);
     }
 
 	 /******************************/
@@ -432,11 +436,11 @@
 			font-weight         : light;
 			font-size			: 15px;
 			color 				: #696969;
-			width				: 300px;
+/*			width				: 300px;
 			left                : 10px;
 			height				: 300px;
 			text-align       	: left;
-            top                 : 180px;
+            top                 : 180px; */
 		}
 
         /***Invite Friend***/
@@ -492,7 +496,7 @@
 		height          : 24px;
 		font-family		: "Roboto";
 		font-weight		: regular;
-		font-size		: 20px;
+		font-size		: 19px;
 		text-align		: left;
 	}
 	.plusbutton {
@@ -2239,7 +2243,11 @@ table-view#select_recipientwithoutSeperator {
         opacity             : .85;
 	}
     .history_cell_transTypeLabel_wider {
-        width: 70px;
+        width           : 70px;
+    }
+    .history_cell_transTypeLabel_evenWider {
+        font-size       : 8px;
+        width           : 95px;
     }
 	
 	/**  Text in top row if table is empty  **/
@@ -2279,6 +2287,9 @@ table-view#select_recipientwithoutSeperator {
 		text-align       	: left;
 		color 				: #58595b;
 	}
+    .history_datetext_wide {
+        left: 183;
+    }
 
 	/**  Amount of the Transfer on the right side of the row  **/
 	.history_transferamount {
@@ -2294,7 +2305,7 @@ table-view#select_recipientwithoutSeperator {
 
     /**  Amount of the PENDING Transfer on the right side of the row (Only on the Pending Tab)  **/
 	.history_pending_transferamount {
-		left				: 228px;
+		left				: 227px;
 		top					: 20px;
 		width				: 81px;
 		height				: 20px;
@@ -2352,8 +2363,8 @@ table-view#select_recipientwithoutSeperator {
 
     .history_sidecolor_pending {
         top                 : 0px;
-		left                : 313px;
-		width               : 7px;
+		left                : 312px;
+		width               : 8px;
 		height              : 80px;
         background-color	: #3fabe1;
         color               : #fff;
@@ -2710,9 +2721,9 @@ table-view#select_recipientwithoutSeperator {
     }
     #remove_account_glyph {
         font-family : "FontAwesome";
-        font-size   : 23px;
+        font-size   : 24px;
         animation-name				: zoom;
-		animation-duration			: 0.8s;
+		animation-duration			: 0.7s;
 		animation-timing-function	: ease;
     }
     .divider {
@@ -2730,7 +2741,8 @@ table-view#select_recipientwithoutSeperator {
 		row-height		: 50px;
 		separator-style : single-line;
 		separator-color	: rgba(188,190,192,0.9);
-		border			: 1px solid rgb(188,190,192);
+        border: 1px solid;
+        border-color: rgba(188, 190, 192, 0.85);
 	}
     table-view#settings2 {
 		width			: 322px;
@@ -2744,14 +2756,16 @@ table-view#select_recipientwithoutSeperator {
 		border			: 1px solid rgb(188,190,192);
 	}
     table-view#settings_resetpw {
-		width				: 320px;
+		width				: 322px;
         height             : 150px;
-		top					: 40px;
-		left				: 0px;
+		top					: 84px;
+		left				: -1px;
 		background-color	: white;
 		row-height			: 50px;
 		separator-style 	: single-line;
 		separator-color		: rgba(188,190,192,0.9);
+        border: 1px solid;
+        border-color: rgba(188, 190, 192, 0.85);
 	}
 	/**  Left side text label. **/
 	.settings_table_label {
@@ -3215,13 +3229,15 @@ table-view#select_recipientwithoutSeperator {
     @keyframes zoom {
 		from {
 			opacity: .3;
-			scale: .1;
+			scale: .2;
 		}
-		82% {scale: 1.15;}
+		45% {scale: 1.12;}
+		62% {scale: .85;}
+		83% {scale: 1.05;}
 		to {opacity: 1;
 			scale: 1;
 		}
-	}
+    }
 	
 /**  FLOATING Stats Circle Icon **/
 @keyframes floatingStatsCircle {

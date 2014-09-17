@@ -179,6 +179,7 @@
     [self.amount setDelegate:self];
     [self.amount setTag:1];
     [self.amount setKeyboardType:UIKeyboardTypeNumberPad];
+    self.amount.inputAccessoryView = [[UIView alloc] init];
     [self.amount setStyleId:@"howmuch_amountfield"];
     [self.back addSubview:self.amount];
     [self.amount becomeFirstResponder];
@@ -189,6 +190,7 @@
     [self.memo setStyleId:@"howmuch_memo"];
     [self.memo setTag:2];
     [self.memo setKeyboardType:UIKeyboardTypeDefault];
+    self.memo.inputAccessoryView = [[UIView alloc] init];
     [self.back addSubview:self.memo];
 
     self.camera = [UIButton buttonWithType:UIButtonTypeRoundedRect];

@@ -93,10 +93,15 @@
     [self.view addSubview:self.email_failure];
     [self.view addSubview:self.push_failure];
     
+    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
+    spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
+    self.hud.labelText = @"Loading your settings...";
+    [spinner1 startAnimating];
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.customView = spinner1;
     self.hud.delegate = self;
-    self.hud.labelText = @"Loading your settings";
     [self.hud show:YES];
 
     serve * serveOBJ = [serve new];

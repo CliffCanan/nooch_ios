@@ -11,6 +11,7 @@
 #import "Home.h"
 #import "serve.h"
 #import <MessageUI/MessageUI.h>
+#import "SpinKit/RTSpinKitView.h"
 
 @interface TransferPIN : GAITrackedViewController<UITextFieldDelegate,serveD,NSURLConnectionDelegate,MFMailComposeViewControllerDelegate,MBProgressHUDDelegate>
 {

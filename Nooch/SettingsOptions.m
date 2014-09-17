@@ -23,6 +23,7 @@
     UIButton * link_bank ;
 }
 @property(atomic,weak)UIButton *logout;
+
 @end
 
 @implementation SettingsOptions
@@ -120,6 +121,8 @@
     
     menu = [UITableView new];
     [menu setStyleId:@"settings"];
+    menu.layer.borderColor = Rgb2UIColor(188, 190, 192, 0.85).CGColor;
+    menu.layer.borderWidth = 1;
     [menu setDelegate:self];
     [menu setDataSource:self];
     [menu setScrollEnabled:NO];
@@ -348,9 +351,7 @@
         {
             [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
             isBankAttached = YES;
-            
-            //NSLog(@"Account Name is: %@  ....   BankName is: %@ .....",[dictResponse valueForKey:@"AccountName"],[dictResponse valueForKey:@"BankName"]);
-            
+
             if (isBankAttached)
             {
                 [linked_background removeFromSuperview];

@@ -43,9 +43,12 @@
 
     pinchangeProgress = 1;
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
+    backgroundImage.alpha = .25;
+    [self.view addSubview:backgroundImage];
 
     UIView *navBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
-    [navBar setBackgroundColor:[UIColor colorWithRed:82.0f/255.0f green:176.0f/255.0f blue:235.0f/255.0f alpha:1.0f]];
+    [navBar setBackgroundColor:[UIColor colorWithRed:63.0f/255.0f green:171.0f/255.0f blue:225.0f/255.0f alpha:1.0f]];
     [self.view addSubview:navBar];
 
     UIButton *back = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -70,7 +73,9 @@
     [navBar addSubview:lbl];
     
     // Do any additional setup after loading the view from its nib.
-    self.pin = [UITextField new]; [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
+    self.pin = [UITextField new];
+    [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
+    self.pin.inputAccessoryView = [[UIView alloc] init];
     [self.pin setDelegate:self]; [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
     [self.view addSubview:self.pin]; [self.pin becomeFirstResponder];
     
@@ -93,7 +98,7 @@
     self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(235,134,30,30)];
     
     self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 15;
-    self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor clearColor];
+    self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor whiteColor];
     self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
     self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
     [self.view addSubview:self.first_num];
@@ -117,16 +122,16 @@
     {
         switch (len) {
             case 4:
-                [self.fourth_num setBackgroundColor:[UIColor clearColor]];
+                [self.fourth_num setBackgroundColor:[UIColor whiteColor]];
                 break;
             case 3:
-                [self.third_num setBackgroundColor:[UIColor clearColor]];
+                [self.third_num setBackgroundColor:[UIColor whiteColor]];
                 break;
             case 2:
-                [self.second_num setBackgroundColor:[UIColor clearColor]];
+                [self.second_num setBackgroundColor:[UIColor whiteColor]];
                 break;
             case 1:
-                [self.first_num setBackgroundColor:[UIColor clearColor]];
+                [self.first_num setBackgroundColor:[UIColor whiteColor]];
                 break;
             case 0:
                 break;
@@ -183,10 +188,10 @@
             newPinString = [NSString stringWithFormat:@"%@%@",textField.text,string];
             [title setText:@"Confirm your PIN"];
             [self.pin setText:@""];
-            [self.first_num setBackgroundColor:[UIColor clearColor]];
-            [self.second_num setBackgroundColor:[UIColor clearColor]];
-            [self.third_num setBackgroundColor:[UIColor clearColor]];
-            [self.fourth_num setBackgroundColor:[UIColor clearColor]];
+            [self.first_num setBackgroundColor:[UIColor whiteColor]];
+            [self.second_num setBackgroundColor:[UIColor whiteColor]];
+            [self.third_num setBackgroundColor:[UIColor whiteColor]];
+            [self.fourth_num setBackgroundColor:[UIColor whiteColor]];
             return NO;
         }
         
@@ -195,10 +200,10 @@
     {
         if (![newPinString isEqualToString:[NSString stringWithFormat:@"%@%@",textField.text,string]])
         {
-            [self.fourth_num setBackgroundColor:[UIColor clearColor]];
-            [self.third_num setBackgroundColor:[UIColor clearColor]];
-            [self.second_num setBackgroundColor:[UIColor clearColor]];
-            [self.first_num setBackgroundColor:[UIColor clearColor]];
+            [self.fourth_num setBackgroundColor:[UIColor whiteColor]];
+            [self.third_num setBackgroundColor:[UIColor whiteColor]];
+            [self.second_num setBackgroundColor:[UIColor whiteColor]];
+            [self.first_num setBackgroundColor:[UIColor whiteColor]];
             self.pin.text = @"";
             newPinString = @"";
             self.prompt.text = @"PINs didn't match - try again";
@@ -267,20 +272,20 @@
             [spinner stopAnimating];
             [spinner setHidden:YES];
             pinchangeProgress=2;
-            [self.fourth_num setBackgroundColor:[UIColor clearColor]];
-            [self.third_num setBackgroundColor:[UIColor clearColor]];
-            [self.second_num setBackgroundColor:[UIColor clearColor]];
-            [self.first_num setBackgroundColor:[UIColor clearColor]];
+            [self.fourth_num setBackgroundColor:[UIColor whiteColor]];
+            [self.third_num setBackgroundColor:[UIColor whiteColor]];
+            [self.second_num setBackgroundColor:[UIColor whiteColor]];
+            [self.first_num setBackgroundColor:[UIColor whiteColor]];
             self.pin.text = @"";
             self.prompt.text = @"";
             title.text = @"Enter New Pin";
         }
         else
         {
-            [self.fourth_num setBackgroundColor:[UIColor clearColor]];
-            [self.third_num setBackgroundColor:[UIColor clearColor]];
-            [self.second_num setBackgroundColor:[UIColor clearColor]];
-            [self.first_num setBackgroundColor:[UIColor clearColor]];
+            [self.fourth_num setBackgroundColor:[UIColor whiteColor]];
+            [self.third_num setBackgroundColor:[UIColor whiteColor]];
+            [self.second_num setBackgroundColor:[UIColor whiteColor]];
+            [self.first_num setBackgroundColor:[UIColor whiteColor]];
             self.pin.text = @"";
         }
         

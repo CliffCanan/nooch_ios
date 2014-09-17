@@ -67,8 +67,10 @@
     // Do any additional setup after loading the view from its nib.
     self.pin = [UITextField new];
     [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
+    self.pin.inputAccessoryView = [[UIView alloc] init];
     [self.pin setDelegate:self];
-    [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
+    [self.pin setFrame:CGRectMake(800, -100, 10, 10)];
+    [self.pin setTextColor:[UIColor clearColor]];
     [self.view addSubview:self.pin];
     [self.pin becomeFirstResponder];
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -450,11 +452,18 @@
             textLoading = @"Generating your request...";
         }
         
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
+        spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
+        
+        self.hud.mode = MBProgressHUDModeCustomView;
+        self.hud.customView = spinner1;
         self.hud.delegate = self;
         self.hud.labelText = textLoading;
         [self.hud show:YES];
+        [spinner1 startAnimating];
+        
         serve *pin = [serve new];
         pin.Delegate = self;
         pin.tagName = @"ValidatePinNumber";

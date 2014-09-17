@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
+#import "SpinKit/RTSpinKitView.h"
 
 @interface knoxWeb : GAITrackedViewController<MBProgressHUDDelegate>
 {
