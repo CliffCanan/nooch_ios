@@ -239,14 +239,39 @@
 }
 - (void)open_terms_webview
 {
-   // [self.navigationController setNavigationBarHidden:NO];
-    isfromRegister = YES;
-    terms *term = [terms new];
-    [nav_ctrl presentViewController:term animated:YES completion: nil];
-    
-    
-}
 
+    isfromRegister=YES;
+    terms *term = [terms new];
+  
+    CGRect rect= term.view.frame;
+    rect.origin.y=self.view.frame.size.height;
+    term.view.frame=rect;
+     [self.view addSubview:term.view];
+    [self addChildViewController:term];
+    [UIView beginAnimations:@"bucketsOff" context:nil];
+    [UIView setAnimationDuration:0.4];
+    [UIView setAnimationDelegate:self];
+    term.view.frame = self.view.frame;
+    [UIView commitAnimations];
+}
+-(void)removeChild:(UIViewController *) child {
+    
+    [UIView animateWithDuration:.4
+                     animations:^{
+                         CGRect rect= self.view.frame;
+                         rect.origin.y=self.view.frame.size.height;
+                         child.view.frame=rect;
+                     }
+                     completion:^(BOOL finished){
+                         NSLog(@"completion block");
+                         [child didMoveToParentViewController:nil];
+                         [child.view removeFromSuperview];
+                         [child removeFromParentViewController];
+                     }];
+    
+
+
+}
 #pragma mark - facebook integration
 - (void)connect_to_facebook
 {
@@ -342,6 +367,20 @@
              [d setObject:imgData forKey:@"image"];
              self.facebook_info = [d mutableCopy];
              [self.facebook setTitle:@"Facebook Connected" forState:UIControlStateNormal];
+             for (UIView*subview in self.facebook.subviews) {
+                 if([subview isMemberOfClass:[UILabel class]])
+                 {
+                     [subview removeFromSuperview];
+                }
+             }
+             UILabel *glyphFB = [UILabel new];
+             [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
+             [glyphFB setFrame:CGRectMake(20, 8, 30, 30)];
+             [glyphFB setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]];
+             [glyphFB setTextColor:[UIColor whiteColor]];
+             
+             [self.facebook addSubview:glyphFB];
+
              [self.facebook setUserInteractionEnabled:NO];
          });
         

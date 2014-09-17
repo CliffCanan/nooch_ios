@@ -10,6 +10,7 @@
 #import "NSData+AESCrypt.h"
 #import "NSString+AESCrypt.h"
 #import "Home.h"
+#import "Register.h"
 @implementation terms
 
 @synthesize termsView,spinner;
@@ -48,7 +49,7 @@
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     float top=0.0f;
-    if (isfromRegister) {
+  if (isfromRegister) {
         UIView*nav_view=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
         nav_view.backgroundColor=kNoochBlue;
         [self.view addSubview:nav_view];
@@ -63,8 +64,13 @@
         [btn_Close setTitle:@"Close" forState:UIControlStateNormal];
         [nav_view addSubview:btn_Close];
         [btn_Close addTarget:self action:@selector(dismissView:) forControlEvents:UIControlEventTouchUpInside];
-        
+      
     }
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.hud];
+    self.hud.delegate = self;
+    self.hud.labelText = @"Loading...";
+    [self.hud show:YES];
     NSURL *webURL = [NSURL URLWithString:@"https://www.nooch.com/tos"];
     termsView=[[UIWebView alloc]initWithFrame:CGRectMake(0, top, 320, [[UIScreen mainScreen] bounds].size.height - 62)];
     termsView.delegate = self;
@@ -79,13 +85,14 @@
 }
 -(void)dismissView:(id)sender{
     [termsView setDelegate:nil];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [(Register *)self.parentViewController removeChild:self];
+   // [self dismissViewControllerAnimated:YES completion:nil];
 }
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title=@"User Agreement";
-    [self.navigationController setNavigationBarHidden:NO];
+    //[self.navigationController setNavigationBarHidden:NO];
    }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
@@ -95,6 +102,7 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
+     [self.hud hide:YES];
     return ;
     UIApplication* app = [UIApplication sharedApplication];
     app.networkActivityIndicatorVisible = NO;
@@ -104,6 +112,7 @@
     app.networkActivityIndicatorVisible = YES;
 }
 -(void)webViewDidFinishLoad:(UIWebView *) portal{
+     [self.hud hide:YES];
     UIApplication* app = [UIApplication sharedApplication];
     app.networkActivityIndicatorVisible = NO;
     [self.navigationItem setRightBarButtonItem:nil];
