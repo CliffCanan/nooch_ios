@@ -74,7 +74,7 @@
     [self.facebook setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     self.facebook.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.facebook setTitle:@"  Facebook" forState:UIControlStateNormal];
-    [self.facebook setFrame:CGRectMake(0, 160, 0, 0)];
+    [self.facebook setFrame:CGRectMake(0, 158, 0, 0)];
     if ([[UIScreen mainScreen] bounds].size.height < 520) {
         [self.facebook setFrame:CGRectMake(0, 165, 0, 0)];
     }
@@ -90,7 +90,7 @@
     [self.facebook addSubview:glyphFB];
     [self.view addSubview:self.facebook];
 
-    UILabel *or = [[UILabel alloc] initWithFrame:CGRectMake(0, 219, 320, 15)];
+    UILabel *or = [[UILabel alloc] initWithFrame:CGRectMake(0, 216, 320, 15)];
     [or setBackgroundColor:[UIColor clearColor]];
     if ([[UIScreen mainScreen] bounds].size.height < 500) {
         [or setFrame:CGRectMake(0, 218, 0, 0)];
@@ -100,14 +100,14 @@
     [or setStyleClass:@"label_small"];
     [self.view addSubview:or];
 
-    UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(20, 261, 60, 20)];
+    UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(20, 254, 60, 20)];
     [name setBackgroundColor:[UIColor clearColor]];
     [name setTextColor:kNoochBlue];
     [name setText:@"Name"];
     [name setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:name];
 
-    self.name_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 261, 200, 30)];
+    self.name_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 254, 200, 30)];
     [self.name_field setBackgroundColor:[UIColor clearColor]];
     [self.name_field setDelegate:self];
     [self.name_field setPlaceholder:@"First and Last Name"];
@@ -119,12 +119,12 @@
     [self.name_field setAutocapitalizationType:UITextAutocapitalizationTypeWords];
     [self.view addSubview:self.name_field];
 
-    UILabel *email = [[UILabel alloc] initWithFrame:CGRectMake(20, 301, 60, 20)];
+    UILabel *email = [[UILabel alloc] initWithFrame:CGRectMake(20, 294, 60, 20)];
     [email setBackgroundColor:[UIColor clearColor]]; [email setTextColor:kNoochBlue]; [email setText:@"Email"];
     [email setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:email];
 
-    self.email_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 301, 200, 30)];
+    self.email_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 294, 200, 30)];
     [self.email_field setBackgroundColor:[UIColor clearColor]];
     [self.email_field setDelegate:self];
     [self.email_field setPlaceholder:@"Email Address"];
@@ -136,14 +136,14 @@
     [self.email_field setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.email_field];
 
-    UILabel *password = [[UILabel alloc] initWithFrame:CGRectMake(20, 341, 80, 20)];
+    UILabel *password = [[UILabel alloc] initWithFrame:CGRectMake(20, 334, 80, 20)];
     [password setBackgroundColor:[UIColor clearColor]];
     [password setTextColor:kNoochBlue];
     [password setText:@"Password"];
     [password setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:password];
 
-    self.password_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 341, 200, 30)];
+    self.password_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 334, 200, 30)];
     [self.password_field setBackgroundColor:[UIColor clearColor]];
     [self.password_field setDelegate:self];
     [self.password_field setPlaceholder:@"Password"];
@@ -156,7 +156,7 @@
     [self.view addSubview:self.password_field];
 
     UILabel * checkbox_box = [UILabel new];
-    [checkbox_box setFrame:CGRectMake(34, 386, 21, 20)];
+    [checkbox_box setFrame:CGRectMake(36, 385, 21, 20)];
     [checkbox_box setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
     [checkbox_box setTextAlignment:NSTextAlignmentCenter];
     [checkbox_box setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-square-o"]];
@@ -166,21 +166,21 @@
     UIButton *checkbox_dot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [checkbox_dot setBackgroundColor:[UIColor clearColor]];
     [checkbox_dot setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"] forState:UIControlStateNormal];
-    [checkbox_dot setFrame:CGRectMake(35, 387, 19, 18)];
+    [checkbox_dot setFrame:CGRectMake(31, 380, 31, 30)];
     [checkbox_dot setStyleId:@"checkbox_dot"];
     [self.view addSubview:checkbox_dot];
     [checkbox_dot addTarget:self action:@selector(termsAndConditions:) forControlEvents:UIControlEventTouchUpInside];
-    isTermsChecked=YES;
+    isTermsChecked = NO;
     
     UILabel * termsText1 = [UILabel new];
     [termsText1 setFont:[UIFont fontWithName:@"Roboto-light" size:13]];
-    [termsText1 setFrame:CGRectMake(63, 388, 55, 14)];
+    [termsText1 setFrame:CGRectMake(65, 387, 55, 14)];
     [termsText1 setText:@"I agree to "];
     [termsText1 setTextColor:kNoochGrayDark];
     [self.view addSubview:termsText1];
 
     UIButton * termsText2 = [UIButton buttonWithType:UIButtonTypeCustom];
-    [termsText2 setFrame:CGRectMake(120, 388, 150, 14)];
+    [termsText2 setFrame:CGRectMake(122, 387, 150, 14)];
     [termsText2 setBackgroundColor:[UIColor clearColor]];
     [termsText2 setTitle:@"Nooch's Terms of Service." forState:UIControlStateNormal];
     [termsText2 setStyleClass:@"termsCheckText"];
@@ -197,7 +197,7 @@
     [self.cont setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     self.cont.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.cont setTitle:@"Continue" forState:UIControlStateNormal];
-    [self.cont setFrame:CGRectMake(10, 415, 300, 60)];
+    [self.cont setFrame:CGRectMake(10, 418, 300, 60)];
     [self.cont addTarget:self action:@selector(continue_to_signup) forControlEvents:UIControlEventTouchUpInside];
     [self.cont setStyleClass:@"button_green"];
     [self.view addSubview:self.cont];
@@ -206,14 +206,14 @@
     UIButton *login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [login setBackgroundColor:[UIColor clearColor]];
     [login setTitle:@"Already a Member?  Sign in here" forState:UIControlStateNormal];
-    [login setFrame:CGRectMake(10, 476, 280, 30)];
+    [login setFrame:CGRectMake(10, 484, 280, 30)];
     [login addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
     [login setStyleClass:@"label_small"];
     [self.view addSubview:login];
     
     UILabel *glyph_login = [UILabel new];
-    [glyph_login setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
-    [glyph_login setFrame:CGRectMake(262, 0, 16, 30)];
+    [glyph_login setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+    [glyph_login setFrame:CGRectMake(264, 0, 16, 30)];
     [glyph_login setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-right"]];
     [glyph_login setTextColor:kNoochBlue];
     [login addSubview:glyph_login];
@@ -248,10 +248,11 @@
 - (void)open_terms_webview
 {
    // [self.navigationController setNavigationBarHidden:NO];
-    isfromRegister=YES;
+    isfromRegister = YES;
     terms *term = [terms new];
     [nav_ctrl presentViewController:term animated:YES completion: nil];
-  //  [self.slidingViewController resetTopView];
+    
+    
 }
 
 #pragma mark - facebook integration
@@ -401,13 +402,19 @@
     }
     else
     {
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
+        spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
-        
-        self.hud.delegate = self;
         self.hud.labelText = @"Registering your account";
+        [spinner1 startAnimating];
+        self.hud.mode = MBProgressHUDModeCustomView;
+        self.hud.customView = spinner1;
+        self.hud.delegate = self;
         [self.hud show:YES];
+
         [[assist shared]setIsloginFromOther:NO];
+
         serve *check_duplicate = [serve new];
         [check_duplicate setTagName:@"check_dup"];
         [check_duplicate setDelegate:self];
@@ -511,7 +518,8 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (textField== self.password_field)
+    self.name_field.text.capitalizedString;
+    if (textField == self.password_field)
     {
         [UIView beginAnimations:@"bucketsOff" context:nil];
         [UIView setAnimationDuration:0.4];
@@ -520,20 +528,20 @@
         [UIView commitAnimations];
         return;
     }
-    [self animateTextField:textField up:NO];
+   // [self animateTextField:textField up:NO];
 }
 
 #pragma mark - adjusting for textfield view
 - (void) animateTextField: (UITextField*) textField up: (BOOL) up
 {
-    const int movementDistance = textField.frame.origin.y/2; // tweak as needed
+/*    const int movementDistance = textField.frame.origin.y/2; // tweak as needed
     const float movementDuration = 0.3f; // tweak as needed
     int movement = (up ? -movementDistance : movementDistance);
     [UIView beginAnimations: @"anim" context: nil];
     [UIView setAnimationBeginsFromCurrentState: YES];
     [UIView setAnimationDuration: movementDuration];
     self.view.frame = CGRectOffset(self.view.frame, 0, movement);
-    [UIView commitAnimations];
+    [UIView commitAnimations];*/
 }
 - (void)didReceiveMemoryWarning
 {
