@@ -18,6 +18,10 @@
 @property(nonatomic,strong) UIButton *choose_pic;
 @property(nonatomic,strong) UIButton *next_button;
 @property(nonatomic) UIImagePickerController *picker;
+@property (nonatomic, retain) ACAccountStore *accountStore;
+@property (nonatomic, retain) ACAccount *facebookAccount;
+@property(nonatomic,strong) __block NSMutableDictionary *facebook_info;
+@property(nonatomic,strong) MBProgressHUD *hud;
 @end
 
 @implementation SelectPicture
@@ -46,31 +50,51 @@
     [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
     if(buttonIndex == 0)
     {
-        self.pic.layer.borderWidth = 3;
-        self.pic.layer.borderColor = kNoochBlue.CGColor;
-        [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
-        if (![self.user objectForKey:@"image"]) {
-            if (![user objectForKey:@"facebook_id"]) {
-                return;
-            }
-            
-            NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal",[user objectForKey:@"facebook_id"]];
-            
-            NSLog(@"FACEBOOK ID IS......:%@", [user objectForKey:@"facebook_id"]);
-            
-            
-            [self.pic setImageWithURL:[NSURL URLWithString:url]
-                    placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]
-                           completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                               
-                               if (image) {
-                                   
-                                   [[assist shared]setTranferImage:nil];
-                                   [[assist shared]setTranferImage:image];
-                               }
-                           }];
-        }
        
+        if (![self.user objectForKey:@"image"]) {
+            
+            
+            if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]){
+                self.accountStore = [[ACAccountStore alloc] init];
+                self.facebookAccount = nil;
+                NSDictionary *options = @{
+                                          ACFacebookAppIdKey: @"198279616971457",
+                                          ACFacebookPermissionsKey: @[@"email",@"user_about_me"],
+                                          ACFacebookAudienceKey: ACFacebookAudienceOnlyMe
+                                          };
+                ACAccountType *facebookAccountType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+                [self.accountStore requestAccessToAccountsWithType:facebookAccountType
+                                                           options:options completion:^(BOOL granted, NSError *e)
+                 {
+                     if (!granted) {
+                         NSLog(@"didnt grant because: %@",e.description);
+                     }
+                     else {
+                         dispatch_async(dispatch_get_main_queue(), ^{
+                             self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+                             [self.navigationController.view addSubview:self.hud];
+                             self.hud.delegate = self;
+                             self.hud.labelText = @"Loading Facebook Photo...";
+                             [self.hud show:YES];
+                         });
+                         NSArray *accounts = [self.accountStore accountsWithAccountType:facebookAccountType];
+                         self.facebookAccount = [accounts lastObject];
+                         //[self renewFb];
+                         [self finishFb];
+                     }
+                 }];
+            }
+            else {
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Not Available" message:@"You do not have a Facebook account attached to this phone." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [av show];
+            }
+  
+        }
+        else{
+            self.pic.layer.borderWidth = 3;
+            self.pic.layer.borderColor = kNoochBlue.CGColor;
+            [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
+        }
 
     }
     else if(buttonIndex == 1)
@@ -96,6 +120,71 @@
         [self presentViewController:self.picker animated:YES completion:Nil];
     }
 }
+-(void)renewFb
+{
+    [self.accountStore renewCredentialsForAccount:(ACAccount *)self.facebookAccount completion:^(ACAccountCredentialRenewResult renewResult, NSError *error){
+        if(!error)
+        {
+            switch (renewResult) {
+                case ACAccountCredentialRenewResultRenewed:
+                    break;
+                case ACAccountCredentialRenewResultRejected:
+                    NSLog(@"User declined permission");
+                    break;
+                case ACAccountCredentialRenewResultFailed:
+                    NSLog(@"non-user-initiated cancel, you may attempt to retry");
+                    break;
+                default:
+                    break;
+            }
+            [self finishFb];
+        }
+        else{
+            //handle error gracefully
+            NSLog(@"error from renew credentials%@",error);
+        }
+    }];
+}
+-(void)finishFb
+{
+    NSString *acessToken = [NSString stringWithFormat:@"%@",self.facebookAccount.credential.oauthToken];
+    NSDictionary *parameters = @{@"access_token": acessToken,@"fields":@"id,username,first_name,last_name,email"};
+    NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me"];
+    SLRequest *feedRequest = [SLRequest
+                              requestForServiceType:SLServiceTypeFacebook
+                              requestMethod:SLRequestMethodGET
+                              URL:feedURL
+                              parameters:parameters];
+    feedRequest.account = self.facebookAccount;
+    self.facebook_info = [NSMutableDictionary new];
+    [feedRequest performRequestWithHandler:^(NSData *respData,
+                                             NSHTTPURLResponse *urlResponse, NSError *error)
+     {
+         self.facebook_info = [NSJSONSerialization
+                               JSONObjectWithData:respData //1
+                               options:kNilOptions
+                               error:&error];
+         dispatch_async(dispatch_get_main_queue(), ^{
+             [self.hud hide:YES];
+            
+             NSString *imageURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal", [self.facebook_info objectForKey:@"id"]];
+             [[NSUserDefaults standardUserDefaults] setObject:[self.facebook_info objectForKey:@"id"] forKey:@"facebook_id"];
+             [self.pic setImageWithURL:[NSURL URLWithString:imageURL]
+                      placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]
+                             completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                                 
+                                 if (image) {
+                                     
+                                     [[assist shared]setTranferImage:nil];
+                                     [[assist shared]setTranferImage:image];
+                                 }
+                             }];
+             
+         });
+         
+     }];
+}
+
 
 -(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size
 {

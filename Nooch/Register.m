@@ -376,6 +376,20 @@
              [d setObject:imgData forKey:@"image"];
              self.facebook_info = [d mutableCopy];
              [self.facebook setTitle:@"Facebook Connected" forState:UIControlStateNormal];
+             for (UIView*subview in self.facebook.subviews) {
+                 if([subview isMemberOfClass:[UILabel class]])
+                 {
+                     [subview removeFromSuperview];
+                }
+             }
+             UILabel *glyphFB = [UILabel new];
+             [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
+             [glyphFB setFrame:CGRectMake(20, 8, 30, 30)];
+             [glyphFB setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]];
+             [glyphFB setTextColor:[UIColor whiteColor]];
+             
+             [self.facebook addSubview:glyphFB];
+
              [self.facebook setUserInteractionEnabled:NO];
          });
         
