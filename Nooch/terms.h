@@ -21,6 +21,4 @@ BOOL isfromRegister;
 @property(nonatomic,retain) IBOutlet UIActivityIndicatorView *spinner;
 @property(nonatomic, retain) IBOutlet UIWebView *termsView;
 
--(IBAction)acceptButtonAction;
-
 @end

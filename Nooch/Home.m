@@ -115,7 +115,7 @@ NSMutableURLRequest *request;
         ReEnterPin * pin = [ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
     }
-    
+
     serve *fb = [serve new];
     [fb setDelegate:self];
     [fb setTagName:@"fb"];
@@ -529,6 +529,16 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                   [NSValue valueWithUIOffset:UIOffsetMake(0.0, -1.0)], UITextAttributeTextShadowOffset, nil];
     [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
 
+/*    
+    NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
+
+    if ([defaults boolForKey:@"hasSeenIntro"] == false)
+    {
+        [self showIntroWithCrossDissolve];
+        [defaults setBool:true forKey:@"hasSeenIntro"];
+    }
+*/
+
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(71, 8, 7, .4);
     shadow.shadowOffset = CGSizeMake(0, 1);
@@ -804,7 +814,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     [[assist shared] setRequestMultiple:NO];
     [[assist shared] setArray:nil];
- 
+
 }
 
 -(void)GetFavorite
@@ -869,6 +879,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     //do carousel
     [self.view addSubview:_carousel];
     [_carousel reloadData];
+
 }
 
 #pragma mark - iCarousel methods

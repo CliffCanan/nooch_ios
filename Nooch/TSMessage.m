@@ -180,7 +180,7 @@ __weak static UIViewController *_defaultViewController;
     }
     return self;
 }
-
+- (void)registerForRemoteNotifications{}
 - (void)fadeInCurrentNotification
 {
     if ([self.messages count] == 0) return;

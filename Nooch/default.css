@@ -444,16 +444,10 @@
             top                 : 180px; */
 		}
 
-        /***Invite Friend***/
-        .smscrossbuttn-icon {
-		width			: 70px;
-		height			: 35px;
-		left			: 10px;
-        }
 		.sendInvitebuttn-icon {
-		width			: 70px;
-		height			: 35px;
-		left			: 245px;
+            width			: 70px;
+            height			: 35px;
+            left			: 245px;
 		}
          .invitesendbutton {
 			width			: 70px;
@@ -1203,18 +1197,6 @@ table-view#select_recipientwithoutSeperator {
     #cancel_send {
         left: 262px;
         width: 40px;
-    }
-    .animate_bubble {
-        animation-name: bubble;
-        animation-duration: 1.35s;
-		animation-timing-function: ease;
-		animation-iteration-count: 1;
-    }
-    .animate_bubble_slow {
-        animation-name: bubble;
-        animation-duration: 2.0s;
-		animation-timing-function: ease;
-		animation-iteration-count: 1;
     }
 	.animate_roll_left {
 		animation-name				: howmuch_roll_left;
@@ -3186,6 +3168,18 @@ table-view#select_recipientwithoutSeperator {
 			scale: 1;
 		}
 	}
+    .animate_bubble {
+        animation-name: bubble;
+        animation-duration: 1.35s;
+		animation-timing-function: ease;
+		animation-iteration-count: 1;
+    }
+    .animate_bubble_slow {
+        animation-name: bubble;
+        animation-duration: 2.0s;
+		animation-timing-function: ease;
+		animation-iteration-count: 1;
+    }
     .animate_bubble_logo {
         animation-name: bubble;
         animation-duration: 2.2s;
@@ -3205,6 +3199,28 @@ table-view#select_recipientwithoutSeperator {
 			scale: 1;
 		}
 	}
+    @keyframes pulse {
+        from {
+			opacity: .5;
+			scale: 1;
+		}
+		20% {
+            scale: 1;
+        }
+        60% {
+            scale: 1.06;
+        }
+		to {
+            opacity: 1;
+			scale: 1;
+		}
+    }
+    .animate_pulse {
+        animation-name: pulse;
+        animation-duration: 1.0s;
+		animation-timing-function: ease;
+		animation-iteration-count: 1;
+    }
     @keyframes fade_slogan {
 		from {
 			opacity: 0;

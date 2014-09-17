@@ -12,7 +12,7 @@
 #import <CoreTelephony/CTCallCenter.h>
 #import "ReEnterPin.h"
 #import "ProfileInfo.h"
-#import "ECSlidingViewController.h"
+//#import "ECSlidingViewController.h"
 #import "METoast.h"
 @implementation AppDelegate
 

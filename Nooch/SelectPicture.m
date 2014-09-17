@@ -167,7 +167,7 @@
          dispatch_async(dispatch_get_main_queue(), ^{
              [self.hud hide:YES];
             
-             NSString *imageURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal", [self.facebook_info objectForKey:@"id"]];
+             NSString *imageURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", [self.facebook_info objectForKey:@"id"]];
              [[NSUserDefaults standardUserDefaults] setObject:[self.facebook_info objectForKey:@"id"] forKey:@"facebook_id"];
              [self.pic setImageWithURL:[NSURL URLWithString:imageURL]
                       placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]
@@ -275,13 +275,15 @@
     
     //back button
     UIButton *btnback = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btnback setBackgroundColor:[UIColor clearColor]];
-    [btnback setFrame:CGRectMake(12, 30, 35, 35)];
+    [btnback setBackgroundColor:[UIColor whiteColor]];
+    [btnback setFrame:CGRectMake(7, 24, 44, 44)];
     [btnback addTarget:self action:@selector(BackClicked1:) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *glyph_back = [UILabel new];
-    [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:23]];
-    [glyph_back setFrame:CGRectMake(0, 14, 30, 30)];
+    [glyph_back setBackgroundColor:[UIColor clearColor]];
+    [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:26]];
+    [glyph_back setTextAlignment:NSTextAlignmentCenter];
+    [glyph_back setFrame:CGRectMake(0, 14, 44, 44)];
     [glyph_back setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-o-left"]];
     [glyph_back setTextColor:kNoochBlue];
     [btnback addSubview:glyph_back];
@@ -334,7 +336,7 @@
     
     self.choose_pic = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.choose_pic setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.choose_pic setStyleClass:@"button_green"];
+    [self.choose_pic setStyleClass:@"button_blue"];
     [self.choose_pic setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     self.choose_pic.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 

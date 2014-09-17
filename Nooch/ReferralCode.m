@@ -153,9 +153,10 @@
 {
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"Thank you! We will be in touch with an invite code soon." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [av show];
-    serve*serveobj=[serve new];
+
+    serve * serveobj = [serve new];
     [serveobj setDelegate:self];
-    serveobj.tagName=@"requestcode";
+    serveobj.tagName = @"requestcode";
     [serveobj ReferalCodeRequest:[self.user valueForKey:@"email"]];
 }
 
@@ -177,15 +178,22 @@
         
         if ([[response objectForKey:@"validateInvitationCodeResult"] boolValue])
         {
+            RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+            spinner1.color = [UIColor whiteColor];
+            self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+            [self.navigationController.view addSubview:self.hud];
+            
+            self.hud.mode = MBProgressHUDModeCustomView;
+            self.hud.customView = spinner1;
+            self.hud.delegate = self;
+            self.hud.labelText = @"Creating your Nooch account";
+            [self.hud show:YES];
+            [spinner1 startAnimating];
+
             serve * serveOBJ = [serve new];
             [serveOBJ setDelegate:self];
             serveOBJ.tagName=@"validate";
             [serveOBJ getTotalReferralCode:self.code_field.text];
-            self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-            [self.navigationController.view addSubview:self.hud];
-            self.hud.delegate = self;
-            self.hud.labelText = @"Creating your Nooch account";
-            [self.hud show:YES];
         }
         else
         {
@@ -194,8 +202,6 @@
             [avInvalidCode show];
             [self.code_field becomeFirstResponder];
             [enter setEnabled:YES];
-            [spinner stopAnimating];
-            [spinner setHidden:YES];
         }
     }
     if ([tagName isEqualToString:@"validate"])
@@ -213,19 +219,14 @@
         else
         {
             [self.hud hide:YES];
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Sorry! Referral Code Expired" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Expired Referral Code" message:@"Sorry, looks like that referral code is no longer valid.  Please try another or request a new code." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             [enter setEnabled:YES];
-            [spinner stopAnimating];
-            [spinner setHidden:YES];
         }
         
     }
     else if ([tagName isEqualToString:@"encrypt"])
     {
-        serve *create = [serve new];
-        [create setDelegate:self];
-        [create setTagName:@"create_account"];
         NSError *error;
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"email"] forKey:@"email"];
@@ -235,43 +236,46 @@
         
         if ([self.user objectForKey:@"facebook_id"]) [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"facebook_id"] forKey:@"facebook_id"];
         
-        if (![[loginResult objectForKey:@"Status"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"Status"]!=NULL) {
+        if (![[loginResult objectForKey:@"Status"] isKindOfClass:[NSNull class]] &&
+              [loginResult objectForKey:@"Status"] != NULL)
+        {
             getEncryptedPassword = [loginResult objectForKey:@"Status"];
         }
         
         [user setObject:[self.user objectForKey:@"first_name"] forKey:@"firstName"];
         [[NSUserDefaults standardUserDefaults]setObject:[self.user objectForKey:@"email"] forKey:@"UserName"];
         
+        serve *create = [serve new];
+        [create setDelegate:self];
+        [create setTagName:@"create_account"];
         [create newUser:[self.user objectForKey:@"email"] first:[self.user objectForKey:@"first_name" ] last:[self.user objectForKey:@"last_name"] password:[[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]] pin:[self.user objectForKey:@"pin_number"] invCode:self.code_field.text fbId:[self.user objectForKey:@"facebook_id"] ? [self.user objectForKey:@"facebook_id"]: @"" ];
         
         self.code_field.text = @"";
     }
     else if ([tagName isEqualToString:@"create_account"])
     {
-        NSLog(@"login result %@",result);
+        NSLog(@"Login Result: %@",result);
         
         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         
-        if([[[response objectForKey:@"MemberRegistrationResult"]objectForKey:@"Result"] isEqualToString:@"Thanks for registering! Check your email to complete activation."])
+        if ([[[response objectForKey:@"MemberRegistrationResult"]objectForKey:@"Result"] isEqualToString:@"Thanks for registering! Check your email to complete activation."])
         {
-            [[NSUserDefaults standardUserDefaults] setObject:@"asdfa" forKey:@"setPrompt"];
-            serve *login = [serve new];
+          //  [[NSUserDefaults standardUserDefaults] setObject:@"asdfa" forKey:@"setPrompt"];
+         //   NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+
+            NSString * udid = [[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"];
+            serve * login = [serve new];
             login.Delegate = self;
             login.tagName = @"login";
-        
-         //   NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-            NSString *udid=[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"];
             [login login:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"] password:getEncryptedPassword remember:YES lat:lat lon:lon uid:udid];
         }
-        else if([[[response objectForKey:@"MemberRegistrationResult"] objectForKey:@"Result"] isEqualToString:@"You are already a nooch member."])
+        else if ([[[response objectForKey:@"MemberRegistrationResult"] objectForKey:@"Result"] isEqualToString:@"You are already a nooch member."])
         {
             [self.hud hide:YES];
-            UIAlertView *decline= [[UIAlertView alloc] initWithTitle:@"Well..." message:@"This address already exists in our system, we are not able to clone you, our apologies." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *decline = [[UIAlertView alloc] initWithTitle:@"Well..." message:@"This address already exists in our system, we are not yet able to clone you, our apologies." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [decline show];
             [decline setTag:1];
             [enter setEnabled:YES];
-            [spinner stopAnimating];
-            [spinner setHidden:YES];
             
             return;
         }
@@ -294,8 +298,7 @@
         me = [core new];
         [me birth];
         [me stamp];
-        [spinner stopAnimating];
-        [spinner setHidden:YES];
+
         Welcome *welc = [Welcome new];
         [self.navigationController pushViewController:welc animated:YES];
     }
@@ -307,11 +310,11 @@
     {
         if (buttonIndex == 1)
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"Thank you! We will be in touch with an invite code soon." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Received" message:@"Thank you! We will be in touch with an invite code soon." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
-            serve*serveobj=[serve new];
+            serve * serveobj = [serve new];
             [serveobj setDelegate:self];
-            serveobj.tagName=@"requestcode";
+            serveobj.tagName = @"requestcode";
             [serveobj ReferalCodeRequest:[self.user valueForKey:@"email"]];
         }
         else
