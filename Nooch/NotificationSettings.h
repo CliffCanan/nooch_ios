@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "serve.h"
 #import "MBProgressHUD.h"
+#import "SpinKit/RTSpinKitView.h"
 
 @interface NotificationSettings : GAITrackedViewController<UITableViewDataSource,UITableViewDelegate,serveD,UIScrollViewDelegate,MBProgressHUDDelegate>
 {

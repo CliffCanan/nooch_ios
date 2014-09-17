@@ -33,7 +33,9 @@
     return self;
 }
 
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.navigationItem setTitle:@"Transfer Details"];
     [super viewWillAppear:animated];
     self.trackedViewName = @"TransactionDetail Screen";
 }
@@ -45,9 +47,17 @@
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
 
-    UIActivityIndicatorView * act = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    [act setFrame:CGRectMake(14, 5, 20, 20)];
-    [act startAnimating];
+    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+    spinner1.color = [UIColor whiteColor];
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.hud];
+    
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.customView = spinner1;
+    self.hud.delegate = self;
+    self.hud.labelText = @"Assembling this transfer...";
+    [self.hud show:YES];
+    [spinner1 startAnimating];
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
@@ -530,7 +540,7 @@
 
 -(void) cancel_invite
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Are you sure you want to cancel this transfer?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Transfer" message:@"Are you sure you want to cancel this transfer?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:310];
 }
@@ -606,21 +616,21 @@
 
 - (void) decline_request
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Reject Request" message:@"Are you sure you want to reject this request?" delegate:self cancelButtonTitle:@"Yes - Reject" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Reject This Request" message:@"Are you sure you want to reject this request?" delegate:self cancelButtonTitle:@"Yes - Reject" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1011];
 }
 
 - (void)cancel_request_to_existing
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel Request" message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Request" message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1010];
 }
 
 - (void)cancel_request_to_nonNoochUser
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel Request" message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Request" message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:2010];
 }
@@ -796,11 +806,17 @@
     
     else if (alertView.tag == 1 && buttonIndex == 0)  // DISPUTE
     {
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
+        spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
+        
+        self.hud.mode = MBProgressHUDModeCustomView;
+        self.hud.customView = spinner1;
         self.hud.delegate = self;
         self.hud.labelText = @"Disputing this transfer...";
         [self.hud show:YES];
+        [spinner1 startAnimating];
         
         self.responseData = [NSMutableData data];
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
@@ -838,11 +854,17 @@
     
     else if ((alertView.tag == 1010 || alertView.tag == 2010) && buttonIndex == 0) // CANCEL Request
     {
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyle9CubeGrid];
+        spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
+        
+        self.hud.mode = MBProgressHUDModeCustomView;
+        self.hud.customView = spinner1;
         self.hud.delegate = self;
         self.hud.labelText = @"Cancelling this request...";
         [self.hud show:YES];
+        [spinner1 startAnimating];
         
         serve *serveObj = [serve new];
         [serveObj setDelegate:self];
@@ -859,12 +881,18 @@
     
     else if (alertView.tag == 310 && buttonIndex == 0) // CANCEL Transfer (Send) Invite
     {
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyle9CubeGrid];
+        spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
+        
+        self.hud.mode = MBProgressHUDModeCustomView;
+        self.hud.customView = spinner1;
         self.hud.delegate = self;
         self.hud.labelText = @"Cancelling this transfer...";
         [self.hud show:YES];
-        
+        [spinner1 startAnimating];
+
         serve * serveObj = [serve new];
         [serveObj setDelegate:self];
         serveObj.tagName = @"CancelMoneyTransferToNonMemberForSender";  // Cancel Request for Existing User
@@ -1129,7 +1157,8 @@
                 statusstr = @"Invited - Pending";
                 [status setStyleClass:@"yellow_text"];
             }
-            else if ( ![[self.trans valueForKey:@"DisputeId"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"DisputeId"]!=NULL )
+            
+            if ( ![[self.trans valueForKey:@"DisputeId"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"DisputeId"]!=NULL )
             {
                 statusstr = @"Disputed:";
                 [status setStyleClass:@"red_text"];

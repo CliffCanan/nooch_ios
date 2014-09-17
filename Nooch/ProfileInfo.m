@@ -245,12 +245,16 @@ UIImageView *picture;
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
     isPhotoUpdate = NO;
-    
+
+    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
+    spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
-    
-    self.hud.delegate = self;
     self.hud.labelText = @"Loading your profile...";
+    [spinner1 startAnimating];
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.customView = spinner1;
+    self.hud.delegate = self;
     [self.hud show:YES];
 
     NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -721,9 +725,6 @@ UIImageView *picture;
         }
 
         NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal",[user objectForKey:@"facebook_id"]];
-        
-        NSLog(@"FACEBOOK ID IS......:%@", [user objectForKey:@"facebook_id"]);
-
    
         [picture setImageWithURL:[NSURL URLWithString:url]
              placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]
@@ -1099,19 +1100,7 @@ UIImageView *picture;
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     [self animateTextField:textField up:YES];
-    
-    UIToolbar * keyboardDoneButtonView = [[UIToolbar alloc] init];
-    [keyboardDoneButtonView sizeToFit];
-    UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-    UIBarButtonItem * doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                   style:UIBarButtonItemStyleDone target:self
-                                                                  action:@selector(doneClicked:)];
-
-    [keyboardDoneButtonView setItems:[NSArray arrayWithObjects:flex, doneButton, nil] animated:YES];
-    
-    textField.inputAccessoryView = keyboardDoneButtonView;
 }
-
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {

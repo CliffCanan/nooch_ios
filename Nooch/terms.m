@@ -66,6 +66,11 @@
         [btn_Close addTarget:self action:@selector(dismissView:) forControlEvents:UIControlEventTouchUpInside];
       
     }
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.hud];
+    self.hud.delegate = self;
+    self.hud.labelText = @"Loading...";
+    [self.hud show:YES];
     NSURL *webURL = [NSURL URLWithString:@"https://www.nooch.com/tos"];
     termsView=[[UIWebView alloc]initWithFrame:CGRectMake(0, top, 320, [[UIScreen mainScreen] bounds].size.height - 62)];
     termsView.delegate = self;
@@ -97,6 +102,7 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
+     [self.hud hide:YES];
     return ;
     UIApplication* app = [UIApplication sharedApplication];
     app.networkActivityIndicatorVisible = NO;
@@ -106,6 +112,7 @@
     app.networkActivityIndicatorVisible = YES;
 }
 -(void)webViewDidFinishLoad:(UIWebView *) portal{
+     [self.hud hide:YES];
     UIApplication* app = [UIApplication sharedApplication];
     app.networkActivityIndicatorVisible = NO;
     [self.navigationItem setRightBarButtonItem:nil];

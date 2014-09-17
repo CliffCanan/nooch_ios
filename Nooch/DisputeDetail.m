@@ -56,12 +56,16 @@
     self.title=@"Dispute Details";
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
+    backgroundImage.alpha = .25;
+    [self.view addSubview:backgroundImage];
+
     self.txtStatus = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.txtStatus setTextAlignment:NSTextAlignmentRight];
     [self.txtStatus setBackgroundColor:[UIColor clearColor]];
     [self.txtStatus setDelegate:self];
     [self.txtStatus setStyleClass:@"table_view_cell_detailtext_1"];
+    [self.txtStatus setStyleClass:@"bold"];
     [self.txtStatus setText:[NSString stringWithFormat:@"%@ ",[self.disputeDetails valueForKey:@"DisputeStatus"]]];
     [self.txtStatus setUserInteractionEnabled:NO];
     [self.txtStatus setTag:0];
@@ -124,7 +128,10 @@
     
     [self.view addSubview:self.txtResolvedD];
     self.list = [UITableView new];
-    [self.list setFrame:CGRectMake(0, 20, 320, 300)];
+    [self.list setFrame:CGRectMake(-1, 20, 322, 300)];
+    self.list.layer.borderColor = Rgb2UIColor(188, 190, 192, 0.85).CGColor;
+    self.list.layer.borderWidth = 1;
+    [self.list setBackgroundColor:[UIColor whiteColor]];
     [self.list setDelegate:self];
     [self.list setDataSource:self];
     [self.list setRowHeight:50];

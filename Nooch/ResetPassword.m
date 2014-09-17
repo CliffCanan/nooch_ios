@@ -26,9 +26,100 @@
     return self;
 }
 
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     self.trackedViewName = @"Reset Password Screen";
+    
+    UIView *navBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
+    [navBar setBackgroundColor:[UIColor colorWithRed:63.0f/255.0f green:171.0f/255.0f blue:225.0f/255.0f alpha:1.0f]];
+    [self.view addSubview:navBar];
+    
+    UIButton *back = [UIButton buttonWithType:UIButtonTypeCustom];
+    [back setStyleClass:@"backbutton"];
+    [back setTitle:@"Cancel" forState:UIControlStateNormal];
+    [back setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
+    back.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [back addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
+    [back setFrame:CGRectMake(0,5, 70, 30)];
+    [navBar addSubview:back];
+    
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(19, 32, 38, .25);
+    shadow.shadowOffset = CGSizeMake(0, -1);
+    
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
+    UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(105, 20, 200, 30)];
+    lbl.attributedText = [[NSAttributedString alloc] initWithString:@"Reset Password"
+                                                         attributes:textAttributes];
+    [lbl setFont:[UIFont systemFontOfSize:22]];
+    [lbl setTextColor:[UIColor whiteColor]];
+    [navBar addSubview:lbl];
+    
+    UITableView *menu = [UITableView new];
+    [menu setStyleId:@"settings_resetpw"];
+    menu.layer.borderColor = Rgb2UIColor(188, 190, 192, 0.85).CGColor;
+    menu.layer.borderWidth = 1;
+    [menu setDelegate:self];
+    [menu setDataSource:self];
+    [menu setScrollEnabled:NO];
+    [self.view addSubview:menu];
+    [menu reloadData];
+    
+    self.old = [[UITextField alloc] initWithFrame:CGRectMake(0, 10, 0, 0)];
+    [self.old setStyleClass:@"resetpw_right_label"];
+    [self.old setDelegate:self];
+    [self.old setPlaceholder:@"Enter Password"];
+    [self.old setSecureTextEntry:YES];
+    self.old.returnKeyType = UIReturnKeyNext;
+    [self.old becomeFirstResponder];
+    
+    self.pass = [[UITextField alloc] initWithFrame:self.old.frame];
+    [self.pass setStyleClass:@"resetpw_right_label"];
+    [self.pass setDelegate:self];
+    [self.pass setPlaceholder:@"New Password"];
+    [self.pass setSecureTextEntry:YES];
+    self.pass.returnKeyType = UIReturnKeyNext;
+    
+    self.confirm = [[UITextField alloc] initWithFrame:self.old.frame];
+    [self.confirm setStyleClass:@"resetpw_right_label"];
+    [self.confirm setDelegate:self];
+    [self.confirm setPlaceholder:@"Confirm Password"];
+    [self.confirm setSecureTextEntry:YES];
+    self.confirm.returnKeyType = UIReturnKeyDone;
+    
+    self.changepwbtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.changepwbtn setFrame:CGRectMake(0, 270, 0, 0)];
+    [self.changepwbtn setStyleClass:@"button_green"];
+    [self.changepwbtn setTitle:@"Change Password" forState:UIControlStateNormal];
+    [self.changepwbtn setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
+    self.changepwbtn.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [self.changepwbtn addTarget:self action:@selector(finishResetPassword:) forControlEvents:UIControlEventTouchUpInside];
+    [self.changepwbtn setEnabled:NO];
+    [self.view addSubview:self.changepwbtn];
+    
+    UIButton *forgot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [forgot setBackgroundColor:[UIColor clearColor]];
+    [forgot setTitle:@"Forgot Password?" forState:UIControlStateNormal];
+    [forgot setFrame:CGRectMake(20, 240, 280, 22)];
+    [forgot.titleLabel setFont:[UIFont fontWithName:@"Roboto-Regular" size:13]];
+    [forgot setTitleColor:kNoochGrayLight forState:UIControlStateNormal];
+    [forgot addTarget:self action:@selector(forgot_pass) forControlEvents:UIControlEventTouchUpInside];
+    [forgot setStyleId:@"label_forgotpw"];
+    [self.view addSubview:forgot];
+    
+    UIButton *helpGlyph = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [helpGlyph setStyleClass:@"navbar_rightside_icon"];
+    [helpGlyph addTarget:self action:@selector(forgot_pass) forControlEvents:UIControlEventTouchUpInside];
+    [helpGlyph setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-question"] forState:UIControlStateNormal];
+    UIBarButtonItem *help = [[UIBarButtonItem alloc] initWithCustomView:helpGlyph];
+    [self.navigationItem setRightBarButtonItem:help];
+
+}
+
+-(void)goBack
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)viewDidLoad
@@ -38,64 +129,10 @@
     self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setTitle:@"Reset Password"];
     
-    [self.view setStyleClass:@"background_gray"];
-    
-    UITableView *menu = [UITableView new];
-    [menu setStyleId:@"settings_resetpw"];
-    [menu setDelegate:self];
-    [menu setDataSource:self];
-    [menu setScrollEnabled:NO];
-    [self.view addSubview:menu];
-    [menu reloadData];
-
-    self.old = [[UITextField alloc] initWithFrame:CGRectMake(0, 10, 0, 0)];
-    [self.old setStyleClass:@"resetpw_right_label"];
-    [self.old setDelegate:self];
-    [self.old setPlaceholder:@"Enter Password"];
-    [self.old setSecureTextEntry:YES];
-    self.old.returnKeyType = UIReturnKeyNext;
-    [self.old becomeFirstResponder];
-
-    self.pass = [[UITextField alloc] initWithFrame:self.old.frame];
-    [self.pass setStyleClass:@"resetpw_right_label"];
-    [self.pass setDelegate:self];
-    [self.pass setPlaceholder:@"New Password"];
-    [self.pass setSecureTextEntry:YES];
-    self.pass.returnKeyType = UIReturnKeyNext;
-
-    self.confirm = [[UITextField alloc] initWithFrame:self.old.frame];
-    [self.confirm setStyleClass:@"resetpw_right_label"];
-    [self.confirm setDelegate:self];
-    [self.confirm setPlaceholder:@"Confirm Password"];
-    [self.confirm setSecureTextEntry:YES];
-    self.confirm.returnKeyType = UIReturnKeyDone;
-
-    self.changepwbtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.changepwbtn setFrame:CGRectMake(0, 205, 0, 0)];
-    [self.changepwbtn setStyleClass:@"button_green"];
-    [self.changepwbtn setTitle:@"Change Password" forState:UIControlStateNormal];
-    [self.changepwbtn setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
-    self.changepwbtn.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    [self.changepwbtn addTarget:self action:@selector(finishResetPassword:) forControlEvents:UIControlEventTouchUpInside];
-    [self.changepwbtn setEnabled:NO];
-    [self.view addSubview:self.changepwbtn];
-
-    UIButton *forgot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [forgot setBackgroundColor:[UIColor clearColor]];
-    [forgot setTitle:@"Forgot Password?" forState:UIControlStateNormal];
-    [forgot setFrame:CGRectMake(20, 257, 280, 26)];
-    [forgot.titleLabel setFont:[UIFont fontWithName:@"Roboto-Regular" size:13]];
-    [forgot setTitleColor:kNoochGrayLight forState:UIControlStateNormal];
-    [forgot addTarget:self action:@selector(forgot_pass) forControlEvents:UIControlEventTouchUpInside];
-    [forgot setStyleId:@"label_forgotpw"];
-    [self.view addSubview:forgot];
-
-    UIButton *helpGlyph = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [helpGlyph setStyleClass:@"navbar_rightside_icon"];
-    [helpGlyph addTarget:self action:@selector(forgot_pass) forControlEvents:UIControlEventTouchUpInside];
-    [helpGlyph setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-question"] forState:UIControlStateNormal];
-    UIBarButtonItem *help = [[UIBarButtonItem alloc] initWithCustomView:helpGlyph];
-    [self.navigationItem setRightBarButtonItem:help];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
+    backgroundImage.alpha = .25;
+    [self.view addSubview:backgroundImage];
 }
 
 - (IBAction)finishResetPassword:(id)sender

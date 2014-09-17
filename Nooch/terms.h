@@ -8,13 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "serve.h"
+#import "MBProgressHUD.h"
+
+
 BOOL isfromRegister;
 
 //@class signin;
 
-@interface terms : GAITrackedViewController <serveD,UIWebViewDelegate>
+@interface terms : GAITrackedViewController <serveD,UIWebViewDelegate,MBProgressHUDDelegate>
 
-
+@property(nonatomic,strong) MBProgressHUD *hud;
 @property(nonatomic,retain) IBOutlet UIActivityIndicatorView *spinner;
 @property(nonatomic, retain) IBOutlet UIWebView *termsView;
 

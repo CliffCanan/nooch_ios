@@ -11,6 +11,7 @@
 #import <Social/Social.h>
 #import "serve.h"
 #import "MBProgressHUD.h"
+#import "SpinKit/RTSpinKitView.h"
 
 @interface Register : GAITrackedViewController<UITextFieldDelegate,serveD,MBProgressHUDDelegate>
 {

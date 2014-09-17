@@ -272,18 +272,33 @@
     [iv setStyleClass:@"lside_menu_icons"];
     if (indexPath.section == 0)
     {
-        if (indexPath.row == 0) {
+        if (indexPath.row == 0)
+        {
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Home"
                                                                             attributes:textAttributes];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-home"];
         }
-        else if(indexPath.row == 1){
+        else if (indexPath.row == 1)
+        {
             cell.textLabel.text = @"Transaction History";
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Transaction History"
                                                                             attributes:textAttributes];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"];
+            
+            NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
+            if ([defaults boolForKey:@"hasPendingItems"] == true)
+            {
+                UILabel * pending_notif = [UILabel new];
+                [pending_notif setText:[NSString stringWithFormat:@"%@",[defaults objectForKey:@"Pending_count"]]];
+                [pending_notif setFrame:CGRectMake(212, 10, 22, 22)];
+                [pending_notif setStyleId:@"pending_notif"];
+                [pending_notif setStyleId:@"pending_notif_lsideMenu"];
+                [cell.contentView addSubview:pending_notif];
+            }
+            
         }
-        else if (indexPath.row == 2){
+        else if (indexPath.row == 2)
+        {
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Statistics"
                                                                             attributes:textAttributes];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-line-chart"];

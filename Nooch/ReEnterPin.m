@@ -8,6 +8,8 @@
 #import "assist.h"
 #import "ECSlidingViewController.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import "SpinKit/RTSpinKitView.h"
+
 @interface ReEnterPin ()<UITextFieldDelegate>
 @property(nonatomic,retain) UIView *first_num;
 @property(nonatomic,retain) UIView *second_num;
@@ -16,6 +18,8 @@
 @property(nonatomic,strong) UILabel *prompt;
 @property(nonatomic,strong) UITextField *pin;
 @property(nonatomic,strong)NSString*pinNumber;
+@property(nonatomic,strong) MBProgressHUD *hud;
+
 @end
 
 @implementation ReEnterPin
@@ -56,9 +60,13 @@
     [self.prompt setText:@""];
     [self.prompt setStyleClass:@"pin_entry_feedback"];
     
-    self.pin = [UITextField new]; [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
-    [self.pin setDelegate:self]; [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
-    [self.view addSubview:self.pin]; [self.pin becomeFirstResponder];
+    self.pin = [UITextField new];
+    [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
+    self.pin.inputAccessoryView = [[UIView alloc] init];
+    [self.pin setDelegate:self];
+    [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
+    [self.view addSubview:self.pin];
+    [self.pin becomeFirstResponder];
     
     self.first_num = [[UIView alloc] initWithFrame:CGRectMake(44,180,30,30)];
     self.second_num = [[UIView alloc] initWithFrame:CGRectMake(106,180,30,30)];
@@ -129,14 +137,22 @@
         }
     }
     
-    if (len==4) {
-        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        [self.view addSubview:spinner];
-        spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-        [spinner startAnimating];
+    if (len==4)
+    {
+       /* RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+        spinner1.color = [UIColor whiteColor];
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:self.hud];
+        
+        self.hud.mode = MBProgressHUDModeCustomView;
+        self.hud.customView = spinner1;
+        self.hud.delegate = self;
+        self.hud.labelText = @"Validating your PIN";
+        [self.hud show:YES];
+        [spinner1 startAnimating]; */
+        
         self.pinNumber=[NSString stringWithFormat:@"%@%@",textField.text,string];
         serve *pin = [serve new];
-        
         pin.Delegate = self;
         pin.tagName = @"ValidatePinNumber";
         [pin getEncrypt:[NSString stringWithFormat:@"%@",self.pinNumber]];

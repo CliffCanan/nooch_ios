@@ -10,6 +10,8 @@
 //#import "GetLocation.h"
 #import "Register.h"
 #import "ECSlidingViewController.h"
+#import "SpinKit/RTSpinKitView.h"
+
 @interface ReferralCode ()//<GetLocationDelegate>
 {
     //GetLocation*getLocation;
@@ -96,6 +98,7 @@
     self.code_field = [[UITextField alloc] initWithFrame:CGRectMake(55, 250, 210, 60)];
     [self.code_field setBackgroundColor:[UIColor whiteColor]]; 
     [self.code_field setTextColor:kNoochGrayDark];
+    self.code_field.inputAccessoryView = [[UIView alloc] init];
     [self.code_field setKeyboardType:UIKeyboardTypeAlphabet];
     [self.code_field setReturnKeyType:UIReturnKeyGo];
     [self.code_field setDelegate:self];
@@ -126,24 +129,24 @@
         [enter setEnabled:YES];
         return;
     }
-
+    
+    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+    spinner1.color = [UIColor whiteColor];
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.hud];
+    
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.customView = spinner1;
+    self.hud.delegate = self;
+    self.hud.labelText = @"Validating your invite code";
+    [self.hud show:YES];
+    [spinner1 startAnimating];
+    
     [enter setEnabled:NO];
-    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [self.view addSubview:spinner];
-    spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-    [spinner startAnimating];
-        
     serve *inv_code = [serve new];
     [inv_code setDelegate:self];
     [inv_code setTagName:@"inv_check"];
     [inv_code validateInviteCode:[self.code_field.text uppercaseString]];
-        
-    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:self.hud];
-    self.hud.delegate = self;
-    self.hud.labelText = @"Validating your invite code";
-    [self.hud show:YES];
-
 }
 
 - (void)request_code
