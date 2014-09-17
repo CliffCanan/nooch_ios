@@ -73,7 +73,9 @@
     [navBar addSubview:lbl];
     
     // Do any additional setup after loading the view from its nib.
-    self.pin = [UITextField new]; [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
+    self.pin = [UITextField new];
+    [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
+    self.pin.inputAccessoryView = [[UIView alloc] init];
     [self.pin setDelegate:self]; [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
     [self.view addSubview:self.pin]; [self.pin becomeFirstResponder];
     

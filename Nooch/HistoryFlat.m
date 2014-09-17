@@ -14,6 +14,7 @@
 #import "Register.h"
 #import "TransferPIN.h"
 #import "ProfileInfo.h"
+
 @interface HistoryFlat ()<GMSMapViewDelegate>
 {
     GMSMapView * mapView_;
@@ -601,12 +602,16 @@ return customView;
 
 -(void)loadHist:(NSString*)filter index:(int)ind len:(int)len subType:(NSString*)subType
 {
+    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+    spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-
     [self.navigationController.view addSubview:self.hud];
-    self.hud.delegate = self;
     self.hud.labelText = @"Loading Transaction History";
     [self.hud show:YES];
+    [spinner1 startAnimating];
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.customView = spinner1;
+    self.hud.delegate = self;
 
     isSearch = NO;
     isLocalSearch = NO;
@@ -615,6 +620,7 @@ return customView;
     [serveOBJ setDelegate:self];
     serveOBJ.tagName = @"hist";
     [serveOBJ histMore:filter sPos:ind len:len subType:subTypestr];
+    
 }
 
 #pragma mark - transaction type switching

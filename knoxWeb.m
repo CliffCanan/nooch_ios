@@ -10,6 +10,7 @@
 #import "ProfileInfo.h"
 #import "Home.h"
 #import "Welcome.h"
+
 @interface knoxWeb ()<serveD,UIWebViewDelegate>
 {
     NSString *jsonString;
@@ -74,11 +75,17 @@
     [self.view addSubview:self.web];
     [self.web.scrollView setScrollEnabled:YES];
     
+    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+    spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
+    
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.customView = spinner1;
     self.hud.delegate = self;
     self.hud.labelText = @"Preparing Secure Connection";
     [self.hud show:YES];
+    [spinner1 startAnimating];
 
     NSString *body = [NSString stringWithFormat: @"amount=%@&api_key=%@&api_password=%@&invoice_detail=%@&recurring=%@&information_request=%@&redirect_url=%@", @".01",@"7068_59cd5c1f5a75c31",@"7068_da64134cc66a5f0",@"Onboard",@"ot",@"show_all",@"nooch://"];
 	NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@?%@",@"https://knoxpayments.com/nooch/index.php",body]];

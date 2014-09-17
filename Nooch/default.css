@@ -2721,9 +2721,9 @@ table-view#select_recipientwithoutSeperator {
     }
     #remove_account_glyph {
         font-family : "FontAwesome";
-        font-size   : 23px;
+        font-size   : 24px;
         animation-name				: zoom;
-		animation-duration			: 0.8s;
+		animation-duration			: 0.7s;
 		animation-timing-function	: ease;
     }
     .divider {
@@ -3229,13 +3229,15 @@ table-view#select_recipientwithoutSeperator {
     @keyframes zoom {
 		from {
 			opacity: .3;
-			scale: .1;
+			scale: .2;
 		}
-		82% {scale: 1.15;}
+		45% {scale: 1.12;}
+		62% {scale: .85;}
+		83% {scale: 1.05;}
 		to {opacity: 1;
 			scale: 1;
 		}
-	}
+    }
 	
 /**  FLOATING Stats Circle Icon **/
 @keyframes floatingStatsCircle {

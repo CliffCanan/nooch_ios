@@ -12,6 +12,8 @@
 #import "HowMuch.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
+#import "SpinKit/RTSpinKitView.h"
+
 BOOL isphoneBook;
 NSMutableArray*arrRecipientsForRequest;
 BOOL isAddRequest;

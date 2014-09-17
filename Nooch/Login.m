@@ -14,6 +14,8 @@
 #import "NavControl.h"
 #import "NSString+MD5Addition.h"
 #import "UIDevice+IdentifierAddition.h"
+#import "SpinKit/RTSpinKitView.h"
+
 @interface Login (){
     core*me;
 }
@@ -39,11 +41,17 @@
 
 - (void)check_credentials
 {
+    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+    spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
+    
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.customView = spinner1;
     self.hud.delegate = self;
     self.hud.labelText = @"Checking Login Credentials...";
     [self.hud show:YES];
+    [spinner1 startAnimating];
 
     serve *log = [serve new];
     [log setDelegate:self];
@@ -116,6 +124,7 @@
     self.email = [[UITextField alloc] initWithFrame:CGRectMake(30, 140, 300, 40)];
     [self.email setBackgroundColor:[UIColor clearColor]];
     [self.email setPlaceholder:@"Email"];
+    self.email.inputAccessoryView = [[UIView alloc] init];
     [self.email setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     [self.email setAutocorrectionType:UITextAutocorrectionTypeNo];
     [self.email setKeyboardType:UIKeyboardTypeEmailAddress];
@@ -138,6 +147,7 @@
     self.password = [[UITextField alloc] initWithFrame:CGRectMake(30, 182, 260, 40)];
     [self.password setBackgroundColor:[UIColor clearColor]];
     [self.password setPlaceholder:@"Password"];
+    self.password.inputAccessoryView = [[UIView alloc] init];
     [self.password setSecureTextEntry:YES];
     [self.password setTextAlignment:NSTextAlignmentRight];
     [self.password setReturnKeyType:UIReturnKeyGo];

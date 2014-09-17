@@ -101,6 +101,57 @@
 		5C69CFA819C777D800EB406F /* Knox_lightbox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFA619C777D800EB406F /* Knox_lightbox@2x.png */; };
 		5C69CFBC19C8F20F00EB406F /* SIAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69CFB819C8F20F00EB406F /* SIAlertView.m */; };
 		5C69CFBD19C8F20F00EB406F /* UIWindow+SIUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69CFBA19C8F20F00EB406F /* UIWindow+SIUtils.m */; };
+		5C69CFE219C92F6000EB406F /* TSBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69CFDD19C92F6000EB406F /* TSBlurView.m */; };
+		5C69CFE319C92F6000EB406F /* TSMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69CFDF19C92F6000EB406F /* TSMessage.m */; };
+		5C69CFE419C92F6000EB406F /* TSMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69CFE119C92F6000EB406F /* TSMessageView.m */; };
+		5C69CFF819C92F7400EB406F /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFE619C92F7400EB406F /* .gitkeep */; };
+		5C69CFF919C92F7400EB406F /* NotificationBackgroundError.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFE719C92F7400EB406F /* NotificationBackgroundError.png */; };
+		5C69CFFA19C92F7400EB406F /* NotificationBackgroundError@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFE819C92F7400EB406F /* NotificationBackgroundError@2x.png */; };
+		5C69CFFB19C92F7400EB406F /* NotificationBackgroundErrorIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFE919C92F7400EB406F /* NotificationBackgroundErrorIcon.png */; };
+		5C69CFFC19C92F7400EB406F /* NotificationBackgroundErrorIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFEA19C92F7400EB406F /* NotificationBackgroundErrorIcon@2x.png */; };
+		5C69CFFD19C92F7400EB406F /* NotificationBackgroundMessage.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFEB19C92F7400EB406F /* NotificationBackgroundMessage.png */; };
+		5C69CFFE19C92F7400EB406F /* NotificationBackgroundMessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFEC19C92F7400EB406F /* NotificationBackgroundMessage@2x.png */; };
+		5C69CFFF19C92F7400EB406F /* NotificationBackgroundSuccess.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFED19C92F7400EB406F /* NotificationBackgroundSuccess.png */; };
+		5C69D00019C92F7400EB406F /* NotificationBackgroundSuccess@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFEE19C92F7400EB406F /* NotificationBackgroundSuccess@2x.png */; };
+		5C69D00119C92F7400EB406F /* NotificationBackgroundSuccessIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFEF19C92F7400EB406F /* NotificationBackgroundSuccessIcon.png */; };
+		5C69D00219C92F7400EB406F /* NotificationBackgroundSuccessIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFF019C92F7400EB406F /* NotificationBackgroundSuccessIcon@2x.png */; };
+		5C69D00319C92F7400EB406F /* NotificationBackgroundWarning.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFF119C92F7400EB406F /* NotificationBackgroundWarning.png */; };
+		5C69D00419C92F7400EB406F /* NotificationBackgroundWarning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFF219C92F7400EB406F /* NotificationBackgroundWarning@2x.png */; };
+		5C69D00519C92F7400EB406F /* NotificationBackgroundWarningIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFF319C92F7400EB406F /* NotificationBackgroundWarningIcon.png */; };
+		5C69D00619C92F7400EB406F /* NotificationBackgroundWarningIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFF419C92F7400EB406F /* NotificationBackgroundWarningIcon@2x.png */; };
+		5C69D00719C92F7400EB406F /* NotificationButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFF519C92F7400EB406F /* NotificationButtonBackground.png */; };
+		5C69D00819C92F7400EB406F /* NotificationButtonBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFF619C92F7400EB406F /* NotificationButtonBackground@2x.png */; };
+		5C69D00919C92F7400EB406F /* TSMessagesDefaultDesign.json in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFF719C92F7400EB406F /* TSMessagesDefaultDesign.json */; };
+		5C69D00C19C9323000EB406F /* HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D00B19C9323000EB406F /* HexColor.m */; };
+		5C69D02819C9380500EB406F /* IQBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D00F19C9380500EB406F /* IQBarButtonItem.m */; };
+		5C69D02919C9380500EB406F /* IQKeyboardManager.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5C69D01019C9380500EB406F /* IQKeyboardManager.bundle */; };
+		5C69D02A19C9380500EB406F /* IQKeyboardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D01219C9380500EB406F /* IQKeyboardManager.m */; };
+		5C69D02B19C9380500EB406F /* IQKeyboardReturnKeyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D01619C9380500EB406F /* IQKeyboardReturnKeyHandler.m */; };
+		5C69D02C19C9380500EB406F /* IQNSArray+Sort.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D01819C9380500EB406F /* IQNSArray+Sort.m */; };
+		5C69D02D19C9380500EB406F /* IQSegmentedNextPrevious.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D01A19C9380500EB406F /* IQSegmentedNextPrevious.m */; };
+		5C69D02E19C9380500EB406F /* IQTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D01C19C9380500EB406F /* IQTextView.m */; };
+		5C69D02F19C9380500EB406F /* IQTitleBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D01E19C9380500EB406F /* IQTitleBarButtonItem.m */; };
+		5C69D03019C9380500EB406F /* IQToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D02019C9380500EB406F /* IQToolbar.m */; };
+		5C69D03119C9380500EB406F /* IQUIView+Hierarchy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D02219C9380500EB406F /* IQUIView+Hierarchy.m */; };
+		5C69D03219C9380500EB406F /* IQUIView+IQKeyboardToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D02419C9380500EB406F /* IQUIView+IQKeyboardToolbar.m */; };
+		5C69D03319C9380500EB406F /* IQUIWindow+Hierarchy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D02619C9380500EB406F /* IQUIWindow+Hierarchy.m */; };
+		5C69D05A19C941DB00EB406F /* RTSpinKit9CubeGridAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D03819C941DB00EB406F /* RTSpinKit9CubeGridAnimation.m */; };
+		5C69D05B19C941DB00EB406F /* RTSpinKitArcAltAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D03A19C941DB00EB406F /* RTSpinKitArcAltAnimation.m */; };
+		5C69D05C19C941DB00EB406F /* RTSpinKitArcAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D03C19C941DB00EB406F /* RTSpinKitArcAnimation.m */; };
+		5C69D05D19C941DB00EB406F /* RTSpinKitBounceAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D03E19C941DB00EB406F /* RTSpinKitBounceAnimation.m */; };
+		5C69D05E19C941DB00EB406F /* RTSpinKitChasingDotsAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D04019C941DB00EB406F /* RTSpinKitChasingDotsAnimation.m */; };
+		5C69D05F19C941DB00EB406F /* RTSpinKitCircleAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D04219C941DB00EB406F /* RTSpinKitCircleAnimation.m */; };
+		5C69D06019C941DB00EB406F /* RTSpinKitCircleFlipAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D04419C941DB00EB406F /* RTSpinKitCircleFlipAnimation.m */; };
+		5C69D06119C941DB00EB406F /* RTSpinKitFadingCircleAltAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D04619C941DB00EB406F /* RTSpinKitFadingCircleAltAnimation.m */; };
+		5C69D06219C941DB00EB406F /* RTSpinKitFadingCircleAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D04819C941DB00EB406F /* RTSpinKitFadingCircleAnimation.m */; };
+		5C69D06319C941DB00EB406F /* RTSpinKitPlaneAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D04A19C941DB00EB406F /* RTSpinKitPlaneAnimation.m */; };
+		5C69D06419C941DB00EB406F /* RTSpinKitPulseAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D04C19C941DB00EB406F /* RTSpinKitPulseAnimation.m */; };
+		5C69D06519C941DB00EB406F /* RTSpinKitThreeBounceAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D04E19C941DB00EB406F /* RTSpinKitThreeBounceAnimation.m */; };
+		5C69D06619C941DB00EB406F /* RTSpinKitWanderingCubesAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D05019C941DB00EB406F /* RTSpinKitWanderingCubesAnimation.m */; };
+		5C69D06719C941DB00EB406F /* RTSpinKitWaveAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D05219C941DB00EB406F /* RTSpinKitWaveAnimation.m */; };
+		5C69D06819C941DB00EB406F /* RTSpinKitWordPressAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D05419C941DB00EB406F /* RTSpinKitWordPressAnimation.m */; };
+		5C69D06919C941DB00EB406F /* RTSpinKitUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D05719C941DB00EB406F /* RTSpinKitUtils.m */; };
+		5C69D06A19C941DB00EB406F /* RTSpinKitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D05919C941DB00EB406F /* RTSpinKitView.m */; };
 		5CC1A77819BA7A8A0000C2C7 /* Icon29.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77419BA7A8A0000C2C7 /* Icon29.png */; };
 		5CC1A77919BA7A8A0000C2C7 /* Icon58.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77519BA7A8A0000C2C7 /* Icon58.png */; };
 		5CC1A77A19BA7A8A0000C2C7 /* Icon80.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77619BA7A8A0000C2C7 /* Icon80.png */; };
@@ -374,6 +425,93 @@
 		5C69CFB819C8F20F00EB406F /* SIAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIAlertView.m; sourceTree = "<group>"; };
 		5C69CFB919C8F20F00EB406F /* UIWindow+SIUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+SIUtils.h"; sourceTree = "<group>"; };
 		5C69CFBA19C8F20F00EB406F /* UIWindow+SIUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+SIUtils.m"; sourceTree = "<group>"; };
+		5C69CFDC19C92F6000EB406F /* TSBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSBlurView.h; sourceTree = "<group>"; };
+		5C69CFDD19C92F6000EB406F /* TSBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSBlurView.m; sourceTree = "<group>"; };
+		5C69CFDE19C92F6000EB406F /* TSMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMessage.h; sourceTree = "<group>"; };
+		5C69CFDF19C92F6000EB406F /* TSMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMessage.m; sourceTree = "<group>"; };
+		5C69CFE019C92F6000EB406F /* TSMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMessageView.h; sourceTree = "<group>"; };
+		5C69CFE119C92F6000EB406F /* TSMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMessageView.m; sourceTree = "<group>"; };
+		5C69CFE619C92F7400EB406F /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		5C69CFE719C92F7400EB406F /* NotificationBackgroundError.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotificationBackgroundError.png; sourceTree = "<group>"; };
+		5C69CFE819C92F7400EB406F /* NotificationBackgroundError@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationBackgroundError@2x.png"; sourceTree = "<group>"; };
+		5C69CFE919C92F7400EB406F /* NotificationBackgroundErrorIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotificationBackgroundErrorIcon.png; sourceTree = "<group>"; };
+		5C69CFEA19C92F7400EB406F /* NotificationBackgroundErrorIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationBackgroundErrorIcon@2x.png"; sourceTree = "<group>"; };
+		5C69CFEB19C92F7400EB406F /* NotificationBackgroundMessage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotificationBackgroundMessage.png; sourceTree = "<group>"; };
+		5C69CFEC19C92F7400EB406F /* NotificationBackgroundMessage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationBackgroundMessage@2x.png"; sourceTree = "<group>"; };
+		5C69CFED19C92F7400EB406F /* NotificationBackgroundSuccess.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotificationBackgroundSuccess.png; sourceTree = "<group>"; };
+		5C69CFEE19C92F7400EB406F /* NotificationBackgroundSuccess@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationBackgroundSuccess@2x.png"; sourceTree = "<group>"; };
+		5C69CFEF19C92F7400EB406F /* NotificationBackgroundSuccessIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotificationBackgroundSuccessIcon.png; sourceTree = "<group>"; };
+		5C69CFF019C92F7400EB406F /* NotificationBackgroundSuccessIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationBackgroundSuccessIcon@2x.png"; sourceTree = "<group>"; };
+		5C69CFF119C92F7400EB406F /* NotificationBackgroundWarning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotificationBackgroundWarning.png; sourceTree = "<group>"; };
+		5C69CFF219C92F7400EB406F /* NotificationBackgroundWarning@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationBackgroundWarning@2x.png"; sourceTree = "<group>"; };
+		5C69CFF319C92F7400EB406F /* NotificationBackgroundWarningIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotificationBackgroundWarningIcon.png; sourceTree = "<group>"; };
+		5C69CFF419C92F7400EB406F /* NotificationBackgroundWarningIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationBackgroundWarningIcon@2x.png"; sourceTree = "<group>"; };
+		5C69CFF519C92F7400EB406F /* NotificationButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotificationButtonBackground.png; sourceTree = "<group>"; };
+		5C69CFF619C92F7400EB406F /* NotificationButtonBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationButtonBackground@2x.png"; sourceTree = "<group>"; };
+		5C69CFF719C92F7400EB406F /* TSMessagesDefaultDesign.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TSMessagesDefaultDesign.json; sourceTree = "<group>"; };
+		5C69D00A19C9323000EB406F /* HexColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HexColor.h; sourceTree = "<group>"; };
+		5C69D00B19C9323000EB406F /* HexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HexColor.m; sourceTree = "<group>"; };
+		5C69D00E19C9380500EB406F /* IQBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQBarButtonItem.h; sourceTree = "<group>"; };
+		5C69D00F19C9380500EB406F /* IQBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IQBarButtonItem.m; sourceTree = "<group>"; };
+		5C69D01019C9380500EB406F /* IQKeyboardManager.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = IQKeyboardManager.bundle; sourceTree = "<group>"; };
+		5C69D01119C9380500EB406F /* IQKeyboardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQKeyboardManager.h; sourceTree = "<group>"; };
+		5C69D01219C9380500EB406F /* IQKeyboardManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IQKeyboardManager.m; sourceTree = "<group>"; };
+		5C69D01319C9380500EB406F /* IQKeyboardManagerConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQKeyboardManagerConstants.h; sourceTree = "<group>"; };
+		5C69D01419C9380500EB406F /* IQKeyboardManagerConstantsInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQKeyboardManagerConstantsInternal.h; sourceTree = "<group>"; };
+		5C69D01519C9380500EB406F /* IQKeyboardReturnKeyHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQKeyboardReturnKeyHandler.h; sourceTree = "<group>"; };
+		5C69D01619C9380500EB406F /* IQKeyboardReturnKeyHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IQKeyboardReturnKeyHandler.m; sourceTree = "<group>"; };
+		5C69D01719C9380500EB406F /* IQNSArray+Sort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IQNSArray+Sort.h"; sourceTree = "<group>"; };
+		5C69D01819C9380500EB406F /* IQNSArray+Sort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IQNSArray+Sort.m"; sourceTree = "<group>"; };
+		5C69D01919C9380500EB406F /* IQSegmentedNextPrevious.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQSegmentedNextPrevious.h; sourceTree = "<group>"; };
+		5C69D01A19C9380500EB406F /* IQSegmentedNextPrevious.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IQSegmentedNextPrevious.m; sourceTree = "<group>"; };
+		5C69D01B19C9380500EB406F /* IQTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQTextView.h; sourceTree = "<group>"; };
+		5C69D01C19C9380500EB406F /* IQTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IQTextView.m; sourceTree = "<group>"; };
+		5C69D01D19C9380500EB406F /* IQTitleBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQTitleBarButtonItem.h; sourceTree = "<group>"; };
+		5C69D01E19C9380500EB406F /* IQTitleBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IQTitleBarButtonItem.m; sourceTree = "<group>"; };
+		5C69D01F19C9380500EB406F /* IQToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQToolbar.h; sourceTree = "<group>"; };
+		5C69D02019C9380500EB406F /* IQToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IQToolbar.m; sourceTree = "<group>"; };
+		5C69D02119C9380500EB406F /* IQUIView+Hierarchy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IQUIView+Hierarchy.h"; sourceTree = "<group>"; };
+		5C69D02219C9380500EB406F /* IQUIView+Hierarchy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IQUIView+Hierarchy.m"; sourceTree = "<group>"; };
+		5C69D02319C9380500EB406F /* IQUIView+IQKeyboardToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IQUIView+IQKeyboardToolbar.h"; sourceTree = "<group>"; };
+		5C69D02419C9380500EB406F /* IQUIView+IQKeyboardToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IQUIView+IQKeyboardToolbar.m"; sourceTree = "<group>"; };
+		5C69D02519C9380500EB406F /* IQUIWindow+Hierarchy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IQUIWindow+Hierarchy.h"; sourceTree = "<group>"; };
+		5C69D02619C9380500EB406F /* IQUIWindow+Hierarchy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IQUIWindow+Hierarchy.m"; sourceTree = "<group>"; };
+		5C69D02719C9380500EB406F /* KeyboardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardManager.h; sourceTree = "<group>"; };
+		5C69D03719C941DB00EB406F /* RTSpinKit9CubeGridAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSpinKit9CubeGridAnimation.h; sourceTree = "<group>"; };
+		5C69D03819C941DB00EB406F /* RTSpinKit9CubeGridAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSpinKit9CubeGridAnimation.m; sourceTree = "<group>"; };
+		5C69D03919C941DB00EB406F /* RTSpinKitArcAltAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSpinKitArcAltAnimation.h; sourceTree = "<group>"; };
+		5C69D03A19C941DB00EB406F /* RTSpinKitArcAltAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSpinKitArcAltAnimation.m; sourceTree = "<group>"; };
+		5C69D03B19C941DB00EB406F /* RTSpinKitArcAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSpinKitArcAnimation.h; sourceTree = "<group>"; };
+		5C69D03C19C941DB00EB406F /* RTSpinKitArcAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSpinKitArcAnimation.m; sourceTree = "<group>"; };
+		5C69D03D19C941DB00EB406F /* RTSpinKitBounceAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSpinKitBounceAnimation.h; sourceTree = "<group>"; };
+		5C69D03E19C941DB00EB406F /* RTSpinKitBounceAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSpinKitBounceAnimation.m; sourceTree = "<group>"; };
+		5C69D03F19C941DB00EB406F /* RTSpinKitChasingDotsAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSpinKitChasingDotsAnimation.h; sourceTree = "<group>"; };
+		5C69D04019C941DB00EB406F /* RTSpinKitChasingDotsAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSpinKitChasingDotsAnimation.m; sourceTree = "<group>"; };
+		5C69D04119C941DB00EB406F /* RTSpinKitCircleAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSpinKitCircleAnimation.h; sourceTree = "<group>"; };
+		5C69D04219C941DB00EB406F /* RTSpinKitCircleAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSpinKitCircleAnimation.m; sourceTree = "<group>"; };
+		5C69D04319C941DB00EB406F /* RTSpinKitCircleFlipAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSpinKitCircleFlipAnimation.h; sourceTree = "<group>"; };
+		5C69D04419C941DB00EB406F /* RTSpinKitCircleFlipAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSpinKitCircleFlipAnimation.m; sourceTree = "<group>"; };
+		5C69D04519C941DB00EB406F /* RTSpinKitFadingCircleAltAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSpinKitFadingCircleAltAnimation.h; sourceTree = "<group>"; };
+		5C69D04619C941DB00EB406F /* RTSpinKitFadingCircleAltAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSpinKitFadingCircleAltAnimation.m; sourceTree = "<group>"; };
+		5C69D04719C941DB00EB406F /* RTSpinKitFadingCircleAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSpinKitFadingCircleAnimation.h; sourceTree = "<group>"; };
+		5C69D04819C941DB00EB406F /* RTSpinKitFadingCircleAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSpinKitFadingCircleAnimation.m; sourceTree = "<group>"; };
+		5C69D04919C941DB00EB406F /* RTSpinKitPlaneAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSpinKitPlaneAnimation.h; sourceTree = "<group>"; };
+		5C69D04A19C941DB00EB406F /* RTSpinKitPlaneAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSpinKitPlaneAnimation.m; sourceTree = "<group>"; };
+		5C69D04B19C941DB00EB406F /* RTSpinKitPulseAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSpinKitPulseAnimation.h; sourceTree = "<group>"; };
+		5C69D04C19C941DB00EB406F /* RTSpinKitPulseAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSpinKitPulseAnimation.m; sourceTree = "<group>"; };
+		5C69D04D19C941DB00EB406F /* RTSpinKitThreeBounceAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSpinKitThreeBounceAnimation.h; sourceTree = "<group>"; };
+		5C69D04E19C941DB00EB406F /* RTSpinKitThreeBounceAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSpinKitThreeBounceAnimation.m; sourceTree = "<group>"; };
+		5C69D04F19C941DB00EB406F /* RTSpinKitWanderingCubesAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSpinKitWanderingCubesAnimation.h; sourceTree = "<group>"; };
+		5C69D05019C941DB00EB406F /* RTSpinKitWanderingCubesAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSpinKitWanderingCubesAnimation.m; sourceTree = "<group>"; };
+		5C69D05119C941DB00EB406F /* RTSpinKitWaveAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSpinKitWaveAnimation.h; sourceTree = "<group>"; };
+		5C69D05219C941DB00EB406F /* RTSpinKitWaveAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSpinKitWaveAnimation.m; sourceTree = "<group>"; };
+		5C69D05319C941DB00EB406F /* RTSpinKitWordPressAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSpinKitWordPressAnimation.h; sourceTree = "<group>"; };
+		5C69D05419C941DB00EB406F /* RTSpinKitWordPressAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSpinKitWordPressAnimation.m; sourceTree = "<group>"; };
+		5C69D05519C941DB00EB406F /* RTSpinKitAnimating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSpinKitAnimating.h; sourceTree = "<group>"; };
+		5C69D05619C941DB00EB406F /* RTSpinKitUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSpinKitUtils.h; sourceTree = "<group>"; };
+		5C69D05719C941DB00EB406F /* RTSpinKitUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSpinKitUtils.m; sourceTree = "<group>"; };
+		5C69D05819C941DB00EB406F /* RTSpinKitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSpinKitView.h; sourceTree = "<group>"; };
+		5C69D05919C941DB00EB406F /* RTSpinKitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSpinKitView.m; sourceTree = "<group>"; };
 		5CC1A77419BA7A8A0000C2C7 /* Icon29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon29.png; sourceTree = "<group>"; };
 		5CC1A77519BA7A8A0000C2C7 /* Icon58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon58.png; sourceTree = "<group>"; };
 		5CC1A77619BA7A8A0000C2C7 /* Icon80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon80.png; sourceTree = "<group>"; };
@@ -968,6 +1106,130 @@
 			path = SIAlertView;
 			sourceTree = "<group>";
 		};
+		5C69CFDB19C92E7D00EB406F /* TSMessages */ = {
+			isa = PBXGroup;
+			children = (
+				5C69CFE519C92F7400EB406F /* Assets */,
+				5C69D00A19C9323000EB406F /* HexColor.h */,
+				5C69D00B19C9323000EB406F /* HexColor.m */,
+				5C69CFDC19C92F6000EB406F /* TSBlurView.h */,
+				5C69CFDD19C92F6000EB406F /* TSBlurView.m */,
+				5C69CFDE19C92F6000EB406F /* TSMessage.h */,
+				5C69CFDF19C92F6000EB406F /* TSMessage.m */,
+				5C69CFE019C92F6000EB406F /* TSMessageView.h */,
+				5C69CFE119C92F6000EB406F /* TSMessageView.m */,
+			);
+			name = TSMessages;
+			sourceTree = "<group>";
+		};
+		5C69CFE519C92F7400EB406F /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				5C69CFE619C92F7400EB406F /* .gitkeep */,
+				5C69CFE719C92F7400EB406F /* NotificationBackgroundError.png */,
+				5C69CFE819C92F7400EB406F /* NotificationBackgroundError@2x.png */,
+				5C69CFE919C92F7400EB406F /* NotificationBackgroundErrorIcon.png */,
+				5C69CFEA19C92F7400EB406F /* NotificationBackgroundErrorIcon@2x.png */,
+				5C69CFEB19C92F7400EB406F /* NotificationBackgroundMessage.png */,
+				5C69CFEC19C92F7400EB406F /* NotificationBackgroundMessage@2x.png */,
+				5C69CFED19C92F7400EB406F /* NotificationBackgroundSuccess.png */,
+				5C69CFEE19C92F7400EB406F /* NotificationBackgroundSuccess@2x.png */,
+				5C69CFEF19C92F7400EB406F /* NotificationBackgroundSuccessIcon.png */,
+				5C69CFF019C92F7400EB406F /* NotificationBackgroundSuccessIcon@2x.png */,
+				5C69CFF119C92F7400EB406F /* NotificationBackgroundWarning.png */,
+				5C69CFF219C92F7400EB406F /* NotificationBackgroundWarning@2x.png */,
+				5C69CFF319C92F7400EB406F /* NotificationBackgroundWarningIcon.png */,
+				5C69CFF419C92F7400EB406F /* NotificationBackgroundWarningIcon@2x.png */,
+				5C69CFF519C92F7400EB406F /* NotificationButtonBackground.png */,
+				5C69CFF619C92F7400EB406F /* NotificationButtonBackground@2x.png */,
+				5C69CFF719C92F7400EB406F /* TSMessagesDefaultDesign.json */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		5C69D00D19C9380500EB406F /* IQKeyBoardManager */ = {
+			isa = PBXGroup;
+			children = (
+				5C69D00E19C9380500EB406F /* IQBarButtonItem.h */,
+				5C69D00F19C9380500EB406F /* IQBarButtonItem.m */,
+				5C69D01019C9380500EB406F /* IQKeyboardManager.bundle */,
+				5C69D01119C9380500EB406F /* IQKeyboardManager.h */,
+				5C69D01219C9380500EB406F /* IQKeyboardManager.m */,
+				5C69D01319C9380500EB406F /* IQKeyboardManagerConstants.h */,
+				5C69D01419C9380500EB406F /* IQKeyboardManagerConstantsInternal.h */,
+				5C69D01519C9380500EB406F /* IQKeyboardReturnKeyHandler.h */,
+				5C69D01619C9380500EB406F /* IQKeyboardReturnKeyHandler.m */,
+				5C69D01719C9380500EB406F /* IQNSArray+Sort.h */,
+				5C69D01819C9380500EB406F /* IQNSArray+Sort.m */,
+				5C69D01919C9380500EB406F /* IQSegmentedNextPrevious.h */,
+				5C69D01A19C9380500EB406F /* IQSegmentedNextPrevious.m */,
+				5C69D01B19C9380500EB406F /* IQTextView.h */,
+				5C69D01C19C9380500EB406F /* IQTextView.m */,
+				5C69D01D19C9380500EB406F /* IQTitleBarButtonItem.h */,
+				5C69D01E19C9380500EB406F /* IQTitleBarButtonItem.m */,
+				5C69D01F19C9380500EB406F /* IQToolbar.h */,
+				5C69D02019C9380500EB406F /* IQToolbar.m */,
+				5C69D02119C9380500EB406F /* IQUIView+Hierarchy.h */,
+				5C69D02219C9380500EB406F /* IQUIView+Hierarchy.m */,
+				5C69D02319C9380500EB406F /* IQUIView+IQKeyboardToolbar.h */,
+				5C69D02419C9380500EB406F /* IQUIView+IQKeyboardToolbar.m */,
+				5C69D02519C9380500EB406F /* IQUIWindow+Hierarchy.h */,
+				5C69D02619C9380500EB406F /* IQUIWindow+Hierarchy.m */,
+				5C69D02719C9380500EB406F /* KeyboardManager.h */,
+			);
+			path = IQKeyBoardManager;
+			sourceTree = "<group>";
+		};
+		5C69D03519C941DB00EB406F /* SpinKit */ = {
+			isa = PBXGroup;
+			children = (
+				5C69D03619C941DB00EB406F /* Animations */,
+				5C69D05519C941DB00EB406F /* RTSpinKitAnimating.h */,
+				5C69D05619C941DB00EB406F /* RTSpinKitUtils.h */,
+				5C69D05719C941DB00EB406F /* RTSpinKitUtils.m */,
+				5C69D05819C941DB00EB406F /* RTSpinKitView.h */,
+				5C69D05919C941DB00EB406F /* RTSpinKitView.m */,
+			);
+			path = SpinKit;
+			sourceTree = "<group>";
+		};
+		5C69D03619C941DB00EB406F /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				5C69D03719C941DB00EB406F /* RTSpinKit9CubeGridAnimation.h */,
+				5C69D03819C941DB00EB406F /* RTSpinKit9CubeGridAnimation.m */,
+				5C69D03919C941DB00EB406F /* RTSpinKitArcAltAnimation.h */,
+				5C69D03A19C941DB00EB406F /* RTSpinKitArcAltAnimation.m */,
+				5C69D03B19C941DB00EB406F /* RTSpinKitArcAnimation.h */,
+				5C69D03C19C941DB00EB406F /* RTSpinKitArcAnimation.m */,
+				5C69D03D19C941DB00EB406F /* RTSpinKitBounceAnimation.h */,
+				5C69D03E19C941DB00EB406F /* RTSpinKitBounceAnimation.m */,
+				5C69D03F19C941DB00EB406F /* RTSpinKitChasingDotsAnimation.h */,
+				5C69D04019C941DB00EB406F /* RTSpinKitChasingDotsAnimation.m */,
+				5C69D04119C941DB00EB406F /* RTSpinKitCircleAnimation.h */,
+				5C69D04219C941DB00EB406F /* RTSpinKitCircleAnimation.m */,
+				5C69D04319C941DB00EB406F /* RTSpinKitCircleFlipAnimation.h */,
+				5C69D04419C941DB00EB406F /* RTSpinKitCircleFlipAnimation.m */,
+				5C69D04519C941DB00EB406F /* RTSpinKitFadingCircleAltAnimation.h */,
+				5C69D04619C941DB00EB406F /* RTSpinKitFadingCircleAltAnimation.m */,
+				5C69D04719C941DB00EB406F /* RTSpinKitFadingCircleAnimation.h */,
+				5C69D04819C941DB00EB406F /* RTSpinKitFadingCircleAnimation.m */,
+				5C69D04919C941DB00EB406F /* RTSpinKitPlaneAnimation.h */,
+				5C69D04A19C941DB00EB406F /* RTSpinKitPlaneAnimation.m */,
+				5C69D04B19C941DB00EB406F /* RTSpinKitPulseAnimation.h */,
+				5C69D04C19C941DB00EB406F /* RTSpinKitPulseAnimation.m */,
+				5C69D04D19C941DB00EB406F /* RTSpinKitThreeBounceAnimation.h */,
+				5C69D04E19C941DB00EB406F /* RTSpinKitThreeBounceAnimation.m */,
+				5C69D04F19C941DB00EB406F /* RTSpinKitWanderingCubesAnimation.h */,
+				5C69D05019C941DB00EB406F /* RTSpinKitWanderingCubesAnimation.m */,
+				5C69D05119C941DB00EB406F /* RTSpinKitWaveAnimation.h */,
+				5C69D05219C941DB00EB406F /* RTSpinKitWaveAnimation.m */,
+				5C69D05319C941DB00EB406F /* RTSpinKitWordPressAnimation.h */,
+				5C69D05419C941DB00EB406F /* RTSpinKitWordPressAnimation.m */,
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
 		6B1C157C16D4306000FBEFBB /* Custom Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -1078,10 +1340,13 @@
 		6B30372C15FA3FF300056DAD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5C69D03519C941DB00EB406F /* SpinKit */,
+				5C69CFDB19C92E7D00EB406F /* TSMessages */,
 				84B79FFD19BEDEB50081A2AF /* iCarousel.h */,
 				84B79FFE19BEDEB50081A2AF /* iCarousel.m */,
 				5C69CFB519C8F20F00EB406F /* SIAlertView */,
 				0103AEA918FC8B8D003225DA /* FAImageView.h */,
+				5C69D00D19C9380500EB406F /* IQKeyBoardManager */,
 				0103AEAA18FC8B8D003225DA /* FAImageView.m */,
 				0103AEAB18FC8B8D003225DA /* NSString+FontAwesome.h */,
 				0103AEAC18FC8B8D003225DA /* NSString+FontAwesome.m */,
@@ -1489,22 +1754,29 @@
 				6BC5FECB1625F1B0007EAD7A /* Roboto-Black.ttf in Resources */,
 				84BD1A3619B5A0C600ECC983 /* GoogleMaps.bundle in Resources */,
 				6BC5FECD1625F1B0007EAD7A /* Roboto-BlackItalic.ttf in Resources */,
+				5C69D00519C92F7400EB406F /* NotificationBackgroundWarningIcon.png in Resources */,
 				01C26DAD1843BB22005179B7 /* dispute-icon.png in Resources */,
+				5C69CFFF19C92F7400EB406F /* NotificationBackgroundSuccess.png in Resources */,
 				6BC5FECF1625F1B0007EAD7A /* Roboto-Bold.ttf in Resources */,
 				6BC5FED11625F1B0007EAD7A /* Roboto-BoldCondensed.ttf in Resources */,
 				84F099531988AD840020A08F /* Default.png in Resources */,
 				8420B39D187AC4BF00A77E2D /* green-pin.png in Resources */,
 				5C6917DB19B69AD90044BF2B /* nooch_logo_color.png in Resources */,
 				849AF6BD19A3183000693385 /* close_button.png in Resources */,
+				5C69D00219C92F7400EB406F /* NotificationBackgroundSuccessIcon@2x.png in Resources */,
 				6BC5FED31625F1B0007EAD7A /* Roboto-BoldCondensedItalic.ttf in Resources */,
 				845C0BD81973F30200E17E52 /* whiteBack.png in Resources */,
 				6BC5FED51625F1B0007EAD7A /* Roboto-BoldItalic.ttf in Resources */,
+				5C69D00419C92F7400EB406F /* NotificationBackgroundWarning@2x.png in Resources */,
+				5C69CFFA19C92F7400EB406F /* NotificationBackgroundError@2x.png in Resources */,
 				6BC5FED71625F1B0007EAD7A /* Roboto-Condensed.ttf in Resources */,
+				5C69D00319C92F7400EB406F /* NotificationBackgroundWarning.png in Resources */,
 				6BC5FED91625F1B0007EAD7A /* Roboto-CondensedItalic.ttf in Resources */,
 				6BC5FEDB1625F1B0007EAD7A /* Roboto-Italic.ttf in Resources */,
 				01C26DBF1843BB22005179B7 /* stats-profile-inactive.png in Resources */,
 				6BC5FEDD1625F1B0007EAD7A /* Roboto-Light.ttf in Resources */,
 				6BC5FEDF1625F1B0007EAD7A /* Roboto-LightItalic.ttf in Resources */,
+				5C69CFF919C92F7400EB406F /* NotificationBackgroundError.png in Resources */,
 				84F099541988AD840020A08F /* Default@2x.png in Resources */,
 				8420B39F187AC4BF00A77E2D /* pink-pin.png in Resources */,
 				6BC5FEE11625F1B0007EAD7A /* Roboto-Medium.ttf in Resources */,
@@ -1513,7 +1785,9 @@
 				6BC5FEE51625F1B0007EAD7A /* Roboto-Regular.ttf in Resources */,
 				01C26DB61843BB22005179B7 /* memo-nonprofits.png in Resources */,
 				5CC1A77B19BA7A8A0000C2C7 /* Icon120.png in Resources */,
+				5C69CFFB19C92F7400EB406F /* NotificationBackgroundErrorIcon.png in Resources */,
 				6BC5FEE71625F1B0007EAD7A /* Roboto-Thin.ttf in Resources */,
+				5C69D00619C92F7400EB406F /* NotificationBackgroundWarningIcon@2x.png in Resources */,
 				6BC5FEE91625F1B0007EAD7A /* Roboto-ThinItalic.ttf in Resources */,
 				010A993B185FA99F001DCE6B /* n_Icon_58x66.png in Resources */,
 				01C26DC11843BB22005179B7 /* stats-transfers-inactive.png in Resources */,
@@ -1536,6 +1810,7 @@
 				5CC1A77A19BA7A8A0000C2C7 /* Icon80.png in Resources */,
 				6BC04B9C1677DE0E005C68D6 /* LICENSE in Resources */,
 				01C26DC21843BB22005179B7 /* twitter-icon.png in Resources */,
+				5C69D00119C92F7400EB406F /* NotificationBackgroundSuccessIcon.png in Resources */,
 				01C26DBE1843BB22005179B7 /* stats-profile-active.png in Resources */,
 				8465B8D2198A075300921F8A /* bank.png in Resources */,
 				01C26DBD1843BB22005179B7 /* stats-donations-inactive.png in Resources */,
@@ -1553,10 +1828,12 @@
 				014C433B185BB9EE00956A84 /* default.css in Resources */,
 				8420B39E187AC4BF00A77E2D /* orange-pin.png in Resources */,
 				6BE13327176F65D8009763AC /* BackgroundMain-568h@2x.png in Resources */,
+				5C69CFFE19C92F7400EB406F /* NotificationBackgroundMessage@2x.png in Resources */,
 				6BE1332D176F65D8009763AC /* SplashPageBckgrnd-568h@2x.png in Resources */,
 				8420B39B187AC4BF00A77E2D /* Black-pin.png in Resources */,
 				0106773C1860F68400E11F3D /* take-pic-icon.png in Resources */,
 				84C3EF18187D0E82004687F6 /* mapBack.png in Resources */,
+				5C69D00819C92F7400EB406F /* NotificationButtonBackground@2x.png in Resources */,
 				01C26DB21843BB22005179B7 /* fb-icon-90x90.png in Resources */,
 				845631B61990AD45005B90F6 /* whiteBack30.png in Resources */,
 				0129D8E71815B10D00BEAC30 /* Brandon_bld.otf in Resources */,
@@ -1565,17 +1842,24 @@
 				845B49A819B4722B009695AA /* Images-2.xcassets in Resources */,
 				8420B39C187AC4BF00A77E2D /* blue-pin.png in Resources */,
 				8481F08F19A1CA75007F6565 /* selectRecipientIntro.png in Resources */,
+				5C69D00019C92F7400EB406F /* NotificationBackgroundSuccess@2x.png in Resources */,
+				5C69CFFC19C92F7400EB406F /* NotificationBackgroundErrorIcon@2x.png in Resources */,
 				0129D8E81815B10D00BEAC30 /* Brandon_blk.otf in Resources */,
 				0129D8E91815B10D00BEAC30 /* Brandon_light.otf in Resources */,
 				5CC1A77819BA7A8A0000C2C7 /* Icon29.png in Resources */,
 				5CC1A77919BA7A8A0000C2C7 /* Icon58.png in Resources */,
+				5C69D00919C92F7400EB406F /* TSMessagesDefaultDesign.json in Resources */,
+				5C69D00719C92F7400EB406F /* NotificationButtonBackground.png in Resources */,
+				5C69D02919C9380500EB406F /* IQKeyboardManager.bundle in Resources */,
 				845631B71990AD45005B90F6 /* whiteBack30@2x.png in Resources */,
 				0129D8EA1815B10D00BEAC30 /* Brandon_med.otf in Resources */,
 				01C26DAE1843BB22005179B7 /* Dollar_Symbol.png in Resources */,
+				5C69CFF819C92F7400EB406F /* .gitkeep in Resources */,
 				014C432F185B9A4C00956A84 /* n_Icon.png in Resources */,
 				01C26DB31843BB22005179B7 /* fb-icon100x100.png in Resources */,
 				01C26DB91843BB22005179B7 /* pay-back-icon.png in Resources */,
 				5C38468D19C56694002AEB15 /* check@2x.png in Resources */,
+				5C69CFFD19C92F7400EB406F /* NotificationBackgroundMessage.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1586,18 +1870,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C69D02A19C9380500EB406F /* IQKeyboardManager.m in Sources */,
 				84443CAC18A0BD9E0097F6C0 /* NSString+MD5Addition.m in Sources */,
 				01CABC5518A2BD9500BBB935 /* ECSlidingViewController.m in Sources */,
+				5C69D05D19C941DB00EB406F /* RTSpinKitBounceAnimation.m in Sources */,
+				5C69D03319C9380500EB406F /* IQUIWindow+Hierarchy.m in Sources */,
+				5C69D03219C9380500EB406F /* IQUIView+IQKeyboardToolbar.m in Sources */,
 				01085FBD17FC9C8B00A31F63 /* Welcome.m in Sources */,
+				5C69D02C19C9380500EB406F /* IQNSArray+Sort.m in Sources */,
 				01085FDB1803338700A31F63 /* NotificationSettings.m in Sources */,
 				01085FCF18030B6900A31F63 /* Login.m in Sources */,
 				16E4B1B4187053F20099D075 /* SDWebImageDownloader.m in Sources */,
+				5C69D06419C941DB00EB406F /* RTSpinKitPulseAnimation.m in Sources */,
 				01B2CA9918B3CC20008E6901 /* SWCellScrollView.m in Sources */,
 				6B3037DE15FA478F00056DAD /* Constant.m in Sources */,
+				5C69D06619C941DB00EB406F /* RTSpinKitWanderingCubesAnimation.m in Sources */,
 				846EF0C8198B57D2009D5491 /* Home.m in Sources */,
+				5C69D00C19C9323000EB406F /* HexColor.m in Sources */,
+				5C69D05A19C941DB00EB406F /* RTSpinKit9CubeGridAnimation.m in Sources */,
 				01085FC317FDE5C700A31F63 /* LeftMenu.m in Sources */,
 				6B3037AD15FA45BB00056DAD /* NSData+AESCrypt.m in Sources */,
 				6B3037AF15FA45BB00056DAD /* NSString+AESCrypt.m in Sources */,
+				5C69D05F19C941DB00EB406F /* RTSpinKitCircleAnimation.m in Sources */,
 				0103AEB118FC8B8D003225DA /* UIFont+FontAwesome.m in Sources */,
 				84193343187537A800D85FC4 /* GetLocation.m in Sources */,
 				0103AEAF18FC8B8D003225DA /* FAImageView.m in Sources */,
@@ -1610,6 +1904,9 @@
 				16E4B1B9187053F20099D075 /* UIImage+GIF.m in Sources */,
 				84D8794218BF3ED200A60A38 /* METoast.m in Sources */,
 				0169E22D18D8D7C200442642 /* knoxWeb.m in Sources */,
+				5C69D02E19C9380500EB406F /* IQTextView.m in Sources */,
+				5C69D06719C941DB00EB406F /* RTSpinKitWaveAnimation.m in Sources */,
+				5C69CFE319C92F6000EB406F /* TSMessage.m in Sources */,
 				0179E9FC17F36C4C0027526C /* Helpers.m in Sources */,
 				16E4B1BD187053F20099D075 /* MKAnnotationView+WebCache.m in Sources */,
 				01085FC917FDFDB300A31F63 /* HistoryFlat.m in Sources */,
@@ -1618,27 +1915,36 @@
 				16E4B1B3187053F20099D075 /* SDWebImageDecoder.m in Sources */,
 				6B30373615FA3FF400056DAD /* AppDelegate.m in Sources */,
 				01085FF81803461500A31F63 /* ResetPIN.m in Sources */,
+				5C69D06319C941DB00EB406F /* RTSpinKitPlaneAnimation.m in Sources */,
 				6B75E9F415FE74CA00B091D8 /* terms.m in Sources */,
 				01085FCC17FF3DE600A31F63 /* TransactionDetails.m in Sources */,
 				6B75E9FB15FE7EE300B091D8 /* main 2.m in Sources */,
+				5C69D02F19C9380500EB406F /* IQTitleBarButtonItem.m in Sources */,
 				01B2CA9C18B3CC20008E6901 /* SWUtilityButtonTapGestureRecognizer.m in Sources */,
 				84C3EF1B187D101E004687F6 /* ReEnterPin.m in Sources */,
+				5C69D05C19C941DB00EB406F /* RTSpinKitArcAnimation.m in Sources */,
 				01085FAE17FB4BFA00A31F63 /* SelectPicture.m in Sources */,
+				5C69D06119C941DB00EB406F /* RTSpinKitFadingCircleAltAnimation.m in Sources */,
 				84443CAD18A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.m in Sources */,
 				01085FC017FCB13100A31F63 /* InitSliding.m in Sources */,
 				01086006180349E100A31F63 /* Statistics.m in Sources */,
 				842E3313187413490057EAFB /* Decryption.m in Sources */,
+				5C69D06919C941DB00EB406F /* RTSpinKitUtils.m in Sources */,
 				01086009180349F600A31F63 /* LimitsAndFees.m in Sources */,
+				5C69D02819C9380500EB406F /* IQBarButtonItem.m in Sources */,
 				841A3E0D18A61491001DAAA2 /* UIImage+Alpha.m in Sources */,
 				01085FA917FB2D2100A31F63 /* Register.m in Sources */,
+				5C69D02D19C9380500EB406F /* IQSegmentedNextPrevious.m in Sources */,
 				01085FD81803337C00A31F63 /* PINSettings.m in Sources */,
 				6B425A64165568420092B16A /* UIImage+ColorAtPixel.m in Sources */,
 				16E4B1B6187053F20099D075 /* SDWebImageManager.m in Sources */,
 				6BA6C0AF16BC3B8B00A89D7D /* privacy.m in Sources */,
 				01C83E7B17F4D726009CABBF /* HowMuch.m in Sources */,
 				16E4B1BC187053F20099D075 /* UIImageView+WebCache.m in Sources */,
+				5C69D06519C941DB00EB406F /* RTSpinKitThreeBounceAnimation.m in Sources */,
 				16E4B1B7187053F20099D075 /* SDWebImagePrefetcher.m in Sources */,
 				16E4B1B8187053F20099D075 /* UIButton+WebCache.m in Sources */,
+				5C69D03119C9380500EB406F /* IQUIView+Hierarchy.m in Sources */,
 				6B83649B16C314370034655F /* serve.m in Sources */,
 				01B2CA9A18B3CC20008E6901 /* SWLongPressGestureRecognizer.m in Sources */,
 				01B2CA9B18B3CC20008E6901 /* SWTableViewCell.m in Sources */,
@@ -1648,23 +1954,33 @@
 				5C69CFBD19C8F20F00EB406F /* UIWindow+SIUtils.m in Sources */,
 				6B89276116DEA49C00F9100F /* FPPopoverView.m in Sources */,
 				841A3E0F18A61491001DAAA2 /* UIImage+RoundedCorner.m in Sources */,
+				5C69CFE419C92F6000EB406F /* TSMessageView.m in Sources */,
 				16E4B1BB187053F20099D075 /* UIImage+WebP.m in Sources */,
 				841A3E0E18A61491001DAAA2 /* UIImage+Resize.m in Sources */,
 				01B2CA9D18B3CC20008E6901 /* SWUtilityButtonView.m in Sources */,
 				6B89276216DEA49C00F9100F /* FPTouchView.m in Sources */,
+				5C69D06019C941DB00EB406F /* RTSpinKitCircleFlipAnimation.m in Sources */,
+				5C69CFE219C92F6000EB406F /* TSBlurView.m in Sources */,
+				5C69D05B19C941DB00EB406F /* RTSpinKitArcAltAnimation.m in Sources */,
 				6B89276516DEB10200F9100F /* popSelect.m in Sources */,
 				01B2CA9818B3CC20008E6901 /* NSMutableArray+SWUtilityButtons.m in Sources */,
+				5C69D06219C941DB00EB406F /* RTSpinKitFadingCircleAnimation.m in Sources */,
 				842E3316187424440057EAFB /* GetEncryptionValue.m in Sources */,
 				01C49AEC18D8C83500BACE23 /* MBProgressHUD.m in Sources */,
+				5C69D06A19C941DB00EB406F /* RTSpinKitView.m in Sources */,
 				01085FD218030E5900A31F63 /* SettingsOptions.m in Sources */,
 				01C83E8417FB1606009CABBF /* NavControl.m in Sources */,
+				5C69D05E19C941DB00EB406F /* RTSpinKitChasingDotsAnimation.m in Sources */,
 				0103AEB018FC8B8D003225DA /* NSString+FontAwesome.m in Sources */,
+				5C69D03019C9380500EB406F /* IQToolbar.m in Sources */,
 				018DA86318048309007B24FB /* SendInvite.m in Sources */,
 				01C83E8017F9FF9E009CABBF /* TransferPIN.m in Sources */,
 				0179E9F017F35A740027526C /* SelectRecipient.m in Sources */,
 				5C69CFBC19C8F20F00EB406F /* SIAlertView.m in Sources */,
+				5C69D06819C941DB00EB406F /* RTSpinKitWordPressAnimation.m in Sources */,
 				16E4B1B2187053F20099D075 /* SDWebImageCompat.m in Sources */,
 				16E4B1B1187053F20099D075 /* SDImageCache.m in Sources */,
+				5C69D02B19C9380500EB406F /* IQKeyboardReturnKeyHandler.m in Sources */,
 				16E4B1B5187053F20099D075 /* SDWebImageDownloaderOperation.m in Sources */,
 				01C26DFB1843E676005179B7 /* Reachability.m in Sources */,
 				84172D15186D416D0041929F /* core.m in Sources */,

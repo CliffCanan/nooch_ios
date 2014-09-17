@@ -13,6 +13,8 @@
 #import "SWTableViewCell.h"
 #import "Home.h"
 #import <MessageUI/MessageUI.h>
+#import "SpinKit/RTSpinKitView.h"
+
 BOOL isHistFilter;
 NSString*listType;
 @interface HistoryFlat : GAITrackedViewController<UITableViewDataSource,UITableViewDelegate,

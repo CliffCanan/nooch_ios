@@ -101,15 +101,17 @@
     [self.view addSubview:self.contacts];
     [self.contacts reloadData];
 
-    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [self.view addSubview:spinner];
-    spinner.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-
+    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
+    spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
+    
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.customView = spinner1;
     self.hud.delegate = self;
     self.hud.labelText = @"Building Your Recent List";
-    [self.hud show:YES];   
+    [self.hud show:YES];
+    [spinner1 startAnimating];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -527,16 +529,22 @@
         
         [search setHidden:NO];
 
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleFadingCircleAlt];
+        spinner1.color = [UIColor whiteColor];
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:self.hud];
+        
+        self.hud.mode = MBProgressHUDModeCustomView;
+        self.hud.customView = spinner1;
+        self.hud.delegate = self;
+        self.hud.labelText = @"Loading your recent list";
+        [self.hud show:YES];
+        [spinner1 startAnimating];
+
         serve *recents = [serve new];
         [recents setTagName:@"recents"];
         [recents setDelegate:self];
         [recents getRecents];
-
-        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-        [self.navigationController.view addSubview:self.hud];
-        self.hud.delegate = self;
-        self.hud.labelText = @"Loading your Recent list";
-        [self.hud show:YES];
     } 
     else
     {
@@ -569,16 +577,22 @@
         
         [search setHidden:YES];
 
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
+        spinner1.color = [UIColor whiteColor];
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:self.hud];
+        
+        self.hud.mode = MBProgressHUDModeCustomView;
+        self.hud.customView = spinner1;
+        self.hud.delegate = self;
+        self.hud.labelText = @"Finding Nooch users near you";
+        [self.hud show:YES];
+        [spinner1 startAnimating];
+
         serve * ser = [serve new];
         ser.tagName = @"searchByLocation";
         [ser setDelegate:self];
         [ser getLocationBasedSearch:@"15"];
-
-        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-        [self.navigationController.view addSubview:self.hud];
-        self.hud.delegate = self;
-        self.hud.labelText = @"Finding Nooch users near you";
-        [self.hud show:YES];
     }
 }
 

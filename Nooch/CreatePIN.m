@@ -195,9 +195,13 @@
     [self.prompt setText:@"You'll be asked to enter this PIN anytime you send or request money."];
     [self.prompt setStyleClass:@"instruction_text"];
 
-    self.pin = [UITextField new]; [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
-    [self.pin setDelegate:self]; [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
-    [self.view addSubview:self.pin]; [self.pin becomeFirstResponder];
+    self.pin = [UITextField new];
+    self.pin.inputAccessoryView = [[UIView alloc] init];
+    [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
+    [self.pin setDelegate:self];
+    [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
+    [self.view addSubview:self.pin];
+    [self.pin becomeFirstResponder];
 
     self.first_num = [[UIView alloc] initWithFrame:CGRectMake(73,240,28,28)];
     self.second_num = [[UIView alloc] initWithFrame:CGRectMake(121,240,28,28)];

@@ -23,6 +23,7 @@
     UIButton * link_bank ;
 }
 @property(atomic,weak)UIButton *logout;
+
 @end
 
 @implementation SettingsOptions

@@ -22,6 +22,7 @@
 #import "knoxWeb.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBook/ABAddressBook.h>
+#import "SpinKit/RTSpinKitView.h"
 
 NSMutableURLRequest *request;
 @interface Home ()
@@ -831,12 +832,17 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         if ([[assist shared]needsReload])
         {
+            RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleCircleFlip];
+            spinner1.color = [UIColor whiteColor];
             self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
             [self.navigationController.view addSubview:self.hud];
             
+            self.hud.mode = MBProgressHUDModeCustomView;
+            self.hud.customView = spinner1;
             self.hud.delegate = self;
             self.hud.labelText = @"Loading your Nooch account";
             [self.hud show:YES];
+            [spinner1 startAnimating];
         }
 
         if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
