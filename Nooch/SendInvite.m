@@ -400,7 +400,7 @@
     [SMSView addSubview:lbl];
 
     UIButton * cancel_btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancel_btn.frame = CGRectMake(10,23, 70,35);
+    cancel_btn.frame = CGRectMake(10, 23, 60, 35);
     [cancel_btn setStyleClass:@"smscrossbuttn-icon"];
     [cancel_btn setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
     cancel_btn.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -410,8 +410,7 @@
     [navBar addSubview:cancel_btn];
 
     btnToSend = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnToSend.frame = CGRectMake(245, 23, 70, 30);
-    [btnToSend setStyleClass:@"sendInvitebuttn-icon"];
+    btnToSend.frame = CGRectMake(251, 23, 68, 30);
     [btnToSend setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
     btnToSend.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [btnToSend setTitle:@"Send" forState:UIControlStateNormal];

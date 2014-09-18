@@ -46,6 +46,7 @@
     [super viewWillAppear:animated];
     self.trackedViewName = @"Terms Screen";
 }
+
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -96,6 +97,7 @@
     [self.view addSubview:termsView];
 
 }
+
 -(void)dismissView:(id)sender{
     [termsView setDelegate:nil];
     [(Register *)self.parentViewController removeChild:self];
@@ -116,18 +118,20 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-     [self.hud hide:YES];
+    [self.hud hide:YES];
     return ;
-    UIApplication* app = [UIApplication sharedApplication];
+    UIApplication * app = [UIApplication sharedApplication];
     app.networkActivityIndicatorVisible = NO;
 }
--(void)webViewDidStartLoad:(UIWebView *) portal {
-    UIApplication* app = [UIApplication sharedApplication];
+-(void)webViewDidStartLoad:(UIWebView *) portal
+{
+    UIApplication * app = [UIApplication sharedApplication];
     app.networkActivityIndicatorVisible = YES;
 }
--(void)webViewDidFinishLoad:(UIWebView *) portal{
-     [self.hud hide:YES];
-    UIApplication* app = [UIApplication sharedApplication];
+-(void)webViewDidFinishLoad:(UIWebView *) portal
+{
+    [self.hud hide:YES];
+    UIApplication * app = [UIApplication sharedApplication];
     app.networkActivityIndicatorVisible = NO;
     [self.navigationItem setRightBarButtonItem:nil];
 }

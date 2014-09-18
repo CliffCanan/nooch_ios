@@ -847,10 +847,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
             [self.navigationController.view addSubview:self.hud];
             
+            self.hud.color = Rgb2UIColor(255, 255, 255, .88);
             self.hud.mode = MBProgressHUDModeCustomView;
             self.hud.customView = spinner1;
             self.hud.delegate = self;
             self.hud.labelText = @"Loading your Nooch account";
+            self.hud.labelColor = kNoochGrayDark;
             [self.hud show:YES];
             [spinner1 startAnimating];
         }

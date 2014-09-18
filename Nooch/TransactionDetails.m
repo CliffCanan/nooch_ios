@@ -47,7 +47,7 @@
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
 
-    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
@@ -806,7 +806,7 @@
     
     else if (alertView.tag == 1 && buttonIndex == 0)  // DISPUTE
     {
-        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStylePulse];
         spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
@@ -854,7 +854,7 @@
     
     else if ((alertView.tag == 1010 || alertView.tag == 2010) && buttonIndex == 0) // CANCEL Request
     {
-        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyle9CubeGrid];
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
         spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
@@ -881,7 +881,7 @@
     
     else if (alertView.tag == 310 && buttonIndex == 0) // CANCEL Transfer (Send) Invite
     {
-        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyle9CubeGrid];
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
         spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
