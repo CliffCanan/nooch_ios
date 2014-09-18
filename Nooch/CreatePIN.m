@@ -149,13 +149,15 @@
     
     //back button
     UIButton *btnback = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btnback setBackgroundColor:[UIColor clearColor]];
-    [btnback setFrame:CGRectMake(12, 30, 35, 35)];
+    [btnback setBackgroundColor:[UIColor whiteColor]];
+    [btnback setFrame:CGRectMake(7, 24, 44, 44)];
     [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *glyph_back = [UILabel new];
-    [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:23]];
-    [glyph_back setFrame:CGRectMake(0, 14, 30, 30)];
+    [glyph_back setBackgroundColor:[UIColor clearColor]];
+    [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:26]];
+    [glyph_back setTextAlignment:NSTextAlignmentCenter];
+    [glyph_back setFrame:CGRectMake(0, 14, 44, 44)];
     [glyph_back setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-o-left"]];
     [glyph_back setTextColor:kNoochBlue];
     [btnback addSubview:glyph_back];

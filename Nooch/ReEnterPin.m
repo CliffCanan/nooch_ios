@@ -53,6 +53,7 @@
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 108, 300, 40)];
     [title setText:@"Enter Your PIN"];
     [title setStyleClass:@"header_signupflow"];
+    [title setStyleClass:@"animate_pulse"];
     [self.view addSubview:title];
     
     self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 132, 280, 50)];
@@ -78,6 +79,11 @@
     self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
     self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
     
+    [self.first_num setStyleClass:@"animate_bubble_slow"];
+    [self.second_num setStyleClass:@"animate_bubble_slow"];
+    [self.third_num setStyleClass:@"animate_bubble_slow"];
+    [self.fourth_num setStyleClass:@"animate_bubble_slow"];
+   
     [self.view addSubview:self.first_num];
     [self.view addSubview:self.second_num];
     [self.view addSubview:self.third_num];
@@ -185,7 +191,7 @@
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
             
-            NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+            NSLog(@"Invalid Access Token for Member: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
             [timer invalidate];
             
             [self dismissViewControllerAnimated:YES completion:^{
@@ -268,7 +274,8 @@
             [self.second_num setBackgroundColor:[UIColor clearColor]];
             [self.first_num setBackgroundColor:[UIColor clearColor]];
             self.pin.text=@"";
-            if([[dictResult objectForKey:@"Result"] isEqualToString:@"Invalid Pin"]){
+            if([[dictResult objectForKey:@"Result"] isEqualToString:@"Invalid Pin"])
+            {
                 AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
                 self.prompt.textColor = kNoochRed;
                 self.fourth_num.layer.borderColor = kNoochRed.CGColor;

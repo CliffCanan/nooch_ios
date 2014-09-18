@@ -8,11 +8,13 @@
 #import <PixateFreestyle/PixateFreestyle.h>
 #import "NSString+FontAwesome.h"
 #import "MBProgressHUD.h"
+#import "SpinKit/RTSpinKitView.h"
+
 @interface LimitsAndFees ()<MBProgressHUDDelegate>
 @property(nonatomic,strong) MBProgressHUD *hud;
 @end
 @implementation LimitsAndFees
-@synthesize LimitsAndFeesView,spinner;
+@synthesize LimitsAndFeesView;//,spinner;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -46,11 +48,18 @@
     
     LimitsAndFeesView.backgroundColor = [UIColor clearColor];
     LimitsAndFeesView.opaque = 0;
+
+    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
+    spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
+    
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.customView = spinner1;
     self.hud.delegate = self;
-    self.hud.labelText = @"Loading...";
+    self.hud.labelText = @"Loading & Other Computer Activities";
     [self.hud show:YES];
+    [spinner1 startAnimating];
 
     NSURL *webURL = [NSURL URLWithString:@"https://www.nooch.com/2248-112188/"];
     LimitsAndFeesView=[[UIWebView alloc]initWithFrame:self.view.frame];
@@ -78,26 +87,26 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     return ;
-    UIApplication* app = [UIApplication sharedApplication];
-    app.networkActivityIndicatorVisible = NO;
+//    UIApplication* app = [UIApplication sharedApplication];
+//    app.networkActivityIndicatorVisible = NO;
 }
 
 -(void)webViewDidStartLoad:(UIWebView *) portal {
-    UIApplication* app = [UIApplication sharedApplication];
-    app.networkActivityIndicatorVisible = YES;
+//    UIApplication* app = [UIApplication sharedApplication];
+//    app.networkActivityIndicatorVisible = YES;
 }
 
 -(void)webViewDidFinishLoad:(UIWebView *) portal{
-    UIApplication* app = [UIApplication sharedApplication];
-    app.networkActivityIndicatorVisible = NO;
+//    UIApplication * app = [UIApplication sharedApplication];
+//    app.networkActivityIndicatorVisible = NO;
     [self.hud hide:YES];
     [self.navigationItem setRightBarButtonItem:nil];
 }
 
 - (void)viewDidUnload
 {
-    self.hud=nil;
-    [self setSpinner:nil];
+    self.hud = nil;
+//    [self setSpinner:nil];
     [super viewDidUnload];
 }
 

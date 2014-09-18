@@ -32,12 +32,14 @@
     }
     return self;
 }
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     self.trackedViewName = @"Register Screen";
     [self.navigationController setNavigationBarHidden:YES];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -172,7 +174,7 @@
     [self.view addSubview:termsText1];
 
     UIButton * termsText2 = [UIButton buttonWithType:UIButtonTypeCustom];
-    [termsText2 setFrame:CGRectMake(122, 388, 150, 14)];
+    [termsText2 setFrame:CGRectMake(122, 382, 150, 26)];
     [termsText2 setBackgroundColor:[UIColor clearColor]];
     [termsText2 setTitle:@"Nooch's Terms of Service." forState:UIControlStateNormal];
     [termsText2 setStyleClass:@"termsCheckText"];
@@ -180,7 +182,7 @@
     [self.view addSubview:termsText2];
     
     UIView * blankView = [UIView new];
-    blankView.frame = CGRectMake(0, 13, 147, 1);
+    blankView.frame = CGRectMake(0, 18, 146, 1);
     [blankView setBackgroundColor:kNoochGrayDark];
     [blankView setAlpha:0.6];
     [termsText2 addSubview:blankView];
@@ -226,6 +228,7 @@
         [login setFrame:CGRectMake(0, 438, 320, 20)];
     }
 }
+
 -(void)termsAndConditions:(UIButton*)sender{
     if (isTermsChecked) {
          isTermsChecked=NO;
@@ -237,26 +240,28 @@
         [sender setStyleId:@"checkbox_dot"];
     }
 }
+
 - (void)open_terms_webview
 {
-
-    isfromRegister=YES;
+    isfromRegister = YES;
     terms *term = [terms new];
   
     CGRect rect= term.view.frame;
-    rect.origin.y=self.view.frame.size.height;
-    term.view.frame=rect;
-     [self.view addSubview:term.view];
+    rect.origin.y = self.view.frame.size.height;
+    term.view.frame = rect;
+    [self.view addSubview:term.view];
     [self addChildViewController:term];
+
     [UIView beginAnimations:@"bucketsOff" context:nil];
-    [UIView setAnimationDuration:0.4];
+    [UIView setAnimationDuration:0.45];
     [UIView setAnimationDelegate:self];
     term.view.frame = self.view.frame;
     [UIView commitAnimations];
 }
+
 -(void)removeChild:(UIViewController *) child {
     
-    [UIView animateWithDuration:.4
+    [UIView animateWithDuration:.5
                      animations:^{
                          CGRect rect= self.view.frame;
                          rect.origin.y=self.view.frame.size.height;
@@ -268,10 +273,8 @@
                          [child.view removeFromSuperview];
                          [child removeFromParentViewController];
                      }];
-    
-
-
 }
+
 #pragma mark - facebook integration
 - (void)connect_to_facebook
 {
@@ -292,10 +295,15 @@
              }
              else {
                  dispatch_async(dispatch_get_main_queue(), ^{
+                     RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStylePulse];
+                     spinner1.color = [UIColor whiteColor];
                      self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
                      [self.navigationController.view addSubview:self.hud];
-                     self.hud.delegate = self;
                      self.hud.labelText = @"Loading Facebook Info...";
+                     [spinner1 startAnimating];
+                     self.hud.mode = MBProgressHUDModeCustomView;
+                     self.hud.customView = spinner1;
+                     self.hud.delegate = self;
                      [self.hud show:YES];
                  });
                                  NSArray *accounts = [self.accountStore accountsWithAccountType:facebookAccountType];
@@ -351,7 +359,7 @@
                                              NSHTTPURLResponse *urlResponse, NSError *error)
      {
          self.facebook_info = [NSJSONSerialization
-                               JSONObjectWithData:respData //1
+                               JSONObjectWithData:respData
                                options:kNilOptions
                                error:&error];
          dispatch_async(dispatch_get_main_queue(), ^{
@@ -390,24 +398,14 @@
 #pragma mark - navigation
 - (void)continue_to_signup
 {
-    if (!isTermsChecked) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Nooch" message:@"Please check Nooch's terms of service to proceed." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [av show];
-         return;
-    }
-    [UIView beginAnimations:@"bucketsOff" context:nil];
-    [UIView setAnimationDuration:0.4];
-    [UIView setAnimationDelegate:self];
-    [self.view setFrame:CGRectMake(0,0, 320, 600)];
-    [UIView commitAnimations];
-    
     if ([[[self.name_field.text componentsSeparatedByString:@" "] objectAtIndex:0]length] < 3)
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Need a Full Name" message:@"Nooch is currently only able to handle names greater than 3 letters.\n\nIf your first or last name has fewer than 3, please contact us and we'll be happy to manually create your account." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView* alert =[[UIAlertView alloc]initWithTitle:@"Need a Full Name" message:@"Nooch is currently only able to handle names greater than 3 letters.\n\nIf your first or last name has fewer than 3, please contact us and we'll be happy to manually create your account." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [self.name_field becomeFirstResponder];
         return;
     }
+
     if (([self.password_field.text length] == 0) || ([self.name_field.text length] == 0) || ([self.email_field.text length] == 0))
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Eager Beaver" message:@"You have not filled out the sign up form!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -415,22 +413,34 @@
         [self.name_field becomeFirstResponder];
         return;
     }
+
     NSCharacterSet* digitsCharSet = [NSCharacterSet decimalDigitCharacterSet];
     NSCharacterSet* lettercaseCharSet = [NSCharacterSet letterCharacterSet];
     if ([self.password_field.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound)
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"So Close" message:@"For security reasons, et cetera, we ask that passwords contain at least 1 number.\n\nWe know it's annoying, but we're just looking out for you. Keep it safe!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Insecure Password" message:@"For security reasons, et cetera, we ask that passwords contain at least 1 number.\n\nWe know it's annoying, but we're just looking out for you. Keep it safe!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         [self.password_field becomeFirstResponder];
         return;
     }
-    else if([self.password_field.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound)
+    else if ([self.password_field.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Letters Are Fun Too" message:@"Regrettably, your Nooch password must contain at least one actual letter." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         [self.password_field becomeFirstResponder];
         return;
     }
+    if (!isTermsChecked) {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Who Loves Lawyers" message:@"Please read Nooch's Terms of Service and check the box to proceed." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Read Terms", nil];
+        [av show];
+        [av setTag:16];
+        return;
+    }
+/*    [UIView beginAnimations:@"bucketsOff" context:nil];
+    [UIView setAnimationDuration:0.4];
+    [UIView setAnimationDelegate:self];
+    [self.view setFrame:CGRectMake(0,0, 320, 600)];
+    [UIView commitAnimations]; */
     else
     {
         RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
@@ -509,6 +519,14 @@
     }
 }
 
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 16 & buttonIndex == 1)
+    {
+        [self open_terms_webview];
+    }
+}
+
 #pragma mark - UITextField delegation
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
@@ -542,14 +560,9 @@
     return YES;
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    [self animateTextField:textField up:YES];
-}
-
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    self.name_field.text.capitalizedString;
+    self.name_field.text = self.name_field.text.capitalizedString;
     if (textField == self.password_field)
     {
         [UIView beginAnimations:@"bucketsOff" context:nil];
@@ -559,21 +572,8 @@
         [UIView commitAnimations];
         return;
     }
-   // [self animateTextField:textField up:NO];
 }
 
-#pragma mark - adjusting for textfield view
-- (void) animateTextField: (UITextField*) textField up: (BOOL) up
-{
-/*    const int movementDistance = textField.frame.origin.y/2; // tweak as needed
-    const float movementDuration = 0.3f; // tweak as needed
-    int movement = (up ? -movementDistance : movementDistance);
-    [UIView beginAnimations: @"anim" context: nil];
-    [UIView setAnimationBeginsFromCurrentState: YES];
-    [UIView setAnimationDuration: movementDuration];
-    self.view.frame = CGRectOffset(self.view.frame, 0, movement);
-    [UIView commitAnimations];*/
-}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

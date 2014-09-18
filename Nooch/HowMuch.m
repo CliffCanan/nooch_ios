@@ -608,6 +608,25 @@
     [self.camera setTitleColor:kNoochBlue forState:UIControlStateNormal];
 
     [[assist shared]setTranferImage:chosenImage];
+    
+    [self.camera removeFromSuperview];
+
+    UIImageView *trans_image = [[UIImageView alloc] initWithFrame:CGRectMake(252, 205, 56, 56)];
+    trans_image.layer.cornerRadius = 5;
+    trans_image.layer.borderWidth = 1;
+    trans_image.clipsToBounds = YES;
+    trans_image.layer.borderColor = [UIColor whiteColor].CGColor;
+    [trans_image setImage:chosenImage];
+    [self.back addSubview:trans_image];
+
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        [trans_image setFrame:CGRectMake(258, 105, 28, 28)];
+    }
+    else {
+        [trans_image setFrame:CGRectMake(257, 154, 30, 30)];
+    }
+
+
     [picker dismissViewControllerAnimated:YES completion:^{
     }];
 }

@@ -17,6 +17,7 @@
 #import "privacy.h"
 #import "terms.h"
 #import "webView.h"
+#import "tour.h"
 @interface LeftMenu ()
 @property(nonatomic,strong) UITableView *menu;
 @property(nonatomic) NSIndexPath *selected;
@@ -227,6 +228,7 @@
         return 0;
     }
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
@@ -381,36 +383,41 @@
             [self.slidingViewController resetTopView];
         }
     }
-    else if(indexPath.section == 1)
+    else if (indexPath.section == 1)
     {
         if (indexPath.row == 0) {
             SendInvite *inv = [SendInvite new];
             [nav_ctrl pushViewController:inv animated:NO];
             [self.slidingViewController resetTopView];
         }
-        else if(indexPath.row == 1) {
+        else if (indexPath.row == 1) {
             //rate nooch
         }
     }
-    else if(indexPath.section == 2)
+    else if (indexPath.section == 2)
     {
-        if (indexPath.row == 0) {
-            //tutorial
+        if (indexPath.row == 0)
+        {
+            tour *tour1 = [tour new];
+            [nav_ctrl pushViewController:tour1 animated:YES];
+            [self.slidingViewController resetTopView];
+        //    [self showIntroWithCrossDissolve];
         }
-        else if(indexPath.row == 1) {
+        else if (indexPath.row == 1)
+        {
             //contact support
             UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Report a Bug", @"Email Nooch Support", @"Go to Support Center", nil];
             actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
             [actionSheetObject setTag:1];
             [actionSheetObject showInView:self.view];
         }
-        else if(indexPath.row == 2)
+        else if (indexPath.row == 2)
         {
             LimitsAndFees *laf = [LimitsAndFees new];
             [nav_ctrl pushViewController:laf animated:NO];
             [self.slidingViewController resetTopView];
         }
-        else if(indexPath.row == 3)
+        else if (indexPath.row == 3)
         {
             UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"User Agreement", @"Privacy Policy", nil];
             actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
@@ -492,6 +499,7 @@
         }
     }    
 }
+
 
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
