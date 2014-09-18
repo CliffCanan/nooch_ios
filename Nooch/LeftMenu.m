@@ -291,6 +291,7 @@
             if ([defaults boolForKey:@"hasPendingItems"] == true)
             {
                 UILabel * pending_notif = [UILabel new];
+                NSLog(@"The current pending count is: %@",[defaults objectForKey:@"Pending_count"]);
                 [pending_notif setText:[NSString stringWithFormat:@"%@",[defaults objectForKey:@"Pending_count"]]];
                 [pending_notif setFrame:CGRectMake(212, 10, 22, 22)];
                 [pending_notif setStyleId:@"pending_notif"];
