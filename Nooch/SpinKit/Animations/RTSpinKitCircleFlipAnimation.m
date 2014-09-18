@@ -31,21 +31,25 @@
 {
     CALayer *circle = [CALayer layer];
     circle.frame = CGRectInset(CGRectMake(0.0, 0.0, size.width, size.height), 2.0, 2.0);
-    circle.backgroundColor = color.CGColor;
+    circle.backgroundColor = [UIColor clearColor].CGColor;
     circle.cornerRadius = CGRectGetHeight(circle.bounds) * 0.5;
     circle.anchorPoint = CGPointMake(0.5, 0.5);
     circle.anchorPointZ = 0.5;
     circle.shouldRasterize = YES;
     circle.rasterizationScale = [[UIScreen mainScreen] scale];
+
+    circle.contents = (id)[UIImage imageNamed:@"n_icon_46x54.png"].CGImage;
+    
     [layer addSublayer:circle];
     
     CAKeyframeAnimation *anim = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
     anim.removedOnCompletion = NO;
     anim.repeatCount = HUGE_VALF;
-    anim.duration = 1.3;
-    anim.keyTimes = @[@(0.0), @(0.5), @(1.0)];
+    anim.duration = 1.7;
+    anim.keyTimes = @[@(0.0), @(0.333), @(0.667), @(1.0)];
     
     anim.timingFunctions = @[
+        [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut],
         [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut],
         [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut],
         [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]
@@ -53,8 +57,9 @@
 
     anim.values = @[
         [NSValue valueWithCATransform3D:RTSpinKit3DRotationWithPerspective(1.0/120.0, 0, 0, 0, 0)],
-        [NSValue valueWithCATransform3D:RTSpinKit3DRotationWithPerspective(1.0/120.0, M_PI, 0.0, 1.0, 0.0)],
-        [NSValue valueWithCATransform3D:RTSpinKit3DRotationWithPerspective(1.0/120.0, M_PI, 0.0, 0.0, 1.0)]
+        [NSValue valueWithCATransform3D:RTSpinKit3DRotationWithPerspective(3.0/120.0, M_PI, 0.0, 1.0, 0.0)],
+        [NSValue valueWithCATransform3D:RTSpinKit3DRotationWithPerspective(3.0/120.0, M_PI, 0.0, 0.0, 1.0)],
+        [NSValue valueWithCATransform3D:RTSpinKit3DRotationWithPerspective(1.0/120.0, M_PI, 0.0, 0.0, 0.0)]
     ];
     
     [circle addAnimation:anim forKey:@"spinkit-anim"];

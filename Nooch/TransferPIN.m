@@ -117,9 +117,7 @@
     else if ([self.type isEqualToString:@"request"]) {
         [bar setStyleId:@"pin_recipientname_request"];
     }
-    else {
-        [bar setStyleId:@"pin_recipientname_donate"];
-    }
+
     [self.view addSubview:bar];
 
     UILabel *to_label = [UILabel new];
@@ -493,7 +491,6 @@
         }
         else if ([tagName isEqualToString:@"checkValid"])
         {
-            NSLog(@"THIS IS THE CHECKBALID METHOD*************************************");
             if ([[dictResult objectForKey:@"Result"] isEqualToString:@"Success"])
             {
                 transactionInputTransfer=[[NSMutableDictionary alloc]init];
@@ -766,7 +763,6 @@
                 transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
             }
         }
-        NSLog(@"THIS IS THE TRANSACTION TRANSFER: %@",transactionTransfer);
         postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
                                                        options:NSJSONWritingPrettyPrinted error:&error];;
         postLengthTransfer = [NSString stringWithFormat:@"%d", [postTransfer length]];

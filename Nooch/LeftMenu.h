@@ -10,7 +10,9 @@
 #import "Home.h"
 #import "ECSlidingViewController.h"
 #import <MessageUI/MessageUI.h>
-@interface LeftMenu : GAITrackedViewController<UINavigationControllerDelegate,UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,MFMailComposeViewControllerDelegate>
+#import "EAIntroView.h"
+
+@interface LeftMenu : GAITrackedViewController<UINavigationControllerDelegate,UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,EAIntroDelegate,MFMailComposeViewControllerDelegate>
 {
     UIImageView *user_pic;
     UIButton * arrow;

@@ -375,33 +375,44 @@
 
 - (IBAction)SMSClicked:(id)sender
 {
-    [self.navigationController setNavigationBarHidden:YES];
     [SMSView removeFromSuperview];
-    SMSView=[[UIView alloc]initWithFrame:CGRectMake(0, 568, 320, 568)];
-    SMSView.backgroundColor=[UIColor whiteColor];
+
+    SMSView = [[UIView alloc]initWithFrame:CGRectMake(0, 568, 320, 568)];
+    SMSView.backgroundColor = [UIColor whiteColor];
     
     [self.view addSubview:SMSView];
-    UIView * navBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
-    [navBar setBackgroundColor:[UIColor colorWithRed:82.0f/255.0f green:176.0f/255.0f blue:235.0f/255.0f alpha:1.0f]];
+    
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDuration:0.35];
+    SMSView.frame = CGRectMake(0, 0, 320, 568);
+    [UIView commitAnimations];
+
+    UIView * navBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 62)];
+    [navBar setBackgroundColor:[UIColor colorWithRed:63.0f/255.0f green:171.0f/255.0f blue:225.0f/255.0f alpha:1.0f]];
     [SMSView addSubview:navBar];
-    UILabel * lbl = [[UILabel alloc]initWithFrame:CGRectMake(135, 20,70, 30)];
-    [lbl setText:@"SMS"];
-    [lbl setFont:[UIFont systemFontOfSize:22]];
+
+    UILabel * lbl = [[UILabel alloc]initWithFrame:CGRectMake(100, 23, 120, 33)];
+    [lbl setText:@"Send Text"];
+    [lbl setTextAlignment:NSTextAlignmentCenter];
+    [lbl setFont:[UIFont systemFontOfSize:21]];
     [lbl setTextColor:[UIColor whiteColor]];
     [SMSView addSubview:lbl];
 
-    UIButton * crossbtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    crossbtn.frame = CGRectMake(10,22, 70,30);
-    [crossbtn setStyleClass:@"smscrossbuttn-icon"];
-    [crossbtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-
-    [crossbtn setTitle:@"Cancel" forState:UIControlStateNormal];
-    [crossbtn addTarget:self action:@selector(crossClicked) forControlEvents:UIControlEventTouchUpInside];
-    [navBar addSubview:crossbtn];
+    UIButton * cancel_btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancel_btn.frame = CGRectMake(10, 23, 60, 35);
+    [cancel_btn setStyleClass:@"smscrossbuttn-icon"];
+    [cancel_btn setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
+    cancel_btn.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [cancel_btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [cancel_btn setTitle:@"Cancel" forState:UIControlStateNormal];
+    [cancel_btn addTarget:self action:@selector(crossClicked) forControlEvents:UIControlEventTouchUpInside];
+    [navBar addSubview:cancel_btn];
 
     btnToSend = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnToSend.frame = CGRectMake(245,22 , 70, 30);
-    [btnToSend setStyleClass:@"sendInvitebuttn-icon"];
+    btnToSend.frame = CGRectMake(251, 23, 68, 30);
+    [btnToSend setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
+    btnToSend.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [btnToSend setTitle:@"Send" forState:UIControlStateNormal];
     [btnToSend setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [navBar addSubview:btnToSend];
@@ -416,27 +427,26 @@
     [phonebookbtn addTarget:self action:@selector(showcontacts) forControlEvents:UIControlEventTouchUpInside];
     [SMSView addSubview:phonebookbtn];
 
-    textPhoneto = [[UITextField alloc]initWithFrame:CGRectMake(10, 74, 240, 40)];
-    textPhoneto.textColor = [UIColor blackColor];
-    textPhoneto.borderStyle = UITextBorderStyleRoundedRect;
-    textPhoneto.font = [UIFont systemFontOfSize:24.0];
-    textPhoneto.placeholder = @"Phone Number";
-    textPhoneto.backgroundColor = [UIColor whiteColor];
-    [SMSView addSubview:textPhoneto];
-    [textPhoneto becomeFirstResponder];
-    [textPhoneto setDelegate:self];
-
     msgTextView = [[UITextView alloc] initWithFrame:CGRectMake(10, 125, 300, 200)];
     [msgTextView setFont:[UIFont systemFontOfSize:18]];
     msgTextView.textColor=[UIColor blackColor];
-    msgTextView.text=[NSString stringWithFormat:@"Heyo, you should check out Nooch, a great new app for paying me back. Use my referral code: \"%@\" - download here: %@", code.text,@"ow.ly/nGocT"];
+    msgTextView.text=[NSString stringWithFormat:@"Heyo, you should check out Nooch, a great new app for paying me back. Use my referral code: \"%@\" - download here: %@", code.text,@"http://ow.ly/BCuC6"];
     [SMSView addSubview:msgTextView];
     
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDelegate:self];
-    [UIView setAnimationDuration:0.5];
-    SMSView.frame = CGRectMake(0, 0, 320, 568);
-    [UIView commitAnimations];
+    textPhoneto = [[UITextField alloc]initWithFrame:CGRectMake(10, 74, 240, 40)];
+    textPhoneto.textColor = kNoochGrayDark;
+    [textPhoneto setKeyboardType:UIKeyboardTypeNumberPad];
+    textPhoneto.inputAccessoryView = [[UIView alloc] init];
+    textPhoneto.borderStyle = UITextBorderStyleRoundedRect;
+    textPhoneto.font = [UIFont systemFontOfSize:22.0];
+    textPhoneto.placeholder = @"Phone Number";
+    textPhoneto.backgroundColor = [UIColor whiteColor];
+    [textPhoneto becomeFirstResponder];
+    [textPhoneto setDelegate:self];
+    [SMSView addSubview:textPhoneto];
+    
+    [self.navigationController setNavigationBarHidden:YES];
+
 }
 
 -(void)showcontacts
@@ -632,7 +642,7 @@
 
 - (IBAction)EmailCLicked:(id)sender
 {
-    NSString *emailTitle = @"Check out Nooch - a free app to send money";
+    NSString *emailTitle = @"Check out Nooch - a Free App to Pay Me Back";
 
     NSString * messageBody; // Change the message body to HTML
     messageBody=[NSString stringWithFormat:@"<h5>\"Hi, Your friend %@ has invited you to become a member of Nooch, the simplest way to pay back friends.<br/><br/>Accept this invitation by downloading Nooch from the App Store.  You can use this Referral Code to get exclusive access:<br />  %@  <br /><br />To learn more about Nooch, check us out</h5> <a href=\"https://www.nooch.com/overview/\">here</a><br /><h6>-Team Nooch\"</h6>",[user objectForKey:@"firstName"],code.text];
