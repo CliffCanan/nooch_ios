@@ -843,11 +843,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if ([[assist shared]needsReload])
         {
             RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleCircleFlip];
-            spinner1.color = [UIColor whiteColor];
+            spinner1.color = [UIColor clearColor];
             self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
             [self.navigationController.view addSubview:self.hud];
             
-            self.hud.color = Rgb2UIColor(255, 255, 255, .88);
+            self.hud.color = Rgb2UIColor(236, 237, 239, .92);
             self.hud.mode = MBProgressHUDModeCustomView;
             self.hud.customView = spinner1;
             self.hud.delegate = self;
