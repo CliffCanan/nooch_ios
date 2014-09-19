@@ -566,9 +566,17 @@
 - (void) cancel_photo
 {
     [UIView beginAnimations:Nil context:nil];
-    [UIView setAnimationDuration:1];
+    [UIView setAnimationDuration:.5];
+    
+//    self.choose = [[UIView alloc] initWithFrame:CGRectMake(270, 220, 8, 6)];
+
+    for (UIView *subview in [self.choose subviews]) {
+        [subview removeFromSuperview];
+    }
     [self.choose removeFromSuperview];
+    [self.choose setAlpha:0.0];
     [self.shade setAlpha:0.0];
+
     [UIView commitAnimations];
 }
 

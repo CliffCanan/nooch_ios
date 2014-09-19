@@ -48,13 +48,14 @@
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
-    if(buttonIndex == 0)
+    
+    if (buttonIndex == 0)
     {
        
-        if (![self.user objectForKey:@"image"]) {
-            
-            
-            if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]){
+        if (![self.user objectForKey:@"image"])
+        {
+            if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
+            {
                 self.accountStore = [[ACAccountStore alloc] init];
                 self.facebookAccount = nil;
                 NSDictionary *options = @{
@@ -79,10 +80,13 @@
                          });
                          NSArray *accounts = [self.accountStore accountsWithAccountType:facebookAccountType];
                          self.facebookAccount = [accounts lastObject];
-                         //[self renewFb];
                          [self finishFb];
                      }
                  }];
+                [self.next_button setTitle:@"Continue" forState:UIControlStateNormal];
+                [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
+                [self.next_button addTarget:self action:@selector(cont) forControlEvents:UIControlEventTouchUpInside];
+                [self.next_button setStyleClass:@"button_green"];
             }
             else {
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Not Available" message:@"You do not have a Facebook account attached to this phone." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -167,14 +171,14 @@
          dispatch_async(dispatch_get_main_queue(), ^{
              [self.hud hide:YES];
             
-             NSString *imageURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", [self.facebook_info objectForKey:@"id"]];
+             NSString *imageURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal", [self.facebook_info objectForKey:@"id"]];
              [[NSUserDefaults standardUserDefaults] setObject:[self.facebook_info objectForKey:@"id"] forKey:@"facebook_id"];
              [self.pic setImageWithURL:[NSURL URLWithString:imageURL]
-                      placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]
-                             completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                                 
-                                 if (image) {
-                                     
+                      placeholderImage:[UIImage imageNamed:@"profile_picture.png"]
+                             completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType)
+            {
+                                 if (image)
+                                 {
                                      [[assist shared]setTranferImage:nil];
                                      [[assist shared]setTranferImage:image];
                                  }

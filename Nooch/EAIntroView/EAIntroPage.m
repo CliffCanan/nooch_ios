@@ -6,9 +6,9 @@
 #import "EAIntroPage.h"
 
 #define DEFAULT_DESCRIPTION_LABEL_SIDE_PADDING 30
-#define DEFAULT_TITLE_FONT [UIFont fontWithName:@"HelveticaNeue-Bold" size:19.0]
+#define DEFAULT_TITLE_FONT [UIFont fontWithName:@"Roboto-regular" size:22.0]
 #define DEFAULT_LABEL_COLOR [UIColor whiteColor]
-#define DEFAULT_DESCRIPTION_FONT [UIFont fontWithName:@"HelveticaNeue-Light" size:16.0]
+#define DEFAULT_DESCRIPTION_FONT [UIFont fontWithName:@"Roboto-Light" size:18.0]
 #define DEFAULT_TITLE_IMAGE_Y_POSITION 50.0f
 #define DEFAULT_TITLE_LABEL_Y_POSITION 160.0f
 #define DEFAULT_DESCRIPTION_LABEL_Y_POSITION 140.0f

@@ -982,91 +982,92 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 
-        
-        if ([[assist shared]getSuspended])
-        {
-            SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Account Temporarily Suspended" andMessage:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com for more information."];
-            [alertView addButtonWithTitle:@"Ok" type:SIAlertViewButtonTypeCancel handler:nil];
-            [alertView addButtonWithTitle:@"Contact Nooch" type:SIAlertViewButtonTypeDefault
-                                  handler:^(SIAlertView *alert) {
-                                      [self contact_support];
-                                  }];
-            [[SIAlertView appearance] setButtonColor:kNoochBlue];
+    if ([[assist shared]getSuspended])
+    {
+        SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Account Temporarily Suspended" andMessage:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com for more information."];
+        [alertView addButtonWithTitle:@"Ok" type:SIAlertViewButtonTypeCancel handler:nil];
+        [alertView addButtonWithTitle:@"Contact Nooch" type:SIAlertViewButtonTypeDefault
+                              handler:^(SIAlertView *alert) {
+                                  [self contact_support];
+                              }];
+        [[SIAlertView appearance] setButtonColor:kNoochBlue];
 
-            alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
-            alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
-            [alertView show];
-            //[alertView setTag:50];
-            return;
-        }
-        
-        if ([[user valueForKey:@"Status"]isEqualToString:@"Registered"] )
-        {
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Verify Your Email" message:@"Terribly sorry, but before you send money, please just confirm your email address by clicking the link we sent to the email address you used to sign up." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-            [alert show];
-            return;
-        }
-        
-        if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
-        {
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe" message:@"Please take 1 minute to validate your identity by completing your Nooch profile (just 4 fields)." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
-            [alert setTag:147];
-            [alert show];
-            return;
-        }
+        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+        [alertView show];
+        //[alertView setTag:50];
+        return;
+    }
     
-        if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
-        {
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame Our Lawyers" message:@"To keep Nooch safe, we ask all users to verify your phone number before before sending money.\n \nIf you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
-            [alert setTag:148];
-            [alert show];
-            return;
-        }
-  
-        if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
-        {
-            UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Connect Your Bank" message:@"Adding a bank account to fund Nooch payments is lightening quick. (You don't have to type a routing or account number!)  Would you like to take care of this now?." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
-            [set setTag:201];
-            [set show];
-            return;
-        }
-        
-        NSMutableDictionary *favorite = [NSMutableDictionary new];
-        [favorite addEntriesFromDictionary:[favorites objectAtIndex:index]];
-        
-        if (favorite[@"MemberId"])
-        {
-            [favorite setObject:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
-            NSLog(@"%@",favorite);
-            isFromHome = YES;
-            HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
-            [self.navigationController pushViewController:trans animated:YES];
-            return;
-        }
-        else if (favorite[@"UserName"])
-        {
-            if ([favorite[@"emailCount"]intValue]>1) {
-                UIActionSheet *actionSheetObject = [[UIActionSheet alloc] init];
-                for (int j=0; j<[favorite[@"emailCount"]intValue]; j++) {
-                    [actionSheetObject addButtonWithTitle:[favorite[[NSString stringWithFormat:@"emailAdday%d",j]] lowercaseString]];
-                    
-                }
-                actionSheetObject.cancelButtonIndex=[actionSheetObject addButtonWithTitle:@"Cancel"];
-                actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
-                [actionSheetObject setTag:1];
-                actionSheetObject.delegate=self;
-                [actionSheetObject showInView:self.view];
-            }
-            else{
-                emailID=favorite[@"UserName"];
-                serve * emailCheck = [serve new];
-                emailCheck.Delegate = self;
-                emailCheck.tagName = @"emailCheck";
-                [emailCheck getMemIdFromuUsername:[emailID lowercaseString]];
-            }
+    if ([[user valueForKey:@"Status"]isEqualToString:@"Registered"] )
+    {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Verify Your Email" message:@"Terribly sorry, but before you send money, please just confirm your email address by clicking the link we sent to the email address you used to sign up." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        return;
+    }
+    
+    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
+    {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe" message:@"Please take 1 minute to validate your identity by completing your Nooch profile (just 4 fields)." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+        [alert setTag:147];
+        [alert show];
+        return;
+    }
 
-            return;
+    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
+    {
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame Our Lawyers" message:@"To keep Nooch safe, we ask all users to verify your phone number before before sending money.\n \nIf you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
+        [alert setTag:148];
+        [alert show];
+        return;
+    }
+
+    if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    {
+        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Connect Your Bank" message:@"Adding a bank account to fund Nooch payments is lightening quick. (You don't have to type a routing or account number!)  Would you like to take care of this now?." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
+        [set setTag:201];
+        [set show];
+        return;
+    }
+    
+    NSMutableDictionary *favorite = [NSMutableDictionary new];
+    [favorite addEntriesFromDictionary:[favorites objectAtIndex:index]];
+    
+    if (favorite[@"MemberId"])
+    {
+        [favorite setObject:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
+        NSLog(@"%@",favorite);
+        isFromHome = YES;
+        HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
+        [self.navigationController pushViewController:trans animated:YES];
+        return;
+    }
+    else if (favorite[@"UserName"])
+    {
+        if ([favorite[@"emailCount"]intValue] > 1)
+        {
+            UIActionSheet * actionSheetObject = [[UIActionSheet alloc] init];
+            for (int j = 0; j < [favorite[@"emailCount"]intValue]; j++)
+            {
+                [actionSheetObject addButtonWithTitle:[favorite[[NSString stringWithFormat:@"emailAdday%d",j]] lowercaseString]];
+            }
+            actionSheetObject.cancelButtonIndex = [actionSheetObject addButtonWithTitle:@"Cancel"];
+            actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
+            [actionSheetObject setTag:1];
+            actionSheetObject.delegate=self;
+            [actionSheetObject showInView:self.view];
         }
+        else
+        {
+            emailID = favorite[@"UserName"];
+            serve * emailCheck = [serve new];
+            emailCheck.Delegate = self;
+            emailCheck.tagName = @"emailCheck";
+            [emailCheck getMemIdFromuUsername:[emailID lowercaseString]];
+        }
+
+        return;
+    }
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -1090,14 +1091,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             return YES;
         }
         case iCarouselOptionRadius: {
-           return 310;
+           return 300;
         }
         case iCarouselOptionSpacing: {
             return value * 1.9;
         }
         case iCarouselOptionArc:
         {
-            return 2.25;
+            return 2.2;
         }
         default: {
             return value;

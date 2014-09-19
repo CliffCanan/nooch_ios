@@ -150,7 +150,7 @@
     
     [UIView transitionWithView:self.navigationController.view
     duration:0.5
-    options:UIViewAnimationOptionTransitionCrossDissolve
+    options:UIViewAnimationOptionTransitionCurlDown
     animations:^{
         [self.navigationController.view addSubview:overlay];
     }
@@ -158,7 +158,7 @@
      
     mainView = [[UIView alloc]init];
     mainView.layer.cornerRadius = 5;
-    mainView.frame = CGRectMake(8, 40, 304, 504);
+    mainView.frame = CGRectMake(8, 40, 302, 504);
     mainView.backgroundColor = [UIColor whiteColor];
      
     mainView.layer.masksToBounds = NO;
@@ -167,12 +167,12 @@
     mainView.layer.shadowRadius = 4;
     mainView.layer.shadowOpacity = 0.6;
     
-    UIView * head_container = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 304, 44)];
+    UIView * head_container = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 302, 44)];
     head_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
     [mainView addSubview:head_container];
     head_container.layer.cornerRadius = 10;
     
-    UIView * space_container = [[UIView alloc]initWithFrame:CGRectMake(0, 34, 304, 10)];
+    UIView * space_container = [[UIView alloc]initWithFrame:CGRectMake(0, 34, 302, 10)];
     space_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
     [mainView addSubview:space_container];
     
@@ -184,7 +184,7 @@
 
     UILabel * glyph_lock = [UILabel new];
     [glyph_lock setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
-    [glyph_lock setFrame:CGRectMake(29, 10, 22, 29)];
+    [glyph_lock setFrame:CGRectMake(32, 11, 22, 29)];
     [glyph_lock setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
     [glyph_lock setTextColor:kNoochBlue];
     [head_container addSubview:glyph_lock];
@@ -203,7 +203,7 @@
 
     UILabel * glyphLink = [UILabel new];
     [glyphLink setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-    [glyphLink setFrame:CGRectMake(186, 9, 30, 30)];
+    [glyphLink setFrame:CGRectMake(190, 9, 30, 28)];
     [glyphLink setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-link"]];
     [glyphLink setTextColor:[UIColor whiteColor]];
     [btnLink addSubview:glyphLink];

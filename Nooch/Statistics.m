@@ -222,13 +222,13 @@
     [self.exportHistory setTitle:@"    Export Account History" forState:UIControlStateNormal];
     [self.exportHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
     self.exportHistory.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    [self.exportHistory setFrame:CGRectMake(60, 445, 200, 38)];
+    [self.exportHistory setStyleId:@"exportStatsBtn"];
     if ([UIScreen mainScreen].bounds.size.height > 500) {
-        [self.exportHistory setStyleId:@"exportStatsBtn"];
+        [self.exportHistory setFrame:CGRectMake(60, 445, 200, 38)];
     }
-   // else {
-   //     [self.exportHistory setStyleClass:@"exportStatsbutton_4"];
-   // }
+    else {
+        [self.exportHistory setFrame:CGRectMake(60, 441, 200, 36)];
+    }
     
     UILabel *glyph = [UILabel new];
     [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
@@ -239,11 +239,12 @@
     [self.exportHistory addTarget:self action:@selector(ExportHistory:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.exportHistory];
     
-    if ([[UIScreen mainScreen] bounds].size.height == 480) {
+    if ([[UIScreen mainScreen] bounds].size.height == 480)
+    {
         UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
                                                                               [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
         [scroll setDelegate:self];
-        [scroll setContentSize:CGSizeMake(320, 520)];
+        [scroll setContentSize:CGSizeMake(320, 545)];
         for (UIView *subview in self.view.subviews) {
             [subview removeFromSuperview];
             [scroll addSubview:subview];

@@ -893,11 +893,11 @@
 		separator-style 	: single-line;
 		separator-color		: rgba(188,190,192,.7);	
 	}
-table-view#select_recipientwithoutSeperator {
+    table-view#select_recipientwithoutSeperator {
 		width				: 320px;
 		background-color	: #ffffff;
-		row-height			: 64px;
-
+		row-height			: 128px;
+		separator-style 	: none;
 	}
 	/**  Styles all the profile pictures of users that are returned in the Select Recipient Table.  **/
 	.list_userprofilepic {
@@ -3177,13 +3177,19 @@ table-view#select_recipientwithoutSeperator {
     }
     .animate_bubble_slow {
         animation-name: bubble;
-        animation-duration: 2.0s;
+        animation-duration: 2.2s;
 		animation-timing-function: ease;
 		animation-iteration-count: 1;
     }
     .animate_bubble_logo {
         animation-name: bubble;
         animation-duration: 2.2s;
+		animation-timing-function: ease;
+		animation-iteration-count: 1;
+    }
+    .animate_bubble_tour {
+        animation-name: bubble;
+        animation-duration: 3.0s;
 		animation-timing-function: ease;
 		animation-iteration-count: 1;
     }
