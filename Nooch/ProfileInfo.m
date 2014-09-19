@@ -901,7 +901,7 @@ UIImageView *picture;
             [resend_mail setStyleClass:@"button_green_sm"];
             [resend_mail addTarget:self action:@selector(resend_email) forControlEvents:UIControlEventTouchUpInside];
             [resend_mail setTitle:@"Resend Email" forState:UIControlStateNormal];
-            [resend_mail setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
+            [resend_mail setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.22) forState:UIControlStateNormal];
             resend_mail.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
             [cell.contentView addSubview:resend_mail];
         }

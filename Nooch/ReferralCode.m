@@ -178,6 +178,7 @@
         
         if ([[response objectForKey:@"validateInvitationCodeResult"] boolValue])
         {
+            [self.hud hide:YES];
             RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
             spinner1.color = [UIColor whiteColor];
             self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
@@ -204,6 +205,7 @@
             [enter setEnabled:YES];
         }
     }
+
     if ([tagName isEqualToString:@"validate"])
     {
         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];

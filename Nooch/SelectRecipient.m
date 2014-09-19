@@ -529,7 +529,7 @@
         
         [search setHidden:NO];
 
-        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleFadingCircleAlt];
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
         spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
@@ -1001,7 +1001,7 @@
             return;
         }
         
-        if ([self.recents count]>0) {
+        if ([self.recents count] > 0) {
             [self.contacts setHidden:NO];
             [self.contacts setStyleId:@"select_recipient"];
             [self.contacts reloadData];
@@ -1386,16 +1386,16 @@
         cell.indentationLevel = 1;
     }
 
-    for (UIView*subview in cell.contentView.subviews) {
+    for (UIView *subview in cell.contentView.subviews) {
         [subview removeFromSuperview];
     }
 
     [cell.detailTextLabel setText:@""];
 
-    UIImageView*pic = [[UIImageView alloc] initWithFrame:CGRectMake(16, 6, 50, 50)];
+    UIImageView * pic = [[UIImageView alloc] initWithFrame:CGRectMake(16, 6, 50, 50)];
     pic.clipsToBounds = YES;
 
-    UIImageView* npic = [UIImageView new];
+    UIImageView * npic = [UIImageView new];
     npic.clipsToBounds = YES;
 
     [cell.contentView addSubview:pic];
@@ -1482,7 +1482,7 @@
     else if (searching)
     {
         //Nooch User
-        npic.hidden=NO;
+        npic.hidden = NO;
         [npic setFrame:CGRectMake(278, 19, 23, 27)];
         [npic setImage:[UIImage imageNamed:@"n_icon_46x54.png"]];
         [npic removeFromSuperview];
@@ -1491,7 +1491,7 @@
         [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
             placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         [cell setIndentationLevel:1];
-        pic.hidden=NO;
+        pic.hidden = NO;
         cell.indentationWidth = 56;
         [pic setFrame:CGRectMake(16, 6, 50, 50)];
         pic.layer.cornerRadius = 25;
@@ -1584,23 +1584,25 @@
         }
     }
 
-    else if(isRecentList){
+    else if (isRecentList){
         //Recent List
         
         [npic setFrame:CGRectMake(278, 19, 23, 27)];
         [npic setImage:[UIImage imageNamed:@"n_icon_46x54.png"]];
-        NSDictionary *info = [self.recents objectAtIndex:indexPath.row];
+        
+        NSDictionary * info = [self.recents objectAtIndex:indexPath.row];
         [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
             placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
-        pic.hidden=NO;
-        cell.indentationWidth = 56;
+        pic.hidden = NO;
         [pic setFrame:CGRectMake(16, 6, 50, 50)];
         pic.layer.cornerRadius = 25;
+
+        cell.indentationWidth = 56;
         [cell setIndentationLevel:1];
-        cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",info[@"FirstName"],info[@"LastName"]];
+        cell.textLabel.text = [NSString stringWithFormat:@"    %@ %@",info[@"FirstName"],info[@"LastName"]];
         [cell.textLabel setStyleClass:@"select_recipient_name"];
         
-        cell.accessoryType=UITableViewCellAccessoryNone;
+        cell.accessoryType = UITableViewCellAccessoryNone;
         
         if ([[[assist shared] assos] objectForKey:info[@"UserName"]])
         {
@@ -1616,16 +1618,37 @@
         }
     }
     
-    else if(emailEntry)
+    else if (emailEntry)
     {
         //Email
-        cell.accessoryType=UITableViewCellAccessoryNone;
-        [pic removeFromSuperview];
+        [self.contacts setStyleId:@"select_recipientwithoutSeperator"];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+   //     [pic removeFromSuperview];
+        [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
+        [pic setFrame:CGRectMake(130, 62, 60, 60)];
+        pic.layer.cornerRadius = 29;
         [npic removeFromSuperview];
         
         cell.indentationWidth = 10;
-        cell.textLabel.text = [NSString stringWithFormat:@"Send to %@",search.text];
-        [cell.textLabel setStyleClass:@"select_recipient_name"];
+        [cell.contentView sizeToFit];
+        
+        UILabel * send_to_label = [UILabel new];
+        [send_to_label setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
+        [send_to_label setFrame:CGRectMake(60, 2, 200, 25)];
+        [send_to_label setText:@"Send To:"];
+        [send_to_label setTextColor:kNoochBlue];
+        [send_to_label setTextAlignment:NSTextAlignmentCenter];
+        [cell.contentView addSubview:send_to_label];
+
+        UILabel * send_to_email = [UILabel new];
+        [send_to_email setFont:[UIFont fontWithName:@"Roboto-light" size:22]];
+        [send_to_email setFrame:CGRectMake(10, 28, 300, 30)];
+        [send_to_email setText:[NSString stringWithFormat:@"%@",search.text]];
+        [send_to_email setTextColor:kNoochGrayDark];
+        [send_to_email setTextAlignment:NSTextAlignmentCenter];
+        [cell.contentView addSubview:send_to_email];
+        
+        cell.textLabel.text = @"";
         return cell;
     }
     return cell;

@@ -592,33 +592,39 @@
 		text-align		: right;
 	}
 	.exportHistorybutton {
-		background-color: #3FABE1;
+        top: 450px;
+		width: 130px;
+		background-color: rgba(63,171,225,.86);
         border-radius: 4px;
-        top:450px;
 		font-family: "Roboto";
 		font-weight: regular;
 		font-size: 14px;
 		text-align: center;
 		color: white;
-		width: 130px;
-		left: 10px;
-		height: 30px;
-		box-shadow: 1px 1px 2px rgba(88,90,92,0.55);
+		box-shadow: 1px 1px 1px rgba(88,90,92,0.45);
 	}
 	.exportHistorybutton_4{
-		background-color: #3FABE1;
-        border-radius: 4px;
         top: 380px;
+		width: 130px;
+		background-color: rgba(63,171,225,.86);
+        border-radius: 4px;
 		font-family: "Roboto";
 		font-weight: regular;
 		font-size: 14px;
 		text-align: center;
 		color: white;
-		width: 130px;
-		left: 10px;
-		height: 30px;
-		box-shadow: 1px 1px 2px rgba(88,90,92,0.55);
+		box-shadow: 1px 1px 1px rgba(88,90,92,0.45);
 	}
+    #exportStatsBtn {
+		background-color: rgba(63,171,225,.98);
+        border-radius: 4px;
+		font-family: "Roboto";
+		font-weight: regular;
+		font-size: 15px;
+		text-align: center;
+		color: white;
+		box-shadow: 1px 1px 1px rgba(88,90,92,0.45);
+    }
 	
 	/****  		Sub-header Text (Outside of Table)     ****/
 	/****  Mostly Pre-Login Screens + Referral Screen  ****/
@@ -887,11 +893,11 @@
 		separator-style 	: single-line;
 		separator-color		: rgba(188,190,192,.7);	
 	}
-table-view#select_recipientwithoutSeperator {
+    table-view#select_recipientwithoutSeperator {
 		width				: 320px;
 		background-color	: #ffffff;
-		row-height			: 64px;
-
+		row-height			: 128px;
+		separator-style 	: none;
 	}
 	/**  Styles all the profile pictures of users that are returned in the Select Recipient Table.  **/
 	.list_userprofilepic {
@@ -1254,9 +1260,9 @@ table-view#select_recipientwithoutSeperator {
 		color           : #414042px;
 	}
     #howmuch_memo_4 {
-		width 			: 212px;
 		left    		: 83px;
 		top     		: 98px;
+		width 			: 212px;
         height      	: 31px;
 		border 			: 1px solid;
 		border-color	: #939598;
@@ -1270,71 +1276,71 @@ table-view#select_recipientwithoutSeperator {
 	
 	/**  Full container (bottom layer) for the Attach a Picture stuff.  **/
 	#attachpic_container {
+		left			: 10px;
+		top				: 130px;
 		width			: 300px;
 		height			: 130px;
-		top				: 135px;
-		left			: 10px;
 		background-color: transparent;
 	}
 	
 	/**  The left half - blue box - for Taking a Photo.  **/
 	#attachpic_takephoto_box {
+		left			: 0px;
+		top				: 0px;
 		width			: 150px;
 		height			: 130px;
-		top				: 0px;
-		left			: 0px;
 		background-color: #3fabe1;
 	}
   
 	/**  The right half - white box - for the choose from an album option. **/
 	#attachpic_choosefrom_box {
+		left			: 150px;
+		top				: 0px;
 		width			: 150px;
 		height			: 130px;
-		top				: 0px;
-		left			: 150px;
 		background-color: white;
 	}
 	
 	/**  Left side Camera icon. **/
 	#attachpic_takephoto_icon {
+		left			: 47px;
+		top				: 35px;
 		width			: 53px;
 		height			: 39px;
-		top				: 35px;
-		left			: 45px;
 		background-image: url(take-pic-icon.png);
-		}
+    }
 	
 	/**  Right side polaroid icon. **/
 	#attachpic_choosefrom_icon {
+		left			: 201px;
+		top				: 31px;
 		width			: 49px;
 		height			: 48px;
-		top				: 35px;
-		left			: 193px;
 		background-image: url(choose-pic-icon.png);
 	}
 	
 	/**  Left side text label. **/
 	#attachpic_takephoto_label {
-		width			: 145px;
-		height			: 20px;
-		top				: 85px;
 		left			: 0px;
+		top				: 90px;
+		width			: 149px;
+		height			: 20px;
 		color			: white;
 		font-family		: "Roboto";
-		font-size		: 13px;
+		font-size		: 15px;
 		font-weight		: regular;
 		text-align		: center;
 	}
 	
 	/**  Right side text label.  **/
 	#attachpic_choosefrom_label {
-		width			: 145px;
+		left			: 151px;
+		top				: 90px;
+		width			: 149px;
 		height			: 20px;
-		top				: 85px;
-		left			: 145px;
-		color			: #bcbec0;
+		color			: #939598;
 		font-family		: "Roboto";
-		font-size		: 13px;
+		font-size		: 15px;
 		font-weight		: regular;
 		text-align		: center;
 	}
@@ -1343,7 +1349,7 @@ table-view#select_recipientwithoutSeperator {
 		width			: 40px;
 		height			: 40px;
 		top				: 42px;
-		left			: 124px;
+		left			: 130px;
 		background-color: #3fabe1;
 		border			: 4px solid #ffffff;
         color           : #ffffff;
@@ -3171,13 +3177,19 @@ table-view#select_recipientwithoutSeperator {
     }
     .animate_bubble_slow {
         animation-name: bubble;
-        animation-duration: 2.0s;
+        animation-duration: 2.2s;
 		animation-timing-function: ease;
 		animation-iteration-count: 1;
     }
     .animate_bubble_logo {
         animation-name: bubble;
         animation-duration: 2.2s;
+		animation-timing-function: ease;
+		animation-iteration-count: 1;
+    }
+    .animate_bubble_tour {
+        animation-name: bubble;
+        animation-duration: 3.0s;
 		animation-timing-function: ease;
 		animation-iteration-count: 1;
     }

@@ -30,7 +30,8 @@
 	// Do any additional setup after loading the view.
 }
 
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
