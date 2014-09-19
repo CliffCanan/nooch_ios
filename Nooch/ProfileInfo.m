@@ -593,20 +593,20 @@ UIImageView *picture;
     strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@")" withString:@""];
     strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@" " withString:@""];
     
-    if (![self.SavePhoneNumber isEqualToString:strPhoneNumber] || [self.SavePhoneNumber length] == 0)
-    {
-        if ([strPhoneNumber length] == 10)
-        {
-            serve *req = [serve new];
-            [req SendSMSApi:strPhoneNumber msg:@"Reply with \"Go\" to this message to verify your phone number."];
-        }
-        else
-        {
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Phone Number Trouble" message:@"Please double check that you entered a valid 10-digit phone number." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-            return;
-        }
-    }
+//    if (![self.SavePhoneNumber isEqualToString:strPhoneNumber] || [self.SavePhoneNumber length] == 0)
+//    {
+//        if ([strPhoneNumber length] == 10)
+//        {
+//            serve *req = [serve new];
+//            [req SendSMSApi:strPhoneNumber msg:@"Reply with \"Go\" to this message to verify your phone number."];
+//        }
+//        else
+//        {
+//            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Phone Number Trouble" message:@"Please double check that you entered a valid 10-digit phone number." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+//            [alert show];
+//            return;
+//        }
+//    }
 
     if ([self.recovery_email.text length] == 0) {
         self.recovery_email.text = @"";
@@ -1254,7 +1254,7 @@ UIImageView *picture;
         NSDictionary *resultValue = [dictProfileinfo valueForKey:@"MySettingsResult"];
         getEncryptionOldPassword = [dictProfileinfo objectForKey:@"Password"];
         NSLog(@"MY SETTINGS RESULT IS........: %@",[resultValue valueForKey:@"Result"]);
-
+        [[assist shared]setTranferImage:nil];
         if ([[resultValue valueForKey:@"Result"] isEqualToString:@"Your details have been updated successfully."])
         {
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
