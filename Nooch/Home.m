@@ -960,7 +960,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
     else
     {
-//        imageView = (UIImageView *)[view viewWithTag:1];
     }
     
     return view;
@@ -988,7 +987,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
         alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
         [alertView show];
-        //[alertView setTag:50];
         return;
     }
     
