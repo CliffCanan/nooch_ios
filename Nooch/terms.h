@@ -2,18 +2,15 @@
 //  terms.h
 //  Nooch
 //
-//  Created by administrator on 12/05/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Created by administrator on 12/05/13.
+//  Copyright 2014 Nooch Inc. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import "serve.h"
 #import "MBProgressHUD.h"
 
-
 BOOL isfromRegister;
-
-//@class signin;
 
 @interface terms : GAITrackedViewController <serveD,UIWebViewDelegate,MBProgressHUDDelegate>
 

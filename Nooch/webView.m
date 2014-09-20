@@ -15,6 +15,7 @@
 
 @implementation webView
 @synthesize mywebview;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -23,14 +24,19 @@
     }
     return self;
 }
--(void)viewWillAppear:(BOOL)animated{
+
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
-    self.trackedViewName = @"SupportNooch Screen";
+    self.trackedViewName = @"Support Center WebView Screen";
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    [self.navigationItem setTitle:@"Support Center"];
+
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
@@ -42,7 +48,7 @@
     
     NSURL *webURL = [NSURL URLWithString:@"http://support.nooch.com"];
     mywebview=[[UIWebView alloc]initWithFrame:self.view.frame];
-    [mywebview setFrame:CGRectMake(0, -40, 320, [[UIScreen mainScreen] bounds].size.height - 18)];
+    [mywebview setFrame:CGRectMake(0, -40, 320, [[UIScreen mainScreen] bounds].size.height - 22)];
     [mywebview loadRequest:[NSURLRequest requestWithURL:webURL]];
     mywebview.scalesPageToFit = YES;
     mywebview.delegate=self;
@@ -51,15 +57,18 @@
     [self.view addSubview:mywebview];
     // Do any additional setup after loading the view.
 }
+
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     return YES;
 }
+
 -(void)showMenu
 {
     [[assist shared]setneedsReload:NO];
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
+
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     return ;
@@ -81,16 +90,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

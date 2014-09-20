@@ -40,8 +40,8 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.trackedViewName = @"Terms Screen";
@@ -73,11 +73,22 @@
         [btn_Close addTarget:self action:@selector(dismissView:) forControlEvents:UIControlEventTouchUpInside];
         [nav_view addSubview:btn_Close];
     }
+    else {
+        UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [hamburger setStyleId:@"navbar_hamburger"];
+        [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+        [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
+        [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+        hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+        [self.navigationItem setLeftBarButtonItem:menu];
+    }
 
-    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
+    RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
+
     self.hud.labelText = @"Loading Nooch's Terms of Service";
     [spinner1 startAnimating];
     self.hud.mode = MBProgressHUDModeCustomView;
@@ -120,20 +131,17 @@
 {
     [self.hud hide:YES];
     return ;
-    UIApplication * app = [UIApplication sharedApplication];
-    app.networkActivityIndicatorVisible = NO;
 }
--(void)webViewDidStartLoad:(UIWebView *) portal
-{
-    UIApplication * app = [UIApplication sharedApplication];
-    app.networkActivityIndicatorVisible = YES;
-}
+
 -(void)webViewDidFinishLoad:(UIWebView *) portal
 {
     [self.hud hide:YES];
-    UIApplication * app = [UIApplication sharedApplication];
-    app.networkActivityIndicatorVisible = NO;
-    [self.navigationItem setRightBarButtonItem:nil];
+}
+
+-(void)showMenu
+{
+    [[assist shared]setneedsReload:NO];
+    [self.slidingViewController anchorTopViewTo:ECRight];
 }
 
 -(void)listen:(NSString *)result tagName:(NSString*)tagName
@@ -142,7 +150,9 @@
     NSDictionary *template = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
     [termsView loadHTMLString:[template objectForKey:@"Result"] baseURL:nil];
     [spinner stopAnimating];
-    
+
+    [self.hud hide:YES];
+
     for (id subView in [termsView subviews]) {
         if ([subView respondsToSelector:@selector(flashScrollIndicators)]) {
             [subView flashScrollIndicators];

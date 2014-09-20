@@ -1,17 +1,20 @@
-//
 //  privacy.m
 //  Nooch
 //
-//  Created by administrator on 6/05/14.
 //  Copyright 2014 Nooch Inc. All rights reserved.
-//
 
 #import "privacy.h"
-#import "terms.h"
+#import "Home.h"
+#import "ECSlidingViewController.h"
+#import "SpinKit/RTSpinKitView.h"
+
+@interface privacy ()<MBProgressHUDDelegate>
+@property(nonatomic,strong) MBProgressHUD *hud;
+@end
 
 @implementation privacy
 
-@synthesize privacyView,spinner;
+@synthesize privacyView;
 
 # pragma mark - View lifecycle
 
@@ -24,19 +27,10 @@
     return self;
 }
 
-
-- (void)dealloc {
-    //[super dealloc];
-}
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     self.trackedViewName = @"Privacy Screen";
-}
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc. that aren't in use.
 }
 
 - (void)viewDidUnload {
@@ -49,14 +43,32 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    privacyView.backgroundColor = [UIColor clearColor];
-    privacyView.opaque = 0;
-    spinner.hidesWhenStopped = YES;
-    [spinner startAnimating];
     self.navigationItem.title = @"Privacy Policy";
-    
-    NSURL *webURL = [NSURL URLWithString:@"https://www.nooch.com/privacy/"];
-    privacyView=[[UIWebView alloc]initWithFrame:CGRectMake(0, -2, 320, [[UIScreen mainScreen] bounds].size.height - 62)];
+    privacyView.backgroundColor = [UIColor whiteColor];
+
+    UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [hamburger setStyleId:@"navbar_hamburger"];
+    [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+    [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
+    [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+    hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+    [self.navigationItem setLeftBarButtonItem:menu];
+
+    RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
+    spinner1.color = [UIColor whiteColor];
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.hud];
+
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.customView = spinner1;
+    self.hud.delegate = self;
+    self.hud.labelText = @"Loading Privacy Policy...";
+    [self.hud show:YES];
+    [spinner1 startAnimating];
+
+    NSURL * webURL = [NSURL URLWithString:@"https://www.nooch.com/privacy/"];
+    privacyView = [[UIWebView alloc]initWithFrame:CGRectMake(0, -2, 320, [[UIScreen mainScreen] bounds].size.height - 62)];
     privacyView.delegate = self;
     [privacyView loadRequest:[NSURLRequest requestWithURL:webURL]];
     privacyView.scalesPageToFit = YES;
@@ -70,45 +82,36 @@
     return YES;
 }
 
-
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
+    [self.hud hide:YES];
     return ;
-    UIApplication* app = [UIApplication sharedApplication];
-    app.networkActivityIndicatorVisible = NO;
 }
--(void)webViewDidStartLoad:(UIWebView *) portal {
-    UIApplication* app = [UIApplication sharedApplication];
-    app.networkActivityIndicatorVisible = YES;
-}
--(void)webViewDidFinishLoad:(UIWebView *) portal{
-    UIApplication* app = [UIApplication sharedApplication];
-    app.networkActivityIndicatorVisible = NO;
+
+-(void)webViewDidFinishLoad:(UIWebView *) portal
+{
+    [self.hud hide:YES];
     [self.navigationItem setRightBarButtonItem:nil];
 }
 
--(void)navCustomization
+-(void)showMenu
 {
-    self.navigationItem.title = @"Privacy Policy";
-}
-
--(void)goBack
-{
-    //[navCtrl dismissModalViewControllerAnimated:YES];
+    [[assist shared]setneedsReload:NO];
+    [self.slidingViewController anchorTopViewTo:ECRight];
 }
 
 # pragma mark - serve delegation
-
 -(void)listen:(NSString *)result tagName:(NSString*)tagName
 {
     NSError *error;
     NSDictionary *template = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
     
-    if([template objectForKey:@"Result"])
-    {
+    if ([template objectForKey:@"Result"]) {
         [privacyView loadHTMLString:[template objectForKey:@"Result"] baseURL:nil];
     }
-    [spinner stopAnimating];
+    
+    [self.hud hide:YES];
+
     for (id subView in [privacyView subviews]) {
         if ([subView respondsToSelector:@selector(flashScrollIndicators)]) {
             [subView flashScrollIndicators];
@@ -116,9 +119,9 @@
     }
 }
 
-- (IBAction)continueButtonAction
-{
-   //[navCtrl dismissModalViewControllerAnimated:YES];
+- (void)didReceiveMemoryWarning {
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
 }
 
 @end

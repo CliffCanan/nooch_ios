@@ -72,6 +72,7 @@
 	}
 	
 	.light_gray_text { color: #bcbec0; }
+    .reallyLight_gray { color: rgba(218,219,220,.9);
 	.red_text { color		: #c72127; }
 	.orange_text { color		: #cc9933; }
 	.yellow_text { color		: #cccc33; }
@@ -391,7 +392,7 @@
 		.notVerifiedLabel {
 			color 				: #b90e0a;
 			font-family			: "Roboto";
-			font-weight         : medium;
+			font-weight         : regular;
 			font-size			: 15px;
 		}
 		
@@ -532,15 +533,18 @@
 		 
 	  /****  Table Main Text  (left side of row)  ****/
 	 .table_view_cell_textlabel_1 {
-		font-family			: "Roboto";
+		left                : 14px;
+		width				: 260px;
+		height				: 40px;
+        font-family			: "Roboto";
 		font-weight         : regular;
 		font-size			: 17px;
 		text-align       	: left;
 		color 				: #41ABE1;
-		width				: 260px;
-		left                : 14px;
-		height				: 40px;
 	}
+    .table_txtlbl_indented {
+        left    : 32px;
+    }
 	.memtable_view_cell_textlabel_1 {
 		left            : 90px;
         top             : 8px;
@@ -1048,7 +1052,7 @@
 		font-weight         : medium;
 		text-align       	: right;
 		color 				: #58595B;
-	}
+    }
     #howmuch_amountfield_4 {
 		left                : 110px;
 		top					: 42px;
@@ -1244,7 +1248,6 @@
 		background-size	: 30px 22px;
 	}
 
-
 	/**  Text entry field for inputting a memo. **/
     #howmuch_memo {
 		left    		: 8px;
@@ -1258,7 +1261,7 @@
 		font-weight 	: light;
 		font-size       : 16px;
 		color           : #414042px;
-	}
+    }
     #howmuch_memo_4 {
 		left    		: 83px;
 		top     		: 98px;
@@ -3101,12 +3104,6 @@
 			scale: 1;
             opacity : 1;
 		}
-	/*	10% {
-			left: 146px;
-            rotation  : 1;
-			scale: 1;
-            opacity: 1;
-		} */
         100% {
 			left: 5px;
             rotation  : -6;
@@ -3262,6 +3259,7 @@
 			scale: 1;
 		}
     }
+
 	
 /**  FLOATING Stats Circle Icon **/
 @keyframes floatingStatsCircle {

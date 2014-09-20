@@ -522,22 +522,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  [UIColor whiteColor], UITextAttributeTextColor,
-                                  Rgb2UIColor(19, 32, 38, .26), UITextAttributeTextShadowColor,
-                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, -1.0)], UITextAttributeTextShadowOffset, nil];
-    [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
-
-/*    
-    NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
-
-    if ([defaults boolForKey:@"hasSeenIntro"] == false)
-    {
-        [self showIntroWithCrossDissolve];
-        [defaults setBool:true forKey:@"hasSeenIntro"];
-    }
-*/
 
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(71, 8, 7, .4);
@@ -589,7 +573,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.view addSubview:self.suspended];
     }
     
-    else if(![[user objectForKey:@"Status"] isEqualToString:@"Suspended"] && ![[user objectForKey:@"Status"] isEqualToString:@"Registered"] && [[user valueForKey:@"Status"]isEqualToString:@"Active"])
+    else if (![[user objectForKey:@"Status"] isEqualToString:@"Suspended"] &&
+             ![[user objectForKey:@"Status"] isEqualToString:@"Registered"] &&
+              [[user valueForKey:@"Status"]  isEqualToString:@"Active"])
     {
         [self.suspended removeFromSuperview];
         bannerAlert--;
@@ -603,9 +589,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
        
         if (bannerAlert > 0)
         {
-           CGRect rect= self.profile_incomplete.frame;
-           rect.origin.y+=54;
-           self.profile_incomplete.frame=rect;
+           CGRect rect = self.profile_incomplete.frame;
+           rect.origin.y += 54;
+           self.profile_incomplete.frame = rect;
         }
         bannerAlert++;
       
@@ -642,7 +628,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [dis addTarget:self action:@selector(dismiss_profile_unvalidated) forControlEvents:UIControlEventTouchUpInside];
       
         [self.profile_incomplete addSubview:dis];
-        
         [self.view addSubview:self.profile_incomplete];
     }
     
@@ -661,9 +646,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
           
         if (bannerAlert > 0) {
             CGRect rect= self.phone_incomplete.frame;
-            rect.origin.y+=54;
-            self.phone_incomplete.frame=rect;
+            rect.origin.y += 54;
+            self.phone_incomplete.frame = rect;
         }
+
         bannerAlert++;
         
         UILabel *em = [UILabel new];
@@ -705,7 +691,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.phone_incomplete addSubview:dis];
 
         [self.view addSubview:self.phone_incomplete];
-      }
+        
+            [self.view bringSubviewToFront:self.profile_incomplete];
+
+    }
     else {
         [self.phone_incomplete removeFromSuperview];
     }
@@ -716,7 +705,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [top_button setTitleShadowColor:Rgb2UIColor(26, 38, 32, 0.2) forState:UIControlStateNormal];
     top_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     
-    CGRect button_frame = CGRectMake(20, 255, 280, 60);
+    CGRect button_frame = CGRectMake(20, 258, 280, 60);
     [top_button setFrame:button_frame];
     [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
     [top_button setTitle:@"   Search For More Friends" forState:UIControlStateNormal];
@@ -733,14 +722,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     int carouselTop;
     if (bannerAlert == 1)
     {
-        carouselTop = 70;
-        CGRect button_frame = CGRectMake(20, 275, 280, 60);
+        carouselTop = 72;
+        CGRect button_frame = CGRectMake(20, 278, 280, 60);
         [top_button setFrame:button_frame];
     }
-    else if (bannerAlert == 2)
+    else if (bannerAlert >= 2)
     {
-        carouselTop = 100;
-        CGRect button_frame = CGRectMake(20, 305, 280, 60);
+        carouselTop = 110;
+        CGRect button_frame = CGRectMake(20, 315, 280, 60);
         [top_button setFrame:button_frame];
     }
     else {
@@ -751,30 +740,26 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
         ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted)
     {
-        
         NSLog(@"Denied");
     }
     else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
     {
-        
         NSLog(@"Authorized");
-        if ([[[assist shared]assosAll] count]==0) {
+        if ([[[assist shared]assosAll] count] == 0) {
             [self address_book];
-            
         }
-         [self GetFavorite];
+        [self GetFavorite];
     }
     else
     {
         ABAddressBookRequestAccessWithCompletion(ABAddressBookCreateWithOptions(NULL, nil), ^(bool granted, CFErrorRef error)
                                                  {
-                                                     if (!granted){
-                                                         
-                                                         NSLog(@"Just denied");
+                                                     if (!granted) {
+                                                        NSLog(@"Just denied");
                                                          return;
                                                      }
                                                      
-                                                     if ([[[assist shared]assosAll] count]==0) {
+                                                     if ([[[assist shared]assosAll] count] == 0) {
                                                          [self address_book];
                                                          
                                                      }
@@ -784,7 +769,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                                      
                                                      NSLog(@"Just authorized");
                                                  });
-        
         NSLog(@"Not determined");
     }
     
@@ -829,6 +813,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     [super viewWillAppear:animated];
     self.trackedViewName = @"Home Screen";
+    
+    NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  [UIColor whiteColor], UITextAttributeTextColor,
+                                  Rgb2UIColor(19, 32, 38, .26), UITextAttributeTextShadowColor,
+                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, -1.0)], UITextAttributeTextShadowOffset, nil];
+    [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
     [self.navigationItem setTitle:@"Nooch"];
     
     if (![[assist shared]isPOP])
@@ -907,6 +897,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     if (view == nil)
     {
 		view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 140, 175)];
+
         imageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 25, 100, 100)];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         imageView.layer.cornerRadius = 50;
@@ -974,7 +965,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel
 {
-    
 }
 
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index
@@ -1035,13 +1025,41 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     if (favorite[@"MemberId"])
     {
-        [favorite setObject:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
-        NSLog(@"%@",favorite);
-        isFromHome = YES;
-        HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
-        [self.navigationController pushViewController:trans animated:YES];
-        return;
+        double totalduration = .6;
+
+        [UIView animateKeyframesWithDuration:totalduration delay:0 options:UIViewKeyframeAnimationOptionCalculationModeCubic animations:^{
+            [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
+                carousel.currentItemView.transform = CGAffineTransformMakeTranslation(-16, 0);
+            }];
+            [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.3 animations:^{
+                carousel.currentItemView.transform = CGAffineTransformMakeTranslation(-24, 0);
+                
+            }];
+            [UIView addKeyframeWithRelativeStartTime:.5 relativeDuration:.5 animations:^{
+                carousel.currentItemView.transform = CGAffineTransformMakeTranslation(225, 0);
+
+            }];
+            
+            [UIView addKeyframeWithRelativeStartTime:.4 relativeDuration:.6 animations:^{
+                top_button.alpha = 0;
+                
+            }];
+            [UIView addKeyframeWithRelativeStartTime:.4 relativeDuration:.6 animations:^{
+                top_button.transform = CGAffineTransformMakeScale(.1, .1);
+                
+            }];
+
+        } completion:^(BOOL finished){
+        
+                             [favorite setObject:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
+                             NSLog(@"%@",favorite);
+                             isFromHome = YES;
+                             HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
+                             [self.navigationController pushViewController:trans animated:YES];
+                             return;
+                         }];
     }
+    
     else if (favorite[@"UserName"])
     {
         if ([favorite[@"emailCount"]intValue] > 1)
@@ -1054,7 +1072,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             actionSheetObject.cancelButtonIndex = [actionSheetObject addButtonWithTitle:@"Cancel"];
             actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
             [actionSheetObject setTag:1];
-            actionSheetObject.delegate=self;
+            actionSheetObject.delegate = self;
             [actionSheetObject showInView:self.view];
         }
         else
@@ -1277,7 +1295,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                      options:kNilOptions
                                      error:&error];
         NSLog(@"favorites %@",favorites);
-        favorites=[favorites mutableCopy];
+        favorites = [favorites mutableCopy];
         if ([favorites count] == 0) {
             [self FavoriteContactsProcessing];
         }
@@ -1363,21 +1381,30 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                            options:kNilOptions
                                            error:&error];
         
-        if([dictResult objectForKey:@"Result"] != [NSNull null]) {
+        if ([dictResult objectForKey:@"Result"] != [NSNull null])
+        {
             serve *getDetails = [serve new];
             getDetails.Delegate = self;
             getDetails.tagName = @"getMemberDetails";
             [getDetails getDetails:[dictResult objectForKey:@"Result"]];
         }
-        else {
-            
+        else
+        {
             NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
             [dict setObject:emailID forKey:@"email"];
             [dict setObject:@"nonuser" forKey:@"nonuser"];
             isFromHome = YES;
+
+/*          iCarousel * carousel = [iCarousel alloc];
+            [UIView animateWithDuration:0.4
+                             animations:^{
+                                 [carousel.currentItemView setFrame:CGRectMake(320, 0, 140, 175)];
+                             }
+                             completion:^(BOOL finished){  */
             HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
             return;
+//                             }];
         }
     }
     
