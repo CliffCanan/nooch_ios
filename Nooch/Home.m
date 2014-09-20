@@ -285,6 +285,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.45];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
     
     CGRect frame = self.suspended.frame;
     frame.origin.y = -58;
@@ -305,7 +306,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.45];
-    
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+
     CGRect frame = self.profile_incomplete.frame;
     frame.origin.y = -58;
     [self.profile_incomplete setFrame:frame];
@@ -322,7 +324,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.45];
-    
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+
     CGRect frame = self.phone_incomplete.frame;
     frame.origin.y = -58;
     [self.phone_incomplete setFrame:frame];
@@ -1027,7 +1030,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     {
         double totalduration = .6;
 
-        [UIView animateKeyframesWithDuration:totalduration delay:0 options:UIViewKeyframeAnimationOptionCalculationModeCubic animations:^{
+        [UIView animateKeyframesWithDuration:totalduration
+                                       delay:0
+                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                  animations:^{
             [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
                 carousel.currentItemView.transform = CGAffineTransformMakeTranslation(-16, 0);
             }];
