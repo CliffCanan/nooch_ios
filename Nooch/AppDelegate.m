@@ -235,7 +235,12 @@ void exceptionHandler(NSException *exception){
 
 -(BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    NSLog(@"%@",url);
+      NSLog(@"%@",url);
+    if ([sourceApplication isEqualToString:@"com.apple.mobilesafari"]||[sourceApplication isEqualToString:@"com.apple.mobilemail"]) {
+        return YES;
+    }
+  
+    
     //Get the Response from Knox and parse it
     NSString *response = [[url absoluteString]stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSArray *URLParse = [response componentsSeparatedByString:@"?"];
