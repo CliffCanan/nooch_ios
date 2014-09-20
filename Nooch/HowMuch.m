@@ -502,6 +502,8 @@
 #pragma mark - picture attaching
 - (void) attach_pic
 {
+    [self.amount resignFirstResponder];
+
     self.shade = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, [UIScreen mainScreen].bounds.size.height)];
     [self.shade setBackgroundColor:kNoochGrayDark]; 
     [self.shade setAlpha:0.0];
@@ -509,9 +511,10 @@
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancel_photo)];
     [self.shade addGestureRecognizer:recognizer];
     [self.navigationController.view addSubview:self.shade];
-
-    CGRect frame = self.camera.frame;
-    self.choose = [[UIView alloc] initWithFrame:frame];
+    
+    // Set starting point to be the frame of Camera Icon, it will expand/grow from there
+    self.choose = [[UIView alloc] initWithFrame:CGRectMake(270, 220, 8, 6)];
+    self.choose.clipsToBounds = YES;
 
     UIButton *take = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [take addTarget:self action:@selector(take_photo) forControlEvents:UIControlEventTouchUpInside];
@@ -523,11 +526,11 @@
     [album setTitle:@"" forState:UIControlStateNormal];
     [self.choose addSubview:album];
 
-    [self.navigationController.view addSubview:self.choose];
-
     [UIView beginAnimations:Nil context:nil];
-    [UIView setAnimationDuration:.5];
-    [self.choose setFrame:CGRectMake(20, 125, 280, 120)];
+    [UIView setAnimationDuration:0.4];
+    
+    [self.shade setAlpha:0.65];
+
     [self.choose setStyleId:@"attachpic_container"];
     [take setStyleId:@"attachpic_takephoto_box"];
     [album setStyleId:@"attachpic_choosefrom_box"];
@@ -542,11 +545,11 @@
     
     UILabel *take_label = [UILabel new];
     [take_label setStyleId:@"attachpic_takephoto_label"];
-    [take_label setText:@"Take a Photo"];
+    [take_label setText:@"Use Camera"];
     [self.choose addSubview:take_label];
     
     UILabel *album_label = [UILabel new];
-    [album_label setText:@"Choose from Album"];
+    [album_label setText:@"Choose From Album"];
     [album_label setStyleId:@"attachpic_choosefrom_label"];
     [self.choose addSubview:album_label];
     
@@ -554,18 +557,26 @@
     [or setStyleId:@"attachpic_or"];
     [or setText:@"or"];
     [self.choose addSubview:or];
-    [self.shade setAlpha:0.6];
-    [self.amount resignFirstResponder];
-    
+
+    [self.navigationController.view addSubview:self.choose];
+
     [UIView commitAnimations];
 }
 
 - (void) cancel_photo
 {
     [UIView beginAnimations:Nil context:nil];
-    [UIView setAnimationDuration:1];
+    [UIView setAnimationDuration:.5];
+    
+//    self.choose = [[UIView alloc] initWithFrame:CGRectMake(270, 220, 8, 6)];
+
+    for (UIView *subview in [self.choose subviews]) {
+        [subview removeFromSuperview];
+    }
     [self.choose removeFromSuperview];
+    [self.choose setAlpha:0.0];
     [self.shade setAlpha:0.0];
+
     [UIView commitAnimations];
 }
 
@@ -611,19 +622,18 @@
     
     [self.camera removeFromSuperview];
 
-    UIImageView *trans_image = [[UIImageView alloc] initWithFrame:CGRectMake(252, 205, 56, 56)];
+    UIButton *trans_image = [[UIButton alloc] initWithFrame:CGRectMake(252, 205, 56, 56)];
     trans_image.layer.cornerRadius = 5;
-    trans_image.layer.borderWidth = 1;
     trans_image.clipsToBounds = YES;
-    trans_image.layer.borderColor = [UIColor whiteColor].CGColor;
-    [trans_image setImage:chosenImage];
+    [trans_image setBackgroundImage:chosenImage forState:UIControlStateNormal];
+    [trans_image addTarget:self action:@selector(attach_pic) forControlEvents:UIControlEventTouchUpInside];
     [self.back addSubview:trans_image];
 
     if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        [trans_image setFrame:CGRectMake(258, 105, 28, 28)];
+        [trans_image setFrame:CGRectMake(259, 105, 30, 30)];
     }
     else {
-        [trans_image setFrame:CGRectMake(257, 154, 30, 30)];
+        [trans_image setFrame:CGRectMake(259, 150, 34, 34)];
     }
 
 

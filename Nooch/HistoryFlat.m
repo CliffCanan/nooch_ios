@@ -189,53 +189,55 @@
 
         [completed_pending setSelectedSegmentIndex:0];
     
-        UILabel *glyph_checkmark = [UILabel new];
+        UILabel * glyph_checkmark = [UILabel new];
         [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
         [glyph_checkmark setFrame:CGRectMake(21, 12, 22, 16)];
         [glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
         [glyph_checkmark setTextColor:[UIColor whiteColor]];
         [self.view addSubview:glyph_checkmark];
         
-        UILabel *glyph_pending = [UILabel new];
+        UILabel * glyph_pending = [UILabel new];
         [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
         [glyph_pending setFrame:CGRectMake(178, 12, 20, 16)];
         [glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
         [glyph_pending setTextColor: kNoochBlue];
         [self.view addSubview:glyph_pending];
     
-        SDImageCache *imageCache = [SDImageCache sharedImageCache];
+        SDImageCache * imageCache = [SDImageCache sharedImageCache];
         [imageCache clearMemory];
         [imageCache clearDisk];
         [imageCache cleanDisk];
     
         [self loadHist:@"ALL" index:index len:20 subType:subTypestr];
-
-        //Export History
-        exportHistory = [UIButton buttonWithType:UIButtonTypeCustom];
-        [exportHistory setTitle:@"     Export History" forState:UIControlStateNormal];
-        [exportHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
-        exportHistory.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-        [exportHistory setFrame:CGRectMake(10, 420, 150, 20)];
-        if ([UIScreen mainScreen].bounds.size.height > 500) {
-            [exportHistory setStyleClass:@"exportHistorybutton"];
-        }
-        else {
-            [exportHistory setStyleClass:@"exportHistorybutton_4"];
-        }
-
-        UILabel *glyph = [UILabel new];
-        [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
-        [glyph setFrame:CGRectMake(7, 7, 15, 15)];
-        [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cloud-download"]];
-        [glyph setTextColor:[UIColor whiteColor]];
-        [exportHistory addSubview:glyph];
-        [exportHistory addTarget:self action:@selector(ExportHistory:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:exportHistory];
-        [self.view bringSubviewToFront:exportHistory];
         
         // Row count for scrolling
         countRows = 0;
     }
+
+    //Export History
+    exportHistory = [UIButton buttonWithType:UIButtonTypeCustom];
+    [exportHistory setTitle:@"     Export History" forState:UIControlStateNormal];
+    [exportHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
+    exportHistory.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [exportHistory setFrame:CGRectMake(10, 420, 132, 31)];
+    if ([UIScreen mainScreen].bounds.size.height > 500) {
+        [exportHistory setStyleClass:@"exportHistorybutton"];
+    }
+    else {
+        [exportHistory setStyleClass:@"exportHistorybutton_4"];
+    }
+    
+    UILabel *glyph = [UILabel new];
+    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
+    [glyph setFrame:CGRectMake(7, 1, 15, 30)];
+    [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cloud-download"]];
+    [glyph setTextColor:[UIColor whiteColor]];
+    [exportHistory addSubview:glyph];
+    [exportHistory addTarget:self action:@selector(ExportHistory:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:exportHistory];
+    [self.view bringSubviewToFront:exportHistory];
+    
+    
     UISwipeGestureRecognizer * recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideright:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self.view addGestureRecognizer:recognizer];
@@ -2205,16 +2207,21 @@ return customView;
 
 -(void)loadSearchByName
 {
+    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
+    spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
-    self.hud.delegate = self;
     self.hud.labelText = @"Searching History...";
     [self.hud show:YES];
+    [spinner1 startAnimating];
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.customView = spinner1;
+    self.hud.delegate = self;
 
-    listType=@"ALL";
-    isLocalSearch=NO;
-    serve*serveOBJ=[serve new];
-    serveOBJ.tagName=@"search";
+    listType = @"ALL";
+    isLocalSearch = NO;
+    serve * serveOBJ = [serve new];
+    serveOBJ.tagName = @"search";
     [serveOBJ setDelegate:self];
     [serveOBJ histMoreSerachbyName:listType sPos:index len:20 name:SearchStirng subType:subTypestr];
 }
@@ -2256,11 +2263,12 @@ return customView;
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
 }
+
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     NSError *error;
- [self.hud hide:YES];
+    [self.hud hide:YES];
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     [imageCache clearMemory];
     [imageCache clearDisk];
@@ -2268,8 +2276,6 @@ return customView;
     
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
     {
-//        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Login Detected From New Device" message:@"It seems like you have logged in from another device, which automatically signs you out of any other active devices." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//        [Alert show];
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
@@ -2285,8 +2291,10 @@ return customView;
     
     if ([tagName isEqualToString:@"csv"])
     {
-        NSDictionary*dictResponse=[NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        if ([[[dictResponse valueForKey:@"sendTransactionInCSVResult"]valueForKey:@"Result"]isEqualToString:@"1"]) {
+        NSDictionary * dictResponse = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        
+        if ([[[dictResponse valueForKey:@"sendTransactionInCSVResult"]valueForKey:@"Result"]isEqualToString:@"1"])
+        {
             UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Export Successful" message:@"Your personalized transaction report has been emailed to you." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
             [alert show];
         }
@@ -2364,7 +2372,7 @@ return customView;
               //  }
             }
             NSLog(@"The Pending COUNTER is: %d",counter);
-            [completed_pending setTitle:[NSString stringWithFormat:@"Pending  (%d)",counter]forSegmentAtIndex:1];
+            [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%d)",counter]forSegmentAtIndex:1];
             
         }
         else {
@@ -2388,7 +2396,6 @@ return customView;
         [self.list removeFromSuperview];
         self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
         [self.list setStyleId:@"history"];
-        //[self.list setRowHeight:68];
         [self.list setDataSource:self]; [self.list setDelegate:self];
         [self.list setSectionHeaderHeight:0];
         [self.view addSubview:self.list];
@@ -2549,11 +2556,16 @@ return customView;
     
     else if ((actionSheet.tag == 1010 || actionSheet.tag == 2010) && buttonIndex == 0) // CANCEL Request
     {
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
+        spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
-        self.hud.delegate = self;
         self.hud.labelText = @"Cancelling this request...";
         [self.hud show:YES];
+        [spinner1 startAnimating];
+        self.hud.mode = MBProgressHUDModeCustomView;
+        self.hud.customView = spinner1;
+        self.hud.delegate = self;
         
         serve * serveObj = [serve new];
         [serveObj setDelegate:self];
@@ -2570,11 +2582,16 @@ return customView;
     
     else if (actionSheet.tag == 310 && buttonIndex == 0) // CANCEL Transfer (Send) Invite
     {
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
+        spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
-        self.hud.delegate = self;
         self.hud.labelText = @"Cancelling this transfer...";
         [self.hud show:YES];
+        [spinner1 startAnimating];
+        self.hud.mode = MBProgressHUDModeCustomView;
+        self.hud.customView = spinner1;
+        self.hud.delegate = self;
         
         serve * serveObj = [serve new];
         [serveObj setDelegate:self];

@@ -29,6 +29,8 @@ UIImageView *picture;
 @property(nonatomic,strong) UITextField *city;
 @property(nonatomic,strong) UITextField *zip;
 @property(nonatomic,strong) UITableView *list;
+@property(nonatomic,strong) UILabel *glyph_arrow_email;
+@property(nonatomic,strong) UILabel *glyph_arrow_phone;
 @property(nonatomic,strong) UIButton *save;
 @property(nonatomic,strong) NSString *ServiceType;
 @property (nonatomic , retain) NSString * SavePhoneNumber;
@@ -57,6 +59,7 @@ UIImageView *picture;
     self.trackedViewName = @"Profile Screen";
 
     [self.navigationItem setTitle:@"Profile Info"];
+
     if ([[user objectForKey:@"Photo"] length] > 0 && [user objectForKey:@"Photo"] != nil && !isPhotoUpdate)
     {
         [picture setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
@@ -69,8 +72,8 @@ UIImageView *picture;
     }
 }
 
--(void) viewWillDisappear:(BOOL)animated {
-    
+-(void) viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
 }
 
@@ -235,7 +238,6 @@ UIImageView *picture;
         [hamburger addTarget:self action:@selector(savePrompt2) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
         [self.navigationItem setLeftBarButtonItem:menu];
-
     }
     if (!isSignup) {
         [self.slidingViewController.panGesture setEnabled:YES];
@@ -393,7 +395,7 @@ UIImageView *picture;
     self.phone = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.phone setTextAlignment:NSTextAlignmentRight];
     [self.phone setBackgroundColor:[UIColor clearColor]];
-    [self.phone setPlaceholder:@"555-555-5555"];
+    [self.phone setPlaceholder:@"(215) 555-1234"];
     [self.phone setDelegate:self];
     [self.phone setKeyboardType:UIKeyboardTypeNumberPad];
     self.phone.returnKeyType = UIReturnKeyNext;
@@ -405,7 +407,7 @@ UIImageView *picture;
     self.address_one = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.address_one setTextAlignment:NSTextAlignmentRight];
     [self.address_one setBackgroundColor:[UIColor clearColor]];
-    [self.address_one setPlaceholder:@"123 Nooch Lane"];
+    [self.address_one setPlaceholder:@"123 Nooch St"];
     [self.address_one setDelegate:self];
     [self.address_one setKeyboardType:UIKeyboardTypeDefault];
     self.address_one.returnKeyType = UIReturnKeyNext;
@@ -459,10 +461,12 @@ UIImageView *picture;
     [self.save addTarget:self action:@selector(save_changes) forControlEvents:UIControlEventTouchUpInside];
     [self.save setTitle:@"Save" forState:UIControlStateNormal];
     [self.save setStyleClass:@"nav_top_right"];
+    [self.save setStyleClass:@"reallyLight_gray"];
     [self.save setEnabled:NO];
+    [self.save setUserInteractionEnabled:NO];
     [self.view addSubview:self.save];
     UIBarButtonItem *nav_save = [[UIBarButtonItem alloc] initWithCustomView:self.save];
-    [self.navigationItem setRightBarButtonItem:nav_save animated:NO ];
+    [self.navigationItem setRightBarButtonItem:nav_save animated:YES];
     
     self.name.text=@"";
     self.email.text=@"";
@@ -484,12 +488,10 @@ UIImageView *picture;
                               nil];
     
     self.list = [UITableView new];
-    [self.list setFrame:CGRectMake(0, 70, 320, 390)];
-    self.list.layer.borderWidth = 1;
-    self.list.layer.borderColor = (__bridge CGColorRef)([UIColor redColor]);
+    [self.list setFrame:CGRectMake(0, 70, 320, [UIScreen mainScreen].bounds.size.height - 134)];
     [self.list setDelegate:self];
     [self.list setDataSource:self];
-    [self.list setRowHeight:60];
+    [self.list setRowHeight:50];
     [self.list setScrollEnabled:YES];
     [self.view addSubview:self.list];
 }
@@ -586,12 +588,13 @@ UIImageView *picture;
 
     [self.save setEnabled:NO];
     [self.save setUserInteractionEnabled:NO];
+    [self.save setStyleClass:@"reallyLight_gray"];
     
-    strPhoneNumber=self.phone.text;
-    strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@"(" withString:@""];
-    strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
-    strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@")" withString:@""];
-    strPhoneNumber=[strPhoneNumber stringByReplacingOccurrencesOfString:@" " withString:@""];
+    strPhoneNumber = self.phone.text;
+    strPhoneNumber = [strPhoneNumber stringByReplacingOccurrencesOfString:@"(" withString:@""];
+    strPhoneNumber = [strPhoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    strPhoneNumber = [strPhoneNumber stringByReplacingOccurrencesOfString:@")" withString:@""];
+    strPhoneNumber = [strPhoneNumber stringByReplacingOccurrencesOfString:@" " withString:@""];
     
 //    if (![self.SavePhoneNumber isEqualToString:strPhoneNumber] || [self.SavePhoneNumber length] == 0)
 //    {
@@ -616,20 +619,8 @@ UIImageView *picture;
     timezoneStandard = [[timezoneStandard componentsSeparatedByString:@", "] objectAtIndex:0];
     timezoneStandard = [GMTTimezonesDictionary objectForKey:timezoneStandard];
     timezoneStandard = @"";
-   
 
     recoverMail = [[NSString alloc] init];
-
-/*    if([self.recovery_email.text length] > 0){
-        if (![self validateEmail:[self.recovery_email text]]) {
-          [me endWaitStat];
-          self.recovery_email.text = @"";
-          [self.recovery_email becomeFirstResponder];
-          UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Invalid Recovery Email" message:@"Please check to make sure your recovery email address is correct." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-          [alert show];
-          return;
-      }
-  }  */
     
     if ([self.recovery_email.text length] > 0) {
         recoverMail = self.recovery_email.text;
@@ -690,7 +681,6 @@ UIImageView *picture;
         [transactionInput setObject:arr forKey:@"Picture"];
     }
 
-//    NSLog(@"%@",transactionInput);
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
     self.hud.delegate = self;
@@ -727,7 +717,7 @@ UIImageView *picture;
         NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal",[user objectForKey:@"facebook_id"]];
    
         [picture setImageWithURL:[NSURL URLWithString:url]
-             placeholderImage:[UIImage imageNamed:@"RoundLoading.png"]
+             placeholderImage:[UIImage imageNamed:@"profile_picture"]
                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
                         
                         if (image) {
@@ -738,9 +728,10 @@ UIImageView *picture;
         }];
     
         [self.save setEnabled:YES];
+        [self.save setUserInteractionEnabled:YES];
+        [self.save setStyleClass:@"nav_top_right"];
         [self.save setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
         self.save.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        [self.save setUserInteractionEnabled:YES];
         
         [dictSavedInfo setObject:@"YES" forKey:@"ImageChanged"];
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
@@ -825,8 +816,8 @@ UIImageView *picture;
     isPhotoUpdate = YES;
 
     [self.save setEnabled:YES];
-    [self.save setStyleClass:@"nav_top_right"];
     [self.save setUserInteractionEnabled:YES];
+    [self.save setStyleClass:@"nav_top_right"];
     [dictSavedInfo setObject:@"YES" forKey:@"ImageChanged"];
 
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
@@ -848,7 +839,6 @@ UIImageView *picture;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-
 {
     return 8;
 }
@@ -860,12 +850,18 @@ UIImageView *picture;
     
     if (cell == nil)
     {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                      reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                        reuseIdentifier:CellIdentifier];
         [cell.textLabel setTextColor:kNoochGrayLight];
         cell.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         cell.clipsToBounds = YES;
     }
+
+    NSShadow * shadow_white = [[NSShadow alloc] init];
+    shadow_white.shadowColor = Rgb2UIColor(255, 252, 252, .4);
+    shadow_white.shadowOffset = CGSizeMake(0, 1);
+    NSDictionary * textAttributes_white = @{NSShadowAttributeName: shadow_white };
+    
     if (indexPath.row == 0)
     {
         UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
@@ -878,13 +874,36 @@ UIImageView *picture;
     }
     else if (indexPath.row == 1)
     {
+        UILabel * mail = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        [mail setBackgroundColor:[UIColor clearColor]];
+        [mail setStyleClass:@"table_view_cell_textlabel_1"];
+        mail.attributedText = [[NSAttributedString alloc] initWithString:@"Email"
+                                                              attributes:textAttributes_white];
+        
         if ([[user valueForKey:@"Status"] isEqualToString:@"Registered"])
         {
-            UIView *email_not_validated = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 88)];
-            [email_not_validated setBackgroundColor:Rgb2UIColor(246, 8, 3, .4)];
+            UIView * email_not_validated = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 88)];
+            [email_not_validated setBackgroundColor:Rgb2UIColor(250, 228, 3, .25)];
             [cell.contentView addSubview:email_not_validated];
+            
+            [mail setStyleClass:@"table_txtlbl_indented"];
+
+            UILabel * glyph_excl = [UILabel new];
+            [glyph_excl setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+            [glyph_excl setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+            [glyph_excl setStyleClass:@"animate_bubble_slow"];
+            [glyph_excl setFrame:CGRectMake(12, 6, 20, 38)];
+            [glyph_excl setTextColor:kNoochRed];
+            [cell.contentView addSubview:glyph_excl];
+            
+            self.glyph_arrow_email = [UILabel new];
+            [self.glyph_arrow_email setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+            [self.glyph_arrow_email setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-down"]];
+            [self.glyph_arrow_email setFrame:CGRectMake(82, 6, 20, 38)];
+            [self.glyph_arrow_email setTextColor:kNoochGrayDark];
+            [cell.contentView addSubview:self.glyph_arrow_email];
         
-            UILabel *emailVerifiedStatus = [[UILabel alloc] initWithFrame:CGRectMake(15, 50, 130, 30)];
+            UILabel * emailVerifiedStatus = [[UILabel alloc] initWithFrame:CGRectMake(32, 50, 130, 30)];
             [emailVerifiedStatus setBackgroundColor:[UIColor clearColor]];
             [emailVerifiedStatus setStyleClass:@"notVerifiedLabel"];
             [cell.contentView addSubview:emailVerifiedStatus];
@@ -896,25 +915,23 @@ UIImageView *picture;
             emailVerifiedStatus.attributedText = [[NSAttributedString alloc] initWithString:@"Not Verified"
                                                                        attributes:textAttributes];
 
-            UIButton *resend_mail = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [resend_mail setFrame:CGRectMake(200,50,105,30)];
+            UIButton * resend_mail = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [resend_mail setFrame:CGRectMake(200, 50, 105, 30)];
             [resend_mail setStyleClass:@"button_green_sm"];
             [resend_mail addTarget:self action:@selector(resend_email) forControlEvents:UIControlEventTouchUpInside];
             [resend_mail setTitle:@"Resend Email" forState:UIControlStateNormal];
-            [resend_mail setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
+            [resend_mail setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.22) forState:UIControlStateNormal];
             resend_mail.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
             [cell.contentView addSubview:resend_mail];
         }
-        UILabel *mail = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
-        [mail setBackgroundColor:[UIColor clearColor]];
-        [mail setText:@"Email"];
-        [mail setStyleClass:@"table_view_cell_textlabel_1"];
+
         [cell.contentView addSubview:mail];
+
         [cell.contentView addSubview:self.email];
     }
     else if (indexPath.row == 2)
     {
-        UILabel *recover = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        UILabel * recover = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [recover setBackgroundColor:[UIColor clearColor]];
         [recover setText:@"Recovery Email"];
 
@@ -924,14 +941,41 @@ UIImageView *picture;
     }
     else if (indexPath.row == 3)
     {
-        if (![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"]&& [[dictSavedInfo valueForKey:@"phoneno"]length]>0) {
-            
-            UIView *unverified_phone = [[UIView alloc] initWithFrame:CGRectMake(0,0,320,88)];
-            [unverified_phone setAlpha:0.4];
-            [unverified_phone setBackgroundColor:kNoochRed];
+        UILabel * num = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        [num setBackgroundColor:[UIColor clearColor]];
+        [num setStyleClass:@"table_view_cell_textlabel_1"];
+        [num setText:@"JAWNSON"];
+        num.attributedText = [[NSAttributedString alloc] initWithString:@"Phone"
+                                                             attributes:textAttributes_white];
+        
+        NSLog(@"IsVerifiedPhone value is: %@",[user objectForKey:@"IsVerifiedPhone"]);
+        NSLog(@"PhoneNo value is: %@",[dictSavedInfo valueForKey:@"phoneno"]);
+        NSLog(@"PhoneNo LENGTH is: %d",[[dictSavedInfo valueForKey:@"phoneno"]length]);
+        
+        if (![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"])// && [[dictSavedInfo valueForKey:@"phoneno"]length] > 1)
+        {
+            UIView * unverified_phone = [[UIView alloc] initWithFrame:CGRectMake(0,0,320,88)];
+            [unverified_phone setBackgroundColor:Rgb2UIColor(250, 228, 3, .25)];
             [cell.contentView addSubview:unverified_phone];
             
-            UILabel *phoneVerifiedStatus = [[UILabel alloc] initWithFrame:CGRectMake(15, 50, 130, 30)];
+            [num setStyleClass:@"table_txtlbl_indented"];
+
+            UILabel * glyph_excl = [UILabel new];
+            [glyph_excl setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+            [glyph_excl setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+            [glyph_excl setStyleClass:@"animate_bubble_slow"];
+            [glyph_excl setFrame:CGRectMake(12, 6, 20, 38)];
+            [glyph_excl setTextColor:kNoochRed];
+            [cell.contentView addSubview:glyph_excl];
+            
+            self.glyph_arrow_phone = [UILabel new];
+            [self.glyph_arrow_phone setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+            [self.glyph_arrow_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-down"]];
+            [self.glyph_arrow_phone setFrame:CGRectMake(89, 6, 20, 38)];
+            [self.glyph_arrow_phone setTextColor:kNoochGrayDark];
+            [cell.contentView addSubview:self.glyph_arrow_phone];
+            
+            UILabel * phoneVerifiedStatus = [[UILabel alloc] initWithFrame:CGRectMake(32, 50, 130, 30)];
             [phoneVerifiedStatus setBackgroundColor:[UIColor clearColor]];
             [phoneVerifiedStatus setStyleClass:@"notVerifiedLabel"];
             [cell.contentView addSubview:phoneVerifiedStatus];
@@ -942,7 +986,7 @@ UIImageView *picture;
             NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
             phoneVerifiedStatus.attributedText = [[NSAttributedString alloc] initWithString:@"Not Verified"
                                                                                  attributes:textAttributes];
-
+            
             UIButton *resend_phone = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [resend_phone setTitle:@"Resend SMS" forState:UIControlStateNormal];
             [resend_phone addTarget:self action:@selector(resend_SMS) forControlEvents:UIControlEventTouchUpInside];
@@ -954,16 +998,13 @@ UIImageView *picture;
             
             [self.phone setUserInteractionEnabled:NO];
         }
-        UILabel *num = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
-        [num setBackgroundColor:[UIColor clearColor]];
-        [num setText:@"Phone"];
-        [num setStyleClass:@"table_view_cell_textlabel_1"];
+        
         [cell.contentView addSubview:num];
         [cell.contentView addSubview:self.phone];
     }
     else if (indexPath.row == 4)
     {
-        UILabel *addr1 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        UILabel * addr1 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [addr1 setBackgroundColor:[UIColor clearColor]];
         [addr1 setText:@"Address"];
         [addr1 setStyleClass:@"table_view_cell_textlabel_1"];
@@ -972,7 +1013,7 @@ UIImageView *picture;
     }
     else if (indexPath.row == 5)
     {
-        UILabel *addr2 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        UILabel * addr2 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [addr2 setBackgroundColor:[UIColor clearColor]];
         [addr2 setText:@"Address 2"];
         [addr2 setStyleClass:@"table_view_cell_textlabel_1"];
@@ -981,20 +1022,20 @@ UIImageView *picture;
     }
     else if (indexPath.row == 6)
     {
-        UILabel *z = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
-        [z setBackgroundColor:[UIColor clearColor]];
-        [z setText:@"City"];
-        [z setStyleClass:@"table_view_cell_textlabel_1"];
-        [cell.contentView addSubview:z];
+        UILabel * city_lbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        [city_lbl setBackgroundColor:[UIColor clearColor]];
+        [city_lbl setText:@"City"];
+        [city_lbl setStyleClass:@"table_view_cell_textlabel_1"];
+        [cell.contentView addSubview:city_lbl];
         [cell.contentView addSubview:self.city];
     }
     else if (indexPath.row == 7)
     {
-        UILabel *z = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, 50)];
-        [z setBackgroundColor:[UIColor clearColor]];
-        [z setText:@"ZIP"];
-        [z setStyleClass:@"table_view_cell_textlabel_1"];
-        [cell.contentView addSubview:z];
+        UILabel * zip_lbl = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, 50)];
+        [zip_lbl setBackgroundColor:[UIColor clearColor]];
+        [zip_lbl setText:@"ZIP"];
+        [zip_lbl setStyleClass:@"table_view_cell_textlabel_1"];
+        [cell.contentView addSubview:zip_lbl];
         [cell.contentView addSubview:self.zip];
     }
     return cell;
@@ -1014,25 +1055,36 @@ UIImageView *picture;
 
     if (indexPath.row == 1 && [[user valueForKey:@"Status"]isEqualToString:@"Registered"])
     {
-        self.disclose = YES;
-        self.expand_path = indexPath;
+        if (self.disclose == YES) {
+            self.disclose = NO;
+        }
+        else if (self.disclose == NO) {
+            self.disclose = YES;
+            self.expand_path = indexPath;
+        }
         [self.list beginUpdates];
         [self.list endUpdates];
     } 
     else if (indexPath.row == 3 && ![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"] && [[dictSavedInfo valueForKey:@"phoneno"]length] > 0)
     {
-        self.disclose = YES;
-        self.expand_path = indexPath;
+        if (self.disclose == YES) {
+            self.disclose = NO;
+        }
+        else if (self.disclose == NO) {
+            self.disclose = YES;
+            self.expand_path = indexPath;
+        }
         [self.list beginUpdates];
         [self.list endUpdates];
         [self.phone setUserInteractionEnabled:YES];
     }
-  [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row == self.expand_path.row && self.disclose) {
+    if (indexPath.row == self.expand_path.row && self.disclose) {
         return 88;
     }
     return 50;
@@ -1043,6 +1095,7 @@ UIImageView *picture;
 {
     [self.save setEnabled:YES];
     [self.save setUserInteractionEnabled:YES];
+    [self.save setStyleClass:@"nav_top_right"];
     
     if (textField == self.phone)
     {
@@ -1097,49 +1150,42 @@ UIImageView *picture;
     [self.view endEditing:YES];
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField
+- (void) toggleArrowRotate
 {
-    [self animateTextField:textField up:YES];
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    [self animateTextField:textField up:NO];
-}
-
-#pragma mark - adjusting for textfield view
-- (void) animateTextField: (UITextField*) textField up: (BOOL) up
-{
-    const int movementDistance = textField.tag * 48; // tweak as needed
-    const float movementDuration = 0.3f; // tweak as needed
-
-    int movement = (up ? movementDistance : -movementDistance);
-
-    [UIView beginAnimations: @"anim" context: nil];
-    [UIView setAnimationBeginsFromCurrentState: YES];
-    [UIView setAnimationDuration: movementDuration];
-    
-    if ([UIScreen mainScreen].bounds.size.height == 480)
+    if (self.disclose == YES)
     {
-        movement += 24;
-        for (UIScrollView *scroll in self.view.subviews)
-        {
-            if ([scroll isKindOfClass:[UIScrollView class]])
-            {
-                if (!up)
-                    movement = 0;
-                [scroll setContentOffset:CGPointMake(0, movement)];
-            }
-        }
+        self.disclose = NO;
+        
+        [self.glyph_arrow_email setStyleClass:@"animate_rotate"];
+        [self toggleArrowRotate];
+        
+        /*  CGAffineTransform rotation = CGAffineTransformRotate(CGAffineTransformIdentity, -M_PI/1);
+         [UIView animateWithDuration:0.4
+         animations:^{
+         self.glyph_arrow_email.transform = rotation;
+         }
+         completion:nil]; */
     }
-    else {
-        self.view.frame = CGRectOffset(self.view.frame, 0, -movement);
+    else if (self.disclose == NO)
+    {
+        self.disclose = YES;
+        
+        [self.glyph_arrow_email setStyleClass:@"animate_rotate"];
+        
+        /* CGAffineTransform rotation = CGAffineTransformMakeRotation(180 * M_PI / 180 );
+         [UIView animateWithDuration:0.4
+         animations:^{
+         self.glyph_arrow_email.transform = rotation;
+         }
+         completion:nil]; */
     }
-    [UIView commitAnimations];
+
+    
 }
 
 #pragma mark - file paths
-- (NSString *)autoLogin{
+- (NSString *)autoLogin
+{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
@@ -1226,7 +1272,7 @@ UIImageView *picture;
         else if ([response isEqualToString:@"Success"]) {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"A verifiction SMS has been sent to your phone." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
-            self.disclose = NO;
+            self.disclose = YES;
             [self.list beginUpdates];
             [self.list endUpdates];
         }
@@ -1253,8 +1299,9 @@ UIImageView *picture;
         [dictSavedInfo setObject:@"NO" forKey:@"ImageChanged"];
         NSDictionary *resultValue = [dictProfileinfo valueForKey:@"MySettingsResult"];
         getEncryptionOldPassword = [dictProfileinfo objectForKey:@"Password"];
-        NSLog(@"MY SETTINGS RESULT IS........: %@",[resultValue valueForKey:@"Result"]);
+        NSLog(@"My Settings Result:  %@",[resultValue valueForKey:@"Result"]);
         [[assist shared]setTranferImage:nil];
+
         if ([[resultValue valueForKey:@"Result"] isEqualToString:@"Your details have been updated successfully."])
         {
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
@@ -1262,13 +1309,14 @@ UIImageView *picture;
             [defaults synchronize];
             [self.save setEnabled:NO];
             [self.save setUserInteractionEnabled:NO];
+            [self.save setStyleClass:@"reallyLight_gray"];
             
             serve * serveOBJ = [serve new];
             serveOBJ.tagName = @"myset";
             [serveOBJ setDelegate:self];
             [serveOBJ getSettings];
             
-            if ([[user objectForKey:@"Photo"] length]>0 && [user objectForKey:@"Photo"]!=nil && !isPhotoUpdate)
+            if ([[user objectForKey:@"Photo"] length] >0 && [user objectForKey:@"Photo"] != nil && !isPhotoUpdate)
             {
                 [picture setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
                         placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
@@ -1283,7 +1331,7 @@ UIImageView *picture;
             }
         }
         
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Something Went Wrong" message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
         [av setTag:9];
         
@@ -1297,7 +1345,7 @@ UIImageView *picture;
                              }];
             [self.navigationController popToRootViewControllerAnimated:NO];
             [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
-            isSignup=NO;
+            isSignup = NO;
         }
 
     }
@@ -1314,7 +1362,9 @@ UIImageView *picture;
         if (![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]])
         {
             
-            if ([dictProfileinfo valueForKey:@"ContactNumber"] != NULL && ![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]]) {
+            if (  [dictProfileinfo valueForKey:@"ContactNumber"] != NULL &&
+                ![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]])
+            {
                 self.SavePhoneNumber = [dictProfileinfo valueForKey:@"ContactNumber"];
             }
             else {
@@ -1334,16 +1384,16 @@ UIImageView *picture;
             }
             else
             {
-                self.phone.text=[dictProfileinfo valueForKey:@"ContactNumber"];
-                NSString* phone = [self.phone.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                self.phone.text = [dictProfileinfo valueForKey:@"ContactNumber"];
+                NSString * phone = [self.phone.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                 self.address_one.text = phone;
                 [dictSavedInfo setObject:self.phone.text forKey:@"phoneno"];
             }
-            [self.list reloadData];
+         //   [self.list reloadData];
         }
         
         else
-            self.SavePhoneNumber=@"";
+            self.SavePhoneNumber = @"";
             
         if (![[dictProfileinfo valueForKey:@"Address"] isKindOfClass:[NSNull class]])
         {

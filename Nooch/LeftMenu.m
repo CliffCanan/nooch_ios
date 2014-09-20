@@ -291,6 +291,7 @@
             if ([defaults boolForKey:@"hasPendingItems"] == true)
             {
                 UILabel * pending_notif = [UILabel new];
+                NSLog(@"The current pending count is: %@",[defaults objectForKey:@"Pending_count"]);
                 [pending_notif setText:[NSString stringWithFormat:@"%@",[defaults objectForKey:@"Pending_count"]]];
                 [pending_notif setFrame:CGRectMake(212, 10, 22, 22)];
                 [pending_notif setStyleId:@"pending_notif"];
@@ -329,25 +330,25 @@
                                                                 attributes:textAttributes];
         } */
     }
-    else if(indexPath.section == 2)
+    else if (indexPath.section == 2)
     {
         if (indexPath.row == 0) {
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"How Nooch Works"
                                                                             attributes:textAttributes];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-question"];
         }
-        else if(indexPath.row == 1){
+        else if (indexPath.row == 1) {
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Contact Support"
                                                                             attributes:textAttributes];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope"];
             [iv setStyleClass:@"lside_menu_icons_sm"];
         }
-        else if(indexPath.row == 2){
+        else if (indexPath.row == 2) {
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Limits & Fees"
                                                                             attributes:textAttributes];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-usd"];
         }
-        else if(indexPath.row == 3) {
+        else if (indexPath.row == 3) {
             cell.textLabel.text = @"Legal Info";
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Legal Info"
                                                                             attributes:textAttributes];
@@ -401,7 +402,6 @@
             tour *tour1 = [tour new];
             [nav_ctrl pushViewController:tour1 animated:YES];
             [self.slidingViewController resetTopView];
-        //    [self showIntroWithCrossDissolve];
         }
         else if (indexPath.row == 1)
         {
@@ -474,26 +474,25 @@
             [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
             [self presentViewController:mailComposer animated:YES completion:nil];
         }
-        else if(buttonIndex == 2)
+        else if (buttonIndex == 2)
         {
             //support center
-            webView*wb=[[webView alloc]init];
+            webView * wb = [[webView alloc]init];
             [nav_ctrl pushViewController:wb animated:NO];
             [self.slidingViewController resetTopView];
-           // 
-           // [[UIApplication sharedApplication] openURL: webURL];
         }
     }
     else if ([actionSheet tag] == 2)
     {
-        if (buttonIndex == 0) {
-            isfromRegister=NO;
-            terms *term = [terms new];
+        if (buttonIndex == 0)
+        {
+            isfromRegister = NO;
+            terms * term = [terms new];
             [nav_ctrl pushViewController:term animated:NO];
             [self.slidingViewController resetTopView];
         } 
         else if (buttonIndex == 1) {
-            privacy *priv = [privacy new];
+            privacy * priv = [privacy new];
             [nav_ctrl pushViewController:priv animated:NO];
             [self.slidingViewController resetTopView];
         }
