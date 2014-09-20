@@ -47,8 +47,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2296"
             endingLineNumber = "2296"
-            landmarkName = "@implementation HistoryFlat"
-            landmarkType = "3">
+            landmarkName = "-listen:tagName:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -207,7 +207,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1883"
             endingLineNumber = "1883"
-            landmarkName = "-swipeableTableViewCell:didTriggerRightUtilityButtonWithIndex:"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
