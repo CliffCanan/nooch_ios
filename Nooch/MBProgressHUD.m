@@ -42,9 +42,9 @@
 #endif
 
 
-static const CGFloat kPadding = 4.f;
-static const CGFloat kLabelFontSize = 14.0f;
-static const CGFloat kDetailsLabelFontSize = 12.f;
+static const CGFloat kPadding = 10.f;
+static const CGFloat kLabelFontSize = 15.0f;
+static const CGFloat kDetailsLabelFontSize = 13.0f;
 
 
 @interface MBProgressHUD ()
@@ -182,16 +182,16 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		self.labelText = nil;
 		self.detailsLabelText = nil;
 		self.opacity = 0.8f;
-        self.color = Rgb2UIColor(24, 158, 225, .88);
+        self.color = Rgb2UIColor(24, 158, 225, .9);
 		self.labelFont = [UIFont boldSystemFontOfSize:kLabelFontSize];
         self.labelColor = [UIColor whiteColor];
 		self.detailsLabelFont = [UIFont boldSystemFontOfSize:kDetailsLabelFontSize];
         self.detailsLabelColor = [UIColor whiteColor];
 		self.xOffset = 0.0f;
-		self.yOffset = -22.0f;
+		self.yOffset = -24.0f;
 		self.dimBackground = NO;
-		self.margin = 16.0f;
-        self.cornerRadius = 10.0f;
+		self.margin = 18.0f;
+        self.cornerRadius = 12.0f;
 		self.graceTime = 0.0f;
 		self.minShowTime = 0.75f;
 		self.removeFromSuperViewOnHide = NO;
@@ -316,7 +316,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	if (animated && animationType == MBProgressHUDAnimationZoomIn) {
 		self.transform = CGAffineTransformConcat(rotationTransform, CGAffineTransformMakeScale(0.85f, 0.85f));
 	} else if (animated && animationType == MBProgressHUDAnimationZoomOut) {
-		self.transform = CGAffineTransformConcat(rotationTransform, CGAffineTransformMakeScale(1.1f, 1.1f));
+		self.transform = CGAffineTransformConcat(rotationTransform, CGAffineTransformMakeScale(1.14f, 1.14f));
 	}
 	self.showStarted = [NSDate date];
 	// Fade in
@@ -346,7 +346,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		if (animationType == MBProgressHUDAnimationZoomIn) {
 			self.transform = CGAffineTransformConcat(rotationTransform, CGAffineTransformMakeScale(1.15f, 1.15f));
 		} else if (animationType == MBProgressHUDAnimationZoomOut) {
-			self.transform = CGAffineTransformConcat(rotationTransform, CGAffineTransformMakeScale(0.85f, 0.85f));
+			self.transform = CGAffineTransformConcat(rotationTransform, CGAffineTransformMakeScale(0.82f, 0.82f));
 		}
 
 		self.alpha = 0.02f;
@@ -454,7 +454,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 
 - (void)setupLabels {
 	label = [[UILabel alloc] initWithFrame:self.bounds];
-	label.adjustsFontSizeToFitWidth = NO;
+	label.adjustsFontSizeToFitWidth = YES;
 	label.textAlignment = MBLabelAlignmentCenter;
 	label.opaque = NO;
 	label.backgroundColor = [UIColor clearColor];
