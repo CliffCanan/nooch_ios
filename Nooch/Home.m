@@ -1292,7 +1292,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                      options:kNilOptions
                                      error:&error];
-        NSLog(@"favorites %@",favorites);
+       // NSLog(@"favorites %@",favorites);
         favorites = [favorites mutableCopy];
         if ([favorites count] == 0) {
             [self FavoriteContactsProcessing];
@@ -1303,7 +1303,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             
             if ([favorites count] < 5) {
                [self FavoriteContactsProcessing];
-            }
+           }
            [_carousel reloadData];
         }
     }
@@ -1462,9 +1462,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
     {
         [self.hud hide:YES];
-//        UIAlertView * Alert=[[UIAlertView alloc]initWithTitle:@"New Device Detected" message:@"It looks like you have logged in from a new device.  To protect your account, we will just log you out of all other devices." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//        
-//        [Alert show];
         
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
@@ -1489,8 +1486,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     additions = [[NSMutableArray alloc]init];
     
     additions = [[[assist shared]assosAll] mutableCopy];
-   // favorites = [[NSMutableArray alloc]init];
-
+   
     for (int i = 0; i < [additions count] ;i++)
     {
         if ([favorites count] == 6) {
@@ -1500,11 +1496,28 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             i = 0;
         }
         NSUInteger randomIndex = arc4random() % [additions  count];
-        if ([favorites containsObject:[additions objectAtIndex:randomIndex]])
+        int loc=-1;
+        for (int j = 0; j < [favorites count];j++)
         {
-            continue;
+            //In case of Server Record
+            if ([[favorites objectAtIndex:j] valueForKey:@"eMailId"] && ![[[favorites objectAtIndex:j] valueForKey:@"eMailId"]isKindOfClass:[NSNull class]]) {
+                
+                if ([[[favorites objectAtIndex:j] valueForKey:@"eMailId"] isEqualToString:[[additions objectAtIndex:randomIndex]valueForKey:@"UserName"]])
+                    loc=0;
+            }
+            //In case of Address book
+            else if ([[favorites objectAtIndex:j] valueForKey:@"UserName"]&& ![[[favorites objectAtIndex:j] valueForKey:@"UserName"]isKindOfClass:[NSNull class]]) {
+                
+                if ([[[favorites objectAtIndex:j] valueForKey:@"UserName"] isEqualToString:[[additions objectAtIndex:randomIndex]valueForKey:@"UserName"]])
+                    loc=0;
+            }
         }
-        if (  [[additions objectAtIndex:randomIndex] valueForKey:@"UserName"] &&
+        //continue outer loop
+        if(loc==0){
+           continue;
+        }
+        
+        if ([[additions objectAtIndex:randomIndex] valueForKey:@"UserName"] &&
             ![[[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]isEqualToString:@"(null)"] &&
             ![[[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
         {
