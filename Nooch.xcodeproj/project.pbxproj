@@ -2147,8 +2147,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Baljeet Singh (HE787S955W)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Baljeet Singh (HE787S955W)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Clifford Satell (W95LAEDX2E)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Clifford Satell (W95LAEDX2E)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2171,8 +2171,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "2613ab82-35a1-46a9-93b9-4a7734cf5b80";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2613ab82-35a1-46a9-93b9-4a7734cf5b80";
+				PROVISIONING_PROFILE = "b3cc5a9c-f0fc-46b8-afc5-a3cb39debaa4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b3cc5a9c-f0fc-46b8-afc5-a3cb39debaa4";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -2184,8 +2184,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Baljeet Singh (HE787S955W)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Baljeet Singh (HE787S955W)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Nooch Inc (3GDWQ778SF)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Nooch Inc (3GDWQ778SF)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2207,8 +2207,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "2613ab82-35a1-46a9-93b9-4a7734cf5b80";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2613ab82-35a1-46a9-93b9-4a7734cf5b80";
+				PROVISIONING_PROFILE = "b67b8ed4-9799-4d56-a1ea-e5e691e41d6b";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b67b8ed4-9799-4d56-a1ea-e5e691e41d6b";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

@@ -584,7 +584,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         bannerAlert--;
     }
     
-    else if ([[user objectForKey:@"Status"] isEqualToString:@"Registered"])
+    else if (![[user objectForKey:@"Status"] isEqualToString:@"Registered"])
     {
         [self.profile_incomplete removeFromSuperview];
         self.profile_incomplete = [UIView new];
