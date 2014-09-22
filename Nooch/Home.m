@@ -1037,20 +1037,16 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             }];
             [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.3 animations:^{
                 carousel.currentItemView.transform = CGAffineTransformMakeTranslation(-24, 0);
-                
             }];
             [UIView addKeyframeWithRelativeStartTime:.5 relativeDuration:.5 animations:^{
                 carousel.currentItemView.transform = CGAffineTransformMakeTranslation(225, 0);
-
             }];
             
             [UIView addKeyframeWithRelativeStartTime:.4 relativeDuration:.6 animations:^{
                 top_button.alpha = 0;
-                
             }];
             [UIView addKeyframeWithRelativeStartTime:.4 relativeDuration:.6 animations:^{
                 top_button.transform = CGAffineTransformMakeScale(.1, .1);
-                
             }];
 
         } completion:^(BOOL finished){

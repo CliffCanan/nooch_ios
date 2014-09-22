@@ -11,9 +11,13 @@
 #import "ECSlidingViewController.h"
 #import "UIImageView+WebCache.h"
 #import "Register.h"
+#import "MBProgressHUD.h"
+#import "SpinKit/RTSpinKitView.h"
+
 @interface SendInvite ()<ABPeoplePickerNavigationControllerDelegate>
 @property(nonatomic,strong) UITableView *contacts;
 @property(nonatomic,strong) NSMutableArray *recents;
+@property(nonatomic,strong) MBProgressHUD *hud;
 
 @property (nonatomic, strong) ABPeoplePickerNavigationController *addressBookController;
 @end
@@ -130,17 +134,19 @@
     [email_label setText:@"Email"];
     [self.view addSubview:email_label];
 
-    blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
-    [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
-    UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
-    [actv startAnimating];
-    [blankView addSubview:actv];
-    [self .view addSubview:blankView];
-    [self.view bringSubviewToFront:blankView];
+    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWordPress];
+    spinner1.color = [UIColor whiteColor];
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.hud];
+    self.hud.labelText = @"Loading important stuff...";
+    [self.hud show:YES];
+    [spinner1 startAnimating];
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.customView = spinner1;
+    self.hud.delegate = self;
 
-    serve*serveOBJ=[serve new];
-    serveOBJ.tagName=@"GetReffereduser";
+    serve * serveOBJ = [serve new];
+    serveOBJ.tagName = @"GetReffereduser";
     [serveOBJ setDelegate:self];
     [serveOBJ getInvitedMemberList:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]];
 }
@@ -157,23 +163,18 @@
 -(void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     NSError* error;
+    [self.hud hide:YES];
 
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
     {
-//        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//        
-//        [Alert show];
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         
-        NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
         [timer invalidate];
-        // timer=nil;
         
         [nav_ctrl performSelector:@selector(disable)];
         [nav_ctrl performSelector:@selector(reset)];
-       // [nav_ctrl popViewControllerAnimated:YES];
         Register *reg = [Register new];
         [nav_ctrl pushViewController:reg animated:YES];
         me = [core new];
@@ -197,7 +198,6 @@
                       JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                       options:kNilOptions
                       error:&error];
-        //edit
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         [defaults setValue:[[dictResponse valueForKey:@"getReferralCodeResult"] valueForKey:@"Result"] forKey:@"ReferralCode"];
         [defaults synchronize];
@@ -205,6 +205,8 @@
     }
     else if ([tagName isEqualToString:@"GetReffereduser"])
     {
+        [self.hud hide:YES];
+
         dictInviteUserList=[[NSMutableDictionary alloc]init];
         dictInviteUserList=[NSJSONSerialization
                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
@@ -212,8 +214,8 @@
                             error:&error];
         if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"]count] > 0)
         {
-            UIView*view_table=[[UIView alloc]initWithFrame:CGRectMake(10, 296, 300, 200)];
-            view_table.backgroundColor=[UIColor whiteColor];
+            UIView*view_table = [[UIView alloc]initWithFrame:CGRectMake(10, 296, 300, 200)];
+            view_table.backgroundColor = [UIColor whiteColor];
             [self.view addSubview:view_table];
             self.contacts = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 300, 190)];
             [self.contacts setDataSource:self];
@@ -255,7 +257,7 @@
         SMSView.frame= CGRectMake(0, 568, 320, 568);
         [UIView commitAnimations];
         [SMSView removeFromSuperview];
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Message Sent Successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Message Sent Successfully" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
          [self callService:@"SM"];
     }
@@ -268,6 +270,7 @@
     tableView.rowHeight=60;
     return [[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] count];
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";

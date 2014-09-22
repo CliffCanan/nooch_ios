@@ -45,73 +45,74 @@
     // PAGE 1
     EAIntroPage * page1 = [EAIntroPage page];
     page1.title = @"Welcome To Nooch";
-    page1.desc = @"Pay back a friend or send a payment request to anyone. Nooch makes money simple.";
+    page1.desc = @"Pay back a friend or send a payment request to anyone. Nooch makes money simple. The people you Nooch most frequently will appear on the Home Screen. Send to anyone - even if they don't have Nooch.";
     page1.bgImage = [UIImage imageNamed:@"bg1"];
     page1.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"title1"]];
 
     // PAGE 2
     EAIntroPage * page2 = [EAIntroPage page];
+    page2.bgImage = [UIImage imageNamed:@"1connect-bank-bg.png"];
+
     page2.title = @"Link A Funding Source";
-    page2.titleColor = Rgb2UIColor(31, 32, 33, 1);
+//    page2.titleColor = Rgb2UIColor(31, 32, 33, 1);
     page2.titlePositionY = 114;
 
     page2.desc = @"No more long forms or waiting periods.  Just select your bank and sign in using your existing online banking credentials.";
-    page2.descColor = Rgb2UIColor(31, 32, 33, 1);
     page2.descWidth = 300;
-    page2.descPositionY = 93;
-
-    page2.bgImage = [UIImage imageNamed:@"1_connect-bank-bg.png"];
+    page2.descPositionY = page2.titlePositionY - 23;
 
     page2.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"connect-bank-img2"]];
     [page2.titleIconView setStyleClass:@"animate_bubble_tour"];
-    page2.titleIconPositionY = 120;
+    page2.titleIconPositionY = 116;
     
     // PAGE 3
     EAIntroPage *page3 = [EAIntroPage page];
-    page3.title = @"Choose A Recipient";
-    page3.titleColor = Rgb2UIColor(31, 32, 33, 1);
-    page3.titlePositionY = 114;
-    
-    page3.desc = @"The people you Nooch most frequently will appear on the Home Screen. Send to anyone - even if they don't have Nooch.";
-    page3.descColor = Rgb2UIColor(31, 32, 33, 1);
-    page3.descWidth = 300;
-    page3.descPositionY = 93;
+    page3.bgImage = [UIImage imageNamed:@"2select-recipient-bg.png"];
 
-    page3.bgImage = [UIImage imageNamed:@"2_select-recipient-bg.png"];
+//    page3.title = @"Choose A Recipient";
+    page3.titlePositionY = 118;
+    
+    page3.desc = @"To send or request money, select from a recent contact, find nearby Nooch users, or enter ANY email address.";
+    page3.descWidth = 304;
+    page3.descPositionY = page3.titlePositionY - 21;
 
     page3.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"select-recipient-img"]];
     [page3.titleIconView setStyleClass:@"animate_bubble_tour"];
-    page3.titleIconPositionY = 126;
+    page3.titleIconPositionY = 150;
 
     // PAGE 4
     EAIntroPage *page4 = [EAIntroPage page];
-    page4.title = @"Search For Contacts";
-    page4.titleColor = Rgb2UIColor(31, 32, 33, 1);
+    page4.bgImage = [UIImage imageNamed:@"3how-much-bg"];
 
-    page4.desc = @"Here you'll see recent contacts.  Or select this tab to see nearby Nooch users.";
-    page4.descColor = Rgb2UIColor(31, 32, 33, 1);
+    page4.title = @"Send or Request?";
+    page4.titlePositionY = 116;
 
-    page4.bgImage = [UIImage imageNamed:@"bg1"];
+    page4.desc = @"Enter an amount, add a memo, or picture to any transfer.  Then tap 'Send' or 'Request'.";
+    page4.descWidth = 300;
+    page4.descPositionY = page4.titlePositionY - 24;
     
     [page4.titleIconView setStyleClass:@"animate_bubble_tour"];
-    page4.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"title4"]];
+    page4.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"how-much-img"]];
+    page4.titleIconPositionY = 120;
 
     // PAGE 5
     EAIntroPage *page5 = [EAIntroPage page];
-    page5.title = @"Send or Request";
-    page5.titleColor = Rgb2UIColor(31, 32, 33, 1);
-    page5.desc = @"Enter an amount.  You can also add a memo or picture to any transfer.  Then select 'Send' or 'Receive'.";
-    page5.descColor = Rgb2UIColor(31, 32, 33, 1);
     page5.bgImage = [UIImage imageNamed:@"bg1"];
+
+    page5.title = @"Transfer Details";
+    
+    page5.desc = @"";
+    
     page5.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"title3"]];
     
 
     EAIntroPage *page6 = [EAIntroPage page];
-    page6.title = @"Transfer History";
-    page6.titleColor = Rgb2UIColor(31, 32, 33, 1);
-    page6.desc = @"See all your Nooch transfers and filter by type.  To see your transfers on a map, swipe <-- or tap the map icon in the navigation bar.";
-    page6.descColor = Rgb2UIColor(31, 32, 33, 1);
     page6.bgImage = [UIImage imageNamed:@"bg1"];
+
+    page6.title = @"Transfer History";
+
+    page6.desc = @"See all your Nooch transfers and filter by type.  To see your transfers on a map, swipe <-- or tap the map icon in the navigation bar.";
+
     page6.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"title4"]];
 
     

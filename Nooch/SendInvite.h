@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 #import "serve.h"
+#import "MBProgressHUD.h"
 
-@interface SendInvite : GAITrackedViewController<UITableViewDataSource,UITableViewDelegate,serveD,MFMailComposeViewControllerDelegate,UITextFieldDelegate>
+@interface SendInvite : GAITrackedViewController<UITableViewDataSource,UITableViewDelegate,serveD,MFMailComposeViewControllerDelegate,UITextFieldDelegate,MBProgressHUDDelegate>
 {
     NSMutableDictionary*dictResponse;
     NSMutableDictionary*dictInviteUserList;
