@@ -764,13 +764,17 @@ return customView;
         if ([histShowArrayCompleted count] > indexPath.row)
         {
             NSDictionary * dictRecord_complete = [histShowArrayCompleted objectAtIndex:indexPath.row];
-            
-            if ([[dictRecord_complete valueForKey:@"Memo"] length] < 2) {
-                return 72;
+            if (![[dictRecord_complete valueForKey:@"Memo"] isKindOfClass:[NSNull class]]) {
+                if ([[dictRecord_complete valueForKey:@"Memo"] length] < 2) {
+                    return 72;
+                }
+                else if ([[dictRecord_complete valueForKey:@"Memo"] length] > 32) {
+                    return 85;
+                }
+                else
+                   return 72;
             }
-            else if ([[dictRecord_complete valueForKey:@"Memo"] length] > 32) {
-                return 85;
-            }
+           
         }
     }
     else
