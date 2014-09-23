@@ -1301,7 +1301,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         else
         {
-            favorites=[favorites mutableCopy];
+            favorites = [favorites mutableCopy];
             
             if ([favorites count] < 5) {
                [self FavoriteContactsProcessing];
@@ -1373,7 +1373,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
     }
 
-    else if([tagName isEqualToString:@"emailCheck"])
+    else if ([tagName isEqualToString:@"emailCheck"])
     {
         NSError* error;
         NSMutableDictionary *dictResult = [NSJSONSerialization
@@ -1502,20 +1502,22 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         for (int j = 0; j < [favorites count];j++)
         {
             //In case of Server Record
-            if ([[favorites objectAtIndex:j] valueForKey:@"eMailId"] && ![[[favorites objectAtIndex:j] valueForKey:@"eMailId"]isKindOfClass:[NSNull class]]) {
-                
+            if (  [[favorites objectAtIndex:j] valueForKey:@"eMailId"] &&
+                ![[[favorites objectAtIndex:j] valueForKey:@"eMailId"]isKindOfClass:[NSNull class]])
+            {
                 if ([[[favorites objectAtIndex:j] valueForKey:@"eMailId"] isEqualToString:[[additions objectAtIndex:randomIndex]valueForKey:@"UserName"]])
-                    loc=0;
+                    loc = 0;
             }
             //In case of Address book
-            else if ([[favorites objectAtIndex:j] valueForKey:@"UserName"]&& ![[[favorites objectAtIndex:j] valueForKey:@"UserName"]isKindOfClass:[NSNull class]]) {
-                
+            else if (  [[favorites objectAtIndex:j] valueForKey:@"UserName"] &&
+                     ![[[favorites objectAtIndex:j] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
+            {
                 if ([[[favorites objectAtIndex:j] valueForKey:@"UserName"] isEqualToString:[[additions objectAtIndex:randomIndex]valueForKey:@"UserName"]])
-                    loc=0;
+                    loc = 0;
             }
         }
         //continue outer loop
-        if(loc==0){
+        if (loc == 0){
            continue;
         }
         

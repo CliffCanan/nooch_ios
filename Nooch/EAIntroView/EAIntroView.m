@@ -10,6 +10,7 @@
 @property (nonatomic, strong) UIImageView *bgImageView;
 @property (nonatomic, strong) UIImageView *pageBgBack;
 @property (nonatomic, strong) UIImageView *pageBgFront;
+#define Rgb2UIColor(r, g, b, a)  [UIColor colorWithRed:((r) / 255.0) green:((g) / 255.0) blue:((b) / 255.0) alpha:(a)]
 
 @end
 
@@ -55,7 +56,7 @@
     self.easeOutCrossDisolves = YES;
     self.hideOffscreenPages = YES;
     self.titleViewY = 20.0f;
-    self.pageControlY = 60.0f;
+    self.pageControlY = 50.0f;
     self.bgViewContentMode = UIViewContentModeScaleAspectFill;
     self.motionEffectsRelativeValue = 40.0f;
     _pages = [pagesArray copy];
@@ -255,6 +256,11 @@
         [pageView addSubview:titleImageView];
     }
     
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(31, 32, 33, .4);
+    shadow.shadowOffset = CGSizeMake(0, 1);
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
+    
     if(page.title.length) {
         CGFloat titleHeight;
         
@@ -270,9 +276,10 @@
         }
         
         CGRect titleLabelFrame = CGRectMake(10, self.frame.size.height - page.titlePositionY, self.scrollView.frame.size.width - 20, titleHeight);
-        
+
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:titleLabelFrame];
-        titleLabel.text = page.title;
+   //     titleLabel.text = page.title;
+        titleLabel.attributedText = [[NSAttributedString alloc] initWithString:page.title attributes:textAttributes];
         titleLabel.font = page.titleFont;
         titleLabel.textColor = page.titleColor;
         titleLabel.backgroundColor = [UIColor clearColor];
@@ -294,7 +301,8 @@
         }
         
         UITextView *descLabel = [[UITextView alloc] initWithFrame:descLabelFrame];
-        descLabel.text = page.desc;
+//        descLabel.text = page.desc;
+        descLabel.attributedText = [[NSAttributedString alloc] initWithString:page.desc attributes:textAttributes];
         descLabel.scrollEnabled = NO;
         descLabel.font = page.descFont;
         descLabel.textColor = page.descColor;

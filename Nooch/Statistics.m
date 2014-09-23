@@ -7,6 +7,7 @@
 #import "Statistics.h"
 #import "Home.h"
 #import "ECSlidingViewController.h"
+#import "UIImageView+WebCache.h"
 
 @interface Statistics ()
 @property(nonatomic,retain) UIView *back_profile;
@@ -14,7 +15,7 @@
 @property(nonatomic,retain) UIView *back_donation;
 @property(nonatomic,retain) UITableView *profile_stats;
 @property(nonatomic,retain) UITableView *transfer_stats;
-@property(nonatomic,retain) UITableView *donation_stats;
+@property(nonatomic,retain) UITableView *top_friends_stats;
 @property(nonatomic) int selected;
 @property(nonatomic,retain) UIImageView *profileIcon;
 @property(nonatomic,retain) UIImageView *transfersIcon;
@@ -91,7 +92,7 @@
     [self.back_profile setStyleClass:@"raised_view"];
     [self.view addSubview:self.back_profile];
 
-    // Panel #3: Donation Stats
+    // Panel #3: Top Friends Stats
     self.back_donation = [UIView new];
     [self.back_donation setBackgroundColor:[UIColor whiteColor]];
     [self.back_donation setFrame:CGRectMake(650, 10, 300, 400)];
@@ -209,13 +210,13 @@
     [self.back_transfer addSubview:self.transfer_stats];
     [self.transfer_stats reloadData];
     
-    self.donation_stats = [UITableView new];
-    [self.donation_stats setDelegate:self];
-    [self.donation_stats setDataSource:self];
-    [self.donation_stats setStyleClass:@"stats"];
-    [self.donation_stats setUserInteractionEnabled:NO];
-    [self.back_donation addSubview:self.donation_stats];
-    [self.donation_stats reloadData];
+    self.top_friends_stats = [UITableView new];
+    [self.top_friends_stats setDelegate:self];
+    [self.top_friends_stats setDataSource:self];
+    [self.top_friends_stats setStyleClass:@"stats_top_friends"];
+    [self.top_friends_stats setUserInteractionEnabled:NO];
+    [self.back_donation addSubview:self.top_friends_stats];
+    [self.top_friends_stats reloadData];
     
     //Export Stats
     self.exportHistory = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -262,6 +263,8 @@
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
     self.hud.delegate = self;
+    
+    [self GetFavorite];
 
 }
 
@@ -292,7 +295,6 @@
     
     [UIView commitAnimations];
 }
-
 
 -(void)go_3rd_panel_from_1st
 {
@@ -344,7 +346,6 @@
 
     [UIView commitAnimations];
 }
-
 
 -(void)go_1st_panel_from_2nd
 {
@@ -517,7 +518,7 @@
 }
 
 #pragma mark - UITableViewDataSource
--(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView * view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 50)];
     view.backgroundColor = [UIColor clearColor];
@@ -528,8 +529,8 @@
     if (tableView == self.profile_stats) {
         Title.text = @"Profile Stats";
     }
-    else if (tableView == self.donation_stats) {
-        Title.text = @"Donation Stats";
+    else if (tableView == self.top_friends_stats) {
+        Title.text = @"Top Friends";
     }
     else if (tableView == self.transfer_stats) {
         Title.text = @"Transfer Stats";
@@ -545,7 +546,17 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 7;
+    if (tableView == self.profile_stats) {
+        return 4;
+    }
+    if (tableView == self.transfer_stats) {
+        return 7;
+    }
+    if (tableView == self.top_friends_stats) {
+        return 5;
+    }
+
+    return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -577,7 +588,7 @@
             if ([dictAllStats valueForKey:@"Total_Friends_Invited"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Friends_Invited"]  valueForKey:@"Result"]];
             }
-            if ([[[dictAllStats valueForKey:@"Total_Friends_Invited"]valueForKey:@"Result"] length]==0) {
+            else if ([[[dictAllStats valueForKey:@"Total_Friends_Invited"]valueForKey:@"Result"] length] == 0) {
                 [statistic setText:@"0"];
             }
         }
@@ -586,7 +597,7 @@
             if ([dictAllStats valueForKey:@"Total_Friends_Joined"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Friends_Joined"]  valueForKey:@"Result"]];
             }
-            if ([[[dictAllStats valueForKey:@"Total_Friends_Joined"]valueForKey:@"Result"] length]==0) {
+            else if ([[[dictAllStats valueForKey:@"Total_Friends_Joined"]valueForKey:@"Result"] length] == 0) {
                 [statistic setText:@"0"];
             }
         }
@@ -594,7 +605,7 @@
             if ([dictAllStats valueForKey:@"Total_Posts_To_TW"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Posts_To_TW"]  valueForKey:@"Result"]];
             }
-            if ([[[dictAllStats valueForKey:@"Total_Posts_To_TW"]valueForKey:@"Result"] length]==0) {
+            else if ([[[dictAllStats valueForKey:@"Total_Posts_To_TW"]valueForKey:@"Result"] length] == 0) {
                 [statistic setText:@"0"];
             }
             [title setText:@"Posts to Twitter"];
@@ -603,7 +614,7 @@
             if ([dictAllStats valueForKey:@"Total_Posts_To_FB"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Posts_To_FB"]  valueForKey:@"Result"]];
             }
-            if ([[[dictAllStats valueForKey:@"Total_Posts_To_FB"]valueForKey:@"Result"] length]==0) {
+            else if ([[[dictAllStats valueForKey:@"Total_Posts_To_FB"]valueForKey:@"Result"] length] == 0) {
                 [statistic setText:@"0"];
             }
             [title setText:@"Posts to Facebook"];
@@ -618,7 +629,7 @@
             if ([dictAllStats valueForKey:@"Total_P2P_transfers"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_P2P_transfers"]  valueForKey:@"Result"]];
             }
-            if ([[[dictAllStats valueForKey:@"Total_P2P_transfers"]valueForKey:@"Result"] length] == 0) {
+            else if ([[[dictAllStats valueForKey:@"Total_P2P_transfers"]valueForKey:@"Result"] length] == 0) {
                 [statistic setText:@"0"];
             }
         }
@@ -673,46 +684,85 @@
         }
     } 
 
-    else if (tableView == self.donation_stats)  //donations
+    else if (tableView == self.top_friends_stats)  //donations
     {
-        if (indexPath.row == 0)
+        UIImageView * imageView = nil;
+        UILabel * name = nil;
+
+        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 5, 54, 54)];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        imageView.layer.cornerRadius = 27;
+        // [imageView setStyleClass:@"animate_bubble"];
+
+        name = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 140, 20)];
+        name.textColor = [Helpers hexColor:@"313233"];
+        name.textAlignment = NSTextAlignmentCenter;
+        [name setFont:[UIFont fontWithName:@"Roboto-regular" size:19]];
+        [name setStyleClass:@"stats_topFriends_label"];
+        
+        NSDictionary * favorite = [favorites objectAtIndex:0];
+        int fav_count = [favorites count];
+        
+        if (fav_count > 0)
         {
-            [title setText:@"Total Donated"];
-            [statistic setText:[[dictAllStats valueForKey:@"Total_$_Donated"]  valueForKey:@"Result"]];
-            if ([[[dictAllStats valueForKey:@"Total_$_Donated"]valueForKey:@"Result"] length] == 0) {
-                [statistic setText:@"$ 0"];
+            if (indexPath.row == 0)
+            {
+                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+                          placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
+                
+                name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
+            }
+            else if (fav_count > 1 && indexPath.row == 1)
+            {
+                NSDictionary * favorite = [favorites objectAtIndex:1];
+                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+                          placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
+                
+                name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
+            }
+            else if (fav_count > 2 && indexPath.row == 2)
+            {
+                NSDictionary * favorite = [favorites objectAtIndex:2];
+                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+                          placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
+                
+                name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
+            }
+            else if (fav_count > 3 && indexPath.row == 3)
+            {
+                NSDictionary * favorite = [favorites objectAtIndex:3];
+                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+                          placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
+                
+                name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
+            }
+            else if (fav_count > 4 && indexPath.row == 4)
+            {
+                NSDictionary * favorite = [favorites objectAtIndex:3];
+                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+                          placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
+                
+                name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
             }
         }
-        else if (indexPath.row == 1)
-        {
-            [title setText:@"Total Donations"];
-            [statistic setText:[[dictAllStats valueForKey:@"Total_Donations_Count"]  valueForKey:@"Result"]];
-            if ([[[dictAllStats valueForKey:@"Total_Donations_Count"]valueForKey:@"Result"] length] == 0) {
-                [statistic setText:@"0"];
-            }
-        }
-        else if (indexPath.row == 2)
-        {
-            [title setText:@"Causes Donated to"];
-            [statistic setText:[[[dictAllStats valueForKey:@"DonatedTo"]  valueForKey:@"Result"] capitalizedString]];
-            if ([[[dictAllStats valueForKey:@"DonatedTo"]valueForKey:@"Result"] length]==0) {
-                [statistic setText:@"0"];
-            }
-        }
-        else if (indexPath.row == 3)
-        {
-            [title setText:@"Largest Donation"];
-            [statistic setText:[[dictAllStats valueForKey:@"Largest_Donation_Made"]  valueForKey:@"Result"]];
-            if ([[[dictAllStats valueForKey:@"Largest_Donation_Made"]valueForKey:@"Result"] length]==0) {
-                [statistic setText:@"0"];
-            }
-        }
+        [imageView setClipsToBounds:YES];
+        [cell.contentView addSubview:imageView];
+        [cell.contentView addSubview:name];
     }
 
     [cell.contentView addSubview:title];
     [cell.contentView addSubview:statistic];
     return cell;
 }
+
+-(void)GetFavorite
+{
+    serve *favoritesOBJ = [serve new];
+    [favoritesOBJ setTagName:@"favorites"];
+    [favoritesOBJ setDelegate:self];
+    [favoritesOBJ get_favorites];
+}
+
 -(void)showMenu
 {
     [self.slidingViewController anchorTopViewTo:ECRight];
@@ -843,12 +893,22 @@
         [serveOBJ setDelegate:self];
         serveOBJ.tagName = @"DonatedTo";
         [serveOBJ GetMemberStats:@"DonatedTo"];
-        [blankView removeFromSuperview];
         [self.profile_stats reloadData];
         [self.transfer_stats reloadData];
-        [self.donation_stats reloadData];
+        [self.top_friends_stats reloadData];
     }
     
+    if ([tagName isEqualToString:@"favorites"])
+    {
+        NSError * error;
+        favorites = [[NSMutableArray alloc] init];
+        favorites = [NSJSONSerialization
+                     JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                     options:kNilOptions
+                     error:&error];
+         NSLog(@"favorites %@",favorites);
+    }
+
     if ([tagName isEqualToString:@"csv"])
     {
         NSDictionary * dictResponse = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];

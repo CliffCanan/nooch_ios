@@ -3005,6 +3005,16 @@
 		separator-style : single-line;
 		separator-color : rgba(188,190,192,.6);
 	}
+    table-view.stats_top_friends {
+		height			: 360px;
+		width			: 300px;
+		top				: 80px;
+		left			: 0px;
+		background-color: white;
+		row-height		: 64px;
+		separator-style : single-line;
+		separator-color : rgba(188,190,192,.3);
+	}
 	.stats_header {
 		width			: 300px;
 		height			: 30px;
@@ -3017,10 +3027,10 @@
 		text-align		: center;
 	}
 	.stats_table_left_lable {
+		left			: 10px;
+		top				: 0px;
 		width			: 210px;
 		height			: 50px;
-		top				: 0px;
-		left			: 10px;
 		color			: #313233;
 		font-family		: "Roboto";
 		font-weight		: light;
@@ -3028,10 +3038,10 @@
 		text-align		: left;
 	}
 	.stats_table_right_lable {
+		left			: 230px;
+		top				: 0px;
 		width			: 70px;
 		height			: 50px;
-		top				: 0px;
-		left			: 230px;
 		color			: #3fabe1;
 		font-family		: "Roboto";
 		font-weight		: medium;
@@ -3039,15 +3049,26 @@
 		text-align		: center;
 	}
 	.stats_table_right_lable1 {
+		left			: 140px;
+		top				: 17px;
 		width			: 200px;
 		height			: 20px;
-		top				: 17px;
-		left			: 140px;
 		color			: #3fabe1;
 		font-family		: "Roboto";
 		font-weight		: light;
 		font-size		: 14px;
 		text-align		: center;
+	}
+    .stats_topFriends_label {
+		left			: 76px;
+		top				: 10px;
+		width			: 200px;
+		height			: 30px;
+		color			: #313233;
+		font-family		: "Roboto";
+		font-weight		: light;
+		font-size		: 19px;
+		text-align		: left;
 	}
 
 	.stats_circle {

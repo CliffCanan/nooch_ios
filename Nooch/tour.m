@@ -54,8 +54,7 @@
     page2.bgImage = [UIImage imageNamed:@"1connect-bank-bg.png"];
 
     page2.title = @"Link A Funding Source";
-//    page2.titleColor = Rgb2UIColor(31, 32, 33, 1);
-    page2.titlePositionY = 114;
+    page2.titlePositionY = 118;
 
     page2.desc = @"No more long forms or waiting periods.  Just select your bank and sign in using your existing online banking credentials.";
     page2.descWidth = 300;
@@ -78,14 +77,14 @@
 
     page3.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"select-recipient-img"]];
     [page3.titleIconView setStyleClass:@"animate_bubble_tour"];
-    page3.titleIconPositionY = 150;
+    page3.titleIconPositionY = 155;
 
     // PAGE 4
     EAIntroPage *page4 = [EAIntroPage page];
     page4.bgImage = [UIImage imageNamed:@"3how-much-bg"];
 
     page4.title = @"Send or Request?";
-    page4.titlePositionY = 116;
+    page4.titlePositionY = 112;
 
     page4.desc = @"Enter an amount, add a memo, or picture to any transfer.  Then tap 'Send' or 'Request'.";
     page4.descWidth = 300;
@@ -93,7 +92,7 @@
     
     [page4.titleIconView setStyleClass:@"animate_bubble_tour"];
     page4.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"how-much-img"]];
-    page4.titleIconPositionY = 120;
+    page4.titleIconPositionY = 126;
 
     // PAGE 5
     EAIntroPage *page5 = [EAIntroPage page];
@@ -104,7 +103,6 @@
     page5.desc = @"";
     
     page5.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"title3"]];
-    
 
     EAIntroPage *page6 = [EAIntroPage page];
     page6.bgImage = [UIImage imageNamed:@"bg1"];
@@ -115,11 +113,10 @@
 
     page6.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"title4"]];
 
-    
-    EAIntroView *intro = [[EAIntroView alloc] initWithFrame:CGRectMake(0, 0, 320, 500) andPages:@[page1,page2,page3,page4, page5,page6]];
+    EAIntroView *intro = [[EAIntroView alloc] initWithFrame:CGRectMake(0, 0, 320, 504) andPages:@[page1,page2,page3,page4, page5,page6]];
     [intro setDelegate:self];
-    [intro.pageControl setStyleClass:@"blue_text"];
-    [intro.skipButton setStyleClass:@"blue_text"];
+    [intro.pageControl setStyleClass:@"reallyLight_gray"];
+    [intro.skipButton setStyleClass:@"reallyLight_gray"];
     [intro setBgViewContentMode:UIViewContentModeScaleAspectFill];
     
     [intro showInView:self.view animateDuration:0.3];

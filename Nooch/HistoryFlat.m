@@ -2356,22 +2356,29 @@ return customView;
                     [histShowArrayCompleted addObject:dict];
                 }
                 
-              //  else if ( completed_pending.selectedSegmentIndex == 1 ) //&& ![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]  &&  ![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"])
-              //  {
-                    if (  ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] && ![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"]) ||
-                        (([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
-                         [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
-                    {
-                        // NSLog(@"%@",dict);
-                        [histShowArrayPending addObject:dict];
+              //  else if ( completed_pending.selectedSegmentIndex == 1 ) //&& ![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]  &&  ![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
                 
-                        if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
-                            counter++;
-                        }
+                if (  ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] && ![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"]) ||
+                     (([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
+                       [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
+                {
+                    [histShowArrayPending addObject:dict];
+                
+                    if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
+                        counter++;
                     }
-              //  }
+                }
             }
-            NSLog(@"The Pending COUNTER is: %d",counter);
+            
+            NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
+            if (counter > 0) {
+                [defaults setBool:true forKey:@"hasPendingItems"];
+            }
+            else {
+                [defaults setBool:false forKey:@"hasPendingItems"];
+            }
+            
+            NSLog(@"The Pending counter is: %d",counter);
             [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%d)",counter]forSegmentAtIndex:1];
             
         }

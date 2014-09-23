@@ -13,9 +13,9 @@
 
 @interface Statistics : GAITrackedViewController<serveD,UITableViewDataSource,UITableViewDelegate,MBProgressHUDDelegate>
 {
-    NSDictionary*dictResult;
-    NSMutableDictionary*dictAllStats;
-    UIView*blankView;
-    NSString*titlestr;
+    NSDictionary * dictResult;
+    NSMutableDictionary * dictAllStats;
+    NSString * titlestr;
+    NSMutableArray * favorites;
 }
 @end

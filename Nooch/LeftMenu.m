@@ -287,16 +287,20 @@
                                                                             attributes:textAttributes];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"];
             
+            UILabel * pending_notif = [UILabel new];
+
             NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
             if ([defaults boolForKey:@"hasPendingItems"] == true)
             {
-                UILabel * pending_notif = [UILabel new];
                 NSLog(@"The current pending count is: %@",[defaults objectForKey:@"Pending_count"]);
                 [pending_notif setText:[NSString stringWithFormat:@"%@",[defaults objectForKey:@"Pending_count"]]];
                 [pending_notif setFrame:CGRectMake(212, 10, 22, 22)];
                 [pending_notif setStyleId:@"pending_notif"];
                 [pending_notif setStyleId:@"pending_notif_lsideMenu"];
                 [cell.contentView addSubview:pending_notif];
+            }
+            else {
+                [pending_notif removeFromSuperview];
             }
             
         }
