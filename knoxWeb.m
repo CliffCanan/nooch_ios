@@ -107,22 +107,40 @@
 {
     overlay = [[UIView alloc]init];
     overlay.frame = CGRectMake(0, 0, 320, [[UIScreen mainScreen] bounds].size.height);
-    overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
-    
-    [UIView transitionWithView:self.navigationController.view
-                      duration:0.5
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{
-                        [self.navigationController.view addSubview:overlay];
-                    }
-                    completion:nil];
-    
+    overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.0];
+    [self.navigationController.view addSubview:overlay];
+
     mainView = [[UIView alloc]init];
     mainView.layer.cornerRadius = 5;
-    mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 5);
+    mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 5);
     mainView.backgroundColor = [UIColor whiteColor];
     mainView.layer.masksToBounds = NO;
-
+    
+ /*   [UIView transitionWithView:self.navigationController.view
+                      duration:0.5
+                       options: UIViewAnimationOptionTransitionFlipFromRight
+                    animations:^{
+                        mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 5);
+                    }
+                    completion:nil];  */
+    
+    [UIView animateWithDuration:.4
+                     animations:^{
+                         overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+                     }];
+    
+    [UIView animateWithDuration:0.33
+                     animations:^{
+                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                         mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 5);
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:.22
+                                          animations:^{
+                                              [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                                              mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 5);
+                                          }];
+                     }];
+ 
     UIView * head_container = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 302, 44)];
     head_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
     [mainView addSubview:head_container];

@@ -181,13 +181,12 @@ NSString *amnt;
     
 }
 -(void)getEncrypt:(NSString *)input {
-    NSLog(@"string......%@",input);
     NSString *encodedString = [NSString encodeBase64String:input];
     
     self.responseData = [[NSMutableData alloc] init];
     requestEncryption = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@", ServerUrl,@"GetEncryptedData",@"data",encodedString]]];
     [requestEncryption setHTTPMethod:@"GET"];
-    NSLog(@"%@",requestEncryption);
+    //NSLog(@"%@",requestEncryption);
     [requestEncryption setTimeoutInterval:500.0f];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestEncryption delegate:self];
     if (!connection)

@@ -155,6 +155,10 @@
 		5C69D07019CA0F5B00EB406F /* EAIntroPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D06D19CA0F5B00EB406F /* EAIntroPage.m */; };
 		5C69D07119CA0F5B00EB406F /* EAIntroView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D06F19CA0F5B00EB406F /* EAIntroView.m */; };
 		5C69D09819CA244C00EB406F /* tour.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D09719CA244C00EB406F /* tour.m */; };
+		5CACE20619CFF86A004AD9C4 /* 1connect-bank-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20319CFF86A004AD9C4 /* 1connect-bank-bg.png */; };
+		5CACE20719CFF86A004AD9C4 /* 2select-recipient-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20419CFF86A004AD9C4 /* 2select-recipient-bg.png */; };
+		5CACE20819CFF86A004AD9C4 /* 3how-much-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20519CFF86A004AD9C4 /* 3how-much-bg.png */; };
+		5CACE20A19CFF878004AD9C4 /* how-much-img@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20919CFF878004AD9C4 /* how-much-img@2x.png */; };
 		5CC1A77819BA7A8A0000C2C7 /* Icon29.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77419BA7A8A0000C2C7 /* Icon29.png */; };
 		5CC1A77919BA7A8A0000C2C7 /* Icon58.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77519BA7A8A0000C2C7 /* Icon58.png */; };
 		5CC1A77A19BA7A8A0000C2C7 /* Icon80.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77619BA7A8A0000C2C7 /* Icon80.png */; };
@@ -535,6 +539,10 @@
 		5C69D08119CA133300EB406F /* title4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title4@2x.png"; sourceTree = "<group>"; };
 		5C69D09619CA244C00EB406F /* tour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tour.h; sourceTree = "<group>"; };
 		5C69D09719CA244C00EB406F /* tour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tour.m; sourceTree = "<group>"; };
+		5CACE20319CFF86A004AD9C4 /* 1connect-bank-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1connect-bank-bg.png"; sourceTree = "<group>"; };
+		5CACE20419CFF86A004AD9C4 /* 2select-recipient-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "2select-recipient-bg.png"; sourceTree = "<group>"; };
+		5CACE20519CFF86A004AD9C4 /* 3how-much-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "3how-much-bg.png"; sourceTree = "<group>"; };
+		5CACE20919CFF878004AD9C4 /* how-much-img@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "how-much-img@2x.png"; sourceTree = "<group>"; };
 		5CC1A77419BA7A8A0000C2C7 /* Icon29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon29.png; sourceTree = "<group>"; };
 		5CC1A77519BA7A8A0000C2C7 /* Icon58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon58.png; sourceTree = "<group>"; };
 		5CC1A77619BA7A8A0000C2C7 /* Icon80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon80.png; sourceTree = "<group>"; };
@@ -955,6 +963,10 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				5CACE20919CFF878004AD9C4 /* how-much-img@2x.png */,
+				5CACE20319CFF86A004AD9C4 /* 1connect-bank-bg.png */,
+				5CACE20419CFF86A004AD9C4 /* 2select-recipient-bg.png */,
+				5CACE20519CFF86A004AD9C4 /* 3how-much-bg.png */,
 				5C69CFA519C777D800EB406F /* Knox_lightbox.png */,
 				5C69CFA619C777D800EB406F /* Knox_lightbox@2x.png */,
 				5C38468E19C566DE002AEB15 /* cross@2x.png */,
@@ -1813,11 +1825,13 @@
 				5C69D00519C92F7400EB406F /* NotificationBackgroundWarningIcon.png in Resources */,
 				01C26DAD1843BB22005179B7 /* dispute-icon.png in Resources */,
 				5C69CFFF19C92F7400EB406F /* NotificationBackgroundSuccess.png in Resources */,
+				5CACE20819CFF86A004AD9C4 /* 3how-much-bg.png in Resources */,
 				6BC5FECF1625F1B0007EAD7A /* Roboto-Bold.ttf in Resources */,
 				6BC5FED11625F1B0007EAD7A /* Roboto-BoldCondensed.ttf in Resources */,
 				84F099531988AD840020A08F /* Default.png in Resources */,
 				8420B39D187AC4BF00A77E2D /* green-pin.png in Resources */,
 				5C6917DB19B69AD90044BF2B /* nooch_logo_color.png in Resources */,
+				5CACE20A19CFF878004AD9C4 /* how-much-img@2x.png in Resources */,
 				849AF6BD19A3183000693385 /* close_button.png in Resources */,
 				5C69D00219C92F7400EB406F /* NotificationBackgroundSuccessIcon@2x.png in Resources */,
 				6BC5FED31625F1B0007EAD7A /* Roboto-BoldCondensedItalic.ttf in Resources */,
@@ -1897,6 +1911,8 @@
 				845631B61990AD45005B90F6 /* whiteBack30.png in Resources */,
 				0129D8E71815B10D00BEAC30 /* Brandon_bld.otf in Resources */,
 				01C26DEF1843C56C005179B7 /* nooch_Logo.png in Resources */,
+				5CACE20719CFF86A004AD9C4 /* 2select-recipient-bg.png in Resources */,
+				5CACE20619CFF86A004AD9C4 /* 1connect-bank-bg.png in Resources */,
 				010A993A185FA99F001DCE6B /* choose-pic-icon.png in Resources */,
 				845B49A819B4722B009695AA /* Images-2.xcassets in Resources */,
 				8420B39C187AC4BF00A77E2D /* blue-pin.png in Resources */,
@@ -2147,8 +2163,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Baljeet Singh (HE787S955W)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Baljeet Singh (HE787S955W)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Clifford Satell (W95LAEDX2E)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Clifford Satell (W95LAEDX2E)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2171,8 +2187,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "2613ab82-35a1-46a9-93b9-4a7734cf5b80";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2613ab82-35a1-46a9-93b9-4a7734cf5b80";
+				PROVISIONING_PROFILE = "b3cc5a9c-f0fc-46b8-afc5-a3cb39debaa4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b3cc5a9c-f0fc-46b8-afc5-a3cb39debaa4";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -2184,8 +2200,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Baljeet Singh (HE787S955W)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Baljeet Singh (HE787S955W)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Nooch Inc (3GDWQ778SF)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Nooch Inc (3GDWQ778SF)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2207,8 +2223,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "2613ab82-35a1-46a9-93b9-4a7734cf5b80";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2613ab82-35a1-46a9-93b9-4a7734cf5b80";
+				PROVISIONING_PROFILE = "b67b8ed4-9799-4d56-a1ea-e5e691e41d6b";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b67b8ed4-9799-4d56-a1ea-e5e691e41d6b";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
