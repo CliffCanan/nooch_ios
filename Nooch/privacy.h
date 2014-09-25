@@ -13,6 +13,5 @@
 @interface privacy : GAITrackedViewController <serveD,UIWebViewDelegate>
 
 @property(nonatomic, retain) IBOutlet UIWebView *privacyView;
-@property (retain,nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 
 @end

@@ -285,6 +285,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.45];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
     
     CGRect frame = self.suspended.frame;
     frame.origin.y = -58;
@@ -305,7 +306,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.45];
-    
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+
     CGRect frame = self.profile_incomplete.frame;
     frame.origin.y = -58;
     [self.profile_incomplete setFrame:frame];
@@ -322,7 +324,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.45];
-    
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+
     CGRect frame = self.phone_incomplete.frame;
     frame.origin.y = -58;
     [self.phone_incomplete setFrame:frame];
@@ -581,7 +584,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         bannerAlert--;
     }
     
-    else if ([[user objectForKey:@"Status"] isEqualToString:@"Registered"])
+    else if (![[user objectForKey:@"Status"] isEqualToString:@"Registered"])
     {
         [self.profile_incomplete removeFromSuperview];
         self.profile_incomplete = [UIView new];
@@ -1025,26 +1028,25 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     {
         double totalduration = .6;
 
-        [UIView animateKeyframesWithDuration:totalduration delay:0 options:UIViewKeyframeAnimationOptionCalculationModeCubic animations:^{
+        [UIView animateKeyframesWithDuration:totalduration
+                                       delay:0
+                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                  animations:^{
             [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
                 carousel.currentItemView.transform = CGAffineTransformMakeTranslation(-16, 0);
             }];
             [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.3 animations:^{
                 carousel.currentItemView.transform = CGAffineTransformMakeTranslation(-24, 0);
-                
             }];
             [UIView addKeyframeWithRelativeStartTime:.5 relativeDuration:.5 animations:^{
                 carousel.currentItemView.transform = CGAffineTransformMakeTranslation(225, 0);
-
             }];
             
             [UIView addKeyframeWithRelativeStartTime:.4 relativeDuration:.6 animations:^{
                 top_button.alpha = 0;
-                
             }];
             [UIView addKeyframeWithRelativeStartTime:.4 relativeDuration:.6 animations:^{
                 top_button.transform = CGAffineTransformMakeScale(.1, .1);
-                
             }];
 
         } completion:^(BOOL finished){
