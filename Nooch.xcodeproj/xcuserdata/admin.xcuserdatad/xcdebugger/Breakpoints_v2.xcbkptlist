@@ -383,7 +383,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "538"
             endingLineNumber = "538"
-            landmarkName = "-mailComposeController:didFinishWithResult:error:"
+            landmarkName = "-close_lightBox"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
