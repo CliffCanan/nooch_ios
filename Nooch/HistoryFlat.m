@@ -2369,14 +2369,31 @@ return customView;
                         // NSLog(@"%@",dict);
                         [histShowArrayPending addObject:dict];
                 
-                        if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
+                       if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
                             counter++;
                         }
                     }
+//                
+//                if ( ( [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
+//                      [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"] ) &&
+//                    ![[dict valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
+//                {
+//                    counter++;
+//                }
+                
               //  }
             }
             NSLog(@"The Pending COUNTER is: %d",counter);
             [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%d)",counter]forSegmentAtIndex:1];
+            NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
+            if (counter>0) {
+                 [defaults setBool:true forKey:@"hasPendingItems"];
+            }
+            else
+            [defaults setBool:false forKey:@"hasPendingItems"];
+            
+            [defaults setValue: [NSString stringWithFormat:@"%d",counter] forKey:@"Pending_count"];
+            [defaults synchronize];
             
         }
         else {
