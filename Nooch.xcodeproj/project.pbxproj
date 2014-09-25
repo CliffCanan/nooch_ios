@@ -155,14 +155,18 @@
 		5C69D07019CA0F5B00EB406F /* EAIntroPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D06D19CA0F5B00EB406F /* EAIntroPage.m */; };
 		5C69D07119CA0F5B00EB406F /* EAIntroView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D06F19CA0F5B00EB406F /* EAIntroView.m */; };
 		5C69D09819CA244C00EB406F /* tour.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D09719CA244C00EB406F /* tour.m */; };
-		5CACE20619CFF86A004AD9C4 /* 1connect-bank-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20319CFF86A004AD9C4 /* 1connect-bank-bg.png */; };
-		5CACE20719CFF86A004AD9C4 /* 2select-recipient-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20419CFF86A004AD9C4 /* 2select-recipient-bg.png */; };
-		5CACE20819CFF86A004AD9C4 /* 3how-much-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20519CFF86A004AD9C4 /* 3how-much-bg.png */; };
-		5CACE20A19CFF878004AD9C4 /* how-much-img@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20919CFF878004AD9C4 /* how-much-img@2x.png */; };
+		5CACE20619CFF86A004AD9C4 /* 1_connectBank_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20319CFF86A004AD9C4 /* 1_connectBank_bg.png */; };
+		5CACE20719CFF86A004AD9C4 /* 2_selectRecipient_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20419CFF86A004AD9C4 /* 2_selectRecipient_bg.png */; };
+		5CACE20819CFF86A004AD9C4 /* 3_howMuch_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20519CFF86A004AD9C4 /* 3_howMuch_bg.png */; };
 		5CC1A77819BA7A8A0000C2C7 /* Icon29.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77419BA7A8A0000C2C7 /* Icon29.png */; };
 		5CC1A77919BA7A8A0000C2C7 /* Icon58.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77519BA7A8A0000C2C7 /* Icon58.png */; };
 		5CC1A77A19BA7A8A0000C2C7 /* Icon80.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77619BA7A8A0000C2C7 /* Icon80.png */; };
 		5CC1A77B19BA7A8A0000C2C7 /* Icon120.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77719BA7A8A0000C2C7 /* Icon120.png */; };
+		5CD72EF219D3ECDC008A21D2 /* 4_history_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CD72EEE19D3ECDC008A21D2 /* 4_history_bg@2x.png */; };
+		5CD72EF319D3ECDC008A21D2 /* history_img@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CD72EEF19D3ECDC008A21D2 /* history_img@2x.png */; };
+		5CD72EF419D3ECDC008A21D2 /* howMuch_img@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CD72EF019D3ECDC008A21D2 /* howMuch_img@2x.png */; };
+		5CD72EF519D3ECDC008A21D2 /* selectRecipient_img@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CD72EF119D3ECDC008A21D2 /* selectRecipient_img@2x.png */; };
+		5CD72EF719D3EDD3008A21D2 /* connectBank_img@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CD72EF619D3EDD3008A21D2 /* connectBank_img@2x.png */; };
 		5CEFA0CB19CBE1A900991EEB /* (null) in Resources */ = {isa = PBXBuildFile; };
 		5CEFA0CC19CBE1A900991EEB /* (null) in Resources */ = {isa = PBXBuildFile; };
 		5CEFA0CD19CBE1A900991EEB /* (null) in Resources */ = {isa = PBXBuildFile; };
@@ -539,14 +543,18 @@
 		5C69D08119CA133300EB406F /* title4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title4@2x.png"; sourceTree = "<group>"; };
 		5C69D09619CA244C00EB406F /* tour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tour.h; sourceTree = "<group>"; };
 		5C69D09719CA244C00EB406F /* tour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tour.m; sourceTree = "<group>"; };
-		5CACE20319CFF86A004AD9C4 /* 1connect-bank-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1connect-bank-bg.png"; sourceTree = "<group>"; };
-		5CACE20419CFF86A004AD9C4 /* 2select-recipient-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "2select-recipient-bg.png"; sourceTree = "<group>"; };
-		5CACE20519CFF86A004AD9C4 /* 3how-much-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "3how-much-bg.png"; sourceTree = "<group>"; };
-		5CACE20919CFF878004AD9C4 /* how-much-img@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "how-much-img@2x.png"; sourceTree = "<group>"; };
+		5CACE20319CFF86A004AD9C4 /* 1_connectBank_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1_connectBank_bg.png; sourceTree = "<group>"; };
+		5CACE20419CFF86A004AD9C4 /* 2_selectRecipient_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2_selectRecipient_bg.png; sourceTree = "<group>"; };
+		5CACE20519CFF86A004AD9C4 /* 3_howMuch_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3_howMuch_bg.png; sourceTree = "<group>"; };
 		5CC1A77419BA7A8A0000C2C7 /* Icon29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon29.png; sourceTree = "<group>"; };
 		5CC1A77519BA7A8A0000C2C7 /* Icon58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon58.png; sourceTree = "<group>"; };
 		5CC1A77619BA7A8A0000C2C7 /* Icon80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon80.png; sourceTree = "<group>"; };
 		5CC1A77719BA7A8A0000C2C7 /* Icon120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon120.png; sourceTree = "<group>"; };
+		5CD72EEE19D3ECDC008A21D2 /* 4_history_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "4_history_bg@2x.png"; sourceTree = "<group>"; };
+		5CD72EEF19D3ECDC008A21D2 /* history_img@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "history_img@2x.png"; sourceTree = "<group>"; };
+		5CD72EF019D3ECDC008A21D2 /* howMuch_img@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "howMuch_img@2x.png"; sourceTree = "<group>"; };
+		5CD72EF119D3ECDC008A21D2 /* selectRecipient_img@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "selectRecipient_img@2x.png"; sourceTree = "<group>"; };
+		5CD72EF619D3EDD3008A21D2 /* connectBank_img@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connectBank_img@2x.png"; sourceTree = "<group>"; };
 		5CF1760B19C0178A004C7427 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
 		6B01F1B3179DA78B00E34C49 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		6B01F1B5179DA79B00E34C49 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
@@ -963,10 +971,14 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
-				5CACE20919CFF878004AD9C4 /* how-much-img@2x.png */,
-				5CACE20319CFF86A004AD9C4 /* 1connect-bank-bg.png */,
-				5CACE20419CFF86A004AD9C4 /* 2select-recipient-bg.png */,
-				5CACE20519CFF86A004AD9C4 /* 3how-much-bg.png */,
+				5CD72EF619D3EDD3008A21D2 /* connectBank_img@2x.png */,
+				5CD72EF119D3ECDC008A21D2 /* selectRecipient_img@2x.png */,
+				5CD72EF019D3ECDC008A21D2 /* howMuch_img@2x.png */,
+				5CD72EEF19D3ECDC008A21D2 /* history_img@2x.png */,
+				5CACE20319CFF86A004AD9C4 /* 1_connectBank_bg.png */,
+				5CACE20419CFF86A004AD9C4 /* 2_selectRecipient_bg.png */,
+				5CACE20519CFF86A004AD9C4 /* 3_howMuch_bg.png */,
+				5CD72EEE19D3ECDC008A21D2 /* 4_history_bg@2x.png */,
 				5C69CFA519C777D800EB406F /* Knox_lightbox.png */,
 				5C69CFA619C777D800EB406F /* Knox_lightbox@2x.png */,
 				5C38468E19C566DE002AEB15 /* cross@2x.png */,
@@ -1825,13 +1837,12 @@
 				5C69D00519C92F7400EB406F /* NotificationBackgroundWarningIcon.png in Resources */,
 				01C26DAD1843BB22005179B7 /* dispute-icon.png in Resources */,
 				5C69CFFF19C92F7400EB406F /* NotificationBackgroundSuccess.png in Resources */,
-				5CACE20819CFF86A004AD9C4 /* 3how-much-bg.png in Resources */,
+				5CACE20819CFF86A004AD9C4 /* 3_howMuch_bg.png in Resources */,
 				6BC5FECF1625F1B0007EAD7A /* Roboto-Bold.ttf in Resources */,
 				6BC5FED11625F1B0007EAD7A /* Roboto-BoldCondensed.ttf in Resources */,
 				84F099531988AD840020A08F /* Default.png in Resources */,
 				8420B39D187AC4BF00A77E2D /* green-pin.png in Resources */,
 				5C6917DB19B69AD90044BF2B /* nooch_logo_color.png in Resources */,
-				5CACE20A19CFF878004AD9C4 /* how-much-img@2x.png in Resources */,
 				849AF6BD19A3183000693385 /* close_button.png in Resources */,
 				5C69D00219C92F7400EB406F /* NotificationBackgroundSuccessIcon@2x.png in Resources */,
 				6BC5FED31625F1B0007EAD7A /* Roboto-BoldCondensedItalic.ttf in Resources */,
@@ -1862,10 +1873,12 @@
 				6BC5FEE71625F1B0007EAD7A /* Roboto-Thin.ttf in Resources */,
 				5C69D00619C92F7400EB406F /* NotificationBackgroundWarningIcon@2x.png in Resources */,
 				6BC5FEE91625F1B0007EAD7A /* Roboto-ThinItalic.ttf in Resources */,
+				5CD72EF519D3ECDC008A21D2 /* selectRecipient_img@2x.png in Resources */,
 				010A993B185FA99F001DCE6B /* n_Icon_58x66.png in Resources */,
 				01C26DC11843BB22005179B7 /* stats-transfers-inactive.png in Resources */,
 				8420B3A0187AC4BF00A77E2D /* red-pin.png in Resources */,
 				014C432C185B9A4C00956A84 /* facebook-icon.png in Resources */,
+				5CD72EF419D3ECDC008A21D2 /* howMuch_img@2x.png in Resources */,
 				0179E9EB17F355310027526C /* flat_storyboard.storyboard in Resources */,
 				014C432A185B9A4C00956A84 /* dollar-sign.png in Resources */,
 				6B5E18D71670014100EF1990 /* Icon.png in Resources */,
@@ -1892,6 +1905,7 @@
 				6BC04B9D1677DE0E005C68D6 /* README.rst in Resources */,
 				5C69CFA719C777D800EB406F /* Knox_lightbox.png in Resources */,
 				6BC04C031677E25D005C68D6 /* AirshipConfig.plist in Resources */,
+				5CD72EF219D3ECDC008A21D2 /* 4_history_bg@2x.png in Resources */,
 				84443CB118A0BDF30097F6C0 /* RoundLoading.png in Resources */,
 				846874C3198F40EF001223B8 /* n_icon_46x54.png in Resources */,
 				84F099521988AD840020A08F /* Default-568h@2x.png in Resources */,
@@ -1907,12 +1921,13 @@
 				0106773C1860F68400E11F3D /* take-pic-icon.png in Resources */,
 				84C3EF18187D0E82004687F6 /* mapBack.png in Resources */,
 				5C69D00819C92F7400EB406F /* NotificationButtonBackground@2x.png in Resources */,
+				5CD72EF319D3ECDC008A21D2 /* history_img@2x.png in Resources */,
 				01C26DB21843BB22005179B7 /* fb-icon-90x90.png in Resources */,
 				845631B61990AD45005B90F6 /* whiteBack30.png in Resources */,
 				0129D8E71815B10D00BEAC30 /* Brandon_bld.otf in Resources */,
 				01C26DEF1843C56C005179B7 /* nooch_Logo.png in Resources */,
-				5CACE20719CFF86A004AD9C4 /* 2select-recipient-bg.png in Resources */,
-				5CACE20619CFF86A004AD9C4 /* 1connect-bank-bg.png in Resources */,
+				5CACE20719CFF86A004AD9C4 /* 2_selectRecipient_bg.png in Resources */,
+				5CACE20619CFF86A004AD9C4 /* 1_connectBank_bg.png in Resources */,
 				010A993A185FA99F001DCE6B /* choose-pic-icon.png in Resources */,
 				845B49A819B4722B009695AA /* Images-2.xcassets in Resources */,
 				8420B39C187AC4BF00A77E2D /* blue-pin.png in Resources */,
@@ -1925,6 +1940,7 @@
 				5CC1A77919BA7A8A0000C2C7 /* Icon58.png in Resources */,
 				5C69D00919C92F7400EB406F /* TSMessagesDefaultDesign.json in Resources */,
 				5CEFA0CD19CBE1A900991EEB /* (null) in Resources */,
+				5CD72EF719D3EDD3008A21D2 /* connectBank_img@2x.png in Resources */,
 				5C69D00719C92F7400EB406F /* NotificationButtonBackground.png in Resources */,
 				5C69D02919C9380500EB406F /* IQKeyboardManager.bundle in Resources */,
 				845631B71990AD45005B90F6 /* whiteBack30@2x.png in Resources */,
