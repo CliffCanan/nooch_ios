@@ -688,6 +688,7 @@
     {
         UIImageView * imageView = nil;
         UILabel * name = nil;
+        UILabel * frequency = nil;
 
         imageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 5, 54, 54)];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -695,11 +696,13 @@
         // [imageView setStyleClass:@"animate_bubble"];
 
         name = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 140, 20)];
-        name.textColor = [Helpers hexColor:@"313233"];
-        name.textAlignment = NSTextAlignmentCenter;
-        [name setFont:[UIFont fontWithName:@"Roboto-regular" size:19]];
         [name setStyleClass:@"stats_topFriends_label"];
         
+        frequency = [[UILabel alloc] initWithFrame:CGRectMake(80, 26, 140, 30)];
+        frequency.textColor = [Helpers hexColor:@"313233"];
+        frequency.textAlignment = NSTextAlignmentLeft;
+        [frequency setFont:[UIFont fontWithName:@"Roboto-light" size:14]];
+
         NSDictionary * favorite = [favorites objectAtIndex:0];
         int fav_count = [favorites count];
         
@@ -711,6 +714,7 @@
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
+                frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
             }
             else if (fav_count > 1 && indexPath.row == 1)
             {
@@ -719,6 +723,7 @@
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
+                frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
             }
             else if (fav_count > 2 && indexPath.row == 2)
             {
@@ -727,6 +732,7 @@
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
+                frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
             }
             else if (fav_count > 3 && indexPath.row == 3)
             {
@@ -735,6 +741,7 @@
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
+                frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
             }
             else if (fav_count > 4 && indexPath.row == 4)
             {
@@ -743,11 +750,13 @@
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
+                frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
             }
         }
         [imageView setClipsToBounds:YES];
         [cell.contentView addSubview:imageView];
         [cell.contentView addSubview:name];
+        [cell.contentView addSubview:frequency];
     }
 
     [cell.contentView addSubview:title];

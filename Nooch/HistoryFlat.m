@@ -897,7 +897,7 @@ return customView;
                     
                     UILabel *name = [UILabel new];
                     [name setStyleClass:@"history_cell_textlabel"];
-                    [name setStyleClass:@"history_recipientname"];
+         //           [name setStyleClass:@"history_recipientname"];
                     
                     UILabel *date = [UILabel new];
                     [date setStyleClass:@"history_datetext"];

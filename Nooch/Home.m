@@ -584,7 +584,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         bannerAlert--;
     }
     
-    else if (![[user objectForKey:@"Status"] isEqualToString:@"Registered"])
+    else if ([[user objectForKey:@"Status"] isEqualToString:@"Registered"])
     {
         [self.profile_incomplete removeFromSuperview];
         self.profile_incomplete = [UIView new];
@@ -703,13 +703,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
     
     [top_button removeFromSuperview];
+
     top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [top_button setFrame:CGRectMake(20, 500, 280, 60)];
     [top_button setStyleId:@"button_green_home"];
     [top_button setTitleShadowColor:Rgb2UIColor(26, 38, 32, 0.2) forState:UIControlStateNormal];
     top_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    
-    CGRect button_frame = CGRectMake(20, 258, 280, 60);
-    [top_button setFrame:button_frame];
+
     [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
     [top_button setTitle:@"   Search For More Friends" forState:UIControlStateNormal];
     
@@ -721,7 +721,21 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [top_button addSubview:glyph_search];
 
     [self.view addSubview:top_button];
-
+    
+    [UIView animateKeyframesWithDuration:0.5
+                                   delay:0
+                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
+                                      top_button.alpha = 0;
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.8 animations:^{
+                                      [top_button setFrame:CGRectMake(20, 258, 280, 60)];
+                                      top_button.alpha = 1;
+                                  }];
+                              } completion: nil
+     ];
+    
     int carouselTop;
     if (bannerAlert == 1)
     {

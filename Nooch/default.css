@@ -3060,10 +3060,10 @@
 		text-align		: center;
 	}
     .stats_topFriends_label {
-		left			: 76px;
+		left			: 80px;
 		top				: 10px;
 		width			: 200px;
-		height			: 30px;
+		height			: 24px;
 		color			: #313233;
 		font-family		: "Roboto";
 		font-weight		: light;

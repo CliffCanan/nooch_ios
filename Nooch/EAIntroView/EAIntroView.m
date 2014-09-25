@@ -257,7 +257,7 @@
     }
     
     NSShadow * shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = Rgb2UIColor(31, 32, 33, .4);
+    shadow.shadowColor = Rgb2UIColor(31, 32, 33, .5);
     shadow.shadowOffset = CGSizeMake(0, 1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
     
@@ -278,7 +278,7 @@
         CGRect titleLabelFrame = CGRectMake(10, self.frame.size.height - page.titlePositionY, self.scrollView.frame.size.width - 20, titleHeight);
 
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:titleLabelFrame];
-   //     titleLabel.text = page.title;
+        // titleLabel.text = page.title;
         titleLabel.attributedText = [[NSAttributedString alloc] initWithString:page.title attributes:textAttributes];
         titleLabel.font = page.titleFont;
         titleLabel.textColor = page.titleColor;
@@ -301,7 +301,7 @@
         }
         
         UITextView *descLabel = [[UITextView alloc] initWithFrame:descLabelFrame];
-//        descLabel.text = page.desc;
+        // descLabel.text = page.desc;
         descLabel.attributedText = [[NSAttributedString alloc] initWithString:page.desc attributes:textAttributes];
         descLabel.scrollEnabled = NO;
         descLabel.font = page.descFont;
@@ -354,6 +354,8 @@
     
     self.skipButton = [[UIButton alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width - 80, self.pageControl.frame.origin.y - ((30 - self.pageControl.frame.size.height)/2), 80, 30)];
     [self.skipButton setTitle:NSLocalizedString(@"Skip", nil) forState:UIControlStateNormal];
+    [self.skipButton setTitleShadowColor:Rgb2UIColor(31, 32, 33, 0.35) forState:UIControlStateNormal];
+    self.skipButton.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [self.skipButton addTarget:self action:@selector(skipIntroduction) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.skipButton];
     
