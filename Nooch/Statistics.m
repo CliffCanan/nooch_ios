@@ -745,7 +745,7 @@
             }
             else if (fav_count > 4 && indexPath.row == 4)
             {
-                NSDictionary * favorite = [favorites objectAtIndex:3];
+                NSDictionary * favorite = [favorites objectAtIndex:4];
                 [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
