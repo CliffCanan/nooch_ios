@@ -100,6 +100,8 @@
     self.recip_back = [UILabel new];
     [self.recip_back setStyleClass:@"barbackground"];
     [self.recip_back setStyleClass:@"barbackground_gray"];
+  //  self.recip_back.layer.cornerRadius = 4;
+    self.recip_back.clipsToBounds = YES;
     [self.back addSubview:self.recip_back];
 
     NSShadow * shadow = [[NSShadow alloc] init];

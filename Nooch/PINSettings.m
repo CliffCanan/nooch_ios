@@ -110,7 +110,7 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [self.navigationItem setTitle:@"Security Settings"];
-      self.trackedViewName = @"PinSettings Screen";
+    self.trackedViewName = @"PinSettings Screen";
 }
 
 - (void)changepass{

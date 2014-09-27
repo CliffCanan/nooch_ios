@@ -596,20 +596,15 @@ UIImageView *picture;
     strPhoneNumber = [strPhoneNumber stringByReplacingOccurrencesOfString:@")" withString:@""];
     strPhoneNumber = [strPhoneNumber stringByReplacingOccurrencesOfString:@" " withString:@""];
     
-//    if (![self.SavePhoneNumber isEqualToString:strPhoneNumber] || [self.SavePhoneNumber length] == 0)
-//    {
-//        if ([strPhoneNumber length] == 10)
-//        {
-//            serve *req = [serve new];
-//            [req SendSMSApi:strPhoneNumber msg:@"Reply with \"Go\" to this message to verify your phone number."];
-//        }
-//        else
-//        {
-//            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Phone Number Trouble" message:@"Please double check that you entered a valid 10-digit phone number." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//            [alert show];
-//            return;
-//        }
-//    }
+    if (![self.SavePhoneNumber isEqualToString:strPhoneNumber] || [self.SavePhoneNumber length] == 0)
+    {
+        if ([strPhoneNumber length] != 10)
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Phone Number Trouble" message:@"Please double check that you entered a valid 10-digit phone number." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            return;
+        }
+    }
 
     if ([self.recovery_email.text length] == 0) {
         self.recovery_email.text = @"";
@@ -926,7 +921,6 @@ UIImageView *picture;
         }
 
         [cell.contentView addSubview:mail];
-
         [cell.contentView addSubview:self.email];
     }
     else if (indexPath.row == 2)
@@ -944,7 +938,6 @@ UIImageView *picture;
         UILabel * num = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [num setBackgroundColor:[UIColor clearColor]];
         [num setStyleClass:@"table_view_cell_textlabel_1"];
-        [num setText:@"JAWNSON"];
         num.attributedText = [[NSAttributedString alloc] initWithString:@"Phone"
                                                              attributes:textAttributes_white];
         
@@ -952,7 +945,7 @@ UIImageView *picture;
         NSLog(@"PhoneNo value is: %@",[dictSavedInfo valueForKey:@"phoneno"]);
         NSLog(@"PhoneNo LENGTH is: %d",[[dictSavedInfo valueForKey:@"phoneno"]length]);
         
-        if (![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"])// && [[dictSavedInfo valueForKey:@"phoneno"]length] > 1)
+        if (![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"])
         {
             UIView * unverified_phone = [[UIView alloc] initWithFrame:CGRectMake(0,0,320,88)];
             [unverified_phone setBackgroundColor:Rgb2UIColor(250, 228, 3, .25)];
@@ -968,13 +961,16 @@ UIImageView *picture;
             [glyph_excl setTextColor:kNoochRed];
             [cell.contentView addSubview:glyph_excl];
             
-            self.glyph_arrow_phone = [UILabel new];
-            [self.glyph_arrow_phone setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-            [self.glyph_arrow_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-down"]];
-            [self.glyph_arrow_phone setFrame:CGRectMake(89, 6, 20, 38)];
-            [self.glyph_arrow_phone setTextColor:kNoochGrayDark];
-            [cell.contentView addSubview:self.glyph_arrow_phone];
-            
+            if ([[dictSavedInfo valueForKey:@"phoneno"]length] > 0)
+            {
+                self.glyph_arrow_phone = [UILabel new];
+                [self.glyph_arrow_phone setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+                [self.glyph_arrow_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-down"]];
+                [self.glyph_arrow_phone setFrame:CGRectMake(89, 6, 20, 38)];
+                [self.glyph_arrow_phone setTextColor:kNoochGrayDark];
+                [cell.contentView addSubview:self.glyph_arrow_phone];
+            }
+
             UILabel * phoneVerifiedStatus = [[UILabel alloc] initWithFrame:CGRectMake(32, 50, 130, 30)];
             [phoneVerifiedStatus setBackgroundColor:[UIColor clearColor]];
             [phoneVerifiedStatus setStyleClass:@"notVerifiedLabel"];
@@ -996,7 +992,6 @@ UIImageView *picture;
             resend_phone.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
             [cell.contentView addSubview:resend_phone];
             
-            [self.phone setUserInteractionEnabled:NO];
         }
         
         [cell.contentView addSubview:num];

@@ -36,17 +36,20 @@
     }
     return self;
 }
+
 -(void)showMenu
 {
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [self.navigationItem setTitle:@"Settings"];
-      self.trackedViewName = @"SettingsOptions Screen";
+    self.trackedViewName = @"SettingsOptions Screen";
     
     [self getBankInfo];
-   }
+}
+
 -(void)getBankInfo{
     serve*  serveOBJ=[serve new];
     serveOBJ.Delegate=self;
@@ -54,12 +57,14 @@
     [serveOBJ GetKnoxBankAccountDetails];
 
 }
+
 -(void)RemoveKnoxBankAccount{
     serve*  serveOBJ=[serve new];
     serveOBJ.Delegate=self;
     serveOBJ.tagName=@"RemoveKnoxBankAccount";
     [serveOBJ RemoveKnoxBankAccount];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

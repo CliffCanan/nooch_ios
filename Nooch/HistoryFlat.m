@@ -897,7 +897,6 @@ return customView;
                     
                     UILabel *name = [UILabel new];
                     [name setStyleClass:@"history_cell_textlabel"];
-                    [name setStyleClass:@"history_recipientname"];
                     
                     UILabel *date = [UILabel new];
                     [date setStyleClass:@"history_datetext"];
@@ -1497,9 +1496,9 @@ return customView;
 
                 if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
                 {
-                    UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(0, 313, 7, 72)];
+                    UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(0, 311, 9, 72)];
                     [indicator setBackgroundColor:[UIColor clearColor]];
-                    [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:12]];
+                    [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
                     [indicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-left"]];
                     [indicator setStyleClass:@"history_sidecolor_pending"];
 
@@ -1704,9 +1703,9 @@ return customView;
             
             if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
             {
-				UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(0, 313, 7, 72)];
+				UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(0, 311, 9, 72)];
                 [indicator setBackgroundColor:[UIColor clearColor]];
-                [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:12]];
+                [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
                 [indicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-left"]];
                 [indicator setStyleClass:@"history_sidecolor_pending"];
 
@@ -2349,6 +2348,7 @@ return customView;
             isEnd = NO;
             isStart = NO;
             int counter = 0;
+            int pending_notif_counter = 0;
             for (NSDictionary *dict in histArray)
             {
                 if ( [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]   ||
@@ -2359,45 +2359,48 @@ return customView;
                 {
                     [histShowArrayCompleted addObject:dict];
                 }
-                
-              //  else if ( completed_pending.selectedSegmentIndex == 1 ) //&& ![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]  &&  ![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"])
-              //  {
-                    if (  ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] && ![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"]) ||
-                        (([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
-                         [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
-                    {
-                        // NSLog(@"%@",dict);
-                        [histShowArrayPending addObject:dict];
+
+                // For the Pending Notification in the Completed/Pending Segmented Control on History Screen
+                if (  ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] && ![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"]) ||
+                     (([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
+                       [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
+                {
+                    [histShowArrayPending addObject:dict];
                 
                        if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
                             counter++;
                         }
                     }
-//                
-//                if ( ( [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
-//                      [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"] ) &&
-//                    ![[dict valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
-//                {
-//                    counter++;
-//                }
-                
-              //  }
+                // For the Red Pending Notification Bubble in the left menu  (different than "counter" above, this one
+                // doesn't include Invites, or Requests this user Sent)
+                if ( ( [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
+                      [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"] ) &&
+                    ![[dict valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
+                {
+                    pending_notif_counter++;
+                }
             }
-            NSLog(@"The Pending COUNTER is: %d",counter);
-            [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%d)",counter]forSegmentAtIndex:1];
-            NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
-            if (counter>0) {
-                 [defaults setBool:true forKey:@"hasPendingItems"];
-            }
-            else
-            [defaults setBool:false forKey:@"hasPendingItems"];
             
-            [defaults setValue: [NSString stringWithFormat:@"%d",counter] forKey:@"Pending_count"];
+            NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
+            if (pending_notif_counter > 0) {
+                [defaults setBool:true forKey:@"hasPendingItems"];
+            }
+            else {
+                [defaults setBool:false forKey:@"hasPendingItems"];
+
+            }
+            [defaults setValue: [NSString stringWithFormat:@"%d",pending_notif_counter] forKey:@"Pending_count"];
             [defaults synchronize];
+            
+            NSLog(@"The Pending counter is: %d",counter);
+            [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%d)",counter]forSegmentAtIndex:1];
+           
+            
+         
             
         }
         else {
-            isEnd=YES;
+            isEnd = YES;
         }
 
         if (isMapOpen) {

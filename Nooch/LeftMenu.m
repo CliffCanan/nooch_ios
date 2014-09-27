@@ -47,7 +47,6 @@
     [self.menu setBackgroundColor:kNoochMenu]; [self.menu setDelegate:self]; [self.menu setDataSource:self]; [self.menu setSeparatorColor:kNoochGrayLight];
     [self.menu setRowHeight:45];
     [self.view addSubview:self.menu];
- 
 
     UIView *user_bar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 90)];
     [user_bar setStyleId:@"lside_topbar_background"];
@@ -157,7 +156,9 @@
         [self.name setText:[NSString stringWithFormat:@"Some"]];
         [self.lastName setText:[NSString stringWithFormat:@"Person"]];
     }
-       [self.menu reloadData];
+
+    [self.menu reloadData];
+
 }
 
 -(void) go_profile
@@ -288,16 +289,20 @@
                                                                             attributes:textAttributes];
             iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"];
             
+            UILabel * pending_notif = [UILabel new];
+
             NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
             if ([defaults boolForKey:@"hasPendingItems"] == true)
             {
-                UILabel * pending_notif = [UILabel new];
                 NSLog(@"The current pending count is: %@",[defaults objectForKey:@"Pending_count"]);
                 [pending_notif setText:[NSString stringWithFormat:@"%@",[defaults objectForKey:@"Pending_count"]]];
                 [pending_notif setFrame:CGRectMake(212, 10, 22, 22)];
                 [pending_notif setStyleId:@"pending_notif"];
                 [pending_notif setStyleId:@"pending_notif_lsideMenu"];
                 [cell.contentView addSubview:pending_notif];
+            }
+            else {
+                [pending_notif removeFromSuperview];
             }
             
         }

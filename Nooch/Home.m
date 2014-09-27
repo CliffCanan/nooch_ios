@@ -584,7 +584,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         bannerAlert--;
     }
     
-    else if (![[user objectForKey:@"Status"] isEqualToString:@"Registered"])
+    else if ([[user objectForKey:@"Status"] isEqualToString:@"Registered"])
     {
         [self.profile_incomplete removeFromSuperview];
         self.profile_incomplete = [UIView new];
@@ -703,13 +703,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
     
     [top_button removeFromSuperview];
+
     top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [top_button setFrame:CGRectMake(20, 500, 280, 60)];
     [top_button setStyleId:@"button_green_home"];
     [top_button setTitleShadowColor:Rgb2UIColor(26, 38, 32, 0.2) forState:UIControlStateNormal];
     top_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    
-    CGRect button_frame = CGRectMake(20, 258, 280, 60);
-    [top_button setFrame:button_frame];
+
     [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
     [top_button setTitle:@"   Search For More Friends" forState:UIControlStateNormal];
     
@@ -721,7 +721,21 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [top_button addSubview:glyph_search];
 
     [self.view addSubview:top_button];
-
+    
+    [UIView animateKeyframesWithDuration:0.5
+                                   delay:0
+                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
+                                      top_button.alpha = 0;
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.8 animations:^{
+                                      [top_button setFrame:CGRectMake(20, 258, 280, 60)];
+                                      top_button.alpha = 1;
+                                  }];
+                              } completion: nil
+     ];
+    
     int carouselTop;
     if (bannerAlert == 1)
     {
@@ -1322,7 +1336,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         else
         {
-            favorites=[favorites mutableCopy];
+            favorites = [favorites mutableCopy];
             
             if ([favorites count] < 5) {
                [self FavoriteContactsProcessing];
@@ -1336,25 +1350,22 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         NSError *error;
         [self.hud hide:YES];
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-      int counter = 0;
+
+        
+        int counter = 0;
+
         if ([histArray count] > 0)
         {
-            
-            for (NSDictionary * dict in histArray)
-//            {
-//                if ( ( [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
-//                      [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"] ) &&
-//                     ![[dict valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
-//                {
-//                    counter++;
-//                }
-                if ((([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
-                     [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
-                {
-                if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
-                        counter++;
-                    }
-                }
+
+         for (NSDictionary * dict in histArray)
+           {
+               if ( ( [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
+                     [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"] ) &&
+                    ![[dict valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
+               {
+                   counter++;
+               }
+           }
             
             [self.navigationItem setLeftBarButtonItem:nil];
 
@@ -1402,7 +1413,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
     }
 
-    else if([tagName isEqualToString:@"emailCheck"])
+    else if ([tagName isEqualToString:@"emailCheck"])
     {
         NSError* error;
         NSMutableDictionary *dictResult = [NSJSONSerialization
@@ -1531,20 +1542,22 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         for (int j = 0; j < [favorites count];j++)
         {
             //In case of Server Record
-            if ([[favorites objectAtIndex:j] valueForKey:@"eMailId"] && ![[[favorites objectAtIndex:j] valueForKey:@"eMailId"]isKindOfClass:[NSNull class]]) {
-                
+            if (  [[favorites objectAtIndex:j] valueForKey:@"eMailId"] &&
+                ![[[favorites objectAtIndex:j] valueForKey:@"eMailId"]isKindOfClass:[NSNull class]])
+            {
                 if ([[[favorites objectAtIndex:j] valueForKey:@"eMailId"] isEqualToString:[[additions objectAtIndex:randomIndex]valueForKey:@"UserName"]])
-                    loc=0;
+                    loc = 0;
             }
             //In case of Address book
-            else if ([[favorites objectAtIndex:j] valueForKey:@"UserName"]&& ![[[favorites objectAtIndex:j] valueForKey:@"UserName"]isKindOfClass:[NSNull class]]) {
-                
+            else if (  [[favorites objectAtIndex:j] valueForKey:@"UserName"] &&
+                     ![[[favorites objectAtIndex:j] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
+            {
                 if ([[[favorites objectAtIndex:j] valueForKey:@"UserName"] isEqualToString:[[additions objectAtIndex:randomIndex]valueForKey:@"UserName"]])
-                    loc=0;
+                    loc = 0;
             }
         }
         //continue outer loop
-        if(loc==0){
+        if (loc == 0){
            continue;
         }
         
