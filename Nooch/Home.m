@@ -1350,13 +1350,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         NSError *error;
         [self.hud hide:YES];
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-
-        
         int counter = 0;
 
         if ([histArray count] > 0)
         {
-
          for (NSDictionary * dict in histArray)
            {
                if ( ( [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
@@ -1373,7 +1370,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
             if (counter > 0)
             {
-               
                 UILabel * pending_notif = [UILabel new];
                 [pending_notif setText:[NSString stringWithFormat:@"%d",counter]];
                 [pending_notif setFrame:CGRectMake(16, -2, 20, 20)];
