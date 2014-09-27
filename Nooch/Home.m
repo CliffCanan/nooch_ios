@@ -831,6 +831,27 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [super viewWillAppear:animated];
     self.trackedViewName = @"Home Screen";
     
+    //Update Pending Status
+    NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
+    if ([[defaults objectForKey:@"Pending_count"] intValue]>0) {
+        [self.navigationItem setLeftBarButtonItem:nil];
+        UILabel * pending_notif = [UILabel new];
+        [pending_notif setText:[defaults objectForKey:@"Pending_count"]];
+        [pending_notif setFrame:CGRectMake(16, -2, 20, 20)];
+        [pending_notif setStyleId:@"pending_notif"];
+        
+        UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [hamburger setStyleId:@"navbar_hamburger"];
+        [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+        [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
+        [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+        hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        [hamburger addSubview:pending_notif]; UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+        [self.navigationItem setLeftBarButtonItem:menu];
+        
+    }
+   
+    
     NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [UIColor whiteColor], UITextAttributeTextColor,
                                   Rgb2UIColor(19, 32, 38, .26), UITextAttributeTextShadowColor,
@@ -1329,21 +1350,20 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         NSError *error;
         [self.hud hide:YES];
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        
         int counter = 0;
 
         if ([histArray count] > 0)
         {
-
-            for (NSDictionary * dict in histArray)
-            {
-                if ( ( [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
-                      [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"] ) &&
-                     ![[dict valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
-                {
-                    counter++;
-                }
-            }
+         for (NSDictionary * dict in histArray)
+           {
+               if ( ( [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
+                     [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"] ) &&
+                    ![[dict valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
+               {
+                   counter++;
+               }
+           }
+            
             [self.navigationItem setLeftBarButtonItem:nil];
 
             NSUserDefaults * defaults = [[NSUserDefaults alloc]init];

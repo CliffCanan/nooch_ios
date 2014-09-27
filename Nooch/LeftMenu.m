@@ -156,7 +156,9 @@
         [self.name setText:[NSString stringWithFormat:@"Some"]];
         [self.lastName setText:[NSString stringWithFormat:@"Person"]];
     }
+
     [self.menu reloadData];
+
 }
 
 -(void) go_profile

@@ -2367,11 +2367,10 @@ return customView;
                 {
                     [histShowArrayPending addObject:dict];
                 
-                    if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
-                        counter++;
+                       if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
+                            counter++;
+                        }
                     }
-                }
-
                 // For the Red Pending Notification Bubble in the left menu  (different than "counter" above, this one
                 // doesn't include Invites, or Requests this user Sent)
                 if ( ( [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
@@ -2388,10 +2387,16 @@ return customView;
             }
             else {
                 [defaults setBool:false forKey:@"hasPendingItems"];
+
             }
+            [defaults setValue: [NSString stringWithFormat:@"%d",pending_notif_counter] forKey:@"Pending_count"];
+            [defaults synchronize];
             
             NSLog(@"The Pending counter is: %d",counter);
             [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%d)",counter]forSegmentAtIndex:1];
+           
+            
+         
             
         }
         else {
