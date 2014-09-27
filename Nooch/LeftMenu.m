@@ -47,7 +47,6 @@
     [self.menu setBackgroundColor:kNoochMenu]; [self.menu setDelegate:self]; [self.menu setDataSource:self]; [self.menu setSeparatorColor:kNoochGrayLight];
     [self.menu setRowHeight:45];
     [self.view addSubview:self.menu];
-    [self.menu reloadData];
 
     UIView *user_bar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 90)];
     [user_bar setStyleId:@"lside_topbar_background"];
@@ -157,6 +156,7 @@
         [self.name setText:[NSString stringWithFormat:@"Some"]];
         [self.lastName setText:[NSString stringWithFormat:@"Person"]];
     }
+    [self.menu reloadData];
 }
 
 -(void) go_profile

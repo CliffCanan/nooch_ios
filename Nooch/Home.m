@@ -1329,10 +1329,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         NSError *error;
         [self.hud hide:YES];
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        
+        int counter = 0;
 
         if ([histArray count] > 0)
         {
-            int counter = 0;
+
             for (NSDictionary * dict in histArray)
             {
                 if ( ( [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&

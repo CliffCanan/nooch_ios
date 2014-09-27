@@ -87,8 +87,8 @@
     [self.hud show:YES];
     [spinner1 startAnimating];
 
-    NSString *body = [NSString stringWithFormat: @"amount=%@&api_key=%@&api_password=%@&invoice_detail=%@&recurring=%@&information_request=%@&redirect_url=%@", @".01",@"7068_59cd5c1f5a75c31",@"7068_da64134cc66a5f0",@"Onboard",@"ot",@"show_all",@"nooch://"];
-	NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@?%@",@"https://knoxpayments.com/nooch/index.php",body]];
+    NSString *body = [NSString stringWithFormat: @"amount=%@&api_key=%@&api_password=%@&invoice_detail=%@&recurring=%@&information_request=%@&redirect_url=%@&partner=%@&label=%@", @".01",@"7068_59cd5c1f5a75c31",@"7068_da64134cc66a5f0",@"Onboard",@"ot",@"show_all",@"nooch://",@"nooch",@"wl"];
+	NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@?%@",@"https://knoxpayments.com/pay/index.php",body]];
     
     self.request = [[NSMutableURLRequest alloc]initWithURL: url];
     [self.request setHTTPMethod: @"GET"];

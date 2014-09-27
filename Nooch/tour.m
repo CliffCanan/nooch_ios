@@ -56,9 +56,16 @@
     page2.title = @"Link A Funding Source";
     page2.titlePositionY = 116;
 
-    page2.desc = @"No more long forms or waiting periods.  Just select your bank and sign in using your existing online banking credentials.";
+    page2.desc = @"No long forms or waiting periods.  Just select your bank and sign in using your existing online banking credentials.";
     page2.descWidth = 300;
     page2.descPositionY = page2.titlePositionY - 23;
+
+/*    UILabel * glyphLock = [UILabel new];
+    [glyphLock setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
+    [glyphLock setFrame:CGRectMake(147, 9, 14, 10)];
+    [glyphLock setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
+    [glyphLock setTextColor:[UIColor whiteColor]];
+    [page2.desc addSubview:glyphLock];  */
 
     page2.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"connectBank_img"]];
     [page2.titleIconView setStyleClass:@"animate_bubble_tour"];
