@@ -1198,7 +1198,6 @@ UIImageView *picture;
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         [timer invalidate];
-        // timer=nil;
         [nav_ctrl performSelector:@selector(disable)];
         [nav_ctrl performSelector:@selector(reset)];
         NSMutableArray*arrNav=[nav_ctrl.viewControllers mutableCopy];
@@ -1311,11 +1310,14 @@ UIImageView *picture;
             [serveOBJ setDelegate:self];
             [serveOBJ getSettings];
             
-            if ([[user objectForKey:@"Photo"] length] >0 && [user objectForKey:@"Photo"] != nil && !isPhotoUpdate)
+            if ([[user objectForKey:@"Photo"] length] > 0 && [user objectForKey:@"Photo"] != nil && !isPhotoUpdate)
             {
                 [picture setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
                         placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
             }
+
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Profile Saved" message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
         }
         else
         {
@@ -1324,11 +1326,10 @@ UIImageView *picture;
             {
                 [[me usr] setObject:validated forKey:@"validated"];
             }
+            
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Something Went Wrong" message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [av show];
         }
-        
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Something Went Wrong" message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [av show];
-        [av setTag:9];
         
         if (isSignup)
         {

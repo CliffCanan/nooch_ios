@@ -710,7 +710,7 @@
         {
             if (indexPath.row == 0)
             {
-                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
@@ -719,7 +719,7 @@
             else if (fav_count > 1 && indexPath.row == 1)
             {
                 NSDictionary * favorite = [favorites objectAtIndex:1];
-                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
@@ -728,7 +728,7 @@
             else if (fav_count > 2 && indexPath.row == 2)
             {
                 NSDictionary * favorite = [favorites objectAtIndex:2];
-                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
@@ -737,7 +737,7 @@
             else if (fav_count > 3 && indexPath.row == 3)
             {
                 NSDictionary * favorite = [favorites objectAtIndex:3];
-                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
@@ -746,7 +746,7 @@
             else if (fav_count > 4 && indexPath.row == 4)
             {
                 NSDictionary * favorite = [favorites objectAtIndex:4];
-                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
@@ -884,8 +884,12 @@
         [serveOBJ setDelegate:self];
         serveOBJ.tagName=@"Largest_Donation_Made";
         [serveOBJ GetMemberStats:@"Largest_Donation_Made"];
+
+        [self.profile_stats reloadData];
+        [self.transfer_stats reloadData];
+        [self.top_friends_stats reloadData];
     }
-    else if ([tagName isEqualToString:@"Largest_Donation_Made"]) {
+/*    else if ([tagName isEqualToString:@"Largest_Donation_Made"]) {
         serve*serveOBJ=[serve new];
         [serveOBJ setDelegate:self];
         serveOBJ.tagName=@"Total_Donations_Count";
@@ -902,10 +906,7 @@
         [serveOBJ setDelegate:self];
         serveOBJ.tagName = @"DonatedTo";
         [serveOBJ GetMemberStats:@"DonatedTo"];
-        [self.profile_stats reloadData];
-        [self.transfer_stats reloadData];
-        [self.top_friends_stats reloadData];
-    }
+    } */
     
     if ([tagName isEqualToString:@"favorites"])
     {
@@ -958,6 +959,8 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
+    [super viewWillDisappear:animated];
+
 }
 
 - (void)didReceiveMemoryWarning

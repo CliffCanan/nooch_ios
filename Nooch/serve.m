@@ -67,11 +67,8 @@ NSDictionary*dictResponse;
 NSString *responseString;
 @implementation serve
 @synthesize Delegate,tagName,responseData;
-//NSString * const ServerUrl = @"https://74.117.228.120/NoochService.svc"; //production server
-//NSString * const ServerUrl = @"https://192.203.102.254/NoochService.svc"; //development server
 //NSString * const ServerUrl =@"https://noochweb.venturepact.com/noochservice/noochservice.svc";
-//http://noochweb.venturepact.com/NoochService.svc
-//NSString * const ServerUrl = @"https://192.203.102.254/NoochService/NoochService.svc";
+//NSString * const ServerUrl = @"https://192.203.102.254/NoochService/NoochService.svc"; //development server
 NSString * const ServerUrl =@"https://www.noochme.com/NoochService/NoochService.svc";
 //NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
 //NSString * const ServerUrl = @"https://10.200.1.40/noochservice/NoochService.svc";

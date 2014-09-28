@@ -181,17 +181,17 @@
     [termsText2 addTarget:self action:@selector(open_terms_webview) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:termsText2];
     
-    UIView * blankView = [UIView new];
-    blankView.frame = CGRectMake(0, 18, 146, 1);
-    [blankView setBackgroundColor:kNoochGrayDark];
-    [blankView setAlpha:0.6];
-    [termsText2 addSubview:blankView];
+    UIView * underline = [UIView new];
+    underline.frame = CGRectMake(0, 18, 146, 1);
+    [underline setBackgroundColor:kNoochGrayDark];
+    [underline setAlpha:0.6];
+    [termsText2 addSubview:underline];
     
     self.cont = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.cont setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     self.cont.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.cont setTitle:@"Continue" forState:UIControlStateNormal];
-    [self.cont setFrame:CGRectMake(10, 424, 300, 60)];
+    [self.cont setFrame:CGRectMake(10, 434, 300, 60)];
     [self.cont addTarget:self action:@selector(continue_to_signup) forControlEvents:UIControlEventTouchUpInside];
     [self.cont setStyleClass:@"button_green"];
     [self.view addSubview:self.cont];
@@ -200,14 +200,14 @@
     UIButton *login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [login setBackgroundColor:[UIColor clearColor]];
     [login setTitle:@"Already a Member?  Sign in here " forState:UIControlStateNormal];
-    [login setFrame:CGRectMake(10, 490, 280, 30)];
+    [login setFrame:CGRectMake(10, 510, 280, 30)];
     [login addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
     [login setStyleClass:@"label_small"];
     [self.view addSubview:login];
     
     UILabel *glyph_login = [UILabel new];
     [glyph_login setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
-    [glyph_login setFrame:CGRectMake(264, 0, 18, 30)];
+    [glyph_login setFrame:CGRectMake(268, 0, 18, 30)];
     [glyph_login setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-right"]];
     [glyph_login setTextColor:kNoochGreen];
     [login addSubview:glyph_login];
@@ -246,7 +246,7 @@
     isfromRegister = YES;
     terms *term = [terms new];
   
-    CGRect rect= term.view.frame;
+    CGRect rect = term.view.frame;
     rect.origin.y = self.view.frame.size.height;
     term.view.frame = rect;
     [self.view addSubview:term.view];
@@ -261,14 +261,13 @@
 
 -(void)removeChild:(UIViewController *) child {
     
-    [UIView animateWithDuration:.5
+    [UIView animateWithDuration:.35
                      animations:^{
                          CGRect rect= self.view.frame;
                          rect.origin.y=self.view.frame.size.height;
                          child.view.frame=rect;
                      }
                      completion:^(BOOL finished){
-                         NSLog(@"completion block");
                          [child didMoveToParentViewController:nil];
                          [child.view removeFromSuperview];
                          [child removeFromParentViewController];

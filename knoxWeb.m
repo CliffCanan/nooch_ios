@@ -116,14 +116,6 @@
     mainView.backgroundColor = [UIColor whiteColor];
     mainView.layer.masksToBounds = NO;
     
- /*   [UIView transitionWithView:self.navigationController.view
-                      duration:0.5
-                       options: UIViewAnimationOptionTransitionFlipFromRight
-                    animations:^{
-                        mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 5);
-                    }
-                    completion:nil];  */
-    
     [UIView animateWithDuration:.4
                      animations:^{
                          overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];

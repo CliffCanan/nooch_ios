@@ -947,7 +947,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         if (favorite[@"MemberId"])
         {
-            [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+            [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                       placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
 
             name.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
@@ -1086,7 +1086,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         } completion:^(BOOL finished){
         
-                             [favorite setObject:[NSString stringWithFormat:@"https://192.203.102.254/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
+                             [favorite setObject:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
                              NSLog(@"%@",favorite);
                              isFromHome = YES;
                              HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];

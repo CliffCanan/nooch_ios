@@ -792,7 +792,7 @@ return customView;
     static NSString *cellIdentifier = @"Cell";
     SWTableViewCell *cell = (SWTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
-    // NSLog(@"The CELL is:  %@",cell);
+    NSLog(@"The cell is:  %@",cell);
     
     NSMutableArray *leftUtilityButtons = [NSMutableArray new];
     NSMutableArray *rightUtilityButtons = [NSMutableArray new];
