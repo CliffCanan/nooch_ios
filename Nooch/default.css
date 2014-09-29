@@ -2238,12 +2238,12 @@
 	
 	/**  Text in top row if table is empty  **/
 	.history_cell_textlabelEmpty { 
-		left				: 15px;
+		left				: 8px;
 		top					: 10px;
-		width				: 290px;
+		width				: 304px;
 		height				: 50px;
 		font-size			: 19px;
-		font-weight			: regular;
+		font-weight			: light;
 		text-align			: center;
 	}
 

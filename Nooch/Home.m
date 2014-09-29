@@ -539,11 +539,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     [super viewDidAppear:animated];
 
-    NSShadow * shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = Rgb2UIColor(71, 8, 7, .4);
-    shadow.shadowOffset = CGSizeMake(0, 1);
-    NSDictionary * textAttributes =
-            @{NSShadowAttributeName: shadow };
+    NSShadow * shadowRed = [[NSShadow alloc] init];
+    shadowRed.shadowColor = Rgb2UIColor(71, 8, 7, .4);
+    shadowRed.shadowOffset = CGSizeMake(0, 1);
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadowRed };
     
     int bannerAlert = 0;
 
@@ -583,6 +582,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         UIButton *dis = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [dis setStyleClass:@"dismiss_banner"];
         [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
+        [dis setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
+        dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [dis addTarget:self action:@selector(dismiss_suspended_alert) forControlEvents:UIControlEventTouchUpInside];
         [self.suspended addSubview:dis];
         
@@ -641,6 +642,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         UIButton *dis = [UIButton buttonWithType:UIButtonTypeCustom];
         [dis setStyleClass:@"dismiss_banner"];
         [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
+        [dis setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
+        dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [dis addTarget:self action:@selector(dismiss_profile_unvalidated) forControlEvents:UIControlEventTouchUpInside];
       
         [self.profile_incomplete addSubview:dis];
@@ -702,6 +705,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         UIButton *dis = [UIButton buttonWithType:UIButtonTypeCustom];
         [dis setStyleClass:@"dismiss_banner"];
         [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
+        [dis setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
+        dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [dis addTarget:self action:@selector(dismiss_phone_unvalidated) forControlEvents:UIControlEventTouchUpInside];
 
         [self.phone_incomplete addSubview:dis];
@@ -722,47 +727,76 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [top_button setStyleId:@"button_green_home"];
     [top_button setTitleShadowColor:Rgb2UIColor(26, 38, 32, 0.2) forState:UIControlStateNormal];
     top_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-
+    top_button.alpha = 0;
     [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
     [top_button setTitle:@"   Search For More Friends" forState:UIControlStateNormal];
     
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(26, 38, 32, .2);
+    shadow.shadowOffset = CGSizeMake(0, -1);
+    
+    NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
+    
     UILabel * glyph_search = [UILabel new];
     [glyph_search setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-    [glyph_search setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-search"]];
+    glyph_search.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-search"]
+                                                        attributes:textAttributes1];
     [glyph_search setFrame:CGRectMake(14, 0, 15, 53)];
     [glyph_search setTextColor:[UIColor whiteColor]];
     [top_button addSubview:glyph_search];
 
     [self.view addSubview:top_button];
     
-    [UIView animateKeyframesWithDuration:0.5
-                                   delay:0
-                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
-                              animations:^{
-                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
-                                      top_button.alpha = 0;
-                                  }];
-                                  [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.8 animations:^{
-                                      [top_button setFrame:CGRectMake(20, 258, 280, 60)];
-                                      top_button.alpha = 1;
-                                  }];
-                              } completion: nil
-     ];
-    
     int carouselTop;
     if (bannerAlert == 1)
     {
+        [UIView animateKeyframesWithDuration:0.5
+                                       delay:0
+                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
+                                          top_button.alpha = 0;
+                                      }];
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                          [top_button setFrame:CGRectMake(20, 284, 280, 60)];
+                                          top_button.alpha = 1;
+                                      }];
+                                  } completion: nil
+        ];
+        
         carouselTop = 72;
-        CGRect button_frame = CGRectMake(20, 278, 280, 60);
-        [top_button setFrame:button_frame];
     }
     else if (bannerAlert >= 2)
     {
+        [UIView animateKeyframesWithDuration:0.5
+                                       delay:0
+                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
+                                          top_button.alpha = 0;
+                                      }];
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                          [top_button setFrame:CGRectMake(20, 320, 280, 60)];
+                                          top_button.alpha = 1;
+                                      }];
+                                  } completion: nil
+        ];
         carouselTop = 110;
-        CGRect button_frame = CGRectMake(20, 315, 280, 60);
-        [top_button setFrame:button_frame];
     }
     else {
+        [UIView animateKeyframesWithDuration:0.5
+                                       delay:0
+                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
+                                          top_button.alpha = 0;
+                                      }];
+                                      [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.8 animations:^{
+                                          [top_button setFrame:CGRectMake(20, 260, 280, 60)];
+                                          top_button.alpha = 1;
+                                      }];
+                                  } completion: nil
+        ];
         carouselTop = 50;
     }
     
@@ -801,8 +835,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                                  });
         NSLog(@"Not determined");
     }
-    
-    
+
+
     [_carousel removeFromSuperview];
     _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, carouselTop, 320, 175)];
     _carousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -847,7 +881,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     //Update Pending Status
     NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
     
-    NSLog(@"Pending_Count = %@", [defaults objectForKey:@"Pending_count"]);
+    // NSLog(@"Pending_Count = %@", [defaults objectForKey:@"Pending_count"]);
     if ([[defaults objectForKey:@"Pending_count"] intValue] > 0)
     {
         [self.navigationItem setLeftBarButtonItem:nil];
@@ -865,7 +899,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [hamburger addSubview:pending_notif];
         UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
         [self.navigationItem setLeftBarButtonItem:menu];
-        
     }
 
     NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:

@@ -41,23 +41,33 @@
 
 - (void)check_credentials
 {
-    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
-    spinner1.color = [UIColor whiteColor];
-    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:self.hud];
-    
-    self.hud.mode = MBProgressHUDModeCustomView;
-    self.hud.customView = spinner1;
-    self.hud.delegate = self;
-    self.hud.labelText = @"Checking Login Credentials...";
-    [self.hud show:YES];
-    [spinner1 startAnimating];
+    if ([self.email.text length] > 0 &&
+        [self.email.text rangeOfString:@"@"].location != NSNotFound &&
+        [self.email.text  rangeOfString:@"."].location != NSNotFound &&
+        [self.password.text length] > 5)
+    {
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+        spinner1.color = [UIColor whiteColor];
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:self.hud];
+        
+        self.hud.mode = MBProgressHUDModeCustomView;
+        self.hud.customView = spinner1;
+        self.hud.delegate = self;
+        self.hud.labelText = @"Checking Login Credentials...";
+        [self.hud show:YES];
+        [spinner1 startAnimating];
 
-    serve *log = [serve new];
-    [log setDelegate:self];
-    [log setTagName:@"encrypt"];
-    [[assist shared]setPassValue:self.password.text];
-    [log getEncrypt:self.password.text];
+        serve *log = [serve new];
+        [log setDelegate:self];
+        [log setTagName:@"encrypt"];
+        [[assist shared]setPassValue:self.password.text];
+        [log getEncrypt:self.password.text];
+    }
+    else {
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Please Enter Email And Password" message:@"We can't log you in if we don't know who you are!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [av show];
+    }
 }
 
 # pragma mark - CLLocationManager Delegate Methods
@@ -478,8 +488,10 @@
 #pragma mark - UITextField delegation
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if ([self.email.text length] > 0 && [self.email.text  rangeOfString:@"@"].location != NSNotFound && [self.email.text  rangeOfString:@"."].location != NSNotFound
-        && [self.password.text length] > 5)
+    if ([self.email.text length] > 0 &&
+        [self.email.text rangeOfString:@"@"].location != NSNotFound &&
+        [self.email.text  rangeOfString:@"."].location != NSNotFound &&
+        [self.password.text length] > 5)
     {
         [self.login setEnabled:YES];
     }
