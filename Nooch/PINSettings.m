@@ -109,6 +109,7 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     [self.navigationItem setTitle:@"Security Settings"];
     self.trackedViewName = @"PinSettings Screen";
 }

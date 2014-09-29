@@ -90,7 +90,7 @@
     page4.bgImage = [UIImage imageNamed:@"3_howMuch_bg"];
 
     page4.title = @"Send or Request?";
-    page4.titlePositionY = 115;
+    page4.titlePositionY = 118;
 
     page4.desc = @"Enter an amount, add a memo, or picture to any transfer.  Then tap 'Send' or 'Request'.";
     page4.descWidth = 300;
@@ -104,7 +104,7 @@
     page5.bgImage = [UIImage imageNamed:@"4_history_bg"];
 
     page5.title = @"Detailed History";
-    page5.titlePositionY = 115;
+    page5.titlePositionY = 118;
     
     page5.desc = @"See all your Nooch transfers and filter by type.  To see a map of your payments, swipe left or tap the map icon in the navigation bar.";
     page5.descWidth = 300;
@@ -123,7 +123,7 @@
     page6.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"title4"]];
     page5.titleIconPositionY = 120;
 
-    EAIntroView *intro = [[EAIntroView alloc] initWithFrame:CGRectMake(0, 0, 320, 504) andPages:@[page1,page2,page3,page4, page5]];
+    EAIntroView *intro = [[EAIntroView alloc] initWithFrame:CGRectMake(0, 0, 320, 504) andPages:@[page1,page2,page3,page4,page5]];
     [intro setDelegate:self];
     [intro.pageControl setStyleClass:@"reallyLight_gray"];
     [intro.skipButton setStyleClass:@"reallyLight_gray"];

@@ -67,11 +67,8 @@ NSDictionary*dictResponse;
 NSString *responseString;
 @implementation serve
 @synthesize Delegate,tagName,responseData;
-//NSString * const ServerUrl = @"https://74.117.228.120/NoochService.svc"; //production server
-//NSString * const ServerUrl = @"https://192.203.102.254/NoochService.svc"; //development server
 //NSString * const ServerUrl =@"https://noochweb.venturepact.com/noochservice/noochservice.svc";
-//http://noochweb.venturepact.com/NoochService.svc
-//NSString * const ServerUrl = @"https://192.203.102.254/NoochService/NoochService.svc";
+//NSString * const ServerUrl = @"https://192.203.102.254/NoochService/NoochService.svc"; //development server
 NSString * const ServerUrl =@"https://www.noochme.com/NoochService/NoochService.svc";
 //NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
 //NSString * const ServerUrl = @"https://10.200.1.40/noochservice/NoochService.svc";
@@ -368,7 +365,6 @@ NSString *amnt;
     [dictnew setObject:pin forKey:@"PinNumber"];
     //inviteCode
     [dictnew setObject:inv forKey:@"inviteCode"];
-   // NSString *udid=[[UIDevice currentDevice] uniqueDeviceIdentifier];
     [dictnew setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"] forKey:@"deviceTokenId"];
     //    [dictnew setObject:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"udId"];
     [dictnew setObject:@"" forKey:@"friendRequestId"];
@@ -381,7 +377,7 @@ NSString *amnt;
         NSUInteger len = data.length;
         uint8_t *bytes = (uint8_t *)[data bytes];
         NSMutableString *result1 = [NSMutableString stringWithCapacity:len * 3];
-        //  [result1 appendString:@"["];
+
         for (NSUInteger i = 0; i < len; i++) {
             if (i) {
                 [result1 appendString:@","];
@@ -1361,7 +1357,6 @@ NSString *amnt;
     NSString * memId = [defaults objectForKey:@"MemberId"];
     
     NSString *urlString = [NSString stringWithFormat:@"%@/GetMemberStats?memberId=%@&query=%@&accessToken=%@",ServerUrl,memId,query,[defaults valueForKey:@"OAuthToken"]];
-    NSLog(@"%@",urlString);
     NSURL *url = [NSURL URLWithString:urlString];
     
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];

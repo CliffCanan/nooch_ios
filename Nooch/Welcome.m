@@ -177,7 +177,7 @@
                          [UIView animateWithDuration:.22
                                           animations:^{
                                               [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-                                              mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 5);
+                                              mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 50);
                                           }];
                      }];
     

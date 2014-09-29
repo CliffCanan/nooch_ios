@@ -44,6 +44,8 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+
     [self.navigationItem setTitle:@"Settings"];
     self.trackedViewName = @"SettingsOptions Screen";
     
@@ -372,7 +374,7 @@
                 
                 bank_image = [[UIImageView alloc]initWithFrame:CGRectMake(10, 8, 49, 48)];
                 bank_image.contentMode = UIViewContentModeScaleToFill;
-                bank_image.image = [UIImage imageNamed:@"bank.png"];
+            //    bank_image.image = [UIImage imageNamed:@"bank.png"];
                 [linked_background addSubview:bank_image];
                 
                 bank_name = [UILabel new];
@@ -401,6 +403,7 @@
                 }
             }
 
+            NSLog(@"ImageURL = %@",[dictResponse valueForKey:@"BankImageURL"]);
             [bank_image setImageWithURL:[NSURL URLWithString:[dictResponse valueForKey:@"BankImageURL"]] placeholderImage:[UIImage imageNamed:@"bank.png"]];
             [bank_image setFrame:CGRectMake(10, 7, 50, 50)];
             bank_image.layer.cornerRadius = 5;
