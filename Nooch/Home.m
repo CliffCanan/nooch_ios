@@ -1369,6 +1369,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
+   
     if ([tagName isEqualToString:@"favorites"])
     {
         [self.hud hide:YES];
@@ -1564,7 +1565,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
 
 }
-
+-(void)hide{
+    self.hud.hidden=YES;
+}
 -(void)FavoriteContactsProcessing
 {
     [additions removeAllObjects];
