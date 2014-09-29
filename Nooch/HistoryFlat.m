@@ -764,7 +764,8 @@ return customView;
         if ([histShowArrayCompleted count] > indexPath.row)
         {
             NSDictionary * dictRecord_complete = [histShowArrayCompleted objectAtIndex:indexPath.row];
-            if (![[dictRecord_complete valueForKey:@"Memo"] isKindOfClass:[NSNull class]]) {
+            if (![[dictRecord_complete valueForKey:@"Memo"] isKindOfClass:[NSNull class]])
+            {
                 if ([[dictRecord_complete valueForKey:@"Memo"] length] < 2) {
                     return 72;
                 }
@@ -775,6 +776,12 @@ return customView;
                    return 72;
             }
            
+        }
+        else if ([histTempCompleted count] == indexPath.row ||
+                 [histShowArrayCompleted count] == 0)
+        {
+            NSLog(@"GOT HERE");
+            return 200;
         }
     }
     else
@@ -792,7 +799,7 @@ return customView;
     static NSString *cellIdentifier = @"Cell";
     SWTableViewCell *cell = (SWTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
-    // NSLog(@"The CELL is:  %@",cell);
+    NSLog(@"The cell is:  %@",cell);
     
     NSMutableArray *leftUtilityButtons = [NSMutableArray new];
     NSMutableArray *rightUtilityButtons = [NSMutableArray new];
@@ -860,11 +867,16 @@ return customView;
                 
     if (self.completed_selected)
     {
+        UILabel * emptyText = nil;
+        UILabel * emptyText_localSearch = nil;
+
+        UIImageView * emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(33, 105, 253, 256)];
+
         if (isLocalSearch)
         {
             if ([histTempCompleted count] > indexPath.row)
             {
-                NSDictionary *dictRecord = [histTempCompleted objectAtIndex:indexPath.row];
+                NSDictionary * dictRecord = [histTempCompleted objectAtIndex:indexPath.row];
 
                 if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]  ||
                     [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"] ||
@@ -1149,16 +1161,29 @@ return customView;
             }
             else if ([histTempCompleted count] == indexPath.row)
             {
-                UILabel *name = [UILabel new];
+                if ([self.list subviews]) {
+                    for (UILabel * subview in [self.list subviews]) {
+                        [subview removeFromSuperview];
+                    }
+                }
+
                 [self.list setStyleId:@"emptyTable"];
-                [name setStyleClass:@"history_cell_textlabelEmpty"];
-                [name setStyleClass:@"history_recipientname"];
-                if (indexPath.row == 0)
-                    [name setText:@"No payments found for that name..."];
+
+               // if (indexPath.row == 0) {
+                    [emptyPic setImage:nil];
+                    [emptyText setText:@"JIBBER JAWN"];
+                    
+                    emptyText_localSearch = [[UILabel alloc] initWithFrame:CGRectMake(6, 5, 308, 70)];
+                    [emptyText_localSearch setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
+                    [emptyText_localSearch setNumberOfLines:0];
+                    [emptyText_localSearch setText:@"No payments found for that name."];
+                    [emptyText_localSearch setTextAlignment:NSTextAlignmentCenter];
+            /*  }
                 else {
-                    [name setText:@""];
-				}
-                [cell.contentView addSubview:name];
+                    [emptyText_localSearch setText:@""];
+				} */
+                
+                [self.list addSubview:emptyText_localSearch];
             }
             return cell;
         }
@@ -1451,15 +1476,20 @@ return customView;
             if (isEnd == YES)
             {
                 [self.list setStyleId:@"emptyTable"];
-                UILabel *name = [UILabel new];
-                [name setStyleClass:@"history_cell_textlabelEmpty"];
-                [name setStyleClass:@"history_recipientname"];
-                if (indexPath.row == 0)
-                    [name setText:@"No payments to display here yet!"];
-                else {
-                    [name setText:@""];
-                }
-                [cell.contentView addSubview:name];
+
+                emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, 300, 75)];
+                [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
+                [emptyText setNumberOfLines:0];
+                [emptyText setText:@"Once you make or receive a payment, come here to see all the details."];
+                [emptyText setTextAlignment:NSTextAlignmentCenter];
+
+                [emptyPic setImage:[UIImage imageNamed:@"history_img"]];
+                [emptyPic setStyleClass:@"animate_bubble"];
+
+                [self.list addSubview: emptyPic];
+                [self.list addSubview: emptyText];
+
+                [exportHistory removeFromSuperview];
             }
             else
             {
@@ -1918,7 +1948,7 @@ return customView;
                 [name setStyleClass:@"history_cell_textlabelEmpty"];
                 [name setStyleClass:@"history_recipientname"];
                 if (indexPath.row == 0)
-                    [name setText:@"No pending payments right now!"];
+                    [name setText:@"No pending payments for you right now."];
                 else
                     [name setText:@""];
                 [cell.contentView addSubview:name];

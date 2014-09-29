@@ -236,6 +236,8 @@
     [recents setTagName:@"recents"];
     [recents setDelegate:self];
     [recents getRecents];
+
+    [super viewWillDisappear:animated];
 }
 
 -(void)DoneEditing_RequestMultiple:(id)sender

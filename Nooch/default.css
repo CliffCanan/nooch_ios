@@ -819,7 +819,7 @@
 		height				: 30px;
 		font-family			: "Roboto";
 		font-weight         : light;
-		font-size			: 17px;
+		font-size			: 18px;
 		text-align       	: center;
 		color 				: #414042;
 	}
@@ -2201,9 +2201,8 @@
 	}
     
     table-view#emptyTable {
+        row-height			: 200px;
         separator-style     : none;
-        separator-color     : #ffffff;
-
     }
 
 	/**  Profile Pic of other user  **/
@@ -2239,12 +2238,12 @@
 	
 	/**  Text in top row if table is empty  **/
 	.history_cell_textlabelEmpty { 
-		left				: 15px;
-		top					: 20px;
-		width				: 290px;
-		height				: 32px;
-		font-size			: 18px;
-		font-weight			: regular;
+		left				: 8px;
+		top					: 10px;
+		width				: 304px;
+		height				: 50px;
+		font-size			: 19px;
+		font-weight			: light;
 		text-align			: center;
 	}
 
@@ -3006,15 +3005,23 @@
 		separator-color : rgba(188,190,192,.6);
 	}
     table-view.stats_top_friends {
-		height			: 360px;
-		width			: 300px;
-		top				: 80px;
 		left			: 0px;
+		top				: 80px;
+		width			: 300px;
+		height			: 360px;
 		background-color: white;
 		row-height		: 64px;
 		separator-style : single-line;
 		separator-color : rgba(188,190,192,.3);
 	}
+    table-view.stats_top_friends_empty {
+        left			: 0px;
+        top				: 80px;
+        width			: 300px;
+        background-color: white;
+        row-height		: 140px;
+        separator-style : none;
+    }
 	.stats_header {
 		width			: 300px;
 		height			: 30px;

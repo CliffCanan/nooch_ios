@@ -30,6 +30,8 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+
     UIImageView *background = [UIImageView new];
     [pup setFrame:CGRectMake(0, 0, 200, 300)];
     [background setFrame:pup.frame];
