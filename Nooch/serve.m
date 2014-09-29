@@ -365,7 +365,6 @@ NSString *amnt;
     [dictnew setObject:pin forKey:@"PinNumber"];
     //inviteCode
     [dictnew setObject:inv forKey:@"inviteCode"];
-   // NSString *udid=[[UIDevice currentDevice] uniqueDeviceIdentifier];
     [dictnew setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"] forKey:@"deviceTokenId"];
     //    [dictnew setObject:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"udId"];
     [dictnew setObject:@"" forKey:@"friendRequestId"];
@@ -378,7 +377,7 @@ NSString *amnt;
         NSUInteger len = data.length;
         uint8_t *bytes = (uint8_t *)[data bytes];
         NSMutableString *result1 = [NSMutableString stringWithCapacity:len * 3];
-        //  [result1 appendString:@"["];
+
         for (NSUInteger i = 0; i < len; i++) {
             if (i) {
                 [result1 appendString:@","];
@@ -1358,7 +1357,6 @@ NSString *amnt;
     NSString * memId = [defaults objectForKey:@"MemberId"];
     
     NSString *urlString = [NSString stringWithFormat:@"%@/GetMemberStats?memberId=%@&query=%@&accessToken=%@",ServerUrl,memId,query,[defaults valueForKey:@"OAuthToken"]];
-    NSLog(@"%@",urlString);
     NSURL *url = [NSURL URLWithString:urlString];
     
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];

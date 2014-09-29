@@ -684,32 +684,34 @@
         }
     } 
 
-    else if (tableView == self.top_friends_stats)  //donations
+    else if (tableView == self.top_friends_stats)
     {
-        UIImageView * imageView = nil;
-        UILabel * name = nil;
-        UILabel * frequency = nil;
-
-        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 5, 54, 54)];
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
-        imageView.layer.cornerRadius = 27;
-        // [imageView setStyleClass:@"animate_bubble"];
-
-        name = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 140, 20)];
-        [name setStyleClass:@"stats_topFriends_label"];
-        
-        frequency = [[UILabel alloc] initWithFrame:CGRectMake(80, 26, 140, 30)];
-        frequency.textColor = [Helpers hexColor:@"313233"];
-        frequency.textAlignment = NSTextAlignmentLeft;
-        [frequency setFont:[UIFont fontWithName:@"Roboto-light" size:14]];
-
-        NSDictionary * favorite = [favorites objectAtIndex:0];
         int fav_count = [favorites count];
         
         if (fav_count > 0)
         {
+            [self.top_friends_stats setStyleClass:@"stats_top_friends"];
+
+            UIImageView * imageView = nil;
+            UILabel * name = nil;
+            UILabel * frequency = nil;
+            
+            imageView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 5, 54, 54)];
+            imageView.contentMode = UIViewContentModeScaleAspectFit;
+            imageView.layer.cornerRadius = 27;
+            // [imageView setStyleClass:@"animate_bubble"];
+
+            name = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 140, 20)];
+            [name setStyleClass:@"stats_topFriends_label"];
+
+            frequency = [[UILabel alloc] initWithFrame:CGRectMake(80, 26, 140, 30)];
+            frequency.textColor = [Helpers hexColor:@"313233"];
+            frequency.textAlignment = NSTextAlignmentLeft;
+            [frequency setFont:[UIFont fontWithName:@"Roboto-light" size:14]];
+
             if (indexPath.row == 0)
             {
+                NSDictionary * favorite = [favorites objectAtIndex:0];
                 [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
@@ -752,11 +754,27 @@
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
                 frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
             }
+            
+            [imageView setClipsToBounds:YES];
+            [cell.contentView addSubview:imageView];
+            [cell.contentView addSubview:name];
+            [cell.contentView addSubview:frequency];
         }
-        [imageView setClipsToBounds:YES];
-        [cell.contentView addSubview:imageView];
-        [cell.contentView addSubview:name];
-        [cell.contentView addSubview:frequency];
+        else if (fav_count == 0)
+        {
+            if (indexPath.row == 0)
+            {
+                [self.top_friends_stats setStyleClass:@"stats_top_friends_empty"];
+
+                UILabel * emptyText = nil;
+                emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 280, 130)];
+                [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
+                [emptyText setNumberOfLines:3];
+                emptyText.text = @"Once you make or receive some payments, your top friends will show up here.";
+                [emptyText setTextAlignment:NSTextAlignmentCenter];
+                [cell.contentView addSubview:emptyText];
+            }
+        }
     }
 
     [cell.contentView addSubview:title];
@@ -910,13 +928,14 @@
     
     if ([tagName isEqualToString:@"favorites"])
     {
+        NSLog(@"favorites %@",favorites);
+
         NSError * error;
         favorites = [[NSMutableArray alloc] init];
         favorites = [NSJSONSerialization
                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                      options:kNilOptions
                      error:&error];
-         NSLog(@"favorites %@",favorites);
     }
 
     if ([tagName isEqualToString:@"csv"])

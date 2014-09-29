@@ -764,7 +764,8 @@ return customView;
         if ([histShowArrayCompleted count] > indexPath.row)
         {
             NSDictionary * dictRecord_complete = [histShowArrayCompleted objectAtIndex:indexPath.row];
-            if (![[dictRecord_complete valueForKey:@"Memo"] isKindOfClass:[NSNull class]]) {
+            if (![[dictRecord_complete valueForKey:@"Memo"] isKindOfClass:[NSNull class]])
+            {
                 if ([[dictRecord_complete valueForKey:@"Memo"] length] < 2) {
                     return 72;
                 }
@@ -775,6 +776,12 @@ return customView;
                    return 72;
             }
            
+        }
+        else if ([histTempCompleted count] == indexPath.row ||
+                 [histShowArrayCompleted count] == 0)
+        {
+            NSLog(@"GOT HERE");
+            return 200;
         }
     }
     else
@@ -1152,7 +1159,6 @@ return customView;
                 UILabel *name = [UILabel new];
                 [self.list setStyleId:@"emptyTable"];
                 [name setStyleClass:@"history_cell_textlabelEmpty"];
-                [name setStyleClass:@"history_recipientname"];
                 if (indexPath.row == 0)
                     [name setText:@"No payments found for that name..."];
                 else {
@@ -1451,15 +1457,21 @@ return customView;
             if (isEnd == YES)
             {
                 [self.list setStyleId:@"emptyTable"];
-                UILabel *name = [UILabel new];
-                [name setStyleClass:@"history_cell_textlabelEmpty"];
-                [name setStyleClass:@"history_recipientname"];
-                if (indexPath.row == 0)
-                    [name setText:@"No payments to display here yet!"];
-                else {
-                    [name setText:@""];
-                }
-                [cell.contentView addSubview:name];
+                
+                UILabel * text = nil;
+                text = [[UILabel alloc] initWithFrame:CGRectMake(10, 88, 300, 75)];
+                [text setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
+                [text setNumberOfLines:0];
+                [text setText:@"Once you make or receive a payment, come here to see all the details."];
+                [text setTextAlignment:NSTextAlignmentCenter];
+
+                UIImageView * pic = [[UIImageView alloc] initWithFrame:CGRectMake(33, 170, 253, 256)];
+                [pic setImage:[UIImage imageNamed:@"history_img"]];
+                [pic setStyleClass:@"animate_bubble"];
+                
+                [self.view addSubview:pic];
+                [self.view addSubview:text];
+                [exportHistory removeFromSuperview];
             }
             else
             {

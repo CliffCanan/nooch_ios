@@ -236,7 +236,8 @@ void exceptionHandler(NSException *exception){
 -(BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
       NSLog(@"%@",url);
-    if ([sourceApplication isEqualToString:@"com.apple.mobilesafari"]||[sourceApplication isEqualToString:@"com.apple.mobilemail"]) {
+    if ([sourceApplication isEqualToString:@"com.apple.mobilesafari"] ||
+        [sourceApplication isEqualToString:@"com.apple.mobilemail"]) {
         return YES;
     }
   
@@ -246,24 +247,29 @@ void exceptionHandler(NSException *exception){
     NSArray *URLParse = [response componentsSeparatedByString:@"?"];
     NSLog(@"%@",URLParse);
     NSString *responseBody = URLParse[1];
-     NSLog(@"%@",responseBody);
+    NSLog(@"%@",responseBody);
     NSArray *responseParse = [responseBody componentsSeparatedByString:@"&"];
+    
     //Parse the components of the response
-      NSLog(@"%@",responseParse);
-    NSArray *isPaid = [responseParse[0] componentsSeparatedByString:@"pst="][1];
-      NSLog(@"%@",isPaid);
-    NSString *paymentID = [responseParse[2] componentsSeparatedByString:@"pay_id="][1];
-    NSString *imageURL = [responseParse[5] componentsSeparatedByString:@"bank_image="][1];
-    NSString *bname = [responseParse[4] componentsSeparatedByString:@"bank_name="][1];
-    NSString *accountName = [responseParse[3] componentsSeparatedByString:@"account_name="][1];
-    //Components of response are Logged here - you may want to store them in your Database or check to make sure the reponse includes "Paid"
-    NSLog(@"fired in Delegate - URL Encoded %@ %@ %@ %@ %@", isPaid, paymentID,accountName,imageURL,bname);
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSLog(@"%@",responseParse);
+    NSArray * isPaid = [responseParse[0] componentsSeparatedByString:@"pst="][1];
+    NSLog(@"%@",isPaid);
+    NSString * paymentID = [responseParse[2] componentsSeparatedByString:@"pay_id="][1];
+//    NSString * imageURL = [responseParse[5] componentsSeparatedByString:@"bank_image="][1];
+//    NSString * bname = [responseParse[4] componentsSeparatedByString:@"bank_name="][1];
+//    NSString * accountName = [responseParse[3] componentsSeparatedByString:@"account_name="][1];
+
+    NSString * imageURL = @"https://s3.amazonaws.com/knox_bank_avatars/USBKUS.png";
+    NSString * bname = @"US Bank Guy";
+    NSString * accountName = @"12345678";
+    //Components of response are Logged here
+    NSLog(@"fired in Delegate - URL Encoded %@ %@", isPaid, paymentID);
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:isPaid forKey:@"isPaid"];
+    [defaults setObject:paymentID forKey:@"paymentID"];
     [defaults setObject:imageURL forKey:@"BankImageURL"];
     [defaults setObject:bname forKey:@"BankName"];
     [defaults setObject:accountName forKey:@"AccountName"];
-    [defaults setObject:paymentID forKey:@"paymentID"];
     [defaults synchronize];
     
     //Send Notification to WebView so it can resign itself and to the parent view if desired to handle response and give success notification etc.

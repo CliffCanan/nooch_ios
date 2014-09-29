@@ -54,12 +54,12 @@
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
-    UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeCustom];
-    [hamburger setStyleId:@"navbar_back"];
-    [hamburger setImage:[UIImage imageNamed:@"whiteBack.png"] forState:UIControlStateNormal];
-    [hamburger setImage:[UIImage imageNamed:@"whiteBack.png"] forState:UIControlStateHighlighted];
-    [hamburger addTarget:self action:@selector(backToHome) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+    UIButton * backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [backBtn setStyleId:@"navbar_back"];
+    [backBtn setImage:[UIImage imageNamed:@"whiteBack.png"] forState:UIControlStateNormal];
+    [backBtn setImage:[UIImage imageNamed:@"whiteBack.png"] forState:UIControlStateHighlighted];
+    [backBtn addTarget:self action:@selector(backToHome) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
     [self.navigationItem setLeftBarButtonItem:menu];
     
     UIButton *helpGlyph = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -87,7 +87,7 @@
     [self.hud show:YES];
     [spinner1 startAnimating];
 
-    NSString *body = [NSString stringWithFormat: @"amount=%@&api_key=%@&api_password=%@&invoice_detail=%@&recurring=%@&information_request=%@&redirect_url=%@&partner=%@&label=%@", @".01",@"7068_59cd5c1f5a75c31",@"7068_da64134cc66a5f0",@"Onboard",@"ot",@"show_all",@"nooch://",@"nooch",@"wl"];
+    NSString *body = [NSString stringWithFormat: @"amount=%@&api_key=%@&api_password=%@&invoice_detail=%@&recurring=%@&information_request=%@&redirect_url=%@&partner=%@&label=%@", @"0.00",@"7068_59cd5c1f5a75c31",@"7068_da64134cc66a5f0",@"Onboard",@"ot",@"show_all",@"nooch://",@"nooch",@"wl"];
 	NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@?%@",@"https://knoxpayments.com/pay/index.php",body]];
     
     self.request = [[NSMutableURLRequest alloc]initWithURL: url];
@@ -202,7 +202,7 @@
 }
 
 -(void)backToHome {
-        [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)resignView
@@ -224,11 +224,6 @@
                             @"MemberId":[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]};
     
     [obj saveMemberTransId:[dict mutableCopy]];
-    
-    [nav_ctrl popViewControllerAnimated:NO];
-    ProfileInfo *profile = [ProfileInfo new];
-    isProfileOpenFromSideBar = NO;
-    [nav_ctrl pushViewController:profile animated:YES];
 }
 
 #pragma mark - server delegation
@@ -240,16 +235,23 @@
     {
         [self.hud hide:YES];
         
-        NSDictionary*dictResponse=[NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSDictionary * dictResponse = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         if ([[[dictResponse valueForKey:@"SaveMemberTransIdResult"]valueForKey:@"Result"]isEqualToString:@"Success"])
         {
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Whooo" message:@"Bank Successfully Linked" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            [nav_ctrl popViewControllerAnimated:NO];
+            ProfileInfo * profile = [ProfileInfo new];
+            isProfileOpenFromSideBar = NO;
+            [nav_ctrl pushViewController:profile animated:YES];
+
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Great Success" message:@"Your bank was successfully linked." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
             [alert show];
         }
         else
         {
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Please Try Again" message:@"Bank Linking Failure" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Please Try Again" message:@"Bank linking failed and your info was not saved." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
             [alert show];
+            
+            [self.navigationController popViewControllerAnimated:YES];
         }
     }
 }

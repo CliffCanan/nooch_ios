@@ -130,7 +130,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
     CFIndex nPeople = ABAddressBookGetPersonCount(addressBook);
     
-    for(int i = 0; i < nPeople; i++)
+    for (int i = 0; i < nPeople; i++)
     {
         NSMutableDictionary *curContact=[[NSMutableDictionary alloc] init];
         ABRecordRef person=CFArrayGetValueAtIndex(people, i);
@@ -283,55 +283,68 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 -(void)dismiss_suspended_alert
 {
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.45];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-    
-    CGRect frame = self.suspended.frame;
-    frame.origin.y = -58;
-    [self.suspended setFrame:frame];
-    
-//    [self.suspended removeFromSuperview];
-    CGRect rect= self.profile_incomplete.frame;
-    rect.origin.y-=54;
-    self.profile_incomplete.frame=rect;
-    
-    CGRect rect2 = self.phone_incomplete.frame;
-    rect2.origin.y-=54;
-    self.phone_incomplete.frame=rect2;
-    [UIView commitAnimations];
-}
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+
+    [UIView animateKeyframesWithDuration:.35
+                                   delay:0
+                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      CGRect frame = self.suspended.frame;
+                                      frame.origin.y = -56;
+                                      [self.suspended setFrame:frame];
+                                      
+                                      CGRect rect= self.profile_incomplete.frame;
+                                      rect.origin.y -= 56;
+                                      self.profile_incomplete.frame = rect;
+                                      
+                                      CGRect rect2 = self.phone_incomplete.frame;
+                                      rect2.origin.y -= 56;
+                                      self.phone_incomplete.frame = rect2;
+                                  }];
+                              } completion: ^(BOOL finished){
+                                  [self.suspended removeFromSuperview];
+                              }
+     ];}
 
 -(void)dismiss_profile_unvalidated
 {
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.45];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-
-    CGRect frame = self.profile_incomplete.frame;
-    frame.origin.y = -58;
-    [self.profile_incomplete setFrame:frame];
-    
-    CGRect rect2 = self.phone_incomplete.frame;
-    rect2.origin.y-=54;
-    self.phone_incomplete.frame=rect2;
-
-    [UIView commitAnimations];
-    //[self.profile_incomplete removeFromSuperview];
+    [UIView animateKeyframesWithDuration:.35
+                                   delay:0
+                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      CGRect frame = self.profile_incomplete.frame;
+                                      frame.origin.y = -57;
+                                      [self.profile_incomplete setFrame:frame];
+                                      
+                                      CGRect rect2 = self.phone_incomplete.frame;
+                                      rect2.origin.y -= 56;
+                                      self.phone_incomplete.frame = rect2;
+                                  }];
+                              } completion: ^(BOOL finished){
+                                  [self.profile_incomplete removeFromSuperview];
+                              }
+     ];
 }
 
 -(void)dismiss_phone_unvalidated
 {
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.45];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
 
-    CGRect frame = self.phone_incomplete.frame;
-    frame.origin.y = -58;
-    [self.phone_incomplete setFrame:frame];
-    
-    [UIView commitAnimations];
-  // [self.phone_incomplete removeFromSuperview];
+    [UIView animateKeyframesWithDuration:.35
+                                   delay:0
+                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      CGRect frame = self.phone_incomplete.frame;
+                                      frame.origin.y = -57;
+                                      [self.phone_incomplete setFrame:frame];
+                                  }];
+                              } completion: ^(BOOL finished){
+                                  [self.phone_incomplete removeFromSuperview];
+                              }
+     ];
 }
 
 -(void)address_book
@@ -593,7 +606,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if (bannerAlert > 0)
         {
            CGRect rect = self.profile_incomplete.frame;
-           rect.origin.y += 54;
+           rect.origin.y += 56;
            self.profile_incomplete.frame = rect;
         }
         bannerAlert++;
@@ -649,7 +662,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
           
         if (bannerAlert > 0) {
             CGRect rect= self.phone_incomplete.frame;
-            rect.origin.y += 54;
+            rect.origin.y += 56;
             self.phone_incomplete.frame = rect;
         }
 
@@ -833,7 +846,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     //Update Pending Status
     NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
-    if ([[defaults objectForKey:@"Pending_count"] intValue]>0) {
+    
+    NSLog(@"Pending_Count = %@", [defaults objectForKey:@"Pending_count"]);
+    if ([[defaults objectForKey:@"Pending_count"] intValue] > 0)
+    {
         [self.navigationItem setLeftBarButtonItem:nil];
         UILabel * pending_notif = [UILabel new];
         [pending_notif setText:[defaults objectForKey:@"Pending_count"]];
@@ -846,12 +862,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
         [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
         hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-        [hamburger addSubview:pending_notif]; UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+        [hamburger addSubview:pending_notif];
+        UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
         [self.navigationItem setLeftBarButtonItem:menu];
         
     }
-   
-    
+
     NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [UIColor whiteColor], UITextAttributeTextColor,
                                   Rgb2UIColor(19, 32, 38, .26), UITextAttributeTextShadowColor,
@@ -1350,63 +1366,62 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         NSError *error;
         [self.hud hide:YES];
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        
         int counter = 0;
+       // NSLog(@"THE Pending_Count = %@", [defaults objectForKey:@"Pending_count"]);
 
-        if ([histArray count] > 0)
+        for (NSDictionary * dict in histArray)
         {
-         for (NSDictionary * dict in histArray)
-           {
-               if ( ( [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
-                     [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"] ) &&
-                    ![[dict valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
-               {
-                   counter++;
-               }
-           }
-            
-            [self.navigationItem setLeftBarButtonItem:nil];
-
-            NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
-
-            if (counter > 0)
+            if ( ( [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
+                   [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"] ) &&
+                  ![[dict valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
             {
-                UILabel * pending_notif = [UILabel new];
-                [pending_notif setText:[NSString stringWithFormat:@"%d",counter]];
-                [pending_notif setFrame:CGRectMake(16, -2, 20, 20)];
-                [pending_notif setStyleId:@"pending_notif"];
-
-                UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-                [hamburger setStyleId:@"navbar_hamburger"];
-                [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
-                [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
-                [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
-                hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-                [hamburger addSubview:pending_notif];
-
-                UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
-                [self.navigationItem setLeftBarButtonItem:menu];
-
-                [defaults setBool:true forKey:@"hasPendingItems"];
+               counter++;
             }
-            else
-            {
-                UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-                [hamburger setStyleId:@"navbar_hamburger"];
-                [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
-                [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
-                [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
-                hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-                UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
-                [self.navigationItem setLeftBarButtonItem:menu];
-
-                [defaults setBool:false forKey:@"hasPendingItems"];
-            }
-            NSString * count;
-            count = [NSString stringWithFormat:@"%d", counter];
-
-            [defaults setValue: count forKey:@"Pending_count"];
-            [defaults synchronize];
         }
+        
+        [self.navigationItem setLeftBarButtonItem:nil];
+
+        NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
+
+        if (counter > 0)
+        {
+            UILabel * pending_notif = [UILabel new];
+            [pending_notif setText:[NSString stringWithFormat:@"%d",counter]];
+            [pending_notif setFrame:CGRectMake(16, -2, 20, 20)];
+            [pending_notif setStyleId:@"pending_notif"];
+
+            UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [hamburger setStyleId:@"navbar_hamburger"];
+            [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+            [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
+            [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+            hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+            [hamburger addSubview:pending_notif];
+
+            UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+            [self.navigationItem setLeftBarButtonItem:menu];
+
+            [defaults setBool:true forKey:@"hasPendingItems"];
+        }
+        else
+        {
+            UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [hamburger setStyleId:@"navbar_hamburger"];
+            [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+            [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
+            [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+            hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+            UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+            [self.navigationItem setLeftBarButtonItem:menu];
+
+            [defaults setBool:false forKey:@"hasPendingItems"];
+        }
+        NSString * count;
+        count = [NSString stringWithFormat:@"%d", counter];
+
+        [defaults setValue: count forKey:@"Pending_count"];
+        [defaults synchronize];
     }
 
     else if ([tagName isEqualToString:@"emailCheck"])
