@@ -64,7 +64,8 @@
         terms.text = @"User Agreement";
         terms.textAlignment = NSTextAlignmentCenter;
         [nav_view addSubview:terms];
-
+        [terms release];
+        
         UIButton * btn_Close = [UIButton buttonWithType:UIButtonTypeCustom];
         btn_Close.frame = CGRectMake(0, 20, 80, 40);
         [btn_Close setTitle:@"Close" forState:UIControlStateNormal];
@@ -72,6 +73,7 @@
         btn_Close.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         [btn_Close addTarget:self action:@selector(dismissView:) forControlEvents:UIControlEventTouchUpInside];
         [nav_view addSubview:btn_Close];
+        [nav_view release];
     }
     else {
         UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -83,7 +85,7 @@
         UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
         [self.navigationItem setLeftBarButtonItem:menu];
     }
-
+    
     RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
