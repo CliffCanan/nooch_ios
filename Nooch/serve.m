@@ -638,8 +638,7 @@ NSString *amnt;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
-    
-    
+   
     if ([responseString rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound)
     {
         //logout in case of invalid OAuth
@@ -647,10 +646,14 @@ NSString *amnt;
               [[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"])
         {
             [self.hud hide:YES];
+           
+            
             if (![[assist shared]isloginFromOther]) {
                 UIAlertView * Alert = [[UIAlertView alloc]initWithTitle:@"New Device Detected" message:@"It looks like you have logged in from a new device.  To protect your account, we will just log you out of all other devices." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 
                 [Alert show];
+                Home*home1=[Home new];
+                [home1 hide];
                 [[assist shared]setIsloginFromOther:YES];
             }
            

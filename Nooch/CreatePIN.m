@@ -51,8 +51,6 @@
 {
     int len = [textField.text length] + [string length];
     
-//    [self.prompt setText:@""];
-    
     if([string length] == 0) { //deleting
         switch (len) {
             case 4:

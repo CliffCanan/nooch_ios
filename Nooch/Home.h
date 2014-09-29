@@ -46,4 +46,5 @@ NSUserDefaults *user;
     UIButton *top_button;
     NSMutableArray *histArray;
 }
+-(void)hide;
 @end

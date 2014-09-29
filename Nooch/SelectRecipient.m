@@ -204,7 +204,7 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated  {
-    
+    [super viewDidAppear:animated];
     if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
         ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted)
     {
@@ -237,7 +237,7 @@
     [recents setDelegate:self];
     [recents getRecents];
 
-    [super viewWillDisappear:animated];
+    
 }
 
 -(void)DoneEditing_RequestMultiple:(id)sender
@@ -1571,7 +1571,7 @@
         }
         else
         {
-            loc=-1;
+            //loc=-1;
             cell.accessoryType=UITableViewCellAccessoryNone;
         }
 
