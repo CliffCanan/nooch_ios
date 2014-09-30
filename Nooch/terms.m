@@ -69,7 +69,7 @@
         UIButton * btn_Close = [UIButton buttonWithType:UIButtonTypeCustom];
         btn_Close.frame = CGRectMake(0, 20, 80, 40);
         [btn_Close setTitle:@"Close" forState:UIControlStateNormal];
-        [btn_Close setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
+        [btn_Close setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.175) forState:UIControlStateNormal];
         btn_Close.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         [btn_Close addTarget:self action:@selector(dismissView:) forControlEvents:UIControlEventTouchUpInside];
         [nav_view addSubview:btn_Close];
@@ -92,7 +92,7 @@
     [self.navigationController.view addSubview:self.hud];
 
     self.hud.labelText = @"Loading Nooch's Terms of Service";
-    [spinner1 startAnimating];
+//    [spinner1 startAnimating];
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
     self.hud.delegate = self;

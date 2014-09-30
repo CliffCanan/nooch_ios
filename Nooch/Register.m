@@ -59,42 +59,42 @@
     [logo setStyleClass:@"animate_bubble_logo"];
     [self.view addSubview:logo];
 
-    UILabel *signup = [[UILabel alloc] initWithFrame:CGRectMake(0, 88, 320, 15)];
+    UILabel * signup = [[UILabel alloc] initWithFrame:CGRectMake(0, 88, 320, 15)];
     [signup setText:@"Sign Up Below With"];
     [signup setStyleClass:@"instruction_text"];
     [self.view addSubview:signup];
 
     self.facebook = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.facebook setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
+    [self.facebook setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
     self.facebook.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.facebook setTitle:@"  Facebook" forState:UIControlStateNormal];
     [self.facebook setFrame:CGRectMake(0, 153, 0, 0)];
-    if ([[UIScreen mainScreen] bounds].size.height < 520) {
-        [self.facebook setFrame:CGRectMake(0, 145, 0, 0)];
-    }
     [self.facebook addTarget:self action:@selector(connect_to_facebook) forControlEvents:UIControlEventTouchUpInside];
     [self.facebook setStyleClass:@"button_blue"];
-    
-    UILabel *glyphFB = [UILabel new];
+
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(26, 38, 32, .2);
+    shadow.shadowOffset = CGSizeMake(0, -1);
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
+
+    UILabel * glyphFB = [UILabel new];
     [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
     [glyphFB setFrame:CGRectMake(60, 8, 30, 30)];
-    [glyphFB setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]];
+    glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]
+                                                                 attributes:textAttributes];
     [glyphFB setTextColor:[UIColor whiteColor]];
     
     [self.facebook addSubview:glyphFB];
     [self.view addSubview:self.facebook];
 
-    UILabel *or = [[UILabel alloc] initWithFrame:CGRectMake(0, 216, 320, 15)];
+    UILabel * or = [[UILabel alloc] initWithFrame:CGRectMake(0, 216, 320, 15)];
     [or setBackgroundColor:[UIColor clearColor]];
-    if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        [or setFrame:CGRectMake(0, 218, 0, 0)];
-    }
     [or setTextAlignment:NSTextAlignmentCenter];
     [or setText:@"Or..."];
     [or setStyleClass:@"label_small"];
     [self.view addSubview:or];
 
-    UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(20, 254, 60, 20)];
+    UILabel * name = [[UILabel alloc] initWithFrame:CGRectMake(20, 254, 60, 20)];
     [name setBackgroundColor:[UIColor clearColor]];
     [name setTextColor:kNoochBlue];
     [name setText:@"Name"];
@@ -113,8 +113,10 @@
     [self.name_field setAutocapitalizationType:UITextAutocapitalizationTypeWords];
     [self.view addSubview:self.name_field];
 
-    UILabel *email = [[UILabel alloc] initWithFrame:CGRectMake(20, 294, 60, 20)];
-    [email setBackgroundColor:[UIColor clearColor]]; [email setTextColor:kNoochBlue]; [email setText:@"Email"];
+    UILabel * email = [[UILabel alloc] initWithFrame:CGRectMake(20, 294, 60, 20)];
+    [email setBackgroundColor:[UIColor clearColor]];
+    [email setTextColor:kNoochBlue];
+    [email setText:@"Email"];
     [email setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:email];
 
@@ -123,14 +125,14 @@
     [self.email_field setDelegate:self];
     [self.email_field setPlaceholder:@"Email Address"];
     [self.email_field setKeyboardType:UIKeyboardTypeEmailAddress];
-    self.email_field .returnKeyType = UIReturnKeyNext;
+    self.email_field.returnKeyType = UIReturnKeyNext;
     [self.email_field setTag:2];
     [self.email_field setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     [self.email_field setAutocorrectionType:UITextAutocorrectionTypeNo];
     [self.email_field setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.email_field];
 
-    UILabel *password = [[UILabel alloc] initWithFrame:CGRectMake(20, 334, 80, 20)];
+    UILabel * password = [[UILabel alloc] initWithFrame:CGRectMake(20, 334, 80, 20)];
     [password setBackgroundColor:[UIColor clearColor]];
     [password setTextColor:kNoochBlue];
     [password setText:@"Password"];
@@ -157,14 +159,14 @@
     [checkbox_box setTextColor:kNoochBlue];
     [self.view addSubview:checkbox_box];
 
-    UIButton *checkbox_dot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton * checkbox_dot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [checkbox_dot setBackgroundColor:[UIColor clearColor]];
     [checkbox_dot setTitle:@"  " forState:UIControlStateNormal];
     [checkbox_dot setFrame:CGRectMake(31, 381, 31, 30)];
     [checkbox_dot setStyleId:@"checkbox_dot"];
-    [self.view addSubview:checkbox_dot];
     [checkbox_dot addTarget:self action:@selector(termsAndConditions:) forControlEvents:UIControlEventTouchUpInside];
     isTermsChecked = NO;
+    [self.view addSubview:checkbox_dot];
     
     UILabel * termsText1 = [UILabel new];
     [termsText1 setFont:[UIFont fontWithName:@"Roboto-light" size:13]];
@@ -188,7 +190,7 @@
     [termsText2 addSubview:underline];
     
     self.cont = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.cont setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
+    [self.cont setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
     self.cont.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.cont setTitle:@"Continue" forState:UIControlStateNormal];
     [self.cont setFrame:CGRectMake(10, 434, 300, 60)];
@@ -197,15 +199,15 @@
     [self.view addSubview:self.cont];
     [self.cont setEnabled:NO];
 
-    UIButton *login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton * login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [login setBackgroundColor:[UIColor clearColor]];
     [login setTitle:@"Already a Member?  Sign in here " forState:UIControlStateNormal];
     [login setFrame:CGRectMake(10, 510, 280, 30)];
     [login addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
     [login setStyleClass:@"label_small"];
     [self.view addSubview:login];
-    
-    UILabel *glyph_login = [UILabel new];
+
+    UILabel * glyph_login = [UILabel new];
     [glyph_login setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
     [glyph_login setFrame:CGRectMake(268, 0, 18, 30)];
     [glyph_login setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-right"]];
@@ -214,28 +216,39 @@
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
-        [name setFrame:CGRectMake(0, 246, 0, 0)];
-        [self.name_field setFrame:CGRectMake(0, 246, 0, 0)];
-        
-        [email setFrame:CGRectMake(0, 286, 0, 0)];
-        [self.email_field setFrame:CGRectMake(0, 286, 0, 0)];
-        
-        [password setFrame:CGRectMake(0, 326, 0, 0)];
-        [self.password_field setFrame:CGRectMake(0, 326, 0, 0)];
-        
-        [self.cont setFrame:CGRectMake(0, 379, 0, 0)];
-        
-        [login setFrame:CGRectMake(0, 438, 320, 20)];
+        [signup setFrame:CGRectMake(0, 78, 320, 15)];
+
+        [self.facebook setFrame:CGRectMake(0, 136, 0, 0)];
+
+        [or setFrame:CGRectMake(0, 195, 320, 15)];
+
+        [name setFrame:CGRectMake(0, 225, 0, 0)];
+        [self.name_field setFrame:CGRectMake(0, 225, 0, 0)];
+
+        [email setFrame:CGRectMake(0, 265, 0, 0)];
+        [self.email_field setFrame:CGRectMake(0, 265, 0, 0)];
+
+        [password setFrame:CGRectMake(0, 305, 0, 0)];
+        [self.password_field setFrame:CGRectMake(0, 305, 0, 0)];
+
+        [checkbox_box setFrame:CGRectMake(36, 346, 21, 20)];
+        [checkbox_dot setFrame:CGRectMake(31, 341, 31, 30)];
+        [termsText1 setFrame:CGRectMake(65, 348, 55, 14)];
+        [termsText2 setFrame:CGRectMake(122, 342, 150, 26)];
+
+        [self.cont setFrame:CGRectMake(0, 381, 0, 0)];
+
+        [login setFrame:CGRectMake(0, 439, 320, 20)];
     }
 }
 
 -(void)termsAndConditions:(UIButton*)sender{
     if (isTermsChecked) {
-         isTermsChecked=NO;
+         isTermsChecked = NO;
          [sender setTitle:@"" forState:UIControlStateNormal];
     }
-    else{
-        isTermsChecked=YES;
+    else {
+        isTermsChecked = YES;
         [sender setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"] forState:UIControlStateNormal];
         [sender setStyleId:@"checkbox_dot"];
     }
@@ -244,7 +257,7 @@
 - (void)open_terms_webview
 {
     isfromRegister = YES;
-    terms *term = [terms new];
+    terms * term = [terms new];
   
     CGRect rect = term.view.frame;
     rect.origin.y = self.view.frame.size.height;
@@ -263,9 +276,9 @@
     
     [UIView animateWithDuration:.35
                      animations:^{
-                         CGRect rect= self.view.frame;
-                         rect.origin.y=self.view.frame.size.height;
-                         child.view.frame=rect;
+                         CGRect rect = self.view.frame;
+                         rect.origin.y = self.view.frame.size.height;
+                         child.view.frame = rect;
                      }
                      completion:^(BOOL finished){
                          [child didMoveToParentViewController:nil];
@@ -317,6 +330,7 @@
         [av show];
     }
 }
+
 -(void)renewFb
 {
     [self.accountStore renewCredentialsForAccount:(ACAccount *)self.facebookAccount completion:^(ACAccountCredentialRenewResult renewResult, NSError *error){
@@ -338,10 +352,11 @@
         }
         else{
             //handle error gracefully
-            NSLog(@"error from renew credentials%@",error);
+            NSLog(@"Error from renew credentials: %@",error);
         }
     }];
 }
+
 -(void)finishFb
 {
     NSString *acessToken = [NSString stringWithFormat:@"%@",self.facebookAccount.credential.oauthToken];
@@ -413,8 +428,9 @@
         return;
     }
 
-    NSCharacterSet* digitsCharSet = [NSCharacterSet decimalDigitCharacterSet];
-    NSCharacterSet* lettercaseCharSet = [NSCharacterSet letterCharacterSet];
+    NSCharacterSet * digitsCharSet = [NSCharacterSet decimalDigitCharacterSet];
+    NSCharacterSet * lettercaseCharSet = [NSCharacterSet letterCharacterSet];
+
     if ([self.password_field.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Insecure Password" message:@"For security reasons, et cetera, we ask that passwords contain at least 1 number.\n\nWe know it's annoying, but we're just looking out for you. Keep it safe!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -429,17 +445,13 @@
         [self.password_field becomeFirstResponder];
         return;
     }
+
     if (!isTermsChecked) {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Who Loves Lawyers" message:@"Please read Nooch's Terms of Service and check the box to proceed." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Read Terms", nil];
         [av show];
         [av setTag:16];
         return;
     }
-/*    [UIView beginAnimations:@"bucketsOff" context:nil];
-    [UIView setAnimationDuration:0.4];
-    [UIView setAnimationDelegate:self];
-    [self.view setFrame:CGRectMake(0,0, 320, 600)];
-    [UIView commitAnimations]; */
     else
     {
         RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
@@ -447,7 +459,6 @@
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
         self.hud.labelText = @"Registering your account";
-        [spinner1 startAnimating];
         self.hud.mode = MBProgressHUDModeCustomView;
         self.hud.customView = spinner1;
         self.hud.delegate = self;
@@ -455,7 +466,7 @@
 
         [[assist shared]setIsloginFromOther:NO];
 
-        serve *check_duplicate = [serve new];
+        serve * check_duplicate = [serve new];
         [check_duplicate setTagName:@"check_dup"];
         [check_duplicate setDelegate:self];
         [check_duplicate dupCheck:[self.email_field.text lowercaseString]];
@@ -465,7 +476,7 @@
 - (void)login
 {
     [[UIApplication sharedApplication]setStatusBarHidden:YES];
-    Login *signin = [Login new];
+    Login * signin = [Login new];
     [self.navigationController pushViewController:signin animated:YES];
 }
 
@@ -542,7 +553,6 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    //
     switch (textField.tag) {
         case 1:
             [self.email_field becomeFirstResponder];
@@ -562,15 +572,6 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     self.name_field.text = self.name_field.text.capitalizedString;
-    if (textField == self.password_field)
-    {
-        [UIView beginAnimations:@"bucketsOff" context:nil];
-        [UIView setAnimationDuration:0.4];
-        [UIView setAnimationDelegate:self];
-        [self.view setFrame:CGRectMake(0,0, 320, 600)];
-        [UIView commitAnimations];
-        return;
-    }
 }
 
 - (void)didReceiveMemoryWarning

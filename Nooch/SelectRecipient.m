@@ -227,7 +227,7 @@
             NSLog(@"Just authorized");
 
         });
-        
+
         NSLog(@"Not determined");
     }
 
@@ -236,7 +236,6 @@
     [recents setTagName:@"recents"];
     [recents setDelegate:self];
     [recents getRecents];
-
     
 }
 
@@ -244,7 +243,7 @@
 {
     if ([[[assist shared]getArray] count]==0)
     {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"But Whooo?" message:@"Please select at least one recipient.  Otherwise it makes it way harder to know where to send you your request!" delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"But Whooo?" message:@"Please select at least one recipient.  Otherwise it makes it way harder to know where to send your request!" delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
         [alert show];
         return;
     }

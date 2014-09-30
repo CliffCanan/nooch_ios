@@ -780,7 +780,6 @@ return customView;
         else if ([histTempCompleted count] == indexPath.row ||
                  [histShowArrayCompleted count] == 0)
         {
-            NSLog(@"GOT HERE");
             return 200;
         }
     }
@@ -1100,13 +1099,11 @@ return customView;
                                 fromDate:addeddate
                                 toDate:ServerDate      
                                 options:0];
-                        ////nslog(@"%ld  %ld", (long)[components hour],(long)[components minute]);
                         if ((long)[components hour] == 0) {
                             NSDateComponents *components = [gregorianCalendar components:NSMinuteCalendarUnit
                                 fromDate:addeddate
                                 toDate:ServerDate
                                 options:0];
-                            ////nslog(@"%ld ",(long)[components minute]);
                             if ((long)[components minute]==0) {
                                 NSDateComponents *components = [gregorianCalendar components:NSSecondCalendarUnit                                
                                     fromDate:addeddate
@@ -1170,9 +1167,7 @@ return customView;
                 [self.list setStyleId:@"emptyTable"];
 
                // if (indexPath.row == 0) {
-                    [emptyPic setImage:nil];
-                    [emptyText setText:@"JIBBER JAWN"];
-                    
+                
                     emptyText_localSearch = [[UILabel alloc] initWithFrame:CGRectMake(6, 5, 308, 70)];
                     [emptyText_localSearch setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
                     [emptyText_localSearch setNumberOfLines:0];

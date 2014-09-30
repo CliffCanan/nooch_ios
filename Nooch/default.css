@@ -694,24 +694,24 @@
 
 	/*** 	 SIGNUP FLOW:  Instructional Text	***/
 	.instruction_text {
-		font-family		: "Roboto";
+		left            : 20px;
+		width			: 280px;
+		height			: 70px;
+        font-family		: "Roboto";
 		font-weight     : regular;
 		font-size		: 16px;
 		text-align      : center;
 		color 			: #313233;
-		width			: 280px;
-		left            : 20px;
-		height			: 70px;
 	}
     .instruction_text_smscrn {
-		font-family		: "Roboto";
+		left            : 20px;
+		width			: 280px;
+		height			: 44px;
+        font-family		: "Roboto";
 		font-weight     : regular;
 		font-size		: 15px;
 		text-align      : center;
 		color 			: #313233;
-		width			: 280px;
-		left            : 20px;
-		height			: 44px;
 	}
 
     .pin_entry_feedback {
@@ -2671,7 +2671,7 @@
     }
 
     #linked_account_name {
-        left		: 86px;
+        left		: 87px;
         top			: 6px;
         width		: 200px;
         height		: 32px;

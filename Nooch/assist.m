@@ -180,14 +180,12 @@ static assist * _sharedInstance = nil;
      
      facebookAccount = [accounts lastObject];
      fbAllowed = YES;
-     //[self renewFb];
      //nslog(@"fb connected");
      }
      else
      {
      // Handle Failure
      fbAllowed = NO;
-     //nslog(@"fb not connected");
      }
      }];
      
@@ -204,10 +202,8 @@ static assist * _sharedInstance = nil;
      NSArray *accounts = [accountStore accountsWithAccountType:twitterAccountType];
      twitterAccount = [accounts lastObject];
      twitterAllowed = YES;
-     //nslog(@"twitter granted");
      }else{
      twitterAllowed = NO;
-     //nslog(@"twitter not granted");
      }
      }];
      }
@@ -306,21 +302,19 @@ static assist * _sharedInstance = nil;
             }
         }
     }
-}/*}}}*/
+}
 -(void)death:(NSString *)path{/*{{{*/
     NSFileManager *dfm = [NSFileManager defaultManager];
     [dfm removeItemAtPath:path error:nil];
-}/*}}}*/
+}
 -(NSMutableArray*)allHist{/*{{{*/
     return histCache;
-}/*}}}*/
+}
 -(void)histPoll{
     histSafe=NO;
     responseData = [NSMutableData data];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
-    
-    
+
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@&accessToken=%@", MyUrl, @"GetTransactionsList", [usr objectForKey:@"MemberId"], @"ALL", @"pSize", [NSString stringWithFormat:@"%d",[histCache count]], @"pIndex", @"1",[defaults valueForKey:@"OAuthToken"]]]];
     [NSURLConnection connectionWithRequest:request delegate:self];
 }
@@ -420,16 +414,15 @@ static assist * _sharedInstance = nil;
 }
 -(void)getAcctInfo{
     if (!islogout) {
-        serve *info = [serve new];
+        serve * info = [serve new];
         info.Delegate = self;
         info.tagName = @"info";
 
-        NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-        [info getDetails:[defaults valueForKey:@"MemberId"]
-         ];
+        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+        [info getDetails:[defaults valueForKey:@"MemberId"]];
     }
-    
 }
+
 #pragma mark - file paths
 - (NSString *)autoLogin{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -440,8 +433,8 @@ static assist * _sharedInstance = nil;
 
 -(void)listen:(NSString *)result tagName:(NSString *)tagName
 {
-    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound) {
-        
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound)
+    {
         if (timer!=nil) {
             [timer invalidate];
             timer=nil;
@@ -459,46 +452,51 @@ static assist * _sharedInstance = nil;
         NSError *error;
         
         NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        NSLog(@"user info %@",loginResult);
-        if ([loginResult valueForKey:@"FacebookAccountLogin"] && [[loginResult valueForKey:@"FacebookAccountLogin"]length]>0) {
+        NSLog(@"User Info: %@",loginResult);
+
+        if ( [loginResult valueForKey:@"FacebookAccountLogin"] &&
+            [[loginResult valueForKey:@"FacebookAccountLogin"]length] > 0) {
             [user setObject:[loginResult valueForKey:@"FacebookAccountLogin"] forKey:@"facebook_id"];
         }
-        else{
+        else {
             [user setObject:@"" forKey:@"FacebookAccountID"];
         }
-        if ([loginResult valueForKey:@"Status"]!=Nil  && ![[loginResult valueForKey:@"Status"] isKindOfClass:[NSNull class]]&& [loginResult valueForKey:@"Status"] !=NULL) {
+
+        if (  [loginResult valueForKey:@"Status"] != Nil  &&
+              [loginResult valueForKey:@"Status"] != NULL &&
+            ![[loginResult valueForKey:@"Status"] isKindOfClass:[NSNull class]])
+        {
             [user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"];
             if ([[loginResult valueForKey:@"Status"]isEqualToString:@"Suspended"]) {
                 [[assist shared]setSusPended:YES];
             }
-            else
-            {
-
+            else {
                [[assist shared]setSusPended:NO];
-
             }
-            NSString*url=[loginResult valueForKey:@"PhotoUrl"];
             
             [user setObject:[loginResult valueForKey:@"DateCreated"] forKey:@"DateCreated"];
-           
+
+            NSString * url = [loginResult valueForKey:@"PhotoUrl"];
             [user setObject:url forKey:@"Photo"];
-            NSLog(@"%@",url);
-            if ([[loginResult valueForKey:@"IsKnoxBankAdded"]boolValue]==YES) {
+            // NSLog(@"%@",url);
+
+            if ([[loginResult valueForKey:@"IsKnoxBankAdded"]boolValue] == YES) {
                    [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
             }
-            else{
+            else {
                    [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
             }
-            
+
         }
         
-        if(![[loginResult objectForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"BalanceAmount"] != NULL)
+        if (![[loginResult objectForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]] &&
+              [loginResult objectForKey:@"BalanceAmount"] != NULL)
         {
-            [usr setObject:[loginResult objectForKey:@"BalanceAmount"] forKey:@"Balance"];
-            
+            [usr setObject:@"1" forKey:@"Balance"];
             [user setObject:[loginResult objectForKey:@"BalanceAmount"] forKey:@"Balance"];
         }
-        if(![[loginResult objectForKey:@"FirstName"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"FirstName"] != NULL)
+        if (![[loginResult objectForKey:@"FirstName"] isKindOfClass:[NSNull class]] &&
+              [loginResult objectForKey:@"FirstName"] != NULL)
         {
             [usr setObject:[loginResult objectForKey:@"FirstName"] forKey:@"firstName"];
             [usr setObject:[loginResult objectForKey:@"LastName"] forKey:@"lastName"];
@@ -506,22 +504,27 @@ static assist * _sharedInstance = nil;
             [user setObject:[loginResult objectForKey:@"FirstName"] forKey:@"firstName"];
             [user setObject:[loginResult objectForKey:@"LastName"] forKey:@"lastName"];
         }
-        if(![[loginResult objectForKey:@"Status"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"Status"] != NULL){
+        if (![[loginResult objectForKey:@"Status"] isKindOfClass:[NSNull class]] &&
+              [loginResult objectForKey:@"Status"] != NULL)
+        {
             [usr setObject:[loginResult objectForKey:@"Status"] forKey:@"Status"];
-            
             [user setObject:[loginResult objectForKey:@"Status"] forKey:@"Status"];
         }
-        if(![[loginResult objectForKey:@"PhotoUrl"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"PhotoUrl"] != NULL){
+        if (![[loginResult objectForKey:@"PhotoUrl"] isKindOfClass:[NSNull class]] &&
+              [loginResult objectForKey:@"PhotoUrl"] != NULL)
+        {
             if ([pic isEqualToData:UIImagePNGRepresentation([UIImage imageNamed:@"profile_picture.png"])] || [pic isKindOfClass:[NSNull class]] || [pic length] == 0) {
                 [self fetchPic];
             }
         }
-        if(![[loginResult objectForKey:@"MemberId"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"MemberId"] != NULL)
+        if (![[loginResult objectForKey:@"MemberId"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"MemberId"] != NULL)
         {
-            if (![[loginResult objectForKey:@"MemberId"] isEqualToString:[usr objectForKey:@"MemberId"]]) {
+            if (![[loginResult objectForKey:@"MemberId"] isEqualToString:[usr objectForKey:@"MemberId"]])
+            {
                 [usr setObject:[loginResult objectForKey:@"MemberId"] forKey:@"MemberId"];
+
                 if (![[loginResult objectForKey:@"MemberId"] isEqualToString:@"00000000-0000-0000-0000-000000000000"]) {
-                    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+                    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
                     [defaults setObject:[loginResult objectForKey:@"MemberId"] forKey:@"MemberId"];
                     [defaults synchronize];
                 }
