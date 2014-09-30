@@ -996,7 +996,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         if (favorite[@"MemberId"])
         {
-            [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+            [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                       placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
 
             name.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];

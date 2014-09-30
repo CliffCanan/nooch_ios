@@ -293,7 +293,7 @@
     user_pic.layer.borderWidth = 1;
     user_pic.layer.borderColor = [Helpers hexColor:@"6d6e71"].CGColor;
     if ([dict objectForKey:@"Photo"]!=NULL && ![[dict objectForKey:@"Photo"] isKindOfClass:[NSNull class]]) {
-        [user_pic setImageWithURL:[NSURL URLWithString:[dict objectForKey:@"Photo"]]
+        [user_pic sd_setImageWithURL:[NSURL URLWithString:[dict objectForKey:@"Photo"]]
                  placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
     }
     else

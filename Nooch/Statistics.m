@@ -712,7 +712,7 @@
             if (indexPath.row == 0)
             {
                 NSDictionary * favorite = [favorites objectAtIndex:0];
-                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+                [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
@@ -721,7 +721,7 @@
             else if (fav_count > 1 && indexPath.row == 1)
             {
                 NSDictionary * favorite = [favorites objectAtIndex:1];
-                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+                [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
@@ -730,7 +730,7 @@
             else if (fav_count > 2 && indexPath.row == 2)
             {
                 NSDictionary * favorite = [favorites objectAtIndex:2];
-                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+                [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
@@ -739,7 +739,7 @@
             else if (fav_count > 3 && indexPath.row == 3)
             {
                 NSDictionary * favorite = [favorites objectAtIndex:3];
-                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+                [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
@@ -748,7 +748,7 @@
             else if (fav_count > 4 && indexPath.row == 4)
             {
                 NSDictionary * favorite = [favorites objectAtIndex:4];
-                [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+                [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];

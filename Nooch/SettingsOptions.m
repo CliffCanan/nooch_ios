@@ -404,7 +404,7 @@
             }
 
             NSLog(@"ImageURL = %@",[dictResponse valueForKey:@"BankImageURL"]);
-            [bank_image setImageWithURL:[NSURL URLWithString:[dictResponse valueForKey:@"BankImageURL"]] placeholderImage:[UIImage imageNamed:@"bank.png"]];
+            [bank_image sd_setImageWithURL:[NSURL URLWithString:[dictResponse valueForKey:@"BankImageURL"]] placeholderImage:[UIImage imageNamed:@"bank.png"]];
             [bank_image setFrame:CGRectMake(10, 7, 50, 50)];
             bank_image.layer.cornerRadius = 5;
             bank_image.clipsToBounds = YES;

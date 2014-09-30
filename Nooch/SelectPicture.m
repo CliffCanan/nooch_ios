@@ -173,16 +173,17 @@
             
              NSString *imageURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal", [self.facebook_info objectForKey:@"id"]];
              [[NSUserDefaults standardUserDefaults] setObject:[self.facebook_info objectForKey:@"id"] forKey:@"facebook_id"];
-             [self.pic setImageWithURL:[NSURL URLWithString:imageURL]
-                      placeholderImage:[UIImage imageNamed:@"profile_picture.png"]
-                             completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType)
-            {
-                                 if (image)
-                                 {
-                                     [[assist shared]setTranferImage:nil];
-                                     [[assist shared]setTranferImage:image];
-                                 }
-                             }];
+             
+             
+             [self.pic sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"profile_picture.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                 if (image)
+                 {
+                     [[assist shared]setTranferImage:nil];
+                     [[assist shared]setTranferImage:image];
+                 }
+                 
+             }];
+
              
          });
          
