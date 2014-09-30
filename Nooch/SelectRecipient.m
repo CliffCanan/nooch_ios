@@ -1445,7 +1445,7 @@
         [pic setFrame:CGRectMake(16, 6, 50, 50)];
         pic.layer.cornerRadius = 25;
         pic.clipsToBounds = YES;
-        [pic setImageWithURL:[NSURL URLWithString:temp[@"Photo"]]
+        [pic sd_setImageWithURL:[NSURL URLWithString:temp[@"Photo"]]
             placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         
         NSString * name = [NSString stringWithFormat:@"   %@ %@",[[temp objectForKey:@"FirstName"] capitalizedString],[[temp objectForKey:@"LastName"] capitalizedString]];
@@ -1489,7 +1489,7 @@
         [npic removeFromSuperview];
         
         NSDictionary *info = [arrSearchedRecords objectAtIndex:indexPath.row];
-        [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
+        [pic sd_setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
             placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         [cell setIndentationLevel:1];
         pic.hidden = NO;
@@ -1540,7 +1540,7 @@
         [npic setImage:[UIImage imageNamed:@"n_icon_46x54.png"]];
         
         NSDictionary *info = [arrRequestPersons objectAtIndex:indexPath.row];
-        [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
+        [pic sd_setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
             placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         pic.hidden=NO;
         cell.indentationWidth = 56;
@@ -1592,7 +1592,7 @@
         [npic setImage:[UIImage imageNamed:@"n_icon_46x54.png"]];
         
         NSDictionary * info = [self.recents objectAtIndex:indexPath.row];
-        [pic setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
+        [pic sd_setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
             placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         pic.hidden = NO;
         [pic setFrame:CGRectMake(16, 6, 50, 50)];

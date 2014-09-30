@@ -98,7 +98,7 @@
     {
         [other_party setText:[[self.trans objectForKey:@"Name"] capitalizedString]];
         [other_party setStyleClass:@"details_othername"];
-        [user_picture setImageWithURL:[NSURL URLWithString:[self.trans objectForKey:@"Photo"]]
+        [user_picture sd_setImageWithURL:[NSURL URLWithString:[self.trans objectForKey:@"Photo"]]
              placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
     }
     [self.view addSubview:other_party];
