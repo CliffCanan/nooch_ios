@@ -996,7 +996,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         if (favorite[@"MemberId"])
         {
-            [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+            [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
                       placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
 
             name.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
@@ -1369,7 +1369,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-   
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.hud hide:YES];
+    });
+    
+
     if ([tagName isEqualToString:@"favorites"])
     {
         [self.hud hide:YES];
@@ -1575,48 +1579,50 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     additions = [[NSMutableArray alloc]init];
     
     additions = [[[assist shared]assosAll] mutableCopy];
-   
-    for (int i = 0; i < [additions count] ;i++)
-    {
-        if ([favorites count] == 6) {
-            break;
-        }
-        else if (i >= [additions count]-1) {
-            i = 0;
-        }
-        NSUInteger randomIndex = arc4random() % [additions  count];
-        int loc=-1;
-        for (int j = 0; j < [favorites count];j++)
+    if ([additions count]>=5) {
+        for (int i = 0; i < [additions count] ;i++)
         {
-            //In case of Server Record
-            if (  [[favorites objectAtIndex:j] valueForKey:@"eMailId"] &&
-                ![[[favorites objectAtIndex:j] valueForKey:@"eMailId"]isKindOfClass:[NSNull class]])
-            {
-                if ([[[favorites objectAtIndex:j] valueForKey:@"eMailId"] isEqualToString:[[additions objectAtIndex:randomIndex]valueForKey:@"UserName"]])
-                    loc = 0;
+            if ([favorites count] == 6) {
+                break;
             }
-            //In case of Address book
-            else if (  [[favorites objectAtIndex:j] valueForKey:@"UserName"] &&
-                     ![[[favorites objectAtIndex:j] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
-            {
-                if ([[[favorites objectAtIndex:j] valueForKey:@"UserName"] isEqualToString:[[additions objectAtIndex:randomIndex]valueForKey:@"UserName"]])
-                    loc = 0;
+            else if (i >= [additions count]-1) {
+                i = 0;
             }
-        }
-        //continue outer loop
-        if (loc == 0){
-           continue;
+            NSUInteger randomIndex = arc4random() % [additions  count];
+            int loc=-1;
+            for (int j = 0; j < [favorites count];j++)
+            {
+                //In case of Server Record
+                if (  [[favorites objectAtIndex:j] valueForKey:@"eMailId"] &&
+                    ![[[favorites objectAtIndex:j] valueForKey:@"eMailId"]isKindOfClass:[NSNull class]])
+                {
+                    if ([[[favorites objectAtIndex:j] valueForKey:@"eMailId"] isEqualToString:[[additions objectAtIndex:randomIndex]valueForKey:@"UserName"]])
+                        loc = 0;
+                }
+                //In case of Address book
+                else if (  [[favorites objectAtIndex:j] valueForKey:@"UserName"] &&
+                         ![[[favorites objectAtIndex:j] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
+                {
+                    if ([[[favorites objectAtIndex:j] valueForKey:@"UserName"] isEqualToString:[[additions objectAtIndex:randomIndex]valueForKey:@"UserName"]])
+                        loc = 0;
+                }
+            }
+            //continue outer loop
+            if (loc == 0){
+                continue;
+            }
+            
+            if ([[additions objectAtIndex:randomIndex] valueForKey:@"UserName"] &&
+                ![[[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]isEqualToString:@"(null)"] &&
+                ![[[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
+            {
+                [favorites addObject:[additions objectAtIndex:randomIndex]];
+            }
         }
         
-        if ([[additions objectAtIndex:randomIndex] valueForKey:@"UserName"] &&
-            ![[[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]isEqualToString:@"(null)"] &&
-            ![[[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
-        {
-            [favorites addObject:[additions objectAtIndex:randomIndex]];
-        }
+        [_carousel reloadData];
     }
-
-    [_carousel reloadData];
+    
 }
 
 #pragma mark- Date From String

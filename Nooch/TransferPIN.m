@@ -188,11 +188,11 @@
     else {
         [user_pic setHidden:NO];
         if (self.receiver[@"Photo"]) {
-            [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
+            [user_pic sd_setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
                      placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         }
         else {
-            [user_pic setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
+            [user_pic sd_setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
                      placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         }
     }

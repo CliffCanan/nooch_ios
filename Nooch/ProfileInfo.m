@@ -62,7 +62,7 @@ UIImageView *picture;
 
     if ([[user objectForKey:@"Photo"] length] > 0 && [user objectForKey:@"Photo"] != nil && !isPhotoUpdate)
     {
-        [picture setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
+        [picture sd_setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
                 placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
     }
     
@@ -711,16 +711,25 @@ UIImageView *picture;
 
         NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal",[user objectForKey:@"facebook_id"]];
    
-        [picture setImageWithURL:[NSURL URLWithString:url]
-             placeholderImage:[UIImage imageNamed:@"profile_picture"]
-                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                        
-                        if (image) {
-                            [picture setImage:image];
-                            [[assist shared]setTranferImage:nil];
-                            [[assist shared]setTranferImage:image];
-                        }
+        [picture sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"RoundLoading"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            if (image) {
+                [picture setImage:image];
+                [[assist shared]setTranferImage:nil];
+                [[assist shared]setTranferImage:image];
+            }
+
         }];
+        
+//        [picture sd_setImageWithURL:[NSURL URLWithString:url]
+//             placeholderImage:[UIImage imageNamed:@"profile_picture"]
+//                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+//                        
+//                        if (image) {
+//                            [picture setImage:image];
+//                            [[assist shared]setTranferImage:nil];
+//                            [[assist shared]setTranferImage:image];
+//                        }
+//        }];
     
         [self.save setEnabled:YES];
         [self.save setUserInteractionEnabled:YES];
@@ -1312,7 +1321,7 @@ UIImageView *picture;
             
             if ([[user objectForKey:@"Photo"] length] > 0 && [user objectForKey:@"Photo"] != nil && !isPhotoUpdate)
             {
-                [picture setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
+                [picture sd_setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
                         placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
             }
 

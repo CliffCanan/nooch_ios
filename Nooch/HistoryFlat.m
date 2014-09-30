@@ -343,7 +343,7 @@
     imgV.clipsToBounds = YES;
 
     NSString*urlImage=[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Photo"];
-    [imgV setImageWithURL:[NSURL URLWithString:urlImage] placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
+    [imgV sd_setImageWithURL:[NSURL URLWithString:urlImage] placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
     [customView addSubview:imgV];
 
     NSString *TransactionType = @"";
@@ -944,7 +944,7 @@ return customView;
                             [transferTypeLabel setText:@"Transfer to"];
                             [transferTypeLabel setBackgroundColor:kNoochRed];
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
-                            [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                            [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                                 placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                         }
                         else
@@ -958,7 +958,7 @@ return customView;
                                 [transferTypeLabel setText:@"Transfer from"];
                                 [transferTypeLabel setBackgroundColor:kNoochGreen];
                                 [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
-                                [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                                [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                                     placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                             }
                         }
@@ -977,7 +977,7 @@ return customView;
                             if ([dictRecord valueForKey:@"InvitationSentTo"] == NULL || [[dictRecord objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])
                             {
                                 [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
-                                [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                                [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                                     placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                             }
                             else
@@ -990,7 +990,7 @@ return customView;
                         {
                             [transferTypeLabel setText:@"Request from"];
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
-                            [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                            [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                                 placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                         }
                         [transferTypeLabel setBackgroundColor:kNoochBlue];
@@ -1033,7 +1033,7 @@ return customView;
                         [amount setTextColor:kNoochGrayDark];
                         [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                         [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
-                        [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                        [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                             placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                     }
                     
@@ -1259,7 +1259,7 @@ return customView;
                         [transferTypeLabel setText:@"Transfer to"];
 						[transferTypeLabel setBackgroundColor:kNoochRed];
                         [name setText:[NSString stringWithFormat:@"%@",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
-                        [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                        [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                             placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                     }
                     else
@@ -1273,7 +1273,7 @@ return customView;
                             [transferTypeLabel setText:@"Transfer from"];
                             [transferTypeLabel setBackgroundColor:kNoochGreen];
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
-                            [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                            [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                                 placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                         }
                     }
@@ -1292,7 +1292,7 @@ return customView;
                         if ([dictRecord valueForKey:@"InvitationSentTo"] == NULL || [[dictRecord objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])
                         {
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
-                            [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                            [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                                 placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                         }
                         else
@@ -1305,7 +1305,7 @@ return customView;
                     {
                         [transferTypeLabel setText:@"Request from"];
                         [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
-                        [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                        [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                             placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                     }
 					[transferTypeLabel setBackgroundColor:kNoochBlue];
@@ -1347,7 +1347,7 @@ return customView;
                     [indicator setStyleClass:@"history_sidecolor_neutral"];
                     [amount setTextColor:kNoochGrayDark];
                     [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
-                    [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                    [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                         placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 }
 
@@ -1559,7 +1559,7 @@ return customView;
                     pic.layer.cornerRadius = 25;
                     pic.clipsToBounds = YES;
                     [cell.contentView addSubview:pic];
-                    [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                    [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                         placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
 
                     UILabel *name = [UILabel new];
@@ -1808,7 +1808,7 @@ return customView;
                         if ([dictRecord valueForKey:@"InvitationSentTo"] == NULL || [[dictRecord objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])
                         {
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
-                            [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                            [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                                 placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                         }
                         else
@@ -1830,7 +1830,7 @@ return customView;
                         
                         [transferTypeLabel setText:@"Request from"];
                         [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
-                        [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                        [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                             placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                     }
                     [transferTypeLabel setBackgroundColor:kNoochBlue];
@@ -1859,7 +1859,7 @@ return customView;
                     [glyphDate setFrame:CGRectMake(173, 9, 14, 10)];
                     [transferTypeLabel setBackgroundColor:kNoochRed];
                     [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
-                    [pic setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                    [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                         placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 }
                 else {

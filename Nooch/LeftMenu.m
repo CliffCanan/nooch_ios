@@ -133,8 +133,10 @@
     
     if ([[user objectForKey:@"Photo"] length] > 0 && [user objectForKey:@"Photo"] != nil)
     {
+        NSLog(@"%@",[user objectForKey:@"Photo"]);
         [user_pic setStyleId:@"lside_userpic"];
-        [user_pic setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
+        
+        [user_pic sd_setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
         placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
         user_pic.layer.cornerRadius = 30;
         user_pic.layer.borderWidth = 2;
