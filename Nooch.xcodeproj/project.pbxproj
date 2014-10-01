@@ -248,6 +248,12 @@
 		84443CAC18A0BD9E0097F6C0 /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 84443CA818A0BD9E0097F6C0 /* NSString+MD5Addition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		84443CAD18A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 84443CAA18A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		84443CB118A0BDF30097F6C0 /* RoundLoading.png in Resources */ = {isa = PBXBuildFile; fileRef = 84443CB018A0BDF30097F6C0 /* RoundLoading.png */; };
+		844E3F8919DC05E400A00411 /* bg1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 844E3F8319DC05E400A00411 /* bg1@2x.png */; };
+		844E3F8A19DC05E400A00411 /* icon1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 844E3F8419DC05E400A00411 /* icon1@2x.png */; };
+		844E3F8B19DC05E400A00411 /* icon2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 844E3F8519DC05E400A00411 /* icon2@2x.png */; };
+		844E3F8C19DC05E400A00411 /* icon3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 844E3F8619DC05E400A00411 /* icon3@2x.png */; };
+		844E3F8D19DC05E400A00411 /* pageDot.png in Resources */ = {isa = PBXBuildFile; fileRef = 844E3F8719DC05E400A00411 /* pageDot.png */; };
+		844E3F8E19DC05E400A00411 /* pageDot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 844E3F8819DC05E400A00411 /* pageDot@2x.png */; };
 		845631B61990AD45005B90F6 /* whiteBack30.png in Resources */ = {isa = PBXBuildFile; fileRef = 845631B41990AD45005B90F6 /* whiteBack30.png */; };
 		845631B71990AD45005B90F6 /* whiteBack30@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 845631B51990AD45005B90F6 /* whiteBack30@2x.png */; };
 		845B49A819B4722B009695AA /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 845B49A719B4722B009695AA /* Images-2.xcassets */; };
@@ -504,16 +510,6 @@
 		5C69D06D19CA0F5B00EB406F /* EAIntroPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAIntroPage.m; sourceTree = "<group>"; };
 		5C69D06E19CA0F5B00EB406F /* EAIntroView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAIntroView.h; sourceTree = "<group>"; };
 		5C69D06F19CA0F5B00EB406F /* EAIntroView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAIntroView.m; sourceTree = "<group>"; };
-		5C69D07319CA133300EB406F /* bg1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg1@2x.png"; sourceTree = "<group>"; };
-		5C69D07819CA133300EB406F /* icon1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon1@2x.png"; sourceTree = "<group>"; };
-		5C69D07919CA133300EB406F /* icon2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon2@2x.png"; sourceTree = "<group>"; };
-		5C69D07A19CA133300EB406F /* icon3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon3@2x.png"; sourceTree = "<group>"; };
-		5C69D07B19CA133300EB406F /* pageDot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pageDot.png; sourceTree = "<group>"; };
-		5C69D07C19CA133300EB406F /* pageDot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pageDot@2x.png"; sourceTree = "<group>"; };
-		5C69D07E19CA133300EB406F /* title1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title1@2x.png"; sourceTree = "<group>"; };
-		5C69D07F19CA133300EB406F /* title2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title2@2x.png"; sourceTree = "<group>"; };
-		5C69D08019CA133300EB406F /* title3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title3@2x.png"; sourceTree = "<group>"; };
-		5C69D08119CA133300EB406F /* title4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title4@2x.png"; sourceTree = "<group>"; };
 		5C69D09619CA244C00EB406F /* tour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tour.h; sourceTree = "<group>"; };
 		5C69D09719CA244C00EB406F /* tour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tour.m; sourceTree = "<group>"; };
 		5CACE20319CFF86A004AD9C4 /* 1_connectBank_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1_connectBank_bg.png; sourceTree = "<group>"; };
@@ -718,6 +714,12 @@
 		84443CA918A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IdentifierAddition.h"; sourceTree = "<group>"; };
 		84443CAA18A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IdentifierAddition.m"; sourceTree = "<group>"; };
 		84443CB018A0BDF30097F6C0 /* RoundLoading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoundLoading.png; sourceTree = "<group>"; };
+		844E3F8319DC05E400A00411 /* bg1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bg1@2x.png"; path = "Nooch/EAIntroView/bg1@2x.png"; sourceTree = SOURCE_ROOT; };
+		844E3F8419DC05E400A00411 /* icon1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon1@2x.png"; path = "Nooch/EAIntroView/icon1@2x.png"; sourceTree = SOURCE_ROOT; };
+		844E3F8519DC05E400A00411 /* icon2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon2@2x.png"; path = "Nooch/EAIntroView/icon2@2x.png"; sourceTree = SOURCE_ROOT; };
+		844E3F8619DC05E400A00411 /* icon3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon3@2x.png"; path = "Nooch/EAIntroView/icon3@2x.png"; sourceTree = SOURCE_ROOT; };
+		844E3F8719DC05E400A00411 /* pageDot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pageDot.png; path = Nooch/EAIntroView/pageDot.png; sourceTree = SOURCE_ROOT; };
+		844E3F8819DC05E400A00411 /* pageDot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pageDot@2x.png"; path = "Nooch/EAIntroView/pageDot@2x.png"; sourceTree = SOURCE_ROOT; };
 		845631B41990AD45005B90F6 /* whiteBack30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteBack30.png; sourceTree = "<group>"; };
 		845631B51990AD45005B90F6 /* whiteBack30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteBack30@2x.png"; sourceTree = "<group>"; };
 		845B49A719B4722B009695AA /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Images-2.xcassets"; sourceTree = "<group>"; };
@@ -1271,16 +1273,12 @@
 		5C69D07219CA133300EB406F /* Intro */ = {
 			isa = PBXGroup;
 			children = (
-				5C69D07319CA133300EB406F /* bg1@2x.png */,
-				5C69D07819CA133300EB406F /* icon1@2x.png */,
-				5C69D07919CA133300EB406F /* icon2@2x.png */,
-				5C69D07A19CA133300EB406F /* icon3@2x.png */,
-				5C69D07B19CA133300EB406F /* pageDot.png */,
-				5C69D07C19CA133300EB406F /* pageDot@2x.png */,
-				5C69D07E19CA133300EB406F /* title1@2x.png */,
-				5C69D07F19CA133300EB406F /* title2@2x.png */,
-				5C69D08019CA133300EB406F /* title3@2x.png */,
-				5C69D08119CA133300EB406F /* title4@2x.png */,
+				844E3F8319DC05E400A00411 /* bg1@2x.png */,
+				844E3F8419DC05E400A00411 /* icon1@2x.png */,
+				844E3F8519DC05E400A00411 /* icon2@2x.png */,
+				844E3F8619DC05E400A00411 /* icon3@2x.png */,
+				844E3F8719DC05E400A00411 /* pageDot.png */,
+				844E3F8819DC05E400A00411 /* pageDot@2x.png */,
 			);
 			name = Intro;
 			path = "../../../../Cocoa Libraries/EAIntroView-master/Resources/Intro";
@@ -1877,6 +1875,7 @@
 				6BC5FEDD1625F1B0007EAD7A /* Roboto-Light.ttf in Resources */,
 				6BC5FEDF1625F1B0007EAD7A /* Roboto-LightItalic.ttf in Resources */,
 				5C69CFF919C92F7400EB406F /* NotificationBackgroundError.png in Resources */,
+				844E3F8B19DC05E400A00411 /* icon2@2x.png in Resources */,
 				5CEFA0CB19CBE1A900991EEB /* (null) in Resources */,
 				84F099541988AD840020A08F /* Default@2x.png in Resources */,
 				5CEFA0CC19CBE1A900991EEB /* (null) in Resources */,
@@ -1895,10 +1894,12 @@
 				010A993B185FA99F001DCE6B /* n_Icon_58x66.png in Resources */,
 				01C26DC11843BB22005179B7 /* stats-transfers-inactive.png in Resources */,
 				8420B3A0187AC4BF00A77E2D /* red-pin.png in Resources */,
+				844E3F8919DC05E400A00411 /* bg1@2x.png in Resources */,
 				014C432C185B9A4C00956A84 /* facebook-icon.png in Resources */,
 				5CD72EF419D3ECDC008A21D2 /* howMuch_img@2x.png in Resources */,
 				0179E9EB17F355310027526C /* flat_storyboard.storyboard in Resources */,
 				014C432A185B9A4C00956A84 /* dollar-sign.png in Resources */,
+				844E3F8E19DC05E400A00411 /* pageDot@2x.png in Resources */,
 				6B5E18D71670014100EF1990 /* Icon.png in Resources */,
 				6BDAF5CB1672BD45006D75A5 /* Icon@2x.png in Resources */,
 				6BC04B991677DE0D005C68D6 /* CHANGELOG in Resources */,
@@ -1913,6 +1914,7 @@
 				01542901190FF5CE00A15AA0 /* noochIcon-96.png in Resources */,
 				5CC1A77A19BA7A8A0000C2C7 /* Icon80.png in Resources */,
 				6BC04B9C1677DE0E005C68D6 /* LICENSE in Resources */,
+				844E3F8C19DC05E400A00411 /* icon3@2x.png in Resources */,
 				01C26DC21843BB22005179B7 /* twitter-icon.png in Resources */,
 				5C69D00119C92F7400EB406F /* NotificationBackgroundSuccessIcon.png in Resources */,
 				01C26DBE1843BB22005179B7 /* stats-profile-active.png in Resources */,
@@ -1928,6 +1930,7 @@
 				846874C3198F40EF001223B8 /* n_icon_46x54.png in Resources */,
 				84F099521988AD840020A08F /* Default-568h@2x.png in Resources */,
 				014C433D185BC7EF00956A84 /* VarelaRound-Regular.ttf in Resources */,
+				844E3F8D19DC05E400A00411 /* pageDot.png in Resources */,
 				6B8E848A17565A9E00B3D7B1 /* BackgroundMain@2x.png in Resources */,
 				8420B390187A69CC00A77E2D /* profile_picture.png in Resources */,
 				014C433B185BB9EE00956A84 /* default.css in Resources */,
@@ -1948,6 +1951,7 @@
 				5CACE20619CFF86A004AD9C4 /* 1_connectBank_bg.png in Resources */,
 				010A993A185FA99F001DCE6B /* choose-pic-icon.png in Resources */,
 				845B49A819B4722B009695AA /* Images-2.xcassets in Resources */,
+				844E3F8A19DC05E400A00411 /* icon1@2x.png in Resources */,
 				8420B39C187AC4BF00A77E2D /* blue-pin.png in Resources */,
 				8481F08F19A1CA75007F6565 /* selectRecipientIntro.png in Resources */,
 				5C69D00019C92F7400EB406F /* NotificationBackgroundSuccess@2x.png in Resources */,

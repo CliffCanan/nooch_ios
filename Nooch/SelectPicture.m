@@ -219,8 +219,8 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    imageShow = [info objectForKey:UIImagePickerControllerEditedImage];
-    imageShow = [imageShow resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(120, 120) interpolationQuality:kCGInterpolationMedium];
+    imageShow = [info objectForKey:UIImagePickerControllerOriginalImage];
+    imageShow = [imageShow resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(150, 150) interpolationQuality:kCGInterpolationMedium];
     [self.pic setImage:imageShow];
     
     [[assist shared]setTranferImage:imageShow];

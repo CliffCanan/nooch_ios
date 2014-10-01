@@ -1593,6 +1593,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     additions = [[NSMutableArray alloc]init];
     
     additions = [[[assist shared]assosAll] mutableCopy];
+    NSLog(@"%@",additions);
     if ([additions count]>=5) {
         for (int i = 0; i < [additions count] ;i++)
         {
