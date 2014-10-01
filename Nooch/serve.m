@@ -625,7 +625,6 @@ NSString *amnt;
     [responseData appendData:data];
 }
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    [self.hud hide:YES];
     NSLog(@"serve connect error: %@",self.tagName);
     if ([tagName isEqualToString:@"EncryptReqImm"]) {
         
