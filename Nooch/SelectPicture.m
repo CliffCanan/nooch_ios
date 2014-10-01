@@ -40,7 +40,7 @@
     self.trackedViewName = @"Select Picture Screen";
 }
 - (void)change_pic {
-    UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Use Facebook Picture", @"Use Camera", @"From iPhone Library", nil];
+    UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Use Facebook Picture", @"Use Camera", @"From iPhone Library", nil];
     actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
     [actionSheetObject showInView:self.view];
 }
@@ -51,7 +51,6 @@
     
     if (buttonIndex == 0)
     {
-       
         if (![self.user objectForKey:@"image"])
         {
             if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])

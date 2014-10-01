@@ -645,10 +645,10 @@
 
 - (IBAction)EmailCLicked:(id)sender
 {
-    NSString *emailTitle = @"Check out Nooch - a Free App to Pay Me Back";
+    NSString * emailTitle = @"Check out Nooch - a Free App to Pay Me Back";
 
     NSString * messageBody; // Change the message body to HTML
-    messageBody=[NSString stringWithFormat:@"<h5>\"Hi, Your friend %@ has invited you to become a member of Nooch, the simplest way to pay back friends.<br/><br/>Accept this invitation by downloading Nooch from the App Store.  You can use this Referral Code to get exclusive access:<br />  %@  <br /><br />To learn more about Nooch, check us out</h5> <a href=\"https://www.nooch.com/overview/\">here</a><br /><h6>-Team Nooch\"</h6>",[user objectForKey:@"firstName"],code.text];
+    messageBody=[NSString stringWithFormat:@"Hey there,<br/><p>You should check out Nooch, a great <strong>free iOS app</strong> that lets me pay you back anytime, anywhere.  Since I know youdon't like carrying cash around either, I thought you would love using Nooch!</p><p>You can download Nooch from the App Store - and be sure to use my Referral Code to get exclusive access:</p><p style=\"text-align:center\">  <strong>%@</strong>  </p><p>To learn more about Nooch, check it out <a href=\"https://www.nooch.com/overview/\">here</a></p><p>-%@</p>",code.text,[user objectForKey:@"firstName"]];
 
     MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
     mc.mailComposeDelegate = self;

@@ -412,7 +412,7 @@
 #pragma mark - navigation
 - (void)continue_to_signup
 {
-    if ([[[self.name_field.text componentsSeparatedByString:@" "] objectAtIndex:0]length] < 3)
+    if ([[[self.name_field.text componentsSeparatedByString:@" "] objectAtIndex:0]length] < 2)
     {
         UIAlertView* alert =[[UIAlertView alloc]initWithTitle:@"Need a Full Name" message:@"Nooch is currently only able to handle names greater than 3 letters.\n\nIf your first or last name has fewer than 3, please contact us and we'll be happy to manually create your account." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];

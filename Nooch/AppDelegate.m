@@ -184,7 +184,6 @@ void exceptionHandler(NSException *exception){
     [[UAPush shared] registerDeviceToken:deviceToken];
     [[NSUserDefaults standardUserDefaults] setValue:deviceTokens forKey:@"DeviceToken"];
     NSLog(@"DeviceToken%@",deviceToken);
-    
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error

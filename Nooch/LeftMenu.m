@@ -133,9 +133,10 @@
     
     if ([[user objectForKey:@"Photo"] length] > 0 && [user objectForKey:@"Photo"] != nil)
     {
-        NSLog(@"%@",[user objectForKey:@"Photo"]);
         [user_pic setStyleId:@"lside_userpic"];
-        [user_pic setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]] placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
+        
+        [user_pic sd_setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
+        placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
         user_pic.layer.cornerRadius = 30;
         user_pic.layer.borderWidth = 2;
         user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -414,7 +415,7 @@
         else if (indexPath.row == 1)
         {
             //contact support
-            UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Report a Bug", @"Email Nooch Support", @"Go to Support Center", nil];
+            UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:@"Support Options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Report a Bug", @"Email Nooch Support", @"Go to Support Center", nil];
             actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
             [actionSheetObject setTag:1];
             [actionSheetObject showInView:self.view];
@@ -427,7 +428,7 @@
         }
         else if (indexPath.row == 3)
         {
-            UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"User Agreement", @"Privacy Policy", nil];
+            UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"User Agreement", @"Privacy Policy", nil];
             actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
             [actionSheetObject setTag:2];
             [actionSheetObject showInView:self.view];

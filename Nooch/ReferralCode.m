@@ -98,7 +98,7 @@
     self.code_field = [[UITextField alloc] initWithFrame:CGRectMake(55, 250, 210, 60)];
     [self.code_field setBackgroundColor:[UIColor whiteColor]]; 
     [self.code_field setTextColor:kNoochGrayDark];
-    self.code_field.inputAccessoryView = [[UIView alloc] init];
+    //self.code_field.inputAccessoryView = [[UIView alloc] init];
     [self.code_field setKeyboardType:UIKeyboardTypeAlphabet];
     [self.code_field setReturnKeyType:UIReturnKeyGo];
     [self.code_field setDelegate:self];
@@ -262,9 +262,6 @@
         
         if ([[[response objectForKey:@"MemberRegistrationResult"]objectForKey:@"Result"] isEqualToString:@"Thanks for registering! Check your email to complete activation."])
         {
-          //  [[NSUserDefaults standardUserDefaults] setObject:@"asdfa" forKey:@"setPrompt"];
-         //   NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-
             NSString * udid = [[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"];
             serve * login = [serve new];
             login.Delegate = self;
