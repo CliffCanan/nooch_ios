@@ -616,7 +616,7 @@
 {
     [self cancel_photo];
    
-    UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
+    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
     chosenImage = [chosenImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(150,150) interpolationQuality:kCGInterpolationMedium];
     [self.camera setTitleColor:kNoochBlue forState:UIControlStateNormal];
 

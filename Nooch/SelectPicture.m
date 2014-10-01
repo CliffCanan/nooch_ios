@@ -111,7 +111,9 @@
             [myAlertView show];
             return;
         }
+       
         self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+          self.picker.allowsEditing = YES;
         [self presentViewController:self.picker animated:YES completion:Nil];
     }
     else if(buttonIndex == 2)
@@ -219,7 +221,7 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    imageShow = [info objectForKey:UIImagePickerControllerOriginalImage];
+    imageShow = [info objectForKey:UIImagePickerControllerEditedImage];
     imageShow = [imageShow resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(150, 150) interpolationQuality:kCGInterpolationMedium];
     [self.pic setImage:imageShow];
     
