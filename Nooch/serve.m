@@ -174,18 +174,16 @@ NSString *amnt;
     self.responseData = [[NSMutableData alloc] init];
     requestEncryption = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@", ServerUrl,@"GetEncryptedData",@"data",encodedString]]];
     [requestEncryption setHTTPMethod:@"GET"];
-    //NSLog(@"%@",requestEncryption);
     [requestEncryption setTimeoutInterval:500.0f];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestEncryption delegate:self];
     if (!connection)
         NSLog(@"connect error");
 }
--(void)getDetails:(NSString*)username{
-    //self.tagName=@"memberDetail";
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+-(void)getDetails:(NSString*)username {
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
-    requestMem=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&accessToken=%@",ServerUrl,@"GetMemberDetails",username,[defaults valueForKey:@"OAuthToken"]]]];
+    requestMem = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&accessToken=%@",ServerUrl,@"GetMemberDetails",username,[defaults valueForKey:@"OAuthToken"]]]];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestMem delegate:self];
     
     if (!connection)
@@ -656,7 +654,6 @@ NSString *amnt;
                 [home1 hide];
                 [[assist shared]setIsloginFromOther:YES];
             }
-           
 
             [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];

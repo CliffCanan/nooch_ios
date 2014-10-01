@@ -2223,8 +2223,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ce338172-4fbb-4d62-a7da-4b64e4227f50";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ce338172-4fbb-4d62-a7da-4b64e4227f50";
+				PROVISIONING_PROFILE = "b3cc5a9c-f0fc-46b8-afc5-a3cb39debaa4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b3cc5a9c-f0fc-46b8-afc5-a3cb39debaa4";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

@@ -305,7 +305,7 @@
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"email"];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-                NSLog(@"test: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
+
                 [nav_ctrl performSelector:@selector(disable)];
                 Register *reg = [Register new];
                 [self.navigationController pushViewController:reg animated:YES];
@@ -348,7 +348,7 @@
         UILabel * glyph_shield = [[UILabel alloc] initWithFrame:CGRectMake(73, 6, 13, 32)];
         [glyph_shield setBackgroundColor:[UIColor clearColor]];
         [glyph_shield setTextAlignment:NSTextAlignmentLeft];
-        [glyph_shield setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
+        [glyph_shield setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
         [glyph_shield setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
 
 
@@ -427,8 +427,8 @@
                 [menu setStyleId:@"settings2"];
                 [self.logout setStyleId:@"button_signout_5"];
             }
-            [bank_image setImage:[UIImage imageNamed:@"bank.png"]];
-            [bank_name setText:[dictResponse valueForKey:@"NO Bank Attached"]];
+      //      [bank_image setImage:[UIImage imageNamed:@"bank.png"]];
+      //      [bank_name setText:[dictResponse valueForKey:@"NO Bank Attached"]];
         }
     }
     

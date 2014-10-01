@@ -154,32 +154,6 @@
     mainView.frame = CGRectMake(9, -540, 302, 504);
     mainView.backgroundColor = [UIColor whiteColor];
     mainView.layer.masksToBounds = NO;
-   
-  /*  [UIView transitionWithView:self.navigationController.view
-                      duration:0.5
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{
-                        [self.navigationController.view addSubview:overlay];
-                    }
-                    completion:nil];  */
-
-    
-    [UIView animateWithDuration:.4
-                     animations:^{
-                         overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
-                     }];
-    
-    [UIView animateWithDuration:0.33
-                     animations:^{
-                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                         mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 5);
-                     } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:.22
-                                          animations:^{
-                                              [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-                                              mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 50);
-                                          }];
-                     }];
     
     UIView * head_container = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 302, 44)];
     head_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
@@ -222,7 +196,34 @@
     [glyphLink setTextColor:[UIColor whiteColor]];
     [btnLink addSubview:glyphLink];
     [mainView addSubview:btnLink];
+
     
+    UIButton * btnclose = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnclose.frame = CGRectMake(mainView.frame.size.width - 28,head_container.frame.origin.y - 15, 35, 35);
+    [btnclose setImage:[UIImage imageNamed:@"close_button.png"] forState:UIControlStateNormal] ;
+    [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
+    
+    [mainView addSubview:imageShow];
+    [mainView addSubview:btnclose];
+    [overlay addSubview:mainView];
+
+    [UIView animateWithDuration:.4
+                     animations:^{
+                         overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+                     }];
+    
+    [UIView animateWithDuration:0.35
+                     animations:^{
+                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                         mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 52);
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:.24
+                                          animations:^{
+                                              [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                                              mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 52);
+                                          }];
+                     }];
+
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
         mainView.frame = CGRectMake(8, 40, 304, 430);
@@ -233,15 +234,6 @@
         imageShow.frame = CGRectMake(2, 43, 300, 340);
         btnLink.frame = CGRectMake(10,mainView.frame.size.height-51, 280, 44);
     }
-     
-    UIButton * btnclose = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnclose.frame = CGRectMake(mainView.frame.size.width - 28,head_container.frame.origin.y - 15, 35, 35);
-    [btnclose setImage:[UIImage imageNamed:@"close_button.png"] forState:UIControlStateNormal] ;
-    [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
-
-    [mainView addSubview:imageShow];
-    [mainView addSubview:btnclose];
-    [overlay addSubview:mainView];
 
 }
 
