@@ -1229,7 +1229,7 @@ UIImageView *picture;
                                error:&error] objectForKey:@"Result"];
         if ([response isEqualToString:@"Already Activated."])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your email has already been verified." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"" message:@"Your email has already been verified." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
             self.disclose = NO;
             [self.list beginUpdates];
@@ -1237,12 +1237,12 @@ UIImageView *picture;
         }
         else if ([response isEqualToString:@"Not a nooch member."])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"An error occurred when attempting to fulfill this request, please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"" message:@"An error occurred when attempting to fulfill this request, please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
         }
         else if ([response isEqualToString:@"Success"])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"A verifiction link has been sent to your email." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"" message:@"A verifiction link has been sent to your email." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
             self.disclose = NO;
             [self.list beginUpdates];
@@ -1250,7 +1250,7 @@ UIImageView *picture;
         }
         else if ([response isEqualToString:@"Failure"])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"An error occurred when attempting to fulfill this request, please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"" message:@"An error occurred when attempting to fulfill this request, please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
         }
     }
@@ -1262,33 +1262,33 @@ UIImageView *picture;
                                error:&error] objectForKey:@"Result"];
         
         if ([response isEqualToString:@"Already Verified."]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your phone number has already been verified." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"" message:@"Your phone number has already been verified." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
             self.disclose = NO;
             [self.list beginUpdates];
             [self.list endUpdates];
         }
         else if ([response isEqualToString:@"Not a nooch member."]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"An error occurred when attempting to fulfill this request, please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Unexpected Error" message:@"An error occurred when attempting to fulfill this request, please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
         }
         else if ([response isEqualToString:@"Success"]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"A verifiction SMS has been sent to your phone." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Check Your Texts" message:@"A verifiction SMS has been sent to your phone." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
             self.disclose = YES;
             [self.list beginUpdates];
             [self.list endUpdates];
         }
         else if ([response isEqualToString:@"Failure"]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"An error occurred when attempting to fulfill this request, please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Unexpected Error" message:@"An error occurred when attempting to fulfill this request, please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
         }
         else if ([response isEqualToString:@"Temporarily_Blocked"]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account is currently suspended, please attempt to verify your phone number when you are no longer suspended." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Is Suspended" message:@"Your account is currently suspended, please attempt to verify your phone number when you are no longer suspended." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
         }
         else if ([response isEqualToString:@"Suspended"]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account is currently suspended, please attempt to verify your phone number when you are no longer suspended." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Is Suspended" message:@"Your account is currently suspended, please attempt to verify your phone number when you are no longer suspended." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
         }
     }

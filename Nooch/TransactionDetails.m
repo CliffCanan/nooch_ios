@@ -398,17 +398,8 @@
         [self.view addSubview:twit];
         [self.view addSubview:twit_text];
     }
-    
-    blankView = [[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
-    [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
-    UIActivityIndicatorView *actv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [actv setFrame:CGRectMake(140,(self.view.frame.size.height / 2) - 15, 40, 40)];
-    [actv startAnimating];
-    [blankView addSubview:actv];
-    [self.view addSubview:blankView];
-    [self.view bringSubviewToFront:blankView];
-    
-    serve *serveOBJ = [serve new ];
+
+    serve * serveOBJ = [serve new ];
     serveOBJ.tagName = @"tranDetail";
     [serveOBJ setDelegate:self];
     [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
@@ -941,7 +932,6 @@
     
     else if ([tagName isEqualToString:@"tranDetail"])
     {
-        [blankView removeFromSuperview];
         NSError *error;
 
         loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
