@@ -1154,39 +1154,6 @@ UIImageView *picture;
     [self.view endEditing:YES];
 }
 
-- (void) toggleArrowRotate
-{
-    if (self.disclose == YES)
-    {
-        self.disclose = NO;
-        
-        [self.glyph_arrow_email setStyleClass:@"animate_rotate"];
-        [self toggleArrowRotate];
-        
-        /*  CGAffineTransform rotation = CGAffineTransformRotate(CGAffineTransformIdentity, -M_PI/1);
-         [UIView animateWithDuration:0.4
-         animations:^{
-         self.glyph_arrow_email.transform = rotation;
-         }
-         completion:nil]; */
-    }
-    else if (self.disclose == NO)
-    {
-        self.disclose = YES;
-        
-        [self.glyph_arrow_email setStyleClass:@"animate_rotate"];
-        
-        /* CGAffineTransform rotation = CGAffineTransformMakeRotation(180 * M_PI / 180 );
-         [UIView animateWithDuration:0.4
-         animations:^{
-         self.glyph_arrow_email.transform = rotation;
-         }
-         completion:nil]; */
-    }
-
-    
-}
-
 #pragma mark - file paths
 - (NSString *)autoLogin
 {
@@ -1194,6 +1161,7 @@ UIImageView *picture;
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
 }
+
 -(void)Error:(NSError *)Error{
     [self.hud hide:YES];
    
@@ -1203,12 +1171,10 @@ UIImageView *picture;
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
     [alert show];
-    
 }
-#pragma mark - server delegation
 
+#pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     [self.hud hide:YES];
@@ -1306,7 +1272,6 @@ UIImageView *picture;
     }
     else if ([tagName isEqualToString:@"MySettingsResult"])
     {
-
         dictProfileinfo = [NSJSONSerialization
                          JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                          options:kNilOptions
@@ -1601,7 +1566,6 @@ UIImageView *picture;
         if ([[sourceData objectForKey:@"Status"] length] > 0)
         {
             NSString * letterA = [[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
-         // NSLog(@"LETTER 'A' IS %@",letterA);
 
             self.name.text = [NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
             
@@ -1660,7 +1624,7 @@ UIImageView *picture;
     else  if ([self.ServiceType isEqualToString:@"email"])
     {
         self.email.text = [sourceData objectForKey:@"Status"];
-//        NSString* email = [self.email.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        //  NSString* email = [self.email.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
         if (![[dictProfileinfo objectForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]] &&
               [dictProfileinfo objectForKey:@"RecoveryMail"] != NULL &&
@@ -1706,7 +1670,6 @@ UIImageView *picture;
 }
 
 - (void)didReceiveMemoryWarning
-
 {
     [super didReceiveMemoryWarning];
     SDImageCache *imageCache = [SDImageCache sharedImageCache];

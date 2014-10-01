@@ -261,7 +261,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
    
     [[assist shared] SaveAssos:additions.mutableCopy];
     
-    NSLog(@"ginto%d",[additions count]);
+    NSLog(@"Additions Count: %d",[additions count]);
     NSMutableArray * get_ids_input = [NSMutableArray new];
     for (NSDictionary * person in additions)
     {
@@ -546,7 +546,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     int bannerAlert = 0;
 
-    if ([[user objectForKey:@"Status"] isEqualToString:@"Suspended"])
+    if ([[user objectForKey:@"Status"] isEqualToString:@"Suspended"] ||
+        [[user objectForKey:@"Status"] isEqualToString:@"Temporarily_Blocked"])
     {
         bannerAlert++;
         [self.suspended removeFromSuperview];
@@ -1058,7 +1059,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 
-    if ([[assist shared]getSuspended])
+    if ([[assist shared]getSuspended] || [[user objectForKey:@"Status"] isEqualToString:@"Temporarily_Blocked"])
     {
         SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Account Temporarily Suspended" andMessage:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com for more information."];
         [alertView addButtonWithTitle:@"Ok" type:SIAlertViewButtonTypeCancel handler:nil];
@@ -1076,32 +1077,67 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     if ([[user valueForKey:@"Status"]isEqualToString:@"Registered"] )
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Verify Your Email" message:@"Terribly sorry, but before you send money, please just confirm your email address by clicking the link we sent to the email address you used to sign up." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-        [alert show];
+        SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Please Verify Your Email" andMessage:@"Terribly sorry, but before you can send money, please confirm your email address by clicking the link we sent to the email address you used to sign up."];
+        [alertView addButtonWithTitle:@"Ok" type:SIAlertViewButtonTypeCancel handler:nil];
+        [[SIAlertView appearance] setButtonColor:kNoochBlue];
+        
+        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+        [alertView show];
         return;
     }
     
     if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe" message:@"Please take 1 minute to validate your identity by completing your Nooch profile (just 4 fields)." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
-        [alert setTag:147];
-        [alert show];
+        SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Help Us Keep Nooch Safe" andMessage:@"Please take 1 minute to verify your identity by completing your Nooch profile (just 4 fields)."];
+        [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
+        [alertView addButtonWithTitle:@"Validate Now" type:SIAlertViewButtonTypeDefault
+                              handler:^(SIAlertView *alert) {
+                                  ProfileInfo *prof = [ProfileInfo new];
+                                  [nav_ctrl pushViewController:prof animated:YES];
+                                  [self.slidingViewController resetTopView];
+                              }];
+        [[SIAlertView appearance] setButtonColor:kNoochBlue];
+        
+        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+        [alertView show];
         return;
     }
 
     if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame Our Lawyers" message:@"To keep Nooch safe, we ask all users to verify your phone number before before sending money.\n \nIf you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
-        [alert setTag:148];
-        [alert show];
+        SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Blame The Lawyers" andMessage:@"To keep Nooch safe, we ask all users to verify a phone number before sending money.\n\nIf you've already added your phone number, just respond 'Go' to the text message we sent."];
+        [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
+        [alertView addButtonWithTitle:@"Add Phone" type:SIAlertViewButtonTypeDefault
+                              handler:^(SIAlertView *alert) {
+                                  ProfileInfo *prof = [ProfileInfo new];
+                                  [nav_ctrl pushViewController:prof animated:YES];
+                                  [self.slidingViewController resetTopView];
+                              }];
+        [[SIAlertView appearance] setButtonColor:kNoochBlue];
+        
+        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+        [alertView show];
         return;
     }
 
     if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
-        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Connect Your Bank" message:@"Adding a bank account to fund Nooch payments is lightening quick. (You don't have to type a routing or account number!)  Would you like to take care of this now?." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
-        [set setTag:201];
-        [set show];
+        SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Connect Your Bank" andMessage:@"Adding a bank account to fund Nooch payments is lightening quick. (You don't have to type a routing or account number!)\n \n Would you like to take care of this now?"];
+        [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
+        [alertView addButtonWithTitle:@"Go Now" type:SIAlertViewButtonTypeDefault
+                              handler:^(SIAlertView *alert) {
+                                  knoxWeb *knox = [knoxWeb new];
+                                  [nav_ctrl pushViewController:knox animated:YES];
+                                  [self.slidingViewController resetTopView];
+                              }];
+        [[SIAlertView appearance] setButtonColor:kNoochBlue];
+        
+        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+        [alertView show];
         return;
     }
     
@@ -1291,48 +1327,90 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
    
-    if ([[assist shared]getSuspended])
+    if ([[assist shared]getSuspended] || [[user objectForKey:@"Status"] isEqualToString:@"Temporarily_Blocked"])
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
-        [alert setTag:50];
-        [alert show];
+        SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Account Temporarily Suspended" andMessage:@"For security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com for more information."];
+        [alertView addButtonWithTitle:@"Ok" type:SIAlertViewButtonTypeCancel handler:nil];
+        [alertView addButtonWithTitle:@"Contact Nooch" type:SIAlertViewButtonTypeDefault
+                              handler:^(SIAlertView *alert) {
+                                  [self contact_support];
+                              }];
+        [[SIAlertView appearance] setButtonColor:kNoochBlue];
+        
+        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+        [alertView show];
         return;
     }
     
-    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"])
+    if ([[user valueForKey:@"Status"]isEqualToString:@"Registered"])
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Please Verify Your Email" message:@"Terribly sorry, but before you can send money, please confirm your email address by clicking the link we sent to the email address you used to sign up." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-        [alert show];
+        SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Please Verify Your Email" andMessage:@"Terribly sorry, but before you can send money, please confirm your email address by clicking the link we sent to the email address you used to sign up."];
+        [alertView addButtonWithTitle:@"Ok" type:SIAlertViewButtonTypeCancel handler:nil];
+        [[SIAlertView appearance] setButtonColor:kNoochBlue];
+        
+        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+        [alertView show];
         return;
     }
   
     if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"])
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe" message:@"Please take 1 minute to verify your identity by completing your Nooch profile (just 4 fields)." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
-        [alert setTag:147];
-        [alert show];
+        SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Help Us Keep Nooch Safe" andMessage:@"Please take 1 minute to verify your identity by completing your Nooch profile (just 4 fields)."];
+        [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
+        [alertView addButtonWithTitle:@"Validate Now" type:SIAlertViewButtonTypeDefault
+                              handler:^(SIAlertView *alert) {
+                                  ProfileInfo *prof = [ProfileInfo new];
+                                  [nav_ctrl pushViewController:prof animated:YES];
+                                  [self.slidingViewController resetTopView];
+                              }];
+        [[SIAlertView appearance] setButtonColor:kNoochBlue];
+        
+        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+        [alertView show];
         return;
     }
 
     if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Blame The Lawyers" message:@"To keep Nooch safe, we ask all users to verify a phone number before before sending money.\n \n If you've already added your phone number, just respond 'Go' to the text message we sent." delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Add Phone", nil];
-        [alert setTag:148];
-        [alert show];
+        SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Blame The Lawyers" andMessage:@"To keep Nooch safe, we ask all users to verify a phone number before sending money.\n\nIf you've already added your phone number, just respond 'Go' to the text message we sent."];
+        [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
+        [alertView addButtonWithTitle:@"Add Phone" type:SIAlertViewButtonTypeDefault
+                              handler:^(SIAlertView *alert) {
+                                  ProfileInfo *prof = [ProfileInfo new];
+                                  [nav_ctrl pushViewController:prof animated:YES];
+                                  [self.slidingViewController resetTopView];
+                              }];
+        [[SIAlertView appearance] setButtonColor:kNoochBlue];
+        
+        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+        [alertView show];
         return;
     }
 
     if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
-        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Connect Your Bank" message:@"Adding a bank account to fund Nooch payments is lightening quick. (You don't have to type a routing or account number!)\n \n Would you like to take care of this now?" delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Go Now", nil];
-        [set setTag:201];
-        [set show];
+        SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Connect Your Bank" andMessage:@"Adding a bank account to fund Nooch payments is lightening quick. (You don't have to type a routing or account number!)\n \n Would you like to take care of this now?"];
+        [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
+        [alertView addButtonWithTitle:@"Go Now" type:SIAlertViewButtonTypeDefault
+                              handler:^(SIAlertView *alert) {
+                                  knoxWeb *knox = [knoxWeb new];
+                                  [nav_ctrl pushViewController:knox animated:YES];
+                                  [self.slidingViewController resetTopView];
+                              }];
+        [[SIAlertView appearance] setButtonColor:kNoochBlue];
+        
+        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+        [alertView show];
         return;
     }
   
     if (NSClassFromString(@"SelectRecipient"))
     {
-        
         Class aClass = NSClassFromString(@"SelectRecipient");
         id instance = [[aClass alloc] init];
         
@@ -1551,7 +1629,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             if (new[@"MemberId"])
                 [AddressBookAdditions addObject:new];
         }
-        NSLog(@"%@",AddressBookAdditions);
+        NSLog(@"AddressBookAdditions: %@",AddressBookAdditions);
     }
 
     else if ([tagName isEqualToString:@"fb"])
@@ -1593,7 +1671,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     additions = [[NSMutableArray alloc]init];
     
     additions = [[[assist shared]assosAll] mutableCopy];
-    NSLog(@"%@",additions);
+    // NSLog(@"Additions: %@",additions);
     if ([additions count]>=5) {
         for (int i = 0; i < [additions count] ;i++)
         {

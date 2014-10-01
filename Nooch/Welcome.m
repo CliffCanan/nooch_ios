@@ -186,25 +186,34 @@
     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     btnLink.frame = CGRectMake(10,mainView.frame.size.height-56, 280, 50);
-    [btnLink setTitle:@"Link Now" forState:UIControlStateNormal];
+    [btnLink setTitle:@"Link Now  " forState:UIControlStateNormal];
     [btnLink addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
 
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(26, 38, 32, .2);
+    shadow.shadowOffset = CGSizeMake(0, -1);
+    NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
+
     UILabel * glyphLink = [UILabel new];
-    [glyphLink setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-    [glyphLink setFrame:CGRectMake(190, 9, 30, 28)];
-    [glyphLink setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-link"]];
+    [glyphLink setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
+    [glyphLink setFrame:CGRectMake(191, 9, 30, 28)];
+    glyphLink.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-link"]
+                                                             attributes:textAttributes1];
     [glyphLink setTextColor:[UIColor whiteColor]];
     [btnLink addSubview:glyphLink];
     [mainView addSubview:btnLink];
 
+    UIImageView * btnClose = [[UIImageView alloc] initWithFrame:self.view.frame];
+    btnClose.image = [UIImage imageNamed:@"close_button"];
+    btnClose.frame = CGRectMake(9, 6, 35, 35);
     
-    UIButton * btnclose = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnclose.frame = CGRectMake(mainView.frame.size.width - 28,head_container.frame.origin.y - 15, 35, 35);
-    [btnclose setImage:[UIImage imageNamed:@"close_button.png"] forState:UIControlStateNormal] ;
-    [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
+    UIButton * btnClose_shell = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnClose_shell.frame = CGRectMake(mainView.frame.size.width - 35, head_container.frame.origin.y - 21, 48, 46);
+    [btnClose_shell addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
+    [btnClose_shell addSubview:btnClose];
     
+    [mainView addSubview:btnClose_shell];
     [mainView addSubview:imageShow];
-    [mainView addSubview:btnclose];
     [overlay addSubview:mainView];
 
     [UIView animateWithDuration:.4
