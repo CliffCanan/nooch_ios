@@ -103,7 +103,7 @@
     EAIntroPage *page5 = [EAIntroPage page];
     page5.bgImage = [UIImage imageNamed:@"4_history_bg"];
 
-    page5.title = @"Detailed History";
+    page5.title = @"Transfer History";
     page5.titlePositionY = 118;
     
     page5.desc = @"See all your Nooch transfers and filter by type.  To see a map of your payments, swipe left or tap the map icon in the navigation bar.";
@@ -116,14 +116,14 @@
     EAIntroPage *page6 = [EAIntroPage page];
     page6.bgImage = [UIImage imageNamed:@"bg1"];
 
-    page6.title = @"Transfer History";
+    page6.title = @"Detailed History";
 
     page6.desc = @"";
 
     page6.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"title4"]];
     page5.titleIconPositionY = 120;
 
-    EAIntroView *intro = [[EAIntroView alloc] initWithFrame:CGRectMake(0, 0, 320, 504) andPages:@[page1,page2,page3,page4,page5]];
+    EAIntroView *intro = [[EAIntroView alloc] initWithFrame:CGRectMake(0, 0, 320, 504) andPages:@[page1,page2,page3,page4,page5,page6]];
     [intro setDelegate:self];
     [intro.pageControl setStyleClass:@"reallyLight_gray"];
     [intro.skipButton setStyleClass:@"reallyLight_gray"];
@@ -131,7 +131,16 @@
     
     [intro showInView:self.view animateDuration:0.4];
 }
-
+- (void)intro:(EAIntroView *)introView pageAppeared:(EAIntroPage *)page withIndex:(NSInteger)pageIndex{
+    
+    
+}
+- (void)intro:(EAIntroView *)introView pageStartScrolling:(EAIntroPage *)page withIndex:(NSInteger)pageIndex{
+    
+}
+- (void)intro:(EAIntroView *)introView pageEndScrolling:(EAIntroPage *)page withIndex:(NSInteger)pageIndex{
+    
+}
 - (void)introDidFinish:(EAIntroView *)introView
 {
     NSLog(@"introDidFinish callback");

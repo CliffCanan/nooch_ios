@@ -630,6 +630,8 @@ NSString *amnt;
         
     }
     NSLog(@"Error aya %@",error);
+    [self.Delegate Error:error];
+
     
 }
 

@@ -1365,7 +1365,21 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [serveOBJ UpDateLatLongOfUser:[[NSString alloc] initWithFormat:@"%f",loc.latitude] lng:[[NSString alloc] initWithFormat:@"%f",loc.longitude]];
     [locationManager stopUpdatingLocation];
 }
-
+-(void)Error:(NSError *)Error{
+    [self.hud hide:YES];
+    
+    
+    
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:@"Message"
+                          message:@"Error connecting to server"
+                          delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    
+    [alert show];
+    
+}
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
@@ -1579,6 +1593,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     additions = [[NSMutableArray alloc]init];
     
     additions = [[[assist shared]assosAll] mutableCopy];
+    NSLog(@"%@",additions);
     if ([additions count]>=5) {
         for (int i = 0; i < [additions count] ;i++)
         {

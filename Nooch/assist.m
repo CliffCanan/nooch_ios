@@ -430,7 +430,18 @@ static assist * _sharedInstance = nil;
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
     
 }
-
+-(void)Error:(NSError *)Error{
+    
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:@"Message"
+                          message:@"Error connecting to server"
+                          delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    
+    [alert show];
+    
+}
 -(void)listen:(NSString *)result tagName:(NSString *)tagName
 {
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound)

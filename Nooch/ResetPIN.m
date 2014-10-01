@@ -232,7 +232,20 @@
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
-
+-(void)Error:(NSError *)Error{
+ //   [self.hud hide:YES];
+    [spinner stopAnimating];
+    [spinner setHidden:YES];
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:@"Message"
+                          message:@"Error connecting to server"
+                          delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    
+    [alert show];
+    
+}
 -(void)listen:(NSString *)result tagName:(NSString *)tagName
 {
     NSError* error;

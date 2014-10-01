@@ -372,6 +372,7 @@
 
 #pragma mark - UIScrollView Delegate
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+   // NSLog(@"%d %d",self.currentPageIndex ,[self.pages count])
     if ([(id)self.delegate respondsToSelector:@selector(intro:pageStartScrolling:withIndex:)] && self.currentPageIndex < [self.pages count]) {
         [self.delegate intro:self pageStartScrolling:_pages[self.currentPageIndex] withIndex:self.currentPageIndex];
     }
@@ -395,7 +396,7 @@
     NSInteger page = (NSInteger)(offset);
     
     if (page == (_pages.count - 1) && self.swipeToExit) {
-        self.alpha = ((self.scrollView.frame.size.width*_pages.count)-self.scrollView.contentOffset.x)/self.scrollView.frame.size.width;
+       // self.alpha = ((self.scrollView.frame.size.width*_pages.count)-self.scrollView.contentOffset.x)/self.scrollView.frame.size.width;
     } else {
         [self crossDissolveForOffset:offset];
     }
