@@ -71,9 +71,9 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    return ;
     UIApplication* app = [UIApplication sharedApplication];
     app.networkActivityIndicatorVisible = NO;
+    return ;
 }
 -(void)webViewDidStartLoad:(UIWebView *) portal {
     UIApplication* app = [UIApplication sharedApplication];

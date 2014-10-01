@@ -659,7 +659,7 @@
                 self.prompt.text=@"2nd Failed Attempt";
             }
             else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))            {
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
                 [av setTag:50];
                 [av show];
                 [[assist shared] setSusPended:YES];
@@ -679,7 +679,7 @@
             }
             else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))
             {
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
                 [av setTag:50];
                 [av show];
                 [[assist shared] setSusPended:YES];
@@ -1024,9 +1024,9 @@
         if ([[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Your cash was sent successfully"])
         {
             [[assist shared] setTranferImage:nil];
-            UIImage*imgempty=[UIImage imageNamed:@""];
+            UIImage * imgempty = [UIImage imageNamed:@""];
             [[assist shared] setTranferImage:imgempty];
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your transfer was sent successfully.  The recipient must accept this payment by linking a bank account.  We will contact them and let you know when they respond." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",nil];
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Great Success" message:@"Your transfer was sent successfully.\n\nThe recipient must accept this payment by linking a bank account.  We will contact them and let you know when they respond." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",nil];
             av.tag = 1;
             [av show];
             return;
@@ -1034,9 +1034,9 @@
         if ([[[dictResultTransfer valueForKey:@"RequestMoneyFromNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Request made successfully."])
         {
             [[assist shared] setTranferImage:nil];
-            UIImage*imgempty=[UIImage imageNamed:@""];
+            UIImage * imgempty = [UIImage imageNamed:@""];
             [[assist shared] setTranferImage:imgempty];
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:@"Your Request was made successfully.  The recipient can pay this request by clicking the link we emailed to them. They do not have to download the app to pay the request." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",nil];
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Great Success" message:@"Your request was sent successfully.\n\nThe recipient can pay this request by clicking the link we emailed to them.\n\nThey do not have to download this app to pay the request (but they totally can too)." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",nil];
             av.tag=1;
             [av show];
             return;
@@ -1207,7 +1207,7 @@
         [self.first_num setBackgroundColor:[UIColor clearColor]];
         self.pin.text=@"";
 
-        UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:nil message:@"To protect your money, your Nooch account will be suspended for 24 hours if you enter another incorrect PIN." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:@"" message:@"To protect your money, your Nooch account will be suspended for 24 hours if you enter another incorrect PIN." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [suspendedAlert show];
         [suspendedAlert setTag:9];
     }
@@ -1231,7 +1231,7 @@
         [self.first_num setBackgroundColor:[UIColor clearColor]];
         self.pin.text=@"";
 
-        UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:nil message:@"We're terribly sorry, but to keep Nooch safe, your account has been suspended for 24 hours. Please contact us anytime at support@nooch.com if you believe this was a mistake or would like more information." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Contact Support",nil];
+        UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:@"" message:@"We're terribly sorry, but to keep Nooch safe, your account has been suspended for 24 hours. Please contact us anytime at support@nooch.com if you believe this was a mistake or would like more information." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Contact Support",nil];
         [suspendedAlert show];
         [suspendedAlert setTag:50];
     }
@@ -1248,13 +1248,13 @@
     else {
         NSString *resultValue = [dictResultTransfer objectForKey:@"RaiseDisputeResult"];
         if ([resultValue valueForKey:@"Result"]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"" message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
             return;
         }
         else {
             NSString *resultValue = [dictResultTransfer objectForKey:@"HandleRequestMoneyResult"];
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"" message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
             return;
         }

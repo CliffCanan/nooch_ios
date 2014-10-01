@@ -304,7 +304,7 @@
                 [self.second_num setStyleClass:@"shakePin2"];
                 [self.first_num setStyleClass:@"shakePin1"];
                 self.prompt.text=@"2nd failed attempt.";
-                UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:nil message:@"For security protection, your account will be suspended for 24 hours if you enter wrong PIN number again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:@"Please Try Again" message:@"For security protection, your account will be suspended for 24 hours if you enter wrong PIN number again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
                 [suspendedAlert show];
                 
             }

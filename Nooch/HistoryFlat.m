@@ -1513,6 +1513,8 @@ return customView;
                 
     else if (self.completed_selected == NO)
     {
+        UILabel * emptyText_Pending = nil;
+
         if (isLocalSearch)
         {
             if ([histTempPending count] > indexPath.row)
@@ -1939,14 +1941,13 @@ return customView;
             if (isEnd == YES)
             {
                 [self.list setStyleId:@"emptyTable"];
-                UILabel *name = [UILabel new];
-                [name setStyleClass:@"history_cell_textlabelEmpty"];
-                [name setStyleClass:@"history_recipientname"];
-                if (indexPath.row == 0)
-                    [name setText:@"No pending payments for you right now."];
-                else
-                    [name setText:@""];
-                [cell.contentView addSubview:name];
+                emptyText_Pending = [[UILabel alloc] initWithFrame:CGRectMake(6, 5, 308, 70)];
+                [emptyText_Pending setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
+                [emptyText_Pending setNumberOfLines:0];
+                [emptyText_Pending setText:@"No payments found for you at the moment."];
+                [emptyText_Pending setTextAlignment:NSTextAlignmentCenter];
+                [self.list addSubview:emptyText_Pending];
+
                 return cell;
             }
             else if (isStart == YES)

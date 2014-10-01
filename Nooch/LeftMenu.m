@@ -143,7 +143,7 @@
         user_pic.clipsToBounds = YES;
         [user_pic setUserInteractionEnabled:YES];
         
-        NSLog(@"Photo = %@",[user objectForKey:@"Photo"]);
+        // NSLog(@"Photo = %@",[user objectForKey:@"Photo"]);
     }
 
     if ( ([[user valueForKey:@"Status"]isEqualToString:@"Registered"]   ||
@@ -297,7 +297,7 @@
             NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
             if ([defaults boolForKey:@"hasPendingItems"] == true)
             {
-                NSLog(@"The current pending count is: %@",[defaults objectForKey:@"Pending_count"]);
+                //  NSLog(@"The current pending count is: %@",[defaults objectForKey:@"Pending_count"]);
                 [pending_notif setText:[NSString stringWithFormat:@"%@",[defaults objectForKey:@"Pending_count"]]];
                 [pending_notif setFrame:CGRectMake(212, 10, 22, 22)];
                 [pending_notif setStyleId:@"pending_notif"];
