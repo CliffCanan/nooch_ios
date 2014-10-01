@@ -14,6 +14,7 @@
 @protocol serveD
 @required
 -(void)listen:(NSString *)result tagName:(NSString *)tagName;
+-(void)Error:(NSError*)Error;
 @end
 
 @interface serve : NSObject {

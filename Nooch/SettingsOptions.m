@@ -286,7 +286,18 @@
     [av setTag:15];
     [av show];
 }
-
+-(void)Error:(NSError *)Error{
+  
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:@"Message"
+                          message:@"Error connecting to server"
+                          delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    
+    [alert show];
+    
+}
 -(void)listen:(NSString *)result tagName:(NSString *)tagName
 {
     if([tagName isEqualToString:@"logout"])

@@ -153,7 +153,18 @@
         [user setObject:@"NO" forKey:@"requiredImmediately"];
     }
 }
-
+-(void)Error:(NSError *)Error{
+   
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:@"Message"
+                          message:@"Error connecting to server"
+                          delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    
+    [alert show];
+    
+}
 
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName

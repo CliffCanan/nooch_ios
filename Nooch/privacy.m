@@ -98,7 +98,19 @@
     [[assist shared]setneedsReload:NO];
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
-
+-(void)Error:(NSError *)Error{
+    [self.hud hide:YES];
+    
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:@"Message"
+                          message:@"Error connecting to server"
+                          delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    
+    [alert show];
+    
+}
 # pragma mark - serve delegation
 -(void)listen:(NSString *)result tagName:(NSString*)tagName
 {
