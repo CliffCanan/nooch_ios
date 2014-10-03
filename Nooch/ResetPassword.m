@@ -165,6 +165,13 @@
         return;
     }
 
+    /* if (![[[assist shared]getPass] isEqualToString:self.old.text])
+    {
+        UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"This Is Awkward" message:@"That doesn't appear to be the correct password. Please try again or contact us for futher help." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    } */
+
     if ([self.pass.text isEqualToString:self.confirm.text])
     {
         if ([self.pass.text length] < 8)
@@ -206,7 +213,7 @@
         encryPassword.Delegate = self;
         encryPassword->tag = [NSNumber numberWithInteger:3];
     }
-    NSLog(@"ecrypting password");
+    // NSLog(@"ecrypting password");
 }
 
 -(void)setEncryptedPassword:(NSString *) encryptedPwd
@@ -282,6 +289,7 @@
         }
     }
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 3;
 }
@@ -365,7 +373,8 @@
     return YES;
 }
 
--(void)Error:(NSError *)Error{
+-(void)Error:(NSError *)Error
+{
     [self.hud hide:YES];
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
@@ -373,36 +382,35 @@
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
     [alert show];
-    
 }
+
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    if([tagName isEqualToString:@"ForgotPass"])
+    if ([tagName isEqualToString:@"ForgotPass"])
     {
         [self.hud hide:YES];
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Please check your email for a reset password link." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
     }
 
-    else if([tagName isEqualToString:@"resetPasswordDetails"])
+    else if ([tagName isEqualToString:@"resetPasswordDetails"])
     {
         [self.hud hide:YES];
         NSLog(@"RESULT IS: %@",result);
         BOOL isResult = [result boolValue];
-        if(isResult == 0)
+        if (isResult == 0)
         {
             isPasswordChanged = YES;
             UIAlertView * showAlertMessage = [[UIAlertView alloc] initWithTitle:@"Great Success" message:@"Your password has been changed successfully." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             [showAlertMessage show];
             [[assist shared]setPassValue:passwordReset];
-            [self.navigationController popViewControllerAnimated:YES];
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
         else
         {
-            isPasswordChanged=NO;
+            isPasswordChanged = NO;
             newchangedPass = @"";
             UIAlertView * showAlertMessage = [[UIAlertView alloc] initWithTitle:@"Incorrect Password" message:@"Please check your current password." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             [showAlertMessage show];

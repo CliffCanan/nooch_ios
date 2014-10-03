@@ -1443,21 +1443,20 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [serveOBJ UpDateLatLongOfUser:[[NSString alloc] initWithFormat:@"%f",loc.latitude] lng:[[NSString alloc] initWithFormat:@"%f",loc.longitude]];
     [locationManager stopUpdatingLocation];
 }
+
 -(void)Error:(NSError *)Error{
     [self.hud hide:YES];
-    
-    
-    
+
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
     [alert show];
     
 }
+
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
@@ -1672,10 +1671,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     additions = [[[assist shared]assosAll] mutableCopy];
     // NSLog(@"Additions: %@",additions);
-    if ([additions count]>=5) {
+
+    if ([additions count] >= 5)
+    {
         for (int i = 0; i < [additions count] ;i++)
         {
-            if ([favorites count] == 6) {
+            if ([favorites count] == 5) {
                 break;
             }
             else if (i >= [additions count]-1) {
@@ -1704,7 +1705,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             if (loc == 0){
                 continue;
             }
-            
+
             if ([[additions objectAtIndex:randomIndex] valueForKey:@"UserName"] &&
                 ![[[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]isEqualToString:@"(null)"] &&
                 ![[[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
@@ -1712,10 +1713,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 [favorites addObject:[additions objectAtIndex:randomIndex]];
             }
         }
-        
+
         [_carousel reloadData];
     }
-    
 }
 
 #pragma mark- Date From String

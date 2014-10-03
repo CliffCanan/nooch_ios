@@ -517,6 +517,14 @@
     
 }
 
+-(void)GetFavorite
+{
+    serve *favoritesOBJ = [serve new];
+    [favoritesOBJ setTagName:@"favorites"];
+    [favoritesOBJ setDelegate:self];
+    [favoritesOBJ get_favorites];
+}
+
 #pragma mark - UITableViewDataSource
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
@@ -704,10 +712,10 @@
             name = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 140, 20)];
             [name setStyleClass:@"stats_topFriends_label"];
 
-            frequency = [[UILabel alloc] initWithFrame:CGRectMake(80, 26, 140, 30)];
+            frequency = [[UILabel alloc] initWithFrame:CGRectMake(80, 26, 140, 33)];
             frequency.textColor = [Helpers hexColor:@"313233"];
             frequency.textAlignment = NSTextAlignmentLeft;
-            [frequency setFont:[UIFont fontWithName:@"Roboto-light" size:14]];
+            [frequency setFont:[UIFont fontWithName:@"Roboto-light" size:15]];
 
             if (indexPath.row == 0)
             {
@@ -754,11 +762,13 @@
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
                 frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
             }
-            
+
             [imageView setClipsToBounds:YES];
             [cell.contentView addSubview:imageView];
             [cell.contentView addSubview:name];
             [cell.contentView addSubview:frequency];
+            [self.top_friends_stats setStyleClass:@"stats_top_friends"];
+
         }
         else if (fav_count == 0)
         {
@@ -767,7 +777,7 @@
                 [self.top_friends_stats setStyleClass:@"stats_top_friends_empty"];
 
                 UILabel * emptyText = nil;
-                emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 280, 130)];
+                emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 280, 120)];
                 [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
                 [emptyText setNumberOfLines:3];
                 emptyText.text = @"Once you make or receive some payments, your top friends will show up here.";
@@ -782,31 +792,24 @@
     return cell;
 }
 
--(void)GetFavorite
-{
-    serve *favoritesOBJ = [serve new];
-    [favoritesOBJ setTagName:@"favorites"];
-    [favoritesOBJ setDelegate:self];
-    [favoritesOBJ get_favorites];
-}
-
 -(void)showMenu
 {
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
--(void)Error:(NSError *)Error{
+
+-(void)Error:(NSError *)Error
+{
     [self.hud hide:YES];
     
-    UIAlertView *alert = [[UIAlertView alloc]
+    UIAlertView * alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
     [alert show];
-    
 }
+
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {

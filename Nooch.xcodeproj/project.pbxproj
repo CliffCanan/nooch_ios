@@ -82,6 +82,8 @@
 		16E4B1CA1870A2C90099D075 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16E4B1C91870A2C90099D075 /* MessageUI.framework */; };
 		5C38468D19C56694002AEB15 /* check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C38468C19C56694002AEB15 /* check@2x.png */; };
 		5C38468F19C566DE002AEB15 /* cross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C38468E19C566DE002AEB15 /* cross@2x.png */; };
+		5C5D073219DE70CB00B07A30 /* 0_home-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C5D073019DE70CB00B07A30 /* 0_home-bg.png */; };
+		5C5D073319DE70CB00B07A30 /* home_img@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C5D073119DE70CB00B07A30 /* home_img@2x.png */; };
 		5C6917DB19B69AD90044BF2B /* nooch_logo_color.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C6917DA19B69AD90044BF2B /* nooch_logo_color.png */; };
 		5C69CFA719C777D800EB406F /* Knox_lightbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFA519C777D800EB406F /* Knox_lightbox.png */; };
 		5C69CFA819C777D800EB406F /* Knox_lightbox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFA619C777D800EB406F /* Knox_lightbox@2x.png */; };
@@ -412,6 +414,8 @@
 		16E4B1C91870A2C90099D075 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		5C38468C19C56694002AEB15 /* check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check@2x.png"; sourceTree = "<group>"; };
 		5C38468E19C566DE002AEB15 /* cross@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cross@2x.png"; sourceTree = "<group>"; };
+		5C5D073019DE70CB00B07A30 /* 0_home-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0_home-bg.png"; sourceTree = "<group>"; };
+		5C5D073119DE70CB00B07A30 /* home_img@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home_img@2x.png"; sourceTree = "<group>"; };
 		5C6917DA19B69AD90044BF2B /* nooch_logo_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nooch_logo_color.png; sourceTree = "<group>"; };
 		5C69CFA519C777D800EB406F /* Knox_lightbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Knox_lightbox.png; sourceTree = "<group>"; };
 		5C69CFA619C777D800EB406F /* Knox_lightbox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Knox_lightbox@2x.png"; sourceTree = "<group>"; };
@@ -979,10 +983,12 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				5C5D073119DE70CB00B07A30 /* home_img@2x.png */,
 				5CD72EF619D3EDD3008A21D2 /* connectBank_img@2x.png */,
 				5CD72EF119D3ECDC008A21D2 /* selectRecipient_img@2x.png */,
 				5CD72EF019D3ECDC008A21D2 /* howMuch_img@2x.png */,
 				5CD72EEF19D3ECDC008A21D2 /* history_img@2x.png */,
+				5C5D073019DE70CB00B07A30 /* 0_home-bg.png */,
 				5CACE20319CFF86A004AD9C4 /* 1_connectBank_bg.png */,
 				5CACE20419CFF86A004AD9C4 /* 2_selectRecipient_bg.png */,
 				5CACE20519CFF86A004AD9C4 /* 3_howMuch_bg.png */,
@@ -1870,6 +1876,7 @@
 				6BC5FED71625F1B0007EAD7A /* Roboto-Condensed.ttf in Resources */,
 				5C69D00319C92F7400EB406F /* NotificationBackgroundWarning.png in Resources */,
 				6BC5FED91625F1B0007EAD7A /* Roboto-CondensedItalic.ttf in Resources */,
+				5C5D073219DE70CB00B07A30 /* 0_home-bg.png in Resources */,
 				6BC5FEDB1625F1B0007EAD7A /* Roboto-Italic.ttf in Resources */,
 				01C26DBF1843BB22005179B7 /* stats-profile-inactive.png in Resources */,
 				6BC5FEDD1625F1B0007EAD7A /* Roboto-Light.ttf in Resources */,
@@ -1969,6 +1976,7 @@
 				0129D8EA1815B10D00BEAC30 /* Brandon_med.otf in Resources */,
 				01C26DAE1843BB22005179B7 /* Dollar_Symbol.png in Resources */,
 				5C69CFF819C92F7400EB406F /* .gitkeep in Resources */,
+				5C5D073319DE70CB00B07A30 /* home_img@2x.png in Resources */,
 				014C432F185B9A4C00956A84 /* n_Icon.png in Resources */,
 				01C26DB31843BB22005179B7 /* fb-icon100x100.png in Resources */,
 				01C26DB91843BB22005179B7 /* pay-back-icon.png in Resources */,
@@ -2207,8 +2215,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Baljeet Singh (HE787S955W)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Baljeet Singh (HE787S955W)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Clifford Satell (W95LAEDX2E)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Clifford Satell (W95LAEDX2E)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2231,8 +2239,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ce338172-4fbb-4d62-a7da-4b64e4227f50";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ce338172-4fbb-4d62-a7da-4b64e4227f50";
+				PROVISIONING_PROFILE = "b3cc5a9c-f0fc-46b8-afc5-a3cb39debaa4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b3cc5a9c-f0fc-46b8-afc5-a3cb39debaa4";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -2244,8 +2252,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Baljeet Singh (HE787S955W)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Baljeet Singh (HE787S955W)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2267,8 +2275,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ce338172-4fbb-4d62-a7da-4b64e4227f50";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ce338172-4fbb-4d62-a7da-4b64e4227f50";
+				PROVISIONING_PROFILE = "b67b8ed4-9799-4d56-a1ea-e5e691e41d6b";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b67b8ed4-9799-4d56-a1ea-e5e691e41d6b";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

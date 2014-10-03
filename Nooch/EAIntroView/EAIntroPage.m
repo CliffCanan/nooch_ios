@@ -27,10 +27,15 @@
         _titlePositionY  = DEFAULT_TITLE_LABEL_Y_POSITION;
         _descPositionY   = DEFAULT_DESCRIPTION_LABEL_Y_POSITION;
         _title = @"";
-        _titleFont = DEFAULT_TITLE_FONT;
+        if ([[UIScreen mainScreen] bounds].size.height < 500) {
+            _titleFont = [UIFont fontWithName:@"Roboto-regular" size:21.0];
+            _descFont = [UIFont fontWithName:@"Roboto-Light" size:16.0];
+        } else {
+            _titleFont = DEFAULT_TITLE_FONT;
+            _descFont = DEFAULT_DESCRIPTION_FONT;
+        }
         _titleColor = DEFAULT_LABEL_COLOR;
         _desc = @"";
-        _descFont = DEFAULT_DESCRIPTION_FONT;
         _descColor = DEFAULT_LABEL_COLOR;
         _showTitleView = YES;
     }

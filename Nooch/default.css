@@ -72,7 +72,7 @@
 	}
 	
 	.light_gray_text { color: #bcbec0; }
-    .reallyLight_gray { color: rgba(218,219,220,.9);
+    .reallyLight_gray { color: rgba(251,253,254,.98);
 	.red_text { color		: #c72127; }
 	.orange_text { color		: #cc9933; }
 	.yellow_text { color		: #cccc33; }
@@ -3008,7 +3008,7 @@
 		left			: 0px;
 		top				: 80px;
 		width			: 300px;
-		height			: 360px;
+		height			: 364px;
 		background-color: white;
 		row-height		: 64px;
 		separator-style : single-line;
@@ -3019,7 +3019,7 @@
         top				: 80px;
         width			: 300px;
         background-color: white;
-        row-height		: 140px;
+        row-height		: 68px;
         separator-style : none;
     }
 	.stats_header {

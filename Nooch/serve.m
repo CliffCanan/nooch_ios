@@ -1213,7 +1213,7 @@ NSString *amnt;
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     responseData = [NSMutableData data];
     NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&SubListType=%@&%@=%@&%@=%@&accessToken=%@", ServerUrl, @"GetTransactionsList", [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"], type,subType, @"pSize", [NSString stringWithFormat:@"%d",len], @"pIndex", [NSString stringWithFormat:@"%d",sPos],[defaults valueForKey:@"OAuthToken"]];
-    NSLog(@"more hist %@",type);
+    NSLog(@"more hist: %@",type);
     requestList = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlForHis]];
     
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
@@ -1227,7 +1227,7 @@ NSString *amnt;
     
     responseData = [NSMutableData data];
     NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&sublist=%@&friendName=%@&%@=%@&%@=%@&accessToken=%@", ServerUrl, @"GetTransactionsSearchList", [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"], type,subType,name, @"pSize", [NSString stringWithFormat:@"%d",len], @"pIndex", [NSString stringWithFormat:@"%d",sPos],[defaults valueForKey:@"OAuthToken"]];
-    NSLog(@"more hist %@",type);
+    NSLog(@"more hist: %@",type);
     requestList = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlForHis]];
     
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
