@@ -1447,13 +1447,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 -(void)Error:(NSError *)Error{
     [self.hud hide:YES];
 
-    UIAlertView *alert = [[UIAlertView alloc]
+    /* UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    [alert show];
+    [alert show]; */
     
 }
 

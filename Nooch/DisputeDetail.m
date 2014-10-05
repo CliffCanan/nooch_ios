@@ -294,27 +294,24 @@
     }
     return cell;
 }
--(void)Error:(NSError *)Error{
+
+-(void)Error:(NSError *)Error {
    
-    UIAlertView *alert = [[UIAlertView alloc]
+    /* UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
-    [alert show];
-    
+    [alert show]; */
 }
+
 #pragma mark - server delegation
 
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
     {
-//        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//        [Alert show];
-        
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
@@ -322,8 +319,8 @@
         [nav_ctrl performSelector:@selector(disable)];
         [nav_ctrl performSelector:@selector(reset)];
         
-        NSMutableArray*arrNav=[nav_ctrl.viewControllers mutableCopy];
-        for (int i=[arrNav count]; i>1; i--) {
+        NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
+        for (int i = [arrNav count]; i > 1; i--) {
             [arrNav removeLastObject];
         }
         

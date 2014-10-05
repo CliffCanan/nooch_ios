@@ -126,7 +126,6 @@
 
     EAIntroView *intro = [[EAIntroView alloc] initWithFrame:CGRectMake(0, 0, 320, 504) andPages:@[page1,page2,page3,page4,page5]];
     [intro setDelegate:self];
-    [intro.pageControl setStyleClass:@"reallyLight_gray"];
     [intro.skipButton setStyleClass:@"reallyLight_gray"];
     [intro setBgViewContentMode:UIViewContentModeScaleAspectFill];
     intro.showSkipButtonOnlyOnLastPage = true;
