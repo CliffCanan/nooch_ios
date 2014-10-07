@@ -153,17 +153,16 @@
         [user setObject:@"NO" forKey:@"requiredImmediately"];
     }
 }
--(void)Error:(NSError *)Error{
-   
-    UIAlertView *alert = [[UIAlertView alloc]
+
+-(void)Error:(NSError *)Error
+{
+    /*UIAlertView * alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
-    [alert show];
-    
+    [alert show]; */
 }
 
 #pragma mark - server delegation
@@ -171,23 +170,20 @@
 {
     if ([tagName isEqualToString:@"requiredImmediately"])
     {
-        NSError* error;
+        NSError * error;
         Dictresponse = [NSJSONSerialization
                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
-        NSLog(@"%@",Dictresponse);
     }
     if ([tagName isEqualToString:@"set_search"])
     {
-        NSError* error;
+        NSError * error;
         Dictresponse = [NSJSONSerialization
                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
-        NSLog(@"%@",Dictresponse);
     }
-
 }
 
 - (void)didReceiveMemoryWarning

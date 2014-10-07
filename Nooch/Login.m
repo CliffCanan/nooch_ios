@@ -56,7 +56,6 @@
         self.hud.delegate = self;
         self.hud.labelText = @"Checking Login Credentials...";
         [self.hud show:YES];
-        [spinner1 startAnimating];
 
         serve *log = [serve new];
         [log setDelegate:self];
@@ -69,7 +68,7 @@
         if ([UIAlertController class]) // for iOS 8
         {
             UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:@"Please 1 Enter Email And Password"
+                                         alertControllerWithTitle:@"Please Enter Email And Password"
                                          message:@"We can't log you in if we don't know who you are!"
                                          preferredStyle:UIAlertControllerStyleAlert];
             
@@ -87,7 +86,7 @@
         }
         else  // for iOS 7 and prior
         {
-            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Please 2 Enter Email And Password" message:@"We can't log you in if we don't know who you are!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Please Enter Email And Password" message:@"We can't log you in if we don't know who you are!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [av show];
         }
         
@@ -218,8 +217,9 @@
 
     self.stay_logged_in = [[UISwitch alloc] initWithFrame:CGRectMake(110, 302, 34, 21)];
     [self.stay_logged_in setStyleClass:@"login_switch"];
+    [self.stay_logged_in setOnTintColor:kNoochBlue];
     [self.stay_logged_in setOn: YES];
-    self.stay_logged_in.transform = CGAffineTransformMakeScale(0.75, 0.75);
+    self.stay_logged_in.transform = CGAffineTransformMakeScale(0.8, 0.8);
     [self.view addSubview:self.stay_logged_in];
     
     UILabel *remember_me = [[UILabel alloc] initWithFrame:CGRectMake(19, 303, 140, 30)];
@@ -283,8 +283,17 @@
             [emailField.text  rangeOfString:@"@"].location != NSNotFound &&
             [emailField.text  rangeOfString:@"."].location != NSNotFound)
         {
-            [spinner startAnimating];
-            [spinner setHidden:NO];
+            RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleBounce];
+            spinner1.color = [UIColor whiteColor];
+            self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+            [self.navigationController.view addSubview:self.hud];
+            
+            self.hud.mode = MBProgressHUDModeCustomView;
+            self.hud.customView = spinner1;
+            self.hud.delegate = self;
+            self.hud.labelText = @"Working hard...";
+            [self.hud show:YES];
+
             serve * forgetful = [serve new];
             forgetful.Delegate = self;
             forgetful.tagName = @"ForgotPass";
@@ -365,23 +374,24 @@
     // Close the Mail Interface
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
+
 -(void)Error:(NSError *)Error{
     [self.hud hide:YES];
     
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
-                          message:@"Error connecting to server"
+                          message:@"The internet is busy right now... please try again."
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
     [alert show];
-    
 }
+
 -(void)listen:(NSString *)result tagName:(NSString *)tagName
 {
     if([tagName isEqualToString:@"ForgotPass"])
     {
+        [self.hud hide:YES];
         if ([UIAlertController class]) // for iOS 8
         {
             UIAlertController * alert = [UIAlertController
@@ -436,11 +446,15 @@
     else if ([tagName isEqualToString:@"login"])
     {
         NSError * error;
-        [self.hud hide:YES];
         NSDictionary * loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
         NSLog(@"Result is: %@",[loginResult objectForKey:@"Result"]);
-        if ([loginResult objectForKey:@"Result"] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && ![[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil)
+        if (  [loginResult objectForKey:@"Result"] &&
+            ![[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] &&
+            ![[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] &&
+            ![[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] &&
+            ![[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] &&
+            loginResult != nil)
         {
             serve * getDetails = [serve new];
             getDetails.Delegate = self;
@@ -451,6 +465,8 @@
         else if ([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] && loginResult != nil)
         {
             [spinner stopAnimating];
+            [self.hud hide:YES];
+
             if ([UIAlertController class]) // for iOS 8
             {
                 UIAlertController * alert = [UIAlertController
@@ -479,6 +495,7 @@
         else if ([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && loginResult != nil)
         {
             [spinner stopAnimating];
+            [self.hud hide:YES];
 
             if ([UIAlertController class]) // for iOS 8
             {
@@ -516,6 +533,8 @@
         }
         else if ([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil)
         {
+            [self.hud hide:YES];
+
             if ([UIAlertController class]) // for iOS 8
             {
                 UIAlertController * alert = [UIAlertController
@@ -583,6 +602,7 @@
         else if ([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] && loginResult != nil)
         {
             [spinner stopAnimating];
+            [self.hud hide:YES];
 
             if ([UIAlertController class]) // for iOS 8
             {
@@ -690,6 +710,8 @@
     
     else if ([tagName isEqualToString:@"info"])
     {
+        [self.hud hide:YES];
+
         [[assist shared]setIsloginFromOther:NO];
         [self.navigationItem setHidesBackButton:YES];
         [nav_ctrl setNavigationBarHidden:NO];
@@ -697,20 +719,20 @@
         [user removeObjectForKey:@"Balance"];
         [self.navigationItem setBackBarButtonItem:Nil];
         [spinner stopAnimating];
+
         [UIView beginAnimations:nil context:NULL];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-        [UIView setAnimationDuration:0.65];
+        [UIView setAnimationDuration:0.7];
         [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:nav_ctrl.view cache:NO];
         [UIView commitAnimations];
-        
         [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationDelay:0.375];
+        //[UIView setAnimationDelay:0.2];
         [nav_ctrl popToRootViewControllerAnimated:NO];
-        
+
         [UIView commitAnimations];
         return;
     }
-    
+
 }
 
 #pragma mark - file paths

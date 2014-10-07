@@ -14,8 +14,6 @@
 
 @interface ReEnterPin : GAITrackedViewController<serveD,UIAlertViewDelegate,MBProgressHUDDelegate,MFMailComposeViewControllerDelegate>
 {
-    UIActivityIndicatorView*spinner;
     NSDictionary*dictResult;
-    
 }
 @end

@@ -227,11 +227,12 @@
 {
     if([status isEqualToString:@"Pin changed successfully."])
     {
-        UIAlertView *showAlertMessage = [[UIAlertView alloc] initWithTitle:@"PIN Updated" message:@"Your PIN number has been changed successfully!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        UIAlertView *showAlertMessage = [[UIAlertView alloc] initWithTitle:@"PIN Updated" message:@"Your PIN has been changed successfully." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [showAlertMessage show];
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
+
 -(void)Error:(NSError *)Error{
  //   [self.hud hide:YES];
     [spinner stopAnimating];
@@ -242,10 +243,9 @@
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
     [alert show];
-    
 }
+
 -(void)listen:(NSString *)result tagName:(NSString *)tagName
 {
     NSError* error;
@@ -340,7 +340,7 @@
         }
         else if (([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
             [av setTag:202320];
             
             [av show];
@@ -359,7 +359,7 @@
         }
         else if (([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
             [av setTag:202320];
             [av show];
             [[assist shared]setSusPended:YES];

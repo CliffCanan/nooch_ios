@@ -286,6 +286,7 @@
     [av setTag:15];
     [av show];
 }
+
 -(void)Error:(NSError *)Error{
   
     UIAlertView *alert = [[UIAlertView alloc]
@@ -298,9 +299,10 @@
     [alert show];
     
 }
+
 -(void)listen:(NSString *)result tagName:(NSString *)tagName
 {
-    if([tagName isEqualToString:@"logout"])
+    if ([tagName isEqualToString:@"logout"])
     {
         NSError* error;
         NSMutableDictionary*dictResponse = [NSJSONSerialization
@@ -325,7 +327,7 @@
         }
     }
     
-    else if([tagName isEqualToString:@"RemoveKnoxBankAccount"])
+    else if ([tagName isEqualToString:@"RemoveKnoxBankAccount"])
     {
         NSError* error;
         NSMutableDictionary*dictResponse = [NSJSONSerialization
@@ -414,7 +416,6 @@
                 }
             }
 
-            NSLog(@"ImageURL = %@",[dictResponse valueForKey:@"BankImageURL"]);
             [bank_image sd_setImageWithURL:[NSURL URLWithString:[dictResponse valueForKey:@"BankImageURL"]] placeholderImage:[UIImage imageNamed:@"bank.png"]];
             [bank_image setFrame:CGRectMake(10, 7, 50, 50)];
             bank_image.layer.cornerRadius = 5;
@@ -438,11 +439,8 @@
                 [menu setStyleId:@"settings2"];
                 [self.logout setStyleId:@"button_signout_5"];
             }
-      //      [bank_image setImage:[UIImage imageNamed:@"bank.png"]];
-      //      [bank_name setText:[dictResponse valueForKey:@"NO Bank Attached"]];
         }
     }
-    
 }
 
 #pragma mark - file paths
@@ -479,20 +477,23 @@
     {
         if (buttonIndex == 1)
         {
-            blankView=[[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
+            blankView = [[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
             [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
-            UIActivityIndicatorView*actv=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+
+            UIActivityIndicatorView * actv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
             [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
             [actv startAnimating];
             [blankView addSubview:actv];
+
             [self .view addSubview:blankView];
             [self.view bringSubviewToFront:blankView];
             [[assist shared]setisloggedout:YES];
             [timer invalidate];
-            timer=nil;
-            serve*  serveOBJ=[serve new];
-            serveOBJ.Delegate=self;
-            serveOBJ.tagName=@"logout";
+            timer = nil;
+
+            serve *  serveOBJ = [serve new];
+            serveOBJ.Delegate = self;
+            serveOBJ.tagName = @"logout";
             [serveOBJ LogOutRequest:[[NSUserDefaults standardUserDefaults ]valueForKey:@"MemberId"]];
         }
     }

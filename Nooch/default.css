@@ -9,7 +9,7 @@
 	/**  This should set the tint color throughout the entire app.	Includes things  **/
 	/**	 like color of Segmented Controls, Refresh Controls, & default iOS elements  **/
 	view { 
-		-ios-tint-color	: #3fabe1;
+		//-ios-tint-color	: #3fabe1;
 		font-family		: "Roboto";
 	}
 
@@ -2995,14 +2995,14 @@
 /*****     STATS     *****/
 /*************************/
 	table-view.stats {
-		height			: 340px;
+		height			: 347px;
 		width			: 300px;
 		top				: 80px;
 		left			: 0px;
 		background-color: white;
 		row-height		: 46px;
 		separator-style : single-line;
-		separator-color : rgba(188,190,192,.6);
+		separator-color : rgba(188,190,192,.5);
 	}
     table-view.stats_top_friends {
 		left			: 0px;
@@ -3045,9 +3045,9 @@
 		text-align		: left;
 	}
 	.stats_table_right_lable {
-		left			: 230px;
+		left			: 227px;
 		top				: 0px;
-		width			: 70px;
+		width			: 73px;
 		height			: 50px;
 		color			: #3fabe1;
 		font-family		: "Roboto";

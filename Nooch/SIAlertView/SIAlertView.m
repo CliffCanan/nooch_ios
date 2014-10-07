@@ -834,14 +834,14 @@ static SIAlertView *__si_alert_current_view;
 - (CGFloat)heightForMessageLabel
 {
     CGFloat minHeight = MESSAGE_MIN_LINE_COUNT * 40;
-    NSLog(@"1. min height is....: %f",minHeight);
+    //NSLog(@"1. min height is....: %f",minHeight);
 
     if (self.messageLabel) {
         CGFloat maxHeight = MESSAGE_MAX_LINE_COUNT * 40;
-        NSLog(@"2. LINE HEIGHT is....: %f",self.messageLabel.font.lineHeight);
+      /*  NSLog(@"2. LINE HEIGHT is....: %f",self.messageLabel.font.lineHeight);
         NSLog(@"3.  Message MAX LINE COUNT is....: %d",MESSAGE_MAX_LINE_COUNT);
         NSLog(@"4.  COMPUTED MAX HEIGHT THEN IS....: %f",maxHeight);
-     /*   #ifdef __IPHONE_7_0
+        #ifdef __IPHONE_7_0
             NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
             paragraphStyle.lineBreakMode = self.messageLabel.lineBreakMode;
             
@@ -864,8 +864,8 @@ static SIAlertView *__si_alert_current_view;
                                    constrainedToSize:CGSizeMake(CONTAINER_WIDTH - CONTENT_PADDING_LEFT * 2, maxHeight*2)
                                        lineBreakMode:self.messageLabel.lineBreakMode];
 
-            NSLog(@"7.  size.width = %f",size.width);
-            NSLog(@"7.  size.height = %f",size.height);
+            //NSLog(@"7.  size.width = %f",size.width);
+            //NSLog(@"8.  size.height = %f",size.height);
 
             return MAX(minHeight, size.height);
     //    #endif

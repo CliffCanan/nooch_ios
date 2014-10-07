@@ -45,7 +45,7 @@
 - (void)later
 {
     [self.navigationController setNavigationBarHidden:NO];
-    [UIView animateWithDuration:0.75
+    [UIView animateWithDuration:0.7
                      animations:^{
                          [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
                          [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
@@ -108,10 +108,16 @@
     [enter setFrame:CGRectMake(10, 385, 300, 60)];
     [enter setStyleClass:@"button_green"];
     
+    NSShadow * shadow1 = [[NSShadow alloc] init];
+    shadow1.shadowColor = Rgb2UIColor(26, 38, 19, .22);
+    shadow1.shadowOffset = CGSizeMake(0, -1);
+    NSDictionary * textAttributes0 = @{NSShadowAttributeName: shadow1 };
+
     UILabel * glyphBank = [UILabel new];
-    [glyphBank setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
-    [glyphBank setFrame:CGRectMake(22, 9, 30, 30)];
-    [glyphBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
+    [glyphBank setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
+    [glyphBank setFrame:CGRectMake(23, 9, 30, 30)];
+    glyphBank.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]
+                                                               attributes:textAttributes0];
     [glyphBank setTextColor:[UIColor whiteColor]];
     
     [enter addSubview:glyphBank];
@@ -195,8 +201,8 @@
     NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
 
     UILabel * glyphLink = [UILabel new];
-    [glyphLink setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
-    [glyphLink setFrame:CGRectMake(191, 9, 30, 28)];
+    [glyphLink setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
+    [glyphLink setFrame:CGRectMake(192, 9, 30, 28)];
     glyphLink.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-link"]
                                                              attributes:textAttributes1];
     [glyphLink setTextColor:[UIColor whiteColor]];
@@ -230,8 +236,10 @@
                                           animations:^{
                                               [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
                                               mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 52);
-                                          }];
-                     }];
+                                          }
+                          ];
+                     }
+     ];
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
@@ -246,8 +254,24 @@
 
 }
 
--(void)close_lightBox{
-    [overlay removeFromSuperview];
+-(void)close_lightBox
+{
+    [UIView animateWithDuration:0.15
+                     animations:^{
+                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                         mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 52);
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:.38
+                                          animations:^{
+                                              [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                                              mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 52);
+                                              overlay.alpha = 0;
+                                          } completion:^(BOOL finished) {
+                                              [overlay removeFromSuperview];
+                                          }
+                          ];
+                     }
+     ];
 }
 
 - (void)didReceiveMemoryWarning {

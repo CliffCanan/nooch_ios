@@ -110,7 +110,7 @@ NSMutableURLRequest *request;
         ReEnterPin * pin = [ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
     }
-    else if([[user objectForKey:@"requiredImmediately"] boolValue])
+    else if ([[user objectForKey:@"requiredImmediately"] boolValue])
     {
         ReEnterPin * pin = [ReEnterPin new];
         [self presentViewController:pin animated:YES completion:nil];
