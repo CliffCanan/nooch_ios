@@ -87,11 +87,14 @@
     [self.view addSubview:title];
     
     self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 245, 300, 30)];
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        [self.prompt setFrame:CGRectMake(10, 192, 300, 30)];
+    }
     [self.prompt setText:@""];
     [self.prompt setTextAlignment:NSTextAlignmentCenter];
     [self.prompt setStyleId:@"pin_instructiontext_send"];
     [self.view addSubview:self.prompt];
-    
+
     self.first_num = [[UIView alloc] initWithFrame:CGRectMake(44,134,30,30)];
     self.second_num = [[UIView alloc] initWithFrame:CGRectMake(106,134,30,30)];
     self.third_num = [[UIView alloc] initWithFrame:CGRectMake(171,134,30,30)];

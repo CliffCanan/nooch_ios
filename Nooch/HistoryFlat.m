@@ -1474,8 +1474,15 @@ return customView;
             {
                 [self.list setStyleId:@"emptyTable"];
 
-                emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, 300, 75)];
-                [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
+                if ([[UIScreen mainScreen] bounds].size.height < 500)
+                {
+                    emptyText = [[UILabel alloc] initWithFrame:CGRectMake(8, 10, 304, 56)];
+                    [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:18]];
+                    [emptyPic setFrame:CGRectMake(33, 78, 253, 256)];
+                } else {
+                    emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, 300, 72)];
+                    [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
+                }
                 [emptyText setNumberOfLines:0];
                 [emptyText setText:@"Once you make or receive a payment, come here to see all the details."];
                 [emptyText setTextAlignment:NSTextAlignmentCenter];

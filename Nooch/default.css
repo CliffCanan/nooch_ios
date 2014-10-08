@@ -508,8 +508,18 @@
 		font-weight		: medium;
 		font-size		: 22px;
 		text-align		: right;
-        padding: 100px;
+        padding         : 100px;
 	}
+    .pickerstyle_4 {
+        width			: 320px;
+        left			: 0px;
+        height          : 480px;
+        font-family		: "Roboto";
+        font-weight		: medium;
+        font-size		: 22px;
+        text-align		: right;
+        padding         : 100px;
+    }
     .back_button-icon {
         top             : 45px;
 		width			: 15px;

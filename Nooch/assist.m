@@ -155,61 +155,57 @@ static assist * _sharedInstance = nil;
     }
     if (pic == NULL) {
         [self fetchPic];
-    }else if([pic length] == 0){
+    } else if ([pic length] == 0){
         [self fetchPic];
     }
     [usr setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"] forKey:@"email"];
-    //nslog(@"user object: %@",usr);
     
      accountStore = [[ACAccountStore alloc] init];
-     if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]){
-     ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-     facebookAccount = nil;
-     NSDictionary *options = @{
-     ACFacebookAppIdKey: @"198279616971457",
-     ACFacebookPermissionsKey: @[@"email",@"user_about_me"],
-     ACFacebookAudienceKey: ACFacebookAudienceFriends
-     };
-     
-     [accountStore requestAccessToAccountsWithType:facebookAccountType
-     options:options completion:^(BOOL granted, NSError *e)
+     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
      {
-     if (granted)
-     {
-     NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
+         ACAccountType * facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+         facebookAccount = nil;
+         NSDictionary *options = @{
+                                    ACFacebookAppIdKey: @"198279616971457",
+                                    ACFacebookPermissionsKey: @[@"email",@"user_about_me"],
+                                    ACFacebookAudienceKey: ACFacebookAudienceFriends
+                                   };
      
-     facebookAccount = [accounts lastObject];
-     fbAllowed = YES;
-     //nslog(@"fb connected");
-     }
-     else
-     {
-     // Handle Failure
-     fbAllowed = NO;
-     }
-     }];
+         [accountStore requestAccessToAccountsWithType:facebookAccountType
+                                               options:options completion:^(BOOL granted, NSError *e) {
+              if (granted)
+              {
+                  NSArray * accounts = [accountStore accountsWithAccountType:facebookAccountType];
+                  facebookAccount = [accounts lastObject];
+                  fbAllowed = YES;
+                  // NSLog(@"fb connected");
+              }
+              else { // Handle Failure
+                  fbAllowed = NO;
+              }
+          }];
      
-     
-     }else{
-     fbAllowed = NO;
+     } else {
+         fbAllowed = NO;
      }
    
-     if([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]){
-     ACAccountType *twitterAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-     twitterAccount = nil;
-     [accountStore requestAccessToAccountsWithType:twitterAccountType options:nil completion:^(BOOL granted, NSError *e){
-     if (granted) {
-     NSArray *accounts = [accountStore accountsWithAccountType:twitterAccountType];
-     twitterAccount = [accounts lastObject];
-     twitterAllowed = YES;
-     }else{
-     twitterAllowed = NO;
-     }
-     }];
-     }
-  
-    timer= [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
-#pragma mark 9jan
+     /* if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
+     {
+         ACAccountType *twitterAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+         twitterAccount = nil;
+         [accountStore requestAccessToAccountsWithType:twitterAccountType options:nil completion:^(BOOL granted, NSError *e){
+             if (granted) {
+                 NSArray *accounts = [accountStore accountsWithAccountType:twitterAccountType];
+                 twitterAccount = [accounts lastObject];
+                 twitterAllowed = YES;
+             } else {
+                 twitterAllowed = NO;
+             }
+         }];
+     } */
+
+    timer = [NSTimer scheduledTimerWithTimeInterval:12 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
+    #pragma mark 9jan
     [[assist shared]setneedsReload:YES];
     [self getSettings];
     [self getAcctInfo];

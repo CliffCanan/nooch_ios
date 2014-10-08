@@ -201,7 +201,7 @@
 
     UIButton * login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [login setBackgroundColor:[UIColor clearColor]];
-    [login setTitle:@"Already a Member?  Sign in here " forState:UIControlStateNormal];
+    [login setTitle:@"Already a Member?  Sign in here  " forState:UIControlStateNormal];
     [login setFrame:CGRectMake(10, 510, 280, 30)];
     [login addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
     [login setStyleClass:@"label_small"];
@@ -401,7 +401,7 @@
                  }
              }
              NSShadow * shadow = [[NSShadow alloc] init];
-             shadow.shadowColor = Rgb2UIColor(19, 32, 38, .2);
+             shadow.shadowColor = Rgb2UIColor(19, 32, 38, .22);
              shadow.shadowOffset = CGSizeMake(0, -1);
              NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
 

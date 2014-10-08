@@ -54,7 +54,7 @@
     [self.view addSubview:req_imm];
     
     self.ri = [[UISwitch alloc] initWithFrame:CGRectMake(260, 113, 40, 40)];
-    [self.ri setTintColor:kNoochGrayLight];
+    [self.ri setOnTintColor:kNoochGreen];
     [self.ri addTarget:self action:@selector(req) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.ri];
 
@@ -89,7 +89,7 @@
     [self.view addSubview:show_search];
     
     self.search = [[UISwitch alloc] initWithFrame:CGRectMake(260, 323, 40, 40)];
-    [self.search setTintColor:kNoochGrayLight];
+    [self.search setOnTintColor:kNoochGreen];
     [self.search addTarget:self action:@selector(show_in_search) forControlEvents:UIControlEventValueChanged];
     [self.search setOn:YES];
     if ([user objectForKey:@"show_in_search"]) {

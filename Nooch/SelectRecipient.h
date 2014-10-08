@@ -21,7 +21,7 @@ BOOL isAddRequest;
 {
     NSMutableDictionary*facebook_info;
     ACAccountStore*accountStore;
-    ACAccount*facebookAccount;
+    //ACAccount*facebookAccount;
     UIView*loader;
     NSString*searchString;
     BOOL searching;

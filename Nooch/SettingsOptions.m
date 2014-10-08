@@ -45,23 +45,22 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
     [self.navigationItem setTitle:@"Settings"];
-    self.trackedViewName = @"SettingsOptions Screen";
-    
+    self.trackedViewName = @"Settings Main Screen";
     [self getBankInfo];
 }
 
--(void)getBankInfo{
-    serve*  serveOBJ=[serve new];
+-(void)getBankInfo
+{
+    serve * serveOBJ=[serve new];
     serveOBJ.Delegate=self;
     serveOBJ.tagName=@"knox_bank_info";
     [serveOBJ GetKnoxBankAccountDetails];
-
 }
 
--(void)RemoveKnoxBankAccount{
-    serve*  serveOBJ=[serve new];
+-(void)RemoveKnoxBankAccount
+{
+    serve * serveOBJ=[serve new];
     serveOBJ.Delegate=self;
     serveOBJ.tagName=@"RemoveKnoxBankAccount";
     [serveOBJ RemoveKnoxBankAccount];
@@ -70,30 +69,28 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    isBankAttached=NO;
-    if ( ![[[NSUserDefaults standardUserDefaults]
-            objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
-        isBankAttached=NO;
-        
+    isBankAttached = NO;
+    if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
+        isBankAttached = NO;
     }
     else
-        isBankAttached=YES;
+        isBankAttached = YES;
     
-    NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
+    NSDictionary * navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [UIColor whiteColor], UITextAttributeTextColor,
-                                  Rgb2UIColor(19, 32, 38, .25), UITextAttributeTextShadowColor,
+                                  Rgb2UIColor(19, 32, 38, .22), UITextAttributeTextShadowColor,
                                   [NSValue valueWithUIOffset:UIOffsetMake(0.0, -1.0)], UITextAttributeTextShadowOffset, nil];
     
     [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
     [self.navigationItem setHidesBackButton:YES];
 
-    UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
     [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
-    [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+    [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.21) forState:UIControlStateNormal];
     hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    UIBarButtonItem *menu1 = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+    UIBarButtonItem * menu1 = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu1];
 
 	// Do any additional setup after loading the view.
@@ -103,7 +100,7 @@
 
     [self.view setStyleClass:@"background_gray"];
 
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(15, 16, 250, 25)];
+    UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake(15, 16, 250, 25)];
     [title setStyleClass:@"refer_header"];
     [title setText:@"Linked Bank Account"];
     [self.view addSubview:title];
@@ -111,13 +108,19 @@
     link_bank = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [link_bank setFrame:CGRectMake(0, 125, 0, 0)];
     [link_bank setTitle:@"Link a New Bank" forState:UIControlStateNormal];
-    [link_bank setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
+    [link_bank setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
     link_bank.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
-    UILabel *glyph = [UILabel new];
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(19, 32, 38, .22);
+    shadow.shadowOffset = CGSizeMake(0, -1);
+    NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
+
+    UILabel * glyph = [UILabel new];
     [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
     [glyph setFrame:CGRectMake(25, 9, 30, 30)];
-    [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"]];
+    glyph.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"]
+                                                                 attributes:textAttributes1];
     [glyph setTextColor:[UIColor whiteColor]];
     [link_bank addSubview:glyph];
     [link_bank addTarget:self action:@selector(attach_bank) forControlEvents:UIControlEventTouchUpInside];
@@ -140,7 +143,7 @@
     [self.logout setTitleShadowColor:Rgb2UIColor(33, 34, 34, 0.24) forState:UIControlStateNormal];
     self.logout.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     
-    UILabel *glyphLogout = [UILabel new];
+    UILabel * glyphLogout = [UILabel new];
     [glyphLogout setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
     [glyphLogout setFrame:CGRectMake(60, 7, 30, 30)];
     [glyphLogout setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-sign-out"]];

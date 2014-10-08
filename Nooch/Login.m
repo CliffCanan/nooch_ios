@@ -46,7 +46,7 @@
         [self.email.text  rangeOfString:@"."].location != NSNotFound &&
         [self.password.text length] > 5)
     {
-        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+        RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
         spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
@@ -119,6 +119,7 @@
     [super viewWillAppear:animated];
      self.trackedViewName = @"Login Screen";
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -198,17 +199,23 @@
     [self.view addSubview:pass];
 
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.login setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
+    [self.login setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
     self.login.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.login setTitle:@"Log In  " forState:UIControlStateNormal];
     [self.login setFrame:CGRectMake(10, 244, 300, 60)];
     [self.login addTarget:self action:@selector(check_credentials) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"button_green"];
-    
+
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(19, 32, 38, .22);
+    shadow.shadowOffset = CGSizeMake(0, -1);
+    NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
+
     UILabel *glyphLogin = [UILabel new];
     [glyphLogin setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
     [glyphLogin setFrame:CGRectMake(180, 9, 26, 30)];
-    [glyphLogin setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-sign-in"]];
+    glyphLogin.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-sign-in"]
+                                                                 attributes:textAttributes1];
     [glyphLogin setTextColor:[UIColor whiteColor]];
     
     [self.login addSubview:glyphLogin];
@@ -262,7 +269,6 @@
         [self.stay_logged_in setFrame:CGRectMake(110, 240, 34, 21)];
     }
 }
-
 
 - (void) forgot_pass
 {
@@ -488,7 +494,7 @@
             }
             else // iOS 7 and prior
             {
-                UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Invalid Email or Password" message:@"We don't recognize that information, please double check your email is entered correctly and try again." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Invalid Email or Password" message:@"We don't recognize that information, please double check your email is entered correctly and try again." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
             }
         }

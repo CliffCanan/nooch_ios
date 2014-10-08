@@ -112,7 +112,11 @@
 
     mainView = [[UIView alloc]init];
     mainView.layer.cornerRadius = 5;
-    mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 5);
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        mainView.frame = CGRectMake(9, -500, 302, 449);
+    } else {
+        mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 5);
+    }
     mainView.backgroundColor = [UIColor whiteColor];
     mainView.layer.masksToBounds = NO;
     
@@ -124,12 +128,20 @@
     [UIView animateWithDuration:0.33
                      animations:^{
                          [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                         mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 5);
+                         if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                             mainView.frame = CGRectMake(9, 70, 302, 449);
+                         } else {
+                             mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 5);
+                         }
                      } completion:^(BOOL finished) {
                          [UIView animateWithDuration:.22
                                           animations:^{
                                               [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-                                              mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 5);
+                                              if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                                  mainView.frame = CGRectMake(9, 35, 302, 440);
+                                              } else {
+                                                  mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 5);
+                                              }
                                           }];
                      }];
  
@@ -169,7 +181,7 @@
     
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
-        mainView.frame = CGRectMake(8, 40, 302, 430);
+        mainView.frame = CGRectMake(8, 40, 302, 440);
         head_container.frame = CGRectMake(0, 0, 302, 38);
         space_container.frame = CGRectMake(0, 28, 302, 10);
         glyph_lock.frame = CGRectMake(29, 5, 22, 29);
