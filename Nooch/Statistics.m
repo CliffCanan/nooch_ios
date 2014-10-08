@@ -19,7 +19,7 @@
 @property(nonatomic) int selected;
 @property(nonatomic,retain) UIImageView *profileIcon;
 @property(nonatomic,retain) UIImageView *transfersIcon;
-@property(nonatomic,retain) UIImageView *donations;
+@property(nonatomic,retain) UIImageView *topFriends_active;
 @property(nonatomic,retain) UIButton * exportHistory;
 @property(nonatomic,strong) MBProgressHUD *hud;
 @end
@@ -118,17 +118,17 @@
     UITapGestureRecognizer * tap_profile2=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(go_2nd_panel_from_1st)];
     [inactive_profileIcon addGestureRecognizer:tap_profile2];
     
-    // Donation INACTIVE Icon
-    UIImageView * donation_inactive_icon = [UIImageView new];
-    [donation_inactive_icon setStyleClass:@"stats_circle"];
-    [donation_inactive_icon setStyleId:@"stats_circle_donations_inactive"];
-    donation_inactive_icon.userInteractionEnabled = YES;
+    // Top Friends INACTIVE Icon
+    UIImageView * topFriends_inactive_icon = [UIImageView new];
+    [topFriends_inactive_icon setStyleClass:@"stats_circle"];
+    [topFriends_inactive_icon setStyleId:@"stats_circle_donations_inactive"];
+    topFriends_inactive_icon.userInteractionEnabled = YES;
     UITapGestureRecognizer * tap_donation2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(go_3rd_panel_from_1st)];
-    [donation_inactive_icon addGestureRecognizer:tap_donation2];
+    [topFriends_inactive_icon addGestureRecognizer:tap_donation2];
     
     [self.back_transfer addSubview:self.transfersIcon];
     [self.back_transfer addSubview:inactive_profileIcon];
-    [self.back_transfer addSubview:donation_inactive_icon];
+    [self.back_transfer addSubview:topFriends_inactive_icon];
     
 
     // ----------------
@@ -136,12 +136,12 @@
     // ----------------
     
     // Transfer INACTIVE Icon
-    UIImageView * inactive_trans = [UIImageView new];
-    [inactive_trans setStyleClass:@"stats_circle"];
-    [inactive_trans setStyleId:@"stats_circle_transfers_inactive"];
-    inactive_trans.userInteractionEnabled = YES;
+    UIImageView * transfersIcon_inactive = [UIImageView new];
+    [transfersIcon_inactive setStyleClass:@"stats_circle"];
+    [transfersIcon_inactive setStyleId:@"stats_circle_transfers_inactive"];
+    transfersIcon_inactive.userInteractionEnabled = YES;
     UITapGestureRecognizer * tap_trans_from_profile = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(go_1st_panel_from_2nd)];
-    [inactive_trans addGestureRecognizer:tap_trans_from_profile];
+    [transfersIcon_inactive addGestureRecognizer:tap_trans_from_profile];
 
     // Profile ACTIVE Icon
     self.profileIcon = [UIImageView new];
@@ -150,16 +150,16 @@
     self.profileIcon.userInteractionEnabled = YES;
 
     // Donation INACTIVE Icon
-    UIImageView * inactive_donate = [UIImageView new];
-    [inactive_donate setStyleClass:@"stats_circle"];
-    [inactive_donate setStyleId:@"stats_circle_donations_inactive"];
-    inactive_donate.userInteractionEnabled = YES;
+    UIImageView * topFriends_inactive_icon2 = [UIImageView new];
+    [topFriends_inactive_icon2 setStyleClass:@"stats_circle"];
+    [topFriends_inactive_icon2 setStyleId:@"stats_circle_donations_inactive"];
+    topFriends_inactive_icon2.userInteractionEnabled = YES;
     UITapGestureRecognizer * tap_3rd_icon = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(go_3rd_panel_from_2nd)];
-    [inactive_donate addGestureRecognizer: tap_3rd_icon];
+    [topFriends_inactive_icon2 addGestureRecognizer: tap_3rd_icon];
 
-    [self.back_profile addSubview:inactive_donate];
+    [self.back_profile addSubview:topFriends_inactive_icon2];
     [self.back_profile addSubview:self.profileIcon];
-    [self.back_profile addSubview:inactive_trans];
+    [self.back_profile addSubview:transfersIcon_inactive];
 
 
     // ----------------
@@ -167,12 +167,12 @@
     // ----------------
 
     // Transfer INACTIVE Icon
-    UIImageView * transfersIcon_inactive = [UIImageView new];
-    [transfersIcon_inactive setStyleClass:@"stats_circle"];
-    [transfersIcon_inactive setStyleId:@"stats_circle_transfers_inactive"];
-    transfersIcon_inactive.userInteractionEnabled = YES;
+    UIImageView * transfersIcon_inactive2 = [UIImageView new];
+    [transfersIcon_inactive2 setStyleClass:@"stats_circle"];
+    [transfersIcon_inactive2 setStyleId:@"stats_circle_transfers_inactive"];
+    transfersIcon_inactive2.userInteractionEnabled = YES;
     UITapGestureRecognizer * tap_tran3 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(go_1st_panel_from_3rd)];
-    [transfersIcon_inactive addGestureRecognizer:tap_tran3];
+    [transfersIcon_inactive2 addGestureRecognizer:tap_tran3];
 
     // Profile INACTIVE Icon
     UIImageView * profile_inactive_icon = [UIImageView new];
@@ -182,14 +182,14 @@
     UITapGestureRecognizer * tap_profile3 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(go_2nd_panel_from_3rd)];
     [profile_inactive_icon addGestureRecognizer:tap_profile3];
 
-    // Donation ACTIVE Icon
-    self.donations = [UIImageView new];
-    [self.donations setStyleClass:@"stats_circle"];
-    [self.donations setStyleId:@"stats_circle_donations_active"];
-    self.donations.userInteractionEnabled = YES;
+    // Top Friends ACTIVE Icon
+    self.topFriends_active = [UIImageView new];
+    [self.topFriends_active setStyleClass:@"stats_circle"];
+    [self.topFriends_active setStyleId:@"stats_circle_donations_active"];
+    self.topFriends_active.userInteractionEnabled = YES;
 
-    [self.back_donation addSubview:transfersIcon_inactive];
-    [self.back_donation addSubview:self.donations];
+    [self.back_donation addSubview:transfersIcon_inactive2];
+    [self.back_donation addSubview:self.topFriends_active];
     [self.back_donation addSubview:profile_inactive_icon];
 
     
@@ -303,7 +303,7 @@
 
     [self.exportHistory setFrame:CGRectMake(60, 620, 200, 38)];
 
-    [self.donations setStyleId:@"stats_circle_donations_active"];
+    [self.topFriends_active setStyleId:@"stats_circle_donations_active"];
 
     self.selected += 2;
 
@@ -327,7 +327,7 @@
 {
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.4];
-    [self.donations setStyleId:@"stats_circle_donations_active"];
+    [self.topFriends_active setStyleId:@"stats_circle_donations_active"];
 
     self.selected++;
 
@@ -458,7 +458,7 @@
         }
         else if (self.selected == 1)
         {
-            [self.donations setStyleId:@"stats_circle_donations_active"];
+            [self.topFriends_active setStyleId:@"stats_circle_donations_active"];
             self.selected++;
 
             frame = self.back_profile.frame;
@@ -515,6 +515,14 @@
     }
     [UIView commitAnimations];
     
+}
+
+-(void)GetFavorite
+{
+    serve *favoritesOBJ = [serve new];
+    [favoritesOBJ setTagName:@"favorites"];
+    [favoritesOBJ setDelegate:self];
+    [favoritesOBJ get_favorites];
 }
 
 #pragma mark - UITableViewDataSource
@@ -581,6 +589,11 @@
     [title setStyleClass:@"stats_table_left_lable"];
     [statistic setStyleClass:@"stats_table_right_lable"];
 
+    UILabel * glyph = [[UILabel alloc] initWithFrame:CGRectMake(156, 2, 30, 44)];
+    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:22]];
+    [glyph setTextColor:kNoochBlue];
+    [glyph setTextAlignment:NSTextAlignmentCenter];
+
     if (tableView == self.profile_stats)
     {
         if (indexPath.row == 0) {
@@ -609,6 +622,9 @@
                 [statistic setText:@"0"];
             }
             [title setText:@"Posts to Twitter"];
+            [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-twitter"]];
+            [glyph setFrame:CGRectMake(144, 2, 30, 44)];
+            [cell.contentView addSubview:glyph];
         }
         else if (indexPath.row == 3) {
             if ([dictAllStats valueForKey:@"Total_Posts_To_FB"]) {
@@ -618,6 +634,8 @@
                 [statistic setText:@"0"];
             }
             [title setText:@"Posts to Facebook"];
+            [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook"]];
+            [cell.contentView addSubview:glyph];
         }
     } 
 
@@ -704,10 +722,10 @@
             name = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 140, 20)];
             [name setStyleClass:@"stats_topFriends_label"];
 
-            frequency = [[UILabel alloc] initWithFrame:CGRectMake(80, 26, 140, 30)];
+            frequency = [[UILabel alloc] initWithFrame:CGRectMake(80, 26, 140, 33)];
             frequency.textColor = [Helpers hexColor:@"313233"];
             frequency.textAlignment = NSTextAlignmentLeft;
-            [frequency setFont:[UIFont fontWithName:@"Roboto-light" size:14]];
+            [frequency setFont:[UIFont fontWithName:@"Roboto-light" size:15]];
 
             if (indexPath.row == 0)
             {
@@ -754,11 +772,13 @@
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
                 frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
             }
-            
+
             [imageView setClipsToBounds:YES];
             [cell.contentView addSubview:imageView];
             [cell.contentView addSubview:name];
             [cell.contentView addSubview:frequency];
+            [self.top_friends_stats setStyleClass:@"stats_top_friends"];
+
         }
         else if (fav_count == 0)
         {
@@ -767,7 +787,7 @@
                 [self.top_friends_stats setStyleClass:@"stats_top_friends_empty"];
 
                 UILabel * emptyText = nil;
-                emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 280, 130)];
+                emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 280, 120)];
                 [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
                 [emptyText setNumberOfLines:3];
                 emptyText.text = @"Once you make or receive some payments, your top friends will show up here.";
@@ -782,31 +802,24 @@
     return cell;
 }
 
--(void)GetFavorite
-{
-    serve *favoritesOBJ = [serve new];
-    [favoritesOBJ setTagName:@"favorites"];
-    [favoritesOBJ setDelegate:self];
-    [favoritesOBJ get_favorites];
-}
-
 -(void)showMenu
 {
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
--(void)Error:(NSError *)Error{
+
+-(void)Error:(NSError *)Error
+{
     [self.hud hide:YES];
     
-    UIAlertView *alert = [[UIAlertView alloc]
+    UIAlertView * alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
     [alert show];
-    
 }
+
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
@@ -991,7 +1004,6 @@
 {
     [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
     [super viewWillDisappear:animated];
-
 }
 
 - (void)didReceiveMemoryWarning

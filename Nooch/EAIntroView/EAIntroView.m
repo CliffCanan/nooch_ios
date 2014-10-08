@@ -52,7 +52,7 @@
 #pragma mark - Private
 
 - (void)applyDefaultsToSelfDuringInitializationWithframe:(CGRect)frame pages:(NSArray *)pagesArray {
-    self.swipeToExit = YES;
+    self.swipeToExit = NO;
     self.easeOutCrossDisolves = YES;
     self.hideOffscreenPages = YES;
     self.titleViewY = 20.0f;
@@ -353,8 +353,8 @@
     [self addSubview:self.pageControl];
     
     self.skipButton = [[UIButton alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width - 80, self.pageControl.frame.origin.y - ((30 - self.pageControl.frame.size.height)/2), 80, 30)];
-    [self.skipButton setTitle:NSLocalizedString(@"Skip", nil) forState:UIControlStateNormal];
-    [self.skipButton setTitleShadowColor:Rgb2UIColor(31, 32, 33, 0.35) forState:UIControlStateNormal];
+    [self.skipButton setTitle:NSLocalizedString(@"Done", nil) forState:UIControlStateNormal];
+    [self.skipButton setTitleShadowColor:Rgb2UIColor(31, 32, 33, 0.4) forState:UIControlStateNormal];
     self.skipButton.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [self.skipButton addTarget:self action:@selector(skipIntroduction) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.skipButton];
@@ -396,7 +396,7 @@
     NSInteger page = (NSInteger)(offset);
     
     if (page == (_pages.count - 1) && self.swipeToExit) {
-       // self.alpha = ((self.scrollView.frame.size.width*_pages.count)-self.scrollView.contentOffset.x)/self.scrollView.frame.size.width;
+        self.alpha = ((self.scrollView.frame.size.width*_pages.count)-self.scrollView.contentOffset.x)/self.scrollView.frame.size.width;
     } else {
         [self crossDissolveForOffset:offset];
     }

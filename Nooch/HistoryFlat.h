@@ -28,6 +28,7 @@ serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate,M
     BOOL ishistLoading;
     BOOL isEnd;
     BOOL isStart;
+    int totalDisplayedTransfers_completed;
     int  index;
     BOOL isFilter;
     BOOL isSearch;

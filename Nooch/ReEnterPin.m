@@ -17,8 +17,7 @@
 @property(nonatomic,retain) UIView *fourth_num;
 @property(nonatomic,strong) UILabel *prompt;
 @property(nonatomic,strong) UITextField *pin;
-@property(nonatomic,strong)NSString*pinNumber;
-@property(nonatomic,strong) MBProgressHUD *hud;
+@property(nonatomic,strong) NSString*pinNumber;
 
 @end
 
@@ -38,12 +37,12 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 }
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    
-  
+
     self.trackedViewName = @"ReEnter Pin Screen";
 
     UIImageView *logoicon = [UIImageView new];
@@ -89,11 +88,13 @@
     [self.view addSubview:self.third_num];
     [self.view addSubview:self.fourth_num];
 }
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
     [self.prompt removeFromSuperview];
     int len = [textField.text length] + [string length];
+
     if([string length] == 0) //deleting
     {
         switch (len) {
@@ -143,22 +144,12 @@
         }
     }
     
-    if (len==4)
+    if (len == 4)
     {
-       /* RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
-        spinner1.color = [UIColor whiteColor];
-        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-        [self.navigationController.view addSubview:self.hud];
+       // spinner = [[UILabel alloc] initWithFrame:CGRectMake(20, 132, 280, 50)];
         
-        self.hud.mode = MBProgressHUDModeCustomView;
-        self.hud.customView = spinner1;
-        self.hud.delegate = self;
-        self.hud.labelText = @"Validating your PIN";
-        [self.hud show:YES];
-        [spinner1 startAnimating]; */
-        
-        self.pinNumber=[NSString stringWithFormat:@"%@%@",textField.text,string];
-        serve *pin = [serve new];
+        self.pinNumber = [NSString stringWithFormat:@"%@%@",textField.text,string];
+        serve * pin = [serve new];
         pin.Delegate = self;
         pin.tagName = @"ValidatePinNumber";
         [pin getEncrypt:[NSString stringWithFormat:@"%@",self.pinNumber]];
@@ -166,117 +157,68 @@
     }
     return YES;
 }
--(void)Error:(NSError *)Error{
-    [self.hud hide:YES];
-    
-    UIAlertView *alert = [[UIAlertView alloc]
+
+-(void)Error:(NSError *)Error
+{
+    /*UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
-    [alert show];
-    
+    [alert show]; */
 }
 
 -(void)listen:(NSString *)result tagName:(NSString *)tagName
 {
-    
-    NSError* error;
+
+    /*UIActivityIndicatorView * spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [spinner setFrame:CGRectMake(140, (self.view.frame.size.height / 2) - 15, 40, 40)];
+    [spinner setHidesWhenStopped:YES];
+    [spinner setColor:kNoochBlue];*/
+
+    NSError * error;
     
     dictResult = [NSJSONSerialization
                  JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                  options:kNilOptions
                  error:&error];
-    
-    NSLog(@"%@",dictResult);
-    
-    if ([tagName isEqualToString:@"infopin"])
+
+    if ([tagName isEqualToString:@"ValidatePinNumber"])
     {
-        [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"pincheck"];
-        if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
-        {
-//            UIAlertView *Alert = [[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"Looks like you have logged in from a different device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil , nil];
-//            
-//            [Alert show];
-            
-            [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-            
-            NSLog(@"Invalid Access Token for Member: %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]);
-            [timer invalidate];
-            
-            [self dismissViewControllerAnimated:YES completion:^{
-                [nav_ctrl performSelector:@selector(disable)];
-                Register *reg = [Register new];
-                [nav_ctrl pushViewController:reg animated:YES];
-                me = [core new];
-            }];
-            
-        }
-        else if ([[dictResult valueForKey:@"Status"]isEqualToString:@"Suspended"])
-        {
-            [spinner stopAnimating];
-            [spinner setHidden:YES];
-            [self.fourth_num setBackgroundColor:[UIColor clearColor]];
-            [self.third_num setBackgroundColor:[UIColor clearColor]];
-            [self.second_num setBackgroundColor:[UIColor clearColor]];
-            [self.first_num setBackgroundColor:[UIColor clearColor]];
-            self.pin.text=@"";
-            
-            UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"You account has been suspended." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-            [alert show];
-            
-            [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-            
-            [timer invalidate];
-            [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
-            Register *reg = [Register new];
-            [nav_ctrl pushViewController:reg animated:YES];
-            me = [core new];
-            return;
-        }
-        else
-        {
-            serve *pin = [serve new];
-            pin.Delegate = self;
-            pin.tagName = @"ValidatePinNumber";
-            [pin getEncrypt:[NSString stringWithFormat:@"%@",self.pinNumber]];
-        }
-    }
-    else if ([tagName isEqualToString:@"ValidatePinNumber"]) {
-        [spinner stopAnimating];
-        [spinner setHidden:YES];
-        NSString *encryptedPIN=[dictResult valueForKey:@"Status"];
+        //[spinner stopAnimating];
+        //[spinner setHidden:YES];
+        //[spinner startAnimating];
+        //[self.view addSubview:spinner];
+
+        NSString * encryptedPIN = [dictResult valueForKey:@"Status"];
         
-        serve *checkValid = [serve new];
+        serve * checkValid = [serve new];
         checkValid.tagName = @"checkValid";
         checkValid.Delegate = self;
         [checkValid ValidatePinNumberToEnterForEnterForeground:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] pin:encryptedPIN];
     }
-#pragma mark 9jan 
-    else if ([tagName isEqualToString:@"checkValid"]){
-        if([[dictResult objectForKey:@"Result"] isEqualToString:@"Success"]){
-            NSLog(@"%@",user);
-            if ([user objectForKey:@"requiredImmediately"] == NULL || [[user objectForKey:@"requiredImmediately"] isKindOfClass:[NSNull class]]) {
-                [spinner stopAnimating];
-                [spinner setHidden:YES];
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"FYI" message:@"The Require Immediately function is an added security feature to prompt you for your PIN whenever you enter Nooch. Would you like to keep this on or turn it off? You can change this setting later in the PIN Settings page." delegate:self cancelButtonTitle:@"Turn Off" otherButtonTitles:@"Keep On", nil];
+    
+    else if ([tagName isEqualToString:@"checkValid"])
+    {
+        //[spinner stopAnimating];
+        //[spinner setHidden:YES];
+        //[spinner removeFromSuperview];
+        
+        if ([[dictResult objectForKey:@"Result"] isEqualToString:@"Success"])
+        {
+            if ( [user objectForKey:@"requiredImmediately"] == NULL ||
+                [[user objectForKey:@"requiredImmediately"] isKindOfClass:[NSNull class]])
+            {
+                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Require PIN Setting" message:@"The Require Immediately function is an added security feature that prompts you for your PIN whenever you open Nooch.\n\nWould you like to keep this on or turn it off? You can change this setting in Settings." delegate:self cancelButtonTitle:@"Turn Off" otherButtonTitles:@"Keep On", nil];
                 [av setTag:1];
                 [av show];
                 return;
             }
             else
             {
-                [spinner stopAnimating];
-                [spinner setHidden:YES];
-              
                 [self dismissViewControllerAnimated:YES completion:nil];
-                
+
                 return;
             }
         }
@@ -287,8 +229,9 @@
             [self.third_num setBackgroundColor:[UIColor clearColor]];
             [self.second_num setBackgroundColor:[UIColor clearColor]];
             [self.first_num setBackgroundColor:[UIColor clearColor]];
-            self.pin.text=@"";
-            if([[dictResult objectForKey:@"Result"] isEqualToString:@"Invalid Pin"])
+            self.pin.text = @"";
+
+            if ([[dictResult objectForKey:@"Result"] isEqualToString:@"Invalid Pin"])
             {
                 AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
                 self.prompt.textColor = kNoochRed;
@@ -300,15 +243,11 @@
                 [self.third_num setStyleClass:@"shakePin3"];
                 [self.second_num setStyleClass:@"shakePin2"];
                 [self.first_num setStyleClass:@"shakePin1"];
-                self.prompt.text=@"Incorrect Pin - Please Try Again";
+                self.prompt.text = @"Incorrect Pin - Please Try Again";
                 [self.view addSubview:self.prompt];
-                [spinner stopAnimating];
-                [spinner setHidden:YES];
             }
             else if ([[dictResult objectForKey:@"Result"]isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."])
             {
-                [spinner stopAnimating];
-                [spinner setHidden:YES];
                 self.fourth_num.layer.borderColor = kNoochRed.CGColor;
                 self.third_num.layer.borderColor = kNoochRed.CGColor;
                 self.second_num.layer.borderColor = kNoochRed.CGColor;
@@ -317,14 +256,14 @@
                 [self.third_num setStyleClass:@"shakePin3"];
                 [self.second_num setStyleClass:@"shakePin2"];
                 [self.first_num setStyleClass:@"shakePin1"];
-                self.prompt.text=@"2nd failed attempt.";
-                UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:@"Please Try Again" message:@"For security protection, your account will be suspended for 24 hours if you enter wrong PIN number again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                self.prompt.text = @"2nd failed attempt.";
+                UIAlertView * suspendedAlert = [[UIAlertView alloc]initWithTitle:@"Please Try Again" message:@"For security protection, your account will be suspended for 24 hours if you enter an incorrect PIN again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
                 [suspendedAlert show];
-                
             }
         }
     }
 }
+
 #pragma mark - file paths
 - (NSString *)autoLogin{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -332,38 +271,20 @@
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
     
 }
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (alertView.tag==202320 && buttonIndex==0) {
-        [nav_ctrl popToRootViewControllerAnimated:YES];
-    }
-    else if (alertView.tag == 202320 && buttonIndex == 1) {
-        if (![MFMailComposeViewController canSendMail]){
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-            [av show];
-            return;
-        }
-        MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
-        mailComposer.mailComposeDelegate = self;
-        mailComposer.navigationBar.tintColor=[UIColor whiteColor];
-        
-        [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-        
-        [mailComposer setMessageBody:@"" isHTML:NO];
-        [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
-        [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
-        [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-        [self presentViewController:mailComposer animated:YES completion:nil];
-    }
-    if (alertView.tag == 1) {
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 1)
+    {
         if (buttonIndex == 0) {
-            serve*serveOBJ=[serve new];
+            serve * serveOBJ = [serve new];
             [serveOBJ setTagName:@"requiredImmediately"];
             [serveOBJ setDelegate:self];
             [serveOBJ SaveImmediateRequire:NO];
             [user setObject:@"NO" forKey:@"requiredImmediately"];
-        }else{
-            serve*serveOBJ=[serve new];
+        }
+        else{
+            serve * serveOBJ = [serve new];
             [serveOBJ setTagName:@"requiredImmediately"];
             [serveOBJ setDelegate:self];
             [serveOBJ SaveImmediateRequire:YES];
@@ -372,46 +293,10 @@
         NSLog(@"%@",user);
         //reqImm = NO;
         
-        // [navCtrl popToRootViewControllerAnimated:NO];
         [self dismissViewControllerAnimated:YES completion:nil];
-        //  [self dismissModalViewControllerAnimated:YES];
     }
 }
-- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
-{
-    UIAlertView *alert = [[UIAlertView alloc] init];
-    [alert addButtonWithTitle:@"OK"];
-    [alert setDelegate:nil];
-    switch (result)
-    {
-        case MFMailComposeResultCancelled:
-            NSLog(@"Mail cancelled");
-            break;
-        case MFMailComposeResultSaved:
-            NSLog(@"Mail saved");
-            
-            [alert setTitle:@"Mail saved"];
-            [alert show];
-            break;
-        case MFMailComposeResultSent:
-            NSLog(@"Mail sent");
-            
-            [alert setTitle:@"Mail sent"];
-            [alert show];
-            
-            break;
-        case MFMailComposeResultFailed:
-            [alert setTitle:[error localizedDescription]];
-            [alert show];
-            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
-            break;
-        default:
-            break;
-    }
-    
-    // Close the Mail Interface
-    [self dismissViewControllerAnimated:YES completion:NULL];
-}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

@@ -281,13 +281,12 @@ NSString *amnt;
     [[assist shared]setSusPended:NO];
     ServiceType=@"Login";
    
-     [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"pincheck"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"pincheck"];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 
     self.responseData = [[NSMutableData alloc] init];
     if (isRem) {
         requestLogin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&rememberMeEnabled=true&lat=%f&lng=%f&udid=%@&devicetoken=%@", ServerUrl, @"LoginRequest", @"name", email, @"pwd", pass,lat,lng,[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"],[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"]]]];
-        
     }
     else
     {
@@ -770,14 +769,19 @@ NSString *amnt;
     }
     else if ([tagName isEqualToString:@"login"]) {
         //converting the result into Dictionary
-        NSError* error;
-        NSDictionary *result = [NSJSONSerialization
+        NSError * error;
+        NSDictionary * result = [NSJSONSerialization
                                 JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                                 options:kNilOptions
                                 error:&error];
         NSLog(@"dict object %@",[result objectForKey:@"Result"]);
         //getting the token
-        if([result objectForKey:@"Result"] && ![[result objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] && ![[result objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"]&& ![[result objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && result != nil){
+        if ([result objectForKey:@"Result"] &&
+           ![[result objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] &&
+           ![[result objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] &&
+           ![[result objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] &&
+           result != nil)
+        {
             NSString * token = [result objectForKey:@"Result"];
             //storing the token
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
@@ -1213,7 +1217,7 @@ NSString *amnt;
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     responseData = [NSMutableData data];
     NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&SubListType=%@&%@=%@&%@=%@&accessToken=%@", ServerUrl, @"GetTransactionsList", [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"], type,subType, @"pSize", [NSString stringWithFormat:@"%d",len], @"pIndex", [NSString stringWithFormat:@"%d",sPos],[defaults valueForKey:@"OAuthToken"]];
-    NSLog(@"more hist %@",type);
+    NSLog(@"more hist: %@",type);
     requestList = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlForHis]];
     
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
@@ -1227,7 +1231,7 @@ NSString *amnt;
     
     responseData = [NSMutableData data];
     NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&sublist=%@&friendName=%@&%@=%@&%@=%@&accessToken=%@", ServerUrl, @"GetTransactionsSearchList", [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"], type,subType,name, @"pSize", [NSString stringWithFormat:@"%d",len], @"pIndex", [NSString stringWithFormat:@"%d",sPos],[defaults valueForKey:@"OAuthToken"]];
-    NSLog(@"more hist %@",type);
+    NSLog(@"more hist: %@",type);
     requestList = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlForHis]];
     
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
@@ -1430,7 +1434,6 @@ NSString *amnt;
     else
         rm=@"false";
     NSString *urlString = [NSString stringWithFormat:@"%@/SaveImmediateRequire?memberId=%@&IsRequiredImmediatley=%@&accessToken=%@",ServerUrl,memId,rm,[defaults valueForKey:@"OAuthToken"]];
-    NSLog(@"%@",urlString);
     NSURL *url = [NSURL URLWithString:urlString];
     
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -1447,7 +1450,7 @@ NSString *amnt;
     NSString * memId = [defaults objectForKey:@"MemberId"];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSString *urlString = [NSString stringWithFormat:@"%@/GetsingleTransactionDetail?MemberId=%@&transactionId=%@&accessToken=%@",ServerUrl,memId,transactionId,[defaults valueForKey:@"OAuthToken"]];
-    NSLog(@"%@",urlString);
+    //NSLog(@"%@",urlString);
     NSURL *url = [NSURL URLWithString:urlString];
     
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -1464,7 +1467,6 @@ NSString *amnt;
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     
     NSString *urlString = [NSString stringWithFormat:@"%@/ReferalCodeRequest?userName=%@",ServerUrl,email];
-    NSLog(@"%@",urlString);
     NSURL *url = [NSURL URLWithString:urlString];
     
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -1626,7 +1628,7 @@ NSString *amnt;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     NSString * memId = [defaults objectForKey:@"MemberId"];
     NSString *urlString = [NSString stringWithFormat:@"%@/SaveMembersFBId?MemberId=%@&MemberfaceBookId=%@&accessToken=%@",ServerUrl,memId,fb_id,[defaults valueForKey:@"OAuthToken"]];
-    NSLog(@"%@",urlString);
+    //NSLog(@"%@",urlString);
     NSURL *url = [NSURL URLWithString:urlString];
     
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -1643,8 +1645,7 @@ NSString *amnt;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     NSString * memId = [defaults objectForKey:@"MemberId"];
     NSString *urlString = [NSString stringWithFormat:@"%@/GetKnoxBankAccountDetails?memberId=%@&accessToken=%@",ServerUrl,memId,[defaults valueForKey:@"OAuthToken"]];
-    NSLog(@"%@",urlString);
-    
+
     NSURL *url = [NSURL URLWithString:urlString];
     
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -1661,7 +1662,6 @@ NSString *amnt;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     NSString * memId = [defaults objectForKey:@"MemberId"];
     NSString *urlString = [NSString stringWithFormat:@"%@/RemoveKnoxBankAccount?memberId=%@&accessToken=%@",ServerUrl,memId,[defaults valueForKey:@"OAuthToken"]];
-    NSLog(@"%@",urlString);
     
     NSURL *url = [NSURL URLWithString:urlString];
     
@@ -1679,7 +1679,6 @@ NSString *amnt;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     NSString * memId = [defaults objectForKey:@"MemberId"];
     NSString *urlString = [NSString stringWithFormat:@"%@/GetMostFrequentFriends?MemberId=%@&accessToken=%@",ServerUrl,memId,[defaults valueForKey:@"OAuthToken"]];
-    NSLog(@"%@",urlString);
     
     NSURL *url = [NSURL URLWithString:urlString];
     

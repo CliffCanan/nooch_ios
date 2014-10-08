@@ -45,7 +45,7 @@
 - (void)later
 {
     [self.navigationController setNavigationBarHidden:NO];
-    [UIView animateWithDuration:0.75
+    [UIView animateWithDuration:0.7
                      animations:^{
                          [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
                          [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
@@ -108,10 +108,16 @@
     [enter setFrame:CGRectMake(10, 385, 300, 60)];
     [enter setStyleClass:@"button_green"];
     
+    NSShadow * shadow1 = [[NSShadow alloc] init];
+    shadow1.shadowColor = Rgb2UIColor(26, 38, 19, .22);
+    shadow1.shadowOffset = CGSizeMake(0, -1);
+    NSDictionary * textAttributes0 = @{NSShadowAttributeName: shadow1 };
+
     UILabel * glyphBank = [UILabel new];
-    [glyphBank setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
-    [glyphBank setFrame:CGRectMake(22, 9, 30, 30)];
-    [glyphBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
+    [glyphBank setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
+    [glyphBank setFrame:CGRectMake(23, 9, 30, 30)];
+    glyphBank.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]
+                                                               attributes:textAttributes0];
     [glyphBank setTextColor:[UIColor whiteColor]];
     
     [enter addSubview:glyphBank];
@@ -186,25 +192,34 @@
     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     btnLink.frame = CGRectMake(10,mainView.frame.size.height-56, 280, 50);
-    [btnLink setTitle:@"Link Now" forState:UIControlStateNormal];
+    [btnLink setTitle:@"Link Now  " forState:UIControlStateNormal];
     [btnLink addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
 
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(26, 38, 32, .2);
+    shadow.shadowOffset = CGSizeMake(0, -1);
+    NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
+
     UILabel * glyphLink = [UILabel new];
-    [glyphLink setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-    [glyphLink setFrame:CGRectMake(190, 9, 30, 28)];
-    [glyphLink setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-link"]];
+    [glyphLink setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
+    [glyphLink setFrame:CGRectMake(192, 9, 30, 28)];
+    glyphLink.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-link"]
+                                                             attributes:textAttributes1];
     [glyphLink setTextColor:[UIColor whiteColor]];
     [btnLink addSubview:glyphLink];
     [mainView addSubview:btnLink];
 
+    UIImageView * btnClose = [[UIImageView alloc] initWithFrame:self.view.frame];
+    btnClose.image = [UIImage imageNamed:@"close_button"];
+    btnClose.frame = CGRectMake(9, 6, 35, 35);
     
-    UIButton * btnclose = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnclose.frame = CGRectMake(mainView.frame.size.width - 28,head_container.frame.origin.y - 15, 35, 35);
-    [btnclose setImage:[UIImage imageNamed:@"close_button.png"] forState:UIControlStateNormal] ;
-    [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
+    UIButton * btnClose_shell = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnClose_shell.frame = CGRectMake(mainView.frame.size.width - 35, head_container.frame.origin.y - 21, 48, 46);
+    [btnClose_shell addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
+    [btnClose_shell addSubview:btnClose];
     
+    [mainView addSubview:btnClose_shell];
     [mainView addSubview:imageShow];
-    [mainView addSubview:btnclose];
     [overlay addSubview:mainView];
 
     [UIView animateWithDuration:.4
@@ -221,8 +236,10 @@
                                           animations:^{
                                               [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
                                               mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 52);
-                                          }];
-                     }];
+                                          }
+                          ];
+                     }
+     ];
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
@@ -237,8 +254,24 @@
 
 }
 
--(void)close_lightBox{
-    [overlay removeFromSuperview];
+-(void)close_lightBox
+{
+    [UIView animateWithDuration:0.15
+                     animations:^{
+                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                         mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 52);
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:.38
+                                          animations:^{
+                                              [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                                              mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 52);
+                                              overlay.alpha = 0;
+                                          } completion:^(BOOL finished) {
+                                              [overlay removeFromSuperview];
+                                          }
+                          ];
+                     }
+     ];
 }
 
 - (void)didReceiveMemoryWarning {

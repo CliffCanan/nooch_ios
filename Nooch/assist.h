@@ -38,10 +38,9 @@ NSString *histSearching;
     BOOL isMutipleRequest;
     BOOL isSecondBankVerified;
     BOOL isPOP;
-     BOOL isLoginFromOther;
+    BOOL isLoginFromOther;
     NSString*passValue;
     NSArray*ArrAllContacts;
-    
 }
 //@property(nonatomic,retain)NSTimer*timer;
 
