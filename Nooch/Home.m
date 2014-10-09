@@ -1171,7 +1171,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         } completion:^(BOOL finished){
         
                              [favorite setObject:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
-                             NSLog(@"%@",favorite);
+                             // NSLog(@"%@",favorite);
                              isFromHome = YES;
                              HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
                              [self.navigationController pushViewController:trans animated:YES];
@@ -1637,7 +1637,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                      options:kNilOptions
                                      error:&error];
-        NSLog(@"fb storing %@",temp);
+        NSLog(@"temp string %@",temp);
     }
     
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
@@ -1669,7 +1669,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     additions = [[NSMutableArray alloc]init];
     
     additions = [[[assist shared]assosAll] mutableCopy];
-     NSLog(@"Additions: %@",additions);
+    // NSLog(@"Additions: %@",additions);
 
     if ([additions count] >= 5)
     {
@@ -1727,9 +1727,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [dateFormatter setPMSymbol:@"PM"];
     dateFormatter.dateFormat = @"MM/dd/yyyy hh:mm:ss a";
     
-    NSLog(@"%@", aStr);
+    //NSLog(@"%@", aStr);
     NSDate   *aDate = [dateFormatter dateFromString:aStr];
-    NSLog(@"%@", aDate);
+    //NSLog(@"%@", aDate);
     return aDate;
 }
 

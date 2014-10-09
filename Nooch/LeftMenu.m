@@ -170,7 +170,7 @@
     if (![[defaults objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
         [self.glyph_noBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
-        [self.glyph_noBank setFrame:CGRectMake(6, [[UIScreen mainScreen] bounds].size.height - 48, 18, 18)];
+        [self.glyph_noBank setFrame:CGRectMake(5, [[UIScreen mainScreen] bounds].size.height - 50, 22, 22)];
         [self.glyph_noBank setStyleId:@"glyph_noBank_sidebar"];
         [self.view addSubview:self.glyph_noBank];
     }

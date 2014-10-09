@@ -75,7 +75,7 @@
         isBankAttached = NO;
 
         introText = [UILabel new];
-        [introText setFrame:CGRectMake(20, 36, 280, 68)];
+        [introText setFrame:CGRectMake(10, 38, 300, 75)];
         introText.numberOfLines = 0;
         [introText setText:@"Attach a bank account to send or receive payments. Just select your bank, login to your online banking, and you're done."];
         [introText setTextAlignment:NSTextAlignmentCenter];
@@ -115,7 +115,7 @@
     [self.view addSubview:title];
 
     link_bank = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [link_bank setFrame:CGRectMake(0, 125, 0, 0)];
+    [link_bank setFrame:CGRectMake(0, 123, 0, 0)];
     [link_bank setTitle:@"Link a New Bank" forState:UIControlStateNormal];
     [link_bank setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
     link_bank.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -400,7 +400,6 @@
                 
                 bank_image = [[UIImageView alloc]initWithFrame:CGRectMake(10, 8, 49, 48)];
                 bank_image.contentMode = UIViewContentModeScaleToFill;
-            //    bank_image.image = [UIImage imageNamed:@"bank.png"];
                 [linked_background addSubview:bank_image];
                 
                 bank_name = [UILabel new];
@@ -417,16 +416,6 @@
                 [unlink_account setTitle:@"Edit" forState:UIControlStateNormal];
                 [unlink_account addTarget:self action:@selector(edit_attached_bank) forControlEvents:UIControlEventTouchUpInside];
                 [linked_background addSubview:unlink_account];
-                [link_bank setFrame:CGRectMake(0, 125, 0, 0)];
-
-                [menu setStyleId:@"settings"];
-                
-                if ([[UIScreen mainScreen] bounds].size.height == 480) {
-                    [self.logout setStyleId:@"button_signout_4"];
-                }
-                else {
-                    [self.logout setStyleId:@"button_signout"];
-                }
             }
 
             [bank_image sd_setImageWithURL:[NSURL URLWithString:[dictResponse valueForKey:@"BankImageURL"]] placeholderImage:[UIImage imageNamed:@"bank.png"]];
@@ -435,7 +424,6 @@
             bank_image.clipsToBounds = YES;
             [bank_name setText:[dictResponse valueForKey:@"BankName"]];
             [lastFour_label setText:[NSString stringWithFormat:@"**** **** **** %@",[dictResponse valueForKey:@"AccountName"]  ]];
-
         }
         else
         {
@@ -445,14 +433,10 @@
             if (!isBankAttached)
             {
                 [self.view addSubview:introText];
-    
+
                 [linked_background removeFromSuperview];
                 [bank_image removeFromSuperview];;
                 [unlink_account removeFromSuperview];
-              
-                [link_bank setFrame:CGRectMake(0, 108, 0, 0)];
-                [menu setStyleId:@"settings2"];
-                [self.logout setStyleId:@"button_signout_5"];
             }
         }
     }
