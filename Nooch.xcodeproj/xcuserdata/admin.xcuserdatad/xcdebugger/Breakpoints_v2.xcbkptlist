@@ -843,7 +843,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1162"
             endingLineNumber = "1162"
-            landmarkName = "-toggleArrowRotate"
+            landmarkName = "-autoLogin"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
