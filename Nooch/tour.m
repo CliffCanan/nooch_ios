@@ -47,15 +47,15 @@
     page1.bgImage = [UIImage imageNamed:@"0_home-bg"];
 
     page1.title = @"Welcome To Nooch";
-    page1.titlePositionY = 426;
+    page1.titlePositionY = 428;
 
     page1.desc = @"Pay back a friend or send a payment request to anyone. The people you Nooch most will appear on the Home Screen. Send to anyone - even if they don't have Nooch.";
-    page1.descWidth = 300;
-    page1.descPositionY = 122;
+    page1.descWidth = 302;
+    page1.descPositionY = 126;
 
     page1.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"home_img"]];
     [page1.titleIconView setStyleClass:@"animate_bubble_slow"];
-    page1.titleIconPositionY = 122;
+    page1.titleIconPositionY = 118;
 
     // PAGE 2
     EAIntroPage * page2 = [EAIntroPage page];
@@ -65,7 +65,7 @@
     page2.titlePositionY = 116;
 
     page2.desc = @"No long forms or waiting periods.  Just select your bank and sign in using your existing online banking credentials.";
-    page2.descWidth = 300;
+    page2.descWidth = 302;
     page2.descPositionY = page2.titlePositionY - 23;
 
     page2.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"connectBank_img"]];
@@ -124,16 +124,33 @@
     page6.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"title4"]];
     page6.titleIconPositionY = 120;
 
-    EAIntroView *intro = [[EAIntroView alloc] initWithFrame:CGRectMake(0, 0, 320, 504) andPages:@[page1,page2,page3,page4,page5]];
+    if ([[UIScreen mainScreen] bounds].size.height < 500)
+    {
+        page1.descPositionY = 134;
+        page2.titlePositionY = 426;
+        page2.descPositionY = 118;
+        page3.descPositionY = 102;
+        
+        page4.titlePositionY = 428;
+        page4.descPositionY = 117;
+        page4.titleIconPositionY = 125;
+        
+        page5.titlePositionY = 418;
+        page5.descPositionY = 118;
+        page5.titleIconPositionY = 130;
+    }
+
+    EAIntroView * intro = [[EAIntroView alloc] initWithFrame:CGRectMake(0, 0, 320, 504) andPages:@[page1,page2,page3,page4,page5]];
     [intro setDelegate:self];
     [intro.skipButton setStyleClass:@"reallyLight_gray"];
     [intro setBgViewContentMode:UIViewContentModeScaleAspectFill];
     intro.showSkipButtonOnlyOnLastPage = true;
-    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+
+    if ([[UIScreen mainScreen] bounds].size.height < 500)
+    {
         intro.swipeToExit = true;
-        page4.titlePositionY = 124;
-        page5.titlePositionY = 124;
     }
+
     [intro showInView:self.view animateDuration:0.4];
 }
 

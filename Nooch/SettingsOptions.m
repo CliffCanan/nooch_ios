@@ -14,6 +14,7 @@
 #import "knoxWeb.h"
 #import "UIImageView+WebCache.h"
 @interface SettingsOptions (){
+    UILabel * introText;
     UILabel * bank_name;
     UILabel * lastFour_label;
     UIImageView * bank_image;
@@ -52,17 +53,17 @@
 
 -(void)getBankInfo
 {
-    serve * serveOBJ=[serve new];
-    serveOBJ.Delegate=self;
-    serveOBJ.tagName=@"knox_bank_info";
+    serve * serveOBJ = [serve new];
+    serveOBJ.Delegate = self;
+    serveOBJ.tagName = @"knox_bank_info";
     [serveOBJ GetKnoxBankAccountDetails];
 }
 
 -(void)RemoveKnoxBankAccount
 {
-    serve * serveOBJ=[serve new];
-    serveOBJ.Delegate=self;
-    serveOBJ.tagName=@"RemoveKnoxBankAccount";
+    serve * serveOBJ = [serve new];
+    serveOBJ.Delegate = self;
+    serveOBJ.tagName = @"RemoveKnoxBankAccount";
     [serveOBJ RemoveKnoxBankAccount];
 }
 
@@ -72,6 +73,14 @@
     isBankAttached = NO;
     if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
         isBankAttached = NO;
+
+        introText = [UILabel new];
+        [introText setFrame:CGRectMake(20, 36, 280, 68)];
+        introText.numberOfLines = 0;
+        [introText setText:@"Attach a bank account to send or receive payments. Just select your bank, login to your online banking, and you're done."];
+        [introText setTextAlignment:NSTextAlignmentCenter];
+        [introText setStyleId:@"settings_introText"];
+        [self.view addSubview:introText];
     }
     else
         isBankAttached = YES;
@@ -259,21 +268,21 @@
 
 - (void)profile
 {
-    isProfileOpenFromSideBar=NO;
-    ProfileInfo *info = [ProfileInfo new];
-    [self performSelector:@selector(navigate_to:) withObject:info afterDelay:0.05];
+    isProfileOpenFromSideBar = NO;
+    ProfileInfo * info = [ProfileInfo new];
+    [self performSelector:@selector(navigate_to:) withObject:info afterDelay:0.01];
 }
 
 - (void)pin
 {
-    PINSettings *pin = [PINSettings new];
-    [self performSelector:@selector(navigate_to:) withObject:pin afterDelay:0.05];
+    PINSettings * pin = [PINSettings new];
+    [self performSelector:@selector(navigate_to:) withObject:pin afterDelay:0.01];
 }
 
 - (void)notifications
 {
-    NotificationSettings *notes = [NotificationSettings new];
-    [self performSelector:@selector(navigate_to:) withObject:notes afterDelay:0.05];
+    NotificationSettings * notes = [NotificationSettings new];
+    [self performSelector:@selector(navigate_to:) withObject:notes afterDelay:0.01];
 }
 
 - (void) navigate_to:(id)view
@@ -283,7 +292,7 @@
 
 - (void)sign_out
 {
-    NSLog(@"%@",nav_ctrl.viewControllers);
+    // NSLog(@"%@",nav_ctrl.viewControllers);
     
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Sign Out" message:@"Are you sure you want to sign out?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"I'm Sure", nil];
     [av setTag:15];
@@ -377,6 +386,7 @@
 
             if (isBankAttached)
             {
+                [introText removeFromSuperview];
                 [linked_background removeFromSuperview];
                 [bank_image removeFromSuperview];;
                 [unlink_account removeFromSuperview];
@@ -434,11 +444,13 @@
             isBankAttached = NO;
             if (!isBankAttached)
             {
+                [self.view addSubview:introText];
+    
                 [linked_background removeFromSuperview];
                 [bank_image removeFromSuperview];;
                 [unlink_account removeFromSuperview];
               
-                [link_bank setFrame:CGRectMake(0, 70, 0, 0)];
+                [link_bank setFrame:CGRectMake(0, 108, 0, 0)];
                 [menu setStyleId:@"settings2"];
                 [self.logout setStyleId:@"button_signout_5"];
             }

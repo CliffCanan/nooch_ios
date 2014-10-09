@@ -83,6 +83,25 @@
     .italic_font {font-style  : italic;}
     .bold {font-weight: medium;}
 
+    .font-awesome {
+        font-family : "FontAwesome";
+        font-size   : 19px;
+        color       : #414042;
+        text-align  : center;
+    }
+    .font-awesome_22px {
+        font-family : "FontAwesome";
+        font-size   : 22px;
+        color       : #414042;
+        text-align  : center;
+    }
+    .font-awesome:active,
+    .font-awesome: {
+        font-family : "FontAwesome";
+        font-size   : 20px;
+        color       : #3fabe1;
+        text-align  : center;
+    }
 	 /***************************/
 	 /****		NAV BAR		*****/
 	 /***************************/
@@ -255,6 +274,16 @@
     }
     #pending_notif_lsideMenu {
         box-shadow      : 0px 1px 2px rgba(26, 32, 38, .7);
+    }
+    #glyph_noBank_sidebar {
+        background-color: rgba(250,4,4,.82);
+        border          : 1px solid white;
+        border-radius   : 9px;
+        box-shadow      : 0px 1px 1px rgba(26, 32, 38, 0.4);
+        color           : white;
+        font-family     : "FontAwesome";
+        font-size       : 12px;
+        text-align      : center;
     }
 
 	 /******************************/
@@ -532,12 +561,19 @@
 	/***     	TABLE STYLE 1  				***/
 	/***  PROFILE Screen, SETTINGS Screens  ***/
 
-	 .table_view_1 {
-		row-height		: 45px;
-		separator-style : single-line;
-		separator-color : rgba(188,190,192,.65);
-		background-color: #ffffff;
-	}
+#settings_introText {
+    color           : #414042;
+    font-family		: "Roboto";
+    font-weight		: light;
+    font-size		: 15px;
+    text-align		: center;
+}
+.table_view_1 {
+    row-height		: 45px;
+    separator-style : single-line;
+    separator-color : rgba(188,190,192,.65);
+    background-color: #ffffff;
+}
 
 	 .table_view_cell_1 { text-overflow	: ellipsis; } 
 		 
@@ -2743,7 +2779,7 @@
     table-view#settings2 {
 		width			: 322px;
         height			: 150px;
-		top				: 145px;
+		top				: 180px;
 		left			: -1px;
 		background-color: white;
 		row-height		: 50px;
@@ -2753,7 +2789,7 @@
 	}
     table-view#settings_resetpw {
 		width				: 322px;
-        height             : 150px;
+        height              : 150px;
 		top					: 84px;
 		left				: -1px;
 		background-color	: white;
@@ -2777,24 +2813,24 @@
 	}
 	/**  Gray Signout Button. **/
 	#button_signout {
+		left				: 30px;
+		top					: 415px;
 		width				: 260px;
 		height				: 44px;
-		top					: 415px;
-		left				: 30px;
 		font-size			: 18px;
 	}
     #button_signout_4 {
+		left				: 30px;
+		top					: 364px;
 		width				: 260px;
 		height				: 44px;
-		top					: 364px;
-		left				: 30px;
 		font-size			: 18px;
 	}
 	 #button_signout_5 {
+		left				: 30px;
+		top					: 350px;
 		width				: 260px;
 		height				: 44px;
-		top					: 310px;
-		left				: 30px;
 		font-size			: 18px;
 	}
 	/**************************/

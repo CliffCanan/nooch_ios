@@ -17,5 +17,6 @@
     NSDictionary*dictInput;
     NSDictionary*dictSettings;
     NSString*servicePath;
+    BOOL allOn_sec1_email,allOn_sec2_email,allOn_sec2_push;
 }
 @end

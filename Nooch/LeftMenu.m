@@ -23,6 +23,7 @@
 @property(nonatomic) NSIndexPath *selected;
 @property(nonatomic,strong) UILabel *name;
 @property(nonatomic,strong) UILabel *lastName;
+@property(nonatomic,strong) UILabel *glyph_noBank;
 @end
 @implementation LeftMenu
 
@@ -120,6 +121,7 @@
     }
     [version setText:[NSString stringWithFormat:@"Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
     [self.view addSubview:version];
+    [self.glyph_noBank removeFromSuperview];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -160,6 +162,21 @@
         [self.lastName setText:[NSString stringWithFormat:@"Person"]];
     }
 
+    NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
+    self.glyph_noBank = [UILabel new];
+    NSLog(@"IsKnoxBankAdded is... %@",[defaults objectForKey:@"IsBankAvailable"]);
+    [self.glyph_noBank removeFromSuperview];
+
+    if (![[defaults objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    {
+        [self.glyph_noBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
+        [self.glyph_noBank setFrame:CGRectMake(6, [[UIScreen mainScreen] bounds].size.height - 48, 18, 18)];
+        [self.glyph_noBank setStyleId:@"glyph_noBank_sidebar"];
+        [self.view addSubview:self.glyph_noBank];
+    }
+    else {
+        [self.glyph_noBank removeFromSuperview];
+    }
     [self.menu reloadData];
 
 }
@@ -272,9 +289,7 @@
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = kLeftMenuShadow;
     shadow.shadowOffset = CGSizeMake(0, 1);
-    
-    NSDictionary * textAttributes =
-    @{NSShadowAttributeName: shadow };
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
     
     [iv setStyleClass:@"lside_menu_icons"];
     if (indexPath.section == 0)
