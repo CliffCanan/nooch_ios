@@ -868,10 +868,10 @@ return customView;
                 
     if (self.completed_selected)
     {
-        UILabel * emptyText = nil;
+       // UILabel * emptyText = nil;
         UILabel * emptyText_localSearch = nil;
 
-        UIImageView * emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(33, 105, 253, 256)];
+//        UIImageView * emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(33, 105, 253, 256)];
 
         if (isLocalSearch)
         {
@@ -1472,28 +1472,58 @@ return customView;
         {
             if (isEnd == YES)
             {
-                [self.list setStyleId:@"emptyTable"];
-
-                if ([[UIScreen mainScreen] bounds].size.height < 500)
-                {
-                    emptyText = [[UILabel alloc] initWithFrame:CGRectMake(8, 10, 304, 56)];
-                    [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:18]];
-                    [emptyPic setFrame:CGRectMake(33, 78, 253, 256)];
-                } else {
-                    emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, 300, 72)];
-                    [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
+                if ([histShowArrayCompleted count]==0) {
+                    UILabel * emptyText = nil;
+                    UIImageView * emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(33, 105, 253, 256)];
+                    
+                    [self.list setStyleId:@"emptyTable"];
+                    
+                    if ([[UIScreen mainScreen] bounds].size.height < 500)
+                    {
+                        emptyText = [[UILabel alloc] initWithFrame:CGRectMake(8, 10, 304, 56)];
+                        [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:18]];
+                        [emptyPic setFrame:CGRectMake(33, 78, 253, 256)];
+                    } else {
+                        emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, 300, 72)];
+                        [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
+                    }
+                    [emptyText setNumberOfLines:0];
+                    [emptyText setText:@"Once you make or receive a payment, come here to see all the details."];
+                    [emptyText setTextAlignment:NSTextAlignmentCenter];
+                    
+                    [emptyPic setImage:[UIImage imageNamed:@"history_img"]];
+                    [emptyPic setStyleClass:@"animate_bubble"];
+                    
+                    [self.list  addSubview: emptyPic];
+                    [self.list  addSubview: emptyText];
+                    
+                    [exportHistory removeFromSuperview];
+                    
+                    
                 }
-                [emptyText setNumberOfLines:0];
-                [emptyText setText:@"Once you make or receive a payment, come here to see all the details."];
-                [emptyText setTextAlignment:NSTextAlignmentCenter];
-
-                [emptyPic setImage:[UIImage imageNamed:@"history_img"]];
-                [emptyPic setStyleClass:@"animate_bubble"];
-
-                [self.list addSubview: emptyPic];
-                [self.list addSubview: emptyText];
-
-                [exportHistory removeFromSuperview];
+                
+//                [self.list setStyleId:@"emptyTable"];
+//
+//                if ([[UIScreen mainScreen] bounds].size.height < 500)
+//                {
+//                    emptyText = [[UILabel alloc] initWithFrame:CGRectMake(8, 10, 304, 56)];
+//                    [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:18]];
+//                    [emptyPic setFrame:CGRectMake(33, 78, 253, 256)];
+//                } else {
+//                    emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, 300, 72)];
+//                    [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
+//                }
+//                [emptyText setNumberOfLines:0];
+//                [emptyText setText:@"Once you make or receive a payment, come here to see all the details."];
+//                [emptyText setTextAlignment:NSTextAlignmentCenter];
+//
+//                [emptyPic setImage:[UIImage imageNamed:@"history_img"]];
+//                [emptyPic setStyleClass:@"animate_bubble"];
+//
+//                [self.list addSubview: emptyPic];
+//                [self.list addSubview: emptyText];
+//
+//                [exportHistory removeFromSuperview];
             }
             else
             {
@@ -1522,7 +1552,7 @@ return customView;
                 
     else if (self.completed_selected == NO)
     {
-        UILabel * emptyText_Pending = nil;
+//        UILabel * emptyText_Pending = nil;
 
         if (isLocalSearch)
         {
@@ -1949,13 +1979,27 @@ return customView;
         {
             if (isEnd == YES)
             {
-                [self.list setStyleId:@"emptyTable"];
-                emptyText_Pending = [[UILabel alloc] initWithFrame:CGRectMake(6, 5, 308, 70)];
-                [emptyText_Pending setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
-                [emptyText_Pending setNumberOfLines:0];
-                [emptyText_Pending setText:@"No payments found for you at the moment."];
-                [emptyText_Pending setTextAlignment:NSTextAlignmentCenter];
-                [self.list addSubview:emptyText_Pending];
+                if ([histShowArrayPending count]==0)
+                {
+                    UILabel * emptyText_Pending = nil;
+                    
+                    [self.list setStyleId:@"emptyTable"];
+                    emptyText_Pending = [[UILabel alloc] initWithFrame:CGRectMake(6, 5, 308, 70)];
+                    [emptyText_Pending setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
+                    [emptyText_Pending setNumberOfLines:0];
+                    [emptyText_Pending setText:@"No payments found for you at the moment."];
+                    [emptyText_Pending setTextAlignment:NSTextAlignmentCenter];
+                    [self.list addSubview:emptyText_Pending];
+                    
+                }
+                
+//                [self.list setStyleId:@"emptyTable"];
+//                emptyText_Pending = [[UILabel alloc] initWithFrame:CGRectMake(6, 5, 308, 70)];
+//                [emptyText_Pending setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
+//                [emptyText_Pending setNumberOfLines:0];
+//                [emptyText_Pending setText:@"No payments found for you at the moment."];
+//                [emptyText_Pending setTextAlignment:NSTextAlignmentCenter];
+//                [self.list addSubview:emptyText_Pending];
 
                 return cell;
             }
@@ -2388,9 +2432,10 @@ return customView;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.hud hide:YES];
         });
-        
+        [self.hud hide:YES];
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-
+  
+        
         if ([histArray count] > 0)
         {
             isEnd = NO;
@@ -2442,12 +2487,17 @@ return customView;
             
             // NSLog(@"The Pending counter is: %d",counter);
             [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%d)",counter]forSegmentAtIndex:1];
-
+            
+            
         }
-        else {
+            if ([histShowArrayCompleted count]==0 && ![subTypestr isEqualToString:@"Pending"]) {
             isEnd = YES;
-        }
-
+            
+            }
+            else if([histShowArrayPending count]==0 && [subTypestr isEqualToString:@"Pending"]){
+                 isEnd = YES;
+            }
+        
         if (isMapOpen) {
             [self mapPoints];
         }
@@ -2455,6 +2505,9 @@ return customView;
         [serveOBJ setDelegate:self];
         [serveOBJ setTagName:@"time"];
         [serveOBJ GetServerCurrentTime];
+
+        
+
     }
     
     else if ([tagName isEqualToString:@"time"])
