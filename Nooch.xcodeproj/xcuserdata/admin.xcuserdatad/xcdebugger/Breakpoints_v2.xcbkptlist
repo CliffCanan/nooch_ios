@@ -1035,7 +1035,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "223"
             endingLineNumber = "223"
-            landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
+            landmarkName = "-imageWithImage:scaledToSize:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
