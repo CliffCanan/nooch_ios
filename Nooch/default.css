@@ -276,13 +276,13 @@
         box-shadow      : 0px 1px 2px rgba(26, 32, 38, .7);
     }
     #glyph_noBank_sidebar {
-        background-color: rgba(250,4,4,.82);
+        background-color: rgba(250,4,4,.8);
         border          : 1px solid white;
-        border-radius   : 9px;
-        box-shadow      : 0px 1px 1px rgba(26, 32, 38, 0.4);
+        border-radius   : 11px;
+        box-shadow      : 0px 1px 2px rgba(26, 32, 38, 0.34);
         color           : white;
         font-family     : "FontAwesome";
-        font-size       : 12px;
+        font-size       : 13px;
         text-align      : center;
     }
 
@@ -558,14 +558,14 @@
 	 /****************************
 	  *****	  TABLE Styles 	 *****
 	  ****************************/
-	/***     	TABLE STYLE 1  				***/
-	/***  PROFILE Screen, SETTINGS Screens  ***/
+/***     	TABLE STYLE 1  				***/
+/***  PROFILE Screen, SETTINGS Screens  ***/
 
 #settings_introText {
     color           : #414042;
     font-family		: "Roboto";
     font-weight		: light;
-    font-size		: 15px;
+    font-size		: 16px;
     text-align		: center;
 }
 .table_view_1 {
@@ -2822,13 +2822,6 @@
     #button_signout_4 {
 		left				: 30px;
 		top					: 364px;
-		width				: 260px;
-		height				: 44px;
-		font-size			: 18px;
-	}
-	 #button_signout_5 {
-		left				: 30px;
-		top					: 350px;
 		width				: 260px;
 		height				: 44px;
 		font-size			: 18px;
