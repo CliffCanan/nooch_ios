@@ -1372,23 +1372,23 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         return;
     }
 
-    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
-    {
-        SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Blame The Lawyers" andMessage:@"To keep Nooch safe, we ask all users to verify a phone number before sending money.\n\nIf you've already added your phone number, just respond 'Go' to the text message we sent."];
-        [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
-        [alertView addButtonWithTitle:@"Add Phone" type:SIAlertViewButtonTypeDefault
-                              handler:^(SIAlertView *alert) {
-                                  ProfileInfo *prof = [ProfileInfo new];
-                                  [nav_ctrl pushViewController:prof animated:YES];
-                                  [self.slidingViewController resetTopView];
-                              }];
-        [[SIAlertView appearance] setButtonColor:kNoochBlue];
-        
-        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
-        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
-        [alertView show];
-        return;
-    }
+   if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
+   {
+       SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Blame The Lawyers" andMessage:@"To keep Nooch safe, we ask all users to verify a phone number before sending money.\n\nIf you've already added your phone number, just respond 'Go' to the text message we sent."];
+       [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
+       [alertView addButtonWithTitle:@"Add Phone" type:SIAlertViewButtonTypeDefault
+                             handler:^(SIAlertView *alert) {
+                                 ProfileInfo *prof = [ProfileInfo new];
+                                 [nav_ctrl pushViewController:prof animated:YES];
+                                 [self.slidingViewController resetTopView];
+                             }];
+       [[SIAlertView appearance] setButtonColor:kNoochBlue];
+       
+       alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+       alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+       [alertView show];
+       return;
+   }
 
     if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {

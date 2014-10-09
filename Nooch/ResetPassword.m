@@ -6,8 +6,8 @@
 #import "ResetPassword.h"
 #import "Home.h"
 #import "SpinKit/RTSpinKitView.h"
-
-@interface ResetPassword ()
+#import "Decryption.h"
+@interface ResetPassword ()<DecryptionDelegate>
 @property (nonatomic,strong) UITextField *old;
 @property (nonatomic,strong) UITextField *pass;
 @property (nonatomic,strong) UITextField *confirm;
@@ -126,7 +126,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
 	// Do any additional setup after loading the view.
+    serve * serveOBJ = [serve new];
+    serveOBJ.tagName = @"myset";
+    [serveOBJ setDelegate:self];
+    [serveOBJ getSettings];
+
+    
     self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setTitle:@"Reset Password"];
     
@@ -165,12 +172,12 @@
         return;
     }
 
-    /* if (![[[assist shared]getPass] isEqualToString:self.old.text])
+     if (![[[assist shared]getPass] isEqualToString:self.old.text])
     {
         UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"This Is Awkward" message:@"That doesn't appear to be the correct password. Please try again or contact us for futher help." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         return;
-    } */
+    }
 
     if ([self.pass.text isEqualToString:self.confirm.text])
     {
@@ -388,7 +395,26 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    if ([tagName isEqualToString:@"ForgotPass"])
+     NSError* error;
+      [self.hud hide:YES];
+     if ([tagName isEqualToString:@"myset"])
+    {
+        NSDictionary* dictProfileinfo = [NSJSONSerialization
+                           JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                           options:kNilOptions
+                           error:&error];
+      if (![[dictProfileinfo valueForKey:@"Password"] isKindOfClass:[NSNull class]])
+        {
+            
+            Decryption *decry = [[Decryption alloc] init];
+            decry.Delegate = self;
+            decry->tag = [NSNumber numberWithInteger:2];
+            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Password"]];
+        }
+
+        
+    }
+   else if ([tagName isEqualToString:@"ForgotPass"])
     {
         [self.hud hide:YES];
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Please check your email for a reset password link." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -415,14 +441,22 @@
             UIAlertView * showAlertMessage = [[UIAlertView alloc] initWithTitle:@"Incorrect Password" message:@"Please check your current password." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             [showAlertMessage show];
         }
-        /*if (![[[assist shared]getPass] isEqualToString:self.old.text])
+        if (![[[assist shared]getPass] isEqualToString:self.old.text])
         {
             NSLog(@"ASSIST SHARED - GET PASS = %@",[[assist shared]getPass]);
             UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"This Is Awkward" message:@"That doesn't appear to be the correct password. Please try again or contact us for futher help." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             return;
-        }*/
+        }
     }
+}
+#pragma mark - password encryption
+
+-(void)decryptionDidFinish:(NSMutableDictionary *) sourceData TValue:(NSNumber *) tagValue
+{
+    [[assist shared]setPassValue:[sourceData objectForKey:@"Status"]];
+    //NSLog(@"%@",[[assist shared] getPass]);
+
 }
 - (void)didReceiveMemoryWarning  {
     [super didReceiveMemoryWarning];

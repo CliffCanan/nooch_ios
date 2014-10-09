@@ -17,5 +17,6 @@
     NSMutableDictionary * dictAllStats;
     NSString * titlestr;
     NSMutableArray * favorites;
+    BOOL IsAlertShown;
 }
 @end

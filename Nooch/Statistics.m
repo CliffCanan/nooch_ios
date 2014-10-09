@@ -43,6 +43,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    IsAlertShown=NO;
     self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setHidesBackButton:YES];
     [self.navigationController.view removeGestureRecognizer:self.navigationController.slidingViewController.panGesture];
@@ -810,14 +811,17 @@
 -(void)Error:(NSError *)Error
 {
     [self.hud hide:YES];
-    
-    UIAlertView * alert = [[UIAlertView alloc]
-                          initWithTitle:@"Message"
-                          message:@"Error connecting to server"
-                          delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil];
-    [alert show];
+    if (!IsAlertShown) {
+        IsAlertShown=YES;
+        UIAlertView * alert = [[UIAlertView alloc]
+                               initWithTitle:@"Message"
+                               message:@"Error connecting to server"
+                               delegate:nil
+                               cancelButtonTitle:@"OK"
+                               otherButtonTitles:nil];
+        [alert show];
+    }
+   
 }
 
 #pragma mark - server delegation
