@@ -121,7 +121,21 @@
     }
     [version setText:[NSString stringWithFormat:@"Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
     [self.view addSubview:version];
+    NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
+    self.glyph_noBank = [UILabel new];
+    NSLog(@"IsKnoxBankAdded is... %@",[defaults objectForKey:@"IsBankAvailable"]);
     [self.glyph_noBank removeFromSuperview];
+    
+    if (![[defaults objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    {
+        [self.glyph_noBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
+        [self.glyph_noBank setFrame:CGRectMake(5, [[UIScreen mainScreen] bounds].size.height - 50, 22, 22)];
+        [self.glyph_noBank setStyleId:@"glyph_noBank_sidebar"];
+        [self.view addSubview:self.glyph_noBank];
+    }
+    else {
+        [self.glyph_noBank removeFromSuperview];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -163,22 +177,19 @@
     }
 
     NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
-    self.glyph_noBank = [UILabel new];
     NSLog(@"IsKnoxBankAdded is... %@",[defaults objectForKey:@"IsBankAvailable"]);
-    [self.glyph_noBank removeFromSuperview];
-
-    if (![[defaults objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    
+    if ([[defaults objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
+        [self.glyph_noBank removeFromSuperview];
+    }
+    else {
         [self.glyph_noBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
         [self.glyph_noBank setFrame:CGRectMake(5, [[UIScreen mainScreen] bounds].size.height - 50, 22, 22)];
         [self.glyph_noBank setStyleId:@"glyph_noBank_sidebar"];
         [self.view addSubview:self.glyph_noBank];
     }
-    else {
-        [self.glyph_noBank removeFromSuperview];
-    }
     [self.menu reloadData];
-
 }
 
 -(void) go_profile

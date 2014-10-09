@@ -75,7 +75,7 @@
         isBankAttached = NO;
 
         introText = [UILabel new];
-        [introText setFrame:CGRectMake(10, 38, 300, 75)];
+        [introText setFrame:CGRectMake(10, 38, 300, 76)];
         introText.numberOfLines = 0;
         [introText setText:@"Attach a bank account to send or receive payments. Just select your bank, login to your online banking, and you're done."];
         [introText setTextAlignment:NSTextAlignmentCenter];

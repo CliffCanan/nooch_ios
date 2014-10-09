@@ -619,17 +619,16 @@ return customView;
     isSearch = NO;
     isLocalSearch = NO;
 
-    serve *serveOBJ = [serve new];
+    serve * serveOBJ = [serve new];
     [serveOBJ setDelegate:self];
     serveOBJ.tagName = @"hist";
     [serveOBJ histMore:filter sPos:ind len:len subType:subTypestr];
-    
 }
 
 #pragma mark - transaction type switching
 - (void) completed_or_pending:(id)sender
 {
-    [self.list removeFromSuperview];
+    /*[self.list removeFromSuperview];
     self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
     [self.list setDataSource:self];
     [self.list setDelegate:self];
@@ -638,7 +637,7 @@ return customView;
     [self.list reloadData];
     [self.view bringSubviewToFront:exportHistory];
     
-    [self.list setStyleId:@"history"];
+    [self.list setStyleId:@"history"];*/
     
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     if ([segmentedControl selectedSegmentIndex] == 0)
@@ -1472,7 +1471,8 @@ return customView;
         {
             if (isEnd == YES)
             {
-                if ([histShowArrayCompleted count]==0) {
+                if ([histShowArrayCompleted count] == 0)
+                {
                     UILabel * emptyText = nil;
                     UIImageView * emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(33, 105, 253, 256)];
                     
@@ -1498,8 +1498,6 @@ return customView;
                     [self.list  addSubview: emptyText];
                     
                     [exportHistory removeFromSuperview];
-                    
-                    
                 }
                 
 //                [self.list setStyleId:@"emptyTable"];
@@ -1541,7 +1539,7 @@ return customView;
                 {
                     if (indexPath.row > 6)
                     {
-                        ishistLoading=YES;
+                        ishistLoading = YES;
                         index++;
                         [self loadHist:listType index:index len:20 subType:subTypestr];
                     }
@@ -1979,7 +1977,7 @@ return customView;
         {
             if (isEnd == YES)
             {
-                if ([histShowArrayPending count]==0)
+                if ([histShowArrayPending count] == 0)
                 {
                     UILabel * emptyText_Pending = nil;
                     
@@ -1990,7 +1988,6 @@ return customView;
                     [emptyText_Pending setText:@"No payments found for you at the moment."];
                     [emptyText_Pending setTextAlignment:NSTextAlignmentCenter];
                     [self.list addSubview:emptyText_Pending];
-                    
                 }
                 
 //                [self.list setStyleId:@"emptyTable"];
@@ -2019,9 +2016,9 @@ return customView;
                 }
                 else
                 {
-                    if (indexPath.row > 5)
+                    if (indexPath.row > 10)
                     {
-                        ishistLoading=YES;
+                        ishistLoading = YES;
                         index++;
                         [self loadHist:listType index:index len:20 subType:subTypestr];
                     }
@@ -2350,13 +2347,13 @@ return customView;
 {
     [self.hud hide:YES];
 
-    /* UIAlertView *alert = [[UIAlertView alloc]
+    UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    [alert show]; */
+    [alert show];
 }
 
 #pragma mark - server delegation
@@ -2490,13 +2487,13 @@ return customView;
             
             
         }
-            if ([histShowArrayCompleted count]==0 && ![subTypestr isEqualToString:@"Pending"]) {
+        else if ([histShowArrayCompleted count] == 0 && ![subTypestr isEqualToString:@"Pending"]) {
             isEnd = YES;
             
-            }
-            else if([histShowArrayPending count]==0 && [subTypestr isEqualToString:@"Pending"]){
-                 isEnd = YES;
-            }
+        }
+        else if ([histShowArrayPending count] == 0 && [subTypestr isEqualToString:@"Pending"]) {
+            isEnd = YES;
+        }
         
         if (isMapOpen) {
             [self mapPoints];
@@ -2505,9 +2502,6 @@ return customView;
         [serveOBJ setDelegate:self];
         [serveOBJ setTagName:@"time"];
         [serveOBJ GetServerCurrentTime];
-
-        
-
     }
     
     else if ([tagName isEqualToString:@"time"])
@@ -2518,7 +2512,8 @@ return customView;
         [self.list removeFromSuperview];
         self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
         [self.list setStyleId:@"history"];
-        [self.list setDataSource:self]; [self.list setDelegate:self];
+        [self.list setDataSource:self];
+        [self.list setDelegate:self];
         [self.list setSectionHeaderHeight:0];
         [self.view addSubview:self.list];
         [self.list reloadData];
