@@ -577,7 +577,7 @@ return customView;
 {
     [fp dismissPopoverAnimated:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"dismissPopOver" object:nil];
-    isSearch=NO;
+    isSearch = NO;
     if (![listType isEqualToString:@"CANCEL"] && isFilterSelected)
     {
         [self.search setShowsCancelButton:NO];
@@ -595,6 +595,8 @@ return customView;
         [imageCache clearDisk];
         [imageCache cleanDisk];
         countRows = 0;
+        NSLog(@"ListType is: %@",listType);
+
         [self loadHist:listType index:index len:20 subType:subTypestr];
     }
     else
@@ -1472,8 +1474,15 @@ return customView;
             {
                 [self.list setStyleId:@"emptyTable"];
 
-                emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, 300, 75)];
-                [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
+                if ([[UIScreen mainScreen] bounds].size.height < 500)
+                {
+                    emptyText = [[UILabel alloc] initWithFrame:CGRectMake(8, 10, 304, 56)];
+                    [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:18]];
+                    [emptyPic setFrame:CGRectMake(33, 78, 253, 256)];
+                } else {
+                    emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, 300, 72)];
+                    [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
+                }
                 [emptyText setNumberOfLines:0];
                 [emptyText setText:@"Once you make or receive a payment, come here to see all the details."];
                 [emptyText setTextAlignment:NSTextAlignmentCenter];
@@ -1992,7 +2001,6 @@ return customView;
     dateFormatter.dateFormat = @"M/dd/yyyy hh:mm:ss a";
     
     NSDate   *aDate = [dateFormatter dateFromString:aStr];
-    NSLog(@"%@", aDate);
     return aDate;
 }
 
@@ -2286,27 +2294,27 @@ return customView;
     
     return YES;
 }
+
 #pragma mark - file paths
 - (NSString *)autoLogin{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
 }
--(void)Error:(NSError *)Error{
+
+-(void)Error:(NSError *)Error
+{
     [self.hud hide:YES];
-    
-    
-    
-    UIAlertView *alert = [[UIAlertView alloc]
+
+    /* UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
-    [alert show];
-    
+    [alert show]; */
 }
+
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
@@ -2343,7 +2351,7 @@ return customView;
         }
     }
     
-/*    else if ([tagName isEqualToString:@"histPending"])
+    /* else if ([tagName isEqualToString:@"histPending"])
     {
         [self.hud hide:YES];
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
@@ -2432,12 +2440,9 @@ return customView;
             [defaults setValue: [NSString stringWithFormat:@"%d",pending_notif_counter] forKey:@"Pending_count"];
             [defaults synchronize];
             
-            NSLog(@"The Pending counter is: %d",counter);
+            // NSLog(@"The Pending counter is: %d",counter);
             [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%d)",counter]forSegmentAtIndex:1];
-           
-            
-         
-            
+
         }
         else {
             isEnd = YES;
@@ -2477,12 +2482,12 @@ return customView;
         [self.view bringSubviewToFront:exportHistory];
     }
     
-    else if([tagName isEqualToString:@"search"])
+    else if ([tagName isEqualToString:@"search"])
     {
         [self.hud hide:YES];
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
-        if ([histArray count]>0)
+        if ([histArray count] > 0)
         {
             isEnd = NO;
             isStart = NO;

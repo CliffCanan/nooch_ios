@@ -5,6 +5,7 @@
 
 #import "ResetPassword.h"
 #import "Home.h"
+#import "SpinKit/RTSpinKitView.h"
 
 @interface ResetPassword ()
 @property (nonatomic,strong) UITextField *old;
@@ -12,7 +13,7 @@
 @property (nonatomic,strong) UITextField *confirm;
 @property (nonatomic,strong) UIButton *changepwbtn;
 @property (nonatomic,strong) UIButton *helpGlyph;
-@property(nonatomic,strong) MBProgressHUD *hud;
+@property (nonatomic,strong) MBProgressHUD *hud;
 @end
 
 @implementation ResetPassword
@@ -45,11 +46,11 @@
     [navBar addSubview:back];
     
     NSShadow * shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = Rgb2UIColor(19, 32, 38, .25);
+    shadow.shadowColor = Rgb2UIColor(19, 32, 38, .2);
     shadow.shadowOffset = CGSizeMake(0, -1);
     
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
-    UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(105, 20, 200, 30)];
+    UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(105, 24, 200, 30)];
     lbl.attributedText = [[NSAttributedString alloc] initWithString:@"Reset Password"
                                                          attributes:textAttributes];
     [lbl setFont:[UIFont systemFontOfSize:22]];
@@ -137,8 +138,8 @@
 
 - (IBAction)finishResetPassword:(id)sender
 {
-    NSCharacterSet* digitsCharSet = [NSCharacterSet decimalDigitCharacterSet];
-    NSCharacterSet* lettercaseCharSet = [NSCharacterSet letterCharacterSet];
+    NSCharacterSet * digitsCharSet = [NSCharacterSet decimalDigitCharacterSet];
+    NSCharacterSet * lettercaseCharSet = [NSCharacterSet letterCharacterSet];
     
     if ([self.old.text length] == 0)
     {
@@ -164,29 +165,31 @@
         return;
     }
 
-    if (![[[assist shared]getPass] isEqualToString:self.old.text])
+    /* if (![[[assist shared]getPass] isEqualToString:self.old.text])
     {
         UIAlertView*alert=[[UIAlertView alloc] initWithTitle:@"This Is Awkward" message:@"That doesn't appear to be the correct password. Please try again or contact us for futher help." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         return;
-    }
+    } */
 
-    if([self.pass.text isEqualToString:self.confirm.text])
+    if ([self.pass.text isEqualToString:self.confirm.text])
     {
-        if([self.pass.text length] < 8)
+        if ([self.pass.text length] < 8)
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Almost There" message:@"For sucurity reasons, et cetera... we ask that passwords contain at least 8 characters." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
         }
-        else if([self.pass.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound){
+        else if ([self.pass.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound)
+        {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Sooo Close" message:@"For sucurity reasons, et cetera, et cetera... we ask that passwords contain at LEAST 1 number. We know it's annoying, but just trying to look out for you. Keep it safe!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
         }
-        else if([self.pass.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound){
+        else if ([self.pass.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound)
+        {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Gotta Give Something" message:@"For fairly self-evident reasons, your password must have more than 0 characters." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
         }
-        else{
+        else {
             passwordReset = self.pass.text;
             
             [self resetPassword:self.pass.text];
@@ -204,13 +207,13 @@
 {
     if([newPassword length] != 0)
     {
-        newchangedPass=newPassword;
-        GetEncryptionValue *encryPassword = [[GetEncryptionValue alloc] init];
+        newchangedPass = newPassword;
+        GetEncryptionValue * encryPassword = [[GetEncryptionValue alloc] init];
         [encryPassword getEncryptionData:newPassword];
         encryPassword.Delegate = self;
         encryPassword->tag = [NSNumber numberWithInteger:3];
     }
-    NSLog(@"ecrypting password");
+    // NSLog(@"ecrypting password");
 }
 
 -(void)setEncryptedPassword:(NSString *) encryptedPwd
@@ -230,14 +233,14 @@
 
 -(void) resetNewPassword:(NSString *)encryptedNewPassword
 {
-    [self.view addSubview:[me waitStat:@"Attempting password reset..."]];
+    /* [self.view addSubview:[me waitStat:@"Attempting password reset..."]];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
     self.hud.delegate = self;
     self.hud.labelText = @"Attempting Password Reset...";
-    [self.hud show:YES];
+    [self.hud show:YES];*/
     
-    serve *respass = [[serve alloc] init];
+    serve * respass = [[serve alloc] init];
     respass.Delegate = self;
     respass.tagName = @"resetPasswordDetails";
     [respass resetPassword:getEncryptionOldPassword new:getEncryptionNewPassword];
@@ -245,8 +248,8 @@
 
 - (void) forgot_pass
 {
-    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Enter your email and we will send you a reset link." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
-    alert.alertViewStyle=UIAlertViewStylePlainTextInput;
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Enter your email and we will send you a reset link." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [[alert textFieldAtIndex:0] setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]];
     [alert setTag:220011];
     [alert show];
@@ -260,26 +263,33 @@
         
         if ([emailField.text length] > 0 && [emailField.text  rangeOfString:@"@"].location != NSNotFound && [emailField.text  rangeOfString:@"."].location != NSNotFound)
         {
-            self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+            /* RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+            spinner1.color = [UIColor whiteColor];
+            self.hud = [[MBProgressHUD alloc] initWithView:self.view];
             [self.navigationController.view addSubview:self.hud];
+            
+            self.hud.mode = MBProgressHUDModeCustomView;
+            self.hud.customView = spinner1;
             self.hud.delegate = self;
             self.hud.labelText = @"One sec...";
             [self.hud show:YES];
-            
-            serve *forgetful = [serve new];
+            [spinner1 startAnimating];*/
+
+            serve * forgetful = [serve new];
             forgetful.Delegate = self;
             forgetful.tagName = @"ForgotPass";
             [forgetful forgotPass:emailField.text];
         }
         else
         {
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Enter Valid Email ID" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Please enter a valid email address." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
             alert.alertViewStyle=UIAlertViewStylePlainTextInput;
             [alert setTag:220011];
             [alert show];
         }
     }
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 3;
 }
@@ -363,7 +373,8 @@
     return YES;
 }
 
--(void)Error:(NSError *)Error{
+-(void)Error:(NSError *)Error
+{
     [self.hud hide:YES];
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
@@ -371,39 +382,46 @@
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
     [alert show];
-    
 }
+
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    if([tagName isEqualToString:@"ForgotPass"])
+    if ([tagName isEqualToString:@"ForgotPass"])
     {
         [self.hud hide:YES];
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Please check your email for a reset password link." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av show];
     }
 
-    else if([tagName isEqualToString:@"resetPasswordDetails"])
+    else if ([tagName isEqualToString:@"resetPasswordDetails"])
     {
         [self.hud hide:YES];
+        NSLog(@"RESULT IS: %@",result);
         BOOL isResult = [result boolValue];
-        if(isResult == 0)
+        if (isResult == 0)
         {
-            isPasswordChanged=YES;
-            UIAlertView *showAlertMessage = [[UIAlertView alloc] initWithTitle:@"Great Success" message:@"Your password has most assuredly been changed successfully." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            isPasswordChanged = YES;
+            UIAlertView * showAlertMessage = [[UIAlertView alloc] initWithTitle:@"Great Success" message:@"Your password has been changed successfully." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             [showAlertMessage show];
             [[assist shared]setPassValue:passwordReset];
-            [self.navigationController popViewControllerAnimated:YES];
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
         else
         {
-            isPasswordChanged=NO;
-            newchangedPass=@"";
-            UIAlertView *showAlertMessage = [[UIAlertView alloc] initWithTitle:@"Incorrect Password" message:@"Please check your current password." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            isPasswordChanged = NO;
+            newchangedPass = @"";
+            UIAlertView * showAlertMessage = [[UIAlertView alloc] initWithTitle:@"Incorrect Password" message:@"Please check your current password." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             [showAlertMessage show];
         }
+        /*if (![[[assist shared]getPass] isEqualToString:self.old.text])
+        {
+            NSLog(@"ASSIST SHARED - GET PASS = %@",[[assist shared]getPass]);
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"This Is Awkward" message:@"That doesn't appear to be the correct password. Please try again or contact us for futher help." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            return;
+        }*/
     }
 }
 - (void)didReceiveMemoryWarning  {

@@ -54,7 +54,7 @@
     [self.view addSubview:req_imm];
     
     self.ri = [[UISwitch alloc] initWithFrame:CGRectMake(260, 113, 40, 40)];
-    [self.ri setTintColor:kNoochGrayLight];
+    [self.ri setOnTintColor:kNoochGreen];
     [self.ri addTarget:self action:@selector(req) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.ri];
 
@@ -89,7 +89,7 @@
     [self.view addSubview:show_search];
     
     self.search = [[UISwitch alloc] initWithFrame:CGRectMake(260, 323, 40, 40)];
-    [self.search setTintColor:kNoochGrayLight];
+    [self.search setOnTintColor:kNoochGreen];
     [self.search addTarget:self action:@selector(show_in_search) forControlEvents:UIControlEventValueChanged];
     [self.search setOn:YES];
     if ([user objectForKey:@"show_in_search"]) {
@@ -153,17 +153,16 @@
         [user setObject:@"NO" forKey:@"requiredImmediately"];
     }
 }
--(void)Error:(NSError *)Error{
-   
-    UIAlertView *alert = [[UIAlertView alloc]
+
+-(void)Error:(NSError *)Error
+{
+    /*UIAlertView * alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
-    [alert show];
-    
+    [alert show]; */
 }
 
 #pragma mark - server delegation
@@ -171,23 +170,20 @@
 {
     if ([tagName isEqualToString:@"requiredImmediately"])
     {
-        NSError* error;
+        NSError * error;
         Dictresponse = [NSJSONSerialization
                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
-        NSLog(@"%@",Dictresponse);
     }
     if ([tagName isEqualToString:@"set_search"])
     {
-        NSError* error;
+        NSError * error;
         Dictresponse = [NSJSONSerialization
                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
-        NSLog(@"%@",Dictresponse);
     }
-
 }
 
 - (void)didReceiveMemoryWarning

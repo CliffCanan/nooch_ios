@@ -9,7 +9,7 @@
 	/**  This should set the tint color throughout the entire app.	Includes things  **/
 	/**	 like color of Segmented Controls, Refresh Controls, & default iOS elements  **/
 	view { 
-		-ios-tint-color	: #3fabe1;
+		//-ios-tint-color	: #3fabe1;
 		font-family		: "Roboto";
 	}
 
@@ -72,7 +72,7 @@
 	}
 	
 	.light_gray_text { color: #bcbec0; }
-    .reallyLight_gray { color: rgba(218,219,220,.9);
+    .reallyLight_gray { color: rgba(251,253,254,.98);
 	.red_text { color		: #c72127; }
 	.orange_text { color		: #cc9933; }
 	.yellow_text { color		: #cccc33; }
@@ -508,8 +508,18 @@
 		font-weight		: medium;
 		font-size		: 22px;
 		text-align		: right;
-        padding: 100px;
+        padding         : 100px;
 	}
+    .pickerstyle_4 {
+        width			: 320px;
+        left			: 0px;
+        height          : 480px;
+        font-family		: "Roboto";
+        font-weight		: medium;
+        font-size		: 22px;
+        text-align		: right;
+        padding         : 100px;
+    }
     .back_button-icon {
         top             : 45px;
 		width			: 15px;
@@ -2995,20 +3005,20 @@
 /*****     STATS     *****/
 /*************************/
 	table-view.stats {
-		height			: 340px;
+		height			: 347px;
 		width			: 300px;
 		top				: 80px;
 		left			: 0px;
 		background-color: white;
 		row-height		: 46px;
 		separator-style : single-line;
-		separator-color : rgba(188,190,192,.6);
+		separator-color : rgba(188,190,192,.5);
 	}
     table-view.stats_top_friends {
 		left			: 0px;
 		top				: 80px;
 		width			: 300px;
-		height			: 360px;
+		height			: 364px;
 		background-color: white;
 		row-height		: 64px;
 		separator-style : single-line;
@@ -3019,7 +3029,7 @@
         top				: 80px;
         width			: 300px;
         background-color: white;
-        row-height		: 140px;
+        row-height		: 68px;
         separator-style : none;
     }
 	.stats_header {
@@ -3045,9 +3055,9 @@
 		text-align		: left;
 	}
 	.stats_table_right_lable {
-		left			: 230px;
+		left			: 227px;
 		top				: 0px;
-		width			: 70px;
+		width			: 73px;
 		height			: 50px;
 		color			: #3fabe1;
 		font-family		: "Roboto";

@@ -100,7 +100,7 @@
         }
 
     }
-    else if(buttonIndex == 1)
+    else if (buttonIndex == 1)
     {
         if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
             UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -113,18 +113,23 @@
         }
        
         self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-          self.picker.allowsEditing = YES;
+        self.picker.allowsEditing = YES;
         [self presentViewController:self.picker animated:YES completion:Nil];
     }
-    else if(buttonIndex == 2)
+    else if (buttonIndex == 2)
     {
         self.picker.allowsEditing = YES;
-        [self.picker.view setStyleClass:@"pickerstyle"];
-        
+        if ([[UIScreen mainScreen] bounds].size.height < 500) {
+            [self.picker.view setStyleClass:@"pickerstyle_4"];
+        }
+        else {
+            [self.picker.view setStyleClass:@"pickerstyle"];
+        }
         self.picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
         [self presentViewController:self.picker animated:YES completion:Nil];
     }
 }
+
 -(void)renewFb
 {
     [self.accountStore renewCredentialsForAccount:(ACAccount *)self.facebookAccount completion:^(ACAccountCredentialRenewResult renewResult, NSError *error){
@@ -190,7 +195,6 @@
          
      }];
 }
-
 
 -(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size
 {
@@ -311,7 +315,6 @@
     [welcome setText:[NSString stringWithFormat:@"Hey %@!",[[self.user objectForKey:@"first_name" ] capitalizedString]]];
     [welcome setBackgroundColor:[UIColor clearColor]];
     [welcome setStyleClass:@"header_signupflow"];
-    [subview addSubview:welcome];
     
     self.pic = [[UIImageView alloc] initWithFrame:CGRectMake(89, 170, 144, 144)];
     self.pic.layer.cornerRadius = 72;
@@ -325,9 +328,8 @@
     else {
         [self.pic setImage:[UIImage imageNamed:@"silhouette.png"]];
     }
-    [subview addSubview:self.pic];
     
-    self.message = [[UILabel alloc] initWithFrame:CGRectMake(15, 315, 290, 70)];
+    self.message = [[UILabel alloc] initWithFrame:CGRectMake(24, 315, 272, 70)];
     [self.message setBackgroundColor:[UIColor clearColor]];
     
     if ([self.user objectForKey:@"image"]) {
@@ -338,39 +340,45 @@
     }
     [self.message setStyleClass:@"instruction_text"];
     [self.message setNumberOfLines:0];
-    [subview addSubview:self.message];
     
     self.choose_pic = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.choose_pic setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.choose_pic setStyleClass:@"button_blue"];
-    [self.choose_pic setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
+    [self.choose_pic setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.21) forState:UIControlStateNormal];
     self.choose_pic.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
-    if ([[self.user objectForKey:@"facebook"] objectForKey:@"image"])
-    {
+    if ([[self.user objectForKey:@"facebook"] objectForKey:@"image"]) {
         [self.choose_pic setTitle:@"  Change Picture" forState:UIControlStateNormal];
     }
-    else
-    {
+    else {
         [self.choose_pic setTitle:@"  Choose Picture" forState:UIControlStateNormal];
     }
     [self.choose_pic addTarget:self action:@selector(change_pic) forControlEvents:UIControlEventTouchUpInside];
     [self.choose_pic setFrame:CGRectMake(10, 390, 300, 60)];
 
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(19, 32, 38, .21);
+    shadow.shadowOffset = CGSizeMake(0, -1);
+    NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
+
     UILabel * glyphcamera = [UILabel new];
     [glyphcamera setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
     [glyphcamera setFrame:CGRectMake(40, 10, 26, 28)];
-    [glyphcamera setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-camera"]];
+    glyphcamera.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-camera"]
+                                                             attributes:textAttributes1];
     [glyphcamera setTextColor:[UIColor whiteColor]];
-    
-    [self.choose_pic addSubview:glyphcamera];
-    [subview addSubview:self.choose_pic];
     
     self.next_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.next_button setFrame:CGRectMake(10, 460, 300, 60)];
     [self.next_button addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
-    if ([[UIScreen mainScreen] bounds].size.height == 480) {
-        [self.next_button setFrame:CGRectMake(10, 443, 300, 60)];
+    
+    if ([[UIScreen mainScreen] bounds].size.height < 500)
+    {
+        [self.pic setFrame:CGRectMake(89, 164, 138, 138)];
+        self.pic.layer.cornerRadius = 69;
+        [self.message setFrame:CGRectMake(15, 304, 290, 66)];
+        [self.choose_pic setFrame:CGRectMake(10, 375, 300, 58)];
+        [self.next_button setFrame:CGRectMake(10, 429, 300, 60)];
     }
     
     if ([self.user objectForKey:@"image"])
@@ -388,6 +396,11 @@
         [self.next_button setStyleClass:@"label_small"];
     }
     
+    [subview addSubview:welcome];
+    [subview addSubview:self.pic];
+    [subview addSubview:self.message];
+    [self.choose_pic addSubview:glyphcamera];
+    [subview addSubview:self.choose_pic];
     [subview addSubview:self.next_button];
     
     self.picker = [[UIImagePickerController alloc]init];

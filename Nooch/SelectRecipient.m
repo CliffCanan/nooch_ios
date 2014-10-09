@@ -15,7 +15,7 @@
 @interface SelectRecipient ()
 @property(nonatomic,strong) UITableView *contacts;
 @property(nonatomic,strong) NSMutableArray *recents;
-@property (nonatomic, strong) ABPeoplePickerNavigationController *addressBookController;
+@property(nonatomic, strong) ABPeoplePickerNavigationController *addressBookController;
 @property(nonatomic) BOOL location;
 @property(nonatomic,strong) MBProgressHUD *hud;
 @property(nonatomic,strong) UISegmentedControl *completed_pending;
@@ -36,12 +36,12 @@
 {
     [super viewDidLoad];
   
-    if ([user valueForKey:@"facebook_id"] && ![[user valueForKey:@"facebook_id"] length] > 0)
+   /* if ([user valueForKey:@"facebook_id"] && ![[user valueForKey:@"facebook_id"] length] > 0)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connect with Facebook" message:@"Do you want to connect with your facebook friends?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Lator",nil];
         [av show];
         av.tag=6;
-    }
+    } */
 
     self.location = NO;
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -231,12 +231,11 @@
         NSLog(@"Not determined");
     }
 
-    [self facebook];
+    //[self facebook];
     serve *recents = [serve new];
     [recents setTagName:@"recents"];
     [recents setDelegate:self];
     [recents getRecents];
-    
 }
 
 -(void)DoneEditing_RequestMultiple:(id)sender
@@ -253,6 +252,7 @@
     [self.navigationController pushViewController:how_much animated:YES];
 }
 
+/*
 -(void) facebook
 {
     NSDictionary * options = @{
@@ -324,7 +324,7 @@
          //friends = [me cleanForSave:friends];
          //[self facebookProcess:friends];
      }];
-}
+}  */
 
 -(void)address_book
 {
@@ -739,6 +739,7 @@
     [searchBar resignFirstResponder];
     [searchBar setText:@""];
     [searchBar setShowsCancelButton:NO];
+    [self.contacts setStyleId:@"select_recipient"];
     [self.contacts reloadData];
 }
 
@@ -753,6 +754,7 @@
 {
     [searchBar becomeFirstResponder];
     [searchBar setShowsCancelButton:YES];
+    [searchBar setKeyboardType:UIKeyboardTypeEmailAddress];
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
@@ -763,9 +765,9 @@
 {
     if ([searchBar.text length] == 0)
     {
-        searching=NO;
-        emailEntry=NO;
-        isRecentList=YES;
+        searching = NO;
+        emailEntry = NO;
+        isRecentList = YES;
         
         [self.contacts reloadData];
         return;
@@ -777,15 +779,15 @@
         }
        
         searching = YES;
-        NSRange isRange = [searchBar.text  rangeOfString:[NSString stringWithFormat:@"@"] options:NSCaseInsensitiveSearch];
-        NSRange isRange2 = [searchBar.text  rangeOfString:[NSString stringWithFormat:@"."] options:NSCaseInsensitiveSearch];
+        NSRange isRange = [searchBar.text rangeOfString:[NSString stringWithFormat:@"@"] options:NSCaseInsensitiveSearch];
+     // NSRange isRange2 = [searchBar.text rangeOfString:[NSString stringWithFormat:@"."] options:NSCaseInsensitiveSearch];
         
-        if(isRange.location != NSNotFound && isRange2.location != NSNotFound)
+        if (isRange.location != NSNotFound) // && isRange2.location != NSNotFound)
         {
             emailEntry = YES;
-            isphoneBook=NO;
+            isphoneBook = NO;
             searching = NO;
-            isRecentList=NO;
+            isRecentList = NO;
             searchString = searchBar.text;
             [self.contacts setHidden:NO];
             if ([[assist shared]isRequestMultiple]) {
@@ -795,16 +797,16 @@
         else
         {
             emailEntry = NO;
-            isphoneBook=NO;
+            isphoneBook = NO;
             searching = YES;
-            isRecentList=NO;
+            isRecentList = NO;
             searchString = searchBar.text;
             [self searchTableView];
         }
         [self.contacts reloadData];
     }
     else {
-        isphoneBook=NO;
+        isphoneBook = NO;
         searchString = [searchBar.text substringToIndex:[searchBar.text length] - 1];
         [self.contacts reloadData];
     }
@@ -812,7 +814,7 @@
 
 - (void) searchTableView
 {
-    arrSearchedRecords =[[NSMutableArray alloc]init];
+    arrSearchedRecords = [[NSMutableArray alloc]init];
     for (NSString *key in [[assist shared] assos].allKeys)
     {
         NSMutableDictionary *dict = [[assist shared] assos][key];
@@ -872,20 +874,17 @@
     [nav_ctrl setViewControllers:arrNav animated:NO];
     [self.navigationController popViewControllerAnimated:YES];
 }
--(void)Error:(NSError *)Error{
+
+-(void)Error:(NSError *)Error {
     [self.hud hide:YES];
 
-    
-    
-    UIAlertView *alert = [[UIAlertView alloc]
+    /* UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
-    [alert show];
-    
+    [alert show]; */
 }
 
 #pragma mark - server Delegation
@@ -937,7 +936,7 @@
         [[assist shared] addAssos:additions];
     }
 
-    else if ([tagName isEqualToString:@"fb"])
+    /* else if ([tagName isEqualToString:@"fb"])
     {
         NSError *error;
         NSMutableDictionary *temp = [NSJSONSerialization
@@ -955,7 +954,7 @@
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"whoo!" message:[temp valueForKey:@"Result"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
         }
-    }
+    } */
 
     else if ([tagName isEqualToString:@"recents"])
     {
@@ -1184,21 +1183,18 @@
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag == 6)
-    {
+    
+    /* if (alertView.tag == 6) {
         if (buttonIndex==0) {
             [self connect_to_facebook];
         }
-        else{
-            
-        }
-    }
+    } */
     
     if (alertView.tag == 20220)
     {
-        if (buttonIndex==1)
+        if (buttonIndex == 1)
         {
-            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+            NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
             if (isphoneBook) {
                 [dict setObject:emailphoneBook forKey:@"email"];
             }
@@ -1206,26 +1202,26 @@
                 [dict setObject:searchString forKey:@"email"];
             
             [dict setObject:@"nonuser" forKey:@"nonuser"];
-             isFromHome=NO;
-            HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
+            isFromHome = NO;
+            HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
         }
     }
-    else if (alertView.tag==4 && buttonIndex==0)
+    else if (alertView.tag == 4 && buttonIndex == 0)
     {
-        isEmailEntry=NO;
-        emailEntry=NO;
-        isphoneBook=NO;
-        isRecentList=YES;
-        searching=NO;
-        search.text=@"";
+        isEmailEntry = NO;
+        emailEntry = NO;
+        isphoneBook = NO;
+        isRecentList = YES;
+        searching = NO;
+        search.text = @"";
         [search setShowsCancelButton:NO];
         [search resignFirstResponder];
         [self.contacts reloadData];
     }
 }
 
-#pragma mark - facebook integration
+/* #pragma mark - facebook integration
 - (void)connect_to_facebook
 {
     if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]){
@@ -1321,7 +1317,7 @@
          });
          
      }];
-}
+}  */
 
 
 #pragma mark - UITableViewDataSource
@@ -1444,7 +1440,6 @@
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             }
             else {
- //               loc =- 1;
                 cell.accessoryType = UITableViewCellAccessoryNone;
             }
             
@@ -1516,8 +1511,7 @@
         
         if (info[@"facebookId"])
         {
-            //add fb image
-            UILabel *fb = [UILabel new];
+            UILabel * fb = [UILabel new];
             [fb setStyleClass:@"facebook_glyph"];
             [fb setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook"]];
             [cell.contentView addSubview:fb];

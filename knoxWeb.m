@@ -73,7 +73,7 @@
     [self.web setDelegate:self];
     [self.web setFrame:CGRectMake(0, -2, 320, [[UIScreen mainScreen] bounds].size.height - 61)];
     [self.view addSubview:self.web];
-    [self.web.scrollView setScrollEnabled:YES];
+    [self.web.scrollView setScrollEnabled:NO];
     
     RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
     spinner1.color = [UIColor whiteColor];
@@ -112,7 +112,11 @@
 
     mainView = [[UIView alloc]init];
     mainView.layer.cornerRadius = 5;
-    mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 5);
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        mainView.frame = CGRectMake(9, -500, 302, 449);
+    } else {
+        mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 5);
+    }
     mainView.backgroundColor = [UIColor whiteColor];
     mainView.layer.masksToBounds = NO;
     
@@ -124,12 +128,20 @@
     [UIView animateWithDuration:0.33
                      animations:^{
                          [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                         mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 5);
+                         if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                             mainView.frame = CGRectMake(9, 70, 302, 449);
+                         } else {
+                             mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 5);
+                         }
                      } completion:^(BOOL finished) {
                          [UIView animateWithDuration:.22
                                           animations:^{
                                               [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-                                              mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 5);
+                                              if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                                  mainView.frame = CGRectMake(9, 35, 302, 440);
+                                              } else {
+                                                  mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 5);
+                                              }
                                           }];
                      }];
  
@@ -169,7 +181,7 @@
     
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
-        mainView.frame = CGRectMake(8, 40, 302, 430);
+        mainView.frame = CGRectMake(8, 40, 302, 440);
         head_container.frame = CGRectMake(0, 0, 302, 38);
         space_container.frame = CGRectMake(0, 28, 302, 10);
         glyph_lock.frame = CGRectMake(29, 5, 22, 29);
@@ -177,13 +189,17 @@
         imageShow.frame = CGRectMake(1, 43, 300, 340);
         btnLink.frame = CGRectMake(10,mainView.frame.size.height-51, 280, 44);
     }
-    
-    UIButton *btnclose = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnclose.frame = CGRectMake(mainView.frame.size.width - 28, head_container.frame.origin.y - 15, 35, 35);
-    [btnclose setImage:[UIImage imageNamed:@"close_button.png"] forState:UIControlStateNormal] ;
-    [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
 
-    [mainView addSubview:btnclose];
+    UIImageView * btnClose = [[UIImageView alloc] initWithFrame:self.view.frame];
+    btnClose.image = [UIImage imageNamed:@"close_button"];
+    btnClose.frame = CGRectMake(9, 6, 35, 35);
+
+    UIButton * btnClose_shell = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnClose_shell.frame = CGRectMake(mainView.frame.size.width - 35, head_container.frame.origin.y - 21, 48, 46);
+    [btnClose_shell addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
+    [btnClose_shell addSubview:btnClose];
+
+    [mainView addSubview:btnClose_shell];
     [mainView addSubview:imageShow];
     [mainView addSubview:btnLink];
     [overlay addSubview:mainView];

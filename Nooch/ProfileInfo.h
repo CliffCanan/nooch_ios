@@ -17,7 +17,7 @@ BOOL isProfileOpenFromSideBar;
 @interface ProfileInfo : GAITrackedViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UIScrollViewDelegate,MBProgressHUDDelegate,UIAlertViewDelegate>
 {
     
-    int down,option;
+    int down,option,rowHeight;
     UIActivityIndicatorView*spinner;
     NSString *recoverMail;
     NSString *timezoneStandard;

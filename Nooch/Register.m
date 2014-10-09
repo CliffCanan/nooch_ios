@@ -201,7 +201,7 @@
 
     UIButton * login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [login setBackgroundColor:[UIColor clearColor]];
-    [login setTitle:@"Already a Member?  Sign in here " forState:UIControlStateNormal];
+    [login setTitle:@"Already a Member?  Sign in here  " forState:UIControlStateNormal];
     [login setFrame:CGRectMake(10, 510, 280, 30)];
     [login addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
     [login setStyleClass:@"label_small"];
@@ -378,27 +378,38 @@
                                error:&error];
          dispatch_async(dispatch_get_main_queue(), ^{
              [self.hud hide:YES];
+
              self.name_field.text = [NSString stringWithFormat:@"%@ %@",[self.facebook_info objectForKey:@"first_name"],[self.facebook_info objectForKey:@"last_name"]];
-             [self.name_field becomeFirstResponder];
+             [self.password_field becomeFirstResponder];
+
              self.email_field.text = [self.facebook_info objectForKey:@"email"];
+
              NSString *imageURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", [self.facebook_info objectForKey:@"id"]];
+
              [[NSUserDefaults standardUserDefaults] setObject:[self.facebook_info objectForKey:@"id"] forKey:@"facebook_id"];
-           //  NSData *imgData = [NSData new];
+
              NSData * imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURL]];
              NSMutableDictionary *d = [self.facebook_info mutableCopy];
              [d setObject:imgData forKey:@"image"];
              self.facebook_info = [d mutableCopy];
-             [self.facebook setTitle:@"Facebook Connected" forState:UIControlStateNormal];
+
+             [self.facebook setTitle:@"     Facebook Connected" forState:UIControlStateNormal];
+
              for (UIView*subview in self.facebook.subviews) {
-                 if([subview isMemberOfClass:[UILabel class]])
-                 {
+                 if([subview isMemberOfClass:[UILabel class]]) {
                      [subview removeFromSuperview];
-                }
+                 }
              }
+             NSShadow * shadow = [[NSShadow alloc] init];
+             shadow.shadowColor = Rgb2UIColor(19, 32, 38, .22);
+             shadow.shadowOffset = CGSizeMake(0, -1);
+             NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
+
              UILabel *glyphFB = [UILabel new];
              [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
-             [glyphFB setFrame:CGRectMake(20, 8, 30, 30)];
-             [glyphFB setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]];
+             [glyphFB setFrame:CGRectMake(22, 8, 30, 30)];
+             glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]
+                                                                           attributes:textAttributes1];
              [glyphFB setTextColor:[UIColor whiteColor]];
              
              [self.facebook addSubview:glyphFB];

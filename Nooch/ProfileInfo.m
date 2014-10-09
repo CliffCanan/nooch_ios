@@ -302,9 +302,7 @@ UIImageView *picture;
     NSShadow * shadow_edit = [[NSShadow alloc] init];
     shadow_edit.shadowColor = Rgb2UIColor(33, 34, 35, .35);
     shadow_edit.shadowOffset = CGSizeMake(0, 1);
-    
-    NSDictionary * textAttributes =
-    @{NSShadowAttributeName: shadow_edit };
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow_edit };
 
     UILabel *edit_label = [UILabel new];
     [edit_label setBackgroundColor:[UIColor clearColor]];
@@ -486,13 +484,16 @@ UIImageView *picture;
                               @"Eastern Standard Time",@"GMT-05:00",
                               @"Atlantic Standard Time",@"GMT-04:00",
                               nil];
-    
+    rowHeight = 51;
     self.list = [UITableView new];
-    [self.list setFrame:CGRectMake(0, 70, 320, [UIScreen mainScreen].bounds.size.height - 134)];
+    [self.list setFrame:CGRectMake(0, 70, 320, (rowHeight * 8) + 10)];
     [self.list setDelegate:self];
     [self.list setDataSource:self];
-    [self.list setRowHeight:50];
+    [self.list setRowHeight:rowHeight];
     [self.list setScrollEnabled:YES];
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        rowHeight = 45;
+    }
     [self.view addSubview:self.list];
 }
 
@@ -868,7 +869,7 @@ UIImageView *picture;
     
     if (indexPath.row == 0)
     {
-        UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
         [name setBackgroundColor:[UIColor clearColor]];
         [name setText:@"Name"];
         [name setStyleClass:@"table_view_cell_textlabel_1"];
@@ -878,7 +879,7 @@ UIImageView *picture;
     }
     else if (indexPath.row == 1)
     {
-        UILabel * mail = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        UILabel * mail = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
         [mail setBackgroundColor:[UIColor clearColor]];
         [mail setStyleClass:@"table_view_cell_textlabel_1"];
         mail.attributedText = [[NSAttributedString alloc] initWithString:@"Email"
@@ -934,7 +935,7 @@ UIImageView *picture;
     }
     else if (indexPath.row == 2)
     {
-        UILabel * recover = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        UILabel * recover = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
         [recover setBackgroundColor:[UIColor clearColor]];
         [recover setText:@"Recovery Email"];
 
@@ -944,15 +945,13 @@ UIImageView *picture;
     }
     else if (indexPath.row == 3)
     {
-        UILabel * num = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        UILabel * num = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
         [num setBackgroundColor:[UIColor clearColor]];
         [num setStyleClass:@"table_view_cell_textlabel_1"];
         num.attributedText = [[NSAttributedString alloc] initWithString:@"Phone"
                                                              attributes:textAttributes_white];
         
-        NSLog(@"IsVerifiedPhone value is: %@",[user objectForKey:@"IsVerifiedPhone"]);
-        NSLog(@"PhoneNo value is: %@",[dictSavedInfo valueForKey:@"phoneno"]);
-        NSLog(@"PhoneNo LENGTH is: %d",[[dictSavedInfo valueForKey:@"phoneno"]length]);
+        // NSLog(@"PhoneNo value is: %@",[dictSavedInfo valueForKey:@"phoneno"]);
         
         if (![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"])
         {
@@ -1008,7 +1007,7 @@ UIImageView *picture;
     }
     else if (indexPath.row == 4)
     {
-        UILabel * addr1 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        UILabel * addr1 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
         [addr1 setBackgroundColor:[UIColor clearColor]];
         [addr1 setText:@"Address"];
         [addr1 setStyleClass:@"table_view_cell_textlabel_1"];
@@ -1017,7 +1016,7 @@ UIImageView *picture;
     }
     else if (indexPath.row == 5)
     {
-        UILabel * addr2 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        UILabel * addr2 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
         [addr2 setBackgroundColor:[UIColor clearColor]];
         [addr2 setText:@"Address 2"];
         [addr2 setStyleClass:@"table_view_cell_textlabel_1"];
@@ -1026,7 +1025,7 @@ UIImageView *picture;
     }
     else if (indexPath.row == 6)
     {
-        UILabel * city_lbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        UILabel * city_lbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
         [city_lbl setBackgroundColor:[UIColor clearColor]];
         [city_lbl setText:@"City"];
         [city_lbl setStyleClass:@"table_view_cell_textlabel_1"];
@@ -1035,7 +1034,7 @@ UIImageView *picture;
     }
     else if (indexPath.row == 7)
     {
-        UILabel * zip_lbl = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, 50)];
+        UILabel * zip_lbl = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, rowHeight)];
         [zip_lbl setBackgroundColor:[UIColor clearColor]];
         [zip_lbl setText:@"ZIP"];
         [zip_lbl setStyleClass:@"table_view_cell_textlabel_1"];
@@ -1091,7 +1090,7 @@ UIImageView *picture;
     if (indexPath.row == self.expand_path.row && self.disclose) {
         return 88;
     }
-    return 50;
+    return rowHeight;
 }
 
 #pragma mark - UITextField delegation
@@ -1154,39 +1153,6 @@ UIImageView *picture;
     [self.view endEditing:YES];
 }
 
-- (void) toggleArrowRotate
-{
-    if (self.disclose == YES)
-    {
-        self.disclose = NO;
-        
-        [self.glyph_arrow_email setStyleClass:@"animate_rotate"];
-        [self toggleArrowRotate];
-        
-        /*  CGAffineTransform rotation = CGAffineTransformRotate(CGAffineTransformIdentity, -M_PI/1);
-         [UIView animateWithDuration:0.4
-         animations:^{
-         self.glyph_arrow_email.transform = rotation;
-         }
-         completion:nil]; */
-    }
-    else if (self.disclose == NO)
-    {
-        self.disclose = YES;
-        
-        [self.glyph_arrow_email setStyleClass:@"animate_rotate"];
-        
-        /* CGAffineTransform rotation = CGAffineTransformMakeRotation(180 * M_PI / 180 );
-         [UIView animateWithDuration:0.4
-         animations:^{
-         self.glyph_arrow_email.transform = rotation;
-         }
-         completion:nil]; */
-    }
-
-    
-}
-
 #pragma mark - file paths
 - (NSString *)autoLogin
 {
@@ -1194,6 +1160,7 @@ UIImageView *picture;
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
 }
+
 -(void)Error:(NSError *)Error{
     [self.hud hide:YES];
    
@@ -1203,12 +1170,10 @@ UIImageView *picture;
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
     [alert show];
-    
 }
-#pragma mark - server delegation
 
+#pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     [self.hud hide:YES];
@@ -1306,7 +1271,6 @@ UIImageView *picture;
     }
     else if ([tagName isEqualToString:@"MySettingsResult"])
     {
-
         dictProfileinfo = [NSJSONSerialization
                          JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                          options:kNilOptions
@@ -1601,7 +1565,6 @@ UIImageView *picture;
         if ([[sourceData objectForKey:@"Status"] length] > 0)
         {
             NSString * letterA = [[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
-         // NSLog(@"LETTER 'A' IS %@",letterA);
 
             self.name.text = [NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
             
@@ -1660,7 +1623,7 @@ UIImageView *picture;
     else  if ([self.ServiceType isEqualToString:@"email"])
     {
         self.email.text = [sourceData objectForKey:@"Status"];
-//        NSString* email = [self.email.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        //  NSString* email = [self.email.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
         if (![[dictProfileinfo objectForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]] &&
               [dictProfileinfo objectForKey:@"RecoveryMail"] != NULL &&
@@ -1706,7 +1669,6 @@ UIImageView *picture;
 }
 
 - (void)didReceiveMemoryWarning
-
 {
     [super didReceiveMemoryWarning];
     SDImageCache *imageCache = [SDImageCache sharedImageCache];

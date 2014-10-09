@@ -262,7 +262,7 @@ void exceptionHandler(NSException *exception){
     NSString * bname = @"US Bank Guy";
     NSString * accountName = @"12345678";
     //Components of response are Logged here
-    NSLog(@"fired in Delegate - URL Encoded %@ %@", isPaid, paymentID);
+    NSLog(@"fired in Delegate - URL Encoded --> IsPaid: %@   paymentID: %@", isPaid, paymentID);
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:isPaid forKey:@"isPaid"];
     [defaults setObject:paymentID forKey:@"paymentID"];
