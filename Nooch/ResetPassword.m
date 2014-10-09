@@ -405,16 +405,13 @@
                            error:&error];
       if (![[dictProfileinfo valueForKey:@"Password"] isKindOfClass:[NSNull class]])
         {
-            
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Password"]];
         }
-
-        
     }
-   else if ([tagName isEqualToString:@"ForgotPass"])
+    else if ([tagName isEqualToString:@"ForgotPass"])
     {
         [self.hud hide:YES];
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Please check your email for a reset password link." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -440,13 +437,6 @@
             newchangedPass = @"";
             UIAlertView * showAlertMessage = [[UIAlertView alloc] initWithTitle:@"Incorrect Password" message:@"Please check your current password." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             [showAlertMessage show];
-        }
-        if (![[[assist shared]getPass] isEqualToString:self.old.text])
-        {
-            NSLog(@"ASSIST SHARED - GET PASS = %@",[[assist shared]getPass]);
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"This Is Awkward" message:@"That doesn't appear to be the correct password. Please try again or contact us for futher help." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-            return;
         }
     }
 }
