@@ -99,7 +99,7 @@ NSMutableURLRequest *request;
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
         [user removeObjectForKey:@"Balance"];
-        Register*reg=[Register new];
+        Register * reg = [Register new];
         [nav_ctrl pushViewController:reg animated:NO];
         return;
     }
@@ -116,7 +116,7 @@ NSMutableURLRequest *request;
         [self presentViewController:pin animated:YES completion:nil];
     }
 
-    serve *fb = [serve new];
+    serve * fb = [serve new];
     [fb setDelegate:self];
     [fb setTagName:@"fb"];
     if ([user objectForKey:@"facebook_id"]) {
@@ -554,25 +554,25 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         self.suspended = [UIView new];
         [self.suspended setStyleId:@"suspended_home"];
 
-        UILabel *sus_header = [UILabel new];
+        UILabel * sus_header = [UILabel new];
         [sus_header setStyleClass:@"banner_header"];
         sus_header.attributedText = [[NSAttributedString alloc] initWithString:@"Account Suspended"
                                                                attributes:textAttributes];
         [self.suspended addSubview:sus_header];
 
-        UILabel *sus_info = [UILabel new];
+        UILabel * sus_info = [UILabel new];
         [sus_info setStyleClass:@"banner_info"];
         [sus_info setNumberOfLines:0];
         sus_info.attributedText = [[NSAttributedString alloc] initWithString:@"Your account will be limited while you are suspended."
                                                                     attributes:textAttributes];
         [self.suspended addSubview:sus_info];
 
-        UILabel *sus_exclaim = [UILabel new];
+        UILabel * sus_exclaim = [UILabel new];
         [sus_exclaim setStyleClass:@"banner_alert_glyph"];
         [sus_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
         [self.suspended addSubview:sus_exclaim];
         
-        UIButton *contact = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        UIButton * contact = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [contact setStyleClass:@"go_now_text"];
         [contact setTitle:@"TAP TO CONTACT NOOCH" forState:UIControlStateNormal];
         [contact setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
@@ -580,11 +580,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [contact addTarget:self action:@selector(contact_support) forControlEvents:UIControlEventTouchUpInside];
         [self.suspended addSubview:contact];
         
-        UIButton *dis = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        UIButton * dis = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [dis setStyleClass:@"dismiss_banner"];
         [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
         [dis setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
         dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+        [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
         [dis addTarget:self action:@selector(dismiss_suspended_alert) forControlEvents:UIControlEventTouchUpInside];
         [self.suspended addSubview:dis];
         
@@ -613,18 +614,18 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         bannerAlert++;
       
-        UILabel *em = [UILabel new];
+        UILabel * em = [UILabel new];
         [em setStyleClass:@"banner_header"];
         em.attributedText = [[NSAttributedString alloc] initWithString:@"Profile Not Validated"
                                                                    attributes:textAttributes];
         [self.profile_incomplete addSubview:em];
         
-        UILabel *em_exclaim = [UILabel new];
+        UILabel * em_exclaim = [UILabel new];
         [em_exclaim setStyleClass:@"banner_alert_glyph"];
         [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
         [self.profile_incomplete addSubview:em_exclaim];
         
-        UILabel *em_info = [UILabel new];
+        UILabel * em_info = [UILabel new];
         [em_info setStyleClass:@"banner_info"];
         [em_info setNumberOfLines:0];
         em_info.attributedText = [[NSAttributedString alloc] initWithString:@"Complete your profile to unlock all features."
@@ -632,7 +633,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
        
         [self.profile_incomplete addSubview:em_info];
         
-        UIButton *go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        UIButton * go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [go setStyleClass:@"go_now_text"];
         [go setTitle:@"TAP TO FIX NOW" forState:UIControlStateNormal];
         [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
@@ -640,10 +641,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [go addTarget:self action:@selector(go_profile) forControlEvents:UIControlEventTouchUpInside];
         [self.profile_incomplete addSubview:go];
         
-        UIButton *dis = [UIButton buttonWithType:UIButtonTypeCustom];
+        UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
         [dis setStyleClass:@"dismiss_banner"];
         [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
         [dis setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
+        [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
         dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [dis addTarget:self action:@selector(dismiss_profile_unvalidated) forControlEvents:UIControlEventTouchUpInside];
       
@@ -672,30 +674,30 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         bannerAlert++;
         
-        UILabel *em = [UILabel new];
+        UILabel * em = [UILabel new];
         [em setStyleClass:@"banner_header"];
         em.attributedText = [[NSAttributedString alloc] initWithString:@"Phone Number Not Verified"
                                                               attributes:textAttributes];
         [self.phone_incomplete addSubview:em];
           
-        UILabel *em_exclaim = [UILabel new];
+        UILabel * em_exclaim = [UILabel new];
         [em_exclaim setStyleClass:@"banner_alert_glyph"];
         [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-phone"]];
         [self.phone_incomplete addSubview:em_exclaim];
         
-        UILabel *glyph_phone = [UILabel new];
+        UILabel * glyph_phone = [UILabel new];
         [glyph_phone setStyleClass:@"banner_alert_glyph_sm"];
         [glyph_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
         [self.phone_incomplete addSubview:glyph_phone];
         
-        UILabel *em_info = [UILabel new];
+        UILabel * em_info = [UILabel new];
         [em_info setStyleClass:@"banner_info"];
         [em_info setNumberOfLines:0];
         em_info.attributedText = [[NSAttributedString alloc] initWithString:@"Please verify your phone - respond 'Go' to the SMS."
                                                             attributes:textAttributes];
         [self.phone_incomplete addSubview:em_info];
 
-        UIButton *go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        UIButton * go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [go setStyleClass:@"go_now_text"];
         [go setTitle:@"TAP TO ADD NUMBER" forState:UIControlStateNormal];
         [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
@@ -703,19 +705,19 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [go addTarget:self action:@selector(go_profile) forControlEvents:UIControlEventTouchUpInside];
         [self.phone_incomplete addSubview:go];
 
-        UIButton *dis = [UIButton buttonWithType:UIButtonTypeCustom];
+        UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
         [dis setStyleClass:@"dismiss_banner"];
         [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
         [dis setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
+        [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
         dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [dis addTarget:self action:@selector(dismiss_phone_unvalidated) forControlEvents:UIControlEventTouchUpInside];
 
         [self.phone_incomplete addSubview:dis];
 
         [self.view addSubview:self.phone_incomplete];
-        
-            [self.view bringSubviewToFront:self.profile_incomplete];
 
+        [self.view bringSubviewToFront:self.profile_incomplete];
     }
     else {
         [self.phone_incomplete removeFromSuperview];
@@ -765,7 +767,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                   } completion: nil
         ];
         
-        carouselTop = 72;
+        carouselTop = 75;
     }
     else if (bannerAlert >= 2)
     {
@@ -782,7 +784,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                       }];
                                   } completion: nil
         ];
-        carouselTop = 110;
+        carouselTop = 114;
     }
     else {
         [UIView animateKeyframesWithDuration:0.5
@@ -798,7 +800,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                       }];
                                   } completion: nil
         ];
-        carouselTop = 50;
+        carouselTop = 54;
     }
     
     // Address Book Authorization grant
@@ -984,13 +986,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     //create new view if no view is available for recycling
     if (view == nil)
     {
-		view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 140, 175)];
-
-        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 25, 100, 100)];
+		view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 140, 160)];
+        
+        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 10, 100, 100)];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         imageView.layer.cornerRadius = 50;
 
-        name = [[UILabel alloc] initWithFrame:CGRectMake(0, 132, 140, 20)];
+        name = [[UILabel alloc] initWithFrame:CGRectMake(0, 117, 140, 20)];
         name.textColor = [Helpers hexColor:@"313233"];
         name.textAlignment = NSTextAlignmentCenter;
         [name setFont:[UIFont fontWithName:@"Roboto-regular" size:19]];
@@ -1006,7 +1008,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [glyph_fav setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
             [glyph_fav setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-star"]];
             glyph_fav.textAlignment = NSTextAlignmentCenter;
-            [glyph_fav setFrame:CGRectMake(62, 155, 16, 17)];
+            [glyph_fav setFrame:CGRectMake(62, 140, 16, 17)];
             [glyph_fav setTextColor:kNoochBlue];
             [view addSubview:glyph_fav];
         }
@@ -1015,7 +1017,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [imageView setImage:[UIImage imageWithData:favorite[@"image"]]];
 
             UILabel * lastname = nil;
-            lastname = [[UILabel alloc] initWithFrame:CGRectMake(0, 152, 140, 20)];
+            lastname = [[UILabel alloc] initWithFrame:CGRectMake(0, 137, 140, 20)];
             lastname.textColor = [UIColor blackColor];
             lastname.textAlignment = NSTextAlignmentCenter;
             [lastname setFont:[UIFont fontWithName:@"Roboto-light" size:15]];
@@ -1028,12 +1030,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
             if (!favorite[@"LastName"]) {
                 name.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
-                [glyph_adressBook setFrame:CGRectMake(63, 156, 14, 16)];
+                [glyph_adressBook setFrame:CGRectMake(63, 141, 14, 16)];
             }
             else {
                 name.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
                 lastname.text = [NSString stringWithFormat:@"%@",favorite[@"LastName"]];
-                [glyph_adressBook setFrame:CGRectMake(63, 173, 14, 16)];
+                [glyph_adressBook setFrame:CGRectMake(63, 158, 14, 16)];
             }
             [view addSubview:lastname];
             [view addSubview:glyph_adressBook];
@@ -1043,10 +1045,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [view addSubview:imageView];
         [view addSubview:name];
     }
-    else
-    {
-    }
-    
+
     return view;
 }
 

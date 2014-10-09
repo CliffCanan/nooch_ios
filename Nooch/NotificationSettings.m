@@ -24,6 +24,10 @@
 @property(nonatomic,strong) UISwitch *request_cancelled_push;
 @property(nonatomic,strong) UITableView * transfers_table;
 @property(nonatomic,strong) UITableView * request_table;
+@property(nonatomic,strong) UIButton * btn_glyphEmail_1;
+@property(nonatomic,strong) UIButton * btn_glyphPush_1;
+@property(nonatomic,strong) UIButton * btn_glyphEmail_2;
+@property(nonatomic,strong) UIButton * btn_glyphPush_2;
 @property(nonatomic,strong) MBProgressHUD *hud;
 @end
 
@@ -53,6 +57,10 @@
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
+    allOn_sec1_email = false;
+    allOn_sec2_email = false;
+    allOn_sec2_push = false;
+
     self.transfers_table = [[UITableView alloc] initWithFrame:CGRectMake(0, 26, 320, 145)];
     [self.transfers_table setDataSource:self];
     [self.transfers_table setDelegate:self];
@@ -67,33 +75,37 @@
     [self.view addSubview:self.request_table];
     // [self.request_table reloadData];
 
-    UILabel * glyphEmail_1 = [[UILabel alloc] initWithFrame:CGRectMake(180, 9, 50, 20)];
-    [glyphEmail_1 setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
-    [glyphEmail_1 setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope-o"]];
-    [glyphEmail_1 setTextColor:kNoochGrayDark];
-    [glyphEmail_1 setTextAlignment:NSTextAlignmentCenter];
-    [self.view addSubview:glyphEmail_1];
+    self.btn_glyphEmail_1 = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.btn_glyphEmail_1.frame = CGRectMake(180, 0, 50, 36);
+    [self.btn_glyphEmail_1 setStyleClass:@"font-awesome"];
+    [self.btn_glyphEmail_1 setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope-o"] forState:UIControlStateNormal];
+    [self.btn_glyphEmail_1 setTitleColor:kNoochBlue forState:UIControlStateHighlighted];
+    [self.btn_glyphEmail_1 addTarget:self action:@selector(toggle_section:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.btn_glyphEmail_1];
 
-    UILabel * glyphPush_1 = [[UILabel alloc] initWithFrame:CGRectMake(260, 9, 50, 20)];
-    [glyphPush_1 setFont:[UIFont fontWithName:@"FontAwesome" size:22]];
-    [glyphPush_1 setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-mobile"]];
-    [glyphPush_1 setTextColor:kNoochGrayDark];
-    [glyphPush_1 setTextAlignment:NSTextAlignmentCenter];
-    [self.view addSubview:glyphPush_1];
+    self.btn_glyphPush_1 = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.btn_glyphPush_1.frame = CGRectMake(260, 0, 50, 39);
+    [self.btn_glyphPush_1 setStyleClass:@"font-awesome_22px"];
+    [self.btn_glyphPush_1 setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-mobile"] forState:UIControlStateNormal];
+    [self.btn_glyphPush_1 setTitleColor:kNoochGreen forState:UIControlStateHighlighted];
+    [self.btn_glyphPush_1 addTarget:self action:@selector(toggle_section:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.btn_glyphPush_1];
 
-    UILabel * glyphEmail_2 = [[UILabel alloc] initWithFrame:CGRectMake(180, 185, 50, 20)];
-    [glyphEmail_2 setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
-    [glyphEmail_2 setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope-o"]];
-    [glyphEmail_2 setTextColor:kNoochGrayDark];
-    [glyphEmail_2 setTextAlignment:NSTextAlignmentCenter];
-    [self.view addSubview:glyphEmail_2];
+    self.btn_glyphEmail_2 = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.btn_glyphEmail_2.frame = CGRectMake(180, 177, 50, 36);
+    [self.btn_glyphEmail_2 setStyleClass:@"font-awesome"];
+    [self.btn_glyphEmail_2 setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope-o"] forState:UIControlStateNormal];
+    [self.btn_glyphEmail_2 setTitleColor:kNoochBlue forState:UIControlStateHighlighted];
+    [self.btn_glyphEmail_2 addTarget:self action:@selector(toggle_section:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.btn_glyphEmail_2];
 
-    UILabel * glyphPush_2 = [[UILabel alloc] initWithFrame:CGRectMake(260, 185, 50, 20)];
-    [glyphPush_2 setFont:[UIFont fontWithName:@"FontAwesome" size:22]];
-    [glyphPush_2 setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-mobile"]];
-    [glyphPush_2 setTextColor:kNoochGrayDark];
-    [glyphPush_2 setTextAlignment:NSTextAlignmentCenter];
-    [self.view addSubview:glyphPush_2];
+    self.btn_glyphPush_2 = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.btn_glyphPush_2.frame = CGRectMake(260, 177, 50, 39);
+    [self.btn_glyphPush_2 setStyleClass:@"font-awesome_22px"];
+    [self.btn_glyphPush_2 setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-mobile"] forState:UIControlStateNormal];
+    [self.btn_glyphPush_2 setTitleColor:kNoochGreen forState:UIControlStateHighlighted];
+    [self.btn_glyphPush_2 addTarget:self action:@selector(toggle_section:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.btn_glyphPush_2];
 
     self.email_received = [[UISwitch alloc] initWithFrame:CGRectMake(180, 37, 40, 30)];
     self.email_received.transform = CGAffineTransformMakeScale(0.9, 0.9);
@@ -196,18 +208,78 @@
     serveOBJ.tagName = @"getSettings";
     [serveOBJ MemberNotificationSettingsInput];
     
-    if ([[UIScreen mainScreen] bounds].size.height == 480)
-    {
-        UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
+    /* if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        UIScrollView * scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
                                                                               [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
         [scroll setDelegate:self];
         [scroll setContentSize:CGSizeMake(320, 530)];
-        for (UIView *subview in self.view.subviews)
-        {
+        for (UIView * subview in self.view.subviews) {
             [subview removeFromSuperview];
             [scroll addSubview:subview];
         }
         [self.view addSubview:scroll];
+    } */
+}
+
+-(void)toggle_section:(UIButton*)glyph_selected
+{
+    if (glyph_selected == self.btn_glyphEmail_1)
+    {
+        if (allOn_sec1_email) {
+            [self.email_received setOn:NO animated:YES];
+            [self.email_sent setOn:NO animated:YES];
+            [self.email_unclaimed setOn:NO animated:YES];
+            allOn_sec1_email = false;
+        }
+        else {
+            [self.email_received setOn:YES animated:YES];
+            [self.email_sent setOn:YES animated:YES];
+            [self.email_unclaimed setOn:YES animated:YES];
+            allOn_sec1_email = true;
+        }
+    }
+    else if (glyph_selected == self.btn_glyphEmail_2)
+    {
+        if (allOn_sec2_email) {
+            [self.request_received_email setOn:NO animated:YES];
+            [self.request_paid_email setOn:NO animated:YES];
+            [self.request_rejected_email setOn:NO animated:YES];
+            [self.request_cancelled_email setOn:NO animated:YES];
+            allOn_sec2_email = false;
+        }
+        else {
+            [self.request_received_email setOn:YES animated:YES];
+            [self.request_paid_email setOn:YES animated:YES];
+            [self.request_rejected_email setOn:YES animated:YES];
+            [self.request_cancelled_email setOn:YES animated:YES];
+            allOn_sec2_email = true;
+        }
+    }
+    else if (glyph_selected == self.btn_glyphPush_1)
+    {
+        if (self.push_received.isOn) {
+            [self.push_received setOn:NO animated:YES];
+        }
+        else {
+            [self.push_received setOn:YES animated:YES];
+        }
+    }
+    else if (glyph_selected == self.btn_glyphPush_2)
+    {
+        if (allOn_sec2_push) {
+            [self.request_received_push setOn:NO animated:YES];
+            [self.request_paid_push setOn:NO animated:YES];
+            [self.request_rejected_push setOn:NO animated:YES];
+            [self.request_cancelled_push setOn:NO animated:YES];
+            allOn_sec2_push = false;
+        }
+        else {
+            [self.request_received_push setOn:YES animated:YES];
+            [self.request_paid_push setOn:YES animated:YES];
+            [self.request_rejected_push setOn:YES animated:YES];
+            [self.request_cancelled_push setOn:YES animated:YES];
+            allOn_sec2_push = true;
+        }
     }
 }
 
@@ -403,6 +475,10 @@
             [self.email_unclaimed setOn:NO];
         }
 
+        if (self.email_unclaimed.isOn && self.email_sent.isOn && self.email_received.isOn) {
+            allOn_sec1_email = true;
+        }
+
 
         // Request Received
         if ([[dictInput objectForKey:@"TransferAttemptFailure"]boolValue]) {
@@ -411,10 +487,11 @@
         else {
             //[self.push_failure setOn:NO];
         }
-        [self.request_received_email setOn:YES];
-        [self.request_paid_email setOn:YES];
-        [self.request_rejected_email setOn:YES];
-        [self.request_cancelled_email setOn:YES];
+        allOn_sec2_email = true;
+        [self.request_received_email setOn:YES animated:YES];
+        [self.request_paid_email setOn:YES animated:YES];
+        [self.request_rejected_email setOn:YES animated:YES];
+        [self.request_cancelled_email setOn:YES animated:YES];
     }
 
     else if ([tagName isEqualToString:@"setSettings"])

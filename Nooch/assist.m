@@ -488,10 +488,10 @@ static assist * _sharedInstance = nil;
             // NSLog(@"%@",url);
 
             if ([[loginResult valueForKey:@"IsKnoxBankAdded"]boolValue] == YES) {
-                   [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
+                [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
             }
             else {
-                   [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
+                [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
             }
 
         }

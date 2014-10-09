@@ -28,8 +28,8 @@
         _descPositionY   = DEFAULT_DESCRIPTION_LABEL_Y_POSITION;
         _title = @"";
         if ([[UIScreen mainScreen] bounds].size.height < 500) {
-            _titleFont = [UIFont fontWithName:@"Roboto-regular" size:21.0];
-            _descFont = [UIFont fontWithName:@"Roboto-Light" size:16.0];
+            _titleFont = [UIFont fontWithName:@"Roboto-regular" size:23.0];
+            _descFont = [UIFont fontWithName:@"Roboto-Light" size:17.0];
         } else {
             _titleFont = DEFAULT_TITLE_FONT;
             _descFont = DEFAULT_DESCRIPTION_FONT;
