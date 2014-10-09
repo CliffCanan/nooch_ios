@@ -2506,49 +2506,6 @@ return customView;
         [serveOBJ setTagName:@"time"];
         [serveOBJ GetServerCurrentTime];
 
-//            if ([histShowArrayCompleted count]==0 && ![subTypestr isEqualToString:@"Pending"]) {
-//                UILabel * emptyText = nil;
-//                UIImageView * emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(33, 105, 253, 256)];
-//                
-//                [self.list setStyleId:@"emptyTable"];
-//                
-//                if ([[UIScreen mainScreen] bounds].size.height < 500)
-//                {
-//                    emptyText = [[UILabel alloc] initWithFrame:CGRectMake(8, 10, 304, 56)];
-//                    [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:18]];
-//                    [emptyPic setFrame:CGRectMake(33, 78, 253, 256)];
-//                } else {
-//                    emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, 300, 72)];
-//                    [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
-//                }
-//                [emptyText setNumberOfLines:0];
-//                [emptyText setText:@"Once you make or receive a payment, come here to see all the details."];
-//                [emptyText setTextAlignment:NSTextAlignmentCenter];
-//                
-//                [emptyPic setImage:[UIImage imageNamed:@"history_img"]];
-//                [emptyPic setStyleClass:@"animate_bubble"];
-//                
-//                [self.view  addSubview: emptyPic];
-//                [self.view  addSubview: emptyText];
-//                
-//                [exportHistory removeFromSuperview];
-//                
-//
-//            }
-//            if ([histShowArrayPending count]==0 && [subTypestr isEqualToString:@"Pending"])
-//                {
-//                UILabel * emptyText_Pending = nil;
-//
-//                [self.list setStyleId:@"emptyTable"];
-//                emptyText_Pending = [[UILabel alloc] initWithFrame:CGRectMake(6, 5, 308, 70)];
-//                [emptyText_Pending setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
-//                [emptyText_Pending setNumberOfLines:0];
-//                [emptyText_Pending setText:@"No payments found for you at the moment."];
-//                [emptyText_Pending setTextAlignment:NSTextAlignmentCenter];
-//                [self.view addSubview:emptyText_Pending];
-//                
-//            }
-    
         
 
     }
