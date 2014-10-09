@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/Statistics.m"
-            timestampString = "430986944.703603"
+            timestampString = "434523023.149224"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "292"
-            endingLineNumber = "292"
+            startingLineNumber = "293"
+            endingLineNumber = "293"
             landmarkName = "-go_2nd_panel_from_1st"
             landmarkType = "5">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/Statistics.m"
-            timestampString = "430986944.703603"
+            timestampString = "434523023.149224"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "313"
-            endingLineNumber = "313"
+            startingLineNumber = "314"
+            endingLineNumber = "314"
             landmarkName = "-go_3rd_panel_from_1st"
             landmarkType = "5">
          </BreakpointContent>
@@ -271,7 +271,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "928"
             endingLineNumber = "928"
-            landmarkName = "-alertView:clickedButtonAtIndex:"
+            landmarkName = "-listen:tagName:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -382,22 +382,6 @@
             startingLineNumber = "1532"
             endingLineNumber = "1532"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nooch/HowMuch.m"
-            timestampString = "432730263.31583"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "246"
-            endingLineNumber = "246"
-            landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -923,7 +907,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1309"
             endingLineNumber = "1309"
-            landmarkName = "-send_request"
+            landmarkName = "-mailComposeController:didFinishWithResult:error:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -939,22 +923,6 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1534"
             endingLineNumber = "1534"
-            landmarkName = "-listen:tagName:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nooch/Home.m"
-            timestampString = "433850997.626321"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1551"
-            endingLineNumber = "1551"
             landmarkName = "-listen:tagName:"
             landmarkType = "5">
          </BreakpointContent>
