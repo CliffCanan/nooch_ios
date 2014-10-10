@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by Preston Hults on 9/7/12.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch Inc. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -17,13 +17,11 @@ bool inBack;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>{
     UIActivityIndicatorView * activityView;
-    UIView *loadingView;
-    UILabel *loadingLabel;
-    UIImageView *noConnectionView;
-    UIImageView *rainbowTop;
-    UIImageView *rainbowBot;
-    Reachability* hostReach;
-    Reachability* internetReach;
+    UIView * loadingView;
+    UILabel * loadingLabel;
+    UIImageView * noConnectionView;
+    Reachability * hostReach;
+    Reachability * internetReach;
 }
 @property (strong, nonatomic) UIWindow *window;
 @property(nonatomic, retain) id<GAITracker> tracker;

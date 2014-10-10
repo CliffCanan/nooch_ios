@@ -9,6 +9,7 @@
 #import "SelectPicture.h"
 #import "Login.h"
 #import "terms.h"
+#import "Appirater.h"
 
 @interface Register ()
 @property(nonatomic,strong) UITextField *name_field;
@@ -42,6 +43,8 @@
 
 - (void)viewDidLoad
 {
+    [Appirater appLaunched:NO];
+
     [super viewDidLoad];
     [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
     [self.hud hide:YES];

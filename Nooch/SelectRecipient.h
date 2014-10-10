@@ -25,7 +25,7 @@ BOOL isAddRequest;
     UIView*loader;
     NSString*searchString;
     BOOL searching;
-    BOOL emailEntry;
+    BOOL emailEntry, shouldAnimate;
     NSMutableArray*arrSearchedRecords;
     UISearchBar *search;
     UIActivityIndicatorView*spinner;

@@ -14,6 +14,7 @@
 #import "ProfileInfo.h"
 //#import "ECSlidingViewController.h"
 #import "METoast.h"
+#import "Appirater.h"
 @implementation AppDelegate
 
 static NSString *const kTrackingId = @"UA-36976317-2";
@@ -25,7 +26,12 @@ bool modal;
 {
 
     inBack = NO;
-
+    [Appirater setAppId:@"917955306"];
+    [Appirater setDaysUntilPrompt:8];
+    [Appirater setUsesUntilPrompt:10];
+    [Appirater setSignificantEventsUntilPrompt:-1];
+    [Appirater setTimeBeforeReminding:2];
+    //[Appirater setDebug:YES];
     [GMSServices provideAPIKey:@"AIzaSyDC-JeglFaO1kbXc2Z3ztCgh1AnwfIla-8"];
     inactiveDate = [NSDate date];
     [NSUserDefaults resetStandardUserDefaults];
@@ -54,6 +60,7 @@ bool modal;
     [application setApplicationIconBadgeNumber:0];
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 
+    [Appirater appLaunched:YES];
     NSSetUncaughtExceptionHandler(&exceptionHandler);
    // [[UIApplication sharedApplication]registerForRemoteNotificationTypes:UIRemoteNotificationTypeNone];
     return YES;
@@ -164,7 +171,7 @@ void exceptionHandler(NSException *exception){
         }
     }
     inBack = NO;
-    
+    [Appirater appEnteredForeground:YES];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

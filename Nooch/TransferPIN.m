@@ -105,11 +105,11 @@
     [self.prompt setTextAlignment:NSTextAlignmentCenter];
     [self.view addSubview:self.prompt];
 
-    UIView *back = [UIView new];
+    UIView * back = [UIView new];
     [back setStyleClass:@"raised_view"];
     [back setStyleClass:@"pin_recipientbox"];
     [self.view addSubview:back];
-    UIView *bar = [UIView new];
+    UIView * bar = [UIView new];
     [bar setStyleClass:@"pin_recipientname_bar"];
 
     if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"]) {
@@ -120,11 +120,15 @@
     }
 
     [self.view addSubview:bar];
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(31, 32, 33, .25);
+    shadow.shadowOffset = CGSizeMake(0, 1);
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
 
-    UILabel *to_label = [UILabel new];
-    if ( ![[self.receiver objectForKey:@"email"] length] == 0 && [self.receiver objectForKey:@"nonuser"])
+    UILabel * to_label = [UILabel new];
+    if (![[self.receiver objectForKey:@"email"] length] == 0 && [self.receiver objectForKey:@"nonuser"])
     {
-        [to_label setText:[NSString stringWithFormat:@" %@",[self.receiver objectForKey:@"email"]]];
+        to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[self.receiver objectForKey:@"email"]] attributes:textAttributes];
     }
     else {
         if ([[assist shared] isRequestMultiple])
@@ -134,17 +138,12 @@
             {
                 strMultiple = [strMultiple stringByAppendingString:[NSString stringWithFormat:@", %@",[dictRecord[@"FirstName"] capitalizedString]]];
             }
-            strMultiple=[strMultiple substringFromIndex:1];
+            strMultiple = [strMultiple substringFromIndex:1];
             [to_label setText:strMultiple];
         }
         else
         {
-            if ([[self.receiver objectForKey:@"FirstName"] length] == 0) {
-                [to_label setBackgroundColor:kNoochPurple];
-            } 
-            else {
-                [to_label setText:[NSString stringWithFormat:@" %@ %@",[[self.receiver objectForKey:@"FirstName"] capitalizedString],[[self.receiver objectForKey:@"LastName"] capitalizedString]]];
-            }
+            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@ %@",[[self.receiver objectForKey:@"FirstName"] capitalizedString],[[self.receiver objectForKey:@"LastName"] capitalizedString]] attributes:textAttributes];
         }
     }
 
