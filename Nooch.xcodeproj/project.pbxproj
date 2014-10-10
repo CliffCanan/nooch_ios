@@ -82,6 +82,8 @@
 		16E4B1CA1870A2C90099D075 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16E4B1C91870A2C90099D075 /* MessageUI.framework */; };
 		5C38468D19C56694002AEB15 /* check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C38468C19C56694002AEB15 /* check@2x.png */; };
 		5C38468F19C566DE002AEB15 /* cross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C38468E19C566DE002AEB15 /* cross@2x.png */; };
+		5C4A205019E77B9600D1A0EE /* Appirater.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4A204D19E77B9600D1A0EE /* Appirater.m */; };
+		5C4A205319E77C0000D1A0EE /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C4A205219E77C0000D1A0EE /* StoreKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5C5D073219DE70CB00B07A30 /* 0_home-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C5D073019DE70CB00B07A30 /* 0_home-bg.png */; };
 		5C5D073319DE70CB00B07A30 /* home_img@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C5D073119DE70CB00B07A30 /* home_img@2x.png */; };
 		5C6917DB19B69AD90044BF2B /* nooch_logo_color.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C6917DA19B69AD90044BF2B /* nooch_logo_color.png */; };
@@ -414,6 +416,10 @@
 		16E4B1C91870A2C90099D075 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		5C38468C19C56694002AEB15 /* check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check@2x.png"; sourceTree = "<group>"; };
 		5C38468E19C566DE002AEB15 /* cross@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cross@2x.png"; sourceTree = "<group>"; };
+		5C4A204C19E77B9600D1A0EE /* Appirater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Appirater.h; sourceTree = "<group>"; };
+		5C4A204D19E77B9600D1A0EE /* Appirater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Appirater.m; sourceTree = "<group>"; };
+		5C4A204F19E77B9600D1A0EE /* AppiraterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppiraterDelegate.h; sourceTree = "<group>"; };
+		5C4A205219E77C0000D1A0EE /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		5C5D073019DE70CB00B07A30 /* 0_home-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0_home-bg.png"; sourceTree = "<group>"; };
 		5C5D073119DE70CB00B07A30 /* home_img@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home_img@2x.png"; sourceTree = "<group>"; };
 		5C6917DA19B69AD90044BF2B /* nooch_logo_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nooch_logo_color.png; sourceTree = "<group>"; };
@@ -793,6 +799,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C4A205319E77C0000D1A0EE /* StoreKit.framework in Frameworks */,
 				84830DD019B03DB400E29A4C /* MapKit.framework in Frameworks */,
 				6B30380215FA48F900056DAD /* AudioToolbox.framework in Frameworks */,
 				6B30380115FA48F900056DAD /* AddressBookUI.framework in Frameworks */,
@@ -1129,6 +1136,16 @@
 			name = "venturepact ";
 			sourceTree = "<group>";
 		};
+		5C4A204B19E77B9600D1A0EE /* Appirater */ = {
+			isa = PBXGroup;
+			children = (
+				5C4A204C19E77B9600D1A0EE /* Appirater.h */,
+				5C4A204D19E77B9600D1A0EE /* Appirater.m */,
+				5C4A204F19E77B9600D1A0EE /* AppiraterDelegate.h */,
+			);
+			path = Appirater;
+			sourceTree = "<group>";
+		};
 		5C69CFB519C8F20F00EB406F /* SIAlertView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1330,6 +1347,7 @@
 		6B30372415FA3FF300056DAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5C4A205219E77C0000D1A0EE /* StoreKit.framework */,
 				846A5E0F19DAB0FC0093FF9C /* SDWebImage */,
 				84BD1A3519B5A0C600ECC983 /* GoogleMaps.bundle */,
 				84BD1A3319B5A0AE00ECC983 /* GoogleMaps.framework */,
@@ -1401,6 +1419,7 @@
 		6B30372C15FA3FF300056DAD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5C4A204B19E77B9600D1A0EE /* Appirater */,
 				5C69D06B19CA0F5B00EB406F /* EAIntroView */,
 				5C69D03519C941DB00EB406F /* SpinKit */,
 				5C69CFDB19C92E7D00EB406F /* TSMessages */,
@@ -2014,6 +2033,7 @@
 				5C69D05A19C941DB00EB406F /* RTSpinKit9CubeGridAnimation.m in Sources */,
 				01085FC317FDE5C700A31F63 /* LeftMenu.m in Sources */,
 				846A5E3719DAB0FC0093FF9C /* SDWebImageDownloaderOperation.m in Sources */,
+				5C4A205019E77B9600D1A0EE /* Appirater.m in Sources */,
 				6B3037AD15FA45BB00056DAD /* NSData+AESCrypt.m in Sources */,
 				6B3037AF15FA45BB00056DAD /* NSString+AESCrypt.m in Sources */,
 				5C69D05F19C941DB00EB406F /* RTSpinKitCircleAnimation.m in Sources */,
