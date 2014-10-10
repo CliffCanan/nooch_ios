@@ -36,7 +36,9 @@
     [super viewWillAppear:animated];
     self.trackedViewName = @"KnoxWeb Screen";
 }
-
+-(void)viewDidDisappear:(BOOL)animated{
+    [self.hud hide:YES];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];

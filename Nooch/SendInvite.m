@@ -40,6 +40,9 @@
     [super viewWillAppear:animated];
     self.trackedViewName = @"Refer a Friend Screen";
 }
+-(void)viewDidDisappear:(BOOL)animated{
+    [self.hud hide:YES];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];

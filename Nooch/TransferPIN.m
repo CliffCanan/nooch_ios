@@ -56,7 +56,9 @@
     [super viewWillAppear:animated];
     self.trackedViewName = @"TransferPin Screen";
 }
-
+-(void)viewDidDisappear:(BOOL)animated{
+    [self.hud hide:YES];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];

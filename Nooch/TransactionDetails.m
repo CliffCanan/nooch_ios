@@ -39,7 +39,9 @@
     [super viewWillAppear:animated];
     self.trackedViewName = @"TransactionDetail Screen";
 }
-
+-(void)viewDidDisappear:(BOOL)animated{
+    [self.hud hide:YES];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];

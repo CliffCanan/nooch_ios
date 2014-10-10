@@ -46,7 +46,9 @@
     [super viewWillAppear:animated];
     self.trackedViewName = @"Terms Screen";
 }
-
+-(void)viewDidDisappear:(BOOL)animated{
+    [self.hud hide:YES];
+}
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];

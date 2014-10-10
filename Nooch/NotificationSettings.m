@@ -47,7 +47,9 @@
     [super viewWillAppear:animated];
     self.trackedViewName = @"Notification Settings Screen";
 }
-
+-(void)viewDidDisappear:(BOOL)animated{
+    [self.hud hide:YES];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
