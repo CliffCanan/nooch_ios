@@ -241,13 +241,12 @@ void exceptionHandler(NSException *exception){
 
 -(BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-      NSLog(@"%@",url);
+    // NSLog(@"%@",url);
     if ([sourceApplication isEqualToString:@"com.apple.mobilesafari"] ||
         [sourceApplication isEqualToString:@"com.apple.mobilemail"]) {
         return YES;
     }
-  
-    
+
     //Get the Response from Knox and parse it
     NSString *response = [[url absoluteString]stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSArray *URLParse = [response componentsSeparatedByString:@"?"];
@@ -261,26 +260,18 @@ void exceptionHandler(NSException *exception){
     NSArray * isPaid = [responseParse[0] componentsSeparatedByString:@"pst="][1];
     NSLog(@"%@",isPaid);
     NSString * paymentID = [responseParse[2] componentsSeparatedByString:@"pay_id="][1];
-//    NSString * imageURL = [responseParse[5] componentsSeparatedByString:@"bank_image="][1];
-//    NSString * bname = [responseParse[4] componentsSeparatedByString:@"bank_name="][1];
-//    NSString * accountName = [responseParse[3] componentsSeparatedByString:@"account_name="][1];
 
-    NSString * imageURL = @"https://s3.amazonaws.com/knox_bank_avatars/USBKUS.png";
-    NSString * bname = @"US Bank Guy";
-    NSString * accountName = @"12345678";
     //Components of response are Logged here
     NSLog(@"fired in Delegate - URL Encoded --> IsPaid: %@   paymentID: %@", isPaid, paymentID);
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:isPaid forKey:@"isPaid"];
     [defaults setObject:paymentID forKey:@"paymentID"];
-    [defaults setObject:imageURL forKey:@"BankImageURL"];
-    [defaults setObject:bname forKey:@"BankName"];
-    [defaults setObject:accountName forKey:@"AccountName"];
+
     [defaults synchronize];
     
     //Send Notification to WebView so it can resign itself and to the parent view if desired to handle response and give success notification etc.
     [[NSNotificationCenter defaultCenter]
-     postNotificationName:@"KnoxResponse" object:self];
+    postNotificationName:@"KnoxResponse" object:self];
     return YES;
 }
 

@@ -1694,31 +1694,30 @@ NSString *amnt;
 {
     self.responseData = [[NSMutableData alloc] init];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    
-    NSString *urlString = [NSString stringWithFormat:@"%@/SaveMemberTransId",ServerUrl];
-    
-    NSURL *url = [NSURL URLWithString:urlString];
-    dictInv=[[NSMutableDictionary alloc]init];
-    
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
+
+    NSString * urlString = [NSString stringWithFormat:@"%@/SaveMemberTransId",ServerUrl];
+    NSURL * url = [NSURL URLWithString:urlString];
+    dictInv = [[NSMutableDictionary alloc]init];
+
+    NSUserDefaults * defaults=[NSUserDefaults standardUserDefaults];
+
     [dictInv setObject:trans forKey:@"KNoxInput"];
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
-    
-    NSError *error;
+
+    NSError * error;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
     postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
     requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     [requestInv setHTTPMethod:@"POST"];
     [requestInv setValue:postLengthInv forHTTPHeaderField:@"Content-Length"];
     [requestInv setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [requestInv setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
     [requestInv setHTTPBody:postDataInv];
-    
+
     connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
-    
+
     if (!connectionInv)
         NSLog(@"connect error");
 }

@@ -1022,22 +1022,24 @@
             return;
         }
         
-        if ([self.recents count] > 0) {
+        if ([self.recents count] > 0)
+        {
             [self.contacts setHidden:NO];
             [self.contacts setStyleId:@"select_recipient"];
             [self.contacts reloadData];
         }
-        else {
+        else
+        {
             [self.contacts setHidden:YES];
             self.noContact_img=[[UIImageView alloc] init];
             
             if (IS_IPHONE_5) {
-                self.noContact_img.frame=CGRectMake(0, 93, 320, 405);
+                self.noContact_img.frame=CGRectMake(0, 92, 320, 405);
                 self.noContact_img.contentMode=UIViewContentModeScaleToFill;
                 self.noContact_img.image=[UIImage imageNamed:@"selectRecipientIntro.png"];
             }
             else {
-                self.noContact_img.frame=CGRectMake(0, 93, 320, 320);
+                self.noContact_img.frame=CGRectMake(5, 80, 310, 334);
                 self.noContact_img.contentMode=UIViewContentModeScaleToFill;
                 self.noContact_img.image=[UIImage imageNamed:@"selectRecipientIntro_smallScreen.png"];
             }
