@@ -875,7 +875,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [favoritesOBJ setDelegate:self];
     [favoritesOBJ get_favorites];
 }
-
+-(void)viewDidDisappear:(BOOL)animated{
+      [self.hud hide:YES];
+}
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

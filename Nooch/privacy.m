@@ -26,7 +26,9 @@
     }
     return self;
 }
-
+-(void)viewDidDisappear:(BOOL)animated{
+    [self.hud hide:YES];
+}
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

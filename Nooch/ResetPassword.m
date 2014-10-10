@@ -122,6 +122,9 @@
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+-(void)viewDidDisappear:(BOOL)animated{
+    [self.hud hide:YES];
+}
 
 - (void)viewDidLoad
 {
