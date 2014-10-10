@@ -217,7 +217,7 @@
     //Export History
     exportHistory = [UIButton buttonWithType:UIButtonTypeCustom];
     [exportHistory setTitle:@"     Export History" forState:UIControlStateNormal];
-    [exportHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
+    [exportHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
     exportHistory.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [exportHistory setFrame:CGRectMake(10, 420, 132, 31)];
     if ([UIScreen mainScreen].bounds.size.height > 500) {
@@ -226,13 +226,18 @@
     else {
         [exportHistory setStyleClass:@"exportHistorybutton_4"];
     }
-    
-    UILabel *glyph = [UILabel new];
-    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
-    [glyph setFrame:CGRectMake(7, 1, 15, 30)];
-    [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cloud-download"]];
-    [glyph setTextColor:[UIColor whiteColor]];
-    [exportHistory addSubview:glyph];
+
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(19, 32, 38, .22);
+    shadow.shadowOffset = CGSizeMake(0, -1);
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
+
+    UILabel * glyph_export = [UILabel new];
+    [glyph_export setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
+    [glyph_export setFrame:CGRectMake(7, 1, 15, 30)];
+    glyph_export.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cloud-download"] attributes:textAttributes];
+    [glyph_export setTextColor:[UIColor whiteColor]];
+    [exportHistory addSubview:glyph_export];
     [exportHistory addTarget:self action:@selector(ExportHistory:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:exportHistory];
     [self.view bringSubviewToFront:exportHistory];
@@ -619,17 +624,16 @@ return customView;
     isSearch = NO;
     isLocalSearch = NO;
 
-    serve *serveOBJ = [serve new];
+    serve * serveOBJ = [serve new];
     [serveOBJ setDelegate:self];
     serveOBJ.tagName = @"hist";
     [serveOBJ histMore:filter sPos:ind len:len subType:subTypestr];
-    
 }
 
 #pragma mark - transaction type switching
 - (void) completed_or_pending:(id)sender
 {
-    [self.list removeFromSuperview];
+    /*[self.list removeFromSuperview];
     self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
     [self.list setDataSource:self];
     [self.list setDelegate:self];
@@ -638,7 +642,7 @@ return customView;
     [self.list reloadData];
     [self.view bringSubviewToFront:exportHistory];
     
-    [self.list setStyleId:@"history"];
+    [self.list setStyleId:@"history"];*/
     
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     if ([segmentedControl selectedSegmentIndex] == 0)
@@ -1472,7 +1476,8 @@ return customView;
         {
             if (isEnd == YES)
             {
-                if ([histShowArrayCompleted count]==0) {
+                if ([histShowArrayCompleted count] == 0)
+                {
                     UILabel * emptyText = nil;
                     UIImageView * emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(33, 105, 253, 256)];
                     
@@ -1498,8 +1503,6 @@ return customView;
                     [self.list  addSubview: emptyText];
                     
                     [exportHistory removeFromSuperview];
-                    
-                    
                 }
                 
 //                [self.list setStyleId:@"emptyTable"];
@@ -1541,7 +1544,7 @@ return customView;
                 {
                     if (indexPath.row > 6)
                     {
-                        ishistLoading=YES;
+                        ishistLoading = YES;
                         index++;
                         [self loadHist:listType index:index len:20 subType:subTypestr];
                     }
@@ -1979,7 +1982,7 @@ return customView;
         {
             if (isEnd == YES)
             {
-                if ([histShowArrayPending count]==0)
+                if ([histShowArrayPending count] == 0)
                 {
                     UILabel * emptyText_Pending = nil;
                     
@@ -1990,7 +1993,6 @@ return customView;
                     [emptyText_Pending setText:@"No payments found for you at the moment."];
                     [emptyText_Pending setTextAlignment:NSTextAlignmentCenter];
                     [self.list addSubview:emptyText_Pending];
-                    
                 }
                 
 //                [self.list setStyleId:@"emptyTable"];
@@ -2019,9 +2021,9 @@ return customView;
                 }
                 else
                 {
-                    if (indexPath.row > 5)
+                    if (indexPath.row > 10)
                     {
-                        ishistLoading=YES;
+                        ishistLoading = YES;
                         index++;
                         [self loadHist:listType index:index len:20 subType:subTypestr];
                     }
@@ -2350,13 +2352,13 @@ return customView;
 {
     [self.hud hide:YES];
 
-    /* UIAlertView *alert = [[UIAlertView alloc]
+    UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    [alert show]; */
+    [alert show];
 }
 
 #pragma mark - server delegation
@@ -2490,13 +2492,13 @@ return customView;
             
             
         }
-            if ([histShowArrayCompleted count]==0 && ![subTypestr isEqualToString:@"Pending"]) {
+        else if ([histShowArrayCompleted count] == 0 && ![subTypestr isEqualToString:@"Pending"]) {
             isEnd = YES;
             
-            }
-            else if([histShowArrayPending count]==0 && [subTypestr isEqualToString:@"Pending"]){
-                 isEnd = YES;
-            }
+        }
+        else if ([histShowArrayPending count] == 0 && [subTypestr isEqualToString:@"Pending"]) {
+            isEnd = YES;
+        }
         
         if (isMapOpen) {
             [self mapPoints];
@@ -2505,9 +2507,6 @@ return customView;
         [serveOBJ setDelegate:self];
         [serveOBJ setTagName:@"time"];
         [serveOBJ GetServerCurrentTime];
-
-        
-
     }
     
     else if ([tagName isEqualToString:@"time"])
@@ -2518,7 +2517,8 @@ return customView;
         [self.list removeFromSuperview];
         self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
         [self.list setStyleId:@"history"];
-        [self.list setDataSource:self]; [self.list setDelegate:self];
+        [self.list setDataSource:self];
+        [self.list setDelegate:self];
         [self.list setSectionHeaderHeight:0];
         [self.view addSubview:self.list];
         [self.list reloadData];
