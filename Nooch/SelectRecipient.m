@@ -568,7 +568,7 @@
         self.location = YES;
 
         [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.5];
+        [UIView setAnimationDuration:0.4];
         
         CGRect frame = self.contacts.frame;
         frame.origin.y = 40;
@@ -578,7 +578,7 @@
         
         [search setHidden:YES];
 
-        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWordPress];
         spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
@@ -780,15 +780,20 @@
        
         searching = YES;
         NSRange isRange = [searchBar.text rangeOfString:[NSString stringWithFormat:@"@"] options:NSCaseInsensitiveSearch];
-     // NSRange isRange2 = [searchBar.text rangeOfString:[NSString stringWithFormat:@"."] options:NSCaseInsensitiveSearch];
         
-        if (isRange.location != NSNotFound) // && isRange2.location != NSNotFound)
+        if (isRange.location != NSNotFound)
         {
             emailEntry = YES;
+            shouldAnimate = YES;
             isphoneBook = NO;
             searching = NO;
             isRecentList = NO;
             searchString = searchBar.text;
+            
+            if (isRange.location < searchBar.text.length - 1) {
+                shouldAnimate = NO;
+            }
+            
             [self.contacts setHidden:NO];
             if ([[assist shared]isRequestMultiple]) {
                 return;
@@ -797,6 +802,7 @@
         else
         {
             emailEntry = NO;
+            shouldAnimate = NO;
             isphoneBook = NO;
             searching = YES;
             isRecentList = NO;
@@ -1347,8 +1353,8 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake (10,0,200,30)];
+    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
+    UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake (10, 0, 200, 30)];
     title.textColor = kNoochGrayDark;
     
     if (section == 0)
@@ -1357,9 +1363,11 @@
             title.text = @"Nearby Users";
         else if (searching)
             title.text = @"Search Results";
-        else
+        else if (isRecentList)
             title.text = @"Recent Contacts";
-    } else{
+        else
+            title.text = @"Send To Email Address";
+    } else {
         title.text = @"";
     }
     [headerView addSubview:title];
@@ -1449,7 +1457,7 @@
             NSLog(@"%@",temp);
         }
         
-        UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
+        UIImageView * pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
         pic.clipsToBounds = YES;
         [cell.contentView addSubview:pic];
         [pic setFrame:CGRectMake(16, 6, 50, 50)];
@@ -1473,10 +1481,10 @@
         
         for (NSString *key in [assist shared].assos.allKeys)
         {
-            NSDictionary *person = [assist shared].assos[key];
+            NSDictionary * person = [assist shared].assos[key];
             if ([person[@"MemberId"] isEqualToString:temp[@"MemberId"]])
             {
-                UIImageView *ab = [UIImageView new];
+                UIImageView * ab = [UIImageView new];
                 [ab setStyleClass:@"addressbook-icons"];
                 ab.layer.cornerRadius = 4;
                 [ab setStyleClass:@"animate_bubble"];
@@ -1594,23 +1602,22 @@
         }
     }
 
-    else if (isRecentList){
-        //Recent List
-        
+    else if (isRecentList)
+    {
         [npic setFrame:CGRectMake(278, 19, 23, 27)];
         [npic setImage:[UIImage imageNamed:@"n_icon_46x54.png"]];
         
         NSDictionary * info = [self.recents objectAtIndex:indexPath.row];
         [pic sd_setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
             placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
-        pic.hidden = NO;
         [pic setFrame:CGRectMake(16, 6, 50, 50)];
+        pic.hidden = NO;
         pic.layer.cornerRadius = 25;
 
         cell.indentationWidth = 56;
         [cell setIndentationLevel:1];
-        cell.textLabel.text = [NSString stringWithFormat:@"    %@ %@",info[@"FirstName"],info[@"LastName"]];
         [cell.textLabel setStyleClass:@"select_recipient_name"];
+        cell.textLabel.text = [NSString stringWithFormat:@"    %@ %@",info[@"FirstName"],info[@"LastName"]];
         
         cell.accessoryType = UITableViewCellAccessoryNone;
         
@@ -1630,15 +1637,16 @@
     
     else if (emailEntry)
     {
-        //Email
         [self.contacts setStyleId:@"select_recipientwithoutSeperator"];
+        [npic removeFromSuperview];
+
         cell.accessoryType = UITableViewCellAccessoryNone;
-   //     [pic removeFromSuperview];
         [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
         [pic setFrame:CGRectMake(130, 62, 60, 60)];
-        pic.layer.cornerRadius = 29;
-        [npic removeFromSuperview];
-        
+        pic.layer.cornerRadius = 30;
+        if (shouldAnimate) {
+            [pic setStyleClass:@"animate_bubble"];
+        }
         cell.indentationWidth = 10;
         [cell.contentView sizeToFit];
         
@@ -1709,7 +1717,41 @@
     
     if (emailEntry)
     {
-        [self getMemberIdByUsingUserName];
+        if ([search.text length] > 3 &&
+            [search.text rangeOfString:@"@"].location != NSNotFound &&
+            [search.text rangeOfString:@"@"].location > 1 &&
+            [search.text rangeOfString:@"."].location < search.text.length - 2 &&
+            [search.text  rangeOfString:@"."].location != NSNotFound)
+        {
+            [self getMemberIdByUsingUserName];
+        }
+        else
+        {
+            if ([UIAlertController class]) // for iOS 8
+            {
+                UIAlertController * alert = [UIAlertController
+                                             alertControllerWithTitle:@"Please Check That Email"
+                                             message:@"That doesn't look like a valid email address.  Please check it and try again."
+                                             preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction * ok = [UIAlertAction
+                                      actionWithTitle:@"OK"
+                                      style:UIAlertActionStyleDefault
+                                      handler:^(UIAlertAction * action)
+                                      {
+                                          [alert dismissViewControllerAnimated:YES completion:nil];
+                                      }];
+                [alert addAction:ok];
+                
+                [self presentViewController:alert animated:YES completion:nil];
+                
+            }
+            else  // for iOS 7 and prior
+            {
+                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Please Check That Email" message:@"That doesn't look like a valid email address.  Please check it and try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [av show];
+            }
+        }
         return;
     }
     

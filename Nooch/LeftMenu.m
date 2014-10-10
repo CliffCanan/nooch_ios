@@ -123,7 +123,6 @@
     [self.view addSubview:version];
     NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
     self.glyph_noBank = [UILabel new];
-    NSLog(@"IsKnoxBankAdded is... %@",[defaults objectForKey:@"IsBankAvailable"]);
     [self.glyph_noBank removeFromSuperview];
     
     if (![[defaults objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
@@ -177,7 +176,6 @@
     }
 
     NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
-    NSLog(@"IsKnoxBankAdded is... %@",[defaults objectForKey:@"IsBankAvailable"]);
     
     if ([[defaults objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {

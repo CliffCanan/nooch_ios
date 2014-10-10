@@ -221,7 +221,7 @@
     
     //Export Stats
     self.exportHistory = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.exportHistory setTitle:@"    Export Account History" forState:UIControlStateNormal];
+    [self.exportHistory setTitle:@"      Export Account History" forState:UIControlStateNormal];
     [self.exportHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
     self.exportHistory.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.exportHistory setStyleId:@"exportStatsBtn"];
@@ -231,13 +231,19 @@
     else {
         [self.exportHistory setFrame:CGRectMake(60, 441, 200, 36)];
     }
-    
-    UILabel *glyph = [UILabel new];
-    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
-    [glyph setFrame:CGRectMake(7, 1, 15, 37)];
-    [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cloud-download"]];
-    [glyph setTextColor:[UIColor whiteColor]];
-    [self.exportHistory addSubview:glyph];
+
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(19, 32, 38, .22);
+    shadow.shadowOffset = CGSizeMake(0, -1);
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
+
+    UILabel * glyph_export = [UILabel new];
+    [glyph_export setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+    [glyph_export setFrame:CGRectMake(7, 1, 18, 36)];
+    glyph_export.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cloud-download"] attributes:textAttributes];
+    [glyph_export setTextColor:[UIColor whiteColor]];
+    [glyph_export setTextAlignment:NSTextAlignmentCenter];
+    [self.exportHistory addSubview:glyph_export];
     [self.exportHistory addTarget:self action:@selector(ExportHistory:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.exportHistory];
     

@@ -644,26 +644,26 @@
 	.exportHistorybutton {
         top: 450px;
 		width: 130px;
-		background-color: rgba(63,171,225,.86);
+		background-color: rgba(63,171,225,.9);
         border-radius: 4px;
 		font-family: "Roboto";
 		font-weight: regular;
 		font-size: 14px;
 		text-align: center;
 		color: white;
-		box-shadow: 1px 1px 1px rgba(88,90,92,0.45);
+        box-shadow: 0px 1px 2px rgba(31,32,33,0.4);
 	}
 	.exportHistorybutton_4{
         top: 380px;
 		width: 130px;
-		background-color: rgba(63,171,225,.86);
+		background-color: rgba(63,171,225,.9);
         border-radius: 4px;
 		font-family: "Roboto";
 		font-weight: regular;
 		font-size: 14px;
 		text-align: center;
 		color: white;
-		box-shadow: 1px 1px 1px rgba(88,90,92,0.45);
+        box-shadow: 0px 1px 2px rgba(31,32,33,0.4);
 	}
     #exportStatsBtn {
 		background-color: rgba(63,171,225,.98);
@@ -673,7 +673,7 @@
 		font-size: 15px;
 		text-align: center;
 		color: white;
-		box-shadow: 1px 1px 1px rgba(88,90,92,0.45);
+        box-shadow: 0px 1px 2px rgba(31,32,33,0.4);
     }
 	
 	/****  		Sub-header Text (Outside of Table)     ****/
@@ -1046,8 +1046,8 @@
 		left				: 43px;
 		top					: 0px;
 		width				: 220px;
-		height				: 37px;
-		font-size			: 17px;
+		height				: 39px;
+		font-size			: 18px;
 		font-weight			: regular;
         color               : white;
 	}
@@ -1251,48 +1251,32 @@
     }
 	.animate_roll_left {
 		animation-name				: howmuch_roll_left;
-		animation-duration			: 0.7s;
+		animation-duration			: 0.48s;
 		animation-fill-mode			: forwards;
 		animation-timing-function	: ease-out;
 		animation-iteration-count	: 1;
 	}
     .animate_roll_left_return {
         animation-name				: howmuch_roll_left_return;
-		animation-duration			: 0.8s;
+		animation-duration			: 0.5s;
 		animation-fill-mode			: forwards;
 		animation-timing-function	: ease-out;
 		animation-iteration-count	: 1;
     }
 	.animate_roll_right {
 		animation-name				: howmuch_roll_right;
-		animation-duration			: 0.7s;
+		animation-duration			: 0.48s;
 		animation-fill-mode			: forwards;
 		animation-timing-function	: ease-out;
 		animation-iteration-count	: 1;
 	}
     .animate_roll_right_return {
         animation-name				: howmuch_roll_right_return;
-		animation-duration			: 0.7s;
+		animation-duration			: 0.5s;
 		animation-fill-mode			: forwards;
 		animation-timing-function	: ease-out;
 		animation-iteration-count	: 1;
     }
-
-	/**  Icon when a picture is NOT attached yet.
-	#howmuch_camera {
-		width 			: 30px;
-		height 			: 22px;
-		left 			: 265px;
-		top 			: 164px;
-		background-size	: 30px 22px;
-	}
-    #howmuch_camera_4 {
-		width 			: 30px;
-		height 			: 22px;
-		left 			: 265px;
-		top 			: 81px;
-		background-size	: 30px 22px;
-	}
 
 	/**  Text entry field for inputting a memo. **/
     #howmuch_memo {

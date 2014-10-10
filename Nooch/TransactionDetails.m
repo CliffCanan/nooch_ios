@@ -110,11 +110,9 @@
     [payment setStyleClass:@"details_intro"];
 
     NSShadow * shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = Rgb2UIColor(32, 63, 63, .35);
+    shadow.shadowColor = Rgb2UIColor(32, 33, 34, .32);
     shadow.shadowOffset = CGSizeMake(0, 1);
-    
-    NSDictionary * textAttributes =
-    @{NSShadowAttributeName: shadow };
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
     
     if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"])
     {
@@ -628,57 +626,60 @@
 
 - (void) pay_back
 {
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 
     if ([[assist shared]getSuspended])
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
         [alert setTag:50];
         [alert show];
         return;
     }
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] )
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Email Verification Needed" message:@"Please click the link sent to your email to verify your email address." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Email Verification Needed" message:@"Please click the link sent to your email to verify your email address." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         return;
     }
     if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Profile Not Complete" message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!" delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Profile Not Complete" message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!" delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
         [alert setTag:147];
         [alert show];
         return;
     }
     if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Phone Not Verified" message:@"Please validate your phone number before sending money." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Phone Not Verified" message:@"Please validate your phone number before sending money." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
         [alert show];
         return;
     }
     if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
-        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Funding Source Needed" message:@"Before you can send or receive money, you must add a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView * set = [[UIAlertView alloc] initWithTitle:@"Funding Source Needed" message:@"Before you can send or receive money, you must add a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [set show];
         return;
     }
 
     NSMutableDictionary * input = [self.trans mutableCopy];
-    if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
+    if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]])
+    {
         NSString * MemberId = [input valueForKey:@"RecepientId"];
         [input setObject:MemberId forKey:@"MemberId"];
     }
 
-    isPayBack=YES;
+    isPayBack = YES;
     [[assist shared]setRequestMultiple:NO];
-    isEmailEntry=NO;
+    isEmailEntry = NO;
     // NSLog(@"%@",self.trans);
     HowMuch *payback = [[HowMuch alloc] initWithReceiver:input];
     [self.navigationController pushViewController:payback animated:YES];
 }
 
-- (void) post_to_fb {
-    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]){
+- (void) post_to_fb
+{
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
+    {
         me.accountStore = [[ACAccountStore alloc] init];
         ACAccountType *facebookAccountType = [me.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
         me.facebookAccount = nil;
@@ -703,9 +704,9 @@
              }
          }];
     }
-    else{
-        UIAlertView *alertView = [[UIAlertView alloc]
-                                  initWithTitle:@"Sorry"
+    else {
+        UIAlertView * alertView = [[UIAlertView alloc]
+                                  initWithTitle:@"Can't Post"
                                   message:@"Please make sure your Facebook account is connected to your iPhone!"
                                   delegate:self
                                   cancelButtonTitle:@"OK"
@@ -716,52 +717,67 @@
 
 - (void) post_to_twitter
 {
+    NSString * post_text = nil;
+    if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
+        post_text = [NSString stringWithFormat:@"I just Nooch'ed %@!",[self.trans objectForKey:@"Name"]];
+    }
+    else {
+        post_text = [NSString stringWithFormat:@"I just got paid by %@ on Nooch!",[self.trans objectForKey:@"Name"]];
+    }
 
-           SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-           [controller setInitialText:[NSString stringWithFormat:@"I just Nooch'ed %@!",[self.trans objectForKey:@"Name"]]];
-           [controller addURL:[NSURL URLWithString:@"https://www.nooch.com"]];
-           [self presentViewController:controller animated:YES completion:Nil];
-           
-           SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result){
-               NSString *output= nil;
-               switch (result) {
-                   case SLComposeViewControllerResultCancelled:
-                       NSLog (@"cancelled");
-                       break;
-                   case SLComposeViewControllerResultDone:
-                       output= @"Post Succesfull";
-                       NSLog (@"success");
-                       break;
-                   default:
-                       break;
-               }
-               if ([output isEqualToString:@"Post Succesfull"]) {
-                   UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Twitter" message:output delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                   [alert show];
-                   [alert setTag:11];
-               }
-               [controller dismissViewControllerAnimated:YES completion:Nil];
-           };
-           controller.completionHandler = myBlock;
-   
+    SLComposeViewController * controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+    [controller setInitialText:post_text];
+    [controller addURL:[NSURL URLWithString:@"https://itunes.apple.com/app/id917955306"]];
+    [self presentViewController:controller animated:YES completion:Nil];
+
+    SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result){
+       NSString *output= nil;
+       switch (result) {
+           case SLComposeViewControllerResultCancelled:
+               NSLog (@"cancelled");
+               break;
+           case SLComposeViewControllerResultDone:
+               output= @"Post Succesfull";
+               NSLog (@"success");
+               break;
+           default:
+               break;
+       }
+       if ([output isEqualToString:@"Post Succesfull"])
+       {
+           UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Twitter" message:output delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+           [alert show];
+           [alert setTag:11];
+       }
+       [controller dismissViewControllerAnimated:YES completion:Nil];
+    };
+    controller.completionHandler = myBlock;
 }
 
 -(void)post
 {
+    NSString * post_text = nil;
+    if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
+        post_text = [NSString stringWithFormat:@"I just Nooch'ed %@!",[self.trans objectForKey:@"Name"]];
+    }
+    else {
+        post_text = [NSString stringWithFormat:@"I just got paid by %@ on Nooch!",[self.trans objectForKey:@"Name"]];
+    }
     SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-    [controller setInitialText:[NSString stringWithFormat:@"I just Nooch'ed %@!",[self.trans objectForKey:@"Name"]]];
-    [controller addURL:[NSURL URLWithString:@"https://www.nooch.com"]];
+    [controller setInitialText:post_text];
+    [controller addURL:[NSURL URLWithString:@"https://itunes.apple.com/app/id917955306"]];
     [self presentViewController:controller animated:YES completion:Nil];
 
-    SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result){
-        NSString *output= nil;
+    SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result)
+    {
+        NSString *output = nil;
         switch (result) {
             case SLComposeViewControllerResultCancelled:
-                output= @"Action Cancelled";
+                output = @"Action Cancelled";
                 NSLog (@"cancelled");
                 break;
             case SLComposeViewControllerResultDone:
-                output= @"Post Succesfull";
+                output = @"Post Succesfull";
                 NSLog (@"success");
                 break;
             default:
@@ -772,7 +788,7 @@
         [controller dismissViewControllerAnimated:YES completion:Nil];
         [self performSelectorOnMainThread:@selector(finishedPosting) withObject:nil waitUntilDone:NO];
     };
-    controller.completionHandler =myBlock;
+    controller.completionHandler = myBlock;
 }
 
 -(void)finishedPosting {

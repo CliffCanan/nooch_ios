@@ -94,61 +94,60 @@
     [back_button setImage:[UIImage imageNamed:@"whiteBack30.png"] forState:UIControlStateHighlighted];
     [back_button addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
     [self.navigationItem setLeftBarButtonItem:menu];
     
     self.recip_back = [UILabel new];
     [self.recip_back setStyleClass:@"barbackground"];
     [self.recip_back setStyleClass:@"barbackground_gray"];
-  //  self.recip_back.layer.cornerRadius = 4;
+    // self.recip_back.layer.cornerRadius = 4;
     self.recip_back.clipsToBounds = YES;
     [self.back addSubview:self.recip_back];
 
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(64, 65, 66, .3);
     shadow.shadowOffset = CGSizeMake(0, 1);
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
     
-    NSDictionary * textAttributes =
-    @{NSShadowAttributeName: shadow };
-    
-    UILabel *to = [UILabel new];
-    to.attributedText = [[NSAttributedString alloc] initWithString:@"To: "
-                                                           attributes:textAttributes];
+    UILabel * to = [UILabel new];
+    to.attributedText = [[NSAttributedString alloc] initWithString:@"To: " attributes:textAttributes];
     [to setStyleId:@"label_howmuch_to"];
     [self.back addSubview:to];
 
-    UILabel *to_label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
+    UILabel * to_label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
     if ([self.receiver valueForKey:@"nonuser"])
     {
         [to_label setStyleId:@"label_howmuch_recipientnamenonuser"];
-        [to_label setText:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"email"]]];
+        to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"email"]] attributes:textAttributes];
     }
     else
     {
         if ([[assist shared]isRequestMultiple])
         {
-            NSString*strMultiple=@"";
-            for (NSDictionary *dictRecord in [[assist shared]getArray]) {
-                strMultiple=[strMultiple stringByAppendingString:[NSString stringWithFormat:@", %@",[dictRecord[@"FirstName"] capitalizedString]]];
+            NSString * strMultiple = @"";
+            for (NSDictionary * dictRecord in [[assist shared]getArray]) {
+                strMultiple = [strMultiple stringByAppendingString:[NSString stringWithFormat:@", %@",[dictRecord[@"FirstName"] capitalizedString]]];
             }
             [to_label setStyleId:@"label_howmuch_recipientnamenonuser"];
-            strMultiple=[strMultiple substringFromIndex:1];
+            strMultiple = [strMultiple substringFromIndex:1];
             [to_label setText:strMultiple];
         }
         else
         {
             [to_label setStyleId:@"label_howmuch_recipientname"];
-            [to_label setText:[NSString stringWithFormat:@"%@ %@",[[self.receiver objectForKey:@"FirstName"] capitalizedString],[[self.receiver objectForKey:@"LastName"] capitalizedString]]];
+            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",[[self.receiver objectForKey:@"FirstName"] capitalizedString],[[self.receiver objectForKey:@"LastName"] capitalizedString]] attributes:textAttributes];
         }
     }
     [self.back addSubview:to_label];
 
-    if (![self.receiver valueForKey:@"nonuser"]  && !isUserByLocation)
+    if (![self.receiver valueForKey:@"nonuser"] && !isUserByLocation)
     {
-        UIButton*add=[[UIButton alloc]initWithFrame:CGRectMake(266, 16, 28, 28)];
+        UIButton * add = [[UIButton alloc]initWithFrame:CGRectMake(266, 16, 28, 28)];
         [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];
         [add setStyleClass:@"addbutton_request"];
         [add setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"] forState:UIControlStateNormal];
+        [add setTitleShadowColor:Rgb2UIColor(31, 32, 33, 0.3) forState:UIControlStateNormal];
+        add.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [self.view addSubview:add];
     }
     
@@ -222,14 +221,14 @@
     self.send = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.send setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.send setTitle:@"Send" forState:UIControlStateNormal];
-    [self.send setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
+    [self.send setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
     self.send.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.send addTarget:self action:@selector(initialize_send) forControlEvents:UIControlEventTouchUpInside];
 
     self.request = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.request setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.request setTitle:@"Request" forState:UIControlStateNormal];
-    [self.request setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.26) forState:UIControlStateNormal];
+    [self.request setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.22) forState:UIControlStateNormal];
     self.request.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.request addTarget:self action:@selector(initialize_request) forControlEvents:UIControlEventTouchUpInside];
     [self.request setStyleId:@"howmuch_request"];
@@ -261,7 +260,7 @@
 	[self.reset_type setBackgroundColor:[UIColor clearColor]];
     [self.reset_type setStyleId:@"reset_glyph"];
     [self.reset_type setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"] forState:UIControlStateNormal];
-    [self.reset_type setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+    [self.reset_type setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.25) forState:UIControlStateNormal];
     self.reset_type.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     
     if ([UIScreen mainScreen].bounds.size.height > 500) {
@@ -308,7 +307,7 @@
     isAddRequest=YES;
     NSLog(@"%@",self.receiver);
     
-    if ([[[assist shared]getArray] count]==0)
+    if ([[[assist shared]getArray] count] == 0)
     {
         arrRecipientsForRequest=[[NSMutableArray alloc] init];
         NSLog(@"%@",self.receiver);
@@ -318,10 +317,10 @@
     }
     if (isFromHome)
     {
-        isAddRequest=YES;
-        SelectRecipient*selOBJ=[[SelectRecipient alloc]init];
+        isAddRequest = YES;
+        SelectRecipient * selOBJ = [[SelectRecipient alloc]init];
         
-        NSMutableArray*arrNav=[nav_ctrl.viewControllers mutableCopy];
+        NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
         NSLog(@"%@",arrNav);
         [arrNav insertObject:selOBJ atIndex:1];
         [self.navigationController setViewControllers:arrNav];
@@ -342,7 +341,8 @@
     CGRect origin = self.reset_type.frame;
     origin.origin.x = 10;
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.7];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    [UIView setAnimationDuration:0.55];
 
     origin.size.width = 149;
     origin.origin.x = 162;
@@ -369,7 +369,8 @@
     [self.recip_back setStyleClass:@"barbackground_blue"];
     
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.7];
+    [UIView setAnimationDuration:0.55];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
 
     [self.request addTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
     [self.request setTitle:@"Confirm Request" forState:UIControlStateNormal];
@@ -638,12 +639,12 @@
         [trans_image setFrame:CGRectMake(259, 150, 34, 34)];
     }
 
-
     [picker dismissViewControllerAnimated:YES completion:^{
     }];
 }
 
--(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size{
+-(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size
+{
     float actualHeight = image.size.height;
     float actualWidth = image.size.width;
     float imgRatio = actualWidth/actualHeight;

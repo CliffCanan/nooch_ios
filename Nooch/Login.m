@@ -89,7 +89,6 @@
             UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Please Enter Email And Password" message:@"We can't log you in if we don't know who you are!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [av show];
         }
-        
     }
 }
 
