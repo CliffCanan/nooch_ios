@@ -202,7 +202,9 @@
         [UIView commitAnimations];
     }
 }
-
+-(void)viewDidDisappear:(BOOL)animated{
+    [self.hud hide:YES];
+}
 -(void)viewDidAppear:(BOOL)animated  {
     [super viewDidAppear:animated];
     if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||

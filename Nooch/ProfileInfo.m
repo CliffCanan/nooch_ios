@@ -207,7 +207,9 @@ UIImageView *picture;
         [self.name becomeFirstResponder];
     }
 }
-
+-(void)viewDidDisappear:(BOOL)animated{
+    [self.hud hide:YES];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];

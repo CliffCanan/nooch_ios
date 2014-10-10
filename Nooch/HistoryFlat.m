@@ -43,6 +43,9 @@
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    
+    [self.hud hide:YES];
+    
     if (isMapOpen)
     {
         [UIView beginAnimations:nil context:nil];
