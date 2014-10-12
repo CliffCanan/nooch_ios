@@ -644,38 +644,40 @@ NSString *amnt;
         if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"]isEqualToString:@"1"] ||
               [[NSUserDefaults standardUserDefaults] objectForKey:@"pincheck"])
         {
-            [self.hud hide:YES];
-           
+          
             
             if (![[assist shared]isloginFromOther]) {
+                [self.hud hide:YES];
+                
                 UIAlertView * Alert = [[UIAlertView alloc]initWithTitle:@"New Device Detected" message:@"It looks like you have logged in from a new device.  To protect your account, we will just log you out of all other devices." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 
                 [Alert show];
                 Home*home1=[Home new];
                 [home1 hide];
                 [[assist shared]setIsloginFromOther:YES];
+                
+                [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+                
+                [timer invalidate];
+                [nav_ctrl performSelector:@selector(disable)];
+                [nav_ctrl performSelector:@selector(reset)];
+                NSLog(@"%@",nav_ctrl.viewControllers);
+                NSMutableArray*arrNav=[nav_ctrl.viewControllers mutableCopy];
+                
+                for (int i = [arrNav count]; i > 1; i--) {
+                    [arrNav removeLastObject];
+                }
+                
+                [nav_ctrl setViewControllers:arrNav animated:NO];
+               // NSLog(@"%@",nav_ctrl.viewControllers);
+                
+                Register *reg = [Register new];
+                [nav_ctrl pushViewController:reg animated:YES];
+                me = [core new];
             }
 
-            [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-            
-            [timer invalidate];
-            [nav_ctrl performSelector:@selector(disable)];
-            [nav_ctrl performSelector:@selector(reset)];
-            NSLog(@"%@",nav_ctrl.viewControllers);
-            NSMutableArray*arrNav=[nav_ctrl.viewControllers mutableCopy];
-            
-            for (int i = [arrNav count]; i > 1; i--) {
-                [arrNav removeLastObject];
-            }
-            
-            [nav_ctrl setViewControllers:arrNav animated:NO];
-            NSLog(@"%@",nav_ctrl.viewControllers);
-            
-            Register *reg = [Register new];
-            [nav_ctrl pushViewController:reg animated:YES];
-            me = [core new];
             return;
             
         }
