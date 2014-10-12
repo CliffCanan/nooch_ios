@@ -98,13 +98,13 @@
     }
     [self.view addSubview:self.search];
     
-    UILabel *info2 = [UILabel new];
+    UILabel * info2 = [UILabel new];
     [info2 setFrame:CGRectMake(15, 370, 290, 42)];
     [info2 setNumberOfLines:0];
     [info2 setTextAlignment:NSTextAlignmentCenter];
     [info2 setFont:[UIFont fontWithName:@"Roboto-Light" size:14]];
     [info2 setTextColor:[Helpers hexColor:@"7f8185"]];
-    [info2 setText:@"Show up when users search Nooch for other members."];
+    [info2 setText:@"Show up when users search Nooch for nearby members."];
     [self.view addSubview:info2];
 }
 
@@ -122,7 +122,6 @@
 -(void)changepin{
     ResetPIN * reset = [ResetPIN new];
     [self.navigationController presentViewController:reset animated:YES completion:nil];
-    
 }
 
 -(void)show_in_search

@@ -360,10 +360,9 @@ NSString *amnt;
     [dictnew setObject:email forKey:@"RecoveryMail"];
     [dictnew setObject:password forKey:@"Password"];
     [dictnew setObject:pin forKey:@"PinNumber"];
-    //inviteCode
     [dictnew setObject:inv forKey:@"inviteCode"];
-    [dictnew setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"] forKey:@"deviceTokenId"];
-    //    [dictnew setObject:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"udId"];
+    // [dictnew setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"] forKey:@"deviceTokenId"];
+    // [dictnew setObject:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"udId"];
     [dictnew setObject:@"" forKey:@"friendRequestId"];
     [dictnew setObject:@"" forKey:@"invitedFriendFacebookId"];
     [dictnew setObject:@"" forKey:@"facebookAccountLogin"];
@@ -630,8 +629,6 @@ NSString *amnt;
     }
     NSLog(@"Error aya %@",error);
     [self.Delegate Error:error];
-
-    
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -735,7 +732,7 @@ NSString *amnt;
     {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         
-        NSError* error;
+        NSError * error;
         Dictresponse = [NSJSONSerialization
                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
@@ -782,6 +779,7 @@ NSString *amnt;
            ![[result objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] &&
            ![[result objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] &&
            ![[result objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] &&
+           ![[result objectForKey:@"Result"] containsString:@"Your account has been temporarily blocked."] &&
            result != nil)
         {
             NSString * token = [result objectForKey:@"Result"];

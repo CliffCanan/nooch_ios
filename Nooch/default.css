@@ -71,14 +71,15 @@
 		position : 125 200;
 	}
 	
-	.light_gray_text { color: #bcbec0; }
-    .reallyLight_gray { color: rgba(251,253,254,.98);
-	.red_text { color		: #c72127; }
+	.light_gray_text { color    : #bcbec0; }
+    .reallyLight_gray { color   : rgba(251,253,254,.98;)}
+    .disabled_gray {color       : rgba(210,210,210,.88);}
+	.red_text { color           : #c72127; }
 	.orange_text { color		: #cc9933; }
 	.yellow_text { color		: #cccc33; }
-	.blue_text { color		: #3fabe1; }
+	.blue_text { color          : #3fabe1; }
 	.light_green_text {color	: #7ab259; }
-	.green_text	{color		: #72bf44; }	
+	.green_text	{color          : #72bf44; }
 	
     .italic_font {font-style  : italic;}
     .bold {font-weight: medium;}
@@ -149,7 +150,7 @@
 			font-family : "FontAwesome";
 			font-size     : 24px;
         }
-        /******************************/
+     /******************************/
 	 /******	 BANNERS	********/
 	 /******************************/
      .banner_header {
@@ -159,7 +160,7 @@
         height: 18px;
         font-family: "Roboto";
         font-weight: regular;
-        font-size: 14px;
+        font-size: 15px;
         text-align: center;
         color: white;
      }
@@ -186,7 +187,7 @@
      .banner_info {
         top: 20px;
         left: 2px;
-        width: 292px;
+        width: 295px;
         height: 18px;
         font-family : "Roboto";
         font-weight: regular;
@@ -276,10 +277,10 @@
         box-shadow      : 0px 1px 2px rgba(31, 32, 33, .75);
     }
     #glyph_noBank_sidebar {
-        background-color: rgba(250,4,4,.8);
+        background-color: rgba(250, 4, 4, .8);
         border          : 1px solid white;
         border-radius   : 11px;
-        box-shadow      : 0px 1px 2px rgba(26, 32, 38, 0.34);
+        box-shadow      : 0px 1px 2px rgba(26, 32, 38, 0.45);
         color           : white;
         font-family     : "FontAwesome";
         font-size       : 13px;
@@ -509,16 +510,26 @@
 		text-align		: center;
 		color			: #313233;
 	}
-  .backbutton {
-		width			: 70px;
+    .backbutton {
 		left			: 5px;
-		top             : 25px;
-		height          : 24px;
+		top             : 28px;
+		width			: 70px;
+		height          : 26px;
 		font-family		: "Roboto";
 		font-weight		: regular;
-		font-size		: 19px;
+		font-size		: 18px;
 		text-align		: left;
 	}
+    .backbutton_pinreset {
+        left			: 5px;
+        top             : 24px;
+        width			: 70px;
+        height          : 27px;
+        font-family		: "Roboto";
+        font-weight		: regular;
+        font-size		: 18px;
+        text-align		: left;
+    }
 	.plusbutton {
 		width			: 50px;
 		left			: 245px;
@@ -527,7 +538,7 @@
 		font-weight		: medium;
 		font-size		: 22px;
 		text-align		: left;
-		color 				: #6d6e71;
+		color 			: #6d6e71;
 	}
 	.pickerstyle {
 		width			: 320px;
@@ -848,14 +859,14 @@
   ********  	PRE-LOGIN FLOW	     ********
   *******************************************/
   	.header_signupflow {
-		font-family			: "Roboto";
+		left                : 20px;
+		width				: 280px;
+		height				: 35px;
+        font-family			: "Roboto";
 		font-weight         : light;
 		font-size			: 29px;
 		text-align       	: center;
 		color 				: #313233;
-		width				: 280px;
-		height				: 35px;
-		left                : 20px;
 	}
 	  
 	/**  Signup: "Already a member...",  Select a Picture Screen, Welcome Screen **/
@@ -873,7 +884,7 @@
 		font-family: "Roboto";
 		font-weight: light;
 		color      : #66686a;
-		font-size  : 15px;
+		font-size  : 16px;
 		text-align : center;
 	}
 
@@ -2082,17 +2093,17 @@
 		height			: 30px;
 		top				: 524px;
 		left			: 15px;
-		font-family : "FontAwesome";
-        font-size       : 24px;
-        color : white;
+		font-family     : "FontAwesome";
+        font-size       : 27px;
+        color           : white;
 	}
     #settings_icon_4 {
 		width			: 31px;
 		height			: 30px;
 		top				: 436px;
 		left			: 15px;
-		font-family : "FontAwesome";
-        font-size       : 24px;
+		font-family     : "FontAwesome";
+        font-size       : 26px;
         color           : white;	
 	}
 	#nooch_whitelogo {

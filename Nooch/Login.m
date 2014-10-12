@@ -318,7 +318,7 @@
         [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
     }
 
-    else if ((actionSheet.tag == 50 || actionSheet.tag == 500) && buttonIndex == 1)
+    else if ((actionSheet.tag == 50 || actionSheet.tag == 500 || actionSheet.tag == 600) && buttonIndex == 1)
         {
             if (![MFMailComposeViewController canSendMail]){
                 UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -459,6 +459,7 @@
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] &&
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] &&
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] &&
+            ![[loginResult objectForKey:@"Result"] containsString:@"Your account has been temporarily blocked."] &&
             loginResult != nil)
         {
             serve * getDetails = [serve new];
@@ -497,6 +498,7 @@
                 [alert show];
             }
         }
+
         else if ([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && loginResult != nil)
         {
             [spinner stopAnimating];
@@ -536,7 +538,79 @@
                 [alert show];
             }
         }
-        else if ([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil)
+
+        else if ( [loginResult objectForKey:@"Result"] &&
+                 [[loginResult objectForKey:@"Result"] containsString:@"Your account has been temporarily blocked."] && loginResult != nil)
+        {
+            [self.hud hide:YES];
+            
+            if ([UIAlertController class]) // for iOS 8
+            {
+                UIAlertController * alert = [UIAlertController
+                                             alertControllerWithTitle:@"Account Temporarily Suspended"
+                                             message:@"To keep Nooch safe your account has been temporarily suspended because you entered an incorrect password too many times./n/nIn most cases your account will be automatically un-suspended in 24 hours.  Or, you can always contact us via email if this is a mistake or error./n/nWe apologize for this inconvenience, please understand it is only to protect your account."
+                                             preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction * ok = [UIAlertAction
+                                      actionWithTitle:@"OK"
+                                      style:UIAlertActionStyleDefault
+                                      handler:^(UIAlertAction * action)
+                                      {
+                                          [alert dismissViewControllerAnimated:YES completion:nil];
+                                      }];
+                UIAlertAction * contactSupport = [UIAlertAction
+                                                  actionWithTitle:@"Contact Support"
+                                                  style:UIAlertActionStyleDefault
+                                                  handler:^(UIAlertAction * action)
+                                                  {
+                                                      [alert dismissViewControllerAnimated:YES completion:nil];
+                                                      if (![MFMailComposeViewController canSendMail]){
+                                                          UIAlertController * alert = [UIAlertController
+                                                                                       alertControllerWithTitle:@"No Email Detected"
+                                                                                       message:@"You don't have an email account configured for this device."
+                                                                                       preferredStyle:UIAlertControllerStyleAlert];
+                                                          
+                                                          UIAlertAction * ok = [UIAlertAction
+                                                                                actionWithTitle:@"OK"
+                                                                                style:UIAlertActionStyleDefault
+                                                                                handler:^(UIAlertAction * action)
+                                                                                {
+                                                                                    [alert dismissViewControllerAnimated:YES completion:nil];
+                                                                                }];
+                                                          [alert addAction:ok];
+                                                          
+                                                          [self presentViewController:alert animated:YES completion:nil];
+                                                          return;
+                                                      }
+                                                      MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+                                                      mailComposer.mailComposeDelegate = self;
+                                                      mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+                                                      
+                                                      [mailComposer setSubject:[NSString stringWithFormat:@"Help Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+                                                      
+                                                      [mailComposer setMessageBody:@"" isHTML:NO];
+                                                      [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+                                                      [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+                                                      [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+                                                      [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+                                                      [self presentViewController:mailComposer animated:YES completion:nil];
+                                                  }];
+                [alert addAction:ok];
+                [alert addAction:contactSupport];
+                
+                [self presentViewController:alert animated:YES completion:nil];
+            }
+            else // iOS 7 and prior
+            {
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"To keep Nooch safe your account has been temporarily suspended because you entered an incorrect password too many times./n/nIn most cases your account will be automatically un-suspended in 24 hours.  Or, you can always contact us via email if this is a mistake or error./n/nWe apologize for this inconvenience, please understand it is only to protect your account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+                [alert setTag:600];
+                [alert show];
+            }
+            [spinner stopAnimating];
+        }
+
+        else if ( [loginResult objectForKey:@"Result"] &&
+                 [[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil)
         {
             [self.hud hide:YES];
 
@@ -604,7 +678,9 @@
             }
             [spinner stopAnimating];
         }
-        else if ([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] && loginResult != nil)
+
+        else if ( [loginResult objectForKey:@"Result"] &&
+                 [[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] && loginResult != nil)
         {
             [spinner stopAnimating];
             [self.hud hide:YES];
@@ -673,6 +749,7 @@
                 [alert setTag:50];
             }
         }
+
     }
     
     else if ([tagName isEqualToString:@"getMemberId"])

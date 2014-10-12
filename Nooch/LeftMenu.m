@@ -82,8 +82,8 @@
     [user_bar addSubview:user_pic];
     [user_pic addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profile)]];
 
-    UIView *bottom_bar = [UIView new];
-    if ([[UIScreen mainScreen] bounds].size.height < 520) {
+    UIView * bottom_bar = [UIView new];
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
         [bottom_bar setStyleId:@"lside_bottombar_background_4"];
     } 
     else {
@@ -91,7 +91,7 @@
     }
     [self.view addSubview:bottom_bar];
 
-    UIButton *settings = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton * settings = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     if ([[UIScreen mainScreen] bounds].size.height < 520) {
         [settings setStyleId:@"settings_icon_4"];
     } 
@@ -129,7 +129,6 @@
     version.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]] attributes:textShadow];
     [self.view addSubview:version];
 
-
     NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
     self.glyph_noBank = [UILabel new];
     [self.glyph_noBank removeFromSuperview];
@@ -166,13 +165,12 @@
         user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
         user_pic.clipsToBounds = YES;
         [user_pic setUserInteractionEnabled:YES];
-        
-        // NSLog(@"Photo = %@",[user objectForKey:@"Photo"]);
     }
 
     if ( ([[user valueForKey:@"Status"]isEqualToString:@"Registered"]   ||
           [[user valueForKey:@"Status"]isEqualToString:@"Suspended"] )  ||
-         ( [[user valueForKey:@"firstName"] length] < 1 || [[user valueForKey:@"lastName"] length] < 1) )
+        ![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ||
+         ([[user valueForKey:@"firstName"] length] < 1 || [[user valueForKey:@"lastName"] length] < 1) )
     {
         user_pic.layer.borderWidth = 3;
         user_pic.layer.borderColor = kNoochRed.CGColor;

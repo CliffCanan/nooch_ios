@@ -43,21 +43,20 @@
 
     pinchangeProgress = 1;
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
+    UIImageView * backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
     backgroundImage.alpha = .25;
     [self.view addSubview:backgroundImage];
 
-    UIView *navBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
+    UIView * navBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 60)];
     [navBar setBackgroundColor:[UIColor colorWithRed:63.0f/255.0f green:171.0f/255.0f blue:225.0f/255.0f alpha:1.0f]];
     [self.view addSubview:navBar];
 
-    UIButton *back = [UIButton buttonWithType:UIButtonTypeCustom];
-    [back setStyleClass:@"backbutton"];
+    UIButton * back = [UIButton buttonWithType:UIButtonTypeCustom];
+    [back setStyleClass:@"backbutton_pinreset"];
     [back setTitle:@"Cancel" forState:UIControlStateNormal];
     [back setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     back.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [back addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
-    [back setFrame:CGRectMake(0,5, 70, 30)];
     [navBar addSubview:back];
 
     NSShadow * shadow = [[NSShadow alloc] init];
@@ -65,9 +64,8 @@
     shadow.shadowOffset = CGSizeMake(0, -1);
     
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
-    UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(105, 20, 200, 30)];
-    lbl.attributedText = [[NSAttributedString alloc] initWithString:@"Reset PIN"
-                                                           attributes:textAttributes];
+    UILabel * lbl = [[UILabel alloc]initWithFrame:CGRectMake(105, 20, 200, 30)];
+    lbl.attributedText = [[NSAttributedString alloc] initWithString:@"Reset PIN" attributes:textAttributes];
     [lbl setFont:[UIFont systemFontOfSize:22]];
     [lbl setTextColor:[UIColor whiteColor]];
     [navBar addSubview:lbl];
