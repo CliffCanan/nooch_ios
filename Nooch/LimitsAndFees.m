@@ -71,7 +71,8 @@
     [LimitsAndFeesView loadRequest:[NSURLRequest requestWithURL:webURL]];
     LimitsAndFeesView.scalesPageToFit = YES;
     
-    LimitsAndFeesView.scrollView.hidden = NO;
+    [LimitsAndFeesView.scrollView setScrollEnabled:NO];
+
     [LimitsAndFeesView setDelegate:self];
     [LimitsAndFeesView setMultipleTouchEnabled:YES];
     [self.view addSubview:LimitsAndFeesView];

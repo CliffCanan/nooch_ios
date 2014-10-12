@@ -47,7 +47,7 @@
     self.navigationController.navigationBar.topItem.title = @"";
     NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [UIColor whiteColor], UITextAttributeTextColor,
-                                  Rgb2UIColor(19, 32, 38, .25), UITextAttributeTextShadowColor,
+                                  Rgb2UIColor(19, 32, 38, .22), UITextAttributeTextShadowColor,
                                   [NSValue valueWithUIOffset:UIOffsetMake(0.0, 1.0)], UITextAttributeTextShadowOffset,
                                   nil];
     [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
@@ -64,11 +64,13 @@
     UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
     [self.navigationItem setLeftBarButtonItem:menu];
     
-    UIButton *helpGlyph = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton * helpGlyph = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [helpGlyph setStyleClass:@"navbar_rightside_icon"];
     [helpGlyph addTarget:self action:@selector(moreinfo_lightBox) forControlEvents:UIControlEventTouchUpInside];
     [helpGlyph setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-question-circle"] forState:UIControlStateNormal];
-    UIBarButtonItem *help = [[UIBarButtonItem alloc] initWithCustomView:helpGlyph];
+    [helpGlyph setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.24) forState:UIControlStateNormal];
+    helpGlyph.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    UIBarButtonItem * help = [[UIBarButtonItem alloc] initWithCustomView:helpGlyph];
     [self.navigationItem setRightBarButtonItem:help];
     
     self.web = [UIWebView new];
@@ -77,7 +79,7 @@
     [self.view addSubview:self.web];
     [self.web.scrollView setScrollEnabled:NO];
     
-    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+    RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];

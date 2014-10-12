@@ -596,7 +596,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
              ![[user objectForKey:@"Status"] isEqualToString:@"Registered"] &&
               [[user valueForKey:@"Status"]  isEqualToString:@"Active"])
     {
-        [self.suspended removeFromSuperview];
+        [self dismiss_suspended_alert];
         bannerAlert--;
     }
     
@@ -656,8 +656,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     else if ([[user valueForKey:@"Status"]isEqualToString:@"Active"])
     {
         bannerAlert--;
-        [self.profile_incomplete removeFromSuperview];
-        [self.suspended removeFromSuperview];
+        [self dismiss_profile_unvalidated];
+        [self dismiss_suspended_alert];
     }
     
     if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
@@ -721,6 +721,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
     else {
         [self.phone_incomplete removeFromSuperview];
+        [self dismiss_phone_unvalidated];
     }
     
     [top_button removeFromSuperview];
@@ -800,7 +801,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                       }];
                                   } completion: nil
         ];
-        carouselTop = 54;
+        carouselTop = 48;
     }
     
     // Address Book Authorization grant

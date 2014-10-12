@@ -729,7 +729,7 @@
 #pragma mark - searching
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    if ([self.recents count]==0)
+    if ([self.recents count] == 0)
     {
         [self.contacts setHidden:YES];
         [self.view addSubview: self.noContact_img];
@@ -779,7 +779,8 @@
         if ([self.view.subviews containsObject:self.noContact_img]) {
              [self.noContact_img removeFromSuperview];
         }
-       
+        [self.contacts setHidden:NO];
+
         searching = YES;
         NSRange isRange = [searchBar.text rangeOfString:[NSString stringWithFormat:@"@"] options:NSCaseInsensitiveSearch];
         
@@ -796,7 +797,6 @@
                 shouldAnimate = NO;
             }
             
-            [self.contacts setHidden:NO];
             if ([[assist shared]isRequestMultiple]) {
                 return;
             }
@@ -883,16 +883,17 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(void)Error:(NSError *)Error {
+-(void)Error:(NSError *)Error
+{
     [self.hud hide:YES];
 
-    /* UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Message"
-                          message:@"Error connecting to server"
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:@"Connection Error"
+                          message:@"Looks like there was some trouble connecting to the right place.  Please try again!"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    [alert show]; */
+    [alert show];
 }
 
 #pragma mark - server Delegation
@@ -1033,17 +1034,17 @@
         else
         {
             [self.contacts setHidden:YES];
-            self.noContact_img=[[UIImageView alloc] init];
+            self.noContact_img = [[UIImageView alloc] init];
             
             if (IS_IPHONE_5) {
-                self.noContact_img.frame=CGRectMake(0, 92, 320, 405);
-                self.noContact_img.contentMode=UIViewContentModeScaleToFill;
-                self.noContact_img.image=[UIImage imageNamed:@"selectRecipientIntro.png"];
+                self.noContact_img.frame = CGRectMake(0, 82, 320, 405);
+                self.noContact_img.contentMode = UIViewContentModeScaleAspectFit;
+                self.noContact_img.image = [UIImage imageNamed:@"selectRecipientIntro.png"];
             }
             else {
-                self.noContact_img.frame=CGRectMake(5, 80, 310, 334);
-                self.noContact_img.contentMode=UIViewContentModeScaleToFill;
-                self.noContact_img.image=[UIImage imageNamed:@"selectRecipientIntro_smallScreen.png"];
+                self.noContact_img.frame = CGRectMake(3, 79, 314, 340);
+                self.noContact_img.contentMode = UIViewContentModeScaleAspectFit;
+                self.noContact_img.image = [UIImage imageNamed:@"selectRecipientIntro_smallScreen.png"];
             }
             [self.view addSubview:self.noContact_img];
 

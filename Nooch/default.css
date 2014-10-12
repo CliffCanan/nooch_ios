@@ -946,7 +946,7 @@
     table-view#select_recipientwithoutSeperator {
 		width				: 320px;
 		background-color	: #ffffff;
-		row-height			: 128px;
+		row-height			: 90px;
 		separator-style 	: none;
 	}
 	/**  Styles all the profile pictures of users that are returned in the Select Recipient Table.  **/
@@ -1512,6 +1512,12 @@
 		text-align			: center;
 		color				: #ffffff;
 	}
+    .pin_recipientname_text_wPic_4 {
+        top					: 130px;
+        left				: 69px;
+        width				: 193px;
+        height				: 38px;
+    }
     .pin_recipientname_text_4 {
         top         : 133px;
         height      : 32px;
@@ -1545,6 +1551,12 @@
 		color				: #5a538d;
         text-align          : center;
 	}
+    .pin_memotext_wPic_4 {
+        left				: 69px;
+        top					: 166px;
+        width				: 193px;
+        height				: 32px;
+    }
   
  /*******************************************
   ********  	 DONATE FLOW         ********

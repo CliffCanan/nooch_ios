@@ -168,8 +168,8 @@
         [title setStyleClass:@"pin_instructiontext_4"];
         [to_label setStyleClass:@"pin_recipientname_text_4"];
         [memo_label setStyleClass:@"pin_memotext_4"];
-        [back setStyleClass:@"raised_view"];
         back.layer.cornerRadius = 4;
+        [back setStyleClass:@"raised_view"];
         [back setStyleClass:@"pin_recipientbox_4"];
         [bar setStyleClass:@"pin_recipientname_bar_4"];
     }
@@ -177,8 +177,7 @@
     [self.view addSubview:memo_label];
 
     UIImageView *user_pic = [UIImageView new];
-    if ([[UIScreen mainScreen] bounds].size.height == 480)
-    {
+    if ([[UIScreen mainScreen] bounds].size.height == 480) {
         [user_pic setFrame:CGRectMake(11, 137, 58, 58)];
     }
     else {
@@ -247,9 +246,17 @@
     
     if ([[assist shared] getTranferImage])
     {
+        UIImageView *trans_image = [[UIImageView alloc] initWithFrame:CGRectMake(252, 205, 56, 56)];
         [memo_label setStyleClass:@"pin_memotext_wPic"];
         [to_label setStyleClass:@"pin_recipientname_text_wPic"];
-        UIImageView *trans_image = [[UIImageView alloc] initWithFrame:CGRectMake(252, 205, 56, 56)];
+
+        if ([[UIScreen mainScreen] bounds].size.height < 500)
+        {
+            [memo_label setStyleClass:@"pin_memotext_wPic_4"];
+            [to_label setStyleClass:@"pin_recipientname_text_wPic_4"];
+            [trans_image setFrame:CGRectMake(264, 143, 44, 44)];
+        }
+
         trans_image.layer.cornerRadius = 5;
         trans_image.layer.borderWidth = 1;
         trans_image.clipsToBounds = YES;

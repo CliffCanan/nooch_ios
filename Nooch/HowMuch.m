@@ -633,7 +633,7 @@
     [self.back addSubview:trans_image];
 
     if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        [trans_image setFrame:CGRectMake(259, 105, 30, 30)];
+        [trans_image setFrame:CGRectMake(266, 100, 27, 27)];
     }
     else {
         [trans_image setFrame:CGRectMake(259, 150, 34, 34)];
