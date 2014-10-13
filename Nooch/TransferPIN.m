@@ -1217,7 +1217,7 @@
             || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]
             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."])
     {
-        self.prompt.text=@"2nd failed attempt.";
+        self.prompt.text=@"2nd failed attempt";
         self.fourth_num.layer.borderColor = kNoochRed.CGColor;
         self.third_num.layer.borderColor = kNoochRed.CGColor;
         self.second_num.layer.borderColor = kNoochRed.CGColor;
@@ -1241,7 +1241,7 @@
             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])
     {
         [[assist shared]setSusPended:YES];
-        self.prompt.text=@"3rd failed attempt.";
+        self.prompt.text=@"3rd failed attempt";
         self.fourth_num.layer.borderColor = kNoochRed.CGColor;
         self.third_num.layer.borderColor = kNoochRed.CGColor;
         self.second_num.layer.borderColor = kNoochRed.CGColor;

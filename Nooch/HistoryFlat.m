@@ -2701,7 +2701,7 @@ return customView;
         }
         else if (actionSheet.tag == 2010) {  // CANCEL Request to NonNoochUser
             serveObj.tagName = @"cancelRequestToNonNoochUser";
-            [serveObj CancelMoneyRequestForExistingNoochUser:[self.responseDict valueForKey:@"TransactionId"]];
+            [serveObj CancelMoneyRequestForNonNoochUser:[self.responseDict valueForKey:@"TransactionId"]];
         }
     }
     
