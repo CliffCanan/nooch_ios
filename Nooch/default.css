@@ -6,569 +6,569 @@
  /*******************************************
   ********  	GENERAL STYLES	     ********
   *******************************************/
-	/**  This should set the tint color throughout the entire app.	Includes things  **/
-	/**	 like color of Segmented Controls, Refresh Controls, & default iOS elements  **/
-	view { 
-		//-ios-tint-color	: #3fabe1;
-		font-family		: "Roboto";
-	}
+/**  This should set the tint color throughout the entire app.	Includes things  **/
+/**	 like color of Segmented Controls, Refresh Controls, & default iOS elements  **/
+view { 
+    //-ios-tint-color	: #3fabe1;
+    font-family		: "Roboto";
+}
 
-	#prelogin_logo {
-		background-image : url(nooch_logo_color.png);
-		height : 65px;
-		width : 202px;
-		position : 59 18;
-	}
+#prelogin_logo {
+    background-image : url(nooch_logo_color.png);
+    height : 65px;
+    width : 202px;
+    position : 59 18;
+}
+
+.prelogin_slogan {
+    font-family: "VarelaRound";
+    font-weight: normal;
+    font-size: 15px;
+    text-align: right;
+    color: #5a538d;
+}
+.termsCheckText {
+    font-family: "Roboto";
+    font-weight: light;
+    font-size: 13px;
+    color	: #414042;
+}
+#checkbox_dot {
+    color       : #72BF44;
+    font-family : "FontAwesome";
+    font-size   : 12px;
+    text-align  : center;
+}
+.animate_prelogin_slogan {
+    animation-name: fade_slogan;
+    animation-duration: 2s;
+    animation-timing-function: ease-out;
+    animation-iteration-count: 1;
+}
+
+#requireImmediatelyLogo {
+    background-image : url(noochIcon-96.png);
+    height : 48px;
+    width : 48px;
+    position : 136px 48px;
+}
     
-    .prelogin_slogan {
-        font-family: "VarelaRound";
-        font-weight: normal;
-        font-size: 15px;
-        text-align: right;
-        color: #5a538d;
-    }
-    .termsCheckText {
-        font-family: "Roboto";
-        font-weight: light;
-        font-size: 13px;
-        color	: #414042;
-    }
-    #checkbox_dot {
-        color       : #72BF44;
-        font-family : "FontAwesome";
-        font-size   : 12px;
-		text-align  : center;
-    }
-    .animate_prelogin_slogan {
-        animation-name: fade_slogan;
-        animation-duration: 2s;
-		animation-timing-function: ease-out;
-		animation-iteration-count: 1;
-    }
+.lightbox_title {
+    font-family: "Roboto";
+    font-weight: regular;
+    font-size: 20px;
+    color: #3fabe1;
+    text-align: center;
+}
+
+#loading {
+    style : small;
+    color : #41ABE1;
+    background-color : #2b2e31;
+    size : 70px 70px;
+    border-radius : 5px;
+    box-shadow : inset 0 1px 1px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.1);
+    position : 125 200;
+}
 	
-	#requireImmediatelyLogo {
-		background-image : url(noochIcon-96.png);
-		height : 48px;
-		width : 48px;
-		position : 136px 48px;
-	}
-    
-    .lightbox_title {
-        font-family: "Roboto";
-        font-weight: regular;
-        font-size: 20px;
-        color: #3fabe1;
-        text-align: center;
-    }
-
-	#loading {
-		style : small;
-		color : #41ABE1;
-		background-color : #2b2e31;
-		size : 70px 70px;
-		border-radius : 5px;
-		box-shadow : inset 0 1px 1px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.1);
-		position : 125 200;
-	}
+.light_gray_text { color    : #bcbec0; }
+.reallyLight_gray { color   : rgba(251,253,254,.98); font-size: 21px;}
+.disabled_gray {color       : rgba(210,210,210,.88);}
+.red_text { color           : #c72127; }
+.orange_text { color		: #cc9933; }
+.yellow_text { color		: #cccc33; }
+.blue_text { color          : #3fabe1; }
+.light_green_text {color	: #7ab259; }
+.green_text	{color          : #72bf44; }
 	
-	.light_gray_text { color    : #bcbec0; }
-    .reallyLight_gray { color   : rgba(251,253,254,.98;)}
-    .disabled_gray {color       : rgba(210,210,210,.88);}
-	.red_text { color           : #c72127; }
-	.orange_text { color		: #cc9933; }
-	.yellow_text { color		: #cccc33; }
-	.blue_text { color          : #3fabe1; }
-	.light_green_text {color	: #7ab259; }
-	.green_text	{color          : #72bf44; }
-	
-    .italic_font {font-style  : italic;}
-    .bold {font-weight: medium;}
+.italic_font {font-style  : italic;}
+.bold {font-weight: medium;}
 
-    .font-awesome {
-        font-family : "FontAwesome";
-        font-size   : 19px;
-        color       : #414042;
-        text-align  : center;
-    }
-    .font-awesome_22px {
-        font-family : "FontAwesome";
-        font-size   : 22px;
-        color       : #414042;
-        text-align  : center;
-    }
-    .font-awesome:active,
-    .font-awesome: {
-        font-family : "FontAwesome";
-        font-size   : 20px;
-        color       : #3fabe1;
-        text-align  : center;
-    }
-	 /***************************/
-	 /****		NAV BAR		*****/
-	 /***************************/
-		navigation-bar title {
-			font-family		: "Roboto";
-			font-weight		: regular;
-			font-size		: 20px;
-			color			: #ffffff;
-			text-align		: center;
-			width			: 190px;	
-			left			: 65px;
-		}
-
-		/****  NAV BAR:  User's Balance  ****/
-		#navbar_balance {
-			left		: 0px;
-            top			: 0px;
-            width       : 30px;
-            height      : 30px;
-			font-family : "FontAwesome";
-			font-size	: 24px;
-			color		: #ffffff;
-			text-align	: left;
-		}
-        #navbar_back {
-            height         :40px;
-			width			:40px;
-			left			: -10px;
-		}
-        #navbar_hamburger {
-			width       :  30px;
-            height      : 30px;
-			font-family : "FontAwesome";
-			font-size     : 24px;
-        }
-        .navbar_rightside_icon {
-            width: 30px;
-            height: 30px;
-			font-family : "FontAwesome";
-            font-size:20px;
-        }
-        #navbar_back {
-			width       :  30px;
-            height      : 30px;
-			font-family : "FontAwesome";
-			font-size     : 24px;
-        }
-     /******************************/
-	 /******	 BANNERS	********/
-	 /******************************/
-     .banner_header {
-        top: 2px;
-        left: 10px;
-        width: 300px;
-        height: 18px;
-        font-family: "Roboto";
-        font-weight: regular;
-        font-size: 15px;
-        text-align: center;
-        color: white;
-     }
-     .banner_alert_glyph {
-        top: 2px;
-        left: 40px;
-        width: 20px;
-        height: 18px;
-        font-family: "FontAwesome";
-        font-size: 14px;
-        text-align: center;
-        color: white;
-     }
-     .banner_alert_glyph_sm {
-        top: 2px;
-        left: 48px;
-        width: 10px;
-        height: 10px;
-        font-family: "FontAwesome";
-        font-size: 8px;
-        text-align: center;
-        color: white;
-     }
-     .banner_info {
-        top: 20px;
-        left: 2px;
-        width: 295px;
-        height: 18px;
-        font-family : "Roboto";
-        font-weight: regular;
-        font-size: 12px;
-        text-align: center;
-        color: white;
-     }
-    .dismiss_banner {
-        top     : 3px;
-        left    : 294px;
-        width   : 26px;
-        height  : 50px;
-        font-family: "FontAwesome";
-        font-size: 22px;
-        text-align: center;
-        color: white;
-    }
-	.go_now_text {
-		top: 35px;
-        left: 15px;
-		width: 290px;
-		height: 22px;
-		color: white;
-		font-weight: medium;
-		font-family: "Roboto";
-		font-size: 10px;
-	}
-	/**  ".go_now" is for a blue button, may not use for design reasons, would use "go_now_text" above instead. **/
-	.go_now {
-		top: 30px;
-        left: 224px;
-		width: 68px;
-		height: 30px;
-		color: white;
-		border-radius: 4px;
-		font-family: "Roboto";
-		font-weight: regular;
-		font-size: 14px;
-		background-image: linear-gradient(#6dbee8, #41abe1);
-		border: 1px solid #29A1DE;
-    }
-    #suspended_home {
-        top: 0px;
-        left: -1px;
-        width: 322px;
-        height: 56px;
-        background-image: linear-gradient(#D61915, #c41713);
-		border: 1px solid #C41713;
-		border-radius: 4px;
-		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.45);
-        opacity: .92;
-    }
-    #email_unverified {
-        left: -1px;
-        width: 322px;
-        height: 56px;
-        background-image: linear-gradient(#D61915, #c41713);
-		border: 1px solid #C41713;
-		border-radius: 4px;
-		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.45);
-        opacity: .92;
-    }
-    #phone_unverified {
-        left: -1px;
-        width: 322px;
-        height: 56px;
-        background-image: linear-gradient(#D61915, #c41713);
-		border: 1px solid #C41713;
-		border-radius: 4px;
-		box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.45);
-        opacity: .92;
-    }
-    #pending_notif {
-        width           : 22px;
-        height          : 22px;
-        background-color: red;
-        border          : 1px solid white;
-        border-radius   : 11px;
-        box-shadow      : 0px 1px 2px rgba(26, 32, 38, 0.5);
-        color           : white;
-        font-family     : "Roboto";
-        font-weight     : medium;
-        font-size       : 12px;
-        text-align      : center;
-    }
-    #pending_notif_lsideMenu {
-        box-shadow      : 0px 1px 2px rgba(31, 32, 33, .75);
-    }
-    #glyph_noBank_sidebar {
-        background-color: rgba(250, 4, 4, .8);
-        border          : 1px solid white;
-        border-radius   : 11px;
-        box-shadow      : 0px 1px 2px rgba(26, 32, 38, 0.45);
-        color           : white;
-        font-family     : "FontAwesome";
-        font-size       : 13px;
-        text-align      : center;
-    }
-
-	 /******************************/
-	 /******	 BUTTONS	********/
-	 /******************************/
-
-		/****  BLUE BUTTON GRADIENT ****/
-		.button_blue { 
-            background-image	: linear-gradient(#6dbee8, #41abe1);
-            width				: 280px;
-			height				: 48px;
-			left                : 20px;
-			color 				: white;
-			border-radius		: 5px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 21px;
-			border				: 1px solid #29A1DE;
-        }
-		.button_blue_closeLightbox {
-            background-image	: linear-gradient(#6dbee8, #41abe1);
-            width				: 110px;
-			top                 : 410;
-            height				: 40px;
-			left                : 170px;
-			color 				: white;
-			border-radius		: 5px;
-			font-family			: "Roboto";
-			font-weight         : regular;
-			font-size			: 19px;
-			border				: 1px solid #29A1DE;
-		}
-        .button_blue_closeLightbox_smscrn {
-            background-image	: linear-gradient(#6dbee8, #41abe1);
-            width				: 110px;
-			top                 : 402;
-            height				: 37px;
-			left                : 170px;
-			color 				: white;
-			border-radius		: 5px;
-			font-family			: "Roboto";
-			font-weight         : regular;
-			font-size			: 18px;
-			border				: 1px solid #29A1DE;
-        }
-		/****  GREEN BUTTON GRADIENT  ****/
-		.button_green:normal {
-			width				: 280px;
-			height				: 48px;
-			left                : 20px;
-			color 				: white;
-			border-radius		: 5px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 21px;
-            background-image	: linear-gradient(#7fd034, #6ab029);
-			border				: 1px solid #66AE3C;
-		}
-        .button_green_welcome:normal {
-			width				: 280px;
-			height				: 45px;
-			left                : 10px;
-			color 				: white;
-			border-radius		: 5px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 21px;
-            background-image	: linear-gradient(#7fd034, #6ab029);
-			border				: 1px solid #66AE3C;
-		}
-        #button_green_home {
-            width				: 280px;
-			height				: 54px;
-			left                : 20px;
-			color 				: white;
-			border-radius		: 5px;
-			font-family			: "Roboto";
-			font-weight         : regular;
-			font-size			: 19px;
-            background-image	: linear-gradient(#7fd034, #6ab029);
-			border				: 1px solid #66AE3C;
-        }
-		/****  Disabled GREEN GRADIENT  ****/
-		.button_green:disabled {
-            width				: 280px;
-			height				: 48px;
-			left                : 20px;
-			color 				: white;
-			border-radius		: 5px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 21px;
-            background-image	: linear-gradient(#c0c2c4, #b1b3b6);
-			border				: 1px solid #A7A9AC;
-		}
-		/****  GRAY BUTTON GRADIENT  ****/
-		.button_gray {
-			width				: 280px;
-			height				: 48px;
-			left                : 20px;
-			color 				: white;
-			border-radius		: 5px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 21px;
-			background-image	: linear-gradient(#c0c2c4, #b1b3b6);
-			border				: 1px solid #A7A9AC;
-		}
-		/****  RED BUTTON GRADIENT  ****/
-		.gradient_red { 
-			left                : 20px;
-			width				: 280px;
-			height				: 48px;
-			color 				: white;
-			border-radius		: 5px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 21px;
-			background-image	: linear gradient(#e02d33, #d2232a); 
-		}
-
-		.button_green_sm {
-			left                : 205px;
-			width				: 100px;
-			height				: 30px;
-			color 				: white;
-			border-radius		: 5px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 14px;
-            background-image	: linear-gradient(#7fd034, #6ab029);
-			border				: 1px solid #66AE3C;
-		}
-
-		.notVerifiedLabel {
-			color 				: #b90e0a;
-			font-family			: "Roboto";
-			font-weight         : regular;
-			font-size			: 15px;
-		}
-		
-		.infobutton {
-			width			: 16px;
-			height			: 16px;
-			background-image: url(info-button.png);
-			background-size	: 16px;
-		}
-        
-        /**** News Feed ****/
-        #news_feed {
-            left        : 0px;
-            top         : 5px;
-            width      : 270px;
-            height      : 300px;
-            row-height  : 70px;
-            background-color : white;
-            border-radius   : 5px;
-        }
-        #news_popup {
-            left        : 30px;
-            top         : 60px;
-            width      : 270px;
-            height      : 300px;
-            background-color : white;
-            border-radius   : 5px;
-            box-shadow			: 1px 2px 2px rgba(109,110,113,0.6);
-        }
-        #close_news {
-            left        : 262px;
-            top         : 35px;
-            width      : 30px;
-            height      : 40px;
-            background-color : white;
-            border				: 1px solid #b1b3b6;
-            border-radius   : 10px;
-        }
-        
-		/****  Table Detail Text  (right side of row)  ****/
-		.recentEmptytable_view_cell_detailtext_1 {
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 15px;
-			color 				: #696969;
-/*			width				: 300px;
-			left                : 10px;
-			height				: 300px;
-			text-align       	: left;
-            top                 : 180px; */
-		}
-
-         .invitesendbutton {
-			width			: 70px;
-			height			: 40px;
-			left                : 120px;
-			color 				: white;
-			border-radius		: 3px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 22px;
-            background-image			: linear-gradient(#6dbee8, #41abe1);
-		}
-	.donation_closebutton {
-			width			: 50px;
-			height			: 30px;
-
-			left                : 250px;
-			color 				: white;
-			border-radius		: 3px;
-			font-family			: "Roboto";
-			font-weight         : light;
-			font-size			: 12px;
-            background-image			: linear-gradient(#6dbee8, #41abe1);
-		}
-
-	.Repin_instructiontext {
-		width			: 300px;
-		left			: 10px;
-		top             : 90px;
-		height          : 20px;
-		font-family		: "Roboto";
-		font-weight		: regular;
-		font-size		: 18px;
-		text-align		: center;
-		color			: #313233;
-	}
-    .backbutton {
-		left			: 5px;
-		top             : 28px;
-		width			: 70px;
-		height          : 26px;
-		font-family		: "Roboto";
-		font-weight		: regular;
-		font-size		: 18px;
-		text-align		: left;
-	}
-    .backbutton_pinreset {
-        left			: 5px;
-        top             : 24px;
-        width			: 70px;
-        height          : 27px;
+.font-awesome {
+    font-family : "FontAwesome";
+    font-size   : 19px;
+    color       : #414042;
+    text-align  : center;
+}
+.font-awesome_22px {
+    font-family : "FontAwesome";
+    font-size   : 22px;
+    color       : #414042;
+    text-align  : center;
+}
+.font-awesome:active,
+.font-awesome: {
+    font-family : "FontAwesome";
+    font-size   : 20px;
+    color       : #3fabe1;
+    text-align  : center;
+}
+ /***************************/
+ /****		NAV BAR		*****/
+ /***************************/
+    navigation-bar title {
         font-family		: "Roboto";
         font-weight		: regular;
-        font-size		: 18px;
-        text-align		: left;
+        font-size		: 20px;
+        color			: #ffffff;
+        text-align		: center;
+        width			: 190px;	
+        left			: 65px;
     }
-	.plusbutton {
-		width			: 50px;
-		left			: 245px;
-		height          : 40px;
-		font-family		: "Roboto";
-		font-weight		: medium;
-		font-size		: 22px;
-		text-align		: left;
-		color 			: #6d6e71;
-	}
-	.pickerstyle {
-		width			: 320px;
-		left			: 0px;
-		height          : 568px;
-		font-family		: "Roboto";
-		font-weight		: medium;
-		font-size		: 22px;
-		text-align		: right;
-        padding         : 100px;
-	}
-    .pickerstyle_4 {
-        width			: 320px;
-        left			: 0px;
-        height          : 480px;
-        font-family		: "Roboto";
-        font-weight		: medium;
-        font-size		: 22px;
-        text-align		: right;
-        padding         : 100px;
+
+    /****  NAV BAR:  User's Balance  ****/
+    #navbar_balance {
+        left		: 0px;
+        top			: 0px;
+        width       : 30px;
+        height      : 30px;
+        font-family : "FontAwesome";
+        font-size	: 24px;
+        color		: #ffffff;
+        text-align	: left;
     }
-    .back_button-icon {
-        top             : 45px;
-		width			: 15px;
-		height			: 24px;
-		left			: 10px;
+    #navbar_back {
+        height         :40px;
+        width			:40px;
+        left			: -10px;
     }
-	 /****************************
-	  *****	  TABLE Styles 	 *****
-	  ****************************/
+    #navbar_hamburger {
+        width       :  30px;
+        height      : 30px;
+        font-family : "FontAwesome";
+        font-size     : 24px;
+    }
+    .navbar_rightside_icon {
+        width: 30px;
+        height: 30px;
+        font-family : "FontAwesome";
+        font-size:20px;
+    }
+    #navbar_back {
+        width       :  30px;
+        height      : 30px;
+        font-family : "FontAwesome";
+        font-size     : 24px;
+    }
+ /******************************/
+ /******	 BANNERS	********/
+ /******************************/
+ .banner_header {
+    top: 2px;
+    left: 10px;
+    width: 300px;
+    height: 18px;
+    font-family: "Roboto";
+    font-weight: regular;
+    font-size: 15px;
+    text-align: center;
+    color: white;
+ }
+ .banner_alert_glyph {
+    top: 2px;
+    left: 40px;
+    width: 20px;
+    height: 18px;
+    font-family: "FontAwesome";
+    font-size: 14px;
+    text-align: center;
+    color: white;
+ }
+ .banner_alert_glyph_sm {
+    top: 2px;
+    left: 48px;
+    width: 10px;
+    height: 10px;
+    font-family: "FontAwesome";
+    font-size: 8px;
+    text-align: center;
+    color: white;
+ }
+ .banner_info {
+    top: 20px;
+    left: 2px;
+    width: 295px;
+    height: 18px;
+    font-family : "Roboto";
+    font-weight: regular;
+    font-size: 12px;
+    text-align: center;
+    color: white;
+ }
+.dismiss_banner {
+    top     : 3px;
+    left    : 294px;
+    width   : 26px;
+    height  : 50px;
+    font-family: "FontAwesome";
+    font-size: 22px;
+    text-align: center;
+    color: white;
+}
+.go_now_text {
+    top: 35px;
+    left: 15px;
+    width: 290px;
+    height: 22px;
+    color: white;
+    font-weight: medium;
+    font-family: "Roboto";
+    font-size: 10px;
+}
+/**  ".go_now" is for a blue button, may not use for design reasons, would use "go_now_text" above instead. **/
+.go_now {
+    top: 30px;
+    left: 224px;
+    width: 68px;
+    height: 30px;
+    color: white;
+    border-radius: 4px;
+    font-family: "Roboto";
+    font-weight: regular;
+    font-size: 14px;
+    background-image: linear-gradient(#6dbee8, #41abe1);
+    border: 1px solid #29A1DE;
+}
+#suspended_home {
+    top: 0px;
+    left: -1px;
+    width: 322px;
+    height: 56px;
+    background-image: linear-gradient(#D61915, #c41713);
+    border: 1px solid #C41713;
+    border-radius: 4px;
+    box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.45);
+    opacity: .92;
+}
+#email_unverified {
+    left: -1px;
+    width: 322px;
+    height: 56px;
+    background-image: linear-gradient(#D61915, #c41713);
+    border: 1px solid #C41713;
+    border-radius: 4px;
+    box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.45);
+    opacity: .92;
+}
+#phone_unverified {
+    left: -1px;
+    width: 322px;
+    height: 56px;
+    background-image: linear-gradient(#D61915, #c41713);
+    border: 1px solid #C41713;
+    border-radius: 4px;
+    box-shadow: 0px 1px 3px rgba(89, 10, 9, 0.45);
+    opacity: .92;
+}
+#pending_notif {
+    width           : 22px;
+    height          : 22px;
+    background-color: red;
+    border          : 1px solid white;
+    border-radius   : 11px;
+    box-shadow      : 0px 1px 2px rgba(26, 32, 38, 0.5);
+    color           : white;
+    font-family     : "Roboto";
+    font-weight     : medium;
+    font-size       : 12px;
+    text-align      : center;
+}
+#pending_notif_lsideMenu {
+    box-shadow      : 0px 1px 2px rgba(31, 32, 33, .75);
+}
+#glyph_noBank_sidebar {
+    background-color: rgba(250, 4, 4, .8);
+    border          : 1px solid white;
+    border-radius   : 11px;
+    box-shadow      : 0px 1px 2px rgba(26, 32, 38, 0.45);
+    color           : white;
+    font-family     : "FontAwesome";
+    font-size       : 13px;
+    text-align      : center;
+}
+
+/******************************/
+/******	 BUTTONS	********/
+/******************************/
+
+/****  BLUE BUTTON GRADIENT ****/
+.button_blue { 
+    background-image	: linear-gradient(#6dbee8, #41abe1);
+    width				: 280px;
+    height				: 48px;
+    left                : 20px;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 21px;
+    border				: 1px solid #29A1DE;
+}
+.button_blue_closeLightbox {
+    background-image	: linear-gradient(#6dbee8, #41abe1);
+    width				: 110px;
+    top                 : 410;
+    height				: 40px;
+    left                : 170px;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 19px;
+    border				: 1px solid #29A1DE;
+}
+.button_blue_closeLightbox_smscrn {
+    background-image	: linear-gradient(#6dbee8, #41abe1);
+    width				: 110px;
+    top                 : 402;
+    height				: 37px;
+    left                : 170px;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 18px;
+    border				: 1px solid #29A1DE;
+}
+/****  GREEN BUTTON GRADIENT  ****/
+.button_green:normal {
+    width				: 280px;
+    height				: 48px;
+    left                : 20px;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 21px;
+    background-image	: linear-gradient(#7fd034, #6ab029);
+    border				: 1px solid #66AE3C;
+}
+.button_green_welcome:normal {
+    width				: 280px;
+    height				: 45px;
+    left                : 10px;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 21px;
+    background-image	: linear-gradient(#7fd034, #6ab029);
+    border				: 1px solid #66AE3C;
+}
+#button_green_home {
+    width				: 280px;
+    height				: 54px;
+    left                : 20px;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 19px;
+    background-image	: linear-gradient(#7fd034, #6ab029);
+    border				: 1px solid #66AE3C;
+}
+/****  Disabled GREEN GRADIENT  ****/
+.button_green:disabled {
+    width				: 280px;
+    height				: 48px;
+    left                : 20px;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 21px;
+    background-image	: linear-gradient(#c0c2c4, #b1b3b6);
+    border				: 1px solid #A7A9AC;
+}
+/****  GRAY BUTTON GRADIENT  ****/
+.button_gray {
+    width				: 280px;
+    height				: 48px;
+    left                : 20px;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 21px;
+    background-image	: linear-gradient(#c0c2c4, #b1b3b6);
+    border				: 1px solid #A7A9AC;
+}
+/****  RED BUTTON GRADIENT  ****/
+.gradient_red { 
+    left                : 20px;
+    width				: 280px;
+    height				: 48px;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 21px;
+    background-image	: linear gradient(#e02d33, #d2232a); 
+}
+
+.button_green_sm {
+    left                : 205px;
+    width				: 100px;
+    height				: 30px;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 14px;
+    background-image	: linear-gradient(#7fd034, #6ab029);
+    border				: 1px solid #66AE3C;
+}
+
+.notVerifiedLabel {
+    color 				: #b90e0a;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 15px;
+}
+
+.infobutton {
+    width			: 16px;
+    height			: 16px;
+    background-image: url(info-button.png);
+    background-size	: 16px;
+}
+
+/**** News Feed ****/
+#news_feed {
+    left        : 0px;
+    top         : 5px;
+    width      : 270px;
+    height      : 300px;
+    row-height  : 70px;
+    background-color : white;
+    border-radius   : 5px;
+}
+#news_popup {
+    left        : 30px;
+    top         : 60px;
+    width      : 270px;
+    height      : 300px;
+    background-color : white;
+    border-radius   : 5px;
+    box-shadow			: 1px 2px 2px rgba(109,110,113,0.6);
+}
+#close_news {
+    left        : 262px;
+    top         : 35px;
+    width      : 30px;
+    height      : 40px;
+    background-color : white;
+    border				: 1px solid #b1b3b6;
+    border-radius   : 10px;
+}
+
+/****  Table Detail Text  (right side of row)  ****/
+.recentEmptytable_view_cell_detailtext_1 {
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 15px;
+    color 				: #696969;
+/*			width				: 300px;
+    left                : 10px;
+    height				: 300px;
+    text-align       	: left;
+    top                 : 180px; */
+}
+
+ .invitesendbutton {
+    width			: 70px;
+    height			: 40px;
+    left                : 120px;
+    color 				: white;
+    border-radius		: 3px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 22px;
+    background-image			: linear-gradient(#6dbee8, #41abe1);
+}
+.donation_closebutton {
+    width			: 50px;
+    height			: 30px;
+
+    left                : 250px;
+    color 				: white;
+    border-radius		: 3px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 12px;
+    background-image			: linear-gradient(#6dbee8, #41abe1);
+}
+
+.Repin_instructiontext {
+    width			: 300px;
+    left			: 10px;
+    top             : 90px;
+    height          : 20px;
+    font-family		: "Roboto";
+    font-weight		: regular;
+    font-size		: 18px;
+    text-align		: center;
+    color			: #313233;
+}
+.backbutton {
+    left			: 5px;
+    top             : 28px;
+    width			: 70px;
+    height          : 26px;
+    font-family		: "Roboto";
+    font-weight		: regular;
+    font-size		: 18px;
+    text-align		: left;
+}
+.backbutton_pinreset {
+    left			: 5px;
+    top             : 24px;
+    width			: 70px;
+    height          : 27px;
+    font-family		: "Roboto";
+    font-weight		: regular;
+    font-size		: 18px;
+    text-align		: left;
+}
+.plusbutton {
+    width			: 50px;
+    left			: 245px;
+    height          : 40px;
+    font-family		: "Roboto";
+    font-weight		: medium;
+    font-size		: 22px;
+    text-align		: left;
+    color 			: #6d6e71;
+}
+.pickerstyle {
+    width			: 320px;
+    left			: 0px;
+    height          : 568px;
+    font-family		: "Roboto";
+    font-weight		: medium;
+    font-size		: 22px;
+    text-align		: right;
+    padding         : 100px;
+}
+.pickerstyle_4 {
+    width			: 320px;
+    left			: 0px;
+    height          : 480px;
+    font-family		: "Roboto";
+    font-weight		: medium;
+    font-size		: 22px;
+    text-align		: right;
+    padding         : 100px;
+}
+.back_button-icon {
+    top             : 45px;
+    width			: 15px;
+    height			: 24px;
+    left			: 10px;
+}
+/****************************
+*****	  TABLE Styles 	 *****
+****************************/
 /***     	TABLE STYLE 1  				***/
 /***  PROFILE Screen, SETTINGS Screens  ***/
 
@@ -586,2753 +586,2753 @@
     background-color: #ffffff;
 }
 
-	 .table_view_cell_1 { text-overflow	: ellipsis; } 
-		 
-	  /****  Table Main Text  (left side of row)  ****/
-	 .table_view_cell_textlabel_1 {
-		left                : 14px;
-		width				: 260px;
-		height				: 40px;
-        font-family			: "Roboto";
-		font-weight         : regular;
-		font-size			: 17px;
-		text-align       	: left;
-		color 				: #41ABE1;
-	}
-    .table_txtlbl_indented {
-        left    : 32px;
-    }
-	.memtable_view_cell_textlabel_1 {
-		left            : 90px;
-        top             : 8px;
-        width			: 200px;
-		height			: 38px;
-		font-family		: "Roboto";
-		font-size		: 16px;
-		text-align     	: center;
-		color 			: #313233;
-	}
-    #profile_DateText {
-		left            : 90px;
-        top             : 26px;
-		width			: 200px;
-		height			: 32px;
-        font-family		: "Roboto";
-		font-weight     : light;
-		font-size		: 15px;
-		text-align     	: center;
-		color 			: #313233;
-	}
-	.memtable_view_cell_textlabel_1_64 {
-		left            : 90px;
-		top             : 72px;
-		font-family		: "Roboto";
-		font-weight     : regular;
-		font-size		: 16px;
-		text-align      : center;
-		color 			: #313233;
-		width			: 200px;
-		height			: 60px;
-	}       
-	#icon_RequestMultiple {
-		left				: 290px;
-		width				: 80px;
-		height				: 40px;
-		background-size		: 80px 40px;
-	}
-
-        /****  Table Detail Text  (right side of row)  ****/
-	.table_view_cell_detailtext_1 {
-		font-family		: "Roboto";
-		font-weight		: light;
-		font-size		: 17px;
-		color 			: #313233;
-		width			: 212px;
-		left			: 95px;
-		height			: 40px;
-		text-align		: right;
-	}
-	.exportHistorybutton {
-        top: 450px;
-		width: 130px;
-		background-color: rgba(63,171,225,.9);
-        border-radius: 4px;
-		font-family: "Roboto";
-		font-weight: regular;
-		font-size: 14px;
-		text-align: center;
-		color: white;
-        box-shadow: 0px 1px 2px rgba(31,32,33,0.4);
-	}
-	.exportHistorybutton_4{
-        top: 380px;
-		width: 130px;
-		background-color: rgba(63,171,225,.9);
-        border-radius: 4px;
-		font-family: "Roboto";
-		font-weight: regular;
-		font-size: 14px;
-		text-align: center;
-		color: white;
-        box-shadow: 0px 1px 2px rgba(31,32,33,0.4);
-	}
-    #exportStatsBtn {
-		background-color: rgba(63,171,225,.98);
-        border-radius: 4px;
-		font-family: "Roboto";
-		font-weight: regular;
-		font-size: 15px;
-		text-align: center;
-		color: white;
-        box-shadow: 0px 1px 2px rgba(31,32,33,0.4);
-    }
-	
-	/****  		Sub-header Text (Outside of Table)     ****/
-	/****  Mostly Pre-Login Screens + Referral Screen  ****/
-	.header_label{
-		font-family			: "Roboto";
-		font-weight         : regular;
-		font-size			: 17px;
-		text-align       	: center;
-		color 				: #414042;
-		width				: 280px;
-		left                : 20px;
-		height				: 30px;
-	}
-	
-	/************************************/
-	/*******     TABLE STYLE 2      ******   SELECT RECIPIENT screen; CHOOSE A CAUSE screen ****/
-	/************************************/
-	.table_view_2 {
-		row-height		: 45px;
-		separator-color	: rgba(188,190,192,.65);
-		separator-style : single-line;
-		background-color: #ffffff;
-	}
-
-	.table_view_cell_2 {text-overflow	: ellipsis; }
-	
-	.facebook_glyph {
-        width			: 14px;
-		height			: 16px;
-		top				: 45px;
-		left			: 14px;
-        color       	: #41ABE1;
-        font-family 	: "FontAwesome";
-        font-size       : 13px;
-    }
-		 
-	/****  Table Cell View Main Text Label (Left Side)  ****/
-	.table_view_cell_textlabel_2 {
-		font-family			: "Roboto";
-		font-weight         : regular;
-		font-size			: 17px;
-		text-align       	: left;
-		color 				: #313233;
-		width				: 250px;
-		left                : 20px;
-		height				: 30px;
-	}
-
-	/****  Table text right side  ****/
-	.table_view_cell_detailtext_2 {
-		font-family			: "Roboto";
-		font-weight         : light;
-		font-size			: 17px;
-		text-align       	: right;
-		color 				: #6d6e71;
-		width				: 280px;
-		left                : 20px;
-		height				: 30px;
-	}
-	/***********************/
-	/****  END TABLES   ****/
-	/***********************/
-
-	/*** 	 SIGNUP FLOW:  Instructional Text	***/
-	.instruction_text {
-		left            : 20px;
-		width			: 280px;
-		height			: 70px;
-        font-family		: "Roboto";
-		font-weight     : regular;
-		font-size		: 16px;
-		text-align      : center;
-		color 			: #313233;
-	}
-    .instruction_text_smscrn {
-		left            : 20px;
-		width			: 280px;
-		height			: 44px;
-        font-family		: "Roboto";
-		font-weight     : regular;
-		font-size		: 15px;
-		text-align      : center;
-		color 			: #313233;
-	}
-
-    .pin_entry_feedback {
-        text-align: center;
-        font-size: 14px;
-    }
-
-	/****  Raised Box - This adds a drop-shadow. ****/
-	.raised_view {
-		/* border-radius       : 0px;  */
-		box-shadow			: 0 2px 2px rgba(109,110,113,0.6);
-	}
-
- /*******************************************
-  ********  PROFILE STATUS VIEWS     ********
-  *******************************************/
-    #suspended {
-        width           : 320px;
-        height          : 50px;
-        left               : 0px;
-        background-color: #d2232a;
-        opacity : 0.6;
-    }
-	#profileTopSectionBg {
-		background-color: rgba(63,171,225,.4);
-		box-shadow: 0px 1px 2px rgba(88,90,92,.5);
-	}
-    #profileTopSectionBg_susp {
-		background-color: #D61915;
-        opacity: .6;
-        box-shadow: 0px 1px 2px rgba(89, 10, 9, 0.4);
-    }
-	.alertContainer {
-		left: -1px;
-		width: 322px;
-		height: 64px;
-		color: white;
-	}
-	.alertBackgroundRed { 
-		background-color: #D61915;
-		border: 1px solid #C41713;
-		box-shadow: 0px 1px 2px rgba(89, 10, 9, 0.4);
-		border-radius: 4px;
-	}
-	.alertBackgroundGreen {
-		background-color: #1A981C;
-		border-color: #168218;
-		box-shadow: 0px 1px 2px rgba(19, 108, 20, 0.45);
-		border-radius: 4px;
-	}
-	.alertBannerTitle {
-		left        : 20px;
-		top			: 2px;
-		width		: 280px;
-		height		: 20px;
-		font-family	: "Roboto";
-		font-weight : Medium;
-		font-size	: 17px;
-		text-align  : center;
-		color 		: white;
-	}
-	.alertBannerText {
-		left        : 10px;
-		top			: 23px;
-		width		: 300px;
-		height		: 30px;
-		font-family	: "Roboto";
-		font-weight : regular;
-		font-size	: 14px;
-		text-align  : center;
-		color 		: white;
-	}
-	.alertIcon {
-		/*left should be set inline based on the title's length*/
-		top: 3px;
-	}
-    .nav_top_right  {
-		width			: 50px;
-		height			: 25px;
-		font-family     : "Roboto";
-		font-size		: 18px;
-		text-align     	: center;
-		color 			: #ffffff;
-	}
-
-	
- /*******************************************
-  ********  	PRE-LOGIN FLOW	     ********
-  *******************************************/
-  	.header_signupflow {
-		left                : 20px;
-		width				: 280px;
-		height				: 35px;
-        font-family			: "Roboto";
-		font-weight         : light;
-		font-size			: 29px;
-		text-align       	: center;
-		color 				: #313233;
-	}
-	  
-	/**  Signup: "Already a member...",  Select a Picture Screen, Welcome Screen **/
-	.label_small {
-		left                : 20px;
-		width				: 280px;
-		height				: 30px;
-		font-family			: "Roboto";
-		font-weight         : light;
-		font-size			: 18px;
-		text-align       	: center;
-		color 				: #414042;
-	}
-	#moreinfo_button {
-		font-family: "Roboto";
-		font-weight: light;
-		color      : #66686a;
-		font-size  : 16px;
-		text-align : center;
-	}
-
-	/**  Text entry field for inputting a referral code. **/
-	#referral_code_field {
-		width				: 210px;
-		height				: 60px;
-		border				: 4px solid #3fabe1;
-		border-radius		: 15px;
-		-ios-border-style	: rounded-rect;
-		background-color	: #fff;
-		font-family			: "Roboto";
-		font-weight			: light;
-		font-size			: 16px;
-		font-stretch		: expanded;
-		color				: #3fabe1;
-		text-align			: center;
-		text-transform		: uppercase;
-		padding				: 8px 4px;
-	}
-
-	/**  Text "Remember Me" **/
-	#label_rememberme {
-		font-family			: "Roboto";
-		font-weight			: light;
-		font-size			: 14px;
-		text-align			: left;
-		color				: #939598;
-		width				: 140px;
-		left				: 19px;
-	}
-	/**  Text "Forgot Password?" **/
-	#label_forgotpw {
-		font-family			: "Roboto";
-		font-weight			: light;
-		font-size			: 14px;
-		text-align			: right;
-		color				: #939598;
-		width				: 150px;
-		left				: 170px;
-	}
-	#login_switch {
-		width				: 34px;
-		height				: 21px;
-		background-color 	: #939598;
-		border-radius   	: 14px;
-	}
-	
-	#login_switch thumb { color: white; }
-
- /*******************************************
-  ********  	SEND MONEY FLOW	     ********
-  *******************************************/
-  
-	/****  NAV BAR:  Select Recipient, How Much?, PIN screens  ****/
-	.navbar_title_sendmoneyflow  { font-size: 18px; }
-
-	/*********************************/
-	/**   SELECT RECIPIENT Screen   **/
-	/*********************************/
-	
-	/**  Sets the overall table style, specifically the row-height and separator color. */
-	table-view#select_recipient {
-		width				: 320px;
-		background-color	: #ffffff;
-		row-height			: 64px;
-		separator-style 	: single-line;
-		separator-color		: rgba(188,190,192,.7);	
-	}
-    table-view#select_recipientwithoutSeperator {
-		width				: 320px;
-		background-color	: #ffffff;
-		row-height			: 90px;
-		separator-style 	: none;
-	}
-	/**  Styles all the profile pictures of users that are returned in the Select Recipient Table.  **/
-	.list_userprofilepic {
-		width: 46px;
-		height: 46px;
-		border: 1px solid #6d6E71;
-		top: 7px;
-		left: 20px;
-        shape: ellipse;
-	}
-
-	.select_recipient_name {
-		height:62px;
-		top:0px;
-		color: #313233;
-		font-family: "Roboto";
-		font-weight: Regular;
-		font-size: 19px;
-		text-align: left;
-	}
-    
-    .select_recipient_pending_name {
-        height: 52px;
-        top: 0px;
-        color: #313233;
-        font-size: 19px;
-    }
-	
-	.first_name { font-weight: regular;}
-
-	/**  Very small FB icon next to Nooch user pics in the Select Recipient Screen. Designates the user is FB friends with the marked user.  **/  
-	.facebook-icons {
-		width			: 14px;
-		height			: 28px;
-		top				: 45px;
-		left			: 17px;
-		background		: url(facebook-icon.png);
-	}
-
-	/**  Very small address book icon next to Nooch user pics in the Select Recipient Screen. Designates the user has that person's email address in their address book. **/    
-	.addressbook-icons {
-		width			: 14px;
-		height			: 16px;
-		top				: 45px;
-		left			: 52px;
-        border          : 1px solid;
-        border-color    : white;
-        border-radius   : 3px;
-		background-image: url(address-book-icon.png);
-	}
-
-	/*************************/  
-	/**   HOW MUCH? Screen  **/
-	/*************************/
-
-	/**  Background box for all the content of the How Much? screen.  This element should also be assigned the ".raised_view" class. **/  
-	.howmuch_mainbox {
-		left				: 8px;
-		top					: 10px;
-		width				: 304px;
-		height				: 250px;
-		border-radius		: 5px;
-        box-shadow			: 0 2px 2px rgba(88,90,92,0.45);
-	}
-    .howmuch_mainbox_smscrn {
-		left				: 8px;
-		top					: 6px;
-		width				: 304px;
-		height				: 189px;
-		border-radius		: 5px;
-        box-shadow			: 0 2px 2px rgba(88,90,92,0.45);
-	}
-	
-	/**  Just the text "To:"  **/
-	#label_howmuch_to  {
-		left				: 10px;
-		top					: 00px;
-		width				: 28px;
-		height				: 38px;
-		font-size			: 20px;
-		font-weight			: light;
-        color               : white;
-	}
-  
-	/**  Styles the recipient's name in the bar at the top of the main box. **/
-	#label_howmuch_recipientname {
-		left				: 43px;
-		top					: 0px;
-		width				: 210px;
-		height				: 38px;
-		font-size			: 20px;
-		font-weight			: regular;
-        color               : white;
-	}
-	#label_howmuch_recipientnamenonuser {
-		left				: 43px;
-		top					: 0px;
-		width				: 220px;
-		height				: 39px;
-		font-size			: 18px;
-		font-weight			: regular;
-        color               : white;
-	}
-
-	.barbackground {
-        left : 0px;
-        top : 0px;
-        width : 304px;
-        height  : 38px;
-		border-top-left-radius: 4px;
-		border-top-right-radius: 4px;
-    }
-	.barbackground_gray {
-		background-color :  #9fa1a4;  /** Default - before a user has entered an amount. **/
-		border-top-left-radius: 4px;
-		border-top-right-radius: 4px;
-	}
-	.barbackground_green {
-		background-image: linear-gradient(#76c22f, #66aa27);
-		border-top-left-radius: 4px;
-		border-top-right-radius: 4px;
-	}
-	/** For REQUESTS **/
-	.barbackground_blue {
-		background-image: linear-gradient(#40a9de, #3b9cce);
-		border-top-left-radius: 4px;
-		border-top-right-radius: 4px;
-	}
-
-	/**  Sets the recipient's profile pic in the middle (left side) of the main box. **/
-	#howmuch_recipientpic {
-		width				: 76px;
-		height				: 76px;
-		top					: 62px;
-		left				: 28px;
-		border				: 1px solid #939598;
-        border-radius   	: 37px;
-	}
-
-	/**  Main entry field for the Amount.  Starts as light gray, turns dark when a number is entered. **/  
-	#howmuch_amountfield {
-		left                : 110px;
-		top					: 63px;
-		width				: 180px;
-		height				: 60px;
-		font-family			: "Roboto";
-		font-size			: 50px;
-		font-weight         : medium;
-		text-align       	: right;
-		color 				: #58595B;
-    }
-    #howmuch_amountfield_4 {
-		left                : 110px;
-		top					: 42px;
-		width				: 180px;
-		height				: 50px;
-		font-family			: "Roboto";
-		font-size			: 42px;
-		font-weight         : medium;
-		text-align       	: right;
-		color 				: #58595B;
-	}
+.table_view_cell_1 { text-overflow	: ellipsis; }
  
-	/**  Send and Request buttons. **/ 
-	.howmuch_buttons {
-		width				: 150px;
-		font-family			: "Roboto";
-		font-size			: 21px;
-		font-weight         : light;
-		text-align       	: center;
-		color 				: #ffffff;
-		text-transform		: uppercase;
-	}
+/****  Table Main Text  (left side of row)  ****/
+.table_view_cell_textlabel_1 {
+    left                : 14px;
+    width				: 260px;
+    height				: 40px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 17px;
+    text-align       	: left;
+    color 				: #41ABE1;
+}
+.table_txtlbl_indented {
+    left    : 32px;
+}
+.memtable_view_cell_textlabel_1 {
+    left            : 90px;
+    top             : 8px;
+    width			: 200px;
+    height			: 38px;
+    font-family		: "Roboto";
+    font-size		: 16px;
+    text-align     	: center;
+    color 			: #313233;
+}
+#profile_DateText {
+    left            : 90px;
+    top             : 26px;
+    width			: 200px;
+    height			: 32px;
+    font-family		: "Roboto";
+    font-weight     : light;
+    font-size		: 15px;
+    text-align     	: center;
+    color 			: #313233;
+}
+.memtable_view_cell_textlabel_1_64 {
+    left            : 90px;
+    top             : 72px;
+    font-family		: "Roboto";
+    font-weight     : regular;
+    font-size		: 16px;
+    text-align      : center;
+    color 			: #313233;
+    width			: 200px;
+    height			: 60px;
+}       
+#icon_RequestMultiple {
+    left				: 290px;
+    width				: 80px;
+    height				: 40px;
+    background-size		: 80px 40px;
+}
 
-	/**  Sets the position for the Request Button. **/
-	#howmuch_request {
-		height                  : 56px;
-        background-image        : linear-gradient(#6dbee8, #41abe1);
-		border-bottom-left-radius: 4px;
-		left                    : 0px;
-		top                     : 194px;
-        opacity                 : 1;
-	}
-    #howmuch_request_4 {
-		left                : 0px;
-		top                 : 139px;
-        height              : 50px;
-		background-image    : linear-gradient(#6dbee8, #41abe1);
-		border-bottom-left-radius: 4px;
+/****  Table Detail Text  (right side of row)  ****/
+.table_view_cell_detailtext_1 {
+    font-family		: "Roboto";
+    font-weight		: light;
+    font-size		: 17px;
+    color 			: #313233;
+    width			: 212px;
+    left			: 95px;
+    height			: 40px;
+    text-align		: right;
+}
+.exportHistorybutton {
+    top: 450px;
+    width: 130px;
+    background-color: rgba(63,171,225,.9);
+    border-radius: 4px;
+    font-family: "Roboto";
+    font-weight: regular;
+    font-size: 14px;
+    text-align: center;
+    color: white;
+    box-shadow: 0px 1px 2px rgba(31,32,33,0.4);
+}
+.exportHistorybutton_4{
+    top: 380px;
+    width: 130px;
+    background-color: rgba(63,171,225,.9);
+    border-radius: 4px;
+    font-family: "Roboto";
+    font-weight: regular;
+    font-size: 14px;
+    text-align: center;
+    color: white;
+    box-shadow: 0px 1px 2px rgba(31,32,33,0.4);
+}
+#exportStatsBtn {
+    background-color: rgba(63,171,225,.98);
+    border-radius: 4px;
+    font-family: "Roboto";
+    font-weight: regular;
+    font-size: 15px;
+    text-align: center;
+    color: white;
+    box-shadow: 0px 1px 2px rgba(31,32,33,0.4);
+}
 
-        opacity: 1;
-	}
-	/**  Sets the position for the Send Button. **/
-	#howmuch_send {
-        height              : 56px;
-		background-image    : linear-gradient(#7fd034, #6ab029);
-		left                : 154px;
-		top                 : 194px;
-		border-bottom-right-radius: 4px;
-        opacity             : 1;
-	}
-    #howmuch_send_4 {
-        height              : 50px;
-		background-image: linear-gradient(#7fd034, #6ab029);
-		left                : 153px;
-		top                 : 139px;
-		border-bottom-right-radius: 4px;
-        opacity             : 1;
-	}
-	.nonhowmuch_send {
-        background-image	: linear-gradient(#7fd034, #6ab029);
-		left	            : 9px;
-		top		            : 204px;
-		width				: 302px;
-		height				: 56px;
-		border-bottom-right-radius: 4px;
-		border-bottom-left-radius: 4px;
-		font-family			: "Roboto";
-		font-size			: 22px;
-		font-weight         : light;
-		text-align       	: center;
-		color 				: #ffffff;
-		text-transform		: uppercase;
-	}
-
-	/**  The middle divider between the send/request buttons.  Includes the $ sign and white circle (but not the vertical white line, which is just empty space. **/ 
-	#howmuch_divider {
-		width			: 38px;
-		height			: 38px;
-		top				: 202px;
-		left			: 132px;
-		background-image: url(dollar-sign.png);
-		background-size	: 39px;
-	}
-    #howmuch_divider_4 {
-		width			: 38px;
-		height			: 38px;
-		top				: 146px;
-		left			: 132px;
-		background-image: url(dollar-sign.png);
-		background-size	: 39px;
-	}
-    #howmuch_send_expand {
-        background-image: linear-gradient(#7fd034, #6ab029);
-        left: 0px;
-		width: 304px;
-		border-bottom-right-radius: 4px;
-		border-bottom-left-radius: 4px;
-    }
-    #howmuch_send_hide {
-        left:311px;
-        width:1px;
-        opacity : 0;
-    }
-    #howmuch_request_expand {
-        background-image: linear-gradient(#6dbee8, #41abe1);
-        width: 304px;
-        left: 0px;
-		border-bottom-right-radius: 4px;
-		border-bottom-left-radius: 4px;
-    }
-    #howmuch_request_mult_expand {
-        background-image: linear-gradient(#6dbee8, #41abe1);
-        left: 0px;
-        top: 204px;
-		width: 304px;
-        height: 56px;
-		border-bottom-right-radius: 4px;
-		border-bottom-left-radius: 4px;
-    }
-    #howmuch_request_hide {
-        width: 1px;
-        opacity : 0;
-    }
-    #reset_glyph {
-        color: white;
-        font-family	: "FontAwesome";
-        font-size	: 23px;
-    }
-    #cancel_hidden {
-		left: 132px;
-		top: 194px;
-        width: 0px;
-        height: 56px;
-		opacity: 0;
-    }
-	#cancel_hidden_4 {
-		left: 132px;
-		top: 136px;
-        width: 0px;
-        height: 56px;
-		opacity: 0;
-	}
-    #cancel_request {
-        width: 40px;
-		left: 0px;
-    }
-    #cancel_send {
-        left: 262px;
-        width: 40px;
-    }
-	.animate_roll_left {
-		animation-name				: howmuch_roll_left;
-		animation-duration			: 0.48s;
-		animation-fill-mode			: forwards;
-		animation-timing-function	: ease-out;
-		animation-iteration-count	: 1;
-	}
-    .animate_roll_left_return {
-        animation-name				: howmuch_roll_left_return;
-		animation-duration			: 0.5s;
-		animation-fill-mode			: forwards;
-		animation-timing-function	: ease-out;
-		animation-iteration-count	: 1;
-    }
-	.animate_roll_right {
-		animation-name				: howmuch_roll_right;
-		animation-duration			: 0.48s;
-		animation-fill-mode			: forwards;
-		animation-timing-function	: ease-out;
-		animation-iteration-count	: 1;
-	}
-    .animate_roll_right_return {
-        animation-name				: howmuch_roll_right_return;
-		animation-duration			: 0.5s;
-		animation-fill-mode			: forwards;
-		animation-timing-function	: ease-out;
-		animation-iteration-count	: 1;
-    }
-
-	/**  Text entry field for inputting a memo. **/
-    #howmuch_memo {
-		left    		: 8px;
-		top     		: 148px;
-		width 			: 288px;
-		border 			: 1px solid;
-		border-color	: #939598;
-		border-radius	: 3px;
-        text-align      : center;
-		font-family 	: "Roboto";
-		font-weight 	: light;
-		font-size       : 16px;
-		color           : #414042px;
-    }
-    #howmuch_memo_4 {
-		left    		: 83px;
-		top     		: 98px;
-		width 			: 212px;
-        height      	: 31px;
-		border 			: 1px solid;
-		border-color	: #939598;
-		border-radius	: 3px;
-        text-align      : center;
-		font-family 	: "Roboto";
-		font-weight 	: light;
-		font-size       : 15px;
-		color           : #414042px;
-	}
+/****  		Sub-header Text (Outside of Table)     ****/
+/****  Mostly Pre-Login Screens + Referral Screen  ****/
+.header_label{
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 17px;
+    text-align       	: center;
+    color 				: #414042;
+    width				: 280px;
+    left                : 20px;
+    height				: 30px;
+}
 	
-	/**  Full container (bottom layer) for the Attach a Picture stuff.  **/
-	#attachpic_container {
-		left			: 10px;
-		top				: 130px;
-		width			: 300px;
-		height			: 130px;
-		background-color: transparent;
-	}
+/************************************/
+/*******     TABLE STYLE 2      ******   SELECT RECIPIENT screen; CHOOSE A CAUSE screen ****/
+/************************************/
+.table_view_2 {
+    row-height		: 45px;
+    separator-color	: rgba(188,190,192,.65);
+    separator-style : single-line;
+    background-color: #ffffff;
+}
+
+.table_view_cell_2 {text-overflow	: ellipsis; }
+
+.facebook_glyph {
+    width			: 14px;
+    height			: 16px;
+    top				: 45px;
+    left			: 14px;
+    color       	: #41ABE1;
+    font-family 	: "FontAwesome";
+    font-size       : 13px;
+}
+     
+/****  Table Cell View Main Text Label (Left Side)  ****/
+.table_view_cell_textlabel_2 {
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 17px;
+    text-align       	: left;
+    color 				: #313233;
+    width				: 250px;
+    left                : 20px;
+    height				: 30px;
+}
+
+/****  Table text right side  ****/
+.table_view_cell_detailtext_2 {
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 17px;
+    text-align       	: right;
+    color 				: #6d6e71;
+    width				: 280px;
+    left                : 20px;
+    height				: 30px;
+}
+/***********************/
+/****  END TABLES   ****/
+/***********************/
+
+/*** 	 SIGNUP FLOW:  Instructional Text	***/
+.instruction_text {
+    left            : 20px;
+    width			: 280px;
+    height			: 70px;
+    font-family		: "Roboto";
+    font-weight     : regular;
+    font-size		: 16px;
+    text-align      : center;
+    color 			: #313233;
+}
+.instruction_text_smscrn {
+    left            : 20px;
+    width			: 280px;
+    height			: 44px;
+    font-family		: "Roboto";
+    font-weight     : regular;
+    font-size		: 15px;
+    text-align      : center;
+    color 			: #313233;
+}
+
+.pin_entry_feedback {
+    text-align: center;
+    font-size: 14px;
+}
+
+/****  Raised Box - This adds a drop-shadow. ****/
+.raised_view {
+    /* border-radius       : 0px;  */
+    box-shadow			: 0 2px 2px rgba(109,110,113,0.6);
+}
+
+/*******************************************
+********  PROFILE STATUS VIEWS     ********
+*******************************************/
+#suspended {
+    width           : 320px;
+    height          : 50px;
+    left               : 0px;
+    background-color: #d2232a;
+    opacity : 0.6;
+}
+#profileTopSectionBg {
+    background-color: rgba(63,171,225,.4);
+    box-shadow: 0px 1px 2px rgba(88,90,92,.5);
+}
+#profileTopSectionBg_susp {
+    background-color: #D61915;
+    opacity: .6;
+    box-shadow: 0px 1px 2px rgba(89, 10, 9, 0.4);
+}
+.alertContainer {
+    left: -1px;
+    width: 322px;
+    height: 64px;
+    color: white;
+}
+.alertBackgroundRed { 
+    background-color: #D61915;
+    border: 1px solid #C41713;
+    box-shadow: 0px 1px 2px rgba(89, 10, 9, 0.4);
+    border-radius: 4px;
+}
+.alertBackgroundGreen {
+    background-color: #1A981C;
+    border-color: #168218;
+    box-shadow: 0px 1px 2px rgba(19, 108, 20, 0.45);
+    border-radius: 4px;
+}
+.alertBannerTitle {
+    left        : 20px;
+    top			: 2px;
+    width		: 280px;
+    height		: 20px;
+    font-family	: "Roboto";
+    font-weight : Medium;
+    font-size	: 17px;
+    text-align  : center;
+    color 		: white;
+}
+.alertBannerText {
+    left        : 10px;
+    top			: 23px;
+    width		: 300px;
+    height		: 30px;
+    font-family	: "Roboto";
+    font-weight : regular;
+    font-size	: 14px;
+    text-align  : center;
+    color 		: white;
+}
+.alertIcon {
+    /*left should be set inline based on the title's length*/
+    top: 3px;
+}
+.nav_top_right  {
+    width			: 50px;
+    height			: 25px;
+    font-family     : "Roboto";
+    font-size		: 18px;
+    text-align     	: center;
+    color 			: #ffffff;
+}
+
 	
-	/**  The left half - blue box - for Taking a Photo.  **/
-	#attachpic_takephoto_box {
-		left			: 0px;
-		top				: 0px;
-		width			: 150px;
-		height			: 130px;
-		background-color: #3fabe1;
-	}
+/*******************************************
+********  	PRE-LOGIN FLOW	     ********
+*******************************************/
+.header_signupflow {
+    left                : 20px;
+    width				: 280px;
+    height				: 35px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 29px;
+    text-align       	: center;
+    color 				: #313233;
+}
   
-	/**  The right half - white box - for the choose from an album option. **/
-	#attachpic_choosefrom_box {
-		left			: 150px;
-		top				: 0px;
-		width			: 150px;
-		height			: 130px;
-		background-color: white;
-	}
-	
-	/**  Left side Camera icon. **/
-	#attachpic_takephoto_icon {
-		left			: 47px;
-		top				: 35px;
-		width			: 53px;
-		height			: 39px;
-		background-image: url(take-pic-icon.png);
-    }
-	
-	/**  Right side polaroid icon. **/
-	#attachpic_choosefrom_icon {
-		left			: 201px;
-		top				: 31px;
-		width			: 49px;
-		height			: 48px;
-		background-image: url(choose-pic-icon.png);
-	}
-	
-	/**  Left side text label. **/
-	#attachpic_takephoto_label {
-		left			: 0px;
-		top				: 90px;
-		width			: 149px;
-		height			: 20px;
-		color			: white;
-		font-family		: "Roboto";
-		font-size		: 15px;
-		font-weight		: regular;
-		text-align		: center;
-	}
-	
-	/**  Right side text label.  **/
-	#attachpic_choosefrom_label {
-		left			: 151px;
-		top				: 90px;
-		width			: 149px;
-		height			: 20px;
-		color			: #939598;
-		font-family		: "Roboto";
-		font-size		: 15px;
-		font-weight		: regular;
-		text-align		: center;
-	}
-	
-	#attachpic_or {
-		width			: 40px;
-		height			: 40px;
-		top				: 42px;
-		left			: 130px;
-		background-color: #3fabe1;
-		border			: 4px solid #ffffff;
-        color           : #ffffff;
-		border-radius	: 18px;
-		font-family		: "Roboto";
-		font-size		: 13px;
-		font-weight		: regular;
-		text-align		: center;
-	}
+/**  Signup: "Already a member...",  Select a Picture Screen, Welcome Screen **/
+.label_small {
+    left                : 20px;
+    width				: 280px;
+    height				: 30px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 18px;
+    text-align       	: center;
+    color 				: #414042;
+}
+#moreinfo_button {
+    font-family: "Roboto";
+    font-weight: light;
+    color      : #66686a;
+    font-size  : 16px;
+    text-align : center;
+}
 
-	/********************/
-	/**   PIN Screen   **/
-	/********************/
+/**  Text entry field for inputting a referral code. **/
+#referral_code_field {
+    width				: 210px;
+    height				: 60px;
+    border				: 4px solid #3fabe1;
+    border-radius		: 15px;
+    -ios-border-style	: rounded-rect;
+    background-color	: #fff;
+    font-family			: "Roboto";
+    font-weight			: light;
+    font-size			: 16px;
+    font-stretch		: expanded;
+    color				: #3fabe1;
+    text-align			: center;
+    text-transform		: uppercase;
+    padding				: 8px 4px;
+}
 
-	.pin_instructiontext {
-		width			: 300px;
-		left			: 10px;
-		top             : 14px;
-		height          : 20px;
-		font-family		: "Roboto";
-		font-weight		: medium;
-		font-size		: 16px;
-		text-align		: center;
-		color			: #14171a;
-	}
-    .pin_instructiontext_4 {
-        top             : 4px;
-    }
-	/**  Making the word "transfer" green.  **/  
-	#pin_instructiontext_send { 
-        text-align : center;
-		color 	: #72bf44;
-	}
-	#Transferpin_instructiontext_send { 
-        text-align : center;
-		color 	: #72bf44;
-	}
-    /**  Making the word "request" blue.  **/    
-	#pin_instructiontext_request { 
-        text-align : center;
-		color	: #3fabe1;
-	}
-	/**  Making the word "contribution" purple.  **/  
-	#pin_instructiontext_donate {
-		width	: 300px;
-		height	: 18px;
-		top		: 38px;
-		left	: 10px;
-        text-align : center;
-		color	: #5a538d;
-	}
+/**  Text "Remember Me" **/
+#label_rememberme {
+    font-family			: "Roboto";
+    font-weight			: light;
+    font-size			: 14px;
+    text-align			: left;
+    color				: #939598;
+    width				: 140px;
+    left				: 19px;
+}
+/**  Text "Forgot Password?" **/
+#label_forgotpw {
+    font-family			: "Roboto";
+    font-weight			: light;
+    font-size			: 14px;
+    text-align			: right;
+    color				: #939598;
+    width				: 150px;
+    left				: 170px;
+}
+#login_switch {
+    width				: 34px;
+    height				: 21px;
+    background-color 	: #939598;
+    border-radius   	: 14px;
+}
 
-	/**  The Amount of the transfer displayed in the middle of the PIN screen.  **/  
-	.pin_amountfield {
-		left            : 60px;
-		top             : 114px;
-        width			: 200px;
-		height			: 60px;
-        font-family		: "Roboto";
-		font-size		: 50px;
-		font-weight     : medium;
-		text-align      : center;
-		color 			: #313233;
-	}
-    .pin_amountfield_4 {
-		left            : 60px;
-		top             : 83px;
-        width			: 200px;
-		height			: 46px;
-        font-family		: "Roboto";
-		font-size		: 42px;
-		font-weight     : medium;
-		text-align      : center;
-		color 			: #313233;
-	}
+#login_switch thumb { color: white; }
 
-	/**  Background white box for the recipient info right above the number pad.  **/  
-	.pin_recipientbox {
-		top				: 198px;
-		left			: 6px;
-		width			: 308px;
-		height			: 72px;
-		background-color: white;
-		border-radius	: 4px;
-	}
-    .pin_recipientbox_4 {
-        top             : 133px;
-        height          : 64px;
-    }
+/*******************************************
+********  	SEND MONEY FLOW	     ********
+*******************************************/
 
-	/**  The background bar of the top half of the recipient box.  **/
-	.pin_recipientname_bar {
-		top				: 198px;
-		left			: 6px;
-		width			: 308px;
-		height			: 38px;
-	}
-    .pin_recipientname_bar_4 {
-		top				: 133px;
-        height          : 32px;
-	}
+/****  NAV BAR:  Select Recipient, How Much?, PIN screens  ****/
+.navbar_title_sendmoneyflow  { font-size: 18px; }
 
-    #pin_recipientname_send {background-image: linear-gradient(#76c22f, #66aa27); border-top-left-radius:4px;border-top-right-radius:4px;}
-    #pin_recipientname_request {background-image: linear-gradient(#6dbee8, #41abe1); border-top-left-radius:4px;border-top-right-radius:4px;}
-    #pin_recipientname_donate {background-image: linear-gradient(#595287, #413a70); border-top-left-radius:4px;border-top-right-radius:4px;}
+/*********************************/
+/**   SELECT RECIPIENT Screen   **/
+/*********************************/
 
-	/**  The text of the recipient's name in the recipient box.  **/
-	.pin_recipientname_text {
-		top					: 198px;
-		left				: 69px;
-		width				: 244px;
-		height				: 38px;
-		font-family			: "Roboto";
-		font-size			: 20px;
-		font-weight			: regular;
-		text-align			: center;
-		color				: #ffffff;
-	}
-    .pin_recipientname_text_wPic {
-		top					: 198px;
-		left				: 69px;
-		width				: 181px;
-		height				: 38px;
-		font-family			: "Roboto";
-		font-size			: 20px;
-		font-weight			: regular;
-		text-align			: center;
-		color				: #ffffff;
-	}
-    .pin_recipientname_text_wPic_4 {
-        top					: 130px;
-        left				: 69px;
-        width				: 193px;
-        height				: 38px;
-    }
-    .pin_recipientname_text_4 {
-        top         : 133px;
-        height      : 32px;
-    }
-	/**  The text of the memo if one was attached.  **/ 
-	.pin_memotext {
-		left				: 69px;
-		top					: 235px;
-		width				: 244px;
-		height				: 33px;
-		font-family			: "Roboto";
-		font-size			: 15px;
-		font-weight			: light;
-		text-align			: left;
-		color				: #5a538d;
-        text-align          : center;
-	}
-    .pin_memotext_4 {
-        top                 : 168px;
-        height              : 30px;
-    }
-    .pin_memotext_wPic {
-		left				: 69px;
-		top					: 235px;
-		width				: 181px;
-		height				: 33px;
-		font-family			: "Roboto";
-		font-size			: 15px;
-		font-weight			: light;
-		text-align			: left;
-		color				: #5a538d;
-        text-align          : center;
-	}
-    .pin_memotext_wPic_4 {
-        left				: 69px;
-        top					: 166px;
-        width				: 193px;
-        height				: 32px;
-    }
-  
- /*******************************************
-  ********  	 DONATE FLOW         ********
-  *******************************************/
+/**  Sets the overall table style, specifically the row-height and separator color. */
+table-view#select_recipient {
+    width				: 320px;
+    background-color	: #ffffff;
+    row-height			: 64px;
+    separator-style 	: single-line;
+    separator-color		: rgba(188,190,192,.7);	
+}
+table-view#select_recipientwithoutSeperator {
+    width				: 320px;
+    background-color	: #ffffff;
+    row-height			: 90px;
+    separator-style 	: none;
+}
+/**  Styles all the profile pictures of users that are returned in the Select Recipient Table.  **/
+.list_userprofilepic {
+    width: 46px;
+    height: 46px;
+    border: 1px solid #6d6E71;
+    top: 7px;
+    left: 20px;
+    shape: ellipse;
+}
 
-  	/***********************************/  
-	/****  DONATE - Choose a Cause  ****/
-	/***********************************/
+.select_recipient_name {
+    height:62px;
+    top:0px;
+    color: #313233;
+    font-family: "Roboto";
+    font-weight: Regular;
+    font-size: 19px;
+    text-align: left;
+}
 
-	/**  This is for the filter button, which is just the blue ribbon icon with no label. Placed on far right of search bar. **/
-	#nonprofit_ribbon_blue {
-		width			: 16px;
-		height			: 25px;
-		top				: 7px;
-		left			: 282px;
-		background-image: url(ribbon-icon-blue.png);
-		background-size	: 16px 25px;
-	}
+.select_recipient_pending_name {
+    height: 52px;
+    top: 0px;
+    color: #313233;
+    font-size: 19px;
+}
 
-	/**  The large full-width banner image of the Featured Nonprofit on the 'Choose a Cause' screen. **/
-	.featured_nonprofit_banner {
-		width	: 320px;
-		height	: 163px;
-		top		: 40px;
-		left	: 0px;
-	}
+.first_name { font-weight: regular;}
 
-   /**  Just the semi-transparent black background of the "Featured Nonprofit" label. **
-	**  This goes full-width and does NOT include the actual text label.  			  **/
-	#featured_nonprofit_label_background {
-		width			: 320;
-		height			: 30px;
-		top				: 173px;
-		left			: 0px;
-		background-color: rgba(0,0,0,.65);
-	}
+/**  Very small FB icon next to Nooch user pics in the Select Recipient Screen. Designates the user is FB friends with the marked user.  **/  
+.facebook-icons {
+    width			: 14px;
+    height			: 28px;
+    top				: 45px;
+    left			: 17px;
+    background		: url(facebook-icon.png);
+}
 
-	/**  The actual label with the words "Featured Nonprofit".  **/	
-	#featured_nonprofit_label {
-		width			: 160px;
-		height			: 18px;
-		left			: 10px;
-		top				: 179px;
-		font-family		: "Roboto";
-		font-size		: 15px;
-		font-weight		: medium;
-		text-align		: left;
-		color			: #ffffff;
-	}
+/**  Very small address book icon next to Nooch user pics in the Select Recipient Screen. Designates the user has that person's email address in their address book. **/    
+.addressbook-icons {
+    width			: 14px;
+    height			: 16px;
+    top				: 45px;
+    left			: 52px;
+    border          : 1px solid;
+    border-color    : white;
+    border-radius   : 3px;
+    background-image: url(address-book-icon.png);
+}
 
-	/**  Name of each Nonprofit in the 'Choose a Cause' Table  **/	
-	.nonprofitlist_name {
-		width			: 320px;
-		height			: 22px;
-		top				: 20px;
-		left			: 77px;
-		font-family		: "Roboto";
-		font-size		: 18px;
-		font-weight		: regular;
-		text-align		: left;
-		color			: #313233;
-	}
+/*************************/  
+/**   HOW MUCH? Screen  **/
+/*************************/
 
-	/**  Profile Pics of each Nonprofit in the Choose a Cause Table  **/
-	.nonprofitlist_pic {
-		width			: 55px;
-		height			: 46px;
-		border			: none;
-		background		: transparent;
-        left            :10px;
-	}
+/**  Background box for all the content of the How Much? screen.  This element should also be assigned the ".raised_view" class. **/  
+.howmuch_mainbox {
+    left				: 8px;
+    top					: 10px;
+    width				: 304px;
+    height				: 250px;
+    border-radius		: 5px;
+    box-shadow			: 0 2px 2px rgba(88,90,92,0.45);
+}
+.howmuch_mainbox_smscrn {
+    left				: 8px;
+    top					: 6px;
+    width				: 304px;
+    height				: 189px;
+    border-radius		: 5px;
+    box-shadow			: 0 2px 2px rgba(88,90,92,0.45);
+}
 
-	/**************************************/  
-	/****       Nonprofit Details      ****/
-	/**************************************/
+/**  Just the text "To:"  **/
+#label_howmuch_to  {
+    left				: 10px;
+    top					: 00px;
+    width				: 28px;
+    height				: 38px;
+    font-size			: 20px;
+    font-weight			: light;
+    color               : white;
+}
 
-	/** Featured Nonprofit Banner - top adjusted b/c there is no search bar on the Nonprofit Details screen.  **/
-	.featured_nonprofit_banner_details {
-		width	: 320px;
-		height	: 163px;
-		top		: 0px;
-		left	: 0px;
-	}
+/**  Styles the recipient's name in the bar at the top of the main box. **/
+#label_howmuch_recipientname {
+    left				: 43px;
+    top					: 0px;
+    width				: 210px;
+    height				: 38px;
+    font-size			: 20px;
+    font-weight			: regular;
+    color               : white;
+}
+#label_howmuch_recipientnamenonuser {
+    left				: 43px;
+    top					: 0px;
+    width				: 220px;
+    height				: 39px;
+    font-size			: 18px;
+    font-weight			: regular;
+    color               : white;
+}
 
-	/**  The paragraph description of the Nonprofit.  **/	
-	.nonprofit_details_desc {
-		width				: 300px;
-		height				: 165px;
-		top					: 259px;
-		left                : 10px;
-		font-family			: "Roboto";
-		font-weight         : light;
-		font-size			: 14px;
-		text-align       	: left;
-		color 				: #313233;
-	}
+.barbackground {
+    left : 0px;
+    top : 0px;
+    width : 304px;
+    height  : 38px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.barbackground_gray {
+    background-color :  #9fa1a4;  /** Default - before a user has entered an amount. **/
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.barbackground_green {
+    background-image: linear-gradient(#76c22f, #66aa27);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+/** For REQUESTS **/
+.barbackground_blue {
+    background-image: linear-gradient(#40a9de, #3b9cce);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
 
-	/**  The Website, FB, Twitter & YouTube circle buttons.  **/
-	.nonprofit_details_buttons {
-		width				: 50px;
-		height				: 50px;
-		top					: 184px;
-		border-radius		: 25px;	
-		background-size		: 50px;
-	}
-	.nonprofit_details_button_website {
-		background-image	: url(nonprofits-website.png);
-		left				: 15px;
-        width				: 50px;
-        height				: 50px;
-		top					: 184px;
-	}
-	.nonprofit_details_button_fb {
-		background-image	: url(nonprofits-fb.png);
-		left				: 95px;
-        width				: 50px;
-        height				: 50px;
-		top					: 184px;
-	}
-	.nonprofit_details_button_twitter {
-		background-image	: url(nonprofits-twitter.png);
-		left				: 175px;
-        width				: 50px;
-        height				: 50px;
-		top					: 184px;
-	}
-	.nonprofit_details_button_youtube {
-		background-image	: url(nonprofits-youtube.png);
-		left				: 255px;
-        width				: 50px;
-        height				: 50px;
-		top					: 184px;
-	}
-	
-	/**  The labels under each social media button on each nonprofit's details screen. **/
-	.nonprofit_details_buttons_labels {
-		width				: 55px;
-		height				: 15px;
-		top					: 236px;
-		font-family			: "Roboto";
-		font-weight         : light;
-		font-size			: 12px;
-        text-align      : center;
-		color 				: #6d6e71;
-	}
-	
-	/**  Setting the correct position for each button label. **/
-	#nonprofit_details_buttons_label_website { 	left	: 10px;}
-	#nonprofit_details_buttons_label_fb 		 { 	left	: 90px;}
-	#nonprofit_details_buttons_label_twitter { 	left	: 170px;}
-	#nonprofit_details_buttons_label_youtube { 	left	: 250px;}
+/**  Sets the recipient's profile pic in the middle (left side) of the main box. **/
+#howmuch_recipientpic {
+    width				: 76px;
+    height				: 76px;
+    top					: 62px;
+    left				: 28px;
+    border				: 1px solid #939598;
+    border-radius   	: 37px;
+}
 
-	.nonprofit_details_donatebutton {
-		width			: 280px;
-		height			: 56px;
-		top				: 430px;
-		left			: 20px;
-		background-image: linear-gradient(#7fd034, #6ab029);
-	}
-	
-	/**************************************/  
-	/****   DONATE - How Much? Screen  ****/
-	/**************************************/
+/**  Main entry field for the Amount.  Starts as light gray, turns dark when a number is entered. **/  
+#howmuch_amountfield {
+    left                : 110px;
+    top					: 63px;
+    width				: 180px;
+    height				: 60px;
+    font-family			: "Roboto";
+    font-size			: 50px;
+    font-weight         : medium;
+    text-align       	: right;
+    color 				: #58595B;
+}
+#howmuch_amountfield_4 {
+    left                : 110px;
+    top					: 42px;
+    width				: 180px;
+    height				: 50px;
+    font-family			: "Roboto";
+    font-size			: 42px;
+    font-weight         : medium;
+    text-align       	: right;
+    color 				: #58595B;
+}
 
-	/**  Just the text of the Nonprofit's Name  **/
-	#nonprofit_howmuch_orgname {
-		width				: 220px;
-		height				: 38px;
-		top					: 10px;
-		left				: 72px;
-		font-family			: "Roboto";
-		font-size			: 19px;
-		font-weight			: regular;
-		text-align			: center;
-		color				: #ffffff;
-	}
+/**  Send and Request buttons. **/ 
+.howmuch_buttons {
+    width				: 150px;
+    font-family			: "Roboto";
+    font-size			: 21px;
+    font-weight         : light;
+    text-align       	: center;
+    color 				: #ffffff;
+    text-transform		: uppercase;
+}
 
-	/**  The background bar once an amount is entered (turns Purple) **/  
-	#barbackground_purp {		
-		width			: 302px;
-		height			: 38px;
-		top				: 10px;
-		left			: 9px;
-		background-image: linear-gradient(#595287, #413a70);
-	}
+/**  Sets the position for the Request Button. **/
+#howmuch_request {
+    height                  : 56px;
+    background-image        : linear-gradient(#6dbee8, #41abe1);
+    border-bottom-left-radius: 4px;
+    left                    : 0px;
+    top                     : 194px;
+    opacity                 : 1;
+}
+#howmuch_request_4 {
+    left                : 0px;
+    top                 : 139px;
+    height              : 50px;
+    background-image    : linear-gradient(#6dbee8, #41abe1);
+    border-bottom-left-radius: 4px;
 
-	/**  Nonprofit's Profile Pic in the Purple Circle  **/  
-	#nonprofit_orgpic {
-		width				: 58px;
-		height				: 58px;
-		top					: 14px;
-		left				: 15px;
-		border				: 2px solid #514b80;
-		background-color	: #ffffff;
-        background-size		: 56px 56px;
-		border-radius   	: 24px;
-	}
+    opacity: 1;
+}
+/**  Sets the position for the Send Button. **/
+#howmuch_send {
+    height              : 56px;
+    background-image    : linear-gradient(#7fd034, #6ab029);
+    left                : 154px;
+    top                 : 194px;
+    border-bottom-right-radius: 4px;
+    opacity             : 1;
+}
+#howmuch_send_4 {
+    height              : 50px;
+    background-image: linear-gradient(#7fd034, #6ab029);
+    left                : 153px;
+    top                 : 139px;
+    border-bottom-right-radius: 4px;
+    opacity             : 1;
+}
+.nonhowmuch_send {
+    background-image	: linear-gradient(#7fd034, #6ab029);
+    left	            : 9px;
+    top		            : 204px;
+    width				: 302px;
+    height				: 56px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    font-family			: "Roboto";
+    font-size			: 22px;
+    font-weight         : light;
+    text-align       	: center;
+    color 				: #ffffff;
+    text-transform		: uppercase;
+}
 
-	#nonprofit_amountfield {
-		font-family			: "Roboto";
-		font-size			: 52px;
-		font-weight         : medium;
-		font-stretch		: expanded;
-		text-align       	: right;
-		color 				: #313233;
-		width				: 210px;
-		height				: 60px;
-		top					: 60px;
-		left                : 80px;
-	}
+/**  The middle divider between the send/request buttons.  Includes the $ sign and white circle (but not the vertical white line, which is just empty space. **/ 
+#howmuch_divider {
+    width			: 38px;
+    height			: 38px;
+    top				: 202px;
+    left			: 132px;
+    background-image: url(dollar-sign.png);
+    background-size	: 39px;
+}
+#howmuch_divider_4 {
+    width			: 38px;
+    height			: 38px;
+    top				: 146px;
+    left			: 132px;
+    background-image: url(dollar-sign.png);
+    background-size	: 39px;
+}
+#howmuch_send_expand {
+    background-image: linear-gradient(#7fd034, #6ab029);
+    left: 0px;
+    width: 304px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+#howmuch_send_hide {
+    left:311px;
+    width:1px;
+    opacity : 0;
+}
+#howmuch_request_expand {
+    background-image: linear-gradient(#6dbee8, #41abe1);
+    width: 304px;
+    left: 0px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+#howmuch_request_mult_expand {
+    background-image: linear-gradient(#6dbee8, #41abe1);
+    left: 0px;
+    top: 204px;
+    width: 304px;
+    height: 56px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+#howmuch_request_hide {
+    width: 1px;
+    opacity : 0;
+}
+#reset_glyph {
+    color: white;
+    font-family	: "FontAwesome";
+    font-size	: 23px;
+}
+#cancel_hidden {
+    left: 132px;
+    top: 194px;
+    width: 0px;
+    height: 56px;
+    opacity: 0;
+}
+#cancel_hidden_4 {
+    left: 132px;
+    top: 136px;
+    width: 0px;
+    height: 56px;
+    opacity: 0;
+}
+#cancel_request {
+    width: 40px;
+    left: 0px;
+}
+#cancel_send {
+    left: 262px;
+    width: 40px;
+}
+.animate_roll_left {
+    animation-name				: howmuch_roll_left;
+    animation-duration			: 0.48s;
+    animation-fill-mode			: forwards;
+    animation-timing-function	: ease-out;
+    animation-iteration-count	: 1;
+}
+.animate_roll_left_return {
+    animation-name				: howmuch_roll_left_return;
+    animation-duration			: 0.5s;
+    animation-fill-mode			: forwards;
+    animation-timing-function	: ease-out;
+    animation-iteration-count	: 1;
+}
+.animate_roll_right {
+    animation-name				: howmuch_roll_right;
+    animation-duration			: 0.48s;
+    animation-fill-mode			: forwards;
+    animation-timing-function	: ease-out;
+    animation-iteration-count	: 1;
+}
+.animate_roll_right_return {
+    animation-name				: howmuch_roll_right_return;
+    animation-duration			: 0.5s;
+    animation-fill-mode			: forwards;
+    animation-timing-function	: ease-out;
+    animation-iteration-count	: 1;
+}
 
-    .nonprofit_quicktapbuttons {
-		width				: 46px;
-		height				: 46px;
-		top					: 132px;
-		border-radius		: 22px;
-		background-size		: 46px;
-    }
-	#nonprofit_quicktapbuttons_5 {
-		left			: 22px;
-		background-image: url(quicktap_5.png);
-	}
-	#nonprofit_quicktapbuttons_10 {
-		left			: 100px;
-		background-image: url(quicktap_10.png);
-	}
-	#nonprofit_quicktapbuttons_25 {
-		left			: 178px;
-		background-image: url(quicktap_25.png);
-	}
-	#nonprofit_quicktapbuttons_50 {
-		left			: 256px;
-		background-image: url(quicktap_50.png);
-	}
+/**  Text entry field for inputting a memo. **/
+#howmuch_memo {
+    left    		: 8px;
+    top     		: 148px;
+    width 			: 288px;
+    border 			: 1px solid;
+    border-color	: #939598;
+    border-radius	: 3px;
+    text-align      : center;
+    font-family 	: "Roboto";
+    font-weight 	: light;
+    font-size       : 16px;
+    color           : #414042px;
+}
+#howmuch_memo_4 {
+    left    		: 83px;
+    top     		: 98px;
+    width 			: 212px;
+    height      	: 31px;
+    border 			: 1px solid;
+    border-color	: #939598;
+    border-radius	: 3px;
+    text-align      : center;
+    font-family 	: "Roboto";
+    font-weight 	: light;
+    font-size       : 15px;
+    color           : #414042px;
+}
 
-	#nonprofit_quicktapbuttons_5:highlighted { transform: scale(1.2) }
-	#nonprofit_quicktapbuttons_10:highlighted { scale: 1.2 }
-	#nonprofit_quicktapbuttons_25:highlighted { transform: scale(1.2) }
-	#nonprofit_quicktapbuttons_50:highlighted { scale: 1.2 }
+/**  Full container (bottom layer) for the Attach a Picture stuff.  **/
+#attachpic_container {
+    left			: 10px;
+    top				: 130px;
+    width			: 300px;
+    height			: 130px;
+    background-color: transparent;
+}
 
-	/**  The Dedication icon only  **/  
-	#nonprofit_dedication_icon {
-		width			: 30px;
-		height			: 28;
-		top				: 214px;
-		left			: 23px;
-		background-image: url(memo-nonprofits.png);
-		background-size	: 30px 28px;
-	}
+/**  The left half - blue box - for Taking a Photo.  **/
+#attachpic_takephoto_box {
+    left			: 0px;
+    top				: 0px;
+    width			: 150px;
+    height			: 130px;
+    background-color: #3fabe1;
+}
 
-	/**  The "+ Dedication" text label  **/  
-	#nonprofit_dedication_label {
-		width			: 85px;
-		height			: 15px;
-		top				: 223px;
-		left			: 59px;
-		font-family		: "Roboto";
-		font-size		: 13px;
-		font-weight     : light;
-		text-align      : left;
-		color 			: #6d6e71;
-	}
+/**  The right half - white box - for the choose from an album option. **/
+#attachpic_choosefrom_box {
+    left			: 150px;
+    top				: 0px;
+    width			: 150px;
+    height			: 130px;
+    background-color: white;
+}
 
-	/**  Main Donate Button - starts Gray, then turns Green when an amount is entered.  **/ 
-	#nonprofit_donatebutton {
-		width				: 152x;
-		height				: 56px;
-		top					: 204px;
-		left				: 159px;
-		font-family			: "Roboto";
-		font-size			: 22px;
-		font-weight         : light;
-		font-stretch		: expanded;
-		text-align       	: center;
-		text-transform		: uppercase;
-		color 				: #ffffff;
-		border-bottom-right-radius	: 0px;
-		border-bottom-left-radius	: 0px;
-		border-top-right-radius		: 0px;
-		border-top-left-radius		: 3px;
-	}
+/**  Left side Camera icon. **/
+#attachpic_takephoto_icon {
+    left			: 47px;
+    top				: 35px;
+    width			: 53px;
+    height			: 39px;
+    background-image: url(take-pic-icon.png);
+}
 
-	#nonprofit_donatebutton:disabled {  
-     border-bottom-right-radius	: 3px;
-		border-bottom-left-radius	: 0px;
-		border-top-right-radius		: 0px;
-		border-top-left-radius		: 3px;
-        background-image: linear-gradient(#c0c2c4, #b1b3b6);
-         }
+/**  Right side polaroid icon. **/
+#attachpic_choosefrom_icon {
+    left			: 201px;
+    top				: 31px;
+    width			: 49px;
+    height			: 48px;
+    background-image: url(choose-pic-icon.png);
+}
 
-	/**  Dedication Text Box  **/
-	#nonprofit_dedication_entrybox {
-		width 			: 286px;
-		height			: 84px;
-		left    		: 17px;
-		top     		: 111px;
-		border 			: 2px solid;
-		border-color	: #939598;
-		border-radius	: 6px;
-		font-family 	: "Roboto";
-		font-weight 	: light;
-		font-size       : 15px;
-		font-stretch	: semi-expanded;
-		color           : #414042px;
-	}
+/**  Left side text label. **/
+#attachpic_takephoto_label {
+    left			: 0px;
+    top				: 90px;
+    width			: 149px;
+    height			: 20px;
+    color			: white;
+    font-family		: "Roboto";
+    font-size		: 15px;
+    font-weight		: regular;
+    text-align		: center;
+}
 
-	/**  'In Honor Of'  or  'In Memory Of'  **/
-	segmented-control#donatededication { 
-		width			: 270px;
-		height			: 30px;
-		top				: 75px;
-		left			: 25px;
-		-ios-tint-color	: 5a538d;
-		font-family		: "Roboto";
-		font-weight		: light;
-	}
-  
-	/**  Sets the style for the 'Cancel' and '+ Add Dedication' buttons. **/
-	.dedication_buttons {
-		width			: 135px;
-		height			: 50px;
-		top				: 155px;
-		font-family		: "Roboto";
-		font-size		: 20px;
-		font-weight     : light;
-		text-align      : center;
-		color 			: #ffffff;
-	}
-	.dedication_buttons_add {
-		width			: 152px;
-		height			: 55px;
-		top				: 155px;
-		font-family		: "Roboto";
-		font-size		: 20px;
-		font-weight     : light;
-		text-align      : center;
-		color 			: #ffffff;
-         left             :150px;
-        background-image	: linear-gradient(#7fd034, #6ab029);
-	}
-    .dedication_buttons_cancel_dedication{
-        width			: 152px;
-		height			: 55px;
-		top				: 155px;
-		font-family		: "Roboto";
-		font-size		: 20px;
-		font-weight     : light;
-		text-align      : center;
-		color 			: #ffffff;
-        left             :-2px;
-        background-image			: linear-gradient(#c0c2c4, #b1b3b6);
+/**  Right side text label.  **/
+#attachpic_choosefrom_label {
+    left			: 151px;
+    top				: 90px;
+    width			: 149px;
+    height			: 20px;
+    color			: #939598;
+    font-family		: "Roboto";
+    font-size		: 15px;
+    font-weight		: regular;
+    text-align		: center;
+}
 
-    }
-	/**  Sets the left location of the 'Cancel' button. **/
-	#dedication_buttons_cancel 	{ left	: 9px; }
+#attachpic_or {
+    width			: 40px;
+    height			: 40px;
+    top				: 42px;
+    left			: 130px;
+    background-color: #3fabe1;
+    border			: 4px solid #ffffff;
+    color           : #ffffff;
+    border-radius	: 18px;
+    font-family		: "Roboto";
+    font-size		: 13px;
+    font-weight		: regular;
+    text-align		: center;
+}
 
-	/**  Sets the left location of the 'Add Dedication' (equivalent to 'Done') button. **/	
-	#dedication_buttons_done 	{ left	: 160x;}
+/********************/
+/**   PIN Screen   **/
+/********************/
 
-	/***************************/
-	/**   Donate PIN Screen   **/
-	/***************************/
+.pin_instructiontext {
+    width			: 300px;
+    left			: 10px;
+    top             : 14px;
+    height          : 20px;
+    font-family		: "Roboto";
+    font-weight		: medium;
+    font-size		: 16px;
+    text-align		: center;
+    color			: #14171a;
+}
+.pin_instructiontext_4 {
+    top             : 4px;
+}
+/**  Making the word "transfer" green.  **/  
+#pin_instructiontext_send { 
+    text-align : center;
+    color 	: #72bf44;
+}
+#Transferpin_instructiontext_send { 
+    text-align : center;
+    color 	: #72bf44;
+}
+/**  Making the word "request" blue.  **/    
+#pin_instructiontext_request { 
+    text-align : center;
+    color	: #3fabe1;
+}
+/**  Making the word "contribution" purple.  **/  
+#pin_instructiontext_donate {
+    width	: 300px;
+    height	: 18px;
+    top		: 38px;
+    left	: 10px;
+    text-align : center;
+    color	: #5a538d;
+}
 
-	#nonprofit_pin_orgname_bar {
-		width				: 302px;
-		height				: 38px;
-		top					: 196px;
-		left				: 9px;
-		background-image	: linear-gradient(#595287, #413a70);
-	}
-   
-	.nonprofit_pin_orgname_text {
-		width				: 228px;
-		height				: 38px;
-		top					: 196px;
-		left				: 81px;
-		font-family			: "Roboto";
-		font-size			: 20px;
-		font-weight			: regular;
-		text-align			: left;
-		color				: #ffffff;
-	}
-   
-	.pin_dedication_prefix {
-		top					: 234px;
-		left				: 81px;
-		width				: 95px;
-		height				: 33px;
-		font-family			: "Roboto";
-		font-size			: 15px;
-		font-weight			: Regular;
-		text-align			: center;
-		color				: #5a538d;
-	}
-   
-	.pin_dedication_text {
-		top					: 234px;
-		left				: 181px;
-		width				: 130px;
-		height				: 33px;
-		font-family			: "Roboto";
-		font-size			: 15px;
-		font-weight			: light;
-		text-align			: center;
-		color				: #5a538d;
-	}
+/**  The Amount of the transfer displayed in the middle of the PIN screen.  **/  
+.pin_amountfield {
+    left            : 60px;
+    top             : 114px;
+    width			: 200px;
+    height			: 60px;
+    font-family		: "Roboto";
+    font-size		: 50px;
+    font-weight     : medium;
+    text-align      : center;
+    color 			: #313233;
+}
+.pin_amountfield_4 {
+    left            : 60px;
+    top             : 83px;
+    width			: 200px;
+    height			: 46px;
+    font-family		: "Roboto";
+    font-size		: 42px;
+    font-weight     : medium;
+    text-align      : center;
+    color 			: #313233;
+}
+
+/**  Background white box for the recipient info right above the number pad.  **/  
+.pin_recipientbox {
+    top				: 198px;
+    left			: 6px;
+    width			: 308px;
+    height			: 72px;
+    background-color: white;
+    border-radius	: 4px;
+}
+.pin_recipientbox_4 {
+    top             : 133px;
+    height          : 64px;
+}
+
+/**  The background bar of the top half of the recipient box.  **/
+.pin_recipientname_bar {
+    top				: 198px;
+    left			: 6px;
+    width			: 308px;
+    height			: 38px;
+}
+.pin_recipientname_bar_4 {
+    top				: 133px;
+    height          : 32px;
+}
+
+#pin_recipientname_send {background-image: linear-gradient(#76c22f, #66aa27); border-top-left-radius:4px;border-top-right-radius:4px;}
+#pin_recipientname_request {background-image: linear-gradient(#6dbee8, #41abe1); border-top-left-radius:4px;border-top-right-radius:4px;}
+#pin_recipientname_donate {background-image: linear-gradient(#595287, #413a70); border-top-left-radius:4px;border-top-right-radius:4px;}
+
+/**  The text of the recipient's name in the recipient box.  **/
+.pin_recipientname_text {
+    top					: 198px;
+    left				: 69px;
+    width				: 244px;
+    height				: 38px;
+    font-family			: "Roboto";
+    font-size			: 20px;
+    font-weight			: regular;
+    text-align			: center;
+    color				: #ffffff;
+}
+.pin_recipientname_text_wPic {
+    top					: 198px;
+    left				: 69px;
+    width				: 181px;
+    height				: 38px;
+    font-family			: "Roboto";
+    font-size			: 20px;
+    font-weight			: regular;
+    text-align			: center;
+    color				: #ffffff;
+}
+.pin_recipientname_text_wPic_4 {
+    top					: 130px;
+    left				: 69px;
+    width				: 193px;
+    height				: 38px;
+}
+.pin_recipientname_text_4 {
+    top         : 133px;
+    height      : 32px;
+}
+/**  The text of the memo if one was attached.  **/ 
+.pin_memotext {
+    left				: 69px;
+    top					: 235px;
+    width				: 244px;
+    height				: 33px;
+    font-family			: "Roboto";
+    font-size			: 15px;
+    font-weight			: light;
+    text-align			: left;
+    color				: #5a538d;
+    text-align          : center;
+}
+.pin_memotext_4 {
+    top                 : 168px;
+    height              : 30px;
+}
+.pin_memotext_wPic {
+    left				: 69px;
+    top					: 235px;
+    width				: 181px;
+    height				: 33px;
+    font-family			: "Roboto";
+    font-size			: 15px;
+    font-weight			: light;
+    text-align			: left;
+    color				: #5a538d;
+    text-align          : center;
+}
+.pin_memotext_wPic_4 {
+    left				: 69px;
+    top					: 166px;
+    width				: 193px;
+    height				: 32px;
+}
+
+/*******************************************
+********  	 DONATE FLOW         ********
+*******************************************/
+
+/***********************************/  
+/****  DONATE - Choose a Cause  ****/
+/***********************************/
+
+/**  This is for the filter button, which is just the blue ribbon icon with no label. Placed on far right of search bar. **/
+#nonprofit_ribbon_blue {
+    width			: 16px;
+    height			: 25px;
+    top				: 7px;
+    left			: 282px;
+    background-image: url(ribbon-icon-blue.png);
+    background-size	: 16px 25px;
+}
+
+/**  The large full-width banner image of the Featured Nonprofit on the 'Choose a Cause' screen. **/
+.featured_nonprofit_banner {
+    width	: 320px;
+    height	: 163px;
+    top		: 40px;
+    left	: 0px;
+}
+
+/**  Just the semi-transparent black background of the "Featured Nonprofit" label. **
+**  This goes full-width and does NOT include the actual text label.  			  **/
+#featured_nonprofit_label_background {
+    width			: 320;
+    height			: 30px;
+    top				: 173px;
+    left			: 0px;
+    background-color: rgba(0,0,0,.65);
+}
+
+/**  The actual label with the words "Featured Nonprofit".  **/	
+#featured_nonprofit_label {
+    width			: 160px;
+    height			: 18px;
+    left			: 10px;
+    top				: 179px;
+    font-family		: "Roboto";
+    font-size		: 15px;
+    font-weight		: medium;
+    text-align		: left;
+    color			: #ffffff;
+}
+
+/**  Name of each Nonprofit in the 'Choose a Cause' Table  **/	
+.nonprofitlist_name {
+    width			: 320px;
+    height			: 22px;
+    top				: 20px;
+    left			: 77px;
+    font-family		: "Roboto";
+    font-size		: 18px;
+    font-weight		: regular;
+    text-align		: left;
+    color			: #313233;
+}
+
+/**  Profile Pics of each Nonprofit in the Choose a Cause Table  **/
+.nonprofitlist_pic {
+    width			: 55px;
+    height			: 46px;
+    border			: none;
+    background		: transparent;
+    left            :10px;
+}
+
+/**************************************/  
+/****       Nonprofit Details      ****/
+/**************************************/
+
+/** Featured Nonprofit Banner - top adjusted b/c there is no search bar on the Nonprofit Details screen.  **/
+.featured_nonprofit_banner_details {
+    width	: 320px;
+    height	: 163px;
+    top		: 0px;
+    left	: 0px;
+}
+
+/**  The paragraph description of the Nonprofit.  **/	
+.nonprofit_details_desc {
+    width				: 300px;
+    height				: 165px;
+    top					: 259px;
+    left                : 10px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 14px;
+    text-align       	: left;
+    color 				: #313233;
+}
+
+/**  The Website, FB, Twitter & YouTube circle buttons.  **/
+.nonprofit_details_buttons {
+    width				: 50px;
+    height				: 50px;
+    top					: 184px;
+    border-radius		: 25px;	
+    background-size		: 50px;
+}
+.nonprofit_details_button_website {
+    background-image	: url(nonprofits-website.png);
+    left				: 15px;
+    width				: 50px;
+    height				: 50px;
+    top					: 184px;
+}
+.nonprofit_details_button_fb {
+    background-image	: url(nonprofits-fb.png);
+    left				: 95px;
+    width				: 50px;
+    height				: 50px;
+    top					: 184px;
+}
+.nonprofit_details_button_twitter {
+    background-image	: url(nonprofits-twitter.png);
+    left				: 175px;
+    width				: 50px;
+    height				: 50px;
+    top					: 184px;
+}
+.nonprofit_details_button_youtube {
+    background-image	: url(nonprofits-youtube.png);
+    left				: 255px;
+    width				: 50px;
+    height				: 50px;
+    top					: 184px;
+}
+
+/**  The labels under each social media button on each nonprofit's details screen. **/
+.nonprofit_details_buttons_labels {
+    width				: 55px;
+    height				: 15px;
+    top					: 236px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 12px;
+    text-align      : center;
+    color 				: #6d6e71;
+}
+
+/**  Setting the correct position for each button label. **/
+#nonprofit_details_buttons_label_website { 	left	: 10px;}
+#nonprofit_details_buttons_label_fb 		 { 	left	: 90px;}
+#nonprofit_details_buttons_label_twitter { 	left	: 170px;}
+#nonprofit_details_buttons_label_youtube { 	left	: 250px;}
+
+.nonprofit_details_donatebutton {
+    width			: 280px;
+    height			: 56px;
+    top				: 430px;
+    left			: 20px;
+    background-image: linear-gradient(#7fd034, #6ab029);
+}
+
+/**************************************/  
+/****   DONATE - How Much? Screen  ****/
+/**************************************/
+
+/**  Just the text of the Nonprofit's Name  **/
+#nonprofit_howmuch_orgname {
+    width				: 220px;
+    height				: 38px;
+    top					: 10px;
+    left				: 72px;
+    font-family			: "Roboto";
+    font-size			: 19px;
+    font-weight			: regular;
+    text-align			: center;
+    color				: #ffffff;
+}
+
+/**  The background bar once an amount is entered (turns Purple) **/  
+#barbackground_purp {		
+    width			: 302px;
+    height			: 38px;
+    top				: 10px;
+    left			: 9px;
+    background-image: linear-gradient(#595287, #413a70);
+}
+
+/**  Nonprofit's Profile Pic in the Purple Circle  **/  
+#nonprofit_orgpic {
+    width				: 58px;
+    height				: 58px;
+    top					: 14px;
+    left				: 15px;
+    border				: 2px solid #514b80;
+    background-color	: #ffffff;
+    background-size		: 56px 56px;
+    border-radius   	: 24px;
+}
+
+#nonprofit_amountfield {
+    font-family			: "Roboto";
+    font-size			: 52px;
+    font-weight         : medium;
+    font-stretch		: expanded;
+    text-align       	: right;
+    color 				: #313233;
+    width				: 210px;
+    height				: 60px;
+    top					: 60px;
+    left                : 80px;
+}
+
+.nonprofit_quicktapbuttons {
+    width				: 46px;
+    height				: 46px;
+    top					: 132px;
+    border-radius		: 22px;
+    background-size		: 46px;
+}
+#nonprofit_quicktapbuttons_5 {
+    left			: 22px;
+    background-image: url(quicktap_5.png);
+}
+#nonprofit_quicktapbuttons_10 {
+    left			: 100px;
+    background-image: url(quicktap_10.png);
+}
+#nonprofit_quicktapbuttons_25 {
+    left			: 178px;
+    background-image: url(quicktap_25.png);
+}
+#nonprofit_quicktapbuttons_50 {
+    left			: 256px;
+    background-image: url(quicktap_50.png);
+}
+
+#nonprofit_quicktapbuttons_5:highlighted { transform: scale(1.2) }
+#nonprofit_quicktapbuttons_10:highlighted { scale: 1.2 }
+#nonprofit_quicktapbuttons_25:highlighted { transform: scale(1.2) }
+#nonprofit_quicktapbuttons_50:highlighted { scale: 1.2 }
+
+/**  The Dedication icon only  **/  
+#nonprofit_dedication_icon {
+    width			: 30px;
+    height			: 28;
+    top				: 214px;
+    left			: 23px;
+    background-image: url(memo-nonprofits.png);
+    background-size	: 30px 28px;
+}
+
+/**  The "+ Dedication" text label  **/  
+#nonprofit_dedication_label {
+    width			: 85px;
+    height			: 15px;
+    top				: 223px;
+    left			: 59px;
+    font-family		: "Roboto";
+    font-size		: 13px;
+    font-weight     : light;
+    text-align      : left;
+    color 			: #6d6e71;
+}
+
+/**  Main Donate Button - starts Gray, then turns Green when an amount is entered.  **/ 
+#nonprofit_donatebutton {
+    width				: 152x;
+    height				: 56px;
+    top					: 204px;
+    left				: 159px;
+    font-family			: "Roboto";
+    font-size			: 22px;
+    font-weight         : light;
+    font-stretch		: expanded;
+    text-align       	: center;
+    text-transform		: uppercase;
+    color 				: #ffffff;
+    border-bottom-right-radius	: 0px;
+    border-bottom-left-radius	: 0px;
+    border-top-right-radius		: 0px;
+    border-top-left-radius		: 3px;
+}
+
+#nonprofit_donatebutton:disabled {  
+ border-bottom-right-radius	: 3px;
+    border-bottom-left-radius	: 0px;
+    border-top-right-radius		: 0px;
+    border-top-left-radius		: 3px;
+    background-image: linear-gradient(#c0c2c4, #b1b3b6);
+     }
+
+/**  Dedication Text Box  **/
+#nonprofit_dedication_entrybox {
+    width 			: 286px;
+    height			: 84px;
+    left    		: 17px;
+    top     		: 111px;
+    border 			: 2px solid;
+    border-color	: #939598;
+    border-radius	: 6px;
+    font-family 	: "Roboto";
+    font-weight 	: light;
+    font-size       : 15px;
+    font-stretch	: semi-expanded;
+    color           : #414042px;
+}
+
+/**  'In Honor Of'  or  'In Memory Of'  **/
+segmented-control#donatededication { 
+    width			: 270px;
+    height			: 30px;
+    top				: 75px;
+    left			: 25px;
+    -ios-tint-color	: 5a538d;
+    font-family		: "Roboto";
+    font-weight		: light;
+}
+
+/**  Sets the style for the 'Cancel' and '+ Add Dedication' buttons. **/
+.dedication_buttons {
+    width			: 135px;
+    height			: 50px;
+    top				: 155px;
+    font-family		: "Roboto";
+    font-size		: 20px;
+    font-weight     : light;
+    text-align      : center;
+    color 			: #ffffff;
+}
+.dedication_buttons_add {
+    width			: 152px;
+    height			: 55px;
+    top				: 155px;
+    font-family		: "Roboto";
+    font-size		: 20px;
+    font-weight     : light;
+    text-align      : center;
+    color 			: #ffffff;
+     left             :150px;
+    background-image	: linear-gradient(#7fd034, #6ab029);
+}
+.dedication_buttons_cancel_dedication{
+    width			: 152px;
+    height			: 55px;
+    top				: 155px;
+    font-family		: "Roboto";
+    font-size		: 20px;
+    font-weight     : light;
+    text-align      : center;
+    color 			: #ffffff;
+    left             :-2px;
+    background-image			: linear-gradient(#c0c2c4, #b1b3b6);
+
+}
+/**  Sets the left location of the 'Cancel' button. **/
+#dedication_buttons_cancel 	{ left	: 9px; }
+
+/**  Sets the left location of the 'Add Dedication' (equivalent to 'Done') button. **/	
+#dedication_buttons_done 	{ left	: 160x;}
+
+/***************************/
+/**   Donate PIN Screen   **/
+/***************************/
+
+#nonprofit_pin_orgname_bar {
+    width				: 302px;
+    height				: 38px;
+    top					: 196px;
+    left				: 9px;
+    background-image	: linear-gradient(#595287, #413a70);
+}
+
+.nonprofit_pin_orgname_text {
+    width				: 228px;
+    height				: 38px;
+    top					: 196px;
+    left				: 81px;
+    font-family			: "Roboto";
+    font-size			: 20px;
+    font-weight			: regular;
+    text-align			: left;
+    color				: #ffffff;
+}
+
+.pin_dedication_prefix {
+    top					: 234px;
+    left				: 81px;
+    width				: 95px;
+    height				: 33px;
+    font-family			: "Roboto";
+    font-size			: 15px;
+    font-weight			: Regular;
+    text-align			: center;
+    color				: #5a538d;
+}
+
+.pin_dedication_text {
+    top					: 234px;
+    left				: 181px;
+    width				: 130px;
+    height				: 33px;
+    font-family			: "Roboto";
+    font-size			: 15px;
+    font-weight			: light;
+    text-align			: center;
+    color				: #5a538d;
+}
 
 /* END NONPROFIT FLOW */
 
-	/**  The text "Sent using a 196-bit encryption." **/
-	.label_encryption  {
-		font-family			: "Roboto";
-		font-weight			: regular;
-		font-size			: 12px;
-		text-align			: center;
-		color				: #5a538d;
-		width				: 215px;
-		height				: 15px;
-		left				: 70px;
-		top              : 470px;
-	}
+/**  The text "Sent using a 196-bit encryption." **/
+.label_encryption  {
+    font-family			: "Roboto";
+    font-weight			: regular;
+    font-size			: 12px;
+    text-align			: center;
+    color				: #5a538d;
+    width				: 215px;
+    height				: 15px;
+    left				: 70px;
+    top              : 470px;
+}
 
-	/**  The Lock icon **/
-	.icon_encryption {
-		width 				: 18px;
-		height 				: 22px;
-		top 				: 465px;
-		left 				: 39px;
-		background-image 	: url(encryption-lock.png);
-	}
+/**  The Lock icon **/
+.icon_encryption {
+    width 				: 18px;
+    height 				: 22px;
+    top 				: 465px;
+    left 				: 39px;
+    background-image 	: url(encryption-lock.png);
+}
 
  /*******************************************
   ********* 	 Left SIDEBAR	    *********
   *******************************************/
 
-    /**  Background only of the blue section headers of the right sidebar Table. */
-	.sectionheader_bckgrnd {
-		width				: 270px;
-		height				: 22px;
-		background-image	: linear-gradient(#6dbee8, #41abe1);
-		box-shadow			: 0px 1px 0px rgba(46,47,48,.95),
-							  0px -1px 0px rgba(46,47,48,.95);
-	}
-	
-	.lside_menu_icons {
-        font-family	: "FontAwesome";
-        font-size	: 20px;
-        left		: 8px;
-        top			: 8px;
-        width		: 28px;
-        height		: 28px;
-        color		: white;
-        text-align	: center;
-    }
-    .lside_menu_icons_sm {
-        font-family	: "FontAwesome";
-        font-size: 16px;
-    }
-    .lside_arrow {
-        color       : white;
-		opacity		: .7;
-        font-family : "FontAwesome";
-        font-size	: 23px;
-		text-align	: right;
-    }
-	
-	#lside_topbar_background {
-		width			: 270px;
-		height			: 90px;
-		top				: 0px;
-		left			: 0px;
-		background-image: linear-gradient(#505257, #454647);
-	}
-	#lside_userpic {
-		width			: 62px;
-		height			: 62px;
-		top				: 21px;
-		left			: 18px;
-		border			: 2px solid white;
-		border-radius	: 31px;
-		box-shadow		: 0px 2px 6px rgba(29,30,31,.75);
-	}
-	#lside_firstname {
-		width			: 170px;
-		height			: 30px;
-		top				: 25px;
-		left			: 92px;
-		color			: white;
-		font-family		: "Roboto";
-		font-size		: 26px;
-		font-weight		: regular;
-		text-align		: left;
-	}
-	#lside_lastName {
-		width			: 150px;
-		height			: 26px;
-		top				: 55px;
-		left			: 92px;
-		color			: white;
-		font-family		: "Roboto";
-		font-size		: 20px;
-		font-weight		: light;
-		text-align		: left;
-	}
-	/**  Blue Bottom Bar Background **/
-	#lside_bottombar_background {
-		width			: 270px;
-		height			: 55px;
-		top				: 513px;
-        left			: 0px;
-		background-image: linear-gradient(#69b9e0, #3fa5d9);
-	}
-    #lside_bottombar_background_4 {
-        width			: 270px;
-		height			: 55px;
-		top				: 425px;
-        left			: 0px;
-		background-image: linear-gradient(#69b9e0, #3fa5d9);
-    }
+/**  Background only of the blue section headers of the right sidebar Table. */
+.sectionheader_bckgrnd {
+    width				: 270px;
+    height				: 22px;
+    background-image	: linear-gradient(#6dbee8, #41abe1);
+    box-shadow			: 0px 1px 0px rgba(46,47,48,.95),
+                          0px -1px 0px rgba(46,47,48,.95);
+}
 
-	#settings_icon {
-		width			: 31px;
-		height			: 30px;
-		top				: 524px;
-		left			: 15px;
-		font-family     : "FontAwesome";
-        font-size       : 27px;
-        color           : white;
-	}
-    #settings_icon_4 {
-		width			: 31px;
-		height			: 30px;
-		top				: 436px;
-		left			: 15px;
-		font-family     : "FontAwesome";
-        font-size       : 26px;
-        color           : white;	
-	}
-	#nooch_whitelogo {
-		width			: 80px;
-		height			: 26px;
-		top				: 521px;
-		left			: 96px;
-		background-image: url(nooch_Logo.png);
-	}
-    #nooch_whitelogo_4 {
-		width			: 80px;
-		height			: 26px;
-		top				: 433px;
-		left			: 96px;
-		background-image: url(nooch_Logo.png);
-	}
-	#version_label {
-		width			: 100px;
-		height			: 12px;
-		top				: 551px;
-		left			: 85px;
-		color			: white;
-		font-family		: "Roboto";
-		font-size		: 10px;
-		font-weight		: light;
-		text-align		: center;
-	}
-    #version_label_4 {
-		width			: 100px;
-		height			: 12px;
-		top				: 463px;
-		left			: 85px;
-		color			: white;
-		font-family		: "Roboto";
-		font-size		: 10px;
-		font-weight		: regular;
-		text-align		: center;
-	}
+.lside_menu_icons {
+    font-family	: "FontAwesome";
+    font-size	: 20px;
+    left		: 8px;
+    top			: 8px;
+    width		: 28px;
+    height		: 28px;
+    color		: white;
+    text-align	: center;
+}
+.lside_menu_icons_sm {
+    font-family	: "FontAwesome";
+    font-size: 16px;
+}
+.lside_arrow {
+    color       : white;
+    opacity		: .7;
+    font-family : "FontAwesome";
+    font-size	: 23px;
+    text-align	: right;
+}
 
- /*******************************************
-  ********* 	 HISTORY FLOW	    *********
-  *******************************************/
-	
-	/**************************/  
-	/****  HISTORY - MAIN  ****/
-	/**************************/
+#lside_topbar_background {
+    width			: 270px;
+    height			: 90px;
+    top				: 0px;
+    left			: 0px;
+    background-image: linear-gradient(#505257, #454647);
+}
+#lside_userpic {
+    width			: 62px;
+    height			: 62px;
+    top				: 21px;
+    left			: 18px;
+    border			: 2px solid white;
+    border-radius	: 31px;
+    box-shadow		: 0px 2px 6px rgba(29,30,31,.75);
+}
+#lside_firstname {
+    width			: 170px;
+    height			: 30px;
+    top				: 25px;
+    left			: 92px;
+    color			: white;
+    font-family		: "Roboto";
+    font-size		: 26px;
+    font-weight		: regular;
+    text-align		: left;
+}
+#lside_lastName {
+    width			: 150px;
+    height			: 26px;
+    top				: 55px;
+    left			: 92px;
+    color			: white;
+    font-family		: "Roboto";
+    font-size		: 20px;
+    font-weight		: light;
+    text-align		: left;
+}
+/**  Blue Bottom Bar Background **/
+#lside_bottombar_background {
+    width			: 270px;
+    height			: 55px;
+    top				: 513px;
+    left			: 0px;
+    background-image: linear-gradient(#69b9e0, #3fa5d9);
+}
+#lside_bottombar_background_4 {
+    width			: 270px;
+    height			: 55px;
+    top				: 425px;
+    left			: 0px;
+    background-image: linear-gradient(#69b9e0, #3fa5d9);
+}
 
-	.label_filter  {
-		width				: 25px;
-		height				: 25px;
-		font-family	: "FontAwesome";
-		font-size			: 22px;
-		text-align       	: left;
-		color 				: #ffffff;
-	}
+#settings_icon {
+    width			: 31px;
+    height			: 30px;
+    top				: 524px;
+    left			: 15px;
+    font-family     : "FontAwesome";
+    font-size       : 27px;
+    color           : white;
+}
+#settings_icon_4 {
+    width			: 31px;
+    height			: 30px;
+    top				: 436px;
+    left			: 15px;
+    font-family     : "FontAwesome";
+    font-size       : 26px;
+    color           : white;	
+}
+#nooch_whitelogo {
+    width			: 80px;
+    height			: 26px;
+    top				: 521px;
+    left			: 96px;
+    background-image: url(nooch_Logo.png);
+}
+#nooch_whitelogo_4 {
+    width			: 80px;
+    height			: 26px;
+    top				: 433px;
+    left			: 96px;
+    background-image: url(nooch_Logo.png);
+}
+#version_label {
+    width			: 100px;
+    height			: 12px;
+    top				: 551px;
+    left			: 85px;
+    color			: white;
+    font-family		: "Roboto";
+    font-size		: 10px;
+    font-weight		: light;
+    text-align		: center;
+}
+#version_label_4 {
+    width			: 100px;
+    height			: 12px;
+    top				: 463px;
+    left			: 85px;
+    color			: white;
+    font-family		: "Roboto";
+    font-size		: 10px;
+    font-weight		: regular;
+    text-align		: center;
+}
 
-    #glyph_map {
-        width				: 25px;
-		height				: 25px;
-		font-family	: "FontAwesome";
-		font-size			: 22px;
-		text-align       	: right;
-		color 				: #ffffff;
-	}
+/*******************************************
+********* 	 HISTORY FLOW	    *********
+*******************************************/
 
-	#history_segcontrol {
-		width				: 306px;
-		height				: 30px;
-		left				: 7px;
-		top					: 6px;
-		//-ios-tint-color		: #3fabe1;
-		background-color	: #3fabe1;
-		border-color		: #3fabe1;
-		font-family			: "Roboto";
-		font-weight			: regular;
-	}
-    #dedicate_segcontrol {
-		width				: 270px;
-		height				: 30px;
-		left				: 15px;
-		top					: 6px;
-		-ios-tint-color		: #494475;
-		background-color	: #494475;
-		border-color		: #494475;
-		font-family			: "Roboto";
-		font-weight			: light;
-	}
-	#dedicate_textview {
-		width				: 280px;
-		height				: 30px;
-		left				: 10px;
-		top					: 55px;
-		background-color	: white;
-		border-color		: #7e7e7e;
-		font-family			: "Roboto";
-		font-weight			: light;
+/**************************/  
+/****  HISTORY - MAIN  ****/
+/**************************/
 
-	}
-    #history_search {background-color : #dcddde;}
+.label_filter  {
+    width				: 25px;
+    height				: 25px;
+    font-family	: "FontAwesome";
+    font-size			: 22px;
+    text-align       	: left;
+    color 				: #ffffff;
+}
 
-    .historyMap_marker_name {
-        font-family: "Roboto";
-        font-weight: regular;
-        font-size: 18px;
-        color: white;
-        text-align: center;
-    }
-    .historyMap_marker_title {
-        font-family: "Roboto";
-        font-weight: light;
-        font-size: 12px;
-        color: white;
-        text-align: center;
-    }
-    .historyMap_marker_amnt {
-        font-family: "Roboto";
-        font-weight: medium;
-        font-size: 24px;
-        text-align: center;
-    }
-    .historyMap_marker_memo {
-        font-family: "Roboto";
-        font-weight: regular;
-        font-size: 14px;
-        text-align: center;
-    }
-    .historyMap_marker_dateIntro {
-        font-family: "Roboto";
-        font-weight: regular;
-        font-size: 12px;
-        text-align: center;
-    }
-    .historyMap_marker_date {
-        font-family: "Roboto";
-        font-weight: regular;
-        font-size: 12px;
-        text-align: center;
-    }
-    
+#glyph_map {
+    width				: 25px;
+    height				: 25px;
+    font-family	: "FontAwesome";
+    font-size			: 22px;
+    text-align       	: right;
+    color 				: #ffffff;
+}
 
-	/**  Table View for the entire main history table - for row-height & separator-color)  **/
-	table-view#history {
-		width				: 320px;
-		background-color	: #ffffff;
-		row-height			: 80px;
-		separator-style 	: single-line;
-		separator-color		: rgba(188,190,192,.6);
-	}
-    
-    table-view#emptyTable {
-        row-height			: 200px;
-        separator-style     : none;
-    }
+#history_segcontrol {
+    width				: 306px;
+    height				: 30px;
+    left				: 7px;
+    top					: 6px;
+    //-ios-tint-color		: #3fabe1;
+    background-color	: #3fabe1;
+    border-color		: #3fabe1;
+    font-family			: "Roboto";
+    font-weight			: regular;
+}
+#dedicate_segcontrol {
+    width				: 270px;
+    height				: 30px;
+    left				: 15px;
+    top					: 6px;
+    -ios-tint-color		: #494475;
+    background-color	: #494475;
+    border-color		: #494475;
+    font-family			: "Roboto";
+    font-weight			: light;
+}
+#dedicate_textview {
+    width				: 280px;
+    height				: 30px;
+    left				: 10px;
+    top					: 55px;
+    background-color	: white;
+    border-color		: #7e7e7e;
+    font-family			: "Roboto";
+    font-weight			: light;
 
-	/**  Profile Pic of other user  **/
-	.history_userpics {
-		width				: 45px;
-		height				: 45px;
-		border				: 1px solid #6d6e71;
-		top					: 7px;
-		left				: 16px;
-	}
-	  
-	/**  Text ("You Paid/Requested/Donated...")  **/
-	.history_cell_transTypeLabel {
-		left				: 71px;
-		top					: 8px;
-		width				: 66px;
-		height				: 11px;
-		font-size			: 9px;
-		font-weight			: medium;
-        background-color    : rgba(232,233,234,.96);
-        color               : white;
-        border-radius       : 3px;
-        text-align          : center;
-        opacity             : .85;
-	}
-    .history_cell_transTypeLabel_wider {
-        width           : 70px;
-    }
-    .history_cell_transTypeLabel_evenWider {
-        font-size       : 8px;
-        width           : 95px;
-    }
-	
-	/**  Text in top row if table is empty  **/
-	.history_cell_textlabelEmpty { 
-		left				: 8px;
-		top					: 10px;
-		width				: 304px;
-		height				: 50px;
-		font-size			: 19px;
-		font-weight			: light;
-		text-align			: center;
-	}
+}
+#history_search {background-color : #dcddde;}
 
-	/**  Name of other party  **/
-	.history_cell_textlabel { 
-		left				: 71px;
-		top					: 22px;
-		width				: 185px;
-		height				: 21px;
-		font-size			: 15px;
-		font-weight			: regular;
-	}
-    .history_cell_textlabel_wMemo {
-		top					: 21px;
-		height				: 20px;
-	}
-
-	/**  Date of the transfer ("2 days ago")  **/
-	.history_datetext {
-		left                : 157px;
-		top					: 7px;
-		width				: 150px;
-		height				: 12px;
-		font-family			: "Roboto";
-		font-size			: 10px;
-		font-weight         : light;
-		text-align       	: left;
-		color 				: #58595b;
-	}
-    .history_datetext_wide {
-        left: 183;
-    }
-
-	/**  Amount of the Transfer on the right side of the row  **/
-	.history_transferamount {
-		left				: 237px;
-		top					: 21px;
-		width				: 78px;
-		height				: 21px;
-		font-family			: "Roboto";
-		font-weight         : medium;
-		font-size			: 19px;
-		text-align       	: right;
-	}
-
-    /**  Amount of the PENDING Transfer on the right side of the row (Only on the Pending Tab)  **/
-	.history_pending_transferamount {
-		left				: 227px;
-		top					: 20px;
-		width				: 81px;
-		height				: 20px;
-		font-family			: "Roboto";
-		font-weight         : medium;
-		font-size			: 20px;
-		text-align       	: right;
-	}
-
-    .history_memo {
-		left				: 72px;
-		top					: 42px;
-		width				: 200px;
-		height				: 16px;
-		font-family			: "Roboto";
-		font-weight         : regular;
-		font-size			: 13px;
-		text-align       	: left;
-        color               : rgba(88,90,92,.96);
-	}
-    .history_memo_long {
-        top					: 41px;
-		height				: 31px;
-	}
-
-	/**  Next 3 classes set the color the amount depending if the transfer increased/decreased the user's balance  **/
-	.history_transferamount_pos {color		: #72bf44;}
-	.history_transferamount_neg {color		: #d2232a;}
-	.history_transferamount_neutral {color	: #3fabe1;}
-
-	.transfer_status {
-		left                : 254px;
-		top					: 41px;
-		width				: 60px;
-		height				: 15px;
-		font-family			: "Roboto";
-		font-weight         : regular;
-		font-size			: 11px;
-		text-align       	: right;
-	}
-
-	.history_sidecolor {
-		top				: 8px;
-		left			: 5px;
-		width			: 6px;
-		height			: 6px;
-        border-radius   : 3px;
-	}
-
-    /**  Next 4 classes set the color of .history_sidecolor depending on the type of transfer.  **/
-	.history_sidecolor_pos {background-color		: #72bf44;}
-	.history_sidecolor_neg {background-color		: #d2232a;}
-	.history_sidecolor_neutral {background-color	: #3fabe1;}
-	.history_sidecolor_donate {background-color	: #5a538d;}
-
-    .history_sidecolor_pending {
-        top                 : 0px;
-		left                : 311px;
-		width               : 9px;
-		height              : 80px;
-        background-color	: #3fabe1;
-        color               : #fff;
-        text-align          : center;
-    }
-
-	.titlelbl {
-       width				: 300px;
-		height				: 38px;
-		top					: 0px;
-		left				: 0px;
-		font-size			: 20px;
-		font-weight			: regular;
-        color               : gray;
-        text-align       	: center;
-    }
-    .addbutton_request{
-		width				: 30px;
-		height				: 30px;
-		top					: 15px;
-		left				: 266px;
-		color           : white;
-        font-family	: "FontAwesome";
-        font-size       : 24px;
-	}
-	.details_othername_nonnooch {
-		width				: 260px;
-		height				: 28px;
-		top					: 27px;
-		left                : 80px;
-		font-family			: "Roboto";
-		font-weight         : light;
-		font-size			: 15px;
-		text-align       	: center;
-		color 				: #313233;
-	}
-
-	
-	/*********************************/
-	/*****    TRANSFER DETAILS   *****/
-	/*********************************/
-
-    #transDetailsTopSectionBG {
-		background-color: rgba(228,229,230,.3);
-        border: 1px solid rgba(207,210,212,.9);
-	/*	box-shadow: 0px 1px rgba(207,210,212,.9); */
-	}
-
-	/***** Intro Text - "Payment from"  or  "Request From"  etc.  ****/
-	.details_intro {
-		width			: 300px;
-		height			: 16px;
-		top				: 6px;
-		left			: 10px;
-		font-family		: "Roboto";
-		font-weight		: regular;
-		font-size		: 12px;
-		text-align		: center;
-        color			: white;
-        border-radius	: 4px;
-	}
-
-	.details_intro_blue { background-color: #3fabe1; border-radius	: 4px;}     	/**  For REQUESTS	**/
-	.details_intro_green { background-color: #72bf44; border-radius	: 4px;}    	/**   For receive		**/
-    .details_intro_red { background-color: #d2232a; border-radius	: 4px;}       /** for sent **/
-	.details_intro_purple { background-color: #5a538d; border-radius	: 4px;} 	/**  For DONATIONS	**/
-	
-	/*****  Other Person's Name  ****/
-	.details_othername {
-		width				: 213px;
-		height				: 28px;
-		top					: 26px;
-		left                : 88px;
-		font-family			: "Roboto";
-		font-weight         : regular;
-		font-size			: 24px;
-		text-align       	: center;
-		color 				: #313233;
-	}
-
-	/**  Profile Picture of the other user  **/
-	.details_userpic {
-		width	: 65px;
-		height	: 65px;
-		top		: 17px;
-		left	: 16px;
-		border	: 1px solid #6d6e71;
-	}
-
-	/**  Amount of the transfer  **/
-	.details_amount {
-		width				: 213px;
-		height				: 40px;
-		top					: 60px;
-		left                : 88px;
-		font-family			: "Roboto";
-		font-weight         : medium;
-		font-size			: 40px;
-		text-align       	: center;
-		color 				: #3fabe1;
-        animation-name: bubble;
-        animation-duration: 2.05s;
-		animation-timing-function: ease;
-		animation-iteration-count: 1;
-	}
-
-	/**  Memo & Location Text **/
-    .details_label_memo {
-		font-family		: "Roboto";
-		font-weight		: regular;
-		font-size		: 24px;
-		text-align		: center;
-		width			: 300px;
-		left			: 10px;
-		height			: 44px;
-        border			: 1px solid #dcddde;
-        border-radius	: 4px;
-	}
-	.details_label {
-		font-family			: "Roboto";
-		font-weight         : regular;
-		font-size			: 18px;
-		text-align          : center;
-		color 				: #6d6e71;
-		width				: 280px;
-		left                : 20px;
-		height				: 30px;
-	}
-	#details_status {
-		font-family		: "Roboto";
-		font-weight         : bold;
-		font-size			: 20px;
-    }
-    .details_label_location {
-		top					: 160px;
-        height				: 20px;
-        font-family			: "Roboto";
-		font-weight         : medium;
-		font-size			: 12px;
-		text-align          : center;
-		color 				: white;
-        background-color 	: rgba(0,0,0,0.65);
-	}
-    .details_label_location_4 {
-        top					: 97px;
-        height				: 19px;
-        font-family			: "Roboto";
-		font-weight         : bold;
-		font-size			: 12px;
-		text-align          : center;
-		color				: white;
-        background-color	: rgba(0,0,0,0.65);
-	}
-    .details_label1 {
-		left                : 20px;
-		width				: 280px;
-		height				: 30px;
-		font-family			: "Roboto";
-		font-weight         : regular;
-		font-size			: 15px;
-		text-align          : center;
-		color 				: #d3d3d3;
-	}
-	.details_btn_left {
-		left			: 8px;
-		top				: 430px;
-		width			: 148px;
-        height			: 50px;
-		font-size		: 22px;
-        color 			: white;
-		border-radius	: 5px;
-		font-family		: "Roboto";
-		font-weight     : light;
-        background-image: linear-gradient(#7fd034, #6ab029);
-		animation-name: moveUp_transDetailsBtns;
-		animation-duration: 1.3s;
-		animation-timing-function: ease-out;
-	}
-    .details_btn_left_4 {
-		top			: 350px;
-    }
-	.details_btn_right {
-		left				: 164px;
-		top					: 430px;
-		width				: 148px;
-		height				: 50px;
-		color 				: white;
-		border-radius		: 5px;
-		font-family			: "Roboto";
-		font-weight         : light;
-		font-size			: 22px;
-        background-image	: linear-gradient(#F5003D, #D21937);
-		animation-name: moveUp_transDetailsBtns;
-		animation-duration: 1.3s;
-		animation-timing-function: ease-out;
-	}
-    .details_btn_right_4 {
-        top     : 350px;
-    }
-    .details_button_center {
-		left			: 10px;
-		top				: 430px;
-		width			: 300px;
-        height			: 50px;
-        color 			: white;
-		border-radius	: 5px;
-		font-family		: "Roboto";
-		font-weight     : light;
-		font-size		: 22px;
-        background-image: linear-gradient(#F5003D, #D21937);
-		animation-name: moveUp_transDetailsBtns;
-		animation-duration: 1.3s;
-		animation-timing-function: ease-out;
-	}
-    .details_btn_remind {
-		left			: 8px;
-		top				: 430px;
-		width			: 148px;
-        height			: 50px;
-        color 			: white;
-		border-radius	: 5px;
-		font-family		: "Roboto";
-		font-weight     : light;
-		font-size		: 22px;
-        background-image: linear-gradient(#40a9de, #3b9cce);
-		animation-name: moveUp_transDetailsBtns;
-		animation-duration: 1.3s;
-		animation-timing-function: ease-out;
-	}
-    .details_btn_remind_4 {
-        top         : 350px;
-    }
+.historyMap_marker_name {
+    font-family: "Roboto";
+    font-weight: regular;
+    font-size: 18px;
+    color: white;
+    text-align: center;
+}
+.historyMap_marker_title {
+    font-family: "Roboto";
+    font-weight: light;
+    font-size: 12px;
+    color: white;
+    text-align: center;
+}
+.historyMap_marker_amnt {
+    font-family: "Roboto";
+    font-weight: medium;
+    font-size: 24px;
+    text-align: center;
+}
+.historyMap_marker_memo {
+    font-family: "Roboto";
+    font-weight: regular;
+    font-size: 14px;
+    text-align: center;
+}
+.historyMap_marker_dateIntro {
+    font-family: "Roboto";
+    font-weight: regular;
+    font-size: 12px;
+    text-align: center;
+}
+.historyMap_marker_date {
+    font-family: "Roboto";
+    font-weight: regular;
+    font-size: 12px;
+    text-align: center;
+}
 
 
-	/**  Circle Buttons at the bottom ('Pay Back'  FB  Twitter  'Dispute' **/
-	.details_buttons {
-		width: 50px;
-		height: 50px;
-		top: 428px;
-	}
-    .details_buttons_4 {
-		width: 50px;
-		height: 50px;
-		top: 338px;
-	}
+/**  Table View for the entire main history table - for row-height & separator-color)  **/
+table-view#history {
+    width				: 320px;
+    background-color	: #ffffff;
+    row-height			: 80px;
+    separator-style 	: single-line;
+    separator-color		: rgba(188,190,192,.6);
+}
 
-	/**  Text labels immediately below each round button at the bottom of Transfer Details. **/
-	.details_buttons_labels {
-		width				: 50px;
-        text-align          : center;
-		height				: 14px;
-		top					: 482px;
-		font-family			: "Roboto";
-		font-weight         : light;
-		font-size			: 12px;
-		color 				: #5a5b5d;
-	}
-    .details_buttons_labels_4 {
-		width				: 50px;
-        text-align          : center;
-		height				: 14px;
-		top					: 392px;
-		font-family			: "Roboto";
-		font-weight         : regular;
-		font-size			: 12px;
-		color 				: #5a5b5d;
-	}
+table-view#emptyTable {
+    row-height			: 200px;
+    separator-style     : none;
+}
 
-    #details_payback {left : 15px;}
-    #details_fb {left : 95px;}
-    #details_fb_donate {left : 20px;}
-    #details_twit {left : 175px;}
-    #details_twit_donate {left : 140px;}
-    #details_disp {left : 255px;}
-	#details_disp_donate {left : 255px;}
+/**  Profile Pic of other user  **/
+.history_userpics {
+    width				: 45px;
+    height				: 45px;
+    border				: 1px solid #6d6e71;
+    top					: 7px;
+    left				: 16px;
+}
+  
+/**  Text ("You Paid/Requested/Donated...")  **/
+.history_cell_transTypeLabel {
+    left				: 71px;
+    top					: 8px;
+    width				: 66px;
+    height				: 11px;
+    font-size			: 9px;
+    font-weight			: medium;
+    background-color    : rgba(232,233,234,.96);
+    color               : white;
+    border-radius       : 3px;
+    text-align          : center;
+    opacity             : .85;
+}
+.history_cell_transTypeLabel_wider {
+    width           : 70px;
+}
+.history_cell_transTypeLabel_evenWider {
+    font-size       : 8px;
+    width           : 95px;
+}
 
-	#mapLightBox_paraText {color:#464749;}
-	
- /**************************************
-  ********    SETTINGS FLOW     ********
-  **************************************/
+/**  Text in top row if table is empty  **/
+.history_cell_textlabelEmpty { 
+    left				: 8px;
+    top					: 10px;
+    width				: 304px;
+    height				: 50px;
+    font-size			: 19px;
+    font-weight			: light;
+    text-align			: center;
+}
 
-	/**************************/
-	/****   Main Settings  ****/
-	/**************************/
+/**  Name of other party  **/
+.history_cell_textlabel { 
+    left				: 71px;
+    top					: 22px;
+    width				: 185px;
+    height				: 21px;
+    font-size			: 15px;
+    font-weight			: regular;
+}
+.history_cell_textlabel_wMemo {
+    top					: 21px;
+    height				: 20px;
+}
 
-    .table_glyph {
-        left        : 15px;
-        top         : 10px;
-        width      : 22px;
-        height      : 30px;
-        font-family : "FontAwesome";
-        font-size       : 20px;
-        color       : #3fabe1;
-		text-align: center;
-    }	
-	.table_arrow {
-        left        : 280px;
-        top         : 10px;
-        width       : 20px;
-        height      : 30px;
-        color       :  rgba(63,171,225,.8);
-        font-family : "FontAwesome";
-        font-size       : 23px;
-		text-align: right;
-    }
+/**  Date of the transfer ("2 days ago")  **/
+.history_datetext {
+    left                : 157px;
+    top					: 7px;
+    width				: 150px;
+    height				: 12px;
+    font-family			: "Roboto";
+    font-size			: 10px;
+    font-weight         : light;
+    text-align       	: left;
+    color 				: #58595b;
+}
+.history_datetext_wide {
+    left: 183;
+}
 
-	.background_gray { background-color: #efeff4; }
+/**  Amount of the Transfer on the right side of the row  **/
+.history_transferamount {
+    left				: 237px;
+    top					: 21px;
+    width				: 78px;
+    height				: 21px;
+    font-family			: "Roboto";
+    font-weight         : medium;
+    font-size			: 19px;
+    text-align       	: right;
+}
 
-    #account_background {
-        top: 44px;
-        left: -1px;
-        width: 322px;
-        height: 64px;
-        background-color: white;
-        border: 1px solid;
-        border-color: rgba(188, 190, 192, 0.85);
-    }
+/**  Amount of the PENDING Transfer on the right side of the row (Only on the Pending Tab)  **/
+.history_pending_transferamount {
+    left				: 227px;
+    top					: 20px;
+    width				: 81px;
+    height				: 20px;
+    font-family			: "Roboto";
+    font-weight         : medium;
+    font-size			: 20px;
+    text-align       	: right;
+}
 
-    #linked_account_name {
-        left		: 87px;
-        top			: 6px;
-        width		: 200px;
-        height		: 32px;
-        font-family	: "Roboto";
-        font-weight	: medium;
-        font-size	: 17px;
-        text-align	: left;
-        color		: #313233;
-    }
+.history_memo {
+    left				: 72px;
+    top					: 42px;
+    width				: 200px;
+    height				: 16px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 13px;
+    text-align       	: left;
+    color               : rgba(88,90,92,.96);
+}
+.history_memo_long {
+    top					: 41px;
+    height				: 31px;
+}
 
-    #linked_account_last4 {
-        left		: 73px;
-        top			: 35px;
-        width		: 200px;
-        height		: 16px;
-        font-family	: "Roboto";
-        font-weight	: light;
-        font-size	: 14px;
-        text-align	: left;
-        color		: #313233;
-    }
+/**  Next 3 classes set the color the amount depending if the transfer increased/decreased the user's balance  **/
+.history_transferamount_pos {color		: #72bf44;}
+.history_transferamount_neg {color		: #d2232a;}
+.history_transferamount_neutral {color	: #3fabe1;}
 
-    #remove_account {
-        color		: #a94442;
-        top			: 2px;
-        left		: 262px;
-        width		: 50px;
-        height		: 60px;
-        font-family	: "Roboto";
-        font-weight	: regular;
-        font-size	: 12px;
-		text-align	: right;
-    }
-    #remove_account_glyph {
-        font-family : "FontAwesome";
-        font-size   : 24px;
-        animation-name				: zoom;
-		animation-duration			: 0.7s;
-		animation-timing-function	: ease;
-    }
-    .divider {
-        left: 40px;
-        width: 270px;
-        height: 1px;
-        background-color: rgba(188,190,192,0.4);
-    }
-	table-view#settings {
-		width			: 322px;
-        height			: 150px;
-		top				: 200px;
-		left			: -1px;
-		background-color: white;
-		row-height		: 50px;
-		separator-style : single-line;
-		separator-color	: rgba(188,190,192,0.9);
-        border: 1px solid;
-        border-color: rgba(188, 190, 192, 0.85);
-	}
-    table-view#settings2 {
-		width			: 322px;
-        height			: 150px;
-		top				: 180px;
-		left			: -1px;
-		background-color: white;
-		row-height		: 50px;
-		separator-style : single-line;
-		separator-color	: rgba(188,190,192,0.9);
-		border			: 1px solid rgb(188,190,192);
-	}
-    table-view#settings_resetpw {
-		width				: 322px;
-        height              : 150px;
-		top					: 84px;
-		left				: -1px;
-		background-color	: white;
-		row-height			: 50px;
-		separator-style 	: single-line;
-		separator-color		: rgba(188,190,192,0.9);
-        border: 1px solid;
-        border-color: rgba(188, 190, 192, 0.85);
-	}
-	/**  Left side text label. **/
-	.settings_table_label {
-		width		: 250px;
-		height		: 50px;
-		top			: 0px;
-		left		: 50px;
-		color		: #313233;
-		font-family	: "Roboto";
-		font-weight	: regular;
-		font-size	: 18px;
-		text-align	: left;
-	}
-	/**  Gray Signout Button. **/
-	#button_signout {
-		left				: 30px;
-		top					: 415px;
-		width				: 260px;
-		height				: 44px;
-		font-size			: 18px;
-	}
-    #button_signout_4 {
-		left				: 30px;
-		top					: 364px;
-		width				: 260px;
-		height				: 44px;
-		font-size			: 18px;
-	}
-	/**************************/
-	/****  Reset Password  ****/
-	/**************************/
+.transfer_status {
+    left                : 254px;
+    top					: 41px;
+    width				: 60px;
+    height				: 15px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 11px;
+    text-align       	: right;
+}
 
-	/**  Reset Password Screen --> Reset PW Table  **/
-    .settings_resetpass_labels {
-		color       : #3fabe1;
-		width		: 250px;
-		height		: 50px;
-		top			: 0px;
-		left		: 20px;
-		font-family	: "Roboto";
-		font-weight	: regular;
-		font-size	: 18px;
-		text-align	: left;
-    }
+.history_sidecolor {
+    top				: 8px;
+    left			: 5px;
+    width			: 6px;
+    height			: 6px;
+    border-radius   : 3px;
+}
 
-	.resetpw_left_label	{ 
-		width			: 170px;
-		left			: 15px;
-		font-size		: 16px;
-	}
+/**  Next 4 classes set the color of .history_sidecolor depending on the type of transfer.  **/
+.history_sidecolor_pos {background-color		: #72bf44;}
+.history_sidecolor_neg {background-color		: #d2232a;}
+.history_sidecolor_neutral {background-color	: #3fabe1;}
+.history_sidecolor_donate {background-color	: #5a538d;}
 
-	.resetpw_right_label {
-		width			: 140px;
-		height			: 45px;
-		left			: 171px;
-		top				: 0px;
-		color			: #3fabe1;
-		font-family		: "Roboto";
-		font-size		: 16px;
-		font-weight		: light;
-		text-align		: right;
-	}
+.history_sidecolor_pending {
+    top                 : 0px;
+    left                : 311px;
+    width               : 9px;
+    height              : 80px;
+    background-color	: #3fabe1;
+    color               : #fff;
+    text-align          : center;
+}
 
-	.password_strength_label {
-		width			: 125px;
-		height			: 15px;
-		left			: 55px;
-		top				: 170px;
-		color			: #939598;
-		font-family		: "Roboto";
-		font-size		: 14px;
-		font-weight		: regular;
-		text-align		: left;
-	}
+.titlelbl {
+   width				: 300px;
+    height				: 38px;
+    top					: 0px;
+    left				: 0px;
+    font-size			: 20px;
+    font-weight			: regular;
+    color               : gray;
+    text-align       	: center;
+}
+.addbutton_request{
+    width				: 30px;
+    height				: 30px;
+    top					: 15px;
+    left				: 266px;
+    color           : white;
+    font-family	: "FontAwesome";
+    font-size       : 24px;
+}
+.details_othername_nonnooch {
+    width				: 260px;
+    height				: 28px;
+    top					: 27px;
+    left                : 80px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 15px;
+    text-align       	: center;
+    color 				: #313233;
+}
 
-	.password_strength_feedback {
-		width			: 120px;
-		height			: 15px;
-		left			: 185px;
-		top				: 170px;
-		color			: #c72127;
-		font-family		: "Roboto";
-		font-size		: 14px;
-		font-weight		: regular;
-		text-align		: left;
-	}
 
-	.resetpw_match {
-		width			: 125px;
-		height			: 10px;
-		left			: 186px;
-		top				: 33px;
-		font-family		: "Roboto";
-		font-size		: 16px;
-		font-weight		: regular;
-		text-align		: center;
-		text-transform	: uppercase;
-	}
+/*********************************/
+/*****    TRANSFER DETAILS   *****/
+/*********************************/
 
-	#resetpw_check_icon {
-		width			: 12px;
-		height			: 8px;
-		top				: 32px;
-		left			: 270px;
-		background-image: url(check-icon-small.png);
-	}
-	
-	/**************************/  
-	/****  Refer a Friend  ****/
-	/**************************/
+#transDetailsTopSectionBG {
+    background-color: rgba(228,229,230,.3);
+    border: 1px solid rgba(207,210,212,.9);
+/*	box-shadow: 0px 1px rgba(207,210,212,.9); */
+}
 
-	#refer_introtext {
-		width			: 300px;
-		height			: 30px;
-		top				: 15px;
-		left			: 10px;
-		color			: #313233;
-		font-family		: "Roboto";
-		font-weight		: regular;
-		font-size		: 23px;
-		text-align		: center;
-	}
-	#refer_invitecode {
-		width			: 300px;
-		height			: 45px;
-		top				: 65px;
-		left			: 10px;
-		color			: #3fabe1;
-		font-family		: "Roboto";
-		font-weight		: bold;
-		font-size		: 44px;
-		font-stretch	: expanded;
-		text-align		: center;
-		text-transform	: uppercase;
-	}
-	.refer_header {
-		left			: 15px;
-		width			: 250px;
-		height			: 25px;
-		color			: #313233;
-		font-family		: "Roboto";
-		font-weight		: regular;
-		font-size		: 17px;
-		text-align		: left;
-	}
+/***** Intro Text - "Payment from"  or  "Request From"  etc.  ****/
+.details_intro {
+    width			: 300px;
+    height			: 16px;
+    top				: 6px;
+    left			: 10px;
+    font-family		: "Roboto";
+    font-weight		: regular;
+    font-size		: 12px;
+    text-align		: center;
+    color			: white;
+    border-radius	: 4px;
+}
 
-	/**  Circle Buttons at the bottom ('Pay Back'  FB  Twitter  'Dispute' **/
-	.refer_buttons {
-		width				: 50px;
-		height				: 50px;
-		top					: 170px;
-	}  
-    #refer_sms {
-        left        : 24px;
-        background-image : url(sms-icon.png);
-    }
-    #refer_fb {
-        left        : 98px;
-        background-image : url(fb-icon100x100.png);
-    }
-    #refer_twit {
-        left        : 172px;
-        background-image : url(twitter-icon.png);
-    }
-    #refer_email {
-        left        : 246px;
-        background-image : url(email-icon.png);
-    }
+.details_intro_blue { background-color: #3fabe1; border-radius	: 4px;}     	/**  For REQUESTS	**/
+.details_intro_green { background-color: #72bf44; border-radius	: 4px;}    	/**   For receive		**/
+.details_intro_red { background-color: #d2232a; border-radius	: 4px;}       /** for sent **/
+.details_intro_purple { background-color: #5a538d; border-radius	: 4px;} 	/**  For DONATIONS	**/
 
-	/**  Text labels immediately below each referral method (SMS, FB, Twitter, Email) button. **/
-	.refer_buttons_labels {
-		width				: 60px;
-		height				: 17px;
-		top					: 224px;
-		font-family			: "Roboto";
-		font-weight         : light;
-		font-size			: 13px;
-        text-align      	: center;
-		color 				: #6d6e71;
-	}
+/*****  Other Person's Name  ****/
+.details_othername {
+    width				: 213px;
+    height				: 28px;
+    top					: 26px;
+    left                : 88px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 24px;
+    text-align       	: center;
+    color 				: #313233;
+}
 
-	/**  Sets the Table styling for the list of users a person has referred. **/
-	table-view#refer {
-		width		: 302px;
-        height		: 170px;
-		left		: 9px;
-        top			: 302px;
-		row-height	: 60px;
-	}
-	.refer_seperator{
-        width	: 295px;
-        height	: 1px;
-		left	: 5px;
-        top		: 59px;
-    }
-    .refer_name {
-		width				: 160px;
-		height				: 58px;
-		left                : 69px;
-		top                 : 1px;
-		font-family			: "Roboto";
-		font-weight         : regular;
-		font-size			: 17px;
-		text-align       	: left;
-		color 				: #313233;
-    }
-	.refer_datetext {
-		width				: 85px;
-		height				: 58px;
-		left                : 209px;
-        top                 : 1px;
-		font-family			: "Roboto";
-		font-weight         : light;
-		font-size			: 15px;
-		text-align       	: right;
-		color 				: #3fabe1;
-	}
-    
-	/**  ARE THE FOLLOWING TWO CLASSES NEEDED? DON'T THINK THEY'RE USED ANYWHERE.  */
-	.memsince{
-        background-color: 	: #3FABE1;
-        width				: 200px;
-		left                : 175px;
-		height				: 30px;
-        top                 : 35px;
-    }
-	.refer_text {
-        width				: 280px;
-		height				: 1px;
-		color 				: #d3d3d3;
-	}
+/**  Profile Picture of the other user  **/
+.details_userpic {
+    width	: 65px;
+    height	: 65px;
+    top		: 17px;
+    left	: 16px;
+    border	: 1px solid #6d6e71;
+}
+
+/**  Amount of the transfer  **/
+.details_amount {
+    width				: 213px;
+    height				: 40px;
+    top					: 60px;
+    left                : 88px;
+    font-family			: "Roboto";
+    font-weight         : medium;
+    font-size			: 40px;
+    text-align       	: center;
+    color 				: #3fabe1;
+    animation-name: bubble;
+    animation-duration: 2.05s;
+    animation-timing-function: ease;
+    animation-iteration-count: 1;
+}
+
+/**  Memo & Location Text **/
+.details_label_memo {
+    font-family		: "Roboto";
+    font-weight		: regular;
+    font-size		: 24px;
+    text-align		: center;
+    width			: 300px;
+    left			: 10px;
+    height			: 44px;
+    border			: 1px solid #dcddde;
+    border-radius	: 4px;
+}
+.details_label {
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 18px;
+    text-align          : center;
+    color 				: #6d6e71;
+    width				: 280px;
+    left                : 20px;
+    height				: 30px;
+}
+#details_status {
+    font-family		: "Roboto";
+    font-weight         : bold;
+    font-size			: 20px;
+}
+.details_label_location {
+    top					: 160px;
+    height				: 20px;
+    font-family			: "Roboto";
+    font-weight         : medium;
+    font-size			: 12px;
+    text-align          : center;
+    color 				: white;
+    background-color 	: rgba(0,0,0,0.65);
+}
+.details_label_location_4 {
+    top					: 97px;
+    height				: 19px;
+    font-family			: "Roboto";
+    font-weight         : bold;
+    font-size			: 12px;
+    text-align          : center;
+    color				: white;
+    background-color	: rgba(0,0,0,0.65);
+}
+.details_label1 {
+    left                : 20px;
+    width				: 280px;
+    height				: 30px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 15px;
+    text-align          : center;
+    color 				: #d3d3d3;
+}
+.details_btn_left {
+    left			: 8px;
+    top				: 430px;
+    width			: 148px;
+    height			: 50px;
+    font-size		: 22px;
+    color 			: white;
+    border-radius	: 5px;
+    font-family		: "Roboto";
+    font-weight     : light;
+    background-image: linear-gradient(#7fd034, #6ab029);
+    animation-name: moveUp_transDetailsBtns;
+    animation-duration: 1.3s;
+    animation-timing-function: ease-out;
+}
+.details_btn_left_4 {
+    top			: 350px;
+}
+.details_btn_right {
+    left				: 164px;
+    top					: 430px;
+    width				: 148px;
+    height				: 50px;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 22px;
+    background-image	: linear-gradient(#F5003D, #D21937);
+    animation-name: moveUp_transDetailsBtns;
+    animation-duration: 1.3s;
+    animation-timing-function: ease-out;
+}
+.details_btn_right_4 {
+    top     : 350px;
+}
+.details_button_center {
+    left			: 10px;
+    top				: 430px;
+    width			: 300px;
+    height			: 50px;
+    color 			: white;
+    border-radius	: 5px;
+    font-family		: "Roboto";
+    font-weight     : light;
+    font-size		: 22px;
+    background-image: linear-gradient(#F5003D, #D21937);
+    animation-name: moveUp_transDetailsBtns;
+    animation-duration: 1.3s;
+    animation-timing-function: ease-out;
+}
+.details_btn_remind {
+    left			: 8px;
+    top				: 430px;
+    width			: 148px;
+    height			: 50px;
+    color 			: white;
+    border-radius	: 5px;
+    font-family		: "Roboto";
+    font-weight     : light;
+    font-size		: 22px;
+    background-image: linear-gradient(#40a9de, #3b9cce);
+    animation-name: moveUp_transDetailsBtns;
+    animation-duration: 1.3s;
+    animation-timing-function: ease-out;
+}
+.details_btn_remind_4 {
+    top         : 350px;
+}
+
+
+/**  Circle Buttons at the bottom ('Pay Back'  FB  Twitter  'Dispute' **/
+.details_buttons {
+    width: 50px;
+    height: 50px;
+    top: 428px;
+}
+.details_buttons_4 {
+    width: 50px;
+    height: 50px;
+    top: 338px;
+}
+
+/**  Text labels immediately below each round button at the bottom of Transfer Details. **/
+.details_buttons_labels {
+    width				: 50px;
+    text-align          : center;
+    height				: 14px;
+    top					: 482px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 12px;
+    color 				: #5a5b5d;
+}
+.details_buttons_labels_4 {
+    width				: 50px;
+    text-align          : center;
+    height				: 14px;
+    top					: 392px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 12px;
+    color 				: #5a5b5d;
+}
+
+#details_payback {left : 15px;}
+#details_fb {left : 95px;}
+#details_fb_donate {left : 20px;}
+#details_twit {left : 175px;}
+#details_twit_donate {left : 140px;}
+#details_disp {left : 255px;}
+#details_disp_donate {left : 255px;}
+
+#mapLightBox_paraText {color:#464749;}
+
+/**************************************
+********    SETTINGS FLOW     ********
+**************************************/
+
+/**************************/
+/****   Main Settings  ****/
+/**************************/
+
+.table_glyph {
+    left        : 15px;
+    top         : 10px;
+    width      : 22px;
+    height      : 30px;
+    font-family : "FontAwesome";
+    font-size       : 20px;
+    color       : #3fabe1;
+    text-align: center;
+}	
+.table_arrow {
+    left        : 280px;
+    top         : 10px;
+    width       : 20px;
+    height      : 30px;
+    color       :  rgba(63,171,225,.8);
+    font-family : "FontAwesome";
+    font-size       : 23px;
+    text-align: right;
+}
+
+.background_gray { background-color: #efeff4; }
+
+#account_background {
+    top: 44px;
+    left: -1px;
+    width: 322px;
+    height: 64px;
+    background-color: white;
+    border: 1px solid;
+    border-color: rgba(188, 190, 192, 0.85);
+}
+
+#linked_account_name {
+    left		: 87px;
+    top			: 6px;
+    width		: 200px;
+    height		: 32px;
+    font-family	: "Roboto";
+    font-weight	: medium;
+    font-size	: 17px;
+    text-align	: left;
+    color		: #313233;
+}
+
+#linked_account_last4 {
+    left		: 73px;
+    top			: 35px;
+    width		: 200px;
+    height		: 16px;
+    font-family	: "Roboto";
+    font-weight	: light;
+    font-size	: 14px;
+    text-align	: left;
+    color		: #313233;
+}
+
+#remove_account {
+    color		: #a94442;
+    top			: 2px;
+    left		: 262px;
+    width		: 50px;
+    height		: 60px;
+    font-family	: "Roboto";
+    font-weight	: regular;
+    font-size	: 12px;
+    text-align	: right;
+}
+#remove_account_glyph {
+    font-family : "FontAwesome";
+    font-size   : 24px;
+    animation-name				: zoom;
+    animation-duration			: 0.7s;
+    animation-timing-function	: ease;
+}
+.divider {
+    left: 40px;
+    width: 270px;
+    height: 1px;
+    background-color: rgba(188,190,192,0.4);
+}
+table-view#settings {
+    width			: 322px;
+    height			: 150px;
+    top				: 200px;
+    left			: -1px;
+    background-color: white;
+    row-height		: 50px;
+    separator-style : single-line;
+    separator-color	: rgba(188,190,192,0.9);
+    border: 1px solid;
+    border-color: rgba(188, 190, 192, 0.85);
+}
+table-view#settings2 {
+    width			: 322px;
+    height			: 150px;
+    top				: 180px;
+    left			: -1px;
+    background-color: white;
+    row-height		: 50px;
+    separator-style : single-line;
+    separator-color	: rgba(188,190,192,0.9);
+    border			: 1px solid rgb(188,190,192);
+}
+table-view#settings_resetpw {
+    width				: 322px;
+    height              : 150px;
+    top					: 84px;
+    left				: -1px;
+    background-color	: white;
+    row-height			: 50px;
+    separator-style 	: single-line;
+    separator-color		: rgba(188,190,192,0.9);
+    border: 1px solid;
+    border-color: rgba(188, 190, 192, 0.85);
+}
+/**  Left side text label. **/
+.settings_table_label {
+    width		: 250px;
+    height		: 50px;
+    top			: 0px;
+    left		: 50px;
+    color		: #313233;
+    font-family	: "Roboto";
+    font-weight	: regular;
+    font-size	: 18px;
+    text-align	: left;
+}
+/**  Gray Signout Button. **/
+#button_signout {
+    left				: 30px;
+    top					: 415px;
+    width				: 260px;
+    height				: 44px;
+    font-size			: 18px;
+}
+#button_signout_4 {
+    left				: 30px;
+    top					: 364px;
+    width				: 260px;
+    height				: 44px;
+    font-size			: 18px;
+}
+/**************************/
+/****  Reset Password  ****/
+/**************************/
+
+/**  Reset Password Screen --> Reset PW Table  **/
+.settings_resetpass_labels {
+    color       : #3fabe1;
+    width		: 250px;
+    height		: 50px;
+    top			: 0px;
+    left		: 20px;
+    font-family	: "Roboto";
+    font-weight	: regular;
+    font-size	: 18px;
+    text-align	: left;
+}
+
+.resetpw_left_label	{ 
+    width			: 170px;
+    left			: 15px;
+    font-size		: 16px;
+}
+
+.resetpw_right_label {
+    width			: 140px;
+    height			: 45px;
+    left			: 171px;
+    top				: 0px;
+    color			: #3fabe1;
+    font-family		: "Roboto";
+    font-size		: 16px;
+    font-weight		: light;
+    text-align		: right;
+}
+
+.password_strength_label {
+    width			: 125px;
+    height			: 15px;
+    left			: 55px;
+    top				: 170px;
+    color			: #939598;
+    font-family		: "Roboto";
+    font-size		: 14px;
+    font-weight		: regular;
+    text-align		: left;
+}
+
+.password_strength_feedback {
+    width			: 120px;
+    height			: 15px;
+    left			: 185px;
+    top				: 170px;
+    color			: #c72127;
+    font-family		: "Roboto";
+    font-size		: 14px;
+    font-weight		: regular;
+    text-align		: left;
+}
+
+.resetpw_match {
+    width			: 125px;
+    height			: 10px;
+    left			: 186px;
+    top				: 33px;
+    font-family		: "Roboto";
+    font-size		: 16px;
+    font-weight		: regular;
+    text-align		: center;
+    text-transform	: uppercase;
+}
+
+#resetpw_check_icon {
+    width			: 12px;
+    height			: 8px;
+    top				: 32px;
+    left			: 270px;
+    background-image: url(check-icon-small.png);
+}
+
+/**************************/  
+/****  Refer a Friend  ****/
+/**************************/
+
+#refer_introtext {
+    width			: 300px;
+    height			: 30px;
+    top				: 15px;
+    left			: 10px;
+    color			: #313233;
+    font-family		: "Roboto";
+    font-weight		: regular;
+    font-size		: 23px;
+    text-align		: center;
+}
+#refer_invitecode {
+    width			: 300px;
+    height			: 45px;
+    top				: 65px;
+    left			: 10px;
+    color			: #3fabe1;
+    font-family		: "Roboto";
+    font-weight		: bold;
+    font-size		: 44px;
+    font-stretch	: expanded;
+    text-align		: center;
+    text-transform	: uppercase;
+}
+.refer_header {
+    left			: 15px;
+    width			: 250px;
+    height			: 25px;
+    color			: #313233;
+    font-family		: "Roboto";
+    font-weight		: regular;
+    font-size		: 17px;
+    text-align		: left;
+}
+
+/**  Circle Buttons at the bottom ('Pay Back'  FB  Twitter  'Dispute' **/
+.refer_buttons {
+    width				: 50px;
+    height				: 50px;
+    top					: 170px;
+}  
+#refer_sms {
+    left        : 24px;
+    background-image : url(sms-icon.png);
+}
+#refer_fb {
+    left        : 98px;
+    background-image : url(fb-icon100x100.png);
+}
+#refer_twit {
+    left        : 172px;
+    background-image : url(twitter-icon.png);
+}
+#refer_email {
+    left        : 246px;
+    background-image : url(email-icon.png);
+}
+
+/**  Text labels immediately below each referral method (SMS, FB, Twitter, Email) button. **/
+.refer_buttons_labels {
+    width				: 60px;
+    height				: 17px;
+    top					: 224px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 13px;
+    text-align      	: center;
+    color 				: #6d6e71;
+}
+
+/**  Sets the Table styling for the list of users a person has referred. **/
+table-view#refer {
+    width		: 302px;
+    height		: 170px;
+    left		: 9px;
+    top			: 302px;
+    row-height	: 60px;
+}
+.refer_seperator{
+    width	: 295px;
+    height	: 1px;
+    left	: 5px;
+    top		: 59px;
+}
+.refer_name {
+    width				: 160px;
+    height				: 58px;
+    left                : 69px;
+    top                 : 1px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 17px;
+    text-align       	: left;
+    color 				: #313233;
+}
+.refer_datetext {
+    width				: 85px;
+    height				: 58px;
+    left                : 209px;
+    top                 : 1px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 15px;
+    text-align       	: right;
+    color 				: #3fabe1;
+}
+
+/**  ARE THE FOLLOWING TWO CLASSES NEEDED? DON'T THINK THEY'RE USED ANYWHERE.  */
+.memsince{
+    background-color: 	: #3FABE1;
+    width				: 200px;
+    left                : 175px;
+    height				: 30px;
+    top                 : 35px;
+}
+.refer_text {
+    width				: 280px;
+    height				: 1px;
+    color 				: #d3d3d3;
+}
 
 /*************************/  
 /*****     STATS     *****/
 /*************************/
-	table-view.stats {
-		height			: 347px;
-		width			: 300px;
-		top				: 80px;
-		left			: 0px;
-		background-color: white;
-		row-height		: 46px;
-		separator-style : single-line;
-		separator-color : rgba(188,190,192,.5);
-	}
-    table-view.stats_top_friends {
-		left			: 0px;
-		top				: 80px;
-		width			: 300px;
-		height			: 364px;
-		background-color: white;
-		row-height		: 64px;
-		separator-style : single-line;
-		separator-color : rgba(188,190,192,.3);
-	}
-    table-view.stats_top_friends_empty {
-        left			: 0px;
-        top				: 80px;
-        width			: 300px;
-        background-color: white;
-        row-height		: 68px;
-        separator-style : none;
-    }
-	.stats_header {
-		width			: 300px;
-		height			: 30px;
-		top				: 0px;
-		left			: 0px;
-		color			: #414042;
-		font-family		: "Roboto";
-		font-weight		: regular;
-		font-size		: 20px;
-		text-align		: center;
-	}
-	.stats_table_left_lable {
-		left			: 10px;
-		top				: 0px;
-		width			: 210px;
-		height			: 50px;
-		color			: #313233;
-		font-family		: "Roboto";
-		font-weight		: light;
-		font-size		: 17px;
-		text-align		: left;
-	}
-	.stats_table_right_lable {
-		left			: 227px;
-		top				: 0px;
-		width			: 73px;
-		height			: 50px;
-		color			: #3fabe1;
-		font-family		: "Roboto";
-		font-weight		: medium;
-		font-size		: 17px;
-		text-align		: center;
-	}
-	.stats_table_right_lable1 {
-		left			: 140px;
-		top				: 17px;
-		width			: 200px;
-		height			: 20px;
-		color			: #3fabe1;
-		font-family		: "Roboto";
-		font-weight		: light;
-		font-size		: 14px;
-		text-align		: center;
-	}
-    .stats_topFriends_label {
-		left			: 80px;
-		top				: 10px;
-		width			: 200px;
-		height			: 24px;
-		color			: #313233;
-		font-family		: "Roboto";
-		font-weight		: light;
-		font-size		: 19px;
-		text-align		: left;
-	}
+table-view.stats {
+    height			: 347px;
+    width			: 300px;
+    top				: 80px;
+    left			: 0px;
+    background-color: white;
+    row-height		: 46px;
+    separator-style : single-line;
+    separator-color : rgba(188,190,192,.5);
+}
+table-view.stats_top_friends {
+    left			: 0px;
+    top				: 80px;
+    width			: 300px;
+    height			: 364px;
+    background-color: white;
+    row-height		: 64px;
+    separator-style : single-line;
+    separator-color : rgba(188,190,192,.3);
+}
+table-view.stats_top_friends_empty {
+    left			: 0px;
+    top				: 80px;
+    width			: 300px;
+    background-color: white;
+    row-height		: 68px;
+    separator-style : none;
+}
+.stats_header {
+    width			: 300px;
+    height			: 30px;
+    top				: 0px;
+    left			: 0px;
+    color			: #414042;
+    font-family		: "Roboto";
+    font-weight		: regular;
+    font-size		: 20px;
+    text-align		: center;
+}
+.stats_table_left_lable {
+    left			: 10px;
+    top				: 0px;
+    width			: 210px;
+    height			: 50px;
+    color			: #313233;
+    font-family		: "Roboto";
+    font-weight		: light;
+    font-size		: 17px;
+    text-align		: left;
+}
+.stats_table_right_lable {
+    left			: 227px;
+    top				: 0px;
+    width			: 73px;
+    height			: 50px;
+    color			: #3fabe1;
+    font-family		: "Roboto";
+    font-weight		: medium;
+    font-size		: 17px;
+    text-align		: center;
+}
+.stats_table_right_lable1 {
+    left			: 140px;
+    top				: 17px;
+    width			: 200px;
+    height			: 20px;
+    color			: #3fabe1;
+    font-family		: "Roboto";
+    font-weight		: light;
+    font-size		: 14px;
+    text-align		: center;
+}
+.stats_topFriends_label {
+    left			: 80px;
+    top				: 10px;
+    width			: 200px;
+    height			: 24px;
+    color			: #313233;
+    font-family		: "Roboto";
+    font-weight		: light;
+    font-size		: 19px;
+    text-align		: left;
+}
 
-	.stats_circle {
-		top			: 15px;
-		shape		: ellipse;
-		width		: 55px;
-		height		: 55px;
-	}
-	#stats_circle_profile_active 		{ 
-        left						: 121px;
-        background-image			: url(stats-profile-active.png);
-		animation-name				: floatingStatsCircle;
-		animation-duration			: 3s;
-		animation-iteration-count	: infinite;
-		animation-timing-function	: ease;
-    }
-	#stats_circle_profile_inactive 		{ 
-        background-image: url(stats-profile-inactive.png);
-        left  : 121px;
-    }
-	#stats_circle_transfers_active 		{ 
-        background-image: url(stats-transfers-active.png);
-        left : 33px;
-		animation-name				: floatingStatsCircle;
-		animation-duration			: 2s;	
-		animation-iteration-count	: infinite;
-		animation-timing-function	: ease;
-    }
-	#stats_circle_transfers_inactive 	{ 
-        background-image: url(stats-transfers-inactive.png);
-        left : 33px;
-    }
-	#stats_circle_donations_active 		{
-        background-image: url(stats-donations-active.png);
-        left :  209px;
-		animation-name				: floatingStatsCircle;
-		animation-duration			: 2s;	
-		animation-iteration-count	: infinite;
-		animation-timing-function	: ease
-    }
-	#stats_circle_donations_inactive 	{ 
-        background-image: url(stats-donations-inactive.png);
-        left : 209px;
-    }
+.stats_circle {
+    top			: 15px;
+    shape		: ellipse;
+    width		: 55px;
+    height		: 55px;
+}
+#stats_circle_profile_active 		{ 
+    left						: 121px;
+    background-image			: url(stats-profile-active.png);
+    animation-name				: floatingStatsCircle;
+    animation-duration			: 3s;
+    animation-iteration-count	: infinite;
+    animation-timing-function	: ease;
+}
+#stats_circle_profile_inactive 		{ 
+    background-image: url(stats-profile-inactive.png);
+    left  : 121px;
+}
+#stats_circle_transfers_active 		{ 
+    background-image: url(stats-transfers-active.png);
+    left : 33px;
+    animation-name				: floatingStatsCircle;
+    animation-duration			: 2s;	
+    animation-iteration-count	: infinite;
+    animation-timing-function	: ease;
+}
+#stats_circle_transfers_inactive 	{ 
+    background-image: url(stats-transfers-inactive.png);
+    left : 33px;
+}
+#stats_circle_donations_active 		{
+    background-image: url(stats-donations-active.png);
+    left :  209px;
+    animation-name				: floatingStatsCircle;
+    animation-duration			: 2s;	
+    animation-iteration-count	: infinite;
+    animation-timing-function	: ease
+}
+#stats_circle_donations_inactive 	{ 
+    background-image: url(stats-donations-inactive.png);
+    left : 209px;
+}
 
- /*******************************************
-  ********* 	  ANIMATIONS 	    *********
-  *******************************************/
+/*******************************************
+********* 	  ANIMATIONS 	    *********
+*******************************************/
 
-	@keyframes howmuch_roll_left {
-        0% {
-			left: 150px;
-            rotation: 0;
-			scale: 1;
-            opacity : 1;
-		}
-        100% {
-			left: 5px;
-            rotation  : -6;
-			scale: .5;
-            opacity: 0;
-		}
-	}
-    @keyframes howmuch_roll_left_return {
-        0% {
-            left: 5px;
-            rotation: 0;
-			scale: .4;
-			opacity: 0;
-        }
-        100% {
-            left: 141px;
-            rotation: 4;
-			scale: 1;
-			opacity: 1;
-        }
+@keyframes howmuch_roll_left {
+    0% {
+        left: 150px;
+        rotation: 0;
+        scale: 1;
+        opacity : 1;
     }
-    @keyframes howmuch_roll_right {
-		0% {
-			left: 150px;
-            rotation: 0;
-			scale: 1;
-            opacity: 1;
-		}
-		100% {
-			left: 310px;
-            rotation  : 6;
-			scale: .5;
-            opacity : 0;
-		}
+    100% {
+        left: 5px;
+        rotation  : -6;
+        scale: .5;
+        opacity: 0;
     }
-    @keyframes howmuch_roll_right_return {
-		0% {
-			left: 310px;
-            rotation: 0;
-			scale: .1;
-			opacity: 0;
-		}
-		100% {
-			left: 141px;
-            rotation: -4;
-			scale: 1;
-			opacity: 1;
-		}
-	}
-	@keyframes bubble {
-		from {
-			opacity: .4;
-			scale: .15;
-		}
-		50% {scale: 1.1;}
-		65% {scale: .85;}
-		75% {scale: 1.1;}
-		85% {scale: .93;}
-		to {opacity: 1;
-			scale: 1;
-		}
-	}
-    .animate_bubble {
-        animation-name: bubble;
-        animation-duration: 1.35s;
-		animation-timing-function: ease;
-		animation-iteration-count: 1;
+}
+@keyframes howmuch_roll_left_return {
+    0% {
+        left: 5px;
+        rotation: 0;
+        scale: .4;
+        opacity: 0;
     }
-    .animate_bubble_slow {
-        animation-name: bubble;
-        animation-duration: 2.2s;
-		animation-timing-function: ease;
-		animation-iteration-count: 1;
+    100% {
+        left: 141px;
+        rotation: 4;
+        scale: 1;
+        opacity: 1;
     }
-    .animate_bubble_logo {
-        animation-name: bubble;
-        animation-duration: 2.2s;
-		animation-timing-function: ease;
-		animation-iteration-count: 1;
+}
+@keyframes howmuch_roll_right {
+    0% {
+        left: 150px;
+        rotation: 0;
+        scale: 1;
+        opacity: 1;
     }
-    .animate_bubble_tour {
-        animation-name: bubble;
-        animation-duration: 3.0s;
-		animation-timing-function: ease;
-		animation-iteration-count: 1;
+    100% {
+        left: 310px;
+        rotation  : 6;
+        scale: .5;
+        opacity : 0;
     }
-    @keyframes bubble_logo {
-		from {
-			opacity: .2;
-			scale: .1;
-		}
-		45% {scale: 1.18;}
-		62% {scale: .82;}
-		77% {scale: 1.1;}
-		84% {scale: .94;}
-		to {opacity: 1;
-			scale: 1;
-		}
-	}
-    @keyframes pulse {
-        from {
-			opacity: .5;
-			scale: 1;
-		}
-		20% {
-            scale: 1;
-        }
-        60% {
-            scale: 1.06;
-        }
-		to {
-            opacity: 1;
-			scale: 1;
-		}
+}
+@keyframes howmuch_roll_right_return {
+    0% {
+        left: 310px;
+        rotation: 0;
+        scale: .1;
+        opacity: 0;
     }
-    .animate_pulse {
-        animation-name: pulse;
-        animation-duration: 1.0s;
-		animation-timing-function: ease;
-		animation-iteration-count: 1;
+    100% {
+        left: 141px;
+        rotation: -4;
+        scale: 1;
+        opacity: 1;
     }
-    @keyframes fade_slogan {
-		from {
-			opacity: 0;
-			scale: .8;
-            left: -50px;
-		}
-		50% {
-            opacity: .2;
-            scale: 1.05;
-        }
-		70% {
-            opacity: .6;
-            scale: .96;
-            left: 200px;
-        }
-		to {
-            opacity: 1;
-			scale: 1;
-            left: 160px;
-		}
-	}
+}
+@keyframes bubble {
+    from {
+        opacity: .4;
+        scale: .15;
+    }
+    50% {scale: 1.1;}
+    65% {scale: .85;}
+    75% {scale: 1.1;}
+    85% {scale: .93;}
+    to {opacity: 1;
+        scale: 1;
+    }
+}
+.animate_bubble {
+    animation-name: bubble;
+    animation-duration: 1.35s;
+    animation-timing-function: ease;
+    animation-iteration-count: 1;
+}
+.animate_bubble_slow {
+    animation-name: bubble;
+    animation-duration: 2.2s;
+    animation-timing-function: ease;
+    animation-iteration-count: 1;
+}
+.animate_bubble_logo {
+    animation-name: bubble;
+    animation-duration: 2.2s;
+    animation-timing-function: ease;
+    animation-iteration-count: 1;
+}
+.animate_bubble_tour {
+    animation-name: bubble;
+    animation-duration: 3.0s;
+    animation-timing-function: ease;
+    animation-iteration-count: 1;
+}
+@keyframes bubble_logo {
+    from {
+        opacity: .2;
+        scale: .1;
+    }
+    45% {scale: 1.18;}
+    62% {scale: .82;}
+    77% {scale: 1.1;}
+    84% {scale: .94;}
+    to {opacity: 1;
+        scale: 1;
+    }
+}
+@keyframes pulse {
+    from {
+        opacity: .5;
+        scale: 1;
+    }
+    20% {
+        scale: 1;
+    }
+    60% {
+        scale: 1.06;
+    }
+    to {
+        opacity: 1;
+        scale: 1;
+    }
+}
+.animate_pulse {
+    animation-name: pulse;
+    animation-duration: 1.0s;
+    animation-timing-function: ease;
+    animation-iteration-count: 1;
+}
+@keyframes fade_slogan {
+    from {
+        opacity: 0;
+        scale: .8;
+        left: -50px;
+    }
+    50% {
+        opacity: .2;
+        scale: 1.05;
+    }
+    70% {
+        opacity: .6;
+        scale: .96;
+        left: 200px;
+    }
+    to {
+        opacity: 1;
+        scale: 1;
+        left: 160px;
+    }
+}
 
-    @keyframes zoom {
-		from {
-			opacity: .3;
-			scale: .2;
-		}
-		45% {scale: 1.12;}
-		62% {scale: .85;}
-		83% {scale: 1.05;}
-		to {opacity: 1;
-			scale: 1;
-		}
+@keyframes zoom {
+    from {
+        opacity: .3;
+        scale: .2;
     }
+    45% {scale: 1.12;}
+    62% {scale: .85;}
+    83% {scale: 1.05;}
+    to {opacity: 1;
+        scale: 1;
+    }
+}
 
 	
 /**  FLOATING Stats Circle Icon **/

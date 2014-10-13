@@ -58,6 +58,7 @@
 }
 -(void)viewDidDisappear:(BOOL)animated{
     [self.hud hide:YES];
+    [super viewDidDisappear:animated];
 }
 - (void)viewDidLoad
 {
@@ -1278,13 +1279,12 @@
             return;
         }
         else {
-            NSString *resultValue = [dictResultTransfer objectForKey:@"HandleRequestMoneyResult"];
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error #2651" message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            //NSString *resultValue = [dictResultTransfer objectForKey:@"HandleRequestMoneyResult"];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error #2651" message:@"Unfortunately something is not quite right. This is a polite way of saying we screwed up.  Please try your transfer again!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
             return;
         }
-        //UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"" message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        //[av show];
+
         transferFinished = YES;
         sendingMoney = NO;
     }

@@ -48,11 +48,13 @@
 }
 -(void)viewDidDisappear:(BOOL)animated{
     [self.hud hide:YES];
+    [super viewDidDisappear:animated];
 }
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     float top = 0.0f;
+
     RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
@@ -144,20 +146,17 @@
     [[assist shared]setneedsReload:NO];
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
--(void)Error:(NSError *)Error{
+-(void)Error:(NSError *)Error
+{
     [self.hud hide:YES];
-    
-    
-    
+
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
     [alert show];
-    
 }
 
 -(void)listen:(NSString *)result tagName:(NSString*)tagName

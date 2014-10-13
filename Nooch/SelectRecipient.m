@@ -204,6 +204,7 @@
 }
 -(void)viewDidDisappear:(BOOL)animated{
     [self.hud hide:YES];
+    [super viewDidDisappear:animated];
 }
 -(void)viewDidAppear:(BOOL)animated  {
     [super viewDidAppear:animated];

@@ -45,10 +45,8 @@ bool modal;
     // You should remove this in your app.
     [self failIfSimulator];
 
-    
     //Urban Airship 5+
     UAConfig *config = [UAConfig defaultConfig];
-    
     // Call takeOff (which creates the UAirship singleton)
     [UAirship takeOff:config];
     [UAPush shared].userNotificationTypes = (UIUserNotificationTypeAlert |
@@ -57,21 +55,12 @@ bool modal;
     [UAPush shared].userPushNotificationsEnabled = YES;
     // Set the icon badge to zero on startup (optional)
     [[UAPush shared] resetBadge];
-    
-    
+
     //google analytics
     [GAI sharedInstance].debug = NO;
     [GAI sharedInstance].dispatchInterval = 30;
     [GAI sharedInstance].trackUncaughtExceptions = YES;
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-36976317-2"];
-
-    // Override point for customization after application launch.
-  /*  NSMutableDictionary *takeOffOptions = [[NSMutableDictionary alloc] init];
-    [takeOffOptions setValue:launchOptions forKey:UAirshipTakeOffOptionsLaunchOptionsKey];
-    [UAirship takeOff:takeOffOptions];
-    [[UAPush shared] resetBadge];
-    [[UAPush shared] setPushEnabled:YES];
-    [[UAPush shared] registerForRemoteNotificationTypes: UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];*/
     
     [self application:nil handleOpenURL:[NSURL URLWithString:@"Nooch:"]];
     [self.window makeKeyAndVisible];
@@ -81,7 +70,6 @@ bool modal;
 
     [Appirater appLaunched:YES];
     NSSetUncaughtExceptionHandler(&exceptionHandler);
-   // [[UIApplication sharedApplication]registerForRemoteNotificationTypes:UIRemoteNotificationTypeNone];
     return YES;
 }
 
@@ -259,18 +247,14 @@ void exceptionHandler(NSException *exception){
     else
     {
         [[UAPush shared] appReceivedRemoteNotification:userInfo applicationState:application.applicationState];
-//    [[UAPush shared] handleNotification:userInfo
-//                       applicationState:application.applicationState];
-    // Reset the badge if you are using that functionality
-    
-   
-       [[UAPush shared] resetBadge];
+        // Reset the badge if you are using that functionality
+        [[UAPush shared] resetBadge];
         NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
         
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[UIApplication sharedApplication] applicationIconBadgeNumber]+1]; 
-    }// zero badge after push received
-
+    }
 }
+
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
     UA_LINFO(@"Received remote notification (in appDelegate): %@", userInfo);
     
@@ -284,6 +268,7 @@ void exceptionHandler(NSException *exception){
     
     completionHandler(UIBackgroundFetchResultNoData);
 }
+
 - (void)failIfSimulator {
     if ([[[UIDevice currentDevice] model] rangeOfString:@"Simulator"].location != NSNotFound) {
         UIAlertView *someError = [[UIAlertView alloc] initWithTitle:@"Notice"
@@ -297,7 +282,6 @@ void exceptionHandler(NSException *exception){
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [someError show];
         });
-        
     }
 }
 

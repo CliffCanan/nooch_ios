@@ -880,9 +880,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [favoritesOBJ setDelegate:self];
     [favoritesOBJ get_favorites];
 }
--(void)viewDidDisappear:(BOOL)animated{
-      [self.hud hide:YES];
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [self.hud hide:YES];
+    [super viewDidDisappear:animated];
 }
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
