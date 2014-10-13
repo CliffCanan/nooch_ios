@@ -8,11 +8,11 @@
 
 #import "AppDelegate.h"
 #import "UAirship.h"
+#import "UAConfig.h"
 #import "UAPush.h"
 #import <CoreTelephony/CTCallCenter.h>
 #import "ReEnterPin.h"
 #import "ProfileInfo.h"
-//#import "ECSlidingViewController.h"
 #import "METoast.h"
 #import "Appirater.h"
 @implementation AppDelegate
@@ -36,11 +36,29 @@ bool modal;
     inactiveDate = [NSDate date];
     [NSUserDefaults resetStandardUserDefaults];
     [self.window setUserInteractionEnabled:YES];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectCheck:) name:kReachabilityChangedNotification object:nil];
     hostReach = [Reachability reachabilityWithHostName:@"www.google.com"];
     internetReach = [Reachability reachabilityForInternetConnection];
     [internetReach startNotifier];
+    // Display a UIAlertView warning developers that push notifications do not work in the simulator
+    // You should remove this in your app.
+    [self failIfSimulator];
 
+    
+    //Urban Airship 5+
+    UAConfig *config = [UAConfig defaultConfig];
+    
+    // Call takeOff (which creates the UAirship singleton)
+    [UAirship takeOff:config];
+    [UAPush shared].userNotificationTypes = (UIUserNotificationTypeAlert |
+                                             UIUserNotificationTypeBadge |
+                                             UIUserNotificationTypeSound);
+    [UAPush shared].userPushNotificationsEnabled = YES;
+    // Set the icon badge to zero on startup (optional)
+    [[UAPush shared] resetBadge];
+    
+    
     //google analytics
     [GAI sharedInstance].debug = NO;
     [GAI sharedInstance].dispatchInterval = 30;
@@ -48,12 +66,13 @@ bool modal;
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-36976317-2"];
 
     // Override point for customization after application launch.
-    NSMutableDictionary *takeOffOptions = [[NSMutableDictionary alloc] init];
+  /*  NSMutableDictionary *takeOffOptions = [[NSMutableDictionary alloc] init];
     [takeOffOptions setValue:launchOptions forKey:UAirshipTakeOffOptionsLaunchOptionsKey];
     [UAirship takeOff:takeOffOptions];
     [[UAPush shared] resetBadge];
     [[UAPush shared] setPushEnabled:YES];
-    [[UAPush shared] registerForRemoteNotificationTypes: UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];
+    [[UAPush shared] registerForRemoteNotificationTypes: UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];*/
+    
     [self application:nil handleOpenURL:[NSURL URLWithString:@"Nooch:"]];
     [self.window makeKeyAndVisible];
 
@@ -176,19 +195,23 @@ void exceptionHandler(NSException *exception){
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    // Set the icon badge to zero on resume (optional)
+    [[UAPush shared] resetBadge];
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application{
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    [UAirship land];
+    //[UAirship land];
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     NSString *deviceTokens = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     deviceTokens = [deviceTokens stringByReplacingOccurrencesOfString:@" " withString:@""];
-    [[UAPush shared] registerDeviceToken:deviceToken];
+    [[UAPush shared] appRegisteredForRemoteNotificationsWithDeviceToken:deviceToken];
+    
+  //  [[UAPush shared] registerDeviceToken:deviceToken];
     [[NSUserDefaults standardUserDefaults] setValue:deviceTokens forKey:@"DeviceToken"];
     NSLog(@"DeviceToken%@",deviceToken);
 }
@@ -226,17 +249,47 @@ void exceptionHandler(NSException *exception){
     }
     else
     {
-    [[UAPush shared] handleNotification:userInfo
-                       applicationState:application.applicationState];
+        [[UAPush shared] appReceivedRemoteNotification:userInfo applicationState:application.applicationState];
+//    [[UAPush shared] handleNotification:userInfo
+//                       applicationState:application.applicationState];
     // Reset the badge if you are using that functionality
     
-    [[UAPush shared] setBadgeNumber:0];
-    [[UAPush shared] resetBadge];
+   
+       [[UAPush shared] resetBadge];
         NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
         
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[UIApplication sharedApplication] applicationIconBadgeNumber]+1]; 
     }// zero badge after push received
 
+}
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
+    UA_LINFO(@"Received remote notification (in appDelegate): %@", userInfo);
+    
+    // Optionally provide a delegate that will be used to handle notifications received while the app is running
+    // [UAPush shared].pushNotificationDelegate = your custom push delegate class conforming to the UAPushNotificationDelegate protocol
+    
+    // Reset the badge after a push is received in a active or inactive state
+    if (application.applicationState != UIApplicationStateBackground) {
+        [[UAPush shared] resetBadge];
+    }
+    
+    completionHandler(UIBackgroundFetchResultNoData);
+}
+- (void)failIfSimulator {
+    if ([[[UIDevice currentDevice] model] rangeOfString:@"Simulator"].location != NSNotFound) {
+        UIAlertView *someError = [[UIAlertView alloc] initWithTitle:@"Notice"
+                                                            message:@"You will not be able to receive push notifications in the simulator."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        
+        // Let the UI finish launching first so it doesn't complain about the lack of a root view controller
+        // Delay execution of the block for 1/2 second.
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [someError show];
+        });
+        
+    }
 }
 
 -(BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
