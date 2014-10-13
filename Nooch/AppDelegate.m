@@ -95,9 +95,18 @@ bool modal;
         [noConnectionView removeFromSuperview];
         [self.window setUserInteractionEnabled:YES];
     }
-    else if (![self.window.subviews containsObject:noConnectionView] && netStat == NotReachable){
-        noConnectionView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20, 320, [[UIScreen mainScreen] bounds].size.height-30)];
-        noConnectionView.image = [UIImage imageNamed:@"No-Internet-Full-Screen.png"];
+    else if (![self.window.subviews containsObject:noConnectionView] && netStat == NotReachable)
+    {
+        noConnectionView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20,320, [[UIScreen mainScreen] bounds].size.height-20)];
+        if ([[UIScreen mainScreen] bounds].size.height < 500) {
+            noConnectionView.image = [UIImage imageNamed:@"No-Internet-Full-Screen_sm"];
+        }
+        else if ([[UIScreen mainScreen] bounds].size.height < 1200) {
+            noConnectionView.image = [UIImage imageNamed:@"No-Internet-Full-Screen_medium"];
+        }
+        else if ([[UIScreen mainScreen] bounds].size.height > 1200) {
+            noConnectionView.image = [UIImage imageNamed:@"No-Internet-Full-Screen_lg"];
+        }
         [self.window addSubview:noConnectionView];
         [self.window setUserInteractionEnabled:NO];
     }
