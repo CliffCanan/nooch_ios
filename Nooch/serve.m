@@ -779,8 +779,8 @@ NSString *amnt;
            ![[result objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] &&
            ![[result objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] &&
            ![[result objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] &&
-           ![[result objectForKey:@"Result"] containsString:@"Your account has been temporarily blocked."] &&
-           result != nil)
+            [[result objectForKey:@"Result"] rangeOfString:@"Your account has been temporarily blocked."].location == NSNotFound &&
+              result != nil)
         {
             NSString * token = [result objectForKey:@"Result"];
             //storing the token

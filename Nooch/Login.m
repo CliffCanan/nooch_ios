@@ -459,7 +459,7 @@
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] &&
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] &&
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] &&
-            ![[loginResult objectForKey:@"Result"] containsString:@"Your account has been temporarily blocked."] &&
+             [[loginResult objectForKey:@"Result"] rangeOfString:@"Your account has been temporarily blocked."].location == NSNotFound &&
             loginResult != nil)
         {
             serve * getDetails = [serve new];
@@ -540,7 +540,8 @@
         }
 
         else if ( [loginResult objectForKey:@"Result"] &&
-                 [[loginResult objectForKey:@"Result"] containsString:@"Your account has been temporarily blocked."] && loginResult != nil)
+                 [[loginResult objectForKey:@"Result"] rangeOfString:@"Your account has been temporarily blocked."].location != NSNotFound &&
+                 loginResult != nil)
         {
             [self.hud hide:YES];
             
@@ -548,7 +549,7 @@
             {
                 UIAlertController * alert = [UIAlertController
                                              alertControllerWithTitle:@"Account Temporarily Suspended"
-                                             message:@"To keep Nooch safe your account has been temporarily suspended because you entered an incorrect password too many times./n/nIn most cases your account will be automatically un-suspended in 24 hours.  Or, you can always contact us via email if this is a mistake or error./n/nWe apologize for this inconvenience, please understand it is only to protect your account."
+                                             message:@"To keep Nooch safe your account has been temporarily suspended because you entered an incorrect password too many times.\n\nIn most cases your account will be automatically un-suspended in 24 hours. You can always contact support if this is a mistake or error.\n\nWe apologize for this inconvenience, please understand it is only to protect your account."
                                              preferredStyle:UIAlertControllerStyleAlert];
                 
                 UIAlertAction * ok = [UIAlertAction
@@ -602,7 +603,7 @@
             }
             else // iOS 7 and prior
             {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"To keep Nooch safe your account has been temporarily suspended because you entered an incorrect password too many times./n/nIn most cases your account will be automatically un-suspended in 24 hours.  Or, you can always contact us via email if this is a mistake or error./n/nWe apologize for this inconvenience, please understand it is only to protect your account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"To keep Nooch safe your account has been temporarily suspended because you entered an incorrect password too many times.\n\nIn most cases your account will be automatically un-suspended in 24 hours. You can always contact support if this is a mistake or error.\n\nWe apologize for this inconvenience, please understand it is only to protect your account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
                 [alert setTag:600];
                 [alert show];
             }
