@@ -53,7 +53,17 @@
 {
     [super viewDidAppear:animated];
     float top = 0.0f;
+    RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
+    spinner1.color = [UIColor whiteColor];
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.hud];
     
+    self.hud.labelText = @"Loading Nooch's Terms of Service";
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.customView = spinner1;
+    self.hud.delegate = self;
+    [self.hud show:YES];
+
     if (isfromRegister)
     {
         UIView * nav_view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
@@ -87,20 +97,8 @@
         UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
         [self.navigationItem setLeftBarButtonItem:menu];
     }
-    
-    RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
-    spinner1.color = [UIColor whiteColor];
-    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:self.hud];
 
-    self.hud.labelText = @"Loading Nooch's Terms of Service";
-//    [spinner1 startAnimating];
-    self.hud.mode = MBProgressHUDModeCustomView;
-    self.hud.customView = spinner1;
-    self.hud.delegate = self;
-    [self.hud show:YES];
-
-    NSURL *webURL = [NSURL URLWithString:@"https://www.nooch.com/tos"];
+    NSURL * webURL = [NSURL URLWithString:@"https://www.nooch.com/tos"];
     termsView = [[UIWebView alloc]initWithFrame:CGRectMake(0, top, 320, [[UIScreen mainScreen] bounds].size.height - 62)];
     termsView.delegate = self;
     
@@ -110,7 +108,6 @@
     termsView.scrollView.hidden = NO;
     [termsView setMultipleTouchEnabled:YES];
     [self.view addSubview:termsView];
-
 }
 
 -(void)dismissView:(id)sender{

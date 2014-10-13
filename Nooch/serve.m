@@ -360,10 +360,9 @@ NSString *amnt;
     [dictnew setObject:email forKey:@"RecoveryMail"];
     [dictnew setObject:password forKey:@"Password"];
     [dictnew setObject:pin forKey:@"PinNumber"];
-    //inviteCode
     [dictnew setObject:inv forKey:@"inviteCode"];
-    [dictnew setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"] forKey:@"deviceTokenId"];
-    //    [dictnew setObject:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"udId"];
+    // [dictnew setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"] forKey:@"deviceTokenId"];
+    // [dictnew setObject:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"udId"];
     [dictnew setObject:@"" forKey:@"friendRequestId"];
     [dictnew setObject:@"" forKey:@"invitedFriendFacebookId"];
     [dictnew setObject:@"" forKey:@"facebookAccountLogin"];
@@ -630,8 +629,6 @@ NSString *amnt;
     }
     NSLog(@"Error aya %@",error);
     [self.Delegate Error:error];
-
-    
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -735,7 +732,7 @@ NSString *amnt;
     {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         
-        NSError* error;
+        NSError * error;
         Dictresponse = [NSJSONSerialization
                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
@@ -782,7 +779,8 @@ NSString *amnt;
            ![[result objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] &&
            ![[result objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] &&
            ![[result objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] &&
-           result != nil)
+            [[result objectForKey:@"Result"] rangeOfString:@"Your account has been temporarily blocked."].location == NSNotFound &&
+              result != nil)
         {
             NSString * token = [result objectForKey:@"Result"];
             //storing the token
@@ -1696,31 +1694,30 @@ NSString *amnt;
 {
     self.responseData = [[NSMutableData alloc] init];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    
-    NSString *urlString = [NSString stringWithFormat:@"%@/SaveMemberTransId",ServerUrl];
-    
-    NSURL *url = [NSURL URLWithString:urlString];
-    dictInv=[[NSMutableDictionary alloc]init];
-    
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
+
+    NSString * urlString = [NSString stringWithFormat:@"%@/SaveMemberTransId",ServerUrl];
+    NSURL * url = [NSURL URLWithString:urlString];
+    dictInv = [[NSMutableDictionary alloc]init];
+
+    NSUserDefaults * defaults=[NSUserDefaults standardUserDefaults];
+
     [dictInv setObject:trans forKey:@"KNoxInput"];
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
-    
-    NSError *error;
+
+    NSError * error;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
     postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
     requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     [requestInv setHTTPMethod:@"POST"];
     [requestInv setValue:postLengthInv forHTTPHeaderField:@"Content-Length"];
     [requestInv setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [requestInv setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
     [requestInv setHTTPBody:postDataInv];
-    
+
     connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
-    
+
     if (!connectionInv)
         NSLog(@"connect error");
 }
