@@ -1,5 +1,5 @@
 /*
- Copyright 2009-2012 Urban Airship Inc. All rights reserved.
+ Copyright 2009-2014 Urban Airship Inc. All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
@@ -25,15 +25,45 @@
 
 #import <UIKit/UIKit.h>
 
-typedef enum _UALogLevel {
+/**
+ * Represents the possible log levels.
+ */
+typedef NS_ENUM(NSInteger, UALogLevel) {
+    /**
+     * Undefined log level.
+     */
     UALogLevelUndefined = -1,
+
+    /**
+     * No log messages.
+     */
     UALogLevelNone = 0,
+
+    /**
+     * Log error messages.
+     */
     UALogLevelError = 1,
+
+    /**
+     * Log warning messages.
+     */
     UALogLevelWarn = 2,
+
+    /**
+     * Log informative messages.
+     */
     UALogLevelInfo = 3,
+
+    /**
+     * Log debugging messages.
+     */
     UALogLevelDebug = 4,
+
+    /**
+     * Log detailed tracing messages.
+     */
     UALogLevelTrace = 5
-} UALogLevel;
+};
 
 
 #define UA_LEVEL_LOG_THREAD(level, levelString, fmt, ...) \
@@ -59,7 +89,7 @@ typedef enum _UALogLevel {
 #endif
 
 extern BOOL uaLoggingEnabled; // Default is true
-extern UALogLevel uaLogLevel; // Default is UALogLevelDebug
+extern UALogLevel uaLogLevel; // Default is UALogLevelError
 
 #define UA_LTRACE(fmt, ...) UA_LEVEL_LOG(UALogLevelTrace, @"T", fmt, ##__VA_ARGS__)
 #define UA_LDEBUG(fmt, ...) UA_LEVEL_LOG(UALogLevelDebug, @"D", fmt, ##__VA_ARGS__)
@@ -71,154 +101,101 @@ extern UALogLevel uaLogLevel; // Default is UALogLevelDebug
 
 // constants
 #define kAirshipProductionServer @"https://device-api.urbanairship.com"
-
-//legacy paths
-#define kUAOldDirectory [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, \
-NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString: @"/ua/"]
-
-#define kUAOldDownloadDirectory [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, \
-NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString: @"/"]
-
-// color
-#define RGBA(r,g,b,a) [UIColor colorWithRed: r/255.0f green: g/255.0f \
-blue: b/255.0f alpha: a]
-
-#define BG_RGBA(r,g,b,a) CGContextSetRGBFillColor(context, r/255.0f, \
-g/255.0f, b/255.0f, a)
-
-#define kUpdateFGColor RGBA(255, 131, 48, 1)
-#define kUpdateBGColor RGBA(255, 228, 201, 1)
-
-#define kInstalledFGColor RGBA(60, 150, 60, 1)
-#define kInstalledBGColor RGBA(185, 220, 185, 1)
-
-#define kDownloadingFGColor RGBA(45, 138, 193, 1)
-#define kDownloadingBGColor RGBA(173, 213, 237, 1)
-
-#define kPriceFGColor [UIColor darkTextColor]
-#define kPriceBorderColor RGBA(185, 185, 185, 1)
-#define kPriceBGColor RGBA(217, 217, 217, 1)
-
-// tag
-#define __UA_DEPRECATED __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_NA,__MAC_NA,__IPHONE_3_0,__IPHONE_3_0)
-
-// code block
-#define RELEASE_SAFELY(__POINTER) { [__POINTER release]; __POINTER = nil; }
+#define kAnalyticsProductionServer @"https://combine.urbanairship.com"
+#define kUAProductionLandingPageContentURL @"https://dl.urbanairship.com/aaa"
 
 #ifdef _UA_VERSION
 #define UA_VERSION @ _UA_VERSION
 #else
-#define UA_VERSION @ "1.1.2"
+#define UA_VERSION @ "0.0.0"
 #endif
 
-#define UA_VERSION_INTERFACE(CLASSNAME)  \
+#define UA_VERSION_INTERFACE(CLASSNAME) \
 @interface CLASSNAME : NSObject         \
 + (NSString *)get;                      \
 @end
 
 
-#define UA_VERSION_IMPLEMENTATION(CLASSNAME, VERSION_STR)    \
+#define UA_VERSION_IMPLEMENTATION(CLASSNAME, VERSION_STR)   \
 @implementation CLASSNAME                                   \
 + (NSString *)get {                                         \
-return VERSION_STR;                                     \
+return VERSION_STR;                                         \
 }                                                           \
 @end
 
 
-#define SINGLETON_INTERFACE(CLASSNAME)  \
-+ (CLASSNAME*)shared;\
-- (void)forceRelease;
+#define SINGLETON_INTERFACE(CLASSNAME)                                                      \
++ (CLASSNAME*)shared;                                                                       \
 
+#define SINGLETON_IMPLEMENTATION(CLASSNAME)                                                 \
+                                                                                            \
+static CLASSNAME* g_shared##CLASSNAME = nil;                                                \
+static dispatch_once_t sharedOncePredicate##CLASSNAME;                                      \
+static dispatch_once_t allocOncePredicate##CLASSNAME;                                                  \
+\
++ (CLASSNAME*)shared                                                                        \
+{                                                                                           \
+\
+dispatch_once(&sharedOncePredicate##CLASSNAME, ^{                                                      \
+g_shared##CLASSNAME = [[self alloc] init];                                                  \
+});                                                                                         \
+return g_shared##CLASSNAME;                                                                 \
+}                                                                                           \
+\
++ (id)allocWithZone:(NSZone*)zone                                                           \
+{                                                                                           \
+dispatch_once(&allocOncePredicate##CLASSNAME, ^{                                                       \
+if (g_shared##CLASSNAME == nil) {                                                           \
+g_shared##CLASSNAME = [super allocWithZone:zone];                                           \
+}                                                                                           \
+});                                                                                         \
+return g_shared##CLASSNAME;                                                                 \
+}                                                                                           \
+\
+- (id)copyWithZone:(NSZone*)zone                                                            \
+{                                                                                           \
+return self;                                                                                \
+}                                                                                           \
 
-#define SINGLETON_IMPLEMENTATION(CLASSNAME)         \
-                                                    \
-static CLASSNAME* g_shared##CLASSNAME = nil;        \
-\
-+ (CLASSNAME*)shared                                \
-{                                                   \
-if (g_shared##CLASSNAME != nil) {                   \
-return g_shared##CLASSNAME;                         \
-}                                                   \
-\
-@synchronized(self) {                               \
-if (g_shared##CLASSNAME == nil) {                   \
-    g_shared##CLASSNAME = [[self alloc] init];      \
-}                                                   \
-}                                                   \
-\
-return g_shared##CLASSNAME;                         \
-}                                                   \
-\
-+ (id)allocWithZone:(NSZone*)zone                   \
-{                                                   \
-@synchronized(self) {                               \
-if (g_shared##CLASSNAME == nil) {                   \
-g_shared##CLASSNAME = [super allocWithZone:zone];    \
-return g_shared##CLASSNAME;                         \
-}                                                   \
-}                                                   \
-NSAssert(NO, @ "[" #CLASSNAME                       \
-" alloc] explicitly called on singleton class.");   \
-return nil;                                         \
-}                                                   \
-\
-- (id)copyWithZone:(NSZone*)zone                    \
-{                                                   \
-return self;                                        \
-}                                                   \
-\
-- (id)retain                                        \
-{                                                   \
-return self;                                        \
-}                                                   \
-\
-- (oneway void)release                                     \
-{                                                   \
-}                                                   \
-\
-- (void)forceRelease {                              \
-UALOG(@"Force release "#CLASSNAME"");               \
-@synchronized(self) {                               \
-if (g_shared##CLASSNAME != nil) {                   \
-g_shared##CLASSNAME = nil;                          \
-}                                                   \
-}                                                   \
-[super release];                                    \
-}                                                   \
-\
-- (id)autorelease                                   \
-{                                                   \
-return self;                                        \
-}
-
-
-#ifndef kCFCoreFoundationVersionNumber_iPhoneOS_4_0
-#define kCFCoreFoundationVersionNumber_iPhoneOS_4_0 550.32
-#endif
-
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 40000
-#define IF_IOS4_OR_GREATER(...) \
-if (kCFCoreFoundationVersionNumber >= kCFCoreFoundationVersionNumber_iPhoneOS_4_0) \
-{ \
-__VA_ARGS__ \
-}
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
+#define IF_IOS7_OR_GREATER(...) \
+    if (kCFCoreFoundationVersionNumber >= kCFCoreFoundationVersionNumber_iOS_7_0) \
+    { \
+        __VA_ARGS__ \
+    }
 #else
-#define IF_IOS4_OR_GREATER(...)
+#define IF_IOS_7_OR_GREATER(...)
 #endif
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_4_1
-#define IF_IOS4_1_OR_GREATER(...) \
-if (kCFCoreFoundationVersionNumber >= kCFCoreFoundationVersionNumber_iOS_4_1) \
-{ \
-__VA_ARGS__ \
-}
+#define UA_SUPPRESS_PERFORM_SELECTOR_LEAK_WARNING(THE_CODE) \
+do { \
+_Pragma("clang diagnostic push") \
+_Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"") \
+THE_CODE; \
+_Pragma("clang diagnostic pop") \
+} while (0)
+
+#define UA_PREVIEW_WARNING \
+NSLog(@"\n\n\n" \
+      "\t *********************************************************\n" \
+      "\t *             URBAN AIRSHIP PREVIEW RELEASE             *\n" \
+      "\t *                                                       *\n" \
+      "\t * This is a preview Urban Airship release.  It is       *\n" \
+      "\t * not intended to be part of a production application.  *\n" \
+      "\t *                                                       *\n" \
+      "\t *                                                       *\n" \
+      "\t *                 _..--=--..._                          *\n" \
+      "\t *              .-'            '-.  .-.                  *\n" \
+      "\t *             /.'              '.\\/  /                  *\n" \
+      "\t *            |=-                -=| (                   *\n" \
+      "\t *             \'.              .'/\\  \\                   *\n" \
+      "\t *              '-.,_____ _____.-'  '-'                  *\n" \
+      "\t *                   [_____]=8                           *\n" \
+      "\t *                                                       *\n" \
+      "\t *********************************************************\n\n\n"); \
+
+#ifdef UA_PREVIEW
+#define UA_BUILD_WARNINGS UA_PREVIEW_WARNING
 #else
-#define IF_IOS4_1_OR_GREATER(...)
+#define UA_BUILD_WARNINGS
 #endif
-
-
-// Add new __LIB__ macros as necessary
-#define __UA_LIB_1_3_0__ "Deprecated in libUAirship-1.3.0"
-#define __UA_LIB_1_3_2__ "Deprecated in libUAirship-1.3.2"
-#define UA_DEPRECATED(deprecatedMessage) __attribute__((deprecated(deprecatedMessage)))
-

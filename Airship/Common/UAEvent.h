@@ -1,5 +1,5 @@
 /*
- Copyright 2009-2012 Urban Airship Inc. All rights reserved.
+ Copyright 2009-2014 Urban Airship Inc. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
@@ -24,74 +24,51 @@
  */
 
 
-#define kEventAppInitSize               450//397 w/ push id, no inbox id
-#define kEventAppExitSize               200//136 w/ only network type
-#define kEventDeviceRegistrationSize    200//153 w/ only user info
-#define kEventPushReceivedSize          200//160 w/ uuid push info
-#define kEventAppActiveSize             120
-#define kEventAppInactiveSize           120
+#define kEventAppInitSize               (NSUInteger) 450//397 w/ push id, no inbox id
+#define kEventAppExitSize               (NSUInteger) 200//136 w/ only network type
 
-@interface UAEvent : NSObject {
-    NSString *time;
-    NSString *event_id;
-    NSMutableDictionary *data;
-}
-
-@property (nonatomic, readonly) NSString *time;
-@property (nonatomic, readonly) NSString *event_id;
-@property (nonatomic, readonly) NSMutableDictionary *data;
-
-+ (id)event;
-- (id)initWithContext:(NSDictionary*)context;
-+ (id)eventWithContext:(NSDictionary*)context;
-- (NSString *)getType;
-- (void)gatherData:(NSDictionary*)context;
-- (int)getEstimatedSize;
-- (void)addDataFromSessionForKey:(NSString*)dataKey;
-- (void)addDataWithValue:(id)value forKey:(NSString*)key;
-@end
-
-@interface UAEventCustom : UAEvent {
-  @private
-    NSString *type;
-}
-- (id)initWithType:(NSString*)aType;
-+ (id)eventWithType:(NSString*)aType;
-- (id)initWithType:(NSString*)aType andContext:(NSDictionary*)context;
-+ (id)eventWithType:(NSString*)aType andContext:(NSDictionary*)context;
-@end
-
-
-@interface UAEventAppInit : UAEvent
-@end
-
-@interface UAEventAppForeground : UAEventAppInit
-@end
-
-@interface UAEventAppExit : UAEvent
-@end
-
-@interface UAEventAppBackground : UAEventAppExit
-@end
-
-@interface UAEventDeviceRegistration : UAEvent
-@end
-
-@interface UAEventPushReceived : UAEvent
-@end
+#define kEventDeviceRegistrationSize    (NSUInteger) 200//153 w/ only user info
+#define kEventPushReceivedSize          (NSUInteger) 200//160 w/ uuid push info
 
 /**
- * This event is recorded when the app becomes active: on foreground
- * or when resuming after losing focus for any of the reasons that would
- * trigger a UAEventAppInactive event.
+ * This base class encapsulates analytics events.
  */
-@interface UAEventAppActive : UAEvent
-@end
+@interface UAEvent : NSObject
 
 /**
- * This event is recorded when the app resigns its active state. This will happen
- * prior to backgrounding and when there is an incoming call, the user opens the
- * notification center in iOS5+, the user launches the task-bar, etc.
+ * The time the event was created.
  */
-@interface UAEventAppInactive : UAEvent
+@property (nonatomic, readonly, copy) NSString *time;
+
+/**
+ * The unique event ID.
+ */
+@property (nonatomic, readonly, copy) NSString *eventId;
+
+/**
+ * The event's data.
+ */
+@property (nonatomic, readonly, strong) NSDictionary *data;
+
+/**
+ * The event's type.
+ */
+@property (nonatomic, readonly) NSString *eventType;
+
+/**
+ * The event's estimated size.
+ */
+@property (nonatomic, readonly) NSUInteger estimatedSize;
+
+/**
+ * Checks if the event is valid. Invalid events will be dropped.
+ * @return YES if the event is valid.
+ */
+- (BOOL)isValid;
+
+
+
+
+
 @end
+
