@@ -582,7 +582,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/AppDelegate.m"
-            timestampString = "434878983.352723"
+            timestampString = "434883470.663285"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "313"
@@ -726,7 +726,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/AppDelegate.m"
-            timestampString = "434878983.352723"
+            timestampString = "434883470.663285"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "295"
@@ -1020,6 +1020,22 @@
             startingLineNumber = "90"
             endingLineNumber = "90"
             landmarkName = "-connectCheck:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/AppDelegate.m"
+            timestampString = "434883635.754021"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "265"
+            endingLineNumber = "265"
+            landmarkName = "-application:didReceiveRemoteNotification:fetchCompletionHandler:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -2155,6 +2155,9 @@
 					6B30372015FA3FF200056DAD = {
 						DevelopmentTeam = 3GDWQ778SF;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.InAppPurchase = {
 								enabled = 0;
 							};
