@@ -21,9 +21,11 @@
     UITableView * menu;
     UIView * linked_background;
     UIButton * unlink_account;
-    UIButton * link_bank ;
+    UIButton * link_bank;
+    UILabel *glyph_noBank;
 }
 @property(atomic,weak)UIButton *logout;
+
 
 @end
 
@@ -70,9 +72,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    isBankAttached = NO;
-    if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
+    // isBankAttached = NO;
+
+    if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    {
         isBankAttached = NO;
+
+        glyph_noBank = [UILabel new];
+        
+        [glyph_noBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
+        [glyph_noBank setFrame:CGRectMake(180, 17, 22, 22)];
+        [glyph_noBank setStyleId:@"glyph_noBank_sidebar"];
+        [self.view addSubview:glyph_noBank];
 
         introText = [UILabel new];
         [introText setFrame:CGRectMake(10, 38, 300, 76)];
@@ -82,9 +93,11 @@
         [introText setStyleId:@"settings_introText"];
         [self.view addSubview:introText];
     }
-    else
+    else {
         isBankAttached = YES;
-    
+        [glyph_noBank removeFromSuperview];
+    }
+
     NSDictionary * navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [UIColor whiteColor], UITextAttributeTextColor,
                                   Rgb2UIColor(19, 32, 38, .22), UITextAttributeTextShadowColor,
@@ -116,7 +129,12 @@
 
     link_bank = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [link_bank setFrame:CGRectMake(0, 123, 0, 0)];
-    [link_bank setTitle:@"Link a New Bank" forState:UIControlStateNormal];
+    if (isBankAttached) {
+        [link_bank setTitle:@"Link a New Bank" forState:UIControlStateNormal];
+    }
+    else {
+        [link_bank setTitle:@"Link a Bank Now" forState:UIControlStateNormal];
+    }
     [link_bank setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
     link_bank.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 

@@ -32,17 +32,17 @@
     [super viewWillAppear:animated];
     self.trackedViewName = @"Reset Password Screen";
     
-    UIView *navBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];
+    UIView * navBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 60)];
     [navBar setBackgroundColor:[UIColor colorWithRed:63.0f/255.0f green:171.0f/255.0f blue:225.0f/255.0f alpha:1.0f]];
     [self.view addSubview:navBar];
     
-    UIButton *back = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton * back = [UIButton buttonWithType:UIButtonTypeCustom];
     [back setStyleClass:@"backbutton"];
     [back setTitle:@"Cancel" forState:UIControlStateNormal];
     [back setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
     back.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [back addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
-    [back setFrame:CGRectMake(0,5, 70, 30)];
+    //[back setFrame:CGRectMake(0,5, 70, 30)];
     [navBar addSubview:back];
     
     NSShadow * shadow = [[NSShadow alloc] init];

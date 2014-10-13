@@ -33,7 +33,7 @@ UIImageView *picture;
 @property(nonatomic,strong) UILabel *glyph_arrow_phone;
 @property(nonatomic,strong) UIButton *save;
 @property(nonatomic,strong) NSString *ServiceType;
-@property (nonatomic , retain) NSString * SavePhoneNumber;
+@property(nonatomic, retain) NSString * SavePhoneNumber;
 @property(nonatomic) BOOL disclose;
 @property(nonatomic) NSIndexPath *expand_path;
 @property(nonatomic,strong) MBProgressHUD *hud;
@@ -461,10 +461,10 @@ UIImageView *picture;
     [self.save addTarget:self action:@selector(save_changes) forControlEvents:UIControlEventTouchUpInside];
     [self.save setTitle:@"Save" forState:UIControlStateNormal];
     [self.save setStyleClass:@"nav_top_right"];
-    [self.save setStyleClass:@"reallyLight_gray"];
+    [self.save setStyleClass:@"disabled_gray"];
     [self.save setEnabled:NO];
     [self.save setUserInteractionEnabled:NO];
-    [self.view addSubview:self.save];
+    //[self.view addSubview:self.save];
     UIBarButtonItem *nav_save = [[UIBarButtonItem alloc] initWithCustomView:self.save];
     [self.navigationItem setRightBarButtonItem:nav_save animated:YES];
     
@@ -591,7 +591,7 @@ UIImageView *picture;
 
     [self.save setEnabled:NO];
     [self.save setUserInteractionEnabled:NO];
-    [self.save setStyleClass:@"reallyLight_gray"];
+    [self.save setStyleClass:@"disabled_gray"];
     
     strPhoneNumber = self.phone.text;
     strPhoneNumber = [strPhoneNumber stringByReplacingOccurrencesOfString:@"(" withString:@""];
@@ -1100,7 +1100,7 @@ UIImageView *picture;
 {
     [self.save setEnabled:YES];
     [self.save setUserInteractionEnabled:YES];
-    [self.save setStyleClass:@"nav_top_right"];
+    [self.save setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     if (textField == self.phone)
     {
@@ -1290,7 +1290,7 @@ UIImageView *picture;
             [defaults synchronize];
             [self.save setEnabled:NO];
             [self.save setUserInteractionEnabled:NO];
-            [self.save setStyleClass:@"reallyLight_gray"];
+            [self.save setStyleClass:@"disabled_gray"];
             
             serve * serveOBJ = [serve new];
             serveOBJ.tagName = @"myset";

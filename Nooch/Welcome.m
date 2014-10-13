@@ -65,14 +65,7 @@
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
     
-    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
-    [slogan setBackgroundColor:[UIColor clearColor]];
-    [slogan setText:@"Money Made Simple"];
-    [slogan setFont:[UIFont fontWithName:@"VarelaRound-regular" size:15]];
-    [slogan setStyleClass:@"prelogin_slogan"];
-    [self.view addSubview:slogan];
-    
-    UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, 300, 40)];
+    UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake(10, 110, 300, 40)];
     [title setTextColor:kNoochGrayDark];
     [title setBackgroundColor:[UIColor clearColor]];
     [title setText:@"Congratulations!"];
@@ -81,7 +74,7 @@
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
     
-    UILabel * success_header = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 280, 20)];
+    UILabel * success_header = [[UILabel alloc] initWithFrame:CGRectMake(20, 156, 280, 20)];
     [success_header setTextColor:kNoochBlue];
     [success_header setBackgroundColor:[UIColor clearColor]];
     [success_header setText:@"Account Created Successfully"];
@@ -90,14 +83,37 @@
     [success_header setStyleClass:@"animate_bubble_slow"];
     [self.view addSubview:success_header];
     
-    UILabel * prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 200, 280, 122)];
+    UILabel * next_lbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 194, 300, 32)];
+    [next_lbl setTextColor:kNoochGrayDark];
+    [next_lbl setBackgroundColor:[UIColor clearColor]];
+    [next_lbl setText:@"What Next?"];
+    [next_lbl setTextAlignment:NSTextAlignmentCenter];
+    [next_lbl setFont:[UIFont fontWithName:@"Roboto-regular" size:24]];
+    [self.view addSubview:next_lbl];
+
+    UILabel * prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 228, 300, 110)];
     [prompt setTextColor:kNoochGrayDark];
     [prompt setBackgroundColor:[UIColor clearColor]];
-    [prompt setText:@"Next:\n\n1. Confirm your email address\n(we sent a link)\n\n2. Link a funding source \n"];
+    [prompt setText:@"1. Confirm your email address\n(we sent a link)\n\n2. Link a funding source"];
     [prompt setTextAlignment:NSTextAlignmentCenter];
-    [prompt setFont:[UIFont fontWithName:@"Roboto-regular" size:17]];
+    [prompt setFont:[UIFont fontWithName:@"Roboto-regular" size:19]];
     prompt.numberOfLines = 0;
     [self.view addSubview:prompt];
+
+    UIButton * moreinfo = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [moreinfo setBackgroundColor:[UIColor clearColor]];
+    [moreinfo setTitle:@" Tell me more" forState:UIControlStateNormal];
+    [moreinfo setFrame:CGRectMake(93, 338, 134, 20)];
+    [moreinfo setStyleId:@"moreinfo_button"];
+    
+    UILabel * glyphinfo = [UILabel new];
+    [glyphinfo setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+    [glyphinfo setFrame:CGRectMake(5, 1, 15, 18)];
+    [glyphinfo setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-question-circle"]];
+    [glyphinfo setTextColor:kNoochPurple];
+    [moreinfo addSubview:glyphinfo];
+    [moreinfo addTarget:self action:@selector(moreinfo_lightBox) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:moreinfo];
 
     UIButton * enter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [enter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -105,7 +121,7 @@
     [enter setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     enter.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [enter addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
-    [enter setFrame:CGRectMake(10, 385, 300, 60)];
+    [enter setFrame:CGRectMake(10, 390, 300, 60)];
     [enter setStyleClass:@"button_green"];
     
     NSShadow * shadow1 = [[NSShadow alloc] init];
@@ -122,28 +138,13 @@
     
     [enter addSubview:glyphBank];
     [self.view addSubview:enter];
-
-    UIButton * moreinfo = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [moreinfo setBackgroundColor:[UIColor clearColor]];
-    [moreinfo setTitle:@" Tell me more" forState:UIControlStateNormal];
-    [moreinfo setFrame:CGRectMake(95, 325, 130, 20)];
-    [moreinfo setStyleId:@"moreinfo_button"];
-    
-    UILabel * glyphinfo = [UILabel new];
-    [glyphinfo setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
-    [glyphinfo setFrame:CGRectMake(4, 1, 15, 18)];
-    [glyphinfo setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-question-circle"]];
-    [glyphinfo setTextColor:kNoochPurple];
-    [moreinfo addSubview:glyphinfo];
-    [moreinfo addTarget:self action:@selector(moreinfo_lightBox) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:moreinfo];
     
     UIButton * later = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [later setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
     [later setBackgroundColor:[UIColor clearColor]];
     [later setTitle:@"I'll link a bank later..." forState:UIControlStateNormal];
     [later addTarget:self action:@selector(later) forControlEvents:UIControlEventTouchUpInside];
-    [later setFrame:CGRectMake(10, 450, 300, 60)];
+    [later setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height - 90, 300, 60)];
     [later setStyleClass:@"label_small"];
     [self.view addSubview:later];
 }
