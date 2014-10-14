@@ -144,7 +144,12 @@
     [later setBackgroundColor:[UIColor clearColor]];
     [later setTitle:@"I'll link a bank later..." forState:UIControlStateNormal];
     [later addTarget:self action:@selector(later) forControlEvents:UIControlEventTouchUpInside];
-    [later setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height - 90, 300, 60)];
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        [later setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height - 50, 300, 50)];
+    }
+    else {
+        [later setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height - 90, 300, 65)];
+    }
     [later setStyleClass:@"label_small"];
     [self.view addSubview:later];
 }
@@ -158,7 +163,7 @@
     
     mainView = [[UIView alloc]init];
     mainView.layer.cornerRadius = 5;
-    mainView.frame = CGRectMake(9, -540, 302, 504);
+    mainView.frame = CGRectMake(8, -540, 302, 504);
     mainView.backgroundColor = [UIColor whiteColor];
     mainView.layer.masksToBounds = NO;
     
@@ -244,12 +249,12 @@
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
-        mainView.frame = CGRectMake(8, 40, 304, 430);
-        head_container.frame = CGRectMake(0, 0, 304, 38);
-        space_container.frame = CGRectMake(0, 28, 304, 10);
+        mainView.frame = CGRectMake(9, 40, 302, 430);
+        head_container.frame = CGRectMake(0, 0, 302, 38);
+        space_container.frame = CGRectMake(0, 28, 302, 10);
         glyph_lock.frame = CGRectMake(29, 5, 22, 29);
-        title.frame = CGRectMake(0, 5, 304, 28);
-        imageShow.frame = CGRectMake(2, 43, 300, 340);
+        title.frame = CGRectMake(0, 5, 302, 28);
+        imageShow.frame = CGRectMake(2, 42, 298, 338);
         btnLink.frame = CGRectMake(10,mainView.frame.size.height-51, 280, 44);
     }
 

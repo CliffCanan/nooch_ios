@@ -2639,8 +2639,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "015fafeb-feda-4a51-aa96-a9527fd5fb8e";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "015fafeb-feda-4a51-aa96-a9527fd5fb8e";
+				PROVISIONING_PROFILE = "27a3a1ff-4215-4618-bef9-6ba5b803dd1b";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "27a3a1ff-4215-4618-bef9-6ba5b803dd1b";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2715,8 +2715,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "015fafeb-feda-4a51-aa96-a9527fd5fb8e";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "015fafeb-feda-4a51-aa96-a9527fd5fb8e";
+				PROVISIONING_PROFILE = "27a3a1ff-4215-4618-bef9-6ba5b803dd1b";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "27a3a1ff-4215-4618-bef9-6ba5b803dd1b";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;

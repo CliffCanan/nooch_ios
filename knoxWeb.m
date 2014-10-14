@@ -243,6 +243,7 @@
     
     [obj saveMemberTransId:[dict mutableCopy]];
 }
+
 -(void)Error:(NSError *)Error{
     [self.hud hide:YES];
     
@@ -252,10 +253,9 @@
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
     [alert show];
-    
 }
+
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
@@ -268,7 +268,7 @@
         NSDictionary * dictResponse = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         if ([[[dictResponse valueForKey:@"SaveMemberTransIdResult"]valueForKey:@"Result"]isEqualToString:@"Success"])
         {
-            [nav_ctrl popViewControllerAnimated:NO];
+            //[nav_ctrl popViewControllerAnimated:NO];
             ProfileInfo * profile = [ProfileInfo new];
             isProfileOpenFromSideBar = NO;
             [nav_ctrl pushViewController:profile animated:YES];
