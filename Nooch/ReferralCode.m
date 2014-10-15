@@ -305,7 +305,11 @@
         me = [core new];
         [me birth];
         [me stamp];
-
+        NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
+        [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
+        [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
+        [automatic writeToFile:[self autoLogin] atomically:YES];
+        
         Welcome *welc = [Welcome new];
         [self.navigationController pushViewController:welc animated:YES];
     }

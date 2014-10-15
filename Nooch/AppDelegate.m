@@ -95,6 +95,7 @@ bool modal;
             noConnectionView.image = [UIImage imageNamed:@"No-Internet-Full-Screen_lg"];
         }
         [self.window addSubview:noConnectionView];
+        
         [self.window setUserInteractionEnabled:NO];
     }
 }
