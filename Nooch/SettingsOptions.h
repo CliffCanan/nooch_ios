@@ -10,7 +10,7 @@ BOOL isBankAttached;
 #import "serve.h"
 @interface SettingsOptions : GAITrackedViewController<UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate,serveD>
 {
-    UIView* blankView;
+    UIView * blankView;
     UIButton * arrow;
 }
 @end

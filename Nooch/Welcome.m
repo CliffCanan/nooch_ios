@@ -121,7 +121,7 @@
     [enter setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     enter.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [enter addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
-    [enter setFrame:CGRectMake(10, 390, 300, 60)];
+    [enter setFrame:CGRectMake(10, 388, 300, 60)];
     [enter setStyleClass:@"button_green"];
     
     NSShadow * shadow1 = [[NSShadow alloc] init];
@@ -145,7 +145,7 @@
     [later setTitle:@"I'll link a bank later..." forState:UIControlStateNormal];
     [later addTarget:self action:@selector(later) forControlEvents:UIControlEventTouchUpInside];
     if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        [later setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height - 50, 300, 50)];
+        [later setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height - 44, 300, 44)];
     }
     else {
         [later setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height - 90, 300, 65)];
@@ -208,7 +208,7 @@
 
     UILabel * glyphLink = [UILabel new];
     [glyphLink setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
-    [glyphLink setFrame:CGRectMake(103, 9, 30, 28)];
+    [glyphLink setFrame:CGRectMake(70, 9, 24, 28)];
     glyphLink.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-link"]
                                                              attributes:textAttributes1];
     [glyphLink setTextColor:[UIColor whiteColor]];
