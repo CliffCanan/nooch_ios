@@ -121,12 +121,13 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
     //back button
     UIButton *btnback = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnback setBackgroundColor:[UIColor whiteColor]];
     [btnback setFrame:CGRectMake(7, -18, 44, 44)];
     [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
+
     UILabel *glyph_back = [UILabel new];
     [glyph_back setBackgroundColor:[UIColor clearColor]];
     [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:26]];
@@ -135,7 +136,7 @@
     [glyph_back setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-o-left"]];
     [glyph_back setTextColor:kNoochBlue];
     [btnback addSubview:glyph_back];
-    
+
     [self.view addSubview:btnback];
 
     [UIView animateKeyframesWithDuration:.2
@@ -225,10 +226,9 @@
     UILabel *glyphLogin = [UILabel new];
     [glyphLogin setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
     [glyphLogin setFrame:CGRectMake(180, 9, 26, 30)];
-    glyphLogin.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-sign-in"]
-                                                                 attributes:textAttributes1];
+    glyphLogin.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-sign-in"] attributes:textAttributes1];
     [glyphLogin setTextColor:[UIColor whiteColor]];
-    
+
     [self.login addSubview:glyphLogin];
     [self.view addSubview:self.login];
     [self.login setEnabled:NO];
@@ -238,27 +238,23 @@
     [self.stay_logged_in setOnTintColor:kNoochBlue];
     [self.stay_logged_in setOn: YES];
     self.stay_logged_in.transform = CGAffineTransformMakeScale(0.8, 0.8);
-    [self.view addSubview:self.stay_logged_in];
-    
+
     UILabel *remember_me = [[UILabel alloc] initWithFrame:CGRectMake(19, 303, 140, 30)];
     [remember_me setText:@"Remember Me"];
     [remember_me setStyleId:@"label_rememberme"];
-    [self.view addSubview:remember_me];
-    
+
     UIButton *forgot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [forgot setBackgroundColor:[UIColor clearColor]];
     [forgot setTitle:@"Forgot Password?" forState:UIControlStateNormal];
     [forgot setFrame:CGRectMake(190, 303, 120, 30)];
     [forgot addTarget:self action:@selector(forgot_pass) forControlEvents:UIControlEventTouchUpInside];
     [forgot setStyleId:@"label_forgotpw"];
-    [self.view addSubview:forgot];
 
     UILabel *encryption; [encryption setStyleId:@"label_encryption"];
-    [self.view addSubview:encryption];
 
     UIImageView *encrypt_icon;
     [encrypt_icon setStyleId:@"icon_encryption"];
-    [self.view addSubview:encrypt_icon];
+    
     
     // Height adjustments for 3.5" screens
     if ([[UIScreen mainScreen] bounds].size.height < 500)
@@ -277,8 +273,14 @@
         [self.login setFrame:CGRectMake(20, 185, 300, 60)];
         [forgot setFrame:CGRectMake(190, 236, 120, 30)];
         [remember_me setFrame:CGRectMake(19, 236, 140, 30)];
-        [self.stay_logged_in setFrame:CGRectMake(110, 240, 34, 21)];
+        [self.stay_logged_in setFrame:CGRectMake(115, 237, 34, 21)];
+        self.stay_logged_in.transform = CGAffineTransformMakeScale(0.75, 0.72);
     }
+    [self.view addSubview:self.stay_logged_in];
+    [self.view addSubview:remember_me];
+    [self.view addSubview:forgot];
+    [self.view addSubview:encryption];
+    [self.view addSubview:encrypt_icon];
 }
 
 - (void) forgot_pass

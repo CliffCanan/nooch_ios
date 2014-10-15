@@ -45,13 +45,10 @@
     CAKeyframeAnimation *anim = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
     anim.removedOnCompletion = NO;
     anim.repeatCount = HUGE_VALF;
-    anim.duration = 3.3;
-    anim.keyTimes = @[@(0.0), @(0.16665), @(0.33333), @(0.5),@(0.66667), @(0.83333), @(1.0)];
+    anim.duration = 1.8;
+    anim.keyTimes = @[@(0.0), @(0.333), @(0.667), @(1.0)];
     
     anim.timingFunctions = @[
-        [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut],
-        [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut],
-        [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut],
         [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut],
         [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut],
         [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut],
@@ -60,12 +57,9 @@
 
     anim.values = @[
         [NSValue valueWithCATransform3D:RTSpinKit3DRotationWithPerspective(1.0/120.0,    0, 0, 0, 0)],
-        [NSValue valueWithCATransform3D:RTSpinKit3DRotationWithPerspective(2.8/120.0, M_PI, 0, 1, 0)],
-        [NSValue valueWithCATransform3D:RTSpinKit3DRotationWithPerspective(2.8/120.0, M_PI, 0, 0, 1)],
-        [NSValue valueWithCATransform3D:RTSpinKit3DRotationWithPerspective(1.0/120.0, M_PI, 0, 0, 0)],
-        [NSValue valueWithCATransform3D:RTSpinKit3DRotationWithPerspective(2.8/120.0, M_PI, 1, 1, 0)],
-        [NSValue valueWithCATransform3D:RTSpinKit3DRotationWithPerspective(2.8/120.0, M_PI, 0, 0, 1)],
-        [NSValue valueWithCATransform3D:RTSpinKit3DRotationWithPerspective(1.0/120.0, 0, 0, 0, 0)]
+        [NSValue valueWithCATransform3D:RTSpinKit3DRotationWithPerspective(2.6/120.0, M_PI, 0, 1, 0)],
+        [NSValue valueWithCATransform3D:RTSpinKit3DRotationWithPerspective(2.6/120.0, M_PI, 0, 0, 1)],
+        [NSValue valueWithCATransform3D:RTSpinKit3DRotationWithPerspective(1.0/120.0, M_PI, 0, 0, 0)]
     ];
     
     [circle addAnimation:anim forKey:@"spinkit-anim"];

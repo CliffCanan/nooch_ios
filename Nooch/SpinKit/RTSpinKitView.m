@@ -27,7 +27,7 @@
 
 #include <tgmath.h>
 
-static const CGFloat kRTSpinKitViewDefaultSpinnerSize = 37.0;
+static const CGFloat kRTSpinKitViewDefaultSpinnerSize = 38.0;
 
 @interface RTSpinKitView ()
 @end
