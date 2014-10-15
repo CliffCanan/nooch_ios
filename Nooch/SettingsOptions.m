@@ -167,7 +167,7 @@
     
     self.logout = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.logout setTitle:@"Sign Out" forState:UIControlStateNormal];
-    [self.logout setTitleShadowColor:Rgb2UIColor(33, 34, 34, 0.24) forState:UIControlStateNormal];
+    [self.logout setTitleShadowColor:Rgb2UIColor(30, 31, 33, 0.24) forState:UIControlStateNormal];
     self.logout.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     
     UILabel * glyphLogout = [UILabel new];

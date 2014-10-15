@@ -51,7 +51,7 @@
     UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
     [slogan setBackgroundColor:[UIColor clearColor]];
     [slogan setText:@"Money Made Simple"];
-    [slogan setFont:[UIFont fontWithName:@"VarelaRound-regular" size:15]];
+    [slogan setFont:[UIFont fontWithName:@"VarelaRound-Regular" size:15]];
     [slogan setStyleClass:@"prelogin_slogan"];
     [self.view addSubview:slogan];
 
@@ -86,19 +86,18 @@
     [self.view addSubview:enter];
 
     UIButton *request = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [request setFrame:CGRectMake(10, 420, 300, 60)];
+    [request setFrame:CGRectMake(10, 424, 300, 60)];
     [request setTitleShadowColor:Rgb2UIColor(32, 33, 34, 0.22) forState:UIControlStateNormal];
     request.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [request setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [request setTitle:@"I Don't Have a Code" forState:UIControlStateNormal];
     [request addTarget:self action:@selector(request_code) forControlEvents:UIControlEventTouchUpInside];
-    [request setStyleClass:@"button_gray"];
+    [request setStyleClass:@"label_small"];
     [self.view addSubview:request];
     
     self.code_field = [[UITextField alloc] initWithFrame:CGRectMake(55, 250, 210, 60)];
     [self.code_field setBackgroundColor:[UIColor whiteColor]]; 
     [self.code_field setTextColor:kNoochGrayDark];
-    //self.code_field.inputAccessoryView = [[UIView alloc] init];
     [self.code_field setKeyboardType:UIKeyboardTypeAlphabet];
     [self.code_field setReturnKeyType:UIReturnKeyGo];
     [self.code_field setDelegate:self];
@@ -151,14 +150,11 @@
 
 - (void)request_code
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Nooch Money" message:@"Thank you! We will be in touch with an invite code soon." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request An Invite Code" message:@"To make sure every Nooch user has the best experience, you must have an invite or referral code.\n\nYou can get a code from any current Nooch user, or request an invite directly from us. We try to send out codes as quickly as possible as they are requested." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Request Code", nil];
     [av show];
-
-    serve * serveobj = [serve new];
-    [serveobj setDelegate:self];
-    serveobj.tagName = @"requestcode";
-    [serveobj ReferalCodeRequest:[self.user valueForKey:@"email"]];
+    [av setTag:101];
 }
+
 -(void)Error:(NSError *)Error{
     [self.hud hide:YES];
     
@@ -210,7 +206,7 @@
         }
         else
         {
-            UIAlertView *avInvalidCode = [[UIAlertView alloc]initWithTitle:@"Not Quite Right" message:@"Please check your referral code to make sure you entered it correctly.  If you do not have a code, you can request one." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Request Code", nil];
+            UIAlertView *avInvalidCode = [[UIAlertView alloc]initWithTitle:@"Not Quite Right" message:@"Please check your referral code to make sure you entered it correctly.  If you do not have a code, you can request one." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Request Code", nil];
             [avInvalidCode setTag:88];
             [avInvalidCode show];
             [self.code_field becomeFirstResponder];
@@ -321,7 +317,7 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
-    if (alertView.tag == 88)
+    if (alertView.tag == 88 || alertView.tag == 101)
     {
         if (buttonIndex == 1)
         {
@@ -336,20 +332,8 @@
         {
             [[me usr] setObject:@"YES" forKey:@"requiredImmediately"];
         }
-        
+
         [self dismissViewControllerAnimated:YES completion:nil];
-        
-    }
-    else if (alertView.tag == 2)
-    {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    else if (alertView.tag == 2022)
-    {
-        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-        me = [core new];
     }
 }
 

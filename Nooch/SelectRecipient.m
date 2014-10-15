@@ -48,7 +48,17 @@
     self.navigationController.navigationBar.topItem.title = @"";
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-    
+
+    [self.navigationItem setLeftBarButtonItem:nil];
+    UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [back_button setStyleId:@"navbar_back"];
+    [back_button addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
+    [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
+    back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+    [self.navigationItem setLeftBarButtonItem:menu];
+
     isPayBack = NO;
     isEmailEntry = NO;
     isAddRequest = NO;
@@ -124,7 +134,7 @@
     {
         self.location = NO;
         [self.navigationItem setHidesBackButton:YES];
-
+        [self.navigationItem setLeftBarButtonItem:nil];
         [self.completed_pending setSelectedSegmentIndex:0];
 
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Add Recipients" message:@"To request money from more than one person, search for friends then tap each additional person (up to 10).\n\nTap 'Done' when finished." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -136,8 +146,8 @@
         Done.frame = CGRectMake(307, 25, 16, 35);
         [Done setStyleId:@"icon_RequestMultiple"];
         [Done setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [Done setTitle:@"    Done" forState:UIControlStateNormal];
-        [Done setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
+        [Done setTitle:@"     Done" forState:UIControlStateNormal];
+        [Done setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.21) forState:UIControlStateNormal];
         Done.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         [Done addTarget:self action:@selector(DoneEditing_RequestMultiple:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -181,6 +191,16 @@
     {
         [self.navigationItem setTitle:@"Select Recipient"];
         [self.navigationItem setHidesBackButton:NO];
+
+        UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [back_button setStyleId:@"navbar_back"];
+        [back_button addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
+        [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
+        back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+        [self.navigationItem setLeftBarButtonItem:menu];
+
         isUserByLocation=NO;
         [self.navigationItem setRightBarButtonItem:Nil];
         [[assist shared]setRequestMultiple:NO];
@@ -192,7 +212,7 @@
         search.text=@"";
         [search setShowsCancelButton:NO];
         [search resignFirstResponder];
-//        [self.contacts reloadData];
+        // [self.contacts reloadData];
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:1];
         CGRect frame = self.contacts.frame;
@@ -204,9 +224,11 @@
 }
 -(void)viewDidDisappear:(BOOL)animated{
     [self.hud hide:YES];
+    [super viewDidDisappear:animated];
 }
 -(void)viewDidAppear:(BOOL)animated  {
     [super viewDidAppear:animated];
+
     if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
         ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted)
     {
@@ -238,6 +260,11 @@
     [recents setTagName:@"recents"];
     [recents setDelegate:self];
     [recents getRecents];
+}
+
+-(void)backPressed:(id)sender{
+    [self.navigationItem setLeftBarButtonItem:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)DoneEditing_RequestMultiple:(id)sender
@@ -904,8 +931,6 @@
     
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
     {
-//        UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You've Logged in From Another Device" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//        [Alert show];
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
@@ -1104,6 +1129,7 @@
         }
         else
         {
+            [self.navigationItem setLeftBarButtonItem:nil];
             if ([[assist shared]isRequestMultiple])
             {
                 [spinner stopAnimating];
@@ -1169,6 +1195,8 @@
         }
         else
         {
+            [self.navigationItem setLeftBarButtonItem:nil];
+
             isEmailEntry=NO;
             int loc=0;
             
@@ -1680,7 +1708,6 @@
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     if ([[assist shared] isRequestMultiple])
     {
         NSDictionary *receiver =  [arrRequestPersons objectAtIndex:indexPath.row];
@@ -1749,7 +1776,6 @@
                 [alert addAction:ok];
                 
                 [self presentViewController:alert animated:YES completion:nil];
-                
             }
             else  // for iOS 7 and prior
             {
@@ -1808,6 +1834,7 @@
             
             return;
          }
+        [self.navigationItem setLeftBarButtonItem:nil];
 
         isFromHome = NO;
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];
@@ -1817,6 +1844,7 @@
     }
     else
     {
+        [self.navigationItem setLeftBarButtonItem:nil];
         isFromHome = NO;
         NSDictionary *receiver =  [self.recents objectAtIndex:indexPath.row];
         HowMuch *how_much = [[HowMuch alloc] initWithReceiver:receiver];

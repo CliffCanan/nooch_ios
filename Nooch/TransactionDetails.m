@@ -41,7 +41,9 @@
 }
 -(void)viewDidDisappear:(BOOL)animated{
     [self.hud hide:YES];
+    [super viewDidDisappear:animated];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

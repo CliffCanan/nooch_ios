@@ -24,7 +24,6 @@ bool modal;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-
     inBack = NO;
     [Appirater setAppId:@"917955306"];
     [Appirater setDaysUntilPrompt:8];
@@ -36,42 +35,31 @@ bool modal;
     inactiveDate = [NSDate date];
     [NSUserDefaults resetStandardUserDefaults];
     [self.window setUserInteractionEnabled:YES];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectCheck:) name:kReachabilityChangedNotification object:nil];
     hostReach = [Reachability reachabilityWithHostName:@"www.google.com"];
     internetReach = [Reachability reachabilityForInternetConnection];
     [internetReach startNotifier];
     // Display a UIAlertView warning developers that push notifications do not work in the simulator
     // You should remove this in your app.
-    [self failIfSimulator];
+    // [self failIfSimulator];
 
-    
     //Urban Airship 5+
     UAConfig *config = [UAConfig defaultConfig];
-    
     // Call takeOff (which creates the UAirship singleton)
     [UAirship takeOff:config];
     [UAPush shared].userNotificationTypes = (UIUserNotificationTypeAlert |
                                              UIUserNotificationTypeBadge |
                                              UIUserNotificationTypeSound);
-    [UAPush shared].userPushNotificationsEnabled = YES;
+    //[UAPush shared].userPushNotificationsEnabled = YES;
     // Set the icon badge to zero on startup (optional)
     [[UAPush shared] resetBadge];
-    
-    
+
     //google analytics
     [GAI sharedInstance].debug = NO;
     [GAI sharedInstance].dispatchInterval = 30;
     [GAI sharedInstance].trackUncaughtExceptions = YES;
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-36976317-2"];
-
-    // Override point for customization after application launch.
-  /*  NSMutableDictionary *takeOffOptions = [[NSMutableDictionary alloc] init];
-    [takeOffOptions setValue:launchOptions forKey:UAirshipTakeOffOptionsLaunchOptionsKey];
-    [UAirship takeOff:takeOffOptions];
-    [[UAPush shared] resetBadge];
-    [[UAPush shared] setPushEnabled:YES];
-    [[UAPush shared] registerForRemoteNotificationTypes: UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];*/
     
     [self application:nil handleOpenURL:[NSURL URLWithString:@"Nooch:"]];
     [self.window makeKeyAndVisible];
@@ -81,7 +69,6 @@ bool modal;
 
     [Appirater appLaunched:YES];
     NSSetUncaughtExceptionHandler(&exceptionHandler);
-   // [[UIApplication sharedApplication]registerForRemoteNotificationTypes:UIRemoteNotificationTypeNone];
     return YES;
 }
 
@@ -95,15 +82,24 @@ bool modal;
         [noConnectionView removeFromSuperview];
         [self.window setUserInteractionEnabled:YES];
     }
-    else if (![self.window.subviews containsObject:noConnectionView] && netStat == NotReachable){
-        noConnectionView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20, 320, [[UIScreen mainScreen] bounds].size.height-30)];
-        noConnectionView.image = [UIImage imageNamed:@"No-Internet-Full-Screen.png"];
+    else if (![self.window.subviews containsObject:noConnectionView] && netStat == NotReachable)
+    {
+        noConnectionView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20,[[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height-20)];
+        if ([[UIScreen mainScreen] bounds].size.height < 500) {
+            noConnectionView.image = [UIImage imageNamed:@"No-Internet-Full-Screen_sm"];
+        }
+        else if ([[UIScreen mainScreen] bounds].size.height < 1200) {
+            noConnectionView.image = [UIImage imageNamed:@"No-Internet-Full-Screen_medium"];
+        }
+        else if ([[UIScreen mainScreen] bounds].size.height > 1200) {
+            noConnectionView.image = [UIImage imageNamed:@"No-Internet-Full-Screen_lg"];
+        }
         [self.window addSubview:noConnectionView];
         
         [self.window setUserInteractionEnabled:NO];
     }
 }
-
+/*
 -(void)showWait:(NSString*)label
 {
     loadingView = [[UIView alloc] initWithFrame:CGRectMake(75,( [[UIScreen mainScreen] bounds].size.height/2)-165, 170, 130)];
@@ -128,7 +124,7 @@ bool modal;
 
 -(void)endWait{
     [loadingView removeFromSuperview];
-}
+} */
 
 void exceptionHandler(NSException *exception){
     NSLog(@"Caught exception: %@",exception.description);
@@ -251,18 +247,14 @@ void exceptionHandler(NSException *exception){
     else
     {
         [[UAPush shared] appReceivedRemoteNotification:userInfo applicationState:application.applicationState];
-//    [[UAPush shared] handleNotification:userInfo
-//                       applicationState:application.applicationState];
-    // Reset the badge if you are using that functionality
-    
-   
-       [[UAPush shared] resetBadge];
+        // Reset the badge if you are using that functionality
+        [[UAPush shared] resetBadge];
         NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
         
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[UIApplication sharedApplication] applicationIconBadgeNumber]+1]; 
-    }// zero badge after push received
-
+    }
 }
+
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
     UA_LINFO(@"Received remote notification (in appDelegate): %@", userInfo);
     
@@ -276,6 +268,7 @@ void exceptionHandler(NSException *exception){
     
     completionHandler(UIBackgroundFetchResultNoData);
 }
+/*
 - (void)failIfSimulator {
     if ([[[UIDevice currentDevice] model] rangeOfString:@"Simulator"].location != NSNotFound) {
         UIAlertView *someError = [[UIAlertView alloc] initWithTitle:@"Notice"
@@ -289,9 +282,8 @@ void exceptionHandler(NSException *exception){
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [someError show];
         });
-        
     }
-}
+}*/
 
 -(BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {

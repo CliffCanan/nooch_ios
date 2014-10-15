@@ -17,6 +17,7 @@
 #import "Register.h"
 #import "ECSlidingViewController.h"
 #import "UIImage+Resize.h"
+#import "UAPush.h"
 UIImageView *picture;
 @interface ProfileInfo ()
 @property(nonatomic) UIImagePickerController *picker;
@@ -70,6 +71,7 @@ UIImageView *picture;
     {
         [self.member_since_back setStyleId:@"profileTopSectionBg_susp"];
     }
+    [UAPush shared].userPushNotificationsEnabled = YES;
 }
 
 -(void) viewWillDisappear:(BOOL)animated
@@ -86,7 +88,7 @@ UIImageView *picture;
 {
     if (isSignup) {
         [self.navigationController setNavigationBarHidden:NO];
-        [UIView animateWithDuration:0.75
+        [UIView animateWithDuration:0.7
                          animations:^{
                              [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
                              [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
@@ -124,6 +126,7 @@ UIImageView *picture;
         }
         else
         {
+            [self.navigationItem setLeftBarButtonItem:nil];
             [self performSelector:@selector(GoBackOnce) withObject:nil];
         }
     }
@@ -141,6 +144,7 @@ UIImageView *picture;
         }
         else
         {
+            [self.navigationItem setLeftBarButtonItem:nil];
             [self performSelector:@selector(GoBackOnce) withObject:nil];
         }
     }
@@ -207,9 +211,12 @@ UIImageView *picture;
         [self.name becomeFirstResponder];
     }
 }
+
 -(void)viewDidDisappear:(BOOL)animated{
     [self.hud hide:YES];
+    [super viewDidDisappear:animated];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -232,13 +239,14 @@ UIImageView *picture;
     }
     else
     {
-        UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeCustom];
-        [hamburger setStyleId:@"navbar_back"];
-        [hamburger setImage:[UIImage imageNamed:@"whiteBack.png"] forState:UIControlStateNormal];
-        [hamburger setImage:[UIImage imageNamed:@"whiteBack.png"] forState:UIControlStateHighlighted];
+        UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [back_button setStyleId:@"navbar_back"];
+        [back_button addTarget:self action:@selector(savePrompt2) forControlEvents:UIControlEventTouchUpInside];
+        [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
+        [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
+        back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
-        [hamburger addTarget:self action:@selector(savePrompt2) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+        UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
         [self.navigationItem setLeftBarButtonItem:menu];
     }
     if (!isSignup) {

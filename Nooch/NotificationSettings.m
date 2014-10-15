@@ -49,6 +49,7 @@
 }
 -(void)viewDidDisappear:(BOOL)animated{
     [self.hud hide:YES];
+    [super viewDidDisappear:animated];
 }
 - (void)viewDidLoad
 {
@@ -58,6 +59,17 @@
     [self.navigationItem setTitle:@"Notification Settings"];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
+
+    [self.navigationItem setLeftBarButtonItem:nil];
+    UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [back_button setStyleId:@"navbar_back"];
+    [back_button addTarget:self action:@selector(backtn) forControlEvents:UIControlEventTouchUpInside];
+    [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
+    [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
+    back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    
+    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+    [self.navigationItem setLeftBarButtonItem:menu];
 
     allOn_sec1_email = false;
     allOn_sec2_email = false;
@@ -209,18 +221,6 @@
     [serveOBJ setDelegate:self];
     serveOBJ.tagName = @"getSettings";
     [serveOBJ MemberNotificationSettingsInput];
-    
-    /* if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        UIScrollView * scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
-                                                                              [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
-        [scroll setDelegate:self];
-        [scroll setContentSize:CGSizeMake(320, 530)];
-        for (UIView * subview in self.view.subviews) {
-            [subview removeFromSuperview];
-            [scroll addSubview:subview];
-        }
-        [self.view addSubview:scroll];
-    } */
 }
 
 -(void)toggle_section:(UIButton*)glyph_selected
@@ -418,6 +418,11 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 50.0;
+}
+
+-(void)backtn {
+    [self.navigationItem setLeftBarButtonItem:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)Error:(NSError *)Error

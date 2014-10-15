@@ -305,7 +305,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                               } completion: ^(BOOL finished){
                                   [self.suspended removeFromSuperview];
                               }
-     ];}
+     ];
+}
 
 -(void)dismiss_profile_unvalidated
 {
@@ -482,7 +483,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
        CFRelease(phoneNumber);
     }
     [[assist shared] SaveAssos:additions.mutableCopy];
-  //  NSLog(@"%@",additions);
+    // NSLog(@"%@",additions);
     NSMutableArray *get_ids_input = [NSMutableArray new];
     for (NSDictionary *person in additions)
     {
@@ -730,7 +731,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [top_button removeFromSuperview];
 
     top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [top_button setFrame:CGRectMake(20, 500, 280, 60)];
+    [top_button setFrame:CGRectMake(20, 450, 280, 60)];
     [top_button setStyleId:@"button_green_home"];
     [top_button setTitleShadowColor:Rgb2UIColor(26, 38, 32, 0.2) forState:UIControlStateNormal];
     top_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -762,7 +763,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                        delay:0
                                      options:UIViewKeyframeAnimationOptionCalculationModeCubic
                                   animations:^{
-                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.4 animations:^{
                                           top_button.alpha = 0;
                                       }];
                                       [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
@@ -880,9 +881,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [favoritesOBJ setDelegate:self];
     [favoritesOBJ get_favorites];
 }
--(void)viewDidDisappear:(BOOL)animated{
-      [self.hud hide:YES];
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [self.hud hide:YES];
+    [super viewDidDisappear:animated];
 }
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -974,6 +979,19 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [self.view addSubview:_carousel];
     [_carousel reloadData];
 
+    [UIView animateKeyframesWithDuration:0.46
+                                   delay:0
+                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
+                                      top_button.alpha = 0;
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.8 animations:^{
+                                      [top_button setFrame:CGRectMake(20, 260, 280, 60)];
+                                      top_button.alpha = 1;
+                                  }];
+                              } completion: nil
+     ];
 }
 
 #pragma mark - iCarousel methods
@@ -1181,14 +1199,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             }];
 
         } completion:^(BOOL finished){
-        
-                             [favorite setObject:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
-                             // NSLog(@"%@",favorite);
-                             isFromHome = YES;
-                             HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
-                             [self.navigationController pushViewController:trans animated:YES];
-                             return;
-                         }];
+            [favorite setObject:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
+            [top_button removeFromSuperview];
+            isFromHome = YES;
+            HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
+            [self.navigationController pushViewController:trans animated:YES];
+            return;
+        }];
     }
     
     else if (favorite[@"UserName"])
@@ -1267,7 +1284,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    
     if ((alertView.tag == 147 || alertView.tag == 148) && buttonIndex==1)
     {
         ProfileInfo *prof = [ProfileInfo new];
@@ -1423,6 +1439,19 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     if (NSClassFromString(@"SelectRecipient"))
     {
         Class aClass = NSClassFromString(@"SelectRecipient");
+
+        [UIView animateKeyframesWithDuration:0.2
+                                       delay:0
+                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1.0 animations:^{
+                                          top_button.alpha = 0;
+                                      }];
+                                  } completion: ^(BOOL finished) {
+                                      [top_button removeFromSuperview];
+                                  }
+         ];
+
         id instance = [[aClass alloc] init];
         
         if ([instance isKindOfClass:[UIViewController class]]) {
@@ -1581,21 +1610,27 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         else
         {
+            [UIView animateKeyframesWithDuration:.2
+                                           delay:0
+                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                      animations:^{
+                                          [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.9 animations:^{
+                                              top_button.Alpha = 0;
+                                              top_button.transform = CGAffineTransformMakeScale(.1, .1);
+                                          }];
+                                          
+                                      } completion:^(BOOL finished){
+                                          [top_button removeFromSuperview];
+                                      }];
+
             NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
             [dict setObject:emailID forKey:@"email"];
             [dict setObject:@"nonuser" forKey:@"nonuser"];
             isFromHome = YES;
 
-/*          iCarousel * carousel = [iCarousel alloc];
-            [UIView animateWithDuration:0.4
-                             animations:^{
-                                 [carousel.currentItemView setFrame:CGRectMake(320, 0, 140, 175)];
-                             }
-                             completion:^(BOOL finished){  */
             HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
             return;
-//                             }];
         }
     }
     
