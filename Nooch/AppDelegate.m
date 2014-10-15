@@ -99,6 +99,7 @@ bool modal;
         noConnectionView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20, 320, [[UIScreen mainScreen] bounds].size.height-30)];
         noConnectionView.image = [UIImage imageNamed:@"No-Internet-Full-Screen.png"];
         [self.window addSubview:noConnectionView];
+        
         [self.window setUserInteractionEnabled:NO];
     }
 }

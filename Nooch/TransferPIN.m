@@ -794,18 +794,19 @@
         else {
             urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyUsingKnox"];
         }
-        urlTransfer = [NSURL URLWithString:urlStrTranfer];
-        requestTransfer = [[NSMutableURLRequest alloc] initWithURL:urlTransfer];
-        requestTransfer.timeoutInterval=12000;
-        [requestTransfer setHTTPMethod:@"POST"];
-        [requestTransfer setValue:postLengthTransfer forHTTPHeaderField:@"Content-Length"];
-        [requestTransfer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        [requestTransfer setHTTPBody:postTransfer];
+      urlTransfer = [NSURL URLWithString:urlStrTranfer];
+       requestTransfer = [[NSMutableURLRequest alloc] initWithURL:urlTransfer];
+       requestTransfer.timeoutInterval=12000;
+       [requestTransfer setHTTPMethod:@"POST"];
+       [requestTransfer setValue:postLengthTransfer forHTTPHeaderField:@"Content-Length"];
+       [requestTransfer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+       [requestTransfer setHTTPBody:postTransfer];
 
-        NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestTransfer delegate:self];
-        if (connection) {
-            self.respData = [NSMutableData data];
-        }
+       NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestTransfer delegate:self];
+       if (connection) {
+           self.respData = [NSMutableData data];
+       }
+     
     }
     else if ([self.type isEqualToString:@"requestRespond"])
     {
@@ -914,7 +915,7 @@
         [requestTransfer setValue:postLengthTransfer forHTTPHeaderField:@"Content-Length"];
         [requestTransfer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
         [requestTransfer setHTTPBody:postTransfer];
-        requestTransfer.timeoutInterval=12000;
+        requestTransfer.timeoutInterval=70;
         NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestTransfer delegate:self];
         if (connection) {
             self.respData = [NSMutableData data];
@@ -1020,6 +1021,7 @@
 }
 
 #pragma mark - connection handling
+
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	[self.respData setLength:0];
 }
