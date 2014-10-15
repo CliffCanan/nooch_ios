@@ -313,7 +313,7 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
-    if (alertView.tag == 88)
+    if (alertView.tag == 88 || alertView.tag == 101)
     {
         if (buttonIndex == 1)
         {
@@ -328,31 +328,9 @@
         {
             [[me usr] setObject:@"YES" forKey:@"requiredImmediately"];
         }
-        
-        [self dismissViewControllerAnimated:YES completion:nil];
-        
-    }
-    else if (alertView.tag == 101)
-    {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Received" message:@"Thank you! We will be in touch with an invite code soon." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [av show];
-        
-        serve * serveobj = [serve new];
-        [serveobj setDelegate:self];
-        serveobj.tagName = @"requestcode";
-        [serveobj ReferalCodeRequest:[self.user valueForKey:@"email"]];
-    }
-    /*else if (alertView.tag == 2)
-    {
+
         [self dismissViewControllerAnimated:YES completion:nil];
     }
-    else if (alertView.tag == 2022)
-    {
-        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-        me = [core new];
-    }*/
 }
 
 #pragma mark - file paths
