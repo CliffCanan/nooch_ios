@@ -145,6 +145,9 @@
 		5C69D07019CA0F5B00EB406F /* EAIntroPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D06D19CA0F5B00EB406F /* EAIntroPage.m */; };
 		5C69D07119CA0F5B00EB406F /* EAIntroView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D06F19CA0F5B00EB406F /* EAIntroView.m */; };
 		5C69D09819CA244C00EB406F /* tour.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D09719CA244C00EB406F /* tour.m */; };
+		5C83949719EC60C200EBEBA4 /* No-Internet-Full-Screen_medium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83949419EC60C200EBEBA4 /* No-Internet-Full-Screen_medium@2x.png */; };
+		5C83949819EC60C200EBEBA4 /* No-Internet-Full-Screen_sm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83949519EC60C200EBEBA4 /* No-Internet-Full-Screen_sm@2x.png */; };
+		5C83949919EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83949619EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png */; };
 		5CACE20619CFF86A004AD9C4 /* 1_connectBank_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20319CFF86A004AD9C4 /* 1_connectBank_bg.png */; };
 		5CACE20719CFF86A004AD9C4 /* 2_selectRecipient_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20419CFF86A004AD9C4 /* 2_selectRecipient_bg.png */; };
 		5CACE20819CFF86A004AD9C4 /* 3_howMuch_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20519CFF86A004AD9C4 /* 3_howMuch_bg.png */; };
@@ -577,6 +580,9 @@
 		5C69D06F19CA0F5B00EB406F /* EAIntroView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAIntroView.m; sourceTree = "<group>"; };
 		5C69D09619CA244C00EB406F /* tour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tour.h; sourceTree = "<group>"; };
 		5C69D09719CA244C00EB406F /* tour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tour.m; sourceTree = "<group>"; };
+		5C83949419EC60C200EBEBA4 /* No-Internet-Full-Screen_medium@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No-Internet-Full-Screen_medium@2x.png"; sourceTree = "<group>"; };
+		5C83949519EC60C200EBEBA4 /* No-Internet-Full-Screen_sm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No-Internet-Full-Screen_sm@2x.png"; sourceTree = "<group>"; };
+		5C83949619EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No-Internet-Full-Screen-lg@2x.png"; sourceTree = "<group>"; };
 		5CACE20319CFF86A004AD9C4 /* 1_connectBank_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1_connectBank_bg.png; sourceTree = "<group>"; };
 		5CACE20419CFF86A004AD9C4 /* 2_selectRecipient_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2_selectRecipient_bg.png; sourceTree = "<group>"; };
 		5CACE20519CFF86A004AD9C4 /* 3_howMuch_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3_howMuch_bg.png; sourceTree = "<group>"; };
@@ -1144,6 +1150,9 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				5C83949419EC60C200EBEBA4 /* No-Internet-Full-Screen_medium@2x.png */,
+				5C83949519EC60C200EBEBA4 /* No-Internet-Full-Screen_sm@2x.png */,
+				5C83949619EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png */,
 				5C5D073119DE70CB00B07A30 /* home_img@2x.png */,
 				5CD72EF619D3EDD3008A21D2 /* connectBank_img@2x.png */,
 				5CD72EF119D3ECDC008A21D2 /* selectRecipient_img@2x.png */,
@@ -2304,6 +2313,7 @@
 				8449C5A119EBAB9700027B9B /* UAPushSettingsTokenView.xib in Resources */,
 				8449C59D19EBAB9700027B9B /* UAPushSettingsAliasView.xib in Resources */,
 				014C433B185BB9EE00956A84 /* default.css in Resources */,
+				5C83949719EC60C200EBEBA4 /* No-Internet-Full-Screen_medium@2x.png in Resources */,
 				8420B39E187AC4BF00A77E2D /* orange-pin.png in Resources */,
 				6BE13327176F65D8009763AC /* BackgroundMain-568h@2x.png in Resources */,
 				8449C5A019EBAB9700027B9B /* UAPushSettingsTagsViewController.xib in Resources */,
@@ -2343,6 +2353,7 @@
 				5C69D00719C92F7400EB406F /* NotificationButtonBackground.png in Resources */,
 				5C69D02919C9380500EB406F /* IQKeyboardManager.bundle in Resources */,
 				845631B71990AD45005B90F6 /* whiteBack30@2x.png in Resources */,
+				5C83949919EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png in Resources */,
 				0129D8EA1815B10D00BEAC30 /* Brandon_med.otf in Resources */,
 				01C26DAE1843BB22005179B7 /* Dollar_Symbol.png in Resources */,
 				5C69CFF819C92F7400EB406F /* .gitkeep in Resources */,
@@ -2352,6 +2363,7 @@
 				01C26DB91843BB22005179B7 /* pay-back-icon.png in Resources */,
 				5C38468D19C56694002AEB15 /* check@2x.png in Resources */,
 				5C69CFFD19C92F7400EB406F /* NotificationBackgroundMessage.png in Resources */,
+				5C83949819EC60C200EBEBA4 /* No-Internet-Full-Screen_sm@2x.png in Resources */,
 				8449C58019EBAB9700027B9B /* list-image-placeholder.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2627,8 +2639,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "015fafeb-feda-4a51-aa96-a9527fd5fb8e";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "015fafeb-feda-4a51-aa96-a9527fd5fb8e";
+				PROVISIONING_PROFILE = "27a3a1ff-4215-4618-bef9-6ba5b803dd1b";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "27a3a1ff-4215-4618-bef9-6ba5b803dd1b";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2703,8 +2715,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "015fafeb-feda-4a51-aa96-a9527fd5fb8e";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "015fafeb-feda-4a51-aa96-a9527fd5fb8e";
+				PROVISIONING_PROFILE = "27a3a1ff-4215-4618-bef9-6ba5b803dd1b";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "27a3a1ff-4215-4618-bef9-6ba5b803dd1b";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;

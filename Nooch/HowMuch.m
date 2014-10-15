@@ -44,6 +44,15 @@
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self.amount becomeFirstResponder];
+    
+    UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [back_button setStyleId:@"navbar_back"];
+    [back_button addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
+    [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
+    back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+    [self.navigationItem setLeftBarButtonItem:menu];
 }
 
 -(void)backPressed:(id)sender{
@@ -52,6 +61,7 @@
     [[assist shared]setRequestMultiple:NO];
     [arrRecipientsForRequest removeAllObjects];
     [[assist shared]setArray:nil];
+    [self.navigationItem setLeftBarButtonItem:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -68,6 +78,15 @@
     [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
     
     [self.navigationItem setTitle:@"How Much?"];
+
+    UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [back_button setStyleId:@"navbar_back"];
+    [back_button addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
+    [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
+    back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+    [self.navigationItem setLeftBarButtonItem:menu];
 
     [[assist shared] setTranferImage:nil];
     
@@ -87,15 +106,6 @@
     self.back.layer.cornerRadius = 4;
     [self.back setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:self.back];
-    
-    UIButton *back_button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [back_button setStyleId:@"navbar_back"];
-    [back_button setImage:[UIImage imageNamed:@"whiteBack30.png"] forState:UIControlStateNormal];
-    [back_button setImage:[UIImage imageNamed:@"whiteBack30.png"] forState:UIControlStateHighlighted];
-    [back_button addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
-    [self.navigationItem setLeftBarButtonItem:menu];
     
     self.recip_back = [UILabel new];
     [self.recip_back setStyleClass:@"barbackground"];
@@ -303,7 +313,8 @@
 -(void)addRecipient:(id)sender
 {
     [[assist shared]setRequestMultiple:YES];
-  
+    [self.navigationItem setLeftBarButtonItem:nil];
+
     isAddRequest=YES;
     NSLog(@"%@",self.receiver);
     
@@ -446,7 +457,9 @@
     NSMutableDictionary *transaction = [self.receiver mutableCopy];
     [transaction setObject:[self.memo text] forKey:@"memo"];
     float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
-    
+
+    [self.navigationItem setLeftBarButtonItem:nil];
+
     if ([self.receiver valueForKey:@"nonuser"])
     {
         TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"send" amount:input_amount];
@@ -476,6 +489,8 @@
         [alert show];
         return;
     }
+
+    [self.navigationItem setLeftBarButtonItem:nil];
 
     if ([[assist shared]isRequestMultiple])
     {

@@ -119,16 +119,12 @@
      self.trackedViewName = @"Login Screen";
 }
 
-- (void)viewDidLoad
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidLoad];
-    [self.navigationController setNavigationBarHidden:YES];
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    
     //back button
     UIButton *btnback = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnback setBackgroundColor:[UIColor whiteColor]];
-    [btnback setFrame:CGRectMake(7, 24, 44, 44)];
+    [btnback setFrame:CGRectMake(7, -18, 44, 44)];
     [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *glyph_back = [UILabel new];
@@ -141,6 +137,22 @@
     [btnback addSubview:glyph_back];
     
     [self.view addSubview:btnback];
+
+    [UIView animateKeyframesWithDuration:.2
+                                   delay:0
+                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      [btnback setFrame:CGRectMake(7, 24, 44, 44)];
+                                  }];
+                              } completion: nil];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self.navigationController setNavigationBarHidden:YES];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     
     UIImageView * logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
@@ -149,7 +161,7 @@
     UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
     [slogan setBackgroundColor:[UIColor clearColor]];
     [slogan setText:@"Money Made Simple"];
-    [slogan setFont:[UIFont fontWithName:@"VarelaRound-regular" size:15]];
+    [slogan setFont:[UIFont fontWithName:@"VarelaRound-Regular" size:15]];
     [slogan setStyleClass:@"prelogin_slogan"];
     [self.view addSubview:slogan];
 

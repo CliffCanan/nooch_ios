@@ -15,12 +15,14 @@
 @property(nonatomic,strong) UITextField *name_field;
 @property(nonatomic,strong) UITextField *email_field;
 @property(nonatomic,strong) UITextField *password_field;
-@property (nonatomic, retain) ACAccountStore *accountStore;
-@property (nonatomic, retain) ACAccount *facebookAccount;
+@property(nonatomic,retain) ACAccountStore *accountStore;
+@property(nonatomic,retain) ACAccount *facebookAccount;
 @property(nonatomic,strong) __block NSMutableDictionary *facebook_info;
 @property(nonatomic,strong) UIButton *facebook;
 @property(nonatomic,strong) UIButton *cont;
+@property(nonatomic,strong) UIButton *login;
 @property(nonatomic,strong) MBProgressHUD *hud;
+@property(atomic,strong) UILabel *or;
 @end
 @implementation Register
 
@@ -39,6 +41,34 @@
     [super viewWillAppear:animated];
     self.trackedViewName = @"Register Screen";
     [self.navigationController setNavigationBarHidden:YES];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    UILabel * glyph_login = [UILabel new];
+    [glyph_login setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
+    [glyph_login setFrame:CGRectMake(268, 0, 18, 30)];
+    [glyph_login setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-right"]];
+    [glyph_login setTextColor:kNoochGreen];
+    
+    self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.login setBackgroundColor:[UIColor clearColor]];
+    [self.login setTitle:@"Already a Member?  Sign in here  " forState:UIControlStateNormal];
+    [self.login setFrame:CGRectMake(10, 575, 280, 30)];
+    [self.login addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
+    [self.login setStyleClass:@"label_small"];
+    [self.login addSubview:glyph_login];
+    [self.view addSubview:self.login];
+
+    [UIView animateKeyframesWithDuration:.25
+                                   delay:0
+                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      // sender.center = CGPointMake(460,500);
+                                      [self.login setFrame:CGRectMake(10, 510, 280, 30)];
+                                  }];
+                              } completion: nil];
 }
 
 - (void)viewDidLoad
@@ -68,7 +98,7 @@
     [self.view addSubview:signup];
 
     self.facebook = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.facebook setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
+    [self.facebook setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.19) forState:UIControlStateNormal];
     self.facebook.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.facebook setTitle:@"  Facebook" forState:UIControlStateNormal];
     [self.facebook setFrame:CGRectMake(0, 153, 0, 0)];
@@ -76,7 +106,7 @@
     [self.facebook setStyleClass:@"button_blue"];
 
     NSShadow * shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = Rgb2UIColor(26, 38, 32, .2);
+    shadow.shadowColor = Rgb2UIColor(26, 38, 32, .18);
     shadow.shadowOffset = CGSizeMake(0, -1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
 
@@ -90,12 +120,13 @@
     [self.facebook addSubview:glyphFB];
     [self.view addSubview:self.facebook];
 
-    UILabel * or = [[UILabel alloc] initWithFrame:CGRectMake(0, 216, 320, 15)];
-    [or setBackgroundColor:[UIColor clearColor]];
-    [or setTextAlignment:NSTextAlignmentCenter];
-    [or setText:@"Or..."];
-    [or setStyleClass:@"label_small"];
-    [self.view addSubview:or];
+    self.or = [UILabel new];// initWithFrame:CGRectMake(0, 216, 320, 15)];
+    [self.or setFrame:CGRectMake(0, 216, 320, 15)];
+    [self.or setBackgroundColor:[UIColor clearColor]];
+    [self.or setTextAlignment:NSTextAlignmentCenter];
+    [self.or setText:@"Or..."];
+    [self.or setStyleClass:@"label_small"];
+    [self.view addSubview:self.or];
 
     UILabel * name = [[UILabel alloc] initWithFrame:CGRectMake(20, 254, 60, 20)];
     [name setBackgroundColor:[UIColor clearColor]];
@@ -202,28 +233,13 @@
     [self.view addSubview:self.cont];
     [self.cont setEnabled:NO];
 
-    UIButton * login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [login setBackgroundColor:[UIColor clearColor]];
-    [login setTitle:@"Already a Member?  Sign in here  " forState:UIControlStateNormal];
-    [login setFrame:CGRectMake(10, 510, 280, 30)];
-    [login addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
-    [login setStyleClass:@"label_small"];
-    [self.view addSubview:login];
-
-    UILabel * glyph_login = [UILabel new];
-    [glyph_login setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
-    [glyph_login setFrame:CGRectMake(268, 0, 18, 30)];
-    [glyph_login setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-right"]];
-    [glyph_login setTextColor:kNoochGreen];
-    [login addSubview:glyph_login];
-
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
         [signup setFrame:CGRectMake(0, 78, 320, 15)];
 
         [self.facebook setFrame:CGRectMake(0, 136, 0, 0)];
 
-        [or setFrame:CGRectMake(0, 195, 320, 15)];
+        [self.or setFrame:CGRectMake(0, 195, 320, 15)];
 
         [name setFrame:CGRectMake(0, 225, 0, 0)];
         [self.name_field setFrame:CGRectMake(0, 225, 0, 0)];
@@ -241,7 +257,7 @@
 
         [self.cont setFrame:CGRectMake(0, 381, 0, 0)];
 
-        [login setFrame:CGRectMake(0, 439, 320, 20)];
+        [self.login setFrame:CGRectMake(0, 439, 320, 20)];
     }
 }
 
@@ -374,7 +390,7 @@
     self.facebook_info = [NSMutableDictionary new];
     [feedRequest performRequestWithHandler:^(NSData *respData,
                                              NSHTTPURLResponse *urlResponse, NSError *error)
-     {
+    {
          self.facebook_info = [NSJSONSerialization
                                JSONObjectWithData:respData
                                options:kNilOptions
@@ -396,7 +412,9 @@
              [d setObject:imgData forKey:@"image"];
              self.facebook_info = [d mutableCopy];
 
-             [self.facebook setTitle:@"     Facebook Connected" forState:UIControlStateNormal];
+             [self.or setText:@"Now just create a password..."];
+
+             [self.facebook setTitle:@"       Facebook Connected" forState:UIControlStateNormal];
 
              for (UIView*subview in self.facebook.subviews) {
                  if([subview isMemberOfClass:[UILabel class]]) {
@@ -404,18 +422,27 @@
                  }
              }
              NSShadow * shadow = [[NSShadow alloc] init];
-             shadow.shadowColor = Rgb2UIColor(19, 32, 38, .22);
+             shadow.shadowColor = Rgb2UIColor(19, 32, 38, .19);
              shadow.shadowOffset = CGSizeMake(0, -1);
              NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
 
-             UILabel *glyphFB = [UILabel new];
+             UILabel * glyphFB = [UILabel new];
              [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
-             [glyphFB setFrame:CGRectMake(22, 8, 30, 30)];
+             [glyphFB setFrame:CGRectMake(17, 8, 26, 30)];
              glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]
                                                                            attributes:textAttributes1];
              [glyphFB setTextColor:[UIColor whiteColor]];
              
              [self.facebook addSubview:glyphFB];
+             
+             UILabel * glyph_check = [UILabel new];
+             [glyph_check setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+             [glyph_check setFrame:CGRectMake(39, 8, 20, 30)];
+             glyph_check.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"]
+                                                                      attributes:textAttributes1];
+             [glyph_check setTextColor:[UIColor whiteColor]];
+             
+             [self.facebook addSubview:glyph_check];
 
              [self.facebook setUserInteractionEnabled:NO];
          });
@@ -487,25 +514,42 @@
     }
 }
 
-- (void)login
+- (void)login:(UIButton*)sender
 {
-    [[UIApplication sharedApplication]setStatusBarHidden:YES];
-    Login * signin = [Login new];
-    [self.navigationController pushViewController:signin animated:YES];
+    [UIView animateKeyframesWithDuration:.54
+                                   delay:0
+                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
+                                      [self.login setFrame:CGRectMake(-16, 510, 280, 30)];
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:0.21 animations:^{
+                                      [self.login setFrame:CGRectMake(-25, 510, 280, 30)];
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:0.46 relativeDuration:0.3 animations:^{
+                                      [self.login setFrame:CGRectMake(100, 510, 280, 30)];
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:0.76 relativeDuration:0.24 animations:^{
+                                      [self.login setFrame:CGRectMake(322, 510, 280, 30)];
+                                  }];
+                              } completion: ^(BOOL finished){
+                                  [[UIApplication sharedApplication]setStatusBarHidden:YES];
+                                  Login * signin = [Login new];
+                                  [self.navigationController pushViewController:signin animated:YES];                              }
+     ];
 }
+
 -(void)Error:(NSError *)Error{
     [self.hud hide:YES];
-    
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
     [alert show];
-    
 }
+
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {

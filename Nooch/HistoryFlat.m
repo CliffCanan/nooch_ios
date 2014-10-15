@@ -340,8 +340,6 @@
     customView.layer.borderWidth = 1.0f;
     customView.layer.cornerRadius = 6;
     [customView setStyleClass:@"raised_view"];
-//    customView.layer.shadowOffset = CGSizeMake(1,2);
-//    customView.layer.shadowRadius = 3.0f;
     customView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mapBack.png"]];
 
     UIImageView *imgV = [[UIImageView alloc]initWithFrame:CGRectMake(68, 10, 82, 82)];
@@ -875,10 +873,10 @@ return customView;
                 
     if (self.completed_selected)
     {
-       // UILabel * emptyText = nil;
+        // UILabel * emptyText = nil;
         UILabel * emptyText_localSearch = nil;
 
-//        UIImageView * emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(33, 105, 253, 256)];
+        // UIImageView * emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(33, 105, 253, 256)];
 
         if (isLocalSearch)
         {
@@ -1753,13 +1751,20 @@ return customView;
 
             else if (indexPath.row == [histTempPending count])
             {
+                if ([self.list subviews])
+                {
+                    for (UIView * subview in [self.list subviews]) {
+                        [subview removeFromSuperview];
+                    }
+                }
+
                 [self.list setStyleId:@"emptyTable"];
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabelEmpty"];
                 [name setStyleClass:@"history_recipientname"];
 
                 if (indexPath.row == 0) {
-                    [name setText:@"No pending payments found."];
+                    [name setText:@"No pending payments found for that name."];
 				}
 				else {
                     [name setText:@""];
@@ -2598,7 +2603,7 @@ return customView;
     else if ([tagName isEqualToString:@"CancelMoneyTransferToNonMemberForSender"])
     {
         [self.hud hide:YES];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Transfer Cancelled" message:@"Aye aye. That transfer has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Transfer Cancelled" message:@"Aye aye. That transfer has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     
         subTypestr = @"Pending";
@@ -2610,8 +2615,11 @@ return customView;
         [self.list removeFromSuperview];
         self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
         [self.list setStyleId:@"history"];
-        [self.list setDataSource:self]; [self.list setDelegate:self]; [self.list setSectionHeaderHeight:0];
-        [self.view addSubview:self.list]; [self.list reloadData];
+        [self.list setDataSource:self];
+        [self.list setDelegate:self];
+        [self.list setSectionHeaderHeight:0];
+        [self.view addSubview:self.list];
+        [self.list reloadData];
         [self.view bringSubviewToFront:exportHistory];
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
     }
@@ -2619,7 +2627,7 @@ return customView;
     else if ([tagName isEqualToString:@"cancelRequestToExisting"] || [tagName isEqualToString:@"cancelRequestToNonNoochUser"])
     {
         [self.hud hide:YES];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Request Cancelled" message:@"You got it. That request has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Request Cancelled" message:@"You got it. That request has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         
         subTypestr = @"Pending";
@@ -2701,7 +2709,7 @@ return customView;
         }
         else if (actionSheet.tag == 2010) {  // CANCEL Request to NonNoochUser
             serveObj.tagName = @"cancelRequestToNonNoochUser";
-            [serveObj CancelMoneyRequestForExistingNoochUser:[self.responseDict valueForKey:@"TransactionId"]];
+            [serveObj CancelMoneyRequestForNonNoochUser:[self.responseDict valueForKey:@"TransactionId"]];
         }
     }
     
@@ -2726,6 +2734,17 @@ return customView;
     
     else if (actionSheet.tag == 1011 && buttonIndex == 0)
     {
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
+        spinner1.color = [UIColor whiteColor];
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:self.hud];
+        self.hud.labelText = @"Rejecting this request...";
+        [self.hud show:YES];
+        [spinner1 startAnimating];
+        self.hud.mode = MBProgressHUDModeCustomView;
+        self.hud.customView = spinner1;
+        self.hud.delegate = self;
+
         serve * serveObj = [serve new];
         [serveObj setDelegate:self];
         serveObj.tagName = @"reject";

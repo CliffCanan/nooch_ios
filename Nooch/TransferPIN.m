@@ -56,9 +56,12 @@
     [super viewWillAppear:animated];
     self.trackedViewName = @"TransferPin Screen";
 }
+
 -(void)viewDidDisappear:(BOOL)animated{
     [self.hud hide:YES];
+    [super viewDidDisappear:animated];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -84,6 +87,15 @@
     [title setNumberOfLines:2];
     [title setStyleClass:@"pin_instructiontext"];
     [self.view addSubview:title];
+    
+    UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [back_button setStyleId:@"navbar_back"];
+    [back_button addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
+    [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
+    back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+    [self.navigationItem setLeftBarButtonItem:menu];
 
     if ([[UIScreen mainScreen] bounds].size.height == 480)
     {
@@ -266,6 +278,11 @@
     }
 }
 
+-(void)backPressed:(id)sender{
+    [self.navigationItem setLeftBarButtonItem:nil];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc] init];
@@ -381,6 +398,7 @@
 - (void)locationError:(NSError *)error {
 	//locationLabel.text = [error description];
 }
+
 #pragma mark - UITextField delegation
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
@@ -1217,7 +1235,7 @@
             || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]
             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."])
     {
-        self.prompt.text=@"2nd failed attempt.";
+        self.prompt.text=@"2nd failed attempt";
         self.fourth_num.layer.borderColor = kNoochRed.CGColor;
         self.third_num.layer.borderColor = kNoochRed.CGColor;
         self.second_num.layer.borderColor = kNoochRed.CGColor;
@@ -1241,7 +1259,7 @@
             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])
     {
         [[assist shared]setSusPended:YES];
-        self.prompt.text=@"3rd failed attempt.";
+        self.prompt.text=@"3rd failed attempt";
         self.fourth_num.layer.borderColor = kNoochRed.CGColor;
         self.third_num.layer.borderColor = kNoochRed.CGColor;
         self.second_num.layer.borderColor = kNoochRed.CGColor;
@@ -1278,13 +1296,12 @@
             return;
         }
         else {
-            NSString *resultValue = [dictResultTransfer objectForKey:@"HandleRequestMoneyResult"];
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error #2651" message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            //NSString *resultValue = [dictResultTransfer objectForKey:@"HandleRequestMoneyResult"];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error #2651" message:@"Unfortunately something is not quite right. This is a polite way of saying we screwed up.  Please try your transfer again!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [av show];
             return;
         }
-        //UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"" message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        //[av show];
+
         transferFinished = YES;
         sendingMoney = NO;
     }

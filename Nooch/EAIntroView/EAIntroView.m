@@ -352,7 +352,7 @@
     self.pageControl.numberOfPages = _pages.count;
     [self addSubview:self.pageControl];
     
-    self.skipButton = [[UIButton alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width - 80, self.pageControl.frame.origin.y - ((30 - self.pageControl.frame.size.height)/2), 80, 30)];
+    self.skipButton = [[UIButton alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width - 95, self.pageControl.frame.origin.y - ((30 - self.pageControl.frame.size.height)/2), 95, 30)];
     [self.skipButton setTitle:NSLocalizedString(@"Done", nil) forState:UIControlStateNormal];
     [self.skipButton setTitleShadowColor:Rgb2UIColor(31, 32, 33, 0.4) forState:UIControlStateNormal];
     self.skipButton.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);

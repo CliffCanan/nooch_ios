@@ -109,7 +109,7 @@
     
     page5.desc = @"See all your Nooch transfers and filter by type.  To see a map of your payments, swipe left or tap the map icon in the navigation bar.";
     page5.descWidth = 300;
-    page5.descPositionY = page4.titlePositionY - 24;
+    page5.descPositionY = page5.titlePositionY - 24;
     
     page5.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"history_img"]];
     page5.titleIconPositionY = 120;
@@ -118,10 +118,13 @@
     page6.bgImage = [UIImage imageNamed:@"bg1"];
 
     page6.title = @"Detailed History";
+    page6.titlePositionY = 118;
 
     page6.desc = @"";
+    page6.descWidth = 300;
+    page6.descPositionY = page6.titlePositionY - 24;
 
-    page6.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"title4"]];
+    page6.titleIconView = [[UIImageView alloc] initWithImage:nil];
     page6.titleIconPositionY = 120;
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
@@ -130,11 +133,11 @@
         page2.titlePositionY = 426;
         page2.descPositionY = 118;
         page3.descPositionY = 102;
-        
+
         page4.titlePositionY = 428;
         page4.descPositionY = 117;
         page4.titleIconPositionY = 125;
-        
+
         page5.titlePositionY = 418;
         page5.descPositionY = 118;
         page5.titleIconPositionY = 130;
