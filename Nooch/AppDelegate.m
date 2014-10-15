@@ -24,7 +24,6 @@ bool modal;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-
     inBack = NO;
     [Appirater setAppId:@"917955306"];
     [Appirater setDaysUntilPrompt:8];
@@ -36,14 +35,14 @@ bool modal;
     inactiveDate = [NSDate date];
     [NSUserDefaults resetStandardUserDefaults];
     [self.window setUserInteractionEnabled:YES];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectCheck:) name:kReachabilityChangedNotification object:nil];
     hostReach = [Reachability reachabilityWithHostName:@"www.google.com"];
     internetReach = [Reachability reachabilityForInternetConnection];
     [internetReach startNotifier];
     // Display a UIAlertView warning developers that push notifications do not work in the simulator
     // You should remove this in your app.
-    [self failIfSimulator];
+    // [self failIfSimulator];
 
     //Urban Airship 5+
     UAConfig *config = [UAConfig defaultConfig];
@@ -52,7 +51,7 @@ bool modal;
     [UAPush shared].userNotificationTypes = (UIUserNotificationTypeAlert |
                                              UIUserNotificationTypeBadge |
                                              UIUserNotificationTypeSound);
-    [UAPush shared].userPushNotificationsEnabled = YES;
+    //[UAPush shared].userPushNotificationsEnabled = YES;
     // Set the icon badge to zero on startup (optional)
     [[UAPush shared] resetBadge];
 
@@ -85,7 +84,7 @@ bool modal;
     }
     else if (![self.window.subviews containsObject:noConnectionView] && netStat == NotReachable)
     {
-        noConnectionView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20,320, [[UIScreen mainScreen] bounds].size.height-20)];
+        noConnectionView = [[UIImageView alloc] initWithFrame:CGRectMake(0,20,[[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height-20)];
         if ([[UIScreen mainScreen] bounds].size.height < 500) {
             noConnectionView.image = [UIImage imageNamed:@"No-Internet-Full-Screen_sm"];
         }
@@ -99,7 +98,7 @@ bool modal;
         [self.window setUserInteractionEnabled:NO];
     }
 }
-
+/*
 -(void)showWait:(NSString*)label
 {
     loadingView = [[UIView alloc] initWithFrame:CGRectMake(75,( [[UIScreen mainScreen] bounds].size.height/2)-165, 170, 130)];
@@ -124,7 +123,7 @@ bool modal;
 
 -(void)endWait{
     [loadingView removeFromSuperview];
-}
+} */
 
 void exceptionHandler(NSException *exception){
     NSLog(@"Caught exception: %@",exception.description);
@@ -268,7 +267,7 @@ void exceptionHandler(NSException *exception){
     
     completionHandler(UIBackgroundFetchResultNoData);
 }
-
+/*
 - (void)failIfSimulator {
     if ([[[UIDevice currentDevice] model] rangeOfString:@"Simulator"].location != NSNotFound) {
         UIAlertView *someError = [[UIAlertView alloc] initWithTitle:@"Notice"
@@ -283,7 +282,7 @@ void exceptionHandler(NSException *exception){
             [someError show];
         });
     }
-}
+}*/
 
 -(BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {

@@ -57,12 +57,13 @@
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
-    UIButton * backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backBtn setStyleId:@"navbar_back"];
-    [backBtn setImage:[UIImage imageNamed:@"whiteBack.png"] forState:UIControlStateNormal];
-    [backBtn setImage:[UIImage imageNamed:@"whiteBack.png"] forState:UIControlStateHighlighted];
-    [backBtn addTarget:self action:@selector(backToHome) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+    UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [back_button setStyleId:@"navbar_back"];
+    [back_button addTarget:self action:@selector(backToHome) forControlEvents:UIControlEventTouchUpInside];
+    [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
+    [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
+    back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
     [self.navigationItem setLeftBarButtonItem:menu];
     
     UIButton * helpGlyph = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -223,6 +224,7 @@
 }
 
 -(void)backToHome {
+    [self.navigationItem setLeftBarButtonItem:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

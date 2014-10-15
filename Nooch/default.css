@@ -21,7 +21,7 @@ view {
 }
 
 .prelogin_slogan {
-    font-family: "VarelaRound";
+    font-family: "VarelaRound-Regular";
     font-weight: normal;
     font-size: 15px;
     text-align: right;
@@ -80,6 +80,7 @@ view {
 .blue_text { color          : #3fabe1; }
 .light_green_text {color	: #7ab259; }
 .green_text	{color          : #72bf44; }
+.white_text {color          : #fff; }
 	
 .italic_font {font-style  : italic;}
 .bold {font-weight: medium;}
@@ -110,46 +111,36 @@ view {
         font-family		: "Roboto";
         font-weight		: regular;
         font-size		: 20px;
-        color			: #ffffff;
+        color			: #fff;
         text-align		: center;
         width			: 190px;	
         left			: 65px;
     }
 
-    /****  NAV BAR:  User's Balance  ****/
-    #navbar_balance {
-        left		: 0px;
-        top			: 0px;
-        width       : 30px;
-        height      : 30px;
-        font-family : "FontAwesome";
-        font-size	: 24px;
-        color		: #ffffff;
-        text-align	: left;
-    }
     #navbar_back {
-        height         :40px;
-        width			:40px;
-        left			: -10px;
+        height      : 40px;
+        width		: 38px;
+        left		: -10px;
+        color       : #fff
+        font-family : "FontAwesome";
+        font-size   : 37px;
+        text-align  : left;
     }
     #navbar_hamburger {
         width       :  30px;
         height      : 30px;
         font-family : "FontAwesome";
-        font-size     : 24px;
+        font-size   : 24px;
+        color       : #fff
     }
     .navbar_rightside_icon {
-        width: 30px;
-        height: 30px;
-        font-family : "FontAwesome";
-        font-size:20px;
-    }
-    #navbar_back {
-        width       :  30px;
+        width       : 30px;
         height      : 30px;
+        color       : #fff
         font-family : "FontAwesome";
-        font-size     : 24px;
+        font-size   : 20px;
     }
+
  /******************************/
  /******	 BANNERS	********/
  /******************************/
@@ -639,6 +630,7 @@ view {
     width				: 80px;
     height				: 40px;
     background-size		: 80px 40px;
+    font-size           : 18px;
 }
 
 /****  Table Detail Text  (right side of row)  ****/

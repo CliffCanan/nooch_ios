@@ -56,10 +56,12 @@
     [super viewWillAppear:animated];
     self.trackedViewName = @"TransferPin Screen";
 }
+
 -(void)viewDidDisappear:(BOOL)animated{
     [self.hud hide:YES];
     [super viewDidDisappear:animated];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -85,6 +87,15 @@
     [title setNumberOfLines:2];
     [title setStyleClass:@"pin_instructiontext"];
     [self.view addSubview:title];
+    
+    UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [back_button setStyleId:@"navbar_back"];
+    [back_button addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
+    [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
+    back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+    [self.navigationItem setLeftBarButtonItem:menu];
 
     if ([[UIScreen mainScreen] bounds].size.height == 480)
     {
@@ -267,6 +278,11 @@
     }
 }
 
+-(void)backPressed:(id)sender{
+    [self.navigationItem setLeftBarButtonItem:nil];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc] init];
@@ -382,6 +398,7 @@
 - (void)locationError:(NSError *)error {
 	//locationLabel.text = [error description];
 }
+
 #pragma mark - UITextField delegation
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {

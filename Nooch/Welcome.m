@@ -195,20 +195,20 @@
     
     UIButton * btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnLink setStyleClass:@"button_green_welcome"];
-    [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
+    [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.22) forState:UIControlStateNormal];
     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     btnLink.frame = CGRectMake(10,mainView.frame.size.height-56, 280, 50);
-    [btnLink setTitle:@"Link Now  " forState:UIControlStateNormal];
+    [btnLink setTitle:@" Link Now" forState:UIControlStateNormal];
     [btnLink addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
 
     NSShadow * shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = Rgb2UIColor(26, 38, 32, .2);
+    shadow.shadowColor = Rgb2UIColor(26, 38, 32, .22);
     shadow.shadowOffset = CGSizeMake(0, -1);
     NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
 
     UILabel * glyphLink = [UILabel new];
     [glyphLink setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
-    [glyphLink setFrame:CGRectMake(192, 9, 30, 28)];
+    [glyphLink setFrame:CGRectMake(103, 9, 30, 28)];
     glyphLink.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-link"]
                                                              attributes:textAttributes1];
     [glyphLink setTextColor:[UIColor whiteColor]];

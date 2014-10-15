@@ -23,27 +23,39 @@
     }
     return self;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setTitle:@"Security Settings"];
-    
+
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
     backgroundImage.alpha = .25;
     [self.view addSubview:backgroundImage];
+
+    [self.navigationItem setLeftBarButtonItem:nil];
+    UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [back_button setStyleId:@"navbar_back"];
+    [back_button addTarget:self action:@selector(backtn) forControlEvents:UIControlEventTouchUpInside];
+    [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
+    [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
+    back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     
+    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+    [self.navigationItem setLeftBarButtonItem:menu];
+
     UIButton *change_pin = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [change_pin setFrame:CGRectMake(20, 30, 280, 60)];
     [change_pin setTitle:@"Change PIN" forState:UIControlStateNormal];
-    [change_pin setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
+    [change_pin setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.21) forState:UIControlStateNormal];
     change_pin.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [change_pin addTarget:self action:@selector(changepin) forControlEvents:UIControlEventTouchUpInside];
     [change_pin setStyleClass:@"button_blue"];
     [self.view addSubview:change_pin];
-    
+
     UILabel *req_imm = [[UILabel alloc] initWithFrame:CGRectMake(-1, 100, 322, 56)];
     [req_imm setBackgroundColor:[UIColor whiteColor]];
     [req_imm setFont:[UIFont fontWithName:@"Roboto-regular" size:17]];
@@ -52,7 +64,7 @@
     req_imm.layer.borderColor = Rgb2UIColor(188, 190, 192, 0.85).CGColor;
     req_imm.layer.borderWidth = 1;
     [self.view addSubview:req_imm];
-    
+
     self.ri = [[UISwitch alloc] initWithFrame:CGRectMake(260, 113, 40, 40)];
     [self.ri setOnTintColor:kNoochGreen];
     [self.ri addTarget:self action:@selector(req) forControlEvents:UIControlEventValueChanged];
@@ -74,7 +86,7 @@
     [change_password setFrame:CGRectMake(0, 240, 0, 0)];
     [change_password setStyleClass:@"button_blue"];
     [change_password setTitle:@"Change Password" forState:UIControlStateNormal];
-    [change_password setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
+    [change_password setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.21) forState:UIControlStateNormal];
     change_password.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [change_password addTarget:self action:@selector(changepass) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:change_password];
@@ -111,7 +123,12 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationItem setTitle:@"Security Settings"];
-    self.trackedViewName = @"PinSettings Screen";
+    self.trackedViewName = @"Pin Settings Screen";
+}
+
+-(void)backtn {
+    [self.navigationItem setLeftBarButtonItem:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)changepass{
@@ -155,13 +172,13 @@
 
 -(void)Error:(NSError *)Error
 {
-    /*UIAlertView * alert = [[UIAlertView alloc]
+    UIAlertView * alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    [alert show]; */
+    [alert show];
 }
 
 #pragma mark - server delegation
