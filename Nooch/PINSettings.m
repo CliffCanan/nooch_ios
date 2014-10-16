@@ -116,7 +116,7 @@
     [info2 setTextAlignment:NSTextAlignmentCenter];
     [info2 setFont:[UIFont fontWithName:@"Roboto-Light" size:14]];
     [info2 setTextColor:[Helpers hexColor:@"7f8185"]];
-    [info2 setText:@"Show up when users search Nooch for nearby members."];
+    [info2 setText:@"Show up when other members search for people nearby to send or request money."];
     [self.view addSubview:info2];
 }
 

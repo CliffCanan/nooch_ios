@@ -45,16 +45,18 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
+
     UILabel * glyph_login = [UILabel new];
     [glyph_login setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
     [glyph_login setFrame:CGRectMake(268, 0, 18, 30)];
     [glyph_login setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-right"]];
     [glyph_login setTextColor:kNoochGreen];
-    
+
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.login setBackgroundColor:[UIColor clearColor]];
     [self.login setTitle:@"Already a Member?  Sign in here  " forState:UIControlStateNormal];
-    [self.login setFrame:CGRectMake(10, 575, 280, 30)];
+    [self.login setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height + 6, 280, 30)];
     [self.login addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"label_small"];
     [self.login addSubview:glyph_login];
@@ -65,8 +67,12 @@
                                  options:UIViewKeyframeAnimationOptionCalculationModeCubic
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
-                                      // sender.center = CGPointMake(460,500);
-                                      [self.login setFrame:CGRectMake(10, 510, 280, 30)];
+                                      if ([[UIScreen mainScreen] bounds].size.height > 500) {
+                                          [self.login setFrame:CGRectMake(10, 509, 280, 30)];
+                                      }
+                                      else {
+                                          [self.login setFrame:CGRectMake(10, 440, 280, 30)];
+                                      }
                                   }];
                               } completion: nil];
 }
@@ -291,8 +297,8 @@
     [UIView commitAnimations];
 }
 
--(void)removeChild:(UIViewController *) child {
-    
+-(void)removeChild:(UIViewController *) child
+{
     [UIView animateWithDuration:.35
                      animations:^{
                          CGRect rect = self.view.frame;
@@ -521,16 +527,32 @@
                                  options:UIViewKeyframeAnimationOptionCalculationModeCubic
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
-                                      [self.login setFrame:CGRectMake(-16, 510, 280, 30)];
+                                      if ([[UIScreen mainScreen] bounds].size.height > 500) {
+                                          [self.login setFrame:CGRectMake(-16, 509, 280, 30)];
+                                      } else {
+                                          [self.login setFrame:CGRectMake(-16, 440, 280, 30)];
+                                      }
                                   }];
                                   [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:0.21 animations:^{
-                                      [self.login setFrame:CGRectMake(-25, 510, 280, 30)];
+                                      if ([[UIScreen mainScreen] bounds].size.height > 500) {
+                                          [self.login setFrame:CGRectMake(-25, 509, 280, 30)];
+                                      } else {
+                                          [self.login setFrame:CGRectMake(-25, 440, 280, 30)];
+                                      }
                                   }];
-                                  [UIView addKeyframeWithRelativeStartTime:0.46 relativeDuration:0.3 animations:^{
-                                      [self.login setFrame:CGRectMake(100, 510, 280, 30)];
+                                  [UIView addKeyframeWithRelativeStartTime:0.46 relativeDuration:0.32 animations:^{
+                                      if ([[UIScreen mainScreen] bounds].size.height > 500) {
+                                          [self.login setFrame:CGRectMake(100, 509, 280, 30)];
+                                      } else {
+                                          [self.login setFrame:CGRectMake(100, 440, 280, 30)];
+                                      }
                                   }];
-                                  [UIView addKeyframeWithRelativeStartTime:0.76 relativeDuration:0.24 animations:^{
-                                      [self.login setFrame:CGRectMake(322, 510, 280, 30)];
+                                  [UIView addKeyframeWithRelativeStartTime:0.78 relativeDuration:0.22 animations:^{
+                                      if ([[UIScreen mainScreen] bounds].size.height > 500) {
+                                          [self.login setFrame:CGRectMake(321, 509, 280, 30)];
+                                      } else {
+                                          [self.login setFrame:CGRectMake(321, 440, 280, 30)];
+                                      }
                                   }];
                               } completion: ^(BOOL finished){
                                   [[UIApplication sharedApplication]setStatusBarHidden:YES];
