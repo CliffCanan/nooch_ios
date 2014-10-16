@@ -69,6 +69,7 @@
     getlocation = [[GetLocation alloc] init];
 	getlocation.delegate = self;
 	[getlocation.locationManager startUpdatingLocation];
+    [getlocation.locationManager requestWhenInUseAuthorization];
     
     // Do any additional setup after loading the view from its nib.
     self.pin = [UITextField new];
