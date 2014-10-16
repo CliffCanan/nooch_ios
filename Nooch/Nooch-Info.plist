@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This application requires location services to work.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -87,11 +89,11 @@
 			<key>TintColor</key>
 			<dict>
 				<key>Blue</key>
-				<real>0.30182510614395142</real>
+				<real>0.3018251061439514</real>
 				<key>Green</key>
 				<real>0.2811298668384552</real>
 				<key>Red</key>
-				<real>0.24812017381191251</real>
+				<real>0.2481201738119125</real>
 			</dict>
 			<key>Translucent</key>
 			<false/>

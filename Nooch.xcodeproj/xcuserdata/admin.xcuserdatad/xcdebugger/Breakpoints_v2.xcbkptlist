@@ -191,7 +191,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1035"
             endingLineNumber = "1035"
-            landmarkName = "-connectionDidFinishLoading:"
+            landmarkName = "-alertView:clickedButtonAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -987,7 +987,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "479"
             endingLineNumber = "479"
-            landmarkName = "-Error:"
+            landmarkName = "-textField:shouldChangeCharactersInRange:replacementString:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1067,7 +1067,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1032"
             endingLineNumber = "1032"
-            landmarkName = "-connection:didFailWithError:"
+            landmarkName = "-alertView:clickedButtonAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
