@@ -61,7 +61,6 @@
     self.hud.delegate = self;
     self.hud.labelText = @"Assembling this transfer...";
     [self.hud show:YES];
-    [spinner1 startAnimating];
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
@@ -234,8 +233,8 @@
     UILabel *fb_text = [UILabel new];
     [fb_text setFrame:fb.frame];
     if ([[UIScreen mainScreen] bounds].size.height == 480) {
-            [fb_text setStyleClass:@"details_buttons_labels_4"];
-        } 
+        [fb_text setStyleClass:@"details_buttons_labels_4"];
+    }
     else {
         [fb_text setStyleClass:@"details_buttons_labels"];
     }
@@ -379,8 +378,9 @@
         }
     }
 
-    else if ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Transfer"] ||
-             [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Invite"] )
+    else if (([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Transfer"] ||
+              [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Invite"] ) &&
+              [[self.trans valueForKey:@"TransactionStatus"] isEqualToString:@"Success"])
     {
             
         if ([[self.trans objectForKey:@"MemberId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
@@ -801,7 +801,7 @@
 
 - (void) dispute
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Confirm Dispute" message:@"To protect your money, if you dispute a transfer your Nooch account will be temporarily suspended while we investigate." delegate:self cancelButtonTitle:@"Yes - Dispute" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Confirm Dispute" message:@"To protect your account, if you dispute a transfer your Nooch account will be temporarily suspended while we investigate." delegate:self cancelButtonTitle:@"Yes - Dispute" otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1];
 }
@@ -836,7 +836,6 @@
         self.hud.delegate = self;
         self.hud.labelText = @"Disputing this transfer...";
         [self.hud show:YES];
-        [spinner1 startAnimating];
         
         self.responseData = [NSMutableData data];
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
@@ -884,7 +883,6 @@
         self.hud.delegate = self;
         self.hud.labelText = @"Cancelling this request...";
         [self.hud show:YES];
-        [spinner1 startAnimating];
         
         serve *serveObj = [serve new];
         [serveObj setDelegate:self];
@@ -911,7 +909,6 @@
         self.hud.delegate = self;
         self.hud.labelText = @"Cancelling this transfer...";
         [self.hud show:YES];
-        [spinner1 startAnimating];
 
         serve * serveObj = [serve new];
         [serveObj setDelegate:self];
@@ -921,6 +918,17 @@
     
     else if (alertView.tag == 1011 && buttonIndex == 0)  // REJECT
     {
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
+        spinner1.color = [UIColor whiteColor];
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:self.hud];
+
+        self.hud.mode = MBProgressHUDModeCustomView;
+        self.hud.customView = spinner1;
+        self.hud.delegate = self;
+        self.hud.labelText = @"Rejecting this request...";
+        [self.hud show:YES];
+
         serve * serveObj = [serve new];
         [serveObj setDelegate:self];
         serveObj.tagName = @"reject";
@@ -951,13 +959,13 @@
 -(void)Error:(NSError *)Error {
     [self.hud hide:YES];
    
-    /* UIAlertView * alert = [[UIAlertView alloc]
+    UIAlertView * alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    [alert show];  */
+    [alert show];
 }
 
 #pragma mark - server delegation
@@ -1157,7 +1165,7 @@
             NSString *statusstr;
 
             if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-                statusstr = @"Cancelled";
+                statusstr = @"Canceled";
                 [status setStyleClass:@"red_text"];
             }
             else if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
@@ -1180,6 +1188,12 @@
                      [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
             {
                 statusstr = @"Completed";
+                [status setStyleClass:@"green_text"];
+            }
+            else if ([[loginResult valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
+                     [[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Success"])
+            {
+                statusstr = @"Complete (Request Paid)";
                 [status setStyleClass:@"green_text"];
             }
             else if ([[loginResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&

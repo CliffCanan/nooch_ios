@@ -67,7 +67,6 @@
     self.hud.delegate = self;
     self.hud.labelText = @"Loading Privacy Policy...";
     [self.hud show:YES];
-    [spinner1 startAnimating];
 
     NSURL * webURL = [NSURL URLWithString:@"https://www.nooch.com/privacy/"];
     privacyView = [[UIWebView alloc]initWithFrame:CGRectMake(0, -2, 320, [[UIScreen mainScreen] bounds].size.height - 62)];
