@@ -283,8 +283,7 @@
             self.hud.customView = spinner1;
             self.hud.delegate = self;
             self.hud.labelText = @"One sec...";
-            [self.hud show:YES];
-            [spinner1 startAnimating];*/
+            [self.hud show:YES];*/
 
             serve * forgetful = [serve new];
             forgetful.Delegate = self;

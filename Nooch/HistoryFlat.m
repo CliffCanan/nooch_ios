@@ -408,7 +408,7 @@
     {
         if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]]valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"])
         {
-            statusstr = @"Cancelled:";
+            statusstr = @"Canceled:";
             [lblloc setStyleClass:@"red_text"];
         }
         else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
@@ -617,7 +617,6 @@ return customView;
     [self.navigationController.view addSubview:self.hud];
     self.hud.labelText = @"Loading Transaction History";
     [self.hud show:YES];
-    [spinner1 startAnimating];
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
     self.hud.delegate = self;
@@ -1364,6 +1363,14 @@ return customView;
                     [updated_balance setStyleClass:@"transfer_status"];
                     [updated_balance setText:[NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"TransactionStatus"]]];
                     [updated_balance setTextColor:kNoochGrayLight];
+                    [cell.contentView addSubview:updated_balance];
+                }
+                else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"] &&
+                         [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"] )
+                {
+                    [updated_balance setText:@"Paid"];
+                    [updated_balance setStyleClass:@"transfer_status"];
+                    [updated_balance setTextColor:kNoochGreen];
                     [cell.contentView addSubview:updated_balance];
                 }
                 else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"] &&
@@ -2695,7 +2702,6 @@ return customView;
         [self.navigationController.view addSubview:self.hud];
         self.hud.labelText = @"Cancelling this request...";
         [self.hud show:YES];
-        [spinner1 startAnimating];
         self.hud.mode = MBProgressHUDModeCustomView;
         self.hud.customView = spinner1;
         self.hud.delegate = self;
@@ -2721,7 +2727,6 @@ return customView;
         [self.navigationController.view addSubview:self.hud];
         self.hud.labelText = @"Cancelling this transfer...";
         [self.hud show:YES];
-        [spinner1 startAnimating];
         self.hud.mode = MBProgressHUDModeCustomView;
         self.hud.customView = spinner1;
         self.hud.delegate = self;
@@ -2740,7 +2745,6 @@ return customView;
         [self.navigationController.view addSubview:self.hud];
         self.hud.labelText = @"Rejecting this request...";
         [self.hud show:YES];
-        [spinner1 startAnimating];
         self.hud.mode = MBProgressHUDModeCustomView;
         self.hud.customView = spinner1;
         self.hud.delegate = self;

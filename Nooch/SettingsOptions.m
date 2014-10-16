@@ -498,11 +498,11 @@
             [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
 
             UIActivityIndicatorView * actv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-            [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2)-5, 40, 40)];
+            [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2) - 10, 40, 40)];
             [actv startAnimating];
             [blankView addSubview:actv];
 
-            [self .view addSubview:blankView];
+            [self.view addSubview:blankView];
             [self.view bringSubviewToFront:blankView];
             [[assist shared]setisloggedout:YES];
             [timer invalidate];

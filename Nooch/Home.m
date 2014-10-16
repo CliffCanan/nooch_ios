@@ -951,7 +951,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             self.hud.labelText = @"Loading your Nooch account";
             self.hud.labelColor = kNoochGrayDark;
             [self.hud show:YES];
-            [spinner1 startAnimating];
         }
 
         if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
