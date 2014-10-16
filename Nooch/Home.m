@@ -863,11 +863,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         
         //location
         locationManager = [[CLLocationManager alloc] init];
-        [locationManager requestAlwaysAuthorization];
+       
         locationManager.delegate = self;
         locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
         locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
         [locationManager startUpdatingLocation];
+         [locationManager requestAlwaysAuthorization];
     }
 
     [[assist shared] setRequestMultiple:NO];
