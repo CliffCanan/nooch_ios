@@ -18,7 +18,7 @@
 	if (self != nil) {
 		self.locationManager = [[CLLocationManager alloc] init];
 		self.locationManager.delegate = self;
-        [self.locationManager requestAlwaysAuthorization];
+        [self.locationManager requestWhenInUseAuthorization];
         // send loc updates to myself
 	}
 	return self;
