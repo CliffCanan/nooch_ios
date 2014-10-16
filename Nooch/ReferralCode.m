@@ -139,7 +139,6 @@
     self.hud.delegate = self;
     self.hud.labelText = @"Validating your invite code";
     [self.hud show:YES];
-    [spinner1 startAnimating];
     
     [enter setEnabled:NO];
     serve *inv_code = [serve new];

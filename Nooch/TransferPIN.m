@@ -484,8 +484,7 @@
         self.hud.delegate = self;
         self.hud.labelText = textLoading;
         [self.hud show:YES];
-        [spinner1 startAnimating];
-        
+
         serve * pin = [serve new];
         pin.Delegate = self;
         pin.tagName = @"ValidatePinNumber";

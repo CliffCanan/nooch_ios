@@ -63,7 +63,6 @@
     self.hud.delegate = self;
     self.hud.labelText = @"Loading & Other Computer Activities";
     [self.hud show:YES];
-    [spinner1 startAnimating];
 
     NSURL * webURL = [NSURL URLWithString:@"https://www.nooch.com/2248-112188/"];
     LimitsAndFeesView = [[UIWebView alloc]initWithFrame:self.view.frame];
