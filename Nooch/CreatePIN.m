@@ -176,12 +176,13 @@
     self.pin_check = @"";
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
-    NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  [UIColor whiteColor], UITextAttributeTextColor,
-                                  Rgb2UIColor(19, 32, 38, .25), UITextAttributeTextShadowColor,
-                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, -1.0)], UITextAttributeTextShadowOffset,
-                                  nil];
-    [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
+    NSShadow * shadowNavText = [[NSShadow alloc] init];
+    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .26);
+    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
+    
+    NSDictionary * titleAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
+                                       NSShadowAttributeName: shadowNavText};
+    [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
     
     [self.navigationItem setTitle:@"Create PIN"];
 

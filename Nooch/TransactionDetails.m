@@ -120,8 +120,7 @@
     if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"])
     {
 	    if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
-	        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Paid To:"
-                                                                   attributes:textAttributes];
+	        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Paid To:" attributes:textAttributes];
             [payment setStyleClass:@"details_intro_red"];
         }
 		else {
@@ -133,8 +132,7 @@
     else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"])
     {
         if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]]) {
-            payment.attributedText = [[NSAttributedString alloc] initWithString:@"Request Sent To:"
-                                                                   attributes:textAttributes];
+            payment.attributedText = [[NSAttributedString alloc] initWithString:@"Request Sent To:" attributes:textAttributes];
         }
         else {
             payment.attributedText = [[NSAttributedString alloc] initWithString:@"Request From:"
@@ -144,21 +142,18 @@
     }
     else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"])
     {
-        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Invite Sent To:"
-                                                               attributes:textAttributes];
+        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Invite Sent To:" attributes:textAttributes];
         [payment setStyleClass:@"details_intro_green"];
     }
     else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"InviteRequest"] ||
 	         ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] && [[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]]))
     {
-        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Request Sent To:"
-                                                               attributes:textAttributes];
+        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Request Sent To:" attributes:textAttributes];
         [payment setStyleClass:@"details_intro_blue"];
     }
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"])
     {
-        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Disputed Transfer:"
-                                                               attributes:textAttributes];
+        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Disputed Transfer:" attributes:textAttributes];
         [payment setStyleClass:@"details_intro_red"];
     }
     [self.view addSubview:payment];
@@ -169,7 +164,7 @@
     [amount setTextAlignment:NSTextAlignmentCenter];
     [self.view addSubview:amount];
 
-    UILabel *memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 116, 320, 60)];
+    UILabel * memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 116, 320, 60)];
     if (![[self.trans valueForKey:@"Memo"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"Memo"]!=NULL)
     {
         if ([[self.trans valueForKey:@"Memo"] length] == 0 || [[self.trans valueForKey:@"Memo"] isEqualToString:@"\"\""])
@@ -189,111 +184,91 @@
     [memo setStyleClass:@"italic_font"];
     [self.view addSubview:memo];
 
-        
-    UIButton *pay_back = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton * pay_back = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [pay_back setTitle:@"" forState:UIControlStateNormal];
     [pay_back setStyleCSS:@"background-image : url(pay-back-icon.png)"];
     [pay_back setStyleId:@"details_payback"];
     [pay_back addTarget:self action:@selector(pay_back) forControlEvents:UIControlEventTouchUpInside];
-    
-    if ([[UIScreen mainScreen] bounds].size.height == 480) {
-        [pay_back setStyleClass:@"details_buttons_4"];
-    }
-    else {
-        [pay_back setStyleClass:@"details_buttons"];
-    }
 
-    UILabel *pay_text = [UILabel new];
+    UILabel * pay_text = [UILabel new];
     [pay_text setFrame:pay_back.frame];
-    if ([[UIScreen mainScreen] bounds].size.height == 480) {
-        [pay_text setStyleClass:@"details_buttons_labels_4"];
-    }
-    else {
-        [pay_text setStyleClass:@"details_buttons_labels"];
-    }
-    [pay_text setText:@"Pay Back"];
 
-    UIButton *fb = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton * fb = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [fb setTitle:@"" forState:UIControlStateNormal];
     [fb setStyleCSS:@"background-image : url(fb-icon-90x90.png)"];
+    [fb addTarget:self action:@selector(post_to_fb) forControlEvents:UIControlEventTouchUpInside];
     if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
         [fb setStyleId:@"details_fb_donate"];
     }
     else {
         [fb setStyleId:@"details_fb"];
     }
-    [fb addTarget:self action:@selector(post_to_fb) forControlEvents:UIControlEventTouchUpInside];
-    if ([[UIScreen mainScreen] bounds].size.height == 480) {
-        [fb setStyleClass:@"details_buttons_4"];
-    }
-    else {
-        [fb setStyleClass:@"details_buttons"];
-    }
 
     UILabel *fb_text = [UILabel new];
     [fb_text setFrame:fb.frame];
-    if ([[UIScreen mainScreen] bounds].size.height == 480) {
-        [fb_text setStyleClass:@"details_buttons_labels_4"];
-    }
-    else {
-        [fb_text setStyleClass:@"details_buttons_labels"];
-    }
     [fb_text setText:@"Share"];
 
     UIButton *twit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [twit setTitle:@"" forState:UIControlStateNormal];
     [twit setStyleCSS:@"background-image : url(twitter-icon.png)"];
+    [twit addTarget:self action:@selector(post_to_twitter) forControlEvents:UIControlEventTouchUpInside];
     if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
         [twit setStyleId:@"details_twit_donate"];
     }
     else {
         [twit setStyleId:@"details_twit"];
     }
-    [twit addTarget:self action:@selector(post_to_twitter) forControlEvents:UIControlEventTouchUpInside];
-    if ([[UIScreen mainScreen] bounds].size.height == 480) {
-        [twit setStyleClass:@"details_buttons_4"];
-    }
-    else {
-        [twit setStyleClass:@"details_buttons"];
-    }
 
-    UILabel *twit_text = [UILabel new];
+    UILabel * twit_text = [UILabel new];
     [twit_text setFrame:twit.frame];
-    if ([[UIScreen mainScreen] bounds].size.height == 480) {
-        [twit_text setStyleClass:@"details_buttons_labels_4"];
-    }
-    else {
-        [twit_text setStyleClass:@"details_buttons_labels"];
-    }
     [twit_text setText:@"Tweet"];
 
-    UIButton *disp = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton * disp = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [disp setTitle:@"" forState:UIControlStateNormal];
     [disp setStyleCSS:@"background-image : url(dispute-icon.png)"];
+    [disp addTarget:self action:@selector(dispute) forControlEvents:UIControlEventTouchUpInside];
     if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
         [disp setStyleId:@"details_disp_donate"];
     }
     else
         [disp setStyleId:@"details_disp"];
-        
-    [disp addTarget:self action:@selector(dispute) forControlEvents:UIControlEventTouchUpInside];
-    if ([[UIScreen mainScreen] bounds].size.height == 480) {
-        [disp setStyleClass:@"details_buttons_4"];
-    }
-    else {
-        [disp setStyleClass:@"details_buttons"];
-    }
 
-    UILabel *disp_text = [UILabel new];
+    UILabel * disp_text = [UILabel new];
     [disp_text setFrame:disp.frame];
-    if ([[UIScreen mainScreen] bounds].size.height == 480) {
-        [disp_text setStyleClass:@"details_buttons_labels_4"];
-    }
-    else {
+    [disp_text setText:@"Dispute"];
+
+    if ([[UIScreen mainScreen] bounds].size.height > 500) {
+        [pay_back setStyleClass:@"details_buttons"];
+        [pay_text setStyleClass:@"details_buttons_labels"];
+        [fb setStyleClass:@"details_buttons"];
+        [fb_text setStyleClass:@"details_buttons_labels"];
+        [twit setStyleClass:@"details_buttons"];
+        [twit_text setStyleClass:@"details_buttons_labels"];
+        [disp setStyleClass:@"details_buttons"];
         [disp_text setStyleClass:@"details_buttons_labels"];
     }
-    [disp_text setText:@"Dispute"];
-    
+    else
+    {
+        [pay_back setStyleClass:@"details_buttons_4"];
+        [pay_text setStyleClass:@"details_buttons_labels_4"];
+        [fb setStyleClass:@"details_buttons_4"];
+        [fb_text setStyleClass:@"details_buttons_labels_4"];
+        [twit setStyleClass:@"details_buttons_4"];
+        [twit_text setStyleClass:@"details_buttons_labels_4"];
+        [disp setStyleClass:@"details_buttons_4"];
+        [disp_text setStyleClass:@"details_buttons_labels_4"];
+    }
+    if ([[self.trans objectForKey:@"MemberId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
+        [pay_text setStyleId:@"details_buttons_labels_long"];
+        CGRect frame1 = pay_text.frame;
+        [pay_text setFrame:CGRectMake(frame1.origin.x - 5, frame1.origin.y, frame1.size.width, frame1.size.height)];
+        [pay_text setText:@"Pay Again"];
+    }
+    else {
+        [pay_text setText:@"Pay Back"];
+    }
+
+
     if ( [[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
     {
         // Pay & Cancel Buttons
