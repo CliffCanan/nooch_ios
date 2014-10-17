@@ -1528,14 +1528,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         favorites = [favorites mutableCopy];
 
         if ([favorites count] == 0) {
-            //[self FavoriteContactsProcessing];
+            [self FavoriteContactsProcessing];
         }
         else
         {
             favorites = [favorites mutableCopy];
             
             if ([favorites count] < 5) {
-               //[self FavoriteContactsProcessing];
+               [self FavoriteContactsProcessing];
            }
            [_carousel reloadData];
         }
