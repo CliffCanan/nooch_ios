@@ -430,7 +430,7 @@ NSString *amnt;
     [requestSet setHTTPBody:postDataSet];
     [requestSet setTimeoutInterval:3600];
     
-    NSLog(@"%@  ........ %@",url,urlStrSet);
+    //NSLog(@"%@  ....  %@",url,urlStrSet);
     
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestSet delegate:self];
     if (!connection)

@@ -88,7 +88,7 @@ UIImageView *picture;
 {
     if (isSignup) {
         [self.navigationController setNavigationBarHidden:NO];
-        [UIView animateWithDuration:0.7
+        [UIView animateWithDuration:0.75
                          animations:^{
                              [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
                              [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
@@ -249,6 +249,7 @@ UIImageView *picture;
         UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
         [self.navigationItem setLeftBarButtonItem:menu];
     }
+
     if (!isSignup) {
         [self.slidingViewController.panGesture setEnabled:YES];
         [self.view addGestureRecognizer:self.slidingViewController.panGesture];
@@ -1339,7 +1340,6 @@ UIImageView *picture;
             [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
             isSignup = NO;
         }
-
     }
 
     else if ([tagName isEqualToString:@"myset"])

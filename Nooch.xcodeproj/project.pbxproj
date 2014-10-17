@@ -65,12 +65,6 @@
 		01C26DB91843BB22005179B7 /* pay-back-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26D9E1843BB22005179B7 /* pay-back-icon.png */; };
 		01C26DBA1843BB22005179B7 /* silhouette.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26D9F1843BB22005179B7 /* silhouette.png */; };
 		01C26DBB1843BB22005179B7 /* sms-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DA01843BB22005179B7 /* sms-icon.png */; };
-		01C26DBC1843BB22005179B7 /* stats-donations-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DA11843BB22005179B7 /* stats-donations-active.png */; };
-		01C26DBD1843BB22005179B7 /* stats-donations-inactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DA21843BB22005179B7 /* stats-donations-inactive.png */; };
-		01C26DBE1843BB22005179B7 /* stats-profile-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DA31843BB22005179B7 /* stats-profile-active.png */; };
-		01C26DBF1843BB22005179B7 /* stats-profile-inactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DA41843BB22005179B7 /* stats-profile-inactive.png */; };
-		01C26DC01843BB22005179B7 /* stats-transfers-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DA51843BB22005179B7 /* stats-transfers-active.png */; };
-		01C26DC11843BB22005179B7 /* stats-transfers-inactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DA61843BB22005179B7 /* stats-transfers-inactive.png */; };
 		01C26DC21843BB22005179B7 /* twitter-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DA71843BB22005179B7 /* twitter-icon.png */; };
 		01C26DEF1843C56C005179B7 /* nooch_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C26DD51843C56C005179B7 /* nooch_Logo.png */; };
 		01C26DFB1843E676005179B7 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C26DFA1843E676005179B7 /* Reachability.m */; };
@@ -451,12 +445,6 @@
 		01C26D9E1843BB22005179B7 /* pay-back-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pay-back-icon.png"; sourceTree = "<group>"; };
 		01C26D9F1843BB22005179B7 /* silhouette.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = silhouette.png; sourceTree = "<group>"; };
 		01C26DA01843BB22005179B7 /* sms-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sms-icon.png"; sourceTree = "<group>"; };
-		01C26DA11843BB22005179B7 /* stats-donations-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stats-donations-active.png"; sourceTree = "<group>"; };
-		01C26DA21843BB22005179B7 /* stats-donations-inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stats-donations-inactive.png"; sourceTree = "<group>"; };
-		01C26DA31843BB22005179B7 /* stats-profile-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stats-profile-active.png"; sourceTree = "<group>"; };
-		01C26DA41843BB22005179B7 /* stats-profile-inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stats-profile-inactive.png"; sourceTree = "<group>"; };
-		01C26DA51843BB22005179B7 /* stats-transfers-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stats-transfers-active.png"; sourceTree = "<group>"; };
-		01C26DA61843BB22005179B7 /* stats-transfers-inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stats-transfers-inactive.png"; sourceTree = "<group>"; };
 		01C26DA71843BB22005179B7 /* twitter-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter-icon.png"; sourceTree = "<group>"; };
 		01C26DD51843C56C005179B7 /* nooch_Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nooch_Logo.png; sourceTree = "<group>"; };
 		01C26DF91843E676005179B7 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
@@ -1212,12 +1200,6 @@
 				01C26D9E1843BB22005179B7 /* pay-back-icon.png */,
 				01C26D9F1843BB22005179B7 /* silhouette.png */,
 				01C26DA01843BB22005179B7 /* sms-icon.png */,
-				01C26DA11843BB22005179B7 /* stats-donations-active.png */,
-				01C26DA21843BB22005179B7 /* stats-donations-inactive.png */,
-				01C26DA31843BB22005179B7 /* stats-profile-active.png */,
-				01C26DA41843BB22005179B7 /* stats-profile-inactive.png */,
-				01C26DA51843BB22005179B7 /* stats-transfers-active.png */,
-				01C26DA61843BB22005179B7 /* stats-transfers-inactive.png */,
 				01C26DA71843BB22005179B7 /* twitter-icon.png */,
 			);
 			name = images;
@@ -2251,7 +2233,6 @@
 				6BC5FED91625F1B0007EAD7A /* Roboto-CondensedItalic.ttf in Resources */,
 				5C5D073219DE70CB00B07A30 /* 0_home-bg.png in Resources */,
 				6BC5FEDB1625F1B0007EAD7A /* Roboto-Italic.ttf in Resources */,
-				01C26DBF1843BB22005179B7 /* stats-profile-inactive.png in Resources */,
 				6BC5FEDD1625F1B0007EAD7A /* Roboto-Light.ttf in Resources */,
 				6BC5FEDF1625F1B0007EAD7A /* Roboto-LightItalic.ttf in Resources */,
 				5C69CFF919C92F7400EB406F /* NotificationBackgroundError.png in Resources */,
@@ -2263,7 +2244,6 @@
 				8420B39F187AC4BF00A77E2D /* pink-pin.png in Resources */,
 				6BC5FEE11625F1B0007EAD7A /* Roboto-Medium.ttf in Resources */,
 				6BC5FEE31625F1B0007EAD7A /* Roboto-MediumItalic.ttf in Resources */,
-				01C26DC01843BB22005179B7 /* stats-transfers-active.png in Resources */,
 				6BC5FEE51625F1B0007EAD7A /* Roboto-Regular.ttf in Resources */,
 				8449C58219EBAB9700027B9B /* UAInboxMessageListCell.xib in Resources */,
 				01C26DB61843BB22005179B7 /* memo-nonprofits.png in Resources */,
@@ -2275,7 +2255,6 @@
 				6BC5FEE91625F1B0007EAD7A /* Roboto-ThinItalic.ttf in Resources */,
 				5CD72EF519D3ECDC008A21D2 /* selectRecipient_img@2x.png in Resources */,
 				010A993B185FA99F001DCE6B /* n_Icon_58x66.png in Resources */,
-				01C26DC11843BB22005179B7 /* stats-transfers-inactive.png in Resources */,
 				8449C59919EBAB9700027B9B /* UALocationSettingsViewController.xib in Resources */,
 				8420B3A0187AC4BF00A77E2D /* red-pin.png in Resources */,
 				844E3F8919DC05E400A00411 /* bg1@2x.png in Resources */,
@@ -2289,7 +2268,6 @@
 				01C26DBB1843BB22005179B7 /* sms-icon.png in Resources */,
 				01C26DAA1843BB22005179B7 /* address-book-icon.png in Resources */,
 				8449C59519EBAB9700027B9B /* middle-detail.png in Resources */,
-				01C26DBC1843BB22005179B7 /* stats-donations-active.png in Resources */,
 				8471A10919960CB300047231 /* arrow-blue.png in Resources */,
 				8449BF9E19EB94AE00027B9B /* AirshipConfig.plist in Resources */,
 				01C26DB01843BB22005179B7 /* email-icon.png in Resources */,
@@ -2302,9 +2280,7 @@
 				844E3F8C19DC05E400A00411 /* icon3@2x.png in Resources */,
 				01C26DC21843BB22005179B7 /* twitter-icon.png in Resources */,
 				5C69D00119C92F7400EB406F /* NotificationBackgroundSuccessIcon.png in Resources */,
-				01C26DBE1843BB22005179B7 /* stats-profile-active.png in Resources */,
 				8465B8D2198A075300921F8A /* bank.png in Resources */,
-				01C26DBD1843BB22005179B7 /* stats-donations-inactive.png in Resources */,
 				8481F09019A1CA75007F6565 /* selectRecipientIntro_smallScreen.png in Resources */,
 				8449C58319EBAB9700027B9B /* UAInboxMessageListController.xib in Resources */,
 				8449C59419EBAB9700027B9B /* bottom-detail@2x.png in Resources */,
@@ -2649,8 +2625,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "19b48529-c547-4d46-9e2e-86131617f562";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "19b48529-c547-4d46-9e2e-86131617f562";
+				PROVISIONING_PROFILE = "ab00c4de-66ad-40b0-9c34-98ade98b06f7";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ab00c4de-66ad-40b0-9c34-98ade98b06f7";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2727,8 +2703,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "19b48529-c547-4d46-9e2e-86131617f562";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "19b48529-c547-4d46-9e2e-86131617f562";
+				PROVISIONING_PROFILE = "ab00c4de-66ad-40b0-9c34-98ade98b06f7";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ab00c4de-66ad-40b0-9c34-98ade98b06f7";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
