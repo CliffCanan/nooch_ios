@@ -18,7 +18,14 @@
 	if (self != nil) {
 		self.locationManager = [[CLLocationManager alloc] init];
 		self.locationManager.delegate = self;
-        [self.locationManager requestWhenInUseAuthorization];
+        
+        if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) { // iOS8+
+            // Sending a message to avoid compile time error
+            [[UIApplication sharedApplication] sendAction:@selector(requestWhenInUseAuthorization)
+                                                       to:self.locationManager
+                                                     from:self
+                                                 forEvent:nil];
+        }
         // send loc updates to myself
 	}
 	return self;

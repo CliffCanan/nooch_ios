@@ -2639,8 +2639,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "27a3a1ff-4215-4618-bef9-6ba5b803dd1b";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "27a3a1ff-4215-4618-bef9-6ba5b803dd1b";
+				PROVISIONING_PROFILE = "19b48529-c547-4d46-9e2e-86131617f562";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "19b48529-c547-4d46-9e2e-86131617f562";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2664,7 +2664,7 @@
 				GCC_PREFIX_HEADER = "Nooch/Nooch-Prefix.pch";
 				HEADER_SEARCH_PATHS = "../Airship/**";
 				INFOPLIST_FILE = "Nooch/Nooch-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2702,7 +2702,7 @@
 				GCC_PREFIX_HEADER = "Nooch/Nooch-Prefix.pch";
 				HEADER_SEARCH_PATHS = "../Airship/**";
 				INFOPLIST_FILE = "Nooch/Nooch-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2715,8 +2715,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "27a3a1ff-4215-4618-bef9-6ba5b803dd1b";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "27a3a1ff-4215-4618-bef9-6ba5b803dd1b";
+				PROVISIONING_PROFILE = "19b48529-c547-4d46-9e2e-86131617f562";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "19b48529-c547-4d46-9e2e-86131617f562";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;

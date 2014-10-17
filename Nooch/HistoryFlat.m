@@ -147,15 +147,15 @@
         [self.navigationItem setRightBarButtonItem:filt animated:NO ];
         
         UILabel *glyph_checkmark = [UILabel new];
-        [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+        [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
         [glyph_checkmark setFrame:CGRectMake(21, 12, 22, 16)];
         [glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
         [glyph_checkmark setTextColor: kNoochBlue];
         [self.view addSubview:glyph_checkmark];
         
         UILabel *glyph_pending = [UILabel new];
-        [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-        [glyph_pending setFrame:CGRectMake(178, 12, 20, 16)];
+        [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+        [glyph_pending setFrame:CGRectMake(174, 12, 20, 16)];
         [glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
         [glyph_pending setTextColor: [UIColor whiteColor]];
         [self.view addSubview:glyph_pending];
@@ -193,15 +193,15 @@
         [completed_pending setSelectedSegmentIndex:0];
     
         UILabel * glyph_checkmark = [UILabel new];
-        [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+        [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
         [glyph_checkmark setFrame:CGRectMake(21, 12, 22, 16)];
         [glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
         [glyph_checkmark setTextColor:[UIColor whiteColor]];
         [self.view addSubview:glyph_checkmark];
         
         UILabel * glyph_pending = [UILabel new];
-        [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-        [glyph_pending setFrame:CGRectMake(178, 12, 20, 16)];
+        [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+        [glyph_pending setFrame:CGRectMake(174, 12, 20, 16)];
         [glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
         [glyph_pending setTextColor: kNoochBlue];
         [self.view addSubview:glyph_pending];
@@ -668,15 +668,15 @@ return customView;
         [self.navigationItem setRightBarButtonItems:topRightBtns animated:NO ];
         
         UILabel *glyph_checkmark = [UILabel new];
-        [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+        [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
         [glyph_checkmark setFrame:CGRectMake(21, 12, 22, 16)];
         [glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
         [glyph_checkmark setTextColor:[UIColor whiteColor]];
         [self.view addSubview:glyph_checkmark];
         
         UILabel *glyph_pending = [UILabel new];
-        [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-        [glyph_pending setFrame:CGRectMake(178, 12, 20, 16)];
+        [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+        [glyph_pending setFrame:CGRectMake(174, 12, 20, 16)];
         [glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
         [glyph_pending setTextColor: kNoochBlue];
         [self.view addSubview:glyph_pending];
@@ -702,15 +702,15 @@ return customView;
         [self.navigationItem setRightBarButtonItem:filt animated:NO ];
         
         UILabel *glyph_checkmark = [UILabel new];
-        [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+        [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
         [glyph_checkmark setFrame:CGRectMake(21, 12, 22, 16)];
         [glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
         [glyph_checkmark setTextColor: kNoochBlue];
         [self.view addSubview:glyph_checkmark];
         
         UILabel *glyph_pending = [UILabel new];
-        [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-        [glyph_pending setFrame:CGRectMake(178, 12, 20, 16)];
+        [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+        [glyph_pending setFrame:CGRectMake(174, 12, 20, 16)];
         [glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
         [glyph_pending setTextColor: [UIColor whiteColor]];
         [self.view addSubview:glyph_pending];

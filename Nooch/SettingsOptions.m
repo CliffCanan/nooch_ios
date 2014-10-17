@@ -98,12 +98,13 @@
         [glyph_noBank removeFromSuperview];
     }
 
-    NSDictionary * navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  [UIColor whiteColor], UITextAttributeTextColor,
-                                  Rgb2UIColor(19, 32, 38, .22), UITextAttributeTextShadowColor,
-                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, -1.0)], UITextAttributeTextShadowOffset, nil];
+    NSShadow * shadowNavText = [[NSShadow alloc] init];
+    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .26);
+    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
     
-    [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
+    NSDictionary * titleAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
+                                       NSShadowAttributeName: shadowNavText};
+    [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
     [self.navigationItem setHidesBackButton:YES];
 
     UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];

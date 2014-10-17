@@ -271,7 +271,7 @@
                                           animations:^{
                                               [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
                                               mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 52);
-                                              overlay.alpha = 0;
+                                              overlay.alpha = 0.5;
                                           } completion:^(BOOL finished) {
                                               [overlay removeFromSuperview];
                                           }
