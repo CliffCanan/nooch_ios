@@ -868,7 +868,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
         locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
         [locationManager startUpdatingLocation];
-         [locationManager requestWhenInUseAuthorization];
+        if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) { // iOS8+
+            // Sending a message to avoid compile time error
+            [[UIApplication sharedApplication] sendAction:@selector(requestWhenInUseAuthorization)
+                                                       to:locationManager
+                                                     from:self
+                                                 forEvent:nil];
+        }
+        //[locationManager requestWhenInUseAuthorization];
     }
 
     [[assist shared] setRequestMultiple:NO];
@@ -923,11 +930,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.navigationItem setLeftBarButtonItem:menu];
     }
 
-    NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  [UIColor whiteColor], UITextAttributeTextColor,
-                                  Rgb2UIColor(19, 32, 38, .26), UITextAttributeTextShadowColor,
-                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, -1.0)], UITextAttributeTextShadowOffset, nil];
-    [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
+    NSShadow * shadowNavText = [[NSShadow alloc] init];
+    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .26);
+    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
+    
+    NSDictionary * titleAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
+                                      NSShadowAttributeName: shadowNavText};
+    [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
+
     [self.navigationItem setTitle:@"Nooch"];
     
     if (![[assist shared]isPOP])
@@ -1488,14 +1498,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 -(void)Error:(NSError *)Error{
     [self.hud hide:YES];
 
-    /* UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Message"
-                          message:@"Error connecting to server"
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:@"Whoops"
+                          message:@"We aren't able to connect to the server right now, the internet must be unusually congested.  Sorry about that, please try again!"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    [alert show]; */
-    
+    [alert show];
 }
 
 #pragma mark - server delegation
@@ -1515,8 +1524,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                      options:kNilOptions
                                      error:&error];
-       // NSLog(@"favorites %@",favorites);
+        NSLog(@"favorites:.... %@",favorites);
         favorites = [favorites mutableCopy];
+
         if ([favorites count] == 0) {
             [self FavoriteContactsProcessing];
         }
@@ -1707,9 +1717,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
 
 }
+
 -(void)hide{
     self.hud.hidden=YES;
 }
+
 -(void)FavoriteContactsProcessing
 {
     [additions removeAllObjects];
@@ -1717,7 +1729,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     additions = [[NSMutableArray alloc]init];
     
     additions = [[[assist shared]assosAll] mutableCopy];
-    // NSLog(@"Additions: %@",additions);
+    NSLog(@"Additions: %@",additions);
 
     if ([additions count] >= 5)
     {

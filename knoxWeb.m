@@ -46,12 +46,13 @@
     // Do any additional setup after loading the view.
     
     self.navigationController.navigationBar.topItem.title = @"";
-    NSDictionary *navbarTtlAts = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  [UIColor whiteColor], UITextAttributeTextColor,
-                                  Rgb2UIColor(19, 32, 38, .22), UITextAttributeTextShadowColor,
-                                  [NSValue valueWithUIOffset:UIOffsetMake(0.0, 1.0)], UITextAttributeTextShadowOffset,
-                                  nil];
-    [self.navigationController.navigationBar setTitleTextAttributes:navbarTtlAts];
+    NSShadow * shadowNavText = [[NSShadow alloc] init];
+    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .26);
+    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
+    
+    NSDictionary * titleAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
+                                       NSShadowAttributeName: shadowNavText};
+    [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
 
     [self.navigationItem setTitle:@"Connect Bank"];
     
@@ -212,14 +213,22 @@
 
 -(void)close_lightBox
 {
-    //[overlay removeFromSuperview];
-    [UIView transitionWithView:self.navigationController.view
-                      duration:0.3
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{
-                        [overlay removeFromSuperview];
-                    }
-                    completion:nil];
+    [UIView animateWithDuration:0.15
+                     animations:^{
+                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                         mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 5);
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:.38
+                                          animations:^{
+                                              [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                                              mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 5);
+                                              overlay.alpha = 0.5;
+                                          } completion:^(BOOL finished) {
+                                              [overlay removeFromSuperview];
+                                          }
+                          ];
+                     }
+     ];
 }
 
 -(void)backToHome {

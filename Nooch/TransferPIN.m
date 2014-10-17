@@ -69,7 +69,14 @@
     getlocation = [[GetLocation alloc] init];
 	getlocation.delegate = self;
 	[getlocation.locationManager startUpdatingLocation];
-    [getlocation.locationManager requestWhenInUseAuthorization];
+    if ([getlocation.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) { // iOS8+
+        // Sending a message to avoid compile time error
+        [[UIApplication sharedApplication] sendAction:@selector(requestWhenInUseAuthorization)
+                                                   to:getlocation.locationManager
+                                                 from:self
+                                             forEvent:nil];
+    }
+    //[getlocation.locationManager requestWhenInUseAuthorization];
     
     // Do any additional setup after loading the view from its nib.
     self.pin = [UITextField new];
