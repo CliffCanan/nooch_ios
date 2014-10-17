@@ -222,7 +222,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [curContact setObject:phone3 forKey:@"phoneNo3"];
         }
         //Get emailInfo Ref
-        for (int j=0; j<ABMultiValueGetCount(emailInfo); j++) {
+        for (int j = 0; j < ABMultiValueGetCount(emailInfo); j++) {
             CFTypeRef emailIdValue = ABMultiValueCopyValueAtIndex(emailInfo, j);
             NSString *emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             if(emailId != NULL) {
@@ -235,7 +235,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             if (emailIdValue) {
                 CFRelease(emailIdValue);
             }
-            
         }
         
         
@@ -539,6 +538,79 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    //Update Pending Status
+    NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
+    
+    // NSLog(@"Pending_Count = %@", [defaults objectForKey:@"Pending_count"]);
+    if ([[defaults objectForKey:@"Pending_count"] intValue] > 0)
+    {
+        [self.navigationItem setLeftBarButtonItem:nil];
+        UILabel * pending_notif = [UILabel new];
+        [pending_notif setText:[defaults objectForKey:@"Pending_count"]];
+        [pending_notif setFrame:CGRectMake(16, -2, 20, 20)];
+        [pending_notif setStyleId:@"pending_notif"];
+        
+        UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [hamburger setStyleId:@"navbar_hamburger"];
+        [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+        [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
+        [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+        hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        [hamburger addSubview:pending_notif];
+        UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+        [self.navigationItem setLeftBarButtonItem:menu];
+    }
+    
+    NSShadow * shadowNavText = [[NSShadow alloc] init];
+    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .26);
+    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
+    
+    NSDictionary * titleAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
+                                       NSShadowAttributeName: shadowNavText};
+    [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
+    
+    [self.navigationItem setTitle:@"Nooch"];
+    
+    if (![[assist shared]isPOP])
+    {
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+        
+        if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]])
+        {
+            //push login
+            return;
+        }
+        if ([[assist shared]needsReload])
+        {
+            RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleCircleFlip];
+            spinner1.color = [UIColor clearColor];
+            self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+            [self.navigationController.view addSubview:self.hud];
+            
+            self.hud.color = Rgb2UIColor(236, 237, 239, .92);
+            self.hud.mode = MBProgressHUDModeCustomView;
+            self.hud.customView = spinner1;
+            self.hud.delegate = self;
+            self.hud.labelText = @"Loading your Nooch account";
+            self.hud.labelColor = kNoochGrayDark;
+            [self.hud show:YES];
+        }
+        
+        if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
+        {
+            serve *serveOBJ = [serve new ];
+            [serveOBJ setTagName:@"sets"];
+            [serveOBJ getSettings];
+        }
+    }
+    else
+    {
+        Register *reg = [Register new];
+        [nav_ctrl pushViewController:reg animated:YES];
+        me = [core new];
+        return;
+    }
+
 
     NSShadow * shadowRed = [[NSShadow alloc] init];
     shadowRed.shadowColor = Rgb2UIColor(71, 8, 7, .4);
@@ -731,25 +803,23 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [top_button removeFromSuperview];
 
     top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [top_button setFrame:CGRectMake(20, 450, 280, 60)];
+    [top_button setFrame:CGRectMake(20, 400, 280, 54)];
     [top_button setStyleId:@"button_green_home"];
     [top_button setTitleShadowColor:Rgb2UIColor(26, 38, 32, 0.2) forState:UIControlStateNormal];
     top_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    top_button.alpha = 0;
+    top_button.alpha = .1;
     [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
     [top_button setTitle:@"   Search For More Friends" forState:UIControlStateNormal];
     
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(26, 38, 32, .2);
     shadow.shadowOffset = CGSizeMake(0, -1);
-    
     NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
     
     UILabel * glyph_search = [UILabel new];
     [glyph_search setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-    glyph_search.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-search"]
-                                                        attributes:textAttributes1];
-    [glyph_search setFrame:CGRectMake(14, 0, 15, 53)];
+    glyph_search.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-search"] attributes:textAttributes1];
+    [glyph_search setFrame:CGRectMake(14, 0, 15, 52)];
     [glyph_search setTextColor:[UIColor whiteColor]];
     [top_button addSubview:glyph_search];
 
@@ -763,11 +833,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                        delay:0
                                      options:UIViewKeyframeAnimationOptionCalculationModeCubic
                                   animations:^{
-                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.4 animations:^{
-                                          top_button.alpha = 0;
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.5 animations:^{
+                                          top_button.alpha = .2;
                                       }];
-                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
-                                          [top_button setFrame:CGRectMake(20, 284, 280, 60)];
+                                      [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:0.8 animations:^{
+                                          [top_button setFrame:CGRectMake(20, 284, 280, 54)];
                                           top_button.alpha = 1;
                                       }];
                                   } completion: nil
@@ -781,11 +851,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                        delay:0
                                      options:UIViewKeyframeAnimationOptionCalculationModeCubic
                                   animations:^{
-                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
-                                          top_button.alpha = 0;
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.5 animations:^{
+                                          top_button.alpha = 0.2;
                                       }];
-                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
-                                          [top_button setFrame:CGRectMake(20, 320, 280, 60)];
+                                      [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:0.8 animations:^{
+                                          [top_button setFrame:CGRectMake(20, 320, 280, 54)];
                                           top_button.alpha = 1;
                                       }];
                                   } completion: nil
@@ -797,11 +867,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                        delay:0
                                      options:UIViewKeyframeAnimationOptionCalculationModeCubic
                                   animations:^{
-                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
-                                          top_button.alpha = 0;
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.5 animations:^{
+                                          top_button.alpha = 1;
                                       }];
-                                      [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.8 animations:^{
-                                          [top_button setFrame:CGRectMake(20, 260, 280, 60)];
+                                      [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:.8 animations:^{
+                                          [top_button setFrame:CGRectMake(20, 260, 280, 54)];
                                           top_button.alpha = 1;
                                       }];
                                   } completion: nil
@@ -906,79 +976,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
     [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
     [automatic writeToFile:[self autoLogin] atomically:YES];
-    
-    //Update Pending Status
-    NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
-    
-    // NSLog(@"Pending_Count = %@", [defaults objectForKey:@"Pending_count"]);
-    if ([[defaults objectForKey:@"Pending_count"] intValue] > 0)
-    {
-        [self.navigationItem setLeftBarButtonItem:nil];
-        UILabel * pending_notif = [UILabel new];
-        [pending_notif setText:[defaults objectForKey:@"Pending_count"]];
-        [pending_notif setFrame:CGRectMake(16, -2, 20, 20)];
-        [pending_notif setStyleId:@"pending_notif"];
-        
-        UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [hamburger setStyleId:@"navbar_hamburger"];
-        [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
-        [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
-        [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
-        hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-        [hamburger addSubview:pending_notif];
-        UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
-        [self.navigationItem setLeftBarButtonItem:menu];
-    }
-
-    NSShadow * shadowNavText = [[NSShadow alloc] init];
-    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .26);
-    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
-    
-    NSDictionary * titleAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
-                                      NSShadowAttributeName: shadowNavText};
-    [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
-
-    [self.navigationItem setTitle:@"Nooch"];
-    
-    if (![[assist shared]isPOP])
-    {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-    
-        if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]])
-        {
-            //push login
-            return;
-        }
-        if ([[assist shared]needsReload])
-        {
-            RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleCircleFlip];
-            spinner1.color = [UIColor clearColor];
-            self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-            [self.navigationController.view addSubview:self.hud];
-            
-            self.hud.color = Rgb2UIColor(236, 237, 239, .92);
-            self.hud.mode = MBProgressHUDModeCustomView;
-            self.hud.customView = spinner1;
-            self.hud.delegate = self;
-            self.hud.labelText = @"Loading your Nooch account";
-            self.hud.labelColor = kNoochGrayDark;
-            [self.hud show:YES];
-        }
-
-        if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
-        {
-            serve *serveOBJ = [serve new ];
-            [serveOBJ setTagName:@"sets"];
-            [serveOBJ getSettings];
-        }
-    }
-    else
-    {
-        Register *reg = [Register new];
-        [nav_ctrl pushViewController:reg animated:YES];
-        me = [core new];
-        return;
-    }
 
     // for the red notification bubble if a user has a pending RECEIVED Request
     serve *serveOBJ = [serve new];
@@ -990,7 +987,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [self.view addSubview:_carousel];
     [_carousel reloadData];
 
-    [UIView animateKeyframesWithDuration:0.46
+    /*[UIView animateKeyframesWithDuration:0.46
                                    delay:0
                                  options:UIViewKeyframeAnimationOptionCalculationModeCubic
                               animations:^{
@@ -1002,7 +999,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                       top_button.alpha = 1;
                                   }];
                               } completion: nil
-     ];
+     ];*/
 }
 
 #pragma mark - iCarousel methods
@@ -1533,11 +1530,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         else
         {
             favorites = [favorites mutableCopy];
-            
+
             if ([favorites count] < 5) {
-               [self FavoriteContactsProcessing];
-           }
-           [_carousel reloadData];
+                [self FavoriteContactsProcessing];
+            }
+            [_carousel reloadData];
         }
     }
     
@@ -1724,12 +1721,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 -(void)FavoriteContactsProcessing
 {
-//    [additions removeAllObjects];
-//    additions = nil;
-//    additions = [[NSMutableArray alloc]init];
-    
-   // additions = [[[assist shared]assosAll] mutableCopy];
-  //  NSLog(@"Additions: %@",additions);
+    // [additions removeAllObjects];
+    // additions = nil;
+    // additions = [[NSMutableArray alloc]init];
+    // additions = [[[assist shared]assosAll] mutableCopy];
 
     if ([[[assist shared]assosAll] count] >= 5)
     {
@@ -1741,9 +1736,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             else if (i >= [[[assist shared]assosAll] count]-1) {
                 i = 0;
             }
-            NSUInteger randomIndex = arc4random() % [[[assist shared]assosAll]  count];
-            int loc=-1;
-            for (int j = 0; j < [favorites count];j++)
+            NSUInteger randomIndex = arc4random() % [[[assist shared]assosAll] count];
+            int loc = -1;
+
+            for (int j = 0; j < [favorites count]; j++)
             {
                 //In case of Server Record
                 if (  [[favorites objectAtIndex:j] valueForKey:@"eMailId"] &&
@@ -1761,11 +1757,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 }
             }
             //continue outer loop
-            if (loc == 0){
+            if (loc == 0) {
                 continue;
             }
 
-            if ([[[[assist shared]assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"] &&
+            if (  [[[[assist shared]assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"] &&
                 ![[[[[assist shared]assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"]isEqualToString:@"(null)"] &&
                 ![[[[[assist shared]assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
             {
