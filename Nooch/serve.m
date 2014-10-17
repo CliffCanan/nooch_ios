@@ -351,7 +351,6 @@ NSString *amnt;
 }
 -(void)newUser:(NSString *)email first:(NSString *)fName last:(NSString *)lName password:(NSString *)password pin:(NSString*)pin invCode:(NSString*)inv fbId:(NSString *)fbId {
     self.responseData = [NSMutableData data];
-    // NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     NSMutableDictionary*dictnew=[[NSMutableDictionary alloc]init];
     [dictnew setObject:email forKey:@"UserName"];
     [dictnew setObject:fName forKey:@"FirstName"];
@@ -405,13 +404,12 @@ NSString *amnt;
     [requestSet setHTTPBody:postDataSet];
     [requestSet setTimeoutInterval:5000];
     
-    
-    
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestSet delegate:self];
     if (!connection)
         NSLog(@"connect error");
     
 }
+
 -(void)setSets:(NSDictionary*)settingsDictionary{
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [NSMutableData data];

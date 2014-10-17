@@ -155,6 +155,7 @@
         }
     }];
 }
+
 -(void)finishFb
 {
     NSString *acessToken = [NSString stringWithFormat:@"%@",self.facebookAccount.credential.oauthToken];
@@ -189,10 +190,7 @@
                  }
                  
              }];
-
-             
          });
-         
      }];
 }
 

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>To see the location of your payment and to find nearby friends who use Nooch.</string>
+	<string>So you can see the location of your payments and also to send money to nearby Nooch users.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -45,7 +45,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>To add a profile picture and for attaching images to your transfers.</string>
+	<string>So you can add a profile picture and for attaching images to your transfers.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Contacts are used to let you send or request money to a friend using their email address.</string>
 	<key>NSLocationUsageDescription</key>
