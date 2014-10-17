@@ -116,7 +116,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-     self.trackedViewName = @"Login Screen";
+     self.screenName = @"Login Screen";
 }
 
 - (void)viewDidAppear:(BOOL)animated

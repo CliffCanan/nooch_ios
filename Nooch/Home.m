@@ -900,7 +900,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.trackedViewName = @"Home Screen";
+    self.screenName = @"Home Screen";
     
     NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
     [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
@@ -1724,24 +1724,24 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 -(void)FavoriteContactsProcessing
 {
-    [additions removeAllObjects];
-    additions = nil;
-    additions = [[NSMutableArray alloc]init];
+//    [additions removeAllObjects];
+//    additions = nil;
+//    additions = [[NSMutableArray alloc]init];
     
-    additions = [[[assist shared]assosAll] mutableCopy];
-    NSLog(@"Additions: %@",additions);
+   // additions = [[[assist shared]assosAll] mutableCopy];
+  //  NSLog(@"Additions: %@",additions);
 
-    if ([additions count] >= 5)
+    if ([[[assist shared]assosAll] count] >= 5)
     {
-        for (int i = 0; i < [additions count] ;i++)
+        for (int i = 0; i < [[[assist shared]assosAll] count] ;i++)
         {
             if ([favorites count] == 5) {
                 break;
             }
-            else if (i >= [additions count]-1) {
+            else if (i >= [[[assist shared]assosAll] count]-1) {
                 i = 0;
             }
-            NSUInteger randomIndex = arc4random() % [additions  count];
+            NSUInteger randomIndex = arc4random() % [[[assist shared]assosAll]  count];
             int loc=-1;
             for (int j = 0; j < [favorites count];j++)
             {
@@ -1749,14 +1749,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 if (  [[favorites objectAtIndex:j] valueForKey:@"eMailId"] &&
                     ![[[favorites objectAtIndex:j] valueForKey:@"eMailId"]isKindOfClass:[NSNull class]])
                 {
-                    if ([[[favorites objectAtIndex:j] valueForKey:@"eMailId"] isEqualToString:[[additions objectAtIndex:randomIndex]valueForKey:@"UserName"]])
+                    if ([[[favorites objectAtIndex:j] valueForKey:@"eMailId"] isEqualToString:[[[[assist shared]assosAll] objectAtIndex:randomIndex]valueForKey:@"UserName"]])
                         loc = 0;
                 }
                 //In case of Address book
                 else if (  [[favorites objectAtIndex:j] valueForKey:@"UserName"] &&
                          ![[[favorites objectAtIndex:j] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
                 {
-                    if ([[[favorites objectAtIndex:j] valueForKey:@"UserName"] isEqualToString:[[additions objectAtIndex:randomIndex]valueForKey:@"UserName"]])
+                    if ([[[favorites objectAtIndex:j] valueForKey:@"UserName"] isEqualToString:[[[[assist shared]assosAll] objectAtIndex:randomIndex]valueForKey:@"UserName"]])
                         loc = 0;
                 }
             }
@@ -1765,11 +1765,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 continue;
             }
 
-            if ([[additions objectAtIndex:randomIndex] valueForKey:@"UserName"] &&
-                ![[[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]isEqualToString:@"(null)"] &&
-                ![[[additions objectAtIndex:randomIndex] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
+            if ([[[[assist shared]assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"] &&
+                ![[[[[assist shared]assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"]isEqualToString:@"(null)"] &&
+                ![[[[[assist shared]assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
             {
-                [favorites addObject:[additions objectAtIndex:randomIndex]];
+                [favorites addObject:[[[assist shared]assosAll] objectAtIndex:randomIndex]];
             }
         }
 

@@ -57,7 +57,7 @@ UIImageView *picture;
 {
     [super viewWillAppear:animated];
   
-    self.trackedViewName = @"Profile Screen";
+    self.screenName = @"Profile Screen";
 
     [self.navigationItem setTitle:@"Profile Info"];
 
