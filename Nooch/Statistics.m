@@ -37,7 +37,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.trackedViewName = @"Statistics Screen";
+    self.screenName = @"Statistics Screen";
 }
 -(void)viewDidDisappear:(BOOL)animated{
     [self.hud hide:YES];

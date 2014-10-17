@@ -54,7 +54,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.trackedViewName = @"TransferPin Screen";
+    self.screenName = @"TransferPin Screen";
 }
 
 -(void)viewDidDisappear:(BOOL)animated{

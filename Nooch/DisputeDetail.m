@@ -46,7 +46,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.trackedViewName = @"Dispute Detail Screen";
+    self.screenName = @"Dispute Detail Screen";
 }
 
 - (void)viewDidLoad

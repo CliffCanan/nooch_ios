@@ -900,7 +900,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.trackedViewName = @"Home Screen";
+    self.screenName = @"Home Screen";
     
     NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
     [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];

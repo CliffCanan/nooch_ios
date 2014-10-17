@@ -43,7 +43,7 @@
     [super viewWillAppear:animated];
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
-    self.trackedViewName = @"ReEnter Pin Screen";
+    self.screenName = @"ReEnter Pin Screen";
 
     UIImageView *logoicon = [UIImageView new];
     [logoicon setStyleId:@"requireImmediatelyLogo"];

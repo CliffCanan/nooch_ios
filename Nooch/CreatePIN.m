@@ -36,7 +36,7 @@
     [super viewWillAppear:animated];
     self.pin_check = @"";
  
-    self.trackedViewName = @"Create PIN Screen";
+    self.screenName = @"Create PIN Screen";
 
     [self.pin setText:@""];
     [self.first_num setBackgroundColor:[UIColor clearColor]];

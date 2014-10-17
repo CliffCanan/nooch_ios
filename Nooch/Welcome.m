@@ -26,7 +26,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear: animated];
 
-    self.trackedViewName = @"Welcome Screen";
+    self.screenName = @"Welcome Screen";
 
     [self.navigationController setNavigationBarHidden:YES];
     

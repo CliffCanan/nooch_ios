@@ -35,7 +35,7 @@
     self.navigationController.navigationBar.hidden = YES;
     [super viewWillAppear:animated];
     
-    self.trackedViewName = @"How Nooch Works Tour";
+    self.screenName = @"How Nooch Works Tour";
     
     [self showIntroWithCrossDissolve];
 }

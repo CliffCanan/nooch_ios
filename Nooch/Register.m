@@ -39,7 +39,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.trackedViewName = @"Register Screen";
+    self.screenName = @"Register Screen";
     [self.navigationController setNavigationBarHidden:YES];
 }
 

@@ -39,7 +39,7 @@
 {
     [super viewWillAppear:animated];
   
-    self.trackedViewName = @"Reset Pin Screen";
+    self.screenName = @"Reset Pin Screen";
 
     pinchangeProgress = 1;
     [self.view setBackgroundColor:[UIColor whiteColor]];
