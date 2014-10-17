@@ -149,7 +149,7 @@
 {
     [super viewWillAppear:animated];
 
-    self.trackedViewName = @"Left Sidebar";
+    self.screenName = @"Left Sidebar";
 
     [self.name setText:[[user objectForKey:@"firstName"] capitalizedString]];
     [self.lastName setText:[[user objectForKey:@"lastName"] capitalizedString]];

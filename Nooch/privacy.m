@@ -33,7 +33,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.trackedViewName = @"Privacy Screen";
+    self.screenName = @"Privacy Screen";
 }
 
 - (void)viewDidUnload {

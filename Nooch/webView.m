@@ -28,7 +28,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.trackedViewName = @"Support Center WebView Screen";
+    self.screenName = @"Support Center WebView Screen";
 }
 
 - (void)viewDidLoad

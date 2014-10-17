@@ -38,7 +38,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.trackedViewName = @"ReferralCode Screen";
+    self.screenName = @"ReferralCode Screen";
 }
 - (void)viewDidLoad
 {

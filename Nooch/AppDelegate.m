@@ -54,11 +54,12 @@ bool modal;
     //[UAPush shared].userPushNotificationsEnabled = YES;
     // Set the icon badge to zero on startup (optional)
     [[UAPush shared] resetBadge];
-
-    //google analytics
-    [GAI sharedInstance].debug = NO;
+    
+    //Google Analytics
     [GAI sharedInstance].dispatchInterval = 30;
     [GAI sharedInstance].trackUncaughtExceptions = YES;
+    // Optional: set Logger to VERBOSE for debug information.
+    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-36976317-2"];
     
     [self application:nil handleOpenURL:[NSURL URLWithString:@"Nooch:"]];

@@ -123,7 +123,7 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationItem setTitle:@"Security Settings"];
-    self.trackedViewName = @"Pin Settings Screen";
+    self.screenName = @"Pin Settings Screen";
 }
 
 -(void)backtn {

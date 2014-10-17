@@ -49,7 +49,7 @@
 {
     [super viewWillAppear:animated];
     [self.navigationItem setTitle:@"Settings"];
-    self.trackedViewName = @"Settings Main Screen";
+    self.screenName = @"Settings Main Screen";
     [self getBankInfo];
 }
 

@@ -37,7 +37,7 @@
 {
     [self.navigationItem setTitle:@"Transfer Details"];
     [super viewWillAppear:animated];
-    self.trackedViewName = @"TransactionDetail Screen";
+    self.screenName = @"TransactionDetail Screen";
 }
 -(void)viewDidDisappear:(BOOL)animated{
     [self.hud hide:YES];

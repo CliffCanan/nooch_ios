@@ -306,7 +306,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.trackedViewName = @"HowMuch Screen";
+    self.screenName = @"HowMuch Screen";
     [self.amount becomeFirstResponder];
     [self.navigationItem setTitle:@"How Much?"];
 }

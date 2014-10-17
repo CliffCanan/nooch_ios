@@ -128,7 +128,7 @@
 {
     [super viewWillAppear:animated];
     [search setHidden:NO];
-    self.trackedViewName = @"SelectRecipient Screen";
+    self.screenName = @"SelectRecipient Screen";
 
     if ([[assist shared] isRequestMultiple] && isAddRequest)
     {
