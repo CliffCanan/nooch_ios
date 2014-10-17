@@ -1078,12 +1078,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/Home.m"
-            timestampString = "435043903.159435"
+            timestampString = "435213262.326916"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
-            landmarkName = "-viewDidLoad"
+            startingLineNumber = "1729"
+            endingLineNumber = "1729"
+            landmarkName = "-FavoriteContactsProcessing"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
