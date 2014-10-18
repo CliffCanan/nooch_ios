@@ -2662,8 +2662,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Nooch Inc (3GDWQ778SF)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Nooch Inc (3GDWQ778SF)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2688,8 +2688,9 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "ab00c4de-66ad-40b0-9c34-98ade98b06f7";
+				"PROVISIONING_PROFILE[sdk=*]" = "3283e931-b85f-4173-8af2-c64c95b6d123";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3283e931-b85f-4173-8af2-c64c95b6d123";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
@@ -2727,8 +2728,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "19b48529-c547-4d46-9e2e-86131617f562";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "19b48529-c547-4d46-9e2e-86131617f562";
+				PROVISIONING_PROFILE = "3283e931-b85f-4173-8af2-c64c95b6d123";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3283e931-b85f-4173-8af2-c64c95b6d123";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;

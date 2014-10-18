@@ -1532,7 +1532,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         else
         {
-            favorites = [favorites mutableCopy];
             
             if ([favorites count] < 5) {
                [self FavoriteContactsProcessing];
