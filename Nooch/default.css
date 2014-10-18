@@ -3124,55 +3124,55 @@ table-view.stats_top_friends_empty {
 }
 
 .stats_circle_transfers_inActive {
-    left            : 33px;
+    left            : 31px;
     top             : 15px;
-    width           : 55px;
-    height          : 55px;
+    width           : 56px;
+    height          : 56px;
     background-color: rgba(63, 171, 225, .65);
     border-radius   : 28px;
     text-align      : center;
 }
 .stats_circle_transfers_Active {
-    left            : 33px;
+    left            : 31px;
     top             : 15px;
-    width           : 55px;
-    height          : 55px;
+    width           : 56px;
+    height          : 56px;
     background-color: rgba(63, 171, 225, 1);
     border-radius   : 28px;
     text-align      : center;
 }
 .stats_circle_Profile_inActive {
-    left            : 121px;
+    left            : 122px;
     top             : 15px;
-    width           : 55px;
-    height          : 55px;
+    width           : 56px;
+    height          : 56px;
     background-color: rgba(63, 171, 225, .65);
     border-radius   : 28px;
     text-align      : center;
 }
 .stats_circle_Profile_Active {
-    left            : 121px;
+    left            : 122px;
     top             : 15px;
-    width           : 55px;
-    height          : 55px;
+    width           : 56px;
+    height          : 56px;
     background-color: rgba(63, 171, 225, 1);
     border-radius   : 28px;
     text-align      : center;
 }
 .stats_circle_topFriends_inActive {
-    left            : 209px;
+    left            : 206px;
     top             : 15px;
-    width           : 55px;
-    height          : 55px;
+    width           : 56px;
+    height          : 56px;
     background-color: rgba(63, 171, 225, .65);
     border-radius   : 28px;
     text-align      : center;
 }
 .stats_circle_topFriends_Active {
-    left            : 209px;
+    left            : 206px;
     top             : 15px;
-    width           : 55px;
-    height          : 55px;
+    width           : 56px;
+    height          : 56px;
     background-color: rgba(63, 171, 225, 1);
     border-radius   : 28px;
 }
