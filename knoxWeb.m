@@ -247,10 +247,10 @@
     serve * obj = [serve new];
     obj.tagName = @"saveMemberTransId";
     [obj setDelegate:self];
-    
+
     NSDictionary * dict = @{@"TransId":[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"],
                             @"MemberId":[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]};
-    
+
     [obj saveMemberTransId:[dict mutableCopy]];
 }
 
@@ -281,6 +281,9 @@
             //[nav_ctrl popViewControllerAnimated:NO];
             ProfileInfo * profile = [ProfileInfo new];
             isProfileOpenFromSideBar = NO;
+            if (!isSignup) {
+                isSignup = YES;
+            }
             [nav_ctrl pushViewController:profile animated:YES];
 
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Great Success" message:@"Your bank was successfully linked." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];

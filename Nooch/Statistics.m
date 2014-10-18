@@ -17,9 +17,6 @@
 @property(nonatomic,retain) UITableView *transfer_stats;
 @property(nonatomic,retain) UITableView *top_friends_stats;
 @property(nonatomic) int selected;
-@property(nonatomic,retain) UIImageView *profileIcon;
-@property(nonatomic,retain) UIImageView *transfersIcon;
-@property(nonatomic,retain) UIImageView *topFriends_active;
 @property(nonatomic,retain) UIButton * exportHistory;
 @property(nonatomic,strong) MBProgressHUD *hud;
 @end
@@ -108,31 +105,59 @@
     //  ICONS - PANEL 1
     // ----------------
     
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(19, 32, 38, .22);
+    shadow.shadowOffset = CGSizeMake(0, -1);
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
+
     // Transfer ACTIVE Icon
-    self.transfersIcon = [UIImageView new];
-    [self.transfersIcon setStyleClass:@"stats_circle"];
-    [self.transfersIcon setStyleId:@"stats_circle_transfers_active"];
-    self.transfersIcon.userInteractionEnabled = YES;
+    UIButton * transfersIcon_bckgrnd = [UIButton new];
+    [transfersIcon_bckgrnd setStyleClass:@"stats_circle_transfers_Active"];
+    transfersIcon_bckgrnd.userInteractionEnabled = NO;
+    
+    UILabel * glyph_transfers = [UILabel new];
+    [glyph_transfers setFont:[UIFont fontWithName:@"FontAwesome" size:26]];
+    [glyph_transfers setFrame:CGRectMake(5, 5, 45, 45)];
+    glyph_transfers.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-money"] attributes:textAttributes];
+    [glyph_transfers setTextColor:[UIColor whiteColor]];
+    [glyph_transfers setTextAlignment:NSTextAlignmentCenter];
+    [transfersIcon_bckgrnd addSubview:glyph_transfers];
     
     // Profile INACTIVE Icon
-    UIImageView * inactive_profileIcon = [UIImageView new];
-    [inactive_profileIcon setStyleClass:@"stats_circle"];
-    [inactive_profileIcon setStyleId:@"stats_circle_profile_inactive"];
-    inactive_profileIcon.userInteractionEnabled = YES;
-    UITapGestureRecognizer * tap_profile2=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(go_2nd_panel_from_1st)];
-    [inactive_profileIcon addGestureRecognizer:tap_profile2];
+    UIButton * profileIcon_bckgrnd = [UIButton new];
+    UITapGestureRecognizer * tap_profile2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(go_2nd_panel_from_1st)];
+    [profileIcon_bckgrnd setStyleClass:@"stats_circle_Profile_inActive"];
+    profileIcon_bckgrnd.userInteractionEnabled = YES;
+    [profileIcon_bckgrnd addGestureRecognizer:tap_profile2];
     
+    UILabel * glyph_Profile = [UILabel new];
+    [glyph_Profile setFont:[UIFont fontWithName:@"FontAwesome" size:28]];
+    [glyph_Profile setFrame:CGRectMake(5, 5, 45, 45)];
+    glyph_Profile.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-user"] attributes:textAttributes];
+    [glyph_Profile setTextColor:[UIColor whiteColor]];
+    [glyph_Profile setAlpha:0.8];
+    [glyph_Profile setTextAlignment:NSTextAlignmentCenter];
+    [profileIcon_bckgrnd addSubview:glyph_Profile];
+
     // Top Friends INACTIVE Icon
-    UIImageView * topFriends_inactive_icon = [UIImageView new];
-    [topFriends_inactive_icon setStyleClass:@"stats_circle"];
-    [topFriends_inactive_icon setStyleId:@"stats_circle_donations_inactive"];
-    topFriends_inactive_icon.userInteractionEnabled = YES;
+    UIButton * topFriendsIcon_bckgrnd = [UIButton new];
     UITapGestureRecognizer * tap_donation2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(go_3rd_panel_from_1st)];
-    [topFriends_inactive_icon addGestureRecognizer:tap_donation2];
+    [topFriendsIcon_bckgrnd setStyleClass:@"stats_circle_topFriends_inActive"];
+    topFriendsIcon_bckgrnd.userInteractionEnabled = YES;
+    [topFriendsIcon_bckgrnd addGestureRecognizer:tap_donation2];
+
+    UILabel * glyph_topFriends = [UILabel new];
+    [glyph_topFriends setFont:[UIFont fontWithName:@"FontAwesome" size:28]];
+    [glyph_topFriends setFrame:CGRectMake(5, 5, 45, 45)];
+    glyph_topFriends.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"] attributes:textAttributes];
+    [glyph_topFriends setTextColor:[UIColor whiteColor]];
+    [glyph_topFriends setAlpha:0.8];
+    [glyph_topFriends setTextAlignment:NSTextAlignmentCenter];
+    [topFriendsIcon_bckgrnd addSubview:glyph_topFriends];
     
-    [self.back_transfer addSubview:self.transfersIcon];
-    [self.back_transfer addSubview:inactive_profileIcon];
-    [self.back_transfer addSubview:topFriends_inactive_icon];
+    [self.back_transfer addSubview:transfersIcon_bckgrnd];
+    [self.back_transfer addSubview:profileIcon_bckgrnd];
+    [self.back_transfer addSubview:topFriendsIcon_bckgrnd];
     
 
     // ----------------
@@ -140,30 +165,53 @@
     // ----------------
     
     // Transfer INACTIVE Icon
-    UIImageView * transfersIcon_inactive = [UIImageView new];
-    [transfersIcon_inactive setStyleClass:@"stats_circle"];
-    [transfersIcon_inactive setStyleId:@"stats_circle_transfers_inactive"];
-    transfersIcon_inactive.userInteractionEnabled = YES;
+    UIButton * transfersIcon_bckgrnd2 = [UIButton new];
+    [transfersIcon_bckgrnd2 setStyleClass:@"stats_circle_transfers_inActive"];
+    transfersIcon_bckgrnd2.userInteractionEnabled = YES;
     UITapGestureRecognizer * tap_trans_from_profile = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(go_1st_panel_from_2nd)];
-    [transfersIcon_inactive addGestureRecognizer:tap_trans_from_profile];
+    [transfersIcon_bckgrnd2 addGestureRecognizer:tap_trans_from_profile];
+    
+    UILabel * glyph_transfers2 = [UILabel new];
+    [glyph_transfers2 setFont:[UIFont fontWithName:@"FontAwesome" size:26]];
+    [glyph_transfers2 setFrame:CGRectMake(5, 5, 45, 45)];
+    glyph_transfers2.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-money"] attributes:textAttributes];
+    [glyph_transfers2 setTextColor:[UIColor whiteColor]];
+    [glyph_transfers2 setAlpha:0.8];
+    [glyph_transfers2 setTextAlignment:NSTextAlignmentCenter];
+    [transfersIcon_bckgrnd2 addSubview:glyph_transfers2];
 
     // Profile ACTIVE Icon
-    self.profileIcon = [UIImageView new];
-    [self.profileIcon setStyleClass:@"stats_circle"];
-    [self.profileIcon setStyleId:@"stats_circle_profile_active"];
-    self.profileIcon.userInteractionEnabled = YES;
+    UIButton * profileIcon_bckgrnd2 = [UIButton new];
+    [profileIcon_bckgrnd2 setStyleClass:@"stats_circle_Profile_Active"];
+    profileIcon_bckgrnd2.userInteractionEnabled = NO;
+    
+    UILabel * glyph_Profile2 = [UILabel new];
+    [glyph_Profile2 setFont:[UIFont fontWithName:@"FontAwesome" size:28]];
+    [glyph_Profile2 setFrame:CGRectMake(5, 5, 45, 45)];
+    glyph_Profile2.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-user"] attributes:textAttributes];
+    [glyph_Profile2 setTextColor:[UIColor whiteColor]];
+    [glyph_Profile2 setTextAlignment:NSTextAlignmentCenter];
+    [profileIcon_bckgrnd2 addSubview:glyph_Profile2];
 
-    // Donation INACTIVE Icon
-    UIImageView * topFriends_inactive_icon2 = [UIImageView new];
-    [topFriends_inactive_icon2 setStyleClass:@"stats_circle"];
-    [topFriends_inactive_icon2 setStyleId:@"stats_circle_donations_inactive"];
-    topFriends_inactive_icon2.userInteractionEnabled = YES;
-    UITapGestureRecognizer * tap_3rd_icon = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(go_3rd_panel_from_2nd)];
-    [topFriends_inactive_icon2 addGestureRecognizer: tap_3rd_icon];
+    // Top Friends INACTIVE Icon
+    UIButton * topFriendsIcon_bckgrnd2 = [UIButton new];
+    UITapGestureRecognizer * tap_donation3 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(go_3rd_panel_from_2nd)];
+    [topFriendsIcon_bckgrnd2 setStyleClass:@"stats_circle_topFriends_inActive"];
+    topFriendsIcon_bckgrnd2.userInteractionEnabled = YES;
+    [topFriendsIcon_bckgrnd2 addGestureRecognizer:tap_donation3];
+    
+    UILabel * glyph_topFriends2 = [UILabel new];
+    [glyph_topFriends2 setFont:[UIFont fontWithName:@"FontAwesome" size:28]];
+    [glyph_topFriends2 setFrame:CGRectMake(5, 5, 45, 45)];
+    glyph_topFriends2.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"] attributes:textAttributes];
+    [glyph_topFriends2 setTextColor:[UIColor whiteColor]];
+    [glyph_topFriends2 setAlpha:0.8];
+    [glyph_topFriends2 setTextAlignment:NSTextAlignmentCenter];
+    [topFriendsIcon_bckgrnd2 addSubview:glyph_topFriends2];
 
-    [self.back_profile addSubview:topFriends_inactive_icon2];
-    [self.back_profile addSubview:self.profileIcon];
-    [self.back_profile addSubview:transfersIcon_inactive];
+    [self.back_profile addSubview:transfersIcon_bckgrnd2];
+    [self.back_profile addSubview:profileIcon_bckgrnd2];
+    [self.back_profile addSubview:topFriendsIcon_bckgrnd2];
 
 
     // ----------------
@@ -171,30 +219,53 @@
     // ----------------
 
     // Transfer INACTIVE Icon
-    UIImageView * transfersIcon_inactive2 = [UIImageView new];
-    [transfersIcon_inactive2 setStyleClass:@"stats_circle"];
-    [transfersIcon_inactive2 setStyleId:@"stats_circle_transfers_inactive"];
-    transfersIcon_inactive2.userInteractionEnabled = YES;
-    UITapGestureRecognizer * tap_tran3 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(go_1st_panel_from_3rd)];
-    [transfersIcon_inactive2 addGestureRecognizer:tap_tran3];
+    UIButton * transfersIcon_bckgrnd3 = [UIButton new];
+    [transfersIcon_bckgrnd3 setStyleClass:@"stats_circle_transfers_inActive"];
+    transfersIcon_bckgrnd3.userInteractionEnabled = YES;
+    UITapGestureRecognizer * tap_trans_from_profile2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(go_1st_panel_from_3rd)];
+    [transfersIcon_bckgrnd3 addGestureRecognizer:tap_trans_from_profile2];
+    
+    UILabel * glyph_transfers3 = [UILabel new];
+    [glyph_transfers3 setFont:[UIFont fontWithName:@"FontAwesome" size:26]];
+    [glyph_transfers3 setFrame:CGRectMake(5, 5, 45, 45)];
+    glyph_transfers3.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-money"] attributes:textAttributes];
+    [glyph_transfers3 setTextColor:[UIColor whiteColor]];
+    [glyph_transfers3 setAlpha:0.8];
+    [glyph_transfers3 setTextAlignment:NSTextAlignmentCenter];
+    [transfersIcon_bckgrnd3 addSubview:glyph_transfers3];
 
     // Profile INACTIVE Icon
-    UIImageView * profile_inactive_icon = [UIImageView new];
-    [profile_inactive_icon setStyleClass:@"stats_circle"];
-    [profile_inactive_icon setStyleId:@"stats_circle_profile_inactive"];
-    profile_inactive_icon.userInteractionEnabled = YES;
+    UIButton * profileIcon_bckgrnd3 = [UIButton new];
     UITapGestureRecognizer * tap_profile3 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(go_2nd_panel_from_3rd)];
-    [profile_inactive_icon addGestureRecognizer:tap_profile3];
+    [profileIcon_bckgrnd3 addGestureRecognizer:tap_profile3];
+    [profileIcon_bckgrnd3 setStyleClass:@"stats_circle_Profile_inActive"];
+    profileIcon_bckgrnd3.userInteractionEnabled = YES;
+    
+    UILabel * glyph_Profile3 = [UILabel new];
+    [glyph_Profile3 setFont:[UIFont fontWithName:@"FontAwesome" size:28]];
+    [glyph_Profile3 setFrame:CGRectMake(5, 5, 45, 45)];
+    glyph_Profile3.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-user"] attributes:textAttributes];
+    [glyph_Profile3 setTextColor:[UIColor whiteColor]];
+    [glyph_Profile3 setAlpha:0.8];
+    [glyph_Profile3 setTextAlignment:NSTextAlignmentCenter];
+    [profileIcon_bckgrnd3 addSubview:glyph_Profile3];
 
     // Top Friends ACTIVE Icon
-    self.topFriends_active = [UIImageView new];
-    [self.topFriends_active setStyleClass:@"stats_circle"];
-    [self.topFriends_active setStyleId:@"stats_circle_donations_active"];
-    self.topFriends_active.userInteractionEnabled = YES;
+    UIButton * topFriendsIcon_bckgrnd3 = [UIButton new];
+    [topFriendsIcon_bckgrnd3 setStyleClass:@"stats_circle_topFriends_Active"];
+    topFriendsIcon_bckgrnd3.userInteractionEnabled = NO;
 
-    [self.back_donation addSubview:transfersIcon_inactive2];
-    [self.back_donation addSubview:self.topFriends_active];
-    [self.back_donation addSubview:profile_inactive_icon];
+    UILabel * glyph_topFriends3 = [UILabel new];
+    [glyph_topFriends3 setFont:[UIFont fontWithName:@"FontAwesome" size:28]];
+    [glyph_topFriends3 setFrame:CGRectMake(5, 5, 45, 45)];
+    glyph_topFriends3.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"] attributes:textAttributes];
+    [glyph_topFriends3 setTextColor:[UIColor whiteColor]];
+    [glyph_topFriends3 setTextAlignment:NSTextAlignmentCenter];
+    [topFriendsIcon_bckgrnd3 addSubview:glyph_topFriends3];
+
+    [self.back_donation addSubview:transfersIcon_bckgrnd3];
+    [self.back_donation addSubview:profileIcon_bckgrnd3];
+    [self.back_donation addSubview:topFriendsIcon_bckgrnd3];
 
     
     // TABLE VIEWS (actual stats data)
@@ -235,14 +306,9 @@
         [self.exportHistory setFrame:CGRectMake(60, 441, 200, 36)];
     }
 
-    NSShadow * shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = Rgb2UIColor(19, 32, 38, .22);
-    shadow.shadowOffset = CGSizeMake(0, -1);
-    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
-
     UILabel * glyph_export = [UILabel new];
     [glyph_export setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-    [glyph_export setFrame:CGRectMake(7, 1, 18, 36)];
+    [glyph_export setFrame:CGRectMake(8, 1, 18, 36)];
     glyph_export.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cloud-download"] attributes:textAttributes];
     [glyph_export setTextColor:[UIColor whiteColor]];
     [glyph_export setTextAlignment:NSTextAlignmentCenter];
@@ -284,9 +350,7 @@
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.4];
  
-    [self.exportHistory setFrame:CGRectMake(60, 580, 200, 38)];
-
-    [self.transfersIcon setStyleId:@"stats_circle_transfers_active"];
+    [self.exportHistory setFrame:CGRectMake(60, 570, 200, 38)];
     
     self.selected++;
 
@@ -311,9 +375,9 @@
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.65];
 
-    [self.exportHistory setFrame:CGRectMake(60, 620, 200, 38)];
+    [self.exportHistory setFrame:CGRectMake(60, 570, 200, 38)];
 
-    [self.topFriends_active setStyleId:@"stats_circle_donations_active"];
+    //[self.topFriends_active setStyleId:@"stats_circle_donations_active"];
 
     self.selected += 2;
 
@@ -337,7 +401,7 @@
 {
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.4];
-    [self.topFriends_active setStyleId:@"stats_circle_donations_active"];
+    //[self.topFriends_active setStyleId:@"stats_circle_donations_active"];
 
     self.selected++;
 
@@ -364,7 +428,7 @@
     
     [self.exportHistory setFrame:CGRectMake(60, 445, 200, 38)];
 
-    [self.profileIcon setStyleId:@"stats_circle_profile_active"];
+    //[self.profileIcon setStyleId:@"stats_circle_profile_active"];
 
     self.selected--;
 
@@ -388,8 +452,6 @@
 {
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.4];
-
-    [self.profileIcon setStyleId:@"stats_circle_profile_active"];
 
     self.selected--;
 
@@ -415,8 +477,6 @@
     [UIView setAnimationDuration:0.65];
     
     [self.exportHistory setFrame:CGRectMake(60, 445, 200, 38)];
-
-    [self.profileIcon setStyleId:@"stats_circle_profile_active"];
 
     self.selected -= 2;
     
@@ -449,9 +509,8 @@
     {
         if (self.selected == 0)
         {
-            [self.exportHistory setFrame:CGRectMake(60, 580, 200, 38)];
+            [self.exportHistory setFrame:CGRectMake(60, 570, 200, 38)];
 
-            [self.transfersIcon setStyleId:@"stats_circle_transfers_active"];
             self.selected++;
 
             frame = self.back_profile.frame;
@@ -468,7 +527,6 @@
         }
         else if (self.selected == 1)
         {
-            [self.topFriends_active setStyleId:@"stats_circle_donations_active"];
             self.selected++;
 
             frame = self.back_profile.frame;
@@ -490,7 +548,6 @@
         {
             [self.exportHistory setFrame:CGRectMake(60, 445, 200, 38)];
 
-            [self.profileIcon setStyleId:@"stats_circle_profile_active"];
             self.selected--;
 
             frame = self.back_profile.frame;
@@ -507,7 +564,6 @@
         }
         else if (self.selected == 2)
         {
-            [self.transfersIcon setStyleId:@"stats_circle_transfers_active"];
             self.selected--;
 
             frame = self.back_profile.frame;

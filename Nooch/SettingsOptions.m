@@ -83,6 +83,7 @@
         [glyph_noBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
         [glyph_noBank setFrame:CGRectMake(180, 17, 22, 22)];
         [glyph_noBank setStyleId:@"glyph_noBank_sidebar"];
+        [glyph_noBank setStyleId:@"glyph_noBank_settings"];
         [self.view addSubview:glyph_noBank];
 
         introText = [UILabel new];

@@ -71,11 +71,11 @@
     [self.view addSubview:self.ri];
 
     UILabel *info = [UILabel new];
-    [info setFrame:CGRectMake(15, 158, 290, 30)];
+    [info setFrame:CGRectMake(15, 159, 290, 30)];
     [info setNumberOfLines:0];
     [info setTextAlignment:NSTextAlignmentCenter];
-    [info setFont:[UIFont fontWithName:@"Roboto-Light" size:14]];
-    [info setTextColor:[Helpers hexColor:@"7f8185"]];
+    [info setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
+    [info setTextColor:[Helpers hexColor:@"6c6e71"]];
     [info setText:@"Require your PIN to enter the app."];
     [self.view addSubview:info];
     if ([[user objectForKey:@"requiredImmediately"] boolValue]) {
@@ -111,11 +111,11 @@
     [self.view addSubview:self.search];
     
     UILabel * info2 = [UILabel new];
-    [info2 setFrame:CGRectMake(15, 370, 290, 42)];
+    [info2 setFrame:CGRectMake(10, 372, 300, 43)];
     [info2 setNumberOfLines:0];
     [info2 setTextAlignment:NSTextAlignmentCenter];
-    [info2 setFont:[UIFont fontWithName:@"Roboto-Light" size:14]];
-    [info2 setTextColor:[Helpers hexColor:@"7f8185"]];
+    [info2 setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
+    [info2 setTextColor:[Helpers hexColor:@"6c6e71"]];
     [info2 setText:@"Show up when other members search for people nearby to send or request money."];
     [self.view addSubview:info2];
 }

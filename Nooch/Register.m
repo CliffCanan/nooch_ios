@@ -56,13 +56,13 @@
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.login setBackgroundColor:[UIColor clearColor]];
     [self.login setTitle:@"Already a Member?  Sign in here  " forState:UIControlStateNormal];
-    [self.login setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height + 6, 280, 30)];
+    [self.login setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height + 10, 280, 30)];
     [self.login addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"label_small"];
     [self.login addSubview:glyph_login];
     [self.view addSubview:self.login];
 
-    [UIView animateKeyframesWithDuration:.25
+    [UIView animateKeyframesWithDuration:.4
                                    delay:0
                                  options:UIViewKeyframeAnimationOptionCalculationModeCubic
                               animations:^{

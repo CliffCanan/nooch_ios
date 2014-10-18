@@ -277,6 +277,9 @@ view {
     font-size       : 13px;
     text-align      : center;
 }
+#glyph_noBank_settings {
+    box-shadow      : 0px 1px 2px rgba(26, 32, 38, .28);
+}
 
 /******************************/
 /******	 BUTTONS	********/
@@ -357,6 +360,7 @@ view {
     font-size			: 19px;
     background-image	: linear-gradient(#7fd034, #6ab029);
     border				: 1px solid #66AE3C;
+    box-shadow          : 0 2px 4px rgba(30,32,31,.2);
 }
 /****  Disabled GREEN GRADIENT  ****/
 .button_green:disabled {
@@ -3119,47 +3123,58 @@ table-view.stats_top_friends_empty {
     text-align		: left;
 }
 
-.stats_circle {
-    top			: 15px;
-    shape		: ellipse;
-    width		: 55px;
-    height		: 55px;
+.stats_circle_transfers_inActive {
+    left            : 31px;
+    top             : 15px;
+    width           : 56px;
+    height          : 56px;
+    background-color: rgba(63, 171, 225, .65);
+    border-radius   : 28px;
+    text-align      : center;
 }
-#stats_circle_profile_active 		{ 
-    left						: 121px;
-    background-image			: url(stats-profile-active.png);
-    animation-name				: floatingStatsCircle;
-    animation-duration			: 3s;
-    animation-iteration-count	: infinite;
-    animation-timing-function	: ease;
+.stats_circle_transfers_Active {
+    left            : 31px;
+    top             : 15px;
+    width           : 56px;
+    height          : 56px;
+    background-color: rgba(63, 171, 225, 1);
+    border-radius   : 28px;
+    text-align      : center;
 }
-#stats_circle_profile_inactive 		{ 
-    background-image: url(stats-profile-inactive.png);
-    left  : 121px;
+.stats_circle_Profile_inActive {
+    left            : 122px;
+    top             : 15px;
+    width           : 56px;
+    height          : 56px;
+    background-color: rgba(63, 171, 225, .65);
+    border-radius   : 28px;
+    text-align      : center;
 }
-#stats_circle_transfers_active 		{ 
-    background-image: url(stats-transfers-active.png);
-    left : 33px;
-    animation-name				: floatingStatsCircle;
-    animation-duration			: 2s;	
-    animation-iteration-count	: infinite;
-    animation-timing-function	: ease;
+.stats_circle_Profile_Active {
+    left            : 122px;
+    top             : 15px;
+    width           : 56px;
+    height          : 56px;
+    background-color: rgba(63, 171, 225, 1);
+    border-radius   : 28px;
+    text-align      : center;
 }
-#stats_circle_transfers_inactive 	{ 
-    background-image: url(stats-transfers-inactive.png);
-    left : 33px;
+.stats_circle_topFriends_inActive {
+    left            : 206px;
+    top             : 15px;
+    width           : 56px;
+    height          : 56px;
+    background-color: rgba(63, 171, 225, .65);
+    border-radius   : 28px;
+    text-align      : center;
 }
-#stats_circle_donations_active 		{
-    background-image: url(stats-donations-active.png);
-    left :  209px;
-    animation-name				: floatingStatsCircle;
-    animation-duration			: 2s;	
-    animation-iteration-count	: infinite;
-    animation-timing-function	: ease
-}
-#stats_circle_donations_inactive 	{ 
-    background-image: url(stats-donations-inactive.png);
-    left : 209px;
+.stats_circle_topFriends_Active {
+    left            : 206px;
+    top             : 15px;
+    width           : 56px;
+    height          : 56px;
+    background-color: rgba(63, 171, 225, 1);
+    border-radius   : 28px;
 }
 
 /*******************************************
