@@ -479,7 +479,7 @@
         if (emailInfo) {
             CFRelease(emailInfo);
         }
-        [additions addObject:curContact];
+       
         
         if (contacName != NULL)
         {
@@ -491,9 +491,9 @@
 
             if (strippedNumber != NULL)
                 [curContact setObject:strippedNumber forKey:@"phoneNo"];
-            [additions addObject:curContact];
+           
         }
-        
+         [additions addObject:curContact];
         if (phoneNumber)
             CFRelease(phoneNumber);
     }

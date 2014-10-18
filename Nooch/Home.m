@@ -241,7 +241,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if (emailInfo) {
             CFRelease(emailInfo);
         }
-        [additions addObject:curContact];
+       
         
         if( contacName == NULL) {
         }
@@ -252,8 +252,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             }
             if(strippedNumber != NULL)
                 [curContact setObject:strippedNumber forKey:@"phoneNo"];
-            [additions addObject:curContact];
+           
         }
+         [additions addObject:curContact];
         if (phoneNumber)
             CFRelease(phoneNumber);
     }
@@ -354,7 +355,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
     CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
     CFIndex nPeople = ABAddressBookGetPersonCount(addressBook);
-    
+    NSLog(@"  cfindex %ld",nPeople);
     for (int i = 0; i < nPeople; i++)
     {
         NSMutableDictionary *curContact=[[NSMutableDictionary alloc] init];
@@ -465,7 +466,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if (emailInfo) {
             CFRelease(emailInfo);
         }
-         [additions addObject:curContact];
+       
         
        if( contacName == NULL) {
         }
@@ -476,13 +477,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             }
             if(strippedNumber != NULL)
                 [curContact setObject:strippedNumber forKey:@"phoneNo"];
-            [additions addObject:curContact];
+            
         }
+        [additions addObject:curContact];
         if (phoneNumber)
        CFRelease(phoneNumber);
     }
     [[assist shared] SaveAssos:additions.mutableCopy];
-    // NSLog(@"%@",additions);
     NSMutableArray *get_ids_input = [NSMutableArray new];
     for (NSDictionary *person in additions)
     {
@@ -1529,8 +1530,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         else
         {
-            favorites = [favorites mutableCopy];
-
             if ([favorites count] < 5) {
                 [self FavoriteContactsProcessing];
             }
@@ -1726,14 +1725,24 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     // additions = [[NSMutableArray alloc]init];
     // additions = [[[assist shared]assosAll] mutableCopy];
 
-    if ([[[assist shared]assosAll] count] >= 5)
-    {
+//    if ([[[assist shared]assosAll] count] >= 5)
+//    {\
+    
+    NSLog(@"%lu",(unsigned long)[[[assist shared]assosAll] count]);
+    NSLog(@"%@",[[assist shared]assosAll]);
+   
         for (int i = 0; i < [[[assist shared]assosAll] count] ;i++)
         {
-            if ([favorites count] == 5) {
-                break;
+            if ([[[assist shared]assosAll] count]<5) {
+                 [favorites addObject:[[[assist shared]assosAll] objectAtIndex:i]];
             }
-            else if (i >= [[[assist shared]assosAll] count]-1) {
+            else{
+            
+                if ([favorites count] == 5) {
+                    break;
+                }
+           
+            else if (i >= [[[assist shared]assosAll] count]-1 && [[[assist shared]assosAll] count]>5) {
                 i = 0;
             }
             NSUInteger randomIndex = arc4random() % [[[assist shared]assosAll] count];
@@ -1767,10 +1776,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             {
                 [favorites addObject:[[[assist shared]assosAll] objectAtIndex:randomIndex]];
             }
+                 }
         }
 
         [_carousel reloadData];
-    }
+   // }
 }
 
 #pragma mark- Date From String
