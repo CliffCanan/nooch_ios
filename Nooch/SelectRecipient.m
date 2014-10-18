@@ -212,9 +212,10 @@
         search.text=@"";
         [search setShowsCancelButton:NO];
         [search resignFirstResponder];
-        // [self.contacts reloadData];
+
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:1];
+
         CGRect frame = self.contacts.frame;
         frame.origin.y = 80;
         frame.size.height = [[UIScreen mainScreen] bounds].size.height-144;
@@ -222,17 +223,28 @@
         [UIView commitAnimations];
     }
 }
+
 -(void)viewDidDisappear:(BOOL)animated{
     [self.hud hide:YES];
     [super viewDidDisappear:animated];
 }
--(void)viewDidAppear:(BOOL)animated  {
+
+-(void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
+
+    //[self facebook];
+    serve * recents = [serve new];
+    [recents setTagName:@"recents"];
+    [recents setDelegate:self];
+    [recents getRecents];
 
     if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
         ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted)
     {
         NSLog(@"Denied");
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Access To Contacts" message:@"Did you know you can send money to ANY email address? It's really helpful to select a contact you already have in your iPhone's Address Book.\n\nTo enable this ability, turn on access to Contacts in your iPhone's Settings:\nSettings --> Privacy --> Contacts" delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+        [alert show];
     }
     else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
     {
@@ -255,11 +267,6 @@
         NSLog(@"Not determined");
     }
 
-    //[self facebook];
-    serve *recents = [serve new];
-    [recents setTagName:@"recents"];
-    [recents setDelegate:self];
-    [recents getRecents];
 }
 
 -(void)backPressed:(id)sender{
@@ -648,24 +655,22 @@
     if (emailMultiValue)
     CFRelease(emailMultiValue);
     [_addressBookController dismissViewControllerAnimated:YES completion:^{
-        if ([emailAddresses count]==0) {
-            UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Uh Oh" message:@"No email address has been specified. Please try again." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        if ([emailAddresses count] == 0)
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Uh Oh" message:@"No email address has been specified. Please try again." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
             [alert show];
         }
-        else if ([emailAddresses count]==1)
+        else if ([emailAddresses count] == 1)
         {
-            //  search.text=[emailAddresses objectAtIndex:0];
-            // [search setShowsCancelButton:YES];
-            // [search becomeFirstResponder];
             emailphoneBook= [emailAddresses objectAtIndex:0];
             isphoneBook=YES;
             [self getMemberIdByUsingUserNameFromPhoneBook];
         }
         else
         {
-            UIActionSheet *actionSheet=[[UIActionSheet alloc]init];
+            UIActionSheet * actionSheet=[[UIActionSheet alloc]init];
             [actionSheet setDelegate:self];
-            for (int i=0 ; i<[emailAddresses count];i++) {
+            for (int i = 0 ; i < [emailAddresses count]; i++) {
                 [actionSheet addButtonWithTitle:[NSString stringWithFormat:@"%@",[emailAddresses objectAtIndex:i]]];
             }
             actionSheet.tag=1111;
@@ -731,7 +736,7 @@
 {
     if ([emailphoneBook isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]])
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Denied" message:@"You are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n \n Please try someone ELSE's email address!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Denied" message:@"You are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [av setTag:4];
         [av show];
     }
@@ -929,7 +934,7 @@
     [self.hud hide:YES];
     [self.contacts setNeedsDisplay];
     
-    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound)
     {
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
@@ -942,7 +947,6 @@
         
         [[assist shared]setPOP:YES];
         [self performSelector:@selector(loadDelay) withObject:Nil afterDelay:2.0];
-        
     }
 
     else if ([tagName isEqualToString:@"getMemberIds"])
@@ -1011,20 +1015,20 @@
         
         if ([[assist shared] isRequestMultiple])
         {
-            isRecentList=NO;
+            isRecentList = NO;
             searching = NO;
-            emailEntry=NO;
-            isRecentList=YES;
-            isphoneBook=NO;
+            emailEntry = NO;
+            isRecentList = YES;
+            isphoneBook = NO;
             [search resignFirstResponder];
             [search setText:@""];
             
             [search setShowsCancelButton:NO];
-            arrRequestPersons=[self.recents mutableCopy];
+            arrRequestPersons = [self.recents mutableCopy];
             NSLog(@"%@",arrRequestPersons);
             
-            if ([arrRequestPersons count]==0) {
-                arrRequestPersons=[self.recents mutableCopy];
+            if ([arrRequestPersons count] == 0) {
+                arrRequestPersons = [self.recents mutableCopy];
             }
             else {
                 int loc=-1;
@@ -1496,8 +1500,7 @@
         [pic setFrame:CGRectMake(16, 6, 50, 50)];
         pic.layer.cornerRadius = 25;
         pic.clipsToBounds = YES;
-        [pic sd_setImageWithURL:[NSURL URLWithString:temp[@"Photo"]]
-            placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
+        [pic sd_setImageWithURL:[NSURL URLWithString:temp[@"Photo"]] placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         
         NSString * name = [NSString stringWithFormat:@"   %@ %@",[[temp objectForKey:@"FirstName"] capitalizedString],[[temp objectForKey:@"LastName"] capitalizedString]];
         [cell.textLabel setText:name];
@@ -1550,17 +1553,18 @@
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",info[@"FirstName"],info[@"LastName"]];
         [cell.textLabel setStyleClass:@"select_recipient_name"];
         
-        if (info[@"facebookId"])
+        /*if (info[@"facebookId"])
         {
             UILabel * fb = [UILabel new];
             [fb setStyleClass:@"facebook_glyph"];
             [fb setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook"]];
             [cell.contentView addSubview:fb];
-        }
-        if (info[@"MemberId"])
-        {
+        }*/
+
+        if (info[@"MemberId"]) {
             [cell.contentView addSubview:npic];
         }
+
         if ([[[assist shared] assos] objectForKey:info[@"UserName"]])
         {
             if ([[assist shared] assos][info[@"UserName"]][@"addressbook"]) {
