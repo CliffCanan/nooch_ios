@@ -188,10 +188,10 @@
             [self.hud hide:YES];
             RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
             spinner1.color = [UIColor whiteColor];
-            //self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-            //[self.navigationController.view addSubview:self.hud];
+            self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+            [self.navigationController.view addSubview:self.hud];
             
-            //self.hud.mode = MBProgressHUDModeCustomView;
+            self.hud.mode = MBProgressHUDModeCustomView;
             self.hud.customView = spinner1;
             //self.hud.delegate = self;
             self.hud.labelText = @"Creating your Nooch account";

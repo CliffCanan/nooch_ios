@@ -1356,11 +1356,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     // Close the Mail Interface
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
-// Warning (Yellow Triangle) \xE2\x9A\xA0
+
 - (void)send_request
 {
     NSUserDefaults * defaults=[NSUserDefaults standardUserDefaults];
-   
+    // Warning (Yellow Triangle) \xE2\x9A\xA0
     if ([[assist shared]getSuspended] || [[user objectForKey:@"Status"] isEqualToString:@"Temporarily_Blocked"])
     {
         SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Account Temporarily Suspended" andMessage:@"\xE2\x9B\x94\nFor security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com for more information."];
