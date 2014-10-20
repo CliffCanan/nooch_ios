@@ -42,9 +42,9 @@
 #endif
 
 
-static const CGFloat kPadding = 10.f;
-static const CGFloat kLabelFontSize = 15.0f;
-static const CGFloat kDetailsLabelFontSize = 13.0f;
+static const CGFloat kPadding = 9.0f;
+static const CGFloat kLabelFontSize = 16.0f;
+static const CGFloat kDetailsLabelFontSize = 15.0f;
 
 
 @interface MBProgressHUD ()
@@ -191,8 +191,8 @@ static const CGFloat kDetailsLabelFontSize = 13.0f;
 		self.xOffset = 0.0f;
 		self.yOffset = -24.0f;
 		self.dimBackground = NO;
-		self.margin = 18.0f;
-        self.cornerRadius = 12.0f;
+		self.margin = 14.0f;
+        self.cornerRadius = 15.0f;
 		self.graceTime = 0.0f;
 		self.minShowTime = 0.75f;
 		self.removeFromSuperViewOnHide = NO;

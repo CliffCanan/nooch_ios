@@ -123,6 +123,7 @@
     [self.search setDelegate:self];
     self.search.searchBarStyle=UISearchBarIconSearch;
     [self.search setPlaceholder:@"Search Transaction History"];
+    [self.search setTintColor:kNoochBlue];
     [self.view addSubview:self.search];
     
     UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];

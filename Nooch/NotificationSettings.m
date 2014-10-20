@@ -14,7 +14,7 @@
 @property(nonatomic,strong) UISwitch *push_received;
 @property(nonatomic,strong) UISwitch *email_sent;
 @property(nonatomic,strong) UISwitch *email_unclaimed;
-@property(nonatomic,strong) UISwitch *request_received_email;
+/*@property(nonatomic,strong) UISwitch *request_received_email;
 @property(nonatomic,strong) UISwitch *request_received_push;
 @property(nonatomic,strong) UISwitch *request_paid_email;
 @property(nonatomic,strong) UISwitch *request_paid_push;
@@ -22,8 +22,8 @@
 @property(nonatomic,strong) UISwitch *request_rejected_push;
 @property(nonatomic,strong) UISwitch *request_cancelled_email;
 @property(nonatomic,strong) UISwitch *request_cancelled_push;
+@property(nonatomic,strong) UITableView * request_table;*/
 @property(nonatomic,strong) UITableView * transfers_table;
-@property(nonatomic,strong) UITableView * request_table;
 @property(nonatomic,strong) UIButton * btn_glyphEmail_1;
 @property(nonatomic,strong) UIButton * btn_glyphPush_1;
 @property(nonatomic,strong) UIButton * btn_glyphEmail_2;
@@ -82,12 +82,12 @@
     [self.view addSubview:self.transfers_table];
     [self.transfers_table reloadData];
     
-    self.request_table = [[UITableView alloc] initWithFrame:CGRectMake(0, 203, 320, 199)];
+    /*self.request_table = [[UITableView alloc] initWithFrame:CGRectMake(0, 203, 320, 199)];
     [self.request_table setDataSource:self];
     [self.request_table setDelegate:self];
     [self.request_table setUserInteractionEnabled:NO];
     [self.view addSubview:self.request_table];
-    // [self.request_table reloadData];
+    [self.request_table reloadData];*/
 
     self.btn_glyphEmail_1 = [UIButton buttonWithType:UIButtonTypeCustom];
     self.btn_glyphEmail_1.frame = CGRectMake(180, 0, 50, 36);
@@ -105,7 +105,7 @@
     [self.btn_glyphPush_1 addTarget:self action:@selector(toggle_section:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.btn_glyphPush_1];
 
-    self.btn_glyphEmail_2 = [UIButton buttonWithType:UIButtonTypeCustom];
+    /*self.btn_glyphEmail_2 = [UIButton buttonWithType:UIButtonTypeCustom];
     self.btn_glyphEmail_2.frame = CGRectMake(180, 177, 50, 36);
     [self.btn_glyphEmail_2 setStyleClass:@"font-awesome"];
     [self.btn_glyphEmail_2 setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope-o"] forState:UIControlStateNormal];
@@ -119,7 +119,7 @@
     [self.btn_glyphPush_2 setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-mobile"] forState:UIControlStateNormal];
     [self.btn_glyphPush_2 setTitleColor:kNoochGreen forState:UIControlStateHighlighted];
     [self.btn_glyphPush_2 addTarget:self action:@selector(toggle_section:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.btn_glyphPush_2];
+    [self.view addSubview:self.btn_glyphPush_2];*/
 
     self.email_received = [[UISwitch alloc] initWithFrame:CGRectMake(180, 37, 40, 30)];
     self.email_received.transform = CGAffineTransformMakeScale(0.9, 0.9);
@@ -145,7 +145,7 @@
     [self.email_unclaimed addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
     self.email_unclaimed.tag = 104;
 
-    self.request_received_email = [[UISwitch alloc] initWithFrame:CGRectMake(180, 214, 40, 30)];
+    /*self.request_received_email = [[UISwitch alloc] initWithFrame:CGRectMake(180, 214, 40, 30)];
     self.request_received_email.transform = CGAffineTransformMakeScale(0.9, 0.9);
     [self.request_received_email setOnTintColor:kNoochBlue];
     [self.request_received_email addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
@@ -191,20 +191,20 @@
     self.request_cancelled_push.transform = CGAffineTransformMakeScale(0.9, 0.9);
     [self.request_cancelled_push setOnTintColor:kNoochGreen];
     [self.request_cancelled_push addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
-    self.request_cancelled_push.tag = 242;
+    self.request_cancelled_push.tag = 242;*/
 
     [self.view addSubview:self.email_received];
     [self.view addSubview:self.push_received];
     [self.view addSubview:self.email_sent];
     [self.view addSubview:self.email_unclaimed];
-    [self.view addSubview:self.request_received_email];
+    /*[self.view addSubview:self.request_received_email];
     [self.view addSubview:self.request_received_push];
     [self.view addSubview:self.request_paid_email];
     [self.view addSubview:self.request_paid_push];
     [self.view addSubview:self.request_rejected_email];
     [self.view addSubview:self.request_rejected_push];
     [self.view addSubview:self.request_cancelled_email];
-    [self.view addSubview:self.request_cancelled_push];
+    [self.view addSubview:self.request_cancelled_push];*/
 
 
     RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
@@ -240,6 +240,16 @@
             allOn_sec1_email = true;
         }
     }
+    else if (glyph_selected == self.btn_glyphPush_1)
+    {
+        if (self.push_received.isOn) {
+            [self.push_received setOn:NO animated:YES];
+        }
+        else {
+            [self.push_received setOn:YES animated:YES];
+        }
+    }
+    /*
     else if (glyph_selected == self.btn_glyphEmail_2)
     {
         if (allOn_sec2_email) {
@@ -255,15 +265,6 @@
             [self.request_rejected_email setOn:YES animated:YES];
             [self.request_cancelled_email setOn:YES animated:YES];
             allOn_sec2_email = true;
-        }
-    }
-    else if (glyph_selected == self.btn_glyphPush_1)
-    {
-        if (self.push_received.isOn) {
-            [self.push_received setOn:NO animated:YES];
-        }
-        else {
-            [self.push_received setOn:YES animated:YES];
         }
     }
     else if (glyph_selected == self.btn_glyphPush_2)
@@ -282,7 +283,7 @@
             [self.request_cancelled_push setOn:YES animated:YES];
             allOn_sec2_push = true;
         }
-    }
+    }*/
 }
 
 -(void)changeSwitch:(UISwitch*)switchRef
@@ -356,10 +357,9 @@
     {
         return 3;
     }
-    if (tableView == self.request_table)
-    {
-        return 4;
-    }
+    //if (tableView == self.request_table) {
+    //    return 4;
+    //}
     return 0;
 }
 
@@ -395,7 +395,7 @@
         }
     }
     
-    if (tableView == self.request_table)
+    /*if (tableView == self.request_table)
     {
         if (indexPath.row == 0) {
             cell.textLabel.text = @"Request Received";
@@ -409,7 +409,7 @@
         else if (indexPath.row == 3) {
             cell.textLabel.text = @"Request Cancelled";
         }
-    }
+    }*/
     
     return cell;
 }
@@ -495,10 +495,10 @@
             //[self.push_failure setOn:NO];
         }
         allOn_sec2_email = true;
-        [self.request_received_email setOn:YES animated:YES];
-        [self.request_paid_email setOn:YES animated:YES];
-        [self.request_rejected_email setOn:YES animated:YES];
-        [self.request_cancelled_email setOn:YES animated:YES];
+        //[self.request_received_email setOn:YES animated:YES];
+        //[self.request_paid_email setOn:YES animated:YES];
+        //[self.request_rejected_email setOn:YES animated:YES];
+        //[self.request_cancelled_email setOn:YES animated:YES];
     }
 
     else if ([tagName isEqualToString:@"setSettings"])

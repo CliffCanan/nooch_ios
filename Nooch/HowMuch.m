@@ -38,13 +38,17 @@
     }
     return self;
 }
+
 -(void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];   
 }
--(void)viewDidAppear:(BOOL)animated{
+
+-(void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
     [self.amount becomeFirstResponder];
-    
+    [self.navigationController setNavigationBarHidden:NO];
+
     UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [back_button setStyleId:@"navbar_back"];
     [back_button addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -55,9 +59,10 @@
     [self.navigationItem setLeftBarButtonItem:menu];
 }
 
--(void)backPressed:(id)sender{
-    isphoneBook=NO;
-    isEmailEntry=NO;
+-(void)backPressed:(id)sender
+{
+    isphoneBook = NO;
+    isEmailEntry = NO;
     [[assist shared]setRequestMultiple:NO];
     [arrRecipientsForRequest removeAllObjects];
     [[assist shared]setArray:nil];
@@ -69,6 +74,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    [self.navigationController setNavigationBarHidden:NO];
     self.navigationController.navigationBar.topItem.title = @"";
     
     NSShadow * shadowNavText = [[NSShadow alloc] init];

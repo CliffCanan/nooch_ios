@@ -24,7 +24,7 @@ BOOL isAddRequest;
     //ACAccount*facebookAccount;
     UIView*loader;
     NSString*searchString;
-    BOOL searching;
+    BOOL searching, navIsUp;
     BOOL emailEntry, shouldAnimate;
     NSMutableArray*arrSearchedRecords;
     UISearchBar *search;
