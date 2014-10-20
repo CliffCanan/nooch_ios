@@ -32,7 +32,7 @@
     [super viewWillAppear:animated];
     self.screenName = @"Reset Password Screen";
     
-    UIView * navBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 60)];
+    UIView * navBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 62)];
     [navBar setBackgroundColor:[UIColor colorWithRed:63.0f/255.0f green:171.0f/255.0f blue:225.0f/255.0f alpha:1.0f]];
     [self.view addSubview:navBar];
     

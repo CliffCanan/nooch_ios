@@ -238,9 +238,9 @@
 
 - (void)resignView
 {
-    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:self.hud];
-    self.hud.delegate = self;
+    //self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    //[self.navigationController.view addSubview:self.hud];
+    //self.hud.delegate = self;
     self.hud.labelText = @"Finishing up...";
     [self.hud show:YES];
 
