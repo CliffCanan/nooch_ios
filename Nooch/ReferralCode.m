@@ -193,10 +193,9 @@
             
             self.hud.mode = MBProgressHUDModeCustomView;
             self.hud.customView = spinner1;
-            self.hud.delegate = self;
+            //self.hud.delegate = self;
             self.hud.labelText = @"Creating your Nooch account";
             [self.hud show:YES];
-            [spinner1 startAnimating];
 
             serve * serveOBJ = [serve new];
             [serveOBJ setDelegate:self];

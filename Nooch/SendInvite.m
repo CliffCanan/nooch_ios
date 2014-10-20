@@ -663,7 +663,7 @@
 
 - (IBAction)EmailCLicked:(id)sender
 {
-    NSString * emailTitle = @"Check out Nooch - a Free App to Pay Me Back";
+    NSString * emailTitle = @"Check out Nooch - a free app to pay me back";
 
     NSString * messageBody; // Change the message body to HTML
     messageBody=[NSString stringWithFormat:@"Hey there,<br/><p>You should check out Nooch, a great <strong>free iOS app</strong> that lets me pay you back anytime, anywhere.  Since I know you don't like carrying cash around either, I thought you would love using Nooch!</p><p>You can download Nooch from the App Store - and be sure to use my Referral Code to get exclusive access:</p><p style=\"text-align:center;font-size:1.5em;\"><strong>%@</strong></p><p>To learn more about Nooch, check it out <a href=\"https://www.nooch.com/overview/\">here</a></p><p>- %@</p>",code.text,[user objectForKey:@"firstName"]];
