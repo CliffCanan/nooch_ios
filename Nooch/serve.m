@@ -1695,10 +1695,10 @@ NSString *amnt;
 
     NSString * urlString = [NSString stringWithFormat:@"%@/SaveMemberTransId",ServerUrl];
     NSURL * url = [NSURL URLWithString:urlString];
+
     dictInv = [[NSMutableDictionary alloc]init];
 
     NSUserDefaults * defaults=[NSUserDefaults standardUserDefaults];
-
     [dictInv setObject:trans forKey:@"KNoxInput"];
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
 
@@ -1713,6 +1713,10 @@ NSString *amnt;
     [requestInv setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [requestInv setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
     [requestInv setHTTPBody:postDataInv];
+
+    NSLog(@"requestInv is... %@",requestInv);
+    NSLog(@"dictInv is... %@",dictInv);
+    NSLog(@"postDataInc is... %@",postDataInv);
 
     connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
 
