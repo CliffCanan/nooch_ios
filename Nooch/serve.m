@@ -1714,10 +1714,6 @@ NSString *amnt;
     [requestInv setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
     [requestInv setHTTPBody:postDataInv];
 
-    NSLog(@"requestInv is... %@",requestInv);
-    NSLog(@"dictInv is... %@",dictInv);
-    NSLog(@"postDataInc is... %@",postDataInv);
-
     connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
 
     if (!connectionInv)

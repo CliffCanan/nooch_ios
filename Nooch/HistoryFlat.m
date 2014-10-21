@@ -121,8 +121,9 @@
     self.search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 40, 320, 40)];
     [self.search setStyleId:@"history_search"];
     [self.search setDelegate:self];
-    self.search.searchBarStyle=UISearchBarIconSearch;
+    self.search.searchBarStyle = UISearchBarStyleMinimal;
     [self.search setPlaceholder:@"Search Transaction History"];
+    [self.search setImage:[UIImage imageNamed:@"search_blue"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
     [self.search setTintColor:kNoochBlue];
     [self.view addSubview:self.search];
     
