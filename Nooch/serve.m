@@ -1695,10 +1695,10 @@ NSString *amnt;
 
     NSString * urlString = [NSString stringWithFormat:@"%@/SaveMemberTransId",ServerUrl];
     NSURL * url = [NSURL URLWithString:urlString];
+
     dictInv = [[NSMutableDictionary alloc]init];
 
     NSUserDefaults * defaults=[NSUserDefaults standardUserDefaults];
-
     [dictInv setObject:trans forKey:@"KNoxInput"];
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
 
