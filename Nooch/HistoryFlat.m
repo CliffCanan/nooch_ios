@@ -722,6 +722,7 @@ return customView;
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
         countRows = 0;
+        index=1;
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
     }
 }
@@ -1563,7 +1564,7 @@ return customView;
         }
     }
                 
-    else if (self.completed_selected == NO)
+      else if (self.completed_selected == NO)
     {
 //        UILabel * emptyText_Pending = nil;
 
@@ -2509,11 +2510,11 @@ return customView;
             
             
         }
-        else if ([histShowArrayCompleted count] == 0 && ![subTypestr isEqualToString:@"Pending"]) {
+        else if ([histArray count] == 0 && ![subTypestr isEqualToString:@"Pending"]) {
             isEnd = YES;
             
         }
-        else if ([histShowArrayPending count] == 0 && [subTypestr isEqualToString:@"Pending"]) {
+        else if ([histArray count] == 0 && [subTypestr isEqualToString:@"Pending"]) {
             isEnd = YES;
         }
         
