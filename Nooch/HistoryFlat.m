@@ -2443,25 +2443,24 @@ return customView;
             [completed_pending setTitle:[NSString stringWithFormat:@"Pending (%d)",counter]forSegmentAtIndex:1];
 
         }
-    }
-*/
+    } */
+
     else if ([tagName isEqualToString:@"hist"])
     {
-
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.hud hide:YES];
         });
         [self.hud hide:YES];
+
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-  
-        
+
         if ([histArray count] > 0)
         {
             isEnd = NO;
             isStart = NO;
             int counter = 0;
             int pending_notif_counter = 0;
-            for (NSDictionary *dict in histArray)
+            for (NSDictionary * dict in histArray)
             {
                 if ( [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]   ||
                      [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"] ||
@@ -2478,45 +2477,42 @@ return customView;
                        [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
                 {
                     [histShowArrayPending addObject:dict];
-                
-                       if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
-                            counter++;
-                        }
+
+                    if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
+                        counter++;
                     }
-                // For the Red Pending Notification Bubble in the left menu  (different than "counter" above, this one
-                // doesn't include Invites, or Requests this user Sent)
-                if ( ( [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
-                      [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"] ) &&
-                    ![[dict valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
+                }
+                // For the Red Pending Notification Bubble in the left menu  (different than "counter" above,
+                // this one doesn't include Invites, or Requests this user Sent)
+                if ( ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
+                      [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]) &&
+                     ![[dict valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
                 {
                     pending_notif_counter++;
                 }
             }
-            
+
             NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
             if (pending_notif_counter > 0) {
                 [defaults setBool:true forKey:@"hasPendingItems"];
             }
             else {
                 [defaults setBool:false forKey:@"hasPendingItems"];
-
             }
             [defaults setValue: [NSString stringWithFormat:@"%d",pending_notif_counter] forKey:@"Pending_count"];
             [defaults synchronize];
             
             // NSLog(@"The Pending counter is: %d",counter);
             [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%d)",counter]forSegmentAtIndex:1];
-            
-            
+
         }
         else if ([histShowArrayCompleted count] == 0 && ![subTypestr isEqualToString:@"Pending"]) {
             isEnd = YES;
-            
         }
         else if ([histShowArrayPending count] == 0 && [subTypestr isEqualToString:@"Pending"]) {
             isEnd = YES;
         }
-        
+
         if (isMapOpen) {
             [self mapPoints];
         }
@@ -2551,7 +2547,7 @@ return customView;
         }
         [self.view bringSubviewToFront:exportHistory];
     }
-    
+
     else if ([tagName isEqualToString:@"search"])
     {
         [self.hud hide:YES];
@@ -2584,7 +2580,7 @@ return customView;
         [serveOBJ setTagName:@"time"];
         [serveOBJ GetServerCurrentTime];
     } 
-    
+
     else if ([tagName isEqualToString:@"reject"])
     {
         [self.hud hide:YES];
@@ -2638,7 +2634,7 @@ return customView;
         [self.hud hide:YES];
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Request Cancelled" message:@"You got it. That request has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-        
+
         subTypestr = @"Pending";
         self.completed_selected = NO;
         [histShowArrayCompleted removeAllObjects];
