@@ -47,7 +47,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2361"
             endingLineNumber = "2361"
-            landmarkName = "-Error:"
+            landmarkName = "-autoLogin"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -381,7 +381,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1414"
             endingLineNumber = "1414"
-            landmarkName = "-tableView:viewForHeaderInSection:"
+            landmarkName = "-tableView:titleForHeaderInSection:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -619,7 +619,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "757"
             endingLineNumber = "757"
-            landmarkName = "-getMemberIdByUsingUserNameFromPhoneBook"
+            landmarkName = "-searchBarCancelButtonClicked:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -907,7 +907,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2378"
             endingLineNumber = "2378"
-            landmarkName = "-listen:tagName:"
+            landmarkName = "-Error:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
