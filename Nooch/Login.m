@@ -15,8 +15,8 @@
 #import "NSString+MD5Addition.h"
 #import "UIDevice+IdentifierAddition.h"
 #import "SpinKit/RTSpinKitView.h"
-
-@interface Login (){
+#import <FacebookSDK/FacebookSDK.h>
+@interface Login ()<FBLoginViewDelegate>{
     core*me;
 }
 @property(nonatomic,strong) UITextField *email;
@@ -25,6 +25,7 @@
 @property(nonatomic,strong) UIButton *login;
 @property(nonatomic,strong) NSString *encrypted_pass;
 @property(nonatomic,strong) MBProgressHUD *hud;
+@property (strong, nonatomic) id<FBGraphUser> loggedInUser;
 @end
 
 @implementation Login
@@ -154,6 +155,25 @@
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES];
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    // Create Login View so that the app will be granted "status_update" permission.
+    FBLoginView *loginview = [[FBLoginView alloc] init];
+    loginview.frame=CGRectMake(50, 90, 220, 50);
+    //loginview.frame = CGRectOffset(loginview.frame, 5, 5);
+#ifdef __IPHONE_7_0
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        loginview.frame = CGRectOffset(loginview.frame, 5, 25);
+    }
+#endif
+#endif
+#endif
+    loginview.delegate = self;
+    
+    [self.view addSubview:loginview];
+    
+    [loginview sizeToFit];
+
     
     UIImageView * logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
@@ -168,7 +188,7 @@
 
     [self.navigationItem setTitle:@"LogIn"];
 
-    self.email = [[UITextField alloc] initWithFrame:CGRectMake(30, 140, 300, 40)];
+    self.email = [[UITextField alloc] initWithFrame:CGRectMake(30, 165, 300, 40)];
     [self.email setBackgroundColor:[UIColor clearColor]];
     [self.email setPlaceholder:@"Email"];
     self.email.inputAccessoryView = [[UIView alloc] init];
@@ -185,13 +205,13 @@
     UILabel *em = [UILabel new];
     [em setStyleClass:@"table_view_cell_textlabel_1"];
     CGRect frame = em.frame;
-    frame.origin.y = 140;
+    frame.origin.y = 165;
     [em setFrame:frame];
     [em setBackgroundColor:[UIColor clearColor]];
     [em setText:@"Email"];
     [self.view addSubview:em];
 
-    self.password = [[UITextField alloc] initWithFrame:CGRectMake(30, 182, 260, 40)];
+    self.password = [[UITextField alloc] initWithFrame:CGRectMake(30, 207, 260, 40)];
     [self.password setBackgroundColor:[UIColor clearColor]];
     [self.password setPlaceholder:@"Password"];
     self.password.inputAccessoryView = [[UIView alloc] init];
@@ -205,7 +225,7 @@
     UILabel *pass = [UILabel new];
     [pass setStyleClass:@"table_view_cell_textlabel_1"];
     frame = pass.frame;
-    frame.origin.y = 182;
+    frame.origin.y = 207;
     [pass setFrame:frame];
     [pass setText:@"Password"];
     [self.view addSubview:pass];
@@ -214,7 +234,7 @@
     [self.login setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
     self.login.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.login setTitle:@"Log In  " forState:UIControlStateNormal];
-    [self.login setFrame:CGRectMake(10, 244, 300, 60)];
+    [self.login setFrame:CGRectMake(10, 244+20, 300, 60)];
     [self.login addTarget:self action:@selector(check_credentials) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"button_green"];
 
@@ -233,20 +253,20 @@
     [self.view addSubview:self.login];
     [self.login setEnabled:NO];
 
-    self.stay_logged_in = [[UISwitch alloc] initWithFrame:CGRectMake(110, 302, 34, 21)];
+    self.stay_logged_in = [[UISwitch alloc] initWithFrame:CGRectMake(110, 302+20, 34, 21)];
     [self.stay_logged_in setStyleClass:@"login_switch"];
     [self.stay_logged_in setOnTintColor:kNoochBlue];
     [self.stay_logged_in setOn: YES];
     self.stay_logged_in.transform = CGAffineTransformMakeScale(0.8, 0.8);
 
-    UILabel *remember_me = [[UILabel alloc] initWithFrame:CGRectMake(19, 303, 140, 30)];
+    UILabel *remember_me = [[UILabel alloc] initWithFrame:CGRectMake(19, 303+20, 140, 30)];
     [remember_me setText:@"Remember Me"];
     [remember_me setStyleId:@"label_rememberme"];
 
     UIButton *forgot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [forgot setBackgroundColor:[UIColor clearColor]];
     [forgot setTitle:@"Forgot Password?" forState:UIControlStateNormal];
-    [forgot setFrame:CGRectMake(190, 303, 120, 30)];
+    [forgot setFrame:CGRectMake(190, 303+20, 120, 30)];
     [forgot addTarget:self action:@selector(forgot_pass) forControlEvents:UIControlEventTouchUpInside];
     [forgot setStyleId:@"label_forgotpw"];
 
@@ -259,21 +279,21 @@
     // Height adjustments for 3.5" screens
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
-        [em setFrame:CGRectMake(20, 110, 100, 20)];
-        [pass setFrame:CGRectMake(20, 142, 102, 20)];
+        [em setFrame:CGRectMake(20, 110+40, 100, 20)];
+        [pass setFrame:CGRectMake(20, 142+40, 102, 20)];
         
         CGRect frameEmailTextField = self.email.frame;
-        frameEmailTextField.origin.y = 110;
+        frameEmailTextField.origin.y = 110+40;
         [self.email setFrame:frameEmailTextField];
 
         CGRect framePassTextField = self.password.frame;
-        framePassTextField.origin.y = 142;
+        framePassTextField.origin.y = 142+40;
         [self.password setFrame:framePassTextField];
 
-        [self.login setFrame:CGRectMake(20, 185, 300, 60)];
-        [forgot setFrame:CGRectMake(190, 236, 120, 30)];
-        [remember_me setFrame:CGRectMake(19, 236, 140, 30)];
-        [self.stay_logged_in setFrame:CGRectMake(115, 237, 34, 21)];
+        [self.login setFrame:CGRectMake(20, 185+30, 300, 60)];
+        [forgot setFrame:CGRectMake(190, 236+30, 120, 30)];
+        [remember_me setFrame:CGRectMake(19, 236+30, 140, 30)];
+        [self.stay_logged_in setFrame:CGRectMake(115, 237+30, 34, 21)];
         self.stay_logged_in.transform = CGAffineTransformMakeScale(0.75, 0.72);
     }
     [self.view addSubview:self.stay_logged_in];
@@ -871,6 +891,88 @@
     [textField resignFirstResponder];
     return YES;
 }
+#pragma mark - FBLoginViewDelegate
+
+- (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView {
+    // first get the buttons set for login mode
+//    self.buttonPostPhoto.enabled = YES;
+//    self.buttonPostStatus.enabled = YES;
+//    self.buttonPickFriends.enabled = YES;
+//    self.buttonPickPlace.enabled = YES;
+//    
+//    // "Post Status" available when logged on and potentially when logged off.  Differentiate in the label.
+//    [self.buttonPostStatus setTitle:@"Post Status Update (Logged On)" forState:self.buttonPostStatus.state];
+}
+
+- (void)loginViewFetchedUserInfo:(FBLoginView *)loginView
+                            user:(id<FBGraphUser>)user {
+     self.loggedInUser = user;
+    // here we use helper properties of FBGraphUser to dot-through to first_name and
+    // id properties of the json response from the server; alternatively we could use
+    // NSDictionary methods such as objectForKey to get values from the my json object
+//    self.labelFirstName.text = [NSString stringWithFormat:@"Hello %@!", user.first_name];
+//    // setting the profileID property of the FBProfilePictureView instance
+//    // causes the control to fetch and display the profile picture for the user
+//    self.profilePic.profileID = user.objectID;
+//    self.loggedInUser = user;
+    
+    
+}
+
+- (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView {
+    // test to see if we can use the share dialog built into the Facebook application
+    FBLinkShareParams *p = [[FBLinkShareParams alloc] init];
+    p.link = [NSURL URLWithString:@"http://developers.facebook.com/ios"];
+    BOOL canShareFB = [FBDialogs canPresentShareDialogWithParams:p];
+    BOOL canShareiOS6 = [FBDialogs canPresentOSIntegratedShareDialogWithSession:nil];
+    BOOL canShareFBPhoto = [FBDialogs canPresentShareDialogWithPhotos];
+    
+//    self.buttonPostStatus.enabled = canShareFB || canShareiOS6;
+//    self.buttonPostPhoto.enabled = canShareFBPhoto;
+//    self.buttonPickFriends.enabled = NO;
+//    self.buttonPickPlace.enabled = NO;
+    
+    // "Post Status" available when logged on and potentially when logged off.  Differentiate in the label.
+//    [self.buttonPostStatus setTitle:@"Post Status Update (Logged Off)" forState:self.buttonPostStatus.state];
+//    
+//    self.profilePic.profileID = nil;
+//    self.labelFirstName.text = nil;
+//    self.loggedInUser = nil;
+}
+
+- (void)loginView:(FBLoginView *)loginView handleError:(NSError *)error {
+    // see https://developers.facebook.com/docs/reference/api/errors/ for general guidance on error handling for Facebook API
+    // our policy here is to let the login view handle errors, but to log the results
+    NSLog(@"FBLoginView encountered an error=%@", error);
+}
+
+#pragma mark -
+
+// Convenience method to perform some action that requires the "publish_actions" permissions.
+- (void)performPublishAction:(void(^)(void))action {
+    // we defer request for permission to post to the moment of post, then we check for the permission
+    if ([FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound) {
+        // if we don't already have the permission, then we request it now
+        [FBSession.activeSession requestNewPublishPermissions:@[@"publish_actions"]
+                                              defaultAudience:FBSessionDefaultAudienceFriends
+                                            completionHandler:^(FBSession *session, NSError *error) {
+                                                if (!error) {
+                                                    action();
+                                                } else if (error.fberrorCategory != FBErrorCategoryUserCancelled) {
+                                                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Permission denied"
+                                                                                                        message:@"Unable to get permission to post"
+                                                                                                       delegate:nil
+                                                                                              cancelButtonTitle:@"OK"
+                                                                                              otherButtonTitles:nil];
+                                                    [alertView show];
+                                                }
+                                            }];
+    } else {
+        action();
+    }
+    
+}
+
 
 - (void)didReceiveMemoryWarning
 {

@@ -15,6 +15,7 @@
 #import "ProfileInfo.h"
 #import "METoast.h"
 #import "Appirater.h"
+#import <FacebookSDK/FacebookSDK.h>
 @implementation AppDelegate
 
 static NSString *const kTrackingId = @"UA-36976317-2";
@@ -196,11 +197,19 @@ void exceptionHandler(NSException *exception){
     // Set the icon badge to zero on resume (optional)
     [[UAPush shared] resetBadge];
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    // Call the 'activateApp' method to log an app event for use in analytics and advertising reporting.
+    [FBAppEvents activateApp];
+    
+    // FBSample logic
+    // We need to properly handle activation of the application with regards to SSO
+    //  (e.g., returning from iOS 6.0 authorization dialog or from fast app switching).
+    [FBAppCall handleDidBecomeActive];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application{
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     //[UAirship land];
+    [FBSession.activeSession close];
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
@@ -288,8 +297,16 @@ void exceptionHandler(NSException *exception){
 
 -(BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    // NSLog(@"%@",url);
-    if ([sourceApplication isEqualToString:@"com.apple.mobilesafari"] ||
+     NSLog(@"%@",url);
+    if ([[url absoluteString] rangeOfString:@"facebook"].location!=NSNotFound) {
+        return [FBAppCall handleOpenURL:url
+                      sourceApplication:sourceApplication
+                        fallbackHandler:^(FBAppCall *call) {
+                            NSLog(@"In fallback handler");
+                        }];
+   
+    }
+   if ([sourceApplication isEqualToString:@"com.apple.mobilesafari"] ||
         [sourceApplication isEqualToString:@"com.apple.mobilemail"]) {
         return YES;
     }
