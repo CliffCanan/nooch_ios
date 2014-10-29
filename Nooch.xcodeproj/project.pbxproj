@@ -332,6 +332,8 @@
 		849AF6BD19A3183000693385 /* close_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AF6BC19A3183000693385 /* close_button.png */; };
 		84B65A73188542E9009A5205 /* NSString+ASBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B65A72188542E9009A5205 /* NSString+ASBase64.m */; };
 		84B79FFF19BEDEB50081A2AF /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B79FFE19BEDEB50081A2AF /* iCarousel.m */; };
+		84BACAF519FF7A48001F796D /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84BACAF419FF7A48001F796D /* FacebookSDK.framework */; };
+		84BACAF719FF7A50001F796D /* FBUserSettingsViewResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 84BACAF619FF7A50001F796D /* FBUserSettingsViewResources.bundle */; };
 		84BD1A3419B5A0AE00ECC983 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84BD1A3319B5A0AE00ECC983 /* GoogleMaps.framework */; };
 		84BD1A3619B5A0C600ECC983 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 84BD1A3519B5A0C600ECC983 /* GoogleMaps.bundle */; };
 		84C3EF18187D0E82004687F6 /* mapBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C3EF17187D0E82004687F6 /* mapBack.png */; };
@@ -937,6 +939,8 @@
 		84B65A72188542E9009A5205 /* NSString+ASBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ASBase64.m"; sourceTree = "<group>"; };
 		84B79FFD19BEDEB50081A2AF /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		84B79FFE19BEDEB50081A2AF /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
+		84BACAF419FF7A48001F796D /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		84BACAF619FF7A50001F796D /* FBUserSettingsViewResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FBUserSettingsViewResources.bundle; sourceTree = "<group>"; };
 		84BD1A3319B5A0AE00ECC983 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
 		84BD1A3519B5A0C600ECC983 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GoogleMaps.bundle; sourceTree = "<group>"; };
 		84C3EF17187D0E82004687F6 /* mapBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapBack.png; sourceTree = "<group>"; };
@@ -974,6 +978,7 @@
 				6BD38F3316A476DE006B9AE1 /* libz.1.1.3.dylib in Frameworks */,
 				6B5265FE16680D8F00E5341F /* OpenGLES.framework in Frameworks */,
 				6B5265FC16680D5200E5341F /* CoreVideo.framework in Frameworks */,
+				84BACAF519FF7A48001F796D /* FacebookSDK.framework in Frameworks */,
 				6B5265FA16680D4600E5341F /* CoreMedia.framework in Frameworks */,
 				6B5265F816680D2400E5341F /* AVFoundation.framework in Frameworks */,
 				6B30385215FA597700056DAD /* Twitter.framework in Frameworks */,
@@ -1501,6 +1506,8 @@
 		6B30372415FA3FF300056DAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84BACAF619FF7A50001F796D /* FBUserSettingsViewResources.bundle */,
+				84BACAF419FF7A48001F796D /* FacebookSDK.framework */,
 				5C10EB7C19F6D4DC0025EB7F /* PixateFreestyle.framework */,
 				8449C4B319EBAB9700027B9B /* Airship */,
 				8449BF9D19EB94AE00027B9B /* AirshipConfig.plist */,
@@ -2204,6 +2211,7 @@
 				5CF1760C19C0178A004C7427 /* FontAwesome.ttf in Resources */,
 				5C38468F19C566DE002AEB15 /* cross@2x.png in Resources */,
 				6BC5FECB1625F1B0007EAD7A /* Roboto-Black.ttf in Resources */,
+				84BACAF719FF7A50001F796D /* FBUserSettingsViewResources.bundle in Resources */,
 				84BD1A3619B5A0C600ECC983 /* GoogleMaps.bundle in Resources */,
 				6BC5FECD1625F1B0007EAD7A /* Roboto-BlackItalic.ttf in Resources */,
 				5C69D00519C92F7400EB406F /* NotificationBackgroundWarningIcon.png in Resources */,
