@@ -14,7 +14,7 @@
 		<string>https://bitbucket.org/nooch/nooch_ios.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Nooch.xcodeproj/project.xcworkspace</string>
+	<string>Nooch.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>1687EFBEFB1EFBCD10AFA9416054EC27E76779FA</key>
