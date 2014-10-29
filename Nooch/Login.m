@@ -923,9 +923,9 @@
     // test to see if we can use the share dialog built into the Facebook application
     FBLinkShareParams *p = [[FBLinkShareParams alloc] init];
     p.link = [NSURL URLWithString:@"http://developers.facebook.com/ios"];
-    BOOL canShareFB = [FBDialogs canPresentShareDialogWithParams:p];
-    BOOL canShareiOS6 = [FBDialogs canPresentOSIntegratedShareDialogWithSession:nil];
-    BOOL canShareFBPhoto = [FBDialogs canPresentShareDialogWithPhotos];
+//    BOOL canShareFB = [FBDialogs canPresentShareDialogWithParams:p];
+//    BOOL canShareiOS6 = [FBDialogs canPresentOSIntegratedShareDialogWithSession:nil];
+//    BOOL canShareFBPhoto = [FBDialogs canPresentShareDialogWithPhotos];
     
 //    self.buttonPostStatus.enabled = canShareFB || canShareiOS6;
 //    self.buttonPostPhoto.enabled = canShareFBPhoto;
