@@ -238,6 +238,7 @@
     [self.cont setStyleClass:@"button_green"];
     [self.view addSubview:self.cont];
     [self.cont setEnabled:NO];
+    [self.cont setAlpha:0];
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
@@ -557,8 +558,15 @@
                               } completion: ^(BOOL finished){
                                   [[UIApplication sharedApplication]setStatusBarHidden:YES];
                                   Login * signin = [Login new];
-                                  [self.navigationController pushViewController:signin animated:YES];                              }
+                                  [self.navigationController pushViewController:signin animated:YES];
+                              }
      ];
+}
+
+-(void)loginFromAlertView
+{
+    Login * signin = [Login new];
+    [self.navigationController pushViewController:signin animated:YES];
 }
 
 -(void)Error:(NSError *)Error{
@@ -582,15 +590,17 @@
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         if (![[loginResult objectForKey:@"Result"] isEqualToString:@"Not a nooch member."])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Email in Use" message:@"The email address you are attempting to sign up with is already in use." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Email in Use" message:@"That email address you are attempting to sign up with is already in use. Do you want to login now?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Login", nil];
+            [av setTag:20];
             [av show];
             return;
         }
 
-        NSString *first_name;
-        NSString *last_name;
-        NSArray *arr = [[self.name_field.text lowercaseString]componentsSeparatedByString:@" "];
-        if ([arr count]>1) {
+        NSString * first_name;
+        NSString * last_name;
+        NSArray * arr = [[self.name_field.text lowercaseString]componentsSeparatedByString:@" "];
+
+        if ([arr count] > 1) {
             first_name = [arr objectAtIndex:0];
             last_name = [arr objectAtIndex:1];
         }
@@ -599,6 +609,7 @@
             first_name = [arr objectAtIndex:0];
             last_name = @"";
         }
+        
         NSDictionary *user;
 
         if (![self.facebook_info objectForKey:@"id"]) {
@@ -607,7 +618,7 @@
                      @"email":[self.email_field.text lowercaseString],
                      @"password":self.password_field.text};
         }
-        else{
+        else {
             user = @{@"first_name":first_name,
                      @"last_name":last_name,
                      @"email":self.email_field.text,
@@ -627,15 +638,23 @@
     {
         [self open_terms_webview];
     }
+    else if (alertView.tag == 20 & buttonIndex == 1)
+    {
+        [self loginFromAlertView];
+    }
 }
 
 #pragma mark - UITextField delegation
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if ([self.name_field.text length] > 0 && [self.email_field.text length] > 0 && [self.email_field.text  rangeOfString:@"@"].location != NSNotFound && [self.email_field.text  rangeOfString:@"."].location != NSNotFound
+    if ([self.name_field.text length] > 1 && [self.email_field.text length] > 2 && [self.email_field.text rangeOfString:@"@"].location != NSNotFound && [self.email_field.text rangeOfString:@"."].location != NSNotFound) {
+        [self.cont setAlpha:1];
+    }
+    if ([self.name_field.text length] > 1 && [self.email_field.text length] > 2 && [self.email_field.text rangeOfString:@"@"].location != NSNotFound && [self.email_field.text rangeOfString:@"."].location != NSNotFound
         && [self.password_field.text length] > 6)
     {
         [self.cont setEnabled:YES];
+        [self.cont setAlpha:1];
     }
     else {
         [self.cont setEnabled:NO];
