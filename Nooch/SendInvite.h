@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by crks on 10/8/13.
-//  Copyright (c) 2013 Nooch. All rights reserved.
+//  Copyright (c) 2014 Nooch. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -15,16 +15,10 @@
 {
     NSMutableDictionary*dictResponse;
     NSMutableDictionary*dictInviteUserList;
-    UITextField*textPhoneto;
-    UITextView*msgTextView;
-    UIView*SMSView;
-    UIButton*btnToSend;
     UILabel *code;
-    NSMutableData*pic;
     NSRange start;
     NSRange end;
     NSString *betweenBraces;
     NSString *newString;
-    UIView*blankView;
 }
 @end
