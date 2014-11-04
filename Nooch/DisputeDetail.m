@@ -54,10 +54,10 @@
     [super viewDidLoad];
     self.navigationController.navigationBar.topItem.title = @"";
     self.title=@"Dispute Details";
-    
+
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
-    backgroundImage.alpha = .25;
+    UIImageView * backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
+    backgroundImage.alpha = .28;
     [self.view addSubview:backgroundImage];
 
     self.txtStatus = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
@@ -70,7 +70,7 @@
     [self.txtStatus setUserInteractionEnabled:NO];
     [self.txtStatus setTag:0];
     [self.view addSubview:self.txtStatus];
-    
+
     self.txtID = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.txtID setTextAlignment:NSTextAlignmentRight];
     [self.txtID setBackgroundColor:[UIColor clearColor]];
@@ -86,7 +86,7 @@
     [self.txtDate setBackgroundColor:[UIColor clearColor]];
     [self.txtDate setPlaceholder:@"Date Reported"];
     [self.txtDate setDelegate:self];
-    [self.txtDate setKeyboardType:UIKeyboardTypeEmailAddress];
+    [self.txtDate setUserInteractionEnabled:NO];
     [self.txtDate setStyleClass:@"table_view_cell_detailtext_1"];
     [self.txtDate setTag:1];
     [self.txtDate setText:[self.disputeDetails valueForKey:@"DisputeReportedDate"]];
@@ -100,6 +100,7 @@
     [self.txtReviewDate setStyleClass:@"table_view_cell_detailtext_1"];
     [self.txtReviewDate setTag:2];
     [self.txtReviewDate setText:[self.disputeDetails valueForKey:@"DisputeReviewDate"]];
+    [self.txtReviewDate setUserInteractionEnabled:NO];
     [self.view addSubview:self.txtReviewDate];
     
     self.txtResolvedD = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
@@ -107,10 +108,11 @@
     [self.txtResolvedD setBackgroundColor:[UIColor clearColor]];
     [self.txtResolvedD setPlaceholder:@"Not Resolved Yet"];
     [self.txtResolvedD setDelegate:self];
-    [self.txtResolvedD setKeyboardType:UIKeyboardTypeDefault];
+    [self.txtResolvedD setUserInteractionEnabled:NO];
     [self.txtResolvedD setStyleClass:@"table_view_cell_detailtext_1"];
     [self.txtResolvedD setTag:3];
     [self.txtResolvedD setText:[self.disputeDetails valueForKey:@"DisputeResolvedDate"]];
+    [self.view addSubview:self.txtResolvedD];
 
     self.txtNotes = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.txtNotes setTextAlignment:NSTextAlignmentRight];
@@ -124,11 +126,9 @@
     [self.txtNotes setUserInteractionEnabled:NO];
     [self.txtNotes setTag:4];
     [self.view addSubview:self.txtNotes];
-    
-    
-    [self.view addSubview:self.txtResolvedD];
+
     self.list = [UITableView new];
-    [self.list setFrame:CGRectMake(-1, 20, 322, 300)];
+    [self.list setFrame:CGRectMake(-1, 26, 322, 300)];
     self.list.layer.borderColor = Rgb2UIColor(188, 190, 192, 0.85).CGColor;
     self.list.layer.borderWidth = 1;
     [self.list setBackgroundColor:[UIColor whiteColor]];
@@ -136,10 +136,11 @@
     [self.list setDataSource:self];
     [self.list setRowHeight:50];
     [self.list setScrollEnabled:NO];
+    [self.list setUserInteractionEnabled:NO];
     [self.view addSubview:self.list];
     
     email_nooch = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [email_nooch setFrame:CGRectMake(20, 365, 280,50)];
+    [email_nooch setFrame:CGRectMake(20, 354, 280,50)];
     [email_nooch setTitle:@"Email Nooch" forState:UIControlStateNormal];
     [email_nooch addTarget:self action:@selector(email_noochClicked:) forControlEvents:UIControlEventTouchUpInside];
     [email_nooch setStyleClass:@"button_blue"];
@@ -147,8 +148,6 @@
     email_nooch.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [email_nooch setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.view addSubview:email_nooch];
-
-    // Do any additional setup after loading the view.
 }
 
 -(void)email_noochClicked:(id)sender
@@ -200,7 +199,6 @@
         default:
             break;
     }
-    // Close the Mail Interface
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
@@ -219,8 +217,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    static NSString * CellIdentifier = @"Cell";
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
@@ -231,7 +229,7 @@
     }
     if (indexPath.row == 0)
     {
-        UILabel *Status = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        UILabel * Status = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [Status setBackgroundColor:[UIColor clearColor]];
         [Status setText:@"Status"];
         [Status setStyleClass:@"table_view_cell_textlabel_1"];
@@ -249,7 +247,7 @@
     }
     else if (indexPath.row == 1)
     {
-        UILabel *ID = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        UILabel * ID = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [ID setBackgroundColor:[UIColor clearColor]];
         [ID setText:@"Dispute ID"];
         [ID setStyleClass:@"table_view_cell_textlabel_1"];
@@ -258,7 +256,7 @@
     }
     else if (indexPath.row == 2)
     {
-        UILabel *Date = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        UILabel * Date = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [Date setBackgroundColor:[UIColor clearColor]];
         [Date setText:@"Dispute Date"];
         [Date setStyleClass:@"table_view_cell_textlabel_1"];
@@ -267,7 +265,7 @@
     }
     else if (indexPath.row == 3)
     {
-        UILabel *ReviewDate = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        UILabel * ReviewDate = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [ReviewDate setBackgroundColor:[UIColor clearColor]];
         [ReviewDate setText:@"Review Date"];
         [ReviewDate setStyleClass:@"table_view_cell_textlabel_1"];
@@ -276,7 +274,7 @@
     }
     else if (indexPath.row == 4)
     {
-        UILabel *ResolvedD = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        UILabel * ResolvedD = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [ResolvedD setBackgroundColor:[UIColor clearColor]];
         [ResolvedD setText:@"Resolved Date"];
         [ResolvedD setStyleClass:@"table_view_cell_textlabel_1"];
@@ -285,7 +283,7 @@
     }
     else if (indexPath.row == 5)
     {
-        UILabel *Note = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
+        UILabel * Note = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [Note setBackgroundColor:[UIColor clearColor]];
         [Note setText:@"Note"];
         [Note setStyleClass:@"table_view_cell_textlabel_1"];
@@ -323,10 +321,10 @@
         for (int i = [arrNav count]; i > 1; i--) {
             [arrNav removeLastObject];
         }
-        
+
         [nav_ctrl setViewControllers:arrNav animated:NO];
         Register *reg = [Register new];
-        
+
         [nav_ctrl pushViewController:reg animated:YES];
         me = [core new];
         return;

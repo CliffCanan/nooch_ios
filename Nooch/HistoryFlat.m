@@ -923,7 +923,7 @@ return customView;
                     
                     UILabel *glyphDate = [UILabel new];
                     [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                    [glyphDate setFrame:CGRectMake(147, 9, 14, 10)];
+                    [glyphDate setFrame:CGRectMake(147, 8, 14, 10)];
                     [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                     [glyphDate setTextColor:kNoochGrayLight];
                     [cell.contentView addSubview:glyphDate];
@@ -1234,7 +1234,7 @@ return customView;
 
                 UILabel *glyphDate = [UILabel new];
                 [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                [glyphDate setFrame:CGRectMake(147, 9, 14, 10)];
+                [glyphDate setFrame:CGRectMake(147, 8, 14, 10)];
                 [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                 [glyphDate setTextColor:kNoochGrayLight];
                 [cell.contentView addSubview:glyphDate];
@@ -1566,8 +1566,6 @@ return customView;
                 
       else if (self.completed_selected == NO)
     {
-//        UILabel * emptyText_Pending = nil;
-
         if (isLocalSearch)
         {
             if ([histTempPending count] > indexPath.row)
@@ -1621,7 +1619,7 @@ return customView;
                     
                     UILabel *glyphDate = [UILabel new];
                     [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                    [glyphDate setFrame:CGRectMake(147, 9, 14, 10)];
+                    [glyphDate setFrame:CGRectMake(147, 8, 14, 10)];
                     [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                     [glyphDate setTextColor:kNoochGrayLight];
                     [cell.contentView addSubview:glyphDate];
@@ -1786,17 +1784,21 @@ return customView;
 
         if ([histShowArrayPending count] > indexPath.row)
         {
-            NSDictionary *dictRecord = [histShowArrayPending objectAtIndex:indexPath.row];
+            NSDictionary * dictRecord = [histShowArrayPending objectAtIndex:indexPath.row];
             
             if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
             {
-				UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(0, 311, 9, 72)];
-                [indicator setBackgroundColor:[UIColor clearColor]];
-                [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
-                [indicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-left"]];
-                [indicator setStyleClass:@"history_sidecolor_pending"];
+                if (![[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
+                {
+                    UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(0, 311, 9, 72)];
+                    [indicator setBackgroundColor:[UIColor clearColor]];
+                    [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
+                    [indicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-left"]];
+                    [indicator setStyleClass:@"history_sidecolor_pending"];
+                    [cell.contentView addSubview:indicator];
+                }
 
-                UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
+                UILabel * amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
                 [amount setBackgroundColor:[UIColor clearColor]];
                 [amount setTextAlignment:NSTextAlignmentRight];
                 [amount setFont:[UIFont fontWithName:@"Roboto-Medium" size:18]];
@@ -1804,7 +1806,7 @@ return customView;
                 [amount setStyleClass:@"history_transferamount_neutral"];
                 [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
 
-                UILabel *transferTypeLabel = [UILabel new];
+                UILabel * transferTypeLabel = [UILabel new];
                 [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
                 transferTypeLabel.layer.cornerRadius = 3;
                 transferTypeLabel .clipsToBounds = YES;
@@ -1825,7 +1827,7 @@ return customView;
 
                 UILabel *glyphDate = [UILabel new];
                 [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                [glyphDate setFrame:CGRectMake(147, 9, 14, 10)];
+                [glyphDate setFrame:CGRectMake(147, 8, 14, 10)];
                 [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                 [glyphDate setTextColor:kNoochGrayLight];
                 [cell.contentView addSubview:glyphDate];
@@ -1900,7 +1902,7 @@ return customView;
                         [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
                         [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
                 }
-                
+
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
                 {
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
@@ -1922,7 +1924,7 @@ return customView;
                 else {
                     [name setText:@""];
                 }
-                
+
                 NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                 NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
                 NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
@@ -1988,7 +1990,6 @@ return customView;
 
                 [cell.contentView addSubview:amount];
                 [cell.contentView addSubview:statusIndicator];
-                [cell.contentView addSubview:indicator];
                 [cell.contentView addSubview:transferTypeLabel];
                 [cell.contentView addSubview:name];
                 [cell.contentView addSubview:pic];
@@ -2012,14 +2013,6 @@ return customView;
                     [emptyText_Pending setTextAlignment:NSTextAlignmentCenter];
                     [self.list addSubview:emptyText_Pending];
                 }
-                
-//                [self.list setStyleId:@"emptyTable"];
-//                emptyText_Pending = [[UILabel alloc] initWithFrame:CGRectMake(6, 5, 308, 70)];
-//                [emptyText_Pending setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
-//                [emptyText_Pending setNumberOfLines:0];
-//                [emptyText_Pending setText:@"No payments found for you at the moment."];
-//                [emptyText_Pending setTextAlignment:NSTextAlignmentCenter];
-//                [self.list addSubview:emptyText_Pending];
 
                 return cell;
             }
@@ -2049,8 +2042,6 @@ return customView;
             }
         }
     }
-    
-    // NSLog(@"The Cell is:  %@",cell);
 
     return cell;
 }
