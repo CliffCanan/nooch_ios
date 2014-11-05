@@ -18,6 +18,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 @interface Login ()<FBLoginViewDelegate>{
     core*me;
+    NSString*email_fb,*fbID;
 }
 @property(nonatomic,strong) UITextField *email;
 @property(nonatomic,strong) UITextField *password;
@@ -153,6 +154,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    isloginWithFB=NO;
     [self.navigationController setNavigationBarHidden:YES];
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
@@ -484,6 +486,20 @@
         }
         
     }
+    else if ([tagName isEqualToString:@"loginwithFB"])
+    {
+        NSError * error;
+        NSDictionary * loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        
+        NSLog(@"Result is: %@",[loginResult objectForKey:@"Result"]);
+        
+        
+        serve * getDetails = [serve new];
+        getDetails.Delegate = self;
+        getDetails.tagName = @"getMemberId";
+        [getDetails getMemIdFromuUsername:email_fb];
+        
+    }
     else if ([tagName isEqualToString:@"login"])
     {
         NSError * error;
@@ -795,6 +811,10 @@
         
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
+        if (isloginWithFB) {
+              [[NSUserDefaults standardUserDefaults] setObject:email_fb forKey:@"UserName"];
+        }
+        else
         [[NSUserDefaults standardUserDefaults] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
         user = [NSUserDefaults standardUserDefaults];
         
@@ -811,11 +831,19 @@
         [me birth];
         
         [[me usr] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
+        if (isloginWithFB) {
+             [[me usr] setObject:email_fb forKey:@"UserName"];
+        }
+        else
         [[me usr] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
         
         serve * enc_user = [serve new];
         [enc_user setDelegate:self];
         [enc_user setTagName:@"username"];
+        if (isloginWithFB) {
+            [enc_user getEncrypt:email_fb];
+        }
+        else
         [enc_user getEncrypt:[self.email.text lowercaseString]];
     } 
     
@@ -894,6 +922,7 @@
 
 #pragma mark - FBLoginViewDelegate
 - (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView {
+ 
     // first get the buttons set for login mode
 //    self.buttonPostPhoto.enabled = YES;
 //    self.buttonPostStatus.enabled = YES;
@@ -906,20 +935,34 @@
 
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView
                             user:(id<FBGraphUser>)user {
+       isloginWithFB=YES;
      self.loggedInUser = user;
-    // here we use helper properties of FBGraphUser to dot-through to first_name and
-    // id properties of the json response from the server; alternatively we could use
-    // NSDictionary methods such as objectForKey to get values from the my json object
-//    self.labelFirstName.text = [NSString stringWithFormat:@"Hello %@!", user.first_name];
-//    // setting the profileID property of the FBProfilePictureView instance
-//    // causes the control to fetch and display the profile picture for the user
-//    self.profilePic.profileID = user.objectID;
-//    self.loggedInUser = user;
+    RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+    spinner1.color = [UIColor whiteColor];
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.hud];
     
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.customView = spinner1;
+    self.hud.delegate = self;
+    self.hud.labelText = @"Checking Login Credentials...";
+    [self.hud show:YES];
+    serve * log = [serve new];
+    [log setDelegate:self];
+    [log setTagName:@"loginwithFB"];
+    NSString * udid = [[UIDevice currentDevice] uniqueDeviceIdentifier];
+    email_fb=[self.loggedInUser objectForKey:@"email"];
+    fbID=[self.loggedInUser objectForKey:@"id"];
+    [log loginwithFB:[self.loggedInUser objectForKey:@"email"] FBId:[self.loggedInUser objectForKey:@"id"] remember:YES lat:lat lon:lon uid:udid];
+    
+     
+
+
     
 }
 
 - (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView {
+       isloginWithFB=NO;
     // test to see if we can use the share dialog built into the Facebook application
     FBLinkShareParams *p = [[FBLinkShareParams alloc] init];
     p.link = [NSURL URLWithString:@"http://developers.facebook.com/ios"];

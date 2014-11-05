@@ -62,7 +62,7 @@
 -(void)privacyPolicy;
 -(void)tos;
 -(void)dupCheck:(NSString*)email;
-//-(void)login:(NSString*)email password:(NSString*)pass;
+-(void)loginwithFB:(NSString*)email FBId:(NSString*)FBId remember:(BOOL)isRem lat:(float)lat lon:(float)lng uid:(NSString*)strId;
 
 -(void)makeBankPrimary:(NSString*)bankId;
 -(void)memberDevice:(NSString *)deviceToken;

@@ -322,6 +322,7 @@
         self.pic.layer.borderWidth = 3;
         self.pic.layer.borderColor = kNoochBlue.CGColor;
         [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
+        [[assist shared]setTranferImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
     }
     else {
         [self.pic setImage:[UIImage imageNamed:@"silhouette.png"]];
