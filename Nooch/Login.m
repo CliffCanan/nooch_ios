@@ -901,7 +901,7 @@
     else {
         [self.login setEnabled:NO];
     }
-    
+
     return YES;
 }
 
@@ -935,30 +935,28 @@
 
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView
                             user:(id<FBGraphUser>)user {
-       isloginWithFB=YES;
-     self.loggedInUser = user;
+    isloginWithFB=YES;
+    self.loggedInUser = user;
+
     RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
-    
+
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
     self.hud.delegate = self;
     self.hud.labelText = @"Checking Login Credentials...";
     [self.hud show:YES];
+
+    NSString * udid = [[UIDevice currentDevice] uniqueDeviceIdentifier];
+    email_fb = [self.loggedInUser objectForKey:@"email"];
+    fbID = [self.loggedInUser objectForKey:@"id"];
+
     serve * log = [serve new];
     [log setDelegate:self];
     [log setTagName:@"loginwithFB"];
-    NSString * udid = [[UIDevice currentDevice] uniqueDeviceIdentifier];
-    email_fb=[self.loggedInUser objectForKey:@"email"];
-    fbID=[self.loggedInUser objectForKey:@"id"];
     [log loginwithFB:[self.loggedInUser objectForKey:@"email"] FBId:[self.loggedInUser objectForKey:@"id"] remember:YES lat:lat lon:lon uid:udid];
-    
-     
-
-
-    
 }
 
 - (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView {
