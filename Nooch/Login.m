@@ -155,10 +155,12 @@
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES];
     [self.view setBackgroundColor:[UIColor whiteColor]];
+
     // Create Login View so that the app will be granted "status_update" permission.
     FBLoginView *loginview = [[FBLoginView alloc] init];
-    loginview.frame=CGRectMake(50, 90, 220, 50);
+    loginview.frame = CGRectMake(20, 90, 280, 50);
     //loginview.frame = CGRectOffset(loginview.frame, 5, 5);
+
 #ifdef __IPHONE_7_0
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
@@ -168,13 +170,12 @@
 #endif
 #endif
 #endif
-    loginview.delegate = self;
-    
-    [self.view addSubview:loginview];
-    
-    [loginview sizeToFit];
 
-    
+    loginview.delegate = self;
+    //[loginview sizeToFit];
+    [self.view addSubview:loginview];
+
+
     UIImageView * logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
@@ -414,9 +415,10 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
--(void)Error:(NSError *)Error{
+-(void)Error:(NSError *)Error
+{
     [self.hud hide:YES];
-    
+
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"The internet is busy right now... please try again."
@@ -843,7 +845,6 @@
         [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:nav_ctrl.view cache:NO];
         [UIView commitAnimations];
         [UIView beginAnimations:nil context:NULL];
-        //[UIView setAnimationDelay:0.2];
         [nav_ctrl popToRootViewControllerAnimated:NO];
 
         [UIView commitAnimations];
@@ -876,7 +877,6 @@
     return YES;
 }
 
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == _email)
@@ -891,8 +891,8 @@
     [textField resignFirstResponder];
     return YES;
 }
-#pragma mark - FBLoginViewDelegate
 
+#pragma mark - FBLoginViewDelegate
 - (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView {
     // first get the buttons set for login mode
 //    self.buttonPostPhoto.enabled = YES;
@@ -923,9 +923,9 @@
     // test to see if we can use the share dialog built into the Facebook application
     FBLinkShareParams *p = [[FBLinkShareParams alloc] init];
     p.link = [NSURL URLWithString:@"http://developers.facebook.com/ios"];
-    BOOL canShareFB = [FBDialogs canPresentShareDialogWithParams:p];
-    BOOL canShareiOS6 = [FBDialogs canPresentOSIntegratedShareDialogWithSession:nil];
-    BOOL canShareFBPhoto = [FBDialogs canPresentShareDialogWithPhotos];
+//    BOOL canShareFB = [FBDialogs canPresentShareDialogWithParams:p];
+//    BOOL canShareiOS6 = [FBDialogs canPresentOSIntegratedShareDialogWithSession:nil];
+//    BOOL canShareFBPhoto = [FBDialogs canPresentShareDialogWithPhotos];
     
 //    self.buttonPostStatus.enabled = canShareFB || canShareiOS6;
 //    self.buttonPostPhoto.enabled = canShareFBPhoto;
@@ -943,7 +943,48 @@
 - (void)loginView:(FBLoginView *)loginView handleError:(NSError *)error {
     // see https://developers.facebook.com/docs/reference/api/errors/ for general guidance on error handling for Facebook API
     // our policy here is to let the login view handle errors, but to log the results
+
     NSLog(@"FBLoginView encountered an error=%@", error);
+    
+    NSString *alertMessage, *alertTitle;
+    
+    // If the user should perform an action outside of you app to recover,
+    // the SDK will provide a message for the user, you just need to surface it.
+    // This conveniently handles cases like Facebook password change or unverified Facebook accounts.
+    if ([FBErrorUtility shouldNotifyUserForError:error]) {
+        alertTitle = @"Facebook error";
+        alertMessage = [FBErrorUtility userMessageForError:error];
+        
+        // This code will handle session closures that happen outside of the app
+        // You can take a look at our error handling guide to know more about it
+        // https://developers.facebook.com/docs/ios/errors
+    } else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession) {
+        alertTitle = @"Session Error";
+        alertMessage = @"Your current session is no longer valid. Please log in again.";
+        
+        // If the user has cancelled a login, we will do nothing.
+        // You can also choose to show the user a message if cancelling login will result in
+        // the user not being able to complete a task they had initiated in your app
+        // (like accessing FB-stored information or posting to Facebook)
+    } else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled) {
+        NSLog(@"user cancelled login");
+        
+        // For simplicity, this sample handles other errors with a generic message
+        // You can checkout our error handling guide for more detailed information
+        // https://developers.facebook.com/docs/ios/errors
+    } else {
+        alertTitle  = @"Something went wrong";
+        alertMessage = @"Please try again later.";
+        NSLog(@"Unexpected error:%@", error);
+    }
+    
+    if (alertMessage) {
+        [[[UIAlertView alloc] initWithTitle:alertTitle
+                                    message:alertMessage
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil] show];
+    }
 }
 
 #pragma mark -
