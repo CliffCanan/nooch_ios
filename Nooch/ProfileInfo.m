@@ -941,6 +941,15 @@ UIImageView *picture;
             resend_mail.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
             [cell.contentView addSubview:resend_mail];
         }
+        else {
+            UILabel * glyph_checkMark = [UILabel new];
+            [glyph_checkMark setBackgroundColor:[UIColor clearColor]];
+            [glyph_checkMark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+            [glyph_checkMark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+            [glyph_checkMark setFrame:CGRectMake(64, 6, 20, 39)];
+            [glyph_checkMark setTextColor:kNoochGreen];
+            [cell.contentView addSubview:glyph_checkMark];
+        }
 
         [cell.contentView addSubview:mail];
         [cell.contentView addSubview:self.email];
@@ -960,10 +969,7 @@ UIImageView *picture;
         UILabel * num = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
         [num setBackgroundColor:[UIColor clearColor]];
         [num setStyleClass:@"table_view_cell_textlabel_1"];
-        num.attributedText = [[NSAttributedString alloc] initWithString:@"Phone"
-                                                             attributes:textAttributes_white];
-        
-        // NSLog(@"PhoneNo value is: %@",[dictSavedInfo valueForKey:@"phoneno"]);
+        num.attributedText = [[NSAttributedString alloc] initWithString:@"Phone" attributes:textAttributes_white];
         
         if (![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"])
         {
@@ -1012,6 +1018,15 @@ UIImageView *picture;
             resend_phone.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
             [cell.contentView addSubview:resend_phone];
             
+        }
+        else {
+            UILabel * glyph_checkMark = [UILabel new];
+            [glyph_checkMark setBackgroundColor:[UIColor clearColor]];
+            [glyph_checkMark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+            [glyph_checkMark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+            [glyph_checkMark setFrame:CGRectMake(71, 6, 20, 40)];
+            [glyph_checkMark setTextColor:kNoochGreen];
+            [cell.contentView addSubview:glyph_checkMark];
         }
         
         [cell.contentView addSubview:num];
