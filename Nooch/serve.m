@@ -297,6 +297,28 @@ NSString *amnt;
     if (!connectionLogin)
         NSLog(@"connect error");
 }
+-(void)loginwithFB:(NSString*)email FBId:(NSString*)FBId remember:(BOOL)isRem lat:(float)lat lon:(float)lng uid:(NSString*)strId {
+    [[assist shared]setBankVerified:NO];
+    
+    [[assist shared]setSusPended:NO];
+    ServiceType=@"Login";
+                                                                                      			    //LoginWithFacebook(string userEmail, string FBId, Boolean rememberMeEnabled, decimal lat, decimal lng, string udid, string devicetoken)
+    [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"pincheck"];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    
+    self.responseData = [[NSMutableData alloc] init];
+    if (isRem) {
+        requestLogin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&rememberMeEnabled=true&lat=%f&lng=%f&udid=%@&devicetoken=%@", ServerUrl, @"LoginWithFacebook", @"userEmail", email, @"FBId", FBId,lat,lng,[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"],[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"]]]];
+    }
+    else
+    {
+        requestLogin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&rememberMeEnabled=false&lat=%f&lng=%f&udid=%@&devicetoken=%@", ServerUrl, @"LoginWithFacebook", @"userEmail", email, @"FBId", FBId,lat,lng,[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"],[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"]]]];
+    }
+    [requestLogin setTimeoutInterval:10000];
+    connectionLogin = [[NSURLConnection alloc] initWithRequest:requestLogin delegate:self];
+    if (!connectionLogin)
+        NSLog(@"connect error");
+}
 -(void)makeBankPrimary:(NSString*)bankId{
     self.responseData = [[NSMutableData alloc] init];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&cardAcctId=%@", ServerUrl, @"MakeBankAccountAsPrimary", [[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"], bankId]]];
@@ -364,7 +386,7 @@ NSString *amnt;
     // [dictnew setObject:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"udId"];
     [dictnew setObject:@"" forKey:@"friendRequestId"];
     [dictnew setObject:@"" forKey:@"invitedFriendFacebookId"];
-    [dictnew setObject:@"" forKey:@"facebookAccountLogin"];
+    [dictnew setObject:fbId forKey:@"facebookAccountLogin"];
     
     if ([[assist shared]getTranferImage]) {
         
@@ -764,7 +786,7 @@ NSString *amnt;
         [defaults synchronize];
         
     }
-    else if ([tagName isEqualToString:@"login"]) {
+    else if ([tagName isEqualToString:@"login"]||[tagName isEqualToString:@"loginwithFB"] ) {
         //converting the result into Dictionary
         NSError * error;
         NSDictionary * result = [NSJSONSerialization
