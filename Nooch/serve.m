@@ -714,7 +714,7 @@ NSString *amnt;
                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
-        // edit 19 Nov 2013
+
         if (![[Dictresponse objectForKey:@"LastLocationLat"] isKindOfClass:[NSNull class]] &&
             ![[Dictresponse objectForKey:@"LastLocationLng"] isKindOfClass:[NSNull class]])
         {
@@ -923,36 +923,6 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 
--(void)SendSMSApi:(NSString*)phoneNo msg:(NSString*)msgText
-{
-    [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    ServiceType=@"SMS";
-    self.responseData = [[NSMutableData alloc] init];
-    NSString *urlString = [NSString stringWithFormat:@"%@/ApiSMS",ServerUrl];
-    NSURL *url = [NSURL URLWithString:urlString];
-    dictSMS=[[NSMutableDictionary alloc]init];
-    [dictSMS setObject:phoneNo forKey:@"phoneto"];
-    [dictSMS setObject:msgText forKey:@"msg"];
-    
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
-    [dictSMS setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
-    
-    NSError *error;
-    postDataSMS = [NSJSONSerialization dataWithJSONObject:dictSMS
-                                                  options:NSJSONWritingPrettyPrinted error:&error];
-    postLengthSMS = [NSString stringWithFormat:@"%d", [postDataSMS length]];
-    requestSMS = [[NSMutableURLRequest alloc] initWithURL:url];
-    [requestSMS setHTTPMethod:@"POST"];
-    [requestSMS setValue:postLengthSMS forHTTPHeaderField:@"Content-Length"];
-    [requestSMS setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [requestSMS setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
-    [requestSMS setHTTPBody:postDataSMS];
-    connectionSMS = [[NSURLConnection alloc] initWithRequest:requestSMS delegate:self];
-    if (!connectionSMS)
-        NSLog(@"connect error");
-    
-}
 -(void)getBankList
 {
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
