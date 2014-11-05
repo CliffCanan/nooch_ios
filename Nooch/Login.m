@@ -957,15 +957,7 @@
     
      
 
-    // here we use helper properties of FBGraphUser to dot-through to first_name and
-    // id properties of the json response from the server; alternatively we could use
-    // NSDictionary methods such as objectForKey to get values from the my json object
-//    self.labelFirstName.text = [NSString stringWithFormat:@"Hello %@!", user.first_name];
-//    // setting the profileID property of the FBProfilePictureView instance
-//    // causes the control to fetch and display the profile picture for the user
-//    self.profilePic.profileID = user.objectID;
-//    self.loggedInUser = user;
-    
+
     
 }
 
