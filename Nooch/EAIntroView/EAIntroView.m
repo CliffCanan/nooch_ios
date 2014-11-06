@@ -56,7 +56,7 @@
     self.easeOutCrossDisolves = YES;
     self.hideOffscreenPages = YES;
     self.titleViewY = 20.0f;
-    self.pageControlY = 50.0f;
+    self.pageControlY = -10;
     self.bgViewContentMode = UIViewContentModeScaleAspectFill;
     self.motionEffectsRelativeValue = 40.0f;
     _pages = [pagesArray copy];
@@ -352,7 +352,7 @@
     self.pageControl.numberOfPages = _pages.count;
     [self addSubview:self.pageControl];
     
-    self.skipButton = [[UIButton alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width - 95, self.pageControl.frame.origin.y - ((30 - self.pageControl.frame.size.height)/2), 95, 30)];
+    self.skipButton = [[UIButton alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width - 95, 30, 95, 30)];
     [self.skipButton setTitle:NSLocalizedString(@"Done", nil) forState:UIControlStateNormal];
     [self.skipButton setTitleShadowColor:Rgb2UIColor(31, 32, 33, 0.4) forState:UIControlStateNormal];
     self.skipButton.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
@@ -360,13 +360,13 @@
     [self addSubview:self.skipButton];
     
     if ([self respondsToSelector:@selector(addConstraint:)]) {
-        self.pageControl.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.pageControl attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.pageControl attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.skipButton attribute:NSLayoutAttributeCenterY multiplier:1 constant:0]];
+        //self.pageControl.translatesAutoresizingMaskIntoConstraints = NO;
+        //[self addConstraint:[NSLayoutConstraint constraintWithItem:self.pageControl attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
+        //[self addConstraint:[NSLayoutConstraint constraintWithItem:self.pageControl attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.skipButton attribute:NSLayoutAttributeCenterY multiplier:1 constant:0]];
     
-        self.skipButton.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.skipButton attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1 constant:-30]];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.skipButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:-20]];
+        //self.skipButton.translatesAutoresizingMaskIntoConstraints = NO;
+        //[self addConstraint:[NSLayoutConstraint constraintWithItem:self.skipButton attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1 constant:-30]];
+        //[self addConstraint:[NSLayoutConstraint constraintWithItem:self.skipButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:-20]];
     }
 }
 

@@ -144,8 +144,9 @@
 		5C83949719EC60C200EBEBA4 /* No-Internet-Full-Screen_medium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83949419EC60C200EBEBA4 /* No-Internet-Full-Screen_medium@2x.png */; };
 		5C83949819EC60C200EBEBA4 /* No-Internet-Full-Screen_sm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83949519EC60C200EBEBA4 /* No-Internet-Full-Screen_sm@2x.png */; };
 		5C83949919EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83949619EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png */; };
+		5C861FA21A0BFAAD00275CD1 /* selectRecipient_img@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C861FA01A0BFAAD00275CD1 /* selectRecipient_img@2x.png */; };
+		5C861FA31A0BFAAD00275CD1 /* 2_selectRecipient_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C861FA11A0BFAAD00275CD1 /* 2_selectRecipient_bg@2x.png */; };
 		5CACE20619CFF86A004AD9C4 /* 1_connectBank_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20319CFF86A004AD9C4 /* 1_connectBank_bg.png */; };
-		5CACE20719CFF86A004AD9C4 /* 2_selectRecipient_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20419CFF86A004AD9C4 /* 2_selectRecipient_bg.png */; };
 		5CACE20819CFF86A004AD9C4 /* 3_howMuch_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20519CFF86A004AD9C4 /* 3_howMuch_bg.png */; };
 		5CBC177519F4CE0000E1D095 /* clear_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CBC177419F4CE0000E1D095 /* clear_white@2x.png */; };
 		5CC1A77819BA7A8A0000C2C7 /* Icon29.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77419BA7A8A0000C2C7 /* Icon29.png */; };
@@ -155,7 +156,6 @@
 		5CD72EF219D3ECDC008A21D2 /* 4_history_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CD72EEE19D3ECDC008A21D2 /* 4_history_bg@2x.png */; };
 		5CD72EF319D3ECDC008A21D2 /* history_img@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CD72EEF19D3ECDC008A21D2 /* history_img@2x.png */; };
 		5CD72EF419D3ECDC008A21D2 /* howMuch_img@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CD72EF019D3ECDC008A21D2 /* howMuch_img@2x.png */; };
-		5CD72EF519D3ECDC008A21D2 /* selectRecipient_img@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CD72EF119D3ECDC008A21D2 /* selectRecipient_img@2x.png */; };
 		5CD72EF719D3EDD3008A21D2 /* connectBank_img@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CD72EF619D3EDD3008A21D2 /* connectBank_img@2x.png */; };
 		5CEFA0CB19CBE1A900991EEB /* (null) in Resources */ = {isa = PBXBuildFile; };
 		5CEFA0CC19CBE1A900991EEB /* (null) in Resources */ = {isa = PBXBuildFile; };
@@ -577,8 +577,9 @@
 		5C83949419EC60C200EBEBA4 /* No-Internet-Full-Screen_medium@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No-Internet-Full-Screen_medium@2x.png"; sourceTree = "<group>"; };
 		5C83949519EC60C200EBEBA4 /* No-Internet-Full-Screen_sm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No-Internet-Full-Screen_sm@2x.png"; sourceTree = "<group>"; };
 		5C83949619EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No-Internet-Full-Screen-lg@2x.png"; sourceTree = "<group>"; };
+		5C861FA01A0BFAAD00275CD1 /* selectRecipient_img@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "selectRecipient_img@2x.png"; sourceTree = "<group>"; };
+		5C861FA11A0BFAAD00275CD1 /* 2_selectRecipient_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "2_selectRecipient_bg@2x.png"; sourceTree = "<group>"; };
 		5CACE20319CFF86A004AD9C4 /* 1_connectBank_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1_connectBank_bg.png; sourceTree = "<group>"; };
-		5CACE20419CFF86A004AD9C4 /* 2_selectRecipient_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2_selectRecipient_bg.png; sourceTree = "<group>"; };
 		5CACE20519CFF86A004AD9C4 /* 3_howMuch_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3_howMuch_bg.png; sourceTree = "<group>"; };
 		5CBC177419F4CE0000E1D095 /* clear_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "clear_white@2x.png"; sourceTree = "<group>"; };
 		5CC1A77419BA7A8A0000C2C7 /* Icon29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon29.png; sourceTree = "<group>"; };
@@ -588,7 +589,6 @@
 		5CD72EEE19D3ECDC008A21D2 /* 4_history_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "4_history_bg@2x.png"; sourceTree = "<group>"; };
 		5CD72EEF19D3ECDC008A21D2 /* history_img@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "history_img@2x.png"; sourceTree = "<group>"; };
 		5CD72EF019D3ECDC008A21D2 /* howMuch_img@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "howMuch_img@2x.png"; sourceTree = "<group>"; };
-		5CD72EF119D3ECDC008A21D2 /* selectRecipient_img@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "selectRecipient_img@2x.png"; sourceTree = "<group>"; };
 		5CD72EF619D3EDD3008A21D2 /* connectBank_img@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connectBank_img@2x.png"; sourceTree = "<group>"; };
 		5CF1760B19C0178A004C7427 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
 		6B01F1B3179DA78B00E34C49 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -1141,6 +1141,8 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				5C861FA01A0BFAAD00275CD1 /* selectRecipient_img@2x.png */,
+				5C861FA11A0BFAAD00275CD1 /* 2_selectRecipient_bg@2x.png */,
 				5CBC177419F4CE0000E1D095 /* clear_white@2x.png */,
 				5C11BE6819F4A8D200A83B87 /* search_blue.png */,
 				5C11BE6A19F4A8D200A83B87 /* search_white.png */,
@@ -1149,12 +1151,10 @@
 				5C83949619EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png */,
 				5C5D073119DE70CB00B07A30 /* home_img@2x.png */,
 				5CD72EF619D3EDD3008A21D2 /* connectBank_img@2x.png */,
-				5CD72EF119D3ECDC008A21D2 /* selectRecipient_img@2x.png */,
 				5CD72EF019D3ECDC008A21D2 /* howMuch_img@2x.png */,
 				5CD72EEF19D3ECDC008A21D2 /* history_img@2x.png */,
 				5C5D073019DE70CB00B07A30 /* 0_home-bg.png */,
 				5CACE20319CFF86A004AD9C4 /* 1_connectBank_bg.png */,
-				5CACE20419CFF86A004AD9C4 /* 2_selectRecipient_bg.png */,
 				5CACE20519CFF86A004AD9C4 /* 3_howMuch_bg.png */,
 				5CD72EEE19D3ECDC008A21D2 /* 4_history_bg@2x.png */,
 				5C69CFA519C777D800EB406F /* Knox_lightbox.png */,
@@ -2247,7 +2247,6 @@
 				6BC5FEE71625F1B0007EAD7A /* Roboto-Thin.ttf in Resources */,
 				5C69D00619C92F7400EB406F /* NotificationBackgroundWarningIcon@2x.png in Resources */,
 				6BC5FEE91625F1B0007EAD7A /* Roboto-ThinItalic.ttf in Resources */,
-				5CD72EF519D3ECDC008A21D2 /* selectRecipient_img@2x.png in Resources */,
 				010A993B185FA99F001DCE6B /* n_Icon_58x66.png in Resources */,
 				8449C59919EBAB9700027B9B /* UALocationSettingsViewController.xib in Resources */,
 				8420B3A0187AC4BF00A77E2D /* red-pin.png in Resources */,
@@ -2305,6 +2304,7 @@
 				0106773C1860F68400E11F3D /* take-pic-icon.png in Resources */,
 				84C3EF18187D0E82004687F6 /* mapBack.png in Resources */,
 				5C69D00819C92F7400EB406F /* NotificationButtonBackground@2x.png in Resources */,
+				5C861FA21A0BFAAD00275CD1 /* selectRecipient_img@2x.png in Resources */,
 				8449C58119EBAB9700027B9B /* list-image-placeholder@2x.png in Resources */,
 				5CD72EF319D3ECDC008A21D2 /* history_img@2x.png in Resources */,
 				01C26DB21843BB22005179B7 /* fb-icon-90x90.png in Resources */,
@@ -2313,7 +2313,7 @@
 				8449C57F19EBAB9700027B9B /* UAInboxUI.strings in Resources */,
 				0129D8E71815B10D00BEAC30 /* Brandon_bld.otf in Resources */,
 				01C26DEF1843C56C005179B7 /* nooch_Logo.png in Resources */,
-				5CACE20719CFF86A004AD9C4 /* 2_selectRecipient_bg.png in Resources */,
+				5C861FA31A0BFAAD00275CD1 /* 2_selectRecipient_bg@2x.png in Resources */,
 				5CACE20619CFF86A004AD9C4 /* 1_connectBank_bg.png in Resources */,
 				010A993A185FA99F001DCE6B /* choose-pic-icon.png in Resources */,
 				845B49A819B4722B009695AA /* Images-2.xcassets in Resources */,
