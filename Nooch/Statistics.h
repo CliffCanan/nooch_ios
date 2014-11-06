@@ -18,5 +18,6 @@
     NSString * titlestr;
     NSMutableArray * favorites;
     BOOL IsAlertShown;
+    int statsLoadedSoFar;
 }
 @end

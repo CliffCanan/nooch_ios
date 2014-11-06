@@ -802,16 +802,8 @@
 		8449C51B19EBAB9700027B9B /* NSString+UALocalization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UALocalization.m"; sourceTree = "<group>"; };
 		8449C51C19EBAB9700027B9B /* NSString+UASizeWithFontCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UASizeWithFontCompatibility.h"; sourceTree = "<group>"; };
 		8449C51D19EBAB9700027B9B /* NSString+UASizeWithFontCompatibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UASizeWithFontCompatibility.m"; sourceTree = "<group>"; };
-		8449C52019EBAB9700027B9B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/UAInteractiveNotifications.strings; sourceTree = "<group>"; };
 		8449C52119EBAB9700027B9B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/UAInteractiveNotifications.strings; sourceTree = "<group>"; };
-		8449C52219EBAB9700027B9B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/UAInteractiveNotifications.strings; sourceTree = "<group>"; };
-		8449C52319EBAB9700027B9B /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/UAInteractiveNotifications.strings; sourceTree = "<group>"; };
-		8449C52419EBAB9700027B9B /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/UAInteractiveNotifications.strings; sourceTree = "<group>"; };
-		8449C52519EBAB9700027B9B /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/UAInteractiveNotifications.strings; sourceTree = "<group>"; };
-		8449C52619EBAB9700027B9B /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/UAInteractiveNotifications.strings; sourceTree = "<group>"; };
 		8449C52719EBAB9700027B9B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		8449C52819EBAB9700027B9B /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/UAInteractiveNotifications.strings"; sourceTree = "<group>"; };
-		8449C52919EBAB9700027B9B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/UAInteractiveNotifications.strings"; sourceTree = "<group>"; };
 		8449C52D19EBAB9700027B9B /* UADateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UADateUtils.h; sourceTree = "<group>"; };
 		8449C52E19EBAB9700027B9B /* UADateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UADateUtils.m; sourceTree = "<group>"; };
 		8449C52F19EBAB9700027B9B /* UAInboxAlertHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UAInboxAlertHandler.h; sourceTree = "<group>"; };
@@ -2183,14 +2175,6 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				de,
-				es,
-				fr,
-				it,
-				ja,
-				pt,
-				"zh-Hans",
-				"zh-Hant",
 			);
 			mainGroup = 6B30371615FA3FF200056DAD;
 			productRefGroup = 6B30372215FA3FF300056DAD /* Products */;
@@ -2532,15 +2516,7 @@
 		8449C51F19EBAB9700027B9B /* UAInteractiveNotifications.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				8449C52019EBAB9700027B9B /* de */,
 				8449C52119EBAB9700027B9B /* en */,
-				8449C52219EBAB9700027B9B /* es */,
-				8449C52319EBAB9700027B9B /* fr */,
-				8449C52419EBAB9700027B9B /* it */,
-				8449C52519EBAB9700027B9B /* ja */,
-				8449C52619EBAB9700027B9B /* pt */,
-				8449C52819EBAB9700027B9B /* zh-Hans */,
-				8449C52919EBAB9700027B9B /* zh-Hant */,
 			);
 			name = UAInteractiveNotifications.strings;
 			sourceTree = "<group>";

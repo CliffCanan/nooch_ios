@@ -242,28 +242,22 @@
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
-        [signup setFrame:CGRectMake(0, 78, 320, 15)];
+        [signup setFrame:CGRectMake(0, 77, 320, 15)];
+        [self.facebook setFrame:CGRectMake(0, 135, 0, 0)];
+        [self.or setFrame:CGRectMake(0, 194, 320, 15)];
+        [name setFrame:CGRectMake(0, 223, 0, 0)];
+        [self.name_field setFrame:CGRectMake(0, 223, 0, 0)];
+        [email setFrame:CGRectMake(0, 263, 0, 0)];
+        [self.email_field setFrame:CGRectMake(0, 263, 0, 0)];
+        [password setFrame:CGRectMake(0, 303, 0, 0)];
+        [self.password_field setFrame:CGRectMake(0, 303, 0, 0)];
 
-        [self.facebook setFrame:CGRectMake(0, 136, 0, 0)];
-
-        [self.or setFrame:CGRectMake(0, 195, 320, 15)];
-
-        [name setFrame:CGRectMake(0, 225, 0, 0)];
-        [self.name_field setFrame:CGRectMake(0, 225, 0, 0)];
-
-        [email setFrame:CGRectMake(0, 265, 0, 0)];
-        [self.email_field setFrame:CGRectMake(0, 265, 0, 0)];
-
-        [password setFrame:CGRectMake(0, 305, 0, 0)];
-        [self.password_field setFrame:CGRectMake(0, 305, 0, 0)];
-
-        [checkbox_box setFrame:CGRectMake(36, 346, 21, 20)];
-        [checkbox_dot setFrame:CGRectMake(31, 341, 31, 30)];
-        [termsText1 setFrame:CGRectMake(65, 348, 55, 14)];
-        [termsText2 setFrame:CGRectMake(122, 342, 150, 26)];
+        [checkbox_box setFrame:CGRectMake(36, 348, 21, 20)];
+        [checkbox_dot setFrame:CGRectMake(31, 343, 31, 30)];
+        [termsText1 setFrame:CGRectMake(65, 350, 55, 14)];
+        [termsText2 setFrame:CGRectMake(122, 344, 150, 26)];
 
         [self.cont setFrame:CGRectMake(0, 381, 0, 0)];
-
         [self.login setFrame:CGRectMake(0, 439, 320, 20)];
     }
 }
@@ -316,7 +310,7 @@
 #pragma mark - facebook integration
 - (void)connect_to_facebook
 {
-    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]){
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]){
         self.accountStore = [[ACAccountStore alloc] init];
         self.facebookAccount = nil;
         NSDictionary *options = @{

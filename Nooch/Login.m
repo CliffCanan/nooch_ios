@@ -40,7 +40,6 @@
     return self;
 }
 
-
 - (void)check_credentials
 {
     if ([self.email.text length] > 0 &&
@@ -73,7 +72,7 @@
                                          alertControllerWithTitle:@"Please Enter Email And Password"
                                          message:@"We can't log you in if we don't know who you are!"
                                          preferredStyle:UIAlertControllerStyleAlert];
-            
+
             UIAlertAction * ok = [UIAlertAction
                                   actionWithTitle:@"OK"
                                   style:UIAlertActionStyleDefault
@@ -82,9 +81,7 @@
                                       [alert dismissViewControllerAnimated:YES completion:nil];
                                   }];
             [alert addAction:ok];
-            
             [self presentViewController:alert animated:YES completion:nil];
-            
         }
         else  // for iOS 7 and prior
         {
@@ -104,7 +101,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{
     [manager stopUpdatingLocation];
-    
+
     CLLocationCoordinate2D loc = [newLocation coordinate];
     lat = [[[NSString alloc] initWithFormat:@"%f",loc.latitude] floatValue];
     lon = [[[NSString alloc] initWithFormat:@"%f",loc.longitude] floatValue];
@@ -154,12 +151,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    isloginWithFB=NO;
+    isloginWithFB = NO;
     [self.navigationController setNavigationBarHidden:YES];
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
     // Create Login View so that the app will be granted "status_update" permission.
-    FBLoginView *loginview = [[FBLoginView alloc] init];
+/*    FBLoginView *loginview = [[FBLoginView alloc] init];
     loginview.frame = CGRectMake(20, 90, 280, 50);
     //loginview.frame = CGRectOffset(loginview.frame, 5, 5);
 
@@ -175,25 +172,28 @@
 
     loginview.delegate = self;
     //[loginview sizeToFit];
-    [self.view addSubview:loginview];
+    [self.view addSubview:loginview];*/
 
 
     UIImageView * logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
     
-    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
-    [slogan setBackgroundColor:[UIColor clearColor]];
-    [slogan setText:@"Money Made Simple"];
-    [slogan setFont:[UIFont fontWithName:@"VarelaRound-Regular" size:15]];
-    [slogan setStyleClass:@"prelogin_slogan"];
-    [self.view addSubview:slogan];
+    if ([[UIScreen mainScreen] bounds].size.height > 500)
+    {
+        UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
+        [slogan setBackgroundColor:[UIColor clearColor]];
+        [slogan setText:@"Money Made Simple"];
+        [slogan setFont:[UIFont fontWithName:@"VarelaRound-Regular" size:15]];
+        [slogan setStyleClass:@"prelogin_slogan"];
+        [self.view addSubview:slogan];
+    }
 
-    [self.navigationItem setTitle:@"LogIn"];
+    //[self.navigationItem setTitle:@"Log In"];
 
-    self.email = [[UITextField alloc] initWithFrame:CGRectMake(30, 165, 300, 40)];
+    self.email = [[UITextField alloc] initWithFrame:CGRectMake(30, 140, 300, 40)];
     [self.email setBackgroundColor:[UIColor clearColor]];
-    [self.email setPlaceholder:@"Email"];
+    [self.email setPlaceholder:@"email@example.com"];
     self.email.inputAccessoryView = [[UIView alloc] init];
     [self.email setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     [self.email setAutocorrectionType:UITextAutocorrectionTypeNo];
@@ -208,13 +208,13 @@
     UILabel *em = [UILabel new];
     [em setStyleClass:@"table_view_cell_textlabel_1"];
     CGRect frame = em.frame;
-    frame.origin.y = 165;
+    frame.origin.y = 140;
     [em setFrame:frame];
     [em setBackgroundColor:[UIColor clearColor]];
     [em setText:@"Email"];
     [self.view addSubview:em];
 
-    self.password = [[UITextField alloc] initWithFrame:CGRectMake(30, 207, 260, 40)];
+    self.password = [[UITextField alloc] initWithFrame:CGRectMake(30, 182, 260, 40)];
     [self.password setBackgroundColor:[UIColor clearColor]];
     [self.password setPlaceholder:@"Password"];
     self.password.inputAccessoryView = [[UIView alloc] init];
@@ -228,7 +228,7 @@
     UILabel *pass = [UILabel new];
     [pass setStyleClass:@"table_view_cell_textlabel_1"];
     frame = pass.frame;
-    frame.origin.y = 207;
+    frame.origin.y = 182;
     [pass setFrame:frame];
     [pass setText:@"Password"];
     [self.view addSubview:pass];
@@ -237,7 +237,7 @@
     [self.login setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
     self.login.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.login setTitle:@"Log In  " forState:UIControlStateNormal];
-    [self.login setFrame:CGRectMake(10, 244+20, 300, 60)];
+    [self.login setFrame:CGRectMake(10, 240, 300, 60)];
     [self.login addTarget:self action:@selector(check_credentials) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"button_green"];
 
@@ -256,20 +256,20 @@
     [self.view addSubview:self.login];
     [self.login setEnabled:NO];
 
-    self.stay_logged_in = [[UISwitch alloc] initWithFrame:CGRectMake(110, 302+20, 34, 21)];
+    self.stay_logged_in = [[UISwitch alloc] initWithFrame:CGRectMake(110, 302, 34, 21)];
     [self.stay_logged_in setStyleClass:@"login_switch"];
     [self.stay_logged_in setOnTintColor:kNoochBlue];
     [self.stay_logged_in setOn: YES];
     self.stay_logged_in.transform = CGAffineTransformMakeScale(0.8, 0.8);
 
-    UILabel *remember_me = [[UILabel alloc] initWithFrame:CGRectMake(19, 303+20, 140, 30)];
+    UILabel *remember_me = [[UILabel alloc] initWithFrame:CGRectMake(19, 303, 140, 30)];
     [remember_me setText:@"Remember Me"];
     [remember_me setStyleId:@"label_rememberme"];
 
     UIButton *forgot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [forgot setBackgroundColor:[UIColor clearColor]];
     [forgot setTitle:@"Forgot Password?" forState:UIControlStateNormal];
-    [forgot setFrame:CGRectMake(190, 303+20, 120, 30)];
+    [forgot setFrame:CGRectMake(190, 303, 120, 30)];
     [forgot addTarget:self action:@selector(forgot_pass) forControlEvents:UIControlEventTouchUpInside];
     [forgot setStyleId:@"label_forgotpw"];
 
@@ -282,21 +282,21 @@
     // Height adjustments for 3.5" screens
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
-        [em setFrame:CGRectMake(20, 110+40, 100, 20)];
-        [pass setFrame:CGRectMake(20, 142+40, 102, 20)];
+        [em setFrame:CGRectMake(20, 95, 100, 20)];
+        [pass setFrame:CGRectMake(20, 130, 102, 20)];
         
         CGRect frameEmailTextField = self.email.frame;
-        frameEmailTextField.origin.y = 110+40;
+        frameEmailTextField.origin.y = 95;
         [self.email setFrame:frameEmailTextField];
 
         CGRect framePassTextField = self.password.frame;
-        framePassTextField.origin.y = 142+40;
+        framePassTextField.origin.y = 130;
         [self.password setFrame:framePassTextField];
 
-        [self.login setFrame:CGRectMake(20, 185+30, 300, 60)];
-        [forgot setFrame:CGRectMake(190, 236+30, 120, 30)];
-        [remember_me setFrame:CGRectMake(19, 236+30, 140, 30)];
-        [self.stay_logged_in setFrame:CGRectMake(115, 237+30, 34, 21)];
+        [self.login setFrame:CGRectMake(20, 180, 300, 60)];
+        [forgot setFrame:CGRectMake(190, 234, 120, 30)];
+        [remember_me setFrame:CGRectMake(19, 234, 140, 30)];
+        [self.stay_logged_in setFrame:CGRectMake(115, 235, 34, 21)];
         self.stay_logged_in.transform = CGAffineTransformMakeScale(0.75, 0.72);
     }
     [self.view addSubview:self.stay_logged_in];

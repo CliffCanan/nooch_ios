@@ -145,8 +145,8 @@
     if ([defaults boolForKey:@"hasPendingItems"] == true)
     {
         [completed_pending setSelectedSegmentIndex:1];
-        
-        [self.navigationItem setRightBarButtonItem:filt animated:NO ];
+
+        [self.navigationItem setRightBarButtonItem:nil animated:YES];
         
         UILabel *glyph_checkmark = [UILabel new];
         [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
@@ -173,7 +173,6 @@
         [histShowArrayPending removeAllObjects];
         countRows = 0;
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
-
     }
     else
     {
@@ -190,7 +189,7 @@
         UIBarButtonItem *map = [[UIBarButtonItem alloc] initWithCustomView:glyph_map];
         
         NSArray *topRightBtns = @[map,filt];
-        [self.navigationItem setRightBarButtonItems:topRightBtns animated:YES ];
+        [self.navigationItem setRightBarButtonItems:topRightBtns animated:YES];
 
         [completed_pending setSelectedSegmentIndex:0];
     
@@ -667,7 +666,7 @@ return customView;
         UIBarButtonItem *map = [[UIBarButtonItem alloc] initWithCustomView:glyph_map];
         
         NSArray *topRightBtns = @[map,filt];
-        [self.navigationItem setRightBarButtonItems:topRightBtns animated:NO ];
+        [self.navigationItem setRightBarButtonItems:topRightBtns animated:YES];
         
         UILabel *glyph_checkmark = [UILabel new];
         [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
@@ -692,16 +691,17 @@ return customView;
     }
     else
     {
-        [self.navigationItem setRightBarButtonItems:nil];
-        UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [self.navigationItem setRightBarButtonItems:nil animated:YES];
+
+     /* UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [filter setStyleClass:@"label_filter"];
         [filter setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-filter"] forState:UIControlStateNormal];
         [filter setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
         filter.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         [filter addTarget:self action:@selector(FilterHistory:) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *filt = [[UIBarButtonItem alloc] initWithCustomView:filter];
-        
-        [self.navigationItem setRightBarButtonItem:filt animated:NO ];
+
+        [self.navigationItem setRightBarButtonItem:filt animated:NO ];*/
         
         UILabel *glyph_checkmark = [UILabel new];
         [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
@@ -784,7 +784,6 @@ return customView;
                 else
                    return 72;
             }
-           
         }
         else if ([histTempCompleted count] == indexPath.row ||
                  [histShowArrayCompleted count] == 0)
@@ -1788,16 +1787,6 @@ return customView;
             
             if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
             {
-                if (![[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
-                {
-                    UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(0, 311, 9, 72)];
-                    [indicator setBackgroundColor:[UIColor clearColor]];
-                    [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
-                    [indicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-left"]];
-                    [indicator setStyleClass:@"history_sidecolor_pending"];
-                    [cell.contentView addSubview:indicator];
-                }
-
                 UILabel * amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
                 [amount setBackgroundColor:[UIColor clearColor]];
                 [amount setTextAlignment:NSTextAlignmentRight];
@@ -1836,7 +1825,7 @@ return customView;
                 pic.layer.cornerRadius = 25;
                 pic.clipsToBounds = YES;
 
-                UILabel *label_memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
+                UILabel * label_memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
                 if ( [dictRecord valueForKey:@"Memo"] != NULL &&
                     ![[dictRecord objectForKey:@"Memo"] isKindOfClass:[NSNull class]] &&
                     ![[dictRecord valueForKey:@"Memo"] isEqualToString:@""] )
@@ -1878,8 +1867,8 @@ return customView;
                     }
                     else
                     {
-                        UIView * bgcolor = [[UIView alloc] init];
-                        bgcolor.backgroundColor = Rgb2UIColor(240, 250, 30, .4);
+                        UIView * bgcolor = [[UIView alloc] init]; // Yellow Highlight for Pending Reeceived Requests
+                        bgcolor.backgroundColor = Rgb2UIColor(240, 250, 30, .35);
                         
                         if (label_memo.attributedText.length > 42) {
                             [bgcolor setFrame:CGRectMake(0, 0, 320, 76)];
@@ -1921,8 +1910,19 @@ return customView;
                     [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                         placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 }
+
                 else {
                     [name setText:@""];
+                }
+
+                if (![[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
+                {
+                    UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(0, 311, 9, 72)];
+                    [indicator setBackgroundColor:[UIColor clearColor]];
+                    [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
+                    [indicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-left"]];
+                    [indicator setStyleClass:@"history_sidecolor_pending"];
+                    [cell.contentView addSubview:indicator];
                 }
 
                 NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
@@ -1987,6 +1987,7 @@ return customView;
                         [date setText:[NSString stringWithFormat:@"%ld days ago",(long)[components day]]];
                     [cell.contentView addSubview:date];   
                 }
+
 
                 [cell.contentView addSubview:amount];
                 [cell.contentView addSubview:statusIndicator];

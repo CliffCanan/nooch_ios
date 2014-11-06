@@ -182,17 +182,17 @@ static const CGFloat kDetailsLabelFontSize = 15.0f;
 		self.labelText = nil;
 		self.detailsLabelText = nil;
 		self.opacity = 0.8f;
-        self.color = Rgb2UIColor(24, 158, 225, .85);
-        // self.color = Rgb2UIColor(11, 12, 23, .8);
+        //self.color = Rgb2UIColor(24, 158, 225, .85);
+        self.color = Rgb2UIColor(11, 12, 53, .76);
 		self.labelFont = [UIFont boldSystemFontOfSize:kLabelFontSize];
         self.labelColor = [UIColor whiteColor];
 		self.detailsLabelFont = [UIFont boldSystemFontOfSize:kDetailsLabelFontSize];
         self.detailsLabelColor = [UIColor whiteColor];
 		self.xOffset = 0.0f;
-		self.yOffset = -24.0f;
+		self.yOffset = -25.0f;
 		self.dimBackground = NO;
 		self.margin = 14.0f;
-        self.cornerRadius = 15.0f;
+        self.cornerRadius = 14.0f;
 		self.graceTime = 0.0f;
 		self.minShowTime = 0.75f;
 		self.removeFromSuperViewOnHide = NO;
@@ -206,10 +206,10 @@ static const CGFloat kDetailsLabelFontSize = 15.0f;
 		self.backgroundColor = [UIColor clearColor];
 		// Make it invisible for now
 		self.alpha = 0.0f;
-		
+
 		taskInProgress = NO;
 		rotationTransform = CGAffineTransformIdentity;
-		
+
 		[self setupLabels];
 		[self updateIndicators];
 		[self registerForKVO];
