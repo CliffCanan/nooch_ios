@@ -156,7 +156,7 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
     // Create Login View so that the app will be granted "status_update" permission.
-/*    FBLoginView *loginview = [[FBLoginView alloc] init];
+    FBLoginView *loginview = [[FBLoginView alloc] init];
     loginview.frame = CGRectMake(20, 90, 280, 50);
     //loginview.frame = CGRectOffset(loginview.frame, 5, 5);
 
@@ -172,7 +172,7 @@
 
     loginview.delegate = self;
     //[loginview sizeToFit];
-    [self.view addSubview:loginview];*/
+    [self.view addSubview:loginview];
 
 
     UIImageView * logo = [UIImageView new];
