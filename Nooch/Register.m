@@ -10,7 +10,7 @@
 #import "Login.h"
 #import "terms.h"
 #import "Appirater.h"
-
+#import "UIDevice+IdentifierAddition.h"
 @interface Register ()
 @property(nonatomic,strong) UITextField *name_field;
 @property(nonatomic,strong) UITextField *email_field;
@@ -404,54 +404,24 @@
                                error:&error];
          dispatch_async(dispatch_get_main_queue(), ^{
              [self.hud hide:YES];
-
-             self.name_field.text = [NSString stringWithFormat:@"%@ %@",[self.facebook_info objectForKey:@"first_name"],[self.facebook_info objectForKey:@"last_name"]];
-             [self.password_field becomeFirstResponder];
-
-             self.email_field.text = [self.facebook_info objectForKey:@"email"];
-
-             NSString *imageURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", [self.facebook_info objectForKey:@"id"]];
-
-             [[NSUserDefaults standardUserDefaults] setObject:[self.facebook_info objectForKey:@"id"] forKey:@"facebook_id"];
-
-             NSData * imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURL]];
-             NSMutableDictionary *d = [self.facebook_info mutableCopy];
-             [d setObject:imgData forKey:@"image"];
-             self.facebook_info = [d mutableCopy];
-
-             [self.or setText:@"Now just create a password..."];
-
-             [self.facebook setTitle:@"       Facebook Connected" forState:UIControlStateNormal];
-
-             for (UIView*subview in self.facebook.subviews) {
-                 if([subview isMemberOfClass:[UILabel class]]) {
-                     [subview removeFromSuperview];
-                 }
-             }
-             NSShadow * shadow = [[NSShadow alloc] init];
-             shadow.shadowColor = Rgb2UIColor(19, 32, 38, .19);
-             shadow.shadowOffset = CGSizeMake(0, -1);
-             NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
-
-             UILabel * glyphFB = [UILabel new];
-             [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
-             [glyphFB setFrame:CGRectMake(17, 8, 26, 30)];
-             glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]
-                                                                           attributes:textAttributes1];
-             [glyphFB setTextColor:[UIColor whiteColor]];
+              //login if it is already nooch user
+             RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+             spinner1.color = [UIColor whiteColor];
+             self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+             [self.navigationController.view addSubview:self.hud];
              
-             [self.facebook addSubview:glyphFB];
-             
-             UILabel * glyph_check = [UILabel new];
-             [glyph_check setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-             [glyph_check setFrame:CGRectMake(39, 8, 20, 30)];
-             glyph_check.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"]
-                                                                      attributes:textAttributes1];
-             [glyph_check setTextColor:[UIColor whiteColor]];
-             
-             [self.facebook addSubview:glyph_check];
+             self.hud.mode = MBProgressHUDModeCustomView;
+             self.hud.customView = spinner1;
+             self.hud.delegate = self;
+             self.hud.labelText = @"Checking SignUp Credentials...";
+             [self.hud show:YES];
+             serve * log = [serve new];
+             [log setDelegate:self];
+             [log setTagName:@"loginwithFB"];
+             NSString * udid = [[UIDevice currentDevice] uniqueDeviceIdentifier];
+    
+             [log loginwithFB:[self.facebook_info objectForKey:@"email"] FBId:[self.facebook_info objectForKey:@"id"] remember:YES lat:0.0 lon:0.0 uid:udid];
 
-             [self.facebook setUserInteractionEnabled:NO];
          });
         
      }];
@@ -583,7 +553,360 @@
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    if ([tagName isEqualToString:@"check_dup"])
+     if ([tagName isEqualToString:@"loginwithFB"])
+    {
+        NSError * error;
+        NSDictionary * loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        
+        NSLog(@"Result is: %@",[loginResult objectForKey:@"Result"]);
+      
+      
+        if ([[loginResult objectForKey:@"Result"] length]==0) {
+            [self.hud hide:YES];
+            
+            self.name_field.text = [NSString stringWithFormat:@"%@ %@",[self.facebook_info objectForKey:@"first_name"],[self.facebook_info objectForKey:@"last_name"]];
+            [self.password_field becomeFirstResponder];
+            
+            self.email_field.text = [self.facebook_info objectForKey:@"email"];
+            
+            NSString *imageURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", [self.facebook_info objectForKey:@"id"]];
+            
+            [[NSUserDefaults standardUserDefaults] setObject:[self.facebook_info objectForKey:@"id"] forKey:@"facebook_id"];
+            
+            NSData * imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURL]];
+            NSMutableDictionary *d = [self.facebook_info mutableCopy];
+            [d setObject:imgData forKey:@"image"];
+            self.facebook_info = [d mutableCopy];
+            
+            [self.or setText:@"Now just create a password..."];
+            
+            [self.facebook setTitle:@"       Facebook Connected" forState:UIControlStateNormal];
+            
+            for (UIView*subview in self.facebook.subviews) {
+                if([subview isMemberOfClass:[UILabel class]]) {
+                    [subview removeFromSuperview];
+                }
+            }
+            NSShadow * shadow = [[NSShadow alloc] init];
+            shadow.shadowColor = Rgb2UIColor(19, 32, 38, .19);
+            shadow.shadowOffset = CGSizeMake(0, -1);
+            NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
+            
+            UILabel * glyphFB = [UILabel new];
+            [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
+            [glyphFB setFrame:CGRectMake(17, 8, 26, 30)];
+            glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]
+                                                                     attributes:textAttributes1];
+            [glyphFB setTextColor:[UIColor whiteColor]];
+            
+            [self.facebook addSubview:glyphFB];
+            
+            UILabel * glyph_check = [UILabel new];
+            [glyph_check setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+            [glyph_check setFrame:CGRectMake(39, 8, 20, 30)];
+            glyph_check.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"]
+                                                                         attributes:textAttributes1];
+            [glyph_check setTextColor:[UIColor whiteColor]];
+            
+            [self.facebook addSubview:glyph_check];
+            
+            [self.facebook setUserInteractionEnabled:NO];
+        }
+        
+        else if (  [loginResult objectForKey:@"Result"] &&
+            ![[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] &&
+            ![[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] &&
+            ![[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] &&
+            ![[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] &&
+            [[loginResult objectForKey:@"Result"] rangeOfString:@"Your account has been temporarily blocked."].location == NSNotFound &&
+            loginResult != nil)
+        {
+            
+            serve * getDetails = [serve new];
+            getDetails.Delegate = self;
+            getDetails.tagName = @"getMemberId";
+            [getDetails getMemIdFromuUsername:[self.facebook_info objectForKey:@"email"]];
+        }
+        else if ( [loginResult objectForKey:@"Result"] &&
+                 [[loginResult objectForKey:@"Result"] rangeOfString:@"Your account has been temporarily blocked."].location != NSNotFound &&
+                 loginResult != nil)
+        {
+            [self.hud hide:YES];
+            
+            if ([UIAlertController class]) // for iOS 8
+            {
+                UIAlertController * alert = [UIAlertController
+                                             alertControllerWithTitle:@"Account Temporarily Suspended"
+                                             message:@"To keep Nooch safe your account has been temporarily suspended because you entered an incorrect password too many times.\n\nIn most cases your account will be automatically un-suspended in 24 hours. You can always contact support if this is a mistake or error.\n\nWe apologize for this inconvenience, please understand it is only to protect your account."
+                                             preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction * ok = [UIAlertAction
+                                      actionWithTitle:@"OK"
+                                      style:UIAlertActionStyleDefault
+                                      handler:^(UIAlertAction * action)
+                                      {
+                                          [alert dismissViewControllerAnimated:YES completion:nil];
+                                      }];
+                UIAlertAction * contactSupport = [UIAlertAction
+                                                  actionWithTitle:@"Contact Support"
+                                                  style:UIAlertActionStyleDefault
+                                                  handler:^(UIAlertAction * action)
+                                                  {
+                                                      [alert dismissViewControllerAnimated:YES completion:nil];
+                                                      if (![MFMailComposeViewController canSendMail]){
+                                                          UIAlertController * alert = [UIAlertController
+                                                                                       alertControllerWithTitle:@"No Email Detected"
+                                                                                       message:@"You don't have an email account configured for this device."
+                                                                                       preferredStyle:UIAlertControllerStyleAlert];
+                                                          
+                                                          UIAlertAction * ok = [UIAlertAction
+                                                                                actionWithTitle:@"OK"
+                                                                                style:UIAlertActionStyleDefault
+                                                                                handler:^(UIAlertAction * action)
+                                                                                {
+                                                                                    [alert dismissViewControllerAnimated:YES completion:nil];
+                                                                                }];
+                                                          [alert addAction:ok];
+                                                          
+                                                          [self presentViewController:alert animated:YES completion:nil];
+                                                          return;
+                                                      }
+                                                      MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+                                                      mailComposer.mailComposeDelegate = self;
+                                                      mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+                                                      
+                                                      [mailComposer setSubject:[NSString stringWithFormat:@"Help Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+                                                      
+                                                      [mailComposer setMessageBody:@"" isHTML:NO];
+                                                      [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+                                                      [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+                                                      [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+                                                      [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+                                                      [self presentViewController:mailComposer animated:YES completion:nil];
+                                                  }];
+                [alert addAction:ok];
+                [alert addAction:contactSupport];
+                
+                [self presentViewController:alert animated:YES completion:nil];
+            }
+            else // iOS 7 and prior
+            {
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"To keep Nooch safe your account has been temporarily suspended because you entered an incorrect password too many times.\n\nIn most cases your account will be automatically un-suspended in 24 hours. You can always contact support if this is a mistake or error.\n\nWe apologize for this inconvenience, please understand it is only to protect your account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+                [alert setTag:600];
+                [alert show];
+            }
+            [spinner stopAnimating];
+        }
+        
+        else if ( [loginResult objectForKey:@"Result"] &&
+                 [[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil)
+        {
+            [self.hud hide:YES];
+            
+            if ([UIAlertController class]) // for iOS 8
+            {
+                UIAlertController * alert = [UIAlertController
+                                             alertControllerWithTitle:@"Account Suspended"
+                                             message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error."
+                                             preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction * ok = [UIAlertAction
+                                      actionWithTitle:@"OK"
+                                      style:UIAlertActionStyleDefault
+                                      handler:^(UIAlertAction * action)
+                                      {
+                                          [alert dismissViewControllerAnimated:YES completion:nil];
+                                      }];
+                UIAlertAction * contactSupport = [UIAlertAction
+                                                  actionWithTitle:@"Contact Support"
+                                                  style:UIAlertActionStyleDefault
+                                                  handler:^(UIAlertAction * action)
+                                                  {
+                                                      [alert dismissViewControllerAnimated:YES completion:nil];
+                                                      if (![MFMailComposeViewController canSendMail]){
+                                                          UIAlertController * alert = [UIAlertController
+                                                                                       alertControllerWithTitle:@"No Email Detected"
+                                                                                       message:@"You don't have an email account configured for this device."
+                                                                                       preferredStyle:UIAlertControllerStyleAlert];
+                                                          
+                                                          UIAlertAction * ok = [UIAlertAction
+                                                                                actionWithTitle:@"OK"
+                                                                                style:UIAlertActionStyleDefault
+                                                                                handler:^(UIAlertAction * action)
+                                                                                {
+                                                                                    [alert dismissViewControllerAnimated:YES completion:nil];
+                                                                                }];
+                                                          [alert addAction:ok];
+                                                          
+                                                          [self presentViewController:alert animated:YES completion:nil];
+                                                          return;
+                                                      }
+                                                      MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+                                                      mailComposer.mailComposeDelegate = self;
+                                                      mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+                                                      
+                                                      [mailComposer setSubject:[NSString stringWithFormat:@"Help Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+                                                      
+                                                      [mailComposer setMessageBody:@"" isHTML:NO];
+                                                      [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+                                                      [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+                                                      [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+                                                      [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+                                                      [self presentViewController:mailComposer animated:YES completion:nil];
+                                                  }];
+                [alert addAction:ok];
+                [alert addAction:contactSupport];
+                
+                [self presentViewController:alert animated:YES completion:nil];
+            }
+            else // iOS 7 and prior
+            {
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+                [alert setTag:500];
+                [alert show];
+            }
+            [spinner stopAnimating];
+        }
+        
+        else if ( [loginResult objectForKey:@"Result"] &&
+                 [[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] && loginResult != nil)
+        {
+            [spinner stopAnimating];
+            [self.hud hide:YES];
+            
+            if ([UIAlertController class]) // for iOS 8
+            {
+                UIAlertController * alert = [UIAlertController
+                                             alertControllerWithTitle:@"Account Temporarily Suspended"
+                                             message:@"For security your account has been temporarily suspended.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information."
+                                             preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction * ok = [UIAlertAction
+                                      actionWithTitle:@"OK"
+                                      style:UIAlertActionStyleDefault
+                                      handler:^(UIAlertAction * action)
+                                      {
+                                          [alert dismissViewControllerAnimated:YES completion:nil];
+                                      }];
+                UIAlertAction * contactSupport = [UIAlertAction
+                                                  actionWithTitle:@"Contact Support"
+                                                  style:UIAlertActionStyleDefault
+                                                  handler:^(UIAlertAction * action)
+                                                  {
+                                                      [alert dismissViewControllerAnimated:YES completion:nil];
+                                                      if (![MFMailComposeViewController canSendMail]) {
+                                                          UIAlertController * alert = [UIAlertController
+                                                                                       alertControllerWithTitle:@"No Email Detected"
+                                                                                       message:@"You don't have an email account configured for this device."
+                                                                                       preferredStyle:UIAlertControllerStyleAlert];
+                                                          
+                                                          UIAlertAction * ok = [UIAlertAction
+                                                                                actionWithTitle:@"OK"
+                                                                                style:UIAlertActionStyleDefault
+                                                                                handler:^(UIAlertAction * action)
+                                                                                {
+                                                                                    [alert dismissViewControllerAnimated:YES completion:nil];
+                                                                                }];
+                                                          [alert addAction:ok];
+                                                          
+                                                          [self presentViewController:alert animated:YES completion:nil];
+                                                          return;
+                                                      }
+                                                      MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+                                                      mailComposer.mailComposeDelegate = self;
+                                                      mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+                                                      
+                                                      [mailComposer setSubject:[NSString stringWithFormat:@"Help Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+                                                      
+                                                      [mailComposer setMessageBody:@"" isHTML:NO];
+                                                      [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+                                                      [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+                                                      [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+                                                      [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+                                                      [self presentViewController:mailComposer animated:YES completion:nil];
+                                                      
+                                                  }];
+                [alert addAction:ok];
+                [alert addAction:contactSupport];
+                
+                [self presentViewController:alert animated:YES completion:nil];
+            }
+            else // iOS 7 and prior
+            {
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been temporarily suspended.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+                [alert show];
+                [alert setTag:50];
+            }
+        }
+    }
+        else if ([tagName isEqualToString:@"getMemberId"])
+        {
+            NSError *error;
+            
+            NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+            [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
+           // [log loginwithFB:[self.facebook_info objectForKey:@"email"] FBId:[self.facebook_info objectForKey:@"id"] remember:YES lat:0.0 lon:0.0 uid:udid];
+
+                [[NSUserDefaults standardUserDefaults] setObject:[self.facebook_info objectForKey:@"email"] forKey:@"UserName"];
+           
+               user = [NSUserDefaults standardUserDefaults];
+            
+           
+                NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
+                [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
+                [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
+                [automatic writeToFile:[self autoLogin] atomically:YES];
+            
+            me = [core new];
+            [me birth];
+            
+            [[me usr] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
+            
+                [[me usr] setObject:[self.facebook_info objectForKey:@"email"] forKey:@"UserName"];
+           
+            
+            serve * enc_user = [serve new];
+            [enc_user setDelegate:self];
+            [enc_user setTagName:@"username"];
+         
+            [enc_user getEncrypt:[self.facebook_info objectForKey:@"email"]];
+            
+        }
+        
+        else if ([tagName isEqualToString:@"username"])
+        {
+            serve * details = [serve new];
+            [details setDelegate:self];
+            [details setTagName:@"info"];
+            [details getDetails:[user objectForKey:@"MemberId"]];
+        }
+        
+        else if ([tagName isEqualToString:@"info"])
+        {
+            [self.hud hide:YES];
+            
+            [[assist shared]setIsloginFromOther:NO];
+            [self.navigationItem setHidesBackButton:YES];
+            [nav_ctrl setNavigationBarHidden:NO];
+            [nav_ctrl.navigationItem setLeftBarButtonItem:nil];
+            [user removeObjectForKey:@"Balance"];
+            [self.navigationItem setBackBarButtonItem:Nil];
+            [spinner stopAnimating];
+            
+            [UIView beginAnimations:nil context:NULL];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+            [UIView setAnimationDuration:0.7];
+            [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:nav_ctrl.view cache:NO];
+            [UIView commitAnimations];
+            [UIView beginAnimations:nil context:NULL];
+            //[UIView setAnimationDelay:0.2];
+            [nav_ctrl popToRootViewControllerAnimated:NO];
+            
+            [UIView commitAnimations];
+            return;
+        }
+
+   else if ([tagName isEqualToString:@"check_dup"])
     {
         [self.hud hide:YES];
         NSError *error;
@@ -679,7 +1002,12 @@
     }
     return YES;
 }
-
+#pragma mark - file paths
+- (NSString *)autoLogin{
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+    }
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     self.name_field.text = self.name_field.text.capitalizedString;
