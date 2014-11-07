@@ -12,8 +12,9 @@
 #import "serve.h"
 #import "MBProgressHUD.h"
 #import "SpinKit/RTSpinKitView.h"
+#import <MessageUI/MessageUI.h>
 
-@interface Register : GAITrackedViewController<UITextFieldDelegate,serveD,MBProgressHUDDelegate>
+@interface Register : GAITrackedViewController<UITextFieldDelegate,serveD,MBProgressHUDDelegate,MFMailComposeViewControllerDelegate>
 {
     UIActivityIndicatorView*spinner;
     BOOL isTermsChecked;

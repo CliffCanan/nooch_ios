@@ -143,7 +143,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1590"
             endingLineNumber = "1590"
-            landmarkName = "-CancelMoneyRequestForNonNoochUser:"
+            landmarkName = "-CancelRejectTransaction:resp:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -158,9 +158,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1799"
-            endingLineNumber = "1799"
-            landmarkName = "-SendReminderToRecepient:memberId:"
-            landmarkType = "5">
+            endingLineNumber = "1799">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -507,7 +505,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1132"
             endingLineNumber = "1132"
-            landmarkName = "-GetAllWithdrawalFrequency"
+            landmarkName = "-GetAllWithdrawalTrigger"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -522,9 +520,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1790"
-            endingLineNumber = "1790"
-            landmarkName = "-SendReminderToRecepient:memberId:"
-            landmarkType = "5">
+            endingLineNumber = "1790">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -555,7 +551,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1373"
             endingLineNumber = "1373"
-            landmarkName = "-MemberNotificationSettingsInput"
+            landmarkName = "-TransferMoneyToNonNoochUser:email:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1003,7 +999,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1576"
             endingLineNumber = "1576"
-            landmarkName = "-CancelMoneyRequestForExistingNoochUser:"
+            landmarkName = "-CancelMoneyTransferToNonMemberForSender:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1446,11 +1442,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/Login.m"
-            timestampString = "436865190.632324"
+            timestampString = "437050712.036184"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "937"
-            endingLineNumber = "937"
+            startingLineNumber = "1163"
+            endingLineNumber = "1163"
             landmarkName = "-loginViewFetchedUserInfo:user:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1462,28 +1458,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/Login.m"
-            timestampString = "436864834.020053"
+            timestampString = "437050712.036184"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "487"
-            endingLineNumber = "487"
+            startingLineNumber = "490"
+            endingLineNumber = "490"
             landmarkName = "-listen:tagName:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Nooch/serve.m"
-            timestampString = "436861693.809498"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "302"
-            endingLineNumber = "302"
-            landmarkName = "-loginwithFB:FBId:remember:lat:lon:uid:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1510,11 +1490,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/Login.m"
-            timestampString = "436864834.020053"
+            timestampString = "437050712.036184"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "807"
-            endingLineNumber = "807"
+            startingLineNumber = "1033"
+            endingLineNumber = "1033"
             landmarkName = "-listen:tagName:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1526,11 +1506,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/Login.m"
-            timestampString = "436865224.09009"
+            timestampString = "437050712.036184"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "849"
-            endingLineNumber = "849"
+            startingLineNumber = "1075"
+            endingLineNumber = "1075"
             landmarkName = "-listen:tagName:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1542,11 +1522,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Nooch/Login.m"
-            timestampString = "436865238.152662"
+            timestampString = "437050712.036184"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "857"
-            endingLineNumber = "857"
+            startingLineNumber = "1083"
+            endingLineNumber = "1083"
             landmarkName = "-listen:tagName:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1628,6 +1608,102 @@
             startingLineNumber = "315"
             endingLineNumber = "315"
             landmarkName = "-loginwithFB:FBId:remember:lat:lon:uid:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/Register.m"
+            timestampString = "437048061.209198"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "556"
+            endingLineNumber = "556"
+            landmarkName = "-listen:tagName:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/Register.m"
+            timestampString = "437048126.20283"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "878"
+            endingLineNumber = "878"
+            landmarkName = "-listen:tagName:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/Register.m"
+            timestampString = "437048161.091482"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "845"
+            endingLineNumber = "845"
+            landmarkName = "-listen:tagName:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/Register.m"
+            timestampString = "437049975.813574"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "885"
+            endingLineNumber = "885"
+            landmarkName = "-listen:tagName:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/Login.m"
+            timestampString = "437050856.361371"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1151"
+            endingLineNumber = "1151"
+            landmarkName = "-loginViewShowingLoggedInUser:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Nooch/Login.m"
+            timestampString = "437050861.455947"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1187"
+            endingLineNumber = "1187"
+            landmarkName = "-loginViewShowingLoggedOutUser:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
