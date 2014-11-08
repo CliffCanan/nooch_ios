@@ -706,7 +706,7 @@
 
     SLComposeViewController * controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
     [controller setInitialText:post_text];
-    [controller addURL:[NSURL URLWithString:@"http://appstore.com/nooch"]];
+    [controller addURL:[NSURL URLWithString:@"http://bit.ly/1xdG2le"]];
     [self presentViewController:controller animated:YES completion:Nil];
 
     SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result){
@@ -744,7 +744,7 @@
     }
     SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
     [controller setInitialText:post_text];
-    [controller addURL:[NSURL URLWithString:@"http://appstore.com/nooch"]];
+    [controller addURL:[NSURL URLWithString:@"http://bit.ly/1xdG2le"]];
     [self presentViewController:controller animated:YES completion:Nil];
 
     SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result)

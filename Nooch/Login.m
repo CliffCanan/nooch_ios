@@ -151,12 +151,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    isloginWithFB = NO;
+    // Close the session and remove the access token from the cache
+    // The session state handler (in the app delegate) will be called automatically
+    [FBSession.activeSession closeAndClearTokenInformation];
+    isloginWithFB=NO;
     [self.navigationController setNavigationBarHidden:YES];
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
     // Create Login View so that the app will be granted "status_update" permission.
-    FBLoginView *loginview = [[FBLoginView alloc] init];
+    /*FBLoginView *loginview = [[FBLoginView alloc] init];
     loginview.frame = CGRectMake(20, 90, 280, 50);
     //loginview.frame = CGRectOffset(loginview.frame, 5, 5);
 
@@ -172,7 +175,7 @@
 
     loginview.delegate = self;
     //[loginview sizeToFit];
-    [self.view addSubview:loginview];
+    [self.view addSubview:loginview];*/
 
 
     UIImageView * logo = [UIImageView new];
@@ -208,13 +211,13 @@
     UILabel *em = [UILabel new];
     [em setStyleClass:@"table_view_cell_textlabel_1"];
     CGRect frame = em.frame;
-    frame.origin.y = 140;
+    frame.origin.y = 165;
     [em setFrame:frame];
     [em setBackgroundColor:[UIColor clearColor]];
     [em setText:@"Email"];
     [self.view addSubview:em];
 
-    self.password = [[UITextField alloc] initWithFrame:CGRectMake(30, 182, 260, 40)];
+    self.password = [[UITextField alloc] initWithFrame:CGRectMake(30, 207, 260, 40)];
     [self.password setBackgroundColor:[UIColor clearColor]];
     [self.password setPlaceholder:@"Password"];
     self.password.inputAccessoryView = [[UIView alloc] init];
@@ -228,7 +231,7 @@
     UILabel *pass = [UILabel new];
     [pass setStyleClass:@"table_view_cell_textlabel_1"];
     frame = pass.frame;
-    frame.origin.y = 182;
+    frame.origin.y = 207;
     [pass setFrame:frame];
     [pass setText:@"Password"];
     [self.view addSubview:pass];
@@ -237,7 +240,7 @@
     [self.login setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
     self.login.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.login setTitle:@"Log In  " forState:UIControlStateNormal];
-    [self.login setFrame:CGRectMake(10, 240, 300, 60)];
+    [self.login setFrame:CGRectMake(10, 244+20, 300, 60)];
     [self.login addTarget:self action:@selector(check_credentials) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"button_green"];
 
@@ -256,20 +259,20 @@
     [self.view addSubview:self.login];
     [self.login setEnabled:NO];
 
-    self.stay_logged_in = [[UISwitch alloc] initWithFrame:CGRectMake(110, 302, 34, 21)];
+    self.stay_logged_in = [[UISwitch alloc] initWithFrame:CGRectMake(110, 302+20, 34, 21)];
     [self.stay_logged_in setStyleClass:@"login_switch"];
     [self.stay_logged_in setOnTintColor:kNoochBlue];
     [self.stay_logged_in setOn: YES];
     self.stay_logged_in.transform = CGAffineTransformMakeScale(0.8, 0.8);
 
-    UILabel *remember_me = [[UILabel alloc] initWithFrame:CGRectMake(19, 303, 140, 30)];
+    UILabel *remember_me = [[UILabel alloc] initWithFrame:CGRectMake(19, 303+20, 140, 30)];
     [remember_me setText:@"Remember Me"];
     [remember_me setStyleId:@"label_rememberme"];
 
     UIButton *forgot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [forgot setBackgroundColor:[UIColor clearColor]];
     [forgot setTitle:@"Forgot Password?" forState:UIControlStateNormal];
-    [forgot setFrame:CGRectMake(190, 303, 120, 30)];
+    [forgot setFrame:CGRectMake(190, 303+20, 120, 30)];
     [forgot addTarget:self action:@selector(forgot_pass) forControlEvents:UIControlEventTouchUpInside];
     [forgot setStyleId:@"label_forgotpw"];
 
@@ -1180,6 +1183,7 @@
     [log setDelegate:self];
     [log setTagName:@"loginwithFB"];
     [log loginwithFB:[self.loggedInUser objectForKey:@"email"] FBId:[self.loggedInUser objectForKey:@"id"] remember:YES lat:lat lon:lon uid:udid];
+    
 }
 
 - (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView {
