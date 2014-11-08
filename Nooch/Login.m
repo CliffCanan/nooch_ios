@@ -157,7 +157,10 @@
     // Close the session and remove the access token from the cache
     // The session state handler (in the app delegate) will be called automatically
     [FBSession.activeSession closeAndClearTokenInformation];
-   
+    [FBSession.activeSession close];
+    [FBSession setActiveSession:nil];
+    
+    
     isloginWithFB=NO;
     [self.navigationController setNavigationBarHidden:YES];
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -499,7 +502,9 @@
         NSLog(@"Result is: %@",[loginResult objectForKey:@"Result"]);
        if ([[loginResult objectForKey:@"Result"] isEqualToString:@"FBID or EmailId not registered with Nooch"]) {
            [self.hud hide:YES];
-            [FBSession.activeSession closeAndClearTokenInformation];
+           [FBSession.activeSession closeAndClearTokenInformation];
+           [FBSession.activeSession close];
+           [FBSession setActiveSession:nil];
            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Facebook Login Failed" message:@"Your Facebook account is not registered with Nooch.\nRegister with Facebook to get access to Login via Facebook." delegate:self cancelButtonTitle:@"Register Now" otherButtonTitles:@"Later", nil];
            [alert setTag:568];
            [alert show];
