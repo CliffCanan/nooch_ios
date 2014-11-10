@@ -78,11 +78,11 @@
 		5C11BE6D19F4A8D200A83B87 /* search_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C11BE6A19F4A8D200A83B87 /* search_white.png */; };
 		5C38468D19C56694002AEB15 /* check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C38468C19C56694002AEB15 /* check@2x.png */; };
 		5C38468F19C566DE002AEB15 /* cross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C38468E19C566DE002AEB15 /* cross@2x.png */; };
+		5C39FEC51A115CA600B2E2F4 /* nooch-logoSVCtest.svg in Resources */ = {isa = PBXBuildFile; fileRef = 5C39FEC41A115CA600B2E2F4 /* nooch-logoSVCtest.svg */; };
 		5C4A205019E77B9600D1A0EE /* Appirater.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4A204D19E77B9600D1A0EE /* Appirater.m */; };
 		5C4A205319E77C0000D1A0EE /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C4A205219E77C0000D1A0EE /* StoreKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5C5D073219DE70CB00B07A30 /* 0_home-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C5D073019DE70CB00B07A30 /* 0_home-bg.png */; };
 		5C5D073319DE70CB00B07A30 /* home_img@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C5D073119DE70CB00B07A30 /* home_img@2x.png */; };
-		5C6917DB19B69AD90044BF2B /* nooch_logo_color.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C6917DA19B69AD90044BF2B /* nooch_logo_color.png */; };
 		5C69CFA719C777D800EB406F /* Knox_lightbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFA519C777D800EB406F /* Knox_lightbox.png */; };
 		5C69CFA819C777D800EB406F /* Knox_lightbox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFA619C777D800EB406F /* Knox_lightbox@2x.png */; };
 		5C69CFBC19C8F20F00EB406F /* SIAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69CFB819C8F20F00EB406F /* SIAlertView.m */; };
@@ -468,13 +468,13 @@
 		5C11BE6A19F4A8D200A83B87 /* search_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_white.png; sourceTree = "<group>"; };
 		5C38468C19C56694002AEB15 /* check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check@2x.png"; sourceTree = "<group>"; };
 		5C38468E19C566DE002AEB15 /* cross@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cross@2x.png"; sourceTree = "<group>"; };
+		5C39FEC41A115CA600B2E2F4 /* nooch-logoSVCtest.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "nooch-logoSVCtest.svg"; sourceTree = "<group>"; };
 		5C4A204C19E77B9600D1A0EE /* Appirater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Appirater.h; sourceTree = "<group>"; };
 		5C4A204D19E77B9600D1A0EE /* Appirater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Appirater.m; sourceTree = "<group>"; };
 		5C4A204F19E77B9600D1A0EE /* AppiraterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppiraterDelegate.h; sourceTree = "<group>"; };
 		5C4A205219E77C0000D1A0EE /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		5C5D073019DE70CB00B07A30 /* 0_home-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0_home-bg.png"; sourceTree = "<group>"; };
 		5C5D073119DE70CB00B07A30 /* home_img@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home_img@2x.png"; sourceTree = "<group>"; };
-		5C6917DA19B69AD90044BF2B /* nooch_logo_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nooch_logo_color.png; sourceTree = "<group>"; };
 		5C69CFA519C777D800EB406F /* Knox_lightbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Knox_lightbox.png; sourceTree = "<group>"; };
 		5C69CFA619C777D800EB406F /* Knox_lightbox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Knox_lightbox@2x.png"; sourceTree = "<group>"; };
 		5C69CFB719C8F20F00EB406F /* SIAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIAlertView.h; sourceTree = "<group>"; };
@@ -1141,6 +1141,7 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				5C39FEC41A115CA600B2E2F4 /* nooch-logoSVCtest.svg */,
 				5C861FA01A0BFAAD00275CD1 /* selectRecipient_img@2x.png */,
 				5C861FA11A0BFAAD00275CD1 /* 2_selectRecipient_bg@2x.png */,
 				5CBC177419F4CE0000E1D095 /* clear_white@2x.png */,
@@ -1165,7 +1166,6 @@
 				5CC1A77519BA7A8A0000C2C7 /* Icon58.png */,
 				5CC1A77619BA7A8A0000C2C7 /* Icon80.png */,
 				5CC1A77719BA7A8A0000C2C7 /* Icon120.png */,
-				5C6917DA19B69AD90044BF2B /* nooch_logo_color.png */,
 				849AF6BC19A3183000693385 /* close_button.png */,
 				8471A10819960CB300047231 /* arrow-blue.png */,
 				8481F08D19A1CA75007F6565 /* selectRecipientIntro.png */,
@@ -2209,7 +2209,6 @@
 				8449C57819EBAB9700027B9B /* UAInteractiveNotifications.strings in Resources */,
 				84F099531988AD840020A08F /* Default.png in Resources */,
 				8420B39D187AC4BF00A77E2D /* green-pin.png in Resources */,
-				5C6917DB19B69AD90044BF2B /* nooch_logo_color.png in Resources */,
 				8449C59819EBAB9700027B9B /* top-detail@2x.png in Resources */,
 				849AF6BD19A3183000693385 /* close_button.png in Resources */,
 				5C69D00219C92F7400EB406F /* NotificationBackgroundSuccessIcon@2x.png in Resources */,
@@ -2335,6 +2334,7 @@
 				5C69D00719C92F7400EB406F /* NotificationButtonBackground.png in Resources */,
 				5C69D02919C9380500EB406F /* IQKeyboardManager.bundle in Resources */,
 				845631B71990AD45005B90F6 /* whiteBack30@2x.png in Resources */,
+				5C39FEC51A115CA600B2E2F4 /* nooch-logoSVCtest.svg in Resources */,
 				5C83949919EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png in Resources */,
 				0129D8EA1815B10D00BEAC30 /* Brandon_med.otf in Resources */,
 				01C26DAE1843BB22005179B7 /* Dollar_Symbol.png in Resources */,

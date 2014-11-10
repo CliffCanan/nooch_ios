@@ -144,13 +144,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    //back button
+
+    //Back button
     UIButton *btnback = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnback setBackgroundColor:[UIColor whiteColor]];
-    [btnback setFrame:CGRectMake(7, 24, 44, 44)];
+    [btnback setFrame:CGRectMake(7, 20, 44, 44)];
     [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
+
     UILabel *glyph_back = [UILabel new];
     [glyph_back setBackgroundColor:[UIColor clearColor]];
     [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:26]];
@@ -159,39 +159,39 @@
     [glyph_back setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-o-left"]];
     [glyph_back setTextColor:kNoochBlue];
     [btnback addSubview:glyph_back];
-    
+
     [self.view addSubview:btnback];
-    
+
     UIImageView * logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
-    
-    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
+
+    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(75, 83, 170, 18)];
     [slogan setBackgroundColor:[UIColor clearColor]];
     [slogan setText:@"Money Made Simple"];
     [slogan setFont:[UIFont fontWithName:@"VarelaRound-regular" size:15]];
     [slogan setStyleClass:@"prelogin_slogan"];
     [self.view addSubview:slogan];
-    
+
     self.pin_check = @"";
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
     NSShadow * shadowNavText = [[NSShadow alloc] init];
     shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .26);
     shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
-    
+
     NSDictionary * titleAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
                                        NSShadowAttributeName: shadowNavText};
     [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
-    
+
     [self.navigationItem setTitle:@"Create PIN"];
 
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, 300, 40)];
+    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 118, 300, 40)];
     [title setText:@"Create your PIN"];
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
 
-    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 280, 50)];
+    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 231, 280, 50)];
     [self.prompt setNumberOfLines:2];
     [self.prompt setText:@"You'll be asked to enter this PIN anytime you send or request money."];
     [self.prompt setStyleClass:@"instruction_text"];
@@ -205,33 +205,32 @@
     [self.view addSubview:self.pin];
     [self.pin becomeFirstResponder];
 
-    self.first_num = [[UIView alloc] initWithFrame:CGRectMake(73,240,28,28)];
-    self.second_num = [[UIView alloc] initWithFrame:CGRectMake(121,240,28,28)];
-    self.third_num = [[UIView alloc] initWithFrame:CGRectMake(169,240,28,28)];
-    self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(217,240,28,28)];
+    self.first_num = [[UIView alloc] initWithFrame:CGRectMake(70,181,28,28)];
+    self.second_num = [[UIView alloc] initWithFrame:CGRectMake(120,181,28,28)];
+    self.third_num = [[UIView alloc] initWithFrame:CGRectMake(170,181,28,28)];
+    self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(220,181,28,28)];
 
     self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 14;
-    
+
     if ([[UIScreen mainScreen] bounds].size.height == 480)
     {
         [self.prompt setStyleClass:@"instruction_text_smscrn"];
-        self.first_num = [[UIView alloc] initWithFrame:CGRectMake(73,220,26,26)];
-        self.second_num = [[UIView alloc] initWithFrame:CGRectMake(121,220,26,26)];
-        self.third_num = [[UIView alloc] initWithFrame:CGRectMake(169,220,26,26)];
-        self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(217,220,26,26)];
+        self.first_num = [[UIView alloc] initWithFrame:CGRectMake(73,173,26,26)];
+        self.second_num = [[UIView alloc] initWithFrame:CGRectMake(121,173,26,26)];
+        self.third_num = [[UIView alloc] initWithFrame:CGRectMake(169,173,26,26)];
+        self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(217,173,26,26)];
         self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 13;
     }
-    
+
     self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor clearColor];
     self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
     self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
-    
+
     [self.view addSubview:self.prompt];
     [self.view addSubview:self.first_num];
     [self.view addSubview:self.second_num];
     [self.view addSubview:self.third_num];
     [self.view addSubview:self.fourth_num];
-    // Do any additional setup after loading the view from its nib.
 }
 
 - (void)didReceiveMemoryWarning
