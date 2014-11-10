@@ -41,15 +41,15 @@
     self = [super init];
     
     if (self) {
-        backgroundColor_ = [[UIColor colorWithRed:100.0/255.0 green:196.0/255.0 blue:43.0/255.0 alpha:0.9]
+        backgroundColor_ = [[UIColor colorWithRed:0 green:0 blue:0 alpha:1.0]
                             retain];
-        borderColor_ = [[UIColor colorWithRed:67.0/255.0 green:132.0/255.0 blue:29.0/255.0 alpha:0.92]
+        borderColor_ = [[UIColor colorWithRed:.3 green:.3 blue:.3 alpha:1.0]
                         retain];
         textColor_ = [[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0]
                       retain];
         textFont_ = [[UIFont systemFontOfSize:14.0f] retain];
         location_ = METoastLocationBottom;
-        borderWidth_ = 1.0f;
+        borderWidth_ = 2.0f;
     }
     
     return self;
@@ -308,7 +308,6 @@ static METoastAttribute *sharedAttribute = nil;
                     duration:(CGFloat)duration
             andCompleteBlock:(void (^)(void))completeBlock {
     METoastItem *item = [[METoastItem alloc] init];
-    NSLog(@"%@",message);
     item.message = message;
     item.duration = duration;
     item.completeBlock = completeBlock;
@@ -321,7 +320,7 @@ static METoastAttribute *sharedAttribute = nil;
 - (void)layoutToastView {
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     CGRect toastWindowBounds = self.toastWindow.bounds;
-    CGFloat w = 300.0f;
+    CGFloat w = CGRectGetWidth(toastWindowBounds);
     CGFloat h = CGRectGetHeight(toastWindowBounds);
     METoastLocation loc = [[METoast toastAttribute] location];
     CGPoint center = CGPointZero;

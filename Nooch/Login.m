@@ -154,6 +154,10 @@
     // Close the session and remove the access token from the cache
     // The session state handler (in the app delegate) will be called automatically
     [FBSession.activeSession closeAndClearTokenInformation];
+    [FBSession.activeSession close];
+    [FBSession setActiveSession:nil];
+    
+    
     isloginWithFB=NO;
     [self.navigationController setNavigationBarHidden:YES];
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -357,7 +361,10 @@
     {
         [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
     }
-
+    else if (actionSheet.tag == 568 && buttonIndex == 0)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
     else if ((actionSheet.tag == 50 || actionSheet.tag == 500 || actionSheet.tag == 600) && buttonIndex == 1)
         {
             if (![MFMailComposeViewController canSendMail]){
@@ -495,7 +502,18 @@
         NSDictionary * loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         
         NSLog(@"Result is: %@",[loginResult objectForKey:@"Result"]);
-       
+       if ([[loginResult objectForKey:@"Result"] isEqualToString:@"FBID or EmailId not registered with Nooch"]) {
+           [self.hud hide:YES];
+           [FBSession.activeSession closeAndClearTokenInformation];
+           [FBSession.activeSession close];
+           [FBSession setActiveSession:nil];
+           UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Facebook Login Failed" message:@"Your Facebook account is not registered with Nooch.\nRegister with Facebook to get access to Login via Facebook." delegate:self cancelButtonTitle:@"Register Now" otherButtonTitles:@"Later", nil];
+           [alert setTag:568];
+           [alert show];
+           return;
+
+       }
+        
         if (  [loginResult objectForKey:@"Result"] &&
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] &&
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] &&

@@ -800,7 +800,7 @@ NSString *amnt;
            ![[result objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] &&
            ![[result objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] &&
             [[result objectForKey:@"Result"] rangeOfString:@"Your account has been temporarily blocked."].location == NSNotFound &&
-              result != nil)
+              result != nil && ![[result objectForKey:@"Result"] isEqualToString:@"FBID or EmailId not registered with Nooch"])
         {
             NSString * token = [result objectForKey:@"Result"];
             //storing the token

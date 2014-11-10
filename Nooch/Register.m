@@ -555,7 +555,7 @@
         NSLog(@"Result is: %@",[loginResult objectForKey:@"Result"]);
       
       
-        if ([[loginResult objectForKey:@"Result"] length]==0) {
+        if ([[loginResult objectForKey:@"Result"] isEqualToString:@"FBID or EmailId not registered with Nooch"]) {
             [self.hud hide:YES];
             
             self.name_field.text = [NSString stringWithFormat:@"%@ %@",[self.facebook_info objectForKey:@"first_name"],[self.facebook_info objectForKey:@"last_name"]];
