@@ -143,7 +143,7 @@
                                  options:UIViewKeyframeAnimationOptionCalculationModeCubic
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
-                                      [btnback setFrame:CGRectMake(7, 24, 44, 44)];
+                                      [btnback setFrame:CGRectMake(7, 18, 44, 44)];
                                   }];
                               } completion: nil];
 }
@@ -154,20 +154,23 @@
     // Close the session and remove the access token from the cache
     // The session state handler (in the app delegate) will be called automatically
     [FBSession.activeSession closeAndClearTokenInformation];
+    [FBSession.activeSession close];
+    [FBSession setActiveSession:nil];
+
     isloginWithFB=NO;
     [self.navigationController setNavigationBarHidden:YES];
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
     // Create Login View so that the app will be granted "status_update" permission.
-    /*FBLoginView *loginview = [[FBLoginView alloc] init];
-    loginview.frame = CGRectMake(20, 90, 280, 50);
+    FBLoginView *loginview = [[FBLoginView alloc] init];
+    loginview.frame = CGRectMake(19, 108, 282, 52);
     //loginview.frame = CGRectOffset(loginview.frame, 5, 5);
 
 #ifdef __IPHONE_7_0
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
-        loginview.frame = CGRectOffset(loginview.frame, 5, 25);
+        //loginview.frame = CGRectOffset(loginview.frame, 5, 25);
     }
 #endif
 #endif
@@ -175,26 +178,26 @@
 
     loginview.delegate = self;
     //[loginview sizeToFit];
-    [self.view addSubview:loginview];*/
-
+    [self.view addSubview:loginview];
 
     UIImageView * logo = [UIImageView new];
-    [logo setStyleId:@"prelogin_logo"];
+    [logo setStyleId:@"prelogin_logo_loginScreen"];
     [self.view addSubview:logo];
     
     if ([[UIScreen mainScreen] bounds].size.height > 500)
     {
-        UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
+        UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(90, 73, 140, 15)];
         [slogan setBackgroundColor:[UIColor clearColor]];
         [slogan setText:@"Money Made Simple"];
         [slogan setFont:[UIFont fontWithName:@"VarelaRound-Regular" size:15]];
         [slogan setStyleClass:@"prelogin_slogan"];
+        [slogan setStyleClass:@"prelogin_slogan_loginScreen"];
         [self.view addSubview:slogan];
     }
 
     //[self.navigationItem setTitle:@"Log In"];
 
-    self.email = [[UITextField alloc] initWithFrame:CGRectMake(30, 140, 300, 40)];
+    self.email = [[UITextField alloc] initWithFrame:CGRectMake(30, 165, 300, 40)];
     [self.email setBackgroundColor:[UIColor clearColor]];
     [self.email setPlaceholder:@"email@example.com"];
     self.email.inputAccessoryView = [[UIView alloc] init];
@@ -240,7 +243,7 @@
     [self.login setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
     self.login.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.login setTitle:@"Log In  " forState:UIControlStateNormal];
-    [self.login setFrame:CGRectMake(10, 244+20, 300, 60)];
+    [self.login setFrame:CGRectMake(10, 263, 300, 60)];
     [self.login addTarget:self action:@selector(check_credentials) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"button_green"];
 
@@ -259,20 +262,20 @@
     [self.view addSubview:self.login];
     [self.login setEnabled:NO];
 
-    self.stay_logged_in = [[UISwitch alloc] initWithFrame:CGRectMake(110, 302+20, 34, 21)];
+    self.stay_logged_in = [[UISwitch alloc] initWithFrame:CGRectMake(110, 319, 34, 21)];
     [self.stay_logged_in setStyleClass:@"login_switch"];
     [self.stay_logged_in setOnTintColor:kNoochBlue];
     [self.stay_logged_in setOn: YES];
     self.stay_logged_in.transform = CGAffineTransformMakeScale(0.8, 0.8);
 
-    UILabel *remember_me = [[UILabel alloc] initWithFrame:CGRectMake(19, 303+20, 140, 30)];
+    UILabel *remember_me = [[UILabel alloc] initWithFrame:CGRectMake(19, 320, 140, 30)];
     [remember_me setText:@"Remember Me"];
     [remember_me setStyleId:@"label_rememberme"];
 
     UIButton *forgot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [forgot setBackgroundColor:[UIColor clearColor]];
     [forgot setTitle:@"Forgot Password?" forState:UIControlStateNormal];
-    [forgot setFrame:CGRectMake(190, 303+20, 120, 30)];
+    [forgot setFrame:CGRectMake(190, 320, 120, 30)];
     [forgot addTarget:self action:@selector(forgot_pass) forControlEvents:UIControlEventTouchUpInside];
     [forgot setStyleId:@"label_forgotpw"];
 
@@ -357,32 +360,34 @@
     {
         [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
     }
-
+    else if (actionSheet.tag == 568 && buttonIndex == 0)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
     else if ((actionSheet.tag == 50 || actionSheet.tag == 500 || actionSheet.tag == 600) && buttonIndex == 1)
-        {
-            if (![MFMailComposeViewController canSendMail]){
-                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [av show];
-                return;
-            }
-            MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
-            mailComposer.mailComposeDelegate = self;
-            mailComposer.navigationBar.tintColor=[UIColor whiteColor];
-            
-            [mailComposer setSubject:[NSString stringWithFormat:@"Help Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-            
-            [mailComposer setMessageBody:@"" isHTML:NO];
-            [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
-            [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
-            [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-            [self presentViewController:mailComposer animated:YES completion:nil];
+    {
+        if (![MFMailComposeViewController canSendMail]){
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [av show];
+            return;
         }
+        MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+        mailComposer.mailComposeDelegate = self;
+        mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+        
+        [mailComposer setSubject:[NSString stringWithFormat:@"Help Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+        
+        [mailComposer setMessageBody:@"" isHTML:NO];
+        [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+        [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+        [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        [self presentViewController:mailComposer animated:YES completion:nil];
+    }
     else if (actionSheet.tag == 510 && buttonIndex == 1) {
         [self forgot_pass];
     }
 }
-
 
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
@@ -487,15 +492,28 @@
         else {
             [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:NO lat:lat lon:lon uid:udid];
         }
-        
     }
+
     else if ([tagName isEqualToString:@"loginwithFB"])
     {
         NSError * error;
         NSDictionary * loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+
+        NSLog(@"LoginwithFB Result is: %@",[loginResult objectForKey:@"Result"]);
+
+        if ([[loginResult objectForKey:@"Result"] isEqualToString:@"FBID or EmailId not registered with Nooch"])
+        {
+            [self.hud hide:YES];
+            [FBSession.activeSession closeAndClearTokenInformation];
+            [FBSession.activeSession close];
+            [FBSession setActiveSession:nil];
+
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Facebook Login Failed" message:@"Your Facebook account is not associated with a Nooch account.\nWould you like to create a Nooch account now?" delegate:self cancelButtonTitle:@"Register Now" otherButtonTitles:@"Cancel", nil];
+            [alert setTag:568];
+            [alert show];
+            return;
+        }
         
-        NSLog(@"Result is: %@",[loginResult objectForKey:@"Result"]);
-       
         if (  [loginResult objectForKey:@"Result"] &&
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] &&
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] &&
@@ -504,12 +522,10 @@
             [[loginResult objectForKey:@"Result"] rangeOfString:@"Your account has been temporarily blocked."].location == NSNotFound &&
             loginResult != nil)
         {
-
-        
-        serve * getDetails = [serve new];
-        getDetails.Delegate = self;
-        getDetails.tagName = @"getMemberId";
-        [getDetails getMemIdFromuUsername:email_fb];
+            serve * getDetails = [serve new];
+            getDetails.Delegate = self;
+            getDetails.tagName = @"getMemberId";
+            [getDetails getMemIdFromuUsername:email_fb];
         }
         else if ( [loginResult objectForKey:@"Result"] &&
                  [[loginResult objectForKey:@"Result"] rangeOfString:@"Your account has been temporarily blocked."].location != NSNotFound &&
@@ -722,10 +738,8 @@
                 [alert setTag:50];
             }
         }
-        
-
-        
     }
+
     else if ([tagName isEqualToString:@"login"])
     {
         NSError * error;
@@ -1034,11 +1048,12 @@
     else if ([tagName isEqualToString:@"getMemberId"])
     {
         NSError *error;
-        
+
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
+
         if (isloginWithFB) {
-              [[NSUserDefaults standardUserDefaults] setObject:email_fb forKey:@"UserName"];
+            [[NSUserDefaults standardUserDefaults] setObject:email_fb forKey:@"UserName"];
         }
         else
         [[NSUserDefaults standardUserDefaults] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
@@ -1072,7 +1087,7 @@
         else
         [enc_user getEncrypt:[self.email.text lowercaseString]];
     } 
-    
+
     else if ([tagName isEqualToString:@"username"])
     {
         serve * details = [serve new];
@@ -1080,7 +1095,7 @@
         [details setTagName:@"info"];
         [details getDetails:[user objectForKey:@"MemberId"]];
     }
-    
+
     else if ([tagName isEqualToString:@"info"])
     {
         [self.hud hide:YES];
@@ -1148,20 +1163,11 @@
 
 #pragma mark - FBLoginViewDelegate
 - (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView {
- 
-    // first get the buttons set for login mode
-//    self.buttonPostPhoto.enabled = YES;
-//    self.buttonPostStatus.enabled = YES;
-//    self.buttonPickFriends.enabled = YES;
-//    self.buttonPickPlace.enabled = YES;
-//    
-//    // "Post Status" available when logged on and potentially when logged off.  Differentiate in the label.
-//    [self.buttonPostStatus setTitle:@"Post Status Update (Logged On)" forState:self.buttonPostStatus.state];
 }
 
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView
                             user:(id<FBGraphUser>)user {
-    isloginWithFB=YES;
+    isloginWithFB = YES;
     self.loggedInUser = user;
 
     RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
@@ -1183,11 +1189,12 @@
     [log setDelegate:self];
     [log setTagName:@"loginwithFB"];
     [log loginwithFB:[self.loggedInUser objectForKey:@"email"] FBId:[self.loggedInUser objectForKey:@"id"] remember:YES lat:lat lon:lon uid:udid];
-    
 }
 
-- (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView {
-       isloginWithFB=NO;
+- (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView
+{
+    isloginWithFB = NO;
+
     // test to see if we can use the share dialog built into the Facebook application
     FBLinkShareParams *p = [[FBLinkShareParams alloc] init];
     p.link = [NSURL URLWithString:@"http://developers.facebook.com/ios"];
@@ -1220,13 +1227,14 @@
     // the SDK will provide a message for the user, you just need to surface it.
     // This conveniently handles cases like Facebook password change or unverified Facebook accounts.
     if ([FBErrorUtility shouldNotifyUserForError:error]) {
-        alertTitle = @"Facebook error";
+        alertTitle = @"Facebook Error";
         alertMessage = [FBErrorUtility userMessageForError:error];
-        
+
         // This code will handle session closures that happen outside of the app
         // You can take a look at our error handling guide to know more about it
         // https://developers.facebook.com/docs/ios/errors
-    } else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession) {
+    }
+    else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession) {
         alertTitle = @"Session Error";
         alertMessage = @"Your current session is no longer valid. Please log in again.";
         
@@ -1234,13 +1242,11 @@
         // You can also choose to show the user a message if cancelling login will result in
         // the user not being able to complete a task they had initiated in your app
         // (like accessing FB-stored information or posting to Facebook)
-    } else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled) {
+    }
+    else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled) {
         NSLog(@"user cancelled login");
-        
-        // For simplicity, this sample handles other errors with a generic message
-        // You can checkout our error handling guide for more detailed information
-        // https://developers.facebook.com/docs/ios/errors
-    } else {
+    }
+    else {
         alertTitle  = @"Something went wrong";
         alertMessage = @"Please try again later.";
         NSLog(@"Unexpected error:%@", error);
@@ -1279,9 +1285,7 @@
     } else {
         action();
     }
-    
 }
-
 
 - (void)didReceiveMemoryWarning
 {

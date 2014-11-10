@@ -78,11 +78,11 @@
 		5C11BE6D19F4A8D200A83B87 /* search_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C11BE6A19F4A8D200A83B87 /* search_white.png */; };
 		5C38468D19C56694002AEB15 /* check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C38468C19C56694002AEB15 /* check@2x.png */; };
 		5C38468F19C566DE002AEB15 /* cross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C38468E19C566DE002AEB15 /* cross@2x.png */; };
+		5C39FEC51A115CA600B2E2F4 /* nooch-logoSVCtest.svg in Resources */ = {isa = PBXBuildFile; fileRef = 5C39FEC41A115CA600B2E2F4 /* nooch-logoSVCtest.svg */; };
 		5C4A205019E77B9600D1A0EE /* Appirater.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4A204D19E77B9600D1A0EE /* Appirater.m */; };
 		5C4A205319E77C0000D1A0EE /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C4A205219E77C0000D1A0EE /* StoreKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5C5D073219DE70CB00B07A30 /* 0_home-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C5D073019DE70CB00B07A30 /* 0_home-bg.png */; };
 		5C5D073319DE70CB00B07A30 /* home_img@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C5D073119DE70CB00B07A30 /* home_img@2x.png */; };
-		5C6917DB19B69AD90044BF2B /* nooch_logo_color.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C6917DA19B69AD90044BF2B /* nooch_logo_color.png */; };
 		5C69CFA719C777D800EB406F /* Knox_lightbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFA519C777D800EB406F /* Knox_lightbox.png */; };
 		5C69CFA819C777D800EB406F /* Knox_lightbox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C69CFA619C777D800EB406F /* Knox_lightbox@2x.png */; };
 		5C69CFBC19C8F20F00EB406F /* SIAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69CFB819C8F20F00EB406F /* SIAlertView.m */; };
@@ -242,6 +242,7 @@
 		8420B3A0187AC4BF00A77E2D /* red-pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420B39A187AC4BF00A77E2D /* red-pin.png */; };
 		842E3313187413490057EAFB /* Decryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 842E3312187413490057EAFB /* Decryption.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		842E3316187424440057EAFB /* GetEncryptionValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 842E3315187424440057EAFB /* GetEncryptionValue.m */; };
+		843B87091A108E3000C036A2 /* METoast.m in Sources */ = {isa = PBXBuildFile; fileRef = 843B87081A108E3000C036A2 /* METoast.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		84443CAC18A0BD9E0097F6C0 /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 84443CA818A0BD9E0097F6C0 /* NSString+MD5Addition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		84443CAD18A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 84443CAA18A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		84443CB118A0BDF30097F6C0 /* RoundLoading.png in Resources */ = {isa = PBXBuildFile; fileRef = 84443CB018A0BDF30097F6C0 /* RoundLoading.png */; };
@@ -338,7 +339,6 @@
 		84BD1A3619B5A0C600ECC983 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 84BD1A3519B5A0C600ECC983 /* GoogleMaps.bundle */; };
 		84C3EF18187D0E82004687F6 /* mapBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C3EF17187D0E82004687F6 /* mapBack.png */; };
 		84C3EF1B187D101E004687F6 /* ReEnterPin.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C3EF1A187D101E004687F6 /* ReEnterPin.m */; };
-		84D8794218BF3ED200A60A38 /* METoast.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D8794118BF3ED200A60A38 /* METoast.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		84F099521988AD840020A08F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F0994F1988AD840020A08F /* Default-568h@2x.png */; };
 		84F099531988AD840020A08F /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F099501988AD840020A08F /* Default.png */; };
 		84F099541988AD840020A08F /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F099511988AD840020A08F /* Default@2x.png */; };
@@ -468,13 +468,13 @@
 		5C11BE6A19F4A8D200A83B87 /* search_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_white.png; sourceTree = "<group>"; };
 		5C38468C19C56694002AEB15 /* check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check@2x.png"; sourceTree = "<group>"; };
 		5C38468E19C566DE002AEB15 /* cross@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cross@2x.png"; sourceTree = "<group>"; };
+		5C39FEC41A115CA600B2E2F4 /* nooch-logoSVCtest.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "nooch-logoSVCtest.svg"; sourceTree = "<group>"; };
 		5C4A204C19E77B9600D1A0EE /* Appirater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Appirater.h; sourceTree = "<group>"; };
 		5C4A204D19E77B9600D1A0EE /* Appirater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Appirater.m; sourceTree = "<group>"; };
 		5C4A204F19E77B9600D1A0EE /* AppiraterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppiraterDelegate.h; sourceTree = "<group>"; };
 		5C4A205219E77C0000D1A0EE /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		5C5D073019DE70CB00B07A30 /* 0_home-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0_home-bg.png"; sourceTree = "<group>"; };
 		5C5D073119DE70CB00B07A30 /* home_img@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home_img@2x.png"; sourceTree = "<group>"; };
-		5C6917DA19B69AD90044BF2B /* nooch_logo_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nooch_logo_color.png; sourceTree = "<group>"; };
 		5C69CFA519C777D800EB406F /* Knox_lightbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Knox_lightbox.png; sourceTree = "<group>"; };
 		5C69CFA619C777D800EB406F /* Knox_lightbox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Knox_lightbox@2x.png"; sourceTree = "<group>"; };
 		5C69CFB719C8F20F00EB406F /* SIAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIAlertView.h; sourceTree = "<group>"; };
@@ -700,6 +700,8 @@
 		842E3312187413490057EAFB /* Decryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Decryption.m; sourceTree = "<group>"; };
 		842E3314187424440057EAFB /* GetEncryptionValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetEncryptionValue.h; sourceTree = "<group>"; };
 		842E3315187424440057EAFB /* GetEncryptionValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetEncryptionValue.m; sourceTree = "<group>"; };
+		843B87071A108E3000C036A2 /* METoast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = METoast.h; sourceTree = "<group>"; };
+		843B87081A108E3000C036A2 /* METoast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = METoast.m; sourceTree = "<group>"; };
 		84443CA718A0BD9E0097F6C0 /* NSString+MD5Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5Addition.h"; sourceTree = "<group>"; };
 		84443CA818A0BD9E0097F6C0 /* NSString+MD5Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5Addition.m"; sourceTree = "<group>"; };
 		84443CA918A0BD9E0097F6C0 /* UIDevice+IdentifierAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IdentifierAddition.h"; sourceTree = "<group>"; };
@@ -938,8 +940,6 @@
 		84C3EF17187D0E82004687F6 /* mapBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapBack.png; sourceTree = "<group>"; };
 		84C3EF19187D101E004687F6 /* ReEnterPin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReEnterPin.h; sourceTree = "<group>"; };
 		84C3EF1A187D101E004687F6 /* ReEnterPin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReEnterPin.m; sourceTree = "<group>"; };
-		84D8794018BF3ED200A60A38 /* METoast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = METoast.h; sourceTree = "<group>"; };
-		84D8794118BF3ED200A60A38 /* METoast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = METoast.m; sourceTree = "<group>"; };
 		84F0994F1988AD840020A08F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		84F099501988AD840020A08F /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		84F099511988AD840020A08F /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
@@ -1141,6 +1141,7 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				5C39FEC41A115CA600B2E2F4 /* nooch-logoSVCtest.svg */,
 				5C861FA01A0BFAAD00275CD1 /* selectRecipient_img@2x.png */,
 				5C861FA11A0BFAAD00275CD1 /* 2_selectRecipient_bg@2x.png */,
 				5CBC177419F4CE0000E1D095 /* clear_white@2x.png */,
@@ -1165,7 +1166,6 @@
 				5CC1A77519BA7A8A0000C2C7 /* Icon58.png */,
 				5CC1A77619BA7A8A0000C2C7 /* Icon80.png */,
 				5CC1A77719BA7A8A0000C2C7 /* Icon120.png */,
-				5C6917DA19B69AD90044BF2B /* nooch_logo_color.png */,
 				849AF6BC19A3183000693385 /* close_button.png */,
 				8471A10819960CB300047231 /* arrow-blue.png */,
 				8481F08D19A1CA75007F6565 /* selectRecipientIntro.png */,
@@ -1270,10 +1270,10 @@
 			isa = PBXGroup;
 			children = (
 				845C0BD71973F30200E17E52 /* whiteBack.png */,
+				843B87071A108E3000C036A2 /* METoast.h */,
+				843B87081A108E3000C036A2 /* METoast.m */,
 				845631B41990AD45005B90F6 /* whiteBack30.png */,
 				845631B51990AD45005B90F6 /* whiteBack30@2x.png */,
-				84D8794018BF3ED200A60A38 /* METoast.h */,
-				84D8794118BF3ED200A60A38 /* METoast.m */,
 				84C3EF17187D0E82004687F6 /* mapBack.png */,
 				8420B395187AC4BF00A77E2D /* Black-pin.png */,
 				8420B396187AC4BF00A77E2D /* blue-pin.png */,
@@ -2209,7 +2209,6 @@
 				8449C57819EBAB9700027B9B /* UAInteractiveNotifications.strings in Resources */,
 				84F099531988AD840020A08F /* Default.png in Resources */,
 				8420B39D187AC4BF00A77E2D /* green-pin.png in Resources */,
-				5C6917DB19B69AD90044BF2B /* nooch_logo_color.png in Resources */,
 				8449C59819EBAB9700027B9B /* top-detail@2x.png in Resources */,
 				849AF6BD19A3183000693385 /* close_button.png in Resources */,
 				5C69D00219C92F7400EB406F /* NotificationBackgroundSuccessIcon@2x.png in Resources */,
@@ -2335,6 +2334,7 @@
 				5C69D00719C92F7400EB406F /* NotificationButtonBackground.png in Resources */,
 				5C69D02919C9380500EB406F /* IQKeyboardManager.bundle in Resources */,
 				845631B71990AD45005B90F6 /* whiteBack30@2x.png in Resources */,
+				5C39FEC51A115CA600B2E2F4 /* nooch-logoSVCtest.svg in Resources */,
 				5C83949919EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png in Resources */,
 				0129D8EA1815B10D00BEAC30 /* Brandon_med.otf in Resources */,
 				01C26DAE1843BB22005179B7 /* Dollar_Symbol.png in Resources */,
@@ -2395,7 +2395,6 @@
 				8449C58619EBAB9700027B9B /* UALocationSettingsViewController.m in Sources */,
 				01085FF5180345D200A31F63 /* ResetPassword.m in Sources */,
 				846EF0CB198B5F55009D5491 /* DisputeDetail.m in Sources */,
-				84D8794218BF3ED200A60A38 /* METoast.m in Sources */,
 				0169E22D18D8D7C200442642 /* knoxWeb.m in Sources */,
 				5C69D02E19C9380500EB406F /* IQTextView.m in Sources */,
 				5C69D06719C941DB00EB406F /* RTSpinKitWaveAnimation.m in Sources */,
@@ -2423,6 +2422,7 @@
 				84C3EF1B187D101E004687F6 /* ReEnterPin.m in Sources */,
 				846A5E3C19DAB0FC0093FF9C /* UIImage+MultiFormat.m in Sources */,
 				846A5E3619DAB0FC0093FF9C /* SDWebImageDownloader.m in Sources */,
+				843B87091A108E3000C036A2 /* METoast.m in Sources */,
 				846A5E3819DAB0FC0093FF9C /* SDWebImageManager.m in Sources */,
 				5C69D05C19C941DB00EB406F /* RTSpinKitArcAnimation.m in Sources */,
 				01085FAE17FB4BFA00A31F63 /* SelectPicture.m in Sources */,

@@ -14,18 +14,26 @@ view {
 }
 
 #prelogin_logo {
-    background-image : url(nooch_logo_color.png);
-    height : 65px;
-    width : 202px;
-    position : 59 18;
+    background-image : url(nooch-logoSVCtest.svg);
+    height : 58px;
+    width : 170px;
+    position : 75 18;
 }
-
 .prelogin_slogan {
     font-family: "VarelaRound-Regular";
     font-weight: normal;
     font-size: 15px;
     text-align: right;
     color: #5a538d;
+}
+#prelogin_logo_loginScreen {
+    background-image : url(nooch-logoSVCtest.svg);
+    height : 55px;
+    width : 140px;
+    position : 90 15;
+}
+.prelogin_slogan_loginScreen {
+    font-size: 13px;
 }
 .termsCheckText {
     font-family: "Roboto";
@@ -759,7 +767,8 @@ view {
 .instruction_text_smscrn {
     left            : 20px;
     width			: 280px;
-    height			: 44px;
+    height			: 42px;
+    top             : 218px;
     font-family		: "Roboto";
     font-weight     : regular;
     font-size		: 15px;
