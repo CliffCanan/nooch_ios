@@ -27,8 +27,8 @@
 
 #import <UIKit/UIKit.h>
 
-#define METoastDuration2s 3.0
-#define METoastDuration3s 2.0
+#define METoastDuration2s 2.0
+#define METoastDuration3s 3.0
 #define METoastDurationDefault METoastDuration2s
 
 typedef enum {

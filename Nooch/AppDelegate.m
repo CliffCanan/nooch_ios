@@ -250,7 +250,7 @@ void exceptionHandler(NSException *exception){
         NSString *message = [[userInfo valueForKey:@"aps"] valueForKey:@"alert"];
         [METoast resetToastAttribute];
         [METoast toastWithMessage:message];
-        NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
+       // NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
         
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     }
