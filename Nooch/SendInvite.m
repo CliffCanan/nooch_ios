@@ -412,7 +412,6 @@
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
     {
         SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-        //NSArray*arrReferCode=[referCode.text componentsSeparatedByString:@":"];
         [tweetSheet setInitialText:[NSString stringWithFormat:@"Check out @NoochMoney, the simplest free way to pay me back! Use my invite code to sign up: \"%@\"",code.text]];
         [tweetSheet addURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/nooch/id917955306?mt=8"]];
         [self presentViewController:tweetSheet animated:YES completion:nil];
@@ -460,7 +459,7 @@
     NSString * emailTitle = @"Check out Nooch - a free app to pay me back";
 
     NSString * messageBody; // Change the message body to HTML
-    messageBody=[NSString stringWithFormat:@"Hey there,<br/><p>You should check out Nooch, a great <strong>free iOS app</strong> that lets me pay you back anytime, anywhere.  Since I know you don't like carrying cash around either, I thought you would love using Nooch!</p><p>You can <a href=\"http://appstore.com/nooch\">download Nooch</a> from the App Store - and be sure to use my Referral Code to get exclusive access:</p><p style=\"text-align:center;font-size:1.5em;\"><strong>%@</strong></p><p>To learn more about Nooch, here's the website: <a href=\"https://www.nooch.com/overview/\">www.nooch.com</a>.</p><p>- %@</p>",code.text,[user objectForKey:@"firstName"]];
+    messageBody=[NSString stringWithFormat:@"Hey there,<br/><p>You should check out Nooch, a great <strong>free iOS app</strong> that lets me pay you back anytime, anywhere.  Since I know you don't like carrying cash around either, I thought you would love using Nooch!</p><p>You can <a href=\"https://itunes.apple.com/us/app/nooch/id917955306?mt=8\">download Nooch</a> from the App Store - and be sure to use my Referral Code to get exclusive access:</p><p style=\"text-align:center;font-size:1.5em;\"><strong>%@</strong></p><p>To learn more about Nooch, here's the website: <a href=\"https://www.nooch.com/overview/\">www.nooch.com</a>.</p><p>- %@</p>",code.text,[user objectForKey:@"firstName"]];
 
     MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
     mc.mailComposeDelegate = self;
