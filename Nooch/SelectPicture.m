@@ -302,7 +302,7 @@
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
     
-    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(75, 83, 170, 18)];
+    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(75, 82, 170, 16)];
     [slogan setBackgroundColor:[UIColor clearColor]];
     [slogan setText:@"Money Made Simple"];
     [slogan setFont:[UIFont fontWithName:@"VarelaRound-Regular" size:15]];
@@ -335,7 +335,7 @@
         [self.message setText:@"Great Pic! If you're happy with it tap \"Continue\" or if you wish to change it tap \"Change Picture\""];
     }
     else {
-        [self.message setText:@"Add a picture so people can find you easier when sending you money."];
+        [self.message setText:@"Add a picture so people can find you more easily when sending you money."];
     }
     [self.message setStyleClass:@"instruction_text"];
     [self.message setNumberOfLines:0];

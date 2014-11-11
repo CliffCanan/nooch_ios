@@ -48,7 +48,7 @@
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
     
-    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(75, 83, 170, 18)];
+    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(75, 82, 170, 16)];
     [slogan setBackgroundColor:[UIColor clearColor]];
     [slogan setText:@"Money Made Simple"];
     [slogan setFont:[UIFont fontWithName:@"VarelaRound-Regular" size:15]];
@@ -66,7 +66,7 @@
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
 
-    UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 280, 70)];
+    UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 166, 300, 70)];
     [prompt setTextColor:kNoochGrayDark];
     [prompt setBackgroundColor:[UIColor clearColor]];
     [prompt setNumberOfLines:3];
@@ -123,7 +123,7 @@
 {
     if ([self.code_field.text length] == 0)
     {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Please Enter Invite Code" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Please Enter An Invite Code" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [enter setEnabled:YES];
         return;

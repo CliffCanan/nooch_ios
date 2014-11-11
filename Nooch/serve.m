@@ -406,7 +406,7 @@ NSString *amnt;
         [dictnew setObject:arr forKey:@"Picture"];
     }
     NSDictionary*memDetails=[NSDictionary dictionaryWithObjectsAndKeys:dictnew,@"MemberDetails", nil];
-    NSLog(@"%@",memDetails);
+    //NSLog(@"%@",memDetails);
     UIImage*img=[UIImage imageNamed:@""];
     [[assist shared]setTranferImage:img];
     [[assist shared]setTranferImage:nil];
