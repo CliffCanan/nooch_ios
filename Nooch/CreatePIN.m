@@ -166,7 +166,7 @@
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
 
-    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(75, 83, 170, 18)];
+    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(75, 82, 170, 16)];
     [slogan setBackgroundColor:[UIColor clearColor]];
     [slogan setText:@"Money Made Simple"];
     [slogan setFont:[UIFont fontWithName:@"VarelaRound-regular" size:15]];
@@ -191,7 +191,7 @@
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
 
-    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 231, 280, 50)];
+    self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 231, 300, 50)];
     [self.prompt setNumberOfLines:2];
     [self.prompt setText:@"You'll be asked to enter this PIN anytime you send or request money."];
     [self.prompt setStyleClass:@"instruction_text"];

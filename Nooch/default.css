@@ -32,6 +32,11 @@ view {
     width : 140px;
     position : 90 15;
 }
+#prelogin_logo_loginScreen_4 {
+    height : 44px;
+    width : 122px;
+    position : 99 8;
+}
 .prelogin_slogan_loginScreen {
     font-size: 13px;
 }
@@ -345,6 +350,19 @@ view {
     background-image	: linear-gradient(#7fd034, #6ab029);
     border				: 1px solid #66AE3C;
 }
+.button_green_login_4:normal {
+    width				: 274px;
+    height				: 44px;
+    left                : 23px;
+    top                 : 187px;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 21px;
+    background-image	: linear-gradient(#7fd034, #6ab029);
+    border				: 1px solid #66AE3C;
+}
 .button_green_welcome:normal {
     width				: 280px;
     height				: 45px;
@@ -371,7 +389,8 @@ view {
     box-shadow          : 0 2px 4px rgba(30,32,31,.2);
 }
 /****  Disabled GREEN GRADIENT  ****/
-.button_green:disabled {
+.button_green:disabled,
+.button_green_login_4:disabled {
     width				: 280px;
     height				: 48px;
     left                : 20px;
@@ -755,20 +774,20 @@ view {
 
 /*** 	 SIGNUP FLOW:  Instructional Text	***/
 .instruction_text {
-    left            : 20px;
-    width			: 280px;
+    left            : 10px;
+    width			: 300px;
     height			: 70px;
     font-family		: "Roboto";
     font-weight     : regular;
-    font-size		: 16px;
+    font-size		: 17px;
     text-align      : center;
     color 			: #313233;
 }
 .instruction_text_smscrn {
-    left            : 20px;
-    width			: 280px;
+    left            : 15px;
+    width			: 290px;
     height			: 42px;
-    top             : 218px;
+    top             : 216px;
     font-family		: "Roboto";
     font-weight     : regular;
     font-size		: 15px;

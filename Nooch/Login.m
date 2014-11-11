@@ -143,7 +143,12 @@
                                  options:UIViewKeyframeAnimationOptionCalculationModeCubic
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
-                                      [btnback setFrame:CGRectMake(7, 18, 44, 44)];
+                                      if ([[UIScreen mainScreen] bounds].size.height > 500)
+                                      {
+                                          [btnback setFrame:CGRectMake(7, 18, 44, 44)];
+                                      } else {
+                                          [btnback setFrame:CGRectMake(7, 8, 44, 44)];
+                                      }
                                   }];
                               } completion: nil];
 }
@@ -164,7 +169,6 @@
     // Create Login View so that the app will be granted "status_update" permission.
     FBLoginView *loginview = [[FBLoginView alloc] init];
     loginview.frame = CGRectMake(19, 108, 282, 52);
-    //loginview.frame = CGRectOffset(loginview.frame, 5, 5);
 
 #ifdef __IPHONE_7_0
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
@@ -186,7 +190,7 @@
     
     if ([[UIScreen mainScreen] bounds].size.height > 500)
     {
-        UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(90, 73, 140, 15)];
+        UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(90, 73, 140, 14)];
         [slogan setBackgroundColor:[UIColor clearColor]];
         [slogan setText:@"Money Made Simple"];
         [slogan setFont:[UIFont fontWithName:@"VarelaRound-Regular" size:15]];
@@ -243,7 +247,7 @@
     [self.login setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
     self.login.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.login setTitle:@"Log In  " forState:UIControlStateNormal];
-    [self.login setFrame:CGRectMake(10, 263, 300, 60)];
+    [self.login setFrame:CGRectMake(10, 263, 300, 50)];
     [self.login addTarget:self action:@selector(check_credentials) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"button_green"];
 
@@ -288,21 +292,27 @@
     // Height adjustments for 3.5" screens
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
-        [em setFrame:CGRectMake(20, 95, 100, 20)];
-        [pass setFrame:CGRectMake(20, 130, 102, 20)];
-        
+        [logo setStyleId:@"prelogin_logo_loginScreen_4"];
+
+        loginview.frame = CGRectMake(50, 62, 220, 46);
+
+        [em setFrame:CGRectMake(20, 109, 100, 20)];
+        [pass setFrame:CGRectMake(20, 144, 102, 20)];
+
         CGRect frameEmailTextField = self.email.frame;
-        frameEmailTextField.origin.y = 95;
+        frameEmailTextField.origin.y = 109;
         [self.email setFrame:frameEmailTextField];
 
         CGRect framePassTextField = self.password.frame;
-        framePassTextField.origin.y = 130;
+        framePassTextField.origin.y = 144;
         [self.password setFrame:framePassTextField];
 
-        [self.login setFrame:CGRectMake(20, 180, 300, 60)];
-        [forgot setFrame:CGRectMake(190, 234, 120, 30)];
-        [remember_me setFrame:CGRectMake(19, 234, 140, 30)];
-        [self.stay_logged_in setFrame:CGRectMake(115, 235, 34, 21)];
+        [self.login setStyleClass:@"button_green_login_4"];
+
+        //[self.login setFrame:CGRectMake(20, 182, 300, 50)];
+        [forgot setFrame:CGRectMake(190, 235, 120, 30)];
+        [remember_me setFrame:CGRectMake(19, 235, 140, 30)];
+        [self.stay_logged_in setFrame:CGRectMake(115, 236, 34, 21)];
         self.stay_logged_in.transform = CGAffineTransformMakeScale(0.75, 0.72);
     }
     [self.view addSubview:self.stay_logged_in];

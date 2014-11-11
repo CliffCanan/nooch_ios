@@ -47,6 +47,8 @@
 {
     [super viewDidAppear:animated];
 
+    [self.login removeFromSuperview];
+
     UILabel * glyph_login = [UILabel new];
     [glyph_login setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
     [glyph_login setFrame:CGRectMake(268, 0, 18, 30)];
@@ -60,6 +62,7 @@
     [self.login addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"label_small"];
     [self.login addSubview:glyph_login];
+    [self.login setAlpha:0];
     [self.view addSubview:self.login];
 
     [UIView animateKeyframesWithDuration:.4
@@ -67,6 +70,7 @@
                                  options:UIViewKeyframeAnimationOptionCalculationModeCubic
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      [self.login setAlpha:1];
                                       if ([[UIScreen mainScreen] bounds].size.height > 500) {
                                           [self.login setFrame:CGRectMake(10, 509, 280, 30)];
                                       }
