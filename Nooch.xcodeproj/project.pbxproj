@@ -79,8 +79,8 @@
 		5C38468D19C56694002AEB15 /* check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C38468C19C56694002AEB15 /* check@2x.png */; };
 		5C38468F19C566DE002AEB15 /* cross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C38468E19C566DE002AEB15 /* cross@2x.png */; };
 		5C39FEC51A115CA600B2E2F4 /* nooch-logoSVCtest.svg in Resources */ = {isa = PBXBuildFile; fileRef = 5C39FEC41A115CA600B2E2F4 /* nooch-logoSVCtest.svg */; };
-		5C39FEC81A11B82500B2E2F4 /* knox_lightbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C39FEC61A11B82500B2E2F4 /* knox_lightbox.png */; };
-		5C39FEC91A11B82500B2E2F4 /* knox_lightbox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C39FEC71A11B82500B2E2F4 /* knox_lightbox@2x.png */; };
+		5C39FECC1A12D9D300B2E2F4 /* KnoxInfo-lightbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C39FECA1A12D9D300B2E2F4 /* KnoxInfo-lightbox.png */; };
+		5C39FECD1A12D9D300B2E2F4 /* KnoxInfo-lightbox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C39FECB1A12D9D300B2E2F4 /* KnoxInfo-lightbox@2x.png */; };
 		5C4A205019E77B9600D1A0EE /* Appirater.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4A204D19E77B9600D1A0EE /* Appirater.m */; };
 		5C4A205319E77C0000D1A0EE /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C4A205219E77C0000D1A0EE /* StoreKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5C5D073219DE70CB00B07A30 /* 0_home-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C5D073019DE70CB00B07A30 /* 0_home-bg.png */; };
@@ -469,8 +469,8 @@
 		5C38468C19C56694002AEB15 /* check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check@2x.png"; sourceTree = "<group>"; };
 		5C38468E19C566DE002AEB15 /* cross@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cross@2x.png"; sourceTree = "<group>"; };
 		5C39FEC41A115CA600B2E2F4 /* nooch-logoSVCtest.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "nooch-logoSVCtest.svg"; sourceTree = "<group>"; };
-		5C39FEC61A11B82500B2E2F4 /* knox_lightbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = knox_lightbox.png; sourceTree = "<group>"; };
-		5C39FEC71A11B82500B2E2F4 /* knox_lightbox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "knox_lightbox@2x.png"; sourceTree = "<group>"; };
+		5C39FECA1A12D9D300B2E2F4 /* KnoxInfo-lightbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "KnoxInfo-lightbox.png"; sourceTree = "<group>"; };
+		5C39FECB1A12D9D300B2E2F4 /* KnoxInfo-lightbox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "KnoxInfo-lightbox@2x.png"; sourceTree = "<group>"; };
 		5C4A204C19E77B9600D1A0EE /* Appirater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Appirater.h; sourceTree = "<group>"; };
 		5C4A204D19E77B9600D1A0EE /* Appirater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Appirater.m; sourceTree = "<group>"; };
 		5C4A204F19E77B9600D1A0EE /* AppiraterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppiraterDelegate.h; sourceTree = "<group>"; };
@@ -1141,8 +1141,8 @@
 		014BD55C183D3E6E00C3DD7B /* images */ = {
 			isa = PBXGroup;
 			children = (
-				5C39FEC61A11B82500B2E2F4 /* knox_lightbox.png */,
-				5C39FEC71A11B82500B2E2F4 /* knox_lightbox@2x.png */,
+				5C39FECA1A12D9D300B2E2F4 /* KnoxInfo-lightbox.png */,
+				5C39FECB1A12D9D300B2E2F4 /* KnoxInfo-lightbox@2x.png */,
 				5C39FEC41A115CA600B2E2F4 /* nooch-logoSVCtest.svg */,
 				5C861FA01A0BFAAD00275CD1 /* selectRecipient_img@2x.png */,
 				5C861FA11A0BFAAD00275CD1 /* 2_selectRecipient_bg@2x.png */,
@@ -2252,7 +2252,7 @@
 				844E3F8919DC05E400A00411 /* bg1@2x.png in Resources */,
 				014C432C185B9A4C00956A84 /* facebook-icon.png in Resources */,
 				5CD72EF419D3ECDC008A21D2 /* howMuch_img@2x.png in Resources */,
-				5C39FEC91A11B82500B2E2F4 /* knox_lightbox@2x.png in Resources */,
+				5C39FECD1A12D9D300B2E2F4 /* KnoxInfo-lightbox@2x.png in Resources */,
 				0179E9EB17F355310027526C /* flat_storyboard.storyboard in Resources */,
 				5CBC177519F4CE0000E1D095 /* clear_white@2x.png in Resources */,
 				014C432A185B9A4C00956A84 /* dollar-sign.png in Resources */,
@@ -2262,7 +2262,7 @@
 				01C26DBB1843BB22005179B7 /* sms-icon.png in Resources */,
 				01C26DAA1843BB22005179B7 /* address-book-icon.png in Resources */,
 				8449C59519EBAB9700027B9B /* middle-detail.png in Resources */,
-				5C39FEC81A11B82500B2E2F4 /* knox_lightbox.png in Resources */,
+				5C39FECC1A12D9D300B2E2F4 /* KnoxInfo-lightbox.png in Resources */,
 				8471A10919960CB300047231 /* arrow-blue.png in Resources */,
 				8449BF9E19EB94AE00027B9B /* AirshipConfig.plist in Resources */,
 				01C26DB01843BB22005179B7 /* email-icon.png in Resources */,
