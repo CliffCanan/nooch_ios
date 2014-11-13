@@ -379,8 +379,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1414"
             endingLineNumber = "1414"
-            landmarkName = "-tableView:titleForHeaderInSection:"
-            landmarkType = "5">
+            landmarkName = "@implementation SelectRecipient"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -615,7 +615,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "757"
             endingLineNumber = "757"
-            landmarkName = "-searchBarCancelButtonClicked:"
+            landmarkName = "-peoplePickerNavigationController:shouldContinueAfterSelectingPerson:property:identifier:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1687,7 +1687,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1169"
             endingLineNumber = "1169"
-            landmarkName = "-loginViewShowingLoggedInUser:"
+            landmarkName = "-textFieldShouldReturn:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
