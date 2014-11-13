@@ -104,10 +104,13 @@ UIImageView *picture;
 
 -(void)SaveAlert1
 {
-    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Save Changes" message:@"Do you want to save the changes in your profile?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Save Changes"
+                                                    message:@"Do you want to save the changes in your profile?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"YES"
+                                          otherButtonTitles:@"NO", nil];
     [alert setTag:5021];
     [alert show];
-    
     return;
 }
 
@@ -161,7 +164,11 @@ UIImageView *picture;
              (self.city.text.length > 2 && ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]) ||
              (self.phone.text.length > 3 && ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) )
         {
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Do you want to save the changes in your profile?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Save Changes"
+                                                            message:@"Do you want to save the changes in your profile?"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"YES"
+                                                  otherButtonTitles:@"NO", nil];
             [alert setTag:5020];
             [alert show];
 
@@ -182,7 +189,11 @@ UIImageView *picture;
              (self.phone.text.length > 3 && ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) ||
              (self.recovery_email.text.length > 3 && ![[dictSavedInfo valueForKey:@"recovery_email"]isEqualToString:self.recovery_email.text]) )
         {
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Nooch" message:@"Do you want to save the changes in your profile?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO", nil];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Save Changes"
+                                                            message:@"Do you want to save the changes in your profile?"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"YES"
+                                                  otherButtonTitles:@"NO", nil];
             [alert setTag:5020];
             [alert show];
 
@@ -563,16 +574,24 @@ UIImageView *picture;
     
     if ([self.name.text length] == 0)
     {
-        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Need A Name" message:@"We can call you 'Blank' if you want, but it's probably better if you entered a name..." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Need A Name"
+                                                      message:@"\xF0\x9F\x99\x87\nWe can call you 'Blank' if you want, but it's probably better if you entered a name..."
+                                                     delegate:Nil
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles:Nil, nil];
         [av show];
         return;
     }
-    
+
     if (![self validateEmail:[self.email text]])
     {
-        self.email.text = @"";
+        //self.email.text = @"";
         [self.email becomeFirstResponder];
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Invalid Email Address" message:@"Hmm... please double check that you have entered a valid email address." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Invalid Email Address"
+                                                        message:@"Hmm... please double check that you have entered a valid email address."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
         [alert show];
         return;
     }
@@ -592,9 +611,13 @@ UIImageView *picture;
         [self.city becomeFirstResponder];
         return;
     }
-    
+
     if ([[me pic] isKindOfClass:[NSNull class]]) {
-        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"I don't see you!" message:@"You haven't set your profile picture, would you like to?" delegate:self cancelButtonTitle:@"No Thanks" otherButtonTitles:@"Yes I do", nil];
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"I don't see you!"
+                                                      message:@"\xF0\x9F\x91\x80\nYou haven't set your profile picture, would you like to?"
+                                                     delegate:self
+                                            cancelButtonTitle:@"No Thanks"
+                                            otherButtonTitles:@"Yes - Set Now", nil];
         [av setTag:20];
         [av show];
     }
@@ -602,7 +625,7 @@ UIImageView *picture;
     [self.save setEnabled:NO];
     [self.save setUserInteractionEnabled:NO];
     [self.save setStyleClass:@"disabled_gray"];
-    
+
     strPhoneNumber = self.phone.text;
     strPhoneNumber = [strPhoneNumber stringByReplacingOccurrencesOfString:@"(" withString:@""];
     strPhoneNumber = [strPhoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
@@ -613,6 +636,7 @@ UIImageView *picture;
     {
         if ([strPhoneNumber length] != 10)
         {
+            [self.phone becomeFirstResponder];
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Phone Number Trouble" message:@"Please double check that you entered a valid 10-digit phone number." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             return;
@@ -629,13 +653,13 @@ UIImageView *picture;
     timezoneStandard = @"";
 
     recoverMail = [[NSString alloc] init];
-    
+
     if ([self.recovery_email.text length] > 0) {
         recoverMail = self.recovery_email.text;
     }
     else
         recoverMail = @"";
-    
+
     if ([self.address_two.text length] != 0) {
         [[me usr] setObject:self.address_two.text forKey:@"Addr2"];
         [[me usr] setObject:self.address_two.text forKey:@"Addr1"];
@@ -902,7 +926,7 @@ UIImageView *picture;
             UIView * email_not_validated = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 88)];
             [email_not_validated setBackgroundColor:Rgb2UIColor(250, 228, 3, .25)];
             [cell.contentView addSubview:email_not_validated];
-            
+
             [mail setStyleClass:@"table_txtlbl_indented"];
 
             UILabel * glyph_excl = [UILabel new];
@@ -912,14 +936,14 @@ UIImageView *picture;
             [glyph_excl setFrame:CGRectMake(12, 6, 20, 38)];
             [glyph_excl setTextColor:kNoochRed];
             [cell.contentView addSubview:glyph_excl];
-            
+
             self.glyph_arrow_email = [UILabel new];
             [self.glyph_arrow_email setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
             [self.glyph_arrow_email setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-down"]];
             [self.glyph_arrow_email setFrame:CGRectMake(82, 6, 20, 38)];
             [self.glyph_arrow_email setTextColor:kNoochGrayDark];
             [cell.contentView addSubview:self.glyph_arrow_email];
-        
+
             UILabel * emailVerifiedStatus = [[UILabel alloc] initWithFrame:CGRectMake(32, 50, 130, 30)];
             [emailVerifiedStatus setBackgroundColor:[UIColor clearColor]];
             [emailVerifiedStatus setStyleClass:@"notVerifiedLabel"];
@@ -933,7 +957,7 @@ UIImageView *picture;
                                                                        attributes:textAttributes];
 
             UIButton * resend_mail = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [resend_mail setFrame:CGRectMake(200, 50, 105, 30)];
+            [resend_mail setFrame:CGRectMake(200, 51, 105, 30)];
             [resend_mail setStyleClass:@"button_green_sm"];
             [resend_mail addTarget:self action:@selector(resend_email) forControlEvents:UIControlEventTouchUpInside];
             [resend_mail setTitle:@"Resend Email" forState:UIControlStateNormal];
@@ -941,7 +965,8 @@ UIImageView *picture;
             resend_mail.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
             [cell.contentView addSubview:resend_mail];
         }
-        else {
+        else
+        {
             UILabel * glyph_checkMark = [UILabel new];
             [glyph_checkMark setBackgroundColor:[UIColor clearColor]];
             [glyph_checkMark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
@@ -976,7 +1001,7 @@ UIImageView *picture;
             UIView * unverified_phone = [[UIView alloc] initWithFrame:CGRectMake(0,0,320,88)];
             [unverified_phone setBackgroundColor:Rgb2UIColor(250, 228, 3, .25)];
             [cell.contentView addSubview:unverified_phone];
-            
+
             [num setStyleClass:@"table_txtlbl_indented"];
 
             UILabel * glyph_excl = [UILabel new];
@@ -986,33 +1011,31 @@ UIImageView *picture;
             [glyph_excl setFrame:CGRectMake(12, 6, 20, 38)];
             [glyph_excl setTextColor:kNoochRed];
             [cell.contentView addSubview:glyph_excl];
-            
-            if ([[dictSavedInfo valueForKey:@"phoneno"]length] > 0)
-            {
-                self.glyph_arrow_phone = [UILabel new];
-                [self.glyph_arrow_phone setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-                [self.glyph_arrow_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-down"]];
-                [self.glyph_arrow_phone setFrame:CGRectMake(89, 6, 20, 38)];
-                [self.glyph_arrow_phone setTextColor:kNoochGrayDark];
-                [cell.contentView addSubview:self.glyph_arrow_phone];
-            }
+
+            self.glyph_arrow_phone = [UILabel new];
+            [self.glyph_arrow_phone setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+            [self.glyph_arrow_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-down"]];
+            [self.glyph_arrow_phone setFrame:CGRectMake(89, 6, 20, 38)];
+            [self.glyph_arrow_phone setTextColor:kNoochGrayDark];
+            [self.glyph_arrow_phone setAlpha:0];
+            [cell.contentView addSubview:self.glyph_arrow_phone];
 
             UILabel * phoneVerifiedStatus = [[UILabel alloc] initWithFrame:CGRectMake(32, 50, 130, 30)];
             [phoneVerifiedStatus setBackgroundColor:[UIColor clearColor]];
             [phoneVerifiedStatus setStyleClass:@"notVerifiedLabel"];
             [cell.contentView addSubview:phoneVerifiedStatus];
-            
+
             NSShadow * shadow = [[NSShadow alloc] init];
             shadow.shadowColor = Rgb2UIColor(255, 252, 249, .3);
             shadow.shadowOffset = CGSizeMake(0, 1);
             NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
             phoneVerifiedStatus.attributedText = [[NSAttributedString alloc] initWithString:@"Not Verified"
                                                                                  attributes:textAttributes];
-            
+
             UIButton *resend_phone = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [resend_phone setTitle:@"Resend SMS" forState:UIControlStateNormal];
             [resend_phone addTarget:self action:@selector(resend_SMS) forControlEvents:UIControlEventTouchUpInside];
-            [resend_phone setFrame:CGRectMake(200, 50, 105, 30)];
+            [resend_phone setFrame:CGRectMake(200, 51, 105, 30)];
             [resend_phone setStyleClass:@"button_green_sm"];
             [resend_phone setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.25) forState:UIControlStateNormal];
             resend_phone.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -1028,7 +1051,7 @@ UIImageView *picture;
             [glyph_checkMark setTextColor:kNoochGreen];
             [cell.contentView addSubview:glyph_checkMark];
         }
-        
+
         [cell.contentView addSubview:num];
         [cell.contentView addSubview:self.phone];
     }
@@ -1176,7 +1199,7 @@ UIImageView *picture;
 
 - (IBAction)doneClicked:(id)sender
 {
-    NSLog(@"Done Clicked.");
+    //NSLog(@"Done Clicked.");
     [self.view endEditing:YES];
 }
 
@@ -1188,9 +1211,10 @@ UIImageView *picture;
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
 }
 
--(void)Error:(NSError *)Error{
+-(void)Error:(NSError *)Error
+{
     [self.hud hide:YES];
-   
+
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
@@ -1233,7 +1257,11 @@ UIImageView *picture;
                                error:&error] objectForKey:@"Result"];
         if ([response isEqualToString:@"Already Activated."])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"" message:@"Your email has already been verified." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
+                                                         message:@"Your email has already been verified."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
             [av show];
             self.disclose = NO;
             [self.list beginUpdates];
@@ -1241,12 +1269,20 @@ UIImageView *picture;
         }
         else if ([response isEqualToString:@"Not a nooch member."])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"" message:@"An error occurred when attempting to fulfill this request, please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
+                                                         message:@"An error occurred when attempting to fulfill this request, please try again."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
             [av show];
         }
         else if ([response isEqualToString:@"Success"])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"" message:@"A verifiction link has been sent to your email." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Check Your Email"
+                                                         message:[NSString stringWithFormat:@"\xF0\x9F\x93\xA5\nA verifiction link has been sent to %@.",self.email.text]
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
             [av show];
             self.disclose = NO;
             [self.list beginUpdates];
@@ -1266,18 +1302,30 @@ UIImageView *picture;
                                error:&error] objectForKey:@"Result"];
         
         if ([response isEqualToString:@"Already Verified."]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"" message:@"Your phone number has already been verified." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"You're Good To Go  \xF0\x9F\x91\x8D"
+                                                         message:@"Your phone number has already been verified."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
             [av show];
             self.disclose = NO;
             [self.list beginUpdates];
             [self.list endUpdates];
         }
         else if ([response isEqualToString:@"Not a nooch member."]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Unexpected Error" message:@"An error occurred when attempting to fulfill this request, please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Unexpected Error"
+                                                         message:@"An error occurred when attempting to fulfill this request, please try again."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
             [av show];
         }
         else if ([response isEqualToString:@"Success"]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Check Your Texts" message:@"A verifiction SMS has been sent to your phone." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Check Your Texts"
+                                                         message:@"\xF0\x9F\x93\xB2\nA verifiction SMS has been sent to your phone. Please respond \"Go\" (case doesn't matter) to confirm your number."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
             [av show];
             self.disclose = YES;
             [self.list beginUpdates];
@@ -1288,11 +1336,19 @@ UIImageView *picture;
             [av show];
         }
         else if ([response isEqualToString:@"Temporarily_Blocked"]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Is Suspended" message:@"Your account is currently suspended, please attempt to verify your phone number when you are no longer suspended." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Is Suspended"
+                                                         message:@"Your account is currently suspended, please attempt to verify your phone number when your account is no longer suspended."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
             [av show];
         }
         else if ([response isEqualToString:@"Suspended"]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Is Suspended" message:@"Your account is currently suspended, please attempt to verify your phone number when you are no longer suspended." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Is Suspended"
+                                                         message:@"Your account is currently suspended, please attempt to verify your phone number when your account is no longer suspended."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
             [av show];
         }
     }
@@ -1328,7 +1384,20 @@ UIImageView *picture;
                         placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
             }
 
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Profile Saved" message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Profile Saved"
+                                                         message:[resultValue valueForKey:@"Result"]
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+            [av show];
+        }
+        else if ([[resultValue valueForKey:@"Result"] isEqualToString:@"Phone Number already registered with Nooch"])
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Phone Number Already Registered"
+                                                         message:[NSString stringWithFormat:@"Looks like %@ is already registered with another Nooch account. Please contact us if this is a mistake or for further help.",self.phone.text]
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
             [av show];
         }
         else
@@ -1338,11 +1407,15 @@ UIImageView *picture;
             {
                 [[me usr] setObject:validated forKey:@"validated"];
             }
-            
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Something Went Wrong" message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Something Went Wrong"
+                                                         message:[resultValue valueForKey:@"Result"]
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
             [av show];
         }
-        
+
         if (isSignup)
         {
             [self.navigationController setNavigationBarHidden:NO];
@@ -1366,13 +1439,18 @@ UIImageView *picture;
         
         NSLog(@"dictProfileinfo is: %@",dictProfileinfo);
 
-        if (![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]])
+        if (![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]] &&
+            ![[[dictProfileinfo valueForKey:@"ContactNumber"] lowercaseString] isEqualToString:@"null"])
         {
-            
             if (  [dictProfileinfo valueForKey:@"ContactNumber"] != NULL &&
                 ![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]])
             {
                 self.SavePhoneNumber = [dictProfileinfo valueForKey:@"ContactNumber"];
+
+                if (![[dictProfileinfo valueForKey:@"IsVerifiedPhone"] intValue])
+                {
+                    [self.glyph_arrow_phone setAlpha:1];
+                }
             }
             else {
                 self.SavePhoneNumber = @"";
@@ -1386,7 +1464,7 @@ UIImageView *picture;
                                    [[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(6, 4)]];
                 NSString * phone = [self.phone.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                 self.phone.text = phone;
-                
+
                 [dictSavedInfo setObject:self.phone.text forKey:@"phoneno"];
             }
             else
@@ -1481,31 +1559,40 @@ UIImageView *picture;
 
 -(void)decryptionDidFinish:(NSMutableDictionary *) sourceData TValue:(NSNumber *) tagValue
 {
-    
     if ([self.ServiceType isEqualToString:@"Address"])
     {
         self.ServiceType = @"City";
         NSArray * arr = [[sourceData objectForKey:@"Status"] componentsSeparatedByString:@"/"];
-        
-        if ([arr count] == 2)
+
+        NSLog(@"sourceData Status is... %@",[sourceData objectForKey:@"Status"]);
+        NSLog(@"arr is: %@",arr);
+
+        if (![[[sourceData objectForKey:@"Status"] lowercaseString] isEqualToString:@"null"] &&
+            ![[[sourceData objectForKey:@"Status"] lowercaseString] isEqualToString:@"declined"])
         {
-            self.address_one.text = [arr objectAtIndex:0];
-            self.address_two.text = [arr objectAtIndex:1];
+            if ([arr count] == 2)
+            {
+                self.address_one.text = [arr objectAtIndex:0];
+                self.address_two.text = [arr objectAtIndex:1];
+            }
+            else
+            {
+                self.address_one.text = [arr objectAtIndex:0];
+                self.address_two.text = @"";
+            }
+
+            NSString * address1 = [self.address_one.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            self.address_one.text = [address1 capitalizedString];
+            NSString* address2 = [self.address_two.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            self.address_two.text = [address2 capitalizedString];
+            
+            [dictSavedInfo setObject:self.address_one.text forKey:@"Address1"];
+            [dictSavedInfo setObject:self.address_two.text forKey:@"Address2"];
         }
-        
-        else
-        {
-            self.address_one.text = [arr objectAtIndex:0];
-            self.address_two.text = @"";
+        else {
+            self.address_one.text = @"";
+            self.address_one.text = @"";
         }
-        NSString * address1 = [self.address_one.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        self.address_one.text = [address1 capitalizedString];
-        NSString* address2 = [self.address_two.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        self.address_two.text = [address2 capitalizedString];
-        
-        [dictSavedInfo setObject:self.address_one.text forKey:@"Address1"];
-        [dictSavedInfo setObject:self.address_two.text forKey:@"Address2"];
-        
         if (![[dictProfileinfo objectForKey:@"City"] isKindOfClass:[NSNull class]])
         {
             Decryption *decry = [[Decryption alloc] init];
@@ -1514,7 +1601,7 @@ UIImageView *picture;
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"City"]];
         }
     }
-    
+
     else if ([self.ServiceType isEqualToString:@"City"])
     {
         self.ServiceType = @"State";
@@ -1540,7 +1627,7 @@ UIImageView *picture;
             [decry getDecryptedValue:@"GetDecryptedData" pwdString:[dictProfileinfo objectForKey:@"Zipcode"]];
         }
     }
-    
+
     else if ([self.ServiceType isEqualToString:@"State"])
     {
         self.ServiceType = @"zip";
@@ -1552,7 +1639,6 @@ UIImageView *picture;
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptedValue:@"GetDecryptedData" pwdString:[dictProfileinfo objectForKey:@"Zipcode"]];
         }
-        
         else
         {
             self.ServiceType = @"name";
@@ -1565,7 +1651,7 @@ UIImageView *picture;
             }
         }
     }
-    
+
     else  if ([self.ServiceType isEqualToString:@"zip"])
     {
         self.ServiceType = @"name";
@@ -1583,7 +1669,7 @@ UIImageView *picture;
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"FirstName"]];
         }
     }
-    
+
     else  if ([self.ServiceType isEqualToString:@"name"]) // first name
     {
         self.ServiceType = @"lastname";
@@ -1625,7 +1711,7 @@ UIImageView *picture;
     else  if ([self.ServiceType isEqualToString:@"lastname"]) //last name
     {
         self.ServiceType = @"email";
-        
+
         if ([[sourceData objectForKey:@"Status"] length] > 0)
         {
             NSString * letterA = [[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
@@ -1636,7 +1722,7 @@ UIImageView *picture;
             
             [dictSavedInfo setObject:self.name.text forKey:@"name"];
         }
-        
+
         if (![[dictProfileinfo objectForKey:@"UserName"] isKindOfClass:[NSNull class]])
         {
             Decryption *decry = [[Decryption alloc] init];
@@ -1645,12 +1731,11 @@ UIImageView *picture;
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"UserName"]];
         }
     }
-    
+
     else  if ([self.ServiceType isEqualToString:@"email"])
     {
         self.email.text = [sourceData objectForKey:@"Status"];
-        //  NSString* email = [self.email.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        
+
         if (![[dictProfileinfo objectForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]] &&
               [dictProfileinfo objectForKey:@"RecoveryMail"] != NULL &&
             ![[dictProfileinfo objectForKey:@"RecoveryMail"] isEqualToString:@""])
@@ -1661,7 +1746,6 @@ UIImageView *picture;
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"RecoveryMail"]];
         }
-        
         else
         {
             self.recovery_email.text = @"";
@@ -1677,6 +1761,7 @@ UIImageView *picture;
             }
         }
     }
+
     else if ([self.ServiceType isEqualToString:@"recovery"])
     {
         self.ServiceType = @"pwd";
@@ -1688,8 +1773,25 @@ UIImageView *picture;
         [dictSavedInfo setObject:self.recovery_email.text forKey:@"recovery_email"];
 
         if ([self.recovery_email.text isKindOfClass:[NSNull class]] ||
-            [self.recovery_email.text isEqualToString:@"declined"]) {
+            [self.recovery_email.text isEqualToString:@"declined"] ||
+            [self.recovery_email.text isEqualToString:@"null"])
+        {
             self.recovery_email.text = @"";
+        }
+        else if ([self.recovery_email.text length] > 21)
+        {
+            NSLog(@"Smallest Text");
+            [self.recovery_email setStyleClass:@"table_view_cell_detailtext_smallestText"];
+        }
+        else if ([self.recovery_email.text length] > 18)
+        {
+            NSLog(@"Smaller 2 Text");
+            [self.recovery_email setStyleClass:@"table_view_cell_detailtext_smallerStillText"];
+        }
+        else if ([self.recovery_email.text length] > 15)
+        {
+            NSLog(@"Smaller 1 Text");
+            [self.recovery_email setStyleClass:@"table_view_cell_detailtext_smallerText"];
         }
     }
 }

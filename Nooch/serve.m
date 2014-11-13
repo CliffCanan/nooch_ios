@@ -451,9 +451,9 @@ NSString *amnt;
     [requestSet setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [requestSet setHTTPBody:postDataSet];
     [requestSet setTimeoutInterval:3600];
-    
+
     //NSLog(@"%@  ....  %@",url,urlStrSet);
-    
+
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestSet delegate:self];
     if (!connection)
         NSLog(@"connect error");
@@ -793,7 +793,7 @@ NSString *amnt;
                                 JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                                 options:kNilOptions
                                 error:&error];
-        NSLog(@"dict object %@",[result objectForKey:@"Result"]);
+        NSLog(@"Serve --> connectionDidFinishLoading --> Login: dict object %@",[result objectForKey:@"Result"]);
         //getting the token
         if ([result objectForKey:@"Result"] &&
            ![[result objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] &&

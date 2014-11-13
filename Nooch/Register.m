@@ -342,7 +342,7 @@
                      self.hud.delegate = self;
                      [self.hud show:YES];
                  });
-                                 NSArray *accounts = [self.accountStore accountsWithAccountType:facebookAccountType];
+                 NSArray *accounts = [self.accountStore accountsWithAccountType:facebookAccountType];
                  self.facebookAccount = [accounts lastObject];
                  //[self renewFb];
                  [self finishFb];
@@ -412,9 +412,10 @@
              self.hud.mode = MBProgressHUDModeCustomView;
              self.hud.customView = spinner1;
              self.hud.delegate = self;
-             self.hud.labelText = @"Checking SignUp Credentials...";
+             self.hud.labelText = @"Checking Sign Up Credentials...";
              [self.hud show:YES];
 
+             NSLog(@"Facebook Email is: %@",self.facebook_info);
              NSString * udid = [[UIDevice currentDevice] uniqueDeviceIdentifier];
              serve * log = [serve new];
              [log setDelegate:self];
@@ -571,10 +572,13 @@
 
             [[NSUserDefaults standardUserDefaults] setObject:[self.facebook_info objectForKey:@"id"] forKey:@"facebook_id"];
 
-            NSData * imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURL]];
-            NSMutableDictionary *d = [self.facebook_info mutableCopy];
-            [d setObject:imgData forKey:@"image"];
-            self.facebook_info = [d mutableCopy];
+            if (imageURL)
+            {
+                NSData * imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURL]];
+                NSMutableDictionary *d = [self.facebook_info mutableCopy];
+                [d setObject:imgData forKey:@"image"];
+                self.facebook_info = [d mutableCopy];
+            }
 
             [self.or setText:@"Now just create a password..."];
 

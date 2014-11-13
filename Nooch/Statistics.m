@@ -339,9 +339,8 @@
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
     self.hud.delegate = self;
-    
-    [self GetFavorite];
 
+    [self GetFavorite];
 }
 
 

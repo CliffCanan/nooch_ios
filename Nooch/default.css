@@ -675,6 +675,24 @@ view {
     height			: 40px;
     text-align		: right;
 }
+.table_view_cell_detailtext_smallerText {
+    left            : 129;
+    width           : 180
+    font-size       : 16px;
+    font-weight		: light;
+}
+.table_view_cell_detailtext_smallerStillText {
+    left            : 129;
+    width           : 180
+    font-size       : 15px;
+    font-weight		: light;
+}
+.table_view_cell_detailtext_smallestText {
+    left            : 129;
+    width           : 180
+    font-size       : 14px;
+    font-weight		: light;
+}
 .exportHistorybutton {
     top: 450px;
     width: 130px;
@@ -2799,8 +2817,8 @@ table-view#emptyTable {
 }
 table-view#settings {
     width			: 322px;
-    height			: 150px;
-    top				: 200px;
+    height			: 200px;
+    top				: 194px;
     left			: -1px;
     background-color: white;
     row-height		: 50px;
@@ -2847,14 +2865,14 @@ table-view#settings_resetpw {
 /**  Gray Signout Button. **/
 #button_signout {
     left				: 30px;
-    top					: 415px;
+    top					: 425px;
     width				: 260px;
     height				: 44px;
     font-size			: 18px;
 }
 #button_signout_4 {
     left				: 30px;
-    top					: 364px;
+    top					: 414px;
     width				: 260px;
     height				: 44px;
     font-size			: 18px;

@@ -156,7 +156,11 @@
         [self.navigationItem setLeftBarButtonItem:nil];
         [self.completed_pending setSelectedSegmentIndex:0];
 
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Add Recipients" message:@"To request money from more than one person, search for friends then tap each additional person (up to 10).\n\nTap 'Done' when finished." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Add Recipients"
+                                                     message:@"To request money from more than one person, search for friends then tap each additional person (up to 10).\n\nTap 'Done' when finished."
+                                                    delegate:nil
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
         [av show];
         [self.navigationItem setTitle:@"Group Request"];
         [self.navigationItem setRightBarButtonItem:Nil];
@@ -265,7 +269,11 @@
         ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted)
     {
         NSLog(@"Denied");
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Access To Contacts" message:@"Did you know you can send money to ANY email address? It's really helpful to select a contact you already have in your iPhone's Address Book.\n\nTo enable this ability, turn on access to Contacts in your iPhone's Settings:\n\nSettings --> Privacy --> Contacts" delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Access To Contacts"
+                                                        message:@"Did you know you can send money to ANY email address? It's really helpful to select a contact you already have in your iPhone's Address Book.\n\nTo enable this ability, turn on access to Contacts in your iPhone's Settings:\n\nSettings --> Privacy --> Contacts"
+                                                       delegate:Nil
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:Nil, nil];
         [alert show];
     }
     else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
@@ -300,7 +308,11 @@
 {
     if ([[[assist shared]getArray] count] == 0)
     {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"But Whooo?" message:@"Please select at least one recipient.  Otherwise it makes it way harder to know where to send your request!" delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"But Whooo?"
+                                                     message:@"\xF0\x9F\x98\x95\nPlease select at least one recipient. Otherwise it makes it way harder to know where to send your request!"
+                                                    delegate:Nil
+                                           cancelButtonTitle:@"Ok"
+                                           otherButtonTitles:Nil, nil];
         [alert show];
         return;
     }
@@ -904,12 +916,14 @@
 -(void)getMemberIdByUsingUserNameFromPhoneBook
 {
     [search resignFirstResponder];
-    
-    NSLog(@"2.3 Checkpoint REACHED");
 
     if ([emailphoneBook isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]])
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Denied" message:@"You are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Denied"
+                                                     message:@"\xE2\x98\x9D\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!"
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
         [av setTag:4];
         [av show];
     }
@@ -925,12 +939,14 @@
 #pragma mark - email handling
 -(void)getMemberIdByUsingUserName
 {
-    NSLog(@"2.4 Checkpoint Reached");
-
     [search resignFirstResponder];
     if ([[search.text lowercaseString] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]])
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Denied" message:@"You are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Denied"
+                                                     message:@"\xF0\x9F\x98\xB1\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!"
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
         [av setTag:4];
         [av show];
     }
@@ -1812,7 +1828,7 @@
             {
                 UIAlertController * alert = [UIAlertController
                                              alertControllerWithTitle:@"Please Check That Email"
-                                             message:@"That doesn't look like a valid email address.  Please check it and try again."
+                                             message:@"\xF0\x9F\x93\xA7\nThat doesn't look like a valid email address.  Please check it and try again."
                                              preferredStyle:UIAlertControllerStyleAlert];
                 
                 UIAlertAction * ok = [UIAlertAction
@@ -1828,7 +1844,7 @@
             }
             else  // for iOS 7 and prior
             {
-                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Please Check That Email" message:@"That doesn't look like a valid email address.  Please check it and try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Please Check That Email" message:@"\xF0\x9F\x93\xA7\nThat doesn't look like a valid email address. Please check it and try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [av show];
             }
         }
