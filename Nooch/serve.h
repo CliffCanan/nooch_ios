@@ -108,7 +108,7 @@
 -(void)CancelMoneyRequestForExistingNoochUser:(NSString*)transactionId;
 -(void)CancelRejectTransaction:(NSString*)transactionId resp:(NSString*)userResponse;
 -(void)GetServerCurrentTime;
--(void)storeFB:(NSString*)fb_id;
+-(void)storeFB:(NSString*)fb_id isConnect:(NSString*)isconnect;
 -(void)get_favorites;
 -(void)GetKnoxBankAccountDetails;
 -(void)saveMemberTransId:(NSDictionary*)trans;

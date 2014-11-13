@@ -121,7 +121,7 @@ NSMutableURLRequest *request;
     [fb setDelegate:self];
     [fb setTagName:@"fb"];
     if ([user objectForKey:@"facebook_id"]) {
-        [fb storeFB:[user objectForKey:@"facebook_id"]];
+    [fb storeFB:[user objectForKey:@"facebook_id"] isConnect:@"YES"];
     }
 }
 

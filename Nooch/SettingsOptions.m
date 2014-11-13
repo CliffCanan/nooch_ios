@@ -13,6 +13,7 @@
 #import "ECSlidingViewController.h"
 #import "knoxWeb.h"
 #import "UIImageView+WebCache.h"
+#import "fbConnect.h"
 @interface SettingsOptions (){
     UILabel * introText;
     UILabel * bank_name;
@@ -303,6 +304,9 @@
     else if(indexPath.row == 2){
         [self notifications];
     }
+    else if(indexPath.row == 3){
+        [self connect_fb];
+    }
 }
 
 - (void)profile
@@ -322,6 +326,11 @@
 {
     NotificationSettings * notes = [NotificationSettings new];
     [self performSelector:@selector(navigate_to:) withObject:notes afterDelay:0.01];
+}
+- (void)connect_fb
+{
+    fbConnect * fb = [fbConnect new];
+    [self performSelector:@selector(navigate_to:) withObject:fb afterDelay:0.01];
 }
 
 - (void) navigate_to:(id)view

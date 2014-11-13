@@ -330,6 +330,7 @@
 		8481F08F19A1CA75007F6565 /* selectRecipientIntro.png in Resources */ = {isa = PBXBuildFile; fileRef = 8481F08D19A1CA75007F6565 /* selectRecipientIntro.png */; };
 		8481F09019A1CA75007F6565 /* selectRecipientIntro_smallScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 8481F08E19A1CA75007F6565 /* selectRecipientIntro_smallScreen.png */; };
 		84830DD019B03DB400E29A4C /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84830DCF19B03DB400E29A4C /* MapKit.framework */; };
+		848C98411A1473A200C1BAE4 /* fbConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = 848C98401A1473A200C1BAE4 /* fbConnect.m */; };
 		849AF6BD19A3183000693385 /* close_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AF6BC19A3183000693385 /* close_button.png */; };
 		84B65A73188542E9009A5205 /* NSString+ASBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B65A72188542E9009A5205 /* NSString+ASBase64.m */; };
 		84B79FFF19BEDEB50081A2AF /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B79FFE19BEDEB50081A2AF /* iCarousel.m */; };
@@ -928,6 +929,8 @@
 		8481F08D19A1CA75007F6565 /* selectRecipientIntro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = selectRecipientIntro.png; path = ../selectRecipientIntro.png; sourceTree = "<group>"; };
 		8481F08E19A1CA75007F6565 /* selectRecipientIntro_smallScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = selectRecipientIntro_smallScreen.png; path = ../selectRecipientIntro_smallScreen.png; sourceTree = "<group>"; };
 		84830DCF19B03DB400E29A4C /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		848C983F1A1473A200C1BAE4 /* fbConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fbConnect.h; sourceTree = "<group>"; };
+		848C98401A1473A200C1BAE4 /* fbConnect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = fbConnect.m; sourceTree = "<group>"; };
 		849AF6BC19A3183000693385 /* close_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_button.png; sourceTree = "<group>"; };
 		84B65A71188542E9009A5205 /* NSString+ASBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ASBase64.h"; sourceTree = "<group>"; };
 		84B65A72188542E9009A5205 /* NSString+ASBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ASBase64.m"; sourceTree = "<group>"; };
@@ -1008,6 +1011,8 @@
 				01085FDA1803338700A31F63 /* NotificationSettings.m */,
 				01085FD018030E5900A31F63 /* SettingsOptions.h */,
 				01085FD118030E5900A31F63 /* SettingsOptions.m */,
+				848C983F1A1473A200C1BAE4 /* fbConnect.h */,
+				848C98401A1473A200C1BAE4 /* fbConnect.m */,
 			);
 			name = "Settings Controllers";
 			sourceTree = "<group>";
@@ -2459,6 +2464,7 @@
 				01085FB317FB59AB00A31F63 /* CreatePIN.m in Sources */,
 				84B65A73188542E9009A5205 /* NSString+ASBase64.m in Sources */,
 				5C69CFBD19C8F20F00EB406F /* UIWindow+SIUtils.m in Sources */,
+				848C98411A1473A200C1BAE4 /* fbConnect.m in Sources */,
 				5C69D09819CA244C00EB406F /* tour.m in Sources */,
 				6B89276116DEA49C00F9100F /* FPPopoverView.m in Sources */,
 				841A3E0F18A61491001DAAA2 /* UIImage+RoundedCorner.m in Sources */,
