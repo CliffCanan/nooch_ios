@@ -302,7 +302,7 @@ NSString *amnt;
     
     [[assist shared]setSusPended:NO];
     ServiceType=@"Login";
-                                                                                      			    //LoginWithFacebook(string userEmail, string FBId, Boolean rememberMeEnabled, decimal lat, decimal lng, string udid, string devicetoken)
+    //LoginWithFacebook(string userEmail, string FBId, Boolean rememberMeEnabled, decimal lat, decimal lng, string udid, string devicetoken)
     [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"pincheck"];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     
@@ -451,9 +451,9 @@ NSString *amnt;
     [requestSet setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [requestSet setHTTPBody:postDataSet];
     [requestSet setTimeoutInterval:3600];
-    
+
     //NSLog(@"%@  ....  %@",url,urlStrSet);
-    
+
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestSet delegate:self];
     if (!connection)
         NSLog(@"connect error");
@@ -793,7 +793,7 @@ NSString *amnt;
                                 JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                                 options:kNilOptions
                                 error:&error];
-        NSLog(@"dict object %@",[result objectForKey:@"Result"]);
+        NSLog(@"Serve --> connectionDidFinishLoading --> Login: dict object %@",[result objectForKey:@"Result"]);
         //getting the token
         if ([result objectForKey:@"Result"] &&
            ![[result objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] &&
@@ -1756,15 +1756,15 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 
--(void)SendReminderToRecepient:(NSString *)transactionId memberId:(NSString*)memberId
+-(void)SendReminderToRecepient:(NSString *)transactionId reminderType:(NSString*)reminderType
 {
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    NSString *urlString = [NSString stringWithFormat:@"%@/SendReminderToRecepient?MemberId=%@&accesstoken=%@&transactionId=%@",ServerUrl,[defaults objectForKey:@"MemberId"],[defaults objectForKey:@"OAuthToken"],transactionId];
+    NSString *urlString = [NSString stringWithFormat:@"%@/SendTransactionReminderEmail?ReminderType=%@&MemberId=%@&accesstoken=%@&transactionId=%@",ServerUrl,reminderType,[defaults objectForKey:@"MemberId"],[defaults objectForKey:@"OAuthToken"],transactionId];
     NSURL *url = [NSURL URLWithString:urlString];
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");

@@ -1110,10 +1110,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [alertView show];
         return;
     }
-    
+
     if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
-        SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Connect Your Bank" andMessage:@"Adding a bank account to fund Nooch payments is lightening quick.\n\n •  No routing or account number needed\n  • Nooch's bank-grade encryption keeps your info safe\n\n Would you like to take care of this now?"];
+        SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Connect A Funding Source \xF0\x9F\x92\xB0" andMessage:@"Adding a bank account to fund Nooch payments is lightning quick.\n\n •  No routing or account number needed\n  • Nooch's bank-grade encryption keeps your info safe\n\n Would you like to take care of this now?"];
         [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
         [alertView addButtonWithTitle:@"Go Now" type:SIAlertViewButtonTypeDefault
                               handler:^(SIAlertView *alert) {
@@ -1128,7 +1128,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [alertView show];
         return;
     }
-    
+
     else if ([[user valueForKey:@"Status"]isEqualToString:@"Registered"] )
     {
         SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Please Verify Your Email" andMessage:@"Terribly sorry, but before you can send money, please confirm your email address by clicking the link we sent to the email address you used to sign up.\n\xF0\x9F\x99\x8F"];
@@ -1140,7 +1140,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [alertView show];
         return;
     }
-    
+
     /* if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
     {
         SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Help Us Keep Nooch Safe" andMessage:@"Please take 1 minute to verify your identity by completing your Nooch profile (just 4 fields)."];
@@ -1379,7 +1379,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     else if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
-        SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Connect Your Bank" andMessage:@"Adding a bank account to fund Nooch payments is lightening quick.\n\n •  No routing or account number needed\n  • Nooch's bank-grade encryption keeps your info safe\n\n Would you like to take care of this now?"];
+        SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Connect A Funding Source \xF0\x9F\x92\xB0" andMessage:@"Adding a bank account to fund Nooch payments is lightning quick.\n\n •  No routing or account number needed\n  • Nooch's bank-grade encryption keeps your info safe\n\n Would you like to take care of this now?"];
         [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
         [alertView addButtonWithTitle:@"Go Now" type:SIAlertViewButtonTypeDefault
                               handler:^(SIAlertView *alert) {

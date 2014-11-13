@@ -1195,6 +1195,7 @@
     email_fb = [self.loggedInUser objectForKey:@"email"];
     fbID = [self.loggedInUser objectForKey:@"id"];
 
+    NSLog(@"FB LoggedInUser is %@",self.loggedInUser);
     serve * log = [serve new];
     [log setDelegate:self];
     [log setTagName:@"loginwithFB"];

@@ -2122,30 +2122,47 @@ return customView;
                 if (ind == 0)
                 {  //remind
                     self.responseDict = [dictRecord copy];
-                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"COMING SOON" message:@"Send a reminder about this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder"
+                                                                 message:[NSString stringWithFormat:@"Do you want to send %@ a reminder about this request?",[[self.responseDict valueForKey:@"FirstName"] capitalizedString]]
+                                                                delegate:self
+                                                       cancelButtonTitle:@"Yes"
+                                                       otherButtonTitles:@"No", nil];
                     [av show];
-//                    [av setTag:1012];
+                    [av setTag:2012];
                 }
                 else
                 {  //cancel
                     self.responseDict = [dictRecord copy];
-                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Request" message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Request"
+                                                                 message:[NSString stringWithFormat:@"Are you sure you want to cancel this request to %@?",[[self.responseDict valueForKey:@"FirstName"] capitalizedString]]
+                                                                delegate:self
+                                                       cancelButtonTitle:@"Yes"
+                                                       otherButtonTitles:@"No", nil];
                     [av show];
                     [av setTag:1010];
                 }
             }
-            else {
+            else
+            {
                 if (ind == 0)
                 { //remind
                     self.responseDict = [dictRecord copy];
-                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"COMING SOON" message:@"Send a reminder about this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder"
+                                                                 message:@"Do you want to send a reminder about this request?"
+                                                                delegate:self
+                                                       cancelButtonTitle:@"Yes"
+                                                       otherButtonTitles:@"No", nil];
                     [av show];
-//                    [av setTag:2012];
+                    [av setTag:2013];
                 }
                 else
                 {  // cancel
                     self.responseDict = [dictRecord copy];
-                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Request" message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Request"
+                                                                 message:@"Are you sure you want to cancel this request?"
+                                                                delegate:self
+                                                       cancelButtonTitle:@"Yes"
+                                                       otherButtonTitles:@"No", nil];
                     [av show];
                     [av setTag:2010];
                 }
@@ -2154,47 +2171,66 @@ return customView;
         else
         {  // For the Recipient of a Request
             if (ind == 0)
-            {
-                //accept
+            { //accept
                 NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-                
+
                 if ([[assist shared]getSuspended]) {
-                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+                    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended"
+                                                                    message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help."
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:@"Contact Support", nil];
                     [alert setTag:50];
                     [alert show];
                     return; 
                 }
-                if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {   
-                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Email Verification Needed" message:@"Please click the link we emailed you to verify your email address." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                else if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
+                    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Email Verification Needed"
+                                                                    message:@"Please click the link we emailed you to verify your email address."
+                                                                   delegate:Nil
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:Nil, nil];
                     [alert show];
                     return;
                 }
                 if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
                     
-                        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Profile Not Complete" message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!" delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+                        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Profile Not Complete"
+                                                                        message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!"
+                                                                       delegate:self
+                                                              cancelButtonTitle:@"Later"
+                                                              otherButtonTitles:@"Validate Now", nil];
                         [alert setTag:147];
                         [alert show];
                         return;
                 }
                 else if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
-                    UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Please Attach an Account" message:@"Before you can send or receive money, you must add a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                    UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Please Attach An Account"
+                                                                  message:@"Before you can send or receive money, you must add a bank account."
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles:Nil, nil];
                     [set show];
                     return;
                 }
-                else {
-                NSMutableDictionary *input = [dictRecord mutableCopy];
-                [input setValue:@"accept" forKey:@"response"];
-               
-                [[assist shared]setRequestMultiple:NO];
-                TransferPIN *trans = [[TransferPIN alloc] initWithReceiver:input type:@"requestRespond" amount:[[dictRecord objectForKey:@"Amount"] floatValue]];
-                [nav_ctrl pushViewController:trans animated:YES];
+                else
+                {
+                    NSMutableDictionary *input = [dictRecord mutableCopy];
+                    [input setValue:@"accept" forKey:@"response"];
+                   
+                    [[assist shared]setRequestMultiple:NO];
+                    TransferPIN *trans = [[TransferPIN alloc] initWithReceiver:input type:@"requestRespond" amount:[[dictRecord objectForKey:@"Amount"] floatValue]];
+                    [nav_ctrl pushViewController:trans animated:YES];
                 }
             }
             else
-            {
-                //decline
+            { // Reject
                 self.responseDict = [dictRecord copy];
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Reject This Request" message:@"Are you sure you want to reject this request?" delegate:self cancelButtonTitle:@"Yes - Reject" otherButtonTitles:@"No", nil];
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Reject %@'s Request",[self.responseDict valueForKey:@"FirstName"]]
+                                                             message:[NSString stringWithFormat:@"Are you sure you want to reject this request from %@?",[self.responseDict valueForKey:@"Name"]]
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Yes - Reject"
+                                                   otherButtonTitles:@"No", nil];
                 [av show];
                 [av setTag:1011];
             }
@@ -2205,14 +2241,21 @@ return customView;
         if (ind == 0)
         {  //remind
             self.responseDict = [dictRecord copy];
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"COMING SOON" message:@"Send a reminder about this transfer?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder" message:@"Send a reminder about this transfer?"
+                                                        delegate:self
+                                               cancelButtonTitle:@"Yes"
+                                               otherButtonTitles:@"No", nil];
             [av show];
-//            [av setTag:312];
+            [av setTag:2014];
         }
         else
         {  //cancel
             self.responseDict = [dictRecord copy];
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Transfer" message:@"Are you sure you want to cancel this transfer?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Transfer"
+                                                         message:@"Are you sure you want to cancel this transfer?"
+                                                        delegate:self
+                                               cancelButtonTitle:@"Yes"
+                                               otherButtonTitles:@"No", nil];
             [av show];
             [av setTag:310];
         }
@@ -2648,6 +2691,7 @@ return customView;
 
     else if ([tagName isEqualToString:@"remind"])
     {
+        NSLog(@"Remind response was: %@",result);
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Reminder Sent Successfully" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
@@ -2677,14 +2721,38 @@ return customView;
         [s setDelegate:self];
         [s sendCsvTrasactionHistory:email];
     }
+
+    if (actionSheet.tag == 2012 && buttonIndex == 0)  // REMIND Request to Existing User
+    {
+        serve * serveObj = [serve new];
+        [serveObj setDelegate:self];
+        serveObj.tagName = @"remind";
+        [serveObj SendReminderToRecepient:[self.responseDict valueForKey:@"TransactionId"] reminderType:@"RequestMoneyReminderToExistingUser"];
+    }
     
+    else if (actionSheet.tag == 2013 && buttonIndex == 0)  // REMIND Request to New User
+    {
+        serve * serveObj = [serve new];
+        [serveObj setDelegate:self];
+        serveObj.tagName = @"remind";
+        [serveObj SendReminderToRecepient:[self.responseDict valueForKey:@"TransactionId"] reminderType:@"RequestMoneyReminderToNewUser"];
+    }
+    
+    else if (actionSheet.tag == 2014 && buttonIndex == 0)  // REMIND Transfer/Invite to New User
+    {
+        serve * serveObj = [serve new];
+        [serveObj setDelegate:self];
+        serveObj.tagName = @"remind";
+        [serveObj SendReminderToRecepient:[self.responseDict valueForKey:@"TransactionId"] reminderType:@"InvitationReminderToNewUser"];
+    }
+
     else if (actionSheet.tag == 147 && buttonIndex == 1)  // go to Profile
     {
         ProfileInfo *prof = [ProfileInfo new];
         isProfileOpenFromSideBar = NO;
         [self.navigationController pushViewController:prof animated:YES];
     }
-    
+
     else if ((actionSheet.tag == 1010 || actionSheet.tag == 2010) && buttonIndex == 0) // CANCEL Request
     {
         RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
@@ -2709,7 +2777,7 @@ return customView;
             [serveObj CancelMoneyRequestForNonNoochUser:[self.responseDict valueForKey:@"TransactionId"]];
         }
     }
-    
+
     else if (actionSheet.tag == 310 && buttonIndex == 0) // CANCEL Transfer (Send) Invite
     {
         RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
@@ -2727,8 +2795,8 @@ return customView;
         serveObj.tagName = @"CancelMoneyTransferToNonMemberForSender";  // Cancel Request for Existing User
         [serveObj CancelMoneyTransferToNonMemberForSender:[self.responseDict valueForKey:@"TransactionId"]];
     }
-    
-    else if (actionSheet.tag == 1011 && buttonIndex == 0)
+
+    else if (actionSheet.tag == 1011 && buttonIndex == 0)  // REJECT Request
     {
         RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
         spinner1.color = [UIColor whiteColor];
@@ -2744,16 +2812,6 @@ return customView;
         [serveObj setDelegate:self];
         serveObj.tagName = @"reject";
         [serveObj CancelRejectTransaction:[self.responseDict valueForKey:@"TransactionId"] resp:@"Rejected"];
-    }
-    
-	// ADDED BY CLIFF Edited By Baljeet
-	else if (actionSheet.tag == 1012 && buttonIndex == 0) // Send Reminder
-    {
-        NSString * memId1 = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
-        serve * serveObj=[serve new];
-        [serveObj setDelegate:self];
-        serveObj.tagName = @"remind";
-        [serveObj SendReminderToRecepient:[self.responseDict valueForKey:@"TransactionId"] memberId:memId1];
     }
     
     else if (actionSheet.tag == 50 && buttonIndex == 1) // Contact Support

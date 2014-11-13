@@ -19,13 +19,10 @@
 
 @interface serve : NSObject {
     //venturepact modification
-    
-    
     NSMutableData *responseData;
     //NSMutableURLRequest *request;
     id<serveD> Delegate;
     NSString *tagName;
-    
     NSString *latlng;
     // CLLocationManager *locationManager;
     MKPlacemark *placeMarker;
@@ -120,7 +117,7 @@
 -(void)show_in_search:(BOOL)show;
 -(void)CancelMoneyTransferToNonMemberForSender:(NSString *)transactionId;
 -(void)CancelMoneyRequestForNonNoochUser:(NSString*)transactionId;
--(void)SendReminderToRecepient:(NSString *)transactionId memberId:(NSString*)memberId;
+-(void)SendReminderToRecepient:(NSString *)transactionId reminderType:(NSString*)reminderType;
 -(void)ValidatePinNumberToEnterForEnterForeground:(NSString*)memId pin:(NSString*)pin;
 @end
 
