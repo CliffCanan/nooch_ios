@@ -56,7 +56,7 @@ UIImageView *picture;
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-  
+
     self.screenName = @"Profile Screen";
 
     [self.navigationItem setTitle:@"Profile Info"];
@@ -571,7 +571,7 @@ UIImageView *picture;
     [UIView setAnimationDelegate:self];
     [self.view setFrame:CGRectMake(0,64, 320, 600)];
     [UIView commitAnimations];
-    
+
     if ([self.name.text length] == 0)
     {
         UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Need A Name"
@@ -606,20 +606,10 @@ UIImageView *picture;
 
     if ([self.city.text length] == 0)
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"How Bout A City" message:@"It would be fantastic if you entered a city! ;-)" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"How Bout A City" message:@"It would be fantastic if you entered a city!\n\xF0\x9F\x98\x89" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [self.city becomeFirstResponder];
         return;
-    }
-
-    if ([[me pic] isKindOfClass:[NSNull class]]) {
-        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"I don't see you!"
-                                                      message:@"\xF0\x9F\x91\x80\nYou haven't set your profile picture, would you like to?"
-                                                     delegate:self
-                                            cancelButtonTitle:@"No Thanks"
-                                            otherButtonTitles:@"Yes - Set Now", nil];
-        [av setTag:20];
-        [av show];
     }
 
     [self.save setEnabled:NO];
@@ -637,10 +627,25 @@ UIImageView *picture;
         if ([strPhoneNumber length] != 10)
         {
             [self.phone becomeFirstResponder];
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Phone Number Trouble" message:@"Please double check that you entered a valid 10-digit phone number." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Phone Number Trouble"
+                                                            message:@"Please double check that you entered a valid 10-digit phone number."
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil, nil];
             [alert show];
             return;
         }
+    }
+
+    if ([[me pic] isKindOfClass:[NSNull class]]) //|| [[user objectForKey:@"Photo"] rangeOfString:@"gv_no_photo.png"].location != NSNotFound)
+    {
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"I don't see you!"
+                                                      message:@"\xF0\x9F\x91\x80\n\nYou haven't set your profile picture, would you like to do that now?"
+                                                     delegate:self
+                                            cancelButtonTitle:@"No Thanks"
+                                            otherButtonTitles:@"Yes - Set Now", nil];
+        [av setTag:20];
+        [av show];
     }
 
     if ([self.recovery_email.text length] == 0) {
@@ -1437,7 +1442,7 @@ UIImageView *picture;
                          options:kNilOptions
                          error:&error];
         
-        NSLog(@"dictProfileinfo is: %@",dictProfileinfo);
+        // NSLog(@"dictProfileinfo is: %@",dictProfileinfo);
 
         if (![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]] &&
             ![[[dictProfileinfo valueForKey:@"ContactNumber"] lowercaseString] isEqualToString:@"null"])
@@ -1563,9 +1568,6 @@ UIImageView *picture;
     {
         self.ServiceType = @"City";
         NSArray * arr = [[sourceData objectForKey:@"Status"] componentsSeparatedByString:@"/"];
-
-        NSLog(@"sourceData Status is... %@",[sourceData objectForKey:@"Status"]);
-        NSLog(@"arr is: %@",arr);
 
         if (![[[sourceData objectForKey:@"Status"] lowercaseString] isEqualToString:@"null"] &&
             ![[[sourceData objectForKey:@"Status"] lowercaseString] isEqualToString:@"declined"])
