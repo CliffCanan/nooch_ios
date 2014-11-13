@@ -41,14 +41,14 @@
     self.facebook.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.facebook setTitle:@"  Facebook" forState:UIControlStateNormal];
     [self.facebook setFrame:CGRectMake(0, 153, 0, 0)];
-    [self.facebook addTarget:self action:@selector(connect_to_facebook) forControlEvents:UIControlEventTouchUpInside];
+   
     [self.facebook setStyleClass:@"button_blue"];
     [self.view addSubview:self.facebook];
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(26, 38, 32, .18);
     shadow.shadowOffset = CGSizeMake(0, -1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
-
+    NSLog(@"%@",[user valueForKey:@"facebook_id"]);
     if ([user valueForKey:@"facebook_id"] && [[user valueForKey:@"facebook_id"] length] == 0)
      {
          
@@ -60,6 +60,7 @@
          [glyphFB setTextColor:[UIColor whiteColor]];
          
          [self.facebook addSubview:glyphFB];
+          [self.facebook addTarget:self action:@selector(connect_to_facebook) forControlEvents:UIControlEventTouchUpInside];
 
      }
     else{
@@ -79,6 +80,7 @@
         [glyph_check setTextColor:[UIColor whiteColor]];
         
         [self.facebook addSubview:glyph_check];
+         [self.facebook addTarget:self action:@selector(disconnect_fb) forControlEvents:UIControlEventTouchUpInside];
        
     }
 
@@ -203,7 +205,8 @@
              [fb setDelegate:self];
              [fb setTagName:@"fb_YES"];
              if ([facebook_info objectForKey:@"id"]) {
-            
+                 [user setObject:[facebook_info objectForKey:@"id"] forKey:@"facebook_id"];
+                 [user synchronize];
              [fb storeFB:[facebook_info objectForKey:@"id"] isConnect:@"YES"];
              }
          });
@@ -235,36 +238,7 @@
                 [subview removeFromSuperview];
             }
         }
-        [self.facebook setTitle:@" Facebook " forState:UIControlStateNormal];
-        
-        UILabel * glyphFB = [UILabel new];
-        [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
-        [glyphFB setFrame:CGRectMake(17, 8, 26, 30)];
-         glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"] attributes:textAttributes];
-        [glyphFB setTextColor:[UIColor whiteColor]];
-        [self.facebook addSubview:glyphFB];
-        
-        UILabel * glyph_check = [UILabel new];
-        [glyph_check setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-        [glyph_check setFrame:CGRectMake(39, 8, 20, 30)];
-        glyph_check.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"] attributes:textAttributes];
-        [glyph_check setTextColor:[UIColor whiteColor]];
-        
-        [self.facebook addSubview:glyph_check];
-    }
-    else{
-        NSMutableDictionary *temp = [NSJSONSerialization
-                                     JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                                     options:kNilOptions
-                                     error:&error];
-        NSLog(@"%@",temp);
-        NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
-        for (UIView*subview in self.facebook.subviews) {
-            if([subview isMemberOfClass:[UILabel class]]) {
-                [subview removeFromSuperview];
-            }
-        }
-      
+       
         [self.facebook setTitle:@"       Facebook Connected" forState:UIControlStateNormal];
         
         UILabel * glyphFB = [UILabel new];
@@ -281,6 +255,42 @@
         [glyph_check setTextColor:[UIColor whiteColor]];
         
         [self.facebook addSubview:glyph_check];
+       
+        [self.facebook removeTarget:self action:@selector(connect_to_facebook) forControlEvents:UIControlEventTouchUpInside];
+        [self.facebook addTarget:self action:@selector(disconnect_fb) forControlEvents:UIControlEventTouchUpInside];
+    }
+    else{
+        NSMutableDictionary *temp = [NSJSONSerialization
+                                     JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                     options:kNilOptions
+                                     error:&error];
+        NSLog(@"%@",temp);
+        [user  removeObjectForKey:@"facebook_id"];
+         [user synchronize];
+        NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
+        for (UIView*subview in self.facebook.subviews) {
+            if([subview isMemberOfClass:[UILabel class]]) {
+                [subview removeFromSuperview];
+            }
+        }
+        [self.facebook setTitle:@" Facebook " forState:UIControlStateNormal];
+        UILabel * glyphFB = [UILabel new];
+        [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
+        [glyphFB setFrame:CGRectMake(17, 8, 26, 30)];
+        glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"] attributes:textAttributes];
+        [glyphFB setTextColor:[UIColor whiteColor]];
+        [self.facebook addSubview:glyphFB];
+        
+        UILabel * glyph_check = [UILabel new];
+        [glyph_check setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+        [glyph_check setFrame:CGRectMake(39, 8, 20, 30)];
+        glyph_check.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"] attributes:textAttributes];
+        [glyph_check setTextColor:[UIColor whiteColor]];
+        
+        [self.facebook addSubview:glyph_check];
+         [self.facebook removeTarget:self action:@selector(disconnect_fb) forControlEvents:UIControlEventTouchUpInside];
+        [self.facebook addTarget:self action:@selector(connect_to_facebook) forControlEvents:UIControlEventTouchUpInside];
+       
     }
 }
 -(void)Error:(NSError *)Error
