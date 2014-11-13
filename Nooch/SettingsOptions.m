@@ -23,6 +23,7 @@
     UIButton * unlink_account;
     UIButton * link_bank;
     UILabel *glyph_noBank;
+    UIScrollView * scroll;
 }
 @property(atomic,weak)UIButton *logout;
 
@@ -79,7 +80,7 @@
         isBankAttached = NO;
 
         glyph_noBank = [UILabel new];
-        
+
         [glyph_noBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
         [glyph_noBank setFrame:CGRectMake(180, 17, 22, 22)];
         [glyph_noBank setStyleId:@"glyph_noBank_sidebar"];
@@ -189,6 +190,20 @@
     }
 
     [self.view addSubview: self.logout];
+
+
+    if ([[UIScreen mainScreen] bounds].size.height == 480)
+    {
+        scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
+                                                                              [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
+        [scroll setDelegate:self];
+        [scroll setContentSize:CGSizeMake(320, 545)];
+        for (UIView *subview in self.view.subviews) {
+            [subview removeFromSuperview];
+            [scroll addSubview:subview];
+        }
+        [self.view addSubview:scroll];
+    }
 }
 
 -(void)attach_bank
@@ -223,7 +238,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 3;
+    return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -245,17 +260,21 @@
     UILabel *glyph = [UILabel new];
     [glyph setStyleClass:@"table_glyph"];
 
-    if(indexPath.row == 0){
+    if (indexPath.row == 0) {
         title.text = @"Profile Info";
         [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-user"]];
     }
-    else if(indexPath.row == 1){
+    else if (indexPath.row == 1) {
         title.text = @"Security Settings";
         [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
     }
-    else if(indexPath.row == 2){
+    else if (indexPath.row == 2) {
         title.text = @"Notification Settings";
         [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bell"]];
+    }
+    else if(indexPath.row == 3) {
+        title.text = @"Social Settings";
+        [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook"]];
     }
 
     arrow = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -312,9 +331,11 @@
 
 - (void)sign_out
 {
-    // NSLog(@"%@",nav_ctrl.viewControllers);
-    
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Sign Out" message:@"Are you sure you want to sign out?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"I'm Sure", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Sign Out"
+                                                 message:@"Are you sure you want to sign out?"
+                                                delegate:self
+                                       cancelButtonTitle:@"Cancel"
+                                       otherButtonTitles:@"I'm Sure", nil];
     [av setTag:15];
     [av show];
 }
@@ -413,8 +434,15 @@
 
                 linked_background = [UIView new];
                 [linked_background setStyleId:@"account_background"];
-                [self.view addSubview:linked_background];
-                
+
+                if ([[UIScreen mainScreen] bounds].size.height == 480)
+                {
+                    [scroll addSubview:linked_background];
+                }
+                else {
+                    [self.view addSubview:linked_background];
+                }
+
                 [glyph_shield setTextColor:kNoochGreen];
                 [linked_background addSubview:glyph_shield];
                 

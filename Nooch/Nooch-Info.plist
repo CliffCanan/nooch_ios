@@ -21,7 +21,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.6.2</string>
+	<string>1.6.42</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -35,11 +35,13 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.6.2</string>
+	<string>1.6.42</string>
 	<key>FacebookAppID</key>
 	<string>198279616971457</string>
+	<key>FacebookDisplayName</key>
+	<string>Nooch</string>
 	<key>LSApplicationCategoryType</key>
-	<string></string>
+	<string>public.app-category.finance</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
@@ -51,7 +53,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>So you can see the location of your payments and also to send money to nearby Nooch users.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>To add a profile picture and for attaching images to your transfers.</string>
+	<string>So you can add a profile picture and also attach images to your transfers.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Roboto-Italic.ttf</string>

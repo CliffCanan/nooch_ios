@@ -284,7 +284,7 @@
     //back button
     UIButton *btnback = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnback setBackgroundColor:[UIColor whiteColor]];
-    [btnback setFrame:CGRectMake(7, 24, 44, 44)];
+    [btnback setFrame:CGRectMake(7, 20, 44, 44)];
     [btnback addTarget:self action:@selector(BackClicked1:) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *glyph_back = [UILabel new];
@@ -302,19 +302,19 @@
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
     
-    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
+    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(75, 82, 170, 16)];
     [slogan setBackgroundColor:[UIColor clearColor]];
     [slogan setText:@"Money Made Simple"];
     [slogan setFont:[UIFont fontWithName:@"VarelaRound-Regular" size:15]];
     [slogan setStyleClass:@"prelogin_slogan"];
     [self.view addSubview:slogan];
 
-    UILabel *welcome = [[UILabel alloc] initWithFrame:CGRectMake(0, 120, 320, 25)];
+    UILabel *welcome = [[UILabel alloc] initWithFrame:CGRectMake(0, 115, 320, 35)];
     [welcome setText:[NSString stringWithFormat:@"Hey %@!",[[self.user objectForKey:@"first_name" ] capitalizedString]]];
     [welcome setBackgroundColor:[UIColor clearColor]];
     [welcome setStyleClass:@"header_signupflow"];
     
-    self.pic = [[UIImageView alloc] initWithFrame:CGRectMake(89, 170, 144, 144)];
+    self.pic = [[UIImageView alloc] initWithFrame:CGRectMake(89, 166, 144, 144)];
     self.pic.layer.cornerRadius = 72;
     self.pic.clipsToBounds = YES;
     if ([self.user objectForKey:@"image"])
@@ -328,14 +328,14 @@
         [self.pic setImage:[UIImage imageNamed:@"silhouette.png"]];
     }
     
-    self.message = [[UILabel alloc] initWithFrame:CGRectMake(24, 315, 272, 70)];
+    self.message = [[UILabel alloc] initWithFrame:CGRectMake(24, 314, 272, 70)];
     [self.message setBackgroundColor:[UIColor clearColor]];
     
     if ([self.user objectForKey:@"image"]) {
         [self.message setText:@"Great Pic! If you're happy with it tap \"Continue\" or if you wish to change it tap \"Change Picture\""];
     }
     else {
-        [self.message setText:@"Add a picture so people will be able to identify you better when sending you money."];
+        [self.message setText:@"Add a picture so people can find you more easily when sending you money."];
     }
     [self.message setStyleClass:@"instruction_text"];
     [self.message setNumberOfLines:0];
@@ -353,7 +353,7 @@
         [self.choose_pic setTitle:@"  Choose Picture" forState:UIControlStateNormal];
     }
     [self.choose_pic addTarget:self action:@selector(change_pic) forControlEvents:UIControlEventTouchUpInside];
-    [self.choose_pic setFrame:CGRectMake(10, 390, 300, 60)];
+    [self.choose_pic setFrame:CGRectMake(10, 389, 300, 60)];
 
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(19, 32, 38, .21);
@@ -368,7 +368,7 @@
     [glyphcamera setTextColor:[UIColor whiteColor]];
     
     self.next_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.next_button setFrame:CGRectMake(10, 460, 300, 60)];
+    [self.next_button setFrame:CGRectMake(10, 458, 300, 60)];
     [self.next_button addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     
     if ([[UIScreen mainScreen] bounds].size.height < 500)
@@ -376,8 +376,8 @@
         [self.pic setFrame:CGRectMake(89, 164, 138, 138)];
         self.pic.layer.cornerRadius = 69;
         [self.message setFrame:CGRectMake(15, 304, 290, 66)];
-        [self.choose_pic setFrame:CGRectMake(10, 375, 300, 58)];
-        [self.next_button setFrame:CGRectMake(10, 429, 300, 60)];
+        [self.choose_pic setFrame:CGRectMake(10, 374, 300, 58)];
+        [self.next_button setFrame:CGRectMake(10, 428, 300, 60)];
     }
     
     if ([self.user objectForKey:@"image"])

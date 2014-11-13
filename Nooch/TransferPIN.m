@@ -1122,50 +1122,107 @@
         UIImage * imgempty = [UIImage imageNamed:@""];
         [[assist shared] setTranferImage:imgempty];
 
-        int randNum = arc4random() % 12;
+        int randNum = arc4random() % 13;
         UIAlertView *av;
         switch (randNum) {
             case 0:
-                av = [[UIAlertView alloc] initWithTitle:@"Nice Work" message:[NSString stringWithFormat:@"You just sent money to %@, and you did it with style… and class.",receiverFirst] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Nice Work"
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x98\x8E\nYou just sent money to %@, and you did it with style… and class.",receiverFirst]
+                                               delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:@"View Details",nil];
                 break;
             case 1:
-                av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Your money has successfully been digitalized into pixie dust and is currently floating over our heads in a million pieces." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Payment Sent"
+                                                message:@"\xF0\x9F\x92\xB8\nYour money has successfully been digitalized into pixie dust and is currently floating over our heads in a million pieces."
+                                               delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:@"View Details",nil];
                 break;
             case 2:
-                av = [[UIAlertView alloc] initWithTitle:@"Success" message:[NSString stringWithFormat:@"You have officially 'Nooched' %@. That's right, it's a verb.",receiverFirst] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x98\x89\nYou have officially 'Nooched' %@. That's right, it's a verb.",receiverFirst]
+                                               delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:@"View Details" ,nil];
                 break;
             case 3:
-                av = [[UIAlertView alloc] initWithTitle:@"Congratulations" message:@"You now have less money. Eh, it's just money." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Congratulations"
+                                                message:@"\xE2\x98\xBA\nYou now have less money. Eh, it's just money."
+                                               delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:@"View Details" ,nil];
                 break;
             case 4:
-                av = [[UIAlertView alloc] initWithTitle:@"Congratulations" message:@"Your debt burden has been lifted." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Congratulations"
+                                                message:@"\xF0\x9F\x91\x8F\nYour debt burden has been lifted."
+                                               delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:@"View Details" ,nil];
                 break;
             case 5:
-                av = [[UIAlertView alloc] initWithTitle:@"Money Sent" message:@"No need to thank us, it's our job." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Money Sent"
+                                                message:@"\xF0\x9F\x98\x87\nNo need to thank us, it's our job."
+                                               delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:@"View Details" ,nil];
                 break;
             case 6:
-                av = [[UIAlertView alloc] initWithTitle:@"Money Sent" message:@"You are now free to close the app and put your phone away. You're done." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Payment Sent"
+                                                message:@"\xF0\x9F\x91\x8D\nYou are now free to close the app and put your phone away. You're good to go." delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:@"View Details" ,nil];
                 break;
             case 7:
-                av = [[UIAlertView alloc] initWithTitle:@"You're Welcome" message:@"That was some good Nooching. Money sent." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
+                av = [[UIAlertView alloc] initWithTitle:@"You're Welcome"
+                                                message:@"\xF0\x9F\x91\x8C\nThat was some good Nooching. Money sent."
+                                               delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:@"View Details" ,nil];
                 break;
             case 8:
-                av = [[UIAlertView alloc] initWithTitle:@"Great Scott!" message:@"This sucker generated 1.21 gigawatts and sent your money, even without plutonium." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details", nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Great Scott!"
+                                                message:@"\xE2\x9A\xA1\nThis sucker generated 1.21 gigawatts and sent your money, even without plutonium."
+                                               delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:@"View Details", nil];
                 break;
             case 9:
-                av = [[UIAlertView alloc] initWithTitle:@"Knowledge Is Power" message:@"You know how easy Nooch is. But with great power, comes great responsibility..." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Knowledge Is Power"
+                                                message:@"You know how easy Nooch is. But with great power, comes great responsibility..."
+                                               delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:@"View Details" ,nil];
                 break;
             case 10:
-                av = [[UIAlertView alloc] initWithTitle:@"Humpty Dumpty Sat on a Wall" message:@"And processed Nooch transfers." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details", nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Humpty Dumpty Sat on a Wall"
+                                                message:@"And processed Nooch transfers."
+                                               delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:@"View Details", nil];
                 break;
             case 11:
-                av = [[UIAlertView alloc] initWithTitle:@"Nooch Haiku" message:@"Nooch application. \nEasy, Simple, Convenient. \nGetting the job done." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Nooch Haiku"
+                                                message:@"Nooch application.\nEasy, Simple, Convenient.\nGetting the job done." delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:@"View Details" ,nil];
                 break;
             case 12:
-                av = [[UIAlertView alloc] initWithTitle:@"Nooch Loves You" message:@"That is all. Pay it forward. \n \n ...get it?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Nooch Loves You"
+                                                message:@"\xF0\x9F\x92\x99\nThat is all. Pay it forward.\n \n...and yes, Nooch's heart is actually blue."
+                                               delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:@"View Details",nil];
+                break;
+            case 13:
+                av = [[UIAlertView alloc] initWithTitle:@"Easy As Pie"
+                                                message:@"\xF0\x9F\x8D\xB0\nWasn't that easier than lugging to an ATM and forking over colored pieces of paper?."
+                                               delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:@"View Details",nil];
                 break;
             default:
-                av = [[UIAlertView alloc] initWithTitle:@"Nice Work" message:@"Your cash was sent successfully" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Nice Work" message:@"\xF0\x9F\x92\xB8\nYour cash was sent successfully" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
                 break;
         }
         [av show];

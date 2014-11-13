@@ -129,17 +129,17 @@
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
-        page1.descPositionY = 134;
+        page1.descPositionY = 136;
         page2.titlePositionY = 426;
-        page2.descPositionY = 118;
-        page3.descPositionY = 102;
+        page2.descPositionY = 120;
+        page3.descPositionY = 103;
 
         page4.titlePositionY = 428;
-        page4.descPositionY = 117;
+        page4.descPositionY = 118;
         page4.titleIconPositionY = 125;
 
         page5.titlePositionY = 418;
-        page5.descPositionY = 118;
+        page5.descPositionY = 124;
         page5.titleIconPositionY = 130;
     }
 

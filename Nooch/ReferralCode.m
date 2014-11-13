@@ -48,7 +48,7 @@
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
     
-    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(58, 90, 202, 19)];
+    UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(75, 82, 170, 16)];
     [slogan setBackgroundColor:[UIColor clearColor]];
     [slogan setText:@"Money Made Simple"];
     [slogan setFont:[UIFont fontWithName:@"VarelaRound-Regular" size:15]];
@@ -66,12 +66,12 @@
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
 
-    UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 280, 70)];
+    UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 166, 300, 70)];
     [prompt setTextColor:kNoochGrayDark];
     [prompt setBackgroundColor:[UIColor clearColor]];
     [prompt setNumberOfLines:3];
     [prompt setFont:[UIFont systemFontOfSize:14]];
-    [prompt setText:@"Nooch is currently invite-only. If you have a Referral Code enter it below to sign up."]; [prompt setTextAlignment:NSTextAlignmentCenter];
+    [prompt setText:@"Nooch is currently invite-only. If you have a Referral Code enter it below to finish creating your account."]; [prompt setTextAlignment:NSTextAlignmentCenter];
     [prompt setStyleClass:@"instruction_text"];
     [self.view addSubview:prompt];
 
@@ -123,7 +123,7 @@
 {
     if ([self.code_field.text length] == 0)
     {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Please Enter Invite Code" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Please Enter An Invite Code" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [enter setEnabled:YES];
         return;
@@ -149,7 +149,7 @@
 
 - (void)request_code
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request An Invite Code" message:@"To make sure every Nooch user has the best experience, you must have an invite or referral code.\n\nYou can get a code from any current Nooch user, or request an invite directly from us. We try to send out codes as quickly as possible as they are requested." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Request Code", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request An Invite Code" message:@"To make sure every Nooch user has the best experience, you must have an invite or referral code.\n\nYou can get a code from any current Nooch user, or request an invite directly from us. We try to send out codes as quickly as possible when they are requested." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Request Code", nil];
     [av show];
     [av setTag:101];
 }

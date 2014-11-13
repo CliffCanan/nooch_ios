@@ -41,9 +41,6 @@ bool modal;
     hostReach = [Reachability reachabilityWithHostName:@"www.google.com"];
     internetReach = [Reachability reachabilityForInternetConnection];
     [internetReach startNotifier];
-    // Display a UIAlertView warning developers that push notifications do not work in the simulator
-    // You should remove this in your app.
-    // [self failIfSimulator];
 
     //Urban Airship 5+
     UAConfig *config = [UAConfig defaultConfig];
@@ -144,7 +141,7 @@ void exceptionHandler(NSException *exception){
 
 - (void)applicationWillResignActive:(UIApplication *)application{
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates.
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application{
@@ -297,7 +294,7 @@ void exceptionHandler(NSException *exception){
 
 -(BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-     NSLog(@"%@",url);
+    NSLog(@"%@",url);
     if ([[url absoluteString] rangeOfString:@"facebook"].location!=NSNotFound) {
         return [FBAppCall handleOpenURL:url
                       sourceApplication:sourceApplication
@@ -306,7 +303,7 @@ void exceptionHandler(NSException *exception){
                         }];
    
     }
-   if ([sourceApplication isEqualToString:@"com.apple.mobilesafari"] ||
+    if ([sourceApplication isEqualToString:@"com.apple.mobilesafari"] ||
         [sourceApplication isEqualToString:@"com.apple.mobilemail"]) {
         return YES;
     }

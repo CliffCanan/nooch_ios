@@ -308,21 +308,21 @@
 
                 [remind setTag:14];
                 [remind setEnabled:YES];
-                
+
                 if (([self.trans valueForKey:@"InvitationSentTo"] == NULL || [[self.trans objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]]) )
                 {  // Requests to Existing Users
                     [cancel addTarget:self action:@selector(cancel_request_to_existing) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:cancel];
-                    
-                    [remind addTarget:self action:@selector(remind_request) forControlEvents:UIControlEventTouchUpInside];
+
+                    [remind addTarget:self action:@selector(remind_request_existinguser) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:remind];
                 }
                 else
                 {  // Requests to Non-Nooch Users
                     [cancel addTarget:self action:@selector(cancel_request_to_nonNoochUser) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:cancel];
-                    
-                    [remind addTarget:self action:@selector(remind_invite_newuser) forControlEvents:UIControlEventTouchUpInside];
+
+                    [remind addTarget:self action:@selector(remind_request_newuser) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:remind];
                 }
             }
@@ -382,17 +382,36 @@
     [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
 }
 
--(void)remind_invite_newuser
+-(void)remind_request_existinguser
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder" message:@"Do you want to send a reminder about this transfer?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
-    [av setTag:1012];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder"
+                                                 message:[NSString stringWithFormat:@"Do you want to send %@ a reminder about this request?",[[self.trans objectForKey:@"FirstName"] capitalizedString]]
+                                                delegate:self
+                                       cancelButtonTitle:@"Yes"
+                                       otherButtonTitles:@"No", nil];
+    [av setTag:2012];
     [av show];
 }
 
--(void)remind_request
+-(void)remind_request_newuser
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder" message:@"Do you want to send a reminder about this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
-    [av setTag:1012];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder"
+                                                 message:@"Do you want to send a reminder about this request?"
+                                                delegate:self
+                                       cancelButtonTitle:@"Yes"
+                                       otherButtonTitles:@"No", nil];
+    [av setTag:2013];
+    [av show];
+}
+
+-(void)remind_invite_newuser
+{
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder"
+                                                 message:@"Do you want to send a reminder about this transfer?"
+                                                delegate:self
+                                       cancelButtonTitle:@"Yes"
+                                       otherButtonTitles:@"No", nil];
+    [av setTag:2014];
     [av show];
 }
 
@@ -508,7 +527,11 @@
 
 -(void) cancel_invite
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Transfer" message:@"Are you sure you want to cancel this transfer?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Transfer"
+                                                 message:@"Are you sure you want to cancel this transfer?"
+                                                delegate:self
+                                       cancelButtonTitle:@"Yes"
+                                       otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:310];
 }
@@ -584,14 +607,22 @@
 
 - (void) decline_request
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Reject This Request" message:@"Are you sure you want to reject this request?" delegate:self cancelButtonTitle:@"Yes - Reject" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Reject %@'s Request",[self.trans objectForKey:@"FirstName"]]
+                                                 message:[NSString stringWithFormat:@"Are you sure you want to reject this request from %@?",[[self.trans objectForKey:@"Name"] capitalizedString]]
+                                                delegate:self
+                                       cancelButtonTitle:@"Yes - Reject"
+                                       otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1011];
 }
 
 - (void)cancel_request_to_existing
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Request" message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Request"
+                                                 message:[NSString stringWithFormat:@"Are you sure you want to cancel this request to %@?",[[self.trans objectForKey:@"Name"] capitalizedString]]
+                                                delegate:self
+                                       cancelButtonTitle:@"Yes"
+                                       otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1010];
 }
@@ -609,33 +640,53 @@
 
     if ([[assist shared]getSuspended])
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended"
+                                                        message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help."
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:@"Contact Support", nil];
         [alert setTag:50];
         [alert show];
         return;
     }
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] )
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Email Verification Needed" message:@"Please click the link sent to your email to verify your email address." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Email Verification Needed"
+                                                        message:@"Please click the link sent to your email to verify your email address."
+                                                       delegate:Nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:Nil, nil];
         [alert show];
         return;
     }
     if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Profile Not Complete" message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!" delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Profile Not Complete"
+                                                        message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!"
+                                                       delegate:self
+                                              cancelButtonTitle:@"Later"
+                                              otherButtonTitles:@"Validate Now", nil];
         [alert setTag:147];
         [alert show];
         return;
     }
     if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Phone Not Verified" message:@"Please validate your phone number before sending money." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil , nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Phone Not Verified"
+                                                        message:@"Please validate your phone number before sending money."
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:Nil , nil];
         [alert show];
         return;
     }
     if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
-        UIAlertView * set = [[UIAlertView alloc] initWithTitle:@"Funding Source Needed" message:@"Before you can send or receive money, you must add a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        UIAlertView * set = [[UIAlertView alloc] initWithTitle:@"Funding Source Needed"
+                                                       message:@"Before you can send or receive money, you must add a bank account."
+                                                      delegate:self
+                                             cancelButtonTitle:@"OK"
+                                             otherButtonTitles:Nil, nil];
         [set show];
         return;
     }
@@ -706,7 +757,7 @@
 
     SLComposeViewController * controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
     [controller setInitialText:post_text];
-    [controller addURL:[NSURL URLWithString:@"http://appstore.com/nooch"]];
+    [controller addURL:[NSURL URLWithString:@"http://bit.ly/1xdG2le"]];
     [self presentViewController:controller animated:YES completion:Nil];
 
     SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result){
@@ -744,7 +795,7 @@
     }
     SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
     [controller setInitialText:post_text];
-    [controller addURL:[NSURL URLWithString:@"http://appstore.com/nooch"]];
+    [controller addURL:[NSURL URLWithString:@"http://bit.ly/1xdG2le"]];
     [self presentViewController:controller animated:YES completion:Nil];
 
     SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result)
@@ -783,22 +834,37 @@
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag == 1012 && buttonIndex == 0)  // REMIND
+    if (alertView.tag == 2012 && buttonIndex == 0)  // REMIND Request to Existing User
     {
-        NSString * memId1 = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
         serve * serveObj = [serve new];
         [serveObj setDelegate:self];
         serveObj.tagName = @"remind";
-        [serveObj SendReminderToRecepient:[self.trans valueForKey:@"TransactionId"] memberId:memId1];
+        [serveObj SendReminderToRecepient:[self.trans valueForKey:@"TransactionId"] reminderType:@"RequestMoneyReminderToExistingUser"];
     }
-    
+
+    else if (alertView.tag == 2013 && buttonIndex == 0)  // REMIND Request to New User
+    {
+        serve * serveObj = [serve new];
+        [serveObj setDelegate:self];
+        serveObj.tagName = @"remind";
+        [serveObj SendReminderToRecepient:[self.trans valueForKey:@"TransactionId"] reminderType:@"RequestMoneyReminderToNewUser"];
+    }
+
+    else if (alertView.tag == 2014 && buttonIndex == 0)  // REMIND Transfer/Invite to New User
+    {
+        serve * serveObj = [serve new];
+        [serveObj setDelegate:self];
+        serveObj.tagName = @"remind";
+        [serveObj SendReminderToRecepient:[self.trans valueForKey:@"TransactionId"] reminderType:@"InvitationReminderToNewUser"];
+    }
+
     else if (alertView.tag == 147 && buttonIndex == 1)  // PROFILE INCOMPLETE, GO TO PROFILE
     {
         ProfileInfo *prof = [ProfileInfo new];
         isProfileOpenFromSideBar=NO;
         [self.navigationController pushViewController:prof animated:YES];
     }
-    
+
     else if (alertView.tag == 1 && buttonIndex == 0)  // DISPUTE
     {
         RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStylePulse];
@@ -826,7 +892,7 @@
         serveobj.tagName = @"dispute";
         [serveobj RaiseDispute:dict];
     }
-    
+
     else if (alertView.tag == 568 && buttonIndex == 1)  // User Disputed a Transfer, then selected "Contact Support" in Alert
     {
         if (![MFMailComposeViewController canSendMail]){
@@ -845,7 +911,7 @@
         [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
         [self presentViewController:mailComposer animated:YES completion:nil];
     }
-    
+
     else if ((alertView.tag == 1010 || alertView.tag == 2010) && buttonIndex == 0) // CANCEL Request
     {
         RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
@@ -871,7 +937,7 @@
             [serveObj CancelMoneyRequestForExistingNoochUser:[self.trans valueForKey:@"TransactionId"]];
         }
     }
-    
+
     else if (alertView.tag == 310 && buttonIndex == 0) // CANCEL Transfer (Send) Invite
     {
         RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
@@ -890,7 +956,7 @@
         serveObj.tagName = @"CancelMoneyTransferToNonMemberForSender";  // Cancel Request for Existing User
         [serveObj CancelMoneyTransferToNonMemberForSender:[self.trans valueForKey:@"TransactionId"]];
     }
-    
+
     else if (alertView.tag == 1011 && buttonIndex == 0)  // REJECT
     {
         RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
@@ -909,7 +975,7 @@
         serveObj.tagName = @"reject";
         [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Rejected"];
     }
-  
+
     else if (alertView.tag == 50 && buttonIndex == 1)  // IF USER IS SUSPENDED, & TAPS "CONTACT SUPPORT" IN ALERT
     {
         if (![MFMailComposeViewController canSendMail]) {
@@ -947,14 +1013,8 @@
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     [self.hud hide:YES];
-    if ([tagName isEqualToString:@"cancel_invite"])
-    {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Invitation Cancelled" message:@"You have withdrawn this transfer successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        [nav_ctrl popViewControllerAnimated:YES];
-    }
-    
-    else if ([tagName isEqualToString:@"tranDetail"])
+
+    if ([tagName isEqualToString:@"tranDetail"])
     {
         NSError *error;
 
@@ -1232,9 +1292,12 @@
 
     if ([tagName isEqualToString:@"reject"])
     {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Request Rejected" message:@"You got it, you have rejected that request successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Request Rejected"
+                                                     message:@"You got it, you have rejected that request successfully."
+                                                    delegate:nil
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil, nil];
         [alert show];
-    //  [nav_ctrl popViewControllerAnimated:YES];
         
         for (UIView *subview in self.view.subviews)
         {
@@ -1253,7 +1316,11 @@
 
     else if ([tagName isEqualToString:@"cancelRequestToExisting"] || [tagName isEqualToString:@"cancelRequestToNonNoochUser"])
     {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Request Cancelled" message:@"You got it. That request has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Request Cancelled"
+                                                       message:@"You got it. That request has been cancelled successfully."
+                                                      delegate:nil
+                                             cancelButtonTitle:@"OK"
+                                             otherButtonTitles:nil, nil];
         [alert show];
         
         for (UIView *subview in self.view.subviews)
@@ -1270,6 +1337,18 @@
         [status setText:statusstr];
         [self.view addSubview:status];
     }
+
+    if ([tagName isEqualToString:@"cancel_invite"])
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Payment Cancelled"
+                                                        message:@"No problem, this transfer has been cancelled successfully."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+        [nav_ctrl popViewControllerAnimated:YES];
+    }
+
     else if ([tagName isEqualToString:@"CancelMoneyTransferToNonMemberForSender"])
     {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Transfer Cancelled" message:@"Aye aye. That transfer has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -1289,6 +1368,7 @@
         [status setText:statusstr];
         [self.view addSubview:status];
     }
+
     else if ([tagName isEqualToString:@"dispute"])
     {
         for (UIView *subview in self.view.subviews)
@@ -1297,7 +1377,11 @@
                 [subview removeFromSuperview];
         }
         
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Transfer Disputed" message:@"Thanks for letting us know. We will investigate and may contact you for more information.\n\nIf you would like to tell us more please contact Nooch Support." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Transfer Disputed"
+                                                    message:@"Thanks for letting us know. We will investigate and may contact you for more information.\n\nIf you would like to tell us more please contact Nooch Support."
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:@"Contact Support", nil];
         [alert show];
         [alert setTag:568];
         
@@ -1310,7 +1394,7 @@
         [self.view addSubview:status];
         [[assist shared]setSusPended:YES];
     }
-    
+
     else if([tagName isEqualToString:@"info"])
     {
         NSError *error;
@@ -1330,7 +1414,8 @@
     
     else if ([tagName isEqualToString:@"remind"])
     {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Reminder Sent Successfully" message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        NSLog(@"Remind response was: %@",result);
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Reminder Sent Successfully" message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
 

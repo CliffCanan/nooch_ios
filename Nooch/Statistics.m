@@ -339,9 +339,8 @@
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
     self.hud.delegate = self;
-    
-    [self GetFavorite];
 
+    [self GetFavorite];
 }
 
 
@@ -886,33 +885,40 @@
                                otherButtonTitles:nil];
         [alert show];
     }
-   
 }
 
 #pragma mark - server delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    [self.hud hide:YES];
     NSError * error;
     dictResult = [NSJSONSerialization
                  JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                  options:kNilOptions
                  error:&error];
     
-    [ dictAllStats setObject:dictResult forKey:tagName];
+    if (statsLoadedSoFar == 8) {
+        [self.hud hide:YES]; // Hide HUD now because all visible stats have been loaded, rest are on Panels 2 & 3
+    }
+
+    if (![tagName isEqualToString:@"favorites"] &&
+        ![tagName isEqualToString:@"csv"])
+    {
+        [dictAllStats setObject:dictResult forKey:tagName];
+        statsLoadedSoFar += 1;
+    }
     
     if ([tagName isEqualToString:@"Total_P2P_transfers"]) {
-        serve*serveOBJ=[serve new];
-        [serveOBJ setDelegate:self];
-        serveOBJ.tagName=@"Get_Member_Signup_Date";
-        [serveOBJ GetMemberStats:@"Get_Member_Signup_Date"];
-    }
-    else if ([tagName isEqualToString:@"Get_Member_Signup_Date"]) {
         serve*serveOBJ=[serve new];
         [serveOBJ setDelegate:self];
         serveOBJ.tagName=@"Total_$_Sent";
         [serveOBJ GetMemberStats:@"Total_$_Sent"];
     }
+    /*else if ([tagName isEqualToString:@"Get_Member_Signup_Date"]) {
+        serve*serveOBJ=[serve new];
+        [serveOBJ setDelegate:self];
+        serveOBJ.tagName=@"Total_$_Sent";
+        [serveOBJ GetMemberStats:@"Total_$_Sent"];
+    }*/
     else if ([tagName isEqualToString:@"Total_$_Sent"]) {
         serve*serveOBJ=[serve new];
         [serveOBJ setDelegate:self];
@@ -934,10 +940,12 @@
     else if ([tagName isEqualToString:@"Total_no_of_transfer_Received"]) {
         serve*serveOBJ=[serve new];
         [serveOBJ setDelegate:self];
-        serveOBJ.tagName=@"Smallest_sent_transfer";
-        [serveOBJ GetMemberStats:@"Smallest_sent_transfer"];
+        serveOBJ.tagName=@"Largest_sent_transfer";
+        [serveOBJ GetMemberStats:@"Largest_sent_transfer"];
+        //serveOBJ.tagName=@"Smallest_sent_transfer";
+        //[serveOBJ GetMemberStats:@"Smallest_sent_transfer"];
     }
-    else if ([tagName isEqualToString:@"Smallest_sent_transfer"]) {
+    /*else if ([tagName isEqualToString:@"Smallest_sent_transfer"]) {
         serve*serveOBJ=[serve new];
         [serveOBJ setDelegate:self];
         serveOBJ.tagName=@"Smallest_received_transfer";
@@ -948,7 +956,7 @@
         [serveOBJ setDelegate:self];
         serveOBJ.tagName=@"Largest_sent_transfer";
         [serveOBJ GetMemberStats:@"Largest_sent_transfer"];
-    }
+    }*/
     else if ([tagName isEqualToString:@"Largest_sent_transfer"]) {
         serve*serveOBJ=[serve new];
         [serveOBJ setDelegate:self];
@@ -958,10 +966,10 @@
     else if ([tagName isEqualToString:@"Largest_received_transfer"]) {
         serve*serveOBJ=[serve new];
         [serveOBJ setDelegate:self];
-        serveOBJ.tagName=@"Total_$_Added_to_Nooch";
-        [serveOBJ GetMemberStats:@"Total_$_Added_to_Nooch"];
+        serveOBJ.tagName=@"Total_Friends_Joined";
+        [serveOBJ GetMemberStats:@"Total_Friends_Joined"];
     }
-    else if ([tagName isEqualToString:@"Total_$_Added_to_Nooch"]) {
+    /*else if ([tagName isEqualToString:@"Total_$_Added_to_Nooch"]) {
         serve*serveOBJ=[serve new];
         [serveOBJ setDelegate:self];
         serveOBJ.tagName=@"Total_$_withdraw_from_Nooch";
@@ -972,7 +980,7 @@
         [serveOBJ setDelegate:self];
         serveOBJ.tagName=@"Total_Friends_Invited";
         [serveOBJ GetMemberStats:@"Total_Friends_Invited"];
-    }
+    }*/
     else if ([tagName isEqualToString:@"Total_Friends_Invited"]) {
         serve*serveOBJ=[serve new];
         [serveOBJ setDelegate:self];
@@ -1001,7 +1009,7 @@
         [self.transfer_stats reloadData];
         [self.top_friends_stats reloadData];
     }
-/*    else if ([tagName isEqualToString:@"Largest_Donation_Made"]) {
+    /* else if ([tagName isEqualToString:@"Largest_Donation_Made"]) {
         serve*serveOBJ=[serve new];
         [serveOBJ setDelegate:self];
         serveOBJ.tagName=@"Total_Donations_Count";
@@ -1019,8 +1027,8 @@
         serveOBJ.tagName = @"DonatedTo";
         [serveOBJ GetMemberStats:@"DonatedTo"];
     } */
-    
-    if ([tagName isEqualToString:@"favorites"])
+
+    else if ([tagName isEqualToString:@"favorites"])
     {
         NSLog(@"favorites %@",favorites);
 
@@ -1032,7 +1040,7 @@
                      error:&error];
     }
 
-    if ([tagName isEqualToString:@"csv"])
+    else if ([tagName isEqualToString:@"csv"])
     {
         NSDictionary * dictResponse = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         

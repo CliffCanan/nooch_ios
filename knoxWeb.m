@@ -174,7 +174,7 @@
     [head_container addSubview:glyph_lock];
 
     UIImageView * imageShow = [[UIImageView alloc]initWithFrame:CGRectMake(1, 50, 300, 380)];
-    imageShow.image = [UIImage imageNamed:@"Knox_lightbox.png"];
+    imageShow.image = [UIImage imageNamed:@"KnoxInfo-lightbox"];
     imageShow.contentMode = UIViewContentModeScaleAspectFit;
 
     UIButton * btnLink = [UIButton buttonWithType:UIButtonTypeCustom];

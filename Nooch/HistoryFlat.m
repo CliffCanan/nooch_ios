@@ -145,8 +145,8 @@
     if ([defaults boolForKey:@"hasPendingItems"] == true)
     {
         [completed_pending setSelectedSegmentIndex:1];
-        
-        [self.navigationItem setRightBarButtonItem:filt animated:NO ];
+
+        [self.navigationItem setRightBarButtonItem:nil animated:YES];
         
         UILabel *glyph_checkmark = [UILabel new];
         [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
@@ -173,7 +173,6 @@
         [histShowArrayPending removeAllObjects];
         countRows = 0;
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
-
     }
     else
     {
@@ -190,7 +189,7 @@
         UIBarButtonItem *map = [[UIBarButtonItem alloc] initWithCustomView:glyph_map];
         
         NSArray *topRightBtns = @[map,filt];
-        [self.navigationItem setRightBarButtonItems:topRightBtns animated:YES ];
+        [self.navigationItem setRightBarButtonItems:topRightBtns animated:YES];
 
         [completed_pending setSelectedSegmentIndex:0];
     
@@ -667,7 +666,7 @@ return customView;
         UIBarButtonItem *map = [[UIBarButtonItem alloc] initWithCustomView:glyph_map];
         
         NSArray *topRightBtns = @[map,filt];
-        [self.navigationItem setRightBarButtonItems:topRightBtns animated:NO ];
+        [self.navigationItem setRightBarButtonItems:topRightBtns animated:YES];
         
         UILabel *glyph_checkmark = [UILabel new];
         [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
@@ -692,16 +691,17 @@ return customView;
     }
     else
     {
-        [self.navigationItem setRightBarButtonItems:nil];
-        UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [self.navigationItem setRightBarButtonItems:nil animated:YES];
+
+     /* UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [filter setStyleClass:@"label_filter"];
         [filter setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-filter"] forState:UIControlStateNormal];
         [filter setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
         filter.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         [filter addTarget:self action:@selector(FilterHistory:) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *filt = [[UIBarButtonItem alloc] initWithCustomView:filter];
-        
-        [self.navigationItem setRightBarButtonItem:filt animated:NO ];
+
+        [self.navigationItem setRightBarButtonItem:filt animated:NO ];*/
         
         UILabel *glyph_checkmark = [UILabel new];
         [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
@@ -784,7 +784,6 @@ return customView;
                 else
                    return 72;
             }
-           
         }
         else if ([histTempCompleted count] == indexPath.row ||
                  [histShowArrayCompleted count] == 0)
@@ -923,7 +922,7 @@ return customView;
                     
                     UILabel *glyphDate = [UILabel new];
                     [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                    [glyphDate setFrame:CGRectMake(147, 9, 14, 10)];
+                    [glyphDate setFrame:CGRectMake(147, 8, 14, 10)];
                     [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                     [glyphDate setTextColor:kNoochGrayLight];
                     [cell.contentView addSubview:glyphDate];
@@ -1234,7 +1233,7 @@ return customView;
 
                 UILabel *glyphDate = [UILabel new];
                 [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                [glyphDate setFrame:CGRectMake(147, 9, 14, 10)];
+                [glyphDate setFrame:CGRectMake(147, 8, 14, 10)];
                 [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                 [glyphDate setTextColor:kNoochGrayLight];
                 [cell.contentView addSubview:glyphDate];
@@ -1566,8 +1565,6 @@ return customView;
                 
       else if (self.completed_selected == NO)
     {
-//        UILabel * emptyText_Pending = nil;
-
         if (isLocalSearch)
         {
             if ([histTempPending count] > indexPath.row)
@@ -1621,7 +1618,7 @@ return customView;
                     
                     UILabel *glyphDate = [UILabel new];
                     [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                    [glyphDate setFrame:CGRectMake(147, 9, 14, 10)];
+                    [glyphDate setFrame:CGRectMake(147, 8, 14, 10)];
                     [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                     [glyphDate setTextColor:kNoochGrayLight];
                     [cell.contentView addSubview:glyphDate];
@@ -1786,17 +1783,11 @@ return customView;
 
         if ([histShowArrayPending count] > indexPath.row)
         {
-            NSDictionary *dictRecord = [histShowArrayPending objectAtIndex:indexPath.row];
+            NSDictionary * dictRecord = [histShowArrayPending objectAtIndex:indexPath.row];
             
             if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
             {
-				UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(0, 311, 9, 72)];
-                [indicator setBackgroundColor:[UIColor clearColor]];
-                [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
-                [indicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-left"]];
-                [indicator setStyleClass:@"history_sidecolor_pending"];
-
-                UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
+                UILabel * amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
                 [amount setBackgroundColor:[UIColor clearColor]];
                 [amount setTextAlignment:NSTextAlignmentRight];
                 [amount setFont:[UIFont fontWithName:@"Roboto-Medium" size:18]];
@@ -1804,7 +1795,7 @@ return customView;
                 [amount setStyleClass:@"history_transferamount_neutral"];
                 [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
 
-                UILabel *transferTypeLabel = [UILabel new];
+                UILabel * transferTypeLabel = [UILabel new];
                 [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
                 transferTypeLabel.layer.cornerRadius = 3;
                 transferTypeLabel .clipsToBounds = YES;
@@ -1825,7 +1816,7 @@ return customView;
 
                 UILabel *glyphDate = [UILabel new];
                 [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                [glyphDate setFrame:CGRectMake(147, 9, 14, 10)];
+                [glyphDate setFrame:CGRectMake(147, 8, 14, 10)];
                 [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                 [glyphDate setTextColor:kNoochGrayLight];
                 [cell.contentView addSubview:glyphDate];
@@ -1834,7 +1825,7 @@ return customView;
                 pic.layer.cornerRadius = 25;
                 pic.clipsToBounds = YES;
 
-                UILabel *label_memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
+                UILabel * label_memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
                 if ( [dictRecord valueForKey:@"Memo"] != NULL &&
                     ![[dictRecord objectForKey:@"Memo"] isKindOfClass:[NSNull class]] &&
                     ![[dictRecord valueForKey:@"Memo"] isEqualToString:@""] )
@@ -1876,8 +1867,8 @@ return customView;
                     }
                     else
                     {
-                        UIView * bgcolor = [[UIView alloc] init];
-                        bgcolor.backgroundColor = Rgb2UIColor(240, 250, 30, .4);
+                        UIView * bgcolor = [[UIView alloc] init]; // Yellow Highlight for Pending Reeceived Requests
+                        bgcolor.backgroundColor = Rgb2UIColor(240, 250, 30, .35);
                         
                         if (label_memo.attributedText.length > 42) {
                             [bgcolor setFrame:CGRectMake(0, 0, 320, 76)];
@@ -1900,7 +1891,7 @@ return customView;
                         [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
                         [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
                 }
-                
+
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
                 {
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
@@ -1919,10 +1910,21 @@ return customView;
                     [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
                         placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 }
+
                 else {
                     [name setText:@""];
                 }
-                
+
+                if (![[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
+                {
+                    UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(0, 311, 9, 72)];
+                    [indicator setBackgroundColor:[UIColor clearColor]];
+                    [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
+                    [indicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-left"]];
+                    [indicator setStyleClass:@"history_sidecolor_pending"];
+                    [cell.contentView addSubview:indicator];
+                }
+
                 NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                 NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
                 NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
@@ -1986,9 +1988,9 @@ return customView;
                     [cell.contentView addSubview:date];   
                 }
 
+
                 [cell.contentView addSubview:amount];
                 [cell.contentView addSubview:statusIndicator];
-                [cell.contentView addSubview:indicator];
                 [cell.contentView addSubview:transferTypeLabel];
                 [cell.contentView addSubview:name];
                 [cell.contentView addSubview:pic];
@@ -2012,14 +2014,6 @@ return customView;
                     [emptyText_Pending setTextAlignment:NSTextAlignmentCenter];
                     [self.list addSubview:emptyText_Pending];
                 }
-                
-//                [self.list setStyleId:@"emptyTable"];
-//                emptyText_Pending = [[UILabel alloc] initWithFrame:CGRectMake(6, 5, 308, 70)];
-//                [emptyText_Pending setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
-//                [emptyText_Pending setNumberOfLines:0];
-//                [emptyText_Pending setText:@"No payments found for you at the moment."];
-//                [emptyText_Pending setTextAlignment:NSTextAlignmentCenter];
-//                [self.list addSubview:emptyText_Pending];
 
                 return cell;
             }
@@ -2049,8 +2043,6 @@ return customView;
             }
         }
     }
-    
-    // NSLog(@"The Cell is:  %@",cell);
 
     return cell;
 }
@@ -2130,30 +2122,47 @@ return customView;
                 if (ind == 0)
                 {  //remind
                     self.responseDict = [dictRecord copy];
-                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"COMING SOON" message:@"Send a reminder about this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder"
+                                                                 message:[NSString stringWithFormat:@"Do you want to send %@ a reminder about this request?",[[self.responseDict valueForKey:@"FirstName"] capitalizedString]]
+                                                                delegate:self
+                                                       cancelButtonTitle:@"Yes"
+                                                       otherButtonTitles:@"No", nil];
                     [av show];
-//                    [av setTag:1012];
+                    [av setTag:2012];
                 }
                 else
                 {  //cancel
                     self.responseDict = [dictRecord copy];
-                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Request" message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Request"
+                                                                 message:[NSString stringWithFormat:@"Are you sure you want to cancel this request to %@?",[[self.responseDict valueForKey:@"FirstName"] capitalizedString]]
+                                                                delegate:self
+                                                       cancelButtonTitle:@"Yes"
+                                                       otherButtonTitles:@"No", nil];
                     [av show];
                     [av setTag:1010];
                 }
             }
-            else {
+            else
+            {
                 if (ind == 0)
                 { //remind
                     self.responseDict = [dictRecord copy];
-                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"COMING SOON" message:@"Send a reminder about this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder"
+                                                                 message:@"Do you want to send a reminder about this request?"
+                                                                delegate:self
+                                                       cancelButtonTitle:@"Yes"
+                                                       otherButtonTitles:@"No", nil];
                     [av show];
-//                    [av setTag:2012];
+                    [av setTag:2013];
                 }
                 else
                 {  // cancel
                     self.responseDict = [dictRecord copy];
-                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Request" message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Request"
+                                                                 message:@"Are you sure you want to cancel this request?"
+                                                                delegate:self
+                                                       cancelButtonTitle:@"Yes"
+                                                       otherButtonTitles:@"No", nil];
                     [av show];
                     [av setTag:2010];
                 }
@@ -2162,47 +2171,66 @@ return customView;
         else
         {  // For the Recipient of a Request
             if (ind == 0)
-            {
-                //accept
+            { //accept
                 NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-                
+
                 if ([[assist shared]getSuspended]) {
-                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+                    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended"
+                                                                    message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help."
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:@"Contact Support", nil];
                     [alert setTag:50];
                     [alert show];
                     return; 
                 }
-                if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {   
-                    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Email Verification Needed" message:@"Please click the link we emailed you to verify your email address." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                else if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
+                    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Email Verification Needed"
+                                                                    message:@"Please click the link we emailed you to verify your email address."
+                                                                   delegate:Nil
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:Nil, nil];
                     [alert show];
                     return;
                 }
                 if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
                     
-                        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Profile Not Complete" message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!" delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+                        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Profile Not Complete"
+                                                                        message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!"
+                                                                       delegate:self
+                                                              cancelButtonTitle:@"Later"
+                                                              otherButtonTitles:@"Validate Now", nil];
                         [alert setTag:147];
                         [alert show];
                         return;
                 }
                 else if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
-                    UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Please Attach an Account" message:@"Before you can send or receive money, you must add a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                    UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Please Attach An Account"
+                                                                  message:@"Before you can send or receive money, you must add a bank account."
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles:Nil, nil];
                     [set show];
                     return;
                 }
-                else {
-                NSMutableDictionary *input = [dictRecord mutableCopy];
-                [input setValue:@"accept" forKey:@"response"];
-               
-                [[assist shared]setRequestMultiple:NO];
-                TransferPIN *trans = [[TransferPIN alloc] initWithReceiver:input type:@"requestRespond" amount:[[dictRecord objectForKey:@"Amount"] floatValue]];
-                [nav_ctrl pushViewController:trans animated:YES];
+                else
+                {
+                    NSMutableDictionary *input = [dictRecord mutableCopy];
+                    [input setValue:@"accept" forKey:@"response"];
+                   
+                    [[assist shared]setRequestMultiple:NO];
+                    TransferPIN *trans = [[TransferPIN alloc] initWithReceiver:input type:@"requestRespond" amount:[[dictRecord objectForKey:@"Amount"] floatValue]];
+                    [nav_ctrl pushViewController:trans animated:YES];
                 }
             }
             else
-            {
-                //decline
+            { // Reject
                 self.responseDict = [dictRecord copy];
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Reject This Request" message:@"Are you sure you want to reject this request?" delegate:self cancelButtonTitle:@"Yes - Reject" otherButtonTitles:@"No", nil];
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Reject %@'s Request",[self.responseDict valueForKey:@"FirstName"]]
+                                                             message:[NSString stringWithFormat:@"Are you sure you want to reject this request from %@?",[self.responseDict valueForKey:@"Name"]]
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Yes - Reject"
+                                                   otherButtonTitles:@"No", nil];
                 [av show];
                 [av setTag:1011];
             }
@@ -2213,14 +2241,21 @@ return customView;
         if (ind == 0)
         {  //remind
             self.responseDict = [dictRecord copy];
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"COMING SOON" message:@"Send a reminder about this transfer?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder" message:@"Send a reminder about this transfer?"
+                                                        delegate:self
+                                               cancelButtonTitle:@"Yes"
+                                               otherButtonTitles:@"No", nil];
             [av show];
-//            [av setTag:312];
+            [av setTag:2014];
         }
         else
         {  //cancel
             self.responseDict = [dictRecord copy];
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Transfer" message:@"Are you sure you want to cancel this transfer?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Transfer"
+                                                         message:@"Are you sure you want to cancel this transfer?"
+                                                        delegate:self
+                                               cancelButtonTitle:@"Yes"
+                                               otherButtonTitles:@"No", nil];
             [av show];
             [av setTag:310];
         }
@@ -2656,6 +2691,7 @@ return customView;
 
     else if ([tagName isEqualToString:@"remind"])
     {
+        NSLog(@"Remind response was: %@",result);
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Reminder Sent Successfully" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
@@ -2685,14 +2721,38 @@ return customView;
         [s setDelegate:self];
         [s sendCsvTrasactionHistory:email];
     }
+
+    if (actionSheet.tag == 2012 && buttonIndex == 0)  // REMIND Request to Existing User
+    {
+        serve * serveObj = [serve new];
+        [serveObj setDelegate:self];
+        serveObj.tagName = @"remind";
+        [serveObj SendReminderToRecepient:[self.responseDict valueForKey:@"TransactionId"] reminderType:@"RequestMoneyReminderToExistingUser"];
+    }
     
+    else if (actionSheet.tag == 2013 && buttonIndex == 0)  // REMIND Request to New User
+    {
+        serve * serveObj = [serve new];
+        [serveObj setDelegate:self];
+        serveObj.tagName = @"remind";
+        [serveObj SendReminderToRecepient:[self.responseDict valueForKey:@"TransactionId"] reminderType:@"RequestMoneyReminderToNewUser"];
+    }
+    
+    else if (actionSheet.tag == 2014 && buttonIndex == 0)  // REMIND Transfer/Invite to New User
+    {
+        serve * serveObj = [serve new];
+        [serveObj setDelegate:self];
+        serveObj.tagName = @"remind";
+        [serveObj SendReminderToRecepient:[self.responseDict valueForKey:@"TransactionId"] reminderType:@"InvitationReminderToNewUser"];
+    }
+
     else if (actionSheet.tag == 147 && buttonIndex == 1)  // go to Profile
     {
         ProfileInfo *prof = [ProfileInfo new];
         isProfileOpenFromSideBar = NO;
         [self.navigationController pushViewController:prof animated:YES];
     }
-    
+
     else if ((actionSheet.tag == 1010 || actionSheet.tag == 2010) && buttonIndex == 0) // CANCEL Request
     {
         RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
@@ -2717,7 +2777,7 @@ return customView;
             [serveObj CancelMoneyRequestForNonNoochUser:[self.responseDict valueForKey:@"TransactionId"]];
         }
     }
-    
+
     else if (actionSheet.tag == 310 && buttonIndex == 0) // CANCEL Transfer (Send) Invite
     {
         RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
@@ -2735,8 +2795,8 @@ return customView;
         serveObj.tagName = @"CancelMoneyTransferToNonMemberForSender";  // Cancel Request for Existing User
         [serveObj CancelMoneyTransferToNonMemberForSender:[self.responseDict valueForKey:@"TransactionId"]];
     }
-    
-    else if (actionSheet.tag == 1011 && buttonIndex == 0)
+
+    else if (actionSheet.tag == 1011 && buttonIndex == 0)  // REJECT Request
     {
         RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
         spinner1.color = [UIColor whiteColor];
@@ -2752,16 +2812,6 @@ return customView;
         [serveObj setDelegate:self];
         serveObj.tagName = @"reject";
         [serveObj CancelRejectTransaction:[self.responseDict valueForKey:@"TransactionId"] resp:@"Rejected"];
-    }
-    
-	// ADDED BY CLIFF Edited By Baljeet
-	else if (actionSheet.tag == 1012 && buttonIndex == 0) // Send Reminder
-    {
-        NSString * memId1 = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
-        serve * serveObj=[serve new];
-        [serveObj setDelegate:self];
-        serveObj.tagName = @"remind";
-        [serveObj SendReminderToRecepient:[self.responseDict valueForKey:@"TransactionId"] memberId:memId1];
     }
     
     else if (actionSheet.tag == 50 && buttonIndex == 1) // Contact Support
