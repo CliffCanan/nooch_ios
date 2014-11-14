@@ -297,7 +297,8 @@
     {
         [logo setStyleId:@"prelogin_logo_loginScreen_4"];
 
-        [self.facebookLogin setFrame:CGRectMake(20, 60, 280, 50)];
+        [self.facebookLogin setStyleClass:@"button_blue_login_4"];
+        [glyphFB setFrame:CGRectMake(19, 7, 30, 28)];
 
         [em setFrame:CGRectMake(20, 109, 100, 20)];
         [pass setFrame:CGRectMake(20, 144, 102, 20)];

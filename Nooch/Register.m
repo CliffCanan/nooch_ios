@@ -90,6 +90,9 @@
     [Appirater appLaunched:NO];
 
     [super viewDidLoad];
+
+    [FBSession.activeSession close];
+    [FBSession setActiveSession:nil];
     [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
     [self.hud hide:YES];
     [[UIApplication sharedApplication]setStatusBarHidden:YES];
@@ -127,7 +130,7 @@
 
     UILabel * glyphFB = [UILabel new];
     [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
-    [glyphFB setFrame:CGRectMake(60, 8, 30, 30)];
+    [glyphFB setFrame:CGRectMake(58, 8, 30, 30)];
     glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]
                                                                  attributes:textAttributes];
     [glyphFB setTextColor:[UIColor whiteColor]];
@@ -366,21 +369,21 @@
             [subview removeFromSuperview];
         }
     }
-    
+
     NSShadow * shadowFB = [[NSShadow alloc] init];
     shadowFB.shadowColor = Rgb2UIColor(19, 32, 38, .2);
     shadowFB.shadowOffset = CGSizeMake(0, -1);
     NSDictionary * shadowFBdict = @{NSShadowAttributeName: shadowFB};
     
-    [self.facebookLogin setTitle:@"Log in with Facebook" forState:UIControlStateNormal];
+    [self.facebookLogin setTitle:@"  Facebook" forState:UIControlStateNormal];
     
     UILabel * glyphFB = [UILabel new];
     [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
-    [glyphFB setFrame:CGRectMake(19, 8, 30, 30)];
+    [glyphFB setFrame:CGRectMake(58, 8, 30, 30)];
     [glyphFB setTextColor:[UIColor whiteColor]];
     [glyphFB setStyleClass:@"animate_bubble"];
     glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"] attributes:shadowFBdict];
-    
+
     [self.facebookLogin addSubview:glyphFB];
 }
 
