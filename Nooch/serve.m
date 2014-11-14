@@ -1617,7 +1617,7 @@ NSString *amnt;
     self.responseData = [[NSMutableData alloc] init];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     NSString * memId = [defaults objectForKey:@"MemberId"];
-    NSString *urlString = [NSString stringWithFormat:@"%@/SaveMembersFBId?MemberId=%@&MemberfaceBookId=%@&accessToken=%@/isconnect=%@",ServerUrl,memId,fb_id,[defaults valueForKey:@"OAuthToken"],isconnect];
+    NSString *urlString = [NSString stringWithFormat:@"%@/SaveMembersFBId?MemberId=%@&MemberfaceBookId=%@&accessToken=%@&isconnect=%@",ServerUrl,memId,fb_id,[defaults valueForKey:@"OAuthToken"],isconnect];
     //NSLog(@"%@",urlString);
     NSURL *url = [NSURL URLWithString:urlString];
     
