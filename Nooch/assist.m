@@ -459,7 +459,7 @@ static assist * _sharedInstance = nil;
             [user setObject:[loginResult valueForKey:@"FacebookAccountLogin"] forKey:@"facebook_id"];
         }
         else {
-            [user setObject:@"" forKey:@"FacebookAccountID"];
+            [user setObject:@"" forKey:@"facebook_id"];
         }
 
         if (  [loginResult valueForKey:@"Status"] != Nil  &&

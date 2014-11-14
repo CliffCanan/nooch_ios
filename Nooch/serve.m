@@ -1611,13 +1611,13 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 
--(void)storeFB:(NSString*)fb_id
+-(void)storeFB:(NSString*)fb_id isConnect:(NSString*)isconnect
 {
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     NSString * memId = [defaults objectForKey:@"MemberId"];
-    NSString *urlString = [NSString stringWithFormat:@"%@/SaveMembersFBId?MemberId=%@&MemberfaceBookId=%@&accessToken=%@",ServerUrl,memId,fb_id,[defaults valueForKey:@"OAuthToken"]];
+    NSString *urlString = [NSString stringWithFormat:@"%@/SaveMembersFBId?MemberId=%@&MemberfaceBookId=%@&accessToken=%@&isconnect=%@",ServerUrl,memId,fb_id,[defaults valueForKey:@"OAuthToken"],isconnect];
     //NSLog(@"%@",urlString);
     NSURL *url = [NSURL URLWithString:urlString];
     
