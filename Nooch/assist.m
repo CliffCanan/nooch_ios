@@ -427,9 +427,6 @@ static assist * _sharedInstance = nil;
     
 }
 -(void)Error:(NSError *)Error{
-    
-
-    
 }
 -(void)listen:(NSString *)result tagName:(NSString *)tagName
 {
@@ -455,7 +452,8 @@ static assist * _sharedInstance = nil;
         NSLog(@"User Info: %@",loginResult);
 
         if ( [loginResult valueForKey:@"FacebookAccountLogin"] &&
-            [[loginResult valueForKey:@"FacebookAccountLogin"]length] > 0) {
+            [[loginResult valueForKey:@"FacebookAccountLogin"]length] > 1)
+        {
             [user setObject:[loginResult valueForKey:@"FacebookAccountLogin"] forKey:@"facebook_id"];
         }
         else {
@@ -486,7 +484,6 @@ static assist * _sharedInstance = nil;
             else {
                 [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
             }
-
         }
         
         if (![[loginResult objectForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]] &&

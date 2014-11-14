@@ -15,8 +15,6 @@ NSMutableURLRequest *request1,*request2;
 # pragma mark - Custom Method
 
 -(void)getDecryptedValue:(NSString *) methodName pwdString:(NSString *) sources {
-    
-    
     self.responseData =  [[[NSMutableData alloc] init] autorelease];
     request1 = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?data=%@", MyUrl, methodName, sources]]];
   
@@ -46,20 +44,7 @@ NSMutableURLRequest *request1,*request2;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     NSString *responseString = [[[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding] autorelease];
     NSError* error;
-    // SBJsonParser *parser = [[[SBJsonParser alloc] init] autorelease];
-//    id object = [NSJSONSerialization
-//                 JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
-//                 options:kNilOptions
-//                 error:&error];;
-//    NSMutableArray *transResult;
-//    if (object != nil) {
-//        // Success!
-//        transResult = [NSJSONSerialization
-//                       JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
-//                       options:kNilOptions
-//                       error:&error];
-//    }
-   // NSMutableDictionary *loginResult=[[NSMutableDictionary alloc]init];
+
      NSMutableDictionary *loginResult = [NSJSONSerialization
                    JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                    options:kNilOptions
@@ -74,8 +59,6 @@ NSMutableURLRequest *request1,*request2;
             [loginResult2 setObject:[loginResult valueForKey:key] forKey:key];
     }
     
-    [self.Delegate decryptionDidFinish:loginResult2 TValue:self.tag];
-    //[responseData release];
-    
+    [self.Delegate decryptionDidFinish:loginResult2 TValue:self.tag];    
 }
 @end

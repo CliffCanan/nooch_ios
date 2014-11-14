@@ -13,6 +13,5 @@ BOOL isBankAttached;
 {
     UIView * blankView;
     UIButton * arrow;
-    
 }
 @end

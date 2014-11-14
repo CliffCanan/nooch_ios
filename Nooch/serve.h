@@ -51,7 +51,6 @@
 -(void)getSettings;
 -(void)getEncrypt:(NSString *)input;
 -(void)getDetails:(NSString*)username;
-//-(void)getLatestTrans
 -(void)getMemIdFromuUsername:(NSString*)username;
 -(void)getMemberIds:(NSArray*)input;
 -(void)getNoteSettings;
@@ -120,6 +119,3 @@
 -(void)SendReminderToRecepient:(NSString *)transactionId reminderType:(NSString*)reminderType;
 -(void)ValidatePinNumberToEnterForEnterForeground:(NSString*)memId pin:(NSString*)pin;
 @end
-
-//392f9c86-1651-4459-a6a9-d362fcfc4366 - nooch team
-//e9821324-08ac-43f6-ad9d-5b6aabe8e8c3 - team nooch

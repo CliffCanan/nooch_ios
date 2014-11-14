@@ -2,8 +2,8 @@
 //  GetEncryptionValue.m
 //  Nooch
 //
-//  Created by developer on 09/08/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Created by Nooch on 09/08/11.
+//  Copyright 2014 Nooch Inc. All rights reserved.
 //
 
 #import "GetEncryptionValue.h"
@@ -34,12 +34,6 @@ NSMutableURLRequest*requestEncryption;
     
 }
 
-//    serve *enc = [serve new];
-//
-//    enc.Delegate = self;
-//    [enc getEncrypt:stringtoEncry];
-//
-//}
 # pragma mark - NSURL Connection Methods
 
 //response method for all request
