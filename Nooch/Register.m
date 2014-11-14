@@ -90,6 +90,9 @@
     [Appirater appLaunched:NO];
 
     [super viewDidLoad];
+
+    [FBSession.activeSession close];
+    [FBSession setActiveSession:nil];
     [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
     [self.hud hide:YES];
     [[UIApplication sharedApplication]setStatusBarHidden:YES];
@@ -127,7 +130,7 @@
 
     UILabel * glyphFB = [UILabel new];
     [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
-    [glyphFB setFrame:CGRectMake(60, 8, 30, 30)];
+    [glyphFB setFrame:CGRectMake(58, 8, 30, 30)];
     glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]
                                                                  attributes:textAttributes];
     [glyphFB setTextColor:[UIColor whiteColor]];
@@ -366,21 +369,21 @@
             [subview removeFromSuperview];
         }
     }
-    
+
     NSShadow * shadowFB = [[NSShadow alloc] init];
     shadowFB.shadowColor = Rgb2UIColor(19, 32, 38, .2);
     shadowFB.shadowOffset = CGSizeMake(0, -1);
     NSDictionary * shadowFBdict = @{NSShadowAttributeName: shadowFB};
     
-    [self.facebookLogin setTitle:@"Log in with Facebook" forState:UIControlStateNormal];
+    [self.facebookLogin setTitle:@"  Facebook" forState:UIControlStateNormal];
     
     UILabel * glyphFB = [UILabel new];
     [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
-    [glyphFB setFrame:CGRectMake(19, 8, 30, 30)];
+    [glyphFB setFrame:CGRectMake(58, 8, 30, 30)];
     [glyphFB setTextColor:[UIColor whiteColor]];
     [glyphFB setStyleClass:@"animate_bubble"];
     glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"] attributes:shadowFBdict];
-    
+
     [self.facebookLogin addSubview:glyphFB];
 }
 
@@ -468,9 +471,6 @@
                       otherButtonTitles:nil] show];
 }
 
-
-
-
 -(void)termsAndConditions:(UIButton*)sender{
     if (isTermsChecked) {
          isTermsChecked = NO;
@@ -515,122 +515,6 @@
                          [child removeFromParentViewController];
                      }];
 }
-
-/*
-#pragma mark - facebook integration
-- (void)connect_to_facebook
-{
-    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]){
-        self.accountStore = [[ACAccountStore alloc] init];
-        self.facebookAccount = nil;
-        NSDictionary *options = @{
-                                  ACFacebookAppIdKey: @"198279616971457",
-                                  ACFacebookPermissionsKey: @[@"email",@"user_about_me"],
-                                  ACFacebookAudienceKey: ACFacebookAudienceOnlyMe
-                                  };
-        ACAccountType *facebookAccountType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-        [self.accountStore requestAccessToAccountsWithType:facebookAccountType
-                                                   options:options completion:^(BOOL granted, NSError *e)
-         {
-             if (!granted) {
-                 NSLog(@"didnt grant because: %@",e.description);
-             }
-             else {
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStylePulse];
-                     spinner1.color = [UIColor whiteColor];
-                     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-                     [self.navigationController.view addSubview:self.hud];
-                     self.hud.labelText = @"Loading Facebook Info...";
-                     [spinner1 startAnimating];
-                     self.hud.mode = MBProgressHUDModeCustomView;
-                     self.hud.customView = spinner1;
-                     self.hud.delegate = self;
-                     [self.hud show:YES];
-                 });
-                 NSArray *accounts = [self.accountStore accountsWithAccountType:facebookAccountType];
-                 self.facebookAccount = [accounts lastObject];
-                 //[self renewFb];
-                 [self finishFb];
-             }
-         }];
-    }
-    else {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Not Available" message:@"You do not have a Facebook account attached to this phone." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [av show];
-    }
-}
-
--(void)renewFb
-{
-    [self.accountStore renewCredentialsForAccount:(ACAccount *)self.facebookAccount completion:^(ACAccountCredentialRenewResult renewResult, NSError *error){
-        if(!error)
-        {
-            switch (renewResult) {
-                case ACAccountCredentialRenewResultRenewed:
-                    break;
-                case ACAccountCredentialRenewResultRejected:
-                    NSLog(@"User declined permission");
-                    break;
-                case ACAccountCredentialRenewResultFailed:
-                    NSLog(@"non-user-initiated cancel, you may attempt to retry");
-                    break;
-                default:
-                    break;
-            }
-            [self finishFb];
-        }
-        else{
-            //handle error gracefully
-            NSLog(@"Error from renew credentials: %@",error);
-        }
-    }];
-}
-
--(void)finishFb
-{
-    NSString *acessToken = [NSString stringWithFormat:@"%@",self.facebookAccount.credential.oauthToken];
-    NSDictionary *parameters = @{@"access_token": acessToken,@"fields":@"id,username,first_name,last_name,email"};
-    NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me"];
-    SLRequest *feedRequest = [SLRequest
-                              requestForServiceType:SLServiceTypeFacebook
-                              requestMethod:SLRequestMethodGET
-                              URL:feedURL
-                              parameters:parameters];
-    feedRequest.account = self.facebookAccount;
-    self.facebook_info = [NSMutableDictionary new];
-    [feedRequest performRequestWithHandler:^(NSData *respData,
-                                             NSHTTPURLResponse *urlResponse, NSError *error)
-    {
-         self.facebook_info = [NSJSONSerialization
-                               JSONObjectWithData:respData
-                               options:kNilOptions
-                               error:&error];
-         dispatch_async(dispatch_get_main_queue(), ^{
-             [self.hud hide:YES];
-             //login if it is already nooch user
-
-             RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
-             spinner1.color = [UIColor whiteColor];
-             self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-             [self.navigationController.view addSubview:self.hud];
-
-             self.hud.mode = MBProgressHUDModeCustomView;
-             self.hud.customView = spinner1;
-             self.hud.delegate = self;
-             self.hud.labelText = @"Checking Sign Up Credentials...";
-             [self.hud show:YES];
-
-             NSLog(@"Facebook Email is: %@",self.facebook_info);
-             NSString * udid = [[UIDevice currentDevice] uniqueDeviceIdentifier];
-             serve * log = [serve new];
-             [log setDelegate:self];
-             [log setTagName:@"loginwithFB"];
-             [log loginwithFB:[self.facebook_info objectForKey:@"email"] FBId:[self.facebook_info objectForKey:@"id"] remember:YES lat:0.0 lon:0.0 uid:udid];
-         });
-        
-     }];
-} */
 
 #pragma mark - navigation
 - (void)continue_to_signup

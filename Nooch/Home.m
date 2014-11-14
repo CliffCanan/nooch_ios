@@ -573,7 +573,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     NSDictionary * titleAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
                                        NSShadowAttributeName: shadowNavText};
     [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
-    
+
     [self.navigationItem setTitle:@"Nooch"];
     //Update Pending Status
     NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
@@ -593,7 +593,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             spinner1.color = [UIColor clearColor];
             self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
             [self.navigationController.view addSubview:self.hud];
-            
+
             self.hud.color = Rgb2UIColor(238, 239, 240, .92);
             self.hud.mode = MBProgressHUDModeCustomView;
             self.hud.customView = spinner1;
@@ -602,7 +602,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             self.hud.labelColor = kNoochGrayDark;
             [self.hud show:YES];
         }
-        
+
         if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
         {
             serve *serveOBJ = [serve new ];
@@ -618,12 +618,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         return;
     }
 
-
     NSShadow * shadowRed = [[NSShadow alloc] init];
     shadowRed.shadowColor = Rgb2UIColor(71, 8, 7, .4);
     shadowRed.shadowOffset = CGSizeMake(0, 1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadowRed };
-    
 
     if ([[user objectForKey:@"Status"] isEqualToString:@"Suspended"] ||
         [[user objectForKey:@"Status"] isEqualToString:@"Temporarily_Blocked"])
@@ -1051,11 +1049,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                                      from:self
                                                  forEvent:nil];
         }
-        //[locationManager requestWhenInUseAuthorization];
     }
 
     [[assist shared] setRequestMultiple:NO];
     [[assist shared] setArray:nil];
+
+    if ([self.navigationController.view.subviews containsObject:self.hud])
+    {
+        [self.hud hide:YES];
+    }
 }
 
 -(void)GetFavorite
@@ -1091,20 +1093,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     //do carousel
     [self.view addSubview:_carousel];
     [_carousel reloadData];
-
-    /*[UIView animateKeyframesWithDuration:0.46
-                                   delay:0
-                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
-                              animations:^{
-                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
-                                      top_button.alpha = 0;
-                                  }];
-                                  [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.8 animations:^{
-                                      [top_button setFrame:CGRectMake(20, 260, 280, 60)];
-                                      top_button.alpha = 1;
-                                  }];
-                              } completion: nil
-     ];*/
 }
 
 #pragma mark - iCarousel methods

@@ -207,7 +207,7 @@
                     loc =-1;
             }
         }
-        NSLog(@"%@",arrRequestPersons);
+        //NSLog(@"%@",arrRequestPersons);
         [self.contacts reloadData];
     }
     else
@@ -268,7 +268,7 @@
     if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
         ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted)
     {
-        NSLog(@"Denied");
+        NSLog(@"Contacts permission denied");
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Access To Contacts"
                                                         message:@"Did you know you can send money to ANY email address? It's really helpful to select a contact you already have in your iPhone's Address Book.\n\nTo enable this ability, turn on access to Contacts in your iPhone's Settings:\n\nSettings --> Privacy --> Contacts"
                                                        delegate:Nil
@@ -690,8 +690,6 @@
         }
         else if ([emailAddresses count] == 1)
         {
-            NSLog(@"2.2a MAYBE Checkpoint Reached");
-
             emailphoneBook= [emailAddresses objectAtIndex:0];
             isphoneBook=YES;
             [self getMemberIdByUsingUserNameFromPhoneBook];
@@ -952,8 +950,6 @@
     }
     else
     {
-        NSLog(@"2.5 Checkpoint Reached %@",search.text);
-
         serve *emailCheck = [serve new];
         emailCheck.Delegate = self;
         emailCheck.tagName = @"emailCheck";
@@ -1112,11 +1108,11 @@
                 }
             }
             //NSLog(@"%@",arrRequestPersons);
-            
+
             [self.contacts reloadData];
             return;
         }
-        
+
         if ([self.recents count] > 0)
         {
             [self.contacts setHidden:NO];
@@ -1141,7 +1137,7 @@
             [self.view addSubview:self.noContact_img];
         }
     }
-    
+
     else if ([tagName isEqualToString:@"searchByLocation"])
     {
         NSError* error;
@@ -1170,7 +1166,7 @@
         [self.contacts reloadData];
 
     }
-    
+
     else if ([tagName isEqualToString:@"emailCheck"])
     {
         NSError* error;
@@ -1231,7 +1227,7 @@
             return;
         }
     }
-    
+
     else if ([tagName isEqualToString:@"getMemberDetails"])
     {
         NSError* error;
@@ -1319,105 +1315,6 @@
         //[self.contacts reloadData];
     }
 }
-
-/* #pragma mark - facebook integration
-- (void)connect_to_facebook
-{
-    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]){
-        accountStore = [[ACAccountStore alloc] init];
-        facebookAccount = nil;
-        NSDictionary *options = @{
-                                  ACFacebookAppIdKey: @"198279616971457",
-                                  ACFacebookPermissionsKey: @[@"email",@"user_about_me"],
-                                  ACFacebookAudienceKey: ACFacebookAudienceOnlyMe
-                                  };
-        ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-        [accountStore requestAccessToAccountsWithType:facebookAccountType
-                                                   options:options completion:^(BOOL granted, NSError *e)
-         {
-             if (!granted) {
-                 NSLog(@"didnt grant because: %@",e.description);
-             }
-             else{
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-                     [self.navigationController.view addSubview:self.hud];
-                     self.hud.delegate = self;
-                     self.hud.labelText = @"Loading Facebook Info...";
-                     [self.hud show:YES];
-                 });
-                 NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
-                 facebookAccount = [accounts lastObject];
-              
-                 [self finishFb];
-             }
-         }];
-    }
-    else {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Not Available" message:@"You do not have a Facebook account attached to this phone." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [av show];
-    }
-}
-
--(void)renewFb
-{
-    [accountStore renewCredentialsForAccount:(ACAccount *)facebookAccount completion:^(ACAccountCredentialRenewResult renewResult, NSError *error){
-        if(!error)
-        {
-            switch (renewResult) {
-                case ACAccountCredentialRenewResultRenewed:
-                    break;
-                case ACAccountCredentialRenewResultRejected:
-                    NSLog(@"User declined permission");
-                    break;
-                case ACAccountCredentialRenewResultFailed:
-                    NSLog(@"non-user-initiated cancel, you may attempt to retry");
-                    break;
-                default:
-                    break;
-            }
-            [self finishFb];
-        }
-        else{
-            NSLog(@"error from renew credentials%@",error);
-        }
-    }];
-}
-
--(void)finishFb
-{
-    NSString *acessToken = [NSString stringWithFormat:@"%@",facebookAccount.credential.oauthToken];
-    NSDictionary *parameters = @{@"access_token": acessToken,@"fields":@"id,username,first_name,last_name,email"};
-    NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me"];
-    SLRequest *feedRequest = [SLRequest
-                              requestForServiceType:SLServiceTypeFacebook
-                              requestMethod:SLRequestMethodGET
-                              URL:feedURL
-                              parameters:parameters];
-    feedRequest.account = facebookAccount;
-    facebook_info = [NSMutableDictionary new];
-    [feedRequest performRequestWithHandler:^(NSData *respData,
-                                             NSHTTPURLResponse *urlResponse, NSError *error)
-     {
-         facebook_info = [NSJSONSerialization
-                               JSONObjectWithData:respData //1
-                               options:kNilOptions
-                               error:&error];
-         dispatch_async(dispatch_get_main_queue(), ^{
-             [self.hud hide:YES];
-
-             [[NSUserDefaults standardUserDefaults] setObject:[facebook_info objectForKey:@"id"] forKey:@"facebook_id"];
-             serve *fb = [serve new];
-             [fb setDelegate:self];
-             [fb setTagName:@"fb"];
-             if ([facebook_info objectForKey:@"id"]) {
-                 [fb storeFB:[facebook_info objectForKey:@"id"]];
-             }
-         });
-         
-     }];
-}  */
-
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -1547,7 +1444,7 @@
         }
         else {
             temp = [self.recents objectAtIndex:indexPath.row];
-            NSLog(@"%@",temp);
+            //NSLog(@"%@",temp);
         }
         
         UIImageView * pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
@@ -1665,7 +1562,7 @@
         
         [npic removeFromSuperview];
         arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
-        NSLog(@"arrRecipientsForRequest: %@",arrRecipientsForRequest);
+        //NSLog(@"arrRecipientsForRequest: %@",arrRecipientsForRequest);
         
         int loc =- 1;
         
@@ -1857,8 +1754,6 @@
         
         if ([[assist shared] assos][receiver[@"UserName"]][@"addressbook"])
         {
-            NSLog(@"2. navIsUp value is.... %d",navIsUp);
-
             emailphoneBook = receiver[@"UserName"];
             isphoneBook = YES;
 
@@ -1879,7 +1774,6 @@
             }
             else
             {
-                NSLog(@"2.2 Checkpoint Reached");
                 [self getMemberIdByUsingUserNameFromPhoneBook];
             /*
                 serve * emailCheck = [serve new];
@@ -1899,7 +1793,6 @@
         [search setText:@""];
         [search setShowsCancelButton:NO];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        NSLog(@"3. navIsUp value is.... %d",navIsUp);
 
         if (navIsUp == YES) {
             navIsUp = NO;
@@ -1917,8 +1810,6 @@
     }
     else
     {
-        NSLog(@"4. navIsUp value is.... %d",navIsUp);
-
         if (navIsUp == YES) {
             navIsUp = NO;
             dispatch_async(dispatch_get_main_queue(), ^{

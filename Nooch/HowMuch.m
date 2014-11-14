@@ -97,7 +97,7 @@
     [self.navigationItem setLeftBarButtonItem:menu];
 
     [[assist shared] setTranferImage:nil];
-    
+
     self.amnt = [@"" mutableCopy];
     self.decimals = YES;
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -118,7 +118,6 @@
     self.recip_back = [UILabel new];
     [self.recip_back setStyleClass:@"barbackground"];
     [self.recip_back setStyleClass:@"barbackground_gray"];
-    // self.recip_back.layer.cornerRadius = 4;
     self.recip_back.clipsToBounds = YES;
     [self.back addSubview:self.recip_back];
 
@@ -126,7 +125,7 @@
     shadow.shadowColor = Rgb2UIColor(64, 65, 66, .3);
     shadow.shadowOffset = CGSizeMake(0, 1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
-    
+
     UILabel * to = [UILabel new];
     to.attributedText = [[NSAttributedString alloc] initWithString:@"To: " attributes:textAttributes];
     [to setStyleId:@"label_howmuch_to"];
@@ -148,7 +147,7 @@
             }
             [to_label setStyleId:@"label_howmuch_recipientnamenonuser"];
             strMultiple = [strMultiple substringFromIndex:1];
-            [to_label setText:strMultiple];
+            to_label.attributedText = [[NSAttributedString alloc] initWithString:strMultiple attributes:textAttributes];
         }
         else
         {
@@ -223,19 +222,19 @@
         [self.camera setFrame:CGRectMake(259, 154, 30, 26)];
     }
     [self.camera addTarget:self action:@selector(attach_pic) forControlEvents:UIControlEventTouchUpInside];
-    
+
     [self.camera setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-camera"] forState:UIControlStateNormal];
     [self.camera setTitleColor:kNoochGrayLight forState:UIControlStateNormal];
-    
+
     UILabel *glyph_plus = [UILabel new];
     [glyph_plus setFont:[UIFont fontWithName:@"FontAwesome" size:12]];
     [glyph_plus setFrame:CGRectMake(23, -4, 15, 15)];
     [glyph_plus setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus"]];
     [glyph_plus setTextColor:kNoochBlue];
-    
+
     [self.camera addSubview:glyph_plus];
     [self.back addSubview:self.camera];
-    
+
     self.send = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.send setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.send setTitle:@"Send" forState:UIControlStateNormal];
@@ -245,7 +244,6 @@
 
     self.request = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.request setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.request setTitle:@"Request" forState:UIControlStateNormal];
     [self.request setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.22) forState:UIControlStateNormal];
     self.request.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.request addTarget:self action:@selector(initialize_request) forControlEvents:UIControlEventTouchUpInside];
@@ -258,9 +256,13 @@
         [self.send removeFromSuperview];
         [self.request setStyleClass:@"howmuch_buttons"];
         [self.request setStyleId:@"howmuch_request_mult_expand"];
+        [self.request setTitle:@"Confirm Request" forState:UIControlStateNormal];
+        [self.request removeTarget:self action:@selector(initialize_request) forControlEvents:UIControlEventTouchUpInside];
+        [self.request addTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
     }
     else
     {
+        [self.request setTitle:@"Request" forState:UIControlStateNormal];
         [self.send setStyleClass:@"howmuch_buttons"];
         [self.send setStyleId:@"howmuch_send"];
         [self.send setFrame:CGRectMake(160, 160, 150, 50)];
