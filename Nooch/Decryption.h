@@ -2,22 +2,16 @@
 //  Decryption.h
 //  Nooch
 //
-//  Created by developer on 28/07/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Created by Nooch on 7/28/11.
+//  Copyright 2014 Nooch Inc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
-
 @protocol DecryptionDelegate <NSObject>
-
 -(void)decryptionDidFinish:(NSMutableDictionary *) sourceData TValue:(NSNumber *) tagValue;
-
 @end
-
-
 @interface Decryption : NSObject {
-    
     NSMutableData *responseData;
     id <DecryptionDelegate> Delegate;
     

@@ -9,21 +9,33 @@
 #import "fbConnect.h"
 #import <PixateFreestyle/PixateFreestyle.h>
 #import "Home.h"
-@interface fbConnect ()
+#import "AppDelegate.h"
+#import <FacebookSDK/FacebookSDK.h>
+@interface fbConnect ()<FBLoginViewDelegate>
 @property(nonatomic,strong) UIButton *facebook;
 @property(nonatomic,strong) MBProgressHUD *hud;
 @end
 
 @implementation fbConnect
 
-- (void)viewDidLoad {
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.screenName = @"Social Settings";
+}
+
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setTitle:@"Social Settings"];
-    
+
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
+    backgroundImage.alpha = .25;
+    [self.view addSubview:backgroundImage];
+
     [self.navigationItem setLeftBarButtonItem:nil];
     UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [back_button setStyleId:@"navbar_back"];
@@ -31,272 +43,315 @@
     [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
     [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
     back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    
+
     UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
     [self.navigationItem setLeftBarButtonItem:menu];
 
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+    UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake(15, 16, 250, 25)];
+    [title setStyleClass:@"refer_header"];
+    [title setText:@"Linked Social Networks"];
+    [self.view addSubview:title];
+
     self.facebook = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.facebook setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.19) forState:UIControlStateNormal];
     self.facebook.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    [self.facebook setTitle:@"  Facebook" forState:UIControlStateNormal];
-    [self.facebook setFrame:CGRectMake(0, 153, 0, 0)];
-   
+    [self.facebook setTitle:@"    Connect To Facebook" forState:UIControlStateNormal];
+    [self.facebook setFrame:CGRectMake(20, 60, 280, 50)];
     [self.facebook setStyleClass:@"button_blue"];
     [self.view addSubview:self.facebook];
+
     NSShadow * shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = Rgb2UIColor(26, 38, 32, .18);
+    shadow.shadowColor = Rgb2UIColor(19, 32, 38, .2);
     shadow.shadowOffset = CGSizeMake(0, -1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
-    NSLog(@"%@",[user valueForKey:@"facebook_id"]);
-    if ([user valueForKey:@"facebook_id"] && [[user valueForKey:@"facebook_id"] length] == 0)
-     {
-         
-         UILabel * glyphFB = [UILabel new];
-         [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
-         [glyphFB setFrame:CGRectMake(60, 8, 30, 30)];
-         glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]
-                                                                  attributes:textAttributes];
-         [glyphFB setTextColor:[UIColor whiteColor]];
-         
-         [self.facebook addSubview:glyphFB];
-          [self.facebook addTarget:self action:@selector(connect_to_facebook) forControlEvents:UIControlEventTouchUpInside];
 
-     }
-    else{
+    NSLog(@"fb id: %@",[user valueForKey:@"facebook_id"]);
+
+    if ([[user valueForKey:@"facebook_id"] length] == 0 ||
+        [[user valueForKey:@"facebook_id"] isKindOfClass:[NSNull class]])
+    {
+        UILabel * glyphFB = [UILabel new];
+        [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
+        [glyphFB setFrame:CGRectMake(19, 8, 30, 30)];
+        [glyphFB setTextColor:[UIColor whiteColor]];
+        glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"] attributes:textAttributes];
+
+        [self.facebook addSubview:glyphFB];
+        [self.facebook addTarget:self action:@selector(toggleFacebookLogin:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    else if ( ([user valueForKey:@"facebook_id"] && [[user valueForKey:@"facebook_id"] length] > 2) ||
+              (FBSession.activeSession.state == FBSessionStateOpen || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) )
+    {
         [self.facebook setTitle:@"       Facebook Connected" forState:UIControlStateNormal];
-        
+
         UILabel * glyphFB = [UILabel new];
         [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
         [glyphFB setFrame:CGRectMake(17, 8, 26, 30)];
         glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"] attributes:textAttributes];
         [glyphFB setTextColor:[UIColor whiteColor]];
         [self.facebook addSubview:glyphFB];
-        
+
         UILabel * glyph_check = [UILabel new];
-        [glyph_check setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-        [glyph_check setFrame:CGRectMake(39, 8, 20, 30)];
+        [glyph_check setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
+        [glyph_check setFrame:CGRectMake(36, 8, 18, 30)];
         glyph_check.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"] attributes:textAttributes];
         [glyph_check setTextColor:[UIColor whiteColor]];
-        
+
         [self.facebook addSubview:glyph_check];
-         [self.facebook addTarget:self action:@selector(disconnect_fb) forControlEvents:UIControlEventTouchUpInside];
-       
+        [self.facebook addTarget:self action:@selector(disconnect_fb) forControlEvents:UIControlEventTouchUpInside];
     }
 
-    
+    UILabel * info = [UILabel new];
+    [info setFrame:CGRectMake(15, 118, 290, 60)];
+    [info setNumberOfLines:0];
+    [info setTextAlignment:NSTextAlignmentCenter];
+    [info setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
+    [info setTextColor:[Helpers hexColor:@"6c6e71"]];
+    [info setText:@"Connect your Facebook account to Nooch to allow quicker login and to share payments with friends."];
+    [self.view addSubview:info];
+
 }
--(void)disconnect_fb{
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:@"Are you sure you want to disconnect Nooch from facebook?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"NO",nil];
+
+-(void)disconnect_fb
+{
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Confirmation"
+                                                 message:@"Are you sure you want to disconnect Nooch from facebook?"
+                                                delegate:self
+                                       cancelButtonTitle:@"No"
+                                       otherButtonTitles:@"Yes",nil];
+    av.tag = 10;
     [av show];
-    av.tag=6;
 }
+
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    
-     if (alertView.tag == 6) {
-     if (buttonIndex==0) {
-     serve *fb = [serve new];
-     [fb setDelegate:self];
-     [fb setTagName:@"fb_NO"];
-     if ([facebook_info objectForKey:@"id"]) {
-     
-     [fb storeFB:@"" isConnect:@"NO"];
-     }
+    if (alertView.tag == 10 && buttonIndex == 1)
+    {
+        [self userLoggedOut];
+        [FBSession.activeSession closeAndClearTokenInformation];
 
-     }
-     }
-    
+        if ([user valueForKey:@"facebook_id"])
+        {
+            serve *fb = [serve new];
+            [fb setDelegate:self];
+            [fb setTagName:@"fb_NO"];
+            [fb storeFB:@"" isConnect:@"NO"];
+        }
+    }
 }
 
--(void)backtn {
+-(void)backtn
+{
     [self.navigationItem setLeftBarButtonItem:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-#pragma mark - facebook integration
-- (void)connect_to_facebook
+- (void)toggleFacebookLogin:(id)sender
 {
-    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]){
-        accountStore = [[ACAccountStore alloc] init];
-        facebookAccount = nil;
-        NSDictionary *options = @{
-                                  ACFacebookAppIdKey: @"198279616971457",
-                                  ACFacebookPermissionsKey: @[@"email",@"user_about_me"],
-                                  ACFacebookAudienceKey: ACFacebookAudienceOnlyMe
-                                  };
-        ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-        [accountStore requestAccessToAccountsWithType:facebookAccountType
-                                              options:options completion:^(BOOL granted, NSError *e)
-         {
-             if (!granted) {
-                 NSLog(@"didnt grant because: %@",e.description);
-             }
-             else{
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-                     [self.navigationController.view addSubview:self.hud];
-                     self.hud.delegate = self;
-                     self.hud.labelText = @"Loading Facebook Info...";
-                     [self.hud show:YES];
-                 });
-                 NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
-                 facebookAccount = [accounts lastObject];
-                 
-                 [self finishFb];
-             }
-         }];
+    // If the session state is any of the two "open" states when the button is clicked
+    if (FBSession.activeSession.state == FBSessionStateOpen
+        || FBSession.activeSession.state == FBSessionStateOpenTokenExtended)
+    {
+        // Close the session and remove the access token from the cache
+        // The session state handler (in the app delegate) will be called automatically
+        [FBSession.activeSession closeAndClearTokenInformation];
     }
-    else {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Not Available" message:@"You do not have a Facebook account attached to this phone." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [av show];
+    else // If the session state is NOT any of the two "open" states when the button is clicked
+    {
+        // Open a session showing the user the login UI
+        // You must ALWAYS ask for public_profile permissions when opening a session
+        [FBSession openActiveSessionWithReadPermissions:@[@"public_profile", @"email", @"user_friends"]
+                                           allowLoginUI:YES
+                                      completionHandler:
+         ^(FBSession *session, FBSessionState state, NSError *error) {
+             // Call the sessionStateChanged:state:error method to handle session state changes
+             [self sessionStateChanged:session state:state error:error];
+         }];
     }
 }
 
--(void)renewFb
+- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error
 {
-    [accountStore renewCredentialsForAccount:(ACAccount *)facebookAccount completion:^(ACAccountCredentialRenewResult renewResult, NSError *error){
-        if(!error)
+    // If the session was opened successfully
+    if (!error && state == FBSessionStateOpen)
+    {
+        NSLog(@"FB Session opened");
+        // Show the user the logged-in UI
+        [self userLoggedIn];
+        return;
+    }
+
+    if (state == FBSessionStateClosed || state == FBSessionStateClosedLoginFailed)
+    {  // If the session is closed
+        NSLog(@"FB Session closed");
+        // Show the user the logged-out UI
+        [self userLoggedOut];
+    }
+
+    // Handle errors
+    if (error)
+    {
+        NSLog(@"FB Error");
+        NSString *alertText;
+        NSString *alertTitle;
+        // If the error requires people using an app to make an action outside of the app in order to recover
+        if ([FBErrorUtility shouldNotifyUserForError:error] == YES)
         {
-            switch (renewResult) {
-                case ACAccountCredentialRenewResultRenewed:
-                    break;
-                case ACAccountCredentialRenewResultRejected:
-                    NSLog(@"User declined permission");
-                    break;
-                case ACAccountCredentialRenewResultFailed:
-                    NSLog(@"non-user-initiated cancel, you may attempt to retry");
-                    break;
-                default:
-                    break;
-            }
-            [self finishFb];
+            alertTitle = @"Something went wrong";
+            alertText = [FBErrorUtility userMessageForError:error];
+            [self showMessage:alertText withTitle:alertTitle];
         }
-        else{
-            NSLog(@"error from renew credentials%@",error);
+        else
+        {
+            // If the user cancelled login, do nothing
+            if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled)
+            {
+                NSLog(@"User cancelled login");
+            }
+            // Handle session closures that happen outside of the app
+            else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession)
+            {
+                alertTitle = @"Session Error";
+                alertText = @"Your current session is no longer valid. Please log in again.";
+                [self showMessage:alertText withTitle:alertTitle];
+            }
+            // For simplicity, here we just show a generic message for all other errors
+            // You can learn how to handle other errors using our guide: https://developers.facebook.com/docs/ios/errors
+            else
+            {
+                //Get more error information from the error
+                NSDictionary *errorInformation = [[[error.userInfo objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"] objectForKey:@"body"] objectForKey:@"error"];
+                
+                // Show the user an error message
+                alertTitle = @"Something went wrong";
+                alertText = [NSString stringWithFormat:@"Please retry. \n\n If the problem persists contact us and mention this error code: %@", [errorInformation objectForKey:@"message"]];
+                [self showMessage:alertText withTitle:alertTitle];
+            }
+        }
+        // Clear this token
+        [FBSession.activeSession closeAndClearTokenInformation];
+        // Show the user the logged-out UI
+        // [self userLoggedOut];
+    }
+}
+// Facebook: Show the user the logged-out UI
+- (void)userLoggedOut
+{
+    for (UIView *subview in self.facebook.subviews) {
+        if ([subview isMemberOfClass:[UILabel class]]) {
+            [subview removeFromSuperview];
+        }
+    }
+
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(19, 32, 38, .2);
+    shadow.shadowOffset = CGSizeMake(0, -1);
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
+
+    [self.facebook setTitle:@"    Connect To Facebook" forState:UIControlStateNormal];
+    UILabel * glyphFB = [UILabel new];
+    [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
+    [glyphFB setFrame:CGRectMake(19, 8, 30, 30)];
+    [glyphFB setTextColor:[UIColor whiteColor]];
+    glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"] attributes:textAttributes];
+    [self.facebook addSubview:glyphFB];
+
+    [self.facebook removeTarget:self action:@selector(disconnect_fb) forControlEvents:UIControlEventTouchUpInside];
+    [self.facebook addTarget:self action:@selector(toggleFacebookLogin:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+// Facebook: Show the user the logged-in UI
+- (void)userLoggedIn
+{
+    for (UIView *subview in self.facebook.subviews) {
+        if ([subview isMemberOfClass:[UILabel class]]) {
+            [subview removeFromSuperview];
+        }
+    }
+
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(19, 32, 38, .2);
+    shadow.shadowOffset = CGSizeMake(0, -1);
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
+
+    [self.facebook setTitle:@"       Facebook Connected" forState:UIControlStateNormal];
+
+    UILabel * glyphFB = [UILabel new];
+    [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
+    [glyphFB setFrame:CGRectMake(17, 8, 26, 30)];
+    [glyphFB setTextColor:[UIColor whiteColor]];
+    glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"] attributes:textAttributes];
+    
+    UILabel * glyph_check = [UILabel new];
+    [glyph_check setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+    [glyph_check setFrame:CGRectMake(39, 8, 20, 30)];
+    [glyph_check setTextColor:[UIColor whiteColor]];
+    glyph_check.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"] attributes:textAttributes];
+
+    [self.facebook addSubview:glyphFB];
+    [self.facebook addSubview:glyph_check];
+
+    [self.facebook removeTarget:self action:@selector(toggleFacebookLogin:) forControlEvents:UIControlEventTouchUpInside];
+    [self.facebook addTarget:self action:@selector(disconnect_fb) forControlEvents:UIControlEventTouchUpInside];
+
+    [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (!error)
+        {
+            // Success! Now set the facebook_id to be the fb_id that was just returned & send to Nooch DB
+            [[NSUserDefaults standardUserDefaults] setObject:[result objectForKey:@"id"] forKey:@"facebook_id"];
+            NSLog(@"fbConnect -> FB id stored in user defaults as: %@",[result objectForKey:@"id"]);
+
+            serve * storeFbID = [serve new];
+            [storeFbID setDelegate:self];
+            [storeFbID setTagName:@"fb_YES"];
+            [storeFbID storeFB:[result objectForKey:@"id"] isConnect:@"YES"];
+        }
+        else
+        {
+            // An error occurred, we need to handle the error
+            // See: https://developers.facebook.com/docs/ios/errors
         }
     }];
 }
-
--(void)finishFb
+// Show an alert message (For Facebook methods)
+- (void)showMessage:(NSString *)text withTitle:(NSString *)title
 {
-    NSString *acessToken = [NSString stringWithFormat:@"%@",facebookAccount.credential.oauthToken];
-    NSDictionary *parameters = @{@"access_token": acessToken,@"fields":@"id,username,first_name,last_name,email"};
-    NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me"];
-    SLRequest *feedRequest = [SLRequest
-                              requestForServiceType:SLServiceTypeFacebook
-                              requestMethod:SLRequestMethodGET
-                              URL:feedURL
-                              parameters:parameters];
-    feedRequest.account = facebookAccount;
-    facebook_info = [NSMutableDictionary new];
-    [feedRequest performRequestWithHandler:^(NSData *respData,
-                                             NSHTTPURLResponse *urlResponse, NSError *error)
-     {
-         facebook_info = [NSJSONSerialization
-                          JSONObjectWithData:respData //1
-                          options:kNilOptions
-                          error:&error];
-         dispatch_async(dispatch_get_main_queue(), ^{
-             [self.hud hide:YES];
-             
-             [[NSUserDefaults standardUserDefaults] setObject:[facebook_info objectForKey:@"id"] forKey:@"facebook_id"];
-             serve *fb = [serve new];
-             [fb setDelegate:self];
-             [fb setTagName:@"fb_YES"];
-             if ([facebook_info objectForKey:@"id"]) {
-                 [user setObject:[facebook_info objectForKey:@"id"] forKey:@"facebook_id"];
-                 [user synchronize];
-             [fb storeFB:[facebook_info objectForKey:@"id"] isConnect:@"YES"];
-             }
-         });
-         
-     }];
+    [[[UIAlertView alloc] initWithTitle:title
+                                message:text
+                               delegate:self
+                      cancelButtonTitle:@"OK!"
+                      otherButtonTitles:nil] show];
 }
-
 
 #pragma mark - server Delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     [self.hud hide:YES];
     NSError *error;
-    NSShadow * shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = Rgb2UIColor(26, 38, 32, .18);
-    shadow.shadowOffset = CGSizeMake(0, -1);
-    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
 
-    
     if ([tagName isEqualToString:@"fb_YES"])
     {
-    NSMutableDictionary *temp = [NSJSONSerialization
-                                     JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                                     options:kNilOptions
-                                     error:&error];
-        NSLog(@"%@",temp);
-        for (UIView*subview in self.facebook.subviews) {
-            if([subview isMemberOfClass:[UILabel class]]) {
-                [subview removeFromSuperview];
-            }
-        }
-       
-        [self.facebook setTitle:@"       Facebook Connected" forState:UIControlStateNormal];
-        
-        UILabel * glyphFB = [UILabel new];
-        [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
-        [glyphFB setFrame:CGRectMake(17, 8, 26, 30)];
-        glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"] attributes:textAttributes];
-        [glyphFB setTextColor:[UIColor whiteColor]];
-        [self.facebook addSubview:glyphFB];
-        
-        UILabel * glyph_check = [UILabel new];
-        [glyph_check setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-        [glyph_check setFrame:CGRectMake(39, 8, 20, 30)];
-        glyph_check.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"] attributes:textAttributes];
-        [glyph_check setTextColor:[UIColor whiteColor]];
-        
-        [self.facebook addSubview:glyph_check];
-       
-        [self.facebook removeTarget:self action:@selector(connect_to_facebook) forControlEvents:UIControlEventTouchUpInside];
-        [self.facebook addTarget:self action:@selector(disconnect_fb) forControlEvents:UIControlEventTouchUpInside];
+        NSMutableDictionary *temp = [NSJSONSerialization
+                                 JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                 options:kNilOptions
+                                 error:&error];
+        NSLog(@"Listen results for fb_YES: %@",temp);
     }
-    else{
+    else if ([tagName isEqualToString:@"fb_NO"])
+    {
         NSMutableDictionary *temp = [NSJSONSerialization
                                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                      options:kNilOptions
                                      error:&error];
-        NSLog(@"%@",temp);
-        [user  removeObjectForKey:@"facebook_id"];
-         [user synchronize];
-        NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
-        for (UIView*subview in self.facebook.subviews) {
-            if([subview isMemberOfClass:[UILabel class]]) {
-                [subview removeFromSuperview];
-            }
-        }
-        [self.facebook setTitle:@" Facebook " forState:UIControlStateNormal];
-        UILabel * glyphFB = [UILabel new];
-        [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
-        [glyphFB setFrame:CGRectMake(17, 8, 26, 30)];
-        glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"] attributes:textAttributes];
-        [glyphFB setTextColor:[UIColor whiteColor]];
-        [self.facebook addSubview:glyphFB];
-        
-        UILabel * glyph_check = [UILabel new];
-        [glyph_check setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-        [glyph_check setFrame:CGRectMake(39, 8, 20, 30)];
-        glyph_check.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"] attributes:textAttributes];
-        [glyph_check setTextColor:[UIColor whiteColor]];
-        
-        [self.facebook addSubview:glyph_check];
-         [self.facebook removeTarget:self action:@selector(disconnect_fb) forControlEvents:UIControlEventTouchUpInside];
-        [self.facebook addTarget:self action:@selector(connect_to_facebook) forControlEvents:UIControlEventTouchUpInside];
-       
+        NSLog(@"Listen results for fb_NO %@",temp);
+        [user removeObjectForKey:@"facebook_id"];
+        //[user synchronize];
     }
 }
 -(void)Error:(NSError *)Error
 {
     [self.hud hide:YES];
-    
+
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Connection Error"
                           message:@"Looks like there was some trouble connecting to the right place.  Please try again!"
@@ -305,7 +360,6 @@
                           otherButtonTitles:nil];
     [alert show];
 }
-
 
 #pragma mark - file paths
 - (NSString *)autoLogin{
@@ -318,15 +372,4 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 @end

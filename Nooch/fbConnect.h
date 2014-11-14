@@ -14,10 +14,6 @@
 #import <Accounts/Accounts.h>
 #import "serve.h"
 #define Rgb2UIColor(r, g, b, a)  [UIColor colorWithRed:((r) / 255.0) green:((g) / 255.0) blue:((b) / 255.0) alpha:(a)]
-@interface fbConnect : UIViewController<MBProgressHUDDelegate,serveD,UIAlertViewDelegate>
-{
-     NSMutableDictionary*facebook_info;
-    ACAccountStore*accountStore;
-    ACAccount*facebookAccount;
-}
+@interface fbConnect : GAITrackedViewController<MBProgressHUDDelegate,serveD,UIAlertViewDelegate>
+
 @end

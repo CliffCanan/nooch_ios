@@ -104,7 +104,7 @@ NSMutableURLRequest *request;
         [nav_ctrl pushViewController:reg animated:NO];
         return;
     }
-    
+
     //if they have required immediately turned on or haven't selected the option yet, redirect them to PIN screen
     if (![user objectForKey:@"requiredImmediately"])
     {
@@ -117,11 +117,12 @@ NSMutableURLRequest *request;
         [self presentViewController:pin animated:YES completion:nil];
     }
 
-    serve * fb = [serve new];
-    [fb setDelegate:self];
-    [fb setTagName:@"fb"];
-    if ([user objectForKey:@"facebook_id"]) {
-    [fb storeFB:[user objectForKey:@"facebook_id"] isConnect:@"YES"];
+    if ([user objectForKey:@"facebook_id"])
+    {
+        serve * fb = [serve new];
+        [fb setDelegate:self];
+        [fb setTagName:@"fb"];
+        [fb storeFB:[user objectForKey:@"facebook_id"] isConnect:@"YES"];
     }
 }
 
@@ -1782,7 +1783,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             if (new[@"MemberId"])
                 [AddressBookAdditions addObject:new];
         }
-        //NSLog(@"AddressBookAdditions: %@",AddressBookAdditions);
     }
 
     else if ([tagName isEqualToString:@"fb"])
@@ -1792,9 +1792,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                      options:kNilOptions
                                      error:&error];
-        NSLog(@"temp string %@",temp);
+        NSLog(@"Home -> Server response for StoreFB: %@",temp);
     }
-    
+
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
     {
         [self.hud hide:YES];

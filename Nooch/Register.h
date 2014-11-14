@@ -18,6 +18,7 @@
 {
     UIActivityIndicatorView*spinner;
     BOOL isTermsChecked;
+    BOOL isloginWithFB;
 }
 -(void)removeChild:(UIViewController *) child;
 @end
