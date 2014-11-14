@@ -48,18 +48,18 @@
     UIImageView *logoicon = [UIImageView new];
     [logoicon setStyleId:@"requireImmediatelyLogo"];
     [self.view addSubview:logoicon];
-    
+
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 108, 300, 40)];
     [title setText:@"Enter Your PIN"];
     [title setStyleClass:@"header_signupflow"];
     [title setStyleClass:@"animate_pulse"];
     [self.view addSubview:title];
-    
+
     self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(20, 132, 280, 50)];
     [self.prompt setNumberOfLines:1];
     [self.prompt setText:@""];
     [self.prompt setStyleClass:@"pin_entry_feedback"];
-    
+
     self.pin = [UITextField new];
     [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
     self.pin.inputAccessoryView = [[UIView alloc] init];
@@ -67,22 +67,22 @@
     [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
     [self.view addSubview:self.pin];
     [self.pin becomeFirstResponder];
-    
+
     self.first_num = [[UIView alloc] initWithFrame:CGRectMake(44,180,30,30)];
     self.second_num = [[UIView alloc] initWithFrame:CGRectMake(106,180,30,30)];
     self.third_num = [[UIView alloc] initWithFrame:CGRectMake(171,180,30,30)];
     self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(235,180,30,30)];
-    
+
     self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 15;
     self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor clearColor];
     self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
     self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
-    
+
     [self.first_num setStyleClass:@"animate_bubble_slow"];
     [self.second_num setStyleClass:@"animate_bubble_slow"];
     [self.third_num setStyleClass:@"animate_bubble_slow"];
     [self.fourth_num setStyleClass:@"animate_bubble_slow"];
-   
+
     [self.view addSubview:self.first_num];
     [self.view addSubview:self.second_num];
     [self.view addSubview:self.third_num];
@@ -146,8 +146,6 @@
     
     if (len == 4)
     {
-       // spinner = [[UILabel alloc] initWithFrame:CGRectMake(20, 132, 280, 50)];
-        
         self.pinNumber = [NSString stringWithFormat:@"%@%@",textField.text,string];
         serve * pin = [serve new];
         pin.Delegate = self;
@@ -210,7 +208,11 @@
             if ( [user objectForKey:@"requiredImmediately"] == NULL ||
                 [[user objectForKey:@"requiredImmediately"] isKindOfClass:[NSNull class]])
             {
-                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Require PIN Setting" message:@"The Require Immediately function is an added security feature that prompts you for your PIN whenever you open Nooch.\n\nWould you like to keep this on or turn it off? You can change this setting in Settings." delegate:self cancelButtonTitle:@"Turn Off" otherButtonTitles:@"Keep On", nil];
+                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Require PIN Setting"
+                                                              message:@"The Require Immediately function is an added security feature that prompts you for your PIN whenever you open Nooch.\n\nWould you like to keep this on or turn it off? You can change this setting in Settings."
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Turn Off"
+                                                    otherButtonTitles:@"Keep On", nil];
                 [av setTag:1];
                 [av show];
                 return;
@@ -222,7 +224,7 @@
                 return;
             }
         }
-        
+
         else
         {
             [self.fourth_num setBackgroundColor:[UIColor clearColor]];
@@ -257,7 +259,11 @@
                 [self.second_num setStyleClass:@"shakePin2"];
                 [self.first_num setStyleClass:@"shakePin1"];
                 self.prompt.text = @"2nd failed attempt.";
-                UIAlertView * suspendedAlert = [[UIAlertView alloc]initWithTitle:@"Please Try Again" message:@"For security protection, your account will be suspended for 24 hours if you enter an incorrect PIN again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                UIAlertView * suspendedAlert = [[UIAlertView alloc]initWithTitle:@"Please Try Again"
+                                                                         message:@"For security protection, your account will be suspended for 24 hours if you enter an incorrect PIN again."
+                                                                        delegate:nil
+                                                               cancelButtonTitle:@"Ok"
+                                                               otherButtonTitles:nil];
                 [suspendedAlert show];
             }
         }
@@ -265,11 +271,11 @@
 }
 
 #pragma mark - file paths
-- (NSString *)autoLogin{
+- (NSString *)autoLogin
+{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
-    
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -283,7 +289,7 @@
             [serveOBJ SaveImmediateRequire:NO];
             [user setObject:@"NO" forKey:@"requiredImmediately"];
         }
-        else{
+        else {
             serve * serveOBJ = [serve new];
             [serveOBJ setTagName:@"requiredImmediately"];
             [serveOBJ setDelegate:self];
@@ -292,7 +298,7 @@
         }
         NSLog(@"%@",user);
         //reqImm = NO;
-        
+
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }

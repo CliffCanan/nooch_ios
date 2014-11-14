@@ -1378,53 +1378,7 @@
     [textField resignFirstResponder];
     return YES;
 }
-/*
-#pragma mark - FBLoginViewDelegate
-- (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView {
-}
 
-- (void)loginViewFetchedUserInfo:(FBLoginView *)loginView
-                            user:(id<FBGraphUser>)user {
-    isloginWithFB = YES;
-    self.loggedInUser = user;
-
-    RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
-    spinner1.color = [UIColor whiteColor];
-    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:self.hud];
-    self.hud.mode = MBProgressHUDModeCustomView;
-    self.hud.customView = spinner1;
-    self.hud.delegate = self;
-    self.hud.labelText = @"Checking Login Credentials...";
-    [self.hud show:YES];
-
-    NSString * udid = [[UIDevice currentDevice] uniqueDeviceIdentifier];
-    email_fb = [self.loggedInUser objectForKey:@"email"];
-    fbID = [self.loggedInUser objectForKey:@"id"];
-
-    NSLog(@"FB LoggedInUser is %@",self.loggedInUser);
-    serve * log = [serve new];
-    [log setDelegate:self];
-    [log setTagName:@"loginwithFB"];
-    [log loginwithFB:[self.loggedInUser objectForKey:@"email"] FBId:[self.loggedInUser objectForKey:@"id"] remember:YES lat:lat lon:lon uid:udid];
-}
-
-- (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView
-{
-    isloginWithFB = NO;
-
-    // test to see if we can use the share dialog built into the Facebook application
-    FBLinkShareParams *p = [[FBLinkShareParams alloc] init];
-    p.link = [NSURL URLWithString:@"http://developers.facebook.com/ios"];
-
-    // "Post Status" available when logged on and potentially when logged off.  Differentiate in the label.
-//    [self.buttonPostStatus setTitle:@"Post Status Update (Logged Off)" forState:self.buttonPostStatus.state];
-//    
-//    self.profilePic.profileID = nil;
-//    self.labelFirstName.text = nil;
-//    self.loggedInUser = nil;
-}
-*/
 - (void)loginView:(FBLoginView *)loginView handleError:(NSError *)error
 {
     // see https://developers.facebook.com/docs/reference/api/errors/ for general guidance on error handling for Facebook API

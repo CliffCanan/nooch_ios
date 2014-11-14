@@ -1030,7 +1030,7 @@
 
     else if ([tagName isEqualToString:@"favorites"])
     {
-        NSLog(@"favorites %@",favorites);
+        NSLog(@"Favorites are: %@",result);
 
         NSError * error;
         favorites = [[NSMutableArray alloc] init];
