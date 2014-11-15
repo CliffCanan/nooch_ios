@@ -286,7 +286,7 @@
     [btnback setBackgroundColor:[UIColor whiteColor]];
     [btnback setFrame:CGRectMake(7, 20, 44, 44)];
     [btnback addTarget:self action:@selector(BackClicked1:) forControlEvents:UIControlEventTouchUpInside];
-    
+
     UILabel *glyph_back = [UILabel new];
     [glyph_back setBackgroundColor:[UIColor clearColor]];
     [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:26]];
@@ -295,9 +295,9 @@
     [glyph_back setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-o-left"]];
     [glyph_back setTextColor:kNoochBlue];
     [btnback addSubview:glyph_back];
-    
+
     [self.view addSubview:btnback];
-    
+
     UIImageView * logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
@@ -313,7 +313,7 @@
     [welcome setText:[NSString stringWithFormat:@"Hey %@!",[[self.user objectForKey:@"first_name" ] capitalizedString]]];
     [welcome setBackgroundColor:[UIColor clearColor]];
     [welcome setStyleClass:@"header_signupflow"];
-    
+
     self.pic = [[UIImageView alloc] initWithFrame:CGRectMake(89, 166, 144, 144)];
     self.pic.layer.cornerRadius = 72;
     self.pic.clipsToBounds = YES;

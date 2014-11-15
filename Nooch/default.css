@@ -347,6 +347,19 @@ view {
     font-size			: 18px;
     border				: 1px solid #29A1DE;
 }
+.button_blue_login_4 {
+    width				: 274px;
+    height				: 44px;
+    left                : 23px;
+    top                 : 60px;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 20px;
+    background-image	: linear-gradient(#6dbee8, #41abe1);
+    border				: 1px solid #29A1DE;
+}
 /****  GREEN BUTTON GRADIENT  ****/
 .button_green:normal {
     width				: 280px;
@@ -1275,7 +1288,6 @@ table-view#select_recipientwithoutSeperator {
 #howmuch_request_mult_expand {
     background-image: linear-gradient(#6dbee8, #41abe1);
     left: 0px;
-    top: 204px;
     width: 304px;
     height: 56px;
     border-bottom-right-radius: 4px;

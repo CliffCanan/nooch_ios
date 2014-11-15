@@ -1782,17 +1782,14 @@ UIImageView *picture;
         }
         else if ([self.recovery_email.text length] > 21)
         {
-            NSLog(@"Smallest Text");
             [self.recovery_email setStyleClass:@"table_view_cell_detailtext_smallestText"];
         }
         else if ([self.recovery_email.text length] > 18)
         {
-            NSLog(@"Smaller 2 Text");
             [self.recovery_email setStyleClass:@"table_view_cell_detailtext_smallerStillText"];
         }
         else if ([self.recovery_email.text length] > 15)
         {
-            NSLog(@"Smaller 1 Text");
             [self.recovery_email setStyleClass:@"table_view_cell_detailtext_smallerText"];
         }
     }

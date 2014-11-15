@@ -15,7 +15,6 @@
 #import "ProfileInfo.h"
 #import "METoast.h"
 #import "Appirater.h"
-#import <FacebookSDK/FacebookSDK.h>
 @implementation AppDelegate
 
 static NSString *const kTrackingId = @"UA-36976317-2";
@@ -32,6 +31,7 @@ bool modal;
     [Appirater setSignificantEventsUntilPrompt:-1];
     [Appirater setTimeBeforeReminding:2];
     //[Appirater setDebug:YES];
+
     [GMSServices provideAPIKey:@"AIzaSyDC-JeglFaO1kbXc2Z3ztCgh1AnwfIla-8"];
     inactiveDate = [NSDate date];
     [NSUserDefaults resetStandardUserDefaults];
@@ -49,17 +49,30 @@ bool modal;
     [UAPush shared].userNotificationTypes = (UIUserNotificationTypeAlert |
                                              UIUserNotificationTypeBadge |
                                              UIUserNotificationTypeSound);
-    //[UAPush shared].userPushNotificationsEnabled = YES;
+    //[UAPush shared].userPushNotificationsEnabled = YES; (This line triggers asking permission for Push Notifications... moved to Profile.m screen for Nooch)
     // Set the icon badge to zero on startup (optional)
     [[UAPush shared] resetBadge];
     
     //Google Analytics
-    [GAI sharedInstance].dispatchInterval = 30;
+    [GAI sharedInstance].dispatchInterval = 25;
     [GAI sharedInstance].trackUncaughtExceptions = YES;
     // Optional: set Logger to VERBOSE for debug information.
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-36976317-2"];
-    
+
+    // Whenever a person opens the app, check for a cached session
+    if (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded)
+    {
+        // If there's one, just open the session silently, without showing the user the login UI
+        [FBSession openActiveSessionWithReadPermissions:@[@"public_profile",@"email",@"user_friends"]
+                                           allowLoginUI:NO
+                                      completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
+                                          // Handler for session state changes
+                                          // This method will be called EACH time the session state changes,
+                                          // also for intermediate states and NOT just when the session open
+                                          [self sessionStateChanged:session state:state error:error];
+                                      }];
+    }
     [self application:nil handleOpenURL:[NSURL URLWithString:@"Nooch:"]];
     [self.window makeKeyAndVisible];
 
@@ -98,32 +111,6 @@ bool modal;
         [self.window setUserInteractionEnabled:NO];
     }
 }
-/*
--(void)showWait:(NSString*)label
-{
-    loadingView = [[UIView alloc] initWithFrame:CGRectMake(75,( [[UIScreen mainScreen] bounds].size.height/2)-165, 170, 130)];
-    loadingView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.8];
-    loadingView.clipsToBounds = YES;
-    loadingView.layer.cornerRadius = 15.0;
-    activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    activityView.frame = CGRectMake(65, 20, activityView.bounds.size.width, activityView.bounds.size.height);
-    [activityView setBackgroundColor:[UIColor clearColor]];
-    [loadingView addSubview:activityView];
-    loadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 60, 130, 50)];
-    loadingLabel.backgroundColor = [UIColor clearColor];
-    loadingLabel.textColor = [UIColor whiteColor];
-    [loadingLabel setNumberOfLines:2];
-    loadingLabel.textAlignment = NSTextAlignmentCenter;
-    loadingLabel.text = @"Loading...";
-    [loadingView addSubview:loadingLabel];
-    loadingLabel.text = label;
-    [activityView startAnimating];
-    [self.window addSubview:loadingView];
-}
-
--(void)endWait{
-    [loadingView removeFromSuperview];
-} */
 
 void exceptionHandler(NSException *exception){
     NSLog(@"Caught exception: %@",exception.description);
@@ -132,11 +119,6 @@ void exceptionHandler(NSException *exception){
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
     return YES;
-    /*if (!url) {  return NO; }
-     NSString *URLString = [url absoluteString];
-     [[NSUserDefaults standardUserDefaults] setObject:URLString forKey:@"url"];5
-     [[NSUserDefaults standardUserDefaults] synchronize];
-     return YES;*/
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application{
@@ -147,7 +129,7 @@ void exceptionHandler(NSException *exception){
 - (void)applicationDidEnterBackground:(UIApplication *)application{
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    
+
     inBack = YES;
     inactiveDate = [NSDate date];
     splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, [[UIScreen mainScreen] bounds].size.height)];
@@ -172,7 +154,6 @@ void exceptionHandler(NSException *exception){
             {
                 ReEnterPin *pin = [ReEnterPin new];
                 [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:pin animated:YES completion:^{
-                    
                 }];
             }
             else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"requiredImmediately"] boolValue])
@@ -180,7 +161,6 @@ void exceptionHandler(NSException *exception){
                 [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"pincheck"];
                 ReEnterPin *pin = [ReEnterPin new];
                 [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:pin animated:YES completion:^{
-                    
                 }];
             }
         }
@@ -194,18 +174,117 @@ void exceptionHandler(NSException *exception){
     // Set the icon badge to zero on resume (optional)
     [[UAPush shared] resetBadge];
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
     // Call the 'activateApp' method to log an app event for use in analytics and advertising reporting.
     [FBAppEvents activateApp];
-    
+
     // FBSample logic
     // We need to properly handle activation of the application with regards to SSO
     //  (e.g., returning from iOS 6.0 authorization dialog or from fast app switching).
     [FBAppCall handleDidBecomeActive];
 }
 
+// This method will handle ALL the session state changes in the app
+- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error
+{
+    // If the session was opened successfully
+    if (!error && state == FBSessionStateOpen)
+    {
+        NSLog(@"FB Session opened");
+        [self userLoggedIn];
+        return;
+    }
+
+    // If the session is closed
+    if (state == FBSessionStateClosed || state == FBSessionStateClosedLoginFailed)
+    {
+        NSLog(@"FB Session closed");
+        [self userLoggedOut];
+    }
+
+    // Handle errors
+    if (error)
+    {
+        NSLog(@"FB Error");
+        NSString *alertText;
+        NSString *alertTitle;
+        // If the error requires people using an app to make an action outside of the app in order to recover
+        if ([FBErrorUtility shouldNotifyUserForError:error] == YES)
+        {
+            alertTitle = @"Something went wrong";
+            alertText = [FBErrorUtility userMessageForError:error];
+            [self showMessage:alertText withTitle:alertTitle];
+        }
+        else
+        {
+            // If the user cancelled login, do nothing
+            if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled)
+            {
+                NSLog(@"User cancelled login");
+            }
+            // Handle session closures that happen outside of the app
+            else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession)
+            {
+                alertTitle = @"Session Error";
+                alertText = @"Your current session is no longer valid. Please log in again.";
+                [self showMessage:alertText withTitle:alertTitle];
+            }
+            // For simplicity, here we just show a generic message for all other errors
+            // You can learn how to handle other errors using our guide: https://developers.facebook.com/docs/ios/errors
+            else
+            {
+                //Get more error information from the error
+                NSDictionary *errorInformation = [[[error.userInfo objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"] objectForKey:@"body"] objectForKey:@"error"];
+
+                // Show the user an error message
+                alertTitle = @"Something went wrong";
+                alertText = [NSString stringWithFormat:@"Please retry. \n\n If the problem persists contact us and mention this error code: %@", [errorInformation objectForKey:@"message"]];
+                [self showMessage:alertText withTitle:alertTitle];
+            }
+        }
+        // Clear this token
+        [FBSession.activeSession closeAndClearTokenInformation];
+        [self userLoggedOut];
+    }
+}
+// Facebook: Show the user the logged-out UI
+- (void)userLoggedOut
+{
+    [user removeObjectForKey:@"facebook_id"];
+    [user synchronize];
+}
+
+// Facebook: Show the user the logged-in UI
+- (void)userLoggedIn
+{
+    [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (!error)
+        {
+            // Success! Now set the facebook_id to be the fb_id that was just returned
+            [[NSUserDefaults standardUserDefaults] setObject:[result objectForKey:@"id"] forKey:@"facebook_id"];
+            NSLog(@"App Del --> FB id is %@",[result objectForKey:@"id"]);
+        }
+        else
+        {
+            // An error occurred, we need to handle the error
+            // See: https://developers.facebook.com/docs/ios/errors
+        }
+    }];
+}
+// Show an alert message (For Facebook methods)
+- (void)showMessage:(NSString *)text withTitle:(NSString *)title
+{
+    [[[UIAlertView alloc] initWithTitle:title
+                                message:text
+                               delegate:self
+                      cancelButtonTitle:@"OK!"
+                      otherButtonTitles:nil] show];
+}
+
 - (void)applicationWillTerminate:(UIApplication *)application{
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     //[UAirship land];
+    // Close the FB Session if active (does not clear the cache of the FB Token)
     [FBSession.activeSession close];
 }
 
@@ -275,24 +354,11 @@ void exceptionHandler(NSException *exception){
     
     completionHandler(UIBackgroundFetchResultNoData);
 }
-/*
-- (void)failIfSimulator {
-    if ([[[UIDevice currentDevice] model] rangeOfString:@"Simulator"].location != NSNotFound) {
-        UIAlertView *someError = [[UIAlertView alloc] initWithTitle:@"Notice"
-                                                            message:@"You will not be able to receive push notifications in the simulator."
-                                                           delegate:self
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-        
-        // Let the UI finish launching first so it doesn't complain about the lack of a root view controller
-        // Delay execution of the block for 1/2 second.
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            [someError show];
-        });
-    }
-}*/
 
--(BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+-(BOOL) application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation
 {
     NSLog(@"%@",url);
     if ([[url absoluteString] rangeOfString:@"facebook"].location!=NSNotFound) {
@@ -301,8 +367,8 @@ void exceptionHandler(NSException *exception){
                         fallbackHandler:^(FBAppCall *call) {
                             NSLog(@"In fallback handler");
                         }];
-   
     }
+
     if ([sourceApplication isEqualToString:@"com.apple.mobilesafari"] ||
         [sourceApplication isEqualToString:@"com.apple.mobilemail"]) {
         return YES;
