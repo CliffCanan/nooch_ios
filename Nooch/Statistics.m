@@ -271,7 +271,7 @@
 
     UILabel * titleTopFriends = [UILabel new];
     [titleTopFriends setFont:[UIFont fontWithName:@"Roboto" size:20]];
-    [titleTopFriends setFrame:CGRectMake(0, 80, 300, 25)];
+    [titleTopFriends setFrame:CGRectMake(0, 78, 300, 24)];
     [titleTopFriends setTextColor:kNoochGrayDark];
     [titleTopFriends setTextAlignment:NSTextAlignmentCenter];
     titleTopFriends.text = @"Top Friends";
@@ -649,8 +649,8 @@
     if (fav_count > 0)
     {
         PieLayer * pieLayer = [[PieLayer alloc] init];
-        pieLayer.frame = CGRectMake(97, 105, 106, 106);
-        pieLayer.maxRadius = 53;
+        pieLayer.frame = CGRectMake(98, 108, 104, 104);
+        pieLayer.maxRadius = 52;
 
         NSDictionary * favorite1 = [results objectAtIndex:0];
         NSString * favFreq1 = favorite1[@"Frequency"];
@@ -660,10 +660,11 @@
         int freqInt3 = 0;
         int freqInt4 = 0;
         int freqInt5 = 0;
+        int totalPayments = freqInt1;
 
         if (fav_count == 1)
         {
-            [pieLayer addValues:@[[PieElement pieElementWithValue:freqInt1 color:Rgb2UIColor(63, 171, 225, .9)]] animated:YES];
+            [pieLayer addValues:@[[PieElement pieElementWithValue:freqInt1 color:kNoochGreen]] animated:YES];
         }
 
         if (fav_count > 1)
@@ -671,11 +672,12 @@
             NSDictionary * favorite2 = [results objectAtIndex:1];
             NSString * favFreq2 = favorite2[@"Frequency"];
             freqInt2 = [favFreq2 intValue];
+            totalPayments += freqInt2;
 
             if (fav_count == 2)
             {
-                [pieLayer addValues:@[[PieElement pieElementWithValue:freqInt1 color:Rgb2UIColor(63, 171, 225, .9)],
-                                      [PieElement pieElementWithValue:freqInt2 color:Rgb2UIColor(110, 191, 68, .9)]] animated:YES];
+                [pieLayer addValues:@[[PieElement pieElementWithValue:freqInt1 color:kNoochGreen],
+                                      [PieElement pieElementWithValue:freqInt2 color:kNoochPurple]] animated:YES];
             }
         }
 
@@ -684,12 +686,13 @@
             NSDictionary * favorite3 = [results objectAtIndex:2];
             NSString * favFreq3 = favorite3[@"Frequency"];
             freqInt3 = [favFreq3 intValue];
-            
+            totalPayments += freqInt3;
+
             if (fav_count == 3)
             {
-                [pieLayer addValues:@[[PieElement pieElementWithValue:freqInt1 color:Rgb2UIColor(63, 171, 225, .9)],
-                                      [PieElement pieElementWithValue:freqInt2 color:Rgb2UIColor(110, 191, 68, .9)],
-                                      [PieElement pieElementWithValue:freqInt3 color:Rgb2UIColor(10, 191, 168, .9)]] animated:YES];
+                [pieLayer addValues:@[[PieElement pieElementWithValue:freqInt1 color:kNoochGreen],
+                                      [PieElement pieElementWithValue:freqInt2 color:kNoochPurple],
+                                      [PieElement pieElementWithValue:freqInt3 color:kNoochGrayLight]] animated:YES];
             }
         }
 
@@ -698,13 +701,14 @@
             NSDictionary * favorite4 = [results objectAtIndex:3];
             NSString * favFreq4 = favorite4[@"Frequency"];
             freqInt4 = [favFreq4 intValue];
+            totalPayments += freqInt4;
             
             if (fav_count == 4)
             {
-                [pieLayer addValues:@[[PieElement pieElementWithValue:freqInt1 color:Rgb2UIColor(63, 171, 225, .9)],
-                                      [PieElement pieElementWithValue:freqInt2 color:Rgb2UIColor(110, 191, 68, .9)],
-                                      [PieElement pieElementWithValue:freqInt3 color:Rgb2UIColor(10, 191, 168, .9)],
-                                      [PieElement pieElementWithValue:freqInt4 color:Rgb2UIColor(33, 34, 35, .8)]] animated:YES];
+                [pieLayer addValues:@[[PieElement pieElementWithValue:freqInt1 color:kNoochGreen],
+                                      [PieElement pieElementWithValue:freqInt2 color:kNoochPurple],
+                                      [PieElement pieElementWithValue:freqInt3 color:kNoochGrayLight],
+                                      [PieElement pieElementWithValue:freqInt4 color:kNoochRed]] animated:YES];
             }
         }
 
@@ -713,18 +717,41 @@
             NSDictionary * favorite5 = [results objectAtIndex:4];
             NSString * favFreq5 = favorite5[@"Frequency"];
             freqInt5 = [favFreq5 intValue];
+            totalPayments += freqInt5;
 
             if (fav_count == 5)
             {
-                [pieLayer addValues:@[[PieElement pieElementWithValue:freqInt1 color:Rgb2UIColor(63, 171, 225, .9)],
-                                      [PieElement pieElementWithValue:freqInt2 color:Rgb2UIColor(110, 191, 68, .9)],
-                                      [PieElement pieElementWithValue:freqInt3 color:Rgb2UIColor(10, 191, 168, .9)],
-                                      [PieElement pieElementWithValue:freqInt4 color:Rgb2UIColor(33, 34, 35, .8)],
-                                      [PieElement pieElementWithValue:freqInt5 color:kNoochPurple]] animated:YES];
+                [pieLayer addValues:@[[PieElement pieElementWithValue:freqInt1 color:kNoochGreen],
+                                      [PieElement pieElementWithValue:freqInt2 color:kNoochPurple],
+                                      [PieElement pieElementWithValue:freqInt3 color:kNoochRed],
+                                      [PieElement pieElementWithValue:freqInt4 color:kNoochBlue],
+                                      [PieElement pieElementWithValue:freqInt5 color:kNoochGrayLight]] animated:YES];
             }
         }
 
         [self.back_donation.layer addSublayer:pieLayer];
+
+        UIView * pieGraphMiddle = [[UIView alloc] init];
+        pieGraphMiddle.frame = CGRectMake(103, 113, 94, 94);
+        [pieGraphMiddle setStyleId:@"pieGraphMiddle"];
+        pieGraphMiddle.layer.cornerRadius = 46;
+        [self.back_donation addSubview:pieGraphMiddle];
+
+        UILabel * topFriendsTotalPayments = [UILabel new];
+        [topFriendsTotalPayments setFont:[UIFont fontWithName:@"Roboto-medium" size:29]];
+        [topFriendsTotalPayments setFrame:CGRectMake(107, 125, 86, 30)];
+        [topFriendsTotalPayments setTextColor:kNoochGrayDark];
+        [topFriendsTotalPayments setTextAlignment:NSTextAlignmentCenter];
+        topFriendsTotalPayments.text = [NSString stringWithFormat:@"%d", totalPayments];
+        [self.back_donation addSubview:topFriendsTotalPayments];
+
+        UILabel * topFriendsPieTotalLabel = [UILabel new];
+        [topFriendsPieTotalLabel setFont:[UIFont fontWithName:@"Roboto-light" size:17]];
+        [topFriendsPieTotalLabel setFrame:CGRectMake(105, 155, 90, 24)];
+        [topFriendsPieTotalLabel setTextColor:kNoochGrayLight];
+        [topFriendsPieTotalLabel setTextAlignment:NSTextAlignmentCenter];
+        topFriendsPieTotalLabel.text = @"Payments";
+        [self.back_donation addSubview:topFriendsPieTotalLabel];
     }
 }
 
@@ -875,15 +902,15 @@
             UILabel * name = nil;
             UILabel * frequency = nil;
 
-            imageView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 3, 46, 46)];
+            imageView = [[UIImageView alloc] initWithFrame:CGRectMake(11, 4, 42, 42)];
             imageView.contentMode = UIViewContentModeScaleAspectFit;
-            imageView.layer.cornerRadius = 23;
+            imageView.layer.cornerRadius = 21;
             // [imageView setStyleClass:@"animate_bubble"];
 
             name = [[UILabel alloc] initWithFrame:CGRectMake(0, 12, 140, 20)];
             [name setStyleClass:@"stats_topFriends_label"];
 
-            frequency = [[UILabel alloc] initWithFrame:CGRectMake(72, 22, 140, 26)];
+            frequency = [[UILabel alloc] initWithFrame:CGRectMake(70, 22, 140, 26)];
             frequency.textColor = [Helpers hexColor:@"313233"];
             frequency.textAlignment = NSTextAlignmentLeft;
             [frequency setFont:[UIFont fontWithName:@"Roboto-light" size:14]];
@@ -1124,7 +1151,7 @@
 
     else if ([tagName isEqualToString:@"favorites"])
     {
-        NSLog(@"Favorites are: %@",result);
+        //NSLog(@"Favorites are: %@",result);
 
         NSError * error;
         favorites = [[NSMutableArray alloc] init];

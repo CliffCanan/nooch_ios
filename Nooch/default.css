@@ -3180,8 +3180,8 @@ table-view.stats_top_friends_empty {
     text-align		: center;
 }
 .stats_topFriends_label {
-    left			: 72px;
-    top				: 4px;
+    left			: 70px;
+    top				: 6px;
     width			: 200px;
     height			: 20px;
     color			: #313233;
@@ -3190,7 +3190,10 @@ table-view.stats_top_friends_empty {
     font-size		: 18px;
     text-align		: left;
 }
-
+#pieGraphMiddle {
+    background-color: white;
+    border-radius   : 44px;
+}
 .stats_circle_transfers_inActive {
     left            : 30px;
     top             : 15px;
