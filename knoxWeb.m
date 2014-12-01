@@ -128,7 +128,7 @@
     
     [UIView animateWithDuration:.4
                      animations:^{
-                         overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+                         overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
                      }];
     
     [UIView animateWithDuration:0.33

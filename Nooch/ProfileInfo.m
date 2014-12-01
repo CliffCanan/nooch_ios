@@ -513,8 +513,18 @@ UIImageView *picture;
     [self.list setDelegate:self];
     [self.list setDataSource:self];
     [self.list setRowHeight:rowHeight];
-    [self.list setScrollEnabled:YES];
-    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+
+    if ([[user objectForKey:@"Status"] isEqualToString:@"Active"] &&
+        [[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
+    {
+        [self.list setScrollEnabled:NO];
+    }
+    else
+    {
+        [self.list setScrollEnabled:YES];
+    }
+    if ([[UIScreen mainScreen] bounds].size.height < 500)
+    {
         rowHeight = 45;
     }
     [self.view addSubview:self.list];

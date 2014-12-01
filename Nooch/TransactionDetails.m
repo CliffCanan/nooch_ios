@@ -418,95 +418,113 @@
 -(void)Map_LightBox
 {
     overlay = [[UIView alloc]init];
-    overlay.frame = CGRectMake(0, 0, 320, 568);
-    overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
-    
-    [UIView transitionWithView:self.navigationController.view
-                    duration:0.5
-                    options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{
-                        [self.navigationController.view addSubview:overlay];
-                    }
-                    completion:nil];
+    overlay.frame = CGRectMake(0, 0, 320, [[UIScreen mainScreen] bounds].size.height);
+    overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.0];
+    [self.navigationController.view addSubview:overlay];
 
     mainView = [[UIView alloc]init];
-    mainView.layer.cornerRadius=5;
-    mapView_.layer.borderColor=[[UIColor blackColor]CGColor];
-    mapView_.layer.borderWidth=1;
+    mainView.layer.cornerRadius = 5;
+    mapView_.layer.borderColor = [[UIColor blackColor]CGColor];
+    mapView_.layer.borderWidth = 1;
     
     if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        mainView.frame = CGRectMake(10, 30, 300, 443);
+        mainView.frame = CGRectMake(10, -500, 300, 443);
     }
     else {
-        mainView.frame = CGRectMake(10, 70, 300, self.view.frame.size.height-35);
+        mainView.frame = CGRectMake(10, -540, 300, self.view.frame.size.height - 34);
     }
-    mainView.backgroundColor=[UIColor whiteColor];
+    mainView.backgroundColor = [UIColor whiteColor];
     
     [overlay addSubview:mainView];
     mainView.layer.masksToBounds = NO;
-    mainView.layer.cornerRadius = 5;
     mainView.layer.shadowOffset = CGSizeMake(0, 2);
     mainView.layer.shadowRadius = 5;
     mainView.layer.shadowOpacity = 0.65;
-    
-    UIView*head_container=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 300, 44)];
-    head_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+
+    [UIView animateWithDuration:.4
+                     animations:^{
+                         overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+                     }];
+
+    [UIView animateWithDuration:0.35
+                     animations:^{
+                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                         if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                             mainView.frame = CGRectMake(9, 70, 302, 449);
+                         } else {
+                             mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 34);
+                         }
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:.24
+                                          animations:^{
+                                              [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                                              if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                                  mainView.frame = CGRectMake(9, 35, 302, 443);
+                                              } else {
+                                                  mainView.frame = CGRectMake(9, 50, 302, self.view.frame.size.height - 34);
+                                              }
+                                          }];
+                     }];
+
+    UIView * head_container = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 302, 44)];
+    head_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
     [mainView addSubview:head_container];
     head_container.layer.cornerRadius = 10;
+    
+    UIView * space_container = [[UIView alloc]initWithFrame:CGRectMake(0, 34, 302, 10)];
+    space_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    [mainView addSubview:space_container];
 
-    UILabel*title=[[UILabel alloc]initWithFrame:CGRectMake(0, 10, 300, 30)];
+    UILabel * title = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 302, 30)];
     [title setBackgroundColor:[UIColor clearColor]];
     [title setText:@"Transfer Location"];
     [title setStyleClass:@"lightbox_title"];
     [mainView addSubview:title];
 
-    UIView*space_container=[[UIView alloc]initWithFrame:CGRectMake(0, 34, 300, 10)];
-    space_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
-    [mainView addSubview:space_container];   
-    
-    UIView*map_container=[[UIView alloc]initWithFrame:CGRectMake(10, 50, 280, 300)];
-    map_container.backgroundColor=[UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    UIView * map_container = [[UIView alloc]initWithFrame:CGRectMake(10, 50, 282, 300)];
+    map_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
     [mainView addSubview:map_container];
     
-    map_container.layer.cornerRadius=5;
-    map_container.layer.borderColor=[[UIColor lightGrayColor]CGColor];
-    map_container.layer.borderWidth=1;
-    map_container.clipsToBounds=YES;
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:lat
-                                                            longitude:lon
-                                                                 zoom:10];
+    map_container.layer.cornerRadius = 5;
+    map_container.layer.borderColor = [[UIColor lightGrayColor]CGColor];
+    map_container.layer.borderWidth = 1;
+    map_container.clipsToBounds = YES;
+    GMSCameraPosition * camera = [GMSCameraPosition cameraWithLatitude:lat
+                                                             longitude:lon
+                                                                  zoom:10];
     
     mapView_ = [GMSMapView mapWithFrame:CGRectMake(11, 51, 278, 298) camera:camera];
     [mapView_ setFrame:CGRectMake(11, 51, 278, 298)];
     [mainView addSubview:mapView_];
-    mapView_.layer.cornerRadius=5;
-    mapView_.clipsToBounds=YES;
+    mapView_.layer.cornerRadius = 5;
+    mapView_.clipsToBounds = YES;
     mapView_.myLocationEnabled = YES;
+
     // Creates a marker in the center of the map.
     GMSMarker *marker = [[GMSMarker alloc] init];
     marker.position = CLLocationCoordinate2DMake(lat, lon);
     marker.map = mapView_;
     
-    UIView*desc_container=[[UIView alloc]initWithFrame:CGRectMake(10, 356, 280, 36)];
+    UIView * desc_container=[[UIView alloc]initWithFrame:CGRectMake(10, 356, 280, 36)];
     desc_container.backgroundColor=[UIColor colorWithRed:245.0f/255.0f green:245.0f/255.0f blue:245.0f/255.0f alpha:1.0];
     desc_container.layer.cornerRadius = 5;
     desc_container.layer.borderColor=[[UIColor lightGrayColor]CGColor];
     desc_container.layer.borderWidth=0.5;
     [mainView addSubview:desc_container];
     
-    UILabel*desc=[[UILabel alloc]initWithFrame:CGRectMake(5, 0, 270, 36)];
+    UILabel * desc=[[UILabel alloc]initWithFrame:CGRectMake(5, 0, 270, 36)];
     [desc setBackgroundColor:[UIColor clearColor]];
-    desc.text=@"This shows the location of the user who initiated the transfer.";
-    desc.font=[UIFont fontWithName:@"Roboto" size:12];
+    desc.text = @"This shows the location of the user who initiated the transfer.";
+    desc.font = [UIFont fontWithName:@"Roboto" size:12];
     [desc setStyleId:@"mapLightBox_paraText"];
-    desc.numberOfLines=0;
+    desc.numberOfLines = 0;
     [desc_container addSubview:desc];
 
-    UIView*line_container=[[UIView alloc]initWithFrame:CGRectMake(0, desc_container.frame.origin.y+desc_container.frame.size.height+6, 300, 1)];
-    line_container.backgroundColor=[UIColor colorWithRed:229.0f/255.0f green:229.0f/255.0f blue:229.0f/255.0f alpha:1.0];
+    UIView * line_container=[[UIView alloc]initWithFrame:CGRectMake(0, desc_container.frame.origin.y+desc_container.frame.size.height+6, 300, 1)];
+    line_container.backgroundColor = [UIColor colorWithRed:229.0f/255.0f green:229.0f/255.0f blue:229.0f/255.0f alpha:1.0];
     [mainView addSubview:line_container];
     
-    UIButton *btnclose=[UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton * btnclose = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnclose setTitle:@"Close" forState:UIControlStateNormal];
     [btnclose setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.26) forState:UIControlStateNormal];
     btnclose.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -518,11 +536,26 @@
         [btnclose setStyleClass:@"button_blue_closeLightbox"];
     }
     [mainView addSubview:btnclose];
-
 }
 
--(void)close_lightBox{
-    [overlay removeFromSuperview];
+-(void)close_lightBox
+{
+    [UIView animateWithDuration:0.15
+                     animations:^{
+                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                         mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 34);
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:.38
+                                          animations:^{
+                                              [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                                              mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 34);
+                                              overlay.alpha = 0.1;
+                                          } completion:^(BOOL finished) {
+                                              [overlay removeFromSuperview];
+                                          }
+                          ];
+                     }
+     ];
 }
 
 -(void) cancel_invite
