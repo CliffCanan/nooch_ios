@@ -668,7 +668,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         [self.view addSubview:self.suspended];
     }
-    
     else if (![[user objectForKey:@"Status"] isEqualToString:@"Suspended"] &&
              ![[user objectForKey:@"Status"] isEqualToString:@"Registered"] &&
               [[user valueForKey:@"Status"]  isEqualToString:@"Active"])
@@ -730,7 +729,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.profile_incomplete addSubview:dis];
         [self.view addSubview:self.profile_incomplete];
     }
-    
     else if ([[user valueForKey:@"Status"]isEqualToString:@"Active"])
     {
         if (bannerAlert > 0) {
@@ -800,7 +798,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.view bringSubviewToFront:self.profile_incomplete];
     }
     else {
-        [self.phone_incomplete removeFromSuperview];
         [self dismiss_phone_unvalidated];
     }
 
@@ -896,9 +893,24 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             
             [self.view bringSubviewToFront:self.pending_requests];
         }
-        else// if ([[user valueForKey:@"Status"]isEqualToString:@"Active"])
+        else
         {
-            bannerAlert = 0;
+            if ([self.view.subviews containsObject:self.pending_requests])
+            {
+                if (bannerAlert > 0) {
+                    bannerAlert--;
+                }
+                [self dismiss_requestsPendingBanner];
+            }
+        }
+    }
+    else
+    {
+        if ([self.view.subviews containsObject:self.pending_requests])
+        {
+            if (bannerAlert > 0) {
+                bannerAlert--;
+            }
             [self dismiss_requestsPendingBanner];
         }
     }

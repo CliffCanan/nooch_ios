@@ -1618,11 +1618,10 @@ NSString *amnt;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     NSString * memId = [defaults objectForKey:@"MemberId"];
     NSString *urlString = [NSString stringWithFormat:@"%@/SaveMembersFBId?MemberId=%@&MemberfaceBookId=%@&accessToken=%@&IsConnect=%@",ServerUrl,memId,fb_id,[defaults valueForKey:@"OAuthToken"],isconnect];
-    NSLog(@"Serve --> storeFB: %@",urlString);
     NSURL *url = [NSURL URLWithString:urlString];
-    
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");

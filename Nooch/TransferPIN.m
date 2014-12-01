@@ -701,7 +701,11 @@
                 self.prompt.text=@"2nd Failed Attempt";
             }
             else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))            {
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Suspended"
+                                                             message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately."
+                                                            delegate:self
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:@"Contact Support",nil];
                 [av setTag:50];
                 [av show];
                 [[assist shared] setSusPended:YES];
@@ -721,7 +725,11 @@
             }
             else if(([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))
             {
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support",nil];
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Suspended"
+                                                             message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately."
+                                                            delegate:self
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:@"Contact Support",nil];
                 [av setTag:50];
                 [av show];
                 [[assist shared] setSusPended:YES];
@@ -1016,12 +1024,13 @@
             [nav_ctrl popToRootViewControllerAnimated:YES];
         }
     }
-    else if (alertView.tag == 20230) {
+    else if (alertView.tag == 20230)
+    {
         if (buttonIndex == 0) {
             [nav_ctrl popToRootViewControllerAnimated:YES];
         }
     }
-    else if (alertView.tag == 50 && buttonIndex == 1)
+    else if ((alertView.tag == 50 || alertView.tag == 51 || alertView.tag == 52) && buttonIndex == 1)
     {
         if (![MFMailComposeViewController canSendMail])
         {
@@ -1046,26 +1055,28 @@
 }
 
 #pragma mark - connection handling
-
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	[self.respData setLength:0];
 }
+
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     [self.respData appendData:data];
 }
+
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
 	NSLog(@"Connection failed: %@", [error description]);
 }
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
     [self.hud hide:YES];
-    responseString= [[NSString alloc] initWithData:self.respData encoding:NSASCIIStringEncoding];
-    NSError* error;
-    dictResultTransfer= [NSJSONSerialization
+    responseString = [[NSString alloc] initWithData:self.respData encoding:NSASCIIStringEncoding];
+    NSError * error;
+    dictResultTransfer = [NSJSONSerialization
                          JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                          options:kNilOptions
                          error:&error];
-   
-    
+
     NSLog(@"This is the response:  %@",responseString);
     if ([self.receiver valueForKey:@"nonuser"])
     {
@@ -1074,7 +1085,11 @@
             [[assist shared] setTranferImage:nil];
             UIImage * imgempty = [UIImage imageNamed:@""];
             [[assist shared] setTranferImage:imgempty];
-            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Great Success" message:@"Your transfer was sent successfully.\n\nThe recipient must accept this payment by linking a bank account.  We will contact them and let you know when they respond." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",nil];
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Great Success"
+                                                          message:@"\xF0\x9F\x91\x8D\nYour transfer was sent successfully.\n\nThe recipient must accept this payment by linking a bank account. We will contact them and let you know when they respond."
+                                                         delegate:self
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:@"View Details",nil];
             av.tag = 1;
             [av show];
             return;
@@ -1084,36 +1099,45 @@
             [[assist shared] setTranferImage:nil];
             UIImage * imgempty = [UIImage imageNamed:@""];
             [[assist shared] setTranferImage:imgempty];
-            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Great Success" message:@"Your request was sent successfully.\n\nThe recipient can pay this request by clicking the link we emailed to them.\n\nThey do not have to download this app to pay the request (but they totally can too)." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details",nil];
-            av.tag=1;
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Great Success"
+                                                          message:@"\xF0\x9F\x91\x8D\nYour request was sent successfully.\n\nThe recipient can pay this request by clicking the link we emailed to them.\n\nThey do not have to download this app to pay the request (but they totally can too)."
+                                                         delegate:self
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:@"View Details",nil];
+            av.tag = 1;
             [av show];
             return;
         }
-        
     }
     
     if ([self.type isEqualToString:@"send"])
     {
         if (![[dictResultTransfer objectForKey:@"trnsactionId"] isKindOfClass:[NSNull class]])
             transactionId=[dictResultTransfer valueForKey:@"trnsactionId"];
-        NSLog(@"%@",transactionId);
     }
     else if([self.type isEqualToString:@"request"])
     {
         if (![[dictResultTransfer objectForKey:@"requestId"] isKindOfClass:[NSNull class]])
             transactionId=[dictResultTransfer valueForKey:@"requestId"];
     }
-
+    NSLog(@"%@",transactionId);
     
-    if ([self.receiver valueForKey:@"FirstName"] != NULL || [self.receiver valueForKey:@"LastName"] != NULL) {
+    if ([self.receiver valueForKey:@"FirstName"] != NULL || [self.receiver valueForKey:@"LastName"] != NULL)
+    {
         [transactionInputTransfer setObject:[self.receiver valueForKey:@"FirstName"] forKey:@"FirstName"];
         [transactionInputTransfer setObject:[self.receiver valueForKey:@"LastName"] forKey:@"LastName"]; 
     }
 
     self.trans = [transactionInputTransfer copy];
     resultValueTransfer = [dictResultTransfer valueForKey:@"TransferMoneyUsingKnoxResult"];
-    if ([[resultValueTransfer valueForKey:@"Result"] isEqualToString:@"Recepient does not have any active bank account."]) {
-         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Transfer Failed" message:@"The recepient has a Nooch account, but has not connected a bank funding source yet, so they can't receive transfers quite yet!" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
+
+    if ([[resultValueTransfer valueForKey:@"Result"] isEqualToString:@"Recepient does not have any active bank account."])
+    {
+         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Transfer Failed"
+                                                      message:@"\xF0\x9F\x98\xA9\nThe recepient has a Nooch account, but has not linked a bank funding source yet, so they can't receive transfers quite yet!"
+                                                     delegate:self
+                                            cancelButtonTitle:nil
+                                            otherButtonTitles:@"OK",nil];
          [av show];
     }
     else if ([[resultValueTransfer valueForKey:@"Result"] isEqualToString:@"Your cash was sent successfully"])
@@ -1127,21 +1151,21 @@
         switch (randNum) {
             case 0:
                 av = [[UIAlertView alloc] initWithTitle:@"Nice Work"
-                                                message:[NSString stringWithFormat:@"\xF0\x9F\x98\x8E\nYou just sent money to %@, and you did it with style… and class.",receiverFirst]
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x98\x8E\nYou just sent money to %@, and you did it with style… and class.",[receiverFirst capitalizedString]]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:@"View Details",nil];
                 break;
             case 1:
                 av = [[UIAlertView alloc] initWithTitle:@"Payment Sent"
-                                                message:@"\xF0\x9F\x92\xB8\nYour money has successfully been digitalized into pixie dust and is currently floating over our heads in a million pieces."
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x92\xB8\nYour money has successfully been digitalized into pixie dust and is currently floating over our heads in a million pieces on its way to %@.",[receiverFirst capitalizedString]]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:@"View Details",nil];
                 break;
             case 2:
                 av = [[UIAlertView alloc] initWithTitle:@"Success"
-                                                message:[NSString stringWithFormat:@"\xF0\x9F\x98\x89\nYou have officially 'Nooched' %@. That's right, it's a verb.",receiverFirst]
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x98\x89\nYou have officially 'Nooched' %@. That's right, it's a verb.",[receiverFirst capitalizedString]]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:@"View Details" ,nil];
@@ -1155,27 +1179,27 @@
                 break;
             case 4:
                 av = [[UIAlertView alloc] initWithTitle:@"Congratulations"
-                                                message:@"\xF0\x9F\x91\x8F\nYour debt burden has been lifted."
+                                                message:@"\xF0\x9F\x91\x8F\nYour debt burden has been lifted!"
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:@"View Details" ,nil];
                 break;
             case 5:
                 av = [[UIAlertView alloc] initWithTitle:@"Money Sent"
-                                                message:@"\xF0\x9F\x98\x87\nNo need to thank us, it's our job."
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x98\x87\nNo need to thank us, it's our job.\n\n%@ should probably thank you though.",[receiverFirst capitalizedString]]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:@"View Details" ,nil];
                 break;
             case 6:
                 av = [[UIAlertView alloc] initWithTitle:@"Payment Sent"
-                                                message:@"\xF0\x9F\x91\x8D\nYou are now free to close the app and put your phone away. You're good to go." delegate:self
+                                                message:@"\xF0\x9F\x91\x8D\nYou are now free to close Nooch and put your phone away. You're good to go." delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:@"View Details" ,nil];
                 break;
             case 7:
                 av = [[UIAlertView alloc] initWithTitle:@"You're Welcome"
-                                                message:@"\xF0\x9F\x91\x8C\nThat was some good Nooching. Money sent."
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x91\x8C\nThat was some good Nooching. Money sent to %@.",[receiverFirst capitalizedString]]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:@"View Details" ,nil];
@@ -1209,20 +1233,23 @@
                 break;
             case 12:
                 av = [[UIAlertView alloc] initWithTitle:@"Nooch Loves You"
-                                                message:@"\xF0\x9F\x92\x99\nThat is all. Pay it forward.\n \n...and yes, Nooch's heart is actually blue."
+                                                message:@"\xF0\x9F\x92\x99\nThat is all. Pay it forward.\n\n...and yes, Nooch's heart is actually blue."
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:@"View Details",nil];
                 break;
             case 13:
                 av = [[UIAlertView alloc] initWithTitle:@"Easy As Pie"
-                                                message:@"\xF0\x9F\x8D\xB0\nWasn't that easier than lugging to an ATM and forking over colored pieces of paper?."
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x8D\xB0\nWasn't that easier than lugging to an ATM and forking over colored pieces of paper to %@?",[receiverFirst capitalizedString]]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:@"View Details",nil];
                 break;
             default:
-                av = [[UIAlertView alloc] initWithTitle:@"Nice Work" message:@"\xF0\x9F\x92\xB8\nYour cash was sent successfully" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"View Details" ,nil];
+                av = [[UIAlertView alloc] initWithTitle:@"Nice Work"
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x92\xB8\nYour cash was sent successfully to %@.",[receiverFirst capitalizedString]]
+                                               delegate:self cancelButtonTitle:@"OK"
+                                      otherButtonTitles:@"View Details" ,nil];
                 break;
         }
         [av show];
@@ -1231,26 +1258,41 @@
         [av setTag:1];
         
     }
-    else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request processed successfully."]) {
+    else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request processed successfully."])
+    {
         [[assist shared] setTranferImage:nil];
         UIImage * imgempty = [UIImage imageNamed:@""];
         [[assist shared] setTranferImage:imgempty];
 
-        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Request Fulfilled" message:[NSString stringWithFormat:@"You successfully fulfilled %@'s request for $%.02f.",[receiverFirst capitalizedString],self.amnt] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Request Fulfilled"
+                                                      message:[NSString stringWithFormat:@"\xF0\x9F\x91\x8D\nYou successfully fulfilled %@'s request for $%.02f.",[receiverFirst capitalizedString],self.amnt]
+                                                     delegate:self
+                                            cancelButtonTitle:nil
+                                            otherButtonTitles:@"OK",nil];
         [av setTag:1];
         [av show];
     }
-    else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request successfully declined."]) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Denied" message:[NSString stringWithFormat:@"You successfully denied %@'s request for $%.02f.",[receiverFirst capitalizedString],self.amnt] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
+    else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request successfully declined."])
+    {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Denied"
+                                                     message:[NSString stringWithFormat:@"You successfully denied %@'s request for $%.02f.",[receiverFirst capitalizedString],self.amnt]
+                                                    delegate:self
+                                           cancelButtonTitle:nil
+                                           otherButtonTitles:@"OK",nil];
         [av setTag:1];
         [av show];
     }
-    else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request successfully cancelled."]) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Cancelled" message:[NSString stringWithFormat:@"You successfully cancelled your request for $%.02f from %@.",self.amnt,[receiverFirst capitalizedString]] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
+    else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request successfully cancelled."])
+    {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Cancelled"
+                                                     message:[NSString stringWithFormat:@"You successfully cancelled your request for $%.02f from %@.",self.amnt,[receiverFirst capitalizedString]]
+                                                    delegate:self cancelButtonTitle:nil
+                                           otherButtonTitles:@"OK",nil];
         [av setTag:1];
         [av show];
     }
-    else if ([[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request made successfully."]) {
+    else if ([[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request made successfully."])
+    {
         [[assist shared] setTranferImage:nil];
         UIImage * imgempty = [UIImage imageNamed:@""];
         [[assist shared] setTranferImage:imgempty];
@@ -1265,12 +1307,19 @@
             }
 
             strMultiple = [strMultiple substringFromIndex:1];
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Pay Me" message:[NSString stringWithFormat:@"You requested $%.02f from %@ successfully.",self.amnt,strMultiple] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Pay Me"
+                                                         message:[NSString stringWithFormat:@"You requested $%.02f from %@ successfully.",self.amnt,strMultiple]
+                                                        delegate:self
+                                               cancelButtonTitle:nil
+                                               otherButtonTitles:@"OK",nil];
             [av setTag:1];
             [av show];
         }
         else {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Pay Me" message:[NSString stringWithFormat:@"You requested $%.02f from %@ successfully.",self.amnt,[receiverFirst capitalizedString]] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",@"View Details",nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Pay Me"
+                                                         message:[NSString stringWithFormat:@"\xF0\x9F\x98\x80\nYou requested $%.02f from %@ successfully.",self.amnt,[receiverFirst capitalizedString]]
+                                                        delegate:self
+                                               cancelButtonTitle:nil otherButtonTitles:@"OK",@"View Details",nil];
             [av setTag:1];
             [av show];
         }
@@ -1301,7 +1350,7 @@
             || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]
             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."])
     {
-        self.prompt.text=@"2nd failed attempt";
+        self.prompt.text = @"2nd failed attempt";
         self.fourth_num.layer.borderColor = kNoochRed.CGColor;
         self.third_num.layer.borderColor = kNoochRed.CGColor;
         self.second_num.layer.borderColor = kNoochRed.CGColor;
@@ -1316,7 +1365,11 @@
         [self.first_num setBackgroundColor:[UIColor clearColor]];
         self.pin.text=@"";
 
-        UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:@"" message:@"To protect your money, your Nooch account will be suspended for 24 hours if you enter another incorrect PIN." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:@"\xE2\x9A\xA0"
+                                                              message:@"To protect your money, your Nooch account will be suspended for 24 hours if you enter another incorrect PIN."
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Ok"
+                                                    otherButtonTitles:nil];
         [suspendedAlert show];
         [suspendedAlert setTag:9];
     }
@@ -1340,30 +1393,50 @@
         [self.first_num setBackgroundColor:[UIColor clearColor]];
         self.pin.text=@"";
 
-        UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:@"" message:@"We're terribly sorry, but to keep Nooch safe, your account has been suspended for 24 hours. Please contact us anytime at support@nooch.com if you believe this was a mistake or would like more information." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Contact Support",nil];
-        [suspendedAlert show];
+        UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:@"\xE2\x9B\x94"
+                                                              message:@"We're terribly sorry, but to keep Nooch safe, your account has been suspended for 24 hours. Please contact us anytime at support@nooch.com if you believe this was a mistake or would like more information."
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Ok"
+                                                    otherButtonTitles:@"Contact Support",nil];
         [suspendedAlert setTag:50];
+        [suspendedAlert show];
     }
     else if ([[resultValueTransfer valueForKey:@"Result"]isEqual:@"Receiver does not exist."]
              || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Receiver does not exist."]
              || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Receiver does not exist."])
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Transfer Error" message:@"Looks like we screwed up.  We hate when this happens - sorry for the delay!  Please try making your transfer again." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Transfer Error #1350"
+                                                     message:@"\xF0\x9F\x98\xB3\nLooks like we screwed up. We hate when this happens - sorry for the delay!\n\nPlease try making your transfer again or contact us if the problem persists."
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:@"Contact Support",nil];
+        [av setTag:51];
         [av show];
         transferFinished = YES;
         sendingMoney = NO;
     }
 
-    else {
+    else
+    {
         NSString *resultValue = [dictResultTransfer objectForKey:@"RaiseDisputeResult"];
-        if ([resultValue valueForKey:@"Result"]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"" message:[resultValue valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        if ([resultValue valueForKey:@"Result"])
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
+                                                         message:[resultValue valueForKey:@"Result"]
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
             [av show];
             return;
         }
-        else {
-            //NSString *resultValue = [dictResultTransfer objectForKey:@"HandleRequestMoneyResult"];
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error #2651" message:@"Unfortunately something is not quite right. This is a polite way of saying we screwed up.  Please try your transfer again!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        else
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error #2650"
+                                                         message:@"\xF0\x9F\x98\xB3\nUnfortunately something is not quite right. This is a polite way of saying we screwed up.\n\nPlease try your transfer again or contact us if the problem persists."
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:@"Contact Support",nil];
+            [av setTag:52];
             [av show];
             return;
         }

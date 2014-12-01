@@ -8,6 +8,7 @@
 #import "Home.h"
 #import "ECSlidingViewController.h"
 #import "UIImageView+WebCache.h"
+#import "MagicPieLayer.h"
 
 @interface Statistics ()
 @property(nonatomic,retain) UIView *back_profile;
@@ -40,6 +41,12 @@
     [self.hud hide:YES];
     [super viewDidDisappear:animated];
 }
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -99,7 +106,6 @@
     [self.back_donation setFrame:CGRectMake(650, 10, 300, 400)];
     [self.back_donation setStyleClass:@"raised_view"];
     [self.view addSubview:self.back_donation];
-
 
     // ----------------
     //  ICONS - PANEL 1
@@ -263,11 +269,18 @@
     [glyph_topFriends3 setTextAlignment:NSTextAlignmentCenter];
     [topFriendsIcon_bckgrnd3 addSubview:glyph_topFriends3];
 
+    UILabel * titleTopFriends = [UILabel new];
+    [titleTopFriends setFont:[UIFont fontWithName:@"Roboto" size:20]];
+    [titleTopFriends setFrame:CGRectMake(0, 80, 300, 25)];
+    [titleTopFriends setTextColor:kNoochGrayDark];
+    [titleTopFriends setTextAlignment:NSTextAlignmentCenter];
+    titleTopFriends.text = @"Top Friends";
+    [self.back_donation addSubview:titleTopFriends];
+
     [self.back_donation addSubview:transfersIcon_bckgrnd3];
     [self.back_donation addSubview:profileIcon_bckgrnd3];
     [self.back_donation addSubview:topFriendsIcon_bckgrnd3];
 
-    
     // TABLE VIEWS (actual stats data)
     self.profile_stats = [UITableView new];
     [self.profile_stats setDelegate:self];
@@ -276,7 +289,7 @@
     [self.profile_stats setUserInteractionEnabled:NO];
     [self.back_profile addSubview:self.profile_stats];
     [self.profile_stats reloadData];
-    
+
     self.transfer_stats = [UITableView new];
     [self.transfer_stats setDelegate:self];
     [self.transfer_stats setDataSource:self];
@@ -284,7 +297,7 @@
     [self.transfer_stats setUserInteractionEnabled:NO];
     [self.back_transfer addSubview:self.transfer_stats];
     [self.transfer_stats reloadData];
-    
+
     self.top_friends_stats = [UITableView new];
     [self.top_friends_stats setDelegate:self];
     [self.top_friends_stats setDataSource:self];
@@ -292,7 +305,7 @@
     [self.top_friends_stats setUserInteractionEnabled:NO];
     [self.back_donation addSubview:self.top_friends_stats];
     [self.top_friends_stats reloadData];
-    
+
     //Export Stats
     self.exportHistory = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.exportHistory setTitle:@"      Export Account History" forState:UIControlStateNormal];
@@ -343,7 +356,6 @@
     [self GetFavorite];
 }
 
-
 -(void)go_2nd_panel_from_1st
 {
     [UIView beginAnimations:nil context:nil];
@@ -376,8 +388,6 @@
 
     [self.exportHistory setFrame:CGRectMake(60, 570, 200, 38)];
 
-    //[self.topFriends_active setStyleId:@"stats_circle_donations_active"];
-
     self.selected += 2;
 
     CGRect frame;
@@ -394,13 +404,14 @@
     [self.back_donation setFrame:frame];
 
     [UIView commitAnimations];
+    
+  //  [self createFriendsPieChart];
 }
 
 -(void)go_3rd_panel_from_2nd
 {
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.4];
-    //[self.topFriends_active setStyleId:@"stats_circle_donations_active"];
 
     self.selected++;
 
@@ -603,7 +614,7 @@
         Title.text = @"Profile Stats";
     }
     else if (tableView == self.top_friends_stats) {
-        Title.text = @"Top Friends";
+        Title.text = @"";
     }
     else if (tableView == self.transfer_stats) {
         Title.text = @"Transfer Stats";
@@ -628,8 +639,93 @@
     if (tableView == self.top_friends_stats) {
         return 5;
     }
-
     return 4;
+}
+
+-(void)createFriendsPieChart:(NSMutableArray*)results
+{
+    int fav_count = [results count];
+    
+    if (fav_count > 0)
+    {
+        PieLayer * pieLayer = [[PieLayer alloc] init];
+        pieLayer.frame = CGRectMake(97, 105, 106, 106);
+        pieLayer.maxRadius = 53;
+
+        NSDictionary * favorite1 = [results objectAtIndex:0];
+        NSString * favFreq1 = favorite1[@"Frequency"];
+
+        int freqInt1 = [favFreq1 intValue];
+        int freqInt2 = 0;
+        int freqInt3 = 0;
+        int freqInt4 = 0;
+        int freqInt5 = 0;
+
+        if (fav_count == 1)
+        {
+            [pieLayer addValues:@[[PieElement pieElementWithValue:freqInt1 color:Rgb2UIColor(63, 171, 225, .9)]] animated:YES];
+        }
+
+        if (fav_count > 1)
+        {
+            NSDictionary * favorite2 = [results objectAtIndex:1];
+            NSString * favFreq2 = favorite2[@"Frequency"];
+            freqInt2 = [favFreq2 intValue];
+
+            if (fav_count == 2)
+            {
+                [pieLayer addValues:@[[PieElement pieElementWithValue:freqInt1 color:Rgb2UIColor(63, 171, 225, .9)],
+                                      [PieElement pieElementWithValue:freqInt2 color:Rgb2UIColor(110, 191, 68, .9)]] animated:YES];
+            }
+        }
+
+        if (fav_count > 2)
+        {
+            NSDictionary * favorite3 = [results objectAtIndex:2];
+            NSString * favFreq3 = favorite3[@"Frequency"];
+            freqInt3 = [favFreq3 intValue];
+            
+            if (fav_count == 3)
+            {
+                [pieLayer addValues:@[[PieElement pieElementWithValue:freqInt1 color:Rgb2UIColor(63, 171, 225, .9)],
+                                      [PieElement pieElementWithValue:freqInt2 color:Rgb2UIColor(110, 191, 68, .9)],
+                                      [PieElement pieElementWithValue:freqInt3 color:Rgb2UIColor(10, 191, 168, .9)]] animated:YES];
+            }
+        }
+
+        if (fav_count > 3)
+        {
+            NSDictionary * favorite4 = [results objectAtIndex:3];
+            NSString * favFreq4 = favorite4[@"Frequency"];
+            freqInt4 = [favFreq4 intValue];
+            
+            if (fav_count == 4)
+            {
+                [pieLayer addValues:@[[PieElement pieElementWithValue:freqInt1 color:Rgb2UIColor(63, 171, 225, .9)],
+                                      [PieElement pieElementWithValue:freqInt2 color:Rgb2UIColor(110, 191, 68, .9)],
+                                      [PieElement pieElementWithValue:freqInt3 color:Rgb2UIColor(10, 191, 168, .9)],
+                                      [PieElement pieElementWithValue:freqInt4 color:Rgb2UIColor(33, 34, 35, .8)]] animated:YES];
+            }
+        }
+
+        if (fav_count > 4)
+        {
+            NSDictionary * favorite5 = [results objectAtIndex:4];
+            NSString * favFreq5 = favorite5[@"Frequency"];
+            freqInt5 = [favFreq5 intValue];
+
+            if (fav_count == 5)
+            {
+                [pieLayer addValues:@[[PieElement pieElementWithValue:freqInt1 color:Rgb2UIColor(63, 171, 225, .9)],
+                                      [PieElement pieElementWithValue:freqInt2 color:Rgb2UIColor(110, 191, 68, .9)],
+                                      [PieElement pieElementWithValue:freqInt3 color:Rgb2UIColor(10, 191, 168, .9)],
+                                      [PieElement pieElementWithValue:freqInt4 color:Rgb2UIColor(33, 34, 35, .8)],
+                                      [PieElement pieElementWithValue:freqInt5 color:kNoochPurple]] animated:YES];
+            }
+        }
+
+        [self.back_donation.layer addSublayer:pieLayer];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -778,19 +874,19 @@
             UIImageView * imageView = nil;
             UILabel * name = nil;
             UILabel * frequency = nil;
-            
-            imageView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 5, 54, 54)];
+
+            imageView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 3, 46, 46)];
             imageView.contentMode = UIViewContentModeScaleAspectFit;
-            imageView.layer.cornerRadius = 27;
+            imageView.layer.cornerRadius = 23;
             // [imageView setStyleClass:@"animate_bubble"];
 
-            name = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 140, 20)];
+            name = [[UILabel alloc] initWithFrame:CGRectMake(0, 12, 140, 20)];
             [name setStyleClass:@"stats_topFriends_label"];
 
-            frequency = [[UILabel alloc] initWithFrame:CGRectMake(80, 26, 140, 33)];
+            frequency = [[UILabel alloc] initWithFrame:CGRectMake(72, 22, 140, 26)];
             frequency.textColor = [Helpers hexColor:@"313233"];
             frequency.textAlignment = NSTextAlignmentLeft;
-            [frequency setFont:[UIFont fontWithName:@"Roboto-light" size:15]];
+            [frequency setFont:[UIFont fontWithName:@"Roboto-light" size:14]];
 
             if (indexPath.row == 0)
             {
@@ -842,15 +938,13 @@
             [cell.contentView addSubview:imageView];
             [cell.contentView addSubview:name];
             [cell.contentView addSubview:frequency];
-            [self.top_friends_stats setStyleClass:@"stats_top_friends"];
-
         }
         else if (fav_count == 0)
         {
+            [self.top_friends_stats setStyleClass:@"stats_top_friends_empty"];
+
             if (indexPath.row == 0)
             {
-                [self.top_friends_stats setStyleClass:@"stats_top_friends_empty"];
-
                 UILabel * emptyText = nil;
                 emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 280, 120)];
                 [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
@@ -1038,6 +1132,8 @@
                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                      options:kNilOptions
                      error:&error];
+        
+        [self createFriendsPieChart:favorites];
     }
 
     else if ([tagName isEqualToString:@"csv"])

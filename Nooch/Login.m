@@ -658,7 +658,7 @@
         {
             UIAlertController * alert = [UIAlertController
                                     alertControllerWithTitle:@"Reset Link Sent"
-                                    message:@"Please check your email for a reset password link."
+                                    message:@"\xF0\x9F\x93\xA5\nPlease check your email for a reset password link."
                                     preferredStyle:UIAlertControllerStyleAlert];
         
             UIAlertAction * ok = [UIAlertAction
@@ -674,7 +674,11 @@
         }
         else // iOS 7 and prior
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Please check your email for a reset password link." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                         message:@"\xF0\x9F\x93\xA5\nPlease check your email for a reset password link."
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
             [av show];
         }
         [spinner stopAnimating];
@@ -1018,7 +1022,7 @@
             {
                 UIAlertController * alert = [UIAlertController
                                          alertControllerWithTitle:@"This Is Awkward"
-                                         message:@"That doesn't appear to be the correct password. Please try again or contact us for futher help."
+                                         message:@"\xF0\x9F\x94\x90\nThat doesn't appear to be the correct password. Please try again or contact us for futher help."
                                          preferredStyle:UIAlertControllerStyleAlert];
             
                 UIAlertAction * ok = [UIAlertAction
@@ -1043,7 +1047,11 @@
             }
             else // iOS 7 and prior
             {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"This Is Awkward" message:@"That doesn't appear to be the correct password. Please try again or contact us for futher help." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Forgot Password", nil];
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"This Is Awkward"
+                                                                message:@"\xF0\x9F\x94\x90\nThat doesn't appear to be the correct password. Please try again or contact us for futher help."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:@"Forgot Password", nil];
                 [alert setTag:510];
                 [alert show];
             }
@@ -1113,7 +1121,11 @@
             }
             else // iOS 7 and prior
             {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"To keep Nooch safe your account has been temporarily suspended because you entered an incorrect password too many times.\n\nIn most cases your account will be automatically un-suspended in 24 hours. You can always contact support if this is a mistake or error.\n\nWe apologize for this inconvenience, please understand it is only to protect your account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended"
+                                                                message:@"To keep Nooch safe your account has been temporarily suspended because you entered an incorrect password too many times.\n\nIn most cases your account will be automatically un-suspended in 24 hours. You can always contact support if this is a mistake or error.\n\nWe apologize for this inconvenience, please understand it is only to protect your account."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:@"Contact Support", nil];
                 [alert setTag:600];
                 [alert show];
             }
@@ -1183,7 +1195,11 @@
             }
             else // iOS 7 and prior
             {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended"
+                                                                message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:@"Contact Support", nil];
                 [alert setTag:500];
                 [alert show];
             }
@@ -1255,7 +1271,11 @@
             }
             else // iOS 7 and prior
             {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been temporarily suspended.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended"
+                                                                message:@"For security your account has been temporarily suspended.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:@"Contact Support", nil];
                 [alert show];
                 [alert setTag:50];
             }

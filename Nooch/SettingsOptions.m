@@ -419,6 +419,7 @@
                                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                             options:kNilOptions
                                             error:&error];
+        NSLog(@"dicResponse is: %@",dictResponse);
 
         UILabel * glyph_shield = [[UILabel alloc] initWithFrame:CGRectMake(73, 6, 13, 32)];
         [glyph_shield setBackgroundColor:[UIColor clearColor]];

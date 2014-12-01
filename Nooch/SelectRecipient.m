@@ -1696,7 +1696,11 @@
         else
         {
             if ([[[assist shared]getArray] count] == 10) {
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Nooch Money" message:@"You can't request more than 10 Users!" delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Too Many Recipients"
+                                                               message:@"\xE2\x98\x9D\nYou can't request more than 10 Users!"
+                                                              delegate:Nil
+                                                     cancelButtonTitle:@"Ok"
+                                                     otherButtonTitles:Nil, nil];
                 [alert show];
                 return;
             }
