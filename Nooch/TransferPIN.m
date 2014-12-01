@@ -34,20 +34,22 @@
 - (id)initWithReceiver:(NSMutableDictionary *)receiver type:(NSString *)type amount:(float)amount
 {
     self = [super initWithNibName:nil bundle:nil];
-    if (self) {
+    if (self)
+    {
         // Custom initialization
-        receiverFirst=[receiver valueForKey:@"FirstName"];
-        if ([receiver valueForKey:@"memo"]) {
-            self.memo=[receiver valueForKey:@"memo"];
+        receiverFirst = [receiver valueForKey:@"FirstName"];
+        if ([receiver valueForKey:@"memo"])
+        {
+            self.memo = [receiver valueForKey:@"memo"];
         }
-        else if ([receiver valueForKey:@"Memo"]) {
-            self.memo=[receiver valueForKey:@"Memo"];
+        else if ([receiver valueForKey:@"Memo"])
+        {
+            self.memo = [receiver valueForKey:@"Memo"];
         }
 
         self.type = type;
         self.receiver = receiver;
         self.amnt = amount;
-
     }
     return self;
 }
@@ -148,11 +150,24 @@
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
 
     UILabel * to_label = [UILabel new];
+
     if (![[self.receiver objectForKey:@"email"] length] == 0 && [self.receiver objectForKey:@"nonuser"])
     {
-        to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[self.receiver objectForKey:@"email"]] attributes:textAttributes];
+        if ([self.receiver objectForKey:@"firstName"] && [self.receiver objectForKey:@"lastName"])
+        {
+            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",[self.receiver objectForKey:@"firstName"],[self.receiver objectForKey:@"lastName"]] attributes:textAttributes];
+        }
+        else if ([self.receiver objectForKey:@"firstName"])
+        {
+            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"firstName"]] attributes:textAttributes];
+        }
+        else
+        {
+            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"email"]] attributes:textAttributes];
+        }
     }
-    else {
+    else
+    {
         if ([[assist shared] isRequestMultiple])
         {
             NSString * strMultiple = @"";

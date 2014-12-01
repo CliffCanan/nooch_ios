@@ -26,12 +26,12 @@ BOOL isAddRequest;
     NSString*searchString;
     BOOL searching, navIsUp;
     BOOL emailEntry, shouldAnimate;
-    NSMutableArray*arrSearchedRecords;
-    UISearchBar *search;
-    UIActivityIndicatorView*spinner;
+    NSMutableArray * arrSearchedRecords;
+    UISearchBar * search;
+    UIActivityIndicatorView * spinner;
     
     BOOL isRecentList;
-    NSString*emailphoneBook;
+    NSString * emailphoneBook, * firstNamePhoneBook, * lastNamePhoneBook;
     
     UIImageView *arrow;
     UILabel *em;
