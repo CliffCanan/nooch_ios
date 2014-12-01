@@ -326,7 +326,7 @@
     [self.navigationItem setLeftBarButtonItem:nil];
 
     isAddRequest=YES;
-    NSLog(@"%@",self.receiver);
+    NSLog(@"receiver is: %@",self.receiver);
     
     if ([[[assist shared]getArray] count] == 0)
     {
@@ -447,19 +447,31 @@
 {
     if ([self.amnt floatValue] == 0)
     {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!" message:@"Please enter a value over $0.00. We'd love to send a negative amount, but it's actually pretty difficult." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
-            [alert show];
-            return;
-    }
-    if ([[self.amount text] length] < 3)
-    {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Just A Little More" message:@"Please enter an amount greater than $1.00." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [av show];
+        NSLog(@"self.receiver is:  %@",self.receiver);
+        NSString * alertMessage = @"";
+        if ([self.receiver valueForKey:@"nonuser"])
+        {
+            alertMessage = @"\xF0\x9F\x98\xAC\nPlease enter a value over $0.\n\nWe'd love to send a $0 payment, but it's actually surprisingly tricky.";
+        }
+        else
+        {
+            alertMessage = [NSString stringWithFormat:@"\xF0\x9F\x98\xAC\nPlease enter a value over $0.\n\nWe'd love to send a $0 payment to %@, but it's actually rather tricky.",[[self.receiver objectForKey:@"FirstName"] capitalizedString]];
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!"
+                                                        message:alertMessage
+                                                        delegate:self
+                                                cancelButtonTitle:nil
+                                                otherButtonTitles:@"Ok", nil];
+        [alert show];
         return;
     }
-    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100)
+    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 300)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Now" message:[NSString stringWithFormat:@"To keep Nooch safe, please don’t %@ more than $100. We hope to raise this limit very soon!", @"send"] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Now"
+                                                        message:@"\xF0\x9F\x98\xB3\nTo keep Nooch safe, please don’t send more than $300. We hope to raise this limit very soon!"
+                                                       delegate:self
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:@"Ok", nil];
         [alert show];
         return;
     }
@@ -487,15 +499,32 @@
 
 - (void) confirm_request
 {
-    if ([[self.amount text] length] < 3)
+    if ([self.amnt floatValue] == 0)
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Just A Little More" message:@"Please enter an amount greater than $1.00." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [av show];
+        NSString * alertMessage = @"";
+        if ([self.receiver valueForKey:@"nonuser"])
+        {
+            alertMessage = @"\xF0\x9F\x98\xAC\nPlease enter a value over $0. We'd love to send a $0 request, but it would just get too confusing for everyone.";
+        }
+        else
+        {
+            alertMessage = [NSString stringWithFormat:@"\xF0\x9F\x98\xAC\nPlease enter a value over $0.\n\nSurely %@ owes you more than that...",[[self.receiver objectForKey:@"FirstName"] capitalizedString]];
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!"
+                                                        message:alertMessage
+                                                       delegate:self
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:@"Ok", nil];
+        [alert show];
         return;
     }
-    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 100)
+    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 300)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Big Spender" message:[NSString stringWithFormat:@"While we definitely appreciate your enthusiasm, we are limiting transfers to $100 for now in order to minimize our risk (and yours). We're working to raise the limit soon! "] delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Big Spender"
+                                                        message:@"\xF0\x9F\x98\xA7\nWhile we definitely appreciate your enthusiasm, we are limiting transfers to $300 for now in order to minimize our risk (and yours). We're working to raise the limit soon!"
+                                                       delegate:self
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:@"Ok", nil];
         [alert show];
         return;
     }

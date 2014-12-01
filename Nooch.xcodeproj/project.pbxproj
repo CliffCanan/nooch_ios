@@ -149,6 +149,9 @@
 		5CACE20619CFF86A004AD9C4 /* 1_connectBank_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20319CFF86A004AD9C4 /* 1_connectBank_bg.png */; };
 		5CACE20819CFF86A004AD9C4 /* 3_howMuch_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20519CFF86A004AD9C4 /* 3_howMuch_bg.png */; };
 		5CBC177519F4CE0000E1D095 /* clear_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CBC177419F4CE0000E1D095 /* clear_white@2x.png */; };
+		5CC183DC1A19C6B600DADDC8 /* NSMutableArray+pieEx.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC183D71A19C6B600DADDC8 /* NSMutableArray+pieEx.m */; };
+		5CC183DD1A19C6B600DADDC8 /* PieElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC183D91A19C6B600DADDC8 /* PieElement.m */; };
+		5CC183DE1A19C6B600DADDC8 /* PieLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC183DB1A19C6B600DADDC8 /* PieLayer.m */; };
 		5CC1A77819BA7A8A0000C2C7 /* Icon29.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77419BA7A8A0000C2C7 /* Icon29.png */; };
 		5CC1A77919BA7A8A0000C2C7 /* Icon58.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77519BA7A8A0000C2C7 /* Icon58.png */; };
 		5CC1A77A19BA7A8A0000C2C7 /* Icon80.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC1A77619BA7A8A0000C2C7 /* Icon80.png */; };
@@ -583,6 +586,13 @@
 		5CACE20319CFF86A004AD9C4 /* 1_connectBank_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1_connectBank_bg.png; sourceTree = "<group>"; };
 		5CACE20519CFF86A004AD9C4 /* 3_howMuch_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3_howMuch_bg.png; sourceTree = "<group>"; };
 		5CBC177419F4CE0000E1D095 /* clear_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "clear_white@2x.png"; sourceTree = "<group>"; };
+		5CC183D51A19C6B600DADDC8 /* MagicPieLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagicPieLayer.h; sourceTree = "<group>"; };
+		5CC183D61A19C6B600DADDC8 /* NSMutableArray+pieEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+pieEx.h"; sourceTree = "<group>"; };
+		5CC183D71A19C6B600DADDC8 /* NSMutableArray+pieEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+pieEx.m"; sourceTree = "<group>"; };
+		5CC183D81A19C6B600DADDC8 /* PieElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieElement.h; sourceTree = "<group>"; };
+		5CC183D91A19C6B600DADDC8 /* PieElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieElement.m; sourceTree = "<group>"; };
+		5CC183DA1A19C6B600DADDC8 /* PieLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieLayer.h; sourceTree = "<group>"; };
+		5CC183DB1A19C6B600DADDC8 /* PieLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieLayer.m; sourceTree = "<group>"; };
 		5CC1A77419BA7A8A0000C2C7 /* Icon29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon29.png; sourceTree = "<group>"; };
 		5CC1A77519BA7A8A0000C2C7 /* Icon58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon58.png; sourceTree = "<group>"; };
 		5CC1A77619BA7A8A0000C2C7 /* Icon80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon80.png; sourceTree = "<group>"; };
@@ -1463,6 +1473,20 @@
 			path = "../../../../Cocoa Libraries/EAIntroView-master/Resources/Intro";
 			sourceTree = "<group>";
 		};
+		5CC183D41A19C6B600DADDC8 /* MagicPieLayer */ = {
+			isa = PBXGroup;
+			children = (
+				5CC183D51A19C6B600DADDC8 /* MagicPieLayer.h */,
+				5CC183D61A19C6B600DADDC8 /* NSMutableArray+pieEx.h */,
+				5CC183D71A19C6B600DADDC8 /* NSMutableArray+pieEx.m */,
+				5CC183D81A19C6B600DADDC8 /* PieElement.h */,
+				5CC183D91A19C6B600DADDC8 /* PieElement.m */,
+				5CC183DA1A19C6B600DADDC8 /* PieLayer.h */,
+				5CC183DB1A19C6B600DADDC8 /* PieLayer.m */,
+			);
+			path = MagicPieLayer;
+			sourceTree = "<group>";
+		};
 		6B1C157C16D4306000FBEFBB /* Custom Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -1577,6 +1601,7 @@
 		6B30372C15FA3FF300056DAD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5CC183D41A19C6B600DADDC8 /* MagicPieLayer */,
 				5C4A204B19E77B9600D1A0EE /* Appirater */,
 				5C69D06B19CA0F5B00EB406F /* EAIntroView */,
 				5C69D03519C941DB00EB406F /* SpinKit */,
@@ -2443,6 +2468,7 @@
 				8449C58C19EBAB9700027B9B /* UAPushSettingsChannelInfoViewController.m in Sources */,
 				5C69D02819C9380500EB406F /* IQBarButtonItem.m in Sources */,
 				841A3E0D18A61491001DAAA2 /* UIImage+Alpha.m in Sources */,
+				5CC183DC1A19C6B600DADDC8 /* NSMutableArray+pieEx.m in Sources */,
 				01085FA917FB2D2100A31F63 /* Register.m in Sources */,
 				846A5E3D19DAB0FC0093FF9C /* UIImage+WebP.m in Sources */,
 				846A5E3E19DAB0FC0093FF9C /* UIImageView+HighlightedWebCache.m in Sources */,
@@ -2486,12 +2512,14 @@
 				846A5E3319DAB0FC0093FF9C /* SDImageCache.m in Sources */,
 				5C69D06A19C941DB00EB406F /* RTSpinKitView.m in Sources */,
 				01085FD218030E5900A31F63 /* SettingsOptions.m in Sources */,
+				5CC183DD1A19C6B600DADDC8 /* PieElement.m in Sources */,
 				01C83E8417FB1606009CABBF /* NavControl.m in Sources */,
 				5C69D05E19C941DB00EB406F /* RTSpinKitChasingDotsAnimation.m in Sources */,
 				0103AEB018FC8B8D003225DA /* NSString+FontAwesome.m in Sources */,
 				8449C57E19EBAB9700027B9B /* UAInboxMessageViewController.m in Sources */,
 				846A5E3419DAB0FC0093FF9C /* SDWebImageCompat.m in Sources */,
 				5C69D03019C9380500EB406F /* IQToolbar.m in Sources */,
+				5CC183DE1A19C6B600DADDC8 /* PieLayer.m in Sources */,
 				018DA86318048309007B24FB /* SendInvite.m in Sources */,
 				01C83E8017F9FF9E009CABBF /* TransferPIN.m in Sources */,
 				0179E9F017F35A740027526C /* SelectRecipient.m in Sources */,
