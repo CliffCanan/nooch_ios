@@ -135,7 +135,18 @@
     if ([self.receiver valueForKey:@"nonuser"])
     {
         [to_label setStyleId:@"label_howmuch_recipientnamenonuser"];
-        to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"email"]] attributes:textAttributes];
+        if ([self.receiver objectForKey:@"firstName"] && [self.receiver objectForKey:@"lastName"])
+        {
+            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",[self.receiver objectForKey:@"firstName"],[self.receiver objectForKey:@"lastName"]] attributes:textAttributes];
+        }
+        else if ([self.receiver objectForKey:@"firstName"])
+        {
+            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"firstName"]] attributes:textAttributes];
+        }
+        else
+        {
+            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"email"]] attributes:textAttributes];
+        }
     }
     else
     {

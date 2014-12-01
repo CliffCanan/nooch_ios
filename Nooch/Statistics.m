@@ -656,10 +656,7 @@
         NSString * favFreq1 = favorite1[@"Frequency"];
 
         int freqInt1 = [favFreq1 intValue];
-        int freqInt2 = 0;
-        int freqInt3 = 0;
-        int freqInt4 = 0;
-        int freqInt5 = 0;
+        int freqInt2, freqInt3, freqInt4, freqInt5 = 0;
         int totalPayments = freqInt1;
 
         if (fav_count == 1)

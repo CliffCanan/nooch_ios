@@ -73,7 +73,7 @@
     }
     isUserByLocation = NO;
     isphoneBook = NO;
-    
+
     arrRequestPersons = [[NSMutableArray alloc]init];
 
 
@@ -91,7 +91,7 @@
     [self.glyph_recent setTextColor:[UIColor whiteColor]];
     [self.glyph_recent setAlpha: 1];
     [self.view addSubview:self.glyph_recent];
-    
+
     self.glyph_location = [UILabel new];
     [self.glyph_location setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
     [self.glyph_location setFrame:CGRectMake(168, 12, 20, 17)];
@@ -99,14 +99,14 @@
     [self.glyph_location setTextColor: kNoochBlue];
     [self.glyph_location setAlpha: 1];
     [self.view addSubview:self.glyph_location];
-    
+
     search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 40, 320, 40)];
     search.searchBarStyle = UISearchBarStyleMinimal;
     search.placeholder=@"Search by Name or Enter an Email";
     [search setDelegate:self];
     [search setImage:[UIImage imageNamed:@"search_blue"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
     [search setImage:[UIImage imageNamed:@"clear_white"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
-    
+
     for (UIView *subView1 in search.subviews)
     {
         for (id subview2 in subView1.subviews)
@@ -119,7 +119,7 @@
             }
         }
     }
-    
+
     [self.view addSubview:search];
 
     self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [[UIScreen mainScreen] bounds].size.height-146)];
@@ -135,7 +135,7 @@
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
-    
+
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
     self.hud.delegate = self;
@@ -184,7 +184,7 @@
         [search resignFirstResponder];
         [search setText:@""];
         [search setShowsCancelButton:NO];
-        
+
         if ([arrRequestPersons count] == 0)
         {
             arrRequestPersons = [self.recents mutableCopy];
@@ -224,15 +224,15 @@
         UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
         [self.navigationItem setLeftBarButtonItem:menu];
 
-        isUserByLocation=NO;
+        isUserByLocation = NO;
         [self.navigationItem setRightBarButtonItem:Nil];
         [[assist shared]setRequestMultiple:NO];
         [self.completed_pending setSelectedSegmentIndex:0];
         self.location = NO;
-        isRecentList=YES;
-        searching=NO;
-        emailEntry=NO;
-        search.text=@"";
+        isRecentList = YES;
+        searching = NO;
+        emailEntry = NO;
+        search.text = @"";
         [search setShowsCancelButton:NO];
         [search resignFirstResponder];
 
@@ -258,7 +258,8 @@
     [search setTintColor:kNoochBlue];
 
     //[self facebook];
-    if (!isEmailEntry && !isphoneBook) {
+    if (!isEmailEntry && !isphoneBook)
+    {
         serve * recents = [serve new];
         [recents setTagName:@"recents"];
         [recents setDelegate:self];
@@ -293,7 +294,6 @@
             NSLog(@"Just authorized");
 
         });
-
         NSLog(@"Not determined");
     }
 
@@ -430,26 +430,26 @@
 
 -(void)address_book
 {
-    NSMutableArray *additions = [NSMutableArray new];
+    NSMutableArray * additions = [NSMutableArray new];
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
     CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
     CFIndex nPeople = ABAddressBookGetPersonCount(addressBook);
 
-    for(int i = 0; i < nPeople; i++)
+    for (int i = 0; i < nPeople; i++)
     {
-        NSMutableDictionary *curContact = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary * curContact = [[NSMutableDictionary alloc] init];
         ABRecordRef person = CFArrayGetValueAtIndex(people, i);
         
-        NSString *contacName;
+        NSString * contacName;
         
         CFTypeRef contacNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
         contacName = [[NSString stringWithFormat:@"%@", contacNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         if (contacNameValue)
             CFRelease(contacNameValue);
-        
+
         NSString * firstName;
         NSString * lastName;
-        NSData *contactImage;
+        NSData * contactImage;
 
         // Get FirstName Ref
         CFTypeRef firstNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
@@ -460,10 +460,10 @@
         // Get LastName Ref
         CFTypeRef LastNameValue = ABRecordCopyValue(person, kABPersonLastNameProperty);
         
-        if(LastNameValue)
+        if (LastNameValue)
         {
             [contacName stringByAppendingString:[NSString stringWithFormat:@" %@", LastNameValue]];
-            
+
             lastName = [[NSString stringWithFormat:@"%@", LastNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             if (LastNameValue)
                 CFRelease(LastNameValue);
@@ -500,6 +500,9 @@
             phone = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             if (phoneValue)
                 CFRelease(phoneValue);
+
+            phone = [phone stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone length])];
+            //[curContact setObject:phone forKey:@"phoneNo"];
         }
         
         if (ABMultiValueGetCount(phoneNumber) > 1)
@@ -528,7 +531,7 @@
         for (int j = 0; j < ABMultiValueGetCount(emailInfo); j++)
         {
             CFTypeRef emailIdValue = ABMultiValueCopyValueAtIndex(emailInfo, j);
-            NSString *emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            NSString * emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 
             if (emailId != NULL)
             {
@@ -540,13 +543,11 @@
                 CFRelease(emailIdValue);
             }
         }
-        
-        
+
         if (emailInfo) {
             CFRelease(emailInfo);
         }
-       
-        
+
         if (contacName != NULL)
         {
             NSString * strippedNumber = [phone stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone length])];
@@ -557,9 +558,9 @@
 
             if (strippedNumber != NULL)
                 [curContact setObject:strippedNumber forKey:@"phoneNo"];
-           
+
         }
-         [additions addObject:curContact];
+        [additions addObject:curContact];
         if (phoneNumber)
             CFRelease(phoneNumber);
     }
@@ -661,17 +662,18 @@
     }
 }
 
--(void)phonebook:(id)sender {
+-(void)phonebook:(id)sender
+{
     _addressBookController = [[ABPeoplePickerNavigationController alloc] init];
     [_addressBookController setPeoplePickerDelegate:self];
     [self.view removeConstraints:self.view.constraints];
-    NSArray *displayedItems = [NSArray arrayWithObjects:
+    NSArray * displayedItems = [NSArray arrayWithObjects:
                                [NSNumber numberWithInt:kABPersonEmailProperty],
                                nil];
     _addressBookController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _addressBookController.view.translatesAutoresizingMaskIntoConstraints=YES;
 	[_addressBookController.view removeConstraints:_addressBookController.view.constraints];
-    _addressBookController.displayedProperties=displayedItems;
+    _addressBookController.displayedProperties = displayedItems;
     [self presentViewController:_addressBookController animated:YES completion:nil];
 }
 
@@ -679,29 +681,37 @@
 {
     ABMultiValueRef emailMultiValue = ABRecordCopyValue(person, kABPersonEmailProperty);
     emailAddresses = (__bridge NSArray *)ABMultiValueCopyArrayOfAllValues(emailMultiValue) ;
+
     NSLog(@"%@",emailAddresses);
+
     if (emailMultiValue)
     CFRelease(emailMultiValue);
     [_addressBookController dismissViewControllerAnimated:YES completion:^{
         if ([emailAddresses count] == 0)
         {
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Uh Oh" message:@"No email address has been specified. Please try again." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Uh Oh"
+                                                            message:@"No email address has been specified. Please try again."
+                                                           delegate:Nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:Nil, nil];
             [alert show];
         }
         else if ([emailAddresses count] == 1)
         {
-            emailphoneBook= [emailAddresses objectAtIndex:0];
-            isphoneBook=YES;
+            emailphoneBook = [emailAddresses objectAtIndex:0];
+            isphoneBook = YES;
             [self getMemberIdByUsingUserNameFromPhoneBook];
         }
         else
         {
-            UIActionSheet * actionSheet=[[UIActionSheet alloc]init];
+            UIActionSheet * actionSheet = [[UIActionSheet alloc]init];
             [actionSheet setDelegate:self];
-            for (int i = 0 ; i < [emailAddresses count]; i++) {
+
+            for (int i = 0 ; i < [emailAddresses count]; i++)
+            {
                 [actionSheet addButtonWithTitle:[NSString stringWithFormat:@"%@",[emailAddresses objectAtIndex:i]]];
             }
-            actionSheet.tag=1111;
+            actionSheet.tag = 1111;
             [actionSheet addButtonWithTitle:@"Cancel"];
             [actionSheet showInView:self.view];
         }
@@ -709,9 +719,12 @@
     return NO;
 }
 
-- (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
-    for (UIView *_currentView in actionSheet.subviews) {
-        if ([_currentView isKindOfClass:[UILabel class]]) {
+- (void)willPresentActionSheet:(UIActionSheet *)actionSheet
+{
+    for (UIView *_currentView in actionSheet.subviews)
+    {
+        if ([_currentView isKindOfClass:[UILabel class]])
+        {
             [((UILabel *)_currentView) setFont:[UIFont boldSystemFontOfSize:15.f]];
         }
     }
@@ -736,7 +749,11 @@
 
         if ([emailphoneBook isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Very Sneaky" message:@"You are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Very Sneaky"
+                                                         message:@"\xF0\x9F\x98\xB1\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!"
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
             [av setTag:4];
             [av show];
         }
@@ -752,12 +769,14 @@
     }
 }
 
--(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier{
+-(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier
+{
     return YES;
 }
 
--(void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker{
-    isphoneBook=NO;
+-(void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker
+{
+    isphoneBook = NO;
     [_addressBookController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -839,7 +858,7 @@
         searching = NO;
         emailEntry = NO;
         isRecentList = YES;
-        
+
         //[self.contacts reloadData];
         return;
     }
@@ -852,7 +871,7 @@
 
         searching = YES;
         NSRange isRange = [searchBar.text rangeOfString:[NSString stringWithFormat:@"@"] options:NSCaseInsensitiveSearch];
-        
+
         if (isRange.location != NSNotFound)
         {
             emailEntry = YES;
@@ -861,11 +880,11 @@
             searching = NO;
             isRecentList = NO;
             searchString = searchBar.text;
-            
+
             if (isRange.location < searchBar.text.length - 1) {
                 shouldAnimate = NO;
             }
-            
+
             if ([[assist shared]isRequestMultiple]) {
                 return;
             }
@@ -892,20 +911,42 @@
 - (void) searchTableView
 {
     arrSearchedRecords = [[NSMutableArray alloc]init];
-    for (NSString *key in [[assist shared] assos].allKeys)
+
+    for (NSString * key in [[assist shared] assos].allKeys)
     {
-        NSMutableDictionary *dict = [[assist shared] assos][key];
-        NSComparisonResult result = [[dict valueForKey:@"FirstName"] compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
-        NSComparisonResult result2 = [[dict valueForKey:@"LastName"] compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
-        if ((result == NSOrderedSame || result2 == NSOrderedSame) && dict[@"FirstName"] && dict[@"LastName"]) {
+        NSMutableDictionary * dict = [[assist shared] assos][key];
+
+        NSComparisonResult result;
+        NSComparisonResult result2;
+        if ([dict valueForKey:@"FirstName"])
+        {
+            result = [[dict valueForKey:@"FirstName"] compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
+        }
+        else {
+            result = true;
+        }
+
+        if ([dict valueForKey:@"LastName"])
+        {
+            result2 = [[dict valueForKey:@"LastName"] compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
+        }
+        else {
+            result2 = true;
+        }
+
+        if ((result == NSOrderedSame || result2 == NSOrderedSame) &&
+            (dict[@"FirstName"] || dict[@"LastName"]))
+        {
             [arrSearchedRecords addObject:dict];
         }
     }
-    if (![arrSearchedRecords isKindOfClass:[NSNull class]]) {
-        NSSortDescriptor *sortDescriptor;
+
+    if (![arrSearchedRecords isKindOfClass:[NSNull class]])
+    {
+        NSSortDescriptor * sortDescriptor;
         sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"FirstName" ascending:YES];
-        NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-        NSArray *temp = [arrSearchedRecords copy];
+        NSArray * sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        NSArray * temp = [arrSearchedRecords copy];
         [arrSearchedRecords setArray:[temp sortedArrayUsingDescriptors:sortDescriptors]];
     }
 }
@@ -917,7 +958,7 @@
 
     if ([emailphoneBook isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]])
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Denied"
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Try That Again"
                                                      message:@"\xE2\x98\x9D\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!"
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
@@ -940,7 +981,7 @@
     [search resignFirstResponder];
     if ([[search.text lowercaseString] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]])
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Denied"
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Hold On There..."
                                                      message:@"\xF0\x9F\x98\xB1\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!"
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
@@ -966,7 +1007,7 @@
 
 -(void)loadDelay
 {
-    NSMutableArray*arrNav=[nav_ctrl.viewControllers mutableCopy];
+    NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
     [arrNav removeLastObject];
     [nav_ctrl setViewControllers:arrNav animated:NO];
     [self.navigationController popViewControllerAnimated:YES];
@@ -996,14 +1037,14 @@
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-        
+
         [timer invalidate];
-        
+
         [nav_ctrl performSelector:@selector(disable)];
         [nav_ctrl performSelector:@selector(reset)];
-        
+
         [[assist shared]setPOP:YES];
-        [self performSelector:@selector(loadDelay) withObject:Nil afterDelay:2.0];
+        [self performSelector:@selector(loadDelay) withObject:Nil afterDelay:1.0];
     }
 
     else if ([tagName isEqualToString:@"getMemberIds"])
@@ -1013,11 +1054,15 @@
                                JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                options:kNilOptions
                                error:&error];
-        NSMutableArray *temp2 = [[temp objectForKey:@"GetMemberIdsResult"] objectForKey:@"phoneEmailList"];
-        NSMutableArray *additions = [NSMutableArray new];
-        for (NSDictionary *dict in temp2) {
-            NSMutableDictionary *new = [NSMutableDictionary new];
-            for (NSString *key in dict.allKeys) {
+        NSMutableArray * temp2 = [[temp objectForKey:@"GetMemberIdsResult"] objectForKey:@"phoneEmailList"];
+        NSMutableArray * additions = [NSMutableArray new];
+
+        for (NSDictionary * dict in temp2)
+        {
+            NSMutableDictionary * new = [NSMutableDictionary new];
+
+            for (NSString * key in dict.allKeys)
+            {
                 if ([key isEqualToString:@"memberId"] && [dict[key] length] > 0)
                     [new setObject:dict[key] forKey:@"MemberId"];
                 else if ([key isEqualToString:@"emailAddy"])
@@ -1055,21 +1100,23 @@
     {
         [spinner stopAnimating];
         [spinner setHidden:YES];
-        NSError* error;
+
+        NSError * error;
         self.recents = [NSJSONSerialization
                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
         
-        NSMutableArray *temp = [NSMutableArray new];
-        for (NSDictionary *dict in self.recents) {
-            NSMutableDictionary *prep = dict.mutableCopy;
+        NSMutableArray * temp = [NSMutableArray new];
+        for (NSDictionary * dict in self.recents) {
+            NSMutableDictionary * prep = dict.mutableCopy;
             [prep setObject:@"YES" forKey:@"recent"];
             [temp addObject:prep];
         }
+
         self.recents = temp.mutableCopy;
         [[assist shared] addAssos:[self.recents mutableCopy]];
-        
+
         if ([[assist shared] isRequestMultiple])
         {
             searching = NO;
@@ -1085,17 +1132,18 @@
 
             arrRequestPersons = [self.recents mutableCopy];
             //NSLog(@"%@",arrRequestPersons);
-            
+
             if ([arrRequestPersons count] == 0) {
                 arrRequestPersons = [self.recents mutableCopy];
             }
-            else {
+            else
+            {
                 int loc=-1;
                 for (int i = 0; i < [self.recents count]; i++) {
                     NSDictionary * dict = [self.recents objectAtIndex:i];
                     
-                    for (int j = 0; j < [arrRequestPersons count]; j++) {
-                        
+                    for (int j = 0; j < [arrRequestPersons count]; j++)
+                    {
                         NSDictionary * dictSub = [arrRequestPersons objectAtIndex:j];
                         if ([[dict valueForKey:@"MemberId"]caseInsensitiveCompare:[dictSub valueForKey:@"MemberId"]] == NSOrderedSame)
                             loc = 1;
@@ -1140,37 +1188,37 @@
 
     else if ([tagName isEqualToString:@"searchByLocation"])
     {
-        NSError* error;
+        NSError * error;
         self.recents = [NSJSONSerialization
-                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                      options:kNilOptions
-                      error:&error];
-        self.recents=[ self.recents mutableCopy];
+                        JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                        options:kNilOptions
+                        error:&error];
+        self.recents = [self.recents mutableCopy];
         
         for (int i = 0; i < [ self.recents count]; i++)
         {
             for (int j = i+1; j < [ self.recents count]; j++)
             {
-                NSDictionary *recordOne = [ self.recents objectAtIndex:i];
-                NSDictionary *recordTwo = [ self.recents objectAtIndex:j];
-                
+                NSDictionary * recordOne = [ self.recents objectAtIndex:i];
+                NSDictionary * recordTwo = [ self.recents objectAtIndex:j];
+
                 if ([[recordOne valueForKey:@"Miles"] floatValue] > [[recordTwo valueForKey:@"Miles"] floatValue])
                 {
                     [ self.recents exchangeObjectAtIndex:i withObjectAtIndex:j];
                 }
             }   
         }
+
         [self.noContact_img removeFromSuperview];
         [self.contacts setStyleId:@"select_recipient"];
         [self.contacts setHidden:NO];
         [self.contacts reloadData];
-
     }
 
     else if ([tagName isEqualToString:@"emailCheck"])
     {
-        NSError* error;
-        NSMutableDictionary *dictResult = [NSJSONSerialization
+        NSError * error;
+        NSMutableDictionary * dictResult = [NSJSONSerialization
                                            JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                            options:kNilOptions
                                            error:&error];
@@ -1198,9 +1246,9 @@
                 [spinner stopAnimating];
                 [spinner setHidden:YES];
                 searching = NO;
-                emailEntry=NO;
-                isRecentList=NO;
-                isphoneBook=NO;
+                emailEntry = NO;
+                isRecentList = NO;
+                isphoneBook = NO;
                 [search resignFirstResponder];
                 [search setText:@""];
                 [search setShowsCancelButton:NO];
@@ -1208,9 +1256,12 @@
                 return;
             }
 
-            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-            if (isphoneBook) {
+            NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
+            if (isphoneBook)
+            {
                 [dict setObject:emailphoneBook forKey:@"email"];
+                [dict setObject:firstNamePhoneBook forKey:@"firstName"];
+                [dict setObject:lastNamePhoneBook forKey:@"lastName"];
             }
             else
                 [dict setObject:searchString forKey:@"email"];
@@ -1230,10 +1281,11 @@
 
     else if ([tagName isEqualToString:@"getMemberDetails"])
     {
-        NSError* error;
+        NSError * error;
         [spinner stopAnimating];
         [spinner setHidden:YES];
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+
+        NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
         [dict setDictionary:[NSJSONSerialization
                              JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                              options:kNilOptions
@@ -1244,12 +1296,14 @@
             emailEntry = YES;
             int loc = 0;
 
-            for (int i=0;i<[arrRequestPersons count]; i++) {
-                if ([[[arrRequestPersons objectAtIndex:i]valueForKey:@"MemberId"]isEqualToString:[dict valueForKey:@"MemberId"]]) {
-                    loc=1;
+            for (int i = 0; i < [arrRequestPersons count]; i++)
+            {
+                if ([[[arrRequestPersons objectAtIndex:i]valueForKey:@"MemberId"]isEqualToString:[dict valueForKey:@"MemberId"]])
+                {
+                    loc = 1;
                 }
             }
-            
+
             if (loc == 0) {
                 NSString * PhotoUrl = [dict valueForKey:@"PhotoUrl"];
                 [dict setObject:PhotoUrl forKey:@"Photo"];
@@ -1271,17 +1325,17 @@
 
             isEmailEntry = NO;
             int loc = 0;
-            
+
             for (int i = 0; i < [arrRequestPersons count]; i++)
             {
                 if ([[[arrRequestPersons objectAtIndex:i]valueForKey:@"MemberId"]isEqualToString:[dict valueForKey:@"MemberId"]]) {
                     loc=1;  
                 }
             }
-            
-            if (loc==0)
+
+            if (loc == 0)
             {
-                NSString*PhotoUrl=[dict valueForKey:@"PhotoUrl"];
+                NSString * PhotoUrl = [dict valueForKey:@"PhotoUrl"];
                 [dict setObject:PhotoUrl forKey:@"Photo"];
                 [arrRequestPersons addObject:dict];
             }
@@ -1295,13 +1349,12 @@
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    
     /* if (alertView.tag == 6) {
         if (buttonIndex==0) {
             [self connect_to_facebook];
         }
     } */
-    
+
     if (alertView.tag == 4 && buttonIndex == 0)
     {
         //isEmailEntry = NO;
@@ -1346,7 +1399,7 @@
     UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
     UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake (10, 0, 200, 30)];
     title.textColor = kNoochGrayDark;
-    
+
     if (section == 0)
     {
         if (self.location)
@@ -1357,7 +1410,8 @@
             title.text = @"Recent Contacts";
         else
             title.text = @"Send To Email Address";
-    } else {
+    }
+    else {
         title.text = @"";
     }
     [headerView addSubview:title];
@@ -1368,25 +1422,28 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (searching) {
+    if (searching)
+    {
         return [arrSearchedRecords count];
     }
-    else if ([[assist shared] isRequestMultiple]) {
+    else if ([[assist shared] isRequestMultiple])
+    {
         return [arrRequestPersons count];
     }
-    else if (emailEntry) {
+    else if (emailEntry)
+    {
         return 1;
     }
-    else {
+    else
+    {
         return [self.recents count];
     }
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    static NSString * CellIdentifier = @"Cell";
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
     if (cell == nil)
     {
@@ -1396,7 +1453,8 @@
         cell.indentationLevel = 1;
     }
 
-    for (UIView *subview in cell.contentView.subviews) {
+    for (UIView *subview in cell.contentView.subviews)
+    {
         [subview removeFromSuperview];
     }
 
@@ -1410,7 +1468,7 @@
 
     [cell.contentView addSubview:pic];
     [cell.contentView addSubview:npic];
-    
+
     if (self.location)
     {
         [cell.textLabel setTextColor:kNoochGrayLight];
@@ -1424,15 +1482,15 @@
         {
             temp = [arrRequestPersons objectAtIndex:indexPath.row];
             arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
+
             int loc = -1;
             
-            for (int i = 0; i<[arrRecipientsForRequest count]; i++)
+            for (int i = 0; i < [arrRecipientsForRequest count]; i++)
             {
-                NSDictionary *dictionary = [arrRecipientsForRequest objectAtIndex:i];
+                NSDictionary * dictionary = [arrRecipientsForRequest objectAtIndex:i];
                 if ([[dictionary valueForKey:@"MemberId"]isEqualToString:temp[@"MemberId"]]) {
                     loc = 1;
                 }
-                
             }
             if (loc == 1) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -1442,24 +1500,23 @@
             }
             
         }
-        else {
+        else
+        {
             temp = [self.recents objectAtIndex:indexPath.row];
-            //NSLog(@"%@",temp);
         }
         
         UIImageView * pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
-        pic.clipsToBounds = YES;
-        [cell.contentView addSubview:pic];
         [pic setFrame:CGRectMake(16, 6, 50, 50)];
         pic.layer.cornerRadius = 25;
         pic.clipsToBounds = YES;
         [pic sd_setImageWithURL:[NSURL URLWithString:temp[@"Photo"]] placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
-        
+        [cell.contentView addSubview:pic];
+
         NSString * name = [NSString stringWithFormat:@"   %@ %@",[[temp objectForKey:@"FirstName"] capitalizedString],[[temp objectForKey:@"LastName"] capitalizedString]];
         [cell.textLabel setText:name];
-        
+
         NSString * miles;
-        
+
         if ([[temp objectForKey:@"Miles"] intValue] < 1) {
             miles = [NSString stringWithFormat:@"    %.0f feet",([[temp objectForKey:@"Miles"] floatValue] * 5280)];
         }
@@ -1468,7 +1525,7 @@
         }
         [cell.detailTextLabel setText:miles];
         
-        for (NSString *key in [assist shared].assos.allKeys)
+        for (NSString * key in [assist shared].assos.allKeys)
         {
             NSDictionary * person = [assist shared].assos[key];
             if ([person[@"MemberId"] isEqualToString:temp[@"MemberId"]])
@@ -1489,12 +1546,12 @@
     }
     else if (searching)
     {
-        //Nooch User
+        // Nooch User
         npic.hidden = NO;
         [npic setFrame:CGRectMake(278, 19, 23, 27)];
         [npic setImage:[UIImage imageNamed:@"n_icon_46x54.png"]];
         [npic removeFromSuperview];
-        
+
         NSDictionary *info = [arrSearchedRecords objectAtIndex:indexPath.row];
         [pic sd_setImageWithURL:[NSURL URLWithString:info[@"Photo"]]
             placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
@@ -1503,9 +1560,21 @@
         cell.indentationWidth = 61;
         [pic setFrame:CGRectMake(16, 6, 50, 50)];
         pic.layer.cornerRadius = 25;
-        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",info[@"FirstName"],info[@"LastName"]];
-        [cell.textLabel setStyleClass:@"select_recipient_name"];
+        if (info[@"FirstName"] != NULL && info[@"LastName"] != NULL) // If address book record has a First & Last Name
+        {
+            cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",info[@"FirstName"],info[@"LastName"]];
+        }
+        else if (info[@"FirstName"] != NULL && info[@"LastName"] == NULL) // If address book record has only a First Name
+        {
+            cell.textLabel.text = [NSString stringWithFormat:@"%@",info[@"FirstName"]];
+        }
+        else if (info[@"FirstName"] == NULL && info[@"LastName"] != NULL) // If address book record has only a Last Name
+        {
+            cell.textLabel.text = [NSString stringWithFormat:@"%@",info[@"LastName"]];
+        }
         
+        [cell.textLabel setStyleClass:@"select_recipient_name"];
+
         /*if (info[@"facebookId"])
         {
             UILabel * fb = [UILabel new];
@@ -1522,17 +1591,19 @@
         {
             if ([[assist shared] assos][info[@"UserName"]][@"addressbook"])
             {
-                UIImageView *ab = [UIImageView new];
+                UIImageView * ab = [UIImageView new];
                 [ab setStyleClass:@"addressbook-icons"];
-                if (shouldAnimate) {
+                if (shouldAnimate)
+                {
                     [ab setStyleClass:@"animate_bubble"];
                 }
                 [cell.contentView addSubview:ab];
             }
         }
-        if ([[assist shared] isRequestMultiple]) {
+        if ([[assist shared] isRequestMultiple])
+        {
             [npic removeFromSuperview];
-            arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
+            arrRecipientsForRequest = [[[assist shared] getArray] mutableCopy];
             if ([arrRecipientsForRequest containsObject:info]) {
                 cell.accessoryType=UITableViewCellAccessoryCheckmark;
             }
@@ -1563,13 +1634,13 @@
         [npic removeFromSuperview];
         arrRecipientsForRequest=[[[assist shared] getArray] mutableCopy];
         //NSLog(@"arrRecipientsForRequest: %@",arrRecipientsForRequest);
-        
+
         int loc =- 1;
-        
+
         for (int i = 0; i < [arrRecipientsForRequest count]; i++)
         {
-            NSDictionary *dictionary=[arrRecipientsForRequest objectAtIndex:i];
-            if ([[dictionary valueForKey:@"MemberId"]caseInsensitiveCompare:info[@"MemberId"]]==NSOrderedSame) {
+            NSDictionary * dictionary = [arrRecipientsForRequest objectAtIndex:i];
+            if ([[dictionary valueForKey:@"MemberId"]caseInsensitiveCompare:info[@"MemberId"]] == NSOrderedSame) {
                 loc = 1;
             }
         }
@@ -1616,14 +1687,16 @@
         
         if ([[[assist shared] assos] objectForKey:info[@"UserName"]])
         {
-            if ([[assist shared] assos][info[@"UserName"]][@"addressbook"]) {
+            if ([[assist shared] assos][info[@"UserName"]][@"addressbook"])
+            {
                 UIImageView *ab = [UIImageView new];
                 [ab setStyleClass:@"addressbook-icons"];
                 [ab setStyleClass:@"animate_bubble"];
                 [cell.contentView addSubview:ab];
             }
         }
-        if (![[assist shared] isRequestMultiple]) {
+        if (![[assist shared] isRequestMultiple])
+        {
             [pic setStyleClass:@"animate_bubble"];
         }
     }
@@ -1677,10 +1750,11 @@
         if (searching) {
             receiver = [arrSearchedRecords objectAtIndex:indexPath.row];
         }
-        
+
         arrRecipientsForRequest = [[[assist shared] getArray] mutableCopy];
         int loc = -1;
-        for (int i = 0; i < [arrRecipientsForRequest count]; i++) {
+        for (int i = 0; i < [arrRecipientsForRequest count]; i++)
+        {
             NSDictionary * dictionary = [arrRecipientsForRequest objectAtIndex:i];
             if ([[dictionary valueForKey:@"UserName"]isEqualToString:receiver[@"UserName"]]) {
                 loc = 1;
@@ -1695,7 +1769,8 @@
         }
         else
         {
-            if ([[[assist shared]getArray] count] == 10) {
+            if ([[[assist shared]getArray] count] == 10)
+            {
                 UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Too Many Recipients"
                                                                message:@"\xE2\x98\x9D\nYou can't request more than 10 Users!"
                                                               delegate:Nil
@@ -1745,28 +1820,45 @@
             }
             else  // for iOS 7 and prior
             {
-                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Please Check That Email" message:@"\xF0\x9F\x93\xA7\nThat doesn't look like a valid email address. Please check it and try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Please Check That Email"
+                                                              message:@"\xF0\x9F\x93\xA7\nThat doesn't look like a valid email address. Please check it and try again."
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles: nil];
                 [av show];
             }
         }
         return;
     }
-    
+
     if (searching)
     {
         NSDictionary * receiver =  [arrSearchedRecords objectAtIndex:indexPath.row];
-        
+
         if ([[assist shared] assos][receiver[@"UserName"]][@"addressbook"])
         {
             emailphoneBook = receiver[@"UserName"];
+            if (receiver[@"FirstName"]) {
+                firstNamePhoneBook = receiver[@"FirstName"];
+            } else {
+                firstNamePhoneBook = @"";
+            }
+            if (receiver[@"LastName"]) {
+                lastNamePhoneBook = receiver[@"LastName"];
+            } else {
+                lastNamePhoneBook = @"";
+            }
+            
             isphoneBook = YES;
 
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
             if ([receiver[@"emailCount"]intValue] > 1)
             {
-                UIActionSheet *actionSheetObject = [[UIActionSheet alloc] init];
-                for (int j = 0; j < [receiver[@"emailCount"]intValue]; j++) {
+                UIActionSheet * actionSheetObject = [[UIActionSheet alloc] init];
+
+                for (int j = 0; j < [receiver[@"emailCount"]intValue]; j++)
+                {
                     [actionSheetObject addButtonWithTitle:[receiver[[NSString stringWithFormat:@"emailAdday%d",j]] lowercaseString]];
                 }
 
@@ -1779,12 +1871,10 @@
             else
             {
                 [self getMemberIdByUsingUserNameFromPhoneBook];
-            /*
-                serve * emailCheck = [serve new];
+            /*  serve * emailCheck = [serve new];
                 emailCheck.Delegate = self;
                 emailCheck.tagName = @"emailCheck";
-                [emailCheck getMemIdFromuUsername:[receiver[@"UserName"] lowercaseString]];
-             */
+                [emailCheck getMemIdFromuUsername:[receiver[@"UserName"] lowercaseString]]; */
             }
             
             return;
@@ -1798,7 +1888,8 @@
         [search setShowsCancelButton:NO];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-        if (navIsUp == YES) {
+        if (navIsUp == YES)
+        {
             navIsUp = NO;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self lowerNavBar];
@@ -1810,11 +1901,11 @@
         isFromHome = NO;
         HowMuch * how_much = [[HowMuch alloc] initWithReceiver:receiver];
         [self.navigationController pushViewController:how_much animated:YES];
-        //[self.contacts reloadData];
     }
     else
     {
-        if (navIsUp == YES) {
+        if (navIsUp == YES)
+        {
             navIsUp = NO;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self lowerNavBar];
@@ -1823,13 +1914,16 @@
         [self.navigationItem setLeftBarButtonItem:nil];
         isFromHome = NO;
         NSDictionary * receiver = [self.recents objectAtIndex:indexPath.row];
+
         HowMuch * how_much = [[HowMuch alloc] initWithReceiver:receiver];
         [self.navigationController pushViewController:how_much animated:YES];
+
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
 
-- (void)didReceiveMemoryWarning  {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     [imageCache clearMemory];
