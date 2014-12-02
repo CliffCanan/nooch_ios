@@ -514,7 +514,8 @@ UIImageView *picture;
     [self.list setDataSource:self];
     [self.list setRowHeight:rowHeight];
 
-    if ([[user objectForKey:@"Status"] isEqualToString:@"Active"] &&
+    if ([[UIScreen mainScreen] bounds].size.height > 500 &&
+        [[user objectForKey:@"Status"] isEqualToString:@"Active"] &&
         [[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
     {
         [self.list setScrollEnabled:NO];

@@ -111,10 +111,12 @@
     {
         self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 25, 300, 18)];
     }
-    else {
+    else
+    {
         self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 42, 300, 18)];
     }
-    if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"]) {
+    if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"])
+    {
         [self.prompt setText:@"transfer"];
         [self.prompt setStyleId:@"Transferpin_instructiontext_send"];
     }
@@ -129,17 +131,25 @@
     [self.prompt setTextAlignment:NSTextAlignmentCenter];
     [self.view addSubview:self.prompt];
 
+    UILabel * total = [[UILabel alloc] initWithFrame:CGRectMake(10, 200, 290, 30)];
+    [total setBackgroundColor:[UIColor clearColor]];
+    [total setTextColor:[UIColor whiteColor]]; [total setTextAlignment:NSTextAlignmentRight];
+    [total setText:[NSString stringWithFormat:@"$ %.02f",self.amnt]];
+
     UIView * back = [UIView new];
     [back setStyleClass:@"raised_view"];
     [back setStyleClass:@"pin_recipientbox"];
     [self.view addSubview:back];
+
     UIView * bar = [UIView new];
     [bar setStyleClass:@"pin_recipientname_bar"];
 
-    if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"]) {
+    if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"])
+    {
         [bar setStyleId:@"pin_recipientname_send"];
     }
-    else if ([self.type isEqualToString:@"request"]) {
+    else if ([self.type isEqualToString:@"request"])
+    {
         [bar setStyleId:@"pin_recipientname_request"];
     }
 
@@ -186,16 +196,30 @@
 
     [to_label setStyleClass:@"pin_recipientname_text"];
 
-    UILabel *memo_label = [UILabel new];
+    UIImageView * user_pic = [UIImageView new];
+
+    UILabel * memo_label = [UILabel new];
     [memo_label setStyleClass:@"pin_memotext"];
-    if ([[self.receiver objectForKey:@"memo"] length] > 0) {
+    if ([[self.receiver objectForKey:@"memo"] length] > 0)
+    {
         [memo_label setText:[self.receiver objectForKey:@"memo"]];
     }
-    else if ([[self.receiver objectForKey:@"Memo"] length] > 0) {
+    else if ([[self.receiver objectForKey:@"Memo"] length] > 0)
+    {
         [memo_label setText:[self.receiver objectForKey:@"Memo"]];
     }
-    else {
+    else
+    {
         [memo_label setText:@"No memo attached"];
+    }
+
+    if (memo_label.text.length > 34)
+    {
+        [memo_label setStyleClass:@"memo_long"];
+    }
+    if (memo_label.text.length > 40)
+    {
+        [memo_label setStyleClass:@"memo_superLong"];
     }
 
     if ([[UIScreen mainScreen] bounds].size.height == 480)
@@ -207,27 +231,46 @@
         [back setStyleClass:@"raised_view"];
         [back setStyleClass:@"pin_recipientbox_4"];
         [bar setStyleClass:@"pin_recipientname_bar_4"];
+        [user_pic setFrame:CGRectMake(11, 137, 58, 58)];
+
+        [total setStyleClass:@"pin_amountfield_4"];
+
+        self.first_num = [[UIView alloc] initWithFrame:CGRectMake(46,50,28,28)];
+        self.second_num = [[UIView alloc] initWithFrame:CGRectMake(110,50,28,28)];
+        self.third_num = [[UIView alloc] initWithFrame:CGRectMake(175,50,28,28)];
+        self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(239,50,28,28)];
+        self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 14;
     }
+    else
+    {
+        [user_pic setFrame:CGRectMake(11, 205, 58, 58)];
+
+        [total setStyleClass:@"pin_amountfield"];
+
+        self.first_num = [[UIView alloc] initWithFrame:CGRectMake(44,70,32,32)];
+        self.second_num = [[UIView alloc] initWithFrame:CGRectMake(107,70,32,32)];
+        self.third_num = [[UIView alloc] initWithFrame:CGRectMake(170,70,32,32)];
+        self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(233,70,32,32)];
+        self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 16;
+    }
+
     [self.view addSubview:to_label];
     [self.view addSubview:memo_label];
-
-    UIImageView *user_pic = [UIImageView new];
-    if ([[UIScreen mainScreen] bounds].size.height == 480) {
-        [user_pic setFrame:CGRectMake(11, 137, 58, 58)];
-    }
-    else {
-        [user_pic setFrame:CGRectMake(11, 205, 58, 58)];
-    }
-    if ([self.receiver valueForKey:@"nonuser"]) {
+    
+    if ([self.receiver valueForKey:@"nonuser"])
+    {
         [user_pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
     }
-    else {
+    else
+    {
         [user_pic setHidden:NO];
-        if (self.receiver[@"Photo"]) {
+        if (self.receiver[@"Photo"])
+        {
             [user_pic sd_setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
                      placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         }
-        else {
+        else
+        {
             [user_pic sd_setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
                      placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         }
@@ -238,31 +281,6 @@
     user_pic.layer.cornerRadius = 29;
     [self.view addSubview:user_pic];
 
-    UILabel *total = [[UILabel alloc] initWithFrame:CGRectMake(10, 200, 290, 30)];
-    [total setBackgroundColor:[UIColor clearColor]];
-    [total setTextColor:[UIColor whiteColor]]; [total setTextAlignment:NSTextAlignmentRight];
-    [total setText:[NSString stringWithFormat:@"$ %.02f",self.amnt]];
-
-
-    if ([[UIScreen mainScreen] bounds].size.height == 480)
-    {
-        [total setStyleClass:@"pin_amountfield_4"];
-        self.first_num = [[UIView alloc] initWithFrame:CGRectMake(46,50,28,28)];
-        self.second_num = [[UIView alloc] initWithFrame:CGRectMake(110,50,28,28)];
-        self.third_num = [[UIView alloc] initWithFrame:CGRectMake(175,50,28,28)];
-        self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(239,50,28,28)];
-        self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 14;
-    }
-    else
-    {
-        [total setStyleClass:@"pin_amountfield"];
-        self.first_num = [[UIView alloc] initWithFrame:CGRectMake(44,70,32,32)];
-        self.second_num = [[UIView alloc] initWithFrame:CGRectMake(107,70,32,32)];
-        self.third_num = [[UIView alloc] initWithFrame:CGRectMake(170,70,32,32)];
-        self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(233,70,32,32)];
-        self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 16;
-    }
-    
     self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor clearColor];
     self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
 
@@ -272,7 +290,7 @@
     else {
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochBlue.CGColor;    
     }
-    
+
     [self.view addSubview:total];
     [self.view addSubview:self.first_num];
     [self.view addSubview:self.second_num];
@@ -281,7 +299,7 @@
     
     if ([[assist shared] getTranferImage])
     {
-        UIImageView *trans_image = [[UIImageView alloc] initWithFrame:CGRectMake(252, 205, 56, 56)];
+        UIImageView * trans_image = [[UIImageView alloc] initWithFrame:CGRectMake(252, 205, 56, 56)];
         [memo_label setStyleClass:@"pin_memotext_wPic"];
         [to_label setStyleClass:@"pin_recipientname_text_wPic"];
 
@@ -1380,8 +1398,8 @@
         [self.first_num setBackgroundColor:[UIColor clearColor]];
         self.pin.text=@"";
 
-        UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:@"\xE2\x9A\xA0"
-                                                              message:@"To protect your money, your Nooch account will be suspended for 24 hours if you enter another incorrect PIN."
+        UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:@""
+                                                              message:@"\xE2\x9A\xA0\n\nTo protect your account, your Nooch account will be suspended for 24 hours if you enter another incorrect PIN."
                                                              delegate:self
                                                     cancelButtonTitle:@"Ok"
                                                     otherButtonTitles:nil];
