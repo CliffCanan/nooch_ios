@@ -331,11 +331,12 @@
     
     if ([[UIScreen mainScreen] bounds].size.height == 480)
     {
-        UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
+        UIScrollView * scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
                                                                               [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
         [scroll setDelegate:self];
-        [scroll setContentSize:CGSizeMake(320, 545)];
-        for (UIView *subview in self.view.subviews) {
+        [scroll setContentSize:CGSizeMake(320, 562)];
+        for (UIView *subview in self.view.subviews)
+        {
             [subview removeFromSuperview];
             [scroll addSubview:subview];
         }

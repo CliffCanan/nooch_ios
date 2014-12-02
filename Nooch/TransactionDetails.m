@@ -428,10 +428,10 @@
     mapView_.layer.borderWidth = 1;
     
     if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        mainView.frame = CGRectMake(10, -500, 300, 443);
+        mainView.frame = CGRectMake(9, -500, 302, 443);
     }
     else {
-        mainView.frame = CGRectMake(10, -540, 300, self.view.frame.size.height - 34);
+        mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 34);
     }
     mainView.backgroundColor = [UIColor whiteColor];
     
@@ -543,12 +543,21 @@
     [UIView animateWithDuration:0.15
                      animations:^{
                          [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                         mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 34);
+                         if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                             mainView.frame = CGRectMake(9, 70, 302, 449);
+                         } else {
+                             mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 34);
+                         }
                      } completion:^(BOOL finished) {
                          [UIView animateWithDuration:.38
                                           animations:^{
                                               [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-                                              mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 34);
+                                              if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                                  mainView.frame = CGRectMake(9, -500, 302, 443);
+                                              }
+                                              else {
+                                                  mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 34);
+                                              }
                                               overlay.alpha = 0.1;
                                           } completion:^(BOOL finished) {
                                               [overlay removeFromSuperview];

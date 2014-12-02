@@ -1599,9 +1599,9 @@ table-view#select_recipientwithoutSeperator {
 }
 /**  The text of the memo if one was attached.  **/ 
 .pin_memotext {
-    left				: 69px;
+    left				: 68px;
     top					: 235px;
-    width				: 244px;
+    width				: 238px;
     height				: 33px;
     font-family			: "Roboto";
     font-size			: 15px;
@@ -1615,7 +1615,7 @@ table-view#select_recipientwithoutSeperator {
     height              : 30px;
 }
 .pin_memotext_wPic {
-    left				: 69px;
+    left				: 68px;
     top					: 235px;
     width				: 181px;
     height				: 33px;
@@ -1627,10 +1627,20 @@ table-view#select_recipientwithoutSeperator {
     text-align          : center;
 }
 .pin_memotext_wPic_4 {
-    left				: 69px;
+    left				: 68px;
     top					: 166px;
     width				: 193px;
     height				: 32px;
+}
+.memo_long {
+    font-size   : 14px;
+    left        : 67px;
+    width       : 248px;
+}
+.memo_superLong {
+    font-size   : 13px;
+    left        : 65px;
+    width       : 251px;
 }
 
 /*******************************************
