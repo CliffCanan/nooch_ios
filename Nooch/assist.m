@@ -437,14 +437,14 @@ static assist * _sharedInstance = nil;
             timer=nil;
         }
     }
-    else if([tagName isEqualToString:@"sets"])
+    else if ([tagName isEqualToString:@"sets"])
     {
         NSError *error;
         NSMutableDictionary *setsResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         
         [usr setObject:setsResult forKey:@"sets"];
     }
-    else if([tagName isEqualToString:@"info"])
+    else if ([tagName isEqualToString:@"info"])
     {
         NSError *error;
         
@@ -514,7 +514,8 @@ static assist * _sharedInstance = nil;
                 [self fetchPic];
             }
         }
-        if (![[loginResult objectForKey:@"MemberId"] isKindOfClass:[NSNull class]] && [loginResult objectForKey:@"MemberId"] != NULL)
+        if (![[loginResult objectForKey:@"MemberId"] isKindOfClass:[NSNull class]] &&
+              [loginResult objectForKey:@"MemberId"] != NULL)
         {
             if (![[loginResult objectForKey:@"MemberId"] isEqualToString:[usr objectForKey:@"MemberId"]])
             {

@@ -17,7 +17,6 @@
 #import "Register.h"
 #import "ECSlidingViewController.h"
 #import "UIImage+Resize.h"
-#import "UAPush.h"
 UIImageView *picture;
 @interface ProfileInfo ()
 @property(nonatomic) UIImagePickerController *picker;
@@ -71,7 +70,6 @@ UIImageView *picture;
     {
         [self.member_since_back setStyleId:@"profileTopSectionBg_susp"];
     }
-    [UAPush shared].userPushNotificationsEnabled = YES;
 }
 
 -(void) viewWillDisappear:(BOOL)animated

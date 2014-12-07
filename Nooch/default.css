@@ -2343,23 +2343,23 @@ table-view#emptyTable {
 /**  Text ("You Paid/Requested/Donated...")  **/
 .history_cell_transTypeLabel {
     left				: 71px;
-    top					: 8px;
-    width				: 66px;
+    top					: 7px;
+    width				: 72px;
     height				: 11px;
-    font-size			: 9px;
+    font-size			: 8px;
     font-weight			: medium;
     background-color    : rgba(232,233,234,.96);
     color               : white;
     border-radius       : 3px;
     text-align          : center;
-    opacity             : .85;
+    opacity             : .86;
 }
 .history_cell_transTypeLabel_wider {
-    width           : 70px;
+    width           : 74px;
 }
 .history_cell_transTypeLabel_evenWider {
     font-size       : 8px;
-    width           : 95px;
+    width           : 100px;
 }
 
 /**  Text in top row if table is empty  **/
@@ -2389,10 +2389,10 @@ table-view#emptyTable {
 
 /**  Date of the transfer ("2 days ago")  **/
 .history_datetext {
-    left                : 157px;
+    left                : 166px;
     top					: 7px;
     width				: 150px;
-    height				: 12px;
+    height				: 11px;
     font-family			: "Roboto";
     font-size			: 10px;
     font-weight         : light;
@@ -2400,7 +2400,7 @@ table-view#emptyTable {
     color 				: #58595b;
 }
 .history_datetext_wide {
-    left: 183;
+    left: 191;
 }
 
 /**  Amount of the Transfer on the right side of the row  **/

@@ -19,6 +19,7 @@
 #import "webView.h"
 #import "tour.h"
 #import "Appirater.h"
+#import "UAPush.h"
 @interface LeftMenu ()
 @property(nonatomic,strong) UITableView *menu;
 @property(nonatomic) NSIndexPath *selected;
@@ -157,7 +158,6 @@
     if ([[user objectForKey:@"Photo"] length] > 0 && [user objectForKey:@"Photo"] != nil)
     {
         [user_pic setStyleId:@"lside_userpic"];
-        
         [user_pic sd_setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
         placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
         user_pic.layer.cornerRadius = 30;
@@ -195,6 +195,8 @@
         [self.view addSubview:self.glyph_noBank];
     }
     [self.menu reloadData];
+
+    [UAPush shared].userPushNotificationsEnabled = YES;
 }
 
 -(void) go_profile

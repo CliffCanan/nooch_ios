@@ -644,7 +644,9 @@ return customView;
     [self.view bringSubviewToFront:exportHistory];
     
     [self.list setStyleId:@"history"];*/
-    
+
+    listType = @"ALL";
+
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     if ([segmentedControl selectedSegmentIndex] == 0)
     {
@@ -687,7 +689,7 @@ return customView;
         [histShowArrayPending removeAllObjects];
         self.completed_selected = YES;
         countRows = 0;
-        [self loadHist:@"ALL" index:1 len:28 subType:subTypestr];
+        [self loadHist:listType index:1 len:28 subType:subTypestr];
     }
     else
     {
@@ -722,8 +724,8 @@ return customView;
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
         countRows = 0;
-        index=1;
-        [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
+        index = 1;
+        [self loadHist:listType index:1 len:20 subType:subTypestr];
     }
 }
 
@@ -922,7 +924,7 @@ return customView;
                     
                     UILabel *glyphDate = [UILabel new];
                     [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                    [glyphDate setFrame:CGRectMake(147, 8, 14, 10)];
+                    [glyphDate setFrame:CGRectMake(155, 7, 14, 11)];
                     [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                     [glyphDate setTextColor:kNoochGrayLight];
                     [cell.contentView addSubview:glyphDate];
@@ -1035,7 +1037,7 @@ return customView;
                         [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_evenWider"];
                         [transferTypeLabel setBackgroundColor:Rgb2UIColor(108, 109, 111, 1)];
                         [date setStyleClass:@"history_datetext_wide"];
-                        [glyphDate setFrame:CGRectMake(173, 9, 14, 10)];
+                        [glyphDate setFrame:CGRectMake(180, 7, 14, 11)];
                         [indicator setStyleClass:@"history_sidecolor_neutral"];
                         [amount setTextColor:kNoochGrayDark];
                         [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
@@ -1200,9 +1202,6 @@ return customView;
                 [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]||
                 [[dictRecord valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"] )
             {
-
-                UIView * indicator = [UIView new];
-                
                 UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 8, 10, 11)];
                 [statusIndicator setBackgroundColor:[UIColor clearColor]];
                 [statusIndicator setTextAlignment:NSTextAlignmentCenter];
@@ -1213,6 +1212,7 @@ return customView;
                 [amount setTextAlignment:NSTextAlignmentRight];
                 [amount setFont:[UIFont fontWithName:@"Roboto-Medium" size:18]];
                 [amount setStyleClass:@"history_transferamount"];
+                [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]]];
                 
                 UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 9, 50, 50)];
                 pic.layer.cornerRadius = 25;
@@ -1221,8 +1221,8 @@ return customView;
                 
 				UILabel *transferTypeLabel = [UILabel new];
                 [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
-                transferTypeLabel.layer.cornerRadius = 3;
-                transferTypeLabel .clipsToBounds = YES;
+                transferTypeLabel.layer.cornerRadius = 4;
+                transferTypeLabel.clipsToBounds = YES;
                 
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabel"];
@@ -1233,7 +1233,7 @@ return customView;
 
                 UILabel *glyphDate = [UILabel new];
                 [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                [glyphDate setFrame:CGRectMake(147, 8, 14, 10)];
+                [glyphDate setFrame:CGRectMake(155, 7, 14, 11)];
                 [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                 [glyphDate setTextColor:kNoochGrayLight];
                 [cell.contentView addSubview:glyphDate];
@@ -1257,8 +1257,6 @@ return customView;
                     {
                         // Sent Transfer
                         [amount setStyleClass:@"history_transferamount_neg"];
-                        [indicator setStyleClass:@"history_sidecolor_neg"];
-                        [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                         [transferTypeLabel setText:@"Transfer to"];
 						[transferTypeLabel setBackgroundColor:kNoochRed];
                         [name setText:[NSString stringWithFormat:@"%@",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
@@ -1267,25 +1265,18 @@ return customView;
                     }
                     else
                     {
-                        if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"])
-                        {
-                            // Received Transfer
-                            [amount setStyleClass:@"history_transferamount_pos"];
-                            [indicator setStyleClass:@"history_sidecolor_pos"];
-                            [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                            [transferTypeLabel setText:@"Transfer from"];
-                            [transferTypeLabel setBackgroundColor:kNoochGreen];
-                            [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
-                            [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                                placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
-                        }
+                        // Received Transfer
+                        [amount setStyleClass:@"history_transferamount_pos"];
+                        [transferTypeLabel setText:@"Transfer from"];
+                        [transferTypeLabel setBackgroundColor:kNoochGreen];
+                        [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
+                        [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                            placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                     }
                 }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                 {
                     [amount setTextColor:kNoochGrayDark];
-                    [indicator setStyleClass:@"history_sidecolor_neutral"];
-                    [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
 
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"RecepientId"]])
                     {
@@ -1320,13 +1311,9 @@ return customView;
                     //ADDED BY CLIFF
                     if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
                         [amount setTextColor:kNoochGrayDark];
-                        [indicator setStyleClass:@"history_sidecolor_neutral"];
-                        [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                     }
                     else {
                         [amount setStyleClass:@"history_transferamount_neg"];
-                        [indicator setStyleClass:@"history_sidecolor_neg"];
-                        [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                     }
                     [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
                     [transferTypeLabel setText:@"Invite sent to"];
@@ -1344,10 +1331,9 @@ return customView;
                     }
                     
                     [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_evenWider"];
-                    [transferTypeLabel setBackgroundColor:Rgb2UIColor(108, 109, 111, 1)];
+                    [transferTypeLabel setBackgroundColor:Rgb2UIColor(193, 32, 39, .98)];
                     [date setStyleClass:@"history_datetext_wide"];
-                    [glyphDate setFrame:CGRectMake(173, 9, 14, 10)];
-                    [indicator setStyleClass:@"history_sidecolor_neutral"];
+                    [glyphDate setFrame:CGRectMake(180, 7, 14, 11)];
                     [amount setTextColor:kNoochGrayDark];
                     [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
                     [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
@@ -1618,7 +1604,7 @@ return customView;
                     
                     UILabel *glyphDate = [UILabel new];
                     [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                    [glyphDate setFrame:CGRectMake(147, 8, 14, 10)];
+                    [glyphDate setFrame:CGRectMake(155, 7, 14, 11)];
                     [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                     [glyphDate setTextColor:kNoochGrayLight];
                     [cell.contentView addSubview:glyphDate];
@@ -1658,7 +1644,7 @@ return customView;
                         [statusIndicator setTextColor:kNoochRed];
                         [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_evenWider"];
                         [date setStyleClass:@"history_datetext_wide"];
-                        [glyphDate setFrame:CGRectMake(173, 9, 14, 10)];
+                        [glyphDate setFrame:CGRectMake(180, 7, 14, 11)];
                         [transferTypeLabel setBackgroundColor:kNoochRed];
                     }
 
@@ -1816,7 +1802,7 @@ return customView;
 
                 UILabel *glyphDate = [UILabel new];
                 [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                [glyphDate setFrame:CGRectMake(147, 8, 14, 10)];
+                [glyphDate setFrame:CGRectMake(155, 7, 14, 11)];
                 [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                 [glyphDate setTextColor:kNoochGrayLight];
                 [cell.contentView addSubview:glyphDate];
@@ -1904,7 +1890,7 @@ return customView;
                     [statusIndicator setTextColor:kNoochRed];
                     [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_evenWider"];
                     [date setStyleClass:@"history_datetext_wide"];
-                    [glyphDate setFrame:CGRectMake(173, 9, 14, 10)];
+                    [glyphDate setFrame:CGRectMake(180, 7, 14, 11)];
                     [transferTypeLabel setBackgroundColor:kNoochRed];
                     [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
                     [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
@@ -2056,7 +2042,7 @@ return customView;
     [dateFormatter setPMSymbol:@"PM"];
     dateFormatter.dateFormat = @"M/dd/yyyy hh:mm:ss a";
     
-    NSDate   *aDate = [dateFormatter dateFromString:aStr];
+    NSDate *aDate = [dateFormatter dateFromString:aStr];
     return aDate;
 }
 
