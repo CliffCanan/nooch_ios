@@ -105,7 +105,7 @@
         histTempPending=[[NSMutableArray alloc]init];
     }
     
-    NSArray *seg_items = @[@"Completed",@"Pending"];
+    NSArray * seg_items = @[@"Completed",@"Pending"];
     completed_pending = [[UISegmentedControl alloc] initWithItems:seg_items];
     [completed_pending setStyleId:@"history_segcontrol"];
     [completed_pending addTarget:self action:@selector(completed_or_pending:) forControlEvents:UIControlEventValueChanged];
@@ -764,8 +764,7 @@ return customView;
     return 0;
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
-  }
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{}
 
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1549,7 +1548,7 @@ return customView;
         }
     }
                 
-      else if (self.completed_selected == NO)
+    else if (self.completed_selected == NO)
     {
         if (isLocalSearch)
         {
@@ -2493,16 +2492,16 @@ return customView;
                     [histShowArrayCompleted addObject:dict];
                 }
 
-                // For the Pending Notification in the Completed/Pending Segmented Control on History Screen
                 if (  ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] && ![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"]) ||
                      (([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
                        [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
                 {
                     [histShowArrayPending addObject:dict];
 
-                    if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
-                        counter++;
-                    }
+                    // For the Pending Notification in the Completed/Pending Segmented Control on History Screen
+//                    if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
+//                        counter++;
+//                    }
                 }
                 // For the Red Pending Notification Bubble in the left menu  (different than "counter" above,
                 // this one doesn't include Invites, or Requests this user Sent)
@@ -2525,7 +2524,7 @@ return customView;
             [defaults synchronize];
             
             // NSLog(@"The Pending counter is: %d",counter);
-            [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%d)",counter]forSegmentAtIndex:1];
+            // [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%d)",counter]forSegmentAtIndex:1];
 
         }
         else if ([histArray count] == 0 && ![subTypestr isEqualToString:@"Pending"]) {
@@ -2548,7 +2547,7 @@ return customView;
     {
         //ServerDate
         NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        ServerDate=[self dateFromString:[dict valueForKey:@"Result"] ];
+        ServerDate = [self dateFromString:[dict valueForKey:@"Result"] ];
         [self.list removeFromSuperview];
         self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
         [self.list setStyleId:@"history"];
@@ -2568,6 +2567,44 @@ return customView;
              countRows = [histShowArrayCompleted count];
         }
         [self.view bringSubviewToFront:exportHistory];
+        
+        serve * getPendingCount = [serve new];
+        [getPendingCount setDelegate:self];
+        [getPendingCount setTagName:@"getPendingTransfersCount"];
+        [getPendingCount getPendingTransfersCount];
+    }
+
+    else if ([tagName isEqualToString:@"getPendingTransfersCount"])
+    {
+        NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSLog(@"getPendingTransfersCount is: %@",dict);
+
+        // TOTAL PENDING PAYMENTS
+        if (![[dict valueForKey:@"pendingTotal"] isEqualToString:@"0"])
+        {
+            [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%@)",[dict valueForKey:@"pendingTotal"]] forSegmentAtIndex:1];
+        }
+        else
+        {
+            [completed_pending setTitle:@" Pending" forSegmentAtIndex:1];
+        }
+
+        NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
+
+        // PENDING REQUESTS RECEIVED (SET DEFAULT VALUE FOR LEFT SIDE MENU)
+        if (![[dict valueForKey:@"pendingRequestsReceived"] isEqualToString:@"0"])
+        {
+            [defaults setBool:true forKey:@"hasPendingItems"];
+        }
+        else
+        {
+            [defaults setBool:false forKey:@"hasPendingItems"];
+        }
+        NSString * count;
+        count = [NSString stringWithFormat:@"%@", [dict valueForKey:@"pendingRequestsReceived"]];
+        
+        [defaults setValue: count forKey:@"Pending_count"];
+        [defaults synchronize];
     }
 
     else if ([tagName isEqualToString:@"search"])
@@ -2580,13 +2617,17 @@ return customView;
             isEnd = NO;
             isStart = NO;
             
-            for (NSDictionary*dict in histArray) {
-                if ([[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]) {
+            for (NSDictionary * dict in histArray)
+            {
+                if ([[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Success"])
+                {
                     [histShowArrayCompleted addObject:dict];
                 }
             }
-            for (NSDictionary*dict in histArray) {
-                if ([[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]) {
+            for (NSDictionary * dict in histArray)
+            {
+                if ([[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
+                {
                     [histShowArrayPending addObject:dict];
                 }
             }
@@ -2597,7 +2638,7 @@ return customView;
         if (isMapOpen) {
             [self mapPoints];
         }
-        serve *serveOBJ = [serve new];
+        serve * serveOBJ = [serve new];
         [serveOBJ setDelegate:self];
         [serveOBJ setTagName:@"time"];
         [serveOBJ GetServerCurrentTime];

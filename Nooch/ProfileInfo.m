@@ -281,12 +281,12 @@ UIImageView *picture;
     NSShadow * shadowNavText = [[NSShadow alloc] init];
     shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .26);
     shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
-    
+
     NSDictionary * titleAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
                                        NSShadowAttributeName: shadowNavText};
     [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
     [self.navigationItem setTitle:@"Profile Info"];
-    
+
     serve *serveOBJ = [serve new ];
     serveOBJ.tagName = @"myset";
     [serveOBJ setDelegate:self];
@@ -325,10 +325,9 @@ UIImageView *picture;
     shadow_edit.shadowOffset = CGSizeMake(0, 1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow_edit };
 
-    UILabel *edit_label = [UILabel new];
+    UILabel * edit_label = [UILabel new];
     [edit_label setBackgroundColor:[UIColor clearColor]];
-    edit_label.attributedText = [[NSAttributedString alloc] initWithString:@"edit"
-                                                                 attributes:textAttributes];
+    edit_label.attributedText = [[NSAttributedString alloc] initWithString:@"edit" attributes:textAttributes];
     [edit_label setFont:[UIFont fontWithName:@"Roboto-regular" size:11]];
     [edit_label setFrame:CGRectMake(8, 42, 44, 12)];
     [edit_label setTextAlignment:NSTextAlignmentCenter];
@@ -347,7 +346,7 @@ UIImageView *picture;
 
     NSTimeInterval _interval = [newString doubleValue];
 
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:_interval];
+    NSDate * date = [NSDate dateWithTimeIntervalSince1970:_interval];
     NSDateFormatter *_formatter=[[NSDateFormatter alloc]init];
     [_formatter setDateFormat:@"M/d/yyyy"];
     NSString *_date=[_formatter stringFromDate:date];
@@ -399,8 +398,8 @@ UIImageView *picture;
     [self.email setTag:0];
     [self.view addSubview:self.email];
 
-    //Recovery Mail
-    self.recovery_email = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
+    // Recovery Mail
+/*    self.recovery_email = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.recovery_email setTextAlignment:NSTextAlignmentRight];
     [self.recovery_email setBackgroundColor:[UIColor clearColor]];
     [self.recovery_email setPlaceholder:@"(Optional)"];
@@ -409,7 +408,7 @@ UIImageView *picture;
     self.recovery_email.returnKeyType = UIReturnKeyNext;
     [self.recovery_email setStyleClass:@"table_view_cell_detailtext_1"];
     [self.recovery_email setTag:1];
-    [self.view addSubview:self.recovery_email];
+    [self.view addSubview:self.recovery_email]; */
 
     self.phone = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.phone setTextAlignment:NSTextAlignmentRight];
@@ -747,7 +746,11 @@ UIImageView *picture;
 
 - (void)change_pic
 {
-    UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Use Facebook Picture", @"Use Camera", @"From iPhone Library", nil];
+    UIActionSheet * actionSheetObject = [[UIActionSheet alloc] initWithTitle:@""
+                                                                    delegate:self
+                                                           cancelButtonTitle:@"Cancel"
+                                                      destructiveButtonTitle:nil
+                                                           otherButtonTitles:@"Use Facebook Picture", @"Use Camera", @"From iPhone Library", nil];
     actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
     [actionSheetObject showInView:self.view];
 }
@@ -762,7 +765,9 @@ UIImageView *picture;
 
         NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal",[user objectForKey:@"facebook_id"]];
    
-        [picture sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"RoundLoading"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        [picture sd_setImageWithURL:[NSURL URLWithString:url]
+                   placeholderImage:[UIImage imageNamed:@"RoundLoading"]
+                          completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
             if (image) {
                 [picture setImage:image];
                 [[assist shared]setTranferImage:nil];
@@ -770,30 +775,18 @@ UIImageView *picture;
             }
 
         }];
-        
-//        [picture sd_setImageWithURL:[NSURL URLWithString:url]
-//             placeholderImage:[UIImage imageNamed:@"profile_picture"]
-//                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-//                        
-//                        if (image) {
-//                            [picture setImage:image];
-//                            [[assist shared]setTranferImage:nil];
-//                            [[assist shared]setTranferImage:image];
-//                        }
-//        }];
-    
+
         [self.save setEnabled:YES];
         [self.save setUserInteractionEnabled:YES];
         [self.save setStyleClass:@"nav_top_right"];
         [self.save setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
         self.save.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        
+
         [dictSavedInfo setObject:@"YES" forKey:@"ImageChanged"];
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         [imageCache clearMemory];
         [imageCache clearDisk];
         [imageCache cleanDisk];
-      
     }
     else if (buttonIndex == 1)
     {
@@ -807,7 +800,7 @@ UIImageView *picture;
             [myAlertView show];
             return;
         }
-        
+
         self.picker = [UIImagePickerController new];
         self.picker.delegate = self;
         self.picker.allowsEditing = YES;
@@ -834,7 +827,6 @@ UIImageView *picture;
 
     if (imgRatio != maxRatio)
     {
-        
         if (imgRatio < maxRatio)
         {
             imgRatio = 115.0 / actualHeight;
@@ -852,14 +844,13 @@ UIImageView *picture;
     CGRect rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight);
     UIGraphicsBeginImageContext(rect.size);
     [image drawInRect:rect];
-    
+
     UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return img;
 }
 
 #pragma mark-ImagePicker
-
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     option = 1;
@@ -887,7 +878,6 @@ UIImageView *picture;
 }
 
 #pragma mark - UITableViewDataSource
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -895,7 +885,7 @@ UIImageView *picture;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 8;
+    return 7;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -919,7 +909,7 @@ UIImageView *picture;
     
     if (indexPath.row == 0)
     {
-        UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
+        UILabel * name = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
         [name setBackgroundColor:[UIColor clearColor]];
         [name setText:@"Name"];
         [name setStyleClass:@"table_view_cell_textlabel_1"];
@@ -993,7 +983,7 @@ UIImageView *picture;
         [cell.contentView addSubview:mail];
         [cell.contentView addSubview:self.email];
     }
-    else if (indexPath.row == 2)
+    /*else if (indexPath.row == 2)
     {
         UILabel * recover = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
         [recover setBackgroundColor:[UIColor clearColor]];
@@ -1002,8 +992,8 @@ UIImageView *picture;
         [recover setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:recover];
         [cell.contentView addSubview:self.recovery_email];
-    }
-    else if (indexPath.row == 3)
+    }*/
+    else if (indexPath.row == 2)
     {
         UILabel * num = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
         [num setBackgroundColor:[UIColor clearColor]];
@@ -1069,7 +1059,7 @@ UIImageView *picture;
         [cell.contentView addSubview:num];
         [cell.contentView addSubview:self.phone];
     }
-    else if (indexPath.row == 4)
+    else if (indexPath.row == 3)
     {
         UILabel * addr1 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
         [addr1 setBackgroundColor:[UIColor clearColor]];
@@ -1078,7 +1068,7 @@ UIImageView *picture;
         [cell.contentView addSubview:addr1];
         [cell.contentView addSubview:self.address_one];
     }
-    else if (indexPath.row == 5)
+    else if (indexPath.row == 4)
     {
         UILabel * addr2 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
         [addr2 setBackgroundColor:[UIColor clearColor]];
@@ -1087,7 +1077,7 @@ UIImageView *picture;
         [cell.contentView addSubview:addr2];
         [cell.contentView addSubview:self.address_two];
     }
-    else if (indexPath.row == 6)
+    else if (indexPath.row == 5)
     {
         UILabel * city_lbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
         [city_lbl setBackgroundColor:[UIColor clearColor]];
@@ -1096,7 +1086,7 @@ UIImageView *picture;
         [cell.contentView addSubview:city_lbl];
         [cell.contentView addSubview:self.city];
     }
-    else if (indexPath.row == 7)
+    else if (indexPath.row == 6)
     {
         UILabel * zip_lbl = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, rowHeight)];
         [zip_lbl setBackgroundColor:[UIColor clearColor]];
@@ -1113,7 +1103,7 @@ UIImageView *picture;
 {
     [self.name resignFirstResponder];
     [self.email resignFirstResponder];
-    [self.recovery_email resignFirstResponder];
+    //[self.recovery_email resignFirstResponder];
     [self.phone resignFirstResponder];
     [self.address_one resignFirstResponder];
     [self.address_two resignFirstResponder];
@@ -1132,7 +1122,7 @@ UIImageView *picture;
         [self.list beginUpdates];
         [self.list endUpdates];
     } 
-    else if (indexPath.row == 3 && ![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"] && [[dictSavedInfo valueForKey:@"phoneno"]length] > 0)
+    else if (indexPath.row == 2 && ![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"] && [[dictSavedInfo valueForKey:@"phoneno"]length] > 0)
     {
         if (self.disclose == YES) {
             self.disclose = NO;
@@ -1184,11 +1174,11 @@ UIImageView *picture;
 {
     if (textField == _email)
     {
-        [_recovery_email becomeFirstResponder];
+/*        [_recovery_email becomeFirstResponder];
     }
     else if (textField == _recovery_email)
     {
-        [_phone becomeFirstResponder];
+*/        [_phone becomeFirstResponder];
     }
     else if (textField == _phone)
     {
@@ -1242,7 +1232,8 @@ UIImageView *picture;
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     [self.hud hide:YES];
-    NSError* error;
+    NSError * error;
+
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
     {
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
@@ -1262,7 +1253,7 @@ UIImageView *picture;
         me = [core new];
         return;
     }
-    
+
     if ([tagName isEqualToString:@"email_verify"])
     {
         NSString *response = [[NSJSONSerialization
@@ -1416,7 +1407,7 @@ UIImageView *picture;
         }
         else
         {
-            NSString *validated = @"YES";
+            NSString * validated = @"YES";
             if ([[resultValue valueForKey:@"Result"] isEqualToString:@"Profile Validation Failed! Please provide valid contact informations such as address, city, state and contact number details."])
             {
                 [[me usr] setObject:validated forKey:@"validated"];
@@ -1456,8 +1447,7 @@ UIImageView *picture;
         if (![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]] &&
             ![[[dictProfileinfo valueForKey:@"ContactNumber"] lowercaseString] isEqualToString:@"null"])
         {
-            if (  [dictProfileinfo valueForKey:@"ContactNumber"] != NULL &&
-                ![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]])
+            if (  [dictProfileinfo valueForKey:@"ContactNumber"] != NULL)
             {
                 self.SavePhoneNumber = [dictProfileinfo valueForKey:@"ContactNumber"];
 
@@ -1776,7 +1766,7 @@ UIImageView *picture;
     else if ([self.ServiceType isEqualToString:@"recovery"])
     {
         self.ServiceType = @"pwd";
-        self.recovery_email.text = [[NSString stringWithFormat:@"%@",[sourceData objectForKey:@"Status"]] lowercaseString];
+/*        self.recovery_email.text = [[NSString stringWithFormat:@"%@",[sourceData objectForKey:@"Status"]] lowercaseString];
         
         NSString * recovery_email = [self.recovery_email.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         self.recovery_email.text = [recovery_email lowercaseString];
@@ -1801,6 +1791,7 @@ UIImageView *picture;
         {
             [self.recovery_email setStyleClass:@"table_view_cell_detailtext_smallerText"];
         }
+*/
     }
 }
 

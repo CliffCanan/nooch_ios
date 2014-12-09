@@ -1097,10 +1097,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [automatic writeToFile:[self autoLogin] atomically:YES];
 
     // for the red notification bubble if a user has a pending RECEIVED Request
-    serve *serveOBJ = [serve new];
+  /*serve *serveOBJ = [serve new];
     [serveOBJ setDelegate:self];
     serveOBJ.tagName = @"histPending";
-    [serveOBJ histMore:@"ALL" sPos:1 len:20 subType:@"Pending"];
+    [serveOBJ histMore:@"ALL" sPos:1 len:20 subType:@"Pending"];*/
+
+    serve * getPendingCount = [serve new];
+    [getPendingCount setDelegate:self];
+    [getPendingCount setTagName:@"getPendingTransfersCount"];
+    [getPendingCount getPendingTransfersCount];
 
     //do carousel
     [self.view addSubview:_carousel];
@@ -1639,11 +1644,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
     }
     
-    else if ([tagName isEqualToString:@"histPending"])
+    else if ([tagName isEqualToString:@"getPendingTransfersCount"])
     {
         NSError *error;
         [self.hud hide:YES];
-        histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        
+        NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSLog(@"getPendingTransfersCount is: %@",dict);
+            
+        /* histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         
         int counter = 0;
         // NSLog(@"THE Pending_Count = %@", [defaults objectForKey:@"Pending_count"]);
@@ -1656,16 +1665,16 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             {
                counter++;
             }
-        }
+        } */
         
         [self.navigationItem setLeftBarButtonItem:nil];
 
         NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
 
-        if (counter > 0)
+        if (![[dict valueForKey:@"pendingRequestsReceived"] isEqualToString:@"0"])
         {
             UILabel * pending_notif = [UILabel new];
-            [pending_notif setText:[NSString stringWithFormat:@"%d",counter]];
+            [pending_notif setText:[NSString stringWithFormat:@"%@",[dict valueForKey:@"pendingRequestsReceived"]]];
             [pending_notif setFrame:CGRectMake(16, -2, 20, 20)];
             [pending_notif setStyleId:@"pending_notif"];
 
@@ -1690,13 +1699,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
             [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
             hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+
             UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
             [self.navigationItem setLeftBarButtonItem:menu];
 
             [defaults setBool:false forKey:@"hasPendingItems"];
         }
         NSString * count;
-        count = [NSString stringWithFormat:@"%d", counter];
+        count = [NSString stringWithFormat:@"%@", [dict valueForKey:@"pendingRequestsReceived"]];
 
         [defaults setValue: count forKey:@"Pending_count"];
         [defaults synchronize];

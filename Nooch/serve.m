@@ -1759,9 +1759,10 @@ NSString *amnt;
 {
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    NSString *urlString = [NSString stringWithFormat:@"%@/SendTransactionReminderEmail?ReminderType=%@&MemberId=%@&accesstoken=%@&transactionId=%@",ServerUrl,reminderType,[defaults objectForKey:@"MemberId"],[defaults objectForKey:@"OAuthToken"],transactionId];
-    NSURL *url = [NSURL URLWithString:urlString];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSString * urlString = [NSString stringWithFormat:@"%@/SendTransactionReminderEmail?ReminderType=%@&MemberId=%@&accesstoken=%@&transactionId=%@",ServerUrl,reminderType,[defaults objectForKey:@"MemberId"],[defaults objectForKey:@"OAuthToken"],transactionId];
+    NSURL * url = [NSURL URLWithString:urlString];
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
 
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
@@ -1769,4 +1770,19 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 
+-(void)getPendingTransfersCount
+{
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSString * urlString = [NSString stringWithFormat:@"%@/GetMemberPendingTransctionsCount?MemberId=%@&accesstoken=%@",ServerUrl,[defaults objectForKey:@"MemberId"],[defaults objectForKey:@"OAuthToken"]];
+    NSURL * url = [NSURL URLWithString:urlString];
+
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+
+}
 @end

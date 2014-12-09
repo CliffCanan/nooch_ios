@@ -118,4 +118,5 @@
 -(void)CancelMoneyRequestForNonNoochUser:(NSString*)transactionId;
 -(void)SendReminderToRecepient:(NSString *)transactionId reminderType:(NSString*)reminderType;
 -(void)ValidatePinNumberToEnterForEnterForeground:(NSString*)memId pin:(NSString*)pin;
+-(void)getPendingTransfersCount;
 @end
