@@ -2430,7 +2430,7 @@ table-view#emptyTable {
 .history_memo {
     left				: 72px;
     top					: 42px;
-    width				: 200px;
+    width				: 197px;
     height				: 16px;
     font-family			: "Roboto";
     font-weight         : regular;
@@ -2452,7 +2452,7 @@ table-view#emptyTable {
     left                : 254px;
     top					: 42px;
     width				: 60px;
-    height				: 16px;
+    height				: 17px;
     font-family			: "Roboto";
     font-weight         : regular;
     font-size			: 11px;

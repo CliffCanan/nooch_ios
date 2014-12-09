@@ -777,13 +777,17 @@ return customView;
             if (![[dictRecord_complete valueForKey:@"Memo"] isKindOfClass:[NSNull class]])
             {
                 if ([[dictRecord_complete valueForKey:@"Memo"] length] < 2) {
-                    return 72;
+                    return 74;
                 }
-                else if ([[dictRecord_complete valueForKey:@"Memo"] length] > 32) {
-                    return 85;
+                else if ([[dictRecord_complete valueForKey:@"Memo"] length] > 26) {
+                    return 86;
                 }
                 else
-                   return 72;
+                   return 74;
+            }
+            else
+            {
+                return 74;
             }
         }
         else if ([histTempCompleted count] == indexPath.row ||
@@ -792,14 +796,15 @@ return customView;
             return 200;
         }
     }
-    else
+    else // For Pending Tab
     {
-        if ([histShowArrayPending count] > indexPath.row) {
-            return 80;
+        if ([histShowArrayPending count] > indexPath.row)
+        {
+            return 81;
         }
     }
 
-    return 72;
+    return 74;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -894,7 +899,7 @@ return customView;
                     
                     UIView *indicator = [UIView new];
                     
-                    UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 8, 10, 11)];
+                    UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 7, 10, 11)];
                     [statusIndicator setBackgroundColor:[UIColor clearColor]];
                     [statusIndicator setTextAlignment:NSTextAlignmentCenter];
                     [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
@@ -1053,12 +1058,12 @@ return customView;
                     //  'updated_balance' now for displaying transfer STATUS, only if status is "cancelled" or "rejected" or "success" (for invites)
                     //  (this used to display the user's updated balance, which no longer exists)
                     
-                    UILabel *updated_balance = [UILabel new];
+                    UILabel * updated_balance = [UILabel new];
+                    [updated_balance setStyleClass:@"transfer_status"];
                     
                     if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"] ||
                         [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"])
                     {
-                        [updated_balance setStyleClass:@"transfer_status"];
                         [updated_balance setText:[NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"TransactionStatus"]]];
                         [updated_balance setTextColor:kNoochGrayLight];
                         [cell.contentView addSubview:updated_balance];
@@ -1067,14 +1072,12 @@ return customView;
                              [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] )
                     {
                         [updated_balance setText:@"Accepted"];
-                        [updated_balance setStyleClass:@"transfer_status"];
                         [updated_balance setTextColor:kNoochGreen];
                         [cell.contentView addSubview:updated_balance];
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] &&
                              [[dictRecord valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"])
                     {
-                        [updated_balance setStyleClass:@"transfer_status"];
                         [updated_balance setText:@"Resolved"];
                         [updated_balance setTextColor:kNoochGreen];
                         [cell.contentView addSubview:updated_balance];
@@ -1201,7 +1204,7 @@ return customView;
                 [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]||
                 [[dictRecord valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"] )
             {
-                UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 8, 10, 11)];
+                UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 7, 10, 11)];
                 [statusIndicator setBackgroundColor:[UIColor clearColor]];
                 [statusIndicator setTextAlignment:NSTextAlignmentCenter];
                 [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
@@ -1342,12 +1345,12 @@ return customView;
 				//  'updated_balance' now for displaying transfer STATUS, only if status is "cancelled" or "rejected"
                 //  (this used to display the user's updated balance, which no longer exists)
                 
-                UILabel *updated_balance = [UILabel new];
+                UILabel * updated_balance = [UILabel new];
+                [updated_balance setStyleClass:@"transfer_status"];
                 
                 if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"] ||
                     [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"])
                 {
-                    [updated_balance setStyleClass:@"transfer_status"];
                     [updated_balance setText:[NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"TransactionStatus"]]];
                     [updated_balance setTextColor:kNoochGrayLight];
                     [cell.contentView addSubview:updated_balance];
@@ -1356,7 +1359,6 @@ return customView;
                          [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"] )
                 {
                     [updated_balance setText:@"Paid"];
-                    [updated_balance setStyleClass:@"transfer_status"];
                     [updated_balance setTextColor:kNoochGreen];
                     [cell.contentView addSubview:updated_balance];
                 }
@@ -1364,14 +1366,12 @@ return customView;
                          [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] )
                 {
                     [updated_balance setText:@"Accepted"];
-                    [updated_balance setStyleClass:@"transfer_status"];
                     [updated_balance setTextColor:kNoochGreen];
                     [cell.contentView addSubview:updated_balance];
                 }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] &&
                          [[dictRecord valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"])
                 {
-                    [updated_balance setStyleClass:@"transfer_status"];
                     [updated_balance setText:@"Resolved"];
                     [updated_balance setTextColor:kNoochGreen];
                     [cell.contentView addSubview:updated_balance];
@@ -1394,7 +1394,7 @@ return customView;
                     NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                     dateFormatter.dateFormat = @"dd-MMMM-yyyy";
 
-                    NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
+                    NSArray * arrdate = [[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
                     [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
                     [cell.contentView addSubview:date];
                 }
@@ -1579,7 +1579,7 @@ return customView;
                     transferTypeLabel.layer.cornerRadius = 3;
                     transferTypeLabel .clipsToBounds = YES;
 
-                    UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 8, 10, 11)];
+                    UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 7, 10, 11)];
                     [statusIndicator setBackgroundColor:[UIColor clearColor]];
                     [statusIndicator setTextAlignment:NSTextAlignmentCenter];
                     [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
@@ -1785,7 +1785,7 @@ return customView;
                 transferTypeLabel.layer.cornerRadius = 3;
                 transferTypeLabel .clipsToBounds = YES;
 
-                UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 8, 10, 11)];
+                UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 7, 10, 11)];
                 [statusIndicator setBackgroundColor:[UIColor clearColor]];
                 [statusIndicator setTextAlignment:NSTextAlignmentCenter];
                 [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
@@ -1815,7 +1815,6 @@ return customView;
                     ![[dictRecord objectForKey:@"Memo"] isKindOfClass:[NSNull class]] &&
                     ![[dictRecord valueForKey:@"Memo"] isEqualToString:@""] )
                 {
-                    
                     [label_memo setBackgroundColor:[UIColor clearColor]];
                     [label_memo setTextAlignment:NSTextAlignmentRight];
                     label_memo.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"For  \"%@\" ",[dictRecord valueForKey:@"Memo"]]
@@ -1856,7 +1855,7 @@ return customView;
                         bgcolor.backgroundColor = Rgb2UIColor(240, 250, 30, .35);
                         
                         if (label_memo.attributedText.length > 42) {
-                            [bgcolor setFrame:CGRectMake(0, 0, 320, 76)];
+                            [bgcolor setFrame:CGRectMake(0, 0, 320, 78)];
                         }
                         cell.backgroundView = bgcolor;
                         [cell.contentView addSubview:bgcolor];
@@ -2479,8 +2478,8 @@ return customView;
         {
             isEnd = NO;
             isStart = NO;
-            int counter = 0;
-            int pending_notif_counter = 0;
+         // int counter = 0;
+         // int pending_notif_counter = 0;
             for (NSDictionary * dict in histArray)
             {
                 if ( [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]   ||
@@ -2505,15 +2504,15 @@ return customView;
                 }
                 // For the Red Pending Notification Bubble in the left menu  (different than "counter" above,
                 // this one doesn't include Invites, or Requests this user Sent)
-                if ( ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
+             /* if ( ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
                       [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]) &&
                      ![[dict valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
                 {
                     pending_notif_counter++;
-                }
+                } */
             }
 
-            NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
+        /*  NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
             if (pending_notif_counter > 0) {
                 [defaults setBool:true forKey:@"hasPendingItems"];
             }
@@ -2523,8 +2522,8 @@ return customView;
             [defaults setValue: [NSString stringWithFormat:@"%d",pending_notif_counter] forKey:@"Pending_count"];
             [defaults synchronize];
             
-            // NSLog(@"The Pending counter is: %d",counter);
-            // [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%d)",counter]forSegmentAtIndex:1];
+            NSLog(@"The Pending counter is: %d",counter);
+            [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%d)",counter]forSegmentAtIndex:1]; */
 
         }
         else if ([histArray count] == 0 && ![subTypestr isEqualToString:@"Pending"]) {
