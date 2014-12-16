@@ -55,7 +55,7 @@ bool modal;
     [[UAPush shared] resetBadge];
     
     //Google Analytics
-    [GAI sharedInstance].dispatchInterval = 25;
+    [GAI sharedInstance].dispatchInterval = 22;
     [GAI sharedInstance].trackUncaughtExceptions = YES;
     // Optional: set Logger to VERBOSE for debug information.
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
@@ -83,6 +83,10 @@ bool modal;
     [Appirater appLaunched:YES];
 
     NSSetUncaughtExceptionHandler(&exceptionHandler);
+    
+    // ARTISAN SDK
+    [ARPowerHookManager registerHookWithId:@"slogan" friendlyName:@"Slogan" defaultValue:@"Money Made Simple"];
+
     //[ARManager startWithAppId:@"5487d09c2b22204361000011"];
 
     return YES;

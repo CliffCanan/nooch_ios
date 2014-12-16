@@ -12,6 +12,8 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "Appirater.h"
 #import "UIDevice+IdentifierAddition.h"
+#import <ArtisanSDK/ArtisanSDK.h>
+
 @interface Register ()<FBLoginViewDelegate>{
     core*me;
     NSString*email_fb,*fbID,*firstname_fb,*lastname_fb;

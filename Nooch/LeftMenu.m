@@ -367,7 +367,7 @@
         }
         else if (indexPath.row == 1) {
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Rate Nooch" attributes:textAttributes];
-            iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-star"] attributes:textAttributes];
+            iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-thumbs-up"] attributes:textAttributes];
         }
     }
     else if (indexPath.section == 2)
@@ -377,7 +377,7 @@
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-question"] attributes:textAttributes];
         }
         else if (indexPath.row == 1) {
-            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Contact Support" attributes:textAttributes];
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Support" attributes:textAttributes];
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope"] attributes:textAttributes];
             [iv setStyleClass:@"lside_menu_icons_sm"];
         }

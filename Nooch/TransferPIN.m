@@ -10,6 +10,8 @@
 #import "UIImageView+WebCache.h"
 #import "SelectRecipient.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import <ArtisanSDK/ArtisanSDK.h>
+
 @interface TransferPIN ()<GetLocationDelegate>
 {
     GetLocation*getlocation;
@@ -1049,6 +1051,17 @@
             NSLog(@"Input: %@",input);
             TransactionDetails *td = [[TransactionDetails alloc] initWithData:input];
             [nav_ctrl pushViewController:td animated:YES];
+
+            [ARTrackingManager trackEvent:@"User Tapped In-App Coupon"
+                               parameters:@{@"coupon-code":@"B012345"}
+                                 category:@"Men"];
+            
+            [ARTrackingManager trackEvent:@"User Tapped In-App Coupon"
+                               parameters:@{@"coupon-code":@"B012345"}
+                                 category:@"Men"
+                              subCategory:@"Shoes"];
+
+            [ARTrackingManager trackEvent:@"itemsInCartAreNowOutofStock"];
         }
     }
     else if (alertView.tag == 2500)
@@ -1478,14 +1491,17 @@
         sendingMoney = NO;
     }
 }
+
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
     return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 }
+
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
     if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
         [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
     [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
 }
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];

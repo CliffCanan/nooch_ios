@@ -16,6 +16,8 @@
 #import "UIDevice+IdentifierAddition.h"
 #import "SpinKit/RTSpinKitView.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import <ArtisanSDK/ArtisanSDK.h>
+
 @interface Login ()<FBLoginViewDelegate>{
     core*me;
     NSString*email_fb,*fbID;
@@ -172,10 +174,12 @@
 
     if ([[UIScreen mainScreen] bounds].size.height > 500)
     {
-        UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(90, 73, 140, 14)];
+        NSString * sloganFromArtisan = [ARPowerHookManager getValueForHookById:@"slogan"];
+        NSLog(@"SloganFromArtisan: %@",sloganFromArtisan);
+        UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(70, 72, 180, 16)];
         [slogan setBackgroundColor:[UIColor clearColor]];
-        [slogan setText:@"Money Made Simple"];
-        [slogan setFont:[UIFont fontWithName:@"VarelaRound-Regular" size:15]];
+        [slogan setText:sloganFromArtisan];
+        [slogan setFont:[UIFont fontWithName:@"VarelaRound-Regular" size:14]];
         [slogan setStyleClass:@"prelogin_slogan"];
         [slogan setStyleClass:@"prelogin_slogan_loginScreen"];
         [self.view addSubview:slogan];
