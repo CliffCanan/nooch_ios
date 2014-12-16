@@ -3132,7 +3132,7 @@ table-view.stats_top_friends {
     width			: 300px;
     height			: 290px;
     background-color: white;
-    row-height		: 52px;
+    row-height		: 46px;
     separator-style : single-line;
     separator-color : rgba(188,190,192,.35);
 }
@@ -3215,10 +3215,10 @@ table-view.stats_top_friends_empty {
 }
 .stats_circle_transfers_Active {
     left            : 30px;
-    top             : 15px;
+    top             : 12px;
     width           : 56px;
     height          : 56px;
-    background-color: rgba(63, 171, 225, 1);
+    background-color: rgba(112, 191, 68, .96);
     border-radius   : 28px;
     text-align      : center;
 }
@@ -3233,10 +3233,10 @@ table-view.stats_top_friends_empty {
 }
 .stats_circle_Profile_Active {
     left            : 122px;
-    top             : 15px;
+    top             : 12px;
     width           : 56px;
     height          : 56px;
-    background-color: rgba(63, 171, 225, 1);
+    background-color: rgba(112, 191, 68, .96);
     border-radius   : 28px;
     text-align      : center;
 }
@@ -3251,10 +3251,10 @@ table-view.stats_top_friends_empty {
 }
 .stats_circle_topFriends_Active {
     left            : 214px;
-    top             : 15px;
+    top             : 12px;
     width           : 56px;
     height          : 56px;
-    background-color: rgba(63, 171, 225, 1);
+    background-color: rgba(112, 191, 68, .96);
     border-radius   : 28px;
 }
 

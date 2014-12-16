@@ -1648,10 +1648,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     {
         NSError *error;
         [self.hud hide:YES];
-        
+
         NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         NSLog(@"getPendingTransfersCount is: %@",dict);
-            
+
+        int pendingRequestsReceived = [[dict valueForKey:@"pendingRequestsReceived"] intValue];
+        NSString * count;
+
         /* histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         
         int counter = 0;
@@ -1671,10 +1674,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
 
-        if (![[dict valueForKey:@"pendingRequestsReceived"] isEqualToString:@"0"])
+        if (pendingRequestsReceived > 0)
         {
             UILabel * pending_notif = [UILabel new];
-            [pending_notif setText:[NSString stringWithFormat:@"%@",[dict valueForKey:@"pendingRequestsReceived"]]];
+            [pending_notif setText:[NSString stringWithFormat:@"%d", pendingRequestsReceived]];
             [pending_notif setFrame:CGRectMake(16, -2, 20, 20)];
             [pending_notif setStyleId:@"pending_notif"];
 
@@ -1690,6 +1693,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [self.navigationItem setLeftBarButtonItem:menu];
 
             [defaults setBool:true forKey:@"hasPendingItems"];
+
+            count = [NSString stringWithFormat:@"%@", [dict valueForKey:@"pendingRequestsReceived"]];
         }
         else
         {
@@ -1704,9 +1709,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [self.navigationItem setLeftBarButtonItem:menu];
 
             [defaults setBool:false forKey:@"hasPendingItems"];
+
+            count = @"0";
         }
-        NSString * count;
-        count = [NSString stringWithFormat:@"%@", [dict valueForKey:@"pendingRequestsReceived"]];
 
         [defaults setValue: count forKey:@"Pending_count"];
         [defaults synchronize];

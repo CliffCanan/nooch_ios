@@ -146,6 +146,8 @@
 		5C83949919EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83949619EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png */; };
 		5C861FA21A0BFAAD00275CD1 /* selectRecipient_img@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C861FA01A0BFAAD00275CD1 /* selectRecipient_img@2x.png */; };
 		5C861FA31A0BFAAD00275CD1 /* 2_selectRecipient_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C861FA11A0BFAAD00275CD1 /* 2_selectRecipient_bg@2x.png */; };
+		5C938D8E1A380F3800B4581C /* ArtisanSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5C938D8C1A380F3800B4581C /* ArtisanSDK.bundle */; };
+		5C938D8F1A380F3800B4581C /* ArtisanSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C938D8D1A380F3800B4581C /* ArtisanSDK.framework */; };
 		5CACE20619CFF86A004AD9C4 /* 1_connectBank_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20319CFF86A004AD9C4 /* 1_connectBank_bg.png */; };
 		5CACE20819CFF86A004AD9C4 /* 3_howMuch_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20519CFF86A004AD9C4 /* 3_howMuch_bg.png */; };
 		5CBC177519F4CE0000E1D095 /* clear_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CBC177419F4CE0000E1D095 /* clear_white@2x.png */; };
@@ -583,6 +585,8 @@
 		5C83949619EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No-Internet-Full-Screen-lg@2x.png"; sourceTree = "<group>"; };
 		5C861FA01A0BFAAD00275CD1 /* selectRecipient_img@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "selectRecipient_img@2x.png"; sourceTree = "<group>"; };
 		5C861FA11A0BFAAD00275CD1 /* 2_selectRecipient_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "2_selectRecipient_bg@2x.png"; sourceTree = "<group>"; };
+		5C938D8C1A380F3800B4581C /* ArtisanSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ArtisanSDK.bundle; sourceTree = "<group>"; };
+		5C938D8D1A380F3800B4581C /* ArtisanSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ArtisanSDK.framework; sourceTree = "<group>"; };
 		5CACE20319CFF86A004AD9C4 /* 1_connectBank_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1_connectBank_bg.png; sourceTree = "<group>"; };
 		5CACE20519CFF86A004AD9C4 /* 3_howMuch_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3_howMuch_bg.png; sourceTree = "<group>"; };
 		5CBC177419F4CE0000E1D095 /* clear_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "clear_white@2x.png"; sourceTree = "<group>"; };
@@ -965,6 +969,7 @@
 			files = (
 				8449C5A419EBB1F700027B9B /* libUAirship-5.0.3.a in Frameworks */,
 				5C4A205319E77C0000D1A0EE /* StoreKit.framework in Frameworks */,
+				5C938D8F1A380F3800B4581C /* ArtisanSDK.framework in Frameworks */,
 				84830DD019B03DB400E29A4C /* MapKit.framework in Frameworks */,
 				6B30380215FA48F900056DAD /* AudioToolbox.framework in Frameworks */,
 				6B30380115FA48F900056DAD /* AddressBookUI.framework in Frameworks */,
@@ -1473,6 +1478,15 @@
 			path = "../../../../Cocoa Libraries/EAIntroView-master/Resources/Intro";
 			sourceTree = "<group>";
 		};
+		5C938D8B1A380F3800B4581C /* artisan-sdk-2.3.7 */ = {
+			isa = PBXGroup;
+			children = (
+				5C938D8C1A380F3800B4581C /* ArtisanSDK.bundle */,
+				5C938D8D1A380F3800B4581C /* ArtisanSDK.framework */,
+			);
+			path = "artisan-sdk-2.3.7";
+			sourceTree = "<group>";
+		};
 		5CC183D41A19C6B600DADDC8 /* MagicPieLayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -1601,6 +1615,7 @@
 		6B30372C15FA3FF300056DAD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5C938D8B1A380F3800B4581C /* artisan-sdk-2.3.7 */,
 				5CC183D41A19C6B600DADDC8 /* MagicPieLayer */,
 				5C4A204B19E77B9600D1A0EE /* Appirater */,
 				5C69D06B19CA0F5B00EB406F /* EAIntroView */,
@@ -2344,6 +2359,7 @@
 				01C26DEF1843C56C005179B7 /* nooch_Logo.png in Resources */,
 				5C861FA31A0BFAAD00275CD1 /* 2_selectRecipient_bg@2x.png in Resources */,
 				5CACE20619CFF86A004AD9C4 /* 1_connectBank_bg.png in Resources */,
+				5C938D8E1A380F3800B4581C /* ArtisanSDK.bundle in Resources */,
 				010A993A185FA99F001DCE6B /* choose-pic-icon.png in Resources */,
 				845B49A819B4722B009695AA /* Images-2.xcassets in Resources */,
 				844E3F8A19DC05E400A00411 /* icon1@2x.png in Resources */,
@@ -2666,6 +2682,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Nooch/artisan-sdk-2.3.7",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2707,6 +2724,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Nooch/artisan-sdk-2.3.7",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Nooch/Nooch-Prefix.pch";

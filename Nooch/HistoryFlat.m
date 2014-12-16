@@ -2566,7 +2566,7 @@ return customView;
              countRows = [histShowArrayCompleted count];
         }
         [self.view bringSubviewToFront:exportHistory];
-        
+
         serve * getPendingCount = [serve new];
         [getPendingCount setDelegate:self];
         [getPendingCount setTagName:@"getPendingTransfersCount"];
@@ -2576,12 +2576,18 @@ return customView;
     else if ([tagName isEqualToString:@"getPendingTransfersCount"])
     {
         NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        NSLog(@"getPendingTransfersCount is: %@",dict);
+        NSLog(@"getPendingTransfersCount is: %@", dict);
+
+        int pendingDisputes = [[dict valueForKey:@"pendingDisputesNotSolved"] intValue];
+        int pendingInvitations = [[dict valueForKey:@"pendingInvitationsSent"] intValue];
+        int pendingRequestsSent = [[dict valueForKey:@"pendingRequestsSent"] intValue];
+        int pendingRequestsReceived = [[dict valueForKey:@"pendingRequestsReceived"] intValue];
+        int totalPending = pendingDisputes + pendingInvitations + pendingRequestsSent + pendingRequestsReceived;
 
         // TOTAL PENDING PAYMENTS
-        if (![[dict valueForKey:@"pendingTotal"] isEqualToString:@"0"])
+        if (totalPending > 0)
         {
-            [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%@)",[dict valueForKey:@"pendingTotal"]] forSegmentAtIndex:1];
+            [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%d)", totalPending] forSegmentAtIndex:1];
         }
         else
         {
@@ -2591,19 +2597,20 @@ return customView;
         NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
 
         // PENDING REQUESTS RECEIVED (SET DEFAULT VALUE FOR LEFT SIDE MENU)
-        if (![[dict valueForKey:@"pendingRequestsReceived"] isEqualToString:@"0"])
+        if (pendingRequestsReceived > 0)
         {
             [defaults setBool:true forKey:@"hasPendingItems"];
+
+            NSString * count;
+            count = [NSString stringWithFormat:@"%@", [dict valueForKey:@"pendingRequestsReceived"]];
+
+            [defaults setValue: count forKey:@"Pending_count"];
+            [defaults synchronize];
         }
         else
         {
             [defaults setBool:false forKey:@"hasPendingItems"];
         }
-        NSString * count;
-        count = [NSString stringWithFormat:@"%@", [dict valueForKey:@"pendingRequestsReceived"]];
-        
-        [defaults setValue: count forKey:@"Pending_count"];
-        [defaults synchronize];
     }
 
     else if ([tagName isEqualToString:@"search"])

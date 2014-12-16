@@ -10,6 +10,7 @@
 #import "UAirship.h"
 #import "UAConfig.h"
 #import "UAPush.h"
+#import <ArtisanSDK/ArtisanSDK.h>
 #import <CoreTelephony/CTCallCenter.h>
 #import "ReEnterPin.h"
 #import "ProfileInfo.h"
@@ -80,7 +81,10 @@ bool modal;
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 
     [Appirater appLaunched:YES];
+
     NSSetUncaughtExceptionHandler(&exceptionHandler);
+    //[ARManager startWithAppId:@"5487d09c2b22204361000011"];
+
     return YES;
 }
 
