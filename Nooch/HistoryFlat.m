@@ -105,7 +105,7 @@
         histTempPending=[[NSMutableArray alloc]init];
     }
     
-    NSArray *seg_items = @[@"Completed",@"Pending"];
+    NSArray * seg_items = @[@"Completed",@"Pending"];
     completed_pending = [[UISegmentedControl alloc] initWithItems:seg_items];
     [completed_pending setStyleId:@"history_segcontrol"];
     [completed_pending addTarget:self action:@selector(completed_or_pending:) forControlEvents:UIControlEventValueChanged];
@@ -644,7 +644,9 @@ return customView;
     [self.view bringSubviewToFront:exportHistory];
     
     [self.list setStyleId:@"history"];*/
-    
+
+    listType = @"ALL";
+
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     if ([segmentedControl selectedSegmentIndex] == 0)
     {
@@ -687,7 +689,7 @@ return customView;
         [histShowArrayPending removeAllObjects];
         self.completed_selected = YES;
         countRows = 0;
-        [self loadHist:@"ALL" index:1 len:28 subType:subTypestr];
+        [self loadHist:listType index:1 len:28 subType:subTypestr];
     }
     else
     {
@@ -722,8 +724,8 @@ return customView;
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
         countRows = 0;
-        index=1;
-        [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
+        index = 1;
+        [self loadHist:listType index:1 len:20 subType:subTypestr];
     }
 }
 
@@ -762,8 +764,7 @@ return customView;
     return 0;
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
-  }
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{}
 
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -776,13 +777,17 @@ return customView;
             if (![[dictRecord_complete valueForKey:@"Memo"] isKindOfClass:[NSNull class]])
             {
                 if ([[dictRecord_complete valueForKey:@"Memo"] length] < 2) {
-                    return 72;
+                    return 74;
                 }
-                else if ([[dictRecord_complete valueForKey:@"Memo"] length] > 32) {
-                    return 85;
+                else if ([[dictRecord_complete valueForKey:@"Memo"] length] > 26) {
+                    return 86;
                 }
                 else
-                   return 72;
+                   return 74;
+            }
+            else
+            {
+                return 74;
             }
         }
         else if ([histTempCompleted count] == indexPath.row ||
@@ -791,14 +796,15 @@ return customView;
             return 200;
         }
     }
-    else
+    else // For Pending Tab
     {
-        if ([histShowArrayPending count] > indexPath.row) {
-            return 80;
+        if ([histShowArrayPending count] > indexPath.row)
+        {
+            return 81;
         }
     }
 
-    return 72;
+    return 74;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -893,7 +899,7 @@ return customView;
                     
                     UIView *indicator = [UIView new];
                     
-                    UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 8, 10, 11)];
+                    UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 7, 10, 11)];
                     [statusIndicator setBackgroundColor:[UIColor clearColor]];
                     [statusIndicator setTextAlignment:NSTextAlignmentCenter];
                     [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
@@ -922,7 +928,7 @@ return customView;
                     
                     UILabel *glyphDate = [UILabel new];
                     [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                    [glyphDate setFrame:CGRectMake(147, 8, 14, 10)];
+                    [glyphDate setFrame:CGRectMake(155, 7, 14, 11)];
                     [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                     [glyphDate setTextColor:kNoochGrayLight];
                     [cell.contentView addSubview:glyphDate];
@@ -1035,7 +1041,7 @@ return customView;
                         [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_evenWider"];
                         [transferTypeLabel setBackgroundColor:Rgb2UIColor(108, 109, 111, 1)];
                         [date setStyleClass:@"history_datetext_wide"];
-                        [glyphDate setFrame:CGRectMake(173, 9, 14, 10)];
+                        [glyphDate setFrame:CGRectMake(180, 7, 14, 11)];
                         [indicator setStyleClass:@"history_sidecolor_neutral"];
                         [amount setTextColor:kNoochGrayDark];
                         [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
@@ -1052,12 +1058,12 @@ return customView;
                     //  'updated_balance' now for displaying transfer STATUS, only if status is "cancelled" or "rejected" or "success" (for invites)
                     //  (this used to display the user's updated balance, which no longer exists)
                     
-                    UILabel *updated_balance = [UILabel new];
+                    UILabel * updated_balance = [UILabel new];
+                    [updated_balance setStyleClass:@"transfer_status"];
                     
                     if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"] ||
                         [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"])
                     {
-                        [updated_balance setStyleClass:@"transfer_status"];
                         [updated_balance setText:[NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"TransactionStatus"]]];
                         [updated_balance setTextColor:kNoochGrayLight];
                         [cell.contentView addSubview:updated_balance];
@@ -1066,14 +1072,12 @@ return customView;
                              [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] )
                     {
                         [updated_balance setText:@"Accepted"];
-                        [updated_balance setStyleClass:@"transfer_status"];
                         [updated_balance setTextColor:kNoochGreen];
                         [cell.contentView addSubview:updated_balance];
                     }
                     else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] &&
                              [[dictRecord valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"])
                     {
-                        [updated_balance setStyleClass:@"transfer_status"];
                         [updated_balance setText:@"Resolved"];
                         [updated_balance setTextColor:kNoochGreen];
                         [cell.contentView addSubview:updated_balance];
@@ -1200,10 +1204,7 @@ return customView;
                 [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]||
                 [[dictRecord valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"] )
             {
-
-                UIView * indicator = [UIView new];
-                
-                UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 8, 10, 11)];
+                UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 7, 10, 11)];
                 [statusIndicator setBackgroundColor:[UIColor clearColor]];
                 [statusIndicator setTextAlignment:NSTextAlignmentCenter];
                 [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
@@ -1213,6 +1214,7 @@ return customView;
                 [amount setTextAlignment:NSTextAlignmentRight];
                 [amount setFont:[UIFont fontWithName:@"Roboto-Medium" size:18]];
                 [amount setStyleClass:@"history_transferamount"];
+                [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]]];
                 
                 UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 9, 50, 50)];
                 pic.layer.cornerRadius = 25;
@@ -1221,8 +1223,8 @@ return customView;
                 
 				UILabel *transferTypeLabel = [UILabel new];
                 [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
-                transferTypeLabel.layer.cornerRadius = 3;
-                transferTypeLabel .clipsToBounds = YES;
+                transferTypeLabel.layer.cornerRadius = 4;
+                transferTypeLabel.clipsToBounds = YES;
                 
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabel"];
@@ -1233,7 +1235,7 @@ return customView;
 
                 UILabel *glyphDate = [UILabel new];
                 [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                [glyphDate setFrame:CGRectMake(147, 8, 14, 10)];
+                [glyphDate setFrame:CGRectMake(155, 7, 14, 11)];
                 [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                 [glyphDate setTextColor:kNoochGrayLight];
                 [cell.contentView addSubview:glyphDate];
@@ -1257,8 +1259,6 @@ return customView;
                     {
                         // Sent Transfer
                         [amount setStyleClass:@"history_transferamount_neg"];
-                        [indicator setStyleClass:@"history_sidecolor_neg"];
-                        [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                         [transferTypeLabel setText:@"Transfer to"];
 						[transferTypeLabel setBackgroundColor:kNoochRed];
                         [name setText:[NSString stringWithFormat:@"%@",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
@@ -1267,25 +1267,18 @@ return customView;
                     }
                     else
                     {
-                        if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"])
-                        {
-                            // Received Transfer
-                            [amount setStyleClass:@"history_transferamount_pos"];
-                            [indicator setStyleClass:@"history_sidecolor_pos"];
-                            [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                            [transferTypeLabel setText:@"Transfer from"];
-                            [transferTypeLabel setBackgroundColor:kNoochGreen];
-                            [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
-                            [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                                placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
-                        }
+                        // Received Transfer
+                        [amount setStyleClass:@"history_transferamount_pos"];
+                        [transferTypeLabel setText:@"Transfer from"];
+                        [transferTypeLabel setBackgroundColor:kNoochGreen];
+                        [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
+                        [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
+                            placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                     }
                 }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                 {
                     [amount setTextColor:kNoochGrayDark];
-                    [indicator setStyleClass:@"history_sidecolor_neutral"];
-                    [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
 
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"RecepientId"]])
                     {
@@ -1320,13 +1313,9 @@ return customView;
                     //ADDED BY CLIFF
                     if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
                         [amount setTextColor:kNoochGrayDark];
-                        [indicator setStyleClass:@"history_sidecolor_neutral"];
-                        [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                     }
                     else {
                         [amount setStyleClass:@"history_transferamount_neg"];
-                        [indicator setStyleClass:@"history_sidecolor_neg"];
-                        [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
                     }
                     [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
                     [transferTypeLabel setText:@"Invite sent to"];
@@ -1344,10 +1333,9 @@ return customView;
                     }
                     
                     [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_evenWider"];
-                    [transferTypeLabel setBackgroundColor:Rgb2UIColor(108, 109, 111, 1)];
+                    [transferTypeLabel setBackgroundColor:Rgb2UIColor(193, 32, 39, .98)];
                     [date setStyleClass:@"history_datetext_wide"];
-                    [glyphDate setFrame:CGRectMake(173, 9, 14, 10)];
-                    [indicator setStyleClass:@"history_sidecolor_neutral"];
+                    [glyphDate setFrame:CGRectMake(180, 7, 14, 11)];
                     [amount setTextColor:kNoochGrayDark];
                     [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
                     [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
@@ -1357,12 +1345,12 @@ return customView;
 				//  'updated_balance' now for displaying transfer STATUS, only if status is "cancelled" or "rejected"
                 //  (this used to display the user's updated balance, which no longer exists)
                 
-                UILabel *updated_balance = [UILabel new];
+                UILabel * updated_balance = [UILabel new];
+                [updated_balance setStyleClass:@"transfer_status"];
                 
                 if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"] ||
                     [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"])
                 {
-                    [updated_balance setStyleClass:@"transfer_status"];
                     [updated_balance setText:[NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"TransactionStatus"]]];
                     [updated_balance setTextColor:kNoochGrayLight];
                     [cell.contentView addSubview:updated_balance];
@@ -1371,7 +1359,6 @@ return customView;
                          [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"] )
                 {
                     [updated_balance setText:@"Paid"];
-                    [updated_balance setStyleClass:@"transfer_status"];
                     [updated_balance setTextColor:kNoochGreen];
                     [cell.contentView addSubview:updated_balance];
                 }
@@ -1379,14 +1366,12 @@ return customView;
                          [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] )
                 {
                     [updated_balance setText:@"Accepted"];
-                    [updated_balance setStyleClass:@"transfer_status"];
                     [updated_balance setTextColor:kNoochGreen];
                     [cell.contentView addSubview:updated_balance];
                 }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] &&
                          [[dictRecord valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"])
                 {
-                    [updated_balance setStyleClass:@"transfer_status"];
                     [updated_balance setText:@"Resolved"];
                     [updated_balance setTextColor:kNoochGreen];
                     [cell.contentView addSubview:updated_balance];
@@ -1409,7 +1394,7 @@ return customView;
                     NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
                     dateFormatter.dateFormat = @"dd-MMMM-yyyy";
 
-                    NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
+                    NSArray * arrdate = [[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
                     [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
                     [cell.contentView addSubview:date];
                 }
@@ -1563,7 +1548,7 @@ return customView;
         }
     }
                 
-      else if (self.completed_selected == NO)
+    else if (self.completed_selected == NO)
     {
         if (isLocalSearch)
         {
@@ -1594,7 +1579,7 @@ return customView;
                     transferTypeLabel.layer.cornerRadius = 3;
                     transferTypeLabel .clipsToBounds = YES;
 
-                    UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 8, 10, 11)];
+                    UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 7, 10, 11)];
                     [statusIndicator setBackgroundColor:[UIColor clearColor]];
                     [statusIndicator setTextAlignment:NSTextAlignmentCenter];
                     [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
@@ -1618,7 +1603,7 @@ return customView;
                     
                     UILabel *glyphDate = [UILabel new];
                     [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                    [glyphDate setFrame:CGRectMake(147, 8, 14, 10)];
+                    [glyphDate setFrame:CGRectMake(155, 7, 14, 11)];
                     [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                     [glyphDate setTextColor:kNoochGrayLight];
                     [cell.contentView addSubview:glyphDate];
@@ -1658,7 +1643,7 @@ return customView;
                         [statusIndicator setTextColor:kNoochRed];
                         [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_evenWider"];
                         [date setStyleClass:@"history_datetext_wide"];
-                        [glyphDate setFrame:CGRectMake(173, 9, 14, 10)];
+                        [glyphDate setFrame:CGRectMake(180, 7, 14, 11)];
                         [transferTypeLabel setBackgroundColor:kNoochRed];
                     }
 
@@ -1800,7 +1785,7 @@ return customView;
                 transferTypeLabel.layer.cornerRadius = 3;
                 transferTypeLabel .clipsToBounds = YES;
 
-                UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 8, 10, 11)];
+                UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 7, 10, 11)];
                 [statusIndicator setBackgroundColor:[UIColor clearColor]];
                 [statusIndicator setTextAlignment:NSTextAlignmentCenter];
                 [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
@@ -1816,7 +1801,7 @@ return customView;
 
                 UILabel *glyphDate = [UILabel new];
                 [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                [glyphDate setFrame:CGRectMake(147, 8, 14, 10)];
+                [glyphDate setFrame:CGRectMake(155, 7, 14, 11)];
                 [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
                 [glyphDate setTextColor:kNoochGrayLight];
                 [cell.contentView addSubview:glyphDate];
@@ -1830,7 +1815,6 @@ return customView;
                     ![[dictRecord objectForKey:@"Memo"] isKindOfClass:[NSNull class]] &&
                     ![[dictRecord valueForKey:@"Memo"] isEqualToString:@""] )
                 {
-                    
                     [label_memo setBackgroundColor:[UIColor clearColor]];
                     [label_memo setTextAlignment:NSTextAlignmentRight];
                     label_memo.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"For  \"%@\" ",[dictRecord valueForKey:@"Memo"]]
@@ -1871,7 +1855,7 @@ return customView;
                         bgcolor.backgroundColor = Rgb2UIColor(240, 250, 30, .35);
                         
                         if (label_memo.attributedText.length > 42) {
-                            [bgcolor setFrame:CGRectMake(0, 0, 320, 76)];
+                            [bgcolor setFrame:CGRectMake(0, 0, 320, 78)];
                         }
                         cell.backgroundView = bgcolor;
                         [cell.contentView addSubview:bgcolor];
@@ -1904,7 +1888,7 @@ return customView;
                     [statusIndicator setTextColor:kNoochRed];
                     [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_evenWider"];
                     [date setStyleClass:@"history_datetext_wide"];
-                    [glyphDate setFrame:CGRectMake(173, 9, 14, 10)];
+                    [glyphDate setFrame:CGRectMake(180, 7, 14, 11)];
                     [transferTypeLabel setBackgroundColor:kNoochRed];
                     [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
                     [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
@@ -2056,7 +2040,7 @@ return customView;
     [dateFormatter setPMSymbol:@"PM"];
     dateFormatter.dateFormat = @"M/dd/yyyy hh:mm:ss a";
     
-    NSDate   *aDate = [dateFormatter dateFromString:aStr];
+    NSDate *aDate = [dateFormatter dateFromString:aStr];
     return aDate;
 }
 
@@ -2494,8 +2478,8 @@ return customView;
         {
             isEnd = NO;
             isStart = NO;
-            int counter = 0;
-            int pending_notif_counter = 0;
+         // int counter = 0;
+         // int pending_notif_counter = 0;
             for (NSDictionary * dict in histArray)
             {
                 if ( [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]   ||
@@ -2507,28 +2491,28 @@ return customView;
                     [histShowArrayCompleted addObject:dict];
                 }
 
-                // For the Pending Notification in the Completed/Pending Segmented Control on History Screen
                 if (  ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] && ![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"]) ||
                      (([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
                        [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
                 {
                     [histShowArrayPending addObject:dict];
 
-                    if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
-                        counter++;
-                    }
+                    // For the Pending Notification in the Completed/Pending Segmented Control on History Screen
+//                    if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
+//                        counter++;
+//                    }
                 }
                 // For the Red Pending Notification Bubble in the left menu  (different than "counter" above,
                 // this one doesn't include Invites, or Requests this user Sent)
-                if ( ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
+             /* if ( ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
                       [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]) &&
                      ![[dict valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
                 {
                     pending_notif_counter++;
-                }
+                } */
             }
 
-            NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
+        /*  NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
             if (pending_notif_counter > 0) {
                 [defaults setBool:true forKey:@"hasPendingItems"];
             }
@@ -2538,8 +2522,8 @@ return customView;
             [defaults setValue: [NSString stringWithFormat:@"%d",pending_notif_counter] forKey:@"Pending_count"];
             [defaults synchronize];
             
-            // NSLog(@"The Pending counter is: %d",counter);
-            [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%d)",counter]forSegmentAtIndex:1];
+            NSLog(@"The Pending counter is: %d",counter);
+            [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%d)",counter]forSegmentAtIndex:1]; */
 
         }
         else if ([histArray count] == 0 && ![subTypestr isEqualToString:@"Pending"]) {
@@ -2562,7 +2546,7 @@ return customView;
     {
         //ServerDate
         NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        ServerDate=[self dateFromString:[dict valueForKey:@"Result"] ];
+        ServerDate = [self dateFromString:[dict valueForKey:@"Result"] ];
         [self.list removeFromSuperview];
         self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
         [self.list setStyleId:@"history"];
@@ -2582,6 +2566,51 @@ return customView;
              countRows = [histShowArrayCompleted count];
         }
         [self.view bringSubviewToFront:exportHistory];
+
+        serve * getPendingCount = [serve new];
+        [getPendingCount setDelegate:self];
+        [getPendingCount setTagName:@"getPendingTransfersCount"];
+        [getPendingCount getPendingTransfersCount];
+    }
+
+    else if ([tagName isEqualToString:@"getPendingTransfersCount"])
+    {
+        NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSLog(@"getPendingTransfersCount is: %@", dict);
+
+        int pendingDisputes = [[dict valueForKey:@"pendingDisputesNotSolved"] intValue];
+        int pendingInvitations = [[dict valueForKey:@"pendingInvitationsSent"] intValue];
+        int pendingRequestsSent = [[dict valueForKey:@"pendingRequestsSent"] intValue];
+        int pendingRequestsReceived = [[dict valueForKey:@"pendingRequestsReceived"] intValue];
+        int totalPending = pendingDisputes + pendingInvitations + pendingRequestsSent + pendingRequestsReceived;
+
+        // TOTAL PENDING PAYMENTS
+        if (totalPending > 0)
+        {
+            [completed_pending setTitle:[NSString stringWithFormat:@"  Pending  (%d)", totalPending] forSegmentAtIndex:1];
+        }
+        else
+        {
+            [completed_pending setTitle:@" Pending" forSegmentAtIndex:1];
+        }
+
+        NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
+
+        // PENDING REQUESTS RECEIVED (SET DEFAULT VALUE FOR LEFT SIDE MENU)
+        if (pendingRequestsReceived > 0)
+        {
+            [defaults setBool:true forKey:@"hasPendingItems"];
+
+            NSString * count;
+            count = [NSString stringWithFormat:@"%@", [dict valueForKey:@"pendingRequestsReceived"]];
+
+            [defaults setValue: count forKey:@"Pending_count"];
+            [defaults synchronize];
+        }
+        else
+        {
+            [defaults setBool:false forKey:@"hasPendingItems"];
+        }
     }
 
     else if ([tagName isEqualToString:@"search"])
@@ -2594,13 +2623,17 @@ return customView;
             isEnd = NO;
             isStart = NO;
             
-            for (NSDictionary*dict in histArray) {
-                if ([[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]) {
+            for (NSDictionary * dict in histArray)
+            {
+                if ([[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Success"])
+                {
                     [histShowArrayCompleted addObject:dict];
                 }
             }
-            for (NSDictionary*dict in histArray) {
-                if ([[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]) {
+            for (NSDictionary * dict in histArray)
+            {
+                if ([[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
+                {
                     [histShowArrayPending addObject:dict];
                 }
             }
@@ -2611,7 +2644,7 @@ return customView;
         if (isMapOpen) {
             [self mapPoints];
         }
-        serve *serveOBJ = [serve new];
+        serve * serveOBJ = [serve new];
         [serveOBJ setDelegate:self];
         [serveOBJ setTagName:@"time"];
         [serveOBJ GetServerCurrentTime];

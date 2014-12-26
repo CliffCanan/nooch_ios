@@ -53,7 +53,7 @@
     page1.descWidth = 302;
     page1.descPositionY = 126;
 
-    page1.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"home_img"]];
+    page1.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"home-circled"]];
     [page1.titleIconView setStyleClass:@"animate_bubble_slow"];
     page1.titleIconPositionY = 118;
 
@@ -68,7 +68,7 @@
     page2.descWidth = 302;
     page2.descPositionY = page2.titlePositionY - 23;
 
-    page2.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"connectBank_img"]];
+    page2.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"connectBank-circled"]];
     [page2.titleIconView setStyleClass:@"animate_bubble_tour"];
     page2.titleIconPositionY = 125;
     
@@ -83,7 +83,7 @@
     page3.descWidth = 304;
     page3.descPositionY = page3.titlePositionY - 21;
 
-    page3.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"selectRecipient_img"]];
+    page3.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"selectRecipient-Circled"]];
     page3.titleIconPositionY = 155;
 
     // PAGE 4

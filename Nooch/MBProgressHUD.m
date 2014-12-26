@@ -6,6 +6,8 @@
 
 #import "MBProgressHUD.h"
 #import <tgmath.h>
+#import <ArtisanSDK/ArtisanSDK.h>
+
 #define Rgb2UIColor(r, g, b, a)  [UIColor colorWithRed:((r) / 255.0) green:((g) / 255.0) blue:((b) / 255.0) alpha:(a)]
 
 
@@ -183,6 +185,20 @@ static const CGFloat kDetailsLabelFontSize = 15.0f;
 		self.detailsLabelText = nil;
 		self.opacity = 0.8f;
         //self.color = Rgb2UIColor(24, 158, 225, .85);
+        //self.color = Rgb2UIColor(11, 12, 53, .76);
+        NSString * colorFromArtisan = [ARPowerHookManager getValueForHookById:@"HUDcolor"];
+        if ([colorFromArtisan isEqualToString:@"darkBlue"])
+        {
+            self.color = Rgb2UIColor(11, 12, 53, .76);
+        }
+        else if ([colorFromArtisan isEqualToString:@"Blue"])
+        {
+            self.color = Rgb2UIColor(24, 158, 225, .82);
+        }
+        else
+        {
+            self.color = Rgb2UIColor(9, 10, 11, .72);
+        }
         self.color = Rgb2UIColor(11, 12, 53, .76);
 		self.labelFont = [UIFont boldSystemFontOfSize:kLabelFontSize];
         self.labelColor = [UIColor whiteColor];

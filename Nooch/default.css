@@ -23,7 +23,7 @@ view {
     font-family: "VarelaRound-Regular";
     font-weight: normal;
     font-size: 15px;
-    text-align: right;
+    text-align: center;
     color: #5a538d;
 }
 #prelogin_logo_loginScreen {
@@ -409,7 +409,20 @@ view {
     font-size			: 19px;
     background-image	: linear-gradient(#7fd034, #6ab029);
     border				: 1px solid #66AE3C;
-    box-shadow          : 0 2px 3px rgba(30,32,31,.18);
+    box-shadow          : 0 2px 3px rgba(26,38,32,.17);
+}
+#button_blue_home {
+    width				: 280px;
+    height				: 54px;
+    left                : 20px;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 19px;
+    background-image	: linear-gradient(#6dbee8, #41abe1);
+    border				: 1px solid #29A1DE;
+    box-shadow          : 0 2px 3px rgba(18,26,32,.16);
 }
 /****  Disabled GREEN GRADIENT  ****/
 .button_green:disabled,
@@ -936,12 +949,12 @@ view {
   
 /**  Signup: "Already a member...",  Select a Picture Screen, Welcome Screen **/
 .label_small {
-    left                : 20px;
-    width				: 280px;
+    left                : 15px;
+    width				: 290px;
     height				: 30px;
     font-family			: "Roboto";
     font-weight         : light;
-    font-size			: 18px;
+    font-size			: 19px;
     text-align       	: center;
     color 				: #414042;
 }
@@ -1165,20 +1178,20 @@ table-view#select_recipientwithoutSeperator {
 
 /**  Main entry field for the Amount.  Starts as light gray, turns dark when a number is entered. **/  
 #howmuch_amountfield {
-    left                : 110px;
-    top					: 63px;
-    width				: 180px;
-    height				: 60px;
+    left                : 104px;
+    top					: 58px;
+    width				: 190px;
+    height				: 68px;
     font-family			: "Roboto";
-    font-size			: 50px;
+    font-size			: 52px;
     font-weight         : medium;
     text-align       	: right;
     color 				: #58595B;
 }
 #howmuch_amountfield_4 {
-    left                : 110px;
+    left                : 108px;
     top					: 42px;
-    width				: 180px;
+    width				: 184px;
     height				: 50px;
     font-family			: "Roboto";
     font-size			: 42px;
@@ -2343,23 +2356,23 @@ table-view#emptyTable {
 /**  Text ("You Paid/Requested/Donated...")  **/
 .history_cell_transTypeLabel {
     left				: 71px;
-    top					: 8px;
-    width				: 66px;
+    top					: 7px;
+    width				: 72px;
     height				: 11px;
-    font-size			: 9px;
+    font-size			: 8px;
     font-weight			: medium;
     background-color    : rgba(232,233,234,.96);
     color               : white;
     border-radius       : 3px;
     text-align          : center;
-    opacity             : .85;
+    opacity             : .86;
 }
 .history_cell_transTypeLabel_wider {
-    width           : 70px;
+    width           : 74px;
 }
 .history_cell_transTypeLabel_evenWider {
     font-size       : 8px;
-    width           : 95px;
+    width           : 100px;
 }
 
 /**  Text in top row if table is empty  **/
@@ -2389,10 +2402,10 @@ table-view#emptyTable {
 
 /**  Date of the transfer ("2 days ago")  **/
 .history_datetext {
-    left                : 157px;
+    left                : 166px;
     top					: 7px;
     width				: 150px;
-    height				: 12px;
+    height				: 11px;
     font-family			: "Roboto";
     font-size			: 10px;
     font-weight         : light;
@@ -2400,7 +2413,7 @@ table-view#emptyTable {
     color 				: #58595b;
 }
 .history_datetext_wide {
-    left: 183;
+    left: 191;
 }
 
 /**  Amount of the Transfer on the right side of the row  **/
@@ -2430,7 +2443,7 @@ table-view#emptyTable {
 .history_memo {
     left				: 72px;
     top					: 42px;
-    width				: 200px;
+    width				: 197px;
     height				: 16px;
     font-family			: "Roboto";
     font-weight         : regular;
@@ -2452,7 +2465,7 @@ table-view#emptyTable {
     left                : 254px;
     top					: 42px;
     width				: 60px;
-    height				: 16px;
+    height				: 17px;
     font-family			: "Roboto";
     font-weight         : regular;
     font-size			: 11px;
@@ -3132,7 +3145,7 @@ table-view.stats_top_friends {
     width			: 300px;
     height			: 290px;
     background-color: white;
-    row-height		: 52px;
+    row-height		: 46px;
     separator-style : single-line;
     separator-color : rgba(188,190,192,.35);
 }
@@ -3215,10 +3228,10 @@ table-view.stats_top_friends_empty {
 }
 .stats_circle_transfers_Active {
     left            : 30px;
-    top             : 15px;
+    top             : 12px;
     width           : 56px;
     height          : 56px;
-    background-color: rgba(63, 171, 225, 1);
+    background-color: rgba(112, 191, 68, .96);
     border-radius   : 28px;
     text-align      : center;
 }
@@ -3233,10 +3246,10 @@ table-view.stats_top_friends_empty {
 }
 .stats_circle_Profile_Active {
     left            : 122px;
-    top             : 15px;
+    top             : 12px;
     width           : 56px;
     height          : 56px;
-    background-color: rgba(63, 171, 225, 1);
+    background-color: rgba(112, 191, 68, .96);
     border-radius   : 28px;
     text-align      : center;
 }
@@ -3251,10 +3264,10 @@ table-view.stats_top_friends_empty {
 }
 .stats_circle_topFriends_Active {
     left            : 214px;
-    top             : 15px;
+    top             : 12px;
     width           : 56px;
     height          : 56px;
-    background-color: rgba(63, 171, 225, 1);
+    background-color: rgba(112, 191, 68, .96);
     border-radius   : 28px;
 }
 

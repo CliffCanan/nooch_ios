@@ -15,7 +15,6 @@
 #import "NSString+MD5Addition.h"
 #import "UIDevice+IdentifierAddition.h"
 
-
 NSDictionary *transactionInputaddfund;
 NSMutableURLRequest *requestmemid;
 NSMutableURLRequest*requestList;
@@ -67,12 +66,13 @@ NSDictionary*dictResponse;
 NSString *responseString;
 @implementation serve
 @synthesize Delegate,tagName,responseData;
-//NSString * const ServerUrl =@"https://noochweb.venturepact.com/noochservice/noochservice.svc";
-//NSString * const ServerUrl = @"https://192.203.102.254/NoochService/NoochService.svc"; //development server
+
 NSString * const ServerUrl =@"https://www.noochme.com/NoochService/NoochService.svc";
+//NSString * const ServerUrl = @"https://192.203.102.254/NoochService/NoochService.svc"; //development server
 //NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
 //NSString * const ServerUrl = @"https://10.200.1.40/noochservice/NoochService.svc";
 //NSString * const ServerUrl = @"http://noochweb.venturepact.com/NoochService.svc"; //testing server Venturepact isCheckValidation;
+
 bool locationUpdate;
 NSString *tranType;
 NSString *amnt;
@@ -80,9 +80,7 @@ NSString *amnt;
 
 -(void)addFund:(NSString*)amount{
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
     transactionInputaddfund = [NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], @"MemberId", @"", @"RecepientId", amount, @"Amount", TransactionDate, @"TransactionDate", @"false", @"IsPrePaidTransaction",  [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"], @"DeviceId", Latitude, @"Latitude", Longitude, @"Longitude", Altitude, @"Altitude", addressLine1, @"AddressLine1", addressLine2, @"AddressLine2", city, @"City", state, @"State", country, @"Country", zipcode, @"ZipCode", nil];
-    
     NSMutableDictionary *transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputaddfund, @"transactionInput",[defaults valueForKey:@"OAuthToken"],@"accessToken", nil];
     NSError *error;
     NSData *postData = [NSJSONSerialization dataWithJSONObject:transaction
@@ -1759,9 +1757,10 @@ NSString *amnt;
 {
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    NSString *urlString = [NSString stringWithFormat:@"%@/SendTransactionReminderEmail?ReminderType=%@&MemberId=%@&accesstoken=%@&transactionId=%@",ServerUrl,reminderType,[defaults objectForKey:@"MemberId"],[defaults objectForKey:@"OAuthToken"],transactionId];
-    NSURL *url = [NSURL URLWithString:urlString];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSString * urlString = [NSString stringWithFormat:@"%@/SendTransactionReminderEmail?ReminderType=%@&MemberId=%@&accesstoken=%@&transactionId=%@",ServerUrl,reminderType,[defaults objectForKey:@"MemberId"],[defaults objectForKey:@"OAuthToken"],transactionId];
+    NSURL * url = [NSURL URLWithString:urlString];
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
 
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
@@ -1769,4 +1768,19 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 
+-(void)getPendingTransfersCount
+{
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSString * urlString = [NSString stringWithFormat:@"%@/GetMemberPendingTransctionsCount?MemberId=%@&accesstoken=%@",ServerUrl,[defaults objectForKey:@"MemberId"],[defaults objectForKey:@"OAuthToken"]];
+    NSURL * url = [NSURL URLWithString:urlString];
+
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+
+}
 @end

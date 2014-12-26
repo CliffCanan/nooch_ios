@@ -730,7 +730,7 @@
         [self.back_donation.layer addSublayer:pieLayer];
 
         UIView * pieGraphMiddle = [[UIView alloc] init];
-        pieGraphMiddle.frame = CGRectMake(103, 113, 94, 94);
+        pieGraphMiddle.frame = CGRectMake(104, 114, 92, 92);
         [pieGraphMiddle setStyleId:@"pieGraphMiddle"];
         pieGraphMiddle.layer.cornerRadius = 46;
         [self.back_donation addSubview:pieGraphMiddle];

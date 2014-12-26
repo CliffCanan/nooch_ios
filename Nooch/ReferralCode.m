@@ -32,14 +32,17 @@
     }
     return self;
 }
+
 -(void) BackClicked:(id) sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     self.screenName = @"ReferralCode Screen";
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -47,10 +50,11 @@
     UIImageView * logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
-    
+
     UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(75, 82, 170, 16)];
     [slogan setBackgroundColor:[UIColor clearColor]];
-    [slogan setText:@"Money Made Simple"];
+    NSString * sloganFromArtisan = [ARPowerHookManager getValueForHookById:@"slogan"];
+    [slogan setText:sloganFromArtisan];
     [slogan setFont:[UIFont fontWithName:@"VarelaRound-Regular" size:15]];
     [slogan setStyleClass:@"prelogin_slogan"];
     [self.view addSubview:slogan];
@@ -67,11 +71,9 @@
     [self.view addSubview:title];
 
     UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 166, 300, 70)];
-    [prompt setTextColor:kNoochGrayDark];
     [prompt setBackgroundColor:[UIColor clearColor]];
     [prompt setNumberOfLines:3];
-    [prompt setFont:[UIFont systemFontOfSize:14]];
-    [prompt setText:@"Nooch is currently invite-only. If you have a Referral Code enter it below to finish creating your account."]; [prompt setTextAlignment:NSTextAlignmentCenter];
+    [prompt setText:@"If you have a Referral Code from a current Nooch user, enter it below:"];
     [prompt setStyleClass:@"instruction_text"];
     [self.view addSubview:prompt];
 
@@ -123,23 +125,22 @@
 {
     if ([self.code_field.text length] == 0)
     {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Please Enter An Invite Code" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Please Enter An Invite Code" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [enter setEnabled:YES];
         return;
     }
-    
+
     RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
-    
+
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
-    self.hud.delegate = self;
     self.hud.labelText = @"Validating your invite code";
     [self.hud show:YES];
-    
+
     [enter setEnabled:NO];
     serve *inv_code = [serve new];
     [inv_code setDelegate:self];
@@ -149,24 +150,47 @@
 
 - (void)request_code
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request An Invite Code" message:@"To make sure every Nooch user has the best experience, you must have an invite or referral code.\n\nYou can get a code from any current Nooch user, or request an invite directly from us. We try to send out codes as quickly as possible when they are requested." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Request Code", nil];
+    /*UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request An Invite Code"
+                                                 message:@"To make sure every Nooch user has the best experience, you must have an invite or referral code.\n\nYou can get a code from any current Nooch user, or request an invite directly from us. We try to send out codes as quickly as possible when they are requested."
+                                                delegate:self
+                                       cancelButtonTitle:@"Ok"
+                                       otherButtonTitles:@"Request Code", nil];
     [av show];
-    [av setTag:101];
+    [av setTag:101];*/
+
+    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+    spinner1.color = [UIColor whiteColor];
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.hud];
+
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.customView = spinner1;
+    self.hud.labelText = @"";
+    [self.hud show:YES];
+
+    [enter setEnabled:NO];
+
+    refCodeFromArtisan = [ARPowerHookManager getValueForHookById:@"refCode"];
+    serve * inv_code = [serve new];
+    [inv_code setDelegate:self];
+    [inv_code setTagName:@"inv_check"];
+    [inv_code validateInviteCode:[refCodeFromArtisan uppercaseString]];
 }
 
--(void)Error:(NSError *)Error{
+-(void)Error:(NSError *)Error
+{
     [self.hud hide:YES];
-    
+
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
+
     [alert show];
-    
 }
+
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     NSError *error;
@@ -178,6 +202,7 @@
         Register *reg = [Register new];
         [nav_ctrl pushViewController:reg animated:YES];
     }
+
     else if ([tagName isEqualToString:@"inv_check"])
     {
         [self.hud hide:YES];
@@ -190,21 +215,32 @@
             spinner1.color = [UIColor whiteColor];
             self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
             [self.navigationController.view addSubview:self.hud];
-            
+
             self.hud.mode = MBProgressHUDModeCustomView;
             self.hud.customView = spinner1;
-            //self.hud.delegate = self;
             self.hud.labelText = @"Creating your Nooch account";
             [self.hud show:YES];
 
             serve * serveOBJ = [serve new];
             [serveOBJ setDelegate:self];
-            serveOBJ.tagName=@"validate";
-            [serveOBJ getTotalReferralCode:self.code_field.text];
+            serveOBJ.tagName = @"validate";
+            if ([self.code_field.text length] > 0)
+            {
+                [serveOBJ getTotalReferralCode:self.code_field.text];
+            }
+            else
+            {
+                [serveOBJ getTotalReferralCode:refCodeFromArtisan];
+            }
+
         }
         else
         {
-            UIAlertView *avInvalidCode = [[UIAlertView alloc]initWithTitle:@"Not Quite Right" message:@"Please check your referral code to make sure you entered it correctly.  If you do not have a code, you can request one." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Request Code", nil];
+            UIAlertView *avInvalidCode = [[UIAlertView alloc]initWithTitle:@"Not Quite Right"
+                                                                   message:@"We don't recognize that referral code. Please check to make sure you entered it correctly.  If you do not have a code, you can request one."
+                                                                  delegate:self
+                                                         cancelButtonTitle:@"Ok"
+                                                         otherButtonTitles:@"Request Code", nil];
             [avInvalidCode setTag:88];
             [avInvalidCode show];
             [self.code_field becomeFirstResponder];
@@ -215,7 +251,7 @@
     if ([tagName isEqualToString:@"validate"])
     {
         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        
+
         if ([[[response valueForKey:@"getTotalReferralCodeResult"] valueForKey:@"Result"] isEqualToString:@"True"])
         {
             serve *create = [serve new];
@@ -227,12 +263,16 @@
         else
         {
             [self.hud hide:YES];
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Expired Referral Code" message:@"Sorry, looks like that referral code is no longer valid.  Please try another or request a new code." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Expired Referral Code"
+                                                            message:@"Sorry, looks like that referral code is no longer valid.  Please try another code."
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil, nil];
             [alert show];
             [enter setEnabled:YES];
         }
-        
     }
+
     else if ([tagName isEqualToString:@"encrypt"])
     {
         NSError *error;
@@ -241,23 +281,29 @@
         [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"first_name"] forKey:@"first_name"];
         [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"last_name"] forKey:@"last_name"];
         [[NSUserDefaults standardUserDefaults] setObject:[[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]] forKey:@"password"];
-        
+
         if ([self.user objectForKey:@"facebook_id"]) [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"facebook_id"] forKey:@"facebook_id"];
-        
+
         if (![[loginResult objectForKey:@"Status"] isKindOfClass:[NSNull class]] &&
               [loginResult objectForKey:@"Status"] != NULL)
         {
             getEncryptedPassword = [loginResult objectForKey:@"Status"];
         }
-        
+
         [user setObject:[self.user objectForKey:@"first_name"] forKey:@"firstName"];
         [[NSUserDefaults standardUserDefaults]setObject:[self.user objectForKey:@"email"] forKey:@"UserName"];
-        
-        serve *create = [serve new];
+
+        serve * create = [serve new];
         [create setDelegate:self];
         [create setTagName:@"create_account"];
-        [create newUser:[self.user objectForKey:@"email"] first:[self.user objectForKey:@"first_name" ] last:[self.user objectForKey:@"last_name"] password:[[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]] pin:[self.user objectForKey:@"pin_number"] invCode:self.code_field.text fbId:[self.user objectForKey:@"facebook_id"] ? [self.user objectForKey:@"facebook_id"]: @"" ];
-        
+        [create newUser:[self.user objectForKey:@"email"]
+                  first:[self.user objectForKey:@"first_name" ]
+                   last:[self.user objectForKey:@"last_name"]
+               password:[[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]]
+                    pin:[self.user objectForKey:@"pin_number"]
+                invCode:[self.code_field.text length] == 0 ? refCodeFromArtisan : self.code_field.text
+                   fbId:[self.user objectForKey:@"facebook_id"] ? [self.user objectForKey:@"facebook_id"]: @"" ];
+
         self.code_field.text = @"";
     }
     else if ([tagName isEqualToString:@"create_account"])
@@ -277,11 +323,15 @@
         else if ([[[response objectForKey:@"MemberRegistrationResult"] objectForKey:@"Result"] isEqualToString:@"You are already a nooch member."])
         {
             [self.hud hide:YES];
-            UIAlertView *decline = [[UIAlertView alloc] initWithTitle:@"Well..." message:@"This address already exists in our system, we are not yet able to clone you, our apologies." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *decline = [[UIAlertView alloc] initWithTitle:@"Well..."
+                                                              message:@"This address already exists in our system, we are not yet able to clone you, our apologies."
+                                                             delegate:self
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles:nil];
             [decline show];
             [decline setTag:1];
             [enter setEnabled:YES];
-            
+
             return;
         }
     }
@@ -307,7 +357,7 @@
         [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
         [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
         [automatic writeToFile:[self autoLogin] atomically:YES];
-        
+
         Welcome *welc = [Welcome new];
         [self.navigationController pushViewController:welc animated:YES];
     }

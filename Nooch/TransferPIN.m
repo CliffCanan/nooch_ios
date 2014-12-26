@@ -10,6 +10,8 @@
 #import "UIImageView+WebCache.h"
 #import "SelectRecipient.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import <ArtisanSDK/ArtisanSDK.h>
+
 @interface TransferPIN ()<GetLocationDelegate>
 {
     GetLocation*getlocation;
@@ -1179,8 +1181,10 @@
         UIImage * imgempty = [UIImage imageNamed:@""];
         [[assist shared] setTranferImage:imgempty];
 
-        int randNum = arc4random() % 13;
+        int randNum = arc4random() % 14;
         UIAlertView *av;
+        NSString * alertTitleFromArtisan = [ARPowerHookManager getValueForHookById:@"transSuccessAlertTitle"];
+        NSString * alertMsgFromArtisan = [ARPowerHookManager getValueForHookById:@"transSuccessAlertMsg"];
         switch (randNum) {
             case 0:
                 av = [[UIAlertView alloc] initWithTitle:@"Nice Work"
@@ -1274,6 +1278,13 @@
             case 13:
                 av = [[UIAlertView alloc] initWithTitle:@"Easy As Pie"
                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x8D\xB0\nWasn't that easier than lugging to an ATM and forking over colored pieces of paper to %@?",[receiverFirst capitalizedString]]
+                                               delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:@"View Details",nil];
+                break;
+            case 14:
+                av = [[UIAlertView alloc] initWithTitle:alertTitleFromArtisan
+                                                message:alertMsgFromArtisan
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:@"View Details",nil];
@@ -1478,14 +1489,17 @@
         sendingMoney = NO;
     }
 }
+
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
     return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 }
+
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
     if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
         [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
     [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
 }
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];

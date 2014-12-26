@@ -10,6 +10,7 @@
 #import "UAirship.h"
 #import "UAConfig.h"
 #import "UAPush.h"
+#import <ArtisanSDK/ArtisanSDK.h>
 #import <CoreTelephony/CTCallCenter.h>
 #import "ReEnterPin.h"
 #import "ProfileInfo.h"
@@ -54,7 +55,7 @@ bool modal;
     [[UAPush shared] resetBadge];
     
     //Google Analytics
-    [GAI sharedInstance].dispatchInterval = 25;
+    [GAI sharedInstance].dispatchInterval = 22;
     [GAI sharedInstance].trackUncaughtExceptions = YES;
     // Optional: set Logger to VERBOSE for debug information.
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
@@ -80,7 +81,24 @@ bool modal;
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 
     [Appirater appLaunched:YES];
+
     NSSetUncaughtExceptionHandler(&exceptionHandler);
+    
+    // ARTISAN SDK
+//    [ARPowerHookManager registerHookWithId:@"serverURL" friendlyName:@"Server URL To Use" defaultValue:@"https://www.noochme.com/NoochService/NoochService.svc"];
+    [ARPowerHookManager registerHookWithId:@"slogan" friendlyName:@"Slogan" defaultValue:@"Money Made Simple"];
+    [ARPowerHookManager registerHookWithId:@"HUDcolor" friendlyName:@"HUD Color" defaultValue:@"black"];
+    [ARPowerHookManager registerHookWithId:@"refCode" friendlyName:@"Referral Code" defaultValue:@"NOCODE"];
+    [ARPowerHookManager registerHookWithId:@"versionNum" friendlyName:@"Most Recent Version Number" defaultValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+    [ARPowerHookManager registerHookWithId:@"homeBtnClr" friendlyName:@"Home Button Color" defaultValue:@"green"];
+
+    [ARPowerHookManager registerHookWithId:@"transLimit" friendlyName:@"Transfer Limit" defaultValue:@"300"];
+
+    [ARPowerHookManager registerHookWithId:@"transSuccessAlertTitle" friendlyName:@"Alert Title After Transfer Success" defaultValue:@"Nice Work"];
+    [ARPowerHookManager registerHookWithId:@"transSuccessAlertMsg" friendlyName:@"Alert Message After Transfer Success" defaultValue:@"\xF0\x9F\x92\xB8\nYour cash was sent successfully."];
+
+    [ARManager startWithAppId:@"5487d09c2b22204361000011"];
+
     return YES;
 }
 
