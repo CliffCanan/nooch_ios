@@ -14,6 +14,10 @@ BOOL isPayBack;
 BOOL isEmailEntry;
 BOOL isUserByLocation;
 @interface HowMuch : GAITrackedViewController<UITextFieldDelegate,serveD,UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+{
+    NSString * transLimitFromArtisanString;
+    int transLimitFromArtisanInt;
+}
 
 - (id)initWithReceiver:(NSDictionary *)receiver;
 @property(nonatomic,strong)UIButton*balance;

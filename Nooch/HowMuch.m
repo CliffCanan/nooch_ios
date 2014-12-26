@@ -320,6 +320,8 @@
         [self.camera setStyleId:@"howmuch_camera_4"];
     }
 
+    transLimitFromArtisanString = [ARPowerHookManager getValueForHookById:@"transLimit"];
+    transLimitFromArtisanInt = [transLimitFromArtisanString integerValue];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -476,10 +478,10 @@
         [alert show];
         return;
     }
-    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 300)
+    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > transLimitFromArtisanInt)
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Now"
-                                                        message:@"\xF0\x9F\x98\xB3\nTo keep Nooch safe, please don’t send more than $300. We hope to raise this limit very soon!"
+                                                        message:[NSString stringWithFormat:@"\xF0\x9F\x98\xB3\nTo keep Nooch safe, please don’t send more than $%@. We hope to raise this limit very soon!", transLimitFromArtisanString]
                                                        delegate:self
                                               cancelButtonTitle:nil
                                               otherButtonTitles:@"Ok", nil];
@@ -529,10 +531,10 @@
         [alert show];
         return;
     }
-    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > 300)
+    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > transLimitFromArtisanInt)
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Big Spender"
-                                                        message:@"\xF0\x9F\x98\xA7\nWhile we definitely appreciate your enthusiasm, we are limiting transfers to $300 for now in order to minimize our risk (and yours). We're working to raise the limit soon!"
+                                                        message:[NSString stringWithFormat:@"\xF0\x9F\x98\xA7\nWhile we definitely appreciate your enthusiasm, we are limiting transfers to $%@ for now in order to minimize our risk (and yours). We're working to raise the limit soon!", transLimitFromArtisanString]
                                                        delegate:self
                                               cancelButtonTitle:nil
                                               otherButtonTitles:@"Ok", nil];

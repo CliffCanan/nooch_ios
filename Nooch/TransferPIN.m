@@ -1051,17 +1051,6 @@
             NSLog(@"Input: %@",input);
             TransactionDetails *td = [[TransactionDetails alloc] initWithData:input];
             [nav_ctrl pushViewController:td animated:YES];
-
-            [ARTrackingManager trackEvent:@"User Tapped In-App Coupon"
-                               parameters:@{@"coupon-code":@"B012345"}
-                                 category:@"Men"];
-            
-            [ARTrackingManager trackEvent:@"User Tapped In-App Coupon"
-                               parameters:@{@"coupon-code":@"B012345"}
-                                 category:@"Men"
-                              subCategory:@"Shoes"];
-
-            [ARTrackingManager trackEvent:@"itemsInCartAreNowOutofStock"];
         }
     }
     else if (alertView.tag == 2500)
@@ -1192,8 +1181,10 @@
         UIImage * imgempty = [UIImage imageNamed:@""];
         [[assist shared] setTranferImage:imgempty];
 
-        int randNum = arc4random() % 13;
+        int randNum = arc4random() % 14;
         UIAlertView *av;
+        NSString * alertTitleFromArtisan = [ARPowerHookManager getValueForHookById:@"transSuccessAlertTitle"];
+        NSString * alertMsgFromArtisan = [ARPowerHookManager getValueForHookById:@"transSuccessAlertMsg"];
         switch (randNum) {
             case 0:
                 av = [[UIAlertView alloc] initWithTitle:@"Nice Work"
@@ -1287,6 +1278,13 @@
             case 13:
                 av = [[UIAlertView alloc] initWithTitle:@"Easy As Pie"
                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x8D\xB0\nWasn't that easier than lugging to an ATM and forking over colored pieces of paper to %@?",[receiverFirst capitalizedString]]
+                                               delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:@"View Details",nil];
+                break;
+            case 14:
+                av = [[UIAlertView alloc] initWithTitle:alertTitleFromArtisan
+                                                message:alertMsgFromArtisan
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:@"View Details",nil];

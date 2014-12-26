@@ -917,9 +917,22 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     [top_button removeFromSuperview];
 
+    NSString * homeBtnColorFromArtisan = [ARPowerHookManager getValueForHookById:@"homeBtnClr"];
+
     top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [top_button setFrame:CGRectMake(20, 310, 280, 54)];
-    [top_button setStyleId:@"button_green_home"];
+    if ([homeBtnColorFromArtisan isEqualToString:@"green"])
+    {
+        [top_button setStyleId:@"button_green_home"];
+    }
+    else if ([homeBtnColorFromArtisan isEqualToString:@"blue"])
+    {
+        [top_button setStyleId:@"button_blue_home"];
+    }
+    else
+    {
+        [top_button setStyleId:@"button_green_home"];
+    }
     [top_button setTitleShadowColor:Rgb2UIColor(26, 38, 32, 0.2) forState:UIControlStateNormal];
     top_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     top_button.alpha = .01;

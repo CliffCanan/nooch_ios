@@ -16,7 +16,6 @@
 #import "UIDevice+IdentifierAddition.h"
 #import "SpinKit/RTSpinKitView.h"
 #import <FacebookSDK/FacebookSDK.h>
-#import <ArtisanSDK/ArtisanSDK.h>
 
 @interface Login ()<FBLoginViewDelegate>{
     core*me;
@@ -160,7 +159,7 @@
     [super viewDidLoad];
     // Close the session and remove the access token from the cache
     // The session state handler (in the app delegate) will be called automatically
-//    [FBSession.activeSession closeAndClearTokenInformation];
+ //    [FBSession.activeSession closeAndClearTokenInformation];
     [FBSession.activeSession close];
     [FBSession setActiveSession:nil];
 
@@ -175,7 +174,7 @@
     if ([[UIScreen mainScreen] bounds].size.height > 500)
     {
         NSString * sloganFromArtisan = [ARPowerHookManager getValueForHookById:@"slogan"];
-        NSLog(@"SloganFromArtisan: %@",sloganFromArtisan);
+        NSLog(@"SloganFromArtisan is: %@",sloganFromArtisan);
         UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(70, 72, 180, 16)];
         [slogan setBackgroundColor:[UIColor clearColor]];
         [slogan setText:sloganFromArtisan];

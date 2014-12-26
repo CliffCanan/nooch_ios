@@ -168,7 +168,8 @@
 
     UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(75, 82, 170, 16)];
     [slogan setBackgroundColor:[UIColor clearColor]];
-    [slogan setText:@"Money Made Simple"];
+    NSString * sloganFromArtisan = [ARPowerHookManager getValueForHookById:@"slogan"];
+    [slogan setText:sloganFromArtisan];
     [slogan setFont:[UIFont fontWithName:@"VarelaRound-regular" size:15]];
     [slogan setStyleClass:@"prelogin_slogan"];
     [self.view addSubview:slogan];

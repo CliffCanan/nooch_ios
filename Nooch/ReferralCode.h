@@ -12,7 +12,8 @@
 
 @interface ReferralCode : GAITrackedViewController<serveD,UITextFieldDelegate,MBProgressHUDDelegate>
 {
-    NSString*getEncryptedPassword;
+    NSString * getEncryptedPassword;
+    NSString * refCodeFromArtisan;
     float lat,lon;
     UIActivityIndicatorView*spinner;
     UIButton *enter;
