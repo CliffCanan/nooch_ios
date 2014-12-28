@@ -40,6 +40,8 @@ NSUserDefaults *user;
     CLLocationManager*locationManager;
     float lat,lon;
     UIView*blankView;
+    UIView*overlay;
+    UIView*mainView;
     NSDate*ServerDate;
     NSTimer*timerHome;
     NSMutableArray *additions;

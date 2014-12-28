@@ -1110,11 +1110,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [automatic writeToFile:[self autoLogin] atomically:YES];
 
     // for the red notification bubble if a user has a pending RECEIVED Request
-  /*serve *serveOBJ = [serve new];
-    [serveOBJ setDelegate:self];
-    serveOBJ.tagName = @"histPending";
-    [serveOBJ histMore:@"ALL" sPos:1 len:20 subType:@"Pending"];*/
-
     serve * getPendingCount = [serve new];
     [getPendingCount setDelegate:self];
     [getPendingCount setTagName:@"getPendingTransfersCount"];
@@ -1123,10 +1118,166 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     //do carousel
     [self.view addSubview:_carousel];
     [_carousel reloadData];
+
+    NSString * versionNumFromArtisan = [ARPowerHookManager getValueForHookById:@"versionNum"];
+    NSLog(@"VersionNumFromArtisan is: %@",versionNumFromArtisan);
+    NSLog(@"xCode Bundle Version Number is: %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]);
+
+    if (![versionNumFromArtisan isEqualToString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]] &&
+         [[NSUserDefaults standardUserDefaults] boolForKey:@"VersionUpdateNoticeDisplayed"] == false )
+    {
+        [self displayVersionUpdateNotice];
+    }
+}
+
+-(void)displayVersionUpdateNotice
+{
+    overlay = [[UIView alloc]init];
+    overlay.frame = CGRectMake(0, 0, 320, [[UIScreen mainScreen] bounds].size.height);
+    overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.0];
+    [self.navigationController.view addSubview:overlay];
+
+    mainView = [[UIView alloc]init];
+    mainView.layer.cornerRadius = 5;
+    if ([[UIScreen mainScreen] bounds].size.height < 500)
+    {
+        mainView.frame = CGRectMake(9, -500, 302, 440);
+    }
+    else
+    {
+        mainView.frame = CGRectMake(9, -540, 302, 445);
+    }
+    mainView.backgroundColor = [UIColor whiteColor];
+    mainView.layer.masksToBounds = NO;
+
+    [UIView animateWithDuration:.4
+                     animations:^{
+                         overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+                     }];
+
+    [UIView animateWithDuration:0.38
+                     animations:^{
+                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                         if ([[UIScreen mainScreen] bounds].size.height < 500)
+                         {
+                             mainView.frame = CGRectMake(9, 80, 302, 440);
+                         }
+                         else
+                         {
+                             mainView.frame = CGRectMake(9, 80, 302, 445);
+                         }
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:.23
+                                          animations:^{
+                                              [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                                              if ([[UIScreen mainScreen] bounds].size.height < 500)
+                                              {
+                                                  mainView.frame = CGRectMake(9, 45, 302, 440);
+                                              }
+                                              else
+                                              {
+                                                  mainView.frame = CGRectMake(9, 55, 302, 445);
+                                              }
+                                          }];
+                     }];
+
+    UIView * head_container = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 302, 44)];
+    head_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    [mainView addSubview:head_container];
+    head_container.layer.cornerRadius = 10;
+
+    UIView * space_container = [[UIView alloc]initWithFrame:CGRectMake(0, 34, 302, 10)];
+    space_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    [mainView addSubview:space_container];
+
+    UILabel * title = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 302, 28)];
+    [title setBackgroundColor:[UIColor clearColor]];
+    [title setText:@"New Version Available"];
+    [title setStyleClass:@"lightbox_title"];
+    [head_container addSubview:title];
+
+    UILabel * glyph_download = [UILabel new];
+    [glyph_download setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
+    [glyph_download setFrame:CGRectMake(18, 10, 22, 26)];
+    [glyph_download setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cloud-download"]];
+    [glyph_download setTextColor:kNoochBlue];
+    [head_container addSubview:glyph_download];
+
+    UIImageView * imageShow = [[UIImageView alloc]initWithFrame:CGRectMake(11, 40, 280, 380)];
+    imageShow.image = [UIImage imageNamed:@"Knox_Infobox"];
+    imageShow.contentMode = UIViewContentModeScaleAspectFit;
+
+    UIButton * btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btnLink setStyleClass:@"button_green_welcome"];
+    [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
+    btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    btnLink.frame = CGRectMake(10,mainView.frame.size.height-56, 280, 50);
+    [btnLink setTitle:@"Get Newest Version" forState:UIControlStateNormal];
+    [btnLink addTarget:self action:@selector(OpenAppInAppStore) forControlEvents:UIControlEventTouchUpInside];
+
+    if ([[UIScreen mainScreen] bounds].size.height < 500)
+    {
+        mainView.frame = CGRectMake(8, 40, 302, 440);
+        head_container.frame = CGRectMake(0, 0, 302, 38);
+        space_container.frame = CGRectMake(0, 28, 302, 10);
+        glyph_download.frame = CGRectMake(18, 5, 22, 29);
+        title.frame = CGRectMake(0, 5, 302, 28);
+        imageShow.frame = CGRectMake(1, 43, 300, 340);
+        btnLink.frame = CGRectMake(10,mainView.frame.size.height-51, 280, 44);
+    }
+
+    UIImageView * btnClose = [[UIImageView alloc] initWithFrame:self.view.frame];
+    btnClose.image = [UIImage imageNamed:@"close_button"];
+    btnClose.frame = CGRectMake(9, 6, 35, 35);
+
+    UIButton * btnClose_shell = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnClose_shell.frame = CGRectMake(mainView.frame.size.width - 35, head_container.frame.origin.y - 21, 48, 46);
+    [btnClose_shell addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
+    [btnClose_shell addSubview:btnClose];
+
+    [mainView addSubview:btnClose_shell];
+    [mainView addSubview:imageShow];
+    [mainView addSubview:btnLink];
+    [overlay addSubview:mainView];
+
+    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"VersionUpdateNoticeDisplayed"];
+}
+
+-(void)close_lightBox
+{
+    [UIView animateWithDuration:0.15
+                     animations:^{
+                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                         if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                             mainView.frame = CGRectMake(9, 70, 302, 449);
+                         } else {
+                             mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 34);
+                         }
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:.38
+                                          animations:^{
+                                              [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                                              if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                                  mainView.frame = CGRectMake(9, -500, 302, 443);
+                                              }
+                                              else {
+                                                  mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 34);
+                                              }
+                                              overlay.alpha = 0.1;
+                                          } completion:^(BOOL finished) {
+                                              [overlay removeFromSuperview];
+                                          }
+                          ];
+                     }
+     ];
+}
+
+-(void)OpenAppInAppStore
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms://itunes.apple.com/us/app/nooch"]];
 }
 
 #pragma mark - iCarousel methods
-
 -(void)scrollCarouselToIndex:(NSNumber *)index
 {
     [_carousel scrollToItemAtIndex:index.intValue animated:YES];

@@ -27,8 +27,8 @@ bool modal;
 {
     inBack = NO;
     [Appirater setAppId:@"917955306"];
-    [Appirater setDaysUntilPrompt:8];
-    [Appirater setUsesUntilPrompt:10];
+    [Appirater setDaysUntilPrompt:7];
+    [Appirater setUsesUntilPrompt:8];
     [Appirater setSignificantEventsUntilPrompt:-1];
     [Appirater setTimeBeforeReminding:2];
     //[Appirater setDebug:YES];
@@ -43,7 +43,7 @@ bool modal;
     internetReach = [Reachability reachabilityForInternetConnection];
     [internetReach startNotifier];
 
-    //Urban Airship 5+
+/*    //Urban Airship 5+
     UAConfig *config = [UAConfig defaultConfig];
     // Call takeOff (which creates the UAirship singleton)
     [UAirship takeOff:config];
@@ -53,7 +53,20 @@ bool modal;
     //[UAPush shared].userPushNotificationsEnabled = YES; (This line triggers asking permission for Push Notifications... moved to Profile.m screen for Nooch)
     // Set the icon badge to zero on startup (optional)
     [[UAPush shared] resetBadge];
-    
+*/
+    // PUSH NOTIFICATION REGISTRATION
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+    {
+        // Register for push in iOS 8.
+        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    }
+    else
+    {
+        // Register for push in iOS 7 and under.
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)];
+    }
+
     //Google Analytics
     [GAI sharedInstance].dispatchInterval = 22;
     [GAI sharedInstance].trackUncaughtExceptions = YES;
@@ -61,7 +74,7 @@ bool modal;
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-36976317-2"];
 
-    // Whenever a person opens the app, check for a cached session
+    // Whenever a person opens the app, check for a cached FB session
     if (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded)
     {
         // If there's one, just open the session silently, without showing the user the login UI
@@ -83,7 +96,7 @@ bool modal;
     [Appirater appLaunched:YES];
 
     NSSetUncaughtExceptionHandler(&exceptionHandler);
-    
+
     // ARTISAN SDK
 //    [ARPowerHookManager registerHookWithId:@"serverURL" friendlyName:@"Server URL To Use" defaultValue:@"https://www.noochme.com/NoochService/NoochService.svc"];
     [ARPowerHookManager registerHookWithId:@"slogan" friendlyName:@"Slogan" defaultValue:@"Money Made Simple"];
@@ -98,6 +111,8 @@ bool modal;
     [ARPowerHookManager registerHookWithId:@"transSuccessAlertMsg" friendlyName:@"Alert Message After Transfer Success" defaultValue:@"\xF0\x9F\x92\xB8\nYour cash was sent successfully."];
 
     [ARManager startWithAppId:@"5487d09c2b22204361000011"];
+
+    [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"VersionUpdateNoticeDisplayed"];
 
     return YES;
 }
@@ -310,7 +325,7 @@ void exceptionHandler(NSException *exception){
 {
     NSString *deviceTokens = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     deviceTokens = [deviceTokens stringByReplacingOccurrencesOfString:@" " withString:@""];
-    [[UAPush shared] appRegisteredForRemoteNotificationsWithDeviceToken:deviceToken];
+   // [[UAPush shared] appRegisteredForRemoteNotificationsWithDeviceToken:deviceToken];
     
   //  [[UAPush shared] registerDeviceToken:deviceToken];
     [[NSUserDefaults standardUserDefaults] setValue:deviceTokens forKey:@"DeviceToken"];
@@ -350,9 +365,9 @@ void exceptionHandler(NSException *exception){
     }
     else
     {
-        [[UAPush shared] appReceivedRemoteNotification:userInfo applicationState:application.applicationState];
+        //[[UAPush shared] appReceivedRemoteNotification:userInfo applicationState:application.applicationState];
         // Reset the badge if you are using that functionality
-        [[UAPush shared] resetBadge];
+        //[[UAPush shared] resetBadge];
         NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
         
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[UIApplication sharedApplication] applicationIconBadgeNumber]+1]; 
@@ -367,7 +382,7 @@ void exceptionHandler(NSException *exception){
     
     // Reset the badge after a push is received in a active or inactive state
     if (application.applicationState != UIApplicationStateBackground) {
-        [[UAPush shared] resetBadge];
+        //[[UAPush shared] resetBadge];
     }
     
     completionHandler(UIBackgroundFetchResultNoData);
