@@ -1426,7 +1426,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
-        SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Connect A Funding Source \xF0\x9F\x92\xB0" andMessage:@"Adding a bank account to fund Nooch payments is lightning quick.\n\n •  No routing or account number needed\n  • Nooch's bank-grade encryption keeps your info safe\n\n Would you like to take care of this now?"];
+        SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Connect A Funding Source \xF0\x9F\x92\xB0" andMessage:@"Adding a bank account to fund Nooch payments is lightning quick.\n\n •  No routing or account number needed\n • Nooch's bank-grade encryption keeps your info safe\n"];
         [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
         [alertView addButtonWithTitle:@"Go Now" type:SIAlertViewButtonTypeDefault
                               handler:^(SIAlertView *alert) {
@@ -1852,26 +1852,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.hud hide:YES];
 
         NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        NSLog(@"getPendingTransfersCount is: %@",dict);
 
         int pendingRequestsReceived = [[dict valueForKey:@"pendingRequestsReceived"] intValue];
         NSString * count;
 
-        /* histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        
-        int counter = 0;
-        // NSLog(@"THE Pending_Count = %@", [defaults objectForKey:@"Pending_count"]);
-
-        for (NSDictionary * dict in histArray)
-        {
-            if ( ( [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
-                   [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"] ) &&
-                  ![[dict valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
-            {
-               counter++;
-            }
-        } */
-        
         [self.navigationItem setLeftBarButtonItem:nil];
 
         NSUserDefaults * defaults = [[NSUserDefaults alloc]init];

@@ -148,7 +148,7 @@
                                       {
                                           [btnback setFrame:CGRectMake(7, 18, 44, 44)];
                                       } else {
-                                          [btnback setFrame:CGRectMake(7, 8, 44, 44)];
+                                          [btnback setFrame:CGRectMake(7, 2, 44, 44)];
                                       }
                                   }];
                               } completion: nil];
