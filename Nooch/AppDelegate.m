@@ -87,8 +87,6 @@ bool modal;
                                           [self sessionStateChanged:session state:state error:error];
                                       }];
     }
-    [self application:nil handleOpenURL:[NSURL URLWithString:@"Nooch:"]];
-    [self.window makeKeyAndVisible];
 
     [application setApplicationIconBadgeNumber:0];
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
@@ -104,6 +102,7 @@ bool modal;
     [ARPowerHookManager registerHookWithId:@"refCode" friendlyName:@"Referral Code" defaultValue:@"NOCODE"];
     [ARPowerHookManager registerHookWithId:@"versionNum" friendlyName:@"Most Recent Version Number" defaultValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
     [ARPowerHookManager registerHookWithId:@"homeBtnClr" friendlyName:@"Home Button Color" defaultValue:@"green"];
+    [ARPowerHookManager registerHookWithId:@"settingsCogIconPos" friendlyName:@"Settings Cog Icon Position" defaultValue:@"bottomBar"];
 
     [ARPowerHookManager registerHookWithId:@"transLimit" friendlyName:@"Transfer Limit" defaultValue:@"300"];
 
@@ -111,6 +110,9 @@ bool modal;
     [ARPowerHookManager registerHookWithId:@"transSuccessAlertMsg" friendlyName:@"Alert Message After Transfer Success" defaultValue:@"\xF0\x9F\x92\xB8\nYour cash was sent successfully."];
 
     [ARManager startWithAppId:@"5487d09c2b22204361000011"];
+
+    [self application:nil handleOpenURL:[NSURL URLWithString:@"Nooch:"]];
+    [self.window makeKeyAndVisible];
 
     [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"VersionUpdateNoticeDisplayed"];
 

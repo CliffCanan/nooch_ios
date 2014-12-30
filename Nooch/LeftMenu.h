@@ -14,7 +14,9 @@
 
 @interface LeftMenu : GAITrackedViewController<UINavigationControllerDelegate,UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,EAIntroDelegate,MFMailComposeViewControllerDelegate>
 {
+    UIView * user_bar;
     UIImageView *user_pic;
     UIButton * arrow;
+    NSString * settingsIconPosition;
 }
 @end

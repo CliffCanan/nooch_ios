@@ -246,6 +246,7 @@ view {
 }
 #email_unverified {
     left: -1px;
+    top: -60px;
     width: 322px;
     height: 56px;
     background-image: linear-gradient(#D61915, #c41713);
@@ -256,6 +257,7 @@ view {
 }
 #phone_unverified {
     left: -1px;
+    top: -60px;
     width: 322px;
     height: 56px;
     background-image: linear-gradient(#D61915, #c41713);
@@ -268,11 +270,12 @@ view {
     left: -1px;
     width: 322px;
     height: 56px;
+    top: -60px;
     background-image: linear-gradient(#3fabe1, #229bd7);
     border: 1px solid #229bd7;
     border-radius: 4px;
     box-shadow: 0px 1px 3px rgba(9, 10, 70, 0.4);
-    opacity: .94;
+    opacity: .92;
 }
 #pending_notif {
     width           : 22px;
@@ -2174,44 +2177,52 @@ segmented-control#donatededication {
     left			: 0px;
     background-image: linear-gradient(#69b9e0, #3fa5d9);
 }
-
 #settings_icon {
-    width			: 31px;
-    height			: 30px;
-    top				: 524px;
     left			: 15px;
+    top				: 524px;
+    width			: 32px;
+    height			: 31px;
     font-family     : "FontAwesome";
-    font-size       : 27px;
+    font-size       : 28px;
     color           : white;
 }
 #settings_icon_4 {
+    left			: 15px;
+    top				: 436px;
     width			: 31px;
     height			: 30px;
-    top				: 436px;
-    left			: 15px;
     font-family     : "FontAwesome";
     font-size       : 26px;
     color           : white;	
 }
+#settings_icon_topBarPosition {
+    left			: 226px;
+    top				: 35px;
+    width			: 34px;
+    height			: 36px;
+    font-family     : "FontAwesome";
+    font-size       : 27px;
+    color           : white;
+}
 #nooch_whitelogo {
+    left			: 96px;
+    top				: 521px;
     width			: 80px;
     height			: 26px;
-    top				: 521px;
-    left			: 96px;
     background-image: url(nooch_Logo.png);
 }
 #nooch_whitelogo_4 {
+    left			: 96px;
+    top				: 433px;
     width			: 80px;
     height			: 26px;
-    top				: 433px;
-    left			: 96px;
     background-image: url(nooch_Logo.png);
 }
 #version_label {
+    left			: 85px;
+    top				: 551px;
     width			: 100px;
     height			: 12px;
-    top				: 551px;
-    left			: 85px;
     color			: white;
     font-family		: "Roboto";
     font-size		: 10px;
@@ -2219,10 +2230,10 @@ segmented-control#donatededication {
     text-align		: center;
 }
 #version_label_4 {
+    left			: 85px;
+    top				: 463px;
     width			: 100px;
     height			: 12px;
-    top				: 463px;
-    left			: 85px;
     color			: white;
     font-family		: "Roboto";
     font-size		: 10px;
@@ -2230,13 +2241,13 @@ segmented-control#donatededication {
     text-align		: center;
 }
 
-/*******************************************
-********* 	 HISTORY FLOW	    *********
-*******************************************/
+/*********************************
+****** 	HISTORY FLOW	    ******
+**********************************/
 
-/**************************/  
-/****  HISTORY - MAIN  ****/
-/**************************/
+/************************/
+/***  HISTORY - MAIN  ***/
+/************************/
 
 .label_filter  {
     width				: 25px;
@@ -2246,7 +2257,6 @@ segmented-control#donatededication {
     text-align       	: left;
     color 				: #ffffff;
 }
-
 #glyph_map {
     width				: 25px;
     height				: 25px;
@@ -2255,7 +2265,6 @@ segmented-control#donatededication {
     text-align       	: right;
     color 				: #ffffff;
 }
-
 #history_segcontrol {
     width				: 306px;
     height				: 30px;
@@ -3228,7 +3237,7 @@ table-view.stats_top_friends_empty {
 }
 .stats_circle_transfers_Active {
     left            : 30px;
-    top             : 12px;
+    top             : 15px;
     width           : 56px;
     height          : 56px;
     background-color: rgba(112, 191, 68, .96);
@@ -3246,7 +3255,7 @@ table-view.stats_top_friends_empty {
 }
 .stats_circle_Profile_Active {
     left            : 122px;
-    top             : 12px;
+    top             : 15px;
     width           : 56px;
     height          : 56px;
     background-color: rgba(112, 191, 68, .96);
@@ -3264,7 +3273,7 @@ table-view.stats_top_friends_empty {
 }
 .stats_circle_topFriends_Active {
     left            : 214px;
-    top             : 12px;
+    top             : 15px;
     width           : 56px;
     height          : 56px;
     background-color: rgba(112, 191, 68, .96);

@@ -10,7 +10,6 @@
 #import "UIImageView+WebCache.h"
 #import "SelectRecipient.h"
 #import <AudioToolbox/AudioToolbox.h>
-#import <ArtisanSDK/ArtisanSDK.h>
 
 @interface TransferPIN ()<GetLocationDelegate>
 {

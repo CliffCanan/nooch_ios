@@ -683,14 +683,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.profile_incomplete removeFromSuperview];
         self.profile_incomplete = [UIView new];
         [self.profile_incomplete setStyleId:@"email_unverified"];
-       
-        if (bannerAlert > 0)
-        {
-           CGRect rect = self.profile_incomplete.frame;
-           rect.origin.y += 56;
-           self.profile_incomplete.frame = rect;
-        }
-        bannerAlert++;
       
         UILabel * em = [UILabel new];
         [em setStyleClass:@"banner_header"];
@@ -728,6 +720,30 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
       
         [self.profile_incomplete addSubview:dis];
         [self.view addSubview:self.profile_incomplete];
+
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        [UIView animateKeyframesWithDuration:.7
+                                       delay:0
+                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:.25 relativeDuration:.75 animations:^{
+                                          CGRect frame = self.profile_incomplete.frame;
+                                          if (bannerAlert == 0)
+                                          {
+                                              frame.origin.y = 0;
+                                          }
+                                          else if (bannerAlert > 0)
+                                          {
+                                              frame.origin.y = 56;
+                                          }
+                                          [self.profile_incomplete setFrame:frame];
+                                      }];
+                                  } completion: ^(BOOL finished) {
+                                      [self.view bringSubviewToFront:self.profile_incomplete];
+                                  }
+         ];
+
+        bannerAlert++;
     }
     else if ([[user valueForKey:@"Status"]isEqualToString:@"Active"])
     {
@@ -743,14 +759,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.phone_incomplete removeFromSuperview];
         self.phone_incomplete = [UIView new];
         [self.phone_incomplete setStyleId:@"phone_unverified"];
-
-        if (bannerAlert > 0) {
-            CGRect rect= self.phone_incomplete.frame;
-            rect.origin.y += 56;
-            self.phone_incomplete.frame = rect;
-        }
-
-        bannerAlert++;
 
         UILabel * em = [UILabel new];
         [em setStyleClass:@"banner_header"];
@@ -795,7 +803,29 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         [self.view addSubview:self.phone_incomplete];
 
-        [self.view bringSubviewToFront:self.profile_incomplete];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        [UIView animateKeyframesWithDuration:.7
+                                       delay:0
+                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:.25 relativeDuration:.75 animations:^{
+                                          CGRect frame = self.phone_incomplete.frame;
+                                          if (bannerAlert == 0)
+                                          {
+                                              frame.origin.y = 0;
+                                          }
+                                          else if (bannerAlert > 0)
+                                          {
+                                              frame.origin.y = 56;
+                                          }
+                                          [self.phone_incomplete setFrame:frame];
+                                      }];
+                                  } completion: ^(BOOL finished) {
+                                      [self.view bringSubviewToFront:self.phone_incomplete];
+                                  }
+         ];
+
+        bannerAlert++;
     }
     else {
         [self dismiss_phone_unvalidated];
@@ -819,25 +849,24 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [hamburger addSubview:pending_notif];
         UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
         [self.navigationItem setLeftBarButtonItem:menu];
-        
+
         if ([[user objectForKey:@"Status"] isEqualToString:@"Active"] &&
             [[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
         {
             [self.pending_requests removeFromSuperview];
             self.pending_requests = [UIView new];
             [self.pending_requests setStyleId:@"pendingRequestBanner"];
-            [self.pending_requests setStyleClass:@"animate_bubble_slow"];
-            
+
             bannerAlert++;
-            
+
             NSShadow * shadowBlue = [[NSShadow alloc] init];
             shadowBlue.shadowColor = Rgb2UIColor(19, 32, 38, .25);
             shadowBlue.shadowOffset = CGSizeMake(0, 1);
             NSDictionary * textShadowBlue = @{NSShadowAttributeName:shadowBlue};
-            
+
             UILabel * em = [UILabel new];
             [em setStyleClass:@"banner_header"];
-            
+
             UILabel * em_exclaim = [UILabel new];
             [em_exclaim setStyleClass:@"banner_alert_glyph"];
             [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-inbox"]];
@@ -845,12 +874,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             frameOfGlyph.origin.x += 6;
             [em_exclaim setFrame:frameOfGlyph];
             [self.pending_requests addSubview:em_exclaim];
-            
-            /*UILabel * glyph_phone = [UILabel new];
-            [glyph_phone setStyleClass:@"banner_alert_glyph_sm"];
-            [glyph_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
-            [self.pending_requests addSubview:glyph_phone];*/
-            
+
             UILabel * em_info = [UILabel new];
             [em_info setStyleClass:@"banner_info"];
             [em_info setNumberOfLines:0];
@@ -870,7 +894,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             }
             [self.pending_requests addSubview:em];
             [self.pending_requests addSubview:em_info];
-            
+
             UIButton * goHistory = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [goHistory setStyleClass:@"go_now_text"];
             [goHistory setTitle:@"TAP TO VIEW & RESPOND" forState:UIControlStateNormal];
@@ -886,12 +910,26 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
             dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [dis addTarget:self action:@selector(dismiss_requestsPendingBanner) forControlEvents:UIControlEventTouchUpInside];
-            
+
             [self.pending_requests addSubview:dis];
-            
+
             [self.view addSubview:self.pending_requests];
-            
-            [self.view bringSubviewToFront:self.pending_requests];
+
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+            [UIView animateKeyframesWithDuration:.75
+                                           delay:0
+                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                      animations:^{
+                                          [UIView addKeyframeWithRelativeStartTime:.28 relativeDuration:.72 animations:^{
+                                              CGRect frame = self.pending_requests.frame;
+                                              frame.origin.y = 0;
+                                              [self.pending_requests setFrame:frame];
+                                          }];
+                                      } completion: ^(BOOL finished) {
+                                          [self.view bringSubviewToFront:self.pending_requests];
+                                      }
+             ];
+
         }
         else
         {
@@ -1103,7 +1141,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     [super viewWillAppear:animated];
     self.screenName = @"Home Screen";
-    
+
     NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
     [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
     [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
@@ -1126,7 +1164,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     if (![versionNumFromArtisan isEqualToString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]] &&
          [[NSUserDefaults standardUserDefaults] boolForKey:@"VersionUpdateNoticeDisplayed"] == false )
     {
-        [self displayVersionUpdateNotice];
+        //[self displayVersionUpdateNotice];
     }
 }
 
