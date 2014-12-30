@@ -3224,7 +3224,6 @@ table-view.stats_top_friends_empty {
 }
 #pieGraphMiddle {
     background-color: white;
-    border-radius   : 44px;
 }
 .stats_circle_transfers_inActive {
     left            : 30px;
