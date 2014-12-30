@@ -1164,7 +1164,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     if (![versionNumFromArtisan isEqualToString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]] &&
          [[NSUserDefaults standardUserDefaults] boolForKey:@"VersionUpdateNoticeDisplayed"] == false )
     {
-        //[self displayVersionUpdateNotice];
+        [self displayVersionUpdateNotice];
     }
 }
 

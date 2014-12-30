@@ -613,7 +613,7 @@
     [Title setStyleClass:@"stats_header"];
 
     if (tableView == self.profile_stats) {
-        Title.text = @"Profile Stats";
+        Title.text = @"Social Stats";
     }
     else if (tableView == self.top_friends_stats) {
         Title.text = @"";
@@ -714,6 +714,8 @@
             [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook"]];
             [cell.contentView addSubview:glyph];
         }
+        [cell.contentView addSubview:title];
+        [cell.contentView addSubview:statistic];
     } 
 
     else if (tableView == self.transfer_stats) //transfers
@@ -777,6 +779,8 @@
                 [statistic setText:@"0"];
             }
         }
+        [cell.contentView addSubview:title];
+        [cell.contentView addSubview:statistic];
     } 
 
     else if (tableView == self.top_friends_stats)
@@ -881,8 +885,6 @@
         }
     }
 
-    [cell.contentView addSubview:title];
-    [cell.contentView addSubview:statistic];
     return cell;
 }
 
@@ -898,6 +900,8 @@
             topFriendsPieTotalLabel.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
             topFriendsTotalPayments.text = [NSString stringWithFormat:@"%@",favorite[@"Frequency"]];
             topFriendsTotalPayments.textColor = kNoochGreen;
+
+            [self handleTapFromTableRow:0];
         }
 
         if (fav_count > 1 && indexPath.row == 1)
@@ -908,6 +912,8 @@
             topFriendsPieTotalLabel.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
             topFriendsTotalPayments.text = [NSString stringWithFormat:@"%@",favorite[@"Frequency"]];
             topFriendsTotalPayments.textColor = kNoochPurple;
+
+            [self handleTapFromTableRow:1];
         }
 
         if (fav_count > 2 && indexPath.row == 2)
@@ -918,6 +924,8 @@
             topFriendsPieTotalLabel.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
             topFriendsTotalPayments.text = [NSString stringWithFormat:@"%@",favorite[@"Frequency"]];
             topFriendsTotalPayments.textColor = kNoochRed;
+
+            [self handleTapFromTableRow:2];
         }
 
         if (fav_count > 3 && indexPath.row == 3)
@@ -928,6 +936,8 @@
             topFriendsPieTotalLabel.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
             topFriendsTotalPayments.text = [NSString stringWithFormat:@"%@",favorite[@"Frequency"]];
             topFriendsTotalPayments.textColor = kNoochBlue;
+
+            [self handleTapFromTableRow:3];
         }
 
         if (fav_count > 4 && indexPath.row == 4)
@@ -938,6 +948,8 @@
             topFriendsPieTotalLabel.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
             topFriendsTotalPayments.text = [NSString stringWithFormat:@"%@",favorite[@"Frequency"]];
             topFriendsTotalPayments.textColor = kNoochGrayLight;
+
+            [self handleTapFromTableRow:4];
         }
 
         topFriendsPieTotalLabel.textColor = kNoochGrayDark;
@@ -954,7 +966,7 @@
     {
         int centerRadius = 46;
         int pieRadius = 52;
-        
+
         self.pieLayer = [[PieLayer alloc] init];
         self.pieLayer.frame = CGRectMake(40, (160 - pieRadius) - 9, 220, (2 * pieRadius) + 18);
         self.pieLayer.maxRadius = pieRadius;
@@ -965,12 +977,12 @@
         int freqInt1 = [favFreq1 intValue];
         int freqInt2, freqInt3, freqInt4, freqInt5 = 0;
         totalPayments = freqInt1;
-        
+
         if (pieSlice_count == 1)
         {
             [self.pieLayer addValues:@[[PieElement pieElementWithValue:freqInt1 color:kNoochGreen]] animated:YES];
         }
-        
+
         if (pieSlice_count > 1)
         {
             NSDictionary * favorite2 = [results objectAtIndex:1];
@@ -984,7 +996,7 @@
                                            [PieElement pieElementWithValue:freqInt2 color:kNoochPurple]] animated:YES];
             }
         }
-        
+
         if (pieSlice_count > 2)
         {
             NSDictionary * favorite3 = [results objectAtIndex:2];
@@ -999,7 +1011,7 @@
                                            [PieElement pieElementWithValue:freqInt3 color:kNoochRed]] animated:YES];
             }
         }
-        
+
         if (pieSlice_count > 3)
         {
             NSDictionary * favorite4 = [results objectAtIndex:3];
@@ -1015,7 +1027,7 @@
                                            [PieElement pieElementWithValue:freqInt4 color:kNoochBlue]] animated:YES];
             }
         }
-        
+
         if (pieSlice_count > 4)
         {
             NSDictionary * favorite5 = [results objectAtIndex:4];
@@ -1032,9 +1044,9 @@
                                            [PieElement pieElementWithValue:freqInt5 color:kNoochGrayLight]] animated:YES];
             }
         }
-        
+
         [self.back_donation.layer addSublayer:self.pieLayer];
-        
+
         UIView * pieGraphMiddle = [[UIView alloc] init];
         pieGraphMiddle.frame = CGRectMake((300/2) - centerRadius, 160 - centerRadius, 2 * centerRadius, 2 * centerRadius);
         [pieGraphMiddle setStyleId:@"pieGraphMiddle"];
@@ -1069,7 +1081,7 @@
 
 - (void)handleTap:(UITapGestureRecognizer*)tap
 {
-    if(tap.state != UIGestureRecognizerStateEnded)
+    if (tap.state != UIGestureRecognizerStateEnded)
         return;
 
     [topFriendsTotalPayments setTextColor:kNoochGrayDark];
@@ -1079,6 +1091,22 @@
 
     CGPoint pos = [tap locationInView:tap.view];
     PieElement * tappedElem = [self.pieLayer pieElemInPoint:pos];
+    if (!tappedElem)
+        return;
+
+    if (tappedElem.centrOffset > 0)
+        tappedElem = nil;
+    [PieElement animateChanges:^{
+        for (PieElement * elem in self.pieLayer.values)
+        {
+            elem.centrOffset = tappedElem==elem? 8 : 0;
+        }
+    }];
+}
+
+- (void)handleTapFromTableRow:(int)row
+{
+    PieElement * tappedElem = self.pieLayer.values[row];
     if (!tappedElem)
         return;
     
