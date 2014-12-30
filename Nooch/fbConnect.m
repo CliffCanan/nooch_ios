@@ -27,7 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
     self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setTitle:@"Social Settings"];
 
