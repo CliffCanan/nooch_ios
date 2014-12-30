@@ -20,6 +20,7 @@
 #import "tour.h"
 #import "Appirater.h"
 #import "UAPush.h"
+
 @interface LeftMenu ()
 @property(nonatomic,strong) UITableView *menu;
 @property(nonatomic) NSIndexPath *selected;
@@ -51,7 +52,7 @@
     [self.menu setRowHeight:45];
     [self.view addSubview:self.menu];
 
-    UIView *user_bar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 90)];
+    user_bar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 90)];
     [user_bar setStyleId:@"lside_topbar_background"];
     [self.view addSubview:user_bar];
 
@@ -93,17 +94,29 @@
     [self.view addSubview:bottom_bar];
 
     UIButton * settings = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    if ([[UIScreen mainScreen] bounds].size.height < 520) {
-        [settings setStyleId:@"settings_icon_4"];
-    } 
-    else {
-        [settings setStyleId:@"settings_icon"];
-    }
+    settingsIconPosition = [ARPowerHookManager getValueForHookById:@"settingsCogIconPos"];
+
     [settings setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cogs"] forState:UIControlStateNormal];
     [settings addTarget:self action:@selector(go_settings) forControlEvents:UIControlEventTouchUpInside];
     [settings setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.25) forState:UIControlStateNormal];
     settings.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    [self.view addSubview:settings];
+
+    if ([settingsIconPosition isEqualToString:@"topBar"])
+    {
+        [settings setStyleId:@"settings_icon_topBarPosition"];
+        [user_bar addSubview:settings];
+    }
+    else if ([[UIScreen mainScreen] bounds].size.height > 500)
+    {
+        [settings setStyleId:@"settings_icon"];
+        [self.view addSubview:settings];
+    }
+    else
+    {
+        [settings setStyleId:@"settings_icon_4"];
+        [self.view addSubview:settings];
+    }
+
     
     UIImageView * logo = [UIImageView new];
     if ([[UIScreen mainScreen] bounds].size.height < 520) {
@@ -137,9 +150,18 @@
     if (![[defaults objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
         [self.glyph_noBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
-        [self.glyph_noBank setFrame:CGRectMake(5, [[UIScreen mainScreen] bounds].size.height - 50, 22, 22)];
         [self.glyph_noBank setStyleId:@"glyph_noBank_sidebar"];
-        [self.view addSubview:self.glyph_noBank];
+        if ([settingsIconPosition isEqualToString:@"bottomBar"])
+        {
+            [self.glyph_noBank setFrame:CGRectMake(5, [[UIScreen mainScreen] bounds].size.height - 50, 22, 22)];
+            [self.view addSubview:self.glyph_noBank];
+        }
+        else
+        {
+            [self.glyph_noBank setFrame:CGRectMake(240, 31, 22, 22)];
+            [user_bar addSubview:self.glyph_noBank];
+            [user_bar bringSubviewToFront:self.glyph_noBank];
+        }
     }
     else {
         [self.glyph_noBank removeFromSuperview];
@@ -154,7 +176,7 @@
 
     [self.name setText:[[user objectForKey:@"firstName"] capitalizedString]];
     [self.lastName setText:[[user objectForKey:@"lastName"] capitalizedString]];
-    
+
     if ([[user objectForKey:@"Photo"] length] > 0 && [user objectForKey:@"Photo"] != nil)
     {
         [user_pic setStyleId:@"lside_userpic"];
@@ -175,7 +197,7 @@
         user_pic.layer.borderWidth = 3;
         user_pic.layer.borderColor = kNoochRed.CGColor;
     }
-    
+
     if ([[user valueForKey:@"firstName"] length] < 1 && [[user valueForKey:@"lastName"] length] < 1)
     {
         [self.name setText:[NSString stringWithFormat:@"Some"]];
@@ -183,16 +205,27 @@
     }
 
     NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
-    
+
     if ([[defaults objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
         [self.glyph_noBank removeFromSuperview];
     }
-    else {
+    else
+    {
         [self.glyph_noBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
-        [self.glyph_noBank setFrame:CGRectMake(5, [[UIScreen mainScreen] bounds].size.height - 50, 22, 22)];
         [self.glyph_noBank setStyleId:@"glyph_noBank_sidebar"];
-        [self.view addSubview:self.glyph_noBank];
+
+        if ([settingsIconPosition isEqualToString:@"bottomBar"])
+        {
+            [self.glyph_noBank setFrame:CGRectMake(5, [[UIScreen mainScreen] bounds].size.height - 50, 22, 22)];
+            [self.view addSubview:self.glyph_noBank];
+        }
+        else
+        {
+            [self.glyph_noBank setFrame:CGRectMake(240, 31, 22, 22)];
+            [user_bar addSubview:self.glyph_noBank];
+            [user_bar bringSubviewToFront:self.glyph_noBank];
+        }
     }
     [self.menu reloadData];
 

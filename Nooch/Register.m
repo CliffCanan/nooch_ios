@@ -55,21 +55,22 @@
 
     [self.login removeFromSuperview];
 
-    UILabel * glyph_login = [UILabel new];
-    [glyph_login setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
-    [glyph_login setFrame:CGRectMake(268, 0, 18, 30)];
-    [glyph_login setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-right"]];
-    [glyph_login setTextColor:kNoochGreen];
-
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.login setBackgroundColor:[UIColor clearColor]];
     [self.login setTitle:@"Already a Member?  Sign in here  " forState:UIControlStateNormal];
-    [self.login setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height + 10, 280, 30)];
+    [self.login setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height + 10, 300, 36)];
     [self.login addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"label_small"];
-    [self.login addSubview:glyph_login];
     [self.login setAlpha:0];
     [self.view addSubview:self.login];
+
+    UILabel * glyph_login = [UILabel new];
+    [glyph_login setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
+    [glyph_login setFrame:CGRectMake(0, 25, 300, 22)];
+    [glyph_login setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-right"]];
+    [glyph_login setTextColor:kNoochGreen];
+    [glyph_login setTextAlignment:NSTextAlignmentCenter];
+    [self.login addSubview:glyph_login];
 
     [UIView animateKeyframesWithDuration:.4
                                    delay:0
@@ -77,11 +78,13 @@
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                       [self.login setAlpha:1];
-                                      if ([[UIScreen mainScreen] bounds].size.height > 500) {
-                                          [self.login setFrame:CGRectMake(10, 509, 280, 30)];
+                                      if ([[UIScreen mainScreen] bounds].size.height > 500)
+                                      {
+                                          [self.login setFrame:CGRectMake(10, 506, 300, 40)];
                                       }
-                                      else {
-                                          [self.login setFrame:CGRectMake(10, 440, 280, 30)];
+                                      else
+                                      {
+                                          [self.login setFrame:CGRectMake(10, 436, 300, 40)];
                                       }
                                   }];
                               } completion: nil];
@@ -106,6 +109,8 @@
     [self.navigationController setNavigationBarHidden:YES];
 
     //self.facebook_info = [NSMutableDictionary new];
+
+    [self.login removeFromSuperview];
 
     UIImageView * logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
@@ -523,7 +528,11 @@
 {
     if ([[[self.name_field.text componentsSeparatedByString:@" "] objectAtIndex:0]length] < 2)
     {
-        UIAlertView* alert =[[UIAlertView alloc]initWithTitle:@"Need a Full Name" message:@"Nooch is currently only able to handle names greater than 3 letters.\n\nIf your first or last name has fewer than 3, please contact us and we'll be happy to manually create your account." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView * alert =[[UIAlertView alloc]initWithTitle:@"Need a Full Name"
+                                                       message:@"Nooch is currently only able to handle names greater than 3 letters.\n\nIf your first or last name has fewer than 3, please contact us and we'll be happy to manually create your account."
+                                                      delegate:nil
+                                             cancelButtonTitle:@"OK"
+                                             otherButtonTitles:nil, nil];
         [alert show];
         [self.name_field becomeFirstResponder];
         return;
@@ -531,7 +540,11 @@
 
     if (([self.password_field.text length] == 0) || ([self.name_field.text length] == 0) || ([self.email_field.text length] == 0))
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Eager Beaver" message:@"You have not filled out the sign up form!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Eager Beaver"
+                                                     message:@"You have not filled out the sign up form!"
+                                                    delegate:nil
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
         [av show];
         [self.name_field becomeFirstResponder];
         return;
@@ -542,21 +555,34 @@
 
     if ([self.password_field.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound)
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Insecure Password" message:@"For security reasons, et cetera, we ask that passwords contain at least 1 number.\n\nWe know it's annoying, but we're just looking out for you. Keep it safe!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Insecure Password"
+                                                     message:@"For security reasons, et cetera, we ask that passwords contain at least 1 number.\n\nWe know it's annoying, but we're just looking out for you. Keep it safe!"
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
         [av show];
         [self.password_field becomeFirstResponder];
         return;
     }
     else if ([self.password_field.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound)
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Letters Are Fun Too" message:@"Regrettably, your Nooch password must contain at least one actual letter." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Letters Are Fun Too"
+                                                     message:@"Regrettably, your Nooch password must contain at least one actual letter."
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
         [av show];
         [self.password_field becomeFirstResponder];
         return;
     }
 
-    if (!isTermsChecked) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Who Loves Lawyers" message:@"Please read Nooch's Terms of Service and check the box to proceed." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Read Terms", nil];
+    if (!isTermsChecked)
+    {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Who Loves Lawyers"
+                                                     message:@"Please read Nooch's Terms of Service and check the box to proceed."
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:@"Read Terms", nil];
         [av show];
         [av setTag:16];
         return;
@@ -590,30 +616,30 @@
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
                                       if ([[UIScreen mainScreen] bounds].size.height > 500) {
-                                          [self.login setFrame:CGRectMake(-16, 509, 280, 30)];
+                                          [self.login setFrame:CGRectMake(-16, 506, 300, 40)];
                                       } else {
-                                          [self.login setFrame:CGRectMake(-16, 440, 280, 30)];
+                                          [self.login setFrame:CGRectMake(-16, 436, 300, 40)];
                                       }
                                   }];
                                   [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:0.21 animations:^{
                                       if ([[UIScreen mainScreen] bounds].size.height > 500) {
-                                          [self.login setFrame:CGRectMake(-25, 509, 280, 30)];
+                                          [self.login setFrame:CGRectMake(-25, 506, 300, 40)];
                                       } else {
-                                          [self.login setFrame:CGRectMake(-25, 440, 280, 30)];
+                                          [self.login setFrame:CGRectMake(-25, 436, 300, 40)];
                                       }
                                   }];
                                   [UIView addKeyframeWithRelativeStartTime:0.46 relativeDuration:0.32 animations:^{
                                       if ([[UIScreen mainScreen] bounds].size.height > 500) {
-                                          [self.login setFrame:CGRectMake(100, 509, 280, 30)];
+                                          [self.login setFrame:CGRectMake(100, 506, 300, 40)];
                                       } else {
-                                          [self.login setFrame:CGRectMake(100, 440, 280, 30)];
+                                          [self.login setFrame:CGRectMake(100, 436, 300, 40)];
                                       }
                                   }];
                                   [UIView addKeyframeWithRelativeStartTime:0.78 relativeDuration:0.22 animations:^{
                                       if ([[UIScreen mainScreen] bounds].size.height > 500) {
-                                          [self.login setFrame:CGRectMake(321, 509, 280, 30)];
+                                          [self.login setFrame:CGRectMake(321, 506, 300, 40)];
                                       } else {
-                                          [self.login setFrame:CGRectMake(321, 440, 280, 30)];
+                                          [self.login setFrame:CGRectMake(321, 436, 300, 40)];
                                       }
                                   }];
                               } completion: ^(BOOL finished){

@@ -604,9 +604,13 @@ UIImageView *picture;
         return;
     }
 
-    if ([self.address_one.text length] == 0)
+/*  if ([self.address_one.text length] == 0)
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Missing An Address" message:@"Please enter your address to validate your profile." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Missing An Address"
+                                                        message:@"Please enter your address to validate your profile."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
         [alert show];
         [self.address_one becomeFirstResponder];
         return;
@@ -614,11 +618,15 @@ UIImageView *picture;
 
     if ([self.city.text length] == 0)
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"How Bout A City" message:@"It would be fantastic if you entered a city!\n\xF0\x9F\x98\x89" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"How Bout A City"
+                                                        message:@"It would be fantastic if you entered a city!\n\xF0\x9F\x98\x89"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
         [alert show];
         [self.city becomeFirstResponder];
         return;
-    }
+    } */
 
     [self.save setEnabled:NO];
     [self.save setUserInteractionEnabled:NO];
@@ -667,17 +675,20 @@ UIImageView *picture;
 
     recoverMail = [[NSString alloc] init];
 
-    if ([self.recovery_email.text length] > 0) {
+    if ([self.recovery_email.text length] > 0)
+    {
         recoverMail = self.recovery_email.text;
     }
     else
         recoverMail = @"";
 
-    if ([self.address_two.text length] != 0) {
+    if ([self.address_two.text length] != 0)
+    {
         [[me usr] setObject:self.address_two.text forKey:@"Addr2"];
         [[me usr] setObject:self.address_two.text forKey:@"Addr1"];
     }
-    else {
+    else
+    {
         [[me usr] removeObjectForKey:@"Addr2"];
     }
     self.name.text = [self.name.text lowercaseString];
@@ -687,6 +698,8 @@ UIImageView *picture;
     if ([arrdivide count] == 2)
     {
         transactionInput = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[arrdivide objectAtIndex:0],@"FirstName",[arrdivide objectAtIndex:1],@"LastName",self.email.text,@"UserName",nil];
+
+        self.name.text = [NSString stringWithFormat:@"%@ %@",[[arrdivide objectAtIndex:0] capitalizedString],[[arrdivide objectAtIndex:1] capitalizedString]];
     }
     else
     {
@@ -694,10 +707,18 @@ UIImageView *picture;
     }
 
     [transactionInput setObject:[NSString stringWithFormat:@"%@/%@",self.address_one.text,self.address_two.text] forKey:@"Address"];
-    [transactionInput setObject:self.city.text forKey:@"City"];
+    if ([self.city.text length] > 0)
+    {
+        [transactionInput setObject:self.city.text forKey:@"City"];
+    }
+    else
+    {
+        [transactionInput setObject:@"" forKey:@"City"];
+    }
     
     
-    if ( [[assist shared]islocationAllowed]) {
+    if ( [[assist shared]islocationAllowed])
+    {
         [transactionInput setObject:[[assist shared]islocationAllowed]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO] forKey:@"ShowInSearch"];
     }
     else
@@ -709,14 +730,17 @@ UIImageView *picture;
     [transactionInput setObject:recoverMail forKey:@"RecoveryMail"];
     [transactionInput setObject:timezoneStandard forKey:@"TimeZoneKey"];
     
-    if ([[assist shared] getTranferImage]) {
+    if ([[assist shared] getTranferImage])
+    {
         NSData *data;
-       
-       data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
+        data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
+
         NSUInteger len = data.length;
         uint8_t *bytes = (uint8_t *)[data bytes];
         NSMutableString *result1 = [NSMutableString stringWithCapacity:len * 3];
-        for (NSUInteger i = 0; i < len; i++) {
+
+        for (NSUInteger i = 0; i < len; i++)
+        {
             if (i) {
                 [result1 appendString:@","];
             }
@@ -737,11 +761,7 @@ UIImageView *picture;
     req.Delegate = self;
     req.tagName = @"MySettingsResult";
     [req setSets:transaction];
-    
-    NSArray * arr = [self.name.text componentsSeparatedByString:@" "];
-    if ([arr count] == 2) {
-        self.name.text = [NSString stringWithFormat:@"%@ %@",[[arr objectAtIndex:0] capitalizedString],[[arr objectAtIndex:1] capitalizedString]];
-    }
+
 }
 
 - (void)change_pic

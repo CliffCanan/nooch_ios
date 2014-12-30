@@ -17,7 +17,9 @@
     NSMutableDictionary * dictAllStats;
     NSString * titlestr;
     NSMutableArray * favorites;
+    UILabel * topFriendsTotalPayments;
+    UILabel * topFriendsPieTotalLabel;
     BOOL IsAlertShown;
-    int statsLoadedSoFar;
+    int statsLoadedSoFar, fav_count, totalPayments;
 }
 @end

@@ -683,14 +683,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.profile_incomplete removeFromSuperview];
         self.profile_incomplete = [UIView new];
         [self.profile_incomplete setStyleId:@"email_unverified"];
-       
-        if (bannerAlert > 0)
-        {
-           CGRect rect = self.profile_incomplete.frame;
-           rect.origin.y += 56;
-           self.profile_incomplete.frame = rect;
-        }
-        bannerAlert++;
       
         UILabel * em = [UILabel new];
         [em setStyleClass:@"banner_header"];
@@ -728,6 +720,30 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
       
         [self.profile_incomplete addSubview:dis];
         [self.view addSubview:self.profile_incomplete];
+
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        [UIView animateKeyframesWithDuration:.7
+                                       delay:0
+                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:.25 relativeDuration:.75 animations:^{
+                                          CGRect frame = self.profile_incomplete.frame;
+                                          if (bannerAlert == 0)
+                                          {
+                                              frame.origin.y = 0;
+                                          }
+                                          else if (bannerAlert > 0)
+                                          {
+                                              frame.origin.y = 56;
+                                          }
+                                          [self.profile_incomplete setFrame:frame];
+                                      }];
+                                  } completion: ^(BOOL finished) {
+                                      [self.view bringSubviewToFront:self.profile_incomplete];
+                                  }
+         ];
+
+        bannerAlert++;
     }
     else if ([[user valueForKey:@"Status"]isEqualToString:@"Active"])
     {
@@ -743,14 +759,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.phone_incomplete removeFromSuperview];
         self.phone_incomplete = [UIView new];
         [self.phone_incomplete setStyleId:@"phone_unverified"];
-
-        if (bannerAlert > 0) {
-            CGRect rect= self.phone_incomplete.frame;
-            rect.origin.y += 56;
-            self.phone_incomplete.frame = rect;
-        }
-
-        bannerAlert++;
 
         UILabel * em = [UILabel new];
         [em setStyleClass:@"banner_header"];
@@ -795,7 +803,29 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         [self.view addSubview:self.phone_incomplete];
 
-        [self.view bringSubviewToFront:self.profile_incomplete];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        [UIView animateKeyframesWithDuration:.7
+                                       delay:0
+                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:.25 relativeDuration:.75 animations:^{
+                                          CGRect frame = self.phone_incomplete.frame;
+                                          if (bannerAlert == 0)
+                                          {
+                                              frame.origin.y = 0;
+                                          }
+                                          else if (bannerAlert > 0)
+                                          {
+                                              frame.origin.y = 56;
+                                          }
+                                          [self.phone_incomplete setFrame:frame];
+                                      }];
+                                  } completion: ^(BOOL finished) {
+                                      [self.view bringSubviewToFront:self.phone_incomplete];
+                                  }
+         ];
+
+        bannerAlert++;
     }
     else {
         [self dismiss_phone_unvalidated];
@@ -819,25 +849,24 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [hamburger addSubview:pending_notif];
         UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
         [self.navigationItem setLeftBarButtonItem:menu];
-        
+
         if ([[user objectForKey:@"Status"] isEqualToString:@"Active"] &&
             [[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
         {
             [self.pending_requests removeFromSuperview];
             self.pending_requests = [UIView new];
             [self.pending_requests setStyleId:@"pendingRequestBanner"];
-            [self.pending_requests setStyleClass:@"animate_bubble_slow"];
-            
+
             bannerAlert++;
-            
+
             NSShadow * shadowBlue = [[NSShadow alloc] init];
             shadowBlue.shadowColor = Rgb2UIColor(19, 32, 38, .25);
             shadowBlue.shadowOffset = CGSizeMake(0, 1);
             NSDictionary * textShadowBlue = @{NSShadowAttributeName:shadowBlue};
-            
+
             UILabel * em = [UILabel new];
             [em setStyleClass:@"banner_header"];
-            
+
             UILabel * em_exclaim = [UILabel new];
             [em_exclaim setStyleClass:@"banner_alert_glyph"];
             [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-inbox"]];
@@ -845,12 +874,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             frameOfGlyph.origin.x += 6;
             [em_exclaim setFrame:frameOfGlyph];
             [self.pending_requests addSubview:em_exclaim];
-            
-            /*UILabel * glyph_phone = [UILabel new];
-            [glyph_phone setStyleClass:@"banner_alert_glyph_sm"];
-            [glyph_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
-            [self.pending_requests addSubview:glyph_phone];*/
-            
+
             UILabel * em_info = [UILabel new];
             [em_info setStyleClass:@"banner_info"];
             [em_info setNumberOfLines:0];
@@ -870,7 +894,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             }
             [self.pending_requests addSubview:em];
             [self.pending_requests addSubview:em_info];
-            
+
             UIButton * goHistory = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [goHistory setStyleClass:@"go_now_text"];
             [goHistory setTitle:@"TAP TO VIEW & RESPOND" forState:UIControlStateNormal];
@@ -886,12 +910,26 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
             dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [dis addTarget:self action:@selector(dismiss_requestsPendingBanner) forControlEvents:UIControlEventTouchUpInside];
-            
+
             [self.pending_requests addSubview:dis];
-            
+
             [self.view addSubview:self.pending_requests];
-            
-            [self.view bringSubviewToFront:self.pending_requests];
+
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+            [UIView animateKeyframesWithDuration:.75
+                                           delay:0
+                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                      animations:^{
+                                          [UIView addKeyframeWithRelativeStartTime:.28 relativeDuration:.72 animations:^{
+                                              CGRect frame = self.pending_requests.frame;
+                                              frame.origin.y = 0;
+                                              [self.pending_requests setFrame:frame];
+                                          }];
+                                      } completion: ^(BOOL finished) {
+                                          [self.view bringSubviewToFront:self.pending_requests];
+                                      }
+             ];
+
         }
         else
         {
@@ -1103,18 +1141,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     [super viewWillAppear:animated];
     self.screenName = @"Home Screen";
-    
+
     NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
     [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
     [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
     [automatic writeToFile:[self autoLogin] atomically:YES];
 
     // for the red notification bubble if a user has a pending RECEIVED Request
-  /*serve *serveOBJ = [serve new];
-    [serveOBJ setDelegate:self];
-    serveOBJ.tagName = @"histPending";
-    [serveOBJ histMore:@"ALL" sPos:1 len:20 subType:@"Pending"];*/
-
     serve * getPendingCount = [serve new];
     [getPendingCount setDelegate:self];
     [getPendingCount setTagName:@"getPendingTransfersCount"];
@@ -1123,10 +1156,166 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     //do carousel
     [self.view addSubview:_carousel];
     [_carousel reloadData];
+
+    NSString * versionNumFromArtisan = [ARPowerHookManager getValueForHookById:@"versionNum"];
+    NSLog(@"VersionNumFromArtisan is: %@",versionNumFromArtisan);
+    NSLog(@"xCode Bundle Version Number is: %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]);
+
+    if (![versionNumFromArtisan isEqualToString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]] &&
+         [[NSUserDefaults standardUserDefaults] boolForKey:@"VersionUpdateNoticeDisplayed"] == false )
+    {
+        //[self displayVersionUpdateNotice];
+    }
+}
+
+-(void)displayVersionUpdateNotice
+{
+    overlay = [[UIView alloc]init];
+    overlay.frame = CGRectMake(0, 0, 320, [[UIScreen mainScreen] bounds].size.height);
+    overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.0];
+    [self.navigationController.view addSubview:overlay];
+
+    mainView = [[UIView alloc]init];
+    mainView.layer.cornerRadius = 5;
+    if ([[UIScreen mainScreen] bounds].size.height < 500)
+    {
+        mainView.frame = CGRectMake(9, -500, 302, 440);
+    }
+    else
+    {
+        mainView.frame = CGRectMake(9, -540, 302, 445);
+    }
+    mainView.backgroundColor = [UIColor whiteColor];
+    mainView.layer.masksToBounds = NO;
+
+    [UIView animateWithDuration:.4
+                     animations:^{
+                         overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+                     }];
+
+    [UIView animateWithDuration:0.38
+                     animations:^{
+                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                         if ([[UIScreen mainScreen] bounds].size.height < 500)
+                         {
+                             mainView.frame = CGRectMake(9, 80, 302, 440);
+                         }
+                         else
+                         {
+                             mainView.frame = CGRectMake(9, 80, 302, 445);
+                         }
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:.23
+                                          animations:^{
+                                              [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                                              if ([[UIScreen mainScreen] bounds].size.height < 500)
+                                              {
+                                                  mainView.frame = CGRectMake(9, 45, 302, 440);
+                                              }
+                                              else
+                                              {
+                                                  mainView.frame = CGRectMake(9, 55, 302, 445);
+                                              }
+                                          }];
+                     }];
+
+    UIView * head_container = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 302, 44)];
+    head_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    [mainView addSubview:head_container];
+    head_container.layer.cornerRadius = 10;
+
+    UIView * space_container = [[UIView alloc]initWithFrame:CGRectMake(0, 34, 302, 10)];
+    space_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    [mainView addSubview:space_container];
+
+    UILabel * title = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 302, 28)];
+    [title setBackgroundColor:[UIColor clearColor]];
+    [title setText:@"New Version Available"];
+    [title setStyleClass:@"lightbox_title"];
+    [head_container addSubview:title];
+
+    UILabel * glyph_download = [UILabel new];
+    [glyph_download setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
+    [glyph_download setFrame:CGRectMake(18, 10, 22, 26)];
+    [glyph_download setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cloud-download"]];
+    [glyph_download setTextColor:kNoochBlue];
+    [head_container addSubview:glyph_download];
+
+    UIImageView * imageShow = [[UIImageView alloc]initWithFrame:CGRectMake(11, 40, 280, 380)];
+    imageShow.image = [UIImage imageNamed:@"Knox_Infobox"];
+    imageShow.contentMode = UIViewContentModeScaleAspectFit;
+
+    UIButton * btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btnLink setStyleClass:@"button_green_welcome"];
+    [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
+    btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    btnLink.frame = CGRectMake(10,mainView.frame.size.height-56, 280, 50);
+    [btnLink setTitle:@"Get Newest Version" forState:UIControlStateNormal];
+    [btnLink addTarget:self action:@selector(OpenAppInAppStore) forControlEvents:UIControlEventTouchUpInside];
+
+    if ([[UIScreen mainScreen] bounds].size.height < 500)
+    {
+        mainView.frame = CGRectMake(8, 40, 302, 440);
+        head_container.frame = CGRectMake(0, 0, 302, 38);
+        space_container.frame = CGRectMake(0, 28, 302, 10);
+        glyph_download.frame = CGRectMake(18, 5, 22, 29);
+        title.frame = CGRectMake(0, 5, 302, 28);
+        imageShow.frame = CGRectMake(1, 43, 300, 340);
+        btnLink.frame = CGRectMake(10,mainView.frame.size.height-51, 280, 44);
+    }
+
+    UIImageView * btnClose = [[UIImageView alloc] initWithFrame:self.view.frame];
+    btnClose.image = [UIImage imageNamed:@"close_button"];
+    btnClose.frame = CGRectMake(9, 6, 35, 35);
+
+    UIButton * btnClose_shell = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnClose_shell.frame = CGRectMake(mainView.frame.size.width - 35, head_container.frame.origin.y - 21, 48, 46);
+    [btnClose_shell addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
+    [btnClose_shell addSubview:btnClose];
+
+    [mainView addSubview:btnClose_shell];
+    [mainView addSubview:imageShow];
+    [mainView addSubview:btnLink];
+    [overlay addSubview:mainView];
+
+    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"VersionUpdateNoticeDisplayed"];
+}
+
+-(void)close_lightBox
+{
+    [UIView animateWithDuration:0.15
+                     animations:^{
+                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                         if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                             mainView.frame = CGRectMake(9, 70, 302, 449);
+                         } else {
+                             mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 34);
+                         }
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:.38
+                                          animations:^{
+                                              [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                                              if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                                  mainView.frame = CGRectMake(9, -500, 302, 443);
+                                              }
+                                              else {
+                                                  mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 34);
+                                              }
+                                              overlay.alpha = 0.1;
+                                          } completion:^(BOOL finished) {
+                                              [overlay removeFromSuperview];
+                                          }
+                          ];
+                     }
+     ];
+}
+
+-(void)OpenAppInAppStore
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms://itunes.apple.com/us/app/nooch"]];
 }
 
 #pragma mark - iCarousel methods
-
 -(void)scrollCarouselToIndex:(NSNumber *)index
 {
     [_carousel scrollToItemAtIndex:index.intValue animated:YES];
