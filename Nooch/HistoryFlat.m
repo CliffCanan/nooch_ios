@@ -2290,7 +2290,7 @@ return customView;
         [imageCache clearMemory];
         [imageCache clearDisk];
         [imageCache cleanDisk];
-         countRows = 0;
+        countRows = 0;
         [self loadSearchByName];
     }
     [self.search resignFirstResponder];

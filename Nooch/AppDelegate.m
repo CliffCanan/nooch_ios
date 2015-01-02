@@ -43,7 +43,7 @@ bool modal;
     internetReach = [Reachability reachabilityForInternetConnection];
     [internetReach startNotifier];
 
-/*    //Urban Airship 5+
+    //Urban Airship 5+
     UAConfig *config = [UAConfig defaultConfig];
     // Call takeOff (which creates the UAirship singleton)
     [UAirship takeOff:config];
@@ -53,7 +53,7 @@ bool modal;
     //[UAPush shared].userPushNotificationsEnabled = YES; (This line triggers asking permission for Push Notifications... moved to Profile.m screen for Nooch)
     // Set the icon badge to zero on startup (optional)
     [[UAPush shared] resetBadge];
-*/
+
     // PUSH NOTIFICATION REGISTRATION
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
     {
@@ -168,9 +168,11 @@ void exceptionHandler(NSException *exception){
     inBack = YES;
     inactiveDate = [NSDate date];
     splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, [[UIScreen mainScreen] bounds].size.height)];
-    splashView.image = [UIImage imageNamed:@"Default.png"];
+
     if ([[UIScreen mainScreen] bounds].size.height > 500) {
-        splashView.image = [UIImage imageNamed:@"Default-568h@2x.png"];
+        splashView.image = [UIImage imageNamed:@"splash@2x.png"];
+    } else {
+        splashView.image = [UIImage imageNamed:@"splash4.png"];
     }
 }
 

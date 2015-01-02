@@ -1095,6 +1095,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     if (![[assist shared]isPOP])
     {
+        NSLog(@"1.) Checkpoint REACHED");
+
         self.slidingViewController.panGesture.enabled=YES;
         [self.view addGestureRecognizer:self.slidingViewController.panGesture];
 
@@ -1104,14 +1106,19 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         locationManager.delegate = self;
         locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
         locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
-        [locationManager startUpdatingLocation];
+
         if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) { // iOS8+
             // Sending a message to avoid compile time error
+            NSLog(@"2.) Checkpoint REACHED");
             [[UIApplication sharedApplication] sendAction:@selector(requestWhenInUseAuthorization)
                                                        to:locationManager
                                                      from:self
                                                  forEvent:nil];
         }
+        else {
+            //[locationManager requestWhenInUseAuthorization];
+        }
+        [locationManager startUpdatingLocation];
     }
 
     [[assist shared] setRequestMultiple:NO];
