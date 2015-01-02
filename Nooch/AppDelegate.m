@@ -10,7 +10,7 @@
 #import "UAirship.h"
 #import "UAConfig.h"
 #import "UAPush.h"
-#import <ArtisanSDK/ArtisanSDK.h>
+//#import <ArtisanSDK/ArtisanSDK.h>
 #import <CoreTelephony/CTCallCenter.h>
 #import "ReEnterPin.h"
 #import "ProfileInfo.h"
@@ -109,7 +109,7 @@ bool modal;
     [ARPowerHookManager registerHookWithId:@"transSuccessAlertTitle" friendlyName:@"Alert Title After Transfer Success" defaultValue:@"Nice Work"];
     [ARPowerHookManager registerHookWithId:@"transSuccessAlertMsg" friendlyName:@"Alert Message After Transfer Success" defaultValue:@"\xF0\x9F\x92\xB8\nYour cash was sent successfully."];
 
-    [ARManager startWithAppId:@"5487d09c2b22204361000011"];
+    //[ARManager startWithAppId:@"5487d09c2b22204361000011"];
 
     [self application:nil handleOpenURL:[NSURL URLWithString:@"Nooch:"]];
     [self.window makeKeyAndVisible];
@@ -329,7 +329,7 @@ void exceptionHandler(NSException *exception){
 {
     NSString *deviceTokens = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     deviceTokens = [deviceTokens stringByReplacingOccurrencesOfString:@" " withString:@""];
-   // [[UAPush shared] appRegisteredForRemoteNotificationsWithDeviceToken:deviceToken];
+    [[UAPush shared] appRegisteredForRemoteNotificationsWithDeviceToken:deviceToken];
     
   //  [[UAPush shared] registerDeviceToken:deviceToken];
     [[NSUserDefaults standardUserDefaults] setValue:deviceTokens forKey:@"DeviceToken"];
@@ -369,9 +369,9 @@ void exceptionHandler(NSException *exception){
     }
     else
     {
-        //[[UAPush shared] appReceivedRemoteNotification:userInfo applicationState:application.applicationState];
+        [[UAPush shared] appReceivedRemoteNotification:userInfo applicationState:application.applicationState];
         // Reset the badge if you are using that functionality
-        //[[UAPush shared] resetBadge];
+        [[UAPush shared] resetBadge];
         NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
         
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[UIApplication sharedApplication] applicationIconBadgeNumber]+1]; 
@@ -386,7 +386,7 @@ void exceptionHandler(NSException *exception){
     
     // Reset the badge after a push is received in a active or inactive state
     if (application.applicationState != UIApplicationStateBackground) {
-        //[[UAPush shared] resetBadge];
+        [[UAPush shared] resetBadge];
     }
     
     completionHandler(UIBackgroundFetchResultNoData);

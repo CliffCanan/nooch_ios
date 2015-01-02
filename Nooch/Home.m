@@ -1115,9 +1115,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                                      from:self
                                                  forEvent:nil];
         }
-        else {
-            //[locationManager requestWhenInUseAuthorization];
-        }
         [locationManager startUpdatingLocation];
     }
 
