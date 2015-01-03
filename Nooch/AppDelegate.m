@@ -10,7 +10,7 @@
 #import "UAirship.h"
 #import "UAConfig.h"
 #import "UAPush.h"
-//#import <ArtisanSDK/ArtisanSDK.h>
+#import <ArtisanSDK/ArtisanSDK.h>
 #import <CoreTelephony/CTCallCenter.h>
 #import "ReEnterPin.h"
 #import "ProfileInfo.h"
@@ -109,7 +109,7 @@ bool modal;
     [ARPowerHookManager registerHookWithId:@"transSuccessAlertTitle" friendlyName:@"Alert Title After Transfer Success" defaultValue:@"Nice Work"];
     [ARPowerHookManager registerHookWithId:@"transSuccessAlertMsg" friendlyName:@"Alert Message After Transfer Success" defaultValue:@"\xF0\x9F\x92\xB8\nYour cash was sent successfully."];
 
-    //[ARManager startWithAppId:@"5487d09c2b22204361000011"];
+    [ARManager startWithAppId:@"5487d09c2b22204361000011"];
 
     [self application:nil handleOpenURL:[NSURL URLWithString:@"Nooch:"]];
     [self.window makeKeyAndVisible];

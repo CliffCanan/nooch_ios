@@ -3156,7 +3156,7 @@ table-view.stats_top_friends {
     width			: 300px;
     height			: 290px;
     background-color: white;
-    row-height		: 46px;
+    row-height		: 52px;
     separator-style : single-line;
     separator-color : rgba(188,190,192,.35);
 }
@@ -3220,12 +3220,9 @@ table-view.stats_top_friends_empty {
     height			: 20px;
     color			: #313233;
     font-family		: "Roboto";
-    font-weight		: light;
+    font-weight		: regular;
     font-size		: 18px;
     text-align		: left;
-}
-#pieGraphMiddle {
-    background-color: white;
 }
 .stats_circle_transfers_inActive {
     left            : 30px;
@@ -3280,7 +3277,13 @@ table-view.stats_top_friends_empty {
     background-color: rgba(112, 191, 68, .96);
     border-radius   : 28px;
 }
-
+.stats_goToHowMuchBtn {
+    color 				: rgba(88,90,92,1);
+    border-radius		: 5px;
+    font-family			: "FontAwesome";
+    font-size			: 14px;
+    background-color	: rgba(255,255,255,0);
+}
 /*******************************************
 ********* 	  ANIMATIONS 	    *********
 *******************************************/

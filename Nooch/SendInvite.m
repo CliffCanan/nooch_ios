@@ -200,7 +200,7 @@
         me = [core new];
         return;
     }
-    
+
     if ([tagName isEqualToString:@"ReferralCode"])
     {
         dictResponse = [NSJSONSerialization
@@ -211,6 +211,7 @@
         [defaults setValue:[[dictResponse valueForKey:@"getReferralCodeResult"] valueForKey:@"Result"] forKey:@"ReferralCode"];
         [defaults synchronize];
         code.text = [NSString stringWithFormat:@"%@",[[dictResponse valueForKey:@"getReferralCodeResult"] valueForKey:@"Result"]];
+        [code setStyleClass:@"animate_bubble_slow"];
     }
     else if ([tagName isEqualToString:@"GetReffereduser"])
     {
