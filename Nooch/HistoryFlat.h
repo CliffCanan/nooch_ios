@@ -45,7 +45,7 @@ serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate,M
     BOOL isLocalSearch;
     NSString*subTypestr;
     NSDate*ServerDate;
-    
+    UILabel * emptyText_localSearch;
 }
 @property(nonatomic,strong) MBProgressHUD *hud;
 @end

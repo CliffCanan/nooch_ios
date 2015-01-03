@@ -409,8 +409,8 @@
     [self.back_donation setFrame:frame];
 
     [UIView commitAnimations];
-    
-  //  [self createFriendsPieChart];
+
+    [self performSelector:@selector(animatePieChart) withObject:nil afterDelay:.7];
 }
 
 -(void)go_3rd_panel_from_2nd
@@ -434,6 +434,8 @@
     [self.back_donation setFrame:frame];
 
     [UIView commitAnimations];
+
+    [self performSelector:@selector(animatePieChart) withObject:nil afterDelay:.5];
 }
 
 -(void)go_1st_panel_from_2nd
@@ -555,6 +557,8 @@
             frame = self.back_donation.frame;
             frame.origin.x -= 320;
             [self.back_donation setFrame:frame];
+
+            [self performSelector:@selector(animatePieChart) withObject:nil afterDelay:.5];
         }
     }
     else if (slide.direction == UISwipeGestureRecognizerDirectionRight)
@@ -665,7 +669,6 @@
     SendInvite * referFriendScreen = [SendInvite new];
     [self.navigationController pushViewController:referFriendScreen animated:NO];
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -1039,7 +1042,6 @@
     
 }
 
-
 -(void)createFriendsPieChart:(NSMutableArray*)results
 {
     pieSlice_count = [results count];
@@ -1054,11 +1056,12 @@
         self.pieLayer.frame = CGRectMake(40, (160 - pieRadius) - 9, 220, (2 * pieRadius) + 18);
         self.pieLayer.maxRadius = pieRadius;
         self.pieLayer.minRadius = centerRadius - 3;
-        self.pieLayer.showTitles = ShowTitlesAlways;
-        
+        [self.pieLayer setStartAngle:100 endAngle:101 animated:YES];
+        self.pieLayer.animationDuration = 1.5;
+
         NSDictionary * favorite1 = [results objectAtIndex:0];
         NSString * favFreq1 = favorite1[@"Frequency"];
-        
+
         int freqInt1 = [favFreq1 intValue];
         int freqInt2, freqInt3, freqInt4, freqInt5 = 0;
         totalPayments = freqInt1;
@@ -1171,6 +1174,11 @@
     }
 }
 
+-(void)animatePieChart
+{
+    [self.pieLayer setStartAngle:0 endAngle:360 animated:YES];
+}
+
 - (void)handleTap:(UITapGestureRecognizer*)tap
 {
     if (rowNumber == (pieSlice_count))
@@ -1252,6 +1260,7 @@
         topFriendsPieTotalLabel.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
     }
 
+    self.pieLayer.animationDuration = .55;
 
     PieElement * tappedElem = self.pieLayer.values[row];
     if (!tappedElem)
@@ -1265,7 +1274,6 @@
             elem.centrOffset = tappedElem==elem? 8 : 0;
         }
     }];
-
 
     switch (row) {
         case 0:
