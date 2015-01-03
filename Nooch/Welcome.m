@@ -64,7 +64,7 @@
     UIImageView * logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
-    
+
     UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake(10, 110, 300, 40)];
     [title setTextColor:kNoochGrayDark];
     [title setBackgroundColor:[UIColor clearColor]];
@@ -74,7 +74,7 @@
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
     
-    UILabel * success_header = [[UILabel alloc] initWithFrame:CGRectMake(20, 156, 280, 20)];
+    UILabel * success_header = [[UILabel alloc] initWithFrame:CGRectMake(20, 152, 280, 21)];
     [success_header setTextColor:kNoochBlue];
     [success_header setBackgroundColor:[UIColor clearColor]];
     [success_header setText:@"Account Created Successfully"];
@@ -83,6 +83,12 @@
     [success_header setStyleClass:@"animate_bubble_slow"];
     [self.view addSubview:success_header];
     
+    UIView * boxOutline = [[UIView alloc] initWithFrame:CGRectMake(10, 186, 300, 183)];
+    boxOutline.backgroundColor = [UIColor whiteColor];
+    boxOutline.layer.cornerRadius = 8;
+    [boxOutline setStyleClass:@"welcomeBoxShadow"];
+    [self.view addSubview:boxOutline];
+    
     UILabel * next_lbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 194, 300, 32)];
     [next_lbl setTextColor:kNoochGrayDark];
     [next_lbl setBackgroundColor:[UIColor clearColor]];
@@ -90,40 +96,57 @@
     [next_lbl setTextAlignment:NSTextAlignmentCenter];
     [next_lbl setFont:[UIFont fontWithName:@"Roboto-regular" size:24]];
     [self.view addSubview:next_lbl];
-
-    UILabel * prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 228, 300, 110)];
+    
+    UILabel * prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 234, 300, 28)];
     [prompt setTextColor:kNoochGrayDark];
     [prompt setBackgroundColor:[UIColor clearColor]];
-    [prompt setText:@"1. Confirm your email address\n(we sent a link)\n\n2. Link a funding source"];
+    [prompt setText:@"1. Confirm your email address"];
     [prompt setTextAlignment:NSTextAlignmentCenter];
     [prompt setFont:[UIFont fontWithName:@"Roboto-regular" size:19]];
     prompt.numberOfLines = 0;
     [self.view addSubview:prompt];
-
+    
+    UILabel * subPromptTxt = [[UILabel alloc] initWithFrame:CGRectMake(20, 260, 280, 23)];
+    [subPromptTxt setTextColor:[Helpers hexColor:@"585a5c"]];
+    [subPromptTxt setBackgroundColor:[UIColor clearColor]];
+    [subPromptTxt setText:@"(we sent a link - check your email)"];
+    [subPromptTxt setTextAlignment:NSTextAlignmentCenter];
+    [subPromptTxt setFont:[UIFont fontWithName:@"Roboto-light" size:16]];
+    subPromptTxt.numberOfLines = 0;
+    [self.view addSubview:subPromptTxt];
+    
+    UILabel * prompt2 = [[UILabel alloc] initWithFrame:CGRectMake(10, 306, 300, 28)];
+    [prompt2 setTextColor:kNoochGrayDark];
+    [prompt2 setBackgroundColor:[UIColor clearColor]];
+    [prompt2 setText:@"2. Link a funding source"];
+    [prompt2 setTextAlignment:NSTextAlignmentCenter];
+    [prompt2 setFont:[UIFont fontWithName:@"Roboto-regular" size:19]];
+    prompt2.numberOfLines = 0;
+    [self.view addSubview:prompt2];
+    
     UIButton * moreinfo = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [moreinfo setBackgroundColor:[UIColor clearColor]];
-    [moreinfo setTitle:@" Tell me more" forState:UIControlStateNormal];
+    [moreinfo setTitle:@"  Tell me more" forState:UIControlStateNormal];
     [moreinfo setFrame:CGRectMake(93, 338, 134, 20)];
     [moreinfo setStyleId:@"moreinfo_button"];
     
     UILabel * glyphinfo = [UILabel new];
     [glyphinfo setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-    [glyphinfo setFrame:CGRectMake(5, 1, 15, 18)];
+    [glyphinfo setFrame:CGRectMake(5, 0, 15, 19)];
     [glyphinfo setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-question-circle"]];
     [glyphinfo setTextColor:kNoochPurple];
     [moreinfo addSubview:glyphinfo];
     [moreinfo addTarget:self action:@selector(moreinfo_lightBox) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:moreinfo];
 
-    UIButton * enter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [enter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [enter setTitle:@"   Link Funding Source" forState:UIControlStateNormal];
-    [enter setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
-    enter.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    [enter addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
-    [enter setFrame:CGRectMake(10, 388, 300, 60)];
-    [enter setStyleClass:@"button_green"];
-    
+    UIButton * goToKnoxBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [goToKnoxBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [goToKnoxBtn setTitle:@"   Link Funding Source" forState:UIControlStateNormal];
+    [goToKnoxBtn setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
+    goToKnoxBtn.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [goToKnoxBtn addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
+    [goToKnoxBtn setStyleClass:@"button_green"];
+
     NSShadow * shadow1 = [[NSShadow alloc] init];
     shadow1.shadowColor = Rgb2UIColor(26, 38, 19, .22);
     shadow1.shadowOffset = CGSizeMake(0, -1);
@@ -132,25 +155,28 @@
     UILabel * glyphBank = [UILabel new];
     [glyphBank setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
     [glyphBank setFrame:CGRectMake(23, 9, 30, 30)];
+    [glyphBank setTextColor:[UIColor whiteColor]];
     glyphBank.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]
                                                                attributes:textAttributes0];
-    [glyphBank setTextColor:[UIColor whiteColor]];
-    
-    [enter addSubview:glyphBank];
-    [self.view addSubview:enter];
-    
+    [goToKnoxBtn addSubview:glyphBank];
+
     UIButton * later = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [later setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
     [later setBackgroundColor:[UIColor clearColor]];
     [later setTitle:@"I'll link a bank later..." forState:UIControlStateNormal];
+    [later setStyleClass:@"label_small"];
     [later addTarget:self action:@selector(later) forControlEvents:UIControlEventTouchUpInside];
-    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+    if ([[UIScreen mainScreen] bounds].size.height < 500)
+    {
+        [goToKnoxBtn setFrame:CGRectMake(10, 386, 300, 50)];
         [later setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height - 44, 300, 44)];
     }
-    else {
+    else
+    {
+        [goToKnoxBtn setFrame:CGRectMake(10, 402, 300, 50)];
         [later setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height - 90, 300, 65)];
     }
-    [later setStyleClass:@"label_small"];
+    [self.view addSubview:goToKnoxBtn];
     [self.view addSubview:later];
 }
 

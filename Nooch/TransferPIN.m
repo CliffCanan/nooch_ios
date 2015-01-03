@@ -71,7 +71,7 @@
 
     getlocation = [[GetLocation alloc] init];
 	getlocation.delegate = self;
-	[getlocation.locationManager startUpdatingLocation];
+
     if ([getlocation.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) { // iOS8+
         // Sending a message to avoid compile time error
         [[UIApplication sharedApplication] sendAction:@selector(requestWhenInUseAuthorization)
@@ -80,7 +80,7 @@
                                              forEvent:nil];
     }
     //[getlocation.locationManager requestWhenInUseAuthorization];
-    
+	[getlocation.locationManager startUpdatingLocation];    
     // Do any additional setup after loading the view from its nib.
     self.pin = [UITextField new];
     [self.pin setKeyboardType:UIKeyboardTypeNumberPad];

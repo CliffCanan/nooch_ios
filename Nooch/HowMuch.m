@@ -453,7 +453,6 @@
     [self.divider setAlpha:1];
     [self.reset_type setAlpha:0];
     [UIView commitAnimations];
-
 }
 
 - (void) confirm_send

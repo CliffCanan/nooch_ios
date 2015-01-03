@@ -53,15 +53,17 @@
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (cell == nil) {
+
+    if (cell == nil)
+    {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
-    
+
     for(UIView *subview in cell.contentView.subviews)
         [subview removeFromSuperview];
     
-    if (isHistFilter) {
+    if (isHistFilter)
+    {
         [cell.textLabel setTextAlignment:NSTextAlignmentCenter];
         if (indexPath.row == 0) {
             cell.textLabel.text = @"All Transfers";
@@ -80,8 +82,11 @@
     }
     return cell;
 }
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (isHistFilter) {
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (isHistFilter)
+    {
         if (indexPath.row == 0) {
             listType = @"ALL";
         }
@@ -100,7 +105,7 @@
         else if(indexPath.row == 5){
             listType = @"CANCEL";
         }
-        isFilterSelected=YES;
+        isFilterSelected = YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissPopOver" object:nil];
 
         return;

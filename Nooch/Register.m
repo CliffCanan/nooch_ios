@@ -80,11 +80,11 @@
                                       [self.login setAlpha:1];
                                       if ([[UIScreen mainScreen] bounds].size.height > 500)
                                       {
-                                          [self.login setFrame:CGRectMake(10, 506, 300, 40)];
+                                          [self.login setFrame:CGRectMake(10, 503, 300, 44)];
                                       }
                                       else
                                       {
-                                          [self.login setFrame:CGRectMake(10, 436, 300, 40)];
+                                          [self.login setFrame:CGRectMake(10, 429, 300, 44)];
                                       }
                                   }];
                               } completion: nil];
@@ -102,7 +102,7 @@
     [self.hud hide:YES];
     [[UIApplication sharedApplication]setStatusBarHidden:YES];
     [nav_ctrl performSelector:@selector(disable)];
-    
+
     // Do any additional setup after loading the view from its nib.
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -112,13 +112,19 @@
 
     [self.login removeFromSuperview];
 
+    UIView * boxOutline = [[UIView alloc] initWithFrame:CGRectMake(9, 245, 302, 172)];
+    boxOutline.backgroundColor = [UIColor whiteColor];
+    boxOutline.layer.cornerRadius = 8;
+    [boxOutline setStyleClass:@"welcomeBoxShadow"];
+    [self.view addSubview:boxOutline];
+
     UIImageView * logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
     [logo setStyleClass:@"animate_bubble_logo"];
     [self.view addSubview:logo];
 
-    UILabel * signup = [[UILabel alloc] initWithFrame:CGRectMake(0, 88, 320, 15)];
-    [signup setText:@"Sign Up Below With"];
+    UILabel * signup = [[UILabel alloc] initWithFrame:CGRectMake(0, 76, 320, 16)];
+    [signup setText:@"Sign Up With"];
     [signup setStyleClass:@"instruction_text"];
     [self.view addSubview:signup];
 
@@ -126,7 +132,7 @@
     [self.facebookLogin setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.19) forState:UIControlStateNormal];
     self.facebookLogin.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.facebookLogin setTitle:@"  Facebook" forState:UIControlStateNormal];
-    [self.facebookLogin setFrame:CGRectMake(0, 153, 0, 0)];
+    [self.facebookLogin setFrame:CGRectMake(0, 144, 0, 0)];
     [self.facebookLogin addTarget:self action:@selector(toggleFacebookLogin:) forControlEvents:UIControlEventTouchUpInside];
     [self.facebookLogin setStyleClass:@"button_blue"];
 
@@ -138,32 +144,32 @@
     UILabel * glyphFB = [UILabel new];
     [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
     [glyphFB setFrame:CGRectMake(58, 8, 30, 30)];
+    [glyphFB setTextColor:[UIColor whiteColor]];
     glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]
                                                                  attributes:textAttributes];
-    [glyphFB setTextColor:[UIColor whiteColor]];
-    
+
     [self.facebookLogin addSubview:glyphFB];
     [self.view addSubview:self.facebookLogin];
 
     self.or = [UILabel new];// initWithFrame:CGRectMake(0, 216, 320, 15)];
-    [self.or setFrame:CGRectMake(0, 216, 320, 15)];
+    [self.or setFrame:CGRectMake(0, 205, 320, 16)];
     [self.or setBackgroundColor:[UIColor clearColor]];
     [self.or setTextAlignment:NSTextAlignmentCenter];
     [self.or setText:@"Or..."];
     [self.or setStyleClass:@"label_small"];
     [self.view addSubview:self.or];
 
-    UILabel * name = [[UILabel alloc] initWithFrame:CGRectMake(20, 254, 60, 20)];
+    UILabel * name = [[UILabel alloc] initWithFrame:CGRectMake(20, 252, 60, 20)];
     [name setBackgroundColor:[UIColor clearColor]];
     [name setTextColor:kNoochBlue];
-    [name setText:@"Name"];
+    [name setText:@" Full Name"];
     [name setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:name];
 
-    self.name_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 254, 200, 30)];
+    self.name_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 252, 200, 30)];
     [self.name_field setBackgroundColor:[UIColor clearColor]];
     [self.name_field setDelegate:self];
-    [self.name_field setPlaceholder:@"First and Last Name"];
+    [self.name_field setPlaceholder:@"i.e. Abe Lincoln"];
     [self.name_field setKeyboardType:UIKeyboardTypeAlphabet];
     self.name_field .returnKeyType = UIReturnKeyNext;
     [self.name_field setTag:1];
@@ -172,17 +178,17 @@
     [self.name_field setAutocapitalizationType:UITextAutocapitalizationTypeWords];
     [self.view addSubview:self.name_field];
 
-    UILabel * email = [[UILabel alloc] initWithFrame:CGRectMake(20, 294, 60, 20)];
+    UILabel * email = [[UILabel alloc] initWithFrame:CGRectMake(20, 293, 60, 20)];
     [email setBackgroundColor:[UIColor clearColor]];
     [email setTextColor:kNoochBlue];
-    [email setText:@"Email"];
+    [email setText:@" Email"];
     [email setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:email];
 
-    self.email_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 294, 200, 30)];
+    self.email_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 293, 200, 30)];
     [self.email_field setBackgroundColor:[UIColor clearColor]];
     [self.email_field setDelegate:self];
-    [self.email_field setPlaceholder:@"Email Address"];
+    [self.email_field setPlaceholder:@"example@email.com"];
     [self.email_field setKeyboardType:UIKeyboardTypeEmailAddress];
     self.email_field.returnKeyType = UIReturnKeyNext;
     [self.email_field setTag:2];
@@ -194,14 +200,14 @@
     UILabel * password = [[UILabel alloc] initWithFrame:CGRectMake(20, 334, 80, 20)];
     [password setBackgroundColor:[UIColor clearColor]];
     [password setTextColor:kNoochBlue];
-    [password setText:@"Password"];
+    [password setText:@" Password"];
     [password setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:password];
 
     self.password_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 334, 200, 30)];
     [self.password_field setBackgroundColor:[UIColor clearColor]];
     [self.password_field setDelegate:self];
-    [self.password_field setPlaceholder:@"Password"];
+    [self.password_field setPlaceholder:@"Password "];
     [self.password_field setKeyboardType:UIKeyboardTypeAlphabet];
     self.password_field .returnKeyType = UIReturnKeyDone;
     [self.password_field setSecureTextEntry:YES];
@@ -211,7 +217,7 @@
     [self.view addSubview:self.password_field];
 
     UILabel * checkbox_box = [UILabel new];
-    [checkbox_box setFrame:CGRectMake(36, 386, 21, 20)];
+    [checkbox_box setFrame:CGRectMake(36, 385, 21, 20)];
     [checkbox_box setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
     [checkbox_box setTextAlignment:NSTextAlignmentCenter];
     [checkbox_box setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-square-o"]];
@@ -221,7 +227,7 @@
     UIButton * checkbox_dot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [checkbox_dot setBackgroundColor:[UIColor clearColor]];
     [checkbox_dot setTitle:@"  " forState:UIControlStateNormal];
-    [checkbox_dot setFrame:CGRectMake(31, 381, 31, 30)];
+    [checkbox_dot setFrame:CGRectMake(31, 380, 31, 30)];
     [checkbox_dot setStyleId:@"checkbox_dot"];
     [checkbox_dot addTarget:self action:@selector(termsAndConditions:) forControlEvents:UIControlEventTouchUpInside];
     isTermsChecked = NO;
@@ -247,7 +253,7 @@
     [underline setBackgroundColor:kNoochGrayDark];
     [underline setAlpha:0.6];
     [termsText2 addSubview:underline];
-    
+ 
     self.cont = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.cont setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
     self.cont.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -261,23 +267,24 @@
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
-        [signup setFrame:CGRectMake(0, 77, 320, 15)];
-        [self.facebookLogin setFrame:CGRectMake(0, 135, 0, 0)];
-        [self.or setFrame:CGRectMake(0, 194, 320, 15)];
-        [name setFrame:CGRectMake(0, 223, 0, 0)];
-        [self.name_field setFrame:CGRectMake(0, 223, 0, 0)];
-        [email setFrame:CGRectMake(0, 263, 0, 0)];
-        [self.email_field setFrame:CGRectMake(0, 263, 0, 0)];
-        [password setFrame:CGRectMake(0, 303, 0, 0)];
-        [self.password_field setFrame:CGRectMake(0, 303, 0, 0)];
+        [signup setFrame:CGRectMake(0, 66, 320, 16)];
+        [self.facebookLogin setFrame:CGRectMake(0, 126, 0, 0)];
+        [self.or setFrame:CGRectMake(0, 182, 320, 16)];
 
-        [checkbox_box setFrame:CGRectMake(36, 348, 21, 20)];
-        [checkbox_dot setFrame:CGRectMake(31, 343, 31, 30)];
-        [termsText1 setFrame:CGRectMake(65, 350, 55, 14)];
-        [termsText2 setFrame:CGRectMake(122, 344, 150, 26)];
+        [boxOutline setFrame:CGRectMake(9, 219, 302, 153)];
+        [name setFrame:CGRectMake(0, 219, 0, 0)];
+        [self.name_field setFrame:CGRectMake(0, 219, 0, 0)];
+        [email setFrame:CGRectMake(0, 259, 0, 0)];
+        [self.email_field setFrame:CGRectMake(0, 259, 0, 0)];
+        [password setFrame:CGRectMake(0, 299, 0, 0)];
+        [self.password_field setFrame:CGRectMake(0, 299, 0, 0)];
 
-        [self.cont setFrame:CGRectMake(0, 381, 0, 0)];
-        [self.login setFrame:CGRectMake(0, 439, 320, 20)];
+        [checkbox_box setFrame:CGRectMake(36, 345, 21, 20)];
+        [checkbox_dot setFrame:CGRectMake(31, 340, 31, 30)];
+        [termsText1 setFrame:CGRectMake(65, 347, 55, 14)];
+        [termsText2 setFrame:CGRectMake(122, 341, 150, 26)];
+
+        [self.cont setFrame:CGRectMake(0, 380, 0, 0)];
     }
 }
 
@@ -381,9 +388,9 @@
     shadowFB.shadowColor = Rgb2UIColor(19, 32, 38, .2);
     shadowFB.shadowOffset = CGSizeMake(0, -1);
     NSDictionary * shadowFBdict = @{NSShadowAttributeName: shadowFB};
-    
+
     [self.facebookLogin setTitle:@"  Facebook" forState:UIControlStateNormal];
-    
+
     UILabel * glyphFB = [UILabel new];
     [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
     [glyphFB setFrame:CGRectMake(58, 8, 30, 30)];
@@ -402,27 +409,27 @@
             [subview removeFromSuperview];
         }
     }
-    
+
     NSShadow * shadowFB = [[NSShadow alloc] init];
     shadowFB.shadowColor = Rgb2UIColor(19, 32, 38, .2);
     shadowFB.shadowOffset = CGSizeMake(0, -1);
     NSDictionary * shadowFBdict = @{NSShadowAttributeName: shadowFB};
-    
+
     [self.facebookLogin setTitle:@"       Facebook Connected" forState:UIControlStateNormal];
-    
+
     UILabel * glyphFB = [UILabel new];
     [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
     [glyphFB setFrame:CGRectMake(17, 8, 26, 30)];
     glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"] attributes:shadowFBdict];
     [glyphFB setTextColor:[UIColor whiteColor]];
     [self.facebookLogin addSubview:glyphFB];
-    
+
     UILabel * glyph_check = [UILabel new];
     [glyph_check setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
     [glyph_check setFrame:CGRectMake(36, 8, 18, 30)];
     glyph_check.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"] attributes:shadowFBdict];
     [glyph_check setTextColor:[UIColor whiteColor]];
-    
+
     [self.facebookLogin addSubview:glyph_check];
 }
 - (void)attemptFBLogin
@@ -610,42 +617,43 @@
 
 - (void)login:(UIButton*)sender
 {
-    [UIView animateKeyframesWithDuration:.54
+    [UIView animateKeyframesWithDuration:.4
                                    delay:0
                                  options:UIViewKeyframeAnimationOptionCalculationModeCubic
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
                                       if ([[UIScreen mainScreen] bounds].size.height > 500) {
-                                          [self.login setFrame:CGRectMake(-16, 506, 300, 40)];
+                                          [self.login setFrame:CGRectMake(-16, 503, 300, 44)];
                                       } else {
-                                          [self.login setFrame:CGRectMake(-16, 436, 300, 40)];
+                                          [self.login setFrame:CGRectMake(-16, 429, 300, 44)];
                                       }
                                   }];
                                   [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:0.21 animations:^{
                                       if ([[UIScreen mainScreen] bounds].size.height > 500) {
-                                          [self.login setFrame:CGRectMake(-25, 506, 300, 40)];
+                                          [self.login setFrame:CGRectMake(-25, 503, 300, 44)];
                                       } else {
-                                          [self.login setFrame:CGRectMake(-25, 436, 300, 40)];
+                                          [self.login setFrame:CGRectMake(-25, 429, 300, 44)];
                                       }
                                   }];
                                   [UIView addKeyframeWithRelativeStartTime:0.46 relativeDuration:0.32 animations:^{
                                       if ([[UIScreen mainScreen] bounds].size.height > 500) {
-                                          [self.login setFrame:CGRectMake(100, 506, 300, 40)];
+                                          [self.login setFrame:CGRectMake(100, 503, 300, 44)];
                                       } else {
-                                          [self.login setFrame:CGRectMake(100, 436, 300, 40)];
+                                          [self.login setFrame:CGRectMake(100, 429, 300, 44)];
                                       }
                                   }];
                                   [UIView addKeyframeWithRelativeStartTime:0.78 relativeDuration:0.22 animations:^{
                                       if ([[UIScreen mainScreen] bounds].size.height > 500) {
-                                          [self.login setFrame:CGRectMake(321, 506, 300, 40)];
+                                          [self.login setFrame:CGRectMake(321, 503, 300, 44)];
                                       } else {
-                                          [self.login setFrame:CGRectMake(321, 436, 300, 40)];
+                                          [self.login setFrame:CGRectMake(321, 429, 300, 44)];
                                       }
                                   }];
                               } completion: ^(BOOL finished){
                                   [[UIApplication sharedApplication]setStatusBarHidden:YES];
                                   Login * signin = [Login new];
                                   [self.navigationController pushViewController:signin animated:YES];
+                                  [self.login removeFromSuperview];
                               }
      ];
 }

@@ -26,6 +26,8 @@
                                                      from:self
                                                  forEvent:nil];
         }
+        NSLog(@"3.) Checkpoint REACHED");
+
         // send loc updates to myself
 	}
 	return self;
@@ -35,17 +37,16 @@
 	didUpdateToLocation:(CLLocation *)newLocation
 		   fromLocation:(CLLocation *)oldLocation
 {
+    NSLog(@"LocationManager didUPDATEToLocation, new Location is: %@",newLocation);
 	[self.delegate locationUpdate:newLocation];
     [locationManager stopUpdatingLocation];
 }
 
-
 - (void)locationManager:(CLLocationManager *)manager
 	   didFailWithError:(NSError *)error
 {
+    NSLog(@"LocationManager didFailWithError");
 	[self.delegate locationError:error];
 }
-
-
 
 @end

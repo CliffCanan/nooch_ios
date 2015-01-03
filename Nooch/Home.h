@@ -48,7 +48,6 @@ NSUserDefaults *user;
     NSMutableArray *favorites;
     NSString*emailID;
     UIButton *top_button;
-    NSMutableArray *histArray;
 }
 -(void)hide;
 @end

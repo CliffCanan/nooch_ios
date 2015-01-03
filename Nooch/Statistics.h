@@ -19,7 +19,9 @@
     NSMutableArray * favorites;
     UILabel * topFriendsTotalPayments;
     UILabel * topFriendsPieTotalLabel;
+    UILabel * titleTopFriends;
+    UIView * pieGraphMiddleOverlay;
     BOOL IsAlertShown;
-    int statsLoadedSoFar, fav_count, totalPayments;
+    int statsLoadedSoFar, fav_count, totalPayments, rowNumber, pieSlice_count;
 }
 @end
