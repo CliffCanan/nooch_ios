@@ -1,6 +1,6 @@
 //  Decryption.m
 //  Nooch
-//  Copyright 2014 Nooch Inc. All rights reserved.
+//  Copyright (c) 2015 Nooch Inc. All rights reserved.
 
 #import "Decryption.h"
 #import "Constant.h"

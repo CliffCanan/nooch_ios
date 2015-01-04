@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by Nooch on 7/28/11.
-//  Copyright 2014 Nooch Inc. All rights reserved.
+//  Copyright (c) 2015 Nooch Inc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
