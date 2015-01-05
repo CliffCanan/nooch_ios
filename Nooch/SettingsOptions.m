@@ -312,6 +312,7 @@
 - (void)profile
 {
     isProfileOpenFromSideBar = NO;
+    sentFromHomeScrn = NO;
     ProfileInfo * info = [ProfileInfo new];
     [self performSelector:@selector(navigate_to:) withObject:info afterDelay:0.01];
 }

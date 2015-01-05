@@ -481,9 +481,9 @@ view {
 }
 
 .notVerifiedLabel {
-    color 				: #b90e0a;
+    color 				: #D2232A;
     font-family			: "Roboto";
-    font-weight         : regular;
+    font-weight         : medium;
     font-size			: 15px;
 }
 
@@ -660,29 +660,18 @@ view {
     text-align       	: left;
     color 				: #41ABE1;
 }
+.tableViewCell_Profile_leftSide {
+    left                : 10px;
+    width				: 96px;
+    height				: 40px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 17px;
+    text-align       	: right;
+    color 				: #41ABE1;
+}
 .table_txtlbl_indented {
     left    : 32px;
-}
-.memtable_view_cell_textlabel_1 {
-    left            : 90px;
-    top             : 8px;
-    width			: 200px;
-    height			: 38px;
-    font-family		: "Roboto";
-    font-size		: 16px;
-    text-align     	: center;
-    color 			: #313233;
-}
-#profile_DateText {
-    left            : 90px;
-    top             : 26px;
-    width			: 200px;
-    height			: 32px;
-    font-family		: "Roboto";
-    font-weight     : light;
-    font-size		: 15px;
-    text-align     	: center;
-    color 			: #313233;
 }
 .memtable_view_cell_textlabel_1_64 {
     left            : 90px;
@@ -713,6 +702,16 @@ view {
     left			: 95px;
     height			: 40px;
     text-align		: right;
+}
+.tableViewCell_Profile_rightSide {
+    font-family		: "Roboto";
+    font-weight		: regular;
+    font-size		: 17px;
+    color 			: #313233;
+    width			: 200px;
+    left			: 113px;
+    height			: 40px;
+    text-align		: left;
 }
 .table_view_cell_detailtext_smallerText {
     left            : 129;
@@ -876,13 +875,10 @@ view {
     opacity : 0.6;
 }
 #profileTopSectionBg {
-    background-color: rgba(63,171,225,.4);
-    box-shadow: 0px 1px 2px rgba(88,90,92,.5);
+    box-shadow: 0px 1px 2px rgba(88,90,92,.3);
 }
 #profileTopSectionBg_susp {
-    background-color: #D61915;
-    opacity: .6;
-    box-shadow: 0px 1px 2px rgba(89, 10, 9, 0.4);
+    box-shadow: 0px 1px 2px rgba(89, 10, 9, 0.34);
 }
 .alertContainer {
     left: -1px;
