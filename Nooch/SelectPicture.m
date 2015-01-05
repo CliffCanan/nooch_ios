@@ -11,16 +11,16 @@
 #import "ECSlidingViewController.h"
 #import "UIImage+Resize.h"
 #import "UIImageView+WebCache.h"
-@interface SelectPicture ()
+#import <FacebookSDK/FacebookSDK.h>
+@interface SelectPicture ()<FBLoginViewDelegate>{
+    NSString * fbID;
+}
 @property(nonatomic,strong) NSMutableDictionary *user;
 @property(nonatomic,strong) UIImageView *pic;
 @property(nonatomic,strong) UILabel *message;
 @property(nonatomic,strong) UIButton *choose_pic;
 @property(nonatomic,strong) UIButton *next_button;
 @property(nonatomic) UIImagePickerController *picker;
-@property (nonatomic, retain) ACAccountStore *accountStore;
-@property (nonatomic, retain) ACAccount *facebookAccount;
-@property(nonatomic,strong) __block NSMutableDictionary *facebook_info;
 @property(nonatomic,strong) MBProgressHUD *hud;
 @end
 
@@ -35,12 +35,19 @@
     }
     return self;
 }
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.screenName = @"Select Picture Screen";
 }
-- (void)change_pic {
-    UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Use Facebook Picture", @"Use Camera", @"From iPhone Library", nil];
+
+- (void)change_pic
+{
+    UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:nil
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"Cancel"
+                                                     destructiveButtonTitle:nil
+                                                          otherButtonTitles:@"Use Facebook Picture", @"Use Camera", @"From iPhone Library", nil];
     actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
     [actionSheetObject showInView:self.view];
 }
@@ -51,54 +58,7 @@
     
     if (buttonIndex == 0)
     {
-        if (![self.user objectForKey:@"image"])
-        {
-            if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
-            {
-                self.accountStore = [[ACAccountStore alloc] init];
-                self.facebookAccount = nil;
-                NSDictionary *options = @{
-                                          ACFacebookAppIdKey: @"198279616971457",
-                                          ACFacebookPermissionsKey: @[@"email",@"user_about_me"],
-                                          ACFacebookAudienceKey: ACFacebookAudienceOnlyMe
-                                          };
-                ACAccountType *facebookAccountType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-                [self.accountStore requestAccessToAccountsWithType:facebookAccountType
-                                                           options:options completion:^(BOOL granted, NSError *e)
-                 {
-                     if (!granted) {
-                         NSLog(@"didnt grant because: %@",e.description);
-                     }
-                     else {
-                         dispatch_async(dispatch_get_main_queue(), ^{
-                             self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-                             [self.navigationController.view addSubview:self.hud];
-                             self.hud.delegate = self;
-                             self.hud.labelText = @"Loading Facebook Photo...";
-                             [self.hud show:YES];
-                         });
-                         NSArray *accounts = [self.accountStore accountsWithAccountType:facebookAccountType];
-                         self.facebookAccount = [accounts lastObject];
-                         [self finishFb];
-                     }
-                 }];
-                [self.next_button setTitle:@"Continue" forState:UIControlStateNormal];
-                [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
-                [self.next_button addTarget:self action:@selector(cont) forControlEvents:UIControlEventTouchUpInside];
-                [self.next_button setStyleClass:@"button_green"];
-            }
-            else {
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Not Available" message:@"You do not have a Facebook account attached to this phone." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [av show];
-            }
-  
-        }
-        else{
-            self.pic.layer.borderWidth = 3;
-            self.pic.layer.borderColor = kNoochBlue.CGColor;
-            [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
-        }
-
+        [self toggleFacebookLogin];
     }
     else if (buttonIndex == 1)
     {
@@ -128,70 +88,6 @@
         self.picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
         [self presentViewController:self.picker animated:YES completion:Nil];
     }
-}
-
--(void)renewFb
-{
-    [self.accountStore renewCredentialsForAccount:(ACAccount *)self.facebookAccount completion:^(ACAccountCredentialRenewResult renewResult, NSError *error){
-        if(!error)
-        {
-            switch (renewResult) {
-                case ACAccountCredentialRenewResultRenewed:
-                    break;
-                case ACAccountCredentialRenewResultRejected:
-                    NSLog(@"User declined permission");
-                    break;
-                case ACAccountCredentialRenewResultFailed:
-                    NSLog(@"non-user-initiated cancel, you may attempt to retry");
-                    break;
-                default:
-                    break;
-            }
-            [self finishFb];
-        }
-        else{
-            //handle error gracefully
-            NSLog(@"error from renew credentials%@",error);
-        }
-    }];
-}
-
--(void)finishFb
-{
-    NSString *acessToken = [NSString stringWithFormat:@"%@",self.facebookAccount.credential.oauthToken];
-    NSDictionary *parameters = @{@"access_token": acessToken,@"fields":@"id,username,first_name,last_name,email"};
-    NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me"];
-    SLRequest *feedRequest = [SLRequest
-                              requestForServiceType:SLServiceTypeFacebook
-                              requestMethod:SLRequestMethodGET
-                              URL:feedURL
-                              parameters:parameters];
-    feedRequest.account = self.facebookAccount;
-    self.facebook_info = [NSMutableDictionary new];
-    [feedRequest performRequestWithHandler:^(NSData *respData,
-                                             NSHTTPURLResponse *urlResponse, NSError *error)
-     {
-         self.facebook_info = [NSJSONSerialization
-                               JSONObjectWithData:respData //1
-                               options:kNilOptions
-                               error:&error];
-         dispatch_async(dispatch_get_main_queue(), ^{
-             [self.hud hide:YES];
-            
-             NSString *imageURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal", [self.facebook_info objectForKey:@"id"]];
-             [[NSUserDefaults standardUserDefaults] setObject:[self.facebook_info objectForKey:@"id"] forKey:@"facebook_id"];
-             
-             
-             [self.pic sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"profile_picture.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                 if (image)
-                 {
-                     [[assist shared]setTranferImage:nil];
-                     [[assist shared]setTranferImage:image];
-                 }
-                 
-             }];
-         });
-     }];
 }
 
 -(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size
@@ -235,7 +131,6 @@
     
     self.pic.layer.borderWidth = 3;
     self.pic.layer.borderColor = kNoochBlue.CGColor;
-   // [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
 
     [self.message setText:@"Great Pic! If you're happy with it tap \"Continue\" or if you wish to change it tap \"Change Picture\""];
 
@@ -250,7 +145,7 @@
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker1
 {
     [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
-    self.slidingViewController.panGesture.enabled=NO;
+    self.slidingViewController.panGesture.enabled = NO;
     [self dismissViewControllerAnimated:YES completion:Nil];
 }
 
@@ -264,6 +159,7 @@
     CreatePIN *create_pin = [[CreatePIN alloc] initWithData:self.user];
     [self.navigationController pushViewController:create_pin animated:YES];
 }
+
 -(void) BackClicked1:(id) sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -275,13 +171,12 @@
     [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
     self.slidingViewController.panGesture.enabled=NO;
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    
+
     UIView * subview = [[UIView alloc]init];
     subview.frame = self.view.frame;
     subview.backgroundColor = [UIColor clearColor];
     [self.view addSubview:subview];
-    
-    //back button
+
     UIButton *btnback = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnback setBackgroundColor:[UIColor whiteColor]];
     [btnback setFrame:CGRectMake(7, 20, 44, 44)];
@@ -301,16 +196,16 @@
     UIImageView * logo = [UIImageView new];
     [logo setStyleId:@"prelogin_logo"];
     [self.view addSubview:logo];
-    
+
+    NSString * sloganFromArtisan = [ARPowerHookManager getValueForHookById:@"slogan"];
     UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(75, 82, 170, 16)];
     [slogan setBackgroundColor:[UIColor clearColor]];
-    NSString * sloganFromArtisan = [ARPowerHookManager getValueForHookById:@"slogan"];
     [slogan setText:sloganFromArtisan];
     [slogan setFont:[UIFont fontWithName:@"VarelaRound-Regular" size:15]];
     [slogan setStyleClass:@"prelogin_slogan"];
     [self.view addSubview:slogan];
 
-    UILabel *welcome = [[UILabel alloc] initWithFrame:CGRectMake(0, 115, 320, 35)];
+    UILabel * welcome = [[UILabel alloc] initWithFrame:CGRectMake(0, 115, 320, 35)];
     [welcome setText:[NSString stringWithFormat:@"Hey %@!",[[self.user objectForKey:@"first_name" ] capitalizedString]]];
     [welcome setBackgroundColor:[UIColor clearColor]];
     [welcome setStyleClass:@"header_signupflow"];
@@ -318,43 +213,19 @@
     self.pic = [[UIImageView alloc] initWithFrame:CGRectMake(89, 166, 144, 144)];
     self.pic.layer.cornerRadius = 72;
     self.pic.clipsToBounds = YES;
-    if ([self.user objectForKey:@"image"])
-    {
-        self.pic.layer.borderWidth = 3;
-        self.pic.layer.borderColor = kNoochBlue.CGColor;
-        [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
-        [[assist shared]setTranferImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
-    }
-    else {
-        [self.pic setImage:[UIImage imageNamed:@"silhouette.png"]];
-    }
-    
+
     self.message = [[UILabel alloc] initWithFrame:CGRectMake(24, 314, 272, 70)];
     [self.message setBackgroundColor:[UIColor clearColor]];
-    
-    if ([self.user objectForKey:@"image"]) {
-        [self.message setText:@"Great Pic! If you're happy with it tap \"Continue\" or if you wish to change it tap \"Change Picture\""];
-    }
-    else {
-        [self.message setText:@"Add a picture so people can find you more easily when sending you money."];
-    }
     [self.message setStyleClass:@"instruction_text"];
     [self.message setNumberOfLines:0];
-    
+
     self.choose_pic = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.choose_pic setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.choose_pic setStyleClass:@"button_blue"];
     [self.choose_pic setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.21) forState:UIControlStateNormal];
     self.choose_pic.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-
-    if ([[self.user objectForKey:@"facebook"] objectForKey:@"image"]) {
-        [self.choose_pic setTitle:@"  Change Picture" forState:UIControlStateNormal];
-    }
-    else {
-        [self.choose_pic setTitle:@"  Choose Picture" forState:UIControlStateNormal];
-    }
     [self.choose_pic addTarget:self action:@selector(change_pic) forControlEvents:UIControlEventTouchUpInside];
-    [self.choose_pic setFrame:CGRectMake(10, 389, 300, 60)];
+    [self.choose_pic setFrame:CGRectMake(10, 392, 300, 50)];
 
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(19, 32, 38, .21);
@@ -383,6 +254,14 @@
     
     if ([self.user objectForKey:@"image"])
     {
+        self.pic.layer.borderWidth = 3;
+        self.pic.layer.borderColor = kNoochBlue.CGColor;
+        [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
+        [[assist shared]setTranferImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
+
+        [self.message setText:@"Great Pic! If you're happy with it tap \"Continue\" or if you wish to change it tap \"Change Picture\""];
+        [self.choose_pic setTitle:@"  Change Picture" forState:UIControlStateNormal];
+
         [self.next_button setTitle:@"Continue" forState:UIControlStateNormal];
         [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
         [self.next_button addTarget:self action:@selector(cont) forControlEvents:UIControlEventTouchUpInside];
@@ -390,21 +269,180 @@
     }
     else
     {
+        [self.pic setImage:[UIImage imageNamed:@"silhouette.png"]];
+
+        [self.message setText:@"Add a picture so people can find you more easily when sending you money."];
+
+        [self.choose_pic setTitle:@"  Choose Picture" forState:UIControlStateNormal];
+
         [self.next_button setBackgroundColor:[UIColor clearColor]];
         [self.next_button setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
         [self.next_button setTitle:@"I don't want to add a picture now..." forState:UIControlStateNormal];
         [self.next_button setStyleClass:@"label_small"];
     }
-    
+
+    [self.choose_pic addSubview:glyphcamera];
     [subview addSubview:welcome];
     [subview addSubview:self.pic];
     [subview addSubview:self.message];
-    [self.choose_pic addSubview:glyphcamera];
     [subview addSubview:self.choose_pic];
     [subview addSubview:self.next_button];
-    
-    self.picker = [[UIImagePickerController alloc]init];
+
+    self.picker = [[UIImagePickerController alloc] init];
     self.picker.delegate = self;
+}
+
+- (void)toggleFacebookLogin
+{
+    // If the session state is any of the two "open" states when the button is clicked
+    if (FBSession.activeSession.state == FBSessionStateOpen || FBSession.activeSession.state == FBSessionStateOpenTokenExtended)
+    {
+        [self userLoggedIn];
+    }
+    else // If the session state is NOT any of the two "open" states when the button is clicked
+    {
+        // Open a session showing the user the login UI
+        // You must ALWAYS ask for public_profile permissions when opening a session
+        [FBSession openActiveSessionWithReadPermissions:@[@"public_profile", @"email", @"user_friends"]
+                                           allowLoginUI:YES
+                                      completionHandler:
+         ^(FBSession *session, FBSessionState state, NSError *error) {
+             // Call the sessionStateChanged:state:error method to handle session state changes
+             [self sessionStateChanged:session state:state error:error];
+         }];
+    }
+}
+
+- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error
+{
+    // If the session was opened successfully
+    if (!error && state == FBSessionStateOpen)
+    {
+        NSLog(@"FB Session opened");
+        // Show the user the logged-in UI
+        [self userLoggedIn];
+        return;
+    }
+    // If the session is closed
+    if (state == FBSessionStateClosed || state == FBSessionStateClosedLoginFailed)
+    {
+        NSLog(@"FB Session closed");
+        // Show the user the logged-out UI
+        [self userLoggedOut];
+    }
+    // Handle errors
+    if (error)
+    {
+        NSLog(@"FB Error");
+        NSString *alertText;
+        NSString *alertTitle;
+        // If the error requires people using an app to make an action outside of the app in order to recover
+        if ([FBErrorUtility shouldNotifyUserForError:error] == YES)
+        {
+            alertTitle = @"Something went wrong";
+            alertText = [FBErrorUtility userMessageForError:error];
+            [self showMessage:alertText withTitle:alertTitle];
+        }
+        else
+        {
+            // If the user cancelled login, do nothing
+            if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled)
+            {
+                NSLog(@"User cancelled login");
+            }
+            // Handle session closures that happen outside of the app
+            else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession)
+            {
+                alertTitle = @"Session Error";
+                alertText = @"Your current session is no longer valid. Please log in again.";
+                [self showMessage:alertText withTitle:alertTitle];
+            }
+            // For simplicity, here we just show a generic message for all other errors
+            // You can learn how to handle other errors using our guide: https://developers.facebook.com/docs/ios/errors
+            else
+            {
+                //Get more error information from the error
+                NSDictionary *errorInformation = [[[error.userInfo objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"] objectForKey:@"body"] objectForKey:@"error"];
+                
+                // Show the user an error message
+                alertTitle = @"Something went wrong";
+                alertText = [NSString stringWithFormat:@"Please retry. \n\nIf the problem persists contact us and mention this error code: %@", [errorInformation objectForKey:@"message"]];
+                [self showMessage:alertText withTitle:alertTitle];
+            }
+        }
+        // Clear this token
+        [FBSession.activeSession closeAndClearTokenInformation];
+        // Show the user the logged-out UI
+        [self userLoggedOut];
+    }
+}
+
+// Facebook: Show the user the logged-out UI
+- (void)userLoggedOut
+{
+    [self.pic setImage:[UIImage imageNamed:@"silhouette.png"]];
+
+    [self.message setText:@"Add a picture so people can find you more easily when sending you money."];
+
+    [self.choose_pic setTitle:@"  Choose Picture" forState:UIControlStateNormal];
+
+    [self.next_button setBackgroundColor:[UIColor clearColor]];
+    [self.next_button setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
+    [self.next_button setTitle:@"I don't want to add a picture now..." forState:UIControlStateNormal];
+    [self.next_button setStyleClass:@"label_small"];
+}
+
+// Facebook: Show the user the logged-in UI
+- (void)userLoggedIn
+{
+    [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error)
+    {
+        if (!error)
+        {
+            // Success! Now set the facebook_id to be the fb_id that was just returned & send to Nooch DB
+            fbID = [result objectForKey:@"id"];
+
+            [[NSUserDefaults standardUserDefaults] setObject:fbID forKey:@"facebook_id"];
+            NSLog(@"Login w FB successful --> fb id is %@",[result objectForKey:@"id"]);
+
+            // isloginWithFB = YES;
+            NSString * imgURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", fbID];
+
+            [self.pic sd_setImageWithURL:[NSURL URLWithString:imgURL] placeholderImage:[UIImage imageNamed:@"profile_picture.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                if (image)
+                {
+                    [[assist shared]setTranferImage:nil];
+                    [[assist shared]setTranferImage:image];
+                }
+            }];
+
+            self.pic.layer.borderWidth = 4;
+            self.pic.layer.borderColor = kNoochBlue.CGColor;
+            //  [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
+            
+            [self.message setText:@"Great Pic! If you're happy with it tap \"Continue\" or if you wish to change it tap \"Change Picture\""];
+            [self.choose_pic setTitle:@"  Change Picture" forState:UIControlStateNormal];
+            
+            [self.next_button setTitle:@"Continue" forState:UIControlStateNormal];
+            [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
+            [self.next_button addTarget:self action:@selector(cont) forControlEvents:UIControlEventTouchUpInside];
+            [self.next_button setStyleClass:@"button_green"];
+        }
+        else
+        {
+            // An error occurred, we need to handle the error
+            // See: https://developers.facebook.com/docs/ios/errors
+        }
+    }];
+}
+// Show an alert message (For Facebook methods)
+- (void)showMessage:(NSString *)text withTitle:(NSString *)title
+{
+    [[[UIAlertView alloc] initWithTitle:title
+                                message:text
+                               delegate:self
+                      cancelButtonTitle:@"OK"
+                      otherButtonTitles:nil] show];
 }
 
 - (void)didReceiveMemoryWarning {

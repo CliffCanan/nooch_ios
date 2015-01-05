@@ -55,7 +55,7 @@ bool modal;
     [[UAPush shared] resetBadge];
 
     // PUSH NOTIFICATION REGISTRATION
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+/*    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
     {
         // Register for push in iOS 8.
         [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
@@ -65,7 +65,7 @@ bool modal;
     {
         // Register for push in iOS 7 and under.
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)];
-    }
+    } */
 
     //Google Analytics
     [GAI sharedInstance].dispatchInterval = 22;
@@ -109,7 +109,7 @@ bool modal;
     [ARPowerHookManager registerHookWithId:@"transSuccessAlertTitle" friendlyName:@"Alert Title After Transfer Success" defaultValue:@"Nice Work"];
     [ARPowerHookManager registerHookWithId:@"transSuccessAlertMsg" friendlyName:@"Alert Message After Transfer Success" defaultValue:@"\xF0\x9F\x92\xB8\nYour cash was sent successfully."];
 
-//    [ARManager startWithAppId:@"5487d09c2b22204361000011"];
+    [ARManager startWithAppId:@"5487d09c2b22204361000011"];
 
     [self application:nil handleOpenURL:[NSURL URLWithString:@"Nooch:"]];
     [self.window makeKeyAndVisible];
@@ -299,7 +299,6 @@ void exceptionHandler(NSException *exception){
         {
             // Success! Now set the facebook_id to be the fb_id that was just returned
             [[NSUserDefaults standardUserDefaults] setObject:[result objectForKey:@"id"] forKey:@"facebook_id"];
-            NSLog(@"App Del --> FB id is %@",[result objectForKey:@"id"]);
         }
         else
         {
@@ -397,7 +396,7 @@ void exceptionHandler(NSException *exception){
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation
 {
-    NSLog(@"%@",url);
+    NSLog(@"URL is: %@",url);
     if ([[url absoluteString] rangeOfString:@"facebook"].location!=NSNotFound) {
         return [FBAppCall handleOpenURL:url
                       sourceApplication:sourceApplication

@@ -9,7 +9,6 @@
 #import "Home.h"
 #import "SettingsOptions.h"
 #import <QuartzCore/QuartzCore.h>
-#import "ResetPassword.h"
 #import "Decryption.h"
 #import "NSString+AESCrypt.h"
 #import "ResetPassword.h"
@@ -18,8 +17,11 @@
 #import "Register.h"
 #import "ECSlidingViewController.h"
 #import "UIImage+Resize.h"
+#import <FacebookSDK/FacebookSDK.h>
 UIImageView *picture;
-@interface ProfileInfo ()
+@interface ProfileInfo ()<FBLoginViewDelegate>{
+    NSString * fbID;
+}
 @property(nonatomic) UIImagePickerController *picker;
 @property(nonatomic,strong) UILabel *name;
 @property(nonatomic,strong) UITextField *email;
@@ -33,12 +35,11 @@ UIImageView *picture;
 @property(nonatomic,strong) UITableView * list2;
 @property(nonatomic,strong) UIButton *save;
 @property(nonatomic,strong) NSString *ServiceType;
-@property(nonatomic, retain) NSString * SavePhoneNumber;
-@property(nonatomic) BOOL disclose;
-@property(nonatomic) NSIndexPath *expand_path;
+@property(nonatomic,retain) NSString * SavePhoneNumber;
 @property(nonatomic,strong) MBProgressHUD *hud;
 @property(nonatomic,strong) UIView *member_since_back;
 @property(nonatomic,strong) UIView * sectionHeaderBg2;
+@property(nonatomic,strong) UIView * sectionHeaderBg;
 @end
 @implementation ProfileInfo
 
@@ -247,7 +248,6 @@ UIImageView *picture;
     dictSavedInfo = [[NSMutableDictionary alloc]init];
     [dictSavedInfo setObject:@"NO" forKey:@"ImageChanged"];
     self.navigationController.navigationBar.topItem.title = @"";
-    self.disclose = YES;
     [self.navigationItem setHidesBackButton:YES];
     
     if (isProfileOpenFromSideBar)
@@ -316,9 +316,7 @@ UIImageView *picture;
 
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, heightOfTopSection, 320, [[UIScreen mainScreen] bounds].size.height - heightOfTopSection - 64)];
     [scrollView setBackgroundColor:Rgb2UIColor(255, 255, 255, 0)];
-//    [scrollView showsVerticalScrollIndicator];
-//    [scrollView setScrollEnabled:YES];
-//    [scrollView setDelegate:self];
+    // [scrollView setDelegate:self];
     scrollView.contentSize = CGSizeMake(320, [[UIScreen mainScreen] bounds].size.height);
 
     self.member_since_back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, heightOfTopSection)];
@@ -334,7 +332,7 @@ UIImageView *picture;
     [self.view addSubview:self.member_since_back];
 
     NSShadow * shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = Rgb2UIColor(239, 242, 244, .3);
+    shadow.shadowColor = Rgb2UIColor(249, 251, 252, .3);
     shadow.shadowOffset = CGSizeMake(0, 1);
     NSDictionary * textAttributes_topShadow = @{NSShadowAttributeName: shadow };
 
@@ -342,7 +340,7 @@ UIImageView *picture;
     [self.name setTextAlignment:NSTextAlignmentCenter];
     [self.name setFont:[UIFont fontWithName:@"Roboto-regular" size:24]];
     [self.name setTextColor:kNoochGrayDark];
-    self.name.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",[[[NSUserDefaults standardUserDefaults] objectForKey:@"FirstName"] capitalizedString],[[[NSUserDefaults standardUserDefaults] objectForKey:@"LastName"] capitalizedString]] attributes:textAttributes_topShadow];
+    self.name.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",[[user objectForKey:@"firstName"] capitalizedString],[[user objectForKey:@"lastName"] capitalizedString]] attributes:textAttributes_topShadow];
     [self.name setUserInteractionEnabled:NO];
     [self.name setTag:0];
     [self.member_since_back addSubview:self.name];
@@ -448,7 +446,7 @@ UIImageView *picture;
     [memSincelbl setTextColor:[Helpers hexColor:@"313233"]];
     [memSincelbl setTextAlignment:NSTextAlignmentCenter];
     [scrollView addSubview:memSincelbl];
-    
+
     UILabel * dateText = [[UILabel alloc] initWithFrame:CGRectMake(206, 25, 110, 17)];
     dateText.userInteractionEnabled = NO;
     [dateText setBackgroundColor:[UIColor clearColor]];
@@ -470,8 +468,8 @@ UIImageView *picture;
     [self.email setTag:0];
     [scrollView addSubview:self.email];
 
-    // Recovery Mail
-/*    self.recovery_email = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
+    /* // Recovery Mail
+    self.recovery_email = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.recovery_email setTextAlignment:NSTextAlignmentRight];
     [self.recovery_email setBackgroundColor:[UIColor clearColor]];
     [self.recovery_email setPlaceholder:@"(Optional)"];
@@ -524,8 +522,8 @@ UIImageView *picture;
                               @"Atlantic Standard Time",@"GMT-04:00",
                               nil];
 
-    UIView * sectionHeaderBg = [[UIView alloc] initWithFrame:CGRectMake(0, pictureRadius + 16, 320, 26)];
-    sectionHeaderBg.backgroundColor = Rgb2UIColor(230, 231, 232, .4);
+    self.sectionHeaderBg = [[UIView alloc] initWithFrame:CGRectMake(0, pictureRadius + 16, 320, 26)];
+    self.sectionHeaderBg.backgroundColor = Rgb2UIColor(230, 231, 232, .4);
 
     UILabel * sectionHeaderTxt = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 200, 26)];
     sectionHeaderTxt.backgroundColor = [UIColor clearColor];
@@ -533,11 +531,11 @@ UIImageView *picture;
     sectionHeaderTxt.font = [UIFont fontWithName:@"Roboto-light" size:15];
     sectionHeaderTxt.text = @"CONTACT INFO";
     sectionHeaderTxt.textAlignment = NSTextAlignmentLeft;
-    [sectionHeaderBg addSubview:sectionHeaderTxt];
-    [scrollView addSubview:sectionHeaderBg];
+    [self.sectionHeaderBg addSubview:sectionHeaderTxt];
+    [scrollView addSubview:self.sectionHeaderBg];
 
     self.list = [UITableView new];
-    [self.list setFrame:CGRectMake(0, sectionHeaderBg.frame.origin.y + sectionHeaderBg.frame.size.height, 320, rowHeight * 3)];
+    [self.list setFrame:CGRectMake(0, self.sectionHeaderBg.frame.origin.y + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 3)];
     [self.list setDelegate:self];
     [self.list setDataSource:self];
     [self.list setRowHeight:rowHeight];
@@ -548,7 +546,7 @@ UIImageView *picture;
     if ([[user valueForKey:@"Status"] isEqualToString:@"Active"] &&
         [[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
     {
-        [self.list setFrame:CGRectMake(0, pictureRadius + 18 + sectionHeaderBg.frame.size.height, 320, rowHeight * 2)];
+        [self.list setFrame:CGRectMake(0, pictureRadius + 18 + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 2)];
         numberOfRowsToDisplay = 2;
         emailVerifyRowIsShowing = false;
         smsVerifyRowIsShowing = false;
@@ -558,7 +556,7 @@ UIImageView *picture;
              ( [[user valueForKey:@"Status"] isEqualToString:@"Registered"] &&
                [[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"]) )
     {
-        [self.list setFrame:CGRectMake(0, pictureRadius + 18 + sectionHeaderBg.frame.size.height, 320, rowHeight * 3)];
+        [self.list setFrame:CGRectMake(0, pictureRadius + 18 + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 3)];
         numberOfRowsToDisplay = 3;
         if ([[user valueForKey:@"Status"] isEqualToString:@"Registered"]) {
             emailVerifyRowIsShowing = true;
@@ -570,7 +568,7 @@ UIImageView *picture;
     else if ( [[user valueForKey:@"Status"] isEqualToString:@"Registered"] &&
              ![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
     {
-        [self.list setFrame:CGRectMake(0, pictureRadius + 18 + sectionHeaderBg.frame.size.height, 320, rowHeight * 4)];
+        [self.list setFrame:CGRectMake(0, pictureRadius + 18 + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 4)];
         numberOfRowsToDisplay = 4;
         emailVerifyRowIsShowing = true;
         smsVerifyRowIsShowing = true;
@@ -694,7 +692,7 @@ UIImageView *picture;
         return;
     }
 
-/*  if ([self.address_one.text length] == 0)
+    /* if ([self.address_one.text length] == 0)
     {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Missing An Address"
                                                         message:@"Please enter your address to validate your profile."
@@ -727,7 +725,7 @@ UIImageView *picture;
     strPhoneNumber = [strPhoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
     strPhoneNumber = [strPhoneNumber stringByReplacingOccurrencesOfString:@")" withString:@""];
     strPhoneNumber = [strPhoneNumber stringByReplacingOccurrencesOfString:@" " withString:@""];
-    
+
     if (![self.SavePhoneNumber isEqualToString:strPhoneNumber] || [self.SavePhoneNumber length] == 0)
     {
         if ([strPhoneNumber length] != 10)
@@ -781,8 +779,7 @@ UIImageView *picture;
     {
         [[me usr] removeObjectForKey:@"Addr2"];
     }
-    //self.name.text = [self.name.text lowercaseString];
-    
+
     NSArray *arrdivide = [self.name.text componentsSeparatedByString:@" "];
     
     if ([arrdivide count] == 2)
@@ -869,34 +866,7 @@ UIImageView *picture;
 {
     if (buttonIndex == 0)
     {
-        if (![user objectForKey:@"facebook_id"]) {
-            return;
-        }
-
-        NSString *url = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal",[user objectForKey:@"facebook_id"]];
-   
-        [picture sd_setImageWithURL:[NSURL URLWithString:url]
-                   placeholderImage:[UIImage imageNamed:@"RoundLoading"]
-                          completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-            if (image) {
-                [picture setImage:image];
-                [[assist shared]setTranferImage:nil];
-                [[assist shared]setTranferImage:image];
-            }
-
-        }];
-
-        [self.save setEnabled:YES];
-        [self.save setUserInteractionEnabled:YES];
-        [self.save setStyleClass:@"nav_top_right"];
-        [self.save setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
-        self.save.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-
-        [dictSavedInfo setObject:@"YES" forKey:@"ImageChanged"];
-        SDImageCache *imageCache = [SDImageCache sharedImageCache];
-        [imageCache clearMemory];
-        [imageCache clearDisk];
-        [imageCache cleanDisk];
+        [self toggleFacebookLogin];
     }
     else if (buttonIndex == 1)
     {
@@ -987,6 +957,152 @@ UIImageView *picture;
     [self dismissViewControllerAnimated:YES completion:Nil];
 }
 
+- (void)toggleFacebookLogin
+{
+    // If the session state is any of the two "open" states when the button is clicked
+    if (FBSession.activeSession.state == FBSessionStateOpen || FBSession.activeSession.state == FBSessionStateOpenTokenExtended)
+    {
+        [self userLoggedIn];
+    }
+    else // If the session state is NOT any of the two "open" states when the button is clicked
+    {
+        // Open a session showing the user the login UI
+        // You must ALWAYS ask for public_profile permissions when opening a session
+        [FBSession openActiveSessionWithReadPermissions:@[@"public_profile", @"email", @"user_friends"]
+                                           allowLoginUI:YES
+                                      completionHandler:
+         ^(FBSession *session, FBSessionState state, NSError *error) {
+             // Call the sessionStateChanged:state:error method to handle session state changes
+             [self sessionStateChanged:session state:state error:error];
+         }];
+    }
+}
+
+- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error
+{
+    // If the session was opened successfully
+    if (!error && state == FBSessionStateOpen)
+    {
+        NSLog(@"FB Session opened");
+        // Show the user the logged-in UI
+        [self userLoggedIn];
+        return;
+    }
+    // If the session is closed
+    if (state == FBSessionStateClosed || state == FBSessionStateClosedLoginFailed)
+    {
+        NSLog(@"FB Session closed");
+        // Show the user the logged-out UI
+        [self userLoggedOut];
+    }
+    // Handle errors
+    if (error)
+    {
+        NSLog(@"FB Error");
+        NSString *alertText;
+        NSString *alertTitle;
+        // If the error requires people using an app to make an action outside of the app in order to recover
+        if ([FBErrorUtility shouldNotifyUserForError:error] == YES)
+        {
+            alertTitle = @"Something went wrong";
+            alertText = [FBErrorUtility userMessageForError:error];
+            [self showMessage:alertText withTitle:alertTitle];
+        }
+        else
+        {
+            // If the user cancelled login, do nothing
+            if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled)
+            {
+                NSLog(@"User cancelled login");
+            }
+            // Handle session closures that happen outside of the app
+            else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession)
+            {
+                alertTitle = @"Session Error";
+                alertText = @"Your current session is no longer valid. Please log in again.";
+                [self showMessage:alertText withTitle:alertTitle];
+            }
+            // For simplicity, here we just show a generic message for all other errors
+            // You can learn how to handle other errors using our guide: https://developers.facebook.com/docs/ios/errors
+            else
+            {
+                //Get more error information from the error
+                NSDictionary *errorInformation = [[[error.userInfo objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"] objectForKey:@"body"] objectForKey:@"error"];
+                
+                // Show the user an error message
+                alertTitle = @"Something went wrong";
+                alertText = [NSString stringWithFormat:@"Please retry. \n\nIf the problem persists contact us and mention this error code: %@", [errorInformation objectForKey:@"message"]];
+                [self showMessage:alertText withTitle:alertTitle];
+            }
+        }
+        // Clear this token
+        [FBSession.activeSession closeAndClearTokenInformation];
+        // Show the user the logged-out UI
+        [self userLoggedOut];
+    }
+}
+
+// Facebook: Show the user the logged-out UI
+- (void)userLoggedOut
+{
+    [picture setImage:[UIImage imageNamed:@"silhouette.png"]];
+}
+
+// Facebook: Show the user the logged-in UI
+- (void)userLoggedIn
+{
+    [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error)
+    {
+        if (!error)
+        {
+            // Success! Now set the facebook_id to be the fb_id that was just returned & send to Nooch DB
+            fbID = [result objectForKey:@"id"];
+             
+            [[NSUserDefaults standardUserDefaults] setObject:fbID forKey:@"facebook_id"];
+            NSLog(@"Login w FB successful --> fb id is %@",[result objectForKey:@"id"]);
+             
+            NSString * imgURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal", fbID];
+
+            [picture sd_setImageWithURL:[NSURL URLWithString:imgURL]
+                       placeholderImage:[UIImage imageNamed:@"RoundLoading"]
+                              completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                  if (image) {
+                                      [picture setImage:image];
+                                      [[assist shared]setTranferImage:nil];
+                                      [[assist shared]setTranferImage:image];
+                                  }
+            }];
+            
+            isPhotoUpdate = YES;
+
+            [self.save setEnabled:YES];
+            [self.save setUserInteractionEnabled:YES];
+            [self.save setStyleClass:@"nav_top_right"];
+            [dictSavedInfo setObject:@"YES" forKey:@"ImageChanged"];
+
+            SDImageCache *imageCache = [SDImageCache sharedImageCache];
+            [imageCache clearMemory];
+            [imageCache clearDisk];
+            [imageCache cleanDisk];
+        }
+        else
+        {
+            // An error occurred, we need to handle the error
+            // See: https://developers.facebook.com/docs/ios/errors
+        }
+    }];
+}
+
+// Show an alert message (For Facebook methods)
+- (void)showMessage:(NSString *)text withTitle:(NSString *)title
+{
+    [[[UIAlertView alloc] initWithTitle:title
+                                message:text
+                               delegate:self
+                      cancelButtonTitle:@"OK"
+                      otherButtonTitles:nil] show];
+}
+
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -1012,10 +1128,6 @@ UIImageView *picture;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   // if (indexPath.row == self.expand_path.row && self.disclose)
-   // {
-   //     return rowHeight * 2;
-   // }
     return rowHeight;
 }
 
@@ -1293,9 +1405,7 @@ UIImageView *picture;
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.name resignFirstResponder];
     [self.email resignFirstResponder];
-    //[self.recovery_email resignFirstResponder];
     [self.phone resignFirstResponder];
     [self.address_one resignFirstResponder];
     [self.address_two resignFirstResponder];
@@ -1304,31 +1414,10 @@ UIImageView *picture;
 
     if (tableView == self.list)
     {
-        if (indexPath.row == 0 && [[user valueForKey:@"Status"]isEqualToString:@"Registered"])
-        {
-         /*   if (self.disclose == YES) {
-                self.disclose = NO;
-            }
-            else if (self.disclose == NO) {
-                self.disclose = YES;
-                self.expand_path = indexPath;
-            }
-            [self.list beginUpdates];
-            [self.list endUpdates]; */
-        } 
-        else if ( indexPath.row == 1 &&
+        if ( indexPath.row == 1 &&
                 ![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"] &&
                  [[dictSavedInfo valueForKey:@"phoneno"] length] > 0)
         {
-         /*   if (self.disclose == YES) {
-                self.disclose = NO;
-            }
-            else if (self.disclose == NO) {
-                self.disclose = YES;
-                self.expand_path = indexPath;
-            }
-            [self.list beginUpdates];
-            [self.list endUpdates];*/
             [self.phone setUserInteractionEnabled:YES];
         }
     }
@@ -1358,28 +1447,49 @@ UIImageView *picture;
     picture.alpha = 0;
     shadowUnder.alpha = 0;
     [self.member_since_back setFrame:CGRectMake(0, -10 - heightOfTopSection, 320, heightOfTopSection)];
-    
-    //[self.list setFrame:CGRectMake(0, 30, 320, rowHeight * numberOfRowsToDisplay)];
-    //[self.sectionHeaderBg2 setFrame:CGRectMake(0, 4, 320, 26)];
-    //[self.list2 setFrame:CGRectMake(0, self.sectionHeaderBg2.frame.origin.y + 26, 320, (rowHeight * 4) + 5)];
-    [scrollView setFrame:CGRectMake(0, 0, 320, [[UIScreen mainScreen] bounds].size.height - 64)];
 
-    
+    [scrollView setFrame:CGRectMake(0, 0, 320, [[UIScreen mainScreen] bounds].size.height - 10)];
+
+    if (textField == self.address_one || textField == self.address_two || textField == self.city || textField == self.zip)
+    {
+        self.sectionHeaderBg.alpha = 0;
+        [self.sectionHeaderBg2 setFrame:CGRectMake(0, 54, 320, 26)];
+        [self.list2 setFrame:CGRectMake(0, self.sectionHeaderBg2.frame.origin.y + 26, 320, (rowHeight * 4) + 5)];
+    }
+
     [UIView commitAnimations];
+
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyBoard)];
+    [scrollView addGestureRecognizer:tapGesture];
 }
+
 - (void)textFieldDidEndEditing:(UITextField *)textField;
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    [scrollView removeGestureRecognizer:tapGesture];
+}
+
+-(void)hideKeyBoard
+{
+    [self.phone resignFirstResponder];
+    [self.address_one resignFirstResponder];
+    [self.address_two resignFirstResponder];
+    [self.city resignFirstResponder];
+    [self.zip resignFirstResponder];
+    [scrollView removeGestureRecognizer:tapGesture];
 }
 
 -(void)keyboardDidHide:(NSNotification *)notification
 {
     [UIView beginAnimations:@"bucketsOff" context:nil];
-    [UIView setAnimationDuration:0.2];
+    [UIView setAnimationDuration:0.25];
     [UIView setAnimationDelegate:self];
 
     shadowUnder.alpha = 1;
     picture.alpha = 1;
+    self.sectionHeaderBg.alpha = 1;
+    [self.sectionHeaderBg2 setFrame:CGRectMake(0, (38/*PictureRadius*/ + 43 + self.list.frame.size.height), 320, 26)];
+    [self.list2 setFrame:CGRectMake(0, self.sectionHeaderBg2.frame.origin.y + 26, 320, (rowHeight * 4) + 5)];
     [self.member_since_back setFrame:CGRectMake(0, 0, 320, heightOfTopSection)];
     [scrollView setFrame:CGRectMake(0, heightOfTopSection, 320, [[UIScreen mainScreen] bounds].size.height - heightOfTopSection - 64)];
     [scrollView setContentOffset:CGPointZero animated:YES];
@@ -1411,24 +1521,9 @@ UIImageView *picture;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    /*[UIView beginAnimations:@"bucketsOn" context:nil];
-    [UIView setAnimationDuration:0.3];
-    [UIView setAnimationDelegate:self];
-    shadowUnder.alpha = 1;
-    picture.alpha = 1;
-    [self.member_since_back setFrame:CGRectMake(0, 0, 320, heightOfTopSection)];
-    
-    [scrollView setFrame:CGRectMake(0, heightOfTopSection, 320, [[UIScreen mainScreen] bounds].size.height - heightOfTopSection - 64)];
-    
-    [UIView commitAnimations];*/
-
     if (textField == _email)
     {
-/*        [_recovery_email becomeFirstResponder];
-    }
-    else if (textField == _recovery_email)
-    {
-*/        [_phone becomeFirstResponder];
+        [_phone becomeFirstResponder];
     }
     else if (textField == _phone)
     {
@@ -1963,11 +2058,11 @@ UIImageView *picture;
             
             NSString * name = [self.name.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             NSShadow * shadow = [[NSShadow alloc] init];
-            shadow.shadowColor = Rgb2UIColor(239, 242, 244, .3);
+            shadow.shadowColor = Rgb2UIColor(249, 251, 252, .3);
             shadow.shadowOffset = CGSizeMake(0, 1);
             NSDictionary * textAttributes_topShadow = @{NSShadowAttributeName: shadow };
             
-            self.name.attributedText = [[NSAttributedString alloc] initWithString:[name capitalizedString] attributes:textAttributes_topShadow];
+             self.name.attributedText = [[NSAttributedString alloc] initWithString:[name capitalizedString] attributes:textAttributes_topShadow];
 
             [dictSavedInfo setObject:self.name.text forKey:@"name"];
 
@@ -1987,7 +2082,8 @@ UIImageView *picture;
                 [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"UserName"]];
             }
         }
-        else {
+        else
+        {
             UIAlertView * newUserNoName = [[UIAlertView alloc] initWithTitle:@"Nice To Meet You"
                                                                      message:@"Thanks for joining Nooch! Please complete your profile to get started."
                                                                     delegate:self
@@ -2009,7 +2105,7 @@ UIImageView *picture;
             
             NSString * name = [self.name.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             NSShadow * shadow = [[NSShadow alloc] init];
-            shadow.shadowColor = Rgb2UIColor(239, 242, 244, .3);
+            shadow.shadowColor = Rgb2UIColor(249, 251, 252, .3);
             shadow.shadowOffset = CGSizeMake(0, 1);
             NSDictionary * textAttributes_topShadow = @{NSShadowAttributeName: shadow };
             

@@ -21,9 +21,7 @@
 @property(nonatomic,strong) UITextField *name_field;
 @property(nonatomic,strong) UITextField *email_field;
 @property(nonatomic,strong) UITextField *password_field;
-//@property(nonatomic,retain) ACAccountStore *accountStore;
-//@property(nonatomic,retain) ACAccount *facebookAccount;
-//@property(nonatomic,strong) __block NSMutableDictionary *facebook_info;
+@property(nonatomic,strong) __block NSMutableDictionary *facebook_info;
 @property(nonatomic,strong) UIButton *facebookLogin;
 @property(nonatomic,strong) UIButton *cont;
 @property(nonatomic,strong) UIButton *login;
@@ -108,7 +106,7 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self.navigationController setNavigationBarHidden:YES];
 
-    //self.facebook_info = [NSMutableDictionary new];
+    self.facebook_info = [NSMutableDictionary new];
 
     [self.login removeFromSuperview];
 
@@ -145,13 +143,12 @@
     [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
     [glyphFB setFrame:CGRectMake(58, 8, 30, 30)];
     [glyphFB setTextColor:[UIColor whiteColor]];
-    glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"]
-                                                                 attributes:textAttributes];
+    glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"] attributes:textAttributes];
 
     [self.facebookLogin addSubview:glyphFB];
     [self.view addSubview:self.facebookLogin];
 
-    self.or = [UILabel new];// initWithFrame:CGRectMake(0, 216, 320, 15)];
+    self.or = [UILabel new];
     [self.or setFrame:CGRectMake(0, 205, 320, 16)];
     [self.or setBackgroundColor:[UIColor clearColor]];
     [self.or setTextAlignment:NSTextAlignmentCenter];
@@ -232,7 +229,7 @@
     [checkbox_dot addTarget:self action:@selector(termsAndConditions:) forControlEvents:UIControlEventTouchUpInside];
     isTermsChecked = NO;
     [self.view addSubview:checkbox_dot];
-    
+
     UILabel * termsText1 = [UILabel new];
     [termsText1 setFont:[UIFont fontWithName:@"Roboto-light" size:13]];
     [termsText1 setFrame:CGRectMake(65, 388, 55, 14)];
@@ -247,13 +244,13 @@
     [termsText2 setStyleClass:@"termsCheckText"];
     [termsText2 addTarget:self action:@selector(open_terms_webview) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:termsText2];
-    
+
     UIView * underline = [UIView new];
     underline.frame = CGRectMake(0, 18, 146, 1);
     [underline setBackgroundColor:kNoochGrayDark];
     [underline setAlpha:0.6];
     [termsText2 addSubview:underline];
- 
+
     self.cont = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.cont setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
     self.cont.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -353,7 +350,7 @@
             else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession)
             {
                 alertTitle = @"Session Error";
-                alertText = @"Your current session is no longer valid. Please log in again.";
+                alertText = @"Your current Facebook session is no longer valid. Please log in again.";
                 [self showMessage:alertText withTitle:alertTitle];
             }
             // For simplicity, here we just show a generic message for all other errors
@@ -442,7 +439,7 @@
             
             [[NSUserDefaults standardUserDefaults] setObject:[result objectForKey:@"id"] forKey:@"facebook_id"];
             NSLog(@"Login w FB successful --> fb id is %@",[result objectForKey:@"id"]);
-            NSLog(@"Login w FB successful --> result is %@",result);
+            // NSLog(@"Login w FB successful --> result is %@",result);
 
             isloginWithFB = YES;
 
@@ -481,16 +478,19 @@
     [[[UIAlertView alloc] initWithTitle:title
                                 message:text
                                delegate:self
-                      cancelButtonTitle:@"OK!"
+                      cancelButtonTitle:@"OK"
                       otherButtonTitles:nil] show];
 }
 
--(void)termsAndConditions:(UIButton*)sender{
-    if (isTermsChecked) {
+-(void)termsAndConditions:(UIButton*)sender
+{
+    if (isTermsChecked)
+    {
          isTermsChecked = NO;
          [sender setTitle:@"" forState:UIControlStateNormal];
     }
-    else {
+    else
+    {
         isTermsChecked = YES;
         [sender setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"] forState:UIControlStateNormal];
         [sender setStyleId:@"checkbox_dot"];
@@ -501,7 +501,7 @@
 {
     isfromRegister = YES;
     terms * term = [terms new];
-  
+
     CGRect rect = term.view.frame;
     rect.origin.y = self.view.frame.size.height;
     term.view.frame = rect;
@@ -600,7 +600,7 @@
         spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
-        self.hud.labelText = @"Registering your account";
+        self.hud.labelText = @"Checking if email already in use";
         self.hud.mode = MBProgressHUDModeCustomView;
         self.hud.customView = spinner1;
         self.hud.delegate = self;
@@ -694,17 +694,17 @@
 
             self.email_field.text = email_fb;
             
-            //NSString *imageURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", fbID];
+            NSString * imgURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", fbID];
 
             [[NSUserDefaults standardUserDefaults] setObject:fbID forKey:@"facebook_id"];
 
-            /*if (imageURL)
+            if (imgURL)
             {
-                NSData * imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURL]];
-                NSMutableDictionary *d = [self.facebook_info mutableCopy];
-                [d setObject:imgData forKey:@"image"];
-                self.facebook_info = [d mutableCopy];
-            }*/
+                NSData * imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imgURL]];
+                NSMutableDictionary * dictWithFbImage = [self.facebook_info mutableCopy];
+                [dictWithFbImage setObject:imgData forKey:@"image"];
+                self.facebook_info = [dictWithFbImage mutableCopy];
+            }
 
             [self.or setText:@"Now just create a password..."];
 
@@ -723,16 +723,16 @@
             UILabel * glyphFB = [UILabel new];
             [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
             [glyphFB setFrame:CGRectMake(17, 8, 26, 30)];
-            glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"] attributes:textAttributes1];
             [glyphFB setTextColor:[UIColor whiteColor]];
-            [self.facebookLogin addSubview:glyphFB];
+            glyphFB.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook-square"] attributes:textAttributes1];
 
             UILabel * glyph_check = [UILabel new];
             [glyph_check setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
             [glyph_check setFrame:CGRectMake(39, 8, 20, 30)];
-            glyph_check.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"] attributes:textAttributes1];
             [glyph_check setTextColor:[UIColor whiteColor]];
+            glyph_check.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"] attributes:textAttributes1];
 
+            [self.facebookLogin addSubview:glyphFB];
             [self.facebookLogin addSubview:glyph_check];
             [self.facebookLogin setUserInteractionEnabled:NO];
         }
@@ -974,7 +974,6 @@
 
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
-
         [[NSUserDefaults standardUserDefaults] setObject:email_fb forKey:@"UserName"];
 
         user = [NSUserDefaults standardUserDefaults];
@@ -983,10 +982,10 @@
         [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
         [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
         [automatic writeToFile:[self autoLogin] atomically:YES];
-        
+
         me = [core new];
         [me birth];
-        
+
         [[me usr] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
         [[me usr] setObject:email_fb forKey:@"UserName"];
 
@@ -1072,8 +1071,8 @@
                      @"last_name":last_name,
                      @"email":self.email_field.text,
                      @"password":self.password_field.text,
-                     @"facebook_id":fbID};/*,
-                     @"image":[self.facebook_info objectForKey:@"image"]};*/
+                     @"facebook_id":fbID,
+                     @"image":[self.facebook_info objectForKey:@"image"]};
         }
 
         SelectPicture *picture = [[SelectPicture alloc] initWithData:user];

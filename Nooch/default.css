@@ -86,7 +86,7 @@ view {
 	
 .light_gray_text { color    : #bcbec0; }
 .reallyLight_gray { color   : rgba(251,253,254,.98); font-size: 21px;}
-.disabled_gray {color       : rgba(210,210,210,.88);}
+.disabled_gray {color       : rgba(210,210,210,.88) !important;}
 .red_text { color           : #c72127; }
 .orange_text { color		: #cc9933; }
 .yellow_text { color		: #cccc33; }
@@ -932,7 +932,6 @@ view {
     text-align     	: center;
     color 			: #ffffff;
 }
-
 	
 /*******************************************
 ********  	PRE-LOGIN FLOW	     ********

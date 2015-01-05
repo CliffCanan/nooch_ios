@@ -17,7 +17,6 @@ BOOL isProfileOpenFromSideBar,sentFromHomeScrn;
 @interface ProfileInfo : GAITrackedViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UIScrollViewDelegate,MBProgressHUDDelegate,UIAlertViewDelegate>
 {
     int down,option,rowHeight,numberOfRowsToDisplay,heightOfTopSection;
-    UIActivityIndicatorView*spinner;
     NSString *recoverMail;
     NSString *timezoneStandard;
     NSString*getEncryptedPasswordValue;
@@ -30,13 +29,14 @@ BOOL isProfileOpenFromSideBar,sentFromHomeScrn;
     BOOL isPhotoUpdate,emailVerifyRowIsShowing,smsVerifyRowIsShowing;
     NSRange start,end;
     NSString*newString;
-    NSString *betweenBraces;
+    NSString*betweenBraces;
     NSString*strPhoneNumber;
     UIView*navBar;
     UILabel*lbl;
     UIButton*crossbtn;
     NSMutableDictionary*dictSavedInfo;
     UIView * shadowUnder;
+    UITapGestureRecognizer * tapGesture;
 }
 
 @end
