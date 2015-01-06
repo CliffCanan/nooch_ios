@@ -631,6 +631,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.suspended removeFromSuperview];
         self.suspended = [UIView new];
         [self.suspended setStyleId:@"suspended_home"];
+        [self.suspended addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(contact_support)]];
 
         UILabel * sus_header = [UILabel new];
         [sus_header setStyleClass:@"banner_header"];
@@ -684,6 +685,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.profile_incomplete removeFromSuperview];
         self.profile_incomplete = [UIView new];
         [self.profile_incomplete setStyleId:@"email_unverified"];
+        [self.profile_incomplete addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profile)]];
       
         UILabel * em = [UILabel new];
         [em setStyleClass:@"banner_header"];
@@ -760,6 +762,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.phone_incomplete removeFromSuperview];
         self.phone_incomplete = [UIView new];
         [self.phone_incomplete setStyleId:@"phone_unverified"];
+        [self.phone_incomplete addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profile)]];
 
         UILabel * em = [UILabel new];
         [em setStyleClass:@"banner_header"];
@@ -857,6 +860,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [self.pending_requests removeFromSuperview];
             self.pending_requests = [UIView new];
             [self.pending_requests setStyleId:@"pendingRequestBanner"];
+            [self.pending_requests addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_history)]];
 
             bannerAlert++;
 

@@ -120,8 +120,8 @@ UIImageView *picture;
     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Save Changes"
                                                     message:@"Do you want to save the changes in your profile?"
                                                    delegate:self
-                                          cancelButtonTitle:@"YES"
-                                          otherButtonTitles:@"NO", nil];
+                                          cancelButtonTitle:@"Yes"
+                                          otherButtonTitles:@"No", nil];
     [alert setTag:5021];
     [alert show];
     return;

@@ -28,8 +28,7 @@ serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate,M
     BOOL ishistLoading;
     BOOL isEnd;
     BOOL isStart;
-    int totalDisplayedTransfers_completed;
-    int  index;
+    int totalDisplayedTransfers_completed,index;
     BOOL isFilter;
     BOOL isSearch;
     FPPopoverController*fp;
@@ -46,6 +45,7 @@ serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate,M
     NSString*subTypestr;
     NSDate*ServerDate;
     UILabel * emptyText_localSearch;
+    NSIndexPath * indexPathForDeletion;
 }
 @property(nonatomic,strong) MBProgressHUD *hud;
 @end

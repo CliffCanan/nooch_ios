@@ -23,6 +23,7 @@
 @property(nonatomic,retain) UIButton * exportHistory;
 @property(nonatomic,strong) MBProgressHUD *hud;
 @property(nonatomic,strong) PieLayer * pieLayer;
+@property(nonatomic,strong) UIImageView * emptyPic;
 @end
 
 @implementation Statistics
@@ -47,7 +48,7 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    
+    [super viewDidAppear:animated];
 }
 
 - (void)viewDidLoad
@@ -948,16 +949,24 @@
         else if (fav_count == 0)
         {
             [self.top_friends_stats setStyleClass:@"stats_top_friends_empty"];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 
             if (indexPath.row == 0)
             {
                 UILabel * emptyText = nil;
-                emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 280, 120)];
-                [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
+                emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 280, 66)];
+                [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:18]];
                 [emptyText setNumberOfLines:3];
                 emptyText.text = @"Once you make or receive some payments, your top friends will show up here.";
                 [emptyText setTextAlignment:NSTextAlignmentCenter];
                 [cell.contentView addSubview:emptyText];
+            }
+            else if (indexPath.row == 1)
+            {
+                self.emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 250, 254)];
+                self.emptyPic.alpha = 0;
+                [self.emptyPic setImage:[UIImage imageNamed:@"Stats-Circled"]];
+                [cell.contentView  addSubview: self.emptyPic];
             }
         }
     }
@@ -979,7 +988,7 @@
 
     else if (tableView == self.top_friends_stats)
     {
-        if (indexPath.row == 0)
+        if (fav_count > 0 && indexPath.row == 0)
         {
             NSDictionary * favorite = [favorites objectAtIndex:0];
             //[imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]] placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
@@ -1172,10 +1181,17 @@
         tap.numberOfTouchesRequired = 1;
         [transparentOverlay addGestureRecognizer:tap];
     }
+    else
+    {
+        [self.top_friends_stats setScrollEnabled:NO];
+        [self.back_donation setFrame:CGRectMake(650, 10, 300, 460)];
+    }
 }
 
 -(void)animatePieChart
 {
+    self.emptyPic.alpha = 1;
+    [self.emptyPic setStyleClass:@"animate_bubble"];
     [self.pieLayer setStartAngle:0 endAngle:360 animated:YES];
 }
 
