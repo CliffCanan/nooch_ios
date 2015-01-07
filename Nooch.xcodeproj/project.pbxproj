@@ -140,6 +140,8 @@
 		5C69D09819CA244C00EB406F /* tour.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D09719CA244C00EB406F /* tour.m */; };
 		5C822EE11A5B7D2A00D12D20 /* Stats-Circled.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C822EDF1A5B7D2A00D12D20 /* Stats-Circled.png */; };
 		5C822EE21A5B7D2A00D12D20 /* Stats-Circled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C822EE01A5B7D2A00D12D20 /* Stats-Circled@2x.png */; };
+		5C822EE41A5C8E8D00D12D20 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		5C822EE61A5C959700D12D20 /* GameThrive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C822EE51A5C959700D12D20 /* GameThrive.framework */; };
 		5C83949719EC60C200EBEBA4 /* No-Internet-Full-Screen_medium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83949419EC60C200EBEBA4 /* No-Internet-Full-Screen_medium@2x.png */; };
 		5C83949819EC60C200EBEBA4 /* No-Internet-Full-Screen_sm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83949519EC60C200EBEBA4 /* No-Internet-Full-Screen_sm@2x.png */; };
 		5C83949919EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83949619EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png */; };
@@ -584,6 +586,7 @@
 		5C69D09719CA244C00EB406F /* tour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tour.m; sourceTree = "<group>"; };
 		5C822EDF1A5B7D2A00D12D20 /* Stats-Circled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Stats-Circled.png"; sourceTree = "<group>"; };
 		5C822EE01A5B7D2A00D12D20 /* Stats-Circled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Stats-Circled@2x.png"; sourceTree = "<group>"; };
+		5C822EE51A5C959700D12D20 /* GameThrive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameThrive.framework; path = "../../Cocoa Libraries/ios-push-plugin-master/iOS_SDK/Framework/GameThrive.framework"; sourceTree = "<group>"; };
 		5C83949419EC60C200EBEBA4 /* No-Internet-Full-Screen_medium@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No-Internet-Full-Screen_medium@2x.png"; sourceTree = "<group>"; };
 		5C83949519EC60C200EBEBA4 /* No-Internet-Full-Screen_sm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No-Internet-Full-Screen_sm@2x.png"; sourceTree = "<group>"; };
 		5C83949619EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No-Internet-Full-Screen-lg@2x.png"; sourceTree = "<group>"; };
@@ -977,6 +980,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C822EE41A5C8E8D00D12D20 /* (null) in Frameworks */,
 				8449C5A419EBB1F700027B9B /* libUAirship-5.0.3.a in Frameworks */,
 				5C4A205319E77C0000D1A0EE /* StoreKit.framework in Frameworks */,
 				5CAA41B51A44C55B00899563 /* ArtisanSDK.framework in Frameworks */,
@@ -996,6 +1000,7 @@
 				6BF90A5F169B79C5009486E7 /* libsqlite3.0.dylib in Frameworks */,
 				6BC04A8E1677DD1B005C68D6 /* CoreTelephony.framework in Frameworks */,
 				6BD38F3316A476DE006B9AE1 /* libz.1.1.3.dylib in Frameworks */,
+				5C822EE61A5C959700D12D20 /* GameThrive.framework in Frameworks */,
 				6B5265FE16680D8F00E5341F /* OpenGLES.framework in Frameworks */,
 				6B5265FC16680D5200E5341F /* CoreVideo.framework in Frameworks */,
 				84BACAF519FF7A48001F796D /* FacebookSDK.framework in Frameworks */,
@@ -1556,6 +1561,7 @@
 		6B30372415FA3FF300056DAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5C822EE51A5C959700D12D20 /* GameThrive.framework */,
 				84BACAF619FF7A50001F796D /* FBUserSettingsViewResources.bundle */,
 				84BACAF419FF7A48001F796D /* FacebookSDK.framework */,
 				5C10EB7C19F6D4DC0025EB7F /* PixateFreestyle.framework */,
@@ -2646,6 +2652,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				"OTHER_CFLAGS[arch=*]" = "";
+				OTHER_LDFLAGS = "-ObjC";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=*]" = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -2683,6 +2690,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = "-ObjC";
 				PROVISIONING_PROFILE = "b562cd3f-7c1b-46b1-9d03-6982bf95ad05";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b562cd3f-7c1b-46b1-9d03-6982bf95ad05";
 				SDKROOT = iphoneos;
@@ -2704,6 +2712,10 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Nooch/artisan-sdk-2.3.7",
 					"$(PROJECT_DIR)/Nooch/artisan-sdk-latestNEW",
+					/Users/cliffcanan/Desktop/Cocoa,
+					"Libraries/ios-push-plugin-master/iOS_SDK/Framework",
+					/Users/cliffcanan/Desktop/Cocoa,
+					"Libraries/ios-push-plugin-master/iOS_SDK/Framework",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2747,6 +2759,10 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Nooch/artisan-sdk-2.3.7",
 					"$(PROJECT_DIR)/Nooch/artisan-sdk-latestNEW",
+					/Users/cliffcanan/Desktop/Cocoa,
+					"Libraries/ios-push-plugin-master/iOS_SDK/Framework",
+					/Users/cliffcanan/Desktop/Cocoa,
+					"Libraries/ios-push-plugin-master/iOS_SDK/Framework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Nooch/Nooch-Prefix.pch";

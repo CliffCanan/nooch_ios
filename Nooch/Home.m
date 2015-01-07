@@ -541,11 +541,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [self presentViewController:mailComposer animated:YES completion:nil];
 }
 
--(void)go_profile
+-(void)go_profileFromHome
 {
     sentFromHomeScrn = YES;
     ProfileInfo *info = [ProfileInfo new];
     [self.navigationController pushViewController:info animated:YES];
+    [self.phone_incomplete removeFromSuperview];
 }
 
 -(void)go_history
@@ -624,51 +625,55 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     shadowRed.shadowOffset = CGSizeMake(0, 1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadowRed };
 
+    
     if ([[user objectForKey:@"Status"] isEqualToString:@"Suspended"] ||
         [[user objectForKey:@"Status"] isEqualToString:@"Temporarily_Blocked"])
     {
-        bannerAlert++;
-        [self.suspended removeFromSuperview];
-        self.suspended = [UIView new];
-        [self.suspended setStyleId:@"suspended_home"];
-        [self.suspended addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(contact_support)]];
+        if (![self.view.subviews containsObject:self.suspended])
+        {
+            bannerAlert++;
+            [self.suspended removeFromSuperview];
+            self.suspended = [UIView new];
+            [self.suspended setStyleId:@"suspended_home"];
+            [self.suspended addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(contact_support)]];
 
-        UILabel * sus_header = [UILabel new];
-        [sus_header setStyleClass:@"banner_header"];
-        sus_header.attributedText = [[NSAttributedString alloc] initWithString:@"Account Suspended"
-                                                               attributes:textAttributes];
-        [self.suspended addSubview:sus_header];
+            UILabel * sus_header = [UILabel new];
+            [sus_header setStyleClass:@"banner_header"];
+            sus_header.attributedText = [[NSAttributedString alloc] initWithString:@"Account Suspended"
+                                                                   attributes:textAttributes];
+            [self.suspended addSubview:sus_header];
 
-        UILabel * sus_info = [UILabel new];
-        [sus_info setStyleClass:@"banner_info"];
-        [sus_info setNumberOfLines:0];
-        sus_info.attributedText = [[NSAttributedString alloc] initWithString:@"Your account will be limited while you are suspended."
-                                                                    attributes:textAttributes];
-        [self.suspended addSubview:sus_info];
+            UILabel * sus_info = [UILabel new];
+            [sus_info setStyleClass:@"banner_info"];
+            [sus_info setNumberOfLines:0];
+            sus_info.attributedText = [[NSAttributedString alloc] initWithString:@"Your account will be limited while you are suspended."
+                                                                        attributes:textAttributes];
+            [self.suspended addSubview:sus_info];
 
-        UILabel * sus_exclaim = [UILabel new];
-        [sus_exclaim setStyleClass:@"banner_alert_glyph"];
-        [sus_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
-        [self.suspended addSubview:sus_exclaim];
+            UILabel * sus_exclaim = [UILabel new];
+            [sus_exclaim setStyleClass:@"banner_alert_glyph"];
+            [sus_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
+            [self.suspended addSubview:sus_exclaim];
 
-        UIButton * contact = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [contact setStyleClass:@"go_now_text"];
-        [contact setTitle:@"TAP TO CONTACT NOOCH" forState:UIControlStateNormal];
-        [contact setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
-        contact.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        [contact addTarget:self action:@selector(contact_support) forControlEvents:UIControlEventTouchUpInside];
-        [self.suspended addSubview:contact];
+            UIButton * contact = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [contact setStyleClass:@"go_now_text"];
+            [contact setTitle:@"TAP TO CONTACT NOOCH" forState:UIControlStateNormal];
+            [contact setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
+            contact.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+            [contact addTarget:self action:@selector(contact_support) forControlEvents:UIControlEventTouchUpInside];
+            [self.suspended addSubview:contact];
 
-        UIButton * dis = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [dis setStyleClass:@"dismiss_banner"];
-        [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
-        [dis setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
-        dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
-        [dis addTarget:self action:@selector(dismiss_suspended_alert) forControlEvents:UIControlEventTouchUpInside];
-        [self.suspended addSubview:dis];
+            UIButton * dis = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [dis setStyleClass:@"dismiss_banner"];
+            [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
+            [dis setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
+            dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+            [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
+            [dis addTarget:self action:@selector(dismiss_suspended_alert) forControlEvents:UIControlEventTouchUpInside];
+            [self.suspended addSubview:dis];
 
-        [self.view addSubview:self.suspended];
+            [self.view addSubview:self.suspended];
+        }
     }
     else if (![[user objectForKey:@"Status"] isEqualToString:@"Suspended"] &&
              ![[user objectForKey:@"Status"] isEqualToString:@"Registered"] &&
@@ -682,71 +687,74 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     if ([[user objectForKey:@"Status"] isEqualToString:@"Registered"])
     {
-        [self.profile_incomplete removeFromSuperview];
-        self.profile_incomplete = [UIView new];
-        [self.profile_incomplete setStyleId:@"email_unverified"];
-        [self.profile_incomplete addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profile)]];
-      
-        UILabel * em = [UILabel new];
-        [em setStyleClass:@"banner_header"];
-        em.attributedText = [[NSAttributedString alloc] initWithString:@"Confirm Your Email Address"
-                                                                   attributes:textAttributes];
-        [self.profile_incomplete addSubview:em];
-        
-        UILabel * em_exclaim = [UILabel new];
-        [em_exclaim setStyleClass:@"banner_alert_glyph"];
-        [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
-        [self.profile_incomplete addSubview:em_exclaim];
-        
-        UILabel * em_info = [UILabel new];
-        [em_info setStyleClass:@"banner_info"];
-        [em_info setNumberOfLines:0];
-        em_info.attributedText = [[NSAttributedString alloc] initWithString:@"Complete your profile to unlock all features."
-                                                         attributes:textAttributes];
-        [self.profile_incomplete addSubview:em_info];
-        
-        UIButton * go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [go setStyleClass:@"go_now_text"];
-        [go setTitle:@"TAP TO FIX NOW" forState:UIControlStateNormal];
-        [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
-        go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        [go addTarget:self action:@selector(go_profile) forControlEvents:UIControlEventTouchUpInside];
-        [self.profile_incomplete addSubview:go];
-        
-        UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
-        [dis setStyleClass:@"dismiss_banner"];
-        [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
-        [dis setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
-        [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
-        dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        [dis addTarget:self action:@selector(dismiss_profile_unvalidated) forControlEvents:UIControlEventTouchUpInside];
-      
-        [self.profile_incomplete addSubview:dis];
-        [self.view addSubview:self.profile_incomplete];
+        if (![self.view.subviews containsObject:self.profile_incomplete])
+        {
+            [self.profile_incomplete removeFromSuperview];
+            self.profile_incomplete = [UIView new];
+            [self.profile_incomplete setStyleId:@"email_unverified"];
+            [self.profile_incomplete addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profileFromHome)]];
+          
+            UILabel * em = [UILabel new];
+            [em setStyleClass:@"banner_header"];
+            em.attributedText = [[NSAttributedString alloc] initWithString:@"Confirm Your Email Address"
+                                                                       attributes:textAttributes];
+            [self.profile_incomplete addSubview:em];
+            
+            UILabel * em_exclaim = [UILabel new];
+            [em_exclaim setStyleClass:@"banner_alert_glyph"];
+            [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
+            [self.profile_incomplete addSubview:em_exclaim];
+            
+            UILabel * em_info = [UILabel new];
+            [em_info setStyleClass:@"banner_info"];
+            [em_info setNumberOfLines:0];
+            em_info.attributedText = [[NSAttributedString alloc] initWithString:@"Complete your profile to unlock all features."
+                                                             attributes:textAttributes];
+            [self.profile_incomplete addSubview:em_info];
+            
+            UIButton * go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [go setStyleClass:@"go_now_text"];
+            [go setTitle:@"TAP TO FIX NOW" forState:UIControlStateNormal];
+            [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
+            go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+            [go addTarget:self action:@selector(go_profileFromHome) forControlEvents:UIControlEventTouchUpInside];
+            [self.profile_incomplete addSubview:go];
+            
+            UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
+            [dis setStyleClass:@"dismiss_banner"];
+            [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
+            [dis setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
+            [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
+            dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+            [dis addTarget:self action:@selector(dismiss_profile_unvalidated) forControlEvents:UIControlEventTouchUpInside];
+          
+            [self.profile_incomplete addSubview:dis];
+            [self.view addSubview:self.profile_incomplete];
 
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-        [UIView animateKeyframesWithDuration:.7
-                                       delay:0
-                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
-                                  animations:^{
-                                      [UIView addKeyframeWithRelativeStartTime:.25 relativeDuration:.75 animations:^{
-                                          CGRect frame = self.profile_incomplete.frame;
-                                          if (bannerAlert == 0)
-                                          {
-                                              frame.origin.y = 0;
-                                          }
-                                          else if (bannerAlert > 0)
-                                          {
-                                              frame.origin.y = 56;
-                                          }
-                                          [self.profile_incomplete setFrame:frame];
-                                      }];
-                                  } completion: ^(BOOL finished) {
-                                      [self.view bringSubviewToFront:self.profile_incomplete];
-                                  }
-         ];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+            [UIView animateKeyframesWithDuration:.7
+                                           delay:0
+                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                      animations:^{
+                                          [UIView addKeyframeWithRelativeStartTime:.25 relativeDuration:.75 animations:^{
+                                              CGRect frame = self.profile_incomplete.frame;
+                                              if (bannerAlert == 0)
+                                              {
+                                                  frame.origin.y = 0;
+                                              }
+                                              else if (bannerAlert > 0)
+                                              {
+                                                  frame.origin.y = 56;
+                                              }
+                                              [self.profile_incomplete setFrame:frame];
+                                          }];
+                                      } completion: ^(BOOL finished) {
+                                          [self.view bringSubviewToFront:self.profile_incomplete];
+                                      }
+             ];
 
-        bannerAlert++;
+            bannerAlert++;
+        }
     }
     else if ([[user valueForKey:@"Status"]isEqualToString:@"Active"])
     {
@@ -759,77 +767,77 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
     {
-        [self.phone_incomplete removeFromSuperview];
-        self.phone_incomplete = [UIView new];
-        [self.phone_incomplete setStyleId:@"phone_unverified"];
-        [self.phone_incomplete addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profile)]];
+            [self.phone_incomplete removeFromSuperview];
+            self.phone_incomplete = [UIView new];
+            [self.phone_incomplete setStyleId:@"phone_unverified"];
+            [self.phone_incomplete addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profileFromHome)]];
 
-        UILabel * em = [UILabel new];
-        [em setStyleClass:@"banner_header"];
-        em.attributedText = [[NSAttributedString alloc] initWithString:@"Phone Number Not Verified"
-                                                              attributes:textAttributes];
-        [self.phone_incomplete addSubview:em];
+            UILabel * em = [UILabel new];
+            [em setStyleClass:@"banner_header"];
+            em.attributedText = [[NSAttributedString alloc] initWithString:@"Phone Number Not Verified"
+                                                                  attributes:textAttributes];
+            [self.phone_incomplete addSubview:em];
 
-        UILabel * em_exclaim = [UILabel new];
-        [em_exclaim setStyleClass:@"banner_alert_glyph"];
-        [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-phone"]];
-        [self.phone_incomplete addSubview:em_exclaim];
+            UILabel * em_exclaim = [UILabel new];
+            [em_exclaim setStyleClass:@"banner_alert_glyph"];
+            [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-phone"]];
+            [self.phone_incomplete addSubview:em_exclaim];
 
-        UILabel * glyph_phone = [UILabel new];
-        [glyph_phone setStyleClass:@"banner_alert_glyph_sm"];
-        [glyph_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
-        [self.phone_incomplete addSubview:glyph_phone];
+            UILabel * glyph_phone = [UILabel new];
+            [glyph_phone setStyleClass:@"banner_alert_glyph_sm"];
+            [glyph_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
+            [self.phone_incomplete addSubview:glyph_phone];
 
-        UILabel * em_info = [UILabel new];
-        [em_info setStyleClass:@"banner_info"];
-        [em_info setNumberOfLines:0];
-        em_info.attributedText = [[NSAttributedString alloc] initWithString:@"Please verify your phone - respond 'Go' to the SMS."
-                                                            attributes:textAttributes];
-        [self.phone_incomplete addSubview:em_info];
+            UILabel * em_info = [UILabel new];
+            [em_info setStyleClass:@"banner_info"];
+            [em_info setNumberOfLines:0];
+            em_info.attributedText = [[NSAttributedString alloc] initWithString:@"Please verify your phone - respond 'Go' to the SMS."
+                                                                attributes:textAttributes];
+            [self.phone_incomplete addSubview:em_info];
 
-        UIButton * go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [go setStyleClass:@"go_now_text"];
-        [go setTitle:@"TAP TO ADD NUMBER" forState:UIControlStateNormal];
-        [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
-        go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        [go addTarget:self action:@selector(go_profile) forControlEvents:UIControlEventTouchUpInside];
-        [self.phone_incomplete addSubview:go];
+            UIButton * go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [go setStyleClass:@"go_now_text"];
+            [go setTitle:@"TAP TO ADD NUMBER" forState:UIControlStateNormal];
+            [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
+            go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+            [go addTarget:self action:@selector(go_profileFromHome) forControlEvents:UIControlEventTouchUpInside];
+            [self.phone_incomplete addSubview:go];
 
-        UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
-        [dis setStyleClass:@"dismiss_banner"];
-        [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
-        [dis setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
-        [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
-        dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        [dis addTarget:self action:@selector(dismiss_phone_unvalidated) forControlEvents:UIControlEventTouchUpInside];
+            UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
+            [dis setStyleClass:@"dismiss_banner"];
+            [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
+            [dis setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
+            [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
+            dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+            [dis addTarget:self action:@selector(dismiss_phone_unvalidated) forControlEvents:UIControlEventTouchUpInside];
 
-        [self.phone_incomplete addSubview:dis];
+            [self.phone_incomplete addSubview:dis];
 
-        [self.view addSubview:self.phone_incomplete];
+            [self.view addSubview:self.phone_incomplete];
 
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-        [UIView animateKeyframesWithDuration:.7
-                                       delay:0
-                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
-                                  animations:^{
-                                      [UIView addKeyframeWithRelativeStartTime:.25 relativeDuration:.75 animations:^{
-                                          CGRect frame = self.phone_incomplete.frame;
-                                          if (bannerAlert == 0)
-                                          {
-                                              frame.origin.y = 0;
-                                          }
-                                          else if (bannerAlert > 0)
-                                          {
-                                              frame.origin.y = 56;
-                                          }
-                                          [self.phone_incomplete setFrame:frame];
-                                      }];
-                                  } completion: ^(BOOL finished) {
-                                      [self.view bringSubviewToFront:self.phone_incomplete];
-                                  }
-         ];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+            [UIView animateKeyframesWithDuration:.7
+                                           delay:0
+                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                      animations:^{
+                                          [UIView addKeyframeWithRelativeStartTime:.25 relativeDuration:.75 animations:^{
+                                              CGRect frame = self.phone_incomplete.frame;
+                                              if (bannerAlert == 0)
+                                              {
+                                                  frame.origin.y = 0;
+                                              }
+                                              else if (bannerAlert > 0)
+                                              {
+                                                  frame.origin.y = 56;
+                                              }
+                                              [self.phone_incomplete setFrame:frame];
+                                          }];
+                                      } completion: ^(BOOL finished) {
+                                          [self.view bringSubviewToFront:self.phone_incomplete];
+                                      }
+             ];
 
-        bannerAlert++;
+            bannerAlert++;
     }
     else {
         [self dismiss_phone_unvalidated];

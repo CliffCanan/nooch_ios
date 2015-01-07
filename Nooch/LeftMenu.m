@@ -455,6 +455,7 @@
     else if (indexPath.section == 1)
     {
         if (indexPath.row == 0) {
+            sentFromStatsScrn = false;
             SendInvite *inv = [SendInvite new];
             [nav_ctrl pushViewController:inv animated:NO];
             [self.slidingViewController resetTopView];

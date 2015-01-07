@@ -64,6 +64,8 @@
 		<string>FontAwesome.ttf</string>
 		<string>VarelaRound-Regular.ttf</string>
 	</array>
+	<key>GameThrive_APPID</key>
+	<string>d748b06e-95ea-11e4-b2b2-fbd23597044a</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

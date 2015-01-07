@@ -10,7 +10,7 @@
 #import <MessageUI/MessageUI.h>
 #import "serve.h"
 #import "MBProgressHUD.h"
-
+BOOL sentFromStatsScrn;
 @interface SendInvite : GAITrackedViewController<UITableViewDataSource,UITableViewDelegate,serveD,MFMailComposeViewControllerDelegate,UITextFieldDelegate,MBProgressHUDDelegate>
 {
     NSMutableDictionary*dictResponse;

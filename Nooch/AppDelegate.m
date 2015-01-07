@@ -43,19 +43,19 @@ bool modal;
     internetReach = [Reachability reachabilityForInternetConnection];
     [internetReach startNotifier];
 
-    //Urban Airship 5+
+/*     //Urban Airship 5+
     UAConfig *config = [UAConfig defaultConfig];
     // Call takeOff (which creates the UAirship singleton)
     [UAirship takeOff:config];
     [UAPush shared].userNotificationTypes = (UIUserNotificationTypeAlert |
                                              UIUserNotificationTypeBadge |
                                              UIUserNotificationTypeSound);
-    //[UAPush shared].userPushNotificationsEnabled = YES; (This line triggers asking permission for Push Notifications... moved to Profile.m screen for Nooch)
+    //[UAPush shared].userPushNotificationsEnabled = YES; (This line triggers asking permission for Push Notifications... moved to Left Menu screen for Nooch)
     // Set the icon badge to zero on startup (optional)
     [[UAPush shared] resetBadge];
 
     // PUSH NOTIFICATION REGISTRATION
-/*    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+   if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
     {
         // Register for push in iOS 8.
         [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
@@ -66,6 +66,38 @@ bool modal;
         // Register for push in iOS 7 and under.
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)];
     } */
+
+   /* self.gameThrive = [[GameThrive alloc] initWithLaunchOptions:launchOptions handleNotification:^(NSString* message, NSDictionary* additionalData, BOOL isActive) {
+        UIAlertView* alertView;
+        NSLog(@"APP DEL - GameThrieve --> ADDITIONALDATA: %@", additionalData);
+        if (additionalData) {
+            // Append AdditionalData at the end of the message
+            NSString * displayMessage = [NSString stringWithFormat:@"NotificationMessage:%@", message];
+            NSString * messageTitle;
+            if (additionalData[@"discount"])
+                messageTitle = additionalData[@"discount"];
+            else if (additionalData[@"bonusCredits"])
+                messageTitle = additionalData[@"bonusCredits"];
+            else if (additionalData[@"actionSelected"])
+                messageTitle = [NSString stringWithFormat:@"Pressed ButtonId:%@", additionalData[@"actionSelected"]];
+            alertView = [[UIAlertView alloc] initWithTitle:messageTitle
+                                                   message:displayMessage
+                                                  delegate:self
+                                         cancelButtonTitle:@"Close"
+                                         otherButtonTitles:nil, nil];
+        }
+        // If a push notification is received when the app is being used it does not go to the notifiction center so display in your app.
+        if (alertView == nil && isActive) {
+            alertView = [[UIAlertView alloc] initWithTitle:@"GameThrive Message"
+                                                   message:message
+                                                  delegate:self
+                                         cancelButtonTitle:@"Close"
+                                         otherButtonTitles:nil, nil];
+        }
+        // Highly recommend adding game logic around this so the user is not interrupted during gameplay.
+        if (alertView != nil)
+            [alertView show];
+    }];*/
 
     //Google Analytics
     [GAI sharedInstance].dispatchInterval = 22;
@@ -313,7 +345,7 @@ void exceptionHandler(NSException *exception){
     [[[UIAlertView alloc] initWithTitle:title
                                 message:text
                                delegate:self
-                      cancelButtonTitle:@"OK!"
+                      cancelButtonTitle:@"OK"
                       otherButtonTitles:nil] show];
 }
 

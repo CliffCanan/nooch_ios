@@ -3151,7 +3151,7 @@ table-view.stats_top_friends {
     width			: 300px;
     height			: 290px;
     background-color: white;
-    row-height		: 52px;
+    row-height		: 53px;
     separator-style : single-line;
     separator-color : rgba(188,190,192,.35);
 }

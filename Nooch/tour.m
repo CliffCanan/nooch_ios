@@ -147,7 +147,7 @@
     [intro setDelegate:self];
     [intro.skipButton setStyleClass:@"reallyLight_gray"];
     [intro setBgViewContentMode:UIViewContentModeScaleAspectFill];
-    intro.showSkipButtonOnlyOnLastPage = true;
+    intro.showSkipButtonOnlyOnLastPage = false;
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
@@ -171,7 +171,7 @@
     NSLog(@"introDidFinish callback");
     self.navigationController.navigationBar.hidden = NO;
     
-    [nav_ctrl popToRootViewControllerAnimated:YES];
+    [nav_ctrl popViewControllerAnimated:YES];
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
 

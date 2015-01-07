@@ -64,7 +64,7 @@
     [self.view addSubview:backgroundImage];
     
     dictAllStats = [[NSMutableDictionary alloc]init];
-    
+
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
@@ -107,7 +107,7 @@
     // Panel #3: Top Friends Stats
     self.back_donation = [UIView new];
     [self.back_donation setBackgroundColor:[UIColor whiteColor]];
-    [self.back_donation setFrame:CGRectMake(650, 10, 300, 400)];
+    [self.back_donation setFrame:CGRectMake(650, 10, 300, 470)];
     [self.back_donation setStyleClass:@"raised_view"];
     [self.view addSubview:self.back_donation];
 
@@ -290,7 +290,7 @@
     [self.profile_stats setDelegate:self];
     [self.profile_stats setDataSource:self];
     [self.profile_stats setStyleClass:@"stats"];
-    //[self.profile_stats setUserInteractionEnabled:NO];
+    [self.profile_stats setScrollEnabled:NO];
     [self.back_profile addSubview:self.profile_stats];
     [self.profile_stats reloadData];
 
@@ -307,6 +307,7 @@
     [self.top_friends_stats setDataSource:self];
     [self.top_friends_stats setStyleClass:@"stats_top_friends"];
     [self.top_friends_stats setUserInteractionEnabled:YES];
+    [self.top_friends_stats setScrollEnabled:NO];
     [self.back_donation addSubview:self.top_friends_stats];
     [self.top_friends_stats reloadData];
 
@@ -335,6 +336,7 @@
     
     if ([[UIScreen mainScreen] bounds].size.height == 480)
     {
+        [self.top_friends_stats setScrollEnabled:YES];
         UIScrollView * scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
                                                                               [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
         [scroll setDelegate:self];
@@ -638,6 +640,14 @@
     return 25;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView == self.top_friends_stats)
+    {
+        return 53;
+    }
+    return 46;
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == self.profile_stats) {
@@ -667,8 +677,9 @@
 
 -(void)goToReferFriend
 {
+    sentFromStatsScrn = true;
     SendInvite * referFriendScreen = [SendInvite new];
-    [self.navigationController pushViewController:referFriendScreen animated:NO];
+    [self.navigationController pushViewController:referFriendScreen animated:YES];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -754,15 +765,15 @@
             [goToRefer setText:@"   Refer More Friends"];
             [goToRefer setTextAlignment:NSTextAlignmentCenter];
 
-            UILabel * goToRefer_glyph = [[UILabel alloc] initWithFrame:CGRectMake(6, 2, 25, 38)];
+            UILabel * goToRefer_glyph = [[UILabel alloc] initWithFrame:CGRectMake(4, 2, 22, 38)];
             goToRefer_glyph.textColor = kNoochGreen;
-            [goToRefer_glyph setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+            [goToRefer_glyph setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
             [goToRefer_glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"]];
             [goToRefer addSubview:goToRefer_glyph];
 
-            UILabel * goToRefer_glyph2 = [[UILabel alloc] initWithFrame:CGRectMake(186, 2, 24, 40)];
+            UILabel * goToRefer_glyph2 = [[UILabel alloc] initWithFrame:CGRectMake(188, 2, 24, 40)];
             goToRefer_glyph2.textColor = kNoochGreen;
-            [goToRefer_glyph2 setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+            [goToRefer_glyph2 setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
             [goToRefer_glyph2 setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-long-arrow-right"]];
             [goToRefer addSubview:goToRefer_glyph2];
 
@@ -877,6 +888,8 @@
             [goToHowMuch setAlpha:1];
             [goToHowMuch setTag:indexPath.row];
 
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+
             if (indexPath.row == 0)
             {
                 NSDictionary * favorite = [favorites objectAtIndex:0];
@@ -888,6 +901,7 @@
                 colorIndicator.backgroundColor = kNoochGreen;
 
                 [cell.contentView addSubview:goToHowMuch];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
             }
             else if (fav_count > 1 && indexPath.row == 1)
             {
@@ -900,6 +914,7 @@
                 colorIndicator.backgroundColor = kNoochPurple;
 
                 [cell.contentView addSubview:goToHowMuch];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
             }
             else if (fav_count > 2 && indexPath.row == 2)
             {
@@ -912,6 +927,7 @@
                 colorIndicator.backgroundColor = kNoochRed;
 
                 [cell.contentView addSubview:goToHowMuch];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
             }
             else if (fav_count > 3 && indexPath.row == 3)
             {
@@ -924,6 +940,7 @@
                 colorIndicator.backgroundColor = kNoochBlue;
 
                 [cell.contentView addSubview:goToHowMuch];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
             }
             else if (fav_count > 4 && indexPath.row == 4)
             {
@@ -936,6 +953,7 @@
                 colorIndicator.backgroundColor = kNoochGrayLight;
 
                 [cell.contentView addSubview:goToHowMuch];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
             }
             [goToHowMuch addTarget:self action:@selector(goToHowMuch:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -944,7 +962,6 @@
             [cell.contentView addSubview:name];
             [cell.contentView addSubview:frequency];
             [cell.contentView addSubview:colorIndicator];
-            [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
         }
         else if (fav_count == 0)
         {
