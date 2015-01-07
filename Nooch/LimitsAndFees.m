@@ -1,7 +1,7 @@
 //  LimitsAndFees.m
 //  Nooch
 //
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2015 Nooch. All rights reserved.
 
 #import "LimitsAndFees.h"
 #import "ECSlidingViewController.h"

@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by Preston Hults on 2/27/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2015 Nooch. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by crks on 9/25/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2015 Nooch. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -29,10 +29,8 @@ BOOL isAddRequest;
     NSMutableArray * arrSearchedRecords;
     UISearchBar * search;
     UIActivityIndicatorView * spinner;
-    
     BOOL isRecentList;
     NSString * emailphoneBook, * firstNamePhoneBook, * lastNamePhoneBook;
-    
     UIImageView *arrow;
     UILabel *em;
     NSArray *emailAddresses;

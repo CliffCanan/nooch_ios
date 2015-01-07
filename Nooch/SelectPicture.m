@@ -2,7 +2,7 @@
 //  Nooch
 //
 //  Created by crks on 10/1/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2015 Nooch. All rights reserved.
 
 #import "SelectPicture.h"
 #import <QuartzCore/QuartzCore.h>

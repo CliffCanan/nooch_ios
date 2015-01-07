@@ -1,7 +1,7 @@
 //  TransferPIN.m
 //  Nooch
 //
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2015 Nooch. All rights reserved.
 
 #import "TransferPIN.h"
 #import <QuartzCore/QuartzCore.h>

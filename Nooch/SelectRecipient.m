@@ -2,7 +2,7 @@
 //  Nooch
 //
 //  Created by crks on 9/25/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2015 Nooch. All rights reserved.
 
 #import "SelectRecipient.h"
 #import "UIImageView+WebCache.h"

@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by Vicky Mathneja on 02/01/14.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2015 Nooch. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
