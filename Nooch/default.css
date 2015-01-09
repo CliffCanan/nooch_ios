@@ -1058,6 +1058,11 @@ table-view#select_recipientwithoutSeperator {
     text-align: left;
 }
 
+.select_recipient_nameWithPhoneInCell {
+    height: 50px;
+    top: 0px;
+}
+
 .select_recipient_pending_name {
     height: 52px;
     top: 0px;

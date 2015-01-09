@@ -52,6 +52,7 @@
 -(void)getEncrypt:(NSString *)input;
 -(void)getDetails:(NSString*)username;
 -(void)getMemIdFromuUsername:(NSString*)username;
+-(void)getMemIdFromPhoneNumber:(NSString*)phoneNumber;
 -(void)getMemberIds:(NSArray*)input;
 -(void)getNoteSettings;
 -(void)getRecents;

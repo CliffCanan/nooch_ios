@@ -123,13 +123,15 @@ static assist * _sharedInstance = nil;
     passValue=value;
 }
 
--(void)birth{
+-(void)birth
+{
     limit = NO; oldFilter = @""; needsUpdating = YES;
     sortedHist = [NSMutableArray new];
     usr = [NSMutableDictionary new];
     histCache = [NSMutableArray new];
     pic = [NSMutableData new];
     assosciateCache = [NSMutableDictionary new];
+
     if ([self isAlive:[self path:@"currentUser"]]) {
         archivedData = [NSMutableData dataWithContentsOfFile:[self path:@"currentUser"]];
     }
@@ -726,50 +728,132 @@ static assist * _sharedInstance = nil;
         {
             assosciateCache = [NSMutableDictionary new];
         }
-        
-        for (NSDictionary *person in additions)
+
+        for (NSDictionary * person in additions)
+        {
+            NSLog(@"Person is: %@",person);
             if (person[@"UserName"])
+            {
                 if (!assosciateCache[person[@"UserName"]])
+                {
                     [assosciateCache setObject:person forKey:person[@"UserName"]];
+                }
                 else
                 {
                     for (NSString *key in person.allKeys)
+                    {
                         if (!assosciateCache[person[@"UserName"]][key])
+                        {
                             [assosciateCache[person[@"UserName"]] setObject:person[key] forKey:key];
+                        }
+                    }
                 }
+            }
+
+            else if (person[@"phoneNo"])  // if the AB entry has at least 1 Phone Number, NOT an email
+            {
+                if (!assosciateCache[person[@"phoneNo"]])
+                {
+                    [assosciateCache setObject:person forKey:person[@"phoneNo"]];
+                }
+                else
+                {
+                    for (NSString * phoneKey in person.allKeys)
+                    {
+                       // if (!assosciateCache[person[@"phoneNo"]][phoneKey])
+                    // {
+                            [assosciateCache[person[@"phoneNo"]] setObject:person[phoneKey] forKey:phoneKey];
+                       // }
+                    }
+                }
+
+                /*if (person[@"phoneNo2"]) // if the AB entry has more than a 2nd Phone Number
+                {
+                    if (!assosciateCache[person[@"phoneNo2"]])
+                    {
+                        [assosciateCache setObject:person forKey:person[@"phoneNo2"]];
+                    }
+                    else
+                    {
+                        for (NSString * phoneKey in person.allKeys)
+                        {
+                            if (!assosciateCache[person[@"phoneNo2"]][phoneKey])
+                            {
+                                [assosciateCache[person[@"phoneNo2"]] setObject:person[phoneKey] forKey:phoneKey];
+                            }
+                        }
+                    }
+                }
+                if (person[@"phoneNo3"]) // if the AB entry has more than a 3rd Phone Number
+                {
+                    if (!assosciateCache[person[@"phoneNo3"]])
+                    {
+                        [assosciateCache setObject:person forKey:person[@"phoneNo3"]];
+                    }
+                    else
+                    {
+                        for (NSString * phoneKey in person.allKeys)
+                        {
+                            if (!assosciateCache[person[@"phoneNo3"]][phoneKey])
+                            {
+                                [assosciateCache[person[@"phoneNo3"]] setObject:person[phoneKey] forKey:phoneKey];
+                            }
+                        }
+                    }
+                } */
+            }
+
             else if (person[@"MemberId"])
+            {
                 for (NSString *key in assosciateCache.allKeys)
+                {
                     if (![assosciateCache[key][@"MemberId"] isKindOfClass:[NSNull class]])
+                    {
                         if ( [assosciateCache[key][@"MemberId"] isEqualToString:person[@"MemberId"]])
                         {
                             for (NSString *key2 in person.allKeys)
+                            {
                                 if (!assosciateCache[key][key2])
+                                {
                                     [assosciateCache[key] setObject:person[key2] forKey:key2];
+                                }
+                            }
                             break;
                         }
+                    }
+                }
+            }
+        }
     }
     @catch (NSException *exception) {
-        NSLog(@"caugt exception in assos adding %@",[exception description]);
+        NSLog(@"caught exception in Assist.m --> - addAssos %@",[exception description]);
         NSLog(@"adding... %@",additions);
     }
     @finally {
         
     }
 }
--(NSMutableArray*)assosSearch:(NSString*)searchText{
+-(NSMutableArray*)assosSearch:(NSString*)searchText
+{
     NSMutableArray *responseArray = [NSMutableArray new];
     NSArray *keys = [[[assosciateCache objectForKey:@"people"] allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-    for (NSString *key in keys) {
+
+    for (NSString *key in keys)
+    {
         NSDictionary *dict = [[assosciateCache objectForKey:@"people"] objectForKey:key];
+
         NSString *name = [NSString stringWithFormat:@"%@ %@",[dict objectForKey:@"firstName"],[dict objectForKey:@"lastName"]];
+
         if ([name length] >= [searchText length]) {
             if ([[name substringToIndex:[searchText length]] caseInsensitiveCompare:searchText] == NSOrderedSame) {
                 [responseArray addObject:dict];
                 continue;
             }
         }
-        if ([[dict objectForKey:@"lastName"] length] >= [searchText length]) {
-            if ([[[dict objectForKey:@"lastName"] substringToIndex:[searchText length]] caseInsensitiveCompare:searchText] == NSOrderedSame) {
+        if ([[dict objectForKey:@"lastName"] length] >= [searchText length])
+        {
+            if ([[[dict objectForKey:@"lastName"] substringToIndex:[searchText length]] caseInsensitiveCompare:searchText] == NSOrderedSame)
+            {
                 [responseArray addObject:dict];
             }
         }

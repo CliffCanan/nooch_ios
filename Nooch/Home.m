@@ -101,7 +101,8 @@ NSMutableURLRequest *request;
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
         [user removeObjectForKey:@"Balance"];
         Register * reg = [Register new];
-        [nav_ctrl pushViewController:reg animated:NO];
+        [nav_ctrl pushViewController:reg animated:YES];
+        [ARProfileManager clearProfile];
         return;
     }
 
@@ -571,7 +572,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     NSShadow * shadowNavText = [[NSShadow alloc] init];
     shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .26);
     shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
-    
+
     NSDictionary * titleAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
                                        NSShadowAttributeName: shadowNavText};
     [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
@@ -617,6 +618,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         Register *reg = [Register new];
         [nav_ctrl pushViewController:reg animated:YES];
         me = [core new];
+        [ARProfileManager clearProfile];
         return;
     }
 
@@ -752,9 +754,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                           [self.view bringSubviewToFront:self.profile_incomplete];
                                       }
              ];
-
-            bannerAlert++;
         }
+        bannerAlert++;
     }
     else if ([[user valueForKey:@"Status"]isEqualToString:@"Active"])
     {
@@ -767,77 +768,77 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
     {
-            [self.phone_incomplete removeFromSuperview];
-            self.phone_incomplete = [UIView new];
-            [self.phone_incomplete setStyleId:@"phone_unverified"];
-            [self.phone_incomplete addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profileFromHome)]];
+        [self.phone_incomplete removeFromSuperview];
+        self.phone_incomplete = [UIView new];
+        [self.phone_incomplete setStyleId:@"phone_unverified"];
+        [self.phone_incomplete addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profileFromHome)]];
 
-            UILabel * em = [UILabel new];
-            [em setStyleClass:@"banner_header"];
-            em.attributedText = [[NSAttributedString alloc] initWithString:@"Phone Number Not Verified"
+        UILabel * em = [UILabel new];
+        [em setStyleClass:@"banner_header"];
+        em.attributedText = [[NSAttributedString alloc] initWithString:@"Phone Number Not Verified"
                                                                   attributes:textAttributes];
-            [self.phone_incomplete addSubview:em];
+        [self.phone_incomplete addSubview:em];
 
-            UILabel * em_exclaim = [UILabel new];
-            [em_exclaim setStyleClass:@"banner_alert_glyph"];
-            [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-phone"]];
-            [self.phone_incomplete addSubview:em_exclaim];
+        UILabel * em_exclaim = [UILabel new];
+        [em_exclaim setStyleClass:@"banner_alert_glyph"];
+        [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-phone"]];
+        [self.phone_incomplete addSubview:em_exclaim];
 
-            UILabel * glyph_phone = [UILabel new];
-            [glyph_phone setStyleClass:@"banner_alert_glyph_sm"];
-            [glyph_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
-            [self.phone_incomplete addSubview:glyph_phone];
+        UILabel * glyph_phone = [UILabel new];
+        [glyph_phone setStyleClass:@"banner_alert_glyph_sm"];
+        [glyph_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
+        [self.phone_incomplete addSubview:glyph_phone];
 
-            UILabel * em_info = [UILabel new];
-            [em_info setStyleClass:@"banner_info"];
-            [em_info setNumberOfLines:0];
-            em_info.attributedText = [[NSAttributedString alloc] initWithString:@"Please verify your phone - respond 'Go' to the SMS."
+        UILabel * em_info = [UILabel new];
+        [em_info setStyleClass:@"banner_info"];
+        [em_info setNumberOfLines:0];
+        em_info.attributedText = [[NSAttributedString alloc] initWithString:@"Please verify your phone - respond 'Go' to the SMS."
                                                                 attributes:textAttributes];
-            [self.phone_incomplete addSubview:em_info];
+        [self.phone_incomplete addSubview:em_info];
 
-            UIButton * go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [go setStyleClass:@"go_now_text"];
-            [go setTitle:@"TAP TO ADD NUMBER" forState:UIControlStateNormal];
-            [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
-            go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-            [go addTarget:self action:@selector(go_profileFromHome) forControlEvents:UIControlEventTouchUpInside];
-            [self.phone_incomplete addSubview:go];
+        UIButton * go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [go setStyleClass:@"go_now_text"];
+        [go setTitle:@"TAP TO ADD NUMBER" forState:UIControlStateNormal];
+        [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
+        go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+        [go addTarget:self action:@selector(go_profileFromHome) forControlEvents:UIControlEventTouchUpInside];
+        [self.phone_incomplete addSubview:go];
 
-            UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
-            [dis setStyleClass:@"dismiss_banner"];
-            [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
-            [dis setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
-            [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
-            dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-            [dis addTarget:self action:@selector(dismiss_phone_unvalidated) forControlEvents:UIControlEventTouchUpInside];
+        UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
+        [dis setStyleClass:@"dismiss_banner"];
+        [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
+        [dis setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
+        [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
+        dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+        [dis addTarget:self action:@selector(dismiss_phone_unvalidated) forControlEvents:UIControlEventTouchUpInside];
 
-            [self.phone_incomplete addSubview:dis];
+        [self.phone_incomplete addSubview:dis];
 
-            [self.view addSubview:self.phone_incomplete];
+        [self.view addSubview:self.phone_incomplete];
 
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-            [UIView animateKeyframesWithDuration:.7
-                                           delay:0
-                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
-                                      animations:^{
-                                          [UIView addKeyframeWithRelativeStartTime:.25 relativeDuration:.75 animations:^{
-                                              CGRect frame = self.phone_incomplete.frame;
-                                              if (bannerAlert == 0)
-                                              {
-                                                  frame.origin.y = 0;
-                                              }
-                                              else if (bannerAlert > 0)
-                                              {
-                                                  frame.origin.y = 56;
-                                              }
-                                              [self.phone_incomplete setFrame:frame];
-                                          }];
-                                      } completion: ^(BOOL finished) {
-                                          [self.view bringSubviewToFront:self.phone_incomplete];
-                                      }
-             ];
-
-            bannerAlert++;
+        NSLog(@"bannerALert: %d",bannerAlert);
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        [UIView animateKeyframesWithDuration:.7
+                                       delay:0
+                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:.25 relativeDuration:.75 animations:^{
+                                          CGRect frame = self.phone_incomplete.frame;
+                                          if (bannerAlert == 0)
+                                          {
+                                              frame.origin.y = 0;
+                                          }
+                                          else if (bannerAlert > 0)
+                                          {
+                                              frame.origin.y = 56;
+                                          }
+                                          [self.phone_incomplete setFrame:frame];
+                                      }];
+                                  } completion: ^(BOOL finished) {
+                                      [self.view bringSubviewToFront:self.phone_incomplete];
+                                  }
+        ];
+        bannerAlert++;
     }
     else {
         [self dismiss_phone_unvalidated];
@@ -1108,7 +1109,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     if (![[assist shared]isPOP])
     {
-        NSLog(@"1.) Checkpoint REACHED");
+        // NSLog(@"1.) Checkpoint REACHED");
 
         self.slidingViewController.panGesture.enabled=YES;
         [self.view addGestureRecognizer:self.slidingViewController.panGesture];
@@ -1122,7 +1123,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) { // iOS8+
             // Sending a message to avoid compile time error
-            NSLog(@"2.) Checkpoint REACHED");
+            // NSLog(@"2.) Checkpoint REACHED");
             [[UIApplication sharedApplication] sendAction:@selector(requestWhenInUseAuthorization)
                                                        to:locationManager
                                                      from:self
@@ -1137,6 +1138,17 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     if ([self.navigationController.view.subviews containsObject:self.hud])
     {
         [self.hud hide:YES];
+    }
+
+    [ARProfileManager registerString:@"IsBankAttached" withValue:@"unknown"];
+
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    {
+        [ARProfileManager setStringValue:@"YES" forVariable:@"IsBankAttached"];
+    }
+    else
+    {
+        [ARProfileManager setStringValue:@"NO" forVariable:@"IsBankAttached"];
     }
 }
 
@@ -1861,8 +1873,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             }
             [_carousel reloadData];
         }
+
+        [ARProfileManager registerNumber:@"Fav_Nooch_Friends"];
+
+        if ([favorites count] > 0)
+        {
+            [ARProfileManager setNumberValue:[NSNumber numberWithDouble:[favorites count]] forVariable:@"Fav_Nooch_Friends"];
+        }
     }
-    
+
     else if ([tagName isEqualToString:@"getPendingTransfersCount"])
     {
         NSError *error;
@@ -2028,6 +2047,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         Register *reg = [Register new];
         [nav_ctrl pushViewController:reg animated:YES];
         me = [core new];
+        [ARProfileManager clearProfile];
         return;
     }
 

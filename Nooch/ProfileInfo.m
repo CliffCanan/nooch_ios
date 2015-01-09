@@ -1057,11 +1057,13 @@ UIImageView *picture;
         {
             // Success! Now set the facebook_id to be the fb_id that was just returned & send to Nooch DB
             fbID = [result objectForKey:@"id"];
-             
+            [ARProfileManager setUserFacebook:fbID];
+
             [[NSUserDefaults standardUserDefaults] setObject:fbID forKey:@"facebook_id"];
             NSLog(@"Login w FB successful --> fb id is %@",[result objectForKey:@"id"]);
-             
+
             NSString * imgURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal", fbID];
+            [ARProfileManager setUserAvatarUrl:@"http://useartisan.com/wp-content/themes/artisan-mf/images/role_developer.svg"];
 
             [picture sd_setImageWithURL:[NSURL URLWithString:imgURL]
                        placeholderImage:[UIImage imageNamed:@"RoundLoading"]
@@ -1072,7 +1074,7 @@ UIImageView *picture;
                                       [[assist shared]setTranferImage:image];
                                   }
             }];
-            
+
             isPhotoUpdate = YES;
 
             [self.save setEnabled:YES];
@@ -1845,6 +1847,7 @@ UIImageView *picture;
                 self.phone.text = phone;
 
                 [dictSavedInfo setObject:self.phone.text forKey:@"phoneno"];
+                [ARProfileManager setUserPhoneNumber:phone];
             }
             else
             {
@@ -1885,7 +1888,7 @@ UIImageView *picture;
         }
         else if (![[dictProfileinfo valueForKey:@"Zipcode"] isKindOfClass:[NSNull class]])
         {
-         self.ServiceType = @"zip";
+            self.ServiceType = @"zip";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -1915,14 +1918,14 @@ UIImageView *picture;
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"UserName"]];
         }
-        else if (![[dictProfileinfo valueForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]])
+        /* else if (![[dictProfileinfo valueForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]])
         {
-            self.ServiceType=@"recovery";
+           self.ServiceType=@"recovery";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"RecoveryMail"]];
-        }
+        }*/
         else if (![[dictProfileinfo valueForKey:@"Password"] isKindOfClass:[NSNull class]])
         {
             self.ServiceType=@"pwd";
@@ -1961,7 +1964,7 @@ UIImageView *picture;
             self.address_one.text = [address1 capitalizedString];
             NSString* address2 = [self.address_two.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             self.address_two.text = [address2 capitalizedString];
-            
+
             [dictSavedInfo setObject:self.address_one.text forKey:@"Address1"];
             [dictSavedInfo setObject:self.address_two.text forKey:@"Address2"];
         }
@@ -1984,6 +1987,7 @@ UIImageView *picture;
         self.city.text = [sourceData objectForKey:@"Status"];
         NSString * city = [self.city.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         self.city.text = [city capitalizedString];
+        [ARProfileManager setUserCity:[city capitalizedString]];
 
         [dictSavedInfo setObject:self.city.text forKey:@"City"];
        
@@ -1994,7 +1998,7 @@ UIImageView *picture;
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"State"]];
         }
-        
+
         else if (![[dictProfileinfo objectForKey:@"Zipcode"] isKindOfClass:[NSNull class]]) {
             self.ServiceType = @"zip";
             Decryption *decry = [[Decryption alloc] init];
@@ -2034,6 +2038,7 @@ UIImageView *picture;
         self.zip.text = [sourceData objectForKey:@"Status"];
         NSString * zip = [self.zip.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         self.zip.text = zip;
+        [ARProfileManager setUserPostalCode:zip];
         
         [dictSavedInfo setObject:self.zip.text forKey:@"zip"];
         
@@ -2053,6 +2058,7 @@ UIImageView *picture;
         if ([[sourceData objectForKey:@"Status"] length] > 0)
         {
             NSString * letterA = [[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
+            [ARProfileManager setUserFirstName:letterA];
 
             self.name.text = [NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
             
@@ -2102,7 +2108,9 @@ UIImageView *picture;
         {
             NSString * letterA = [[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
             self.name.text = [self.name.text stringByAppendingString:[NSString stringWithFormat:@" %@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]]];
-            
+
+            [ARProfileManager setUserLastName:letterA];
+
             NSString * name = [self.name.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             NSShadow * shadow = [[NSShadow alloc] init];
             shadow.shadowColor = Rgb2UIColor(249, 251, 252, .3);
@@ -2120,6 +2128,7 @@ UIImageView *picture;
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"UserName"]];
+            [ARProfileManager setUserEmail:[dictProfileinfo objectForKey:@"UserName"]];
         }
     }
 
@@ -2127,7 +2136,7 @@ UIImageView *picture;
     {
         self.email.text = [sourceData objectForKey:@"Status"];
 
-        if (![[dictProfileinfo objectForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]] &&
+        /*if (![[dictProfileinfo objectForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]] &&
               [dictProfileinfo objectForKey:@"RecoveryMail"] != NULL &&
             ![[dictProfileinfo objectForKey:@"RecoveryMail"] isEqualToString:@""])
         {
@@ -2138,7 +2147,7 @@ UIImageView *picture;
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"RecoveryMail"]];
         }
         else
-        {
+        { */
             self.recovery_email.text = @"";
             self.ServiceType = @"pwd";
 
@@ -2150,7 +2159,7 @@ UIImageView *picture;
                 decry->tag = [NSNumber numberWithInteger:2];
                 [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Password"]];
             }
-        }
+        //}
     }
 
     else if ([self.ServiceType isEqualToString:@"recovery"])

@@ -200,6 +200,17 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 
+-(void)getMemIdFromPhoneNumber:(NSString*)phoneNumber
+{
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    self.responseData = [[NSMutableData alloc] init];
+    requestmemid = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetMemberIdByUsername?phoneNumber=%@",ServerUrl,phoneNumber
+                                                                             ]]];
+    NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestmemid delegate:self];
+    if (!connection)
+        NSLog(@"connect error");
+}
+
 -(void)getMemberIds:(NSMutableArray*)input
 {
     self.responseData = [[NSMutableData alloc] init];
