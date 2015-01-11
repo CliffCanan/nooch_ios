@@ -15,7 +15,6 @@
 
 @interface TransferPIN : GAITrackedViewController<UITextFieldDelegate,serveD,NSURLConnectionDelegate,MFMailComposeViewControllerDelegate,MBProgressHUDDelegate>
 {
-    
     NSString*Altitude;
     NSString*longitude;
     NSString*latitude;

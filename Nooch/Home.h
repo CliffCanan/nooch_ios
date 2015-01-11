@@ -46,7 +46,7 @@ NSUserDefaults *user;
     NSTimer*timerHome;
     NSMutableArray *additions;
     NSMutableArray *favorites;
-    NSString*emailID;
+    NSString * emailID, * firstNameAB, * lastNameAB;
     UIButton *top_button;
 }
 -(void)hide;

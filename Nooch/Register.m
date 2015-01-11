@@ -56,7 +56,7 @@
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.login setBackgroundColor:[UIColor clearColor]];
     [self.login setTitle:@"Already a Member?  Sign in here  " forState:UIControlStateNormal];
-    [self.login setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height + 10, 300, 36)];
+    [self.login setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height + 10, 300, 44)];
     [self.login addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"label_small"];
     [self.login setAlpha:0];

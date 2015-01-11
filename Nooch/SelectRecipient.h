@@ -31,7 +31,6 @@ BOOL isAddRequest;
     UIActivityIndicatorView * spinner;
     BOOL isRecentList;
     NSString * emailphoneBook, * phoneBookPhoneNum , * firstNamePhoneBook, * lastNamePhoneBook;
-    NSString * PhoneNum;
     UIImageView *arrow;
     UILabel *em;
     NSArray *emailAddresses;
