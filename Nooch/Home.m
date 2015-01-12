@@ -425,14 +425,16 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             CFTypeRef contactImageValue = ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
             contactImage = (__bridge NSData *)(contactImageValue);
 
+            [curContact setObject:contactImage forKey:@"image"];
+
             if (contactImageValue)
                 CFRelease(contactImageValue);
         }
         else
         {
             contactImage = UIImageJPEGRepresentation([UIImage imageNamed:@"profile_picture.png"], 1);
+            [curContact setObject:contactImage forKey:@"image"];
         }
-        [curContact setObject:contactImage forKey:@"image"];
 
         ABMultiValueRef phoneNumber = ABRecordCopyValue(person, kABPersonPhoneProperty);
         ABMultiValueRef emailInfo = ABRecordCopyValue(person, kABPersonEmailProperty);

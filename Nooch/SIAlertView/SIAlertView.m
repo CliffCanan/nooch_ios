@@ -834,18 +834,20 @@ static SIAlertView *__si_alert_current_view;
 - (CGFloat)heightForMessageLabel
 {
     CGFloat minHeight = MESSAGE_MIN_LINE_COUNT * 40;
-    //NSLog(@"1. min height is....: %f",minHeight);
 
-    if (self.messageLabel) {
+    if (self.messageLabel)
+    {
         CGFloat maxHeight = MESSAGE_MAX_LINE_COUNT * 40;
-      /*  NSLog(@"2. LINE HEIGHT is....: %f",self.messageLabel.font.lineHeight);
-        NSLog(@"3.  Message MAX LINE COUNT is....: %d",MESSAGE_MAX_LINE_COUNT);
-        NSLog(@"4.  COMPUTED MAX HEIGHT THEN IS....: %f",maxHeight);
+      
+        //NSLog(@"1. LINE HEIGHT is....: %f",self.messageLabel.font.lineHeight);
+        //NSLog(@"2. Message MAX LINE COUNT is....: %d",MESSAGE_MAX_LINE_COUNT);
+        //NSLog(@"3. COMPUTED MAX HEIGHT THEN IS....: %f",maxHeight);
+
         #ifdef __IPHONE_7_0
-            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+            NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
             paragraphStyle.lineBreakMode = self.messageLabel.lineBreakMode;
             
-            NSDictionary *attributes = @{NSFontAttributeName:self.messageLabel.font,
+            NSDictionary * attributes = @{NSFontAttributeName:self.messageLabel.font,
                                          NSParagraphStyleAttributeName: paragraphStyle.copy};
             
             // NSString class method: boundingRectWithSize:options:attributes:context is
@@ -855,20 +857,19 @@ static SIAlertView *__si_alert_current_view;
                                                           attributes:attributes
                                                              context:nil];
         
-            rect.size = (10,20);
-            NSLog(@"5.  MIN HEIGHT IS....: %f",minHeight);
-            NSLog(@"6.  RECT HEIGHT IS....: %f",rect.size.height);
+            //NSLog(@"4. MIN HEIGHT IS....: %f",minHeight);
+            //NSLog(@"5. RECT HEIGHT IS....: %f",rect.size.height);
             return MAX(minHeight, ceil(rect.size.height));
-        #else*/
+        #else
             CGSize size = [self.message sizeWithFont:self.messageLabel.font
                                    constrainedToSize:CGSizeMake(CONTAINER_WIDTH - CONTENT_PADDING_LEFT * 2, maxHeight*2)
                                        lineBreakMode:self.messageLabel.lineBreakMode];
 
-            //NSLog(@"7.  size.width = %f",size.width);
-            //NSLog(@"8.  size.height = %f",size.height);
+            //NSLog(@"6.  size.width = %f",size.width);
+            //NSLog(@"7.  size.height = %f",size.height);
 
             return MAX(minHeight, size.height);
-    //    #endif
+        #endif
     }
     
     return minHeight;

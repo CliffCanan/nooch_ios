@@ -479,7 +479,7 @@
         {
             CFTypeRef contactImageValue = ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
             contactImage = (__bridge NSData *)(contactImageValue);
-            //[curContact setObject:contactImage forKey:@"image"];
+            [curContact setObject:contactImage forKey:@"image"];
             if (contactImageValue)
                 CFRelease(contactImageValue);
             
@@ -487,7 +487,7 @@
         else
         {
             contactImage = UIImageJPEGRepresentation([UIImage imageNamed:@"profile_picture.png"], 1);
-            //[curContact setObject:contactImage forKey:@"image"];
+            [curContact setObject:contactImage forKey:@"image"];
         }
 
         if (contacName != NULL) [curContact setObject:contacName forKey:@"Name"];
