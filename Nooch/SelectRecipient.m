@@ -545,7 +545,7 @@
                 [curContact setObject:phone forKey:[NSString stringWithFormat:@"phoneAdday%d",j]];
                 [curContact setObject:[NSString stringWithFormat:@"%d",j+1] forKey:@"phoneCount"];
 
-                NSLog(@"\nCheckpoint DELTA.  Contact Number: %d  -  Phone Number: %d",i,j);
+                // NSLog(@"\nCheckpoint DELTA.  Contact Number: %d  -  Phone Number: %d",i,j);
                 [additions addObject:curContact];
             }
             
@@ -818,17 +818,7 @@
         phoneBookPhoneNum = selectedPhone;
         isphoneBook = YES;
         
-        /*if ([emailphoneBook isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]])
-        {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Very Sneaky"
-                                                         message:@"\xF0\x9F\x98\xB1\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!"
-                                                        delegate:self
-                                               cancelButtonTitle:@"OK"
-                                               otherButtonTitles:nil];
-            [av setTag:4];
-            [av show];
-        }
-        else */ if (![selectedPhone isEqualToString:@"Cancel"])
+        if (![selectedPhone isEqualToString:@"Cancel"])
         {
             [search resignFirstResponder];
 
@@ -874,8 +864,9 @@
 
     searching = NO;
     emailEntry = NO;
-    isRecentList = YES;
+    phoneNumEntry = NO;
     isphoneBook = NO;
+    isRecentList = YES;
     searchBar.searchBarStyle = UISearchBarStyleMinimal;
     [searchBar resignFirstResponder];
     [searchBar setText:@""];
@@ -1141,57 +1132,33 @@
 #pragma Mark - Manually Entered Phone Number Handling
 -(void)getMemberIdByUsingEnteredPhoneNumber
 {
-    /* if ([[search.text lowercaseString] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]])
-    {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Hold On There..."
-                                                     message:@"\xF0\x9F\x98\xB1\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's phone number!"
-                                                    delegate:self
-                                           cancelButtonTitle:@"OK"
-                                           otherButtonTitles:nil];
-        [av setTag:4];
-        [av show];
-    }
-    else { */
-        [search resignFirstResponder];
+    [search resignFirstResponder];
 
-        NSString * s = search.text;
-        s = [s stringByReplacingOccurrencesOfString:@"("
-                                         withString:@""];
-        s = [s stringByReplacingOccurrencesOfString:@")"
-                                         withString:@""];
-        s = [s stringByReplacingOccurrencesOfString:@"-"
-                                         withString:@""];
-        s = [s stringByReplacingOccurrencesOfString:@" "
-                                         withString:@""];
+    NSString * s = search.text;
+    s = [s stringByReplacingOccurrencesOfString:@"("
+                                     withString:@""];
+    s = [s stringByReplacingOccurrencesOfString:@")"
+                                     withString:@""];
+    s = [s stringByReplacingOccurrencesOfString:@"-"
+                                     withString:@""];
+    s = [s stringByReplacingOccurrencesOfString:@" "
+                                     withString:@""];
 
-        serve * phoneCheck = [serve new];
-        phoneCheck.Delegate = self;
-        phoneCheck.tagName = @"phoneCheck";
-        [phoneCheck getMemIdFromuUsername:s];
-  //  }
+    serve * phoneCheck = [serve new];
+    phoneCheck.Delegate = self;
+    phoneCheck.tagName = @"phoneCheck";
+    [phoneCheck getMemIdFromPhoneNumber:s];
 }
 
 #pragma Mark - Phone Number From Address Book Handling
 -(void)getMemberIdByUsingPhoneNumberFromAB
 {
-    /* if ([phoneBookPhoneNum isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]])
-    {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Hold On There..."
-                                                     message:@"\xF0\x9F\x98\xB1\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's phone number!"
-                                                    delegate:self
-                                           cancelButtonTitle:@"OK"
-                                           otherButtonTitles:nil];
-        [av setTag:4];
-        [av show];
-    }
-    else { */
-        [search resignFirstResponder];
+    [search resignFirstResponder];
 
-        serve * phoneCheck = [serve new];
-        phoneCheck.Delegate = self;
-        phoneCheck.tagName = @"phoneCheck";
-        [phoneCheck getMemIdFromPhoneNumber:phoneBookPhoneNum];
-   // }
+    serve * phoneCheck = [serve new];
+    phoneCheck.Delegate = self;
+    phoneCheck.tagName = @"phoneCheck";
+    [phoneCheck getMemIdFromPhoneNumber:phoneBookPhoneNum];
 }
 
 #pragma mark - file paths
@@ -1490,10 +1457,24 @@
         
         if ([dictResult objectForKey:@"Result"] != [NSNull null])
         {
-            serve * getDetails = [serve new];
-            getDetails.Delegate = self;
-            getDetails.tagName = @"getMemberDetails";
-            [getDetails getDetails:[dictResult objectForKey:@"Result"]];
+            if ([[dictResult objectForKey:@"Result"] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
+            {
+                [search becomeFirstResponder];
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Hold On There..."
+                                                             message:@"\xF0\x9F\x98\xB1\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's phone number!"
+                                                            delegate:self
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
+                [av setTag:4];
+                [av show]; 
+            }
+            else
+            {
+                serve * getDetails = [serve new];
+                getDetails.Delegate = self;
+                getDetails.tagName = @"getMemberDetails";
+                [getDetails getDetails:[dictResult objectForKey:@"Result"]];
+            }
         }
         else
         {

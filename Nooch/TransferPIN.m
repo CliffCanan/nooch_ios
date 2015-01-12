@@ -19,6 +19,7 @@
 @property(nonatomic,strong)NSMutableData*respData;
 @property(nonatomic,strong) NSString *memo;
 @property(nonatomic,strong) NSString *type;
+@property(nonatomic,strong) NSString *phone;
 @property(nonatomic,strong) NSDictionary *receiver;
 @property(nonatomic) float amnt;
 @property(nonatomic,retain) UIView *first_num;
@@ -37,10 +38,17 @@
     self = [super initWithNibName:nil bundle:nil];
     if (self)
     {
+        NSLog(@"self.receiver is: %@", receiver);
         // Custom initialization
         if ([receiver valueForKey:@"FirstName"])
         {
             receiverFirst = [receiver valueForKey:@"FirstName"];
+        }
+        if ([receiver valueForKey:@"phone"])
+        {
+            self.phone = [[receiver valueForKey:@"phone"] stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [[receiver valueForKey:@"phone"] length])];
+            
+            NSLog(@"self.phone is: %@",self.phone);
         }
         if ([receiver valueForKey:@"memo"])
         {
@@ -633,7 +641,7 @@
                                                transactionInputTransfer, @"transactionInput",
                                                [[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"], @"accessToken",
                                                @"personal",@"inviteType",
-                                               [self.receiver objectForKey:@"phone"],@"receiverPhoneNumer", nil];
+                                               self.phone,@"receiverPhoneNumer", nil];
                     }
                 }
                 if ([self.type isEqualToString:@"request"])
@@ -709,11 +717,10 @@
                     }
                     else if ([self.receiver objectForKey:@"phone"] )
                     {
-//                        return;
                         transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                                transactionInputTransfer, @"transactionInput",
                                                [[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"], @"accessToken",
-                                               [self.receiver objectForKey:@"phone"],@"receiverPhoneNumer", nil];
+                                               self.phone,@"receiverPhoneNumer", nil];
                     }
                 }
 
@@ -1113,18 +1120,34 @@
 
             if ([self.receiver objectForKey:@"nonuser"])
             {
+                if ([self.receiver objectForKey:@"firstName"] && [self.receiver objectForKey:@"lastName"])
+                {
+                    NSString * fullName = [NSString stringWithFormat:@"%@ %@", [self.receiver objectForKey:@"firstName"], [self.receiver objectForKey:@"lastName"]];
+                    [input setObject:fullName forKey:@"InvitationSentTo"];
+                }
+                else if ([self.receiver objectForKey:@"firstName"])
+                {
+                    [input setObject:[self.receiver objectForKey:@"email"] forKey:@"InvitationSentTo"];
+                }
+                else if ([self.receiver objectForKey:@"email"])
+                {
+                    [input setObject:[self.receiver objectForKey:@"email"] forKey:@"InvitationSentTo"];
+                }
+                else if ([self.receiver objectForKey:@"phone"])
+                {
+                    [input setObject:[self.receiver objectForKey:@"phone"] forKey:@"InvitationSentTo"];
+                }
+
                 if ([self.type isEqualToString:@"request"])
                 {
                     [input setObject:@"InviteRequest" forKey:@"TransactionType"];
                     [input setObject:dictResultTransfer[@"requestId"] forKey:@"TransactionId"];
-                    [input setObject:[self.receiver objectForKey:@"email"] forKey:@"InvitationSentTo"];
                 }
                 else
                 {
-                    [input setObject:@"Pending" forKey:@"TransactionStatus"];
                     [input setObject:@"Invite" forKey:@"TransactionType"];
                     [input setObject:dictResultTransfer[@"trnsactionId"] forKey:@"TransactionId"];
-                    [input setObject:[self.receiver objectForKey:@"email"] forKey:@"InvitationSentTo"];
+                    [input setObject:@"Pending" forKey:@"TransactionStatus"];
                 }
             }
             NSLog(@"Input: %@",input);

@@ -982,7 +982,7 @@
             {
                 self.emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 250, 254)];
                 self.emptyPic.alpha = 0;
-                [self.emptyPic setImage:[UIImage imageNamed:@"Stats-Circled"]];
+                [self.emptyPic setImage:[UIImage imageNamed:@"Stats_Circled"]];
                 [cell.contentView  addSubview: self.emptyPic];
             }
         }
@@ -1328,7 +1328,7 @@
             pieGraphMiddleOverlay.backgroundColor = [UIColor whiteColor];
             break;
     }
-    [pieGraphMiddleOverlay setAlpha:.14];
+    [pieGraphMiddleOverlay setAlpha:.18];
     [self.view bringSubviewToFront:topFriendsPieTotalLabel];
     [self.view bringSubviewToFront:topFriendsTotalPayments];
 }

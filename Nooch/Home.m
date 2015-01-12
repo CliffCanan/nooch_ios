@@ -87,6 +87,7 @@ NSMutableURLRequest *request;
             [nav_ctrl pushViewController:prof animated:YES];
             [self.slidingViewController resetTopView];
         }
+
         me = [core new];
         [user removeObjectForKey:@"Balance"];
         loadInfo = [[NSMutableDictionary alloc] initWithContentsOfFile:[self autoLogin]];
@@ -100,13 +101,16 @@ NSMutableURLRequest *request;
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
         [user removeObjectForKey:@"Balance"];
-        Register * reg = [Register new];
-        [nav_ctrl pushViewController:reg animated:YES];
+
+        //Register * reg = [Register new];
+        //[nav_ctrl pushViewController:reg animated:YES];
+
         [ARProfileManager clearProfile];
+
         return;
     }
 
-    //if they have required immediately turned on or haven't selected the option yet, redirect them to PIN screen
+    // If they have required immediately turned on or haven't selected the option yet, redirect them to PIN screen
     if (![user objectForKey:@"requiredImmediately"])
     {
         ReEnterPin * pin = [ReEnterPin new];
@@ -571,7 +575,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     [super viewDidAppear:animated];
     int bannerAlert = 0;
-    
+
     NSShadow * shadowNavText = [[NSShadow alloc] init];
     shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .26);
     shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
@@ -1047,7 +1051,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         ];
         carouselTop = 114;
     }
-    else {
+    else
+    {
         [UIView animateKeyframesWithDuration:0.5
                                        delay:0
                                      options:UIViewKeyframeAnimationOptionCalculationModeCubic
@@ -1138,6 +1143,16 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [[assist shared] setRequestMultiple:NO];
     [[assist shared] setArray:nil];
 
+    NSString * versionNumFromArtisan = [ARPowerHookManager getValueForHookById:@"versionNum"];
+    //NSLog(@"VersionNumFromArtisan is: %@",versionNumFromArtisan);
+    //NSLog(@"xCode Bundle Version Number is: %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]);
+    
+    if (![versionNumFromArtisan isEqualToString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]] &&
+        [[NSUserDefaults standardUserDefaults] boolForKey:@"VersionUpdateNoticeDisplayed"] == false )
+    {
+        [self displayVersionUpdateNotice];
+    }
+
     if ([self.navigationController.view.subviews containsObject:self.hud])
     {
         [self.hud hide:YES];
@@ -1191,16 +1206,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     //do carousel
     [self.view addSubview:_carousel];
     [_carousel reloadData];
-
-    NSString * versionNumFromArtisan = [ARPowerHookManager getValueForHookById:@"versionNum"];
-    //NSLog(@"VersionNumFromArtisan is: %@",versionNumFromArtisan);
-    //NSLog(@"xCode Bundle Version Number is: %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]);
-
-    if (![versionNumFromArtisan isEqualToString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]] &&
-         [[NSUserDefaults standardUserDefaults] boolForKey:@"VersionUpdateNoticeDisplayed"] == false )
-    {
-        [self displayVersionUpdateNotice];
-    }
 }
 
 -(void)displayVersionUpdateNotice
@@ -1276,17 +1281,58 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [glyph_download setTextColor:kNoochBlue];
     [head_container addSubview:glyph_download];
 
+    NSString * pictureURL = [ARPowerHookManager getValueForHookById:@"NV_IMG"];
+    NSString * pictureWidth = [ARPowerHookManager getValueForHookById:@"NV_IMG_W"];
+    int picwidthInt = [pictureWidth integerValue];
+    NSString * pictureHeight = [ARPowerHookManager getValueForHookById:@"NV_IMG_H"];
+    int picHeightInt = [pictureHeight integerValue];
+    NSString * bodyHeaderTxt = [ARPowerHookManager getValueForHookById:@"NV_HD"];
+    NSString * bodyTextTxt = [ARPowerHookManager getValueForHookById:@"NV_BODY"];
+
+    UILabel * bodyHeader = [[UILabel alloc]initWithFrame:CGRectMake(10, head_container.bounds.size.height + 180, mainView.bounds.size.width - 20, 30)];
+    [bodyHeader setBackgroundColor:[UIColor clearColor]];
+    [bodyHeader setText:bodyHeaderTxt];
+    [bodyHeader setFont:[UIFont fontWithName:@"Roboto-regular" size:23]];
+    bodyHeader.textColor = [Helpers hexColor:@"313233"];
+    bodyHeader.textAlignment = NSTextAlignmentCenter;
+    [mainView addSubview:bodyHeader];
+
+    UILabel * bodyText = [[UILabel alloc]initWithFrame:CGRectMake(8, 234, mainView.bounds.size.width - 16, 162)];
+    [bodyText setBackgroundColor:[UIColor clearColor]];
+    [bodyText setText:bodyTextTxt];
+    [bodyText setFont:[UIFont fontWithName:@"Roboto-light" size:14]];
+    [bodyText setNumberOfLines: 0];
+    bodyText.textColor = [Helpers hexColor:@"313233"];
+    bodyText.textAlignment = NSTextAlignmentCenter;
+    [mainView addSubview:bodyText];
+
     UIImageView * imageShow = [[UIImageView alloc]initWithFrame:CGRectMake(11, 40, 280, 380)];
     imageShow.image = [UIImage imageNamed:@"Knox_Infobox"];
     imageShow.contentMode = UIViewContentModeScaleAspectFit;
+    
+    NSLog(@"picWidth is: %d  and picHeight is: %d",picwidthInt,picHeightInt);
+    
+    UIImageView * mainImage = [UIImageView new];
+    [mainImage setFrame:CGRectMake((mainView.bounds.size.width - picwidthInt) / 2, head_container.bounds.size.height + 10, picwidthInt, picHeightInt)];
+    mainImage.clipsToBounds = YES;
+    mainImage.layer.cornerRadius = 10;
+    [mainImage sd_setImageWithURL:[NSURL URLWithString:pictureURL]
+                 placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
 
     UIButton * btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnLink setStyleClass:@"button_green_welcome"];
     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    btnLink.frame = CGRectMake(10,mainView.frame.size.height-56, 280, 50);
-    [btnLink setTitle:@"Get Newest Version" forState:UIControlStateNormal];
+    btnLink.frame = CGRectMake(10, mainView.frame.size.height - 60, 280, 46);
+    [btnLink setTitle:@"    Get Newest Version" forState:UIControlStateNormal];
     [btnLink addTarget:self action:@selector(OpenAppInAppStore) forControlEvents:UIControlEventTouchUpInside];
+
+    UILabel * glyph_download2 = [UILabel new];
+    [glyph_download2 setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
+    [glyph_download2 setFrame:CGRectMake(21, 10, 22, 24)];
+    [glyph_download2 setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cloud-download"]];
+    [glyph_download2 setTextColor:[UIColor whiteColor]];
+    [btnLink addSubview:glyph_download2];
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
@@ -1301,15 +1347,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     UIImageView * btnClose = [[UIImageView alloc] initWithFrame:self.view.frame];
     btnClose.image = [UIImage imageNamed:@"close_button"];
-    btnClose.frame = CGRectMake(9, 6, 35, 35);
+    btnClose.frame = CGRectMake(5, 5, 38, 39);
 
-    UIButton * btnClose_shell = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnClose_shell.frame = CGRectMake(mainView.frame.size.width - 35, head_container.frame.origin.y - 21, 48, 46);
-    [btnClose_shell addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
+    UIView * btnClose_shell = [[UIView alloc] initWithFrame:CGRectMake(mainView.frame.size.width - 38, head_container.frame.origin.y - 21, 48, 46)];
+    [btnClose_shell addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(close_lightBox)]];
     [btnClose_shell addSubview:btnClose];
 
     [mainView addSubview:btnClose_shell];
-    [mainView addSubview:imageShow];
+    //[mainView addSubview:imageShow];
+    [mainView addSubview:mainImage];
     [mainView addSubview:btnLink];
     [overlay addSubview:mainView];
 
@@ -2069,10 +2115,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-        
+
         [timer invalidate];
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
-        
+
         [nav_ctrl performSelector:@selector(reset)];
         Register *reg = [Register new];
         [nav_ctrl pushViewController:reg animated:YES];

@@ -1746,7 +1746,7 @@ return customView;
         if ([histShowArrayPending count] > indexPath.row)
         {
             NSDictionary * dictRecord = [histShowArrayPending objectAtIndex:indexPath.row];
-            
+
             if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
             {
                 UILabel * amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
@@ -1755,7 +1755,7 @@ return customView;
                 [amount setFont:[UIFont fontWithName:@"Roboto-Medium" size:18]];
                 [amount setStyleClass:@"history_pending_transferamount"];
                 [amount setStyleClass:@"history_transferamount_neutral"];
-                [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]]];
 
                 UILabel * transferTypeLabel = [UILabel new];
                 [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
@@ -2479,7 +2479,7 @@ return customView;
                 }
 
                 if (  ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] && ![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"]) ||
-                     (([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
+                    ((([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && ![[dict valueForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]] ) || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
                        [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
                 {
                     [histShowArrayPending addObject:dict];

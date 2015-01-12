@@ -202,10 +202,10 @@ NSString *amnt;
 
 -(void)getMemIdFromPhoneNumber:(NSString*)phoneNumber
 {
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
-    requestmemid = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetMemberIdByUsername?userName=%@",ServerUrl,phoneNumber
-                                                                             ]]];
+    requestmemid = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetMemberIdByPhone?phoneNo=%@&accessToken=%@",ServerUrl,phoneNumber,[defaults valueForKey:@"OAuthToken"]]]];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestmemid delegate:self];
     if (!connection)
         NSLog(@"connect error");
