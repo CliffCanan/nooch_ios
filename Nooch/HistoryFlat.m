@@ -2,7 +2,7 @@
 //  Nooch
 //
 //  Created by crks on 10/3/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2015 Nooch. All rights reserved.
 
 #import "HistoryFlat.h"
 #import "Home.h"
@@ -1746,7 +1746,7 @@ return customView;
         if ([histShowArrayPending count] > indexPath.row)
         {
             NSDictionary * dictRecord = [histShowArrayPending objectAtIndex:indexPath.row];
-            
+
             if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
             {
                 UILabel * amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
@@ -1755,7 +1755,7 @@ return customView;
                 [amount setFont:[UIFont fontWithName:@"Roboto-Medium" size:18]];
                 [amount setStyleClass:@"history_pending_transferamount"];
                 [amount setStyleClass:@"history_transferamount_neutral"];
-                [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
+                [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]]];
 
                 UILabel * transferTypeLabel = [UILabel new];
                 [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
@@ -2071,6 +2071,8 @@ return customView;
         temp = [histShowArrayPending mutableCopy];
     }
     NSDictionary * dictRecord = [temp objectAtIndex:[self.list indexPathForCell:cell].row];
+
+    indexPathForDeletion = [NSIndexPath indexPathForRow:[self.list indexPathForCell:cell].row inSection:0];
 
     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
     {
@@ -2393,7 +2395,7 @@ return customView;
     [imageCache clearMemory];
     [imageCache clearDisk];
     [imageCache cleanDisk];
-    
+
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
     {
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
@@ -2408,7 +2410,7 @@ return customView;
         me = [core new];
         return;
     }
-    
+
     if ([tagName isEqualToString:@"csv"])
     {
         NSDictionary * dictResponse = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
@@ -2419,7 +2421,7 @@ return customView;
             [alert show];
         }
     }
-    
+
     /* else if ([tagName isEqualToString:@"histPending"])
     {
         [self.hud hide:YES];
@@ -2477,7 +2479,7 @@ return customView;
                 }
 
                 if (  ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] && ![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"]) ||
-                     (([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
+                    ((([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && ![[dict valueForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]] ) || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
                        [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
                 {
                     [histShowArrayPending addObject:dict];
@@ -2499,7 +2501,7 @@ return customView;
         [serveOBJ setTagName:@"time"];
         [serveOBJ GetServerCurrentTime];
     }
-    
+
     else if ([tagName isEqualToString:@"time"])
     {
         //ServerDate
@@ -2611,79 +2613,59 @@ return customView;
     else if ([tagName isEqualToString:@"reject"])
     {
         [self.hud hide:YES];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Request Rejected" message:@"No problem, you have rejected this request successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Request Rejected"
+                                                        message:@"No problem, you have rejected this request successfully."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
         [alert show];
+
         subTypestr = @"Pending";
         self.completed_selected = NO;
-        [histShowArrayCompleted removeAllObjects];
-        [histShowArrayPending removeAllObjects];
-        index = 1;
-        countRows = 0;
 
-        [self.list removeFromSuperview];
-        self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
-        [self.list setStyleId:@"history"];
-        [self.list setDataSource:self];
-        [self.list setDelegate:self];
-        [self.list setSectionHeaderHeight:0];
-        [self.view addSubview:self.list];
-        [self.list reloadData];
-        [self.view bringSubviewToFront:exportHistory];
-        [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
+        [self deleteTableRow:indexPathForDeletion];
     }
 
     else if ([tagName isEqualToString:@"CancelMoneyTransferToNonMemberForSender"])
     {
         [self.hud hide:YES];
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Transfer Cancelled" message:@"Aye aye. That transfer has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Transfer Cancelled"
+                                                        message:@"Aye aye. That transfer has been cancelled successfully."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
         [alert show];
-    
+
         subTypestr = @"Pending";
         self.completed_selected = NO;
-        [histShowArrayCompleted removeAllObjects];
-        [histShowArrayPending removeAllObjects];
-        index = 1;
-        countRows = 0;
-        [self.list removeFromSuperview];
-        self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
-        [self.list setStyleId:@"history"];
-        [self.list setDataSource:self];
-        [self.list setDelegate:self];
-        [self.list setSectionHeaderHeight:0];
-        [self.view addSubview:self.list];
-        [self.list reloadData];
-        [self.view bringSubviewToFront:exportHistory];
-        [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
+
+        [self deleteTableRow:indexPathForDeletion];
     }
 
     else if ([tagName isEqualToString:@"cancelRequestToExisting"] || [tagName isEqualToString:@"cancelRequestToNonNoochUser"])
     {
         [self.hud hide:YES];
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Request Cancelled" message:@"You got it. That request has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Request Cancelled"
+                                                        message:@"You got it. That request has been cancelled successfully."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
         [alert show];
 
         subTypestr = @"Pending";
         self.completed_selected = NO;
-        [histShowArrayCompleted removeAllObjects];
-        [histShowArrayPending removeAllObjects];
-        index = 1;
-        countRows = 0;
-        [self.list removeFromSuperview];
-        self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
-        [self.list setStyleId:@"history"];
-        [self.list setDataSource:self];
-        [self.list setDelegate:self];
-        [self.list setSectionHeaderHeight:0];
-        [self.view addSubview:self.list];
-        [self.list reloadData];
-        [self.view bringSubviewToFront:exportHistory];
-        [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
+
+        [self deleteTableRow:indexPathForDeletion];
     }
 
     else if ([tagName isEqualToString:@"remind"])
     {
-        NSLog(@"Remind response was: %@",result);
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Reminder Sent Successfully" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        // NSLog(@"Remind response was: %@",result);
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Reminder Sent Successfully"
+                                                        message:nil
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
         [alert show];
     }
 
@@ -2692,12 +2674,16 @@ return customView;
 #pragma mark Exporting History
 - (IBAction)ExportHistory:(id)sender
 {
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Export Transfer Data" message:@"Where should we email your data?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil];
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Export Transfer Data"
+                                                     message:@"Where should we email your data?"
+                                                    delegate:self
+                                           cancelButtonTitle:@"Cancel"
+                                           otherButtonTitles:@"Send", nil];
     [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
     alert.tag = 11;
 
     UITextField *textField = [alert textFieldAtIndex:0];
-    textField.text= [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
+    textField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
     [alert show];
 }
 
@@ -2823,6 +2809,13 @@ return customView;
         [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
         [self presentViewController:mailComposer animated:YES completion:nil];
     }
+}
+
+-(void)deleteTableRow:(NSIndexPath*)rowNumber
+{
+    int rowToRemove = rowNumber.row;
+    [histShowArrayPending removeObjectAtIndex:rowToRemove];
+    [self.list deleteRowsAtIndexPaths:@[rowNumber] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error

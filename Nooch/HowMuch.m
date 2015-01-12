@@ -2,7 +2,7 @@
 //  Nooch
 //
 //  Created by crks on 9/26/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2015 Nooch. All rights reserved.
 
 #import "HowMuch.h"
 #import "TransferPIN.h"
@@ -76,15 +76,15 @@
     // Do any additional setup after loading the view from its nib.
     [self.navigationController setNavigationBarHidden:NO];
     self.navigationController.navigationBar.topItem.title = @"";
-    
+
     NSShadow * shadowNavText = [[NSShadow alloc] init];
     shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .26);
     shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
-    
+
     NSDictionary * titleAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
                                        NSShadowAttributeName: shadowNavText};
     [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
-    
+
     [self.navigationItem setTitle:@"How Much?"];
 
     UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -114,7 +114,7 @@
     self.back.layer.cornerRadius = 4;
     [self.back setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:self.back];
-    
+
     self.recip_back = [UILabel new];
     [self.recip_back setStyleClass:@"barbackground"];
     [self.recip_back setStyleClass:@"barbackground_gray"];
@@ -143,9 +143,13 @@
         {
             to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"firstName"]] attributes:textAttributes];
         }
-        else
+        else if ([self.receiver objectForKey:@"email"])
         {
             to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"email"]] attributes:textAttributes];
+        }
+        else if ([self.receiver objectForKey:@"phone"])
+        {
+            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"phone"]] attributes:textAttributes];
         }
     }
     else
@@ -178,8 +182,8 @@
         add.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [self.view addSubview:add];
     }
-    
-    UIImageView *user_pic = [UIImageView new];
+
+    UIImageView * user_pic = [UIImageView new];
     [user_pic setFrame:CGRectMake(18, 48, 84, 84)];
     user_pic.layer.borderColor = [Helpers hexColor:@"939598"].CGColor;
     user_pic.layer.borderWidth = 1;
@@ -237,7 +241,7 @@
     [self.camera setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-camera"] forState:UIControlStateNormal];
     [self.camera setTitleColor:kNoochGrayLight forState:UIControlStateNormal];
 
-    UILabel *glyph_plus = [UILabel new];
+    UILabel * glyph_plus = [UILabel new];
     [glyph_plus setFont:[UIFont fontWithName:@"FontAwesome" size:12]];
     [glyph_plus setFrame:CGRectMake(23, -4, 15, 15)];
     [glyph_plus setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus"]];
@@ -293,7 +297,7 @@
     [self.reset_type setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"] forState:UIControlStateNormal];
     [self.reset_type setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.25) forState:UIControlStateNormal];
     self.reset_type.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    
+
     if ([UIScreen mainScreen].bounds.size.height > 500) {
         [self.reset_type setStyleId:@"cancel_hidden"];
     } 

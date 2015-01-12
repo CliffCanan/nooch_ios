@@ -1,7 +1,7 @@
 //  privacy.m
 //  Nooch
 //
-//  Copyright 2014 Nooch Inc. All rights reserved.
+//  Copyright (c) 2015 Nooch Inc. All rights reserved.
 
 #import "privacy.h"
 #import "Home.h"

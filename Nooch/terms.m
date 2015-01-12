@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by administrator on 6/05/14.
-//  Copyright 2014 Nooch Inc. All rights reserved.
+//  Copyright (c) 2015 Nooch Inc. All rights reserved.
 //
 
 #import "terms.h"

@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by crks on 9/25/13.
-//  Copyright (c) 2014 Nooch Inc. All rights reserved.
+//  Copyright (c) 2015 Nooch Inc. All rights reserved.
 
 #import <UIKit/UIKit.h>
 #import "Helpers.h"
@@ -46,7 +46,7 @@ NSUserDefaults *user;
     NSTimer*timerHome;
     NSMutableArray *additions;
     NSMutableArray *favorites;
-    NSString*emailID;
+    NSString * emailID, * firstNameAB, * lastNameAB;
     UIButton *top_button;
 }
 -(void)hide;

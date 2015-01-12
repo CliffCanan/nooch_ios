@@ -2,7 +2,7 @@
 //  Nooch
 //
 //  Created by crks on 10/7/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2015 Nooch. All rights reserved.
 
 #import "Statistics.h"
 #import "Home.h"
@@ -23,6 +23,7 @@
 @property(nonatomic,retain) UIButton * exportHistory;
 @property(nonatomic,strong) MBProgressHUD *hud;
 @property(nonatomic,strong) PieLayer * pieLayer;
+@property(nonatomic,strong) UIImageView * emptyPic;
 @end
 
 @implementation Statistics
@@ -47,7 +48,7 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    
+    [super viewDidAppear:animated];
 }
 
 - (void)viewDidLoad
@@ -63,7 +64,7 @@
     [self.view addSubview:backgroundImage];
     
     dictAllStats = [[NSMutableDictionary alloc]init];
-    
+
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
@@ -106,7 +107,7 @@
     // Panel #3: Top Friends Stats
     self.back_donation = [UIView new];
     [self.back_donation setBackgroundColor:[UIColor whiteColor]];
-    [self.back_donation setFrame:CGRectMake(650, 10, 300, 400)];
+    [self.back_donation setFrame:CGRectMake(650, 10, 300, 470)];
     [self.back_donation setStyleClass:@"raised_view"];
     [self.view addSubview:self.back_donation];
 
@@ -289,7 +290,7 @@
     [self.profile_stats setDelegate:self];
     [self.profile_stats setDataSource:self];
     [self.profile_stats setStyleClass:@"stats"];
-    //[self.profile_stats setUserInteractionEnabled:NO];
+    [self.profile_stats setScrollEnabled:NO];
     [self.back_profile addSubview:self.profile_stats];
     [self.profile_stats reloadData];
 
@@ -306,6 +307,7 @@
     [self.top_friends_stats setDataSource:self];
     [self.top_friends_stats setStyleClass:@"stats_top_friends"];
     [self.top_friends_stats setUserInteractionEnabled:YES];
+    [self.top_friends_stats setScrollEnabled:NO];
     [self.back_donation addSubview:self.top_friends_stats];
     [self.top_friends_stats reloadData];
 
@@ -334,6 +336,7 @@
     
     if ([[UIScreen mainScreen] bounds].size.height == 480)
     {
+        [self.top_friends_stats setScrollEnabled:YES];
         UIScrollView * scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
                                                                               [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
         [scroll setDelegate:self];
@@ -637,6 +640,14 @@
     return 25;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView == self.top_friends_stats)
+    {
+        return 53;
+    }
+    return 46;
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == self.profile_stats) {
@@ -666,8 +677,9 @@
 
 -(void)goToReferFriend
 {
+    sentFromStatsScrn = true;
     SendInvite * referFriendScreen = [SendInvite new];
-    [self.navigationController pushViewController:referFriendScreen animated:NO];
+    [self.navigationController pushViewController:referFriendScreen animated:YES];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -753,15 +765,15 @@
             [goToRefer setText:@"   Refer More Friends"];
             [goToRefer setTextAlignment:NSTextAlignmentCenter];
 
-            UILabel * goToRefer_glyph = [[UILabel alloc] initWithFrame:CGRectMake(6, 2, 25, 38)];
+            UILabel * goToRefer_glyph = [[UILabel alloc] initWithFrame:CGRectMake(4, 2, 22, 38)];
             goToRefer_glyph.textColor = kNoochGreen;
-            [goToRefer_glyph setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+            [goToRefer_glyph setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
             [goToRefer_glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"]];
             [goToRefer addSubview:goToRefer_glyph];
 
-            UILabel * goToRefer_glyph2 = [[UILabel alloc] initWithFrame:CGRectMake(186, 2, 24, 40)];
+            UILabel * goToRefer_glyph2 = [[UILabel alloc] initWithFrame:CGRectMake(188, 2, 24, 40)];
             goToRefer_glyph2.textColor = kNoochGreen;
-            [goToRefer_glyph2 setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+            [goToRefer_glyph2 setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
             [goToRefer_glyph2 setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-long-arrow-right"]];
             [goToRefer addSubview:goToRefer_glyph2];
 
@@ -876,6 +888,8 @@
             [goToHowMuch setAlpha:1];
             [goToHowMuch setTag:indexPath.row];
 
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+
             if (indexPath.row == 0)
             {
                 NSDictionary * favorite = [favorites objectAtIndex:0];
@@ -887,6 +901,7 @@
                 colorIndicator.backgroundColor = kNoochGreen;
 
                 [cell.contentView addSubview:goToHowMuch];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
             }
             else if (fav_count > 1 && indexPath.row == 1)
             {
@@ -899,6 +914,7 @@
                 colorIndicator.backgroundColor = kNoochPurple;
 
                 [cell.contentView addSubview:goToHowMuch];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
             }
             else if (fav_count > 2 && indexPath.row == 2)
             {
@@ -911,6 +927,7 @@
                 colorIndicator.backgroundColor = kNoochRed;
 
                 [cell.contentView addSubview:goToHowMuch];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
             }
             else if (fav_count > 3 && indexPath.row == 3)
             {
@@ -923,6 +940,7 @@
                 colorIndicator.backgroundColor = kNoochBlue;
 
                 [cell.contentView addSubview:goToHowMuch];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
             }
             else if (fav_count > 4 && indexPath.row == 4)
             {
@@ -935,6 +953,7 @@
                 colorIndicator.backgroundColor = kNoochGrayLight;
 
                 [cell.contentView addSubview:goToHowMuch];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
             }
             [goToHowMuch addTarget:self action:@selector(goToHowMuch:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -943,21 +962,28 @@
             [cell.contentView addSubview:name];
             [cell.contentView addSubview:frequency];
             [cell.contentView addSubview:colorIndicator];
-            [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
         }
         else if (fav_count == 0)
         {
             [self.top_friends_stats setStyleClass:@"stats_top_friends_empty"];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 
             if (indexPath.row == 0)
             {
                 UILabel * emptyText = nil;
-                emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 280, 120)];
-                [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
+                emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 280, 66)];
+                [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:18]];
                 [emptyText setNumberOfLines:3];
                 emptyText.text = @"Once you make or receive some payments, your top friends will show up here.";
                 [emptyText setTextAlignment:NSTextAlignmentCenter];
                 [cell.contentView addSubview:emptyText];
+            }
+            else if (indexPath.row == 1)
+            {
+                self.emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 250, 254)];
+                self.emptyPic.alpha = 0;
+                [self.emptyPic setImage:[UIImage imageNamed:@"Stats_Circled"]];
+                [cell.contentView  addSubview: self.emptyPic];
             }
         }
     }
@@ -979,7 +1005,7 @@
 
     else if (tableView == self.top_friends_stats)
     {
-        if (indexPath.row == 0)
+        if (fav_count > 0 && indexPath.row == 0)
         {
             NSDictionary * favorite = [favorites objectAtIndex:0];
             //[imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]] placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
@@ -1172,10 +1198,17 @@
         tap.numberOfTouchesRequired = 1;
         [transparentOverlay addGestureRecognizer:tap];
     }
+    else
+    {
+        [self.top_friends_stats setScrollEnabled:NO];
+        [self.back_donation setFrame:CGRectMake(650, 10, 300, 460)];
+    }
 }
 
 -(void)animatePieChart
 {
+    self.emptyPic.alpha = 1;
+    [self.emptyPic setStyleClass:@"animate_bubble"];
     [self.pieLayer setStartAngle:0 endAngle:360 animated:YES];
 }
 
@@ -1295,7 +1328,7 @@
             pieGraphMiddleOverlay.backgroundColor = [UIColor whiteColor];
             break;
     }
-    [pieGraphMiddleOverlay setAlpha:.14];
+    [pieGraphMiddleOverlay setAlpha:.18];
     [self.view bringSubviewToFront:topFriendsPieTotalLabel];
     [self.view bringSubviewToFront:topFriendsTotalPayments];
 }

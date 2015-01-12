@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by administrator on 12/05/13.
-//  Copyright 2014 Nooch Inc. All rights reserved.
+//  Copyright (c) 2015 Nooch Inc. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

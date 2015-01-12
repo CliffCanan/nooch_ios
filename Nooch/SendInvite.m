@@ -2,7 +2,7 @@
 //  Nooch
 //
 //  Created by crks on 10/8/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2015 Nooch. All rights reserved.
 
 #import "SendInvite.h"
 #import <AddressBook/AddressBook.h>
@@ -46,13 +46,14 @@
     [self.hud hide:YES];
     [super viewDidDisappear:animated];
 }
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
     [self.navigationItem setHidesBackButton:YES];
-    
+
+    if (!sentFromStatsScrn)
+    {
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
@@ -61,10 +62,26 @@
     hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
-
+    }
+    else
+    {
+        UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [back_button setStyleId:@"navbar_back"];
+        [back_button addTarget:self action:@selector(backToStats) forControlEvents:UIControlEventTouchUpInside];
+        [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
+        [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
+        back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        
+        UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+        [self.navigationItem setLeftBarButtonItem:menu];
+    }
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     [self.navigationItem setTitle:@"Refer a Friend"];
+
+    UIView *backgroundWhiteLayer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
+    backgroundWhiteLayer.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:backgroundWhiteLayer];
 
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
     backgroundImage.alpha = .3;
@@ -376,6 +393,11 @@
                                   otherButtonTitles:nil];
         [alertView show];
     }
+}
+
+-(void)backToStats
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)setNavBarColor:(UIColor *)navBarColor titleColor:(UIColor *)titleColor {

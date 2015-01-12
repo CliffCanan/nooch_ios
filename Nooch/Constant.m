@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by administrator on 31/05/11.
-//  Copyright 2014 Nooch Inc. All rights reserved.
+//  Copyright (c) 2015 Nooch Inc. All rights reserved.
 //
 
 //NSString * const MyUrl = @"http://122.165.250.6:9080/NoochService.svc";

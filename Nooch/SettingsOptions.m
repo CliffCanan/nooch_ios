@@ -2,7 +2,7 @@
 //  Nooch
 //
 //  Created by crks on 10/7/13.
-//  Copyright (c) 2014 Nooch Inc. All rights reserved.
+//  Copyright (c) 2015 Nooch Inc. All rights reserved.
 
 #import "SettingsOptions.h"
 #import "Home.h"
@@ -312,6 +312,7 @@
 - (void)profile
 {
     isProfileOpenFromSideBar = NO;
+    sentFromHomeScrn = NO;
     ProfileInfo * info = [ProfileInfo new];
     [self performSelector:@selector(navigate_to:) withObject:info afterDelay:0.01];
 }
@@ -385,6 +386,7 @@
                 Register *reg = [Register new];
                 [self.navigationController pushViewController:reg animated:YES];
                 me = [core new];
+                [ARProfileManager clearProfile];
             }
         }
     }
@@ -482,6 +484,9 @@
             bank_image.clipsToBounds = YES;
             [bank_name setText:[dictResponse valueForKey:@"BankName"]];
             [lastFour_label setText:[NSString stringWithFormat:@"**** **** **** %@",[dictResponse valueForKey:@"AccountName"]  ]];
+
+            [ARProfileManager registerString:@"Bank_Name" withValue:[dictResponse valueForKey:@"BankName"]];
+            [ARProfileManager registerString:@"Bank_Logo" withValue:[dictResponse valueForKey:[dictResponse valueForKey:@"BankImageURL"]]];
         }
         else
         {
@@ -496,6 +501,9 @@
                 [bank_image removeFromSuperview];;
                 [unlink_account removeFromSuperview];
             }
+
+            [ARProfileManager clearVariable:@"Bank_Name"];
+            [ARProfileManager clearVariable:@"Bank_Logo"];
         }
     }
 }

@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by Preston Hults on 2/6/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2015 Nooch. All rights reserved.
 //
 
 #import "serve.h"
@@ -195,6 +195,17 @@ NSString *amnt;
     self.responseData = [[NSMutableData alloc] init];
     requestmemid = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetMemberIdByUsername?userName=%@",ServerUrl,username
                                                                            ]]];
+    NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestmemid delegate:self];
+    if (!connection)
+        NSLog(@"connect error");
+}
+
+-(void)getMemIdFromPhoneNumber:(NSString*)phoneNumber
+{
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    self.responseData = [[NSMutableData alloc] init];
+    requestmemid = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetMemberIdByPhone?phoneNo=%@&accessToken=%@",ServerUrl,phoneNumber,[defaults valueForKey:@"OAuthToken"]]]];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestmemid delegate:self];
     if (!connection)
         NSLog(@"connect error");

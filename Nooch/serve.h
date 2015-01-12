@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by Preston Hults on 2/6/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2015 Nooch. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -52,6 +52,7 @@
 -(void)getEncrypt:(NSString *)input;
 -(void)getDetails:(NSString*)username;
 -(void)getMemIdFromuUsername:(NSString*)username;
+-(void)getMemIdFromPhoneNumber:(NSString*)phoneNumber;
 -(void)getMemberIds:(NSArray*)input;
 -(void)getNoteSettings;
 -(void)getRecents;

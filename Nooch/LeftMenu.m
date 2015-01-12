@@ -2,7 +2,7 @@
 //  Nooch
 //
 //  Created by crks on 10/3/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2015 Nooch. All rights reserved.
 
 #import "LeftMenu.h"
 #import <QuartzCore/QuartzCore.h>
@@ -117,21 +117,17 @@
         [self.view addSubview:settings];
     }
 
-    
     UIImageView * logo = [UIImageView new];
-    if ([[UIScreen mainScreen] bounds].size.height < 520) {
-        [logo setStyleId:@"nooch_whitelogo_4"];
-    } 
-    else {
-        [logo setStyleId:@"nooch_whitelogo"];
-    }
-    [self.view addSubview:logo];
-    
     UILabel * version = [UILabel new];
-    if ([[UIScreen mainScreen] bounds].size.height < 520) {
+
+    if ([[UIScreen mainScreen] bounds].size.height < 500)
+    {
+        [logo setStyleId:@"nooch_whitelogo_4"];
         [version setStyleId:@"version_label_4"];
     }
-    else {
+    else
+    {
+        [logo setStyleId:@"nooch_whitelogo"];
         [version setStyleId:@"version_label"];
     }
 
@@ -142,6 +138,8 @@
 
     version.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]] attributes:textShadow];
     [self.view addSubview:version];
+    [self.view addSubview:logo];
+
 
     NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
     self.glyph_noBank = [UILabel new];
@@ -234,8 +232,8 @@
 
 -(void) go_profile
 {
-    isProfileOpenFromSideBar=YES;
-    ProfileInfo *prof = [ProfileInfo new];
+    isProfileOpenFromSideBar = YES;
+    ProfileInfo * prof = [ProfileInfo new];
     [nav_ctrl pushViewController:prof animated:YES];
     [self.slidingViewController resetTopView];
 }
@@ -247,11 +245,13 @@
     [self.slidingViewController resetTopView];
 }
 
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 3;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
     return 23;
 }
 
@@ -455,6 +455,7 @@
     else if (indexPath.section == 1)
     {
         if (indexPath.row == 0) {
+            sentFromStatsScrn = false;
             SendInvite *inv = [SendInvite new];
             [nav_ctrl pushViewController:inv animated:NO];
             [self.slidingViewController resetTopView];

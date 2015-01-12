@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by crks on 10/7/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2015 Nooch. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -13,12 +13,10 @@
 #import "MBProgressHUD.h"
 #import "SpinKit/RTSpinKitView.h"
 
-BOOL isProfileOpenFromSideBar;
+BOOL isProfileOpenFromSideBar,sentFromHomeScrn;
 @interface ProfileInfo : GAITrackedViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UIScrollViewDelegate,MBProgressHUDDelegate,UIAlertViewDelegate>
 {
-    
-    int down,option,rowHeight;
-    UIActivityIndicatorView*spinner;
+    int down,option,rowHeight,numberOfRowsToDisplay,heightOfTopSection;
     NSString *recoverMail;
     NSString *timezoneStandard;
     NSString*getEncryptedPasswordValue;
@@ -27,18 +25,18 @@ BOOL isProfileOpenFromSideBar;
     NSMutableDictionary*dictProfileinfo;
     
     NSDictionary*GMTTimezonesDictionary;
-   
-    BOOL isPhotoUpdate;
-    UITextView *memSincelbl;
-    UITextView *dateText;
+    UIScrollView *scrollView;
+    BOOL isPhotoUpdate,emailVerifyRowIsShowing,smsVerifyRowIsShowing;
     NSRange start,end;
     NSString*newString;
-    NSString *betweenBraces;
+    NSString*betweenBraces;
     NSString*strPhoneNumber;
     UIView*navBar;
     UILabel*lbl;
     UIButton*crossbtn;
     NSMutableDictionary*dictSavedInfo;
+    UIView * shadowUnder;
+    UITapGestureRecognizer * tapGesture;
 }
 
 @end

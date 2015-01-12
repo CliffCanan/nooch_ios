@@ -2,7 +2,7 @@
 //  Nooch
 //
 //  Created by crks on 10/1/13.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2015 Nooch. All rights reserved.
 
 #import "ReferralCode.h"
 #import "Home.h"
@@ -282,8 +282,11 @@
         [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"last_name"] forKey:@"last_name"];
         [[NSUserDefaults standardUserDefaults] setObject:[[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]] forKey:@"password"];
 
-        if ([self.user objectForKey:@"facebook_id"]) [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"facebook_id"] forKey:@"facebook_id"];
-
+        if ([self.user objectForKey:@"facebook_id"])
+        {
+            [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"facebook_id"] forKey:@"facebook_id"];
+        }
+    
         if (![[loginResult objectForKey:@"Status"] isKindOfClass:[NSNull class]] &&
               [loginResult objectForKey:@"Status"] != NULL)
         {
@@ -304,6 +307,7 @@
                 invCode:[self.code_field.text length] == 0 ? refCodeFromArtisan : self.code_field.text
                    fbId:[self.user objectForKey:@"facebook_id"] ? [self.user objectForKey:@"facebook_id"]: @"" ];
 
+        //NSLog(@"User Fields to be sent to server are: %@",create);
         self.code_field.text = @"";
     }
     else if ([tagName isEqualToString:@"create_account"])

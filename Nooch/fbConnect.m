@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by Vicky Mathneja on 13/11/14.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2015 Nooch. All rights reserved.
 //
 
 #import "fbConnect.h"
@@ -258,6 +258,8 @@
 
     [self.facebook removeTarget:self action:@selector(disconnect_fb) forControlEvents:UIControlEventTouchUpInside];
     [self.facebook addTarget:self action:@selector(toggleFacebookLogin:) forControlEvents:UIControlEventTouchUpInside];
+
+    [ARProfileManager clearVariable:@"UserFacebook"];
 }
 
 // Facebook: Show the user the logged-in UI
@@ -305,6 +307,8 @@
             [storeFbID setDelegate:self];
             [storeFbID setTagName:@"fb_YES"];
             [storeFbID storeFB:[result objectForKey:@"id"] isConnect:@"YES"];
+
+            [ARProfileManager setUserFacebook:[result objectForKey:@"id"]];
         }
         else
         {
@@ -319,7 +323,7 @@
     [[[UIAlertView alloc] initWithTitle:title
                                 message:text
                                delegate:self
-                      cancelButtonTitle:@"OK!"
+                      cancelButtonTitle:@"OK"
                       otherButtonTitles:nil] show];
 }
 

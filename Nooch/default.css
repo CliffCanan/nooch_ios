@@ -86,7 +86,7 @@ view {
 	
 .light_gray_text { color    : #bcbec0; }
 .reallyLight_gray { color   : rgba(251,253,254,.98); font-size: 21px;}
-.disabled_gray {color       : rgba(210,210,210,.88);}
+.disabled_gray {color       : rgba(210,210,210,.88) !important;}
 .red_text { color           : #c72127; }
 .orange_text { color		: #cc9933; }
 .yellow_text { color		: #cccc33; }
@@ -321,7 +321,7 @@ view {
     border-radius		: 5px;
     font-family			: "Roboto";
     font-weight         : light;
-    font-size			: 21px;
+    font-size			: 20px;
     border				: 1px solid #29A1DE;
 }
 .button_blue_closeLightbox {
@@ -372,7 +372,7 @@ view {
     border-radius		: 5px;
     font-family			: "Roboto";
     font-weight         : light;
-    font-size			: 21px;
+    font-size			: 20px;
     background-image	: linear-gradient(#7fd034, #6ab029);
     border				: 1px solid #66AE3C;
 }
@@ -385,19 +385,19 @@ view {
     border-radius		: 5px;
     font-family			: "Roboto";
     font-weight         : light;
-    font-size			: 21px;
+    font-size			: 20px;
     background-image	: linear-gradient(#7fd034, #6ab029);
     border				: 1px solid #66AE3C;
 }
 .button_green_welcome:normal {
-    left                : 10px;
-    width				: 280px;
-    height				: 45px;
+    left                : 20px;
+    width				: 260px;
+    height				: 44px;
     color 				: white;
     border-radius		: 5px;
     font-family			: "Roboto";
     font-weight         : light;
-    font-size			: 21px;
+    font-size			: 20px;
     background-image	: linear-gradient(#7fd034, #6ab029);
     border				: 1px solid #66AE3C;
 }
@@ -481,9 +481,9 @@ view {
 }
 
 .notVerifiedLabel {
-    color 				: #b90e0a;
+    color 				: #D2232A;
     font-family			: "Roboto";
-    font-weight         : regular;
+    font-weight         : medium;
     font-size			: 15px;
 }
 
@@ -660,29 +660,18 @@ view {
     text-align       	: left;
     color 				: #41ABE1;
 }
+.tableViewCell_Profile_leftSide {
+    left                : 10px;
+    width				: 96px;
+    height				: 40px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 17px;
+    text-align       	: right;
+    color 				: #41ABE1;
+}
 .table_txtlbl_indented {
     left    : 32px;
-}
-.memtable_view_cell_textlabel_1 {
-    left            : 90px;
-    top             : 8px;
-    width			: 200px;
-    height			: 38px;
-    font-family		: "Roboto";
-    font-size		: 16px;
-    text-align     	: center;
-    color 			: #313233;
-}
-#profile_DateText {
-    left            : 90px;
-    top             : 26px;
-    width			: 200px;
-    height			: 32px;
-    font-family		: "Roboto";
-    font-weight     : light;
-    font-size		: 15px;
-    text-align     	: center;
-    color 			: #313233;
 }
 .memtable_view_cell_textlabel_1_64 {
     left            : 90px;
@@ -713,6 +702,16 @@ view {
     left			: 95px;
     height			: 40px;
     text-align		: right;
+}
+.tableViewCell_Profile_rightSide {
+    font-family		: "Roboto";
+    font-weight		: regular;
+    font-size		: 17px;
+    color 			: #313233;
+    width			: 200px;
+    left			: 113px;
+    height			: 40px;
+    text-align		: left;
 }
 .table_view_cell_detailtext_smallerText {
     left            : 129;
@@ -876,13 +875,10 @@ view {
     opacity : 0.6;
 }
 #profileTopSectionBg {
-    background-color: rgba(63,171,225,.4);
-    box-shadow: 0px 1px 2px rgba(88,90,92,.5);
+    box-shadow: 0px 1px 2px rgba(88,90,92,.25);
 }
 #profileTopSectionBg_susp {
-    background-color: #D61915;
-    opacity: .6;
-    box-shadow: 0px 1px 2px rgba(89, 10, 9, 0.4);
+    box-shadow: 0px 1px 2px rgba(89, 10, 9, 0.3);
 }
 .alertContainer {
     left: -1px;
@@ -936,7 +932,6 @@ view {
     text-align     	: center;
     color 			: #ffffff;
 }
-
 	
 /*******************************************
 ********  	PRE-LOGIN FLOW	     ********
@@ -1061,6 +1056,11 @@ table-view#select_recipientwithoutSeperator {
     font-weight: Regular;
     font-size: 19px;
     text-align: left;
+}
+
+.select_recipient_nameWithPhoneInCell {
+    height: 50px;
+    top: 0px;
 }
 
 .select_recipient_pending_name {
@@ -2143,10 +2143,10 @@ segmented-control#donatededication {
     box-shadow		: 0px 2px 6px rgba(29,30,31,.75);
 }
 #lside_firstname {
+    left			: 92px;
+    top				: 25px;
     width			: 170px;
     height			: 30px;
-    top				: 25px;
-    left			: 92px;
     color			: white;
     font-family		: "Roboto";
     font-size		: 26px;
@@ -2154,13 +2154,13 @@ segmented-control#donatededication {
     text-align		: left;
 }
 #lside_lastName {
+    left			: 92px;
+    top				: 55px;
     width			: 150px;
     height			: 26px;
-    top				: 55px;
-    left			: 92px;
     color			: white;
     font-family		: "Roboto";
-    font-size		: 20px;
+    font-size		: 21px;
     font-weight		: light;
     text-align		: left;
 }
@@ -3156,7 +3156,7 @@ table-view.stats_top_friends {
     width			: 300px;
     height			: 290px;
     background-color: white;
-    row-height		: 52px;
+    row-height		: 53px;
     separator-style : single-line;
     separator-color : rgba(188,190,192,.35);
 }
@@ -3164,9 +3164,9 @@ table-view.stats_top_friends_empty {
     left			: 0px;
     top				: 80px;
     width			: 300px;
-    height          : 347px;
+    height          : 366px;
     background-color: white;
-    row-height		: 68px;
+    row-height		: 72px;
     separator-style : none;
 }
 .stats_header {

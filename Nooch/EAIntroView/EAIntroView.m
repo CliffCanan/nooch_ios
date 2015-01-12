@@ -134,7 +134,7 @@
 }
 
 - (void)skipIntroduction {
-    [self hideWithFadeOutDuration:0.3];
+    [self hideWithFadeOutDuration:0.9];
 }
 
 #pragma mark - Properties
@@ -659,7 +659,7 @@ float easeOutValue(float value) {
 
 - (void)hideWithFadeOutDuration:(CGFloat)duration {
     [UIView animateWithDuration:duration animations:^{
-        self.alpha = 0;
+        self.alpha = .01;
     } completion:^(BOOL finished){
 		[self finishIntroductionAndRemoveSelf];
 	}];

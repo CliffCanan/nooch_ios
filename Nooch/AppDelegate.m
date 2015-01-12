@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by Preston Hults on 9/7/12.
-//  Copyright (c) 2014 Nooch. All rights reserved.
+//  Copyright (c) 2015 Nooch. All rights reserved.
 //
 
 #import "AppDelegate.h"
@@ -43,19 +43,19 @@ bool modal;
     internetReach = [Reachability reachabilityForInternetConnection];
     [internetReach startNotifier];
 
-    //Urban Airship 5+
+/*     //Urban Airship 5+
     UAConfig *config = [UAConfig defaultConfig];
     // Call takeOff (which creates the UAirship singleton)
     [UAirship takeOff:config];
     [UAPush shared].userNotificationTypes = (UIUserNotificationTypeAlert |
                                              UIUserNotificationTypeBadge |
                                              UIUserNotificationTypeSound);
-    //[UAPush shared].userPushNotificationsEnabled = YES; (This line triggers asking permission for Push Notifications... moved to Profile.m screen for Nooch)
+    //[UAPush shared].userPushNotificationsEnabled = YES; (This line triggers asking permission for Push Notifications... moved to Left Menu screen for Nooch)
     // Set the icon badge to zero on startup (optional)
     [[UAPush shared] resetBadge];
 
     // PUSH NOTIFICATION REGISTRATION
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+   if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
     {
         // Register for push in iOS 8.
         [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
@@ -65,7 +65,39 @@ bool modal;
     {
         // Register for push in iOS 7 and under.
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)];
-    }
+    } */
+
+   /* self.gameThrive = [[GameThrive alloc] initWithLaunchOptions:launchOptions handleNotification:^(NSString* message, NSDictionary* additionalData, BOOL isActive) {
+        UIAlertView* alertView;
+        NSLog(@"APP DEL - GameThrieve --> ADDITIONALDATA: %@", additionalData);
+        if (additionalData) {
+            // Append AdditionalData at the end of the message
+            NSString * displayMessage = [NSString stringWithFormat:@"NotificationMessage:%@", message];
+            NSString * messageTitle;
+            if (additionalData[@"discount"])
+                messageTitle = additionalData[@"discount"];
+            else if (additionalData[@"bonusCredits"])
+                messageTitle = additionalData[@"bonusCredits"];
+            else if (additionalData[@"actionSelected"])
+                messageTitle = [NSString stringWithFormat:@"Pressed ButtonId:%@", additionalData[@"actionSelected"]];
+            alertView = [[UIAlertView alloc] initWithTitle:messageTitle
+                                                   message:displayMessage
+                                                  delegate:self
+                                         cancelButtonTitle:@"Close"
+                                         otherButtonTitles:nil, nil];
+        }
+        // If a push notification is received when the app is being used it does not go to the notifiction center so display in your app.
+        if (alertView == nil && isActive) {
+            alertView = [[UIAlertView alloc] initWithTitle:@"GameThrive Message"
+                                                   message:message
+                                                  delegate:self
+                                         cancelButtonTitle:@"Close"
+                                         otherButtonTitles:nil, nil];
+        }
+        // Highly recommend adding game logic around this so the user is not interrupted during gameplay.
+        if (alertView != nil)
+            [alertView show];
+    }];*/
 
     //Google Analytics
     [GAI sharedInstance].dispatchInterval = 22;
@@ -103,6 +135,13 @@ bool modal;
     [ARPowerHookManager registerHookWithId:@"versionNum" friendlyName:@"Most Recent Version Number" defaultValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
     [ARPowerHookManager registerHookWithId:@"homeBtnClr" friendlyName:@"Home Button Color" defaultValue:@"green"];
     [ARPowerHookManager registerHookWithId:@"settingsCogIconPos" friendlyName:@"Settings Cog Icon Position" defaultValue:@"bottomBar"];
+
+    [ARPowerHookManager registerHookWithId:@"NV_HD" friendlyName:@"New Version Alert Header Txt" defaultValue:@"300"];
+    [ARPowerHookManager registerHookWithId:@"NV_BODY" friendlyName:@"New Version Alert Body Txt" defaultValue:@"300"];
+    [ARPowerHookManager registerHookWithId:@"NV_IMG" friendlyName:@"New Version Alert Image URL" defaultValue:@"https://www.nooch.com/wp-content/uploads/2014/12/ReferralCode_NOCASH.gif"];
+    [ARPowerHookManager registerHookWithId:@"NV_IMG_W" friendlyName:@"New Version Alert Img Width" defaultValue:@"200"];
+    [ARPowerHookManager registerHookWithId:@"NV_IMG_H" friendlyName:@"New Version Alert Img Height" defaultValue:@"170"];
+    [ARPowerHookManager registerHookWithId:@"NV_IMG" friendlyName:@"New Version Alert Image URL" defaultValue:@"https://www.nooch.com/wp-content/uploads/2014/12/ReferralCode_NOCASH.gif"];
 
     [ARPowerHookManager registerHookWithId:@"transLimit" friendlyName:@"Transfer Limit" defaultValue:@"300"];
 
@@ -299,7 +338,6 @@ void exceptionHandler(NSException *exception){
         {
             // Success! Now set the facebook_id to be the fb_id that was just returned
             [[NSUserDefaults standardUserDefaults] setObject:[result objectForKey:@"id"] forKey:@"facebook_id"];
-            NSLog(@"App Del --> FB id is %@",[result objectForKey:@"id"]);
         }
         else
         {
@@ -314,7 +352,7 @@ void exceptionHandler(NSException *exception){
     [[[UIAlertView alloc] initWithTitle:title
                                 message:text
                                delegate:self
-                      cancelButtonTitle:@"OK!"
+                      cancelButtonTitle:@"OK"
                       otherButtonTitles:nil] show];
 }
 
@@ -397,7 +435,7 @@ void exceptionHandler(NSException *exception){
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation
 {
-    NSLog(@"%@",url);
+    NSLog(@"URL is: %@",url);
     if ([[url absoluteString] rangeOfString:@"facebook"].location!=NSNotFound) {
         return [FBAppCall handleOpenURL:url
                       sourceApplication:sourceApplication

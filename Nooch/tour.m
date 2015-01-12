@@ -3,7 +3,7 @@
 //  Nooch
 //
 //  Created by Cliff Canan on 9/17/14.
-//  Copyright (c) 2014 Nooch Inc. All rights reserved.
+//  Copyright (c) 2015 Nooch Inc. All rights reserved.
 //
 
 #import "tour.h"
@@ -115,16 +115,16 @@
     page5.titleIconPositionY = 120;
 
     EAIntroPage *page6 = [EAIntroPage page];
-    page6.bgImage = [UIImage imageNamed:@"bg1"];
+    page6.bgImage = [UIImage imageNamed:@"Tour_stats_bg"];
 
-    page6.title = @"Detailed History";
+    page6.title = @"Stats & Analytics";
     page6.titlePositionY = 118;
 
-    page6.desc = @"";
+    page6.desc = @"Check out a breakdown of your payments including average payment amount and top friends.";
     page6.descWidth = 300;
     page6.descPositionY = page6.titlePositionY - 24;
 
-    page6.titleIconView = [[UIImageView alloc] initWithImage:nil];
+    page6.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Stats_Circled"]];
     page6.titleIconPositionY = 120;
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
@@ -143,11 +143,11 @@
         page5.titleIconPositionY = 130;
     }
 
-    EAIntroView * intro = [[EAIntroView alloc] initWithFrame:CGRectMake(0, 0, 320, 504) andPages:@[page1,page2,page3,page4,page5]];
+    EAIntroView * intro = [[EAIntroView alloc] initWithFrame:CGRectMake(0, 0, 320, 504) andPages:@[page1,page2,page3,page4,page5,page6]];
     [intro setDelegate:self];
     [intro.skipButton setStyleClass:@"reallyLight_gray"];
     [intro setBgViewContentMode:UIViewContentModeScaleAspectFill];
-    intro.showSkipButtonOnlyOnLastPage = true;
+    intro.showSkipButtonOnlyOnLastPage = false;
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
@@ -171,7 +171,7 @@
     NSLog(@"introDidFinish callback");
     self.navigationController.navigationBar.hidden = NO;
     
-    [nav_ctrl popToRootViewControllerAnimated:YES];
+    [nav_ctrl popViewControllerAnimated:YES];
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
 
