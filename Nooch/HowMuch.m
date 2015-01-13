@@ -49,14 +49,14 @@
     [self.amount becomeFirstResponder];
     [self.navigationController setNavigationBarHidden:NO];
 
-    UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    /*UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [back_button setStyleId:@"navbar_back"];
     [back_button addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
     [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
     [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
     back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
-    [self.navigationItem setLeftBarButtonItem:menu];
+    [self.navigationItem setLeftBarButtonItem:menu];*/
 }
 
 -(void)backPressed:(id)sender
@@ -101,6 +101,9 @@
     self.amnt = [@"" mutableCopy];
     self.decimals = YES;
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
+    backgroundImage.alpha = .3;
+    [self.view addSubview:backgroundImage];
 
     self.back = [[UIView alloc] initWithFrame:CGRectMake(10, 10, 300, 248)];
     [self.back setStyleClass:@"raised_view"];
@@ -174,10 +177,11 @@
 
     if (![self.receiver valueForKey:@"nonuser"] && !isUserByLocation)
     {
-        UIButton * add = [[UIButton alloc]initWithFrame:CGRectMake(266, 16, 28, 28)];
+        UIButton * add = [[UIButton alloc]initWithFrame:CGRectMake(266, 15, 30, 30)];
         [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];
         [add setStyleClass:@"addbutton_request"];
         [add setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"] forState:UIControlStateNormal];
+        [add setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [add setTitleShadowColor:Rgb2UIColor(31, 32, 33, 0.3) forState:UIControlStateNormal];
         add.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [self.view addSubview:add];
@@ -217,38 +221,49 @@
     [self.back addSubview:self.amount];
     [self.amount becomeFirstResponder];
 
-    self.memo = [[UITextField alloc] initWithFrame:CGRectMake(10, 120, 260, 38)];
-    [self.memo setPlaceholder:@"Enter a memo"];
+    UIView * memoShell = [[UIView alloc] initWithFrame:CGRectMake(8, 148, 288, 38)];
+    memoShell.layer.cornerRadius = 3;
+    memoShell.layer.borderWidth = 1;
+    memoShell.layer.borderColor = kNoochGrayLight.CGColor;
+    [self.back addSubview:memoShell];
+
+    self.memo = [[UITextField alloc] initWithFrame:CGRectMake(2, 0, 255, 38)];
+    [self.memo setPlaceholder:@"     Enter a memo"];
+    [self.memo setTextAlignment:NSTextAlignmentCenter];
+    [self.memo setTextColor:kNoochGrayDark];
     [self.memo setDelegate:self];
     [self.memo setStyleId:@"howmuch_memo"];
     [self.memo setTag:2];
     [self.memo setKeyboardType:UIKeyboardTypeDefault];
-    self.memo.inputAccessoryView = [[UIView alloc] init];
-    [self.back addSubview:self.memo];
+    self.memo.inputAccessoryView = [[UIView alloc] init]; // To override the IQ Keyboard Mgr
+    [memoShell addSubview:self.memo];
 
     self.camera = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    
     if ([[UIScreen mainScreen] bounds].size.height < 500) {
         [self.camera.titleLabel setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
-        [self.camera setFrame:CGRectMake(260, 105, 28, 24)];
+        [self.camera setFrame:CGRectMake(169, 3, 28, 24)];
     }
     else {
         [self.camera.titleLabel setFont:[UIFont fontWithName:@"FontAwesome" size:21]];
-        [self.camera setFrame:CGRectMake(259, 154, 30, 26)];
+        [self.camera setFrame:CGRectMake(251, 4, 36, 31)];
     }
     [self.camera addTarget:self action:@selector(attach_pic) forControlEvents:UIControlEventTouchUpInside];
-
     [self.camera setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-camera"] forState:UIControlStateNormal];
     [self.camera setTitleColor:kNoochGrayLight forState:UIControlStateNormal];
 
     UILabel * glyph_plus = [UILabel new];
     [glyph_plus setFont:[UIFont fontWithName:@"FontAwesome" size:12]];
-    [glyph_plus setFrame:CGRectMake(23, -4, 15, 15)];
+    [glyph_plus setFrame:CGRectMake(25, -3, 15, 15)];
     [glyph_plus setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus"]];
     [glyph_plus setTextColor:kNoochBlue];
 
+    UIView * memoDivider = [[UIView alloc] initWithFrame:CGRectMake(248, 8, 1, 22)];
+    memoDivider.backgroundColor = kNoochGrayLight;
+    memoDivider.alpha = 0.4;
+    [memoShell addSubview:memoDivider];
+
     [self.camera addSubview:glyph_plus];
-    [self.back addSubview:self.camera];
+    [memoShell addSubview:self.camera];
 
     self.send = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.send setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

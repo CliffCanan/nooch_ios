@@ -479,7 +479,7 @@
         {
             CFTypeRef contactImageValue = ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
             contactImage = (__bridge NSData *)(contactImageValue);
-            //[curContact setObject:contactImage forKey:@"image"];
+            [curContact setObject:contactImage forKey:@"image"];
             if (contactImageValue)
                 CFRelease(contactImageValue);
             
@@ -487,7 +487,7 @@
         else
         {
             contactImage = UIImageJPEGRepresentation([UIImage imageNamed:@"profile_picture.png"], 1);
-            //[curContact setObject:contactImage forKey:@"image"];
+            [curContact setObject:contactImage forKey:@"image"];
         }
 
         if (contacName != NULL) [curContact setObject:contacName forKey:@"Name"];
@@ -514,7 +514,7 @@
                 CFRelease(emailIdValue);
             }
         }
-        
+
         if (emailInfo) {
             CFRelease(emailInfo);
         }
@@ -523,7 +523,6 @@
         // Get phoneValue Ref
         NSString *phone;//, *phone2, *phone3;
 
-        NSLog(@"%d.) ABMultiValueGetCount (phoneNumber) is: %ld",i,ABMultiValueGetCount(phoneNumber));
         for (int j = 0; j < ABMultiValueGetCount(phoneNumber); j++)
         {
             CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, j);

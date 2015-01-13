@@ -44,14 +44,14 @@
     [self.navigationBar addSubview:hax];
     
     LeftMenu *left_menu = [LeftMenu new];
-    
-    
+
     if (![self.slidingViewController.underLeftViewController isKindOfClass:[LeftMenu class]]) {
         self.slidingViewController.underLeftViewController  = left_menu;
     }
+
     [self.slidingViewController setAnchorRightRevealAmount:270.0f];
-    
     [self.slidingViewController setAnchorLeftRevealAmount:270.0f];
+
     self.view.layer.shadowOpacity = 1.0f;
     self.view.layer.shadowRadius = 2.0f;
     self.view.layer.shadowColor = [UIColor blackColor].CGColor;
