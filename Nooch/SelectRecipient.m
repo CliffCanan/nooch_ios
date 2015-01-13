@@ -514,7 +514,7 @@
                 CFRelease(emailIdValue);
             }
         }
-        
+
         if (emailInfo) {
             CFRelease(emailInfo);
         }
@@ -523,7 +523,6 @@
         // Get phoneValue Ref
         NSString *phone;//, *phone2, *phone3;
 
-        NSLog(@"%d.) ABMultiValueGetCount (phoneNumber) is: %ld",i,ABMultiValueGetCount(phoneNumber));
         for (int j = 0; j < ABMultiValueGetCount(phoneNumber); j++)
         {
             CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, j);

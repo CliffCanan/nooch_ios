@@ -43,7 +43,7 @@ bool modal;
     internetReach = [Reachability reachabilityForInternetConnection];
     [internetReach startNotifier];
 
-/*     //Urban Airship 5+
+     //Urban Airship 5+
     UAConfig *config = [UAConfig defaultConfig];
     // Call takeOff (which creates the UAirship singleton)
     [UAirship takeOff:config];
@@ -55,7 +55,7 @@ bool modal;
     [[UAPush shared] resetBadge];
 
     // PUSH NOTIFICATION REGISTRATION
-   if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+   /*if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
     {
         // Register for push in iOS 8.
         [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];

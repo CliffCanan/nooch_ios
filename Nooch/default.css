@@ -1373,31 +1373,19 @@ table-view#select_recipientwithoutSeperator {
 
 /**  Text entry field for inputting a memo. **/
 #howmuch_memo {
-    left    		: 8px;
-    top     		: 148px;
-    width 			: 288px;
-    border 			: 1px solid;
-    border-color	: #939598;
-    border-radius	: 3px;
-    text-align      : center;
     font-family 	: "Roboto";
     font-weight 	: light;
     font-size       : 16px;
-    color           : #414042px;
 }
 #howmuch_memo_4 {
     left    		: 83px;
     top     		: 98px;
     width 			: 212px;
     height      	: 31px;
-    border 			: 1px solid;
-    border-color	: #939598;
-    border-radius	: 3px;
     text-align      : center;
     font-family 	: "Roboto";
     font-weight 	: light;
     font-size       : 15px;
-    color           : #414042px;
 }
 
 /**  Full container (bottom layer) for the Attach a Picture stuff.  **/
@@ -2518,12 +2506,7 @@ table-view#emptyTable {
     text-align       	: center;
 }
 .addbutton_request{
-    width				: 30px;
-    height				: 30px;
-    top					: 15px;
-    left				: 266px;
-    color           : white;
-    font-family	: "FontAwesome";
+    font-family     : "FontAwesome";
     font-size       : 24px;
 }
 .details_othername_nonnooch {
