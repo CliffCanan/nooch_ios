@@ -84,6 +84,7 @@
     [self.completed_pending addTarget:self action:@selector(recent_or_location:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.completed_pending];
     [self.completed_pending setSelectedSegmentIndex:0];
+    [self.completed_pending setTintColor:kNoochBlue];
 
     self.glyph_recent = [UILabel new];
     [self.glyph_recent setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
@@ -866,6 +867,9 @@
     phoneNumEntry = NO;
     isphoneBook = NO;
     isRecentList = YES;
+
+    [self.completed_pending setTintColor:kNoochBlue];
+
     searchBar.searchBarStyle = UISearchBarStyleMinimal;
     [searchBar resignFirstResponder];
     [searchBar setText:@""];
@@ -878,6 +882,7 @@
 {
     [searchBar resignFirstResponder];
     [searchBar setShowsCancelButton:NO animated:YES];
+    
     [self.contacts reloadData];
 }
 
@@ -887,7 +892,7 @@
     {
         [self.navigationController setNavigationBarHidden:YES animated:YES];
         navIsUp = YES;
-
+    }
         [search setTintColor:[UIColor whiteColor]]; // For the 'Cancel' text
 
         [UIView animateKeyframesWithDuration:0.38
@@ -895,23 +900,37 @@
                                      options:UIViewKeyframeAnimationOptionCalculationModeCubic
                                   animations:^{
                                       [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
-                                          [self.contacts setFrame:CGRectMake(0, 70, 320, [[UIScreen mainScreen] bounds].size.height-56)];
+                                          if (!isAddRequest)
+                                          {
+                                              [self.contacts setFrame:CGRectMake(0, 70, 320, [[UIScreen mainScreen] bounds].size.height-56)];
+                                          }
                                       }];
                                       [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.6 animations:^{
                                           [self.view setBackgroundColor:kNoochBlue];
-                                          [self.completed_pending setAlpha:0];
-                                          [self.glyph_recent setAlpha: 0];
-                                          [self.glyph_location setAlpha: 0];
+                                          if (!isAddRequest)
+                                          {
+                                              [self.completed_pending setTintColor:kNoochBlue];
+                                              [self.completed_pending setAlpha:0];
+                                              [self.glyph_recent setAlpha: 0];
+                                              [self.glyph_location setAlpha: 0];
+                                          }
+                                          else
+                                          {
+                                              [self.completed_pending setTintColor:[UIColor whiteColor]];
+                                          }
                                           [search setImage:[UIImage imageNamed:@"search_white"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
                                       }];
                                       [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
-                                          [self.completed_pending setFrame:CGRectMake(7, -8, 306, 30)];
-                                          [searchBar setFrame:CGRectMake(0, 24, 320, 40)];
+                                          if (!isAddRequest)
+                                          {
+                                              [self.completed_pending setFrame:CGRectMake(7, -8, 306, 30)];
+                                              [searchBar setFrame:CGRectMake(0, 24, 320, 40)];
+                                          }
                                           searchBar.placeholder = @"";
                                       }];
                                   } completion: nil
          ];
-    }
+
 
     [searchBar becomeFirstResponder];
     [searchBar setShowsCancelButton:YES animated:YES];
@@ -1846,7 +1865,7 @@
             [phoneOrEmailLabel setTextColor:kNoochGrayDark];
             [phoneOrEmailLabel setTextAlignment:NSTextAlignmentLeft];
 
-            NSLog(@"Inside Cell For Row... info object is: %@",info);
+            //NSLog(@"Inside Cell For Row... info object is: %@",info);
 
             if (info[@"emailAdday0"])
             {
@@ -2174,7 +2193,7 @@
     {
         NSDictionary * receiver =  [arrSearchedRecords objectAtIndex:indexPath.row];
 
-        NSLog(@"Receiver is: %@",receiver);
+        //NSLog(@"Receiver is: %@",receiver);
         if ([[assist shared] assos][receiver[@"UserName"]][@"addressbook"] ||
             [[assist shared] assos][receiver[@"phoneNo"]][@"addressbook"] )
         {
