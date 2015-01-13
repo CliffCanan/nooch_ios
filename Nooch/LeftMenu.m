@@ -19,7 +19,6 @@
 #import "webView.h"
 #import "tour.h"
 #import "Appirater.h"
-#import "UAPush.h"
 
 @interface LeftMenu ()
 @property(nonatomic,strong) UITableView *menu;
@@ -227,7 +226,6 @@
     }
     [self.menu reloadData];
 
-    [UAPush shared].userPushNotificationsEnabled = YES;
 }
 
 -(void) go_profile

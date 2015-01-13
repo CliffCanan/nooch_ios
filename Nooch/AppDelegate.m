@@ -7,9 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "UAirship.h"
-#import "UAConfig.h"
-#import "UAPush.h"
 #import <ArtisanSDK/ArtisanSDK.h>
 #import <CoreTelephony/CTCallCenter.h>
 #import "ReEnterPin.h"
@@ -43,19 +40,10 @@ bool modal;
     internetReach = [Reachability reachabilityForInternetConnection];
     [internetReach startNotifier];
 
-     //Urban Airship 5+
-    UAConfig *config = [UAConfig defaultConfig];
-    // Call takeOff (which creates the UAirship singleton)
-    [UAirship takeOff:config];
-    [UAPush shared].userNotificationTypes = (UIUserNotificationTypeAlert |
-                                             UIUserNotificationTypeBadge |
-                                             UIUserNotificationTypeSound);
-    //[UAPush shared].userPushNotificationsEnabled = YES; (This line triggers asking permission for Push Notifications... moved to Left Menu screen for Nooch)
     // Set the icon badge to zero on startup (optional)
-    [[UAPush shared] resetBadge];
 
     // PUSH NOTIFICATION REGISTRATION
-   /*if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+   if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
     {
         // Register for push in iOS 8.
         [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
@@ -64,10 +52,13 @@ bool modal;
     else
     {
         // Register for push in iOS 7 and under.
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)];
-    } */
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
+                                                                               UIUserNotificationTypeSound |
+                                                                               UIUserNotificationTypeAlert)];
+    }
 
-   /* self.gameThrive = [[GameThrive alloc] initWithLaunchOptions:launchOptions handleNotification:^(NSString* message, NSDictionary* additionalData, BOOL isActive) {
+    // GAMETHRIVE (Push Notifications)
+    self.gameThrive = [[GameThrive alloc] initWithLaunchOptions:launchOptions handleNotification:^(NSString* message, NSDictionary* additionalData, BOOL isActive) {
         UIAlertView* alertView;
         NSLog(@"APP DEL - GameThrieve --> ADDITIONALDATA: %@", additionalData);
         if (additionalData) {
@@ -97,7 +88,7 @@ bool modal;
         // Highly recommend adding game logic around this so the user is not interrupted during gameplay.
         if (alertView != nil)
             [alertView show];
-    }];*/
+    }];
 
     //Google Analytics
     [GAI sharedInstance].dispatchInterval = 22;
@@ -247,7 +238,7 @@ void exceptionHandler(NSException *exception){
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Set the icon badge to zero on resume (optional)
-    [[UAPush shared] resetBadge];
+    //[[UAPush shared] resetBadge];
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 
     // Call the 'activateApp' method to log an app event for use in analytics and advertising reporting.
@@ -366,7 +357,7 @@ void exceptionHandler(NSException *exception){
 {
     NSString *deviceTokens = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     deviceTokens = [deviceTokens stringByReplacingOccurrencesOfString:@" " withString:@""];
-    [[UAPush shared] appRegisteredForRemoteNotificationsWithDeviceToken:deviceToken];
+    //[[UAPush shared] appRegisteredForRemoteNotificationsWithDeviceToken:deviceToken];
     
   //  [[UAPush shared] registerDeviceToken:deviceToken];
     [[NSUserDefaults standardUserDefaults] setValue:deviceTokens forKey:@"DeviceToken"];
@@ -406,9 +397,9 @@ void exceptionHandler(NSException *exception){
     }
     else
     {
-        [[UAPush shared] appReceivedRemoteNotification:userInfo applicationState:application.applicationState];
+        //[[UAPush shared] appReceivedRemoteNotification:userInfo applicationState:application.applicationState];
         // Reset the badge if you are using that functionality
-        [[UAPush shared] resetBadge];
+        //[[UAPush shared] resetBadge];
         NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
         
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[UIApplication sharedApplication] applicationIconBadgeNumber]+1]; 
@@ -416,14 +407,14 @@ void exceptionHandler(NSException *exception){
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
-    UA_LINFO(@"Received remote notification (in appDelegate): %@", userInfo);
+    //UA_LINFO(@"Received remote notification (in appDelegate): %@", userInfo);
     
     // Optionally provide a delegate that will be used to handle notifications received while the app is running
     // [UAPush shared].pushNotificationDelegate = your custom push delegate class conforming to the UAPushNotificationDelegate protocol
     
     // Reset the badge after a push is received in a active or inactive state
     if (application.applicationState != UIApplicationStateBackground) {
-        [[UAPush shared] resetBadge];
+        //[[UAPush shared] resetBadge];
     }
     
     completionHandler(UIBackgroundFetchResultNoData);

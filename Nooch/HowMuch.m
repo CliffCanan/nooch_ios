@@ -160,12 +160,27 @@
         if ([[assist shared]isRequestMultiple])
         {
             NSString * strMultiple = @"";
-            for (NSDictionary * dictRecord in [[assist shared]getArray]) {
-                strMultiple = [strMultiple stringByAppendingString:[NSString stringWithFormat:@", %@",[dictRecord[@"FirstName"] capitalizedString]]];
+
+            if ([[[assist shared]getArray] count] > 1)
+            {
+                for (NSDictionary * dictRecord in [[assist shared]getArray])
+                {
+                    strMultiple = [strMultiple stringByAppendingString:[NSString stringWithFormat:@", %@",[dictRecord[@"FirstName"] capitalizedString]]];
+                }
+
+                [to_label setStyleId:@"label_howmuch_recipientnamenonuser"];
+                strMultiple = [strMultiple substringFromIndex:1];
             }
-            [to_label setStyleId:@"label_howmuch_recipientnamenonuser"];
-            strMultiple = [strMultiple substringFromIndex:1];
-            to_label.attributedText = [[NSAttributedString alloc] initWithString:strMultiple attributes:textAttributes];
+            else
+            {
+                for (NSDictionary * dictRecord in [[assist shared]getArray])
+                {
+                    strMultiple = [NSString stringWithFormat:@"%@ %@", dictRecord[@"FirstName"], dictRecord[@"LastName"]];
+                }
+                [to_label setStyleId:@"label_howmuch_recipientname"];
+            }
+
+            to_label.attributedText = [[NSAttributedString alloc] initWithString:[strMultiple capitalizedString] attributes:textAttributes];
         }
         else
         {
@@ -193,19 +208,37 @@
     user_pic.layer.borderWidth = 1;
     user_pic.clipsToBounds = YES;
     user_pic.layer.cornerRadius = 42;
-    if ([self.receiver valueForKey:@"nonuser"]) {
+    if ([self.receiver valueForKey:@"nonuser"])
+    {
         [user_pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
     }
     else
     {
         [user_pic setHidden:NO];
-        if (self.receiver[@"Photo"]) {
+        if (self.receiver[@"Photo"])
+        {
             [user_pic sd_setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
                      placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         }
-        else {
-            [user_pic sd_setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
+        else
+        {
+            if ([[[assist shared]getArray] count] == 1)
+            {
+                NSString * photoURL = @"";
+                for (NSDictionary * dictRecord in [[assist shared]getArray])
+                {
+                    NSLog(@"DictRecord is: %@",dictRecord);
+                    photoURL = [NSString stringWithFormat:@"%@", dictRecord[@"Photo"]];
+                }
+                [user_pic sd_setImageWithURL:[NSURL URLWithString:photoURL]
+                            placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
+
+            }
+            else
+            {
+                [user_pic sd_setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
                      placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
+            }
         }
     }
     [self.back addSubview:user_pic];
@@ -281,7 +314,8 @@
     [self.request setFrame:CGRectMake(10, 160, 150, 50)];
     [self.back addSubview:self.request];
 
-    if ([[assist shared]isRequestMultiple])
+    if ( [[assist shared] isRequestMultiple] &&
+        [[[assist shared] getArray] count] > 1)
     {
         [self.send removeFromSuperview];
         [self.request setStyleClass:@"howmuch_buttons"];
