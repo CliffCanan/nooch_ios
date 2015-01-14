@@ -19,6 +19,7 @@
 #import "webView.h"
 #import "tour.h"
 #import "Appirater.h"
+#import "SelectApt.h"
 
 @interface LeftMenu ()
 @property(nonatomic,strong) UITableView *menu;
@@ -163,6 +164,8 @@
     else {
         [self.glyph_noBank removeFromSuperview];
     }
+
+    shouldDisplayAptsSection = true;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -289,13 +292,21 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return 3;
+    if (section == 0)
+    {
+        if (shouldDisplayAptsSection) {
+            return 4;
+        }
+        else {
+            return 3;
+        }
     }
-    else if(section == 1){
+    else if (section == 1)
+    {
         return 2;
     }
-    else if(section == 2){
+    else if (section == 2)
+    {
         return 4;
     }
     else {
@@ -322,12 +333,13 @@
             [subview removeFromSuperview];
         }
     }
+
     cell.indentationLevel = 1;
     cell.indentationWidth = 30;
     cell.textLabel.textColor = [UIColor whiteColor];
     [cell setBackgroundColor:kNoochMenu];
     cell.textLabel.font = [UIFont fontWithName:@"Roboto-Light" size:18];
-    
+
     arrow = [UIButton buttonWithType:UIButtonTypeCustom];
     [arrow setFrame:CGRectMake(242, 14, 16, 18)];
     [arrow setStyleClass:@"lside_arrow"];
@@ -337,13 +349,13 @@
     [cell.contentView addSubview:arrow];
 
     UILabel *iv = [UILabel new];
+    [iv setStyleClass:@"lside_menu_icons"];
 
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = kLeftMenuShadow;
     shadow.shadowOffset = CGSizeMake(0, 1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
     
-    [iv setStyleClass:@"lside_menu_icons"];
     if (indexPath.section == 0)
     {
         if (indexPath.row == 0)
@@ -380,6 +392,12 @@
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-line-chart"] attributes:textAttributes];
             [iv setStyleClass:@"lside_menu_icons_sm"];
         }
+        else if (shouldDisplayAptsSection && indexPath.row == 3)
+        {
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Pay Rent" attributes:textAttributes];
+            iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-building-o"] attributes:textAttributes];
+            [iv setStyleClass:@"lside_menu_icons_sm"];
+        }
     }
     /*else if(indexPath.section == 9)
     {
@@ -391,32 +409,38 @@
     }*/
     else if (indexPath.section == 1)
     {
-        if (indexPath.row == 0) {
+        if (indexPath.row == 0)
+        {
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Refer a Friend" attributes:textAttributes];
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"] attributes:textAttributes];
             [iv setStyleClass:@"lside_menu_icons_sm"];
         }
-        else if (indexPath.row == 1) {
+        else if (indexPath.row == 1)
+        {
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Rate Nooch" attributes:textAttributes];
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-thumbs-up"] attributes:textAttributes];
         }
     }
     else if (indexPath.section == 2)
     {
-        if (indexPath.row == 0) {
+        if (indexPath.row == 0)
+        {
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"How Nooch Works" attributes:textAttributes];
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-question"] attributes:textAttributes];
         }
-        else if (indexPath.row == 1) {
+        else if (indexPath.row == 1)
+        {
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Support" attributes:textAttributes];
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope"] attributes:textAttributes];
             [iv setStyleClass:@"lside_menu_icons_sm"];
         }
-        else if (indexPath.row == 2) {
+        else if (indexPath.row == 2)
+        {
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Limits & Fees" attributes:textAttributes];
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-usd"] attributes:textAttributes];
         }
-        else if (indexPath.row == 3) {
+        else if (indexPath.row == 3)
+        {
             cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Legal Info" attributes:textAttributes];
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-gavel"] attributes:textAttributes];
         }
@@ -429,11 +453,13 @@
 {
     if (indexPath.section == 0)
     {
-        if (indexPath.row == 0) {
+        if (indexPath.row == 0)
+        {
             [nav_ctrl popToRootViewControllerAnimated:NO];
             [self.slidingViewController resetTopView];
         }
-        else if (indexPath.row == 1) {
+        else if (indexPath.row == 1)
+        {
             //Rlease memory cache
             SDImageCache *imageCache = [SDImageCache sharedImageCache];
             [imageCache clearMemory];
@@ -444,9 +470,16 @@
             [nav_ctrl pushViewController:hist animated:NO];
             [self.slidingViewController resetTopView];
         }
-        else if (indexPath.row == 2) {
+        else if (indexPath.row == 2)
+        {
             Statistics *stats = [[Statistics alloc] init];
             [nav_ctrl pushViewController:stats animated:NO];
+            [self.slidingViewController resetTopView];
+        }
+        else if (indexPath.row == 3)
+        {
+            SelectApt * selectApt = [[SelectApt alloc] init];
+            [nav_ctrl pushViewController:selectApt animated:NO];
             [self.slidingViewController resetTopView];
         }
     }

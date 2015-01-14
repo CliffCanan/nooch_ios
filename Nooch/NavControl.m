@@ -35,28 +35,38 @@
     [super viewWillAppear:animated];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-    
-    [[UINavigationBar appearance] setBackgroundColor:kNoochBlue];
+
+    //[[UINavigationBar appearance] setBackgroundColor:kNoochBlue];
     [[UINavigationBar appearance] setBarTintColor:kNoochBlue];
+
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+
+    NSShadow * shadowNavText = [[NSShadow alloc] init];
+    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .22);
+    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
     
-    UIView *hax = [[UIView alloc] initWithFrame:CGRectMake(0, 43, 320, 2)];
+    NSDictionary * titleAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
+                                       NSShadowAttributeName: shadowNavText};
+    [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
+
+    UIView *hax = [[UIView alloc] initWithFrame:CGRectMake(0, 43, 320, 1)];
     [hax setBackgroundColor:kNoochBlue];
     [self.navigationBar addSubview:hax];
-    
+
     LeftMenu *left_menu = [LeftMenu new];
 
-    if (![self.slidingViewController.underLeftViewController isKindOfClass:[LeftMenu class]]) {
-        self.slidingViewController.underLeftViewController  = left_menu;
+    if (![self.slidingViewController.underLeftViewController isKindOfClass:[LeftMenu class]])
+    {
+        self.slidingViewController.underLeftViewController = left_menu;
     }
 
     [self.slidingViewController setAnchorRightRevealAmount:270.0f];
-    [self.slidingViewController setAnchorLeftRevealAmount:270.0f];
+    //[self.slidingViewController setAnchorLeftRevealAmount:270.0f];
 
-    self.view.layer.shadowOpacity = 1.0f;
-    self.view.layer.shadowRadius = 2.0f;
+    self.view.layer.shadowOpacity = 0.9f;
+    self.view.layer.shadowRadius = 4.5f;
     self.view.layer.shadowColor = [UIColor blackColor].CGColor;
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-    
 }
 
 -(void)disable{

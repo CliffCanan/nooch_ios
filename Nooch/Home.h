@@ -33,13 +33,15 @@ core *me;
 #define kNoochFontBold [UIFont fontWithName:@"BrandonGrotesque-Bold" size:22]
 #define kNoochFontMed [UIFont fontWithName:@"BrandonGrotesque-Medium" size:16]
 #define kNoochFontLt [UIFont fontWithName:@"BrandonGrotesque-Light" size:18]
+
 UINavigationController *nav_ctrl;
 NSUserDefaults *user;
+BOOL shouldDisplayAptsSection;
+
 @interface Home : GAITrackedViewController<serveD,CLLocationManagerDelegate,MBProgressHUDDelegate,MFMailComposeViewControllerDelegate,iCarouselDataSource,iCarouselDelegate,UIAlertViewDelegate,UIActionSheetDelegate>
 {
     CLLocationManager*locationManager;
     float lat,lon;
-    UIView*blankView;
     UIView*overlay;
     UIView*mainView;
     NSDate*ServerDate;

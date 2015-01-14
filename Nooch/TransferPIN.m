@@ -91,7 +91,8 @@
                                              forEvent:nil];
     }
     //[getlocation.locationManager requestWhenInUseAuthorization];
-	[getlocation.locationManager startUpdatingLocation];    
+	[getlocation.locationManager startUpdatingLocation];
+
     // Do any additional setup after loading the view from its nib.
     self.pin = [UITextField new];
     [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
@@ -104,18 +105,27 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
     [self.navigationItem setTitle:@"Enter PIN"];
+    [self.navigationItem setHidesBackButton:YES];
+
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, 300, 60)];
     [title setText:@"Enter Your PIN to confirm your"]; [title setTextAlignment:NSTextAlignmentCenter];
     [title setNumberOfLines:2];
     [title setStyleClass:@"pin_instructiontext"];
     [self.view addSubview:title];
-    
-    UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+
+    NSShadow * shadowNavText = [[NSShadow alloc] init];
+    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .2);
+    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
+    NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
+
+    UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backPressed:)];
+
+    UILabel * back_button = [UILabel new];
     [back_button setStyleId:@"navbar_back"];
-    [back_button addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
-    [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
-    back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [back_button setUserInteractionEnabled:YES];
+    [back_button addGestureRecognizer: backTap];
+    back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
+
     UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
     [self.navigationItem setLeftBarButtonItem:menu];
 
@@ -175,13 +185,38 @@
 
     if ([self.receiver objectForKey:@"nonuser"])
     {
+        UILabel * glyph_nonuserType = [UILabel new];
+        [glyph_nonuserType setTextColor:[UIColor whiteColor]];
+
+        if ([self.receiver objectForKey:@"email"])
+        {
+            [glyph_nonuserType setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
+            glyph_nonuserType.attributedText = [[NSAttributedString alloc]initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope-o"] attributes:textAttributes];
+        }
+        else if ([self.receiver objectForKey:@"phone"])
+        {
+            [glyph_nonuserType setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
+            glyph_nonuserType.attributedText = [[NSAttributedString alloc]initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-mobile"] attributes:textAttributes];
+        }
+
         if ([self.receiver objectForKey:@"firstName"] && [self.receiver objectForKey:@"lastName"])
         {
+            int numOfChars = [[self.receiver objectForKey:@"firstName"] length] + [[self.receiver objectForKey:@"lastName"] length];
+            if (numOfChars > 23) {numOfChars = 23;}
+
             to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",[self.receiver objectForKey:@"firstName"],[self.receiver objectForKey:@"lastName"]] attributes:textAttributes];
+
+            [glyph_nonuserType setFrame:CGRectMake(198 + ((numOfChars * 10) / 2), 198, 20, 38)];
+            [self.view addSubview:glyph_nonuserType];
         }
         else if ([self.receiver objectForKey:@"firstName"])
         {
+            int numOfChars = [[self.receiver objectForKey:@"firstName"] length];
+
             to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"firstName"]] attributes:textAttributes];
+
+            [glyph_nonuserType setFrame:CGRectMake(200 + ((numOfChars * 10) / 2), 198, 20, 38)];
+            [self.view addSubview:glyph_nonuserType];
         }
         else if ([self.receiver objectForKey:@"email"])
         {
@@ -335,7 +370,8 @@
     }
 }
 
--(void)backPressed:(id)sender{
+-(void)backPressed:(id)sender
+{
     [self.navigationItem setLeftBarButtonItem:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -452,6 +488,7 @@
         Altitude = @"0.0";
     }
 }
+
 - (void)locationError:(NSError *)error {
 	//locationLabel.text = [error description];
 }

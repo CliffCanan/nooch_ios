@@ -247,6 +247,7 @@ UIImageView *picture;
     [super viewDidLoad];
     dictSavedInfo = [[NSMutableDictionary alloc]init];
     [dictSavedInfo setObject:@"NO" forKey:@"ImageChanged"];
+
     self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setHidesBackButton:YES];
     
@@ -263,15 +264,26 @@ UIImageView *picture;
     }
     else
     {
-        UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+
+        NSShadow * shadowNavText = [[NSShadow alloc] init];
+        shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .2);
+        shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
+
+        NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
+
+        UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(savePrompt2)];
+
+        UILabel * back_button = [UILabel new];
         [back_button setStyleId:@"navbar_back"];
-        [back_button addTarget:self action:@selector(savePrompt2) forControlEvents:UIControlEventTouchUpInside];
-        [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
-        [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
-        back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        [back_button setUserInteractionEnabled:YES];
+        [back_button addGestureRecognizer: backTap];
+        back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
 
         UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+
         [self.navigationItem setLeftBarButtonItem:menu];
+        
     }
 
     if (!isSignup) {
@@ -293,13 +305,6 @@ UIImageView *picture;
     self.hud.delegate = self;
     [self.hud show:YES];
 
-    NSShadow * shadowNavText = [[NSShadow alloc] init];
-    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .26);
-    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
-
-    NSDictionary * titleAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
-                                       NSShadowAttributeName: shadowNavText};
-    [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
     [self.navigationItem setTitle:@"Profile"];
 
     serve *serveOBJ = [serve new ];

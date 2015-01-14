@@ -35,28 +35,9 @@
     if (self) {
         // Custom initialization
         self.receiver = [receiver copy];
+        NSLog(@"Selected Recipient is: %@",self.receiver);
     }
     return self;
-}
-
--(void)viewDidDisappear:(BOOL)animated{
-    [super viewDidDisappear:animated];   
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.amount becomeFirstResponder];
-    [self.navigationController setNavigationBarHidden:NO];
-
-    /*UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [back_button setStyleId:@"navbar_back"];
-    [back_button addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
-    [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
-    back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
-    [self.navigationItem setLeftBarButtonItem:menu];*/
 }
 
 -(void)backPressed:(id)sender
@@ -74,26 +55,27 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+
     [self.navigationController setNavigationBarHidden:NO];
     self.navigationController.navigationBar.topItem.title = @"";
+    [self.navigationItem setTitle:@"How Much?"];
+    [self.navigationItem setHidesBackButton:YES];
 
     NSShadow * shadowNavText = [[NSShadow alloc] init];
-    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .26);
+    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .2);
     shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
-
-    NSDictionary * titleAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
-                                       NSShadowAttributeName: shadowNavText};
-    [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
-
-    [self.navigationItem setTitle:@"How Much?"];
-
-    UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
+    
+    UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backPressed:)];
+    
+    UILabel * back_button = [UILabel new];
     [back_button setStyleId:@"navbar_back"];
-    [back_button addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
-    [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
-    back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [back_button setUserInteractionEnabled:YES];
+    [back_button addGestureRecognizer: backTap];
+    back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
+    
     UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+    
     [self.navigationItem setLeftBarButtonItem:menu];
 
     [[assist shared] setTranferImage:nil];
@@ -134,25 +116,50 @@
     [to setStyleId:@"label_howmuch_to"];
     [self.back addSubview:to];
 
-    UILabel * to_label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
+    UILabel * to_label = [[UILabel alloc] initWithFrame:CGRectMake(43, 0, 300, 38)];
     if ([self.receiver valueForKey:@"nonuser"])
     {
         [to_label setStyleId:@"label_howmuch_recipientnamenonuser"];
-        if ([self.receiver objectForKey:@"firstName"] && [self.receiver objectForKey:@"lastName"])
+
+        UILabel * glyph_nonuserType = [UILabel new];
+        [glyph_nonuserType setTextColor:[UIColor whiteColor]];
+
+        if ([self.receiver objectForKey:@"email"])
         {
-            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",[self.receiver objectForKey:@"firstName"],[self.receiver objectForKey:@"lastName"]] attributes:textAttributes];
-        }
-        else if ([self.receiver objectForKey:@"firstName"])
-        {
-            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"firstName"]] attributes:textAttributes];
-        }
-        else if ([self.receiver objectForKey:@"email"])
-        {
-            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"email"]] attributes:textAttributes];
+            [glyph_nonuserType setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
+            glyph_nonuserType.attributedText = [[NSAttributedString alloc]initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope-o"] attributes:textAttributes];
         }
         else if ([self.receiver objectForKey:@"phone"])
         {
-            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"phone"]] attributes:textAttributes];
+            [glyph_nonuserType setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
+            glyph_nonuserType.attributedText = [[NSAttributedString alloc]initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-mobile"] attributes:textAttributes];
+        }
+
+        if ([self.receiver objectForKey:@"firstName"] && [self.receiver objectForKey:@"lastName"])
+        {
+            int numOfChars = [[self.receiver objectForKey:@"firstName"] length] + [[self.receiver objectForKey:@"lastName"] length];
+
+            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", [self.receiver objectForKey:@"firstName"], [self.receiver objectForKey:@"lastName"]] attributes:textAttributes];
+
+            [glyph_nonuserType setFrame:CGRectMake(52 + numOfChars * 10, 1, 20, 37)];
+            [self.back addSubview:glyph_nonuserType];
+        }
+        else if ([self.receiver objectForKey:@"firstName"])
+        {
+            int numOfChars = [[self.receiver objectForKey:@"firstName"] length];
+
+            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", [self.receiver objectForKey:@"firstName"]] attributes:textAttributes];
+
+            [glyph_nonuserType setFrame:CGRectMake(52 + numOfChars * 10, 1, 20, 37)];
+            [self.back addSubview:glyph_nonuserType];
+        }
+        else if ([self.receiver objectForKey:@"email"])
+        {
+            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", [self.receiver objectForKey:@"email"]] attributes:textAttributes];
+        }
+        else if ([self.receiver objectForKey:@"phone"])
+        {
+            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", [self.receiver objectForKey:@"phone"]] attributes:textAttributes];
         }
     }
     else
@@ -192,12 +199,13 @@
 
     if (![self.receiver valueForKey:@"nonuser"] && !isUserByLocation)
     {
-        UIButton * add = [[UIButton alloc]initWithFrame:CGRectMake(266, 15, 30, 30)];
+        UIButton * add = [[UIButton alloc]initWithFrame:CGRectMake(272, 15, 32, 30)];
         [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];
         [add setStyleClass:@"addbutton_request"];
-        [add setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"] forState:UIControlStateNormal];
+        [add setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-square-o"] forState:UIControlStateNormal];
         [add setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [add setTitleShadowColor:Rgb2UIColor(31, 32, 33, 0.3) forState:UIControlStateNormal];
+        [add setTitleColor:Rgb2UIColor(220, 221, 222, .94) forState:UIControlStateHighlighted];
+        [add setTitleShadowColor:Rgb2UIColor(64, 65, 66, 0.3) forState:UIControlStateNormal];
         add.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [self.view addSubview:add];
     }
@@ -243,7 +251,7 @@
     }
     [self.back addSubview:user_pic];
 
-    self.amount = [[UITextField alloc] initWithFrame:CGRectMake(110, 30, 260, 80)];
+    self.amount = [[UITextField alloc] initWithFrame:CGRectMake(104, 58, 190, 68)];
     [self.amount setTextAlignment:NSTextAlignmentRight];
     [self.amount setPlaceholder:@"$ 0.00"];
     [self.amount setDelegate:self];
@@ -317,6 +325,13 @@
     if ( [[assist shared] isRequestMultiple] &&
         [[[assist shared] getArray] count] > 1)
     {
+        UILabel * multRecipNote = [[UILabel alloc] initWithFrame:CGRectMake(144, 120, 172, 17)];
+        [multRecipNote setFont:[UIFont fontWithName:@"Roboto-light" size:14]];
+        [multRecipNote setText:@"(from each person)"];
+        [multRecipNote setTextAlignment:NSTextAlignmentCenter];
+        [multRecipNote setTextColor:kNoochGrayDark];
+        [self.back addSubview: multRecipNote];
+
         [self.send removeFromSuperview];
         [self.request setStyleClass:@"howmuch_buttons"];
         [self.request setStyleId:@"howmuch_request_mult_expand"];
@@ -377,6 +392,35 @@
     transLimitFromArtisanInt = [transLimitFromArtisanString integerValue];
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.amount becomeFirstResponder];
+    [self.navigationController setNavigationBarHidden:NO];
+
+    NSShadow * shadowNavText = [[NSShadow alloc] init];
+    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .2);
+    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
+    NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
+
+    UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backPressed:)];
+
+    UILabel * back_button = [UILabel new];
+    [back_button setStyleId:@"navbar_back"];
+    [back_button setUserInteractionEnabled:YES];
+    [back_button addGestureRecognizer: backTap];
+    back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
+
+    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+
+    [self.navigationItem setLeftBarButtonItem:menu];
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -396,25 +440,26 @@
     
     if ([[[assist shared]getArray] count] == 0)
     {
-        arrRecipientsForRequest=[[NSMutableArray alloc] init];
-        NSLog(@"%@",self.receiver);
+        arrRecipientsForRequest = [[NSMutableArray alloc] init];
+        NSLog(@"%@", self.receiver);
+
         [arrRecipientsForRequest addObject:self.receiver];
         NSLog(@"%@",arrRecipientsForRequest);
+
         [[assist shared]setArray:[arrRecipientsForRequest mutableCopy]];
     }
     if (isFromHome)
     {
         isAddRequest = YES;
         SelectRecipient * selOBJ = [[SelectRecipient alloc]init];
-        
+
         NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
         NSLog(@"%@",arrNav);
         [arrNav insertObject:selOBJ atIndex:1];
         [self.navigationController setViewControllers:arrNav];
-        
+
         [nav_ctrl setViewControllers:arrNav animated:NO];
         [self.navigationController popViewControllerAnimated:YES];
-  
     }
     else
     [self.navigationController popViewControllerAnimated:YES];
@@ -424,7 +469,7 @@
 - (void) initialize_send
 {
     [self.recip_back setStyleClass:@"barbackground_green"];
-    
+
     CGRect origin = self.reset_type.frame;
     origin.origin.x = 10;
     [UIView beginAnimations:nil context:nil];
@@ -433,7 +478,7 @@
 
     origin.size.width = 149;
     origin.origin.x = 162;
-    
+
     origin = self.request.frame;
     origin.size.width = 149;
     origin.origin.x = 9;
@@ -512,11 +557,16 @@
 {
     if ([self.amnt floatValue] == 0)
     {
-        NSLog(@"self.receiver is:  %@",self.receiver);
         NSString * alertMessage = @"";
-        if ([self.receiver valueForKey:@"nonuser"])
+
+        if (([self.receiver valueForKey:@"nonuser"] && ![self.receiver objectForKey:@"firstName"]) ||
+            ([[assist shared] isRequestMultiple] && [[[assist shared] getArray] count] > 1))
         {
             alertMessage = @"\xF0\x9F\x98\xAC\nPlease enter a value over $0.\n\nWe'd love to send a $0 payment, but it's actually surprisingly tricky.";
+        }
+        else if ([self.receiver valueForKey:@"nonuser"] && [self.receiver objectForKey:@"firstName"])
+        {
+            alertMessage = [NSString stringWithFormat:@"\xF0\x9F\x98\xAC\nPlease enter a value over $0.\n\nWe'd love to send a $0 payment to %@, but it's actually rather tricky.",[[self.receiver objectForKey:@"firstName"] capitalizedString]];
         }
         else
         {
@@ -567,13 +617,18 @@
     if ([self.amnt floatValue] == 0)
     {
         NSString * alertMessage = @"";
-        if ([self.receiver valueForKey:@"nonuser"])
+        if (([self.receiver valueForKey:@"nonuser"] && ![self.receiver objectForKey:@"firstName"]) ||
+           ([[assist shared] isRequestMultiple] && [[[assist shared] getArray] count] > 1))
         {
-            alertMessage = @"\xF0\x9F\x98\xAC\nPlease enter a value over $0. We'd love to send a $0 request, but it would just get too confusing for everyone.";
+            alertMessage = @"\xF0\x9F\x98\xAC\nPlease enter a value over $0.\n\nWe'd love to send a $0 request, but it would just get too confusing for everyone.";
+        }
+        else if ([self.receiver valueForKey:@"nonuser"] && [self.receiver objectForKey:@"firstName"])
+        {
+            alertMessage = [NSString stringWithFormat:@"\xF0\x9F\x98\xAC\nPlease enter a value over $0.\n\nSurely %@ owes you more than that...", [[self.receiver objectForKey:@"firstName"] capitalizedString]];
         }
         else
         {
-            alertMessage = [NSString stringWithFormat:@"\xF0\x9F\x98\xAC\nPlease enter a value over $0.\n\nSurely %@ owes you more than that...",[[self.receiver objectForKey:@"FirstName"] capitalizedString]];
+            alertMessage = [NSString stringWithFormat:@"\xF0\x9F\x98\xAC\nPlease enter a value over $0.\n\nSurely %@ owes you more than that...", [[self.receiver objectForKey:@"FirstName"] capitalizedString]];
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!"
                                                         message:alertMessage

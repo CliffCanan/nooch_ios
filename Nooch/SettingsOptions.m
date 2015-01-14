@@ -101,13 +101,6 @@
         [glyph_noBank removeFromSuperview];
     }
 
-    NSShadow * shadowNavText = [[NSShadow alloc] init];
-    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .26);
-    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
-    
-    NSDictionary * titleAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
-                                       NSShadowAttributeName: shadowNavText};
-    [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
     [self.navigationItem setHidesBackButton:YES];
 
     UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
