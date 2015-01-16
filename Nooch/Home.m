@@ -384,7 +384,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
     CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
     CFIndex nPeople = ABAddressBookGetPersonCount(addressBook);
-    NSLog(@"Number of people in Address Book %ld",nPeople);
 
     for (int i = 0; i < nPeople; i++)
     {
@@ -556,7 +555,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     sentFromHomeScrn = YES;
     ProfileInfo *info = [ProfileInfo new];
     [self.navigationController pushViewController:info animated:YES];
-    [self.phone_incomplete removeFromSuperview];
+    //[self.phone_incomplete removeFromSuperview];
 }
 
 -(void)go_history
@@ -577,14 +576,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     [super viewDidAppear:animated];
     int bannerAlert = 0;
-
-    NSShadow * shadowNavText = [[NSShadow alloc] init];
-    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .26);
-    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
-
-    NSDictionary * titleAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
-                                       NSShadowAttributeName: shadowNavText};
-    [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
 
     [self.navigationItem setTitle:@"Nooch"];
     //Update Pending Status
@@ -624,10 +615,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
     else
     {
-        Register *reg = [Register new];
-        [nav_ctrl pushViewController:reg animated:YES];
+        //Register *reg = [Register new];
+        //[nav_ctrl pushViewController:reg animated:YES];
         me = [core new];
-        [ARProfileManager clearProfile];
+        //[ARProfileManager clearProfile];
         return;
     }
 
@@ -1307,10 +1298,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     bodyText.textColor = [Helpers hexColor:@"313233"];
     bodyText.textAlignment = NSTextAlignmentCenter;
     [mainView addSubview:bodyText];
-
-    UIImageView * imageShow = [[UIImageView alloc]initWithFrame:CGRectMake(11, 40, 280, 380)];
-    imageShow.image = [UIImage imageNamed:@"Knox_Infobox"];
-    imageShow.contentMode = UIViewContentModeScaleAspectFit;
     
     NSLog(@"picWidth is: %d  and picHeight is: %d",picwidthInt,picHeightInt);
     
@@ -1343,7 +1330,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         space_container.frame = CGRectMake(0, 28, 302, 10);
         glyph_download.frame = CGRectMake(18, 5, 22, 29);
         title.frame = CGRectMake(0, 5, 302, 28);
-        imageShow.frame = CGRectMake(1, 43, 300, 340);
         btnLink.frame = CGRectMake(10,mainView.frame.size.height-51, 280, 44);
     }
 
@@ -1356,7 +1342,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [btnClose_shell addSubview:btnClose];
 
     [mainView addSubview:btnClose_shell];
-    //[mainView addSubview:imageShow];
     [mainView addSubview:mainImage];
     [mainView addSubview:btnLink];
     [overlay addSubview:mainView];
@@ -1422,7 +1407,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 		view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 140, 160)];
         
         imageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 10, 100, 100)];
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.layer.cornerRadius = 50;
 
         name = [[UILabel alloc] initWithFrame:CGRectMake(0, 117, 140, 20)];
@@ -1579,7 +1564,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     NSMutableDictionary * favorite = [NSMutableDictionary new];
     [favorite addEntriesFromDictionary:[favorites objectAtIndex:index]];
 
-    // NSLog(@"Selected Favorite is: %@", favorite);
+    NSLog(@"Selected Favorite is: %@", favorite);
 
     if (favorite[@"MemberId"])
     {
@@ -1610,6 +1595,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [favorite setObject:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
             [top_button removeFromSuperview];
             isFromHome = YES;
+            isFromMyApt = NO;
             HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
             [self.navigationController pushViewController:trans animated:YES];
             return;
@@ -1687,10 +1673,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             return value;
         }
     }    
-}
-
-- (void)myTask {
-    [blankView removeFromSuperview];
 }
 
 -(void)showMenu
@@ -2051,23 +2033,25 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             }
 
             isFromHome = YES;
+            isFromMyApt = NO;
 
             HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
             return;
         }
     }
-    
+
     else if([tagName isEqualToString:@"getMemberDetails"])
     {
         NSError * error;
-        
+
         NSMutableDictionary * dict = [NSJSONSerialization
         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
         options:kNilOptions
         error:&error];
         isFromHome = YES;
-        
+        isFromMyApt = NO;
+
         HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
         [self.navigationController pushViewController:how_much animated:YES];
     }

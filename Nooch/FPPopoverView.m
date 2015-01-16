@@ -57,9 +57,9 @@
         self.backgroundColor = [UIColor clearColor];
         self.clipsToBounds = YES;
         
-        self.layer.shadowOpacity = 0.7;
-        self.layer.shadowRadius = 5;
-        self.layer.shadowOffset = CGSizeMake(-3, 3);
+        self.layer.shadowOpacity = 0.44;
+        self.layer.shadowRadius = 4.5;
+        self.layer.shadowOffset = CGSizeMake(-1, 3);
 
         //to get working the animations
         self.contentMode = UIViewContentModeRedraw;

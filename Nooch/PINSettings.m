@@ -30,21 +30,29 @@
 	// Do any additional setup after loading the view.
     self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setTitle:@"Security Settings"];
+    [self.navigationItem setHidesBackButton:YES];
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
+
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
     backgroundImage.alpha = .25;
     [self.view addSubview:backgroundImage];
 
-    [self.navigationItem setLeftBarButtonItem:nil];
-    UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    NSShadow * shadowNavText = [[NSShadow alloc] init];
+    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .2);
+    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
+    NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
+
+    UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backtn)];
+
+    UILabel * back_button = [UILabel new];
     [back_button setStyleId:@"navbar_back"];
-    [back_button addTarget:self action:@selector(backtn) forControlEvents:UIControlEventTouchUpInside];
-    [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
-    [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
-    back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [back_button setUserInteractionEnabled:YES];
+    [back_button addGestureRecognizer: backTap];
+    back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
     
     UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+    
     [self.navigationItem setLeftBarButtonItem:menu];
 
     UIButton *change_pin = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -120,18 +128,21 @@
     [self.view addSubview:info2];
 }
 
--(void)viewWillAppear:(BOOL)animated {
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     [self.navigationItem setTitle:@"Security Settings"];
     self.screenName = @"Pin Settings Screen";
 }
 
--(void)backtn {
+-(void)backtn
+{
     [self.navigationItem setLeftBarButtonItem:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)changepass{
+- (void)changepass
+{
     ResetPassword * reset = [ResetPassword new];
     [self.navigationController presentViewController:reset animated:YES completion:nil];
 }

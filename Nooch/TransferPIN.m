@@ -38,7 +38,7 @@
     self = [super initWithNibName:nil bundle:nil];
     if (self)
     {
-        NSLog(@"self.receiver is: %@", receiver);
+        NSLog(@"PIN: self.receiver is: %@", receiver);
         // Custom initialization
         if ([receiver valueForKey:@"FirstName"])
         {
@@ -62,16 +62,20 @@
         self.type = type;
         self.receiver = receiver;
         self.amnt = amount;
+
+        NSLog(@"\nself.type is: %@\nself.amnt is: %f", self.type, self.amnt);
     }
     return self;
 }
 
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     self.screenName = @"TransferPin Screen";
 }
 
--(void)viewDidDisappear:(BOOL)animated{
+-(void)viewDidDisappear:(BOOL)animated
+{
     [self.hud hide:YES];
     [super viewDidDisappear:animated];
 }
@@ -91,7 +95,8 @@
                                              forEvent:nil];
     }
     //[getlocation.locationManager requestWhenInUseAuthorization];
-	[getlocation.locationManager startUpdatingLocation];    
+	[getlocation.locationManager startUpdatingLocation];
+
     // Do any additional setup after loading the view from its nib.
     self.pin = [UITextField new];
     [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
@@ -104,18 +109,27 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
     [self.navigationItem setTitle:@"Enter PIN"];
+    [self.navigationItem setHidesBackButton:YES];
+
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, 300, 60)];
     [title setText:@"Enter Your PIN to confirm your"]; [title setTextAlignment:NSTextAlignmentCenter];
     [title setNumberOfLines:2];
     [title setStyleClass:@"pin_instructiontext"];
     [self.view addSubview:title];
-    
-    UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+
+    NSShadow * shadowNavText = [[NSShadow alloc] init];
+    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .2);
+    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
+    NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
+
+    UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backPressed:)];
+
+    UILabel * back_button = [UILabel new];
     [back_button setStyleId:@"navbar_back"];
-    [back_button addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
-    [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
-    back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [back_button setUserInteractionEnabled:YES];
+    [back_button addGestureRecognizer: backTap];
+    back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
+
     UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
     [self.navigationItem setLeftBarButtonItem:menu];
 
@@ -175,13 +189,38 @@
 
     if ([self.receiver objectForKey:@"nonuser"])
     {
+        UILabel * glyph_nonuserType = [UILabel new];
+        [glyph_nonuserType setTextColor:[UIColor whiteColor]];
+
+        if ([self.receiver objectForKey:@"email"])
+        {
+            [glyph_nonuserType setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
+            glyph_nonuserType.attributedText = [[NSAttributedString alloc]initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope-o"] attributes:textAttributes];
+        }
+        else if ([self.receiver objectForKey:@"phone"])
+        {
+            [glyph_nonuserType setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
+            glyph_nonuserType.attributedText = [[NSAttributedString alloc]initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-mobile"] attributes:textAttributes];
+        }
+
         if ([self.receiver objectForKey:@"firstName"] && [self.receiver objectForKey:@"lastName"])
         {
+            int numOfChars = [[self.receiver objectForKey:@"firstName"] length] + [[self.receiver objectForKey:@"lastName"] length];
+            if (numOfChars > 23) {numOfChars = 23;}
+
             to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",[self.receiver objectForKey:@"firstName"],[self.receiver objectForKey:@"lastName"]] attributes:textAttributes];
+
+            [glyph_nonuserType setFrame:CGRectMake(198 + ((numOfChars * 10) / 2), 198, 20, 38)];
+            [self.view addSubview:glyph_nonuserType];
         }
         else if ([self.receiver objectForKey:@"firstName"])
         {
+            int numOfChars = [[self.receiver objectForKey:@"firstName"] length];
+
             to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"firstName"]] attributes:textAttributes];
+
+            [glyph_nonuserType setFrame:CGRectMake(200 + ((numOfChars * 10) / 2), 198, 20, 38)];
+            [self.view addSubview:glyph_nonuserType];
         }
         else if ([self.receiver objectForKey:@"email"])
         {
@@ -206,7 +245,14 @@
         }
         else
         {
-            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@ %@",[[self.receiver objectForKey:@"FirstName"] capitalizedString],[[self.receiver objectForKey:@"LastName"] capitalizedString]] attributes:textAttributes];
+            if (isFromMyApt && [self.receiver objectForKey:@"AptName"])
+            {
+                to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", [self.receiver objectForKey:@"AptName"]] attributes:textAttributes];
+            }
+            else if ([self.receiver objectForKey:@"FirstName"])
+            {
+                to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", [[self.receiver objectForKey:@"FirstName"] capitalizedString], [[self.receiver objectForKey:@"LastName"] capitalizedString]] attributes:textAttributes];
+            }
         }
     }
 
@@ -335,7 +381,8 @@
     }
 }
 
--(void)backPressed:(id)sender{
+-(void)backPressed:(id)sender
+{
     [self.navigationItem setLeftBarButtonItem:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -452,6 +499,7 @@
         Altitude = @"0.0";
     }
 }
+
 - (void)locationError:(NSError *)error {
 	//locationLabel.text = [error description];
 }
@@ -625,6 +673,8 @@
                 [transactionInputTransfer setValue:country forKey:@"Country"];
                 [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
  
+                NSLog(@"SEND/REQUEST --> transactionInputTransfer #1 is: %@", transactionInputTransfer);
+    
                 if ([self.type isEqualToString:@"send"])
                 {
                     if ([self.receiver objectForKey:@"email"])
@@ -644,6 +694,7 @@
                                                self.phone,@"receiverPhoneNumer", nil];
                     }
                 }
+                NSLog(@"SEND/REQUEST --> transactionInputTransfer #2 is: %@", transactionInputTransfer);
                 if ([self.type isEqualToString:@"request"])
                 {
                  /* transactionInputTransfer = [[NSMutableDictionary alloc]init];
@@ -724,6 +775,7 @@
                     }
                 }
 
+                NSLog(@"SEND/REQUEST --> transactionInputTransfer #3 is: %@", transactionInputTransfer);
                 NSLog(@"Type: %@ - %@", self.type, transactionTransfer);
 
                 postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
@@ -754,6 +806,9 @@
                         urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserThroughPhoneUsingKnox"];
                     }
                 }
+
+                NSLog(@"SEND/REQUEST --> urlStrTransfer is: %@", urlStrTranfer);
+
                 urlTransfer = [NSURL URLWithString:urlStrTranfer];
                 requestTransfer = [[NSMutableURLRequest alloc] initWithURL:urlTransfer];
                 [requestTransfer setHTTPMethod:@"POST"];
@@ -767,7 +822,8 @@
                     self.respData = [NSMutableData data];
                 }
             }
-            else {
+            else
+            {
                 [self.fourth_num setBackgroundColor:[UIColor clearColor]];
                 [self.third_num setBackgroundColor:[UIColor clearColor]];
                 [self.second_num setBackgroundColor:[UIColor clearColor]];
@@ -863,24 +919,27 @@
             }
         }
     }
+
     else if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"request"])
     {
         if ([tagName isEqualToString:@"ValidatePinNumber"])
         {
             transactionInputTransfer = [[NSMutableDictionary alloc]init];
+
             if ([[assist shared] getTranferImage])
             {
                 NSData *data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
                 NSUInteger len = data.length;
                 uint8_t *bytes = (uint8_t *)[data bytes];
                 NSMutableString *result1 = [NSMutableString stringWithCapacity:len * 3];
-                for (NSUInteger i = 0; i < len; i++) {
+                for (NSUInteger i = 0; i < len; i++)
+                {
                     if (i) {
                         [result1 appendString:@","];
                     }
                     [result1 appendFormat:@"%d", bytes[i]];
                 }
-                NSArray*arr=[result1 componentsSeparatedByString:@","];
+                NSArray *arr = [result1 componentsSeparatedByString:@","];
                 [transactionInputTransfer setValue:arr forKey:@"Picture"];
             }
 
@@ -912,12 +971,13 @@
             NSString * receiverName = [[self.receiver valueForKey:@"FirstName"] stringByAppendingString:[NSString stringWithFormat:@" %@",[self.receiver valueForKey:@"LastName"]]];
             [transactionInputTransfer setValue:receiverName forKey:@"Name"];
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
-            NSDate * date = [NSDate date];
 
+            NSDate * date = [NSDate date];
             NSDateFormatter * dateFormat = [[NSDateFormatter alloc] init];
             [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss.SS"];
             NSString * TransactionDate = [dateFormat stringFromDate:date];
 
+            NSLog(@"SEND/REQUEST --> transactionInputTransfer A) is: %@", transactionInputTransfer);
             [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
             [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
@@ -935,6 +995,8 @@
             else {
                 transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
             }
+            NSLog(@"SEND/REQUEST --> transactionInputTransfer B) is: %@", transactionInputTransfer);
+
         }
 
         NSLog(@"TransactionTransfer Object is: %@",transactionTransfer);
@@ -951,7 +1013,12 @@
             urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyUsingKnox"];
         }
         urlTransfer = [NSURL URLWithString:urlStrTranfer];
+
+        NSLog(@"SEND/REQUEST --> urlStrTranfer is: %@", urlStrTranfer);
+
         requestTransfer = [[NSMutableURLRequest alloc] initWithURL:urlTransfer];
+        NSLog(@"SEND/REQUEST --> requestTransfer is: %@", requestTransfer);
+
         requestTransfer.timeoutInterval=12000;
         [requestTransfer setHTTPMethod:@"POST"];
         [requestTransfer setValue:postLengthTransfer forHTTPHeaderField:@"Content-Length"];
@@ -959,6 +1026,7 @@
         [requestTransfer setHTTPBody:postTransfer];
 
         NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestTransfer delegate:self];
+        NSLog(@"NSURLConnection is: %@", connection);
         if (connection) {
             self.respData = [NSMutableData data];
         }
@@ -968,15 +1036,15 @@
     {
         if ([tagName isEqualToString:@"ValidatePinNumber"])
         {
-            transactionInputTransfer=[[NSMutableDictionary alloc]init];
+            transactionInputTransfer = [[NSMutableDictionary alloc]init];
             [transactionInputTransfer setValue:[dictResult valueForKey:@"Status"] forKey:@"PinNumber"];
             [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
             [transactionInputTransfer setValue:[self.receiver objectForKey:@"TransactionId"] forKey:@"TransactionId"];
+
             NSDate *date = [NSDate date];
             NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
             [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss.SS"];
             NSString *TransactionDate = [dateFormat stringFromDate:date];
-            [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
             
             if ([[self.receiver objectForKey:@"response"] isEqualToString:@"accept"])
             {
@@ -988,6 +1056,8 @@
             }
 
             NSString *uid = [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"];
+
+            [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
             [transactionInputTransfer setValue:@"RequestRespond" forKey:@"TransactionType"];
             [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
             [transactionInputTransfer setValue:uid forKey:@"DeviceId"];
@@ -1003,20 +1073,28 @@
 
             transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"handleRequestInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
         }
+
+        NSLog(@"TransactionTransfer Object is: %@", transactionTransfer);
+
         postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
                                                        options:NSJSONWritingPrettyPrinted error:&error];;
         postLengthTransfer = [NSString stringWithFormat:@"%d", [postTransfer length]];
+
         self.respData = [NSMutableData data];
         urlStrTranfer = [[NSString alloc] initWithString:MyUrl];
         urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"HandleRequestMoney"];
         urlTransfer = [NSURL URLWithString:urlStrTranfer];
+
+        
         requestTransfer = [[NSMutableURLRequest alloc] initWithURL:urlTransfer];
         [requestTransfer setHTTPMethod:@"POST"];
         [requestTransfer setValue:postLengthTransfer forHTTPHeaderField:@"Content-Length"];
         [requestTransfer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
         [requestTransfer setHTTPBody:postTransfer];
+        NSLog(@"requestTransfer is: %@", requestTransfer);
         requestTransfer.timeoutInterval=12000;
         NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestTransfer delegate:self];
+        NSLog(@"NSURLConnection is: %@", connection);
         if (connection) {
             self.respData = [NSMutableData data];
         }

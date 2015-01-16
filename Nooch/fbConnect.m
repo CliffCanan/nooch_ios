@@ -37,14 +37,23 @@
     [self.view addSubview:backgroundImage];
 
     [self.navigationItem setLeftBarButtonItem:nil];
-    UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.navigationItem setHidesBackButton:YES];
+
+    NSShadow * shadowNavText = [[NSShadow alloc] init];
+    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .2);
+    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
+    NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
+
+    UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backtn)];
+
+    UILabel * back_button = [UILabel new];
     [back_button setStyleId:@"navbar_back"];
-    [back_button addTarget:self action:@selector(backtn) forControlEvents:UIControlEventTouchUpInside];
-    [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
-    [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
-    back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [back_button setUserInteractionEnabled:YES];
+    [back_button addGestureRecognizer: backTap];
+    back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
 
     UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+
     [self.navigationItem setLeftBarButtonItem:menu];
 
     UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake(15, 16, 250, 25)];

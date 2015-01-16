@@ -81,6 +81,7 @@
 		5C39FEC51A115CA600B2E2F4 /* nooch-logoSVCtest.svg in Resources */ = {isa = PBXBuildFile; fileRef = 5C39FEC41A115CA600B2E2F4 /* nooch-logoSVCtest.svg */; };
 		5C4A205019E77B9600D1A0EE /* Appirater.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4A204D19E77B9600D1A0EE /* Appirater.m */; };
 		5C4A205319E77C0000D1A0EE /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C4A205219E77C0000D1A0EE /* StoreKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		5C597C9E1A67305F0028E29D /* SetAptDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C597C9D1A67305F0028E29D /* SetAptDetails.m */; };
 		5C5D073219DE70CB00B07A30 /* 0_home-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C5D073019DE70CB00B07A30 /* 0_home-bg.png */; };
 		5C69CFBC19C8F20F00EB406F /* SIAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69CFB819C8F20F00EB406F /* SIAlertView.m */; };
 		5C69CFBD19C8F20F00EB406F /* UIWindow+SIUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69CFBA19C8F20F00EB406F /* UIWindow+SIUtils.m */; };
@@ -147,6 +148,8 @@
 		5C83949819EC60C200EBEBA4 /* No-Internet-Full-Screen_sm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83949519EC60C200EBEBA4 /* No-Internet-Full-Screen_sm@2x.png */; };
 		5C83949919EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83949619EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png */; };
 		5C861FA31A0BFAAD00275CD1 /* 2_selectRecipient_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C861FA11A0BFAAD00275CD1 /* 2_selectRecipient_bg@2x.png */; };
+		5C96BFEE1A661A1D009B2877 /* SelectApt.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C96BFED1A661A1D009B2877 /* SelectApt.m */; };
+		5C96BFF11A66392A009B2877 /* MyApartment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C96BFF01A66392A009B2877 /* MyApartment.m */; };
 		5CAA41A71A3FE12700899563 /* connectBank-circled.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CAA41A11A3FE12700899563 /* connectBank-circled.png */; };
 		5CAA41A81A3FE12700899563 /* connectBank-circled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CAA41A21A3FE12700899563 /* connectBank-circled@2x.png */; };
 		5CAA41A91A3FE12700899563 /* home-circled.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CAA41A31A3FE12700899563 /* home-circled.png */; };
@@ -439,6 +442,8 @@
 		5C4A204D19E77B9600D1A0EE /* Appirater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Appirater.m; sourceTree = "<group>"; };
 		5C4A204F19E77B9600D1A0EE /* AppiraterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppiraterDelegate.h; sourceTree = "<group>"; };
 		5C4A205219E77C0000D1A0EE /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		5C597C9C1A67304C0028E29D /* SetAptDetails.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetAptDetails.h; sourceTree = "<group>"; };
+		5C597C9D1A67305F0028E29D /* SetAptDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetAptDetails.m; sourceTree = "<group>"; };
 		5C5D073019DE70CB00B07A30 /* 0_home-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0_home-bg.png"; sourceTree = "<group>"; };
 		5C69CFB719C8F20F00EB406F /* SIAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIAlertView.h; sourceTree = "<group>"; };
 		5C69CFB819C8F20F00EB406F /* SIAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIAlertView.m; sourceTree = "<group>"; };
@@ -545,6 +550,10 @@
 		5C83949519EC60C200EBEBA4 /* No-Internet-Full-Screen_sm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No-Internet-Full-Screen_sm@2x.png"; sourceTree = "<group>"; };
 		5C83949619EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No-Internet-Full-Screen-lg@2x.png"; sourceTree = "<group>"; };
 		5C861FA11A0BFAAD00275CD1 /* 2_selectRecipient_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "2_selectRecipient_bg@2x.png"; sourceTree = "<group>"; };
+		5C96BFED1A661A1D009B2877 /* SelectApt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectApt.m; sourceTree = "<group>"; };
+		5C96BFEF1A661A3B009B2877 /* SelectApt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectApt.h; sourceTree = "<group>"; };
+		5C96BFF01A66392A009B2877 /* MyApartment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyApartment.m; sourceTree = "<group>"; };
+		5C96BFF21A66393E009B2877 /* MyApartment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyApartment.h; sourceTree = "<group>"; };
 		5CAA41A11A3FE12700899563 /* connectBank-circled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connectBank-circled.png"; sourceTree = "<group>"; };
 		5CAA41A21A3FE12700899563 /* connectBank-circled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connectBank-circled@2x.png"; sourceTree = "<group>"; };
 		5CAA41A31A3FE12700899563 /* home-circled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home-circled.png"; sourceTree = "<group>"; };
@@ -1291,6 +1300,19 @@
 			path = "../../../../Cocoa Libraries/EAIntroView-master/Resources/Intro";
 			sourceTree = "<group>";
 		};
+		5C96BFEC1A6619B5009B2877 /* Paying Rent */ = {
+			isa = PBXGroup;
+			children = (
+				5C96BFEF1A661A3B009B2877 /* SelectApt.h */,
+				5C96BFED1A661A1D009B2877 /* SelectApt.m */,
+				5C96BFF21A66393E009B2877 /* MyApartment.h */,
+				5C96BFF01A66392A009B2877 /* MyApartment.m */,
+				5C597C9C1A67304C0028E29D /* SetAptDetails.h */,
+				5C597C9D1A67305F0028E29D /* SetAptDetails.m */,
+			);
+			name = "Paying Rent";
+			sourceTree = "<group>";
+		};
 		5CAA41B11A44C55B00899563 /* artisan-sdk-latestNEW */ = {
 			isa = PBXGroup;
 			children = (
@@ -1404,6 +1426,7 @@
 		6B30372B15FA3FF300056DAD /* Nooch */ = {
 			isa = PBXGroup;
 			children = (
+				5C96BFEC1A6619B5009B2877 /* Paying Rent */,
 				01085FDD1803356300A31F63 /* Registration and Login Controllers */,
 				01085FE1180335C500A31F63 /* Initial Controllers */,
 				01085FDF1803359700A31F63 /* Sliding Menus */,
@@ -1893,6 +1916,7 @@
 				6B3037AD15FA45BB00056DAD /* NSData+AESCrypt.m in Sources */,
 				6B3037AF15FA45BB00056DAD /* NSString+AESCrypt.m in Sources */,
 				5C69D05F19C941DB00EB406F /* RTSpinKitCircleAnimation.m in Sources */,
+				5C96BFF11A66392A009B2877 /* MyApartment.m in Sources */,
 				0103AEB118FC8B8D003225DA /* UIFont+FontAwesome.m in Sources */,
 				84193343187537A800D85FC4 /* GetLocation.m in Sources */,
 				846A5E3119DAB0FC0093FF9C /* MKAnnotationView+WebCache.m in Sources */,
@@ -1921,6 +1945,7 @@
 				5C69D02F19C9380500EB406F /* IQTitleBarButtonItem.m in Sources */,
 				01B2CA9C18B3CC20008E6901 /* SWUtilityButtonTapGestureRecognizer.m in Sources */,
 				84C3EF1B187D101E004687F6 /* ReEnterPin.m in Sources */,
+				5C96BFEE1A661A1D009B2877 /* SelectApt.m in Sources */,
 				846A5E3C19DAB0FC0093FF9C /* UIImage+MultiFormat.m in Sources */,
 				846A5E3619DAB0FC0093FF9C /* SDWebImageDownloader.m in Sources */,
 				843B87091A108E3000C036A2 /* METoast.m in Sources */,
@@ -1959,6 +1984,7 @@
 				6B89276116DEA49C00F9100F /* FPPopoverView.m in Sources */,
 				841A3E0F18A61491001DAAA2 /* UIImage+RoundedCorner.m in Sources */,
 				5C69CFE419C92F6000EB406F /* TSMessageView.m in Sources */,
+				5C597C9E1A67305F0028E29D /* SetAptDetails.m in Sources */,
 				5C69D07119CA0F5B00EB406F /* EAIntroView.m in Sources */,
 				841A3E0E18A61491001DAAA2 /* UIImage+Resize.m in Sources */,
 				01B2CA9D18B3CC20008E6901 /* SWUtilityButtonView.m in Sources */,

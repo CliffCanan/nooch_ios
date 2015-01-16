@@ -45,10 +45,9 @@
         av.tag=6;
     } */
 
-    NSLog(@"\n\nDEFAULTS ARE: %@",user);
     self.location = NO;
-    [self.view setBackgroundColor:[UIColor whiteColor]];
     self.navigationController.navigationBar.topItem.title = @"";
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
 
@@ -164,9 +163,10 @@
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
         [av show];
+
         [self.navigationItem setTitle:@"Group Request"];
         [self.navigationItem setRightBarButtonItem:Nil];
-        
+
         UIButton * Done = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         Done.frame = CGRectMake(307, 25, 16, 35);
         [Done setStyleId:@"icon_RequestMultiple"];
@@ -178,6 +178,7 @@
 
         UIBarButtonItem * DoneItem = [[UIBarButtonItem alloc] initWithCustomView:Done];
         [self.navigationItem setRightBarButtonItem:DoneItem];
+
         isRecentList = NO;
         searching = NO;
         emailEntry = NO;
@@ -215,19 +216,27 @@
     else
     {
         [self.navigationItem setTitle:@"Select Recipient"];
-        [self.navigationItem setHidesBackButton:NO];
+        [self.navigationItem setHidesBackButton:YES];
 
-        UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        NSShadow * shadowNavText = [[NSShadow alloc] init];
+        shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .2);
+        shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
+        NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
+
+        UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backPressed:)];
+
+        UILabel * back_button = [UILabel new];
         [back_button setStyleId:@"navbar_back"];
-        [back_button addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
-        [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
-        back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        [back_button setUserInteractionEnabled:YES];
+        [back_button addGestureRecognizer: backTap];
+        back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
+
         UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+
         [self.navigationItem setLeftBarButtonItem:menu];
+        [self.navigationItem setRightBarButtonItem:Nil];
 
         isUserByLocation = NO;
-        [self.navigationItem setRightBarButtonItem:Nil];
         [[assist shared]setRequestMultiple:NO];
         [self.completed_pending setSelectedSegmentIndex:0];
         self.location = NO;
@@ -247,11 +256,6 @@
         [self.contacts setFrame:frame];
         [UIView commitAnimations];
     }
-}
-
--(void)viewDidDisappear:(BOOL)animated{
-    [self.hud hide:YES];
-    [super viewDidDisappear:animated];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -302,7 +306,14 @@
 
 }
 
--(void)backPressed:(id)sender{
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [self.hud hide:YES];
+    [super viewDidDisappear:animated];
+}
+
+-(void)backPressed:(id)sender
+{
     [self.navigationItem setLeftBarButtonItem:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -329,6 +340,8 @@
     }
     isAddRequest = NO;
     isFromHome = NO;
+    isFromMyApt = NO;
+
     HowMuch * how_much = [[HowMuch alloc] init];
     [self.navigationController pushViewController:how_much animated:YES];
 }
@@ -356,80 +369,6 @@
                               } completion: nil
     ];
 }
-
-/*
--(void) facebook
-{
-    NSDictionary * options = @{
-            ACFacebookAppIdKey: @"198279616971457",
-            ACFacebookPermissionsKey: @[@"friends_about_me"],
-            ACFacebookAudienceKey: ACFacebookAudienceFriends
-    };
-    ACAccountType *facebookAccountType = [me.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-    [me.accountStore requestAccessToAccountsWithType:facebookAccountType
-            options:options completion:^(BOOL granted, NSError *e)
-     {
-         
-     }];
-    NSString *acessToken = [NSString stringWithFormat:@"%@",me.facebookAccount.credential.oauthToken];
-    NSDictionary *parameters = @{@"access_token": acessToken,@"fields":@"id,installed,username,first_name,last_name"};
-    NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/friends"];
-    SLRequest *feedRequest = [SLRequest
-                              requestForServiceType:SLServiceTypeFacebook
-                              requestMethod:SLRequestMethodGET
-                              URL:feedURL
-                              parameters:parameters];
-    feedRequest.account = me.facebookAccount;
-    [feedRequest performRequestWithHandler:^(NSData *respData,
-                                             NSHTTPURLResponse *urlResponse, NSError *error)
-     {
-         NSString *resp = [[NSString alloc] initWithData:respData encoding:NSUTF8StringEncoding];
-         NSError* err;
-        NSDictionary *d = [NSJSONSerialization
-                         JSONObjectWithData:[resp dataUsingEncoding:NSUTF8StringEncoding]
-                         options:kNilOptions
-                         error:&err];
-         NSMutableArray *friends = [d objectForKey:@"data"];
-         NSMutableArray *temp = [NSMutableArray new];
-         for(NSMutableDictionary *dict in friends){
-             if (![dict objectForKey:@"id"]) continue;
-             NSMutableDictionary *new = [NSMutableDictionary new];
-             [new addEntriesFromDictionary:dict];
-             [new setObject:dict[@"id"] forKey:@"facebookId"];
-             if([dict objectForKey:@"installed"]) [new setObject:@"wut2do" forKey:@"MemberId"];
-             [temp addObject:new];
-         }
-         NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-         NSMutableArray *temp2 = [[NSMutableArray alloc] init];
-         NSMutableArray *temp3 = [[NSMutableArray alloc] init];
-         NSMutableArray *fbFriendsTemp;// = [[NSMutableArray alloc] init];
-         NSMutableArray *fbNoochFriendsTemp;// = [[NSMutableArray alloc] init];
-         for(int i= 0; i<[temp count];i++){
-             NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-             if([[temp objectAtIndex:i] objectForKey:@"first_name"] != NULL)[dict setObject:[NSString stringWithFormat:@"%@",[[temp objectAtIndex:i] objectForKey:@"first_name"]] forKey:@"FirstName"];
-             if([[temp objectAtIndex:i] objectForKey:@"last_name"] != NULL)[dict setObject:[NSString stringWithFormat:@"%@",[[temp objectAtIndex:i] objectForKey:@"last_name"]] forKey:@"LastName"];
-             [dict setObject:[NSString stringWithFormat:@"%@",[[temp objectAtIndex:i] objectForKey:@"name"]] forKey:@"name"];
-             if([[temp objectAtIndex:i] objectForKey:@"username"] != NULL) [dict setObject:[NSString stringWithFormat:@"%@",[[temp objectAtIndex:i] objectForKey:@"username"]] forKey:@"UserName"];
-             [dict setObject:[NSString stringWithFormat:@"%@",[[temp objectAtIndex:i] objectForKey:@"facebookId"]] forKey:@"facebookId"];
-             NSString *photoURL;
-             if([dict objectForKey:@"UserName"] != NULL) photoURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square", [dict objectForKey:@"UserName"]];
-             else if([dict objectForKey:@"facebookId"] != NULL) photoURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square", [dict objectForKey:@"facebookId"]];
-             [dict setObject:photoURL forKey:@"Photo"];
-             if([[temp objectAtIndex:i] objectForKey:@"MemberId"] != NULL){
-                 [dict setObject:[NSString stringWithFormat:@"%@",[[temp objectAtIndex:i] objectForKey:@"MemberId"]] forKey:@"MemberId"];
-                 [temp3 addObject:dict];
-             } else
-                 [temp2 addObject:dict];
-         }
-         fbFriendsTemp = [[temp2 sortedArrayUsingDescriptors:[NSArray arrayWithObject:descriptor]] mutableCopy];
-         fbNoochFriendsTemp = [[temp3 sortedArrayUsingDescriptors:[NSArray arrayWithObject:descriptor]] mutableCopy];
-         
-         [[assist shared] addAssos:fbFriendsTemp];
-         [[assist shared] addAssos:fbNoochFriendsTemp];
-         //friends = [me cleanForSave:friends];
-         //[self facebookProcess:friends];
-     }];
-}  */
 
 -(void)address_book
 {
@@ -505,7 +444,8 @@
             CFTypeRef emailIdValue = ABMultiValueCopyValueAtIndex(emailInfo, j);
             NSString * emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             
-            if (emailId != NULL)
+            if ( emailId != NULL &&
+                [emailId rangeOfString:@"@facebook.com"].location == NSNotFound )
             {
                 [curContact setObject:emailId forKey:@"UserName"];
                 [curContact setObject:emailId forKey:[NSString stringWithFormat:@"emailAdday%d",j]];
@@ -1296,7 +1236,9 @@
                         error:&error];
         
         NSMutableArray * temp = [NSMutableArray new];
-        for (NSDictionary * dict in self.recents) {
+ 
+        for (NSDictionary * dict in self.recents)
+        {
             NSMutableDictionary * prep = dict.mutableCopy;
             [prep setObject:@"YES" forKey:@"recent"];
             [temp addObject:prep];
@@ -1455,6 +1397,7 @@
             
             [dict setObject:@"nonuser" forKey:@"nonuser"];
             isFromHome = NO;
+            isFromMyApt = NO;
 
             HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
@@ -1531,6 +1474,7 @@
             
             [dict setObject:@"nonuser" forKey:@"nonuser"];
             isFromHome = NO;
+            isFromMyApt = NO;
             
             HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
@@ -1602,6 +1546,8 @@
             }
 
             isFromHome = NO;
+            isFromMyApt = NO;
+
             HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
         }
@@ -1627,7 +1573,7 @@
     return 1;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+/* - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (section == 0)
     {
@@ -1645,25 +1591,29 @@
     else {
         return @"";
     }
-}
+}*/
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
     UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake (10, 0, 200, 30)];
-    title.textColor = kNoochGrayDark;
+    [title setTextColor: kNoochGrayDark];
+    [title setFont:[UIFont fontWithName:@"Roboto-regular" size:15]];
 
     if (section == 0)
     {
-        if (self.location)
+        if (self.location) {
             title.text = @"Nearby Users";
-        else if (searching)
+        }
+        else if (searching) {
             title.text = @"Search Results";
-        else if (isRecentList)
+        }
+        else if (isRecentList) {
             title.text = @"Recent Contacts";
+        }
         else
             title.text = @"Send To Email Address";
-    }
+    } 
     else {
         title.text = @"";
     }
@@ -2313,6 +2263,8 @@
         //[self.navigationItem setLeftBarButtonItem:nil];
 
         isFromHome = NO;
+        isFromMyApt = NO;
+
         HowMuch * how_much = [[HowMuch alloc] initWithReceiver:receiver];
         [self.navigationController pushViewController:how_much animated:YES];
     }
@@ -2327,6 +2279,8 @@
         }
         [self.navigationItem setLeftBarButtonItem:nil];
         isFromHome = NO;
+        isFromMyApt = NO;
+
         NSDictionary * receiver = [self.recents objectAtIndex:indexPath.row];
 
         HowMuch * how_much = [[HowMuch alloc] initWithReceiver:receiver];

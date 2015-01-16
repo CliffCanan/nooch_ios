@@ -670,7 +670,7 @@
 
     [favorite setObject:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
 
-    isFromHome = YES;
+    isFromStats = YES;
     HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
     [self.navigationController pushViewController:trans animated:YES];
 }

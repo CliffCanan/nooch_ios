@@ -69,7 +69,7 @@ view {
 .lightbox_title {
     font-family: "Roboto";
     font-weight: regular;
-    font-size: 20px;
+    font-size: 19px;
     color: #3fabe1;
     text-align: center;
 }
@@ -129,11 +129,16 @@ view {
         width			: 190px;	
         left			: 65px;
     }
-
+    .fontAwesomeFont {
+        font-family : "FontAwesome";
+        font-size   : 38px;
+        top         : 1px;
+    }
     #navbar_back {
+        left		: 10px;
+        top         : 0px;
         height      : 40px;
-        width		: 38px;
-        left		: -10px;
+        width		: 30px;
         color       : #fff
         font-family : "FontAwesome";
         font-size   : 37px;
@@ -151,7 +156,8 @@ view {
         height      : 30px;
         color       : #fff
         font-family : "FontAwesome";
-        font-size   : 20px;
+        font-size   : 21px;
+        text-align  : center;
     }
 
  /******************************/
@@ -391,7 +397,7 @@ view {
 }
 .button_green_welcome:normal {
     left                : 20px;
-    width				: 260px;
+    width				: 262px;
     height				: 44px;
     color 				: white;
     border-radius		: 5px;
@@ -858,7 +864,10 @@ view {
 
 /****  Raised Box - This adds a drop-shadow. ****/
 .raised_view {
-    box-shadow	: 0 2px 2px rgba(109,110,113,0.6);
+    box-shadow	: 0 2px 2px rgba(109,110,113,0.55);
+}
+.raised_view_AptScrn {
+    box-shadow	: 1px 2px 1px rgba(109,110,113,0.4);
 }
 .welcomeBoxShadow {
     box-shadow  : 0 1px 1px rgba(88,90,92,.5);
@@ -1020,6 +1029,116 @@ view {
 /****  NAV BAR:  Select Recipient, How Much?, PIN screens  ****/
 .navbar_title_sendmoneyflow  { font-size: 18px; }
 
+/*********************************/
+/**   SELECT APARTMENT Screen   **/
+/*********************************/
+
+/**  Sets the overall table style, specifically the row-height and separator color. */
+table-view#select_apt {
+    width				: 320px;
+    background-color	: #ffffff;
+    row-height			: 74px;
+    separator-style 	: single-line;
+    separator-color		: rgba(188,190,192,.7);
+}
+table-view#select_aptWithoutSeperator {
+    width				: 320px;
+    background-color	: #ffffff;
+    row-height			: 124px;
+}
+.select_apt_name {
+    color       : #41abe1;
+    font-family : "Roboto";
+    font-weight : Regular;
+    font-size   : 18px;
+    text-align  : left;
+}
+#suggestApt_textField {
+    font-family		: "Roboto";
+    font-weight		: regular;
+    font-size		: 15px;
+    color 			: #313233;
+    border          : 1px solid rgba(188,190,192,0.8);
+    border-radius   : 4px;
+}
+#enterRent_textField {
+    font-family		: "Roboto";
+    font-weight		: regular;
+    font-size		: 22px;
+    color 			: #313233;
+    border          : 1px solid rgba(188,190,192,0.8);
+    border-radius   : 4px;
+}
+table-view#myAptLastPayments {
+    left			: 8px;
+    top				: 254px;
+    width			: 304px;
+    height			: 200px;
+    background-color: white;
+    row-height		: 50px;
+    separator-style : single-line;
+    separator-color	: rgba(188,190,192,0.9);
+}
+.button_green_shorter:normal {
+    left                : 20px;
+    width				: 280px;
+    height				: 42px;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 18px;
+    background-image	: linear-gradient(#7fd034, #6ab029);
+    border				: 1px solid #66AE3C;
+}
+.button_blue_shorter:normal {
+    left                : 20px;
+    width				: 280px;
+    height				: 42px;
+    background-image	: linear-gradient(#6dbee8, #41abe1);
+    border				: 1px solid #29A1DE;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 18px;
+}
+.button_blue_small:normal {
+    background-image	: linear-gradient(#6dbee8, #41abe1);
+    border				: 1px solid #29A1DE;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 14px;
+}
+.button_green_small:normal {
+    background-image	: linear-gradient(#7fd034, #6ab029);
+    border				: 1px solid #66AE3C;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 14px;
+}
+.tableViewCell_Apt_rightSide {
+    font-family     : "Roboto";
+    font-size       : 16px;
+    font-weight     : medium;
+    color           : #414042;
+}
+.glyphAdd {
+    font-family     : "FontAwesome";
+    font-size       : 22px;
+    color           : #4fabe1;
+}
+.autoPayPopoverText {
+    font-family     : "Roboto";
+    font-size       : "16px;
+    font-weight     : regular;
+    text-align      : center;
+    color           : #414042;
+}
 /*********************************/
 /**   SELECT RECIPIENT Screen   **/
 /*********************************/
@@ -1183,9 +1302,9 @@ table-view#select_recipientwithoutSeperator {
 
 /**  Main entry field for the Amount.  Starts as light gray, turns dark when a number is entered. **/  
 #howmuch_amountfield {
-    left                : 104px;
+    left                : 100px;
     top					: 58px;
-    width				: 190px;
+    width				: 194px;
     height				: 68px;
     font-family			: "Roboto";
     font-size			: 52px;
@@ -1218,12 +1337,12 @@ table-view#select_recipientwithoutSeperator {
 
 /**  Sets the position for the Request Button. **/
 #howmuch_request {
-    height                  : 56px;
-    background-image        : linear-gradient(#6dbee8, #41abe1);
-    border-bottom-left-radius: 4px;
-    left                    : 0px;
-    top                     : 194px;
-    opacity                 : 1;
+    left                        : 0px;
+    height                      : 56px;
+    background-image            : linear-gradient(#6dbee8, #41abe1);
+    border-bottom-left-radius   : 4px;
+    top                         : 194px;
+    opacity                     : 1;
 }
 #howmuch_request_4 {
     left                : 0px;
@@ -1236,12 +1355,12 @@ table-view#select_recipientwithoutSeperator {
 }
 /**  Sets the position for the Send Button. **/
 #howmuch_send {
-    height              : 56px;
-    background-image    : linear-gradient(#7fd034, #6ab029);
-    left                : 154px;
-    top                 : 194px;
-    border-bottom-right-radius: 4px;
-    opacity             : 1;
+    height                      : 56px;
+    background-image            : linear-gradient(#7fd034, #6ab029);
+    left                        : 154px;
+    top                         : 194px;
+    border-bottom-right-radius  : 4px;
+    opacity                     : 1;
 }
 #howmuch_send_4 {
     height              : 50px;
@@ -2507,7 +2626,7 @@ table-view#emptyTable {
 }
 .addbutton_request{
     font-family     : "FontAwesome";
-    font-size       : 24px;
+    font-size       : 23px;
 }
 .details_othername_nonnooch {
     width				: 260px;
@@ -3026,7 +3145,7 @@ table-view#settings_resetpw {
 .refer_header {
     left			: 15px;
     width			: 250px;
-    height			: 25px;
+    height			: 24px;
     color			: #313233;
     font-family		: "Roboto";
     font-weight		: regular;

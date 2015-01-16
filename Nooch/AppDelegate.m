@@ -61,25 +61,24 @@ bool modal;
     self.gameThrive = [[GameThrive alloc] initWithLaunchOptions:launchOptions handleNotification:^(NSString* message, NSDictionary* additionalData, BOOL isActive) {
         UIAlertView* alertView;
         NSLog(@"APP DEL - GameThrieve --> ADDITIONALDATA: %@", additionalData);
-        if (additionalData) {
+        if (additionalData)
+        {
             // Append AdditionalData at the end of the message
-            NSString * displayMessage = [NSString stringWithFormat:@"NotificationMessage:%@", message];
             NSString * messageTitle;
-            if (additionalData[@"discount"])
-                messageTitle = additionalData[@"discount"];
-            else if (additionalData[@"bonusCredits"])
-                messageTitle = additionalData[@"bonusCredits"];
-            else if (additionalData[@"actionSelected"])
-                messageTitle = [NSString stringWithFormat:@"Pressed ButtonId:%@", additionalData[@"actionSelected"]];
+            if (additionalData[@"title"]) {
+                messageTitle = additionalData[@"title"];
+            }
+
             alertView = [[UIAlertView alloc] initWithTitle:messageTitle
-                                                   message:displayMessage
+                                                   message:message
                                                   delegate:self
                                          cancelButtonTitle:@"Close"
                                          otherButtonTitles:nil, nil];
         }
         // If a push notification is received when the app is being used it does not go to the notifiction center so display in your app.
-        if (alertView == nil && isActive) {
-            alertView = [[UIAlertView alloc] initWithTitle:@"GameThrive Message"
+        if (alertView == nil && isActive)
+        {
+            alertView = [[UIAlertView alloc] initWithTitle:nil
                                                    message:message
                                                   delegate:self
                                          cancelButtonTitle:@"Close"
