@@ -8,25 +8,28 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
- @protocol GetLocationDelegate <NSObject>
- @required
- - (void)locationUpdate:(CLLocation *)location;
- - (void)locationError:(NSError *)error;
- @end
+
+@protocol GetLocationDelegate <NSObject>
+
+@required
+//- (void)locationUpdate:(NSArray *)locations;
+- (void)locationError:(NSError *)error;
+- (void)transferPinLocationUpdateManager:(CLLocationManager *)manager
+                      didUpdateLocations:(NSArray *)locationsArray;
+@end
  
- @interface GetLocation : NSObject <CLLocationManagerDelegate> {
- CLLocationManager *locationManager;
- id delegate;
- }
+@interface GetLocation : NSObject <CLLocationManagerDelegate> {
+    CLLocationManager *locationManager;
+    id delegate;
+}
  
- @property (nonatomic, retain) CLLocationManager *locationManager;
- @property (nonatomic, retain) id <GetLocationDelegate> delegate;
- 
- - (void)locationManager:(CLLocationManager *)manager
- didUpdateToLocation:(CLLocation *)newLocation
- fromLocation:(CLLocation *)oldLocation;
- 
- - (void)locationManager:(CLLocationManager *)manager
- didFailWithError:(NSError *)error;
- 
- @end
+@property (nonatomic, retain) CLLocationManager *locationManager;
+@property (nonatomic, retain) id <GetLocationDelegate> delegate;
+
+- (void)locationManager:(CLLocationManager *)manager
+     didUpdateLocations:(NSArray *)locations;
+
+- (void)locationManager:(CLLocationManager *)manager
+       didFailWithError:(NSError *)error;
+
+@end

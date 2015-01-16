@@ -7,15 +7,12 @@
 #import "ReferralCode.h"
 #import "Home.h"
 #import "Welcome.h"
-//#import "GetLocation.h"
 #import "Register.h"
 #import "ECSlidingViewController.h"
 #import "SpinKit/RTSpinKitView.h"
 
-@interface ReferralCode ()//<GetLocationDelegate>
-{
-    //GetLocation*getLocation;
-}
+@interface ReferralCode ()
+
 @property(nonatomic,strong) NSMutableDictionary *user;
 @property(nonatomic,strong) UITextField *code_field;
 @property(nonatomic,strong) MBProgressHUD *hud;
@@ -117,7 +114,9 @@
 
 #pragma mark-Location Tracker Delegates
 
--(void)locationError:(NSError *)error{
+-(void)locationError:(NSError *)error
+{
+    NSLog(@"LocationManager didFailWithError %@", error);
     [[assist shared]setlocationAllowed:NO];
 }
 
@@ -150,31 +149,38 @@
 
 - (void)request_code
 {
-    /*UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request An Invite Code"
-                                                 message:@"To make sure every Nooch user has the best experience, you must have an invite or referral code.\n\nYou can get a code from any current Nooch user, or request an invite directly from us. We try to send out codes as quickly as possible when they are requested."
-                                                delegate:self
-                                       cancelButtonTitle:@"Ok"
-                                       otherButtonTitles:@"Request Code", nil];
-    [av show];
-    [av setTag:101];*/
+    NSString * requireCodeSettingFromArtisan = [ARPowerHookManager getValueForHookById:@"reqCodeSetting"];
+    if ([requireCodeSettingFromArtisan isEqualToString:@"yes"])
+    {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request An Invite Code"
+                                                     message:@"To make sure every Nooch user has the best experience, you must have an invite or referral code.\n\nYou can get a code from any current Nooch user, or request an invite directly from us. We try to send out codes as quickly as possible when they are requested."
+                                                    delegate:self
+                                           cancelButtonTitle:@"Ok"
+                                           otherButtonTitles:@"Request Code", nil];
+        [av show];
+        [av setTag:101];
+    }
 
-    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
-    spinner1.color = [UIColor whiteColor];
-    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:self.hud];
+    else
+    {
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+        spinner1.color = [UIColor whiteColor];
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:self.hud];
 
-    self.hud.mode = MBProgressHUDModeCustomView;
-    self.hud.customView = spinner1;
-    self.hud.labelText = @"";
-    [self.hud show:YES];
+        self.hud.mode = MBProgressHUDModeCustomView;
+        self.hud.customView = spinner1;
+        self.hud.labelText = @"";
+        [self.hud show:YES];
 
-    [enter setEnabled:NO];
+        [enter setEnabled:NO];
 
-    refCodeFromArtisan = [ARPowerHookManager getValueForHookById:@"refCode"];
-    serve * inv_code = [serve new];
-    [inv_code setDelegate:self];
-    [inv_code setTagName:@"inv_check"];
-    [inv_code validateInviteCode:[refCodeFromArtisan uppercaseString]];
+        refCodeFromArtisan = [ARPowerHookManager getValueForHookById:@"refCode"];
+        serve * inv_code = [serve new];
+        [inv_code setDelegate:self];
+        [inv_code setTagName:@"inv_check"];
+        [inv_code validateInviteCode:[refCodeFromArtisan uppercaseString]];
+    }
 }
 
 -(void)Error:(NSError *)Error
@@ -307,7 +313,7 @@
                 invCode:[self.code_field.text length] == 0 ? refCodeFromArtisan : self.code_field.text
                    fbId:[self.user objectForKey:@"facebook_id"] ? [self.user objectForKey:@"facebook_id"]: @"" ];
 
-        //NSLog(@"User Fields to be sent to server are: %@",create);
+        // NSLog(@"User Fields to be sent to server are: %@",create);
         self.code_field.text = @"";
     }
     else if ([tagName isEqualToString:@"create_account"])
@@ -362,7 +368,7 @@
         [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
         [automatic writeToFile:[self autoLogin] atomically:YES];
 
-        Welcome *welc = [Welcome new];
+        Welcome * welc = [Welcome new];
         [self.navigationController pushViewController:welc animated:YES];
     }
 }
@@ -373,7 +379,11 @@
     {
         if (buttonIndex == 1)
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Received" message:@"Thank you! We will be in touch with an invite code soon." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Received"
+                                                         message:@"Thank you! We will be in touch with an invite code soon."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
             [av show];
             serve * serveobj = [serve new];
             [serveobj setDelegate:self];

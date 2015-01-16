@@ -189,7 +189,6 @@ NSString *amnt;
     self.responseData = [[NSMutableData alloc] init];
     requestmemid = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/GetMemberIdByUsername?userName=%@",ServerUrl,username
                                                                            ]]];
-    NSLog(@"requestMemId is: %@",requestmemid);
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:requestmemid delegate:self];
     if (!connection)
         NSLog(@"connect error");
@@ -296,7 +295,7 @@ NSString *amnt;
     {
         requestLogin = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?%@=%@&%@=%@&rememberMeEnabled=false&lat=%f&lng=%f&udid=%@&devicetoken=%@", ServerUrl, @"LoginRequest", @"name", email, @"pwd", pass,lat,lng,[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"],[[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"]]]];
     }
-    NSLog(@"Serve --> requestLogin is: %@",requestLogin);
+
     [requestLogin setTimeoutInterval:10000];
     connectionLogin = [[NSURLConnection alloc] initWithRequest:requestLogin delegate:self];
     if (!connectionLogin)

@@ -13,7 +13,7 @@
 
 @interface TransferPIN ()<GetLocationDelegate>
 {
-    GetLocation*getlocation;
+    GetLocation *getlocation;
 }
 @property(nonatomic,strong) MBProgressHUD *hud;
 @property(nonatomic,strong)NSMutableData*respData;
@@ -33,7 +33,9 @@
 
 @implementation TransferPIN
 
-- (id)initWithReceiver:(NSMutableDictionary *)receiver type:(NSString *)type amount:(float)amount
+- (id)initWithReceiver:(NSMutableDictionary *)receiver
+                  type:(NSString *)type
+                amount:(float)amount
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self)
@@ -387,7 +389,9 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+- (void) mailComposeController:(MFMailComposeViewController *)controller
+           didFinishWithResult:(MFMailComposeResult)result
+                         error:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc] init];
     [alert addButtonWithTitle:@"OK"];
@@ -421,65 +425,167 @@
 }
 
 #pragma mark-Location Tracker Delegates
-- (void)locationUpdate:(CLLocation *)location{
-    lat=location.coordinate.latitude;
-    lon=location.coordinate.longitude;
-    latitude=[NSString stringWithFormat:@"%f",lat];
-    longitude=[NSString stringWithFormat:@"%f",lon];
-    [self updateLocation:[NSString stringWithFormat:@"%f",lat] longitudeField:[NSString stringWithFormat:@"%f",lon]];
+- (void)transferPinLocationUpdateManager:(CLLocationManager *)manager
+                      didUpdateLocations:(NSArray *)locationsArray
+{
+    CLLocationCoordinate2D loc = manager.location.coordinate;
+    lat = [[[NSString alloc] initWithFormat:@"%f",loc.latitude] floatValue];
+    lon = [[[NSString alloc] initWithFormat:@"%f",loc.longitude] floatValue];
+
+    latitude = [NSString stringWithFormat:@"%f",lat];
+    longitude = [NSString stringWithFormat:@"%f",lon];
+
+    [self updateLocation:[NSString stringWithFormat:@"%f",lat]
+          longitudeField:[NSString stringWithFormat:@"%f",lon]];
 }
 
 -(void) updateLocation:(NSString*)latitudeField longitudeField:(NSString*)longitudeField{
 
-    // NSLog(@"%@%@",longitudeField,latitudeField);
+    NSLog(@"TransferPIN --> updateLocation: lat is: %@  & long is: %@",latitudeField,longitudeField);
 
-    NSString *fetchURL = [NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?latlng=%@,%@&sensor=true", latitudeField, longitudeField];
-    NSURL *url = [NSURL URLWithString:fetchURL];
+    NSString * fetchURL = [NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?latlng=%@,%@&sensor=true", latitudeField, longitudeField];
+    NSURL * url = [NSURL URLWithString:fetchURL];
 
-    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+    NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
 
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse * response, NSData *data, NSError *err) {
-        NSError * e;
-        jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options: NSJSONReadingMutableContainers error: &e];
+    [NSURLConnection sendAsynchronousRequest:request
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse * response, NSData *data, NSError *err) {
+        NSError * error;
+        jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options: NSJSONReadingMutableContainers error: &error];
         [self setLocation];
     }];
-    
+}
+
+- (void)locationError:(NSError *)error
+{
+    NSLog(@"LocationManager didFailWithError %@", error);
 }
 
 -(void)setLocation
 {
-    NSArray *placemark = [jsonDictionary  objectForKey:@"results"];
-    
+    NSArray * placemark = [jsonDictionary objectForKey:@"results"];
+    //NSLog(@"Placemark COUNT is: %d\nPlacemark is: %@", [placemark count], placemark);
+
     if ([placemark count] > 0)
     {
-        NSString *addr = [[placemark  objectAtIndex:1]objectForKey:@"formatted_address"];
+        // if Google returned a Street Address
+        if ([[placemark objectAtIndex:0] objectForKey:@"address_components"] &&
+            [[[[placemark objectAtIndex:0] objectForKey:@"types"] objectAtIndex:0] isEqualToString: @"street_address"])
+        {
+            NSArray * addressComponents = [[placemark objectAtIndex:0] objectForKey:@"address_components"];
 
-        NSArray *addrParse = [addr componentsSeparatedByString:@","];
-    
-        if ([addrParse count] == 4)
-        {
-            addressLine1 = [addrParse objectAtIndex:0];
-            city = [addrParse objectAtIndex:1];
-            state = [[addrParse objectAtIndex:2] substringToIndex:3];
-            zipcode = [[addrParse objectAtIndex:2] substringFromIndex:3];
-            country = [addrParse objectAtIndex:3];
+            // Get Street Address
+            if ([[[[addressComponents objectAtIndex:0] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"street_number"])
+            {
+                addressLine1 = [NSString stringWithFormat:@"%@ %@", [[addressComponents objectAtIndex:0] objectForKey:@"long_name"],[[addressComponents objectAtIndex:1] objectForKey:@"long_name"]];
+            }
+
+            // Get City
+            if ( [[[[addressComponents objectAtIndex:2] objectForKey:@"types"] objectAtIndex:0]isEqualToString:@"administrative_area_level_3"] ||
+                 [[[[addressComponents objectAtIndex:2] objectForKey:@"types"] objectAtIndex:1]isEqualToString:@"administrative_area_level_3"] )
+            {
+                city = [[addressComponents objectAtIndex:2] objectForKey:@"long_name"];
+            }
+            else if ([[[[addressComponents objectAtIndex:3] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_3"] ||
+                     [[[[addressComponents objectAtIndex:3] objectForKey:@"types"] objectAtIndex:1] isEqualToString:@"administrative_area_level_3"] )
+            {
+                city = [[addressComponents objectAtIndex:3] objectForKey:@"long_name"];
+            }
+
+            // Get State
+            if ( [[[[addressComponents objectAtIndex:4] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_1"] ||
+                 [[[[addressComponents objectAtIndex:4] objectForKey:@"types"] objectAtIndex:1] isEqualToString:@"administrative_area_level_1"] )
+            {
+                state = [[addressComponents objectAtIndex:4] objectForKey:@"short_name"];
+            }
+            else if ([[[[addressComponents objectAtIndex:5] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_1"] ||
+                     [[[[addressComponents objectAtIndex:5] objectForKey:@"types"] objectAtIndex:1] isEqualToString:@"administrative_area_level_1"] )
+            {
+                state = [[addressComponents objectAtIndex:5] objectForKey:@"short_name"];
+            }
+
+            // Get ZIP
+            if ([[[[addressComponents objectAtIndex:4] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"postal_code"])
+            {
+                zipcode = [[addressComponents objectAtIndex:4] objectForKey:@"short_name"];
+            }
+            else if ([[[[addressComponents objectAtIndex:5] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"postal_code"])
+            {
+                zipcode = [[addressComponents objectAtIndex:5] objectForKey:@"short_name"];
+            }
+            else if ([[[[addressComponents objectAtIndex:6] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"postal_code"])
+            {
+                zipcode = [[addressComponents objectAtIndex:6] objectForKey:@"short_name"];
+            }
+            else if ([[[[addressComponents objectAtIndex:7] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"postal_code"])
+            {
+                zipcode = [[addressComponents objectAtIndex:7] objectForKey:@"short_name"];
+            }
         }
-        else if ([addrParse count] > 4)
+
+        // Get Country
+        if ( [[placemark objectAtIndex:1] objectForKey:@"address_components"] &&
+            [[[[placemark objectAtIndex:1] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"postal_code"])
         {
-            addressLine1 = [addrParse objectAtIndex:0];
-            addressLine2 = [addrParse objectAtIndex:1];
-            city = [addrParse objectAtIndex:2];
-            state = [[addrParse objectAtIndex:3] substringToIndex:3];
-            zipcode = [[addrParse objectAtIndex:3] substringFromIndex:3];
-            country = [addrParse objectAtIndex:4];
+            NSArray * addressComponents2 = [[placemark objectAtIndex:1] objectForKey:@"address_components"];
+            NSUInteger lastObject = [addressComponents2 count] - 1;
+
+            // Country should always be "US", but adding this code just to make sure
+            if ([[addressComponents2 objectAtIndex:lastObject] objectForKey:@"short_name"])
+            {
+                country = [[addressComponents2 objectAtIndex:lastObject] objectForKey:@"short_name"];
+                if ([country rangeOfString:@"US"].location == NSNotFound)
+                {
+                    country = @"NOT US";
+                }
+            }
+            else
+            {
+                country = @"USA";
+            }
         }
-        else
+
+        //NSLog(@"1.) ADDRESS NOW IS: %@, %@, %@, %@, %@",addressLine1,city, state, zipcode, country);
+
+        // Old method of parsing by getting entire formatted address and breaking it down
+        if ([addressLine1 length] < 2 && [city length] < 2 && [zipcode length] < 5)
         {
-            addressLine1 = [addrParse objectAtIndex:0];
-            addressLine2 = @"";
-            city = [addrParse objectAtIndex:1];
+            NSString * addr = [[placemark objectAtIndex:0] objectForKey:@"formatted_address"];
+
+            NSLog(@"addr is: %@", addr);
+
+            NSArray *addrParse = [addr componentsSeparatedByString:@","];
+
+            if ([addrParse count] == 4)
+            {
+                addressLine1 = [addrParse objectAtIndex:0];
+                city = [addrParse objectAtIndex:1];
+                state = [[addrParse objectAtIndex:2] substringToIndex:3];
+                zipcode = [[addrParse objectAtIndex:2] substringFromIndex:3];
+                country = [addrParse objectAtIndex:3];
+            }
+            else if ([addrParse count] > 4)
+            {
+                addressLine1 = [addrParse objectAtIndex:0];
+                addressLine2 = [addrParse objectAtIndex:1];
+                city = [addrParse objectAtIndex:2];
+                state = [[addrParse objectAtIndex:3] substringToIndex:3];
+                zipcode = [[addrParse objectAtIndex:3] substringFromIndex:3];
+                country = [addrParse objectAtIndex:4];
+            }
+            else
+            {
+                addressLine1 = [addrParse objectAtIndex:0];
+                addressLine2 = @"";
+                city = [addrParse objectAtIndex:1];
+            }
+
+            NSLog(@"2.) ADDRESS NOW IS: %@, %@, %@, %@, %@",addressLine1,city, state, zipcode, country);
         }
     }
+
+    // In case any of the above components is still not set
     if ([city rangeOfString:@"null"].location != NSNotFound || city == NULL) {
         city = @"";
     }
@@ -500,22 +606,22 @@
     }
 }
 
-- (void)locationError:(NSError *)error {
-	//locationLabel.text = [error description];
-}
-
 #pragma mark - UITextField delegation
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if ([self.type isEqualToString:@"send"]) {
+    if ([self.type isEqualToString:@"send"])
+    {
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
     }
-    else if([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"]){
+    else if([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"])
+    {
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochBlue.CGColor;
     }
 
     int len = [textField.text length] + [string length];
-    if([string length] == 0) {
+
+    if ([string length] == 0)
+    {
         switch (len) {
             case 4:
                 [self.fourth_num setBackgroundColor:[UIColor clearColor]];
@@ -535,13 +641,14 @@
                 break;
         }
     }
-    else {
-        UIColor *which;
+    else
+    {
+        UIColor * color;
         if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"]) {
-            which = kNoochGreen;
+            color = kNoochGreen;
         }
         else if([self.type isEqualToString:@"request"] ){
-            which = kNoochBlue;
+            color = kNoochBlue;
         }
 
         switch (len) {
@@ -549,17 +656,17 @@
                 return NO;
                 break;
             case 4:
-                [self.fourth_num setBackgroundColor:which];
+                [self.fourth_num setBackgroundColor:color];
                 //start pin validation
                 break;
             case 3:
-                [self.third_num setBackgroundColor:which];
+                [self.third_num setBackgroundColor:color];
                 break;
             case 2:
-                [self.second_num setBackgroundColor:which];
+                [self.second_num setBackgroundColor:color];
                 break;
             case 1:
-                [self.first_num setBackgroundColor:which];
+                [self.first_num setBackgroundColor:color];
                 break;
             case 0:
                 break;
@@ -775,8 +882,8 @@
                     }
                 }
 
-                NSLog(@"SEND/REQUEST --> transactionInputTransfer #3 is: %@", transactionInputTransfer);
-                NSLog(@"Type: %@ - %@", self.type, transactionTransfer);
+                NSLog(@"SEND/REQUEST --> transactionINPUTTransfer #3 is: %@", transactionInputTransfer);
+                NSLog(@"Type: %@ - transactionTransfer: %@", self.type, transactionTransfer);
 
                 postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
                                                                options:NSJSONWritingPrettyPrinted error:&error];;
@@ -807,7 +914,6 @@
                     }
                 }
 
-                NSLog(@"SEND/REQUEST --> urlStrTransfer is: %@", urlStrTranfer);
 
                 urlTransfer = [NSURL URLWithString:urlStrTranfer];
                 requestTransfer = [[NSMutableURLRequest alloc] initWithURL:urlTransfer];
@@ -816,6 +922,8 @@
                 [requestTransfer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
                 [requestTransfer setHTTPBody:postTransfer];
                 requestTransfer.timeoutInterval=12000;
+
+                NSLog(@"SEND/REQUEST --> requestTransfer is: %@", requestTransfer);
 
                 NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestTransfer delegate:self];
                 if (connection) {
@@ -1032,6 +1140,7 @@
         }
 
     }
+
     else if ([self.type isEqualToString:@"requestRespond"])
     {
         if ([tagName isEqualToString:@"ValidatePinNumber"])
@@ -1100,6 +1209,7 @@
         }
         return;
     }
+
     /*else if ([self.type isEqualToString:@"donation"])
     {
         if ([tagName isEqualToString:@"ValidatePinNumber"])
