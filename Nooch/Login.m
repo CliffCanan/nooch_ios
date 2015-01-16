@@ -970,7 +970,8 @@
         NSError * error;
         NSDictionary * loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
-        NSLog(@"Result is: %@",[loginResult objectForKey:@"Result"]);
+        NSLog(@"Login -> loginResult is: %@",loginResult);
+
         if (  [loginResult objectForKey:@"Result"] &&
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] &&
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] &&
@@ -1291,6 +1292,7 @@
         NSError *error;
 
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        //NSLog(@"getMemberId JSON result is: %@",loginResult);
         [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
 
         if (isloginWithFB) {

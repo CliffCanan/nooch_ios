@@ -66,6 +66,9 @@
     UIBarButtonItem * help = [[UIBarButtonItem alloc] initWithCustomView:helpGlyph];
     [self.navigationItem setRightBarButtonItem:help];
 
+    hasAptSet = 1;
+    searching = false;
+
     search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
     search.searchBarStyle = UISearchBarStyleMinimal;
     search.placeholder=@"Search by Name or Location";
@@ -79,8 +82,8 @@
         {
             if ([subview2 isKindOfClass:[UITextField class]])
             {
-                ((UITextField *)subview2).textColor = [UIColor whiteColor];
-                [((UITextField *)subview2) setClearButtonMode:UITextFieldViewModeWhileEditing];
+                //((UITextField *)subview2).textColor = [UIColor whiteColor];
+                //[((UITextField *)subview2) setClearButtonMode:UITextFieldViewModeWhileEditing];
                 break;
             }
         }
@@ -106,14 +109,11 @@
     self.hud.delegate = self;
     self.hud.labelText = @"Finding Apartments";
     //[self.hud show:YES];
-
-    hasAptSet = true;
-    searching = false;
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
-
+    [super viewWillAppear:YES];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -132,6 +132,11 @@
 {
     [self.navigationItem setLeftBarButtonItem:nil];
     [self.navigationController popViewControllerAnimated:YES];
+
+    if (isFromMyApt == YES)
+    {
+        isFromMyApt = NO;
+    }
 }
 
 -(void)cancelBtnPressed
@@ -156,7 +161,7 @@
 
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
-    [search setTintColor:[UIColor whiteColor]]; // For the 'Cancel' text
+    [search setTintColor:kNoochBlue]; // For the 'Cancel' text
 
     [searchBar becomeFirstResponder];
     [searchBar setShowsCancelButton:YES animated:YES];
@@ -238,6 +243,33 @@
         [[assist shared] setPOP:YES];
         [self performSelector:@selector(loadDelay) withObject:Nil afterDelay:1.0];
     }
+    else if ([tagName isEqualToString:@"saveSuggestedProp"])
+    {
+        NSError * error;
+        NSMutableDictionary * dictResponse = [NSJSONSerialization
+                                            JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                            options:kNilOptions
+                                            error:&error];
+        
+        if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"Property suggestion saved successfully."])
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Thank You!"
+                                                         message:@"We will reach out to the owners of that property and add them to the platform ASAP."
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil, nil];
+            [av show];
+        }
+        else
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Nooch"
+                                                         message:[dictResponse valueForKey:@"Result"]
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil, nil];
+            [av show];
+        }
+    }
 }
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -249,6 +281,7 @@
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    NSLog(@"hasAptSet is: %d",hasAptSet);
     if (hasAptSet)
     {
         return 2;
@@ -342,6 +375,7 @@
     [cell.textLabel setText:@"Bellvue Heights Apts"];
 
     [cell.detailTextLabel setText:@"17 E. Roosevelt Blvd., Philadelphia, PA 19123"];
+    [cell.detailTextLabel setNumberOfLines:0];
 
     return cell;
 }
@@ -349,9 +383,12 @@
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MyApartment * myApt = [MyApartment new];
-    [self.navigationController pushViewController:myApt animated:YES];
-
+    if (hasAptSet && indexPath.row == 0)
+    {
+        isFromPropertySearch = YES;
+        MyApartment * myApt = [MyApartment new];
+        [self.navigationController pushViewController:myApt animated:YES];
+    }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -369,14 +406,7 @@
     
     mainView = [[UIView alloc]init];
     mainView.layer.cornerRadius = 5;
-    if ([[UIScreen mainScreen] bounds].size.height < 500)
-    {
-        mainView.frame = CGRectMake(9, -500, 302, 310);
-    }
-    else
-    {
-        mainView.frame = CGRectMake(9, -540, 302, 310);
-    }
+    mainView.frame = CGRectMake(9, -500, 302, 292);
     mainView.backgroundColor = [UIColor whiteColor];
     mainView.layer.masksToBounds = NO;
     
@@ -388,25 +418,18 @@
     [UIView animateWithDuration:0.38
                      animations:^{
                          [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                         if ([[UIScreen mainScreen] bounds].size.height < 500)
-                         {
-                             mainView.frame = CGRectMake(9, 80, 302, 310);
-                         }
-                         else
-                         {
-                             mainView.frame = CGRectMake(9, 80, 302, 310);
-                         }
+                         mainView.frame = CGRectMake(9, 75, 302, 292);
                      } completion:^(BOOL finished) {
                          [UIView animateWithDuration:.23
                                           animations:^{
                                               [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
                                               if ([[UIScreen mainScreen] bounds].size.height < 500)
                                               {
-                                                  mainView.frame = CGRectMake(9, 45, 302, 310);
+                                                  mainView.frame = CGRectMake(9, 45, 302, 292);
                                               }
                                               else
                                               {
-                                                  mainView.frame = CGRectMake(9, 55, 302, 310);
+                                                  mainView.frame = CGRectMake(9, 46, 302, 292);
                                               }
                                           }];
                      }];
@@ -433,7 +456,7 @@
     [glyph_add setTextColor:kNoochBlue];
     [head_container addSubview:glyph_add];
     
-    UILabel * bodyHeader = [[UILabel alloc]initWithFrame:CGRectMake(11, head_container.bounds.size.height + 8, mainView.bounds.size.width - 22, 62)];
+    UILabel * bodyHeader = [[UILabel alloc]initWithFrame:CGRectMake(11, head_container.bounds.size.height + 8, mainView.bounds.size.width - 22, 60)];
     [bodyHeader setBackgroundColor:[UIColor clearColor]];
     [bodyHeader setText:@"If your property is not listed, we can let the owners know you would like to use Nooch to pay your rent."];
     [bodyHeader setFont:[UIFont fontWithName:@"Roboto-light" size:16]];
@@ -442,7 +465,7 @@
     bodyHeader.textAlignment = NSTextAlignmentCenter;
     [mainView addSubview:bodyHeader];
     
-    UILabel * bodyText = [[UILabel alloc]initWithFrame:CGRectMake(12, head_container.bounds.size.height + 76, mainView.bounds.size.width - 24, 54)];
+    UILabel * bodyText = [[UILabel alloc]initWithFrame:CGRectMake(12, head_container.bounds.size.height + 76, mainView.bounds.size.width - 24, 46)];
     [bodyText setBackgroundColor:[UIColor clearColor]];
     [bodyText setText:@"What is the name of your building, complex, or property?"];
     [bodyText setFont:[UIFont fontWithName:@"Roboto-regular" size:16]];
@@ -451,7 +474,7 @@
     bodyText.textAlignment = NSTextAlignmentCenter;
     [mainView addSubview:bodyText];
 
-    self.suggestApt = [[UITextField alloc] initWithFrame:CGRectMake(20, 182, 262, 40)];
+    self.suggestApt = [[UITextField alloc] initWithFrame:CGRectMake(20, 176, 262, 40)];
     [self.suggestApt setBackgroundColor:[UIColor clearColor]];
     [self.suggestApt setPlaceholder:@"Ex: Riverside Apartments, West Philly"];
     self.suggestApt.inputAccessoryView = [[UIView alloc] init];
@@ -460,8 +483,8 @@
     [self.suggestApt setKeyboardType:UIKeyboardTypeAlphabet];
     [self.suggestApt setReturnKeyType:UIReturnKeySend];
     [self.suggestApt setTextAlignment:NSTextAlignmentCenter];
-    //[self.suggestApt becomeFirstResponder];
-    //[self.suggestApt setDelegate:self];
+    [self.suggestApt becomeFirstResponder];
+    [self.suggestApt setDelegate:self];
     [self.suggestApt setStyleId:@"suggestApt_textField"];
     [mainView addSubview:self.suggestApt];
 
@@ -469,18 +492,17 @@
     [btnLink setStyleClass:@"button_green_welcome"];
     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    btnLink.frame = CGRectMake(20, 240, 260, 46);
+    btnLink.frame = CGRectMake(20, 236, 260, 45);
     [btnLink setTitle:@"Send" forState:UIControlStateNormal];
     [btnLink addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
-        mainView.frame = CGRectMake(8, 40, 302, 440);
         head_container.frame = CGRectMake(0, 0, 302, 38);
         space_container.frame = CGRectMake(0, 28, 302, 10);
         glyph_add.frame = CGRectMake(18, 5, 22, 29);
         title.frame = CGRectMake(0, 5, 302, 28);
-        btnLink.frame = CGRectMake(10,mainView.frame.size.height-51, 280, 44);
+        btnLink.frame = CGRectMake(10,mainView.frame.size.height - 54, 280, 44);
     }
 
     UIImageView * btnClose = [[UIImageView alloc] initWithFrame:self.view.frame];
@@ -498,30 +520,37 @@
     [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"VersionUpdateNoticeDisplayed"];
 }
 
+-(void)saveSuggestedProperty
+{
+    serve *  serveOBJ = [serve new];
+    serveOBJ.Delegate = self;
+    serveOBJ.tagName = @"saveSuggestedProp";
+    //[serveOBJ saveSuggestedProp:[[NSUserDefaults standardUserDefaults ]valueForKey:@"MemberId"]];
+}
+
 -(void)close_lightBox
 {
     [UIView animateWithDuration:0.15
                      animations:^{
                          [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
                          if ([[UIScreen mainScreen] bounds].size.height < 500) {
-                             mainView.frame = CGRectMake(9, 70, 302, 310);
+                             mainView.frame = CGRectMake(9, 70, 302, 292);
                          }
                          else {
-                             mainView.frame = CGRectMake(9, 70, 302, 310);
+                             mainView.frame = CGRectMake(9, 70, 302, 292);
                          }
-                     } completion:^(BOOL finished) {
+                     }
+                     completion:^(BOOL finished) {
                          [UIView animateWithDuration:.38
                                           animations:^{
                                               [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-                                              if ([[UIScreen mainScreen] bounds].size.height < 500) {
-                                                  mainView.frame = CGRectMake(9, -500, 302, 310);
-                                              }
-                                              else {
-                                                  mainView.frame = CGRectMake(9, -540, 302, 310);
-                                              }
+                                              mainView.frame = CGRectMake(9, -500, 302, 292);
                                               overlay.alpha = 0.1;
-                                          } completion:^(BOOL finished) {
+                                          }
+                                          completion:^(BOOL finished) {
                                               [overlay removeFromSuperview];
+
+                                              [self saveSuggestedProperty];
                                           }
                           ];
                      }

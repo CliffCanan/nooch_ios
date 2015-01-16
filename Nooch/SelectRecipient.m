@@ -340,6 +340,8 @@
     }
     isAddRequest = NO;
     isFromHome = NO;
+    isFromMyApt = NO;
+
     HowMuch * how_much = [[HowMuch alloc] init];
     [self.navigationController pushViewController:how_much animated:YES];
 }
@@ -1234,7 +1236,9 @@
                         error:&error];
         
         NSMutableArray * temp = [NSMutableArray new];
-        for (NSDictionary * dict in self.recents) {
+ 
+        for (NSDictionary * dict in self.recents)
+        {
             NSMutableDictionary * prep = dict.mutableCopy;
             [prep setObject:@"YES" forKey:@"recent"];
             [temp addObject:prep];
@@ -1393,6 +1397,7 @@
             
             [dict setObject:@"nonuser" forKey:@"nonuser"];
             isFromHome = NO;
+            isFromMyApt = NO;
 
             HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
@@ -1469,6 +1474,7 @@
             
             [dict setObject:@"nonuser" forKey:@"nonuser"];
             isFromHome = NO;
+            isFromMyApt = NO;
             
             HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
@@ -1540,6 +1546,8 @@
             }
 
             isFromHome = NO;
+            isFromMyApt = NO;
+
             HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
         }
@@ -1589,19 +1597,23 @@
 {
     UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
     UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake (10, 0, 200, 30)];
-    title.textColor = kNoochGrayDark;
+    [title setTextColor: kNoochGrayDark];
+    [title setFont:[UIFont fontWithName:@"Roboto-regular" size:15]];
 
     if (section == 0)
     {
-        if (self.location)
+        if (self.location) {
             title.text = @"Nearby Users";
-        else if (searching)
+        }
+        else if (searching) {
             title.text = @"Search Results";
-        else if (isRecentList)
-            title.text = @"Recent 22Contacts";
+        }
+        else if (isRecentList) {
+            title.text = @"Recent Contacts";
+        }
         else
             title.text = @"Send To Email Address";
-    }
+    } 
     else {
         title.text = @"";
     }
@@ -2251,6 +2263,8 @@
         //[self.navigationItem setLeftBarButtonItem:nil];
 
         isFromHome = NO;
+        isFromMyApt = NO;
+
         HowMuch * how_much = [[HowMuch alloc] initWithReceiver:receiver];
         [self.navigationController pushViewController:how_much animated:YES];
     }
@@ -2265,6 +2279,8 @@
         }
         [self.navigationItem setLeftBarButtonItem:nil];
         isFromHome = NO;
+        isFromMyApt = NO;
+
         NSDictionary * receiver = [self.recents objectAtIndex:indexPath.row];
 
         HowMuch * how_much = [[HowMuch alloc] initWithReceiver:receiver];

@@ -20,6 +20,7 @@
 #import "tour.h"
 #import "Appirater.h"
 #import "SelectApt.h"
+#import "MyApartment.h"
 
 @interface LeftMenu ()
 @property(nonatomic,strong) UITableView *menu;
@@ -478,9 +479,19 @@
         }
         else if (indexPath.row == 3)
         {
-            SelectApt * selectApt = [[SelectApt alloc] init];
-            [nav_ctrl pushViewController:selectApt animated:NO];
-            [self.slidingViewController resetTopView];
+            if (hasAptSet)
+            {
+                isFromPropertySearch = NO;
+                MyApartment * myApt = [[MyApartment alloc] init];
+                [nav_ctrl pushViewController: myApt animated:NO];
+                [self.slidingViewController resetTopView];
+            }
+            else
+            {
+                SelectApt * selectApt = [[SelectApt alloc] init];
+                [nav_ctrl pushViewController:selectApt animated:NO];
+                [self.slidingViewController resetTopView];
+            }
         }
     }
     else if (indexPath.section == 1)
@@ -534,7 +545,7 @@
 {
     if ([actionSheet tag] == 1)
     {
-        if(buttonIndex == 0)
+        if (buttonIndex == 0)
         {
             //report bug
             if (![MFMailComposeViewController canSendMail]){
@@ -555,11 +566,16 @@
             [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
             [self presentViewController:mailComposer animated:YES completion:nil];
         }
-        else if(buttonIndex == 1)
+        else if (buttonIndex == 1)
         {
             //email support
-            if (![MFMailComposeViewController canSendMail]){
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            if (![MFMailComposeViewController canSendMail])
+            {
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                             message:@"You don't have a mail account configured for this device."
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles: nil];
                 [av show];
                 return;
             }
@@ -599,7 +615,6 @@
     }    
 }
 
-
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc] init];
@@ -634,6 +649,7 @@
     // Close the Mail Interface
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

@@ -226,7 +226,11 @@
 
 -(void)remove_attached_bank
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Remove Bank Account" message:@"If you remove this bank account, you will not be able to send or receive money. This cannot be undone.\n\nAre you sure you want to remove this bank account?" delegate:self cancelButtonTitle:@"Yes - Remove" otherButtonTitles:@"Cancel", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Remove Bank Account"
+                                                 message:@"If you remove this bank account, you will not be able to send or receive money. This cannot be undone.\n\nAre you sure you want to remove this bank account?"
+                                                delegate:self
+                                       cancelButtonTitle:@"Yes - Remove"
+                                       otherButtonTitles:@"Cancel", nil];
     [av setTag:2];
     [av show];
 }
@@ -237,14 +241,16 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString * CellIdentifier = @"Cell";
 
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil)
+    {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [cell setAccessoryType:UITableViewCellAccessoryNone];
-        UIView *selectionColor = [[UIView alloc] init];
-        selectionColor.backgroundColor = kNoochGrayLight;
+        
+        UIView * selectionColor = [[UIView alloc] init];
+        selectionColor.backgroundColor = Rgb2UIColor(63, 171, 245, .45);
         cell.selectedBackgroundView = selectionColor;
     }
     
@@ -280,7 +286,8 @@
     [cell.contentView addSubview:title];
     [cell.contentView addSubview:glyph];
     [cell.contentView addSubview:arrow];
-    
+
+    [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
     return cell;
 }
 
@@ -391,16 +398,32 @@
                                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                             options:kNilOptions
                                             error:&error];
-        if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"Bank account deleted successfully."]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Removed" message:@"This bank account is no longer linked to your Nooch account. To make or receive payments, you must link a new bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+
+        if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"Bank account deleted successfully."])
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Removed"
+                                                         message:@"This bank account is no longer linked to your Nooch account. To make or receive payments, you must link a new bank account."
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil, nil];
             [av show];
         }
-        else if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"No active bank account found for this user."]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Not Found" message:[dictResponse valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        else if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"No active bank account found for this user."])
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Not Found"
+                                                         message:[dictResponse valueForKey:@"Result"]
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil, nil];
             [av show];
         }
-        else {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Nooch" message:[dictResponse valueForKey:@"Result"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        else
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Nooch"
+                                                         message:[dictResponse valueForKey:@"Result"]
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil, nil];
             [av show];
         }
         
@@ -410,18 +433,11 @@
     else if ([tagName isEqualToString:@"knox_bank_info"])
     {
         NSError * error;
-        NSMutableDictionary*dictResponse = [NSJSONSerialization
+        NSMutableDictionary *dictResponse = [NSJSONSerialization
                                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                             options:kNilOptions
                                             error:&error];
         NSLog(@"dicResponse is: %@",dictResponse);
-
-        UILabel * glyph_shield = [[UILabel alloc] initWithFrame:CGRectMake(73, 6, 13, 32)];
-        [glyph_shield setBackgroundColor:[UIColor clearColor]];
-        [glyph_shield setTextAlignment:NSTextAlignmentLeft];
-        [glyph_shield setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
-        [glyph_shield setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
-
 
         if (![[dictResponse valueForKey:@"AccountName"] isKindOfClass:[NSNull class]] &&
             ![[dictResponse valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]] &&
@@ -448,8 +464,13 @@
                     [self.view addSubview:linked_background];
                 }
 
-                [glyph_shield setTextColor:kNoochGreen];
-                [linked_background addSubview:glyph_shield];
+                UILabel * glyph_lock = [[UILabel alloc] initWithFrame:CGRectMake(73, 6, 13, 32)];
+                [glyph_lock setBackgroundColor:[UIColor clearColor]];
+                [glyph_lock setTextAlignment:NSTextAlignmentLeft];
+                [glyph_lock setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
+                [glyph_lock setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
+                [glyph_lock setTextColor:kNoochGreen];
+                [linked_background addSubview:glyph_lock];
                 
                 bank_image = [[UIImageView alloc]initWithFrame:CGRectMake(10, 8, 49, 48)];
                 bank_image.contentMode = UIViewContentModeScaleToFill;

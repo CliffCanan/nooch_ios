@@ -269,7 +269,6 @@ UIImageView *picture;
         NSShadow * shadowNavText = [[NSShadow alloc] init];
         shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .2);
         shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
-
         NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
 
         UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(savePrompt2)];
@@ -283,7 +282,6 @@ UIImageView *picture;
         UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
 
         [self.navigationItem setLeftBarButtonItem:menu];
-        
     }
 
     if (!isSignup) {
@@ -1182,13 +1180,6 @@ UIImageView *picture;
                 [glyph_excl setFrame:CGRectMake(34, 6, 20, 38)];
                 [glyph_excl setTextColor:kNoochRed];
                 [cell.contentView addSubview:glyph_excl];
-
-              /*  UILabel * glyph_arrow_email = [UILabel new];
-                [glyph_arrow_email setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-                [glyph_arrow_email setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-down"]];
-                [glyph_arrow_email setFrame:CGRectMake(48, 6, 20, 38)];
-                [glyph_arrow_email setTextColor:kNoochGrayDark];
-                [cell.contentView addSubview:glyph_arrow_email];*/
             }
             else
             {
@@ -1263,14 +1254,6 @@ UIImageView *picture;
                 [glyph_excl setFrame:CGRectMake(31, 6, 20, 38)];
                 [glyph_excl setTextColor:kNoochRed];
                 [cell.contentView addSubview:glyph_excl];
-
-              /*glyph_arrow_phone = [UILabel new];
-                [glyph_arrow_phone setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-                [glyph_arrow_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-down"]];
-                [glyph_arrow_phone setFrame:CGRectMake(45, 6, 20, 38)];
-                [glyph_arrow_phone setTextColor:kNoochGrayDark];
-                [glyph_arrow_phone setAlpha:0];
-                [cell.contentView addSubview:glyph_arrow_phone];*/
             }
             else
             {

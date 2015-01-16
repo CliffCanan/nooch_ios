@@ -14,7 +14,7 @@
 
 BOOL hasAptSet;
 
-@interface SelectApt : GAITrackedViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate,UIActionSheetDelegate,MBProgressHUDDelegate>
+@interface SelectApt : GAITrackedViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate,UITextFieldDelegate,UIActionSheetDelegate,MBProgressHUDDelegate>
 {
     NSString*searchString;
     BOOL searching;

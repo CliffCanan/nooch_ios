@@ -384,7 +384,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
     CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
     CFIndex nPeople = ABAddressBookGetPersonCount(addressBook);
-    NSLog(@"Number of people in Address Book %ld",nPeople);
 
     for (int i = 0; i < nPeople; i++)
     {
@@ -616,10 +615,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
     else
     {
-        Register *reg = [Register new];
-        [nav_ctrl pushViewController:reg animated:YES];
+        //Register *reg = [Register new];
+        //[nav_ctrl pushViewController:reg animated:YES];
         me = [core new];
-        [ARProfileManager clearProfile];
+        //[ARProfileManager clearProfile];
         return;
     }
 
@@ -1565,7 +1564,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     NSMutableDictionary * favorite = [NSMutableDictionary new];
     [favorite addEntriesFromDictionary:[favorites objectAtIndex:index]];
 
-    // NSLog(@"Selected Favorite is: %@", favorite);
+    NSLog(@"Selected Favorite is: %@", favorite);
 
     if (favorite[@"MemberId"])
     {
@@ -1596,6 +1595,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [favorite setObject:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
             [top_button removeFromSuperview];
             isFromHome = YES;
+            isFromMyApt = NO;
             HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
             [self.navigationController pushViewController:trans animated:YES];
             return;
@@ -2033,23 +2033,25 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             }
 
             isFromHome = YES;
+            isFromMyApt = NO;
 
             HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
             return;
         }
     }
-    
+
     else if([tagName isEqualToString:@"getMemberDetails"])
     {
         NSError * error;
-        
+
         NSMutableDictionary * dict = [NSJSONSerialization
         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
         options:kNilOptions
         error:&error];
         isFromHome = YES;
-        
+        isFromMyApt = NO;
+
         HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
         [self.navigationController pushViewController:how_much animated:YES];
     }

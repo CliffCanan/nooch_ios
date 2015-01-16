@@ -7,12 +7,15 @@
 //
 
 #import "MyApartment.h"
+#import "ECSlidingViewController.h"
+#import "UIImageView+WebCache.h"
 #import "Home.h"
 #import "ProfileInfo.h"
 #import "SelectApt.h"
-#import "ECSlidingViewController.h"
+#import "HistoryFlat.h"
+#import "SetAptDetails.h"
 #import "knoxWeb.h"
-#import "UIImageView+WebCache.h"
+#import "HowMuch.h"
 
 @interface MyApartment (){
     UILabel * introText;
@@ -21,6 +24,7 @@
     UILabel * aptWebsite;
     UILabel * autoPaySetting;
     UILabel * lastPymntDate;
+    UILabel * monthlyRentAmount;
     NSString * aptWebsiteUrl;
     UIImageView * bank_image;
     UITableView * menu;
@@ -30,7 +34,8 @@
     UILabel *glyph_noBank;
     UIScrollView * scroll;
 }
-@property(atomic,weak)UIButton *logout;
+@property(nonatomic,strong) NSMutableArray * lastPayments;
+@property(nonatomic,strong) UIButton * rentBox;
 
 @end
 
@@ -55,30 +60,13 @@
     [super viewDidLoad];
     isBankAttached = NO;
     
-    if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
-        isBankAttached = NO;
-        
-        glyph_noBank = [UILabel new];
-        
-        [glyph_noBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
-        [glyph_noBank setFrame:CGRectMake(180, 17, 22, 22)];
-        [glyph_noBank setStyleId:@"glyph_noBank_sidebar"];
-        [glyph_noBank setStyleId:@"glyph_noBank_settings"];
-        [self.view addSubview:glyph_noBank];
-        
-        introText = [UILabel new];
-        [introText setFrame:CGRectMake(10, 38, 300, 76)];
-        introText.numberOfLines = 0;
-        [introText setText:@"Attach a bank account to send or receive payments. Just select your bank, login to your online banking, and you're done."];
-        [introText setTextAlignment:NSTextAlignmentCenter];
-        [introText setStyleId:@"settings_introText"];
-        [self.view addSubview:introText];
+        isBankAttached = YES;
     }
     else
     {
-        isBankAttached = YES;
-        [glyph_noBank removeFromSuperview];
+        isBankAttached = NO;
     }
     
     [self.navigationItem setHidesBackButton:YES];
@@ -92,6 +80,18 @@
     UIBarButtonItem * menu1 = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu1];
 
+    [self.navigationItem setRightBarButtonItem:Nil];
+    
+    UIButton * glyph_add = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [glyph_add setStyleClass:@"navbar_rightside_icon"];
+    [glyph_add addTarget:self action:@selector(goToSelectAptScrn) forControlEvents:UIControlEventTouchUpInside];
+    [glyph_add setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"] forState:UIControlStateNormal];
+    [glyph_add setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.24) forState:UIControlStateNormal];
+    glyph_add.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    
+    UIBarButtonItem * addProperty = [[UIBarButtonItem alloc] initWithCustomView:glyph_add];
+    [self.navigationItem setRightBarButtonItem: addProperty];
+
     [self.navigationItem setTitle:@"Settings"];
     [self.slidingViewController.panGesture setEnabled:YES];
 
@@ -102,12 +102,6 @@
     [title setStyleClass:@"refer_header"];
     [title setText:@"My Apartment"];
     [self.view addSubview:title];
-
-    UIButton * glyph_add = [[UIButton alloc] initWithFrame:CGRectMake(290, 12, 22, 21)];
-    [glyph_add setStyleClass:@"glyphAdd"];
-    [glyph_add setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"] forState:UIControlStateNormal];
-    [glyph_add addTarget:self action:@selector(goToSelectApt) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:glyph_add];
 
     topSectionContainer = [[UIView alloc] initWithFrame:CGRectMake(8, 42, 304, 168)];
     topSectionContainer.backgroundColor = [UIColor whiteColor];
@@ -120,13 +114,14 @@
     aptName.text = @"Belmont Village";
     [topSectionContainer addSubview:aptName];
 
-    aptAddress = [[UILabel alloc] initWithFrame:CGRectMake(9, 28, 188, 18)];
+    aptAddress = [[UILabel alloc] initWithFrame:CGRectMake(9, 28, 170, 30)];
     [aptAddress setFont:[UIFont fontWithName:@"Roboto-regular" size:12]];
     [aptAddress setTextColor:kNoochGrayDark];
-    aptAddress.text = @"7246 Dresden Ave, Philadelphia, PA 19876";
+    [aptAddress setText:@"7246 Dresden Ave, Philadelphia, PA 19876"];
+    [aptAddress setNumberOfLines:0];
     [topSectionContainer addSubview:aptAddress];
 
-    aptWebsite = [[UILabel alloc] initWithFrame:CGRectMake(9, 46, 188, 18)];
+    aptWebsite = [[UILabel alloc] initWithFrame:CGRectMake(9, 58, 188, 15)];
     [aptWebsite setFont:[UIFont fontWithName:@"Roboto-regular" size:12]];
     [aptWebsite setTextColor:kNoochBlue];
     [aptWebsite setUserInteractionEnabled:YES];
@@ -135,71 +130,72 @@
     [aptWebsite addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openAptWebsite)]];
     [topSectionContainer addSubview:aptWebsite];
 
-    UILabel * autoPayLbl = [[UILabel alloc] initWithFrame:CGRectMake(9, 70, 100, 15)];
+    UILabel * autoPayLbl = [[UILabel alloc] initWithFrame:CGRectMake(9, 76, 100, 15)];
     [autoPayLbl setFont:[UIFont fontWithName:@"Roboto-regular" size: 12]];
     [autoPayLbl setTextColor:kNoochGrayLight];
     autoPayLbl.text = @"Auto Pay:";
     [topSectionContainer addSubview:autoPayLbl];
 
-    autoPaySetting = [[UILabel alloc] initWithFrame:CGRectMake(64, 70, 30, 15)];
-    [autoPaySetting setFont:[UIFont fontWithName:@"Roboto-light" size: 12]];
-    [autoPaySetting setTextColor:kNoochRed];
-    autoPaySetting.text = @"Off";
+    autoPaySetting = [[UILabel alloc] initWithFrame:CGRectMake(65, 76, 30, 15)];
     [topSectionContainer addSubview:autoPaySetting];
 
     UILabel * lastPymntLbl = [[UILabel alloc] initWithFrame:CGRectMake(9, 89, 100, 15)];
     [lastPymntLbl setFont:[UIFont fontWithName:@"Roboto-regular" size: 12]];
     [lastPymntLbl setTextColor:kNoochGrayLight];
     lastPymntLbl.text = @"Last Payment:";
-    [topSectionContainer addSubview:lastPymntLbl];
+    //[topSectionContainer addSubview:lastPymntLbl];
 
     lastPymntDate = [[UILabel alloc] initWithFrame:CGRectMake(88, 89, 90, 15)];
     [lastPymntDate setFont:[UIFont fontWithName:@"Roboto-light" size: 12]];
     [lastPymntDate setTextColor:kNoochGrayDark];
-    lastPymntDate.text = @"Jan 3, 2015";
-    [topSectionContainer addSubview:lastPymntDate];
+    lastPymntDate.text = @"Jan 2, 2015";
+    //[topSectionContainer addSubview:lastPymntDate];
 
-    UIView * rentBox = [[UIView alloc] initWithFrame:CGRectMake(196, 6, 100, 80)];
-    rentBox.layer.cornerRadius = 4;
-    rentBox.clipsToBounds = YES;
-    rentBox.backgroundColor = kNoochGreen;
-    [rentBox setStyleClass:@"raised_view_AptScrn"];
-    [topSectionContainer addSubview:rentBox];
+    self.rentBox = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.rentBox setFrame:CGRectMake(190, 6, 102, 82)];
+    [self.rentBox addTarget:self action:@selector(goSetAptDetails) forControlEvents:UIControlEventTouchUpInside];
+    [self.rentBox addTarget:self action:@selector(stayPressed:) forControlEvents:UIControlEventTouchDown];
+    self.rentBox.layer.cornerRadius = 4;
+    self.rentBox.backgroundColor = kNoochBlue;
+    [self.rentBox setStyleClass:@"raised_view_AptScrn"];
 
-    UILabel * monthlyRentLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, rentBox.bounds.size.width, 18)];
+    [topSectionContainer addSubview:self.rentBox];
+
+    UILabel * monthlyRentLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, self.rentBox.bounds.size.width, 18)];
     [monthlyRentLbl setFont:[UIFont fontWithName:@"Roboto-regular" size: 14]];
     [monthlyRentLbl setTextColor:[UIColor whiteColor]];
     [monthlyRentLbl setTextAlignment:NSTextAlignmentCenter];
     monthlyRentLbl.text = @"Monthly Rent:";
-    [rentBox addSubview:monthlyRentLbl];
+    [self.rentBox addSubview:monthlyRentLbl];
 
-    UILabel * monthlyRentAmount = [[UILabel alloc] initWithFrame:CGRectMake(0, 26, rentBox.bounds.size.width, 31)];
+    monthlyRentAmount = [[UILabel alloc] initWithFrame:CGRectMake(0, 26, self.rentBox.bounds.size.width, 31)];
     [monthlyRentAmount setFont:[UIFont fontWithName:@"Roboto-medium" size: 23]];
     [monthlyRentAmount setTextColor:[UIColor whiteColor]];
     [monthlyRentAmount setTextAlignment:NSTextAlignmentCenter];
     monthlyRentAmount.text = @"$ 650";
-    [rentBox addSubview:monthlyRentAmount];
+    [self.rentBox addSubview:monthlyRentAmount];
 
-    UILabel * monthlyRentEdit = [[UILabel alloc] initWithFrame:CGRectMake(0, 60, rentBox.bounds.size.width, 15)];
+    UILabel * monthlyRentEdit = [[UILabel alloc] initWithFrame:CGRectMake(0, 60, self.rentBox.bounds.size.width, 15)];
     [monthlyRentEdit setFont:[UIFont fontWithName:@"Roboto-regular" size: 11]];
     [monthlyRentEdit setTextColor:[UIColor whiteColor]];
     [monthlyRentEdit setTextAlignment:NSTextAlignmentCenter];
     monthlyRentEdit.text = @"EDIT";
-    [rentBox addSubview:monthlyRentEdit];
+    [self.rentBox addSubview:monthlyRentEdit];
 
     payRentBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [payRentBtn setFrame:CGRectMake(0, 159, 0, 0)];
     if (isBankAttached)
     {
         [payRentBtn setTitle:@"Pay Rent Now" forState:UIControlStateNormal];
-        [payRentBtn addTarget:self action:@selector(attach_bank) forControlEvents:UIControlEventTouchUpInside];
+        [payRentBtn addTarget:self action:@selector(goToHowMuch) forControlEvents:UIControlEventTouchUpInside];
+        [payRentBtn setStyleClass:@"button_green_shorter"];
     }
     else
     {
         [payRentBtn setTitle:@"Link a Bank Now" forState:UIControlStateNormal];
         [payRentBtn addTarget:self action:@selector(attach_bank) forControlEvents:UIControlEventTouchUpInside];
+        [payRentBtn setStyleClass:@"button_blue_shorter"];
     }
-    [payRentBtn setStyleClass:@"button_green_shorter"];
     [payRentBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [payRentBtn setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
     payRentBtn.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -210,9 +206,9 @@
     NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
     
     UILabel * glyph = [UILabel new];
-    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
-    [glyph setFrame:CGRectMake(35, 0, 30, 42)];
-    glyph.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"]
+    [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
+    [glyph setFrame:CGRectMake(40, 0, 30, 42)];
+    glyph.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-square-o"]
                                                            attributes:textAttributes1];
     [glyph setTextColor:[UIColor whiteColor]];
     [payRentBtn addSubview:glyph];
@@ -243,6 +239,11 @@
         }
         [self.view addSubview:scroll];
     }
+
+    serve *  serveOBJ = [serve new];
+    serveOBJ.Delegate = self;
+    serveOBJ.tagName = @"getAptDetails";
+    //[serveOBJ getAptDetails:[[NSUserDefaults standardUserDefaults ]valueForKey:@"MemberId"]];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -250,7 +251,27 @@
     [super viewWillAppear:animated];
     [self.navigationItem setTitle:@"My Apartment"];
     self.screenName = @"My Apartment Screen";
-    [self getBankInfo];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoPayEnabled"]isEqualToString:@"1"])
+    {
+        [autoPaySetting setFont:[UIFont fontWithName:@"Roboto-medium" size: 12]];
+        [autoPaySetting setTextColor:kNoochGreen];
+        autoPaySetting.text = @"On";
+    }
+    else
+    {
+        [autoPaySetting setFont:[UIFont fontWithName:@"Roboto-regular" size: 12]];
+        [autoPaySetting setTextColor:kNoochRed];
+        autoPaySetting.text = @"Off";
+    }
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
 }
 
 -(void)attach_bank
@@ -279,50 +300,84 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString * CellIdentifier = @"Cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil)
+    {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [cell setAccessoryType:UITableViewCellAccessoryNone];
         UIView *selectionColor = [[UIView alloc] init];
         selectionColor.backgroundColor = kNoochGrayLight;
         cell.selectedBackgroundView = selectionColor;
+        cell.indentationLevel = 1;
     }
-    
-    UILabel *title = [UILabel new];
-    [title setStyleClass:@"settings_table_label"];
-    
-    UILabel *glyph = [UILabel new];
-    [glyph setStyleClass:@"table_glyph"];
-    
-    if (indexPath.row == 0) {
-        title.text = @"Profile Info";
-        [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-user"]];
+
+    if (indexPath.row < 3)
+    {
+        cell.indentationWidth = 50;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        
+        UIImageView * pic = [[UIImageView alloc] initWithFrame:CGRectMake(14, 6, 36, 36)];
+        pic.clipsToBounds = YES;
+        pic.hidden = NO;
+        pic.layer.cornerRadius = 6;
+        [pic sd_setImageWithURL:[NSURL URLWithString:@"https://www.nooch.com/staging/web-app/images/apt1.jpg"]
+               placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
+        [pic setContentMode:UIViewContentModeScaleAspectFill];
+        [cell.contentView addSubview:pic];
+
+        UILabel * month = [[UILabel alloc] initWithFrame:CGRectMake(66, 8, 100, 16)];
+        [month setText:@"January 2015"];
+        [month setFont:[UIFont fontWithName:@"Roboto-regular" size:15]];
+
+        UILabel * paymentAmount = [[UILabel alloc] initWithFrame:CGRectMake(66, 28, 100, 14)];
+        [paymentAmount setFont:[UIFont fontWithName:@"Roboto-regular" size:13]];
+        [paymentAmount setTextColor:kNoochRed];
+        paymentAmount.text = @"$650";
+
+        UIView * statusBar = [[UIView alloc] initWithFrame:CGRectMake(230, 8, 68, 12)];
+        statusBar.backgroundColor = kNoochGreen;
+        statusBar.layer.cornerRadius = 3;
+        [cell.contentView addSubview: statusBar];
+
+        UILabel * statusBarText = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 68, 12)];
+        [statusBarText setFont:[UIFont fontWithName:@"Roboto-medium" size:9]];
+        [statusBarText setText: @"PAID"];
+        [statusBarText setTextColor:[UIColor whiteColor]];
+        [statusBarText setTextAlignment:NSTextAlignmentCenter];
+        [statusBar addSubview:statusBarText];
+
+        UILabel * glyph_status = [[UILabel alloc] initWithFrame:CGRectMake(231, 22, 20, 18)];
+        [glyph_status setTextColor:kNoochGreen];
+        [glyph_status setFont:[UIFont fontWithName:@"FontAwesome" size:11]];
+        [glyph_status setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"]];
+
+        UILabel * statusBarDate = [[UILabel alloc] initWithFrame:CGRectMake(246, 22, 60, 18)];
+        [statusBarDate setFont:[UIFont fontWithName:@"Roboto-regular" size:10]];
+        [statusBarDate setTextColor:kNoochGrayDark];
+        statusBarDate.text = @"Jan 2, 2015";
+
+        [cell.contentView addSubview: month];
+        [cell.contentView addSubview: paymentAmount];
+        [cell.contentView addSubview: glyph_status];
+        [cell.contentView addSubview: statusBarDate];
+
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
-    else if (indexPath.row == 1) {
-        title.text = @"Security Settings";
-        [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
+
+    else if (indexPath.row == 3)
+    {
+        UILabel * seeAll = [[UILabel alloc] initWithFrame:CGRectMake(0, 15, menu.bounds.size.width, 18)];
+        [seeAll setTextAlignment:NSTextAlignmentCenter];
+        [seeAll setTextColor:kNoochBlue];
+        [seeAll setFont:[UIFont fontWithName:@"Roboto-regular" size:15]];
+        [seeAll setText:@"See All"];
+        [cell.contentView addSubview:seeAll];
+
+        [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
     }
-    else if (indexPath.row == 2) {
-        title.text = @"Notification Settings";
-        [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bell"]];
-    }
-    else if(indexPath.row == 3) {
-        title.text = @"Social Settings";
-        [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook"]];
-    }
-    
-    arrow = [UIButton buttonWithType:UIButtonTypeCustom];
-    [arrow setStyleClass:@"table_arrow"];
-    [arrow setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-right"] forState:UIControlStateNormal];
-    [arrow setTitleShadowColor:Rgb2UIColor(3, 5, 8, 0.1) forState:UIControlStateNormal];
-    arrow.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-    
-    [cell.contentView addSubview:title];
-    [cell.contentView addSubview:glyph];
-    [cell.contentView addSubview:arrow];
-    
+
     return cell;
 }
 
@@ -330,47 +385,67 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.row == 0) {
-        [self profile];
+    if (indexPath.row == 3)
+    {
+        isFromApts = YES;
+        listType = @"REQUESTS";
+        HistoryFlat * history = [HistoryFlat new];
+        [self.navigationController pushViewController:history animated:NO];
     }
 }
 
-- (void)profile
+-(void)goToSelectAptScrn
 {
-    isProfileOpenFromSideBar = NO;
-    sentFromHomeScrn = NO;
-    ProfileInfo * info = [ProfileInfo new];
-    [self performSelector:@selector(navigate_to:) withObject:info afterDelay:0.01];
+    if (isFromPropertySearch)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else
+    {
+        SelectApt * selectApt = [SelectApt new];
+        [self.navigationController pushViewController:selectApt animated:YES];
+    }
 }
 
--(void)getBankInfo
+-(void)goToHowMuch
 {
-    serve * serveOBJ = [serve new];
-    serveOBJ.Delegate = self;
-    serveOBJ.tagName = @"knox_bank_info";
-    [serveOBJ GetKnoxBankAccountDetails];
+    NSMutableDictionary * aptToPay = [NSMutableDictionary new];
+    [aptToPay setObject:@"MemberId" forKey:@"MemberId"];
+    [aptToPay setObject:@"Bellevue Apartments" forKey:@"AptName"];
+    [aptToPay setObject:@"650" forKey:@"RentAmount"];
+    [aptToPay setObject:[NSString stringWithFormat:@"https://www.nooch.com/staging/web-app/images/apt1.jpg"] forKey:@"Photo"];
+
+    isFromMyApt = YES;
+    HowMuch * howMuch = [[HowMuch alloc] initWithReceiver: aptToPay];
+    [self.navigationController pushViewController:howMuch animated:YES];
 }
 
--(void) goToSelectApt
+-(void)goSetAptDetails
 {
-    SelectApt * selectApt = [SelectApt new];
-    [self.navigationController pushViewController:selectApt animated:YES];
+    [self.rentBox setFrame:CGRectMake(190, 6, 102, 82)];
+    SetAptDetails * setAptsDetails = [SetAptDetails new];
+    [self performSelector:@selector(navigate_to:) withObject:setAptsDetails afterDelay:0.12];
 }
 
--(void) openAptWebsite
+-(void)openAptWebsite
 {
     UIApplication * mySafari = [UIApplication sharedApplication];
-    NSURL * myURL = [[NSURL alloc]initWithString:aptWebsiteUrl];
-
-    NSLog(@"myURL is: %@",myURL);
+    NSURL * myURL = [[NSURL alloc]initWithString: aptWebsiteUrl];
     [mySafari openURL:myURL];
 }
+
+-(void)stayPressed:(UIButton *) sender
+{
+    [self.rentBox setFrame:CGRectMake(190, 8, 102, 82)];
+}
+
 - (void) navigate_to:(id)view
 {
     [self.navigationController pushViewController:view animated:YES];
 }
 
--(void)Error:(NSError *)Error{
+-(void)Error:(NSError *)Error
+{
     
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
@@ -383,34 +458,69 @@
     
 }
 
+-(void)loadDelay
+{
+    NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
+    [arrNav removeLastObject];
+    [nav_ctrl setViewControllers:arrNav animated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 -(void)listen:(NSString *)result tagName:(NSString *)tagName
 {
-    /*if ([tagName isEqualToString:@"knox_bank_info"])
+    NSLog(@"Result is: %@", result);
+
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound)
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        
+        [timer invalidate];
+        
+        [nav_ctrl performSelector:@selector(disable)];
+        [nav_ctrl performSelector:@selector(reset)];
+        
+        [[assist shared]setPOP:YES];
+        [self performSelector:@selector(loadDelay) withObject:Nil afterDelay:1.0];
+    }
+
+    if ([tagName isEqualToString:@"getAptDetials"])
     {
         NSError * error;
-        NSMutableDictionary*dictResponse = [NSJSONSerialization
-                                            JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                                            options:kNilOptions
-                                            error:&error];
-        NSLog(@"dicResponse is: %@",dictResponse);
-        
-        if (![[dictResponse valueForKey:@"AccountName"] isKindOfClass:[NSNull class]] &&
-            ![[dictResponse valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]] &&
-            ![[dictResponse valueForKey:@"BankName"] isKindOfClass:[NSNull class]])
+
+        NSMutableDictionary * dictResponse = [NSJSONSerialization
+                                              JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                              options:kNilOptions
+                                              error:&error];
+
+        if (![[dictResponse valueForKey:@"aptName"] isKindOfClass:[NSNull class]] &&
+            ![[dictResponse valueForKey:@"aptAddress"] isKindOfClass:[NSNull class]] &&
+            ![[dictResponse valueForKey:@"aptWebsite"] isKindOfClass:[NSNull class]])
         {
-            [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
+            [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"HasAptSelected"];
+
             isBankAttached = YES;
-            
-            [aptName setText:@"Bank"];
-            [aptAddress setText:@"linked_account_last4"];
+            aptName.text = [dictResponse valueForKey:@"aptName"];
+            aptAddress.text = [dictResponse valueForKey:@"aptAddress"];
+            aptWebsite.text = [dictResponse valueForKey:@"aptWebsite"];
+            aptWebsiteUrl = [dictResponse valueForKey:@"aptWebsite"];
+
+            monthlyRentAmount.text = [dictResponse valueForKey:@"monthlyRentAmount"];
+            autoPaySetting.text = [dictResponse valueForKey:@"autoPaySetting"];
+            lastPymntDate.text = @"";
         }
-        else
-        {
-            [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
-    
-            isBankAttached = NO;
-        }
-    }*/
+    }
+
+    else if ([tagName isEqualToString:@"getLastPayments"])
+    {
+        NSError * error;
+        
+        self.lastPayments = [NSJSONSerialization
+                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                             options:kNilOptions
+                             error:&error];
+    }
 }
 
 #pragma mark - file paths
@@ -432,36 +542,15 @@
         }
         return;
     }
-    
-    if (alertView.tag == 15)
-    {
-        if (buttonIndex == 1)
-        {
-            blankView = [[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
-            [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
-            
-            UIActivityIndicatorView * actv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-            [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2) - 10, 40, 40)];
-            [actv startAnimating];
-            [blankView addSubview:actv];
-            
-            [self.view addSubview:blankView];
-            [self.view bringSubviewToFront:blankView];
-            [[assist shared]setisloggedout:YES];
-            [timer invalidate];
-            timer = nil;
-            
-            serve *  serveOBJ = [serve new];
-            serveOBJ.Delegate = self;
-            serveOBJ.tagName = @"logout";
-            [serveOBJ LogOutRequest:[[NSUserDefaults standardUserDefaults ]valueForKey:@"MemberId"]];
-        }
-    }
 }
 
 - (void)didReceiveMemoryWarning
 {
-    [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    [super didReceiveMemoryWarning];
+    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    [imageCache clearMemory];
+    [imageCache clearDisk];
+    [imageCache cleanDisk];
 }
 @end

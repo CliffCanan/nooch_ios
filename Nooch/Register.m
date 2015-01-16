@@ -26,7 +26,8 @@
 @property(nonatomic,strong) UIButton *cont;
 @property(nonatomic,strong) UIButton *login;
 @property(nonatomic,strong) MBProgressHUD *hud;
-@property(atomic,strong) UILabel *or;
+@property(nonatomic,strong) UILabel *or;
+@property(nonatomic,strong) UILabel * pwValidator;
 @end
 @implementation Register
 
@@ -201,7 +202,7 @@
     [password setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:password];
 
-    self.password_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 334, 200, 30)];
+    self.password_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 334, 200, 40)];
     [self.password_field setBackgroundColor:[UIColor clearColor]];
     [self.password_field setDelegate:self];
     [self.password_field setPlaceholder:@"Password "];
@@ -212,6 +213,15 @@
     [self.password_field setAutocorrectionType:UITextAutocorrectionTypeNo];
     [self.password_field setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.password_field];
+
+    self.pwValidator = [UILabel new];
+    [self.pwValidator setFrame:CGRectMake(98, 334, 21, 39)];
+    [self.pwValidator setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
+    [self.pwValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
+    [self.pwValidator setTextAlignment:NSTextAlignmentCenter];
+    [self.pwValidator setTextColor:kNoochRed];
+    [self.pwValidator setHidden:YES];
+    [self.view addSubview:self.pwValidator];
 
     UILabel * checkbox_box = [UILabel new];
     [checkbox_box setFrame:CGRectMake(36, 385, 21, 20)];
@@ -1095,6 +1105,15 @@
 #pragma mark - UITextField delegation
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
+    if (range.length + range.location > textField.text.length)
+    {
+        return NO;
+    }
+
+        NSLog(@"range.length is: %lu",(unsigned long)range.length);
+        NSLog(@"range.location is: %lu",(unsigned long)range.location);
+        NSLog(@"textField.text.length: %lu",(unsigned long)textField.text.length);
+
     if ([self.name_field.text length] > 1 &&
         [self.email_field.text length] > 2 &&
         [self.email_field.text rangeOfString:@"@"].location != NSNotFound &&
@@ -1113,6 +1132,61 @@
     }
     else {
         [self.cont setEnabled:NO];
+    }
+
+    if (textField == self.password_field &&
+        [textField.text length] > 0)
+    {
+        NSCharacterSet * digitsCharSet = [NSCharacterSet decimalDigitCharacterSet];
+        NSCharacterSet * lettercaseCharSet = [NSCharacterSet letterCharacterSet];
+
+        [self.pwValidator setHidden:NO];
+
+        if ([self.password_field.text length] > 5)
+        {
+            pwLength = true;
+        } else {
+            pwLength = false;
+        }
+        if ([self.password_field.text rangeOfCharacterFromSet:lettercaseCharSet].location != NSNotFound)
+        {
+            pwChar = true;
+        } else {
+            pwChar = false;
+        }
+        if ([self.password_field.text rangeOfCharacterFromSet:digitsCharSet].location != NSNotFound)
+        {
+            pwNum = true;
+        } else {
+            pwNum = false;
+        }
+        
+        if (pwLength && pwChar && pwNum)
+        {
+            [self.pwValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"]];
+            [self.pwValidator setTextColor:kNoochGreen];
+        }
+        else if (pwLength && (pwChar || pwNum))
+        {
+            [self.pwValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-minus"]];
+            [self.pwValidator setTextColor:kNoochPurple];
+        }
+        else if (pwLength || (pwChar || pwNum))
+        {
+            [self.pwValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
+            [self.pwValidator setTextColor:kNoochRed];
+        }
+        else
+        {
+            [self.pwValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
+            [self.pwValidator setTextColor:kNoochRed];
+        }
+
+        return YES;
+    }
+    else
+    {
+        [self.pwValidator setHidden:YES];
     }
     return YES;
 }

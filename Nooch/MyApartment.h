@@ -10,9 +10,9 @@
 #import "serve.h"
 
 BOOL isBankAttached;
+BOOL isFromPropertySearch;
+
 @interface MyApartment : GAITrackedViewController<UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate,serveD>
 {
-    UIView * blankView;
-    UIButton * arrow;
 }
 @end

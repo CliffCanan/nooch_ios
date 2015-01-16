@@ -40,23 +40,6 @@
     }
     return self;
 }
--(void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    [self.hud hide:YES];
-    
-    if (isMapOpen)
-    {
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDelegate:self];
-        [UIView setAnimationDuration:0.3];
-        
-        self.list.frame = CGRectMake(-276, 84, 320, self.view.frame.size.height);
-        mapArea.frame = CGRectMake(0, 84,320,self.view.frame.size.height);
-        [UIView commitAnimations];
-    }
-}
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -66,26 +49,44 @@
     self.screenName = @"HistoryFlat Screen";
 }
 
--(void)showMenu
-{
-    [self.search resignFirstResponder];
-    [self.slidingViewController anchorTopViewTo:ECRight];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self.navigationItem setHidesBackButton:YES];
 
-    UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [hamburger setStyleId:@"navbar_hamburger"];
-    [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
-    [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
-    hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
-    UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
-    [self.navigationItem setLeftBarButtonItem:menu];
+    if (!isFromApts)
+    {
+        UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [hamburger setStyleId:@"navbar_hamburger"];
+        [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+        [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+        hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
 
+        UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+        [self.navigationItem setLeftBarButtonItem:menu];
+    }
+    else
+    {
+        [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+
+        NSShadow * shadowNavText = [[NSShadow alloc] init];
+        shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .2);
+        shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
+        NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
+
+        UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backToApts)];
+
+        UILabel * back_button = [UILabel new];
+        [back_button setStyleId:@"navbar_back"];
+        [back_button setUserInteractionEnabled:YES];
+        [back_button addGestureRecognizer: backTap];
+        back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
+
+        UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+
+        [self.navigationItem setLeftBarButtonItem:menu];
+    }
     [self.navigationItem setTitle:@"History"];
      [nav_ctrl performSelector:@selector(disable)];
 
@@ -134,7 +135,7 @@
     [filter setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-filter"] forState:UIControlStateNormal];
     [filter addTarget:self action:@selector(FilterHistory:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *filt = [[UIBarButtonItem alloc] initWithCustomView:filter];
-    
+
     listType = @"ALL";
     index = 1;
     isStart = YES;
@@ -270,6 +271,34 @@
     [mapArea addSubview:mapView_];
 }
 
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.hud hide:YES];
+
+    if (isMapOpen)
+    {
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDuration:0.3];
+
+        self.list.frame = CGRectMake(-276, 84, 320, self.view.frame.size.height);
+        mapArea.frame = CGRectMake(0, 84,320,self.view.frame.size.height);
+        [UIView commitAnimations];
+    }
+}
+
+-(void)showMenu
+{
+    [self.search resignFirstResponder];
+    [self.slidingViewController anchorTopViewTo:ECRight];
+}
+
+-(void)backToApts
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 -(void)toggleMapByNavBtn
 {
     if (!self.completed_selected) {
@@ -311,6 +340,7 @@
     [UIView commitAnimations];
      [self.view bringSubviewToFront:exportHistory];
 }
+
 -(void)sideleft:(id)sender
 {
     if (!self.completed_selected) {
@@ -569,6 +599,7 @@ return customView;
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissFP:) name:@"dismissPopOver" object:nil];
     isHistFilter = YES;
+
     popSelect *popOver = [[popSelect alloc] init];
     popOver.title = nil;
     
@@ -585,17 +616,21 @@ return customView;
     [fp dismissPopoverAnimated:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"dismissPopOver" object:nil];
     isSearch = NO;
+
     if (![listType isEqualToString:@"CANCEL"] && isFilterSelected)
     {
         [self.search setShowsCancelButton:NO];
         [self.search setText:@""];
         [self.search resignFirstResponder];
+
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
+
         isLocalSearch = NO;
         isFilter = YES;
         index = 1;
         isFilterSelected = NO;
+
         //Rlease memory cache
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         [imageCache clearMemory];
@@ -634,17 +669,6 @@ return customView;
 #pragma mark - transaction type switching
 - (void) completed_or_pending:(id)sender
 {
-    /*[self.list removeFromSuperview];
-    self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
-    [self.list setDataSource:self];
-    [self.list setDelegate:self];
-    [self.list setSectionHeaderHeight:0];
-    [self.view addSubview:self.list];
-    [self.list reloadData];
-    [self.view bringSubviewToFront:exportHistory];
-    
-    [self.list setStyleId:@"history"];*/
-
     listType = @"ALL";
 
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
@@ -814,7 +838,9 @@ return customView;
     static NSString *cellIdentifier = @"Cell";
     SWTableViewCell *cell = (SWTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 
-    //NSLog(@"The cell is:  %@",cell);
+    if (1 > 0) {
+        NSLog(@"The cell is:  %@",cell);
+    }
 
     NSMutableArray *leftUtilityButtons = [NSMutableArray new];
     NSMutableArray *rightUtilityButtons = [NSMutableArray new];
@@ -1478,31 +1504,32 @@ return customView;
                 {
                     UILabel * emptyText = nil;
                     UIImageView * emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(33, 105, 253, 256)];
-                    
+
                     [self.list setStyleId:@"emptyTable"];
-                    
+
                     if ([[UIScreen mainScreen] bounds].size.height < 500)
                     {
                         emptyText = [[UILabel alloc] initWithFrame:CGRectMake(8, 10, 304, 56)];
                         [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:18]];
                         [emptyPic setFrame:CGRectMake(33, 78, 253, 256)];
-                    } else {
+                    }
+                    else
+                    {
                         emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, 300, 72)];
                         [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
                     }
                     [emptyText setNumberOfLines:0];
                     [emptyText setText:@"Once you make or receive a payment, come here to see all the details."];
                     [emptyText setTextAlignment:NSTextAlignmentCenter];
-                    
+
                     [emptyPic setImage:[UIImage imageNamed:@"history_img"]];
                     [emptyPic setStyleClass:@"animate_bubble"];
-                    
+
                     [self.list  addSubview: emptyPic];
                     [self.list  addSubview: emptyText];
-                    
+
                     [exportHistory removeFromSuperview];
                 }
-                
             }
             else
             {
@@ -2244,6 +2271,7 @@ return customView;
     [histShowArrayCompleted removeAllObjects];
     [histShowArrayPending removeAllObjects];
     self.search.text=@"";
+
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     [imageCache clearMemory];
     [imageCache clearDisk];
@@ -2422,37 +2450,6 @@ return customView;
         }
     }
 
-    /* else if ([tagName isEqualToString:@"histPending"])
-    {
-        [self.hud hide:YES];
-        histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        
-        if ([histArray count] > 0)
-        {
-            isEnd = NO;
-            isStart = NO;
-            int counter = 0;
-            for (NSDictionary *dict in histArray)
-            {
-                if (![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]&& ![[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"])
-                {
-                    if ( ([[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] && ![[dict valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"]) ||
-                        (([[dict valueForKey:@"TransactionType"]isEqualToString:@"Invite"] || [[dict valueForKey:@"TransactionType"]isEqualToString:@"Request"]) &&
-                          [[dict valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"]))
-                    {
-                        [histShowArrayPending addObject:dict];
-                        
-                        if (![[dict valueForKey:@"TransactionType"]isEqualToString:@"Disputed"]) {
-                            counter++;
-                        }
-                    }
-                }
-            }
-            [completed_pending setTitle:[NSString stringWithFormat:@"Pending (%d)",counter]forSegmentAtIndex:1];
-
-        }
-    } */
-
     else if ([tagName isEqualToString:@"hist"])
     {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -2507,8 +2504,9 @@ return customView;
         //ServerDate
         NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         ServerDate = [self dateFromString:[dict valueForKey:@"Result"] ];
+
         [self.list removeFromSuperview];
-        self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height-80)];
+        self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height - 80)];
         [self.list setStyleId:@"history"];
         [self.list setDataSource:self];
         [self.list setDelegate:self];
