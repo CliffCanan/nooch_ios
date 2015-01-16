@@ -255,6 +255,8 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
+
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoPayEnabled"]isEqualToString:@"1"])
     {
         [autoPaySetting setFont:[UIFont fontWithName:@"Roboto-medium" size: 12]];

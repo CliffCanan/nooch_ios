@@ -15,10 +15,11 @@
 
 - (id) init {
 	self = [super init];
-	if (self != nil) {
+	if (self != nil)
+    {
 		self.locationManager = [[CLLocationManager alloc] init];
 		self.locationManager.delegate = self;
-        
+
         if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) { // iOS8+
             // Sending a message to avoid compile time error
             [[UIApplication sharedApplication] sendAction:@selector(requestWhenInUseAuthorization)
@@ -26,7 +27,7 @@
                                                      from:self
                                                  forEvent:nil];
         }
-        NSLog(@"3.) Checkpoint REACHED");
+        NSLog(@"3.) GetLocation.M --> Checkpoint REACHED");
 
         // send loc updates to myself
 	}
@@ -34,18 +35,21 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager
-	didUpdateToLocation:(CLLocation *)newLocation
-		   fromLocation:(CLLocation *)oldLocation
+     didUpdateLocations:(NSArray *)locations
 {
-    NSLog(@"LocationManager didUPDATEToLocation, new Location is: %@",newLocation);
-	[self.delegate locationUpdate:newLocation];
+    NSLog(@"GetLocation.m --> LocationManager NEW didUpdateLocationS is: %@", locations);
+
+    //- (void)transferPinLocationUpdateManager:(CLLocationManager *)managerdidUpdateLocations:(NSArray *)locationsArray
+
+    [self.delegate transferPinLocationUpdateManager:manager didUpdateLocations:locations];
+    //[self.delegate locationUpdate: locations];
     [locationManager stopUpdatingLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager
 	   didFailWithError:(NSError *)error
 {
-    NSLog(@"LocationManager didFailWithError");
+    NSLog(@"LocationManager didFailWithError %@", error);
 	[self.delegate locationError:error];
 }
 

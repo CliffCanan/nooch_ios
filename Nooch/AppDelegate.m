@@ -59,10 +59,10 @@ bool modal;
 
     // GAMETHRIVE (Push Notifications)
     self.gameThrive = [[GameThrive alloc] initWithLaunchOptions:launchOptions handleNotification:^(NSString* message, NSDictionary* additionalData, BOOL isActive) {
-        UIAlertView* alertView;
-        NSLog(@"APP DEL - GameThrieve --> ADDITIONALDATA: %@", additionalData);
+        UIAlertView * alertView;
         if (additionalData)
         {
+            NSLog(@"APP DEL - GameThrieve --> ADDITIONALDATA: %@", additionalData);
             // Append AdditionalData at the end of the message
             NSString * messageTitle;
             if (additionalData[@"title"]) {
@@ -84,13 +84,12 @@ bool modal;
                                          cancelButtonTitle:@"Close"
                                          otherButtonTitles:nil, nil];
         }
-        // Highly recommend adding game logic around this so the user is not interrupted during gameplay.
         if (alertView != nil)
             [alertView show];
     }];
 
     //Google Analytics
-    [GAI sharedInstance].dispatchInterval = 22;
+    [GAI sharedInstance].dispatchInterval = 20;
     [GAI sharedInstance].trackUncaughtExceptions = YES;
     // Optional: set Logger to VERBOSE for debug information.
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
@@ -121,6 +120,7 @@ bool modal;
 //    [ARPowerHookManager registerHookWithId:@"serverURL" friendlyName:@"Server URL To Use" defaultValue:@"https://www.noochme.com/NoochService/NoochService.svc"];
     [ARPowerHookManager registerHookWithId:@"slogan" friendlyName:@"Slogan" defaultValue:@"Money Made Simple"];
     [ARPowerHookManager registerHookWithId:@"HUDcolor" friendlyName:@"HUD Color" defaultValue:@"black"];
+    [ARPowerHookManager registerHookWithId:@"reqCodeSetting" friendlyName:@"Require Invite Code" defaultValue:@"no"];
     [ARPowerHookManager registerHookWithId:@"refCode" friendlyName:@"Referral Code" defaultValue:@"NOCODE"];
     [ARPowerHookManager registerHookWithId:@"versionNum" friendlyName:@"Most Recent Version Number" defaultValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
     [ARPowerHookManager registerHookWithId:@"homeBtnClr" friendlyName:@"Home Button Color" defaultValue:@"green"];

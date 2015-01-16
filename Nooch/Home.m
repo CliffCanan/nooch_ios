@@ -1110,9 +1110,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     if (![[assist shared]isPOP])
     {
-        // NSLog(@"1.) Checkpoint REACHED");
+        // NSLog(@"1.) Home --> ![[assist shared]isPOP]");
 
-        self.slidingViewController.panGesture.enabled=YES;
+        self.slidingViewController.panGesture.enabled = YES;
         [self.view addGestureRecognizer:self.slidingViewController.panGesture];
 
         //location
@@ -1120,11 +1120,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         locationManager.delegate = self;
         locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
-        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
+        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer; // 100 m
 
         if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) { // iOS8+
             // Sending a message to avoid compile time error
-            // NSLog(@"2.) Checkpoint REACHED");
+
             [[UIApplication sharedApplication] sendAction:@selector(requestWhenInUseAuthorization)
                                                        to:locationManager
                                                      from:self
@@ -1861,29 +1861,37 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 }
 
 # pragma mark - CLLocationManager Delegate Methods
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
+- (void)locationManager:(CLLocationManager *)manager
+     didUpdateLocations:(NSArray *)locations
+{
+    [locationManager stopUpdatingLocation];
+
+    CLLocationCoordinate2D loc = manager.location.coordinate;
+    lat = [[[NSString alloc] initWithFormat:@"%f",loc.latitude] floatValue];
+    lon = [[[NSString alloc] initWithFormat:@"%f",loc.longitude] floatValue];
+
+    //NSLog(@"LAT is: %@   & LONG is: %f", [[NSString alloc] initWithFormat:@"%f",loc.latitude],lon);
+
+    [[assist shared]setlocationAllowed:YES];
+
+    serve * serveOBJ = [serve new];
+    [serveOBJ UpDateLatLongOfUser:[[NSString alloc] initWithFormat:@"%f",loc.latitude] lng:[[NSString alloc] initWithFormat:@"%f",loc.longitude]];
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+       didFailWithError:(NSError *)error
+{
+    [[assist shared] setlocationAllowed:NO];
     
-    [[assist shared]setlocationAllowed:NO];
-    
-    NSLog(@"Error : %@",error);
-    if ([error code] == kCLErrorDenied){
+    NSLog(@"Home: Location Manager Error : %@",error);
+    if ([error code] == kCLErrorDenied) {
         NSLog(@"Error : %@",error);
     }
 }
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{
-    [manager stopUpdatingLocation];
-    
-    CLLocationCoordinate2D loc = [newLocation coordinate];
-    lat = [[[NSString alloc] initWithFormat:@"%f",loc.latitude] floatValue];
-    lon = [[[NSString alloc] initWithFormat:@"%f",loc.longitude] floatValue];
-    [[assist shared]setlocationAllowed:YES];
-    serve*serveOBJ=[serve new];
-    [serveOBJ UpDateLatLongOfUser:[[NSString alloc] initWithFormat:@"%f",loc.latitude] lng:[[NSString alloc] initWithFormat:@"%f",loc.longitude]];
-    [locationManager stopUpdatingLocation];
-}
 
--(void)Error:(NSError *)Error{
+-(void)Error:(NSError *)Error
+{
     [self.hud hide:YES];
 
     UIAlertView *alert = [[UIAlertView alloc]

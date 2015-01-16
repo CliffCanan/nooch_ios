@@ -18,8 +18,8 @@
 #import <FacebookSDK/FacebookSDK.h>
 
 @interface Login ()<FBLoginViewDelegate>{
-    core*me;
-    NSString*email_fb,*fbID;
+    core *me;
+    NSString *email_fb, *fbID;
 }
 @property(nonatomic,strong) UIButton *facebookLogin;
 @property(nonatomic,strong) UITextField *email;
@@ -31,7 +31,9 @@
 @end
 
 @implementation Login
+
 @synthesize inputAccessory;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -86,27 +88,14 @@
         }
         else  // for iOS 7 and prior
         {
-            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Please Enter Email And Password" message:@"We can't log you in if we don't know who you are!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Please Enter Email And Password"
+                                                          message:@"We can't log you in if we don't know who you are!"
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles: nil];
             [av show];
         }
     }
-}
-
-# pragma mark - CLLocationManager Delegate Methods
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
-{
-    if ([error code] == kCLErrorDenied){
-        NSLog(@"Error : %@",error);
-    }
-}
-
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
-{
-    [manager stopUpdatingLocation];
-    CLLocationCoordinate2D loc = [newLocation coordinate];
-    lat = [[[NSString alloc] initWithFormat:@"%f",loc.latitude] floatValue];
-    lon = [[[NSString alloc] initWithFormat:@"%f",loc.longitude] floatValue];
-    [locationManager stopUpdatingLocation];
 }
 
 -(void) BackClicked:(id) sender
@@ -114,7 +103,8 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
      self.screenName = @"Login Screen";
 }
@@ -475,6 +465,7 @@
 
     [self.facebookLogin addSubview:glyph_check];
 }
+
 - (void)attemptFBLogin
 {
     [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
@@ -482,6 +473,8 @@
         {
             // Success! Now Log User into Nooch using the FB ID
             // NSLog(@"user info: %@", result);
+
+            [self checkIfLocationAllowed];
 
             [[NSUserDefaults standardUserDefaults] setObject:[result objectForKey:@"id"] forKey:@"facebook_id"];
             NSLog(@"Login w FB successful --> fb id is %@",[result objectForKey:@"id"]);
@@ -501,7 +494,7 @@
             NSString * udid = [[UIDevice currentDevice] uniqueDeviceIdentifier];
             email_fb = [result objectForKey:@"email"];
             fbID = [result objectForKey:@"id"];
-            
+
             serve * log = [serve new];
             [log setDelegate:self];
             [log setTagName:@"loginwithFB"];
@@ -513,6 +506,51 @@
             // See: https://developers.facebook.com/docs/ios/errors
         }
     }];
+}
+
+# pragma mark - CLLocationManager Delegate Methods
+- (void)locationManager:(CLLocationManager *)manager
+     didUpdateLocations:(NSArray *)locations
+{
+    [locationManager stopUpdatingLocation];
+    
+    CLLocationCoordinate2D loc = manager.location.coordinate;
+    lat = [[[NSString alloc] initWithFormat:@"%f",loc.latitude] floatValue];
+    lon = [[[NSString alloc] initWithFormat:@"%f",loc.longitude] floatValue];
+    
+    NSLog(@"LAT is: %@   & LONG is: %f", [[NSString alloc] initWithFormat:@"%f",loc.latitude],lon);
+    
+    [[assist shared]setlocationAllowed:YES];
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+       didFailWithError:(NSError *)error
+{
+    if ([error code] == kCLErrorDenied){
+        NSLog(@"Error : %@",error);
+    }
+}
+
+-(void)checkIfLocationAllowed
+{
+    if ([CLLocationManager locationServicesEnabled])
+    {
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+        {
+            NSLog(@"Location Services Allowed");
+
+            locationManager = [[CLLocationManager alloc] init];
+
+            locationManager.delegate = self;
+            locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
+            locationManager.desiredAccuracy = kCLLocationAccuracyKilometer; // 100 m
+
+            [locationManager startUpdatingLocation];
+        }
+        else {
+            NSLog(@"Location Services NOT Allowed");
+        }
+    }
 }
 
 // Show an alert message (For Facebook methods)
@@ -528,7 +566,11 @@
 
 - (void) forgot_pass
 {
-    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Please enter your email and we will send you a reset link." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Forgot Password"
+                                                    message:@"Please enter your email and we will send you a reset link."
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"OK", nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [[alert textFieldAtIndex:0] setText:self.email.text];
     [alert setTag:220011];
@@ -692,13 +734,16 @@
     {
         NSError *error;
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+
+        [self checkIfLocationAllowed];
+
         self.encrypted_pass = [[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]];
-        
+
         serve * log = [serve new];
         [log setDelegate:self];
         [log setTagName:@"login"];
         [[UIApplication sharedApplication]setStatusBarHidden:NO];
-        
+
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"firstName"];
         NSString * udid = [[UIDevice currentDevice] uniqueDeviceIdentifier];
         [[assist shared]setlocationAllowed:YES];
@@ -970,7 +1015,7 @@
         NSError * error;
         NSDictionary * loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
-        NSLog(@"Login -> loginResult is: %@",loginResult);
+        //NSLog(@"Login -> loginResult is: %@",loginResult);
 
         if (  [loginResult objectForKey:@"Result"] &&
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] &&
