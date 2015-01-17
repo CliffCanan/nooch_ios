@@ -281,22 +281,33 @@
         NSDictionary * dictResponse = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         if ([[[dictResponse valueForKey:@"SaveMemberTransIdResult"]valueForKey:@"Result"]isEqualToString:@"Success"])
         {
-            //[nav_ctrl popViewControllerAnimated:NO];
-            ProfileInfo * profile = [ProfileInfo new];
+            [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
+
             isProfileOpenFromSideBar = NO;
-            if (!isSignup) {
-                isSignup = YES;
-            }
+            isFromSettingsOptions = YES;
+            sentFromHomeScrn = NO;
+
+            ProfileInfo * profile = [ProfileInfo new];
             [nav_ctrl pushViewController:profile animated:YES];
 
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Great Success" message:@"Your bank was successfully linked." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Great Success"
+                                                            message:@"Your bank was successfully linked."
+                                                           delegate:Nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:Nil, nil];
             [alert show];
         }
         else
         {
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Please Try Again" message:@"Bank linking failed and your info was not saved." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
+
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Please Try Again"
+                                                            message:@"Bank linking failed, unfortunately your info was not saved."
+                                                           delegate:Nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:Nil, nil];
             [alert show];
-            
+
             [self.navigationController popViewControllerAnimated:YES];
         }
     }

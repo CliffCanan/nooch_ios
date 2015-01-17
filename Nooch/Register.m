@@ -28,6 +28,9 @@
 @property(nonatomic,strong) MBProgressHUD *hud;
 @property(nonatomic,strong) UILabel *or;
 @property(nonatomic,strong) UILabel * pwValidator;
+@property(nonatomic,strong) UILabel * emailValidator;
+@property(nonatomic,strong) UILabel * nameValidator;
+@property(nonatomic,strong) UILabel * fullNameInstruc;
 @end
 @implementation Register
 
@@ -113,7 +116,7 @@
 
     UIView * boxOutline = [[UIView alloc] initWithFrame:CGRectMake(9, 245, 302, 172)];
     boxOutline.backgroundColor = [UIColor whiteColor];
-    boxOutline.layer.cornerRadius = 8;
+    boxOutline.layer.cornerRadius = 7;
     [boxOutline setStyleClass:@"welcomeBoxShadow"];
     [self.view addSubview:boxOutline];
 
@@ -164,7 +167,7 @@
     [name setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:name];
 
-    self.name_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 252, 200, 30)];
+    self.name_field = [[UITextField alloc] initWithFrame:CGRectMake(94, 252, 214, 40)];
     [self.name_field setBackgroundColor:[UIColor clearColor]];
     [self.name_field setDelegate:self];
     [self.name_field setPlaceholder:@"i.e. Abe Lincoln"];
@@ -176,6 +179,24 @@
     [self.name_field setAutocapitalizationType:UITextAutocapitalizationTypeWords];
     [self.view addSubview:self.name_field];
 
+    self.nameValidator = [UILabel new];
+    [self.nameValidator setFrame:CGRectMake(14, 0, 21, 40)];
+    [self.nameValidator setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
+    [self.nameValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
+    [self.nameValidator setTextAlignment:NSTextAlignmentCenter];
+    [self.nameValidator setTextColor:kNoochRed];
+    [self.nameValidator setHidden:YES];
+    [self.name_field addSubview:self.nameValidator];
+
+    self.fullNameInstruc = [[UILabel alloc] initWithFrame:CGRectMake(10, 38, 290, 16)];
+    [self.fullNameInstruc setBackgroundColor:[UIColor clearColor]];
+    [self.fullNameInstruc setText:@"Please enter a first AND last name  \xF0\x9F\x99\x8F"];
+    [self.fullNameInstruc setFont:[UIFont fontWithName:@"Roboto-light" size:12]];
+    [self.fullNameInstruc setTextColor:kNoochRed];
+    [self.fullNameInstruc setTextAlignment:NSTextAlignmentCenter];
+    [self.fullNameInstruc setHidden:YES];
+    [boxOutline addSubview:self.fullNameInstruc];
+
     UILabel * email = [[UILabel alloc] initWithFrame:CGRectMake(20, 293, 60, 20)];
     [email setBackgroundColor:[UIColor clearColor]];
     [email setTextColor:kNoochBlue];
@@ -183,7 +204,7 @@
     [email setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:email];
 
-    self.email_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 293, 200, 30)];
+    self.email_field = [[UITextField alloc] initWithFrame:CGRectMake(94, 293, 214, 40)];
     [self.email_field setBackgroundColor:[UIColor clearColor]];
     [self.email_field setDelegate:self];
     [self.email_field setPlaceholder:@"example@email.com"];
@@ -194,6 +215,15 @@
     [self.email_field setAutocorrectionType:UITextAutocorrectionTypeNo];
     [self.email_field setStyleClass:@"table_view_cell_detailtext_1"];
     [self.view addSubview:self.email_field];
+
+    self.emailValidator = [UILabel new];
+    [self.emailValidator setFrame:CGRectMake(74, 293, 21, 39)];
+    [self.emailValidator setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
+    [self.emailValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
+    [self.emailValidator setTextAlignment:NSTextAlignmentCenter];
+    [self.emailValidator setTextColor:kNoochRed];
+    [self.emailValidator setHidden:YES];
+    [self.view addSubview:self.emailValidator];
 
     UILabel * password = [[UILabel alloc] initWithFrame:CGRectMake(20, 334, 80, 20)];
     [password setBackgroundColor:[UIColor clearColor]];
@@ -216,7 +246,7 @@
 
     self.pwValidator = [UILabel new];
     [self.pwValidator setFrame:CGRectMake(98, 334, 21, 39)];
-    [self.pwValidator setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
+    [self.pwValidator setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
     [self.pwValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
     [self.pwValidator setTextAlignment:NSTextAlignmentCenter];
     [self.pwValidator setTextColor:kNoochRed];
@@ -1109,10 +1139,9 @@
     {
         return NO;
     }
-
-        NSLog(@"range.length is: %lu",(unsigned long)range.length);
-        NSLog(@"range.location is: %lu",(unsigned long)range.location);
-        NSLog(@"textField.text.length: %lu",(unsigned long)textField.text.length);
+        //NSLog(@"range.length is: %lu",(unsigned long)range.length);
+        //NSLog(@"range.location is: %lu",(unsigned long)range.location);
+        //NSLog(@"textField.text.length: %lu",(unsigned long)textField.text.length);
 
     if ([self.name_field.text length] > 1 &&
         [self.email_field.text length] > 2 &&
@@ -1134,7 +1163,28 @@
         [self.cont setEnabled:NO];
     }
 
-    if (textField == self.password_field &&
+    if ([self.name_field.text length] > 3 &&
+        [self.name_field.text rangeOfString:@" "].location != NSNotFound &&
+        [self.name_field.text rangeOfString:@" "].location < [self.name_field.text length] - 1)
+    {
+        [self.fullNameInstruc setHidden:YES];
+        [self.nameValidator setHidden:YES];
+    }
+
+    if ([self.email_field.text length] > 4 &&
+        [self.email_field.text rangeOfString:@"@"].location != NSNotFound &&
+        [self.email_field.text rangeOfString:@"."].location != NSNotFound &&
+        [self.email_field.text rangeOfString:@"."].location < [self.email_field.text length] - 1 &&
+        (([self.email_field.text rangeOfString:@"."].location - [self.email_field.text rangeOfString:@"@"].location) != abs(1)))
+    {
+        if (![self.emailValidator isHidden])
+        {
+            [self.emailValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+            [self.emailValidator setTextColor:kNoochGreen];
+        }
+    }
+
+    if ( textField == self.password_field &&
         [textField.text length] > 0)
     {
         NSCharacterSet * digitsCharSet = [NSCharacterSet decimalDigitCharacterSet];
@@ -1163,13 +1213,13 @@
         
         if (pwLength && pwChar && pwNum)
         {
-            [self.pwValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"]];
+            [self.pwValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
             [self.pwValidator setTextColor:kNoochGreen];
         }
         else if (pwLength && (pwChar || pwNum))
         {
             [self.pwValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-minus"]];
-            [self.pwValidator setTextColor:kNoochPurple];
+            [self.pwValidator setTextColor:[UIColor orangeColor]];
         }
         else if (pwLength || (pwChar || pwNum))
         {
@@ -1195,10 +1245,78 @@
 {
     switch (textField.tag) {
         case 1:
-            [self.email_field becomeFirstResponder];
+            if ([self.name_field.text length] < 4 ||
+                [self.name_field.text rangeOfString:@" "].location == NSNotFound ||
+                [self.name_field.text rangeOfString:@" "].location > [self.name_field.text length] - 3)
+            {
+                if ([self.name_field.text length] > 2)
+                {
+                    [self.fullNameInstruc setHidden:NO];
+                }
+                [self.nameValidator setHidden:NO];
+                [self.name_field becomeFirstResponder];
+            }
+            else
+            {
+                BOOL containsPunctuation = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:NSCharacterSet.punctuationCharacterSet].location;
+                BOOL containsNumber = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:NSCharacterSet.decimalDigitCharacterSet].location;
+                BOOL containsSymbols = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:NSCharacterSet.symbolCharacterSet].location;
+                NSMutableCharacterSet *characterSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"'.-"];
+                BOOL containsDash = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:characterSet].location;
+
+                if (containsNumber)
+                {
+                    [self.name_field becomeFirstResponder];
+
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"\xF0\x9F\x98\x8F  Really?"
+                                                                 message:@"Your name has a number in it?\n\nPlease enter a real name.\n\nOr if your name actually does contain a number, our bad... please contact support@nooch.com and we'll create an account for you."
+                                                                delegate:self
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles:nil];
+                    [av show];
+                }
+                else if ((containsSymbols || containsPunctuation) &&
+                         !containsDash)
+                {
+                    [self.name_field becomeFirstResponder];
+                        
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"\xF0\x9F\x98\x8F  Really?"
+                                                                 message:@"Your name has a symbol in it now?\n\nPlease enter a real name.\n\nOr if your name actually does contain a symbol, our apologies... please contact support@nooch.com and we'll create an account for you."
+                                                                delegate:self
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles:nil];
+                    [av show];
+                }
+                else
+                {
+                    [self.fullNameInstruc setHidden:YES];
+                    [self.nameValidator setHidden:YES];
+                    [self.email_field becomeFirstResponder];
+                }
+            }
             break;
         case 2:
-            [self.password_field becomeFirstResponder];
+            if ( [self.email_field.text length] < 4 ||
+                 [self.email_field.text rangeOfString:@"@"].location == NSNotFound ||
+                 [self.email_field.text rangeOfString:@"."].location == NSNotFound ||
+                 [self.email_field.text rangeOfString:@"."].location > [self.email_field.text length] - 3 ||
+                (([self.email_field.text rangeOfString:@"."].location - [self.email_field.text rangeOfString:@"@"].location) == 1))
+            {
+                [self.emailValidator setHidden:NO];
+                [self.emailValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
+                [self.emailValidator setTextColor:kNoochRed];
+
+                [self.email_field becomeFirstResponder];
+            }
+            else
+            {
+                [self.emailValidator setHidden:NO];
+                [self.emailValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+                [self.emailValidator setTextColor:kNoochGreen];
+
+                [self.password_field becomeFirstResponder];
+            }
+
             break;
         case 3:
             [textField resignFirstResponder];

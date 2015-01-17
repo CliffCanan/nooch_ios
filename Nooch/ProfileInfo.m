@@ -97,6 +97,11 @@ UIImageView *picture;
         [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
         isSignup=NO;
     }
+    else if (isFromSettingsOptions)
+    {
+        SettingsOptions *sets = [SettingsOptions new];
+        [nav_ctrl pushViewController:sets animated:YES];
+    }
     else {
         [self.navigationController popViewControllerAnimated:YES];
     }

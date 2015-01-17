@@ -86,6 +86,10 @@ NSMutableURLRequest *request;
             ProfileInfo *prof = [ProfileInfo new];
             [nav_ctrl pushViewController:prof animated:YES];
             [self.slidingViewController resetTopView];
+
+            isFromSettingsOptions = NO;
+            isProfileOpenFromSideBar = NO;
+            sentFromHomeScrn = YES;
         }
 
         me = [core new];
@@ -553,6 +557,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 -(void)go_profileFromHome
 {
     sentFromHomeScrn = YES;
+    isFromSettingsOptions = NO;
+    isProfileOpenFromSideBar = NO;
+
     ProfileInfo *info = [ProfileInfo new];
     [self.navigationController pushViewController:info animated:YES];
     //[self.phone_incomplete removeFromSuperview];
@@ -1120,7 +1127,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         locationManager.delegate = self;
         locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
-        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer; // 100 m
+        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
 
         if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) { // iOS8+
             // Sending a message to avoid compile time error
@@ -1549,6 +1556,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
         [alertView addButtonWithTitle:@"Add Phone" type:SIAlertViewButtonTypeDefault
                             handler:^(SIAlertView *alert) {
+                                sentFromHomeScrn = YES;
+                                isFromSettingsOptions = NO;
+                                isProfileOpenFromSideBar = NO;
+
                                 ProfileInfo *prof = [ProfileInfo new];
                                 [nav_ctrl pushViewController:prof animated:YES];
                                 [self.slidingViewController resetTopView];
@@ -1685,13 +1696,18 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     if ((alertView.tag == 147 || alertView.tag == 148) && buttonIndex==1)
     {
+        isFromSettingsOptions = NO;
+        isProfileOpenFromSideBar = NO;
+        sentFromHomeScrn = YES;
+
         ProfileInfo *prof = [ProfileInfo new];
         [nav_ctrl pushViewController:prof animated:YES];
         [self.slidingViewController resetTopView];
     }
     else if (alertView.tag == 201)
     {
-        if (buttonIndex == 1) {
+        if (buttonIndex == 1)
+        {
             knoxWeb *knox = [knoxWeb new];
             [nav_ctrl pushViewController:knox animated:YES];
             [self.slidingViewController resetTopView];
@@ -1823,6 +1839,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
         [alertView addButtonWithTitle:@"Add Phone" type:SIAlertViewButtonTypeDefault
                              handler:^(SIAlertView *alert) {
+                                 isFromSettingsOptions = NO;
+                                 isProfileOpenFromSideBar = NO;
+                                 sentFromHomeScrn = YES;
+
                                  ProfileInfo * prof = [ProfileInfo new];
                                  [nav_ctrl pushViewController:prof animated:YES];
                                  [self.slidingViewController resetTopView];
@@ -1870,7 +1890,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     lat = [[[NSString alloc] initWithFormat:@"%f",loc.latitude] floatValue];
     lon = [[[NSString alloc] initWithFormat:@"%f",loc.longitude] floatValue];
 
-    //NSLog(@"LAT is: %@   & LONG is: %f", [[NSString alloc] initWithFormat:@"%f",loc.latitude],lon);
+    NSLog(@"LAT is: %@   & LONG is: %f", [[NSString alloc] initWithFormat:@"%f",loc.latitude],lon);
 
     [[assist shared]setlocationAllowed:YES];
 

@@ -700,13 +700,13 @@ view {
 
 /****  Table Detail Text  (right side of row)  ****/
 .table_view_cell_detailtext_1 {
+    left			: 94px;
+    width			: 214px;
+    height			: 40px;
     font-family		: "Roboto";
     font-weight		: regular;
     font-size		: 17px;
     color 			: #313233;
-    width			: 212px;
-    left			: 95px;
-    height			: 40px;
     text-align		: right;
 }
 .tableViewCell_Profile_rightSide {
@@ -870,7 +870,7 @@ view {
     box-shadow	: 1px 2px 1px rgba(109,110,113,0.4);
 }
 .welcomeBoxShadow {
-    box-shadow  : 0 1px 1px rgba(88,90,92,.5);
+    box-shadow  : 1px 1px 1px rgba(109,110,113,0.45);
 }
 
 /*******************************************

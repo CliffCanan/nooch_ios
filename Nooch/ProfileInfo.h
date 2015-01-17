@@ -13,7 +13,7 @@
 #import "MBProgressHUD.h"
 #import "SpinKit/RTSpinKitView.h"
 
-BOOL isProfileOpenFromSideBar,sentFromHomeScrn;
+BOOL isProfileOpenFromSideBar, sentFromHomeScrn, isFromSettingsOptions;
 @interface ProfileInfo : GAITrackedViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UIScrollViewDelegate,MBProgressHUDDelegate,UIAlertViewDelegate>
 {
     int down,option,rowHeight,numberOfRowsToDisplay,heightOfTopSection;

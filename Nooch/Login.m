@@ -543,7 +543,7 @@
 
             locationManager.delegate = self;
             locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
-            locationManager.desiredAccuracy = kCLLocationAccuracyKilometer; // 100 m
+            locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
 
             [locationManager startUpdatingLocation];
         }
