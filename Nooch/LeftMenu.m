@@ -235,6 +235,8 @@
 -(void) go_profile
 {
     isProfileOpenFromSideBar = YES;
+    isFromSettingsOptions = NO;
+
     ProfileInfo * prof = [ProfileInfo new];
     [nav_ctrl pushViewController:prof animated:YES];
     [self.slidingViewController resetTopView];

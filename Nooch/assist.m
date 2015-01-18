@@ -512,11 +512,10 @@ static assist * _sharedInstance = nil;
             }
         }
 
-        if (![[loginResult objectForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]] &&
-              [loginResult objectForKey:@"BalanceAmount"] != NULL)
+        if (![[loginResult objectForKey:@"UserName"] isKindOfClass:[NSNull class]] &&
+              [loginResult objectForKey:@"UserName"] != NULL)
         {
-            [usr setObject:@"1" forKey:@"Balance"];
-            [user setObject:[loginResult objectForKey:@"BalanceAmount"] forKey:@"Balance"];
+            [user setObject:[loginResult objectForKey:@"UserName"] forKey:@"UserName"];
         }
         if (![[loginResult objectForKey:@"FirstName"] isKindOfClass:[NSNull class]] &&
               [loginResult objectForKey:@"FirstName"] != NULL)
