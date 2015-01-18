@@ -518,7 +518,7 @@
     lat = [[[NSString alloc] initWithFormat:@"%f",loc.latitude] floatValue];
     lon = [[[NSString alloc] initWithFormat:@"%f",loc.longitude] floatValue];
     
-    NSLog(@"LAT is: %@   & LONG is: %f", [[NSString alloc] initWithFormat:@"%f",loc.latitude],lon);
+    //NSLog(@"LAT is: %@   & LONG is: %f", [[NSString alloc] initWithFormat:@"%f",loc.latitude],lon);
     
     [[assist shared]setlocationAllowed:YES];
 }

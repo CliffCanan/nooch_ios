@@ -50,6 +50,7 @@ BOOL shouldDisplayAptsSection;
     NSMutableArray *favorites;
     NSString * emailID, * firstNameAB, * lastNameAB;
     UIButton *top_button;
+    int bannerAlert;
 }
 -(void)hide;
 @end

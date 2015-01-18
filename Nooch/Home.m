@@ -36,6 +36,7 @@ NSMutableURLRequest *request;
 @property(nonatomic,strong) UIView *phone_unverified;
 @property(nonatomic,strong) UIView *pending_requests;
 @property(nonatomic,strong) iCarousel *carousel;
+@property(nonatomic,strong) UILabel * selectedFavName;
 
 @end
 
@@ -582,7 +583,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    int bannerAlert = 0;
+    bannerAlert = 0;
 
     [self.navigationItem setTitle:@"Nooch"];
     //Update Pending Status
@@ -979,7 +980,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     NSString * homeBtnColorFromArtisan = [ARPowerHookManager getValueForHookById:@"homeBtnClr"];
 
     top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [top_button setFrame:CGRectMake(20, 310, 280, 54)];
+    [top_button setFrame:CGRectMake(20, 260, 280, 54)];
     if ([homeBtnColorFromArtisan isEqualToString:@"green"])
     {
         [top_button setStyleId:@"button_green_home"];
@@ -995,6 +996,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [top_button setTitleShadowColor:Rgb2UIColor(26, 38, 32, 0.2) forState:UIControlStateNormal];
     top_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     top_button.alpha = .01;
+    [top_button addTarget:self action:@selector(stayPressed:) forControlEvents:UIControlEventTouchDown];
+    [top_button addTarget:self action:@selector(releasePress:) forControlEvents:UIControlEventTouchDragExit];
     [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
     [top_button setTitle:@"   Search For More Friends" forState:UIControlStateNormal];
     
@@ -1575,24 +1578,46 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     NSMutableDictionary * favorite = [NSMutableDictionary new];
     [favorite addEntriesFromDictionary:[favorites objectAtIndex:index]];
 
-    NSLog(@"Selected Favorite is: %@", favorite);
+    NSLog(@"VARIABLE IS: %@", [carousel itemViewAtIndex:index]);
+    NSLog(@"Selected Favorite is: %@  %@  %@  %@", favorite[@"FirstName"], favorite[@"LastName"],favorite[@"UserName"],favorite[@"addressbook"]);
 
     if (favorite[@"MemberId"])
     {
-        double totalduration = .6;
+        self.selectedFavName = [[UILabel alloc] initWithFrame:CGRectMake(60, 12, 200, 28)];
+        [self.selectedFavName setFont:[UIFont fontWithName:@"Roboto-regular" size: 19]];
+        [self.selectedFavName setText: [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]]];
+        [self.selectedFavName setTextColor:kNoochGrayDark];
+        [self.selectedFavName setTextAlignment:NSTextAlignmentCenter];
+        [self.selectedFavName setAlpha:0];
+        [self.view addSubview: self.selectedFavName];
+
+        double totalduration = 0.7;
 
         [UIView animateKeyframesWithDuration:totalduration
-                                       delay:0
+                                       delay:0.02
                                      options:UIViewKeyframeAnimationOptionCalculationModeCubic
                                   animations:^{
-            [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
+           /* [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
                 carousel.currentItemView.transform = CGAffineTransformMakeTranslation(-16, 0);
+            }];*/
+            [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.5 animations:^{
+                [carousel itemViewAtIndex:index].transform = CGAffineTransformMakeScale(1.12, 1.12);
             }];
-            [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.3 animations:^{
-                carousel.currentItemView.transform = CGAffineTransformMakeTranslation(-24, 0);
+            [UIView addKeyframeWithRelativeStartTime:.5 relativeDuration:.45 animations:^{
+                [carousel itemViewAtIndex:index].transform = CGAffineTransformMakeScale(1.18, 1.18);
             }];
-            [UIView addKeyframeWithRelativeStartTime:.5 relativeDuration:.5 animations:^{
-                carousel.currentItemView.transform = CGAffineTransformMakeTranslation(225, 0);
+            [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:0.95 animations:^{
+                self.selectedFavName.transform = CGAffineTransformMakeScale(1.3, 1.3);
+                [self.selectedFavName setAlpha:1];
+
+                for (int i = 0; i < 6; i++)
+                {
+                    if (i != index)
+                    {
+                        [[carousel itemViewAtIndex:i] setAlpha:0];
+                        [carousel itemViewAtIndex:i].transform = CGAffineTransformMakeScale(.3, .3);
+                    }
+                }
             }];
             
             [UIView addKeyframeWithRelativeStartTime:.4 relativeDuration:.6 animations:^{
@@ -1609,6 +1634,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             isFromMyApt = NO;
             HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
             [self.navigationController pushViewController:trans animated:YES];
+
+            [self.selectedFavName removeFromSuperview];
             return;
         }];
     }
@@ -1649,20 +1676,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    NSString *title = [actionSheet buttonTitleAtIndex:buttonIndex];
-    emailID = title;
-
-    if (![title isEqualToString:@"Cancel"])
-    {
-        serve * emailCheck = [serve new];
-        emailCheck.Delegate = self;
-        emailCheck.tagName = @"emailCheck";
-        [emailCheck getMemIdFromuUsername:[title lowercaseString]];
-    }
-}
-
 - (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value
 {
     switch (option)
@@ -1684,6 +1697,20 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             return value;
         }
     }    
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [actionSheet buttonTitleAtIndex:buttonIndex];
+    emailID = title;
+
+    if (![title isEqualToString:@"Cancel"])
+    {
+        serve * emailCheck = [serve new];
+        emailCheck.Delegate = self;
+        emailCheck.tagName = @"emailCheck";
+        [emailCheck getMemIdFromuUsername:[title lowercaseString]];
+    }
 }
 
 -(void)showMenu
@@ -1736,6 +1763,32 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
 }
 
+-(void)stayPressed:(UIButton *) sender
+{
+    CGRect existing = top_button.frame;
+    existing.origin.y += 2;
+    [top_button setFrame:existing];
+
+    /*if (bannerAlert == 0) {
+        [top_button setFrame:CGRectMake(20, 262, 280, 54)];
+    }
+    if (bannerAlert == 1) {
+        [top_button setFrame:CGRectMake(20, 262, 280, 54)];
+    }
+    if (bannerAlert == 2) {
+        [top_button setFrame:CGRectMake(20, 262, 280, 54)];
+    }*/
+}
+
+-(void)releasePress:(UIButton *) sender
+{
+    NSLog(@"RELEASE PRESS MEATHOD");
+
+    if (bannerAlert == 0) {
+        [top_button setFrame:CGRectMake(20, 250, 280, 54)];
+    }
+}
+
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc] init];
@@ -1767,7 +1820,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 - (void)send_request
 {
-    NSUserDefaults * defaults=[NSUserDefaults standardUserDefaults];
+    CGRect existing = top_button.frame;
+    existing.origin.y -= 2;
+    [top_button setFrame:existing];
+
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 
     if ([[assist shared]getSuspended] || [[user objectForKey:@"Status"] isEqualToString:@"Temporarily_Blocked"])
     {
@@ -1857,8 +1914,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
   
     if (NSClassFromString(@"SelectRecipient"))
     {
-        Class aClass = NSClassFromString(@"SelectRecipient");
-
         [UIView animateKeyframesWithDuration:0.2
                                        delay:0
                                      options:UIViewKeyframeAnimationOptionCalculationModeCubic
@@ -1871,6 +1926,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                   }
          ];
 
+        Class aClass = NSClassFromString(@"SelectRecipient");
         id instance = [[aClass alloc] init];
         
         if ([instance isKindOfClass:[UIViewController class]]) {
@@ -1889,8 +1945,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     CLLocationCoordinate2D loc = manager.location.coordinate;
     lat = [[[NSString alloc] initWithFormat:@"%f",loc.latitude] floatValue];
     lon = [[[NSString alloc] initWithFormat:@"%f",loc.longitude] floatValue];
-
-    NSLog(@"LAT is: %@   & LONG is: %f", [[NSString alloc] initWithFormat:@"%f",loc.latitude],lon);
 
     [[assist shared]setlocationAllowed:YES];
 

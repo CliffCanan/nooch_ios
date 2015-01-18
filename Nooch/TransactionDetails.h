@@ -20,7 +20,8 @@
     UIView *overlay,*mainView;
     double lat;
     double lon;
-    NSMutableDictionary *loginResult;
+    NSMutableDictionary * tranDetailResult;
+    NSData *datos;
 }
 @property (nonatomic, retain) ACAccount *twitterAccount;
 @property (nonatomic) bool twitterAllowed;

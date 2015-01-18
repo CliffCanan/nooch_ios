@@ -332,10 +332,6 @@ view {
 }
 .button_blue_closeLightbox {
     background-image	: linear-gradient(#6dbee8, #41abe1);
-    width				: 110px;
-    top                 : 410;
-    height				: 40px;
-    left                : 170px;
     color 				: white;
     border-radius		: 5px;
     font-family			: "Roboto";
@@ -345,10 +341,7 @@ view {
 }
 .button_blue_closeLightbox_smscrn {
     background-image	: linear-gradient(#6dbee8, #41abe1);
-    width				: 110px;
-    top                 : 402;
     height				: 37px;
-    left                : 170px;
     color 				: white;
     border-radius		: 5px;
     font-family			: "Roboto";
@@ -500,6 +493,10 @@ view {
     background-size	: 16px;
 }
 
+.lightbox_socialBtns {
+    font-family     : "FontAwesome";
+    font-size       : 48px;
+}
 /**** News Feed ****/
 #news_feed {
     left        : 0px;

@@ -19,16 +19,19 @@
 @property (nonatomic,strong) NSDictionary *trans;
 @property(nonatomic,strong) NSMutableData *responseData;
 @property(nonatomic,strong) MBProgressHUD *hud;
+@property(nonatomic,strong) UIImageView *imgTran;
 @end
 
 @implementation TransactionDetails
 @synthesize accountStore,twitterAllowed,twitterAccount;
-- (id)initWithData:(NSDictionary *)trans {
+
+- (id)initWithData:(NSDictionary *)trans
+{
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         // Custom initialization
         self.trans = trans;
-        NSLog(@"%@",self.trans);
+        NSLog(@"Screen Initialized with Transaction Info: %@",self.trans);
     }
     return self;
 }
@@ -117,15 +120,16 @@
     shadow.shadowOffset = CGSizeMake(0, 1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
     
-    if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"])
+    if ( [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"] ||
+        ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Invite"] &&
+         [[self.trans valueForKey:@"InvitationSentTo"] isEqualToString:[user valueForKey:@"UserName"]]))
     {
 	    if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
 	        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Paid To:" attributes:textAttributes];
             [payment setStyleClass:@"details_intro_red"];
         }
 		else {
-            payment.attributedText = [[NSAttributedString alloc] initWithString:@"Payment From:"
-                                                                   attributes:textAttributes];
+            payment.attributedText = [[NSAttributedString alloc] initWithString:@"Payment From:" attributes:textAttributes];
             [payment setStyleClass:@"details_intro_green"];
         }
 	}
@@ -135,8 +139,7 @@
             payment.attributedText = [[NSAttributedString alloc] initWithString:@"Request Sent To:" attributes:textAttributes];
         }
         else {
-            payment.attributedText = [[NSAttributedString alloc] initWithString:@"Request From:"
-                                                                   attributes:textAttributes];
+            payment.attributedText = [[NSAttributedString alloc] initWithString:@"Request From:" attributes:textAttributes];
         }
         [payment setStyleClass:@"details_intro_blue"];
     }
@@ -258,7 +261,8 @@
         [disp setStyleClass:@"details_buttons_4"];
         [disp_text setStyleClass:@"details_buttons_labels_4"];
     }
-    if ([[self.trans objectForKey:@"MemberId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
+    if ([[self.trans objectForKey:@"MemberId"] isEqualToString:[user objectForKey:@"MemberId"]])
+    {
         [pay_text setStyleId:@"details_buttons_labels_long"];
         CGRect frame1 = pay_text.frame;
         [pay_text setFrame:CGRectMake(frame1.origin.x - 5, frame1.origin.y, frame1.size.width, frame1.size.height)];
@@ -504,14 +508,14 @@
     GMSMarker *marker = [[GMSMarker alloc] init];
     marker.position = CLLocationCoordinate2DMake(lat, lon);
     marker.map = mapView_;
-    
+
     UIView * desc_container=[[UIView alloc]initWithFrame:CGRectMake(10, 356, 280, 36)];
     desc_container.backgroundColor=[UIColor colorWithRed:245.0f/255.0f green:245.0f/255.0f blue:245.0f/255.0f alpha:1.0];
     desc_container.layer.cornerRadius = 5;
     desc_container.layer.borderColor=[[UIColor lightGrayColor]CGColor];
     desc_container.layer.borderWidth=0.5;
     [mainView addSubview:desc_container];
-    
+
     UILabel * desc=[[UILabel alloc]initWithFrame:CGRectMake(5, 0, 270, 36)];
     [desc setBackgroundColor:[UIColor clearColor]];
     desc.text = @"This shows the location of the user who initiated the transfer.";
@@ -523,16 +527,20 @@
     UIView * line_container=[[UIView alloc]initWithFrame:CGRectMake(0, desc_container.frame.origin.y+desc_container.frame.size.height+6, 300, 1)];
     line_container.backgroundColor = [UIColor colorWithRed:229.0f/255.0f green:229.0f/255.0f blue:229.0f/255.0f alpha:1.0];
     [mainView addSubview:line_container];
-    
+
     UIButton * btnclose = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnclose setTitle:@"Close" forState:UIControlStateNormal];
     [btnclose setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.26) forState:UIControlStateNormal];
     btnclose.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
-    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+    if ([[UIScreen mainScreen] bounds].size.height < 500)
+    {
         [btnclose setStyleClass:@"button_blue_closeLightbox_smscrn"];
+        [btnclose setFrame:CGRectMake(160, mainView.frame.size.height - 46, 120, 38)];
     }
-    else {
+    else
+    {
+        [btnclose setFrame:CGRectMake(150, mainView.frame.size.height - 58, 130, 42)];
         [btnclose setStyleClass:@"button_blue_closeLightbox"];
     }
     [mainView addSubview:btnclose];
@@ -557,6 +565,178 @@
                                               }
                                               else {
                                                   mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 34);
+                                              }
+                                              overlay.alpha = 0.1;
+                                          } completion:^(BOOL finished) {
+                                              [overlay removeFromSuperview];
+                                          }
+                          ];
+                     }
+     ];
+}
+
+-(void)Picture_LightBox
+{
+    overlay = [[UIView alloc]init];
+    overlay.frame = CGRectMake(0, 0, 320, [[UIScreen mainScreen] bounds].size.height);
+    overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.0];
+    [self.navigationController.view addSubview:overlay];
+    
+    mainView = [[UIView alloc]init];
+    mainView.layer.cornerRadius = 5;
+    mapView_.layer.borderColor = [[UIColor blackColor]CGColor];
+    mapView_.layer.borderWidth = 1;
+    
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        mainView.frame = CGRectMake(9, -500, 302, 373);
+    }
+    else {
+        mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 104);
+    }
+    mainView.backgroundColor = [UIColor whiteColor];
+    
+    [overlay addSubview:mainView];
+    mainView.layer.masksToBounds = NO;
+    mainView.layer.shadowOffset = CGSizeMake(0, 2);
+    mainView.layer.shadowRadius = 5;
+    mainView.layer.shadowOpacity = 0.65;
+    
+    [UIView animateWithDuration:.4
+                     animations:^{
+                         overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+                     }];
+    
+    [UIView animateWithDuration:0.35
+                     animations:^{
+                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                         if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                             mainView.frame = CGRectMake(9, 70, 302, 379);
+                         } else {
+                             mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 104);
+                         }
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:.24
+                                          animations:^{
+                                              [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                                              if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                                  mainView.frame = CGRectMake(9, 35, 302, 373);
+                                              } else {
+                                                  mainView.frame = CGRectMake(9, 50, 302, self.view.frame.size.height - 104);
+                                              }
+                                          }];
+                     }];
+    
+    UIView * head_container = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 302, 44)];
+    head_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    [mainView addSubview:head_container];
+    head_container.layer.cornerRadius = 10;
+    
+    UIView * space_container = [[UIView alloc]initWithFrame:CGRectMake(0, 34, 302, 10)];
+    space_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    [mainView addSubview:space_container];
+    
+    UILabel * title = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 302, 30)];
+    [title setBackgroundColor:[UIColor clearColor]];
+    [title setText:@"Transfer Picture"];
+    [title setStyleClass:@"lightbox_title"];
+    [mainView addSubview:title];
+
+    // if picture is attached
+    if (![[tranDetailResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] &&
+          [tranDetailResult valueForKey:@"Picture"] != NULL)
+    {
+        UIView * pic_container = [[UIView alloc]initWithFrame:CGRectMake(51, 60, 200, 200)];
+        pic_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+        pic_container.layer.cornerRadius = 6;
+        pic_container.clipsToBounds = YES;
+        [mainView addSubview:pic_container];
+
+        UIImageView * imgTranCopy = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 200, 200)];
+        [imgTranCopy setImage:[UIImage imageWithData:datos]];
+        imgTranCopy.contentMode = UIViewContentModeScaleAspectFill;
+        imgTranCopy.layer.cornerRadius = 6;
+        imgTranCopy.layer.borderWidth = 1;
+        imgTranCopy.clipsToBounds = YES;
+        imgTranCopy.layer.borderColor = [UIColor whiteColor].CGColor;
+        [pic_container addSubview:imgTranCopy];
+    }
+
+    UIView * desc_container = [[UIView alloc]initWithFrame:CGRectMake(35, 275, 230, 48)];
+    desc_container.backgroundColor = [UIColor clearColor];
+    [mainView addSubview:desc_container];
+
+    UIButton * fb_share = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [fb_share setFrame:CGRectMake(0, 0, 115, 44)];
+    [fb_share setStyleClass:@"lightbox_socialBtns"];
+    [fb_share addTarget:self action:@selector(post_to_fb) forControlEvents:UIControlEventTouchUpInside];
+    [fb_share setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-thin"] forState:UIControlStateNormal];
+    [fb_share setTitleColor:kNoochBlue forState:UIControlStateNormal];
+    [fb_share setTitleShadowColor:Rgb2UIColor(251, 252, 253, 0.2) forState:UIControlStateNormal];
+    fb_share.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [desc_container addSubview:fb_share];
+
+    UILabel * glyphFb = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 115, 44)];
+    [glyphFb setFont:[UIFont fontWithName:@"FontAwesome" size: 24]];
+    [glyphFb setText: [NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook"]];
+    [glyphFb setTextAlignment:NSTextAlignmentCenter];
+    [glyphFb setTextColor:kNoochBlue];
+    [fb_share addSubview:glyphFb];
+
+    UIButton * twitter_share = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [twitter_share setFrame:CGRectMake(115, 0, 115, 44)];
+    [twitter_share setStyleClass:@"lightbox_socialBtns"];
+    [twitter_share addTarget:self action:@selector(post_to_twitter) forControlEvents:UIControlEventTouchUpInside];
+    [twitter_share setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-thin"] forState:UIControlStateNormal];
+    [twitter_share setTitleColor:kNoochBlue forState:UIControlStateNormal];
+    [twitter_share setTitleShadowColor:Rgb2UIColor(251, 252, 253, 0.2) forState:UIControlStateNormal];
+    twitter_share.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [desc_container addSubview:twitter_share];
+
+    UILabel * glyphTwitter = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 115, 44)];
+    [glyphTwitter setFont:[UIFont fontWithName:@"FontAwesome" size: 24]];
+    [glyphTwitter setText: [NSString fontAwesomeIconStringForIconIdentifier:@"fa-twitter"]];
+    [glyphTwitter setTextAlignment:NSTextAlignmentCenter];
+    [glyphTwitter setTextColor:kNoochBlue];
+    [twitter_share addSubview:glyphTwitter];
+    
+    UIView * line_container = [[UIView alloc]initWithFrame:CGRectMake(0, desc_container.frame.origin.y+desc_container.frame.size.height + 12, 302, 1)];
+    line_container.backgroundColor = [UIColor colorWithRed:229.0f/255.0f green:229.0f/255.0f blue:229.0f/255.0f alpha:1.0];
+    [mainView addSubview:line_container];
+    
+    UIButton * btnclose = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btnclose setFrame:CGRectMake(170, mainView.frame.size.height - 52, 110, 40)];
+    [btnclose setTitle:@"Close" forState:UIControlStateNormal];
+    [btnclose setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.26) forState:UIControlStateNormal];
+    btnclose.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [btnclose addTarget:self action:@selector(close_PicturelightBox) forControlEvents:UIControlEventTouchUpInside];
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        [btnclose setStyleClass:@"button_blue_closeLightbox_smscrn"];
+    }
+    else {
+        [btnclose setStyleClass:@"button_blue_closeLightbox"];
+    }
+    [mainView addSubview:btnclose];
+}
+
+-(void)close_PicturelightBox
+{
+    [UIView animateWithDuration:0.15
+                     animations:^{
+                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                         if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                             mainView.frame = CGRectMake(9, 70, 302, 373);
+                         } else {
+                             mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 104);
+                         }
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:.38
+                                          animations:^{
+                                              [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                                              if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                                  mainView.frame = CGRectMake(9, -500, 302, 373);
+                                              }
+                                              else {
+                                                  mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 104);
                                               }
                                               overlay.alpha = 0.1;
                                           } completion:^(BOOL finished) {
@@ -765,18 +945,21 @@
         [me.accountStore requestAccessToAccountsWithType:facebookAccountType
                 options:options completion:^(BOOL granted, NSError *e)
         {
-             if (granted) {
+             if (granted)
+             {
                  NSArray *accounts = [me.accountStore accountsWithAccountType:facebookAccountType];
                  me.facebookAccount = [accounts lastObject];
                  [self performSelectorOnMainThread:@selector(post) withObject:nil waitUntilDone:NO];
              }
-             else {
+             else
+             {
                  // Handle Failure
                  NSLog(@"fbposting not allowed");
              }
          }];
     }
-    else {
+    else
+    {
         UIAlertView * alertView = [[UIAlertView alloc]
                                   initWithTitle:@"Can't Post"
                                   message:@"Please make sure your Facebook account is connected to your iPhone!"
@@ -790,34 +973,59 @@
 - (void) post_to_twitter
 {
     NSString * post_text = nil;
-    if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
-        post_text = [NSString stringWithFormat:@"I just Nooch'ed %@!",[self.trans objectForKey:@"Name"]];
+
+    if ([[self.trans objectForKey:@"TransactionStatus"] isEqualToString:@"Success"])
+    {
+        if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]])
+        {
+            post_text = [NSString stringWithFormat:@"I just Nooch'ed %@!",[self.trans objectForKey:@"Name"]];
+        }
+        else
+        {
+            post_text = [NSString stringWithFormat:@"I just got paid by %@ on Nooch!",[self.trans objectForKey:@"Name"]];
+        }
     }
-    else {
-        post_text = [NSString stringWithFormat:@"I just got paid by %@ on Nooch!",[self.trans objectForKey:@"Name"]];
+    else if ([[self.trans objectForKey:@"TransactionStatus"] isEqualToString:@"Pending"] &&
+             [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Request"])
+    {
+        if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]])
+        {
+            post_text = [NSString stringWithFormat:@"Send me my money %@! Use Nooch and it's super fast (and free) so there are no excuses.", [self.trans objectForKey:@"Name"]];
+        }
+        else
+        {
+            post_text = [NSString stringWithFormat:@"I'm using Nooch to pay %@ - a free iOS app - check it out!",[self.trans objectForKey:@"Name"]];
+        }
     }
 
     SLComposeViewController * controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-    [controller setInitialText:post_text];
+    [controller setInitialText: post_text];
     [controller addURL:[NSURL URLWithString:@"http://bit.ly/1xdG2le"]];
+    if (datos != nil) {
+        [controller addImage:[UIImage imageWithData:datos]];
+    }
     [self presentViewController:controller animated:YES completion:Nil];
 
     SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result){
-       NSString *output= nil;
+       NSString * output = nil;
        switch (result) {
            case SLComposeViewControllerResultCancelled:
-               NSLog (@"cancelled");
+               NSLog (@"Twitter Post Cancelled");
                break;
            case SLComposeViewControllerResultDone:
-               output= @"Post Succesfull";
-               NSLog (@"success");
+               output = @"Twitter Post Succesfull";
+               NSLog (@"Twitter Post Successful");
                break;
            default:
                break;
        }
-       if ([output isEqualToString:@"Post Succesfull"])
+       if ([output isEqualToString:@"Twitter Post Succesfull"])
        {
-           UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Twitter" message:output delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+           UIAlertView *alert = [[UIAlertView alloc] initWithTitle:output
+                                                           message:@"\xF0\x9F\x91\x8D"
+                                                          delegate:nil
+                                                 cancelButtonTitle:@"OK"
+                                                 otherButtonTitles:nil];
            [alert show];
            [alert setTag:11];
        }
@@ -829,15 +1037,38 @@
 -(void)post
 {
     NSString * post_text = nil;
-    if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
-        post_text = [NSString stringWithFormat:@"I just Nooch'ed %@!",[self.trans objectForKey:@"Name"]];
+
+    if ([[self.trans objectForKey:@"TransactionStatus"] isEqualToString:@"Success"])
+    {
+        if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]])
+        {
+            post_text = [NSString stringWithFormat:@"I just Nooch'ed %@!",[self.trans objectForKey:@"Name"]];
+        }
+        else
+        {
+            post_text = [NSString stringWithFormat:@"I just got paid by %@ on Nooch!",[self.trans objectForKey:@"Name"]];
+        }
     }
-    else {
-        post_text = [NSString stringWithFormat:@"I just got paid by %@ on Nooch!",[self.trans objectForKey:@"Name"]];
+    else if ([[self.trans objectForKey:@"TransactionStatus"] isEqualToString:@"Pending"] &&
+             [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Request"])
+    {
+        if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]])
+        {
+            post_text = [NSString stringWithFormat:@"Send me my money %@! Use Nooch and it's super fast (and free) so there are no excuses.", [self.trans objectForKey:@"Name"]];
+        }
+        else
+        {
+            post_text = [NSString stringWithFormat:@"I'm using Nooch to pay %@ - a free iOS app - check it out!",[self.trans objectForKey:@"Name"]];
+        }
     }
+
     SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
     [controller setInitialText:post_text];
     [controller addURL:[NSURL URLWithString:@"http://bit.ly/1xdG2le"]];
+
+    if (datos != nil) {
+        [controller addImage:[UIImage imageWithData:datos]];
+    }
     [self presentViewController:controller animated:YES completion:Nil];
 
     SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result)
@@ -849,27 +1080,33 @@
                 NSLog (@"cancelled");
                 break;
             case SLComposeViewControllerResultDone:
-                output = @"Post Succesfull";
+                output = @"Post To Facebook Succesfull";
                 NSLog (@"success");
                 break;
             default:
                 break;
         }
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Facebook" message:output delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        [alert show];
+        if ([output isEqualToString:@"Post To Facebook Successfull"])
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:output
+                                                            message:@"\xF0\x9F\x91\x8D"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
         [controller dismissViewControllerAnimated:YES completion:Nil];
-        [self performSelectorOnMainThread:@selector(finishedPosting) withObject:nil waitUntilDone:NO];
     };
     controller.completionHandler = myBlock;
 }
 
--(void)finishedPosting {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 - (void) dispute
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Confirm Dispute" message:@"To protect your account, if you dispute a transfer your Nooch account will be temporarily suspended while we investigate." delegate:self cancelButtonTitle:@"Yes - Dispute" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Confirm Dispute"
+                                                 message:@"To protect your account, if you dispute a transfer your Nooch account will be temporarily suspended while we investigate."
+                                                delegate:self
+                                       cancelButtonTitle:@"Yes - Dispute"
+                                       otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1];
 }
@@ -1060,13 +1297,12 @@
     {
         NSError *error;
 
-        loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        tranDetailResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         
         if (![[self.trans objectForKey:@"Latitude"] intValue] == 0 && ![[self.trans objectForKey:@"Longitude"] intValue] == 0)
         {
             // self.trans=[loginResult mutableCopy];
-            NSLog(@"%f",[[self.trans objectForKey:@"Latitude"] floatValue]);
-            NSLog(@"%f",[[self.trans objectForKey:@"Longitude"] floatValue]);
+            NSLog(@"Latitude is : %f  & Longitude is: %f",[[self.trans objectForKey:@"Latitude"] floatValue],[[self.trans objectForKey:@"Longitude"] floatValue]);
             
             lat = [[self.trans objectForKey:@"Latitude"] floatValue];
             lon = [[self.trans objectForKey:@"Longitude"] floatValue];
@@ -1075,14 +1311,17 @@
                                                                     longitude:lon
                                                                          zoom:11];
             
-            UIButton *btnShowOverlay = [[UIButton alloc]init];
-            
-            UIImageView *imgTran;
+            UIButton *btnShowMapOverlay = [[UIButton alloc]init];
+            [btnShowMapOverlay setBackgroundColor:[UIColor clearColor]];
+
+            UIButton *btnShowPicOverlay = [[UIButton alloc]init];
+            [btnShowPicOverlay setBackgroundColor:[UIColor clearColor]];
             
             // if picture is attached
-            if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"] != NULL)
+            if (![[tranDetailResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] &&
+                  [tranDetailResult valueForKey:@"Picture"] != NULL)
             {
-                NSArray *bytedata = [loginResult valueForKey:@"Picture"];
+                NSArray *bytedata = [tranDetailResult valueForKey:@"Picture"];
                 unsigned c = bytedata.count;
                 uint8_t *bytes = malloc(sizeof(*bytes) * c);
                 
@@ -1093,14 +1332,15 @@
                     bytes[i] = (uint8_t)byte;
                 }
 
-                NSData *datos = [NSData dataWithBytes:bytes length:c];
+                datos = [NSData dataWithBytes:bytes length:c];
 
-                imgTran = [[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
-                [imgTran setImage:[UIImage imageWithData:datos]];
-                imgTran.layer.cornerRadius = 6;
-                imgTran.layer.borderWidth = 1;
-                imgTran.clipsToBounds = YES;
-                imgTran.layer.borderColor = [UIColor whiteColor].CGColor;
+                self.imgTran = [[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
+                [self.imgTran setImage:[UIImage imageWithData:datos]];
+                self.imgTran.contentMode = UIViewContentModeScaleAspectFill;
+                self.imgTran.layer.cornerRadius = 6;
+                self.imgTran.layer.borderWidth = 1;
+                self.imgTran.clipsToBounds = YES;
+                self.imgTran.layer.borderColor = [UIColor whiteColor].CGColor;
 
                 mapView_ = [GMSMapView mapWithFrame:CGRectMake(165, 240, 150, 160) camera:camera];
                 mapView_.layer.cornerRadius = 6;
@@ -1109,16 +1349,24 @@
 
                 if ([[UIScreen mainScreen] bounds].size.height == 480)
                 {
-                    [imgTran setFrame:CGRectMake(5, 240, 150, 90)];
-                    [mapView_ setFrame:CGRectMake(165, 240, 150, 90)];
-                    btnShowOverlay.frame = mapView_.frame;
+                    [self.imgTran setFrame:CGRectMake(5, 240, 150, 90)];
+                    [mapView_ setFrame:CGRectMake(165, 240, 150, 80)];
+                    btnShowMapOverlay.frame = mapView_.frame;
                 }
                 else
                 {
-                    [imgTran setFrame:CGRectMake(5, 240, 150, 160)];
+                    [self.imgTran setFrame:CGRectMake(5, 240, 150, 160)];
                     [mapView_ setFrame:CGRectMake(165, 240, 150, 160)];
-                    btnShowOverlay.frame = CGRectMake(165, 240, 150, 160);
+                    btnShowMapOverlay.frame = CGRectMake(165, 240, 150, 160);
                 }
+
+                [self.view addSubview:self.imgTran];
+
+                btnShowPicOverlay.frame = self.imgTran.frame;
+                [btnShowPicOverlay addTarget:self action:@selector(Picture_LightBox) forControlEvents:UIControlEventTouchUpInside];
+
+                [self.view addSubview:btnShowPicOverlay];
+                [self.view bringSubviewToFront:btnShowPicOverlay];
             }
             else  // if no picture is attached
             {
@@ -1127,54 +1375,32 @@
                 if ([[UIScreen mainScreen] bounds].size.height == 480)
                 {
                     [mapView_ setFrame:CGRectMake(-1, 220, 322, 116)];
-                    btnShowOverlay.frame = CGRectMake(-1, 220, 322, 116);
+                    btnShowMapOverlay.frame = CGRectMake(-1, 220, 322, 116);
                 }
                 else
                 {
                     [mapView_ setFrame:CGRectMake(-1, 226, 322, 180)];
-                    btnShowOverlay.frame = CGRectMake(-1, 226, 322, 180);
+                    btnShowMapOverlay.frame = CGRectMake(-1, 226, 322, 180);
                 }
                 
             }
            [self.view addSubview:mapView_];
             mapView_.myLocationEnabled = YES;
-           
-            if ([[assist shared]islocationAllowed])
-            {
-                [self.view addSubview:mapView_];
-                if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"] != NULL)
-                {
-                    [self.view addSubview:imgTran];
-                }
-            }
-            else
-            {
-                if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"] != NULL)
-                {
-                    imgTran.frame = CGRectMake(5, 226, 310, 180);
-                    if ([[UIScreen mainScreen] bounds].size.height == 480)
-                    {
-                        [imgTran setFrame:CGRectMake(5, 240, 150, 80)];
-                    }
-                    [self.view addSubview:imgTran];
-                }
-            }
             
             // Creates a marker in the center of the map.
             GMSMarker *marker = [[GMSMarker alloc] init];
             marker.position = CLLocationCoordinate2DMake(lat, lon);
             marker.map = mapView_;
             
-            [self.view addSubview:btnShowOverlay];
-            [btnShowOverlay setBackgroundColor:[UIColor clearColor]];
-            [self.view bringSubviewToFront:btnShowOverlay];
-            [btnShowOverlay addTarget:self action:@selector(Map_LightBox) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:btnShowMapOverlay];
+            [self.view bringSubviewToFront:btnShowMapOverlay];
+            [btnShowMapOverlay addTarget:self action:@selector(Map_LightBox) forControlEvents:UIControlEventTouchUpInside];
             
         }
 
         if ([self.trans objectForKey:@"Amount"] != NULL)
         {
-            [amount setText:[NSString stringWithFormat:@"$%.02f",[[loginResult valueForKey:@"Amount"] floatValue]]];
+            [amount setText:[NSString stringWithFormat:@"$%.02f", [[tranDetailResult valueForKey:@"Amount"] floatValue]]];
         }
         
         [amount setStyleClass:@"details_amount"];
@@ -1183,7 +1409,7 @@
         UILabel * location = [[UILabel alloc] initWithFrame:CGRectMake(-1, 180, 322, 20)];
         CGRect frame = location.frame;
 
-        if (![[loginResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [loginResult valueForKey:@"Picture"] != NULL)
+        if (![[tranDetailResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] && [tranDetailResult valueForKey:@"Picture"] != NULL)
         {
             frame.origin.x = 165;
             frame.size.width = 155;
@@ -1222,12 +1448,13 @@
         }
 
         //Set Status
-        UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 320, 30)];
-        [status setTag:12];
+        UILabel * status = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 320, 30)];
+        [status setFont: [UIFont fontWithName:@"Roboto-bold" size:21]];
         [status setStyleClass:@"details_label"];
-        [status setStyleId:@"details_status"];
+        //[status setStyleId:@"details_status"];
+        [status setTag:12];
 
-        if ([loginResult objectForKey:@"TransactionDate"] != NULL)
+        if ([tranDetailResult objectForKey:@"TransactionDate"] != NULL)
         {
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
@@ -1235,46 +1462,47 @@
             [dateFormatter setPMSymbol:@"PM"];
             dateFormatter.dateFormat = @"M/d/yyyy h:mm:ss a";
             
-            NSDate *yourDate = [dateFormatter dateFromString:[loginResult valueForKey:@"TransactionDate"]];
+            NSDate *yourDate = [dateFormatter dateFromString:[tranDetailResult valueForKey:@"TransactionDate"]];
             dateFormatter.dateFormat = @"dd-MMMM-yyyy";
             [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
 
             NSString *statusstr;
 
-            if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
+            if ([[tranDetailResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
                 statusstr = @"Canceled";
                 [status setStyleClass:@"red_text"];
             }
-            else if ([[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
+            else if ([[tranDetailResult objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
                 statusstr = @"Rejected";
                 [status setStyleClass:@"red_text"];
             }
-            else if (![[loginResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
-                      [[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Pending"]){
+            else if (![[tranDetailResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
+                      [[tranDetailResult objectForKey:@"TransactionStatus"]isEqualToString:@"Pending"]) {
                 statusstr = @"Pending";
                 [status setStyleClass:@"yellow_text"];
             }
-            else if ([[loginResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
-                     [[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Success"])
+            else if ([[tranDetailResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
+                     [[tranDetailResult objectForKey:@"TransactionStatus"]isEqualToString:@"Success"])
             {
                 statusstr = @"Complete (Payment Accepted)";
+                [status setFont: [UIFont fontWithName:@"Roboto-medium" size:17]];
                 [status setStyleClass:@"green_text"];
             }
-            else if ([[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]     ||
-                     [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]  ||
-                     [[loginResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
+            else if ([[tranDetailResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]     ||
+                     [[tranDetailResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]  ||
+                     [[tranDetailResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
             {
                 statusstr = @"Completed";
                 [status setStyleClass:@"green_text"];
             }
-            else if ([[loginResult valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
-                     [[loginResult objectForKey:@"TransactionStatus"]isEqualToString:@"Success"])
+            else if ([[tranDetailResult valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
+                     [[tranDetailResult objectForKey:@"TransactionStatus"]isEqualToString:@"Success"])
             {
                 statusstr = @"Complete (Request Paid)";
                 [status setStyleClass:@"green_text"];
             }
-            else if ([[loginResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
-                     [[loginResult valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
+            else if ([[tranDetailResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
+                     [[tranDetailResult valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
             {
                 statusstr = @"Invited - Pending";
                 [status setStyleClass:@"yellow_text"];
@@ -1465,7 +1693,7 @@
 
 -(void)DisputeDetailClicked:(UIButton*)sender
 {
-    DisputeDetail*dd=[[DisputeDetail alloc]initWithData:loginResult];
+    DisputeDetail * dd = [[DisputeDetail alloc]initWithData:tranDetailResult];
     [self.navigationController pushViewController:dd animated:YES];
 }
 

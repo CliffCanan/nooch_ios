@@ -980,7 +980,10 @@ return customView;
                         [statusIndicator setTextColor:kNoochGreen];
                     }
 
-                    if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"])
+                    NSLog(@"Username is: %@",[user valueForKey:@"UserName"]);
+                    if ( [[dictRecord valueForKey:@"TransactionType"] isEqualToString:@"Transfer"] ||
+                        ([[dictRecord valueForKey:@"TransactionType"] isEqualToString:@"Invite"] &&
+                         [[dictRecord valueForKey:@"InvitationSentTo"] isEqualToString:[user valueForKey:@"UserName"]]))
                     {
                         if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
                         {
@@ -996,7 +999,8 @@ return customView;
                         }
                         else
                         {
-                            if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"])
+                            if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"] ||
+                                [[dictRecord valueForKey:@"TransactionType"] isEqualToString:@"Invite"] )
                             {
                                 // Received Transfer
                                 [amount setStyleClass:@"history_transferamount_pos"];
@@ -1282,7 +1286,13 @@ return customView;
                     [statusIndicator setTextColor:kNoochGreen];
                 }
                 
-                if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"])
+                NSString * username = [NSString stringWithFormat:@"%@",[user valueForKey:@"UserName"]];
+                NSString * invitationSentTo = [NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"InvitationSentTo"]];
+
+                if ( [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"] ||
+                    ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
+                     [dictRecord valueForKey:@"InvitationSentTo"] != NULL && ![invitationSentTo isEqualToString:username])/*) &&
+                      [dictRecord valueForKey:@"Name"] != NULL)*/)
                 {
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
                     {
@@ -2064,6 +2074,7 @@ return customView;
         if ([histShowArrayCompleted count]>indexPath.row)
         {
             NSDictionary *dictRecord = [histShowArrayCompleted objectAtIndex:indexPath.row];
+            NSLog(@"Selected Entry is: %@", dictRecord);
             TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
             [self.navigationController pushViewController:details animated:YES];
         }
