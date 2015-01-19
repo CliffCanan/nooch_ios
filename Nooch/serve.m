@@ -784,20 +784,27 @@ NSString *amnt;
             [defaults setObject:@"NO" forKey:@"IsVerifiedPhone"];
         }
         [defaults synchronize];
-        
-        if ([[Dictresponse valueForKey:@"ContactNumber"]isKindOfClass:[NSNull class]]||[[Dictresponse valueForKey:@"Address"]isKindOfClass:[NSNull class]]||[[Dictresponse valueForKey:@"City"]isKindOfClass:[NSNull class]]) {
+
+        if ([[Dictresponse valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]])
+        {
+            [defaults setObject:[Dictresponse valueForKey:@"ContactNumber"] forKey:@"ContactNumber"];
+        }
+        if ([[Dictresponse valueForKey:@"ContactNumber"]isKindOfClass:[NSNull class]] ||
+            [[Dictresponse valueForKey:@"Address"]isKindOfClass:[NSNull class]])
+        {
             [defaults setObject:@"NO"forKey:@"ProfileComplete"];
         }
         else
         {
-            [defaults setObject:[Dictresponse valueForKey:@"ContactNumber"] forKey:@"ContactNumber"];
             [[me usr] setObject:@"YES" forKey:@"validated"];
             [defaults setObject:@"YES"forKey:@"ProfileComplete"];
         }
         [defaults synchronize];
         
     }
-    else if ([tagName isEqualToString:@"login"]||[tagName isEqualToString:@"loginwithFB"] ) {
+    else if ([tagName isEqualToString:@"login"] ||
+             [tagName isEqualToString:@"loginwithFB"])
+    {
         //converting the result into Dictionary
         NSError * error;
         NSDictionary * result = [NSJSONSerialization
@@ -806,7 +813,7 @@ NSString *amnt;
                                 error:&error];
         NSLog(@"Serve --> connectionDidFinishLoading --> Login: dict object %@",[result objectForKey:@"Result"]);
         //getting the token
-        if ([result objectForKey:@"Result"] &&
+        if ( [result objectForKey:@"Result"] &&
            ![[result objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] &&
            ![[result objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] &&
            ![[result objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] &&
@@ -1722,7 +1729,7 @@ NSString *amnt;
 {
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *urlString = [NSString stringWithFormat:@"%@/ResendVerificationSMS?UserName=%@",ServerUrl,[defaults objectForKey:@"UserName"]];
     NSURL *url = [NSURL URLWithString:urlString];
 
@@ -1737,7 +1744,7 @@ NSString *amnt;
 {
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *urlString = [NSString stringWithFormat:@"%@/ResendVerificationLink?UserName=%@",ServerUrl,[defaults objectForKey:@"UserName"]];
     NSURL *url = [NSURL URLWithString:urlString];
 

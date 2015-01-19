@@ -373,11 +373,13 @@ void exceptionHandler(NSException *exception){
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
     NSLog(@"%@",notification.userInfo);
     
-    if ([notification.userInfo valueForKey:@"Profile1"] || [notification.userInfo valueForKey:@"Profile2"] || [notification.userInfo valueForKey:@"Profile3"] || [notification.userInfo valueForKey:@"Profile4"])
+    if ([notification.userInfo valueForKey:@"Profile1"] ||
+        [notification.userInfo valueForKey:@"Profile2"] ||
+        [notification.userInfo valueForKey:@"Profile3"] ||
+        [notification.userInfo valueForKey:@"Profile4"])
     {
         [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"NotificationPush"];
         [nav_ctrl popToRootViewControllerAnimated:YES];
-        
     }
 }
 

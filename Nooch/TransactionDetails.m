@@ -14,6 +14,7 @@
 #import "SelectRecipient.h"
 #import "ProfileInfo.h"
 #import "DisputeDetail.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 @interface TransactionDetails ()
 @property (nonatomic,strong) NSDictionary *trans;
@@ -199,7 +200,7 @@
     UIButton * fb = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [fb setTitle:@"" forState:UIControlStateNormal];
     [fb setStyleCSS:@"background-image : url(fb-icon-90x90.png)"];
-    [fb addTarget:self action:@selector(post_to_fb) forControlEvents:UIControlEventTouchUpInside];
+    [fb addTarget:self action:@selector(post) forControlEvents:UIControlEventTouchUpInside];
     if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
         [fb setStyleId:@"details_fb_donate"];
     }
@@ -427,9 +428,8 @@
     [self.navigationController.view addSubview:overlay];
 
     mainView = [[UIView alloc]init];
-    mainView.layer.cornerRadius = 5;
-    mapView_.layer.borderColor = [[UIColor blackColor]CGColor];
-    mapView_.layer.borderWidth = 1;
+    mainView.layer.cornerRadius = 7;
+    mapView_.layer.borderWidth = 0;
     
     if ([[UIScreen mainScreen] bounds].size.height < 500) {
         mainView.frame = CGRectMake(9, -500, 302, 443);
@@ -489,7 +489,7 @@
     map_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
     [mainView addSubview:map_container];
     
-    map_container.layer.cornerRadius = 5;
+    map_container.layer.cornerRadius = 6;
     map_container.layer.borderColor = [[UIColor lightGrayColor]CGColor];
     map_container.layer.borderWidth = 1;
     map_container.clipsToBounds = YES;
@@ -500,7 +500,7 @@
     mapView_ = [GMSMapView mapWithFrame:CGRectMake(11, 51, 278, 298) camera:camera];
     [mapView_ setFrame:CGRectMake(11, 51, 278, 298)];
     [mainView addSubview:mapView_];
-    mapView_.layer.cornerRadius = 5;
+    mapView_.layer.cornerRadius = 6;
     mapView_.clipsToBounds = YES;
     mapView_.myLocationEnabled = YES;
 
@@ -511,7 +511,7 @@
 
     UIView * desc_container=[[UIView alloc]initWithFrame:CGRectMake(10, 356, 280, 36)];
     desc_container.backgroundColor=[UIColor colorWithRed:245.0f/255.0f green:245.0f/255.0f blue:245.0f/255.0f alpha:1.0];
-    desc_container.layer.cornerRadius = 5;
+    desc_container.layer.cornerRadius = 6;
     desc_container.layer.borderColor=[[UIColor lightGrayColor]CGColor];
     desc_container.layer.borderWidth=0.5;
     [mainView addSubview:desc_container];
@@ -583,9 +583,7 @@
     [self.navigationController.view addSubview:overlay];
     
     mainView = [[UIView alloc]init];
-    mainView.layer.cornerRadius = 5;
-    mapView_.layer.borderColor = [[UIColor blackColor]CGColor];
-    mapView_.layer.borderWidth = 1;
+    mainView.layer.cornerRadius = 8;
     
     if ([[UIScreen mainScreen] bounds].size.height < 500) {
         mainView.frame = CGRectMake(9, -500, 302, 373);
@@ -668,7 +666,7 @@
     UIButton * fb_share = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [fb_share setFrame:CGRectMake(0, 0, 115, 44)];
     [fb_share setStyleClass:@"lightbox_socialBtns"];
-    [fb_share addTarget:self action:@selector(post_to_fb) forControlEvents:UIControlEventTouchUpInside];
+    [fb_share addTarget:self action:@selector(post) forControlEvents:UIControlEventTouchUpInside];
     [fb_share setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-thin"] forState:UIControlStateNormal];
     [fb_share setTitleColor:kNoochBlue forState:UIControlStateNormal];
     [fb_share setTitleShadowColor:Rgb2UIColor(251, 252, 253, 0.2) forState:UIControlStateNormal];
@@ -747,7 +745,7 @@
      ];
 }
 
--(void) cancel_invite
+-(void)cancel_invite
 {
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Transfer"
                                                  message:@"Are you sure you want to cancel this transfer?"
@@ -758,7 +756,7 @@
     [av setTag:310];
 }
 
-- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
     UIAlertView *alert = [[UIAlertView alloc] init];
     [alert addButtonWithTitle:@"OK"];
     [alert setDelegate:nil];
@@ -791,7 +789,7 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
-- (void) fulfill_request
+- (void)fulfill_request
 {
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
@@ -827,7 +825,7 @@
     [nav_ctrl pushViewController:trans animated:YES];
 }
 
-- (void) decline_request
+- (void)decline_request
 {
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Reject %@'s Request",[self.trans objectForKey:@"FirstName"]]
                                                  message:[NSString stringWithFormat:@"Are you sure you want to reject this request from %@?",[[self.trans objectForKey:@"Name"] capitalizedString]]
@@ -856,7 +854,7 @@
     [av setTag:2010];
 }
 
-- (void) pay_back
+- (void)pay_back
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 
@@ -928,7 +926,7 @@
     [self.navigationController pushViewController:payback animated:YES];
 }
 
-- (void) post_to_fb
+- (void)post_to_fb
 {
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
     {
@@ -1062,7 +1060,79 @@
         }
     }
 
-    SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+    NSString * postTitle = @"Nooch makes money simple";
+    NSString * postLink = @"https://itunes.apple.com/us/app/nooch/id917955306?mt=8";
+    NSString * postImgUrl = @"https://www.nooch.com/wp-content/themes/newnooch/library/images/nooch-logo.svg";
+
+    // Check if the Facebook app is installed and we can present the share dialog
+    FBLinkShareParams *params = [[FBLinkShareParams alloc] init];
+    params.link = [NSURL URLWithString: postLink];
+    params.name = postTitle;
+    params.picture = [NSURL URLWithString:postImgUrl];
+    params.caption = post_text;
+    
+    // If the Facebook app is installed and we can present the share dialog
+    if ([FBDialogs canPresentShareDialogWithParams:params])
+    {
+        // Present share dialog
+        [FBDialogs presentShareDialogWithLink:params.link
+                                      handler:^(FBAppCall *call, NSDictionary *results, NSError *error) {
+                                          if (error) {
+                                              // An error occurred, we need to handle the error
+                                              // See: https://developers.facebook.com/docs/ios/errors
+                                              NSLog(@"Error publishing story to FB: %@", error.description);
+                                          }
+                                          else {
+                                              // Success
+                                              NSLog(@"Facebook Share result: %@", results);
+                                          }
+                                      }];
+    }
+    else
+    {
+        // FALLBACK: publish just a link using the Feed dialog
+        
+        // Put together the dialog parameters
+        NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       @"Sharing Tutorial", @"name",
+                                       @"Build great social apps and get more installs.", @"caption",
+                                       @"Allow your users to share stories on Facebook from your app using the iOS SDK.", @"description",
+                                       @"https://developers.facebook.com/docs/ios/share/", @"link",
+                                       @"http://i.imgur.com/g3Qc1HN.png", @"picture",
+                                       nil];
+        
+        // Show the feed dialog
+        [FBWebDialogs presentFeedDialogModallyWithSession:nil
+                                               parameters:params
+                                                  handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+                                                      if (error) {
+                                                          // An error occurred, we need to handle the error
+                                                          // See: https://developers.facebook.com/docs/ios/errors
+                                                          NSLog(@"Error publishing story: %@", error.description);
+                                                      } else {
+                                                          if (result == FBWebDialogResultDialogNotCompleted) {
+                                                              // User canceled.
+                                                              NSLog(@"User cancelled.");
+                                                          } else {
+                                                              // Handle the publish feed callback
+                                                              NSDictionary *urlParams = [self parseURLParams:[resultURL query]];
+                                                              
+                                                              if (![urlParams valueForKey:@"post_id"]) {
+                                                                  // User canceled.
+                                                                  NSLog(@"User cancelled.");
+                                                                  
+                                                              } else {
+                                                                  // User clicked the Share button
+                                                                  NSString *result = [NSString stringWithFormat: @"Posted story, id: %@", [urlParams valueForKey:@"post_id"]];
+                                                                  NSLog(@"result %@", result);
+                                                              }
+                                                          }
+                                                      }
+                                                  }];
+    }
+
+    
+   /* SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
     [controller setInitialText:post_text];
     [controller addURL:[NSURL URLWithString:@"http://bit.ly/1xdG2le"]];
 
@@ -1097,7 +1167,20 @@
         }
         [controller dismissViewControllerAnimated:YES completion:Nil];
     };
-    controller.completionHandler = myBlock;
+    controller.completionHandler = myBlock;*/
+}
+
+// A function for parsing URL parameters returned by the Feed Dialog.
+- (NSDictionary*)parseURLParams:(NSString *)query {
+    NSArray *pairs = [query componentsSeparatedByString:@"&"];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    for (NSString *pair in pairs) {
+        NSArray *kv = [pair componentsSeparatedByString:@"="];
+        NSString *val =
+        [kv[1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        params[kv[0]] = val;
+    }
+    return params;
 }
 
 - (void) dispute
@@ -1337,14 +1420,14 @@
                 self.imgTran = [[UIImageView alloc]initWithFrame:CGRectMake(5, 240, 150, 160)];
                 [self.imgTran setImage:[UIImage imageWithData:datos]];
                 self.imgTran.contentMode = UIViewContentModeScaleAspectFill;
-                self.imgTran.layer.cornerRadius = 6;
+                self.imgTran.layer.cornerRadius = 8;
                 self.imgTran.layer.borderWidth = 1;
                 self.imgTran.clipsToBounds = YES;
                 self.imgTran.layer.borderColor = [UIColor whiteColor].CGColor;
 
                 mapView_ = [GMSMapView mapWithFrame:CGRectMake(165, 240, 150, 160) camera:camera];
-                mapView_.layer.cornerRadius = 6;
-                mapView_.layer.borderWidth = 1;
+                mapView_.layer.cornerRadius = 8;
+                mapView_.layer.borderWidth = 0;
                 mapView_.clipsToBounds = YES;
 
                 if ([[UIScreen mainScreen] bounds].size.height == 480)

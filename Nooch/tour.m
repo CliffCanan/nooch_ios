@@ -47,7 +47,7 @@
     page1.bgImage = [UIImage imageNamed:@"0_home-bg"];
 
     page1.title = @"Welcome To Nooch";
-    page1.titlePositionY = 428;
+    page1.titlePositionY = 430;
 
     page1.desc = @"Pay back a friend or send a payment request to anyone. The people you Nooch most will appear on the Home Screen. Send to anyone - even if they don't have Nooch.";
     page1.descWidth = 302;
@@ -62,11 +62,11 @@
     page2.bgImage = [UIImage imageNamed:@"1_connectBank_bg.png"];
 
     page2.title = @"Link A Funding Source";
-    page2.titlePositionY = 116;
+    page2.titlePositionY = 120;
 
     page2.desc = @"No long forms or waiting periods.  Just select your bank and sign in using your existing online banking credentials.";
     page2.descWidth = 302;
-    page2.descPositionY = page2.titlePositionY - 23;
+    page2.descPositionY = page2.titlePositionY - 26;
 
     page2.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"connectBank-circled"]];
     [page2.titleIconView setStyleClass:@"animate_bubble_tour"];
@@ -91,11 +91,11 @@
     page4.bgImage = [UIImage imageNamed:@"3_howMuch_bg"];
 
     page4.title = @"Send or Request?";
-    page4.titlePositionY = 118;
+    page4.titlePositionY = 120;
 
     page4.desc = @"Enter an amount, add a memo, or picture to any transfer.  Then tap 'Send' or 'Request'.";
     page4.descWidth = 300;
-    page4.descPositionY = page4.titlePositionY - 24;
+    page4.descPositionY = page4.titlePositionY - 26;
     
     page4.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"howMuch_img"]];
     page4.titleIconPositionY = 120;
@@ -105,11 +105,11 @@
     page5.bgImage = [UIImage imageNamed:@"4_history_bg"];
 
     page5.title = @"Transfer History";
-    page5.titlePositionY = 118;
+    page5.titlePositionY = 120;
     
     page5.desc = @"See all your Nooch transfers and filter by type.  To see a map of your payments, swipe left or tap the map icon in the navigation bar.";
     page5.descWidth = 300;
-    page5.descPositionY = page5.titlePositionY - 24;
+    page5.descPositionY = page5.titlePositionY - 26;
     
     page5.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"history_img"]];
     page5.titleIconPositionY = 120;
@@ -118,11 +118,11 @@
     page6.bgImage = [UIImage imageNamed:@"Tour_stats_bg"];
 
     page6.title = @"Stats & Analytics";
-    page6.titlePositionY = 118;
+    page6.titlePositionY = 120;
 
     page6.desc = @"Check out a breakdown of your payments including average payment amount and top friends.";
     page6.descWidth = 300;
-    page6.descPositionY = page6.titlePositionY - 24;
+    page6.descPositionY = page6.titlePositionY - 26;
 
     page6.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Stats_Circled"]];
     page6.titleIconPositionY = 120;
@@ -143,21 +143,32 @@
         page5.titleIconPositionY = 130;
     }
 
-    EAIntroView * intro = [[EAIntroView alloc] initWithFrame:CGRectMake(0, 0, 320, 504) andPages:@[page1,page2,page3,page4,page5,page6]];
+    intro = [[EAIntroView alloc] initWithFrame:CGRectMake(0, 0, 320, 504) andPages:@[page1,page2,page3,page4,page5,page6]];
     [intro setDelegate:self];
     [intro.skipButton setStyleClass:@"reallyLight_gray"];
     [intro setBgViewContentMode:UIViewContentModeScaleAspectFill];
+
     intro.showSkipButtonOnlyOnLastPage = false;
+    [intro.skipButton setTitle:@"Skip" forState:UIControlStateNormal];
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
         intro.swipeToExit = true;
     }
 
-    [intro showInView:self.view animateDuration:0.4];
+    [intro showInView:self.view animateDuration:0.3];
 }
 
-- (void)intro:(EAIntroView *)introView pageAppeared:(EAIntroPage *)page withIndex:(NSInteger)pageIndex{
+- (void)intro:(EAIntroView *)introView pageAppeared:(EAIntroPage *)page withIndex:(NSInteger)pageIndex
+{
+    if (pageIndex == 5)
+    {
+        [intro.skipButton setTitle:@"Done" forState:UIControlStateNormal];
+    }
+    else
+    {
+        [intro.skipButton setTitle:@"Skip" forState:UIControlStateNormal];
+    }
 }
 
 - (void)intro:(EAIntroView *)introView pageStartScrolling:(EAIntroPage *)page withIndex:(NSInteger)pageIndex{

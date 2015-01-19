@@ -13,5 +13,7 @@
 #import "EAIntroView.h"
 
 @interface tour : GAITrackedViewController<EAIntroDelegate>
-
+{
+    EAIntroView * intro;
+}
 @end

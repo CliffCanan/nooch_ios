@@ -108,21 +108,21 @@
     [topSectionContainer setStyleClass:@"raised_view_AptScrn"];
     [self.view addSubview:topSectionContainer];
 
-    aptName = [[UILabel alloc] initWithFrame:CGRectMake(8, 5, 200, 22)];
-    [aptName setFont:[UIFont fontWithName:@"Roboto-medium" size:17]];
+    aptName = [[UILabel alloc] initWithFrame:CGRectMake(8, 5, 200, 21)];
+    [aptName setFont:[UIFont fontWithName:@"Roboto-medium" size:18]];
     [aptName setTextColor:kNoochGrayDark];
     aptName.text = @"Belmont Village";
     [topSectionContainer addSubview:aptName];
 
-    aptAddress = [[UILabel alloc] initWithFrame:CGRectMake(9, 28, 170, 30)];
-    [aptAddress setFont:[UIFont fontWithName:@"Roboto-regular" size:12]];
+    aptAddress = [[UILabel alloc] initWithFrame:CGRectMake(9, 26, 170, 36)];
+    [aptAddress setFont:[UIFont fontWithName:@"Roboto-regular" size:13]];
     [aptAddress setTextColor:kNoochGrayDark];
     [aptAddress setText:@"7246 Dresden Ave, Philadelphia, PA 19876"];
     [aptAddress setNumberOfLines:0];
     [topSectionContainer addSubview:aptAddress];
 
-    aptWebsite = [[UILabel alloc] initWithFrame:CGRectMake(9, 58, 188, 15)];
-    [aptWebsite setFont:[UIFont fontWithName:@"Roboto-regular" size:12]];
+    aptWebsite = [[UILabel alloc] initWithFrame:CGRectMake(9, 62, 188, 16)];
+    [aptWebsite setFont:[UIFont fontWithName:@"Roboto-regular" size:13]];
     [aptWebsite setTextColor:kNoochBlue];
     [aptWebsite setUserInteractionEnabled:YES];
     aptWebsite.text = @"www.BelmontVillage.com";
@@ -130,13 +130,13 @@
     [aptWebsite addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openAptWebsite)]];
     [topSectionContainer addSubview:aptWebsite];
 
-    UILabel * autoPayLbl = [[UILabel alloc] initWithFrame:CGRectMake(9, 76, 100, 15)];
-    [autoPayLbl setFont:[UIFont fontWithName:@"Roboto-regular" size: 12]];
+    UILabel * autoPayLbl = [[UILabel alloc] initWithFrame:CGRectMake(9, 81, 100, 16)];
+    [autoPayLbl setFont:[UIFont fontWithName:@"Roboto-regular" size: 13]];
     [autoPayLbl setTextColor:kNoochGrayLight];
     autoPayLbl.text = @"Auto Pay:";
     [topSectionContainer addSubview:autoPayLbl];
 
-    autoPaySetting = [[UILabel alloc] initWithFrame:CGRectMake(65, 76, 30, 15)];
+    autoPaySetting = [[UILabel alloc] initWithFrame:CGRectMake(67, 81, 30, 17)];
     [topSectionContainer addSubview:autoPaySetting];
 
     UILabel * lastPymntLbl = [[UILabel alloc] initWithFrame:CGRectMake(9, 89, 100, 15)];
@@ -259,13 +259,13 @@
 
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoPayEnabled"]isEqualToString:@"1"])
     {
-        [autoPaySetting setFont:[UIFont fontWithName:@"Roboto-medium" size: 12]];
+        [autoPaySetting setFont:[UIFont fontWithName:@"Roboto-medium" size: 13]];
         [autoPaySetting setTextColor:kNoochGreen];
         autoPaySetting.text = @"On";
     }
     else
     {
-        [autoPaySetting setFont:[UIFont fontWithName:@"Roboto-regular" size: 12]];
+        [autoPaySetting setFont:[UIFont fontWithName:@"Roboto-regular" size: 13]];
         [autoPaySetting setTextColor:kNoochRed];
         autoPaySetting.text = @"Off";
     }
@@ -438,7 +438,7 @@
 
 -(void)stayPressed:(UIButton *) sender
 {
-    [self.rentBox setFrame:CGRectMake(190, 8, 102, 82)];
+    [self.rentBox setFrame:CGRectMake(190, 9, 102, 82)];
 }
 
 - (void) navigate_to:(id)view

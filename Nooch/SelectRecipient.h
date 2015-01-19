@@ -17,7 +17,7 @@
 BOOL isphoneBook;
 NSMutableArray*arrRecipientsForRequest;
 BOOL isAddRequest;
-@interface SelectRecipient : GAITrackedViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate,ABPeoplePickerNavigationControllerDelegate,UIActionSheetDelegate,MBProgressHUDDelegate>
+@interface SelectRecipient : GAITrackedViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate,ABPeoplePickerNavigationControllerDelegate,CLLocationManagerDelegate,UIActionSheetDelegate,MBProgressHUDDelegate>
 {
     NSMutableDictionary*facebook_info;
     ACAccountStore*accountStore;
@@ -35,5 +35,6 @@ BOOL isAddRequest;
     UILabel *em;
     NSArray *emailAddresses;
     NSMutableArray*arrRequestPersons;
+    CLLocationManager*locationManager;
 }
 @end

@@ -292,10 +292,10 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 27)];
+    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 27)];
     UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake (10, 0, 200, 27)];
     title.textColor = kNoochGrayDark;
-    title.font = [UIFont fontWithName:@"Roboto-regular" size:14];
+    title.font = [UIFont fontWithName:@"Roboto-regular" size:15];
     
     if (section == 0)
     {
@@ -374,6 +374,7 @@
     [cell.textLabel setStyleClass:@"select_apt_name"];
     [cell.textLabel setText:@"Bellvue Heights Apts"];
 
+    [cell.detailTextLabel setFont:[UIFont fontWithName:@"Roboto-regular" size:14]];
     [cell.detailTextLabel setText:@"17 E. Roosevelt Blvd., Philadelphia, PA 19123"];
     [cell.detailTextLabel setNumberOfLines:0];
 

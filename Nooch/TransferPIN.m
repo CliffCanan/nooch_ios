@@ -1635,14 +1635,14 @@
         {
             [[assist shared]setRequestMultiple:NO];
             NSString * strMultiple = @"";
-            for (NSDictionary *dictRecord in [[assist shared]getArray])
+            for (NSDictionary * dictRecord in [[assist shared]getArray])
             {
                 strMultiple = [strMultiple stringByAppendingString:[NSString stringWithFormat:@", %@",[dictRecord[@"FirstName"] capitalizedString]]];
             }
 
             strMultiple = [strMultiple substringFromIndex:1];
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Pay Me"
-                                                         message:[NSString stringWithFormat:@"You requested $%.02f from %@ successfully.",self.amnt,strMultiple]
+                                                         message:[NSString stringWithFormat:@"\xF0\x9F\x98\x80\nYou requested $%.02f from %@ successfully.",self.amnt,strMultiple]
                                                         delegate:self
                                                cancelButtonTitle:nil
                                                otherButtonTitles:@"OK",nil];

@@ -156,7 +156,7 @@ view {
         height      : 30px;
         color       : #fff
         font-family : "FontAwesome";
-        font-size   : 21px;
+        font-size   : 22px;
         text-align  : center;
     }
 
@@ -861,13 +861,16 @@ view {
 
 /****  Raised Box - This adds a drop-shadow. ****/
 .raised_view {
-    box-shadow	: 0 2px 2px rgba(109,110,113,0.55);
+    box-shadow	: 0 2px 2px rgba(109,110,112,0.45);
+}
+.raised_view_carousel {
+    box-shadow	: 0px 3px 3px rgba(109,110,112,0.3);
 }
 .raised_view_AptScrn {
-    box-shadow	: 1px 2px 1px rgba(109,110,113,0.4);
+    box-shadow	: 1px 2px 1px rgba(109,110,112,0.4);
 }
 .welcomeBoxShadow {
-    box-shadow  : 1px 1px 1px rgba(109,110,113,0.45);
+    box-shadow  : 1px 1px 1px rgba(109,110,112,0.42);
 }
 
 /*******************************************
@@ -3377,11 +3380,9 @@ table-view.stats_top_friends_empty {
     border-radius   : 28px;
 }
 .stats_goToHowMuchBtn {
-    color 				: rgba(88,90,92,1);
-    border-radius		: 5px;
     font-family			: "FontAwesome";
-    font-size			: 14px;
-    background-color	: rgba(255,255,255,0);
+    font-size			: 16px;
+    background-color	: transparent;
 }
 /*******************************************
 ********* 	  ANIMATIONS 	    *********

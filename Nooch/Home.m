@@ -293,7 +293,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     CFRelease(people);
       if (addressBook)
     CFRelease(addressBook);
-    NSLog(@"Recevied notification");
+    NSLog(@"Home -> ABChanged: Recevied notification");
 }
 
 -(void)dismiss_suspended_alert
@@ -689,7 +689,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
              ![[user objectForKey:@"Status"] isEqualToString:@"Registered"] &&
               [[user valueForKey:@"Status"]  isEqualToString:@"Active"])
     {
-        [self dismiss_suspended_alert];
+        if ([self.view.subviews containsObject:self.suspended])
+        {
+            [self dismiss_suspended_alert];
+        }
         if (bannerAlert > 0) {
             bannerAlert--;
         }
@@ -770,89 +773,103 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if (bannerAlert > 0) {
             bannerAlert--;
         }
-        [self dismiss_profile_unvalidated];
-        [self dismiss_suspended_alert];
+        if ([self.view.subviews containsObject:self.profile_incomplete])
+        {
+            [self dismiss_profile_unvalidated];
+        }
+        if ([self.view.subviews containsObject:self.suspended])
+        {
+            [self dismiss_suspended_alert];
+        }
     }
-    
+
     if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
     {
-        [self.phone_incomplete removeFromSuperview];
-        self.phone_incomplete = [UIView new];
-        [self.phone_incomplete setStyleId:@"phone_unverified"];
-        [self.phone_incomplete addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profileFromHome)]];
+        if (![self.view.subviews containsObject:self.phone_incomplete])
+        {
+            [self.phone_incomplete removeFromSuperview];
 
-        UILabel * em = [UILabel new];
-        [em setStyleClass:@"banner_header"];
-        em.attributedText = [[NSAttributedString alloc] initWithString:@"Phone Number Not Verified"
-                                                                  attributes:textAttributes];
-        [self.phone_incomplete addSubview:em];
+            self.phone_incomplete = [UIView new];
+            [self.phone_incomplete setStyleId:@"phone_unverified"];
+            [self.phone_incomplete addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profileFromHome)]];
 
-        UILabel * em_exclaim = [UILabel new];
-        [em_exclaim setStyleClass:@"banner_alert_glyph"];
-        [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-phone"]];
-        [self.phone_incomplete addSubview:em_exclaim];
+            UILabel * em = [UILabel new];
+            [em setStyleClass:@"banner_header"];
+            em.attributedText = [[NSAttributedString alloc] initWithString:@"Phone Number Not Verified"
+                                                                      attributes:textAttributes];
+            [self.phone_incomplete addSubview:em];
 
-        UILabel * glyph_phone = [UILabel new];
-        [glyph_phone setStyleClass:@"banner_alert_glyph_sm"];
-        [glyph_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
-        [self.phone_incomplete addSubview:glyph_phone];
+            UILabel * em_exclaim = [UILabel new];
+            [em_exclaim setStyleClass:@"banner_alert_glyph"];
+            [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-phone"]];
+            [self.phone_incomplete addSubview:em_exclaim];
 
-        UILabel * em_info = [UILabel new];
-        [em_info setStyleClass:@"banner_info"];
-        [em_info setNumberOfLines:0];
-        em_info.attributedText = [[NSAttributedString alloc] initWithString:@"Please verify your phone - respond 'Go' to the SMS."
-                                                                attributes:textAttributes];
-        [self.phone_incomplete addSubview:em_info];
+            UILabel * glyph_phone = [UILabel new];
+            [glyph_phone setStyleClass:@"banner_alert_glyph_sm"];
+            [glyph_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
+            [self.phone_incomplete addSubview:glyph_phone];
 
-        UIButton * go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [go setStyleClass:@"go_now_text"];
-        [go setTitle:@"TAP TO ADD NUMBER" forState:UIControlStateNormal];
-        [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
-        go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        [go addTarget:self action:@selector(go_profileFromHome) forControlEvents:UIControlEventTouchUpInside];
-        [self.phone_incomplete addSubview:go];
+            UILabel * em_info = [UILabel new];
+            [em_info setStyleClass:@"banner_info"];
+            [em_info setNumberOfLines:0];
+            em_info.attributedText = [[NSAttributedString alloc] initWithString:@"Please verify your phone - respond 'Go' to the SMS."
+                                                                    attributes:textAttributes];
+            [self.phone_incomplete addSubview:em_info];
 
-        UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
-        [dis setStyleClass:@"dismiss_banner"];
-        [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
-        [dis setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
-        [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
-        dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        [dis addTarget:self action:@selector(dismiss_phone_unvalidated) forControlEvents:UIControlEventTouchUpInside];
+            UIButton * go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [go setStyleClass:@"go_now_text"];
+            [go setTitle:@"TAP TO ADD NUMBER" forState:UIControlStateNormal];
+            [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
+            go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+            [go addTarget:self action:@selector(go_profileFromHome) forControlEvents:UIControlEventTouchUpInside];
+            [self.phone_incomplete addSubview:go];
 
-        [self.phone_incomplete addSubview:dis];
+            UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
+            [dis setStyleClass:@"dismiss_banner"];
+            [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
+            [dis setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
+            [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
+            dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+            [dis addTarget:self action:@selector(dismiss_phone_unvalidated) forControlEvents:UIControlEventTouchUpInside];
 
-        [self.view addSubview:self.phone_incomplete];
+            [self.phone_incomplete addSubview:dis];
 
-        NSLog(@"bannerALert: %d",bannerAlert);
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-        [UIView animateKeyframesWithDuration:.7
-                                       delay:0
-                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
-                                  animations:^{
-                                      [UIView addKeyframeWithRelativeStartTime:.25 relativeDuration:.75 animations:^{
-                                          CGRect frame = self.phone_incomplete.frame;
-                                          if (bannerAlert == 0)
-                                          {
-                                              frame.origin.y = 0;
-                                          }
-                                          else if (bannerAlert > 0)
-                                          {
-                                              frame.origin.y = 56;
-                                          }
-                                          [self.phone_incomplete setFrame:frame];
-                                      }];
-                                  } completion: ^(BOOL finished) {
-                                      [self.view bringSubviewToFront:self.phone_incomplete];
-                                  }
-        ];
+            [self.view addSubview:self.phone_incomplete];
+
+            //NSLog(@"bannerALert: %d",bannerAlert);
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+            [UIView animateKeyframesWithDuration:.7
+                                           delay:0
+                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                      animations:^{
+                                          [UIView addKeyframeWithRelativeStartTime:.25 relativeDuration:.75 animations:^{
+                                              CGRect frame = self.phone_incomplete.frame;
+                                              if (bannerAlert == 0)
+                                              {
+                                                  frame.origin.y = 0;
+                                              }
+                                              else if (bannerAlert > 0)
+                                              {
+                                                  frame.origin.y = 56;
+                                              }
+                                              [self.phone_incomplete setFrame:frame];
+                                          }];
+                                      } completion: ^(BOOL finished) {
+                                          [self.view bringSubviewToFront:self.phone_incomplete];
+                                      }
+            ];
+        }
+
         bannerAlert++;
     }
-    else {
-        [self dismiss_phone_unvalidated];
+    else
+    {
+        if ([self.view.subviews containsObject:self.phone_incomplete])
+        {
+            [self dismiss_phone_unvalidated];
+        }
     }
 
-    // NSLog(@"Pending_Count = %@", [defaults objectForKey:@"Pending_count"]);
     if ([[defaults objectForKey:@"Pending_count"] intValue] > 0)
     {
         [self.navigationItem setLeftBarButtonItem:nil];
@@ -874,84 +891,87 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if ([[user objectForKey:@"Status"] isEqualToString:@"Active"] &&
             [[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
         {
-            [self.pending_requests removeFromSuperview];
-            self.pending_requests = [UIView new];
-            [self.pending_requests setStyleId:@"pendingRequestBanner"];
-            [self.pending_requests addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_history)]];
-
             bannerAlert++;
-
-            NSShadow * shadowBlue = [[NSShadow alloc] init];
-            shadowBlue.shadowColor = Rgb2UIColor(19, 32, 38, .25);
-            shadowBlue.shadowOffset = CGSizeMake(0, 1);
-            NSDictionary * textShadowBlue = @{NSShadowAttributeName:shadowBlue};
-
-            UILabel * em = [UILabel new];
-            [em setStyleClass:@"banner_header"];
-
-            UILabel * em_exclaim = [UILabel new];
-            [em_exclaim setStyleClass:@"banner_alert_glyph"];
-            [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-inbox"]];
-            CGRect frameOfGlyph = em_exclaim.frame;
-            frameOfGlyph.origin.x += 6;
-            [em_exclaim setFrame:frameOfGlyph];
-            [self.pending_requests addSubview:em_exclaim];
-
-            UILabel * em_info = [UILabel new];
-            [em_info setStyleClass:@"banner_info"];
-            [em_info setNumberOfLines:0];
-            if ([[defaults objectForKey:@"Pending_count"] intValue] == 1)
-            {
-                em.attributedText = [[NSAttributedString alloc] initWithString:@"Pending Request Waiting"
-                                                                    attributes:textShadowBlue];
-                em_info.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"You have %d payment request waiting for a response.",[[defaults objectForKey:@"Pending_count"] intValue]]
-                                                                         attributes:textShadowBlue];
-            }
-            else if ([[defaults objectForKey:@"Pending_count"] intValue] > 1)
-            {
-                em.attributedText = [[NSAttributedString alloc] initWithString:@"Pending Requests Waiting"
-                                                                    attributes:textShadowBlue];
-                em_info.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"You have %d payment requests waiting for a response.",[[defaults objectForKey:@"Pending_count"] intValue]]
-                                                                         attributes:textShadowBlue];
-            }
-            [self.pending_requests addSubview:em];
-            [self.pending_requests addSubview:em_info];
-
-            UIButton * goHistory = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [goHistory setStyleClass:@"go_now_text"];
-            [goHistory setTitle:@"TAP TO VIEW & RESPOND" forState:UIControlStateNormal];
-            [goHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, .25) forState:UIControlStateNormal];
-            goHistory.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-            [goHistory addTarget:self action:@selector(go_history) forControlEvents:UIControlEventTouchUpInside];
-            [self.pending_requests addSubview:goHistory];
             
-            UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
-            [dis setStyleClass:@"dismiss_banner"];
-            [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
-            [dis setTitleShadowColor:Rgb2UIColor(19, 32, 38, .25) forState:UIControlStateNormal];
-            [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
-            dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-            [dis addTarget:self action:@selector(dismiss_requestsPendingBanner) forControlEvents:UIControlEventTouchUpInside];
+            if (![self.view.subviews containsObject:self.pending_requests])
+            {
+                [self.pending_requests removeFromSuperview];
 
-            [self.pending_requests addSubview:dis];
+                self.pending_requests = [UIView new];
+                [self.pending_requests setStyleId:@"pendingRequestBanner"];
+                [self.pending_requests addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_history)]];
 
-            [self.view addSubview:self.pending_requests];
+                NSShadow * shadowBlue = [[NSShadow alloc] init];
+                shadowBlue.shadowColor = Rgb2UIColor(19, 32, 38, .25);
+                shadowBlue.shadowOffset = CGSizeMake(0, 1);
+                NSDictionary * textShadowBlue = @{NSShadowAttributeName:shadowBlue};
 
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-            [UIView animateKeyframesWithDuration:.75
-                                           delay:0
-                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
-                                      animations:^{
-                                          [UIView addKeyframeWithRelativeStartTime:.28 relativeDuration:.72 animations:^{
-                                              CGRect frame = self.pending_requests.frame;
-                                              frame.origin.y = 0;
-                                              [self.pending_requests setFrame:frame];
-                                          }];
-                                      } completion: ^(BOOL finished) {
-                                          [self.view bringSubviewToFront:self.pending_requests];
-                                      }
-             ];
+                UILabel * em = [UILabel new];
+                [em setStyleClass:@"banner_header"];
 
+                UILabel * em_exclaim = [UILabel new];
+                [em_exclaim setStyleClass:@"banner_alert_glyph"];
+                [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-inbox"]];
+                CGRect frameOfGlyph = em_exclaim.frame;
+                frameOfGlyph.origin.x += 6;
+                [em_exclaim setFrame:frameOfGlyph];
+                [self.pending_requests addSubview:em_exclaim];
+
+                UILabel * em_info = [UILabel new];
+                [em_info setStyleClass:@"banner_info"];
+                [em_info setNumberOfLines:0];
+                if ([[defaults objectForKey:@"Pending_count"] intValue] == 1)
+                {
+                    em.attributedText = [[NSAttributedString alloc] initWithString:@"Pending Request Waiting"
+                                                                        attributes:textShadowBlue];
+                    em_info.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"You have %d payment request waiting for a response.",[[defaults objectForKey:@"Pending_count"] intValue]]
+                                                                             attributes:textShadowBlue];
+                }
+                else if ([[defaults objectForKey:@"Pending_count"] intValue] > 1)
+                {
+                    em.attributedText = [[NSAttributedString alloc] initWithString:@"Pending Requests Waiting"
+                                                                        attributes:textShadowBlue];
+                    em_info.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"You have %d payment requests waiting for a response.",[[defaults objectForKey:@"Pending_count"] intValue]]
+                                                                             attributes:textShadowBlue];
+                }
+                [self.pending_requests addSubview:em];
+                [self.pending_requests addSubview:em_info];
+
+                UIButton * goHistory = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                [goHistory setStyleClass:@"go_now_text"];
+                [goHistory setTitle:@"TAP TO VIEW & RESPOND" forState:UIControlStateNormal];
+                [goHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, .25) forState:UIControlStateNormal];
+                goHistory.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+                [goHistory addTarget:self action:@selector(go_history) forControlEvents:UIControlEventTouchUpInside];
+                [self.pending_requests addSubview:goHistory];
+                
+                UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
+                [dis setStyleClass:@"dismiss_banner"];
+                [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
+                [dis setTitleShadowColor:Rgb2UIColor(19, 32, 38, .25) forState:UIControlStateNormal];
+                [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
+                dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+                [dis addTarget:self action:@selector(dismiss_requestsPendingBanner) forControlEvents:UIControlEventTouchUpInside];
+
+                [self.pending_requests addSubview:dis];
+
+                [self.view addSubview:self.pending_requests];
+
+                [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                [UIView animateKeyframesWithDuration:.75
+                                               delay:0
+                                             options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                          animations:^{
+                                              [UIView addKeyframeWithRelativeStartTime:.28 relativeDuration:.72 animations:^{
+                                                  CGRect frame = self.pending_requests.frame;
+                                                  frame.origin.y = 0;
+                                                  [self.pending_requests setFrame:frame];
+                                              }];
+                                          } completion: ^(BOOL finished) {
+                                              [self.view bringSubviewToFront:self.pending_requests];
+                                          }
+                 ];
+            }
         }
         else
         {
@@ -1077,11 +1097,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
         ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted)
     {
-        NSLog(@"Denied");
+        NSLog(@"AB Denied");
     }
     else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
     {
-        NSLog(@"Authorized");
+        NSLog(@"AB Authorized");
         if ([[[assist shared]assosAll] count] == 0) {
             [self address_book];
         }
@@ -1091,7 +1111,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         ABAddressBookRequestAccessWithCompletion(ABAddressBookCreateWithOptions(NULL, nil), ^(bool granted, CFErrorRef error)
                                                  {
                                                      if (!granted) {
-                                                        NSLog(@"Just denied");
+                                                        NSLog(@"AB Just denied");
                                                          return;
                                                      }
                                                      if ([[[assist shared]assosAll] count] == 0) {
@@ -1101,9 +1121,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                                      dispatch_async(dispatch_get_main_queue(), ^{
                                                          [self GetFavorite];
                                                      });
-                                                     NSLog(@"Just authorized");
+                                                     NSLog(@"AB Just authorized");
                                                  });
-        NSLog(@"Not determined");
+        NSLog(@"AB Not determined");
     }
 
     [self GetFavorite];
@@ -1126,21 +1146,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.view addGestureRecognizer:self.slidingViewController.panGesture];
 
         //location
-        locationManager = [[CLLocationManager alloc] init];
-
-        locationManager.delegate = self;
-        locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
-        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
-
-        if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) { // iOS8+
-            // Sending a message to avoid compile time error
-
-            [[UIApplication sharedApplication] sendAction:@selector(requestWhenInUseAuthorization)
-                                                       to:locationManager
-                                                     from:self
-                                                 forEvent:nil];
-        }
-        [locationManager startUpdatingLocation];
+        [self checkIfLocAllowed];
     }
 
     [[assist shared] setRequestMultiple:NO];
@@ -1179,6 +1185,29 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [favoritesOBJ setTagName:@"favorites"];
     [favoritesOBJ setDelegate:self];
     [favoritesOBJ get_favorites];
+}
+
+-(void)checkIfLocAllowed
+{
+    if ([CLLocationManager locationServicesEnabled])
+    {
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+        {
+            NSLog(@"Location Services Allowed");
+            
+            locationManager = [[CLLocationManager alloc] init];
+            
+            locationManager.delegate = self;
+            locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
+            locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
+            
+            [locationManager startUpdatingLocation];
+        }
+        else
+        {
+            NSLog(@"Location Services NOT Allowed");
+        }
+    }
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -1309,7 +1338,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     bodyText.textAlignment = NSTextAlignmentCenter;
     [mainView addSubview:bodyText];
     
-    NSLog(@"picWidth is: %d  and picHeight is: %d",picwidthInt,picHeightInt);
+    //NSLog(@"picWidth is: %d  and picHeight is: %d",picwidthInt,picHeightInt);
     
     UIImageView * mainImage = [UIImageView new];
     [mainImage setFrame:CGRectMake((mainView.bounds.size.width - picwidthInt) / 2, head_container.bounds.size.height + 10, picwidthInt, picHeightInt)];
@@ -1402,78 +1431,100 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 - (NSInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
     //return the total number of items in the carousel
-    return [favorites count];
+    return 5;
 }
 
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSInteger)index reusingView:(UIView *)view
 {
-    UIImageView * imageView = nil;
-    UILabel * name = nil;
-    NSDictionary * favorite = [favorites objectAtIndex:index];
-
     //create new view if no view is available for recycling
     if (view == nil)
     {
+        UIImageView * imageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 10, 100, 100)];
+        UIView * imageShadow = [[UIView alloc] initWithFrame:CGRectMake(20, 10, 100, 100)];
+        UILabel * firstName = [[UILabel alloc] initWithFrame:CGRectMake(0, 117, 140, 20)];
+        UILabel * lastName = [[UILabel alloc] initWithFrame:CGRectMake(0, 137, 140, 20)];
+
 		view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 140, 160)];
-        
-        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 10, 100, 100)];
+
         imageView.contentMode = UIViewContentModeScaleAspectFill;
-        imageView.layer.cornerRadius = 50;
+        imageView.clipsToBounds = YES;
 
-        name = [[UILabel alloc] initWithFrame:CGRectMake(0, 117, 140, 20)];
-        name.textColor = [Helpers hexColor:@"313233"];
-        name.textAlignment = NSTextAlignmentCenter;
-        [name setFont:[UIFont fontWithName:@"Roboto-regular" size:19]];
+        [imageShadow setStyleClass:@"raised_view_carousel"];
+        [imageShadow setBackgroundColor:[UIColor whiteColor]];
 
-        if (favorite[@"MemberId"])
+        firstName.textColor = [Helpers hexColor:@"313233"];
+        firstName.textAlignment = NSTextAlignmentCenter;
+        [firstName setFont:[UIFont fontWithName:@"Roboto-regular" size:19]];
+
+        lastName.textColor = [UIColor blackColor];
+        lastName.textAlignment = NSTextAlignmentCenter;
+        [lastName setFont:[UIFont fontWithName:@"Roboto-light" size:16]];
+
+        if (index < [favorites count])
         {
-            [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
-                      placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
+            NSDictionary * favorite = [favorites objectAtIndex:index];
 
-            name.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
+            if (favorite[@"MemberId"])
+            {
+                [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]]]
+                          placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
 
-            UILabel * glyph_fav = [UILabel new];
-            [glyph_fav setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
-            [glyph_fav setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-star"]];
-            glyph_fav.textAlignment = NSTextAlignmentCenter;
-            [glyph_fav setFrame:CGRectMake(62, 140, 16, 17)];
-            [glyph_fav setTextColor:kNoochBlue];
-            [view addSubview:glyph_fav];
+                firstName.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
+
+                UILabel * glyph_fav = [UILabel new];
+                [glyph_fav setFont:[UIFont fontWithName:@"FontAwesome" size:14]];
+                [glyph_fav setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-star"]];
+                [glyph_fav setTextAlignment:NSTextAlignmentCenter];
+                [glyph_fav setFrame:CGRectMake(62, 140, 16, 17)];
+                [glyph_fav setTextColor:kNoochBlue];
+                [view addSubview:glyph_fav];
+            }
+            else if (favorite[@"image"])
+            {
+                [imageView setImage:[UIImage imageWithData:favorite[@"image"]]];
+
+                UIImageView * glyph_adressBook = [UIImageView new];
+                [glyph_adressBook setStyleClass:@"addressbook-icons"];
+                glyph_adressBook.layer.borderWidth = 1;
+                glyph_adressBook.layer.borderColor = (__bridge CGColorRef)([UIColor whiteColor]);
+                glyph_adressBook.layer.cornerRadius = 3;
+
+                if (!favorite[@"LastName"])
+                {
+                    firstName.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
+                    [glyph_adressBook setFrame:CGRectMake(63, 141, 14, 16)];
+                }
+                else
+                {
+                    firstName.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
+                    lastName.text = [NSString stringWithFormat:@"%@",favorite[@"LastName"]];
+                    [glyph_adressBook setFrame:CGRectMake(63, 158, 14, 16)];
+                }
+                [view addSubview:lastName];
+                [view addSubview:glyph_adressBook];
+            }
         }
-        else if (favorite[@"image"])
+        else
         {
-            [imageView setImage:[UIImage imageWithData:favorite[@"image"]]];
+            [imageView setFrame:CGRectMake((view.bounds.size.width / 2) - (70 / 2), 31, 70, 70)];
+            [imageView setImage:[UIImage imageNamed:@"silhouette"]];
+            //[imageView setImage:[UIImage imageNamed:@"RoundLoading"]];
 
-            UILabel * lastname = nil;
-            lastname = [[UILabel alloc] initWithFrame:CGRectMake(0, 137, 140, 20)];
-            lastname.textColor = [UIColor blackColor];
-            lastname.textAlignment = NSTextAlignmentCenter;
-            [lastname setFont:[UIFont fontWithName:@"Roboto-light" size:15]];
+            [imageShadow setFrame:imageView.frame];
 
-            UIImageView * glyph_adressBook = [UIImageView new];
-            [glyph_adressBook setStyleClass:@"addressbook-icons"];
-            glyph_adressBook.layer.borderWidth = 1;
-            glyph_adressBook.layer.borderColor = (__bridge CGColorRef)([UIColor whiteColor]);
-            glyph_adressBook.layer.cornerRadius = 3;
-
-            if (!favorite[@"LastName"])
-            {
-                name.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
-                [glyph_adressBook setFrame:CGRectMake(63, 141, 14, 16)];
-            }
-            else
-            {
-                name.text = [NSString stringWithFormat:@"%@",favorite[@"FirstName"]];
-                lastname.text = [NSString stringWithFormat:@"%@",favorite[@"LastName"]];
-                [glyph_adressBook setFrame:CGRectMake(63, 158, 14, 16)];
-            }
-            [view addSubview:lastname];
-            [view addSubview:glyph_adressBook];
+            firstName.text = [NSString stringWithFormat:@"Future"];
+            firstName.textColor = kNoochGrayLight;
+            lastName.text = [NSString stringWithFormat:@"Friend"];
+            lastName.textColor = kNoochGrayLight;
+            [view addSubview:lastName];
         }
-        [imageView setClipsToBounds:YES];
 
+        imageView.layer.cornerRadius = imageView.bounds.size.width / 2;
+        imageShadow.layer.cornerRadius = imageView.bounds.size.width / 2;
+
+        [view addSubview:imageShadow];
         [view addSubview:imageView];
-        [view addSubview:name];
+        [view addSubview:firstName];
     }
 
     return view;
@@ -1485,194 +1536,223 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index
 {
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-
-    if ([[assist shared]getSuspended] || [[user objectForKey:@"Status"] isEqualToString:@"Temporarily_Blocked"])
+    if (index < [favorites count])
     {
-        SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Account Temporarily Suspended" andMessage:@"\xE2\x9B\x94\nFor security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com for more information."];
-        [alertView addButtonWithTitle:@"Ok" type:SIAlertViewButtonTypeCancel handler:nil];
-        [alertView addButtonWithTitle:@"Contact Nooch" type:SIAlertViewButtonTypeDefault
-                              handler:^(SIAlertView *alert) {
-                                  [self contact_support];
-                              }];
-        [[SIAlertView appearance] setButtonColor:kNoochBlue];
+        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 
-        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
-        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
-        [alertView show];
-        return;
-    }
+        if ([[assist shared]getSuspended] || [[user objectForKey:@"Status"] isEqualToString:@"Temporarily_Blocked"])
+        {
+            SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Account Temporarily Suspended" andMessage:@"\xE2\x9B\x94\nFor security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com for more information."];
+            [alertView addButtonWithTitle:@"Ok" type:SIAlertViewButtonTypeCancel handler:nil];
+            [alertView addButtonWithTitle:@"Contact Nooch" type:SIAlertViewButtonTypeDefault
+                                  handler:^(SIAlertView *alert) {
+                                      [self contact_support];
+                                  }];
+            [[SIAlertView appearance] setButtonColor:kNoochBlue];
 
-    if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
-    {
-        SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Connect A Funding Source \xF0\x9F\x92\xB0"
-                                                          andMessage:@"Adding a bank account to fund Nooch payments is lightning quick.\n\n •  No routing or account number needed\n • Nooch's bank-grade encryption keeps your info safe\n"];
-        [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
-        [alertView addButtonWithTitle:@"Go Now" type:SIAlertViewButtonTypeDefault
-                              handler:^(SIAlertView *alert) {
-                                  knoxWeb *knox = [knoxWeb new];
-                                  [nav_ctrl pushViewController:knox animated:YES];
-                                  [self.slidingViewController resetTopView];
-                              }];
-        [[SIAlertView appearance] setButtonColor:kNoochBlue];
-        
-        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
-        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
-        [alertView show];
-        return;
-    }
-
-    else if ([[user valueForKey:@"Status"]isEqualToString:@"Registered"] )
-    {
-        SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Please Verify Your Email" andMessage:@"Terribly sorry, but before you can send money, please confirm your email address by clicking the link we sent to the email address you used to sign up.\n\xF0\x9F\x99\x8F"];
-        [alertView addButtonWithTitle:@"Ok" type:SIAlertViewButtonTypeCancel handler:nil];
-        [[SIAlertView appearance] setButtonColor:kNoochBlue];
-        
-        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
-        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
-        [alertView show];
-        return;
-    }
-
-    /* if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
-    {
-        SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Help Us Keep Nooch Safe" andMessage:@"Please take 1 minute to verify your identity by completing your Nooch profile (just 4 fields)."];
-        [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
-        [alertView addButtonWithTitle:@"Validate Now" type:SIAlertViewButtonTypeDefault
-                              handler:^(SIAlertView *alert) {
-                                  ProfileInfo *prof = [ProfileInfo new];
-                                  [nav_ctrl pushViewController:prof animated:YES];
-                                  [self.slidingViewController resetTopView];
-                              }];
-        [[SIAlertView appearance] setButtonColor:kNoochBlue];
-        
-        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
-        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
-        [alertView show];
-        return;
-    } */
-
-    else if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
-    {
-        SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Blame The Lawyers"
-                                                          andMessage:@"To keep Nooch safe, we ask all users to verify a phone number before sending money.\n\nIf you've already added your phone number, just respond 'Go' to the text message we sent."];
-        [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
-        [alertView addButtonWithTitle:@"Add Phone" type:SIAlertViewButtonTypeDefault
-                            handler:^(SIAlertView *alert) {
-                                sentFromHomeScrn = YES;
-                                isFromSettingsOptions = NO;
-                                isProfileOpenFromSideBar = NO;
-
-                                ProfileInfo *prof = [ProfileInfo new];
-                                [nav_ctrl pushViewController:prof animated:YES];
-                                [self.slidingViewController resetTopView];
-                            }];
-        [[SIAlertView appearance] setButtonColor:kNoochBlue];
-      
-        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
-        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
-        [alertView show];
-        return;
-  }
-
-    NSMutableDictionary * favorite = [NSMutableDictionary new];
-    [favorite addEntriesFromDictionary:[favorites objectAtIndex:index]];
-
-    NSLog(@"VARIABLE IS: %@", [carousel itemViewAtIndex:index]);
-    NSLog(@"Selected Favorite is: %@  %@  %@  %@", favorite[@"FirstName"], favorite[@"LastName"],favorite[@"UserName"],favorite[@"addressbook"]);
-
-    if (favorite[@"MemberId"])
-    {
-        self.selectedFavName = [[UILabel alloc] initWithFrame:CGRectMake(60, 12, 200, 28)];
-        [self.selectedFavName setFont:[UIFont fontWithName:@"Roboto-regular" size: 19]];
-        [self.selectedFavName setText: [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]]];
-        [self.selectedFavName setTextColor:kNoochGrayDark];
-        [self.selectedFavName setTextAlignment:NSTextAlignmentCenter];
-        [self.selectedFavName setAlpha:0];
-        [self.view addSubview: self.selectedFavName];
-
-        double totalduration = 0.7;
-
-        [UIView animateKeyframesWithDuration:totalduration
-                                       delay:0.02
-                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
-                                  animations:^{
-           /* [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
-                carousel.currentItemView.transform = CGAffineTransformMakeTranslation(-16, 0);
-            }];*/
-            [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.5 animations:^{
-                [carousel itemViewAtIndex:index].transform = CGAffineTransformMakeScale(1.12, 1.12);
-            }];
-            [UIView addKeyframeWithRelativeStartTime:.5 relativeDuration:.45 animations:^{
-                [carousel itemViewAtIndex:index].transform = CGAffineTransformMakeScale(1.18, 1.18);
-            }];
-            [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:0.95 animations:^{
-                self.selectedFavName.transform = CGAffineTransformMakeScale(1.3, 1.3);
-                [self.selectedFavName setAlpha:1];
-
-                for (int i = 0; i < 6; i++)
-                {
-                    if (i != index)
-                    {
-                        [[carousel itemViewAtIndex:i] setAlpha:0];
-                        [carousel itemViewAtIndex:i].transform = CGAffineTransformMakeScale(.3, .3);
-                    }
-                }
-            }];
-            
-            [UIView addKeyframeWithRelativeStartTime:.4 relativeDuration:.6 animations:^{
-                top_button.alpha = 0;
-            }];
-            [UIView addKeyframeWithRelativeStartTime:.4 relativeDuration:.6 animations:^{
-                top_button.transform = CGAffineTransformMakeScale(.1, .1);
-            }];
-
-        } completion:^(BOOL finished){
-            [favorite setObject:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
-            [top_button removeFromSuperview];
-            isFromHome = YES;
-            isFromMyApt = NO;
-            HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
-            [self.navigationController pushViewController:trans animated:YES];
-
-            [self.selectedFavName removeFromSuperview];
+            alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+            alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+            [alertView show];
             return;
-        }];
-    }
-    
-    else if (favorite[@"UserName"])
-    {
-        if (favorite[@"FirstName"]) {
-            firstNameAB = favorite[@"FirstName"];
-        }
-        if (favorite[@"LastName"]) {
-            lastNameAB = favorite[@"LastName"];
         }
 
-        if ([favorite[@"emailCount"]intValue] > 1)
+        if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
         {
-            UIActionSheet * actionSheetObject = [[UIActionSheet alloc] init];
-            for (int j = 0; j < [favorite[@"emailCount"]intValue]; j++)
+            SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Connect A Funding Source \xF0\x9F\x92\xB0"
+                                                              andMessage:@"Adding a bank account to fund Nooch payments is lightning quick.\n\n •  No routing or account number needed\n • Nooch's bank-grade encryption keeps your info safe\n"];
+            [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
+            [alertView addButtonWithTitle:@"Go Now" type:SIAlertViewButtonTypeDefault
+                                  handler:^(SIAlertView *alert) {
+                                      knoxWeb *knox = [knoxWeb new];
+                                      [nav_ctrl pushViewController:knox animated:YES];
+                                      [self.slidingViewController resetTopView];
+                                  }];
+            [[SIAlertView appearance] setButtonColor:kNoochBlue];
+            
+            alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+            alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+            [alertView show];
+            return;
+        }
+
+        else if ([[user valueForKey:@"Status"]isEqualToString:@"Registered"] )
+        {
+            SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Please Verify Your Email" andMessage:@"Terribly sorry, but before you can send money, please confirm your email address by clicking the link we sent to the email address you used to sign up.\n\xF0\x9F\x99\x8F"];
+            [alertView addButtonWithTitle:@"Ok" type:SIAlertViewButtonTypeCancel handler:nil];
+            [[SIAlertView appearance] setButtonColor:kNoochBlue];
+            
+            alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+            alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+            [alertView show];
+            return;
+        }
+
+        /* if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
+        {
+            SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Help Us Keep Nooch Safe" andMessage:@"Please take 1 minute to verify your identity by completing your Nooch profile (just 4 fields)."];
+            [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
+            [alertView addButtonWithTitle:@"Validate Now" type:SIAlertViewButtonTypeDefault
+                                  handler:^(SIAlertView *alert) {
+                                      ProfileInfo *prof = [ProfileInfo new];
+                                      [nav_ctrl pushViewController:prof animated:YES];
+                                      [self.slidingViewController resetTopView];
+                                  }];
+            [[SIAlertView appearance] setButtonColor:kNoochBlue];
+            
+            alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+            alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+            [alertView show];
+            return;
+        } */
+
+        else if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
+        {
+            SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Blame The Lawyers"
+                                                              andMessage:@"To keep Nooch safe, we ask all users to verify a phone number before sending money.\n\nIf you've already added your phone number, just respond 'Go' to the text message we sent."];
+            [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
+            [alertView addButtonWithTitle:@"Add Phone" type:SIAlertViewButtonTypeDefault
+                                handler:^(SIAlertView *alert) {
+                                    sentFromHomeScrn = YES;
+                                    isFromSettingsOptions = NO;
+                                    isProfileOpenFromSideBar = NO;
+
+                                    ProfileInfo *prof = [ProfileInfo new];
+                                    [nav_ctrl pushViewController:prof animated:YES];
+                                    [self.slidingViewController resetTopView];
+                                }];
+            [[SIAlertView appearance] setButtonColor:kNoochBlue];
+          
+            alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+            alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+            [alertView show];
+            return;
+      }
+
+        NSMutableDictionary * favorite = [NSMutableDictionary new];
+        [favorite addEntriesFromDictionary:[favorites objectAtIndex:index]];
+
+        //NSLog(@"Selected Favorite is: %@  %@  %@  %@", favorite[@"FirstName"], favorite[@"LastName"],favorite[@"UserName"],favorite[@"addressbook"]);
+
+        if (favorite[@"MemberId"])
+        {
+            int selectedFavName_topValue = 16;
+            if (bannerAlert == 0)
             {
-                [actionSheetObject addButtonWithTitle:[favorite[[NSString stringWithFormat:@"emailAdday%d",j]] lowercaseString]];
+                selectedFavName_topValue = 16;
             }
-            actionSheetObject.title = [NSString stringWithFormat:@"Select which email to use for %@", favorite[@"FirstName"]];
-            actionSheetObject.cancelButtonIndex = [actionSheetObject addButtonWithTitle:@"Cancel"];
-            actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
-            [actionSheetObject setTag:1];
-            actionSheetObject.delegate = self;
-            [actionSheetObject showInView:self.view];
-        }
-        else
-        {
-            emailID = favorite[@"UserName"];
-            serve * emailCheck = [serve new];
-            emailCheck.Delegate = self;
-            emailCheck.tagName = @"emailCheck";
-            [emailCheck getMemIdFromuUsername:[emailID lowercaseString]];
-        }
+            else if (bannerAlert == 1)
+            {
+                selectedFavName_topValue = 31;
+            }
 
-        return;
+            if ([self.view.subviews containsObject:self.pending_requests])
+            {
+                if (bannerAlert > 0) {
+                    bannerAlert--;
+                }
+                [self dismiss_requestsPendingBanner];
+            }
+
+            self.selectedFavName = [[UILabel alloc] initWithFrame:CGRectMake(30, 30, 260, 30)];
+            [self.selectedFavName setFont:[UIFont fontWithName:@"Roboto-regular" size: 21]];
+            [self.selectedFavName setText: [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]]];
+            [self.selectedFavName setTextColor:kNoochGrayDark];
+            [self.selectedFavName setTextAlignment:NSTextAlignmentCenter];
+            [self.selectedFavName setAlpha:0];
+            [self.view addSubview: self.selectedFavName];
+
+            double totalduration = 0.7;
+
+            [UIView animateKeyframesWithDuration:totalduration
+                                           delay:0.02
+                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                      animations:^{
+                [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.5 animations:^{
+                    [carousel itemViewAtIndex:index].transform = CGAffineTransformMakeScale(1.12, 1.12);
+                }];
+                [UIView addKeyframeWithRelativeStartTime:.5 relativeDuration:.45 animations:^{
+                    [carousel itemViewAtIndex:index].transform = CGAffineTransformMakeScale(1.18, 1.18);
+                }];
+                [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:0.95 animations:^{
+                    self.selectedFavName.transform = CGAffineTransformMakeScale(1.35, 1.35);
+                    [self.selectedFavName setAlpha:1];
+
+                    for (int i = 0; i < 6; i++)
+                    {
+                        if (i != index)
+                        {
+                            [[carousel itemViewAtIndex:i] setAlpha:0];
+                            [carousel itemViewAtIndex:i].transform = CGAffineTransformMakeScale(.3, .3);
+                        }
+                    }
+                }];
+                
+                [UIView addKeyframeWithRelativeStartTime:.4 relativeDuration:.6 animations:^{
+                    top_button.alpha = 0;
+                }];
+                [UIView addKeyframeWithRelativeStartTime:.4 relativeDuration:.6 animations:^{
+                    top_button.transform = CGAffineTransformMakeScale(.1, .1);
+                }];
+
+            } completion:^(BOOL finished){
+                [favorite setObject:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
+                [top_button removeFromSuperview];
+
+                isFromHome = YES;
+                isFromMyApt = NO;
+
+                HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
+                [self.navigationController pushViewController:trans animated:YES];
+
+                [self.selectedFavName removeFromSuperview];
+                return;
+            }];
+        }
+        
+        else if (favorite[@"UserName"])
+        {
+            if (favorite[@"FirstName"]) {
+                firstNameAB = favorite[@"FirstName"];
+            }
+            if (favorite[@"LastName"]) {
+                lastNameAB = favorite[@"LastName"];
+            }
+
+            if ([favorite[@"emailCount"]intValue] > 1)
+            {
+                UIActionSheet * actionSheetObject = [[UIActionSheet alloc] init];
+                for (int j = 0; j < [favorite[@"emailCount"]intValue]; j++)
+                {
+                    [actionSheetObject addButtonWithTitle:[favorite[[NSString stringWithFormat:@"emailAdday%d",j]] lowercaseString]];
+                }
+                actionSheetObject.title = [NSString stringWithFormat:@"Select which email to use for %@", favorite[@"FirstName"]];
+                actionSheetObject.cancelButtonIndex = [actionSheetObject addButtonWithTitle:@"Cancel"];
+                actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
+                [actionSheetObject setTag:1];
+                actionSheetObject.delegate = self;
+                [actionSheetObject showInView:self.view];
+            }
+            else
+            {
+                emailID = favorite[@"UserName"];
+                serve * emailCheck = [serve new];
+                emailCheck.Delegate = self;
+                emailCheck.tagName = @"emailCheck";
+                [emailCheck getMemIdFromuUsername:[emailID lowercaseString]];
+            }
+
+            return;
+        }
+    }
+    else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
+             ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Access To Contacts"
+                                                        message:@"You can send money to ANY contact in your address book, even if they don't have Nooch.\n\nTO ENABLE, turn on access to Contacts in your iPhone's Settings:\n\nSettings  -->  Privacy  -->  Contacts"
+                                                       delegate:Nil
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:Nil, nil];
+        [alert show];
     }
 }
 
@@ -1782,7 +1862,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 -(void)releasePress:(UIButton *) sender
 {
-    NSLog(@"RELEASE PRESS MEATHOD");
+    NSLog(@"RELEASE PRESS METHOD");
 
     if (bannerAlert == 0) {
         [top_button setFrame:CGRectMake(20, 250, 280, 54)];
@@ -1949,17 +2029,20 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [[assist shared]setlocationAllowed:YES];
 
     serve * serveOBJ = [serve new];
-    [serveOBJ UpDateLatLongOfUser:[[NSString alloc] initWithFormat:@"%f",loc.latitude] lng:[[NSString alloc] initWithFormat:@"%f",loc.longitude]];
+    [serveOBJ UpDateLatLongOfUser:[[NSString alloc] initWithFormat:@"%f",loc.latitude]
+                              lng:[[NSString alloc] initWithFormat:@"%f",loc.longitude]];
 }
 
 - (void)locationManager:(CLLocationManager *)manager
        didFailWithError:(NSError *)error
 {
     [[assist shared] setlocationAllowed:NO];
-    
-    NSLog(@"Home: Location Manager Error : %@",error);
+
     if ([error code] == kCLErrorDenied) {
-        NSLog(@"Error : %@",error);
+        NSLog(@"Home --> Location Mgr Error: %@", error);
+    }
+    else {
+        NSLog(@"Home --> Location Mgr Error: %@",error);
     }
 }
 
@@ -1995,12 +2078,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                      error:&error];
         favorites = [favorites mutableCopy];
 
-        if ([favorites count] == 0) {
+        if ([favorites count] == 0)
+        {
             [self FavoriteContactsProcessing];
         }
         else
         {
-            if ([favorites count] < 5) {
+            if ([favorites count] < 5)
+            {
                 [self FavoriteContactsProcessing];
             }
             [_carousel reloadData];
@@ -2173,7 +2258,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                      options:kNilOptions
                                      error:&error];
-        NSLog(@"Home -> Server response for StoreFB: %@",temp);
+        if ([error isKindOfClass:[NSNull class]])
+        {
+            NSLog(@"Home -> Server response error for StoreFB: %@  & Error: %@", temp, error);
+        }
     }
 
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
@@ -2196,7 +2284,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
 }
 
--(void)hide{
+-(void)hide
+{
     self.hud.hidden=YES;
 }
 

@@ -1139,9 +1139,6 @@
     {
         return NO;
     }
-        //NSLog(@"range.length is: %lu",(unsigned long)range.length);
-        //NSLog(@"range.location is: %lu",(unsigned long)range.location);
-        //NSLog(@"textField.text.length: %lu",(unsigned long)textField.text.length);
 
     if ([self.name_field.text length] > 1 &&
         [self.email_field.text length] > 2 &&
@@ -1150,6 +1147,7 @@
     {
         [self.cont setAlpha:1];
     }
+
     if ([self.name_field.text length] > 1 &&
         [self.email_field.text length] > 2 &&
         [self.email_field.text rangeOfString:@"@"].location != NSNotFound &&
@@ -1163,6 +1161,7 @@
         [self.cont setEnabled:NO];
     }
 
+
     if ([self.name_field.text length] > 3 &&
         [self.name_field.text rangeOfString:@" "].location != NSNotFound &&
         [self.name_field.text rangeOfString:@" "].location < [self.name_field.text length] - 1)
@@ -1174,6 +1173,7 @@
     if ([self.email_field.text length] > 4 &&
         [self.email_field.text rangeOfString:@"@"].location != NSNotFound &&
         [self.email_field.text rangeOfString:@"."].location != NSNotFound &&
+        [self.email_field.text rangeOfString:@" "].location == NSNotFound &&
         [self.email_field.text rangeOfString:@"."].location < [self.email_field.text length] - 1 &&
         (([self.email_field.text rangeOfString:@"."].location - [self.email_field.text rangeOfString:@"@"].location) != abs(1)))
     {
@@ -1181,6 +1181,14 @@
         {
             [self.emailValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
             [self.emailValidator setTextColor:kNoochGreen];
+        }
+    }
+    else
+    {
+        if (![self.emailValidator isHidden])
+        {
+            [self.emailValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
+            [self.emailValidator setTextColor:kNoochRed];
         }
     }
 
@@ -1266,6 +1274,7 @@
 
                 if (containsNumber)
                 {
+                    [self.nameValidator setHidden:NO];
                     [self.name_field becomeFirstResponder];
 
                     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"\xF0\x9F\x98\x8F  Really?"
@@ -1278,6 +1287,7 @@
                 else if ((containsSymbols || containsPunctuation) &&
                          !containsDash)
                 {
+                    [self.nameValidator setHidden:NO];
                     [self.name_field becomeFirstResponder];
                         
                     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"\xF0\x9F\x98\x8F  Really?"
@@ -1299,6 +1309,7 @@
             if ( [self.email_field.text length] < 4 ||
                  [self.email_field.text rangeOfString:@"@"].location == NSNotFound ||
                  [self.email_field.text rangeOfString:@"."].location == NSNotFound ||
+                 [self.email_field.text rangeOfString:@" "].location == NSNotFound ||
                  [self.email_field.text rangeOfString:@"."].location > [self.email_field.text length] - 3 ||
                 (([self.email_field.text rangeOfString:@"."].location - [self.email_field.text rangeOfString:@"@"].location) == 1))
             {

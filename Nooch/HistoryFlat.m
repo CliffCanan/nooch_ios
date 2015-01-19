@@ -14,6 +14,7 @@
 #import "Register.h"
 #import "TransferPIN.h"
 #import "ProfileInfo.h"
+#import "knoxWeb.h"
 
 @interface HistoryFlat ()<GMSMapViewDelegate>
 {
@@ -267,7 +268,7 @@
                                               zoom:8];
     mapView_ = [GMSMapView mapWithFrame:self.view.frame camera:camera];
     mapView_.myLocationEnabled = YES;
-    mapView_.delegate=self;
+    mapView_.delegate = self;
     [mapArea addSubview:mapView_];
 }
 
@@ -359,42 +360,42 @@
 
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker
 {
-    NSDictionary*dictRecord=[histArrayCommon objectAtIndex:[[marker title]intValue]];
-    TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
+    NSDictionary * dictRecord = [histArrayCommon objectAtIndex:[[marker title]intValue]];
+    TransactionDetails * details = [[TransactionDetails alloc] initWithData:dictRecord];
     [self.navigationController pushViewController:details animated:YES];
 }
 
 - (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(GMSMarker *)marker
 {
-    UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 220, 226)];
+    UIView * customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 220, 226)];
     customView.layer.borderColor = [[UIColor whiteColor]CGColor];
-    customView.layer.borderWidth = 1.0f;
+    customView.layer.borderWidth = 2.0f;
     customView.layer.cornerRadius = 6;
-    [customView setStyleClass:@"raised_view"];
+    customView.clipsToBounds = NO;
     customView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mapBack.png"]];
 
-    UIImageView *imgV = [[UIImageView alloc]initWithFrame:CGRectMake(68, 10, 82, 82)];
+    UIImageView * imgV = [[UIImageView alloc]initWithFrame:CGRectMake(68, 10, 82, 82)];
     imgV.layer.cornerRadius = 41;
     imgV.layer.borderColor = [UIColor whiteColor].CGColor;
     imgV.layer.borderWidth = 2;
     imgV.clipsToBounds = YES;
 
-    NSString*urlImage=[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Photo"];
+    NSString * urlImage=[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Photo"];
     [imgV sd_setImageWithURL:[NSURL URLWithString:urlImage] placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
     [customView addSubview:imgV];
 
-    NSString *TransactionType = @"";
+    NSString * TransactionType = @"";
 
-    UILabel *lblTitle = [[UILabel alloc]initWithFrame:CGRectMake(5, 94, 210, 17)];
+    UILabel * lblTitle = [[UILabel alloc]initWithFrame:CGRectMake(5, 94, 210, 17)];
     [lblTitle setStyleClass:@"historyMap_marker_title"];
     [customView addSubview:lblTitle];
     
-    UILabel *lblName=[[UILabel alloc]initWithFrame:CGRectMake(2, 112, 216, 20)];
+    UILabel * lblName=[[UILabel alloc]initWithFrame:CGRectMake(2, 112, 216, 20)];
     lblName.text = [NSString stringWithFormat:@"%@ %@",[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"FirstName"] capitalizedString],[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"LastName"]];
     [lblName setStyleClass:@"historyMap_marker_name"];
     [customView addSubview:lblName];
 
-    UILabel *lblAmt = [[UILabel alloc]initWithFrame:CGRectMake(5, 135, 210, 26)];
+    UILabel * lblAmt = [[UILabel alloc]initWithFrame:CGRectMake(5, 135, 210, 26)];
     lblAmt.text = [NSString stringWithFormat:@"$%.02f",[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Amount"] floatValue]];
     lblAmt.textColor = kNoochGreen;
     [lblAmt setStyleClass:@"historyMap_marker_amnt"];
@@ -466,7 +467,8 @@
             lblName.text = [NSString stringWithFormat:@"%@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"InvitationSentTo"]];
         }
     }
-    else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
+    else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Invite"])
+    {
         TransactionType = @"Sent To:";
         [imgV setImage:[UIImage imageNamed:@"profile_picture.png"]];
         statusstr = @"Invited on:";
@@ -483,18 +485,18 @@
         [lblloc setStyleClass:@"green_text"];
     }
     
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     //Set the AM and PM symbols
+    NSDateFormatter * dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setAMSymbol:@"AM"];
     [dateFormatter setPMSymbol:@"PM"];
     dateFormatter.dateFormat = @"MM/dd/yyyy hh:mm:ss a";
     
-    NSDate *yourDate = [dateFormatter dateFromString:[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionDate"]];
+    NSDate * yourDate = [dateFormatter dateFromString:[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionDate"]];
     dateFormatter.dateFormat = @"dd-MMMM-yyyy";
     [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
 
     //nslog(@"%@",[dateFormatter stringFromDate:yourDate]);
-    NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
+    NSArray * arrdate = [[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
 
     if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Request"])
     {
@@ -510,7 +512,7 @@
         [lblloc setText:[NSString stringWithFormat:@"%@ %@ %@, %@",statusstr,[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]]];
     }
 
-return customView;    
+    return customView;
 }
 
 -(void)mapPoints
@@ -522,7 +524,7 @@ return customView;
 
             return;
         }
-        histArrayCommon=[histShowArrayCompleted copy];
+        histArrayCommon = [histShowArrayCompleted copy];
     }
     else
     {
@@ -531,7 +533,7 @@ return customView;
 
             return;
         }
-        histArrayCommon=[histShowArrayPending copy];
+        histArrayCommon = [histShowArrayPending copy];
     }
     [mapView_ clear];
 
@@ -835,10 +837,11 @@ return customView;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"Cell";
-    SWTableViewCell *cell = (SWTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    static NSString * cellIdentifier = @"Cell";
+    SWTableViewCell * cell = (SWTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 
-    if (1 > 0) {
+    if (cell != NULL)
+    {
         NSLog(@"The cell is:  %@",cell);
     }
 
@@ -2173,9 +2176,10 @@ return customView;
         {  // For the Recipient of a Request
             if (ind == 0)
             { //accept
-                NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+                NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 
-                if ([[assist shared]getSuspended]) {
+                if ([[assist shared]getSuspended])
+                {
                     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended"
                                                                     message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help."
                                                                    delegate:self
@@ -2185,38 +2189,31 @@ return customView;
                     [alert show];
                     return; 
                 }
-                else if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
+                else if (![[user valueForKey:@"Status"]isEqualToString:@"Active"])
+                {
                     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Email Verification Needed"
                                                                     message:@"Please click the link we emailed you to verify your email address."
                                                                    delegate:Nil
                                                           cancelButtonTitle:@"OK"
-                                                          otherButtonTitles:Nil, nil];
+                                                          otherButtonTitles:@"Resend", nil];
+                    [alert setTag:51];
                     [alert show];
                     return;
                 }
-                if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
-                    
-                        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Profile Not Complete"
-                                                                        message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!"
-                                                                       delegate:self
-                                                              cancelButtonTitle:@"Later"
-                                                              otherButtonTitles:@"Validate Now", nil];
-                        [alert setTag:147];
-                        [alert show];
-                        return;
-                }
-                else if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
-                    UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Please Attach An Account"
+                else if (![[defaults objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+                {
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Please Attach An Account"
                                                                   message:@"Before you can send or receive money, you must add a bank account."
                                                                  delegate:self
                                                         cancelButtonTitle:@"OK"
-                                                        otherButtonTitles:Nil, nil];
-                    [set show];
+                                                        otherButtonTitles:@"Add Bank Now", nil];
+                    [alert setTag:52];
+                    [alert show];
                     return;
                 }
                 else
                 {
-                    NSMutableDictionary *input = [dictRecord mutableCopy];
+                    NSMutableDictionary * input = [dictRecord mutableCopy];
                     [input setValue:@"accept" forKey:@"response"];
                    
                     [[assist shared]setRequestMultiple:NO];
@@ -2373,7 +2370,8 @@ return customView;
     [serveOBJ histMoreSerachbyName:listType sPos:index len:20 name:SearchStirng subType:subTypestr];
 }
 
--(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
     [searchBar becomeFirstResponder];
     [searchBar setShowsCancelButton:YES];
 }
@@ -2393,7 +2391,6 @@ return customView;
     {
         SearchStirng = [self.search.text lowercaseString];
        // isEnd = YES;
-       // isFilter = NO;
         isLocalSearch = YES;
         [self searchTableView];
         //[self.list reloadData];
@@ -2456,7 +2453,11 @@ return customView;
         
         if ([[[dictResponse valueForKey:@"sendTransactionInCSVResult"]valueForKey:@"Result"]isEqualToString:@"1"])
         {
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Export Successful" message:@"Your personalized transaction report has been emailed to you." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Export Successful"
+                                                            message:@"Your personalized transaction report has been emailed to you."
+                                                           delegate:Nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:Nil, nil];
             [alert show];
         }
     }
@@ -2621,7 +2622,6 @@ return customView;
 
     else if ([tagName isEqualToString:@"reject"])
     {
-        [self.hud hide:YES];
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Request Rejected"
                                                         message:@"No problem, you have rejected this request successfully."
                                                        delegate:nil
@@ -2651,7 +2651,8 @@ return customView;
         [self deleteTableRow:indexPathForDeletion];
     }
 
-    else if ([tagName isEqualToString:@"cancelRequestToExisting"] || [tagName isEqualToString:@"cancelRequestToNonNoochUser"])
+    else if ([tagName isEqualToString:@"cancelRequestToExisting"] ||
+             [tagName isEqualToString:@"cancelRequestToNonNoochUser"])
     {
         [self.hud hide:YES];
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Request Cancelled"
@@ -2676,6 +2677,50 @@ return customView;
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];
         [alert show];
+    }
+
+    if ([tagName isEqualToString:@"email_verify"])
+    {
+        NSString *response = [[NSJSONSerialization
+                               JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                               options:kNilOptions
+                               error:&error] objectForKey:@"Result"];
+        if ([response isEqualToString:@"Already Activated."])
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
+                                                         message:@"Your email has already been verified."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+            [av show];
+        }
+        else if ([response isEqualToString:@"Not a nooch member."])
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
+                                                         message:@"An error occurred when attempting to fulfill this request, please try again."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+            [av show];
+        }
+        else if ([response isEqualToString:@"Success"])
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Check Your Email"
+                                                         message:[NSString stringWithFormat:@"\xF0\x9F\x93\xA5\nA verifiction link has been sent to %@.",[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]]
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+            [av show];
+        }
+        else if ([response isEqualToString:@"Failure"])
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
+                                                         message:@"An error occurred when attempting to fulfill this request, please try again."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+            [av show];
+        }
     }
 
 }
@@ -2732,11 +2777,18 @@ return customView;
         [serveObj SendReminderToRecepient:[self.responseDict valueForKey:@"TransactionId"] reminderType:@"InvitationReminderToNewUser"];
     }
 
-    else if (actionSheet.tag == 147 && buttonIndex == 1)  // go to Profile
+    else if (actionSheet.tag == 51 && buttonIndex == 1)  // Resend Email Verificaiton Link
     {
-        ProfileInfo *prof = [ProfileInfo new];
-        isProfileOpenFromSideBar = NO;
-        [self.navigationController pushViewController:prof animated:YES];
+        serve * email_verify = [serve new];
+        [email_verify setDelegate:self];
+        [email_verify setTagName:@"email_verify"];
+        [email_verify resendEmail];
+    }
+
+    else if (actionSheet.tag == 52 && buttonIndex == 1)  // go to Knox Webview
+    {
+        knoxWeb * knox = [knoxWeb new];
+        [self.navigationController pushViewController:knox animated:YES];
     }
 
     else if ((actionSheet.tag == 1010 || actionSheet.tag == 2010) && buttonIndex == 0) // CANCEL Request
@@ -2802,8 +2854,13 @@ return customView;
     
     else if (actionSheet.tag == 50 && buttonIndex == 1) // Contact Support
     {
-        if (![MFMailComposeViewController canSendMail]){
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        if (![MFMailComposeViewController canSendMail])
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                         message:@"You don't have a mail account configured for this device."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles: nil];
             [av show];
             return;
         }
@@ -2861,6 +2918,7 @@ return customView;
     // Close the Mail Interface
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

@@ -113,13 +113,13 @@
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     [self.view setStyleClass:@"background_gray"];
 
-    aptName = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 200, 22)];
-    [aptName setFont:[UIFont fontWithName:@"Roboto-medium" size:17]];
+    aptName = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 200, 21)];
+    [aptName setFont:[UIFont fontWithName:@"Roboto-medium" size:18]];
     [aptName setTextColor:kNoochGrayDark];
     aptName.text = @"Belmont Village";
     [self.view addSubview:aptName];
     
-    aptAddress = [[UILabel alloc] initWithFrame:CGRectMake(10, 28, 200, 17)];
+    aptAddress = [[UILabel alloc] initWithFrame:CGRectMake(10, 28, 199, 17)];
     [aptAddress setFont:[UIFont fontWithName:@"Roboto-regular" size:12]];
     [aptAddress setTextColor:kNoochGrayDark];
     aptAddress.text = @"7246 Dresden Ave, Philadelphia, PA 19876";
@@ -275,6 +275,14 @@
     [self.view addSubview: titleFundingSrcSection];
 
     self.secondSectionContainer = [[UIView alloc] initWithFrame:CGRectMake(8, 283, 304, (rowHeight * 2) + 1)];
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoPayEnabled"]isEqualToString:@"1"])
+    {
+        [self.secondSectionContainer setFrame:CGRectMake(8, 283, 304, (rowHeight * 3) + 1)];
+    }
+    else
+    {
+        [self.secondSectionContainer setFrame:CGRectMake(8, 283, 304, (rowHeight * 2) + 1)];
+    }
     self.secondSectionContainer.backgroundColor = [UIColor whiteColor];
     [self.secondSectionContainer setStyleClass:@"raised_view_AptScrn"];
     [self.view addSubview: self.secondSectionContainer];
@@ -317,19 +325,9 @@
     self.autoPaySwitch.transform = CGAffineTransformMakeScale(0.9, 0.9);
     [self.autoPaySwitch addTarget:self
                       action:@selector(stateChanged:) forControlEvents:UIControlEventValueChanged];
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoPayEnabled"]isEqualToString:@"1"])
-    {
-        [self.autoPaySwitch setOn: YES];
-    }
-    else
-    {
-        [self.autoPaySwitch setOn: NO];
-    }
-    [self.secondSectionContainer addSubview: self.autoPaySwitch];
 
     self.secondSectionDivider2 = [[UIView alloc] initWithFrame:CGRectMake(20, (rowHeight * 2) + 1, 284, 1)];
     self.secondSectionDivider2.backgroundColor = Rgb2UIColor(188, 190, 192, 0.7);
-    [self.secondSectionDivider2 setAlpha:0];
     [self.secondSectionContainer addSubview:self.secondSectionDivider2];
     
     self.dateToPayLbl = [[UILabel alloc] initWithFrame:CGRectMake(9, (rowHeight * 2) + 1, 100, rowHeight)];
@@ -344,7 +342,6 @@
     [self.dateToPay_date setText: @"1st day of each month"];
     [self.dateToPay_date setTextColor:kNoochGrayDark];
     [self.dateToPay_date setTextAlignment:NSTextAlignmentRight];
-    [self.dateToPay_date setAlpha:0];
     [self.dateToPay_date setUserInteractionEnabled:YES];
     [self.dateToPay_date addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(DateToAutoPaySelection:)]];
     [self.secondSectionContainer addSubview: self.dateToPay_date];
@@ -354,8 +351,23 @@
     [self.glyph_dateToPayDropdown setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-down"]];
     [self.glyph_dateToPayDropdown setTextAlignment:NSTextAlignmentCenter];
     [self.glyph_dateToPayDropdown setTextColor:kNoochBlue];
-    [self.glyph_dateToPayDropdown setAlpha:0];
     [self.secondSectionContainer addSubview:self.glyph_dateToPayDropdown];
+
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoPayEnabled"]isEqualToString:@"1"])
+    {
+        [self.glyph_dateToPayDropdown setAlpha:1];
+        [self.secondSectionDivider2 setAlpha:1];
+        [self.dateToPay_date setAlpha:1];
+        [self.autoPaySwitch setOn: YES];
+    }
+    else
+    {
+        [self.glyph_dateToPayDropdown setAlpha:0];
+        [self.secondSectionDivider2 setAlpha:0];
+        [self.dateToPay_date setAlpha:0];
+        [self.autoPaySwitch setOn: NO];
+    }
+    [self.secondSectionContainer addSubview: self.autoPaySwitch];
 
     /*if ([[UIScreen mainScreen] bounds].size.height == 480)
     {
@@ -1034,7 +1046,7 @@
 
 -(void)stayPressed:(UIButton *) sender
 {
-    [self.rentBox setFrame:CGRectMake(207, 10, 106, 86)];
+    [self.rentBox setFrame:CGRectMake(207, 11, 106, 86)];
 }
 
 -(void)stateChanged:(UISwitch *)switchState

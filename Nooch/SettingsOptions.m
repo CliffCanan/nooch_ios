@@ -193,7 +193,7 @@
     if ([[UIScreen mainScreen] bounds].size.height == 480)
     {
         scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
-                                                                              [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
+                                                                [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
         [scroll setDelegate:self];
         [scroll setContentSize:CGSizeMake(320, 545)];
         for (UIView *subview in self.view.subviews) {
@@ -208,7 +208,11 @@
 {
     if (isBankAttached)
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Attach New Bank Account" message:@"You can only have one bank account attached at a time.  If you link a new account, that will replace your current bank account. This cannot be undone.\n\nAre you sure you want to replace this bank account?" delegate:self cancelButtonTitle:@"Yes - Replace" otherButtonTitles:@"Cancel", nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Attach New Bank Account"
+                                                     message:@"You can only have one bank account attached at a time.  If you link a new account, that will replace your current bank account. This cannot be undone.\n\nAre you sure you want to replace this bank account?"
+                                                    delegate:self
+                                           cancelButtonTitle:@"Yes - Replace"
+                                           otherButtonTitles:@"Cancel", nil];
         [av setTag:32];
         [av show];
     }
