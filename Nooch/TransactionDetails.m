@@ -97,8 +97,30 @@
 	   ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
        !([self.trans valueForKey:@"InvitationSentTo"] == NULL || [[self.trans objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]]) ) )
     {
-        [other_party setStyleClass:@"details_othername_nonnooch"];
-        [other_party setText:[self.trans objectForKey:@"InvitationSentTo"]];
+        BOOL containsLetters = NSNotFound != [[self.trans objectForKey:@"InvitationSentTo"] rangeOfCharacterFromSet:NSCharacterSet.letterCharacterSet].location;
+        BOOL containsPunctuation = NSNotFound != [[self.trans objectForKey:@"InvitationSentTo"] rangeOfCharacterFromSet:NSCharacterSet.punctuationCharacterSet].location;
+        BOOL containsNumbers = NSNotFound != [[self.trans objectForKey:@"InvitationSentTo"] rangeOfCharacterFromSet:NSCharacterSet.decimalDigitCharacterSet].location;
+        BOOL containsSymbols = NSNotFound != [[self.trans objectForKey:@"InvitationSentTo"] rangeOfCharacterFromSet:NSCharacterSet.symbolCharacterSet].location;
+
+        // Check if it's a phone number
+        if (containsNumbers && !containsLetters && !containsPunctuation && !containsSymbols)
+        {
+            NSMutableString * mu = [NSMutableString stringWithString:[self.trans objectForKey:@"InvitationSentTo"]];
+            [mu insertString:@"(" atIndex:0];
+            [mu insertString:@")" atIndex:4];
+            [mu insertString:@" " atIndex:5];
+            [mu insertString:@"-" atIndex:9];
+            
+            NSString * phoneWithSymbolsAddedBack = [NSString stringWithString:mu];
+
+            [other_party setStyleClass:@"details_namePhoneNum"];
+            [other_party setText:phoneWithSymbolsAddedBack];
+        }
+        else if (containsLetters)
+        {
+            [other_party setStyleClass:@"details_othername_nonnooch"];
+            [other_party setText:[self.trans objectForKey:@"InvitationSentTo"]];
+        }
         [user_picture setImage:[UIImage imageNamed:@"profile_picture.png"]];
     }
     else // transfers with an existing Nooch user
@@ -1170,8 +1192,9 @@
     controller.completionHandler = myBlock;*/
 }
 
-// A function for parsing URL parameters returned by the Feed Dialog.
-- (NSDictionary*)parseURLParams:(NSString *)query {
+// A function for parsing URL parameters returned by the FB Feed Dialog.
+- (NSDictionary*)parseURLParams:(NSString *)query
+{
     NSArray *pairs = [query componentsSeparatedByString:@"&"];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     for (NSString *pair in pairs) {
@@ -1531,10 +1554,9 @@
         }
 
         //Set Status
-        UILabel * status = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 320, 30)];
+        UILabel * status = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 280, 30)];
         [status setFont: [UIFont fontWithName:@"Roboto-bold" size:21]];
-        [status setStyleClass:@"details_label"];
-        //[status setStyleId:@"details_status"];
+        [status setTextAlignment:NSTextAlignmentCenter];
         [status setTag:12];
 
         if ([tranDetailResult objectForKey:@"TransactionDate"] != NULL)
@@ -1568,7 +1590,7 @@
                      [[tranDetailResult objectForKey:@"TransactionStatus"]isEqualToString:@"Success"])
             {
                 statusstr = @"Complete (Payment Accepted)";
-                [status setFont: [UIFont fontWithName:@"Roboto-medium" size:17]];
+                [status setFont: [UIFont fontWithName:@"Roboto-medium" size:18]];
                 [status setStyleClass:@"green_text"];
             }
             else if ([[tranDetailResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]     ||

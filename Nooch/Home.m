@@ -1587,24 +1587,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             return;
         }
 
-        /* if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
-        {
-            SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Help Us Keep Nooch Safe" andMessage:@"Please take 1 minute to verify your identity by completing your Nooch profile (just 4 fields)."];
-            [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
-            [alertView addButtonWithTitle:@"Validate Now" type:SIAlertViewButtonTypeDefault
-                                  handler:^(SIAlertView *alert) {
-                                      ProfileInfo *prof = [ProfileInfo new];
-                                      [nav_ctrl pushViewController:prof animated:YES];
-                                      [self.slidingViewController resetTopView];
-                                  }];
-            [[SIAlertView appearance] setButtonColor:kNoochBlue];
-            
-            alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
-            alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
-            [alertView show];
-            return;
-        } */
-
         else if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
         {
             SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Blame The Lawyers"
@@ -1635,12 +1617,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         if (favorite[@"MemberId"])
         {
-            int selectedFavName_topValue = 16;
-            if (bannerAlert == 0)
-            {
-                selectedFavName_topValue = 16;
-            }
-            else if (bannerAlert == 1)
+            int selectedFavName_topValue = 10;
+            if (bannerAlert == 1)
             {
                 selectedFavName_topValue = 31;
             }
@@ -1653,8 +1631,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 [self dismiss_requestsPendingBanner];
             }
 
-            self.selectedFavName = [[UILabel alloc] initWithFrame:CGRectMake(30, 30, 260, 30)];
-            [self.selectedFavName setFont:[UIFont fontWithName:@"Roboto-regular" size: 21]];
+            self.selectedFavName = [[UILabel alloc] initWithFrame:CGRectMake(20, carousel.bounds.origin.y + 12, 280, 30)];
+            [self.selectedFavName setFont:[UIFont fontWithName:@"Roboto-regular" size: 22]];
             [self.selectedFavName setText: [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]]];
             [self.selectedFavName setTextColor:kNoochGrayDark];
             [self.selectedFavName setTextAlignment:NSTextAlignmentCenter];
@@ -2286,7 +2264,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 -(void)hide
 {
-    self.hud.hidden=YES;
+    [self.hud hide:YES];
 }
 
 -(void)FavoriteContactsProcessing

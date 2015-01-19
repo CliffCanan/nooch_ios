@@ -1251,17 +1251,17 @@
                 [amount setFont:[UIFont fontWithName:@"Roboto-Medium" size:18]];
                 [amount setStyleClass:@"history_transferamount"];
                 [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]]];
-                
+
                 UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 9, 50, 50)];
                 pic.layer.cornerRadius = 25;
                 pic.clipsToBounds = YES;
                 [cell.contentView addSubview:pic];
-                
+
 				UILabel *transferTypeLabel = [UILabel new];
                 [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
                 transferTypeLabel.layer.cornerRadius = 4;
                 transferTypeLabel.clipsToBounds = YES;
-                
+
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabel"];
                 [name setStyleClass:@"history_recipientname"];
@@ -1290,12 +1290,13 @@
                 }
                 
                 NSString * username = [NSString stringWithFormat:@"%@",[user valueForKey:@"UserName"]];
+                NSString * fullName = [NSString stringWithFormat:@"%@ %@",[user valueForKey:@"firstName"],[user valueForKey:@"lastName"]];
                 NSString * invitationSentTo = [NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"InvitationSentTo"]];
 
                 if ( [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"] ||
                     ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
-                     [dictRecord valueForKey:@"InvitationSentTo"] != NULL && ![invitationSentTo isEqualToString:username])/*) &&
-                      [dictRecord valueForKey:@"Name"] != NULL)*/)
+                     [dictRecord valueForKey:@"InvitationSentTo"] != NULL && ![invitationSentTo isEqualToString:username] &&
+                    ![[dictRecord valueForKey:@"Name"] isEqualToString:fullName]))
                 {
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
                     {
@@ -1321,13 +1322,14 @@
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                 {
                     [amount setTextColor:kNoochGrayDark];
-
+                    
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"RecepientId"]])
                     {
                         [transferTypeLabel setText:@"Request sent to"];
                         [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_wider"];
                         
-                        if ([dictRecord valueForKey:@"InvitationSentTo"] == NULL || [[dictRecord objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])
+                        if ([dictRecord valueForKey:@"InvitationSentTo"] == NULL ||
+                            [[dictRecord objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])
                         {
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
                             [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
@@ -1360,9 +1362,32 @@
                         [amount setStyleClass:@"history_transferamount_neg"];
                     }
                     [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
+
                     [transferTypeLabel setText:@"Invite sent to"];
 					[transferTypeLabel setTextColor:kNoochGrayDark];
-                    [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"]]];
+
+                    BOOL containsLetters = NSNotFound != [[dictRecord valueForKey:@"InvitationSentTo"] rangeOfCharacterFromSet:NSCharacterSet.letterCharacterSet].location;
+                    BOOL containsPunctuation = NSNotFound != [[dictRecord valueForKey:@"InvitationSentTo"] rangeOfCharacterFromSet:NSCharacterSet.punctuationCharacterSet].location;
+                    BOOL containsNumbers = NSNotFound != [[dictRecord valueForKey:@"InvitationSentTo"] rangeOfCharacterFromSet:NSCharacterSet.decimalDigitCharacterSet].location;
+                    BOOL containsSymbols = NSNotFound != [[dictRecord valueForKey:@"InvitationSentTo"] rangeOfCharacterFromSet:NSCharacterSet.symbolCharacterSet].location;
+                    
+                    // Check if it's a phone number
+                    if (containsNumbers && !containsLetters && !containsPunctuation && !containsSymbols)
+                    {
+                        NSMutableString * mu = [NSMutableString stringWithString:[dictRecord valueForKey:@"InvitationSentTo"]];
+                        [mu insertString:@"(" atIndex:0];
+                        [mu insertString:@")" atIndex:4];
+                        [mu insertString:@" " atIndex:5];
+                        [mu insertString:@"-" atIndex:9];
+
+                        NSString * phoneWithSymbolsAddedBack = [NSString stringWithString:mu];
+
+                        [name setText:phoneWithSymbolsAddedBack];
+                    }
+                    else if (containsLetters)
+                    {
+                        [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"]]];
+                    }
                 }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
                 {

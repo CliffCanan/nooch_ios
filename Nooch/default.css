@@ -698,7 +698,7 @@ view {
 /****  Table Detail Text  (right side of row)  ****/
 .table_view_cell_detailtext_1 {
     left			: 94px;
-    width			: 214px;
+    width			: 213px;
     height			: 40px;
     font-family		: "Roboto";
     font-weight		: regular;
@@ -870,7 +870,7 @@ view {
     box-shadow	: 1px 2px 1px rgba(109,110,112,0.4);
 }
 .welcomeBoxShadow {
-    box-shadow  : 1px 1px 1px rgba(109,110,112,0.42);
+    box-shadow  : 1px 1px 3px rgba(109,110,112,0.28);
 }
 
 /*******************************************
@@ -2375,11 +2375,10 @@ segmented-control#donatededication {
     color 				: #ffffff;
 }
 #history_segcontrol {
-    width				: 306px;
+    left				: 8px;
+    top					: 7px;
+    width				: 304px;
     height				: 30px;
-    left				: 7px;
-    top					: 6px;
-    //-ios-tint-color	: #3fabe1;
     background-color	: #3fabe1;
     font-family			: "Roboto";
     font-weight			: regular;
@@ -2635,11 +2634,21 @@ table-view#emptyTable {
     left                : 80px;
     font-family			: "Roboto";
     font-weight         : light;
-    font-size			: 15px;
+    font-size			: 16px;
     text-align       	: center;
     color 				: #313233;
 }
-
+.details_namePhoneNum {
+    width				: 250px;
+    height				: 30px;
+    top					: 25px;
+    left                : 80px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 22px;
+    text-align       	: center;
+    color 				: #313233;
+}
 
 /*********************************/
 /*****    TRANSFER DETAILS   *****/

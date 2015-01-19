@@ -114,9 +114,11 @@
 
     [self.login removeFromSuperview];
 
-    UIView * boxOutline = [[UIView alloc] initWithFrame:CGRectMake(9, 245, 302, 172)];
+    UIView * boxOutline = [[UIView alloc] initWithFrame:CGRectMake(9, 244, 302, 175)];
     boxOutline.backgroundColor = [UIColor whiteColor];
-    boxOutline.layer.cornerRadius = 7;
+    boxOutline.layer.cornerRadius = 8;
+    boxOutline.layer.borderWidth = 0.5;
+    boxOutline.layer.borderColor = Rgb2UIColor(188, 190, 192, .45).CGColor;
     [boxOutline setStyleClass:@"welcomeBoxShadow"];
     [self.view addSubview:boxOutline];
 
@@ -190,8 +192,8 @@
 
     self.fullNameInstruc = [[UILabel alloc] initWithFrame:CGRectMake(10, 38, 290, 16)];
     [self.fullNameInstruc setBackgroundColor:[UIColor clearColor]];
-    [self.fullNameInstruc setText:@"Please enter a first AND last name  \xF0\x9F\x99\x8F"];
-    [self.fullNameInstruc setFont:[UIFont fontWithName:@"Roboto-light" size:12]];
+    [self.fullNameInstruc setText:@"\xF0\x9F\x99\x8F  Please enter a first AND last name"];
+    [self.fullNameInstruc setFont:[UIFont fontWithName:@"Roboto-light" size:13]];
     [self.fullNameInstruc setTextColor:kNoochRed];
     [self.fullNameInstruc setTextAlignment:NSTextAlignmentCenter];
     [self.fullNameInstruc setHidden:YES];

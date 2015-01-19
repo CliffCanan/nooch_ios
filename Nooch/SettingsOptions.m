@@ -456,7 +456,7 @@
                                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                             options:kNilOptions
                                             error:&error];
-        NSLog(@"dicResponse is: %@",dictResponse);
+        //NSLog(@"knox info is: %@",dictResponse);
 
         if (![[dictResponse valueForKey:@"AccountName"] isKindOfClass:[NSNull class]] &&
             ![[dictResponse valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]] &&

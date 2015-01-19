@@ -133,6 +133,7 @@ bool modal;
     [ARPowerHookManager registerHookWithId:@"NV_IMG_H" friendlyName:@"New Version Alert Img Height" defaultValue:@"170"];
 
     [ARPowerHookManager registerHookWithId:@"transLimit" friendlyName:@"Transfer Limit" defaultValue:@"300"];
+    [ARPowerHookManager registerHookWithId:@"srchRds" friendlyName:@"Search By Loc Radius (Miles)" defaultValue:@"12"];
 
     [ARPowerHookManager registerHookWithId:@"transSuccessAlertTitle" friendlyName:@"Alert Title After Transfer Success" defaultValue:@"Nice Work"];
     [ARPowerHookManager registerHookWithId:@"transSuccessAlertMsg" friendlyName:@"Alert Message After Transfer Success" defaultValue:@"\xF0\x9F\x92\xB8\nYour cash was sent successfully."];

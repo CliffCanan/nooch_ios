@@ -123,7 +123,7 @@
 
     [self.view addSubview:search];
 
-    self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [[UIScreen mainScreen] bounds].size.height-146)];
+    self.contacts = [[UITableView alloc] initWithFrame:CGRectMake(0, 82, 320, [[UIScreen mainScreen] bounds].size.height - 147)];
     [self.contacts setDataSource:self];
     [self.contacts setDelegate:self];
     [self.contacts setSectionHeaderHeight:28];
@@ -255,8 +255,8 @@
         [UIView setAnimationDuration:1];
 
         CGRect frame = self.contacts.frame;
-        frame.origin.y = 80;
-        frame.size.height = [[UIScreen mainScreen] bounds].size.height - 144;
+        frame.origin.y = 82;
+        frame.size.height = [[UIScreen mainScreen] bounds].size.height - 147;
         [self.contacts setFrame:frame];
         [UIView commitAnimations];
     }
@@ -362,7 +362,7 @@
                                       [self.completed_pending setFrame:CGRectMake(7, 6, 306, 30)];
                                       [self.completed_pending setAlpha: 1];
                                       [self.view setBackgroundColor:[UIColor whiteColor]];
-                                      [self.contacts setFrame:CGRectMake(0, 80, 320, [[UIScreen mainScreen] bounds].size.height - 146)];
+                                      [self.contacts setFrame:CGRectMake(0, 82, 320, [[UIScreen mainScreen] bounds].size.height - 147)];
                                       [self.glyph_recent setAlpha: 1];
                                       [self.glyph_location setAlpha: 1];
                                       search.placeholder = @"Search by Name or Enter an Email";
@@ -608,8 +608,8 @@
         [UIView setAnimationDuration:0.45];
 
         CGRect frame = self.contacts.frame;
-        frame.origin.y = 80;
-        frame.size.height = [[UIScreen mainScreen] bounds].size.height - 146;
+        frame.origin.y = 82;
+        frame.size.height = [[UIScreen mainScreen] bounds].size.height - 147;
         [self.contacts setFrame:frame];
         [search setHidden:NO];
         [UIView commitAnimations];
@@ -659,7 +659,6 @@
 
         [search setHidden:YES];
 
-
         RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWordPress];
         spinner2.color = [UIColor whiteColor];
         self.hud.customView = spinner2;
@@ -668,10 +667,17 @@
 
         if ([self checkIfLocAllowed])
         {
+            NSString * searchRadiusString = [ARPowerHookManager getValueForHookById:@"srchRds"];
+            int searchRadiusInt = [searchRadiusString integerValue];
+
+            if (searchRadiusInt < 2) // Just in case value from Artisan is unavailable for some reason, we'll use a default of 12M
+            {
+                searchRadiusString = @"12";
+            }
             serve * ser = [serve new];
             ser.tagName = @"searchByLocation";
             [ser setDelegate:self];
-            [ser getLocationBasedSearch:@"15"];
+            [ser getLocationBasedSearch:searchRadiusString];
         }
         else
         {
@@ -1467,16 +1473,34 @@
         {
             [self.contacts setHidden:YES];
 
-            if (IS_IPHONE_5)
+            if (!self.location)
             {
-                self.noContact_img.frame = CGRectMake(0, 82, 320, 405);
-                self.noContact_img.image = [UIImage imageNamed:@"selectRecipientIntro.png"];
+                if (IS_IPHONE_5)
+                {
+                    self.noContact_img.frame = CGRectMake(0, 82, 320, 405);
+                    self.noContact_img.image = [UIImage imageNamed:@"selectRecipientIntro.png"];
+                }
+                else
+                {
+                    self.noContact_img.frame = CGRectMake(3, 79, 314, 340);
+                    self.noContact_img.image = [UIImage imageNamed:@"selectRecipientIntro_smallScreen.png"];
+                }
             }
             else
             {
-                self.noContact_img.frame = CGRectMake(3, 79, 314, 340);
-                self.noContact_img.image = [UIImage imageNamed:@"selectRecipientIntro_smallScreen.png"];
+                if (IS_IPHONE_5)
+                {
+                    self.noContact_img.frame = CGRectMake(0, 72, 320, 405);
+                    self.noContact_img.image = [UIImage imageNamed:@"selectRecipientIntro.png"];
+                }
+                else
+                {
+                    self.noContact_img.frame = CGRectMake(3, 72, 314, 340);
+                    self.noContact_img.image = [UIImage imageNamed:@"selectRecipientIntro_smallScreen.png"];
+                }
+                [self.noContact_img setStyleClass:@"animate_bubble"];
             }
+
             [self.view addSubview:self.noContact_img];
         }
     }

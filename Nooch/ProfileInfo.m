@@ -25,7 +25,6 @@ UIImageView *picture;
 @property(nonatomic) UIImagePickerController *picker;
 @property(nonatomic,strong) UILabel *name;
 @property(nonatomic,strong) UITextField *email;
-@property(nonatomic,strong) UITextField *recovery_email;
 @property(nonatomic,strong) UITextField *phone;
 @property(nonatomic,strong) UITextField *address_one;
 @property(nonatomic,strong) UITextField *address_two;
@@ -134,108 +133,84 @@ UIImageView *picture;
 
 -(void)savePrompt2
 {
-    if ([self.recovery_email.text length] == 0)
+    if ( [[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"] ||
+         (self.address_one.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]) ||
+         (self.address_two.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]) ||
+         (self.zip.text.length > 2 && ![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]) ||
+         (self.city.text.length > 2 && ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]) ||
+         (self.phone.text.length > 3 && ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) )
     {
-        if ( [[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"] ||
-             (self.address_one.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]) ||
-             (self.address_two.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]) ||
-             (self.zip.text.length > 2 && ![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]) ||
-             (self.city.text.length > 2 && ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]) ||
-             (self.phone.text.length > 3 && ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) )
-        {
-            [self SaveAlert1];
-        }
-        else
-        {
-            [self.navigationItem setLeftBarButtonItem:nil];
-            [self performSelector:@selector(GoBackOnce) withObject:nil];
-        }
+        [self SaveAlert1];
     }
     else
     {
-        if ( [[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"] ||
-             (self.address_one.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]) ||
-             (self.address_two.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]) ||
-             (self.zip.text.length > 2 && ![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]) ||
-             (self.city.text.length > 2 && ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]) ||
-             (self.phone.text.length > 3 && ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) ||
-             (self.recovery_email.text.length > 3 && ![[dictSavedInfo valueForKey:@"recovery_email"]isEqualToString:self.recovery_email.text]) )
-        {
-            [self SaveAlert1];
-        }
-        else
-        {
-            [self.navigationItem setLeftBarButtonItem:nil];
-            [self performSelector:@selector(GoBackOnce) withObject:nil];
-        }
+        [self.navigationItem setLeftBarButtonItem:nil];
+        [self performSelector:@selector(GoBackOnce) withObject:nil];
     }
 }
 
 -(void)savePrompt
 {
-    if ([self.recovery_email.text length] == 0)
+    if ( [[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"] ||
+         (self.address_one.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]) ||
+         (self.address_two.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]) ||
+         (self.zip.text.length > 2 && ![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]) ||
+         (self.city.text.length > 2 && ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]) ||
+         (self.phone.text.length > 3 && ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) )
     {
-        if ( [[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"] ||
-             (self.address_one.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]) ||
-             (self.address_two.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]) ||
-             (self.zip.text.length > 2 && ![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]) ||
-             (self.city.text.length > 2 && ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]) ||
-             (self.phone.text.length > 3 && ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) )
-        {
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Save Changes"
-                                                            message:@"Do you want to save the changes in your profile?"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"YES"
-                                                  otherButtonTitles:@"NO", nil];
-            [alert setTag:5020];
-            [alert show];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Save Changes"
+                                                        message:@"Do you want to save the changes in your profile?"
+                                                       delegate:self
+                                              cancelButtonTitle:@"YES"
+                                              otherButtonTitles:@"NO", nil];
+        [alert setTag:5020];
+        [alert show];
 
-            return;
-        }
-        else
-        {
-            [self.slidingViewController anchorTopViewTo:ECRight];
-        }
+        return;
     }
     else
     {
-        if ( [[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"] ||
-             (self.address_one.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]) ||
-             (self.address_two.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]) ||
-             (self.zip.text.length > 2 && ![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]) ||
-             (self.city.text.length > 2 && ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]) ||
-             (self.phone.text.length > 3 && ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) ||
-             (self.recovery_email.text.length > 3 && ![[dictSavedInfo valueForKey:@"recovery_email"]isEqualToString:self.recovery_email.text]) )
-        {
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Save Changes"
-                                                            message:@"Do you want to save the changes in your profile?"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"YES"
-                                                  otherButtonTitles:@"NO", nil];
-            [alert setTag:5020];
-            [alert show];
+        [self.slidingViewController anchorTopViewTo:ECRight];
+    }
+    if ( [[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"] ||
+         (self.address_one.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]) ||
+         (self.address_two.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]) ||
+         (self.zip.text.length > 2 && ![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]) ||
+         (self.city.text.length > 2 && ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]) ||
+         (self.phone.text.length > 3 && ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) )
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Save Changes"
+                                                        message:@"Do you want to save the changes in your profile?"
+                                                       delegate:self
+                                              cancelButtonTitle:@"YES"
+                                              otherButtonTitles:@"NO", nil];
+        [alert setTag:5020];
+        [alert show];
 
-            return;
-        }
-        else
-        {
-            [self.slidingViewController anchorTopViewTo:ECRight];
-        }
+        return;
+    }
+    else
+    {
+        [self.slidingViewController anchorTopViewTo:ECRight];
     }
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if ((alertView.tag == 5020 || alertView.tag == 5021) && buttonIndex == 0) {
+    if ((alertView.tag == 5020 || alertView.tag == 5021) && buttonIndex == 0)
+    {
         [self save_changes];
     }
-    else if (alertView.tag == 5020 && buttonIndex == 1){
+    else if (alertView.tag == 5020 && buttonIndex == 1)
+    {
         [self.slidingViewController anchorTopViewTo:ECRight];
     }
-    else if (alertView.tag == 5021 && buttonIndex == 1){
+    else if (alertView.tag == 5021 && buttonIndex == 1)
+    {
         [self.navigationController popViewControllerAnimated:YES];
     }
-    else if (alertView.tag == 1001 && buttonIndex == 0) {
+    else if (alertView.tag == 1001 && buttonIndex == 0)
+    {
         [self.name setUserInteractionEnabled:YES];
         [self.name becomeFirstResponder];
     }
@@ -511,15 +486,6 @@ UIImageView *picture;
     UIBarButtonItem * nav_save = [[UIBarButtonItem alloc] initWithCustomView:self.save];
     [self.navigationItem setRightBarButtonItem:nav_save animated:YES];
 
-    self.name.text=@"";
-    self.email.text=@"";
-    self.recovery_email.text=@"";
-    self.phone.text=@"";
-    self.address_one.text=@"";
-    self.address_two.text=@"";
-    self.city.text=@"";
-    self.zip.text=@"";
-
     GMTTimezonesDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:@"Samoa Standard Time",@"GMT-11:00",
                               @"Hawaiian Standard Time",@"GMT-10:00",
                               @"Alaskan Standard Time",@"GMT-09:00",
@@ -615,7 +581,6 @@ UIImageView *picture;
 {
     [self.name resignFirstResponder];
     [self.email resignFirstResponder];
-    [self.recovery_email resignFirstResponder];
     [self.phone resignFirstResponder];
     [self.address_one resignFirstResponder];
     [self.address_two resignFirstResponder];
@@ -664,7 +629,6 @@ UIImageView *picture;
 {
     [self.name resignFirstResponder];
     [self.email resignFirstResponder];
-    [self.recovery_email resignFirstResponder];
     [self.phone resignFirstResponder];
     [self.address_one resignFirstResponder];
     [self.address_two resignFirstResponder];
@@ -760,23 +724,12 @@ UIImageView *picture;
         [av show];
     }
 
-    if ([self.recovery_email.text length] == 0) {
-        self.recovery_email.text = @"";
-    }
-
     timezoneStandard = [NSString stringWithFormat:@"%@",[NSTimeZone localTimeZone]];
     timezoneStandard = [[timezoneStandard componentsSeparatedByString:@", "] objectAtIndex:0];
     timezoneStandard = [GMTTimezonesDictionary objectForKey:timezoneStandard];
     timezoneStandard = @"";
 
     recoverMail = [[NSString alloc] init];
-
-    if ([self.recovery_email.text length] > 0)
-    {
-        recoverMail = self.recovery_email.text;
-    }
-    else
-        recoverMail = @"";
 
     if ([self.address_two.text length] != 0)
     {
@@ -1287,14 +1240,14 @@ UIImageView *picture;
             [phoneVerifiedStatus setBackgroundColor:[UIColor clearColor]];
             [phoneVerifiedStatus setStyleClass:@"notVerifiedLabel"];
             [cell.contentView addSubview:phoneVerifiedStatus];
-            
+
             NSShadow * shadow = [[NSShadow alloc] init];
             shadow.shadowColor = Rgb2UIColor(255, 252, 249, .3);
             shadow.shadowOffset = CGSizeMake(0, 1);
             NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
             phoneVerifiedStatus.attributedText = [[NSAttributedString alloc] initWithString:@"Not Verified"
                                                                                  attributes:textAttributes];
-            
+
             UIButton *resend_phone = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [resend_phone setTitle:@"Resend SMS" forState:UIControlStateNormal];
             [resend_phone addTarget:self action:@selector(resend_SMS) forControlEvents:UIControlEventTouchUpInside];
@@ -1410,8 +1363,8 @@ UIImageView *picture;
     if (tableView == self.list)
     {
         if ( indexPath.row == 1 &&
-                ![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"] &&
-                 [[dictSavedInfo valueForKey:@"phoneno"] length] > 0)
+            ![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"] &&
+             [[dictSavedInfo valueForKey:@"phoneno"] length] > 0)
         {
             [self.phone setUserInteractionEnabled:YES];
         }
@@ -1483,7 +1436,7 @@ UIImageView *picture;
     shadowUnder.alpha = 1;
     picture.alpha = 1;
     self.sectionHeaderBg.alpha = 1;
-    [self.sectionHeaderBg2 setFrame:CGRectMake(0, (38/*PictureRadius*/ + 43 + self.list.frame.size.height), 320, 26)];
+    [self.sectionHeaderBg2 setFrame:CGRectMake(0, (38 + 43 + self.list.frame.size.height), 320, 26)];
     [self.list2 setFrame:CGRectMake(0, self.sectionHeaderBg2.frame.origin.y + 26, 320, (rowHeight * 4) + 5)];
     [self.member_since_back setFrame:CGRectMake(0, 0, 320, heightOfTopSection)];
     [scrollView setFrame:CGRectMake(0, heightOfTopSection, 320, [[UIScreen mainScreen] bounds].size.height - heightOfTopSection - 64)];
@@ -1676,7 +1629,8 @@ UIImageView *picture;
                                                otherButtonTitles:nil];
             [av show];
         }
-        else if ([response isEqualToString:@"Success"]) {
+        else if ([response isEqualToString:@"Success"])
+        {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Check Your Texts"
                                                          message:@"\xF0\x9F\x93\xB2\nA verifiction SMS has been sent to your phone. Please respond \"Go\" (case doesn't matter) to confirm your number."
                                                         delegate:nil
@@ -1701,7 +1655,8 @@ UIImageView *picture;
             [self.list beginUpdates];
             [self.list endUpdates];
         }
-        else if ([response isEqualToString:@"Failure"]) {
+        else if ([response isEqualToString:@"Failure"])
+        {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Unexpected Error"
                                                          message:@"An error occurred when attempting to fulfill this request, please try again."
                                                         delegate:nil
@@ -1709,7 +1664,8 @@ UIImageView *picture;
                                                otherButtonTitles:nil];
             [av show];
         }
-        else if ([response isEqualToString:@"Temporarily_Blocked"]) {
+        else if ([response isEqualToString:@"Temporarily_Blocked"])
+        {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Is Suspended"
                                                          message:@"Your account is currently suspended, please attempt to verify your phone number when your account is no longer suspended."
                                                         delegate:nil
@@ -1717,7 +1673,8 @@ UIImageView *picture;
                                                otherButtonTitles:nil];
             [av show];
         }
-        else if ([response isEqualToString:@"Suspended"]) {
+        else if ([response isEqualToString:@"Suspended"])
+        {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Is Suspended"
                                                          message:@"Your account is currently suspended, please attempt to verify your phone number when your account is no longer suspended."
                                                         delegate:nil
@@ -1727,7 +1684,7 @@ UIImageView *picture;
         }
     }
 
-    else if ([tagName isEqualToString:@"MySettingsResult"])
+    else if ([tagName isEqualToString:@"MySettingsResult"]) // Saving Profile changes
     {
         dictProfileinfo = [NSJSONSerialization
                          JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
@@ -1805,14 +1762,14 @@ UIImageView *picture;
         }
     }
 
-    else if ([tagName isEqualToString:@"myset"])
+    else if ([tagName isEqualToString:@"myset"]) // Getting profile info from Server
     {
         dictProfileinfo = [NSJSONSerialization
                          JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                          options:kNilOptions
                          error:&error];
         
-        // NSLog(@"dictProfileinfo is: %@",dictProfileinfo);
+        NSLog(@"MYSET --> dictProfileinfo is: %@",dictProfileinfo);
 
         if (![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]] &&
             ![[[dictProfileinfo valueForKey:@"ContactNumber"] lowercaseString] isEqualToString:@"null"])
@@ -1820,11 +1777,6 @@ UIImageView *picture;
             if ([dictProfileinfo valueForKey:@"ContactNumber"] != NULL)
             {
                 self.SavePhoneNumber = [dictProfileinfo valueForKey:@"ContactNumber"];
-
-                /*if (![[dictProfileinfo valueForKey:@"IsVerifiedPhone"] intValue])
-                {
-                    [glyph_arrow_phone setAlpha:1];
-                }*/
             }
             else {
                 self.SavePhoneNumber = @"";
@@ -1851,44 +1803,26 @@ UIImageView *picture;
             }
          //   [self.list reloadData];
         }
-        
         else
+        {
             self.SavePhoneNumber = @"";
-            
-        if (![[dictProfileinfo valueForKey:@"Address"] isKindOfClass:[NSNull class]])
-        {
-            self.ServiceType = @"Address";
-            Decryption *decry = [[Decryption alloc] init];
-            decry.Delegate = self;
-            decry->tag = [NSNumber numberWithInteger:2];
-            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Address"]];
         }
-        else if (![[dictProfileinfo valueForKey:@"City"] isKindOfClass:[NSNull class]])
+
+
+        // The UserName value should never be NULL, so all the 'else if' statements
+        // below this first 'if' *should* never be called
+        if (![[dictProfileinfo valueForKey:@"UserName"] isKindOfClass:[NSNull class]])
         {
-            self.ServiceType = @"City";
+            NSLog(@"CheckPoint UserName");
+            self.ServiceType = @"email";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
-            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"City"]];
-        }
-        else if (![[dictProfileinfo valueForKey:@"State"] isKindOfClass:[NSNull class]])
-        {
-            self.ServiceType = @"State";
-            Decryption *decry = [[Decryption alloc] init];
-            decry.Delegate = self;
-            decry->tag = [NSNumber numberWithInteger:2];
-            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"State"]];
-        }
-        else if (![[dictProfileinfo valueForKey:@"Zipcode"] isKindOfClass:[NSNull class]])
-        {
-            self.ServiceType = @"zip";
-            Decryption *decry = [[Decryption alloc] init];
-            decry.Delegate = self;
-            decry->tag = [NSNumber numberWithInteger:2];
-            [decry getDecryptedValue:@"GetDecryptedData" pwdString:[dictProfileinfo objectForKey:@"Zipcode"]];
+            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"UserName"]];
         }
         else if (![[dictProfileinfo valueForKey:@"FirstName"] isKindOfClass:[NSNull class]])
         {
+            NSLog(@"Checkpoint 'name'");
             self.ServiceType = @"name";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
@@ -1897,35 +1831,48 @@ UIImageView *picture;
         }
         else if (![[dictProfileinfo valueForKey:@"LastName"] isKindOfClass:[NSNull class]])
         {
+            NSLog(@"Checkpoint 'lastname'");
             self.ServiceType = @"lastname";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"LastName"]];
         }
-        else if (![[dictProfileinfo valueForKey:@"UserName"] isKindOfClass:[NSNull class]])
+        else if (![[dictProfileinfo valueForKey:@"Address"] isKindOfClass:[NSNull class]])
         {
-            self.ServiceType = @"email";
+            NSLog(@"Checkpoint 'Address'");
+            self.ServiceType = @"Address";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
-            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"UserName"]];
+            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Address"]];
         }
-        /* else if (![[dictProfileinfo valueForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]])
+        else if (![[dictProfileinfo valueForKey:@"City"] isKindOfClass:[NSNull class]])
         {
-           self.ServiceType=@"recovery";
+            NSLog(@"Checkpoint 'City'");
+            self.ServiceType = @"City";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
-            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"RecoveryMail"]];
-        }*/
-        else if (![[dictProfileinfo valueForKey:@"Password"] isKindOfClass:[NSNull class]])
+            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"City"]];
+        }
+        else if (![[dictProfileinfo valueForKey:@"State"] isKindOfClass:[NSNull class]])
         {
-            self.ServiceType=@"pwd";
+            NSLog(@"Checkpoint 'State'");
+            self.ServiceType = @"State";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
-            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Password"]];
+            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"State"]];
+        }
+        else if (![[dictProfileinfo valueForKey:@"Zipcode"] isKindOfClass:[NSNull class]])
+        {
+            NSLog(@"Checkpoint 'ZIP'");
+            self.ServiceType = @"zip";
+            Decryption *decry = [[Decryption alloc] init];
+            decry.Delegate = self;
+            decry->tag = [NSNumber numberWithInteger:2];
+            [decry getDecryptedValue:@"GetDecryptedData" pwdString:[dictProfileinfo objectForKey:@"Zipcode"]];
         }
     }
 }
@@ -1934,14 +1881,147 @@ UIImageView *picture;
 
 -(void)decryptionDidFinish:(NSMutableDictionary *) sourceData TValue:(NSNumber *) tagValue
 {
-    if ([self.ServiceType isEqualToString:@"Address"])
-    {
-        self.ServiceType = @"City";
-        NSArray * arr = [[sourceData objectForKey:@"Status"] componentsSeparatedByString:@"/"];
+    //NSLog(@"DECRYPTION -> sourceData is: %@", [sourceData objectForKey:@"Status"]);
 
+    if ([self.ServiceType isEqualToString:@"email"])
+    {
+        if (![self.email.text isEqualToString:[sourceData objectForKey:@"Status"]])
+        {
+            self.email.text = [sourceData objectForKey:@"Status"];
+        }
+
+        if (![[dictProfileinfo objectForKey:@"FirstName"] isKindOfClass:[NSNull class]])
+        {
+            self.ServiceType = @"firstname";
+            Decryption * decry = [[Decryption alloc] init];
+            decry.Delegate = self;
+            decry->tag = [NSNumber numberWithInteger:2];
+            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"FirstName"]];
+        }
+        /*if (![[dictProfileinfo objectForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]] &&
+              [dictProfileinfo objectForKey:@"RecoveryMail"] != NULL &&
+            ![[dictProfileinfo objectForKey:@"RecoveryMail"] isEqualToString:@""])
+         {
+             self.ServiceType = @"recovery";
+             Decryption *decry = [[Decryption alloc] init];
+             decry.Delegate = self;
+             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"RecoveryMail"]];
+         }
+         else
+         {
+             self.recovery_email.text = @"";
+             self.ServiceType = @"pwd";
+         
+             if (![[dictProfileinfo objectForKey:@"Password"] isKindOfClass:[NSNull class]])
+             {
+                 Decryption *decry = [[Decryption alloc] init];
+                 decry.Delegate = self;
+                 self.ServiceType = @"pwd";
+                 decry->tag = [NSNumber numberWithInteger:2];
+                 [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Password"]];
+             }
+         }*/
+    }
+
+    else  if ([self.ServiceType isEqualToString:@"firstname"]) // first name
+    {
+        if ( [[sourceData objectForKey:@"Status"] length] > 0)
+        {
+            if (![[[sourceData objectForKey:@"Status"] capitalizedString] isEqualToString:[[user objectForKey:@"firstName"] capitalizedString]])
+            {
+                NSLog(@"First name isn't the same apparently");
+                NSString * letterA = [[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
+                [ARProfileManager setUserFirstName:letterA];
+                [dictSavedInfo setObject:self.name.text forKey:@"name"];
+
+                self.name.text = [NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
+
+                NSString * name = [self.name.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                NSShadow * shadow = [[NSShadow alloc] init];
+                shadow.shadowColor = Rgb2UIColor(249, 251, 252, .3);
+                shadow.shadowOffset = CGSizeMake(0, 1);
+                NSDictionary * textAttributes_topShadow = @{NSShadowAttributeName: shadow };
+
+                self.name.attributedText = [[NSAttributedString alloc] initWithString:[name capitalizedString] attributes:textAttributes_topShadow];
+            }
+
+            if (![[dictProfileinfo objectForKey:@"LastName"] isKindOfClass:[NSNull class]])
+            {
+                self.ServiceType = @"lastname";
+                Decryption * decry = [[Decryption alloc] init];
+                decry.Delegate = self;
+                decry->tag = [NSNumber numberWithInteger:2];
+                [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"LastName"]];
+            }
+            else if (![[dictProfileinfo objectForKey:@"Address"] isKindOfClass:[NSNull class]])
+            {
+                NSLog(@"Checkpoint BRAVO");
+                self.ServiceType = @"Address";
+                Decryption * decry = [[Decryption alloc] init];
+                decry.Delegate = self;
+                decry->tag = [NSNumber numberWithInteger:2];
+                [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Address"]];
+            }
+        }
+        else
+        {
+            UIAlertView * newUserNoName = [[UIAlertView alloc] initWithTitle:@"Nice To Meet You"
+                                                                     message:@"Thanks for joining Nooch! Please complete your profile to get started."
+                                                                    delegate:self
+                                                           cancelButtonTitle:@"OK"
+                                                           otherButtonTitles:nil];
+            [newUserNoName show];
+            [newUserNoName setTag:1001];
+
+            if (![[dictProfileinfo objectForKey:@"Address"] isKindOfClass:[NSNull class]])
+            {
+                self.ServiceType = @"Address";
+                Decryption * decry = [[Decryption alloc] init];
+                decry.Delegate = self;
+                decry->tag = [NSNumber numberWithInteger:2];
+                [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Address"]];
+            }
+        }
+    }
+    
+    else  if ([self.ServiceType isEqualToString:@"lastname"]) //last name
+    {
+        if ( [[sourceData objectForKey:@"Status"] length] > 0 &&
+            ![[[sourceData objectForKey:@"Status"] capitalizedString] isEqualToString:[[user objectForKey:@"lastName"] capitalizedString]])
+        {
+            NSLog(@"Last name isn't the same apparently");
+            NSString * letterA = [[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
+            self.name.text = [self.name.text stringByAppendingString:[NSString stringWithFormat:@" %@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]]];
+            
+            [ARProfileManager setUserLastName:letterA];
+            [dictSavedInfo setObject:self.name.text forKey:@"name"];
+            
+            NSString * name = [self.name.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            NSShadow * shadow = [[NSShadow alloc] init];
+            shadow.shadowColor = Rgb2UIColor(249, 251, 252, .3);
+            shadow.shadowOffset = CGSizeMake(0, 1);
+            NSDictionary * textAttributes_topShadow = @{NSShadowAttributeName: shadow };
+            
+            self.name.attributedText = [[NSAttributedString alloc] initWithString:[name capitalizedString] attributes:textAttributes_topShadow];
+        }
+        
+        if (![[dictProfileinfo objectForKey:@"Address"] isKindOfClass:[NSNull class]])
+        {
+            self.ServiceType = @"Address";
+            Decryption *decry = [[Decryption alloc] init];
+            decry.Delegate = self;
+            decry->tag = [NSNumber numberWithInteger:2];
+            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Address"]];
+        }
+    }
+
+    else if ([self.ServiceType isEqualToString:@"Address"])
+    {
         if (![[[sourceData objectForKey:@"Status"] lowercaseString] isEqualToString:@"null"] &&
             ![[[sourceData objectForKey:@"Status"] lowercaseString] isEqualToString:@"declined"])
         {
+            NSArray * arr = [[sourceData objectForKey:@"Status"] componentsSeparatedByString:@"/"];
+
             if ([arr count] == 2)
             {
                 self.address_one.text = [arr objectAtIndex:0];
@@ -1961,12 +2041,15 @@ UIImageView *picture;
             [dictSavedInfo setObject:self.address_one.text forKey:@"Address1"];
             [dictSavedInfo setObject:self.address_two.text forKey:@"Address2"];
         }
-        else {
+        else
+        {
             self.address_one.text = @"";
             self.address_two.text = @"";
         }
+
         if (![[dictProfileinfo objectForKey:@"City"] isKindOfClass:[NSNull class]])
         {
+            self.ServiceType = @"City";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
@@ -1976,23 +2059,23 @@ UIImageView *picture;
 
     else if ([self.ServiceType isEqualToString:@"City"])
     {
-        self.ServiceType = @"State";
-        self.city.text = [sourceData objectForKey:@"Status"];
-        NSString * city = [self.city.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSString * city = [[sourceData objectForKey:@"Status"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         self.city.text = [city capitalizedString];
-        [ARProfileManager setUserCity:[city capitalizedString]];
 
+        [ARProfileManager setUserCity:[city capitalizedString]];
         [dictSavedInfo setObject:self.city.text forKey:@"City"];
        
         if (![[dictProfileinfo objectForKey:@"State"] isKindOfClass:[NSNull class]])
         {
+            self.ServiceType = @"State";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"State"]];
         }
 
-        else if (![[dictProfileinfo objectForKey:@"Zipcode"] isKindOfClass:[NSNull class]]) {
+        else if (![[dictProfileinfo objectForKey:@"Zipcode"] isKindOfClass:[NSNull class]])
+        {
             self.ServiceType = @"zip";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
@@ -2003,187 +2086,23 @@ UIImageView *picture;
 
     else if ([self.ServiceType isEqualToString:@"State"])
     {
-        self.ServiceType = @"zip";
-        
         if (![[dictProfileinfo objectForKey:@"Zipcode"] isKindOfClass:[NSNull class]])
         {
+            self.ServiceType = @"zip";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptedValue:@"GetDecryptedData" pwdString:[dictProfileinfo objectForKey:@"Zipcode"]];
         }
-        else
-        {
-            self.ServiceType = @"name";
-            if (![[dictProfileinfo objectForKey:@"FirstName"] isKindOfClass:[NSNull class]])
-            {
-                Decryption *decry = [[Decryption alloc] init];
-                decry.Delegate = self;
-                decry->tag = [NSNumber numberWithInteger:2];
-                [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"FirstName"]];
-            }
-        }
     }
 
     else  if ([self.ServiceType isEqualToString:@"zip"])
     {
-        self.ServiceType = @"name";
-        self.zip.text = [sourceData objectForKey:@"Status"];
-        NSString * zip = [self.zip.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSString * zip = [[sourceData objectForKey:@"Status"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         self.zip.text = zip;
+
         [ARProfileManager setUserPostalCode:zip];
-        
         [dictSavedInfo setObject:self.zip.text forKey:@"zip"];
-        
-        if (![[dictProfileinfo objectForKey:@"FirstName"] isKindOfClass:[NSNull class]])
-        {
-            Decryption * decry = [[Decryption alloc] init];
-            decry.Delegate = self;
-            decry->tag = [NSNumber numberWithInteger:2];
-            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"FirstName"]];
-        }
-    }
-
-    else  if ([self.ServiceType isEqualToString:@"name"]) // first name
-    {
-        self.ServiceType = @"lastname";
-        
-        if ([[sourceData objectForKey:@"Status"] length] > 0)
-        {
-            NSString * letterA = [[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
-            [ARProfileManager setUserFirstName:letterA];
-
-            self.name.text = [NSString stringWithFormat:@"%@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]];
-            
-            NSString * name = [self.name.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            NSShadow * shadow = [[NSShadow alloc] init];
-            shadow.shadowColor = Rgb2UIColor(249, 251, 252, .3);
-            shadow.shadowOffset = CGSizeMake(0, 1);
-            NSDictionary * textAttributes_topShadow = @{NSShadowAttributeName: shadow };
-            
-             self.name.attributedText = [[NSAttributedString alloc] initWithString:[name capitalizedString] attributes:textAttributes_topShadow];
-
-            [dictSavedInfo setObject:self.name.text forKey:@"name"];
-
-            if (![[dictProfileinfo objectForKey:@"LastName"] isKindOfClass:[NSNull class]])
-            {
-                self.ServiceType = @"lastname";
-                Decryption * decry = [[Decryption alloc] init];
-                decry.Delegate = self;
-                decry->tag = [NSNumber numberWithInteger:2];
-                [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"LastName"]];
-            }
-            else if (![[dictProfileinfo objectForKey:@"UserName"] isKindOfClass:[NSNull class]])
-            {
-                Decryption * decry = [[Decryption alloc] init];
-                decry.Delegate = self;
-                decry->tag = [NSNumber numberWithInteger:2];
-                [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"UserName"]];
-            }
-        }
-        else
-        {
-            UIAlertView * newUserNoName = [[UIAlertView alloc] initWithTitle:@"Nice To Meet You"
-                                                                     message:@"Thanks for joining Nooch! Please complete your profile to get started."
-                                                                    delegate:self
-                                                           cancelButtonTitle:@"OK"
-                                                           otherButtonTitles:nil];
-            [newUserNoName show];
-            [newUserNoName setTag:1001];
-        }
-    }
-
-    else  if ([self.ServiceType isEqualToString:@"lastname"]) //last name
-    {
-        self.ServiceType = @"email";
-
-        if ([[sourceData objectForKey:@"Status"] length] > 0)
-        {
-            NSString * letterA = [[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
-            self.name.text = [self.name.text stringByAppendingString:[NSString stringWithFormat:@" %@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]]];
-
-            [ARProfileManager setUserLastName:letterA];
-
-            NSString * name = [self.name.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            NSShadow * shadow = [[NSShadow alloc] init];
-            shadow.shadowColor = Rgb2UIColor(249, 251, 252, .3);
-            shadow.shadowOffset = CGSizeMake(0, 1);
-            NSDictionary * textAttributes_topShadow = @{NSShadowAttributeName: shadow };
-            
-            self.name.attributedText = [[NSAttributedString alloc] initWithString:[name capitalizedString] attributes:textAttributes_topShadow];
-            
-            [dictSavedInfo setObject:self.name.text forKey:@"name"];
-        }
-
-        if (![[dictProfileinfo objectForKey:@"UserName"] isKindOfClass:[NSNull class]])
-        {
-            Decryption *decry = [[Decryption alloc] init];
-            decry.Delegate = self;
-            decry->tag = [NSNumber numberWithInteger:2];
-            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"UserName"]];
-            [ARProfileManager setUserEmail:[dictProfileinfo objectForKey:@"UserName"]];
-        }
-    }
-
-    else  if ([self.ServiceType isEqualToString:@"email"])
-    {
-        self.email.text = [sourceData objectForKey:@"Status"];
-
-        /*if (![[dictProfileinfo objectForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]] &&
-              [dictProfileinfo objectForKey:@"RecoveryMail"] != NULL &&
-            ![[dictProfileinfo objectForKey:@"RecoveryMail"] isEqualToString:@""])
-        {
-            self.ServiceType = @"recovery";
-            Decryption *decry = [[Decryption alloc] init];
-            decry.Delegate = self;
-            decry->tag = [NSNumber numberWithInteger:2];
-            [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"RecoveryMail"]];
-        }
-        else
-        { */
-            self.recovery_email.text = @"";
-            self.ServiceType = @"pwd";
-
-            if (![[dictProfileinfo objectForKey:@"Password"] isKindOfClass:[NSNull class]])
-            {
-                Decryption *decry = [[Decryption alloc] init];
-                decry.Delegate = self;
-                self.ServiceType = @"pwd";
-                decry->tag = [NSNumber numberWithInteger:2];
-                [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Password"]];
-            }
-        //}
-    }
-
-    else if ([self.ServiceType isEqualToString:@"recovery"])
-    {
-        self.ServiceType = @"pwd";
-/*        self.recovery_email.text = [[NSString stringWithFormat:@"%@",[sourceData objectForKey:@"Status"]] lowercaseString];
-        
-        NSString * recovery_email = [self.recovery_email.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        self.recovery_email.text = [recovery_email lowercaseString];
-        
-        [dictSavedInfo setObject:self.recovery_email.text forKey:@"recovery_email"];
-
-        if ([self.recovery_email.text isKindOfClass:[NSNull class]] ||
-            [self.recovery_email.text isEqualToString:@"declined"] ||
-            [self.recovery_email.text isEqualToString:@"null"])
-        {
-            self.recovery_email.text = @"";
-        }
-        else if ([self.recovery_email.text length] > 21)
-        {
-            [self.recovery_email setStyleClass:@"table_view_cell_detailtext_smallestText"];
-        }
-        else if ([self.recovery_email.text length] > 18)
-        {
-            [self.recovery_email setStyleClass:@"table_view_cell_detailtext_smallerStillText"];
-        }
-        else if ([self.recovery_email.text length] > 15)
-        {
-            [self.recovery_email setStyleClass:@"table_view_cell_detailtext_smallerText"];
-        }
-*/
     }
 }
 
