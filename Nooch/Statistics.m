@@ -448,8 +448,6 @@
     
     [self.exportHistory setFrame:CGRectMake(60, 445, 200, 38)];
 
-    //[self.profileIcon setStyleId:@"stats_circle_profile_active"];
-
     self.selected--;
 
     CGRect frame;
@@ -989,7 +987,15 @@
             }
             else if (indexPath.row == 1)
             {
-                self.emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 250, 254)];
+                self.emptyPic = [UIImageView new];
+                if ([UIScreen mainScreen].bounds.size.height > 500)
+                {
+                    self.emptyPic.frame = CGRectMake(25, 28, 250, 254);
+                }
+                else
+                {
+                    self.emptyPic.frame = CGRectMake(25, 9, 250, 254);
+                }
                 self.emptyPic.alpha = 0;
                 [self.emptyPic setImage:[UIImage imageNamed:@"Stats_Circled"]];
                 [cell.contentView  addSubview: self.emptyPic];

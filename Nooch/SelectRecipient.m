@@ -815,7 +815,7 @@
                                                            delegate:Nil
                                                   cancelButtonTitle:@"Ok"
                                                   otherButtonTitles:Nil, nil];
-            //[alert show];
+            [alert show];
 
             return NO;
         }

@@ -41,21 +41,7 @@ bool modal;
     [internetReach startNotifier];
 
     // Set the icon badge to zero on startup (optional)
-
-    // PUSH NOTIFICATION REGISTRATION
-   if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
-    {
-        // Register for push in iOS 8.
-        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
-    }
-    else
-    {
-        // Register for push in iOS 7 and under.
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
-                                                                               UIUserNotificationTypeSound |
-                                                                               UIUserNotificationTypeAlert)];
-    }
+    // [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 
     // GAMETHRIVE (Push Notifications)
     self.gameThrive = [[GameThrive alloc] initWithLaunchOptions:launchOptions handleNotification:^(NSString* message, NSDictionary* additionalData, BOOL isActive) {
@@ -108,6 +94,8 @@ bool modal;
                                           [self sessionStateChanged:session state:state error:error];
                                       }];
     }
+    [self application:nil handleOpenURL:[NSURL URLWithString:@"Nooch:"]];
+    [self.window makeKeyAndVisible];
 
     [application setApplicationIconBadgeNumber:0];
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
@@ -207,6 +195,7 @@ void exceptionHandler(NSException *exception){
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+    NSLog(@"App Delegate CheckPoint *applicationWillEnterForeground*");
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     NSTimeInterval timeAway = [inactiveDate timeIntervalSinceNow];
     [splashView removeFromSuperview];
@@ -346,9 +335,9 @@ void exceptionHandler(NSException *exception){
                       otherButtonTitles:nil] show];
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application{
+- (void)applicationWillTerminate:(UIApplication *)application
+{
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    //[UAirship land];
     // Close the FB Session if active (does not clear the cache of the FB Token)
     [FBSession.activeSession close];
 }
@@ -357,18 +346,15 @@ void exceptionHandler(NSException *exception){
 {
     NSString *deviceTokens = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     deviceTokens = [deviceTokens stringByReplacingOccurrencesOfString:@" " withString:@""];
-    //[[UAPush shared] appRegisteredForRemoteNotificationsWithDeviceToken:deviceToken];
     
-  //  [[UAPush shared] registerDeviceToken:deviceToken];
     [[NSUserDefaults standardUserDefaults] setValue:deviceTokens forKey:@"DeviceToken"];
     NSLog(@"DeviceToken%@",deviceToken);
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-    NSLog(@"Error in registration. Error: %@", error);
+    NSLog(@"App Delegate -> Error in Remove Notification Registration: %@", error);
     [[NSUserDefaults standardUserDefaults] setValue:@"123456" forKey:@"DeviceToken"];
-
 }
 
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
@@ -386,37 +372,33 @@ void exceptionHandler(NSException *exception){
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    NSLog(@"userInfo%@", userInfo);
+    NSLog(@"Remote Notification Recieved: %@", userInfo);
     UIApplicationState state = [application applicationState];
     if (state == UIApplicationStateActive)
     {
-        NSString *message = [[userInfo valueForKey:@"aps"] valueForKey:@"alert"];
-        [METoast resetToastAttribute];
-        [METoast toastWithMessage:message];
-       // NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
+        //NSString *message = [[userInfo valueForKey:@"aps"] valueForKey:@"alert"];
+        //[METoast resetToastAttribute];
+        //[METoast toastWithMessage:message];
+       
+        NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
         
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     }
     else
     {
-        //[[UAPush shared] appReceivedRemoteNotification:userInfo applicationState:application.applicationState];
         // Reset the badge if you are using that functionality
-        //[[UAPush shared] resetBadge];
-        NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
-        
+        NSLog(@"Badge Number: %d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
+
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[UIApplication sharedApplication] applicationIconBadgeNumber]+1]; 
     }
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
-    //UA_LINFO(@"Received remote notification (in appDelegate): %@", userInfo);
-    
-    // Optionally provide a delegate that will be used to handle notifications received while the app is running
-    // [UAPush shared].pushNotificationDelegate = your custom push delegate class conforming to the UAPushNotificationDelegate protocol
-    
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
     // Reset the badge after a push is received in a active or inactive state
-    if (application.applicationState != UIApplicationStateBackground) {
-        //[[UAPush shared] resetBadge];
+    if (application.applicationState != UIApplicationStateBackground)
+    {
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     }
     
     completionHandler(UIBackgroundFetchResultNoData);

@@ -1405,7 +1405,8 @@
     NSLog(@"This is the response:  %@",responseString);
     if ([self.receiver valueForKey:@"nonuser"])
     {
-        if ([[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Your cash was sent successfully"])
+        if ([[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Your cash was sent successfully"] ||
+            [[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Your cash was sent successfully"])
         {
             [[assist shared] setTranferImage:nil];
             UIImage * imgempty = [UIImage imageNamed:@""];
@@ -1445,8 +1446,8 @@
         if (![[dictResultTransfer objectForKey:@"requestId"] isKindOfClass:[NSNull class]])
             transactionId=[dictResultTransfer valueForKey:@"requestId"];
     }
-    NSLog(@"%@",transactionId);
-    
+    NSLog(@"Transaction ID: %@",transactionId);
+
     if ([self.receiver valueForKey:@"FirstName"] != NULL || [self.receiver valueForKey:@"LastName"] != NULL)
     {
         [transactionInputTransfer setObject:[self.receiver valueForKey:@"FirstName"] forKey:@"FirstName"];

@@ -202,6 +202,22 @@
         }
         [self.view addSubview:scroll];
     }
+
+    // PUSH NOTIFICATION REGISTRATION
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+    {
+        NSLog(@"No way we're getting here before the Home screen...");
+        // Register for push in iOS 8.
+        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    }
+    else
+    {
+        // Register for push in iOS 7 and under.
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
+                                                                               UIUserNotificationTypeSound |
+                                                                               UIUserNotificationTypeAlert)];
+    }
 }
 
 -(void)attach_bank

@@ -172,7 +172,7 @@ static assist * _sharedInstance = nil;
     }
     [usr setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"] forKey:@"email"];
     
-     accountStore = [[ACAccountStore alloc] init];
+     /*accountStore = [[ACAccountStore alloc] init];
      if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
      {
          ACAccountType * facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
@@ -199,7 +199,7 @@ static assist * _sharedInstance = nil;
      
      } else {
          fbAllowed = NO;
-     }
+     }*/
 
     timer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
 
@@ -454,6 +454,7 @@ static assist * _sharedInstance = nil;
 }
 -(void)listen:(NSString *)result tagName:(NSString *)tagName
 {
+    NSLog(@"Assist.m CheckPoint LISTEN");
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound)
     {
         if (timer!=nil)
