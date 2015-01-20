@@ -67,7 +67,7 @@ NSMutableURLRequest *request;
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
-    backgroundImage.alpha = .3;
+    backgroundImage.alpha = .4;
     [self.view addSubview:backgroundImage];
 
     UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -484,7 +484,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             CFTypeRef emailIdValue = ABMultiValueCopyValueAtIndex(emailInfo, j);
             NSString * emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 
-            if (emailId != NULL)
+            if ( emailId != NULL &&
+                [emailId rangeOfString:@"@facebook.com"].location == NSNotFound)
             {
                 [curContact setObject:emailId forKey:@"UserName"];
                 [curContact setObject:emailId forKey:[NSString stringWithFormat:@"emailAdday%d",j]];
@@ -1639,7 +1640,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [self.selectedFavName setAlpha:0];
             [self.view addSubview: self.selectedFavName];
 
-            double totalduration = 0.7;
+            double totalduration = 0.8;
 
             [UIView animateKeyframesWithDuration:totalduration
                                            delay:0.02

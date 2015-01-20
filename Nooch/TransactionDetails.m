@@ -92,10 +92,10 @@
     user_picture.layer.cornerRadius = 39;
     user_picture.clipsToBounds = YES;
 
-    if( [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"] ||         // Transfers to Non-Noochers
-        [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"InviteRequest"] ||  // Requests to Non-Noochers coming straight from PIN screen
-	   ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
-       !([self.trans valueForKey:@"InvitationSentTo"] == NULL || [[self.trans objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]]) ) )
+    if ( [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"] ||         // Transfers to Non-Noochers
+         [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"InviteRequest"] ||  // Requests to Non-Noochers coming straight from PIN screen
+	    ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
+        !([self.trans valueForKey:@"InvitationSentTo"] == NULL || [[self.trans objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]]) ) )
     {
         BOOL containsLetters = NSNotFound != [[self.trans objectForKey:@"InvitationSentTo"] rangeOfCharacterFromSet:NSCharacterSet.letterCharacterSet].location;
         BOOL containsPunctuation = NSNotFound != [[self.trans objectForKey:@"InvitationSentTo"] rangeOfCharacterFromSet:NSCharacterSet.punctuationCharacterSet].location;
@@ -116,7 +116,12 @@
             [other_party setStyleClass:@"details_namePhoneNum"];
             [other_party setText:phoneWithSymbolsAddedBack];
         }
-        else if (containsLetters)
+        else if (containsPunctuation && [[self.trans objectForKey:@"InvitationSentTo"] rangeOfString:@"("].location == 0) // Server might send Phone Number formatted as (XXX) XXX-XXXX
+        {
+            [other_party setStyleClass:@"details_namePhoneNum"];
+            [other_party setText:[self.trans objectForKey:@"InvitationSentTo"]];
+        }
+        else // It's an email address
         {
             [other_party setStyleClass:@"details_othername_nonnooch"];
             [other_party setText:[self.trans objectForKey:@"InvitationSentTo"]];
@@ -1407,8 +1412,7 @@
         
         if (![[self.trans objectForKey:@"Latitude"] intValue] == 0 && ![[self.trans objectForKey:@"Longitude"] intValue] == 0)
         {
-            // self.trans=[loginResult mutableCopy];
-            NSLog(@"Latitude is : %f  & Longitude is: %f",[[self.trans objectForKey:@"Latitude"] floatValue],[[self.trans objectForKey:@"Longitude"] floatValue]);
+            //NSLog(@"Latitude is : %f  & Longitude is: %f",[[self.trans objectForKey:@"Latitude"] floatValue],[[self.trans objectForKey:@"Longitude"] floatValue]);
             
             lat = [[self.trans objectForKey:@"Latitude"] floatValue];
             lon = [[self.trans objectForKey:@"Longitude"] floatValue];
@@ -1667,7 +1671,7 @@
 
     if ([tagName isEqualToString:@"reject"])
     {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Request Rejected"
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Request Rejected"
                                                      message:@"You got it, you have rejected that request successfully."
                                                     delegate:nil
                                            cancelButtonTitle:@"OK"
@@ -1683,10 +1687,13 @@
         UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 320, 30)];
         [status setStyleClass: @"details_label"];
         [status setStyleId: @"details_status"];
+
         NSString *statusstr = @"Rejected";
         [status setStyleClass: @"red_text"];
         [status setText:statusstr];
         [self.view addSubview:status];
+
+        shouldDeletePendingRow = YES;
     }
 
     else if ([tagName isEqualToString:@"cancelRequestToExisting"] || [tagName isEqualToString:@"cancelRequestToNonNoochUser"])
@@ -1711,6 +1718,8 @@
         [status setStyleClass: @"red_text"];
         [status setText:statusstr];
         [self.view addSubview:status];
+
+        shouldDeletePendingRow = YES;
     }
 
     if ([tagName isEqualToString:@"cancel_invite"])
@@ -1722,6 +1731,7 @@
                                               otherButtonTitles:nil, nil];
         [alert show];
         [nav_ctrl popViewControllerAnimated:YES];
+        shouldDeletePendingRow = YES;
     }
 
     else if ([tagName isEqualToString:@"CancelMoneyTransferToNonMemberForSender"])
@@ -1738,10 +1748,13 @@
         UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 320, 30)];
         [status setStyleClass: @"details_label"];
         [status setStyleId: @"details_status"];
+
         NSString *statusstr = @"Cancelled";
         [status setStyleClass: @"red_text"];
         [status setText:statusstr];
         [self.view addSubview:status];
+
+        shouldDeletePendingRow = YES;
     }
 
     else if ([tagName isEqualToString:@"dispute"])

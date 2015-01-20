@@ -42,14 +42,6 @@
     return self;
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [self.navigationItem setTitle:@"History"];
-
-    [super viewWillAppear:animated];
-    self.screenName = @"HistoryFlat Screen";
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -149,21 +141,21 @@
         [completed_pending setSelectedSegmentIndex:1];
 
         [self.navigationItem setRightBarButtonItem:nil animated:YES];
-        
+
         UILabel *glyph_checkmark = [UILabel new];
         [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
         [glyph_checkmark setFrame:CGRectMake(21, 12, 22, 16)];
         [glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
         [glyph_checkmark setTextColor: kNoochBlue];
         [self.view addSubview:glyph_checkmark];
-        
+
         UILabel *glyph_pending = [UILabel new];
         [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
         [glyph_pending setFrame:CGRectMake(174, 12, 20, 16)];
         [glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
         [glyph_pending setTextColor: [UIColor whiteColor]];
         [self.view addSubview:glyph_pending];
-        
+
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         [imageCache clearMemory];
         [imageCache clearDisk];
@@ -187,35 +179,35 @@
         glyph_map.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         [glyph_map setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-map-marker"] forState:UIControlStateNormal];
         [glyph_map addTarget:self action:@selector(toggleMapByNavBtn) forControlEvents:UIControlEventTouchUpInside];
-        
+
         UIBarButtonItem *map = [[UIBarButtonItem alloc] initWithCustomView:glyph_map];
-        
+
         NSArray *topRightBtns = @[map,filt];
         [self.navigationItem setRightBarButtonItems:topRightBtns animated:YES];
 
         [completed_pending setSelectedSegmentIndex:0];
-    
+
         UILabel * glyph_checkmark = [UILabel new];
         [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
         [glyph_checkmark setFrame:CGRectMake(21, 12, 22, 16)];
         [glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
         [glyph_checkmark setTextColor:[UIColor whiteColor]];
         [self.view addSubview:glyph_checkmark];
-        
+
         UILabel * glyph_pending = [UILabel new];
         [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
         [glyph_pending setFrame:CGRectMake(174, 12, 20, 16)];
         [glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
         [glyph_pending setTextColor: kNoochBlue];
         [self.view addSubview:glyph_pending];
-    
+
         SDImageCache * imageCache = [SDImageCache sharedImageCache];
         [imageCache clearMemory];
         [imageCache clearDisk];
         [imageCache cleanDisk];
-    
+
         [self loadHist:@"ALL" index:index len:20 subType:subTypestr];
-        
+
         // Row count for scrolling
         countRows = 0;
     }
@@ -247,8 +239,8 @@
     [exportHistory addTarget:self action:@selector(ExportHistory:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:exportHistory];
     [self.view bringSubviewToFront:exportHistory];
-    
-    
+
+
     UISwipeGestureRecognizer * recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideright:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self.view addGestureRecognizer:recognizer];
@@ -270,6 +262,26 @@
     mapView_.myLocationEnabled = YES;
     mapView_.delegate = self;
     [mapArea addSubview:mapView_];
+
+    indexPathForDeletion = nil;
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.navigationItem setTitle:@"History"];
+    
+    [super viewWillAppear:animated];
+    self.screenName = @"HistoryFlat Screen";
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (shouldDeletePendingRow)
+    {
+        [self deleteTableRow:indexPathForDeletion];
+    }
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -1605,12 +1617,6 @@
 
                 if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
                 {
-                    UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(0, 311, 9, 72)];
-                    [indicator setBackgroundColor:[UIColor clearColor]];
-                    [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
-                    [indicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-left"]];
-                    [indicator setStyleClass:@"history_sidecolor_pending"];
-
                     UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
                     [amount setBackgroundColor:[UIColor clearColor]];
                     [amount setTextAlignment:NSTextAlignmentRight];
@@ -1697,7 +1703,18 @@
                     else {
                         [name setText:@""];
                     }
-                    
+
+                    if (![[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
+                    {
+                        UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(310, 0, 9, 80)];
+                        [indicator setBackgroundColor:kNoochBlue];
+                        [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
+                        [indicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-left"]];
+                        [indicator setTextColor:[UIColor whiteColor]];
+                        [indicator setTextAlignment:NSTextAlignmentCenter];
+                        [cell.contentView addSubview:indicator];
+                    }
+
                     [cell.contentView addSubview:transferTypeLabel];
                     [cell.contentView addSubview:name];
 
@@ -1783,8 +1800,6 @@
                         [cell.contentView addSubview:label_memo];
                         [name setStyleClass:@"history_cell_textlabel_wMemo"];
                     }
-                    [cell.contentView addSubview:indicator];
-
                 }
             }
 
@@ -1943,11 +1958,12 @@
 
                 if (![[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
                 {
-                    UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(0, 311, 9, 72)];
-                    [indicator setBackgroundColor:[UIColor clearColor]];
+                    UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(310, 0, 9, 80)];
+                    [indicator setBackgroundColor:kNoochBlue];
                     [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
                     [indicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-left"]];
-                    [indicator setStyleClass:@"history_sidecolor_pending"];
+                    [indicator setTextColor:[UIColor whiteColor]];
+                    [indicator setTextAlignment:NSTextAlignmentCenter];
                     [cell.contentView addSubview:indicator];
                 }
 
@@ -2092,6 +2108,10 @@
 
     if (self.completed_selected)
     {
+        if (indexPathForDeletion != nil) {
+            indexPathForDeletion = nil;
+        }
+
         if (isLocalSearch)
         {
             NSDictionary *dictRecord = [histTempCompleted objectAtIndex:indexPath.row];
@@ -2109,17 +2129,19 @@
     }
     else
     {
+        indexPathForDeletion = indexPath;
+
         if (isLocalSearch)
         {
-            NSDictionary *dictRecord=[histTempPending objectAtIndex:indexPath.row];
-            TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
+            NSDictionary * dictRecord = [histTempPending objectAtIndex:indexPath.row];
+            TransactionDetails * details = [[TransactionDetails alloc] initWithData:dictRecord];
             [self.navigationController pushViewController:details animated:YES];
             return;
         }
         if ([histShowArrayPending count] > indexPath.row)
         {
-            NSDictionary *dictRecord=[histShowArrayPending objectAtIndex:indexPath.row];
-            TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
+            NSDictionary * dictRecord = [histShowArrayPending objectAtIndex:indexPath.row];
+            TransactionDetails * details = [[TransactionDetails alloc] initWithData:dictRecord];
             [self.navigationController pushViewController:details animated:YES];
         }
     }
@@ -2285,13 +2307,13 @@
     }
 }
 
+#pragma mark - SWTableView
 - (BOOL)swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:(SWTableViewCell *)cell
 {
     // allow just one cell's utility button to be open at once
     return YES;
 }
 
-#pragma mark - SWTableView
 
 #pragma mark - searching
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
@@ -2907,6 +2929,11 @@
     int rowToRemove = rowNumber.row;
     [histShowArrayPending removeObjectAtIndex:rowToRemove];
     [self.list deleteRowsAtIndexPaths:@[rowNumber] withRowAnimation:UITableViewRowAnimationFade];
+
+    serve * getPendingCount = [serve new];
+    [getPendingCount setDelegate:self];
+    [getPendingCount setTagName:@"getPendingTransfersCount"];
+    [getPendingCount getPendingTransfersCount];
 }
 
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error

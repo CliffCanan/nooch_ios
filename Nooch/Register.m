@@ -1257,12 +1257,24 @@
         case 1:
             if ([self.name_field.text length] < 4 ||
                 [self.name_field.text rangeOfString:@" "].location == NSNotFound ||
-                [self.name_field.text rangeOfString:@" "].location > [self.name_field.text length] - 3)
+                [self.name_field.text rangeOfString:@" "].location > [self.name_field.text length] - 3)// ||
+                //[self.name_field.text rangeOfString:@"-"].location > [self.name_field.text length] - 3 ||
+                //[self.name_field.text rangeOfString:@"."].location > [self.name_field.text length] - 3)
             {
                 if ([self.name_field.text length] > 2)
                 {
                     [self.fullNameInstruc setHidden:NO];
                 }
+                [self.nameValidator setHidden:NO];
+                [self.name_field becomeFirstResponder];
+            }
+            else if (([self.name_field.text rangeOfString:@"-"].location != NSNotFound &&
+                     ([self.name_field.text rangeOfString:@"-"].location > [self.name_field.text length] - 3 ||
+                      [self.name_field.text rangeOfString:@"-"].location < 2)) ||
+                     ([self.name_field.text rangeOfString:@"."].location != NSNotFound &&
+                     ([self.name_field.text rangeOfString:@"."].location > [self.name_field.text length] - 3 ||
+                      [self.name_field.text rangeOfString:@"."].location < 2)))
+            {
                 [self.nameValidator setHidden:NO];
                 [self.name_field becomeFirstResponder];
             }

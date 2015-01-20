@@ -22,6 +22,10 @@
 @property(nonatomic,strong) UIImageView*noContact_img;
 @property(nonatomic, strong) UILabel * glyph_recent;
 @property(nonatomic, strong) UILabel * glyph_location;
+@property(nonatomic, strong) UILabel * glyph_emptyLoc;
+@property(nonatomic, strong) UILabel * emptyLocBody;
+@property(nonatomic, strong) UILabel * emptyLocHdr;
+@property(nonatomic, strong) UIImageView * backgroundImage;
 @end
 
 @implementation SelectRecipient
@@ -86,7 +90,7 @@
 
     self.glyph_recent = [UILabel new];
     [self.glyph_recent setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-    [self.glyph_recent setFrame:CGRectMake(32, 12, 22, 18)];
+    [self.glyph_recent setFrame:CGRectMake(32, 12, 22, 19)];
     [self.glyph_recent setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
     [self.glyph_recent setTextColor:[UIColor whiteColor]];
     [self.glyph_recent setAlpha: 1];
@@ -94,7 +98,7 @@
 
     self.glyph_location = [UILabel new];
     [self.glyph_location setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-    [self.glyph_location setFrame:CGRectMake(168, 12, 20, 17)];
+    [self.glyph_location setFrame:CGRectMake(168, 12, 20, 18)];
     [self.glyph_location setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-map-marker"]];
     [self.glyph_location setTextColor: kNoochBlue];
     [self.glyph_location setAlpha: 1];
@@ -593,6 +597,8 @@
     
     if (sender.selectedSegmentIndex == 0)
     {
+        self.location = NO;
+
         RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
         spinner1.color = [UIColor whiteColor];
         self.hud.customView = spinner1;
@@ -602,22 +608,6 @@
         [self.glyph_recent setTextColor: [UIColor whiteColor]];
         [self.glyph_location setTextColor: kNoochBlue];
 
-        self.location = NO;
-
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.45];
-
-        CGRect frame = self.contacts.frame;
-        frame.origin.y = 82;
-        frame.size.height = [[UIScreen mainScreen] bounds].size.height - 147;
-        [self.contacts setFrame:frame];
-        [search setHidden:NO];
-        [UIView commitAnimations];
-        
-        if ([self.view.subviews containsObject:self.noContact_img]) {
-            [self.noContact_img removeFromSuperview];
-        }
-    
         serve *recents = [serve new];
         [recents setTagName:@"recents"];
         [recents setDelegate:self];
@@ -625,6 +615,21 @@
     } 
     else
     {
+        if ([self.view.subviews containsObject:self.noContact_img])
+        {
+            [UIView animateKeyframesWithDuration:.3
+                                           delay:0
+                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                      animations:^{
+                                          [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                              [self.noContact_img setAlpha:0];
+                                          }];
+                                      } completion: ^(BOOL finished){
+                                          [self.noContact_img removeFromSuperview];
+                                      }
+             ];
+        }
+
         [self.glyph_recent setTextColor:kNoochBlue];
         [self.glyph_location setTextColor: [UIColor whiteColor]];
 
@@ -644,7 +649,6 @@
                                                  forEvent:nil];
         }
         [locationManager startUpdatingLocation];
-
 
         self.location = YES;
 
@@ -674,6 +678,7 @@
             {
                 searchRadiusString = @"12";
             }
+
             serve * ser = [serve new];
             ser.tagName = @"searchByLocation";
             [ser setDelegate:self];
@@ -681,24 +686,77 @@
         }
         else
         {
-            [self.hud hide:YES];
-
-            [self.contacts setHidden:YES];
-            //self.noContact_img = [[UIImageView alloc] init];
-            
-            if (IS_IPHONE_5)
-            {
-                self.noContact_img.frame = CGRectMake(0, 72, 320, 405);
-                self.noContact_img.image = [UIImage imageNamed:@"selectRecipientIntro.png"];
-            }
-            else
-            {
-                self.noContact_img.frame = CGRectMake(3, 75, 314, 340);
-                self.noContact_img.image = [UIImage imageNamed:@"selectRecipientIntro_smallScreen.png"];
-            }
-            [self.view addSubview:self.noContact_img];
+            [self displayEmpty_SearchByLocation];
         }
     }
+}
+
+-(void)displayEmpty_SearchByLocation
+{
+    [self.hud hide:YES];
+    self.backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
+    [self.backgroundImage setAlpha:0];
+    [self.view addSubview:self.backgroundImage];
+    [self.view sendSubviewToBack:self.backgroundImage];
+
+    NSShadow * shadow_white = [[NSShadow alloc] init];
+    shadow_white.shadowColor = [UIColor whiteColor];
+    shadow_white.shadowOffset = CGSizeMake(0, 1.0);
+    NSDictionary * shadowWhite = @{NSShadowAttributeName: shadow_white};
+
+    NSShadow * shadow_Dark = [[NSShadow alloc] init];
+    shadow_Dark.shadowColor = Rgb2UIColor(88, 90, 92, .8);
+    shadow_Dark.shadowOffset = CGSizeMake(0, -2.5);
+    NSDictionary * shadowDark = @{NSShadowAttributeName: shadow_Dark};
+
+    self.glyph_emptyLoc = [[UILabel alloc] initWithFrame:CGRectMake(20, 70, 280, 74)];
+    [self.glyph_emptyLoc setFont:[UIFont fontWithName:@"FontAwesome" size:72]];
+    self.glyph_emptyLoc.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-map-marker"] attributes:shadowDark];
+    [self.glyph_emptyLoc setTextAlignment:NSTextAlignmentCenter];
+    [self.glyph_emptyLoc setTextColor: kNoochGrayLight];
+    [self.glyph_emptyLoc setAlpha:0];
+    [self.view addSubview:self.glyph_emptyLoc];
+
+    self.emptyLocHdr = [[UILabel alloc] initWithFrame:CGRectMake(20, 146, 280, 40)];
+    [self.emptyLocHdr setFont:[UIFont fontWithName:@"Roboto-regular" size: 23]];
+    self.emptyLocHdr.attributedText = [[NSAttributedString alloc] initWithString:@"No Nearby Noochers" attributes:shadowWhite];
+    [self.emptyLocHdr setTextColor:kNoochGrayLight];
+    [self.emptyLocHdr setTextAlignment:NSTextAlignmentCenter];
+    [self.emptyLocHdr setAlpha:0];
+    [self.view addSubview: self.emptyLocHdr];
+    
+    self.emptyLocBody = [[UILabel alloc] initWithFrame:CGRectMake(16, 185, 288, 95)];
+    [self.emptyLocBody setFont:[UIFont fontWithName:@"Roboto-light" size: 18]];
+    self.emptyLocBody.attributedText = [[NSAttributedString alloc] initWithString:@"There are no other Nooch users nearby. Tap 'Recent' to select a contact from your address book or list of recent friends." attributes:shadowWhite];
+    [self.emptyLocBody setTextColor:kNoochGrayLight];
+    [self.emptyLocBody setTextAlignment:NSTextAlignmentCenter];
+    [self.emptyLocBody setNumberOfLines:0];
+    [self.emptyLocBody setAlpha:0];
+    [self.view addSubview: self.emptyLocBody];
+
+    [UIView animateKeyframesWithDuration:0.5
+                                   delay:0
+                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      self.contacts.alpha = 0;
+                                      [self.backgroundImage setAlpha: .5];
+
+                                      [self.emptyLocHdr setAlpha:1];
+                                      [self.emptyLocBody setAlpha:1];
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
+                                      [self.glyph_emptyLoc setAlpha:.4];
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.8 animations:^{
+                                      [self.glyph_emptyLoc setStyleClass:@"animate_bubble"];
+                                      [self.glyph_emptyLoc setAlpha:1];
+                                  }];
+                              } completion: ^(BOOL finished){
+                                  [self.glyph_emptyLoc setAlpha:1];
+                                  [search setHidden:YES];
+                              }
+     ];
 }
 
 # pragma mark - CLLocationManager Delegate Methods
@@ -757,7 +815,7 @@
                                                            delegate:Nil
                                                   cancelButtonTitle:@"Ok"
                                                   otherButtonTitles:Nil, nil];
-            [alert show];
+            //[alert show];
 
             return NO;
         }
@@ -1406,7 +1464,7 @@
             //NSLog(@"%@",arrRequestPersons);
 
             [self.contacts reloadData];
-            return;
+            //return;
         }
 
         if ([self.recents count] > 0)
@@ -1417,24 +1475,74 @@
             }
 
             [self.contacts setHidden:NO];
+
             [self.contacts setStyleId:@"select_recipient"];
             [self.contacts reloadData];
+
+            [UIView animateKeyframesWithDuration:.45
+                                           delay:0
+                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                      animations:^{
+                                          [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.6 animations:^{
+                                              [self.backgroundImage setAlpha: 0];
+                                              [self.glyph_emptyLoc setAlpha:0];
+                                              [self.emptyLocHdr setAlpha:0];
+                                              [self.emptyLocBody setAlpha:0];
+                                              [search setHidden:NO];
+                                          }];
+                                          [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.8 animations:^{
+                                              CGRect frame = self.contacts.frame;
+                                              frame.origin.y = 82;
+                                              frame.size.height = [[UIScreen mainScreen] bounds].size.height - 147;
+                                              [self.contacts setFrame:frame];
+                                          }];
+                                          [UIView addKeyframeWithRelativeStartTime:.4 relativeDuration:1 animations:^{
+                                              [self.contacts setAlpha: 1];
+                                          }];
+                                      } completion: ^(BOOL finished){
+                                          nil;
+                                      }
+             ];
         }
         else
         {
-            [self.contacts setHidden:YES];
-
             if (IS_IPHONE_5)
             {
                 self.noContact_img.frame = CGRectMake(0, 82, 320, 405);
-                self.noContact_img.image = [UIImage imageNamed:@"selectRecipientIntro.png"];
+                self.noContact_img.image = [UIImage imageNamed:@"selectRecipIntro.png"];
             }
             else
             {
                 self.noContact_img.frame = CGRectMake(3, 79, 314, 340);
-                self.noContact_img.image = [UIImage imageNamed:@"selectRecipientIntro_smallScreen.png"];
+                self.noContact_img.image = [UIImage imageNamed:@"selectRecipIntro_4.png"];
             }
+            [self.noContact_img setAlpha:0];
             [self.view addSubview:self.noContact_img];
+
+            [UIView animateKeyframesWithDuration:.45
+                                           delay:0
+                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                      animations:^{
+                                          [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.6 animations:^{
+                                              [self.backgroundImage setAlpha: 0];
+                                              [self.glyph_emptyLoc setAlpha:0];
+                                              [self.emptyLocHdr setAlpha:0];
+                                              [self.emptyLocBody setAlpha:0];
+                                              [search setHidden:NO];
+                                              [self.contacts setAlpha: 0];
+                                          }];
+                                          [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.8 animations:^{
+                                              CGRect frame = self.contacts.frame;
+                                              frame.origin.y = 82;
+                                              frame.size.height = [[UIScreen mainScreen] bounds].size.height - 147;
+                                              [self.contacts setFrame:frame];
+
+                                              [self.noContact_img setAlpha:1];
+                                          }];
+                                      } completion: ^(BOOL finished){
+                                          [self.contacts setHidden:YES];
+                                      }
+             ];
         }
     }
 
@@ -1471,37 +1579,7 @@
         }
         else
         {
-            [self.contacts setHidden:YES];
-
-            if (!self.location)
-            {
-                if (IS_IPHONE_5)
-                {
-                    self.noContact_img.frame = CGRectMake(0, 82, 320, 405);
-                    self.noContact_img.image = [UIImage imageNamed:@"selectRecipientIntro.png"];
-                }
-                else
-                {
-                    self.noContact_img.frame = CGRectMake(3, 79, 314, 340);
-                    self.noContact_img.image = [UIImage imageNamed:@"selectRecipientIntro_smallScreen.png"];
-                }
-            }
-            else
-            {
-                if (IS_IPHONE_5)
-                {
-                    self.noContact_img.frame = CGRectMake(0, 72, 320, 405);
-                    self.noContact_img.image = [UIImage imageNamed:@"selectRecipientIntro.png"];
-                }
-                else
-                {
-                    self.noContact_img.frame = CGRectMake(3, 72, 314, 340);
-                    self.noContact_img.image = [UIImage imageNamed:@"selectRecipientIntro_smallScreen.png"];
-                }
-                [self.noContact_img setStyleClass:@"animate_bubble"];
-            }
-
-            [self.view addSubview:self.noContact_img];
+            [self displayEmpty_SearchByLocation];
         }
     }
 

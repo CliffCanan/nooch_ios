@@ -864,7 +864,7 @@ view {
     box-shadow	: 0 2px 2px rgba(109,110,112,0.45);
 }
 .raised_view_carousel {
-    box-shadow	: 0px 3px 3px rgba(109,110,112,0.3);
+    box-shadow	: 0px 3px 3px rgba(109,110,112,0.34);
 }
 .raised_view_AptScrn {
     box-shadow	: 1px 2px 1px rgba(109,110,112,0.4);
@@ -2547,9 +2547,9 @@ table-view#emptyTable {
 
 /**  Amount of the PENDING Transfer on the right side of the row (Only on the Pending Tab)  **/
 .history_pending_transferamount {
-    left				: 227px;
+    left				: 223px;
     top					: 20px;
-    width				: 81px;
+    width				: 82px;
     height				: 20px;
     font-family			: "Roboto";
     font-weight         : medium;
@@ -2601,17 +2601,6 @@ table-view#emptyTable {
 .history_sidecolor_pos {background-color		: #72bf44;}
 .history_sidecolor_neg {background-color		: #d2232a;}
 .history_sidecolor_neutral {background-color	: #3fabe1;}
-.history_sidecolor_donate {background-color	: #5a538d;}
-
-.history_sidecolor_pending {
-    top                 : 0px;
-    left                : 311px;
-    width               : 9px;
-    height              : 80px;
-    background-color	: #3fabe1;
-    color               : #fff;
-    text-align          : center;
-}
 
 .titlelbl {
    width				: 300px;
@@ -2639,10 +2628,10 @@ table-view#emptyTable {
     color 				: #313233;
 }
 .details_namePhoneNum {
-    width				: 250px;
+    width				: 235px;
     height				: 30px;
     top					: 25px;
-    left                : 80px;
+    left                : 75px;
     font-family			: "Roboto";
     font-weight         : regular;
     font-size			: 22px;
