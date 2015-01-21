@@ -82,6 +82,7 @@ NSMutableURLRequest *request;
     NSMutableDictionary * loadInfo;
     if ([core isAlive:[self autoLogin]])
     {
+        NSLog(@"Home CheckPoint #1");
         if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"NotificationPush"]intValue] == 1)
         {
             ProfileInfo *prof = [ProfileInfo new];
@@ -91,6 +92,7 @@ NSMutableURLRequest *request;
             isFromSettingsOptions = NO;
             isProfileOpenFromSideBar = NO;
             sentFromHomeScrn = YES;
+            NSLog(@"Home CheckPoint #2");
         }
 
         me = [core new];
@@ -99,9 +101,11 @@ NSMutableURLRequest *request;
         [[NSUserDefaults standardUserDefaults] setValue:[loadInfo valueForKey:@"MemberId"] forKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] setValue:[loadInfo valueForKey:@"UserName"] forKey:@"UserName"];
         [me birth];
+        NSLog(@"Home CheckPoint #3");
     }
     else
     {
+        NSLog(@"Home CheckPoint #4");
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
@@ -129,6 +133,7 @@ NSMutableURLRequest *request;
 
     if ([user objectForKey:@"facebook_id"])
     {
+        NSLog(@"Home CheckPoint #5");
         serve * fb = [serve new];
         [fb setDelegate:self];
         [fb setTagName:@"fb"];
@@ -576,8 +581,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 - (NSString *)autoLogin
 {
+    
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSLog(@"Home CheckPoint #6 --> documentsDirectory is: %@", documentsDirectory);
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
 }
 
@@ -585,22 +592,25 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     [super viewDidAppear:animated];
     bannerAlert = 0;
-
+    NSLog(@"Home CheckPoint #7");
     [self.navigationItem setTitle:@"Nooch"];
     //Update Pending Status
     NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
 
     if (![[assist shared]isPOP])
     {
+        NSLog(@"Home CheckPoint #8");
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
         
         if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]])
         {
+            NSLog(@"Home CheckPoint #9");
             //push login
             return;
         }
         if ([[assist shared]needsReload])
         {
+            NSLog(@"Home CheckPoint #10");
             RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleCircleFlip];
             spinner1.color = [UIColor clearColor];
             self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
@@ -617,6 +627,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
         {
+            NSLog(@"Home CheckPoint #11");
             serve *serveOBJ = [serve new ];
             [serveOBJ setTagName:@"sets"];
             [serveOBJ getSettings];
@@ -624,10 +635,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
     else
     {
+        NSLog(@"Home CheckPoint #12");
         //Register *reg = [Register new];
         //[nav_ctrl pushViewController:reg animated:YES];
         me = [core new];
-        //[ARProfileManager clearProfile];
+        [ARProfileManager clearProfile];
         return;
     }
 
@@ -771,6 +783,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
     else if ([[user valueForKey:@"Status"]isEqualToString:@"Active"])
     {
+        NSLog(@"Home CheckPoint #13");
         if (bannerAlert > 0) {
             bannerAlert--;
         }
@@ -1036,7 +1049,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     [self.view addSubview:top_button];
 
-    //NSLog(@"Banner count is: %d",bannerAlert);
+    NSLog(@"Banner count is: %d",bannerAlert);
     int carouselTop;
     if (bannerAlert == 1)
     {
@@ -1139,9 +1152,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     _carousel.dataSource = self;
     [self.view addSubview:_carousel];
 
+    NSLog(@"Home CheckPoint #14");
     if (![[assist shared]isPOP])
     {
-        // NSLog(@"1.) Home --> ![[assist shared]isPOP]");
+        NSLog(@"Home CheckPoint #15");
 
         self.slidingViewController.panGesture.enabled = YES;
         [self.view addGestureRecognizer:self.slidingViewController.panGesture];
@@ -1178,6 +1192,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     {
         [ARProfileManager setStringValue:@"NO" forVariable:@"IsBankAttached"];
     }
+    NSLog(@"Home CheckPoint #16");
 }
 
 -(void)GetFavorite
@@ -1222,10 +1237,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [super viewWillAppear:animated];
     self.screenName = @"Home Screen";
 
+    NSLog(@"Home CheckPoint #17");
     NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] &&
         [[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"])
     {
+        NSLog(@"Home CheckPoint #18");
         [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
         [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
         [automatic writeToFile:[self autoLogin] atomically:YES];
@@ -1236,6 +1253,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [getPendingCount setTagName:@"getPendingTransfersCount"];
     [getPendingCount getPendingTransfersCount];
 
+    NSLog(@"Home CheckPoint #19");
     //do carousel
     [self.view addSubview:_carousel];
     [_carousel reloadData];

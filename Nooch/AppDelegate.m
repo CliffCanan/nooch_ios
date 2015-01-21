@@ -22,6 +22,7 @@ bool modal;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSLog(@"App Delegate CheckPoint A");
     inBack = NO;
     [Appirater setAppId:@"917955306"];
     [Appirater setDaysUntilPrompt:7];
@@ -128,16 +129,16 @@ bool modal;
 
     [ARManager startWithAppId:@"5487d09c2b22204361000011"];
 
-    [self application:nil handleOpenURL:[NSURL URLWithString:@"Nooch:"]];
-    [self.window makeKeyAndVisible];
+    
 
-    [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"VersionUpdateNoticeDisplayed"];
-
+    //[[NSUserDefaults standardUserDefaults] setBool:false forKey:@"VersionUpdateNoticeDisplayed"];
+    NSLog(@"App Delegate CheckPoint B");
     return YES;
 }
 
 -(void)connectCheck:(NSNotification *)notice
 {
+    NSLog(@"App Delegate CheckPoint *ConnectCheck*");
     Reachability* curReach = [notice object];
     NSParameterAssert([curReach isKindOfClass: [Reachability class]]);
     NetworkStatus netStat = [curReach currentReachabilityStatus];
@@ -226,8 +227,7 @@ void exceptionHandler(NSException *exception){
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    // Set the icon badge to zero on resume (optional)
-    //[[UAPush shared] resetBadge];
+    NSLog(@"App Delegate CheckPoint C");
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 
     // Call the 'activateApp' method to log an app event for use in analytics and advertising reporting.

@@ -947,7 +947,7 @@
 
     isPayBack = YES;
     [[assist shared]setRequestMultiple:NO];
-    isEmailEntry = NO;
+
     // NSLog(@"%@",self.trans);
     HowMuch *payback = [[HowMuch alloc] initWithReceiver:input];
     [self.navigationController pushViewController:payback animated:YES];

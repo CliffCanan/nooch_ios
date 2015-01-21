@@ -431,7 +431,9 @@ static assist * _sharedInstance = nil;
     sets.tagName = @"sets";
     [sets getSettings];
 }
--(void)getAcctInfo{
+-(void)getAcctInfo
+{
+    NSLog(@"Assist.m CheckPoint getAccntInfo");
     if (!islogout) {
         serve * info = [serve new];
         info.Delegate = self;
@@ -445,6 +447,7 @@ static assist * _sharedInstance = nil;
 #pragma mark - file paths
 - (NSString *)autoLogin
 {
+    NSLog(@"Assist.m CheckPoint A");
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];

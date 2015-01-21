@@ -23,6 +23,7 @@
 @property(nonatomic, strong) UILabel * glyph_recent;
 @property(nonatomic, strong) UILabel * glyph_location;
 @property(nonatomic, strong) UILabel * glyph_emptyLoc;
+@property(nonatomic, strong) UILabel * glyphEmail;
 @property(nonatomic, strong) UILabel * emptyLocBody;
 @property(nonatomic, strong) UILabel * emptyLocHdr;
 @property(nonatomic, strong) UIImageView * backgroundImage;
@@ -41,13 +42,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-  
-   /* if ([user valueForKey:@"facebook_id"] && ![[user valueForKey:@"facebook_id"] length] > 0)
+
+    /*if ([user valueForKey:@"facebook_id"] && ![[user valueForKey:@"facebook_id"] length] > 0)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connect with Facebook" message:@"Do you want to connect with your facebook friends?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Lator",nil];
         [av show];
         av.tag=6;
-    } */
+    }*/
 
     self.location = NO;
     self.navigationController.navigationBar.topItem.title = @"";
@@ -66,7 +67,6 @@
     [self.navigationItem setLeftBarButtonItem:menu];
 
     isPayBack = NO;
-    isEmailEntry = NO;
     isAddRequest = NO;
     if ([[assist shared] isRequestMultiple]) {
         isAddRequest=YES;
@@ -145,15 +145,21 @@
     self.hud.customView = spinner1;
     self.hud.delegate = self;
     self.hud.labelText = @"Building Your Recent List";
-    [self.hud show:YES];
+    //[self.hud show:YES];
 
     self.noContact_img = [[UIImageView alloc] init];
     self.noContact_img.contentMode = UIViewContentModeScaleAspectFit;
+
+    self.glyphEmail = [[UILabel alloc] initWithFrame:CGRectMake(115, 125, 30, 30)];
+    [self.glyphEmail setTextColor:kNoochPurple];
+    [self.glyphEmail setAlpha:.2];
+    [self.view addSubview:self.glyphEmail];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
     [search setHidden:NO];
     self.screenName = @"SelectRecipient Screen";
 
@@ -246,40 +252,69 @@
         [[assist shared]setRequestMultiple:NO];
         [self.completed_pending setSelectedSegmentIndex:0];
         self.location = NO;
-        isUserByLocation = NO;
-        isRecentList = YES;
-        searching = NO;
-        emailEntry = NO;
 
-        search.text = @"";
-        [search setShowsCancelButton:NO];
-        [search resignFirstResponder];
+        if (emailEntry || phoneNumEntry)
+        {
+            //[search becomeFirstResponder];
+            [self searchBarTextDidBeginEditing:search];
+        }
+        else
+        {
+            if ([self.recents count] == 0)
+            {
+                [self.contacts setHidden:YES];
+                [self.view addSubview: self.noContact_img];
+            }
 
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:1];
+            [self.glyphEmail setAlpha: 0];
+            
+            [self.completed_pending setTintColor:kNoochBlue];
+            [search setTintColor:kNoochBlue];
 
-        CGRect frame = self.contacts.frame;
-        frame.origin.y = 82;
-        frame.size.height = [[UIScreen mainScreen] bounds].size.height - 147;
-        [self.contacts setFrame:frame];
-        [UIView commitAnimations];
+            isphoneBook = NO;
+            isUserByLocation = NO;
+            isRecentList = YES;
+            searching = NO;
+            
+            search.text = @"";
+            [search resignFirstResponder];
+            search.searchBarStyle = UISearchBarStyleMinimal;
+            [search setShowsCancelButton:NO animated:YES];
+            [self.contacts setStyleId:@"select_recipient"];
+
+            if (navIsUp == YES) {
+                navIsUp = NO;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSLog(@"Checkpoint ALPHA");
+                    [self lowerNavBar];
+                });
+            }
+
+            
+            [UIView beginAnimations:nil context:nil];
+            [UIView setAnimationDuration:0.15];
+            [self.contacts setAlpha:0];
+            [UIView commitAnimations];
+
+            RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
+            spinner1.color = [UIColor whiteColor];
+            self.hud.customView = spinner1;
+            self.hud.labelText = @"Loading your recent list...";
+            [self.hud show:YES];
+            
+            serve * recents = [serve new];
+            [recents setTagName:@"recents"];
+            [recents setDelegate:self];
+            [recents getRecents];
+        }
     }
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [search setTintColor:kNoochBlue];
 
     //[self facebook];
-
-    if (!isEmailEntry && !isphoneBook)
-    {
-        serve * recents = [serve new];
-        [recents setTagName:@"recents"];
-        [recents setDelegate:self];
-        [recents getRecents];
-    }
 
     if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
         ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted)
@@ -311,11 +346,17 @@
         });
         NSLog(@"AB Not determined");
     }
-
 }
 
 -(void)viewDidDisappear:(BOOL)animated
 {
+    if (!emailEntry && !phoneNumEntry)
+    {
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:.15];
+        [self.contacts setAlpha:0];
+        [UIView commitAnimations];
+    }
     [self.hud hide:YES];
     [super viewDidDisappear:animated];
 }
@@ -635,21 +676,26 @@
 
         //location
         locationManager = [[CLLocationManager alloc] init];
-        
+
         locationManager.delegate = self;
         locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
         locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
-        
-        if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) { // iOS8+
-            // Sending a message to avoid compile time error
-            
-            [[UIApplication sharedApplication] sendAction:@selector(requestWhenInUseAuthorization)
-                                                       to:locationManager
-                                                     from:self
-                                                 forEvent:nil];
-        }
-        [locationManager startUpdatingLocation];
 
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)
+        {
+            if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) { // iOS8+
+                // Sending a message to avoid compile time error
+                
+                [[UIApplication sharedApplication] sendAction:@selector(requestWhenInUseAuthorization)
+                                                           to:locationManager
+                                                         from:self
+                                                     forEvent:nil];
+            }
+        }
+        else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+        {
+            [locationManager startUpdatingLocation];
+        }
         self.location = YES;
 
         [UIView beginAnimations:nil context:nil];
@@ -705,7 +751,7 @@
     NSDictionary * shadowWhite = @{NSShadowAttributeName: shadow_white};
 
     NSShadow * shadow_Dark = [[NSShadow alloc] init];
-    shadow_Dark.shadowColor = Rgb2UIColor(88, 90, 92, .8);
+    shadow_Dark.shadowColor = Rgb2UIColor(88, 90, 92, .85);
     shadow_Dark.shadowOffset = CGSizeMake(0, -2.5);
     NSDictionary * shadowDark = @{NSShadowAttributeName: shadow_Dark};
 
@@ -806,7 +852,7 @@
             NSLog(@"Location Services Allowed");
             return YES;
         }
-        else
+        else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied)
         {
             NSLog(@"Location Services NOT Allowed");
 
@@ -984,6 +1030,8 @@
     isphoneBook = NO;
     isRecentList = YES;
 
+    [self.glyphEmail setAlpha: 0];
+
     [self.completed_pending setTintColor:kNoochBlue];
 
     searchBar.searchBarStyle = UISearchBarStyleMinimal;
@@ -1053,7 +1101,13 @@
     [searchBar setKeyboardType:UIKeyboardTypeEmailAddress];
 }
 
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+-(void)startedSearching
+{
+    
+}
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
     return YES;
 }
 
@@ -1066,6 +1120,8 @@
         phoneNumEntry = NO;
         isRecentList = YES;
 
+        [self.glyphEmail setAlpha:0];
+
         return;
     }
 
@@ -1077,6 +1133,7 @@
         [self.contacts setHidden:NO];
 
         searching = YES;
+
         NSRange isRange = [searchText rangeOfString:[NSString stringWithFormat:@"@"] options:NSCaseInsensitiveSearch];
 
         if (isRange.location != NSNotFound)
@@ -1089,7 +1146,27 @@
             isRecentList = NO;
             searchString = searchText;
 
-            if (isRange.location < searchText.length - 1) {
+            [self.glyphEmail setFont:[UIFont fontWithName:@"FontAwesome" size:22]];
+            [self.glyphEmail setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope-o"]];
+            int leftValue = ([[UIScreen mainScreen] bounds].size.width / 2) - 42 - (4.9 * [searchString length]);
+            if (leftValue < 3)
+            {
+                [UIView beginAnimations:nil context:nil];
+                [UIView setAnimationDuration:.15];
+                [self.glyphEmail setAlpha:0];
+                [UIView commitAnimations];
+            }
+            else
+            {
+                [UIView beginAnimations:nil context:nil];
+                [UIView setAnimationDuration:.18];
+                [self.glyphEmail setAlpha: 1];
+                [self.glyphEmail setFrame:CGRectMake(leftValue, 125, 30, 30)];
+                [UIView commitAnimations];
+            }
+
+            if (isRange.location < searchText.length - 1)
+            {
                 shouldAnimate = NO;
             }
 
@@ -1114,8 +1191,20 @@
                                              withString:@""];
 
             NSCharacterSet * notDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
-            if ([s rangeOfCharacterFromSet:notDigits].location == NSNotFound)
+            if ([s rangeOfCharacterFromSet:notDigits].location == NSNotFound &&
+                [searchText length] > 3)
             {
+                if (s.length > 3)
+                {
+                    phoneNumEntry = YES;
+                    searching = NO;
+                    searchString = searchBar.text;
+                }
+                if (s.length > 4)
+                {
+                    shouldAnimate = NO;
+                }
+
                 if (s.length == 4)
                 {
                     NSMutableString * mu = [NSMutableString stringWithString:s];
@@ -1141,15 +1230,33 @@
                     searchBar.text = phoneWithSymbolsAddedBack;
                 }
 
-                if (s.length > 3)
+                if (phoneNumEntry && [s length] > 3)
                 {
-                    phoneNumEntry = YES;
-                    searching = NO;
-                    searchString = searchBar.text;
+                    [self.glyphEmail setFont:[UIFont fontWithName:@"FontAwesome" size:25]];
+                    [self.glyphEmail setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-mobile"]];
+                    int leftValue = ([[UIScreen mainScreen] bounds].size.width / 2) - 38 - (4.5 * [searchString length]);
+                    if (leftValue < 3)
+                    {
+                        [UIView beginAnimations:nil context:nil];
+                        [UIView setAnimationDuration:.2];
+                        [self.glyphEmail setAlpha:0];
+                        [UIView commitAnimations];
+                    }
+                    else
+                    {
+                        [UIView beginAnimations:nil context:nil];
+                        [UIView setAnimationDuration:.2];
+                        [self.glyphEmail setFrame:CGRectMake(leftValue, 125, 30, 30)];
+                        [self.glyphEmail setAlpha: 1];
+                        [UIView commitAnimations];
+                    }
                 }
-                if (s.length > 4)
+                else
                 {
-                    shouldAnimate = NO;
+                    [UIView beginAnimations:nil context:nil];
+                    [UIView setAnimationDuration:.15];
+                    [self.glyphEmail setAlpha: 0];
+                    [UIView commitAnimations];
                 }
             }
             else
@@ -1158,6 +1265,7 @@
                 shouldAnimate = NO;
                 searching = YES;
                 searchString = searchText;
+                [self.glyphEmail setAlpha:0];
                 [self searchTableView];
             }
         }
@@ -1183,6 +1291,8 @@
 
         NSComparisonResult result;
         NSComparisonResult result2;
+        NSComparisonResult result3;
+
         if ([dict valueForKey:@"FirstName"])
         {
             result = [[dict valueForKey:@"FirstName"] compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
@@ -1199,7 +1309,17 @@
             result2 = true;
         }
 
-        if ((result == NSOrderedSame || result2 == NSOrderedSame) &&
+        if ([dict valueForKey:@"LastName"] &&
+            [dict valueForKey:@"FirstName"])
+        {
+            NSString * fullName = [NSString stringWithFormat:@"%@ %@", [dict valueForKey:@"FirstName"], [dict valueForKey:@"LastName"]];
+            result3 = [fullName compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
+        }
+        else {
+            result3 = true;
+        }
+
+        if ((result == NSOrderedSame || result2 == NSOrderedSame || result3 == NSOrderedSame) &&
             (dict[@"FirstName"] || dict[@"LastName"]))
         {
             [arrSearchedRecords addObject:dict];
@@ -1219,8 +1339,6 @@
 #pragma mark - Email From Address Book handling
 -(void)getMemberIdByUsingUserNameFromPhoneBook
 {
-    [search resignFirstResponder];
-
     if ([emailphoneBook isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]])
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Try That Again"
@@ -1233,6 +1351,8 @@
     }
     else
     {
+        [search resignFirstResponder];
+
         serve *emailCheck = [serve new];
         emailCheck.Delegate = self;
         emailCheck.tagName = @"emailCheck";
@@ -1243,7 +1363,6 @@
 #pragma mark - Manually Entered Email Handling
 -(void)getMemberIdByUsingUserName
 {
-    [search resignFirstResponder];
     if ([[search.text lowercaseString] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]])
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Hold On There..."
@@ -1256,6 +1375,8 @@
     }
     else
     {
+        [search resignFirstResponder];
+
         serve *emailCheck = [serve new];
         emailCheck.Delegate = self;
         emailCheck.tagName = @"emailCheck";
@@ -1600,7 +1721,7 @@
         }
         else
         {
-            if (navIsUp == YES) {
+            if (!emailEntry && !phoneNumEntry && navIsUp == YES) {
                 navIsUp = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self lowerNavBar];
@@ -1677,7 +1798,7 @@
         }
         else
         {
-            if (navIsUp == YES) {
+            if (!emailEntry && !phoneNumEntry && navIsUp == YES) {
                 navIsUp = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self lowerNavBar];
@@ -1713,7 +1834,7 @@
             [dict setObject:@"nonuser" forKey:@"nonuser"];
             isFromHome = NO;
             isFromMyApt = NO;
-            
+
             HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
 
@@ -1761,12 +1882,11 @@
             if (navIsUp == YES) {
                 navIsUp = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self lowerNavBar];
+                    //[self lowerNavBar];
                 });
             }
             [self.navigationItem setLeftBarButtonItem:nil];
 
-            isEmailEntry = NO;
             int loc = 0;
 
             for (int i = 0; i < [arrRequestPersons count]; i++)
@@ -2214,14 +2334,18 @@
         [npic removeFromSuperview];
 
         cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.indentationWidth = 10;
+        [cell.contentView sizeToFit];
+
         [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
         [pic setFrame:CGRectMake(130, 62, 60, 60)];
         pic.layer.cornerRadius = 30;
-        if (shouldAnimate) {
+
+        if (shouldAnimate)
+        {
             [pic setStyleClass:@"animate_bubble"];
         }
-        cell.indentationWidth = 10;
-        [cell.contentView sizeToFit];
+        //[cell.contentView addSubview:self.glyphEmail];
 
         UILabel * send_to_label = [UILabel new];
         [send_to_label setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
@@ -2238,7 +2362,7 @@
         [send_to_email setTextColor:kNoochGrayDark];
         [send_to_email setTextAlignment:NSTextAlignmentCenter];
         [cell.contentView addSubview:send_to_email];
-        
+
         cell.textLabel.text = @"";
         return cell;
     }
@@ -2386,6 +2510,9 @@
             [[assist shared] assos][receiver[@"phoneNo"]][@"addressbook"] )
         {
             isphoneBook = YES;
+            emailEntry = NO;
+            phoneNumEntry = NO;
+            
 
             if (receiver[@"UserName"]) {
                 emailphoneBook = receiver[@"UserName"];
@@ -2414,7 +2541,6 @@
             else {
                 lastNamePhoneBook = @"";
             }
-
 
             if (receiver[@"UserName"])
             {
@@ -2497,8 +2623,6 @@
                 [self lowerNavBar];
             });
         }
-
-        //[self.navigationItem setLeftBarButtonItem:nil];
 
         isFromHome = NO;
         isFromMyApt = NO;
