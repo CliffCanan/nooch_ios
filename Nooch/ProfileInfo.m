@@ -1771,7 +1771,7 @@ UIImageView *picture;
         
         NSLog(@"MYSET --> dictProfileinfo is: %@",dictProfileinfo);
 
-        if (![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]] &&
+        if ( ![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]] &&
             ![[[dictProfileinfo valueForKey:@"ContactNumber"] lowercaseString] isEqualToString:@"null"])
         {
             if ([dictProfileinfo valueForKey:@"ContactNumber"] != NULL)
@@ -1782,24 +1782,21 @@ UIImageView *picture;
                 self.SavePhoneNumber = @"";
             }
 
-            if ([[dictProfileinfo valueForKey:@"ContactNumber"] length] == 10)
+            if ([[dictProfileinfo valueForKey:@"ContactNumber"] length] > 8)
             {
                 self.phone.text = [NSString stringWithFormat:@"(%@) %@-%@",
                                    [[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(0, 3)],
                                    [[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(3, 3)],
-                                   [[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(6, 4)]];
-                NSString * phone = [self.phone.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                self.phone.text = phone;
+                                   [[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(6, [[dictProfileinfo objectForKey:@"ContactNumber"] length] - 6)]];
+
+                self.phone.text = [self.phone.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
                 [dictSavedInfo setObject:self.phone.text forKey:@"phoneno"];
-                [ARProfileManager setUserPhoneNumber:phone];
+                [ARProfileManager setUserPhoneNumber:self.phone.text];
             }
             else
             {
-                self.phone.text = [dictProfileinfo valueForKey:@"ContactNumber"];
-                NSString * phone = [self.phone.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                self.address_one.text = phone;
-                [dictSavedInfo setObject:self.phone.text forKey:@"phoneno"];
+                self.phone.text = @"";
             }
          //   [self.list reloadData];
         }
