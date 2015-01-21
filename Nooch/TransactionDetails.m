@@ -412,6 +412,8 @@
     serveOBJ.tagName = @"tranDetail";
     [serveOBJ setDelegate:self];
     [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
+
+    shouldDeletePendingRow = NO;
 }
 
 -(void)remind_request_existinguser
