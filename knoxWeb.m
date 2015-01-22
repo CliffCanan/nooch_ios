@@ -234,7 +234,8 @@
      ];
 }
 
--(void)backToHome {
+-(void)backToHome
+{
     [self.navigationItem setLeftBarButtonItem:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -279,6 +280,7 @@
         [self.hud hide:YES];
         
         NSDictionary * dictResponse = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+
         if ([[[dictResponse valueForKey:@"SaveMemberTransIdResult"]valueForKey:@"Result"]isEqualToString:@"Success"])
         {
             [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
@@ -287,22 +289,22 @@
             isFromSettingsOptions = YES;
             sentFromHomeScrn = NO;
 
-            ProfileInfo * profile = [ProfileInfo new];
-            [nav_ctrl pushViewController:profile animated:YES];
-
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Great Success"
-                                                            message:@"Your bank was successfully linked."
+                                                            message:@"\xF0\x9F\x98\x80\nYour bank was linked successfully."
                                                            delegate:Nil
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:Nil, nil];
             [alert show];
+
+            ProfileInfo * profile = [ProfileInfo new];
+            [nav_ctrl pushViewController:profile animated:YES];
         }
         else
         {
             [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
 
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Please Try Again"
-                                                            message:@"Bank linking failed, unfortunately your info was not saved."
+                                                            message:@"\xF0\x9F\x98\xAE\nBank linking failed, unfortunately your info was not saved. We hate it when this happens too."
                                                            delegate:Nil
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:Nil, nil];

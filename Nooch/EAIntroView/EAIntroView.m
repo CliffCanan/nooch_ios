@@ -117,7 +117,8 @@
     }
 }
 
-- (void)finishIntroductionAndRemoveSelf {
+- (void)finishIntroductionAndRemoveSelf
+{
 	if ([(id)self.delegate respondsToSelector:@selector(introDidFinish:)]) {
 		[self.delegate introDidFinish:self];
 	}
@@ -133,8 +134,9 @@
     });
 }
 
-- (void)skipIntroduction {
-    [self hideWithFadeOutDuration:0.9];
+- (void)skipIntroduction
+{
+    [self hideWithFadeOutDuration:0.55];
 }
 
 #pragma mark - Properties
@@ -261,7 +263,8 @@
     shadow.shadowOffset = CGSizeMake(0, 1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
     
-    if(page.title.length) {
+    if (page.title.length)
+    {
         CGFloat titleHeight;
         
         if ([page.title respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) {
@@ -291,7 +294,8 @@
         [pageView addSubview:titleLabel];
     }
     
-    if([page.desc length]) {
+    if ([page.desc length])
+    {
         CGRect descLabelFrame;
         
         if(page.descWidth != 0) {
@@ -333,7 +337,8 @@
     *xIndex += self.scrollView.frame.size.width;
 }
 
-- (void)removeCloseViewAtXIndex:(CGFloat*)xIndex {
+- (void)removeCloseViewAtXIndex:(CGFloat*)xIndex
+{
     UIView *closeView = [self.scrollView viewWithTag:124];
     if(closeView) {
         [closeView removeFromSuperview];
@@ -342,7 +347,8 @@
     *xIndex -= self.scrollView.frame.size.width;
 }
 
-- (void)buildFooterView {
+- (void)buildFooterView
+{
     self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, self.frame.size.height - self.pageControlY, self.frame.size.width, 20)];
     
     self.pageControl.defersCurrentPageDisplay = YES;
@@ -353,7 +359,7 @@
     [self addSubview:self.pageControl];
     
     self.skipButton = [[UIButton alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width - 95, 30, 95, 30)];
-    [self.skipButton setTitle:NSLocalizedString(@"Done", nil) forState:UIControlStateNormal];
+    //[self.skipButton setTitle:NSLocalizedString(@"Done", nil) forState:UIControlStateNormal];
     [self.skipButton setTitleShadowColor:Rgb2UIColor(31, 32, 33, 0.4) forState:UIControlStateNormal];
     self.skipButton.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [self.skipButton addTarget:self action:@selector(skipIntroduction) forControlEvents:UIControlEventTouchUpInside];
@@ -413,7 +419,8 @@ float easeOutValue(float value) {
     return 1.0 + inverse * inverse * inverse;
 }
 
-- (void)crossDissolveForOffset:(float)offset {
+- (void)crossDissolveForOffset:(float)offset
+{
     NSInteger page = (NSInteger)(offset);
     float alphaValue = offset - page;
     
@@ -439,7 +446,8 @@ float easeOutValue(float value) {
     self.pageBgBack.alpha = backLayerAlpha;
     self.pageBgFront.alpha = frontLayerAlpha;
     
-    if(self.titleView) {
+    if (self.titleView)
+    {
         if([self showTitleViewForPage:page] && [self showTitleViewForPage:page+1]) {
             [self.titleView setAlpha:1.0];
         } else if(![self showTitleViewForPage:page] && ![self showTitleViewForPage:page+1]) {
@@ -451,7 +459,8 @@ float easeOutValue(float value) {
         }
     }
     
-    if(self.skipButton) {
+    if (self.skipButton)
+    {
         if(!self.showSkipButtonOnlyOnLastPage) {
             [self.skipButton setAlpha:1.0];
         } else if(page < (long)[self.pages count] - 2) {
@@ -587,7 +596,8 @@ float easeOutValue(float value) {
 
 #pragma mark - Motion effects actions
 
-- (void)addMotionEffectsOnBg {
+- (void)addMotionEffectsOnBg
+{
     if(![self respondsToSelector:@selector(setMotionEffects:)]) {
         return;
     }
@@ -657,7 +667,8 @@ float easeOutValue(float value) {
     }];
 }
 
-- (void)hideWithFadeOutDuration:(CGFloat)duration {
+- (void)hideWithFadeOutDuration:(CGFloat)duration
+{
     [UIView animateWithDuration:duration animations:^{
         self.alpha = .01;
     } completion:^(BOOL finished){
@@ -665,12 +676,14 @@ float easeOutValue(float value) {
 	}];
 }
 
-- (void)setCurrentPageIndex:(NSInteger)currentPageIndex {
+- (void)setCurrentPageIndex:(NSInteger)currentPageIndex
+{
     [self setCurrentPageIndex:currentPageIndex animated:NO];
 }
 
-- (void)setCurrentPageIndex:(NSInteger)currentPageIndex animated:(BOOL)animated {
-    if(currentPageIndex < 0 || currentPageIndex >= [self.pages count]) {
+- (void)setCurrentPageIndex:(NSInteger)currentPageIndex animated:(BOOL)animated
+{
+    if (currentPageIndex < 0 || currentPageIndex >= [self.pages count]) {
         NSLog(@"Wrong currentPageIndex received: %ld",(long)currentPageIndex);
         return;
     }
@@ -680,13 +693,17 @@ float easeOutValue(float value) {
     [self.scrollView scrollRectToVisible:pageRect animated:animated];
 }
 
-- (IBAction)goToNext:(id)sender {
-    if(!self.tapToNext) {
+- (IBAction)goToNext:(id)sender
+{
+    if (!self.tapToNext)
+    {
         return;
     }
-    if(self.currentPageIndex + 1 >= [self.pages count]) {
+    if (self.currentPageIndex + 1 >= [self.pages count])
+    {
         [self hideWithFadeOutDuration:0.3];
-    } else {
+    }
+    else {
         [self setCurrentPageIndex:self.currentPageIndex + 1 animated:YES];
     }
 }

@@ -13,6 +13,9 @@
 #import <MessageUI/MessageUI.h>
 #import <Social/Social.h>
 #import <Accounts/Accounts.h>
+
+BOOL shouldDeletePendingRow;
+
 @interface TransactionDetails : GAITrackedViewController<serveD,UIAlertViewDelegate,MFMailComposeViewControllerDelegate,MBProgressHUDDelegate,UIScrollViewDelegate>{
     GMSMapView *mapView_;
     UIView *blankView;

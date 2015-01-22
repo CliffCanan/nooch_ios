@@ -78,7 +78,7 @@
     [enter setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     enter.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [enter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [enter setTitle:@"Continue" forState:UIControlStateNormal];
+    [enter setTitle:@"Submit" forState:UIControlStateNormal];
     [enter addTarget:self action:@selector(enter_code) forControlEvents:UIControlEventTouchUpInside];
     [enter setFrame:CGRectMake(10, 350, 300, 60)];
     [enter setStyleClass:@"button_green"];

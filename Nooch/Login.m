@@ -109,7 +109,7 @@
      self.screenName = @"Login Screen";
 }
 
-- (void)viewDidAppear:(BOOL)animated
+-(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     //back button
@@ -288,7 +288,7 @@
     // Height adjustments for 3.5" screens
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
-        [logo setStyleId:@"prelogin_logo_loginScreen_4"];
+       [logo setStyleId:@"prelogin_logo_loginScreen_4"];
 
         [self.facebookLogin setStyleClass:@"button_blue_login_4"];
         [glyphFB setFrame:CGRectMake(19, 7, 30, 28)];
@@ -302,7 +302,7 @@
 
         CGRect framePassTextField = self.password.frame;
         framePassTextField.origin.y = 144;
-        [self.password setFrame:framePassTextField];
+        [self.password setFrame:framePassTextField];/* */
 
         [self.login setStyleClass:@"button_green_login_4"];
 
@@ -564,7 +564,7 @@
 }
 
 
-- (void) forgot_pass
+- (void)forgot_pass
 {
     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Forgot Password"
                                                     message:@"Please enter your email and we will send you a reset link."
@@ -573,19 +573,22 @@
                                           otherButtonTitles:@"OK", nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [[alert textFieldAtIndex:0] setText:self.email.text];
-    [alert setTag:220011];
+    [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeEmailAddress];
+    [[alert textFieldAtIndex:0] setTextAlignment:NSTextAlignmentCenter];
+    [alert setTag:22];
     [alert show];
 }
 
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(actionSheet.tag == 220011 && buttonIndex == 1)
+    if(actionSheet.tag == 22 && buttonIndex == 1)
     {
         UITextField *emailField = [actionSheet textFieldAtIndex:0];
         
         if ([emailField.text length] > 0 &&
-            [emailField.text  rangeOfString:@"@"].location != NSNotFound &&
-            [emailField.text  rangeOfString:@"."].location != NSNotFound)
+            [emailField.text rangeOfString:@"@"].location != NSNotFound &&
+            [emailField.text rangeOfString:@"."].location != NSNotFound &&
+            1 < [emailField.text rangeOfString:@"."].location < [emailField.text length] - 2)
         {
             RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleBounce];
             spinner1.color = [UIColor whiteColor];
@@ -605,14 +608,21 @@
         }
         else
         {
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Forgot Password" message:@"Enter Valid Email ID" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Forgot Password"
+                                                            message:@"Please make sure you've entered a valid email address."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:@"OK", nil];
             alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-            [alert setTag:220011];
+            [alert setTag:22];
+            [[alert textFieldAtIndex:0] setText:emailField.text];
+            [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeEmailAddress];
+            [[alert textFieldAtIndex:0] setTextAlignment:NSTextAlignmentCenter];
             [alert show];
         }
     }
 
-    else if (actionSheet.tag == 220011 && buttonIndex == 0)
+    else if (actionSheet.tag == 22 && buttonIndex == 0)
     {
         [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
     }
@@ -623,7 +633,11 @@
     else if ((actionSheet.tag == 50 || actionSheet.tag == 500 || actionSheet.tag == 600) && buttonIndex == 1)
     {
         if (![MFMailComposeViewController canSendMail]){
-            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                          message:@"You don't have an email account configured for this device."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles: nil];
             [av show];
             return;
         }
@@ -698,6 +712,12 @@
 {
     if([tagName isEqualToString:@"ForgotPass"])
     {
+        NSError * error;
+        NSDictionary * loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        
+        NSLog(@"Login -> ForgotPass result is: %@",loginResult);
+
+
         [self.hud hide:YES];
         if ([UIAlertController class]) // for iOS 8
         {

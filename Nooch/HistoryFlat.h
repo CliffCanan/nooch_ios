@@ -17,7 +17,8 @@
 
 BOOL isHistFilter;
 BOOL isFromApts;
-NSString*listType;
+NSString *listType;
+
 @interface HistoryFlat : GAITrackedViewController<UITableViewDataSource,UITableViewDelegate,
 serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate,MBProgressHUDDelegate,MFMailComposeViewControllerDelegate>
 {

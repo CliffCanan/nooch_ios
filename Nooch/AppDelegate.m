@@ -41,21 +41,7 @@ bool modal;
     [internetReach startNotifier];
 
     // Set the icon badge to zero on startup (optional)
-
-    // PUSH NOTIFICATION REGISTRATION
-   if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
-    {
-        // Register for push in iOS 8.
-        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
-    }
-    else
-    {
-        // Register for push in iOS 7 and under.
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
-                                                                               UIUserNotificationTypeSound |
-                                                                               UIUserNotificationTypeAlert)];
-    }
+    // [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 
     // GAMETHRIVE (Push Notifications)
     self.gameThrive = [[GameThrive alloc] initWithLaunchOptions:launchOptions handleNotification:^(NSString* message, NSDictionary* additionalData, BOOL isActive) {
@@ -108,6 +94,8 @@ bool modal;
                                           [self sessionStateChanged:session state:state error:error];
                                       }];
     }
+    [self application:nil handleOpenURL:[NSURL URLWithString:@"Nooch:"]];
+    [self.window makeKeyAndVisible];
 
     [application setApplicationIconBadgeNumber:0];
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
@@ -117,7 +105,7 @@ bool modal;
     NSSetUncaughtExceptionHandler(&exceptionHandler);
 
     // ARTISAN SDK
-//    [ARPowerHookManager registerHookWithId:@"serverURL" friendlyName:@"Server URL To Use" defaultValue:@"https://www.noochme.com/NoochService/NoochService.svc"];
+    // [ARPowerHookManager registerHookWithId:@"serverURL" friendlyName:@"Server URL To Use" defaultValue:@"https://www.noochme.com/NoochService/NoochService.svc"];
     [ARPowerHookManager registerHookWithId:@"slogan" friendlyName:@"Slogan" defaultValue:@"Money Made Simple"];
     [ARPowerHookManager registerHookWithId:@"HUDcolor" friendlyName:@"HUD Color" defaultValue:@"black"];
     [ARPowerHookManager registerHookWithId:@"reqCodeSetting" friendlyName:@"Require Invite Code" defaultValue:@"no"];
@@ -125,7 +113,8 @@ bool modal;
     [ARPowerHookManager registerHookWithId:@"versionNum" friendlyName:@"Most Recent Version Number" defaultValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
     [ARPowerHookManager registerHookWithId:@"homeBtnClr" friendlyName:@"Home Button Color" defaultValue:@"green"];
     [ARPowerHookManager registerHookWithId:@"settingsCogIconPos" friendlyName:@"Settings Cog Icon Position" defaultValue:@"bottomBar"];
-
+    [ARPowerHookManager registerHookWithId:@"DispApts" friendlyName:@"Display Apts Section" defaultValue:@"no"];
+    
     [ARPowerHookManager registerHookWithId:@"NV_HD" friendlyName:@"New Version Alert Header Txt" defaultValue:@"New Stuff Galore"];
     [ARPowerHookManager registerHookWithId:@"NV_BODY" friendlyName:@"New Version Alert Body Txt" defaultValue:@"Check out the latest updates and enhancements in the newest version of Nooch."];
     [ARPowerHookManager registerHookWithId:@"NV_IMG" friendlyName:@"New Version Alert Image URL" defaultValue:@"https://www.nooch.com/wp-content/uploads/2014/12/ReferralCode_NOCASH.gif"];
@@ -133,17 +122,14 @@ bool modal;
     [ARPowerHookManager registerHookWithId:@"NV_IMG_H" friendlyName:@"New Version Alert Img Height" defaultValue:@"170"];
 
     [ARPowerHookManager registerHookWithId:@"transLimit" friendlyName:@"Transfer Limit" defaultValue:@"300"];
+    [ARPowerHookManager registerHookWithId:@"srchRds" friendlyName:@"Search By Loc Radius (Miles)" defaultValue:@"12"];
 
     [ARPowerHookManager registerHookWithId:@"transSuccessAlertTitle" friendlyName:@"Alert Title After Transfer Success" defaultValue:@"Nice Work"];
     [ARPowerHookManager registerHookWithId:@"transSuccessAlertMsg" friendlyName:@"Alert Message After Transfer Success" defaultValue:@"\xF0\x9F\x92\xB8\nYour cash was sent successfully."];
 
     [ARManager startWithAppId:@"5487d09c2b22204361000011"];
 
-    [self application:nil handleOpenURL:[NSURL URLWithString:@"Nooch:"]];
-    [self.window makeKeyAndVisible];
-
     [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"VersionUpdateNoticeDisplayed"];
-
     return YES;
 }
 
@@ -236,8 +222,6 @@ void exceptionHandler(NSException *exception){
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    // Set the icon badge to zero on resume (optional)
-    //[[UAPush shared] resetBadge];
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 
     // Call the 'activateApp' method to log an app event for use in analytics and advertising reporting.
@@ -345,9 +329,9 @@ void exceptionHandler(NSException *exception){
                       otherButtonTitles:nil] show];
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application{
+- (void)applicationWillTerminate:(UIApplication *)application
+{
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    //[UAirship land];
     // Close the FB Session if active (does not clear the cache of the FB Token)
     [FBSession.activeSession close];
 }
@@ -356,64 +340,59 @@ void exceptionHandler(NSException *exception){
 {
     NSString *deviceTokens = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     deviceTokens = [deviceTokens stringByReplacingOccurrencesOfString:@" " withString:@""];
-    //[[UAPush shared] appRegisteredForRemoteNotificationsWithDeviceToken:deviceToken];
     
-  //  [[UAPush shared] registerDeviceToken:deviceToken];
     [[NSUserDefaults standardUserDefaults] setValue:deviceTokens forKey:@"DeviceToken"];
     NSLog(@"DeviceToken%@",deviceToken);
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-    NSLog(@"Error in registration. Error: %@", error);
+    NSLog(@"App Delegate -> Error in Remove Notification Registration: %@", error);
     [[NSUserDefaults standardUserDefaults] setValue:@"123456" forKey:@"DeviceToken"];
-
 }
 
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
     NSLog(@"%@",notification.userInfo);
     
-    if ([notification.userInfo valueForKey:@"Profile1"] || [notification.userInfo valueForKey:@"Profile2"] || [notification.userInfo valueForKey:@"Profile3"] || [notification.userInfo valueForKey:@"Profile4"])
+    if ([notification.userInfo valueForKey:@"Profile1"] ||
+        [notification.userInfo valueForKey:@"Profile2"] ||
+        [notification.userInfo valueForKey:@"Profile3"] ||
+        [notification.userInfo valueForKey:@"Profile4"])
     {
         [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"NotificationPush"];
         [nav_ctrl popToRootViewControllerAnimated:YES];
-        
     }
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    NSLog(@"userInfo%@", userInfo);
+    NSLog(@"Remote Notification Recieved: %@", userInfo);
     UIApplicationState state = [application applicationState];
     if (state == UIApplicationStateActive)
     {
-        NSString *message = [[userInfo valueForKey:@"aps"] valueForKey:@"alert"];
-        [METoast resetToastAttribute];
-        [METoast toastWithMessage:message];
-       // NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
+        //NSString *message = [[userInfo valueForKey:@"aps"] valueForKey:@"alert"];
+        //[METoast resetToastAttribute];
+        //[METoast toastWithMessage:message];
+       
+        NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
         
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     }
     else
     {
-        //[[UAPush shared] appReceivedRemoteNotification:userInfo applicationState:application.applicationState];
         // Reset the badge if you are using that functionality
-        //[[UAPush shared] resetBadge];
-        NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
-        
+        NSLog(@"Badge Number: %d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
+
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[UIApplication sharedApplication] applicationIconBadgeNumber]+1]; 
     }
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
-    //UA_LINFO(@"Received remote notification (in appDelegate): %@", userInfo);
-    
-    // Optionally provide a delegate that will be used to handle notifications received while the app is running
-    // [UAPush shared].pushNotificationDelegate = your custom push delegate class conforming to the UAPushNotificationDelegate protocol
-    
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
     // Reset the badge after a push is received in a active or inactive state
-    if (application.applicationState != UIApplicationStateBackground) {
-        //[[UAPush shared] resetBadge];
+    if (application.applicationState != UIApplicationStateBackground)
+    {
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     }
     
     completionHandler(UIBackgroundFetchResultNoData);

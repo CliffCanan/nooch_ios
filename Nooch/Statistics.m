@@ -448,8 +448,6 @@
     
     [self.exportHistory setFrame:CGRectMake(60, 445, 200, 38)];
 
-    //[self.profileIcon setStyleId:@"stats_circle_profile_active"];
-
     self.selected--;
 
     CGRect frame;
@@ -662,8 +660,15 @@
     return 4;
 }
 
+-(void)stayPressed_goHowMuch:(UIButton *)sender
+{
+    [sender setFrame:CGRectMake(252, 7, 37, 40)];
+}
+
 -(void)goToHowMuch:(UIButton*)sender
 {
+    [sender setFrame:CGRectMake(252, 5, 37, 40)];
+
     int rownumber = sender.tag;
     NSMutableDictionary * favorite = [NSMutableDictionary new];
     [favorite addEntriesFromDictionary:[favorites objectAtIndex:rownumber]];
@@ -884,7 +889,9 @@
             UIButton * goToHowMuch = [[UIButton alloc] initWithFrame:CGRectMake(252, 5, 37, 40)];
             [goToHowMuch setUserInteractionEnabled:YES];
             [goToHowMuch setStyleClass:@"stats_goToHowMuchBtn"];
+            [goToHowMuch setTitleColor:kNoochBlue forState:UIControlStateNormal];
             [goToHowMuch setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-pencil-square-o"] forState:UIControlStateNormal];
+            [goToHowMuch addTarget:self action:@selector(stayPressed_goHowMuch:) forControlEvents:UIControlEventTouchDown];
             [goToHowMuch setAlpha:1];
             [goToHowMuch setTag:indexPath.row];
 
@@ -980,7 +987,15 @@
             }
             else if (indexPath.row == 1)
             {
-                self.emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 250, 254)];
+                self.emptyPic = [UIImageView new];
+                if ([UIScreen mainScreen].bounds.size.height > 500)
+                {
+                    self.emptyPic.frame = CGRectMake(25, 28, 250, 254);
+                }
+                else
+                {
+                    self.emptyPic.frame = CGRectMake(25, 9, 250, 254);
+                }
                 self.emptyPic.alpha = 0;
                 [self.emptyPic setImage:[UIImage imageNamed:@"Stats_Circled"]];
                 [cell.contentView  addSubview: self.emptyPic];

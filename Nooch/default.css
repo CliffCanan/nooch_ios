@@ -156,7 +156,7 @@ view {
         height      : 30px;
         color       : #fff
         font-family : "FontAwesome";
-        font-size   : 21px;
+        font-size   : 22px;
         text-align  : center;
     }
 
@@ -375,7 +375,7 @@ view {
     background-image	: linear-gradient(#7fd034, #6ab029);
     border				: 1px solid #66AE3C;
 }
-.button_green_login_4:normal {
+.button_green_login_4 {
     left                : 23px;
     top                 : 187px;
     width				: 274px;
@@ -427,8 +427,7 @@ view {
     box-shadow          : 0 2px 3px rgba(18,26,32,.16);
 }
 /****  Disabled GREEN GRADIENT  ****/
-.button_green:disabled,
-.button_green_login_4:disabled {
+.button_green:disabled {
     width				: 280px;
     height				: 48px;
     left                : 20px;
@@ -698,7 +697,7 @@ view {
 /****  Table Detail Text  (right side of row)  ****/
 .table_view_cell_detailtext_1 {
     left			: 94px;
-    width			: 214px;
+    width			: 213px;
     height			: 40px;
     font-family		: "Roboto";
     font-weight		: regular;
@@ -861,13 +860,16 @@ view {
 
 /****  Raised Box - This adds a drop-shadow. ****/
 .raised_view {
-    box-shadow	: 0 2px 2px rgba(109,110,113,0.55);
+    box-shadow	: 0 2px 2px rgba(109,110,112,0.45);
+}
+.raised_view_carousel {
+    box-shadow	: 0px 3px 3px rgba(109,110,112,0.34);
 }
 .raised_view_AptScrn {
-    box-shadow	: 1px 2px 1px rgba(109,110,113,0.4);
+    box-shadow	: 1px 2px 1px rgba(109,110,112,0.4);
 }
 .welcomeBoxShadow {
-    box-shadow  : 1px 1px 1px rgba(109,110,113,0.45);
+    box-shadow  : 1px 1px 3px rgba(109,110,112,0.28);
 }
 
 /*******************************************
@@ -2372,11 +2374,10 @@ segmented-control#donatededication {
     color 				: #ffffff;
 }
 #history_segcontrol {
-    width				: 306px;
+    left				: 8px;
+    top					: 7px;
+    width				: 304px;
     height				: 30px;
-    left				: 7px;
-    top					: 6px;
-    //-ios-tint-color	: #3fabe1;
     background-color	: #3fabe1;
     font-family			: "Roboto";
     font-weight			: regular;
@@ -2545,9 +2546,9 @@ table-view#emptyTable {
 
 /**  Amount of the PENDING Transfer on the right side of the row (Only on the Pending Tab)  **/
 .history_pending_transferamount {
-    left				: 227px;
+    left				: 223px;
     top					: 20px;
-    width				: 81px;
+    width				: 82px;
     height				: 20px;
     font-family			: "Roboto";
     font-weight         : medium;
@@ -2599,17 +2600,6 @@ table-view#emptyTable {
 .history_sidecolor_pos {background-color		: #72bf44;}
 .history_sidecolor_neg {background-color		: #d2232a;}
 .history_sidecolor_neutral {background-color	: #3fabe1;}
-.history_sidecolor_donate {background-color	: #5a538d;}
-
-.history_sidecolor_pending {
-    top                 : 0px;
-    left                : 311px;
-    width               : 9px;
-    height              : 80px;
-    background-color	: #3fabe1;
-    color               : #fff;
-    text-align          : center;
-}
 
 .titlelbl {
    width				: 300px;
@@ -2632,11 +2622,21 @@ table-view#emptyTable {
     left                : 80px;
     font-family			: "Roboto";
     font-weight         : light;
-    font-size			: 15px;
+    font-size			: 16px;
     text-align       	: center;
     color 				: #313233;
 }
-
+.details_namePhoneNum {
+    width				: 235px;
+    height				: 30px;
+    top					: 25px;
+    left                : 75px;
+    font-family			: "Roboto";
+    font-weight         : regular;
+    font-size			: 22px;
+    text-align       	: center;
+    color 				: #313233;
+}
 
 /*********************************/
 /*****    TRANSFER DETAILS   *****/
@@ -3377,11 +3377,9 @@ table-view.stats_top_friends_empty {
     border-radius   : 28px;
 }
 .stats_goToHowMuchBtn {
-    color 				: rgba(88,90,92,1);
-    border-radius		: 5px;
     font-family			: "FontAwesome";
-    font-size			: 14px;
-    background-color	: rgba(255,255,255,0);
+    font-size			: 16px;
+    background-color	: transparent;
 }
 /*******************************************
 ********* 	  ANIMATIONS 	    *********

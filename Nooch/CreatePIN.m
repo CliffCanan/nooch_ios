@@ -153,7 +153,7 @@
 
     UILabel *glyph_back = [UILabel new];
     [glyph_back setBackgroundColor:[UIColor clearColor]];
-    [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:26]];
+    [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:28]];
     [glyph_back setTextAlignment:NSTextAlignmentCenter];
     [glyph_back setFrame:CGRectMake(0, 14, 44, 44)];
     [glyph_back setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-o-left"]];

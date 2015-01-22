@@ -55,8 +55,6 @@
 {
     [super viewDidAppear:animated];
 
-    [self.login removeFromSuperview];
-
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.login setBackgroundColor:[UIColor clearColor]];
     [self.login setTitle:@"Already a Member?  Sign in here  " forState:UIControlStateNormal];
@@ -114,9 +112,11 @@
 
     [self.login removeFromSuperview];
 
-    UIView * boxOutline = [[UIView alloc] initWithFrame:CGRectMake(9, 245, 302, 172)];
+    UIView * boxOutline = [[UIView alloc] initWithFrame:CGRectMake(9, 244, 302, 175)];
     boxOutline.backgroundColor = [UIColor whiteColor];
-    boxOutline.layer.cornerRadius = 7;
+    boxOutline.layer.cornerRadius = 8;
+    boxOutline.layer.borderWidth = 0.5;
+    boxOutline.layer.borderColor = Rgb2UIColor(188, 190, 192, .45).CGColor;
     [boxOutline setStyleClass:@"welcomeBoxShadow"];
     [self.view addSubview:boxOutline];
 
@@ -190,8 +190,8 @@
 
     self.fullNameInstruc = [[UILabel alloc] initWithFrame:CGRectMake(10, 38, 290, 16)];
     [self.fullNameInstruc setBackgroundColor:[UIColor clearColor]];
-    [self.fullNameInstruc setText:@"Please enter a first AND last name  \xF0\x9F\x99\x8F"];
-    [self.fullNameInstruc setFont:[UIFont fontWithName:@"Roboto-light" size:12]];
+    [self.fullNameInstruc setText:@"\xF0\x9F\x99\x8F  Please enter a first AND last name"];
+    [self.fullNameInstruc setFont:[UIFont fontWithName:@"Roboto-light" size:13]];
     [self.fullNameInstruc setTextColor:kNoochRed];
     [self.fullNameInstruc setTextAlignment:NSTextAlignmentCenter];
     [self.fullNameInstruc setHidden:YES];
@@ -311,10 +311,14 @@
         [boxOutline setFrame:CGRectMake(9, 219, 302, 153)];
         [name setFrame:CGRectMake(0, 219, 0, 0)];
         [self.name_field setFrame:CGRectMake(0, 219, 0, 0)];
+
         [email setFrame:CGRectMake(0, 259, 0, 0)];
         [self.email_field setFrame:CGRectMake(0, 259, 0, 0)];
+        [self.emailValidator setFrame:CGRectMake(74, 259, 21, 39)];
+
         [password setFrame:CGRectMake(0, 299, 0, 0)];
         [self.password_field setFrame:CGRectMake(0, 299, 0, 0)];
+        [self.pwValidator setFrame:CGRectMake(98, 299, 21, 39)];
 
         [checkbox_box setFrame:CGRectMake(36, 345, 21, 20)];
         [checkbox_dot setFrame:CGRectMake(31, 340, 31, 30)];
@@ -655,9 +659,27 @@
     }
 }
 
-- (void)login:(UIButton*)sender
+-(void)viewDidDisappear:(BOOL)animated
 {
-    [UIView animateKeyframesWithDuration:.4
+    [self.login removeFromSuperview];
+}
+
+-(void)login:(UIButton*)sender
+{
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:.4];
+    if ([[UIScreen mainScreen] bounds].size.height > 500) {
+        [self.login setFrame:CGRectMake(321, 503, 300, 44)];
+    } else {
+        [self.login setFrame:CGRectMake(321, 429, 300, 44)];
+    }
+    [UIView commitAnimations];
+
+    [[UIApplication sharedApplication]setStatusBarHidden:YES];
+    Login * signin = [Login new];
+    [self.navigationController pushViewController:signin animated:YES];
+
+    /*[UIView animateKeyframesWithDuration:.4
                                    delay:0
                                  options:UIViewKeyframeAnimationOptionCalculationModeCubic
                               animations:^{
@@ -695,7 +717,7 @@
                                   [self.navigationController pushViewController:signin animated:YES];
                                   [self.login removeFromSuperview];
                               }
-     ];
+     ];*/
 }
 
 -(void)loginFromAlertView
@@ -1139,9 +1161,6 @@
     {
         return NO;
     }
-        //NSLog(@"range.length is: %lu",(unsigned long)range.length);
-        //NSLog(@"range.location is: %lu",(unsigned long)range.location);
-        //NSLog(@"textField.text.length: %lu",(unsigned long)textField.text.length);
 
     if ([self.name_field.text length] > 1 &&
         [self.email_field.text length] > 2 &&
@@ -1150,6 +1169,7 @@
     {
         [self.cont setAlpha:1];
     }
+
     if ([self.name_field.text length] > 1 &&
         [self.email_field.text length] > 2 &&
         [self.email_field.text rangeOfString:@"@"].location != NSNotFound &&
@@ -1163,6 +1183,7 @@
         [self.cont setEnabled:NO];
     }
 
+
     if ([self.name_field.text length] > 3 &&
         [self.name_field.text rangeOfString:@" "].location != NSNotFound &&
         [self.name_field.text rangeOfString:@" "].location < [self.name_field.text length] - 1)
@@ -1174,6 +1195,7 @@
     if ([self.email_field.text length] > 4 &&
         [self.email_field.text rangeOfString:@"@"].location != NSNotFound &&
         [self.email_field.text rangeOfString:@"."].location != NSNotFound &&
+        [self.email_field.text rangeOfString:@" "].location == NSNotFound &&
         [self.email_field.text rangeOfString:@"."].location < [self.email_field.text length] - 1 &&
         (([self.email_field.text rangeOfString:@"."].location - [self.email_field.text rangeOfString:@"@"].location) != abs(1)))
     {
@@ -1181,6 +1203,14 @@
         {
             [self.emailValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
             [self.emailValidator setTextColor:kNoochGreen];
+        }
+    }
+    else
+    {
+        if (![self.emailValidator isHidden])
+        {
+            [self.emailValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
+            [self.emailValidator setTextColor:kNoochRed];
         }
     }
 
@@ -1247,12 +1277,24 @@
         case 1:
             if ([self.name_field.text length] < 4 ||
                 [self.name_field.text rangeOfString:@" "].location == NSNotFound ||
-                [self.name_field.text rangeOfString:@" "].location > [self.name_field.text length] - 3)
+                [self.name_field.text rangeOfString:@" "].location > [self.name_field.text length] - 3)// ||
+                //[self.name_field.text rangeOfString:@"-"].location > [self.name_field.text length] - 3 ||
+                //[self.name_field.text rangeOfString:@"."].location > [self.name_field.text length] - 3)
             {
                 if ([self.name_field.text length] > 2)
                 {
                     [self.fullNameInstruc setHidden:NO];
                 }
+                [self.nameValidator setHidden:NO];
+                [self.name_field becomeFirstResponder];
+            }
+            else if (([self.name_field.text rangeOfString:@"-"].location != NSNotFound &&
+                     ([self.name_field.text rangeOfString:@"-"].location > [self.name_field.text length] - 3 ||
+                      [self.name_field.text rangeOfString:@"-"].location < 2)) ||
+                     ([self.name_field.text rangeOfString:@"."].location != NSNotFound &&
+                     ([self.name_field.text rangeOfString:@"."].location > [self.name_field.text length] - 3 ||
+                      [self.name_field.text rangeOfString:@"."].location < 2)))
+            {
                 [self.nameValidator setHidden:NO];
                 [self.name_field becomeFirstResponder];
             }
@@ -1266,6 +1308,7 @@
 
                 if (containsNumber)
                 {
+                    [self.nameValidator setHidden:NO];
                     [self.name_field becomeFirstResponder];
 
                     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"\xF0\x9F\x98\x8F  Really?"
@@ -1278,6 +1321,7 @@
                 else if ((containsSymbols || containsPunctuation) &&
                          !containsDash)
                 {
+                    [self.nameValidator setHidden:NO];
                     [self.name_field becomeFirstResponder];
                         
                     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"\xF0\x9F\x98\x8F  Really?"
@@ -1299,6 +1343,7 @@
             if ( [self.email_field.text length] < 4 ||
                  [self.email_field.text rangeOfString:@"@"].location == NSNotFound ||
                  [self.email_field.text rangeOfString:@"."].location == NSNotFound ||
+                 [self.email_field.text rangeOfString:@" "].location != NSNotFound ||
                  [self.email_field.text rangeOfString:@"."].location > [self.email_field.text length] - 3 ||
                 (([self.email_field.text rangeOfString:@"."].location - [self.email_field.text rangeOfString:@"@"].location) == 1))
             {

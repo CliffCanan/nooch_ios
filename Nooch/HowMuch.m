@@ -42,8 +42,6 @@
 
 -(void)backPressed:(id)sender
 {
-    isphoneBook = NO;
-    isEmailEntry = NO;
     [[assist shared]setRequestMultiple:NO];
     [arrRecipientsForRequest removeAllObjects];
     [[assist shared]setArray:nil];

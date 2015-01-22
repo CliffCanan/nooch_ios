@@ -14,6 +14,7 @@
 #import "Register.h"
 #import "TransferPIN.h"
 #import "ProfileInfo.h"
+#import "knoxWeb.h"
 
 @interface HistoryFlat ()<GMSMapViewDelegate>
 {
@@ -22,12 +23,16 @@
     GMSMarker *markerOBJ;
     UIRefreshControl *refreshControl;
 }
-@property (strong, nonatomic) GMSMapView *mapView;
+@property(strong, nonatomic) GMSMapView *mapView;
 @property(nonatomic,strong) UISearchBar *search;
 @property(nonatomic,strong) UITableView *list;
 @property(nonatomic,strong) UIButton *glyph_map;
+@property(nonatomic,strong) UILabel * glyph_checkmark;
+@property(nonatomic,strong) UILabel * glyph_pending;
 @property(nonatomic) BOOL completed_selected;
 @property(nonatomic,strong) NSDictionary *responseDict;
+@property(nonatomic,strong) UILabel * glyph_emptyTable;
+
 @end
 
 @implementation HistoryFlat
@@ -39,14 +44,6 @@
         // Custom initialization
     }
     return self;
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [self.navigationItem setTitle:@"History"];
-
-    [super viewWillAppear:animated];
-    self.screenName = @"HistoryFlat Screen";
 }
 
 - (void)viewDidLoad
@@ -106,7 +103,7 @@
         histTempPending=[[NSMutableArray alloc]init];
     }
     
-    NSArray * seg_items = @[@"Completed",@"Pending"];
+    NSArray * seg_items = @[@" Completed",@" Pending"];
     completed_pending = [[UISegmentedControl alloc] initWithItems:seg_items];
     [completed_pending setStyleId:@"history_segcontrol"];
     [completed_pending addTarget:self action:@selector(completed_or_pending:) forControlEvents:UIControlEventValueChanged];
@@ -143,26 +140,26 @@
 
     NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
 
+    self.glyph_checkmark = [[UILabel alloc] initWithFrame:CGRectMake(22, 13, 22, 18)];
+    [self.glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+
+    self.glyph_pending = [[UILabel alloc] initWithFrame:CGRectMake(174, 13, 20, 18)];
+    [self.glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+
     if ([defaults boolForKey:@"hasPendingItems"] == true)
     {
         [completed_pending setSelectedSegmentIndex:1];
 
         [self.navigationItem setRightBarButtonItem:nil animated:YES];
-        
-        UILabel *glyph_checkmark = [UILabel new];
-        [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-        [glyph_checkmark setFrame:CGRectMake(21, 12, 22, 16)];
-        [glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
-        [glyph_checkmark setTextColor: kNoochBlue];
-        [self.view addSubview:glyph_checkmark];
-        
-        UILabel *glyph_pending = [UILabel new];
-        [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-        [glyph_pending setFrame:CGRectMake(174, 12, 20, 16)];
-        [glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
-        [glyph_pending setTextColor: [UIColor whiteColor]];
-        [self.view addSubview:glyph_pending];
-        
+
+        [self.glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+        [self.glyph_checkmark setTextColor: kNoochBlue];
+        [self.view addSubview:self.glyph_checkmark];
+
+        [self.glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+        [self.glyph_pending setTextColor: [UIColor whiteColor]];
+        [self.view addSubview:self.glyph_pending];
+
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         [imageCache clearMemory];
         [imageCache clearDisk];
@@ -186,35 +183,29 @@
         glyph_map.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         [glyph_map setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-map-marker"] forState:UIControlStateNormal];
         [glyph_map addTarget:self action:@selector(toggleMapByNavBtn) forControlEvents:UIControlEventTouchUpInside];
-        
+
         UIBarButtonItem *map = [[UIBarButtonItem alloc] initWithCustomView:glyph_map];
-        
+
         NSArray *topRightBtns = @[map,filt];
         [self.navigationItem setRightBarButtonItems:topRightBtns animated:YES];
 
         [completed_pending setSelectedSegmentIndex:0];
-    
-        UILabel * glyph_checkmark = [UILabel new];
-        [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-        [glyph_checkmark setFrame:CGRectMake(21, 12, 22, 16)];
-        [glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
-        [glyph_checkmark setTextColor:[UIColor whiteColor]];
-        [self.view addSubview:glyph_checkmark];
-        
-        UILabel * glyph_pending = [UILabel new];
-        [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-        [glyph_pending setFrame:CGRectMake(174, 12, 20, 16)];
-        [glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
-        [glyph_pending setTextColor: kNoochBlue];
-        [self.view addSubview:glyph_pending];
-    
+
+        [self.glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+        [self.glyph_checkmark setTextColor:[UIColor whiteColor]];
+        [self.view addSubview:self.glyph_checkmark];
+
+        [self.glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+        [self.glyph_pending setTextColor: kNoochBlue];
+        [self.view addSubview:self.glyph_pending];
+
         SDImageCache * imageCache = [SDImageCache sharedImageCache];
         [imageCache clearMemory];
         [imageCache clearDisk];
         [imageCache cleanDisk];
-    
+
         [self loadHist:@"ALL" index:index len:20 subType:subTypestr];
-        
+
         // Row count for scrolling
         countRows = 0;
     }
@@ -246,8 +237,8 @@
     [exportHistory addTarget:self action:@selector(ExportHistory:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:exportHistory];
     [self.view bringSubviewToFront:exportHistory];
-    
-    
+
+
     UISwipeGestureRecognizer * recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideright:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self.view addGestureRecognizer:recognizer];
@@ -267,8 +258,28 @@
                                               zoom:8];
     mapView_ = [GMSMapView mapWithFrame:self.view.frame camera:camera];
     mapView_.myLocationEnabled = YES;
-    mapView_.delegate=self;
+    mapView_.delegate = self;
     [mapArea addSubview:mapView_];
+
+    indexPathForDeletion = nil;
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.navigationItem setTitle:@"History"];
+    
+    [super viewWillAppear:animated];
+    self.screenName = @"HistoryFlat Screen";
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (shouldDeletePendingRow)
+    {
+        [self deleteTableRow:indexPathForDeletion];
+    }
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -359,42 +370,42 @@
 
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker
 {
-    NSDictionary*dictRecord=[histArrayCommon objectAtIndex:[[marker title]intValue]];
-    TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
+    NSDictionary * dictRecord = [histArrayCommon objectAtIndex:[[marker title]intValue]];
+    TransactionDetails * details = [[TransactionDetails alloc] initWithData:dictRecord];
     [self.navigationController pushViewController:details animated:YES];
 }
 
 - (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(GMSMarker *)marker
 {
-    UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 220, 226)];
+    UIView * customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 220, 226)];
     customView.layer.borderColor = [[UIColor whiteColor]CGColor];
-    customView.layer.borderWidth = 1.0f;
+    customView.layer.borderWidth = 2.0f;
     customView.layer.cornerRadius = 6;
-    [customView setStyleClass:@"raised_view"];
+    customView.clipsToBounds = NO;
     customView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mapBack.png"]];
 
-    UIImageView *imgV = [[UIImageView alloc]initWithFrame:CGRectMake(68, 10, 82, 82)];
+    UIImageView * imgV = [[UIImageView alloc]initWithFrame:CGRectMake(68, 10, 82, 82)];
     imgV.layer.cornerRadius = 41;
     imgV.layer.borderColor = [UIColor whiteColor].CGColor;
     imgV.layer.borderWidth = 2;
     imgV.clipsToBounds = YES;
 
-    NSString*urlImage=[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Photo"];
+    NSString * urlImage=[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Photo"];
     [imgV sd_setImageWithURL:[NSURL URLWithString:urlImage] placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
     [customView addSubview:imgV];
 
-    NSString *TransactionType = @"";
+    NSString * TransactionType = @"";
 
-    UILabel *lblTitle = [[UILabel alloc]initWithFrame:CGRectMake(5, 94, 210, 17)];
+    UILabel * lblTitle = [[UILabel alloc]initWithFrame:CGRectMake(5, 94, 210, 17)];
     [lblTitle setStyleClass:@"historyMap_marker_title"];
     [customView addSubview:lblTitle];
     
-    UILabel *lblName=[[UILabel alloc]initWithFrame:CGRectMake(2, 112, 216, 20)];
+    UILabel * lblName=[[UILabel alloc]initWithFrame:CGRectMake(2, 112, 216, 20)];
     lblName.text = [NSString stringWithFormat:@"%@ %@",[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"FirstName"] capitalizedString],[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"LastName"]];
     [lblName setStyleClass:@"historyMap_marker_name"];
     [customView addSubview:lblName];
 
-    UILabel *lblAmt = [[UILabel alloc]initWithFrame:CGRectMake(5, 135, 210, 26)];
+    UILabel * lblAmt = [[UILabel alloc]initWithFrame:CGRectMake(5, 135, 210, 26)];
     lblAmt.text = [NSString stringWithFormat:@"$%.02f",[[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"Amount"] floatValue]];
     lblAmt.textColor = kNoochGreen;
     [lblAmt setStyleClass:@"historyMap_marker_amnt"];
@@ -466,7 +477,8 @@
             lblName.text = [NSString stringWithFormat:@"%@",[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"InvitationSentTo"]];
         }
     }
-    else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Invite"]) {
+    else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"]isEqualToString:@"Invite"])
+    {
         TransactionType = @"Sent To:";
         [imgV setImage:[UIImage imageNamed:@"profile_picture.png"]];
         statusstr = @"Invited on:";
@@ -483,18 +495,18 @@
         [lblloc setStyleClass:@"green_text"];
     }
     
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     //Set the AM and PM symbols
+    NSDateFormatter * dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setAMSymbol:@"AM"];
     [dateFormatter setPMSymbol:@"PM"];
     dateFormatter.dateFormat = @"MM/dd/yyyy hh:mm:ss a";
     
-    NSDate *yourDate = [dateFormatter dateFromString:[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionDate"]];
+    NSDate * yourDate = [dateFormatter dateFromString:[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionDate"]];
     dateFormatter.dateFormat = @"dd-MMMM-yyyy";
     [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
 
     //nslog(@"%@",[dateFormatter stringFromDate:yourDate]);
-    NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
+    NSArray * arrdate = [[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
 
     if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Request"])
     {
@@ -510,7 +522,7 @@
         [lblloc setText:[NSString stringWithFormat:@"%@ %@ %@, %@",statusstr,[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]]];
     }
 
-return customView;    
+    return customView;
 }
 
 -(void)mapPoints
@@ -522,7 +534,7 @@ return customView;
 
             return;
         }
-        histArrayCommon=[histShowArrayCompleted copy];
+        histArrayCommon = [histShowArrayCompleted copy];
     }
     else
     {
@@ -531,7 +543,7 @@ return customView;
 
             return;
         }
-        histArrayCommon=[histShowArrayPending copy];
+        histArrayCommon = [histShowArrayPending copy];
     }
     [mapView_ clear];
 
@@ -694,19 +706,11 @@ return customView;
         NSArray *topRightBtns = @[map,filt];
         [self.navigationItem setRightBarButtonItems:topRightBtns animated:YES];
         
-        UILabel *glyph_checkmark = [UILabel new];
-        [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-        [glyph_checkmark setFrame:CGRectMake(21, 12, 22, 16)];
-        [glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
-        [glyph_checkmark setTextColor:[UIColor whiteColor]];
-        [self.view addSubview:glyph_checkmark];
+        [self.glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+        [self.glyph_checkmark setTextColor:[UIColor whiteColor]];
         
-        UILabel *glyph_pending = [UILabel new];
-        [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-        [glyph_pending setFrame:CGRectMake(174, 12, 20, 16)];
-        [glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
-        [glyph_pending setTextColor: kNoochBlue];
-        [self.view addSubview:glyph_pending];
+        [self.glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+        [self.glyph_pending setTextColor: kNoochBlue];
         
         subTypestr = @"";
         [histShowArrayCompleted removeAllObjects];
@@ -729,19 +733,11 @@ return customView;
 
         [self.navigationItem setRightBarButtonItem:filt animated:NO ];*/
         
-        UILabel *glyph_checkmark = [UILabel new];
-        [glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-        [glyph_checkmark setFrame:CGRectMake(21, 12, 22, 16)];
-        [glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
-        [glyph_checkmark setTextColor: kNoochBlue];
-        [self.view addSubview:glyph_checkmark];
-        
-        UILabel *glyph_pending = [UILabel new];
-        [glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-        [glyph_pending setFrame:CGRectMake(174, 12, 20, 16)];
-        [glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
-        [glyph_pending setTextColor: [UIColor whiteColor]];
-        [self.view addSubview:glyph_pending];
+        [self.glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+        [self.glyph_checkmark setTextColor: kNoochBlue];
+
+        [self.glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+        [self.glyph_pending setTextColor: [UIColor whiteColor]];
 
         subTypestr = @"Pending";
         self.completed_selected = NO;
@@ -790,7 +786,7 @@ return customView;
     return 0;
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{}
+//-(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{}
 
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -835,10 +831,11 @@ return customView;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"Cell";
-    SWTableViewCell *cell = (SWTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    static NSString * cellIdentifier = @"Cell";
+    SWTableViewCell * cell = (SWTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 
-    if (1 > 0) {
+    if (cell != NULL && isLocalSearch && !self.completed_selected)
+    {
         NSLog(@"The cell is:  %@",cell);
     }
 
@@ -905,332 +902,21 @@ return customView;
             [subview removeFromSuperview];
         }
     }
-                
+
+
     if (self.completed_selected)
     {
-        emptyText_localSearch = nil;
-        [emptyText_localSearch setHidden:YES];
-
-        // UIImageView * emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(33, 105, 253, 256)];
-
-        if (isLocalSearch)
-        {
-            if ([histTempCompleted count] > indexPath.row)
-            {
-                if ([self.list subviews]) {
-                    for (UILabel * subview in [self.list subviews]) {
-                        [subview setHidden:NO];
-                    }
-                }
-                [self.list setStyleId:@"history"];
-                emptyText_localSearch.text = @"";
-                NSDictionary * dictRecord = [histTempCompleted objectAtIndex:indexPath.row];
-
-                if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]  ||
-                    [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"] ||
-                    [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]||
-                    [[dictRecord valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"] )
-                {
-                    UIView *indicator = [UIView new];
-
-                    UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 7, 10, 11)];
-                    [statusIndicator setBackgroundColor:[UIColor clearColor]];
-                    [statusIndicator setTextAlignment:NSTextAlignmentCenter];
-                    [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
-
-                    UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
-                    [amount setBackgroundColor:[UIColor clearColor]];
-                    [amount setTextAlignment:NSTextAlignmentRight];
-                    [amount setFont:[UIFont fontWithName:@"Roboto-Medium" size:18]];
-                    [amount setStyleClass:@"history_transferamount"];
-
-                    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 9, 50, 50)];
-                    pic.layer.cornerRadius = 25;
-                    pic.clipsToBounds = YES;
-                    [cell.contentView addSubview:pic];
-
-                    UILabel *transferTypeLabel = [UILabel new];
-                    [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
-                    transferTypeLabel.layer.cornerRadius = 3;
-                    transferTypeLabel .clipsToBounds = YES;
-
-                    UILabel *name = [UILabel new];
-                    [name setStyleClass:@"history_cell_textlabel"];
-
-                    UILabel *date = [UILabel new];
-                    [date setStyleClass:@"history_datetext"];
-
-                    UILabel *glyphDate = [UILabel new];
-                    [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                    [glyphDate setFrame:CGRectMake(155, 7, 14, 11)];
-                    [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
-                    [glyphDate setTextColor:kNoochGrayLight];
-                    [cell.contentView addSubview:glyphDate];
-
-                    if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
-                        [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-minus-circle"]];
-                        [statusIndicator setTextColor:kNoochRed];
-                    }
-                    else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-                        [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
-                        [statusIndicator setTextColor:kNoochRed];
-                    }
-                    else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]) {
-                        [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"]];
-                        [statusIndicator setTextColor:kNoochGreen];
-                    }
-
-                    NSLog(@"Username is: %@",[user valueForKey:@"UserName"]);
-                    if ( [[dictRecord valueForKey:@"TransactionType"] isEqualToString:@"Transfer"] ||
-                        ([[dictRecord valueForKey:@"TransactionType"] isEqualToString:@"Invite"] &&
-                         [[dictRecord valueForKey:@"InvitationSentTo"] isEqualToString:[user valueForKey:@"UserName"]]))
-                    {
-                        if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
-                        {
-                            // Sent Transfer
-                            [amount setStyleClass:@"history_transferamount_neg"];
-                            [indicator setStyleClass:@"history_sidecolor_neg"];
-                            [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                            [transferTypeLabel setText:@"Transfer to"];
-                            [transferTypeLabel setBackgroundColor:kNoochRed];
-                            [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
-                            [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                                placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
-                        }
-                        else
-                        {
-                            if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"] ||
-                                [[dictRecord valueForKey:@"TransactionType"] isEqualToString:@"Invite"] )
-                            {
-                                // Received Transfer
-                                [amount setStyleClass:@"history_transferamount_pos"];
-                                [indicator setStyleClass:@"history_sidecolor_pos"];
-                                [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                                [transferTypeLabel setText:@"Transfer from"];
-                                [transferTypeLabel setBackgroundColor:kNoochGreen];
-                                [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
-                                [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                                    placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
-                            }
-                        }
-                    }
-                    else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
-                    {
-                        [amount setTextColor:kNoochGrayDark];
-                        [indicator setStyleClass:@"history_sidecolor_neutral"];
-                        [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                        
-                        if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"RecepientId"]])
-                        {
-                            [transferTypeLabel setText:@"Request sent to"];
-                            [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_wider"];
-                            
-                            if ([dictRecord valueForKey:@"InvitationSentTo"] == NULL || [[dictRecord objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])
-                            {
-                                [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
-                                [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                                    placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
-                            }
-                            else
-                            {
-                                [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"] ]];
-                                [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
-                            }
-                        }
-                        else
-                        {
-                            [transferTypeLabel setText:@"Request from"];
-                            [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
-                            [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                                placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
-                        }
-                        [transferTypeLabel setBackgroundColor:kNoochBlue];
-                        
-                    }
-                    else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
-                              [dictRecord valueForKey:@"InvitationSentTo"] != NULL)
-                    {
-                        //ADDED BY CLIFF
-                        if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-                            [amount setTextColor:kNoochGrayDark];
-                            [indicator setStyleClass:@"history_sidecolor_neutral"];
-                            [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                        }
-                        else {
-                            [amount setStyleClass:@"history_transferamount_neg"];
-                            [indicator setStyleClass:@"history_sidecolor_neg"];
-                            [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                        }
-                        [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
-                        [transferTypeLabel setText:@"Invite sent to"];
-                        [transferTypeLabel setBackgroundColor:kNoochGrayLight];
-                        [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"]]];
-                    }
-                    else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
-                    {
-                        if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
-                        {
-                            [transferTypeLabel setText:@"You disputed a transfer to"];
-                        }
-                        else {
-                            [transferTypeLabel setText:@"Transfer disputed by"];
-                        }
-
-                        [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_evenWider"];
-                        [transferTypeLabel setBackgroundColor:Rgb2UIColor(108, 109, 111, 1)];
-                        [date setStyleClass:@"history_datetext_wide"];
-                        [glyphDate setFrame:CGRectMake(180, 7, 14, 11)];
-                        [indicator setStyleClass:@"history_sidecolor_neutral"];
-                        [amount setTextColor:kNoochGrayDark];
-                        [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                        [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
-                        [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                            placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
-                    }
-                    
-                    [cell.contentView addSubview:amount];
-                    [cell.contentView addSubview:statusIndicator];
-                    [cell.contentView addSubview:transferTypeLabel];
-                    [cell.contentView addSubview:name];
-
-                    //  'updated_balance' now for displaying transfer STATUS, only if status is "cancelled" or "rejected" or "success" (for invites)
-                    //  (this used to display the user's updated balance, which no longer exists)
-                    
-                    UILabel * updated_balance = [UILabel new];
-                    [updated_balance setStyleClass:@"transfer_status"];
-                    
-                    if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"] ||
-                        [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"])
-                    {
-                        [updated_balance setText:[NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"TransactionStatus"]]];
-                        [updated_balance setTextColor:kNoochGrayLight];
-                        [cell.contentView addSubview:updated_balance];
-                    }
-                    else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"] &&
-                             [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] )
-                    {
-                        [updated_balance setText:@"Accepted"];
-                        [updated_balance setTextColor:kNoochGreen];
-                        [cell.contentView addSubview:updated_balance];
-                    }
-                    else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] &&
-                             [[dictRecord valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"])
-                    {
-                        [updated_balance setText:@"Resolved"];
-                        [updated_balance setTextColor:kNoochGreen];
-                        [cell.contentView addSubview:updated_balance];
-                    }
-
-                    NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
-                    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-                    NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
-                            fromDate:addeddate
-                            toDate:ServerDate
-                            options:0];
-
-                    if ((long)[components day] > 3)
-                    {
-                        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-                        //Set the AM and PM symbols
-                        [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
-                        [dateFormatter setAMSymbol:@"AM"];
-                        [dateFormatter setPMSymbol:@"PM"];
-                        dateFormatter.dateFormat = @"MM/dd/yyyy hh:mm:ss a";
-                        NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
-                        dateFormatter.dateFormat = @"dd-MMMM-yyyy";
-
-                        NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
-                        [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
-                        [cell.contentView addSubview:date];
-                        
-                    }
-                    else if ((long)[components day] == 0) {
-                        NSDateComponents *components = [gregorianCalendar components:NSHourCalendarUnit 
-                                fromDate:addeddate
-                                toDate:ServerDate      
-                                options:0];
-                        if ((long)[components hour] == 0) {
-                            NSDateComponents *components = [gregorianCalendar components:NSMinuteCalendarUnit
-                                fromDate:addeddate
-                                toDate:ServerDate
-                                options:0];
-                            if ((long)[components minute]==0) {
-                                NSDateComponents *components = [gregorianCalendar components:NSSecondCalendarUnit                                
-                                    fromDate:addeddate
-                                    toDate:ServerDate
-                                    options:0];
-                                [date setText:[NSString stringWithFormat:@"%ld seconds ago",(long)[components second]]];
-                                [cell.contentView addSubview:date];
-                            }
-                            else if ((long)[components minute]==1) {
-                                [date setText:[NSString stringWithFormat:@"%ld minute ago",(long)[components minute]]];
-                            }
-                            else
-                                [date setText:[NSString stringWithFormat:@"%ld minutes ago",(long)[components minute]]];
-                            [cell.contentView addSubview:date];
-                        }
-                        else {
-                            if ((long)[components hour]==1)
-                                [date setText:[NSString stringWithFormat:@"%ld hour ago",(long)[components hour]]];
-                            else
-                                [date setText:[NSString stringWithFormat:@"%ld hours ago",(long)[components hour]]];
-                            [cell.contentView addSubview:date];
-                        }
-                    }
-                    else {
-                        if ((long)[components day]==1) {
-                            [date setText:[NSString stringWithFormat:@"%ld day ago",(long)[components day]]];
-                        }
-                        else
-                            [date setText:[NSString stringWithFormat:@"%ld days ago",(long)[components day]]];
-                        [cell.contentView addSubview:date];
-                    }
-
-                    if ( [dictRecord valueForKey:@"Memo"] != NULL &&
-                        ![[dictRecord objectForKey:@"Memo"] isKindOfClass:[NSNull class]] &&
-                        ![[dictRecord valueForKey:@"Memo"] isEqualToString:@""] )
-                    {
-                        UILabel *label_memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
-                        [label_memo setBackgroundColor:[UIColor clearColor]];
-                        [label_memo setTextAlignment:NSTextAlignmentRight];
-                        label_memo.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"For  \"%@\" ",[dictRecord valueForKey:@"Memo"]]
-                                                                                    attributes:nil];
-                        label_memo.numberOfLines = 0;
-                        label_memo.lineBreakMode = NSLineBreakByTruncatingTail;
-                        [label_memo setStyleClass:@"history_memo"];
-                        
-                        if (label_memo.attributedText.length > 36) {
-                            [label_memo setStyleClass:@"history_memo_long"];
-                        }
-                        [cell.contentView addSubview:label_memo];
-                        [name setStyleClass:@"history_cell_textlabel_wMemo"];                    }
-                }
-            }
-            else if ([histTempCompleted count] == 0)
-            {
-                if ([self.list subviews]) {
-                    for (UILabel * subview in [self.list subviews]) {
-                        [subview setHidden:YES];
-                    }
-                }
-
-                [self.list setStyleId:@"emptyTable"];
-
-                emptyText_localSearch = [[UILabel alloc] initWithFrame:CGRectMake(6, 5, 308, 70)];
-                [emptyText_localSearch setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
-                [emptyText_localSearch setNumberOfLines:0];
-                [emptyText_localSearch setHidden:NO];
-                [emptyText_localSearch setText:@"No payments found for that name."];
-                [emptyText_localSearch setTextAlignment:NSTextAlignmentCenter];
-                
-                [self.list addSubview:emptyText_localSearch];
-            }
-            return cell;
-        }
-        
         if ([histShowArrayCompleted count] > indexPath.row)
         {
-            NSDictionary *dictRecord = [histShowArrayCompleted objectAtIndex:indexPath.row];
+            NSDictionary * dictRecord = nil;
+
+            if (isLocalSearch)
+            {
+                dictRecord = [histTempCompleted objectAtIndex:indexPath.row];
+            }
+            else {
+                dictRecord = [histShowArrayCompleted objectAtIndex:indexPath.row];
+            }
 
             if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]  ||
                 [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"] ||
@@ -1248,17 +934,17 @@ return customView;
                 [amount setFont:[UIFont fontWithName:@"Roboto-Medium" size:18]];
                 [amount setStyleClass:@"history_transferamount"];
                 [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]]];
-                
+
                 UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 9, 50, 50)];
                 pic.layer.cornerRadius = 25;
                 pic.clipsToBounds = YES;
                 [cell.contentView addSubview:pic];
-                
+
 				UILabel *transferTypeLabel = [UILabel new];
                 [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
                 transferTypeLabel.layer.cornerRadius = 4;
                 transferTypeLabel.clipsToBounds = YES;
-                
+
                 UILabel *name = [UILabel new];
                 [name setStyleClass:@"history_cell_textlabel"];
                 [name setStyleClass:@"history_recipientname"];
@@ -1287,12 +973,13 @@ return customView;
                 }
                 
                 NSString * username = [NSString stringWithFormat:@"%@",[user valueForKey:@"UserName"]];
+                NSString * fullName = [NSString stringWithFormat:@"%@ %@",[user valueForKey:@"firstName"],[user valueForKey:@"lastName"]];
                 NSString * invitationSentTo = [NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"InvitationSentTo"]];
 
                 if ( [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"] ||
                     ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
-                     [dictRecord valueForKey:@"InvitationSentTo"] != NULL && ![invitationSentTo isEqualToString:username])/*) &&
-                      [dictRecord valueForKey:@"Name"] != NULL)*/)
+                     invitationSentTo != NULL && ![invitationSentTo isEqualToString:username] &&
+                    ![[dictRecord valueForKey:@"Name"] isEqualToString:fullName]))
                 {
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
                     {
@@ -1318,13 +1005,14 @@ return customView;
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                 {
                     [amount setTextColor:kNoochGrayDark];
-
+                    
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"RecepientId"]])
                     {
                         [transferTypeLabel setText:@"Request sent to"];
                         [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_wider"];
                         
-                        if ([dictRecord valueForKey:@"InvitationSentTo"] == NULL || [[dictRecord objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])
+                        if ([dictRecord valueForKey:@"InvitationSentTo"] == NULL ||
+                            [[dictRecord objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])
                         {
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
                             [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
@@ -1357,9 +1045,32 @@ return customView;
                         [amount setStyleClass:@"history_transferamount_neg"];
                     }
                     [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
+
                     [transferTypeLabel setText:@"Invite sent to"];
 					[transferTypeLabel setTextColor:kNoochGrayDark];
-                    [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"]]];
+
+                    BOOL containsLetters = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.letterCharacterSet].location;
+                    BOOL containsPunctuation = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.punctuationCharacterSet].location;
+                    BOOL containsNumbers = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.decimalDigitCharacterSet].location;
+                    BOOL containsSymbols = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.symbolCharacterSet].location;
+                    
+                    // Check if it's a phone number
+                    if (containsNumbers && !containsLetters && !containsPunctuation && !containsSymbols)
+                    {
+                        NSMutableString * mu = [NSMutableString stringWithString:[dictRecord valueForKey:@"InvitationSentTo"]];
+                        [mu insertString:@"(" atIndex:0];
+                        [mu insertString:@")" atIndex:4];
+                        [mu insertString:@" " atIndex:5];
+                        [mu insertString:@"-" atIndex:9];
+
+                        NSString * phoneWithSymbolsAddedBack = [NSString stringWithString:mu];
+
+                        [name setText:phoneWithSymbolsAddedBack];
+                    }
+                    else if (containsLetters)
+                    {
+                        [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"]]];
+                    }
                 }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
                 {
@@ -1503,10 +1214,10 @@ return customView;
                 [cell.contentView addSubview:statusIndicator];
                 [cell.contentView addSubview:transferTypeLabel];
                 [cell.contentView addSubview:name];
-
             }
         }
-        else if (indexPath.row == [histShowArrayCompleted count])
+
+        else if (!isLocalSearch && indexPath.row == [histShowArrayCompleted count])
         {
             if (isEnd == YES)
             {
@@ -1545,10 +1256,6 @@ return customView;
             {
                 if (isSearch)
                 {
-                    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-                    activityIndicator.center = CGPointMake(cell.contentView.frame.size.width / 2, cell.contentView.frame.size.height / 2);
-                    [activityIndicator startAnimating];
-                    [cell.contentView addSubview:activityIndicator];
                     ishistLoading = YES;
                     index++;
                     [self loadSearchByName];
@@ -1564,11 +1271,12 @@ return customView;
                 }
             }
         }
+
     }
 
     else if (self.completed_selected == NO)
     {
-        if (isLocalSearch)
+        /*if (isLocalSearch)
         {
             //NSLog(@"histTempPending count is: %d",[histTempPending count]);
             if ([histTempPending count] > indexPath.row)
@@ -1577,12 +1285,6 @@ return customView;
 
                 if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
                 {
-                    UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(0, 311, 9, 72)];
-                    [indicator setBackgroundColor:[UIColor clearColor]];
-                    [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
-                    [indicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-left"]];
-                    [indicator setStyleClass:@"history_sidecolor_pending"];
-
                     UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
                     [amount setBackgroundColor:[UIColor clearColor]];
                     [amount setTextAlignment:NSTextAlignmentRight];
@@ -1669,7 +1371,18 @@ return customView;
                     else {
                         [name setText:@""];
                     }
-                    
+
+                    if (![[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
+                    {
+                        UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(310, 0, 9, 80)];
+                        [indicator setBackgroundColor:kNoochBlue];
+                        [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
+                        [indicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-left"]];
+                        [indicator setTextColor:[UIColor whiteColor]];
+                        [indicator setTextAlignment:NSTextAlignmentCenter];
+                        [cell.contentView addSubview:indicator];
+                    }
+
                     [cell.contentView addSubview:transferTypeLabel];
                     [cell.contentView addSubview:name];
 
@@ -1755,8 +1468,6 @@ return customView;
                         [cell.contentView addSubview:label_memo];
                         [name setStyleClass:@"history_cell_textlabel_wMemo"];
                     }
-                    [cell.contentView addSubview:indicator];
-
                 }
             }
 
@@ -1779,6 +1490,7 @@ return customView;
             }
             return cell;
         }
+         */
 
         if ([histShowArrayPending count] > indexPath.row)
         {
@@ -1843,6 +1555,7 @@ return customView;
                     [name setStyleClass:@"history_cell_textlabel_wMemo"];
                 }
 
+
                 if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                 {
                     if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
@@ -1882,12 +1595,37 @@ return customView;
                     [transferTypeLabel setBackgroundColor:kNoochBlue];
                 }
                 
-                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL)
+                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
+                          [dictRecord valueForKey:@"InvitationSentTo"] != NULL)
                 {
                     [transferTypeLabel setText:@"You invited"];
                     [transferTypeLabel setBackgroundColor:kNoochGrayLight];
-                    [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
                     [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
+
+                    NSString * invitationSentTo = [NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"InvitationSentTo"]];
+
+                    BOOL containsLetters = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.letterCharacterSet].location;
+                    BOOL containsPunctuation = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.punctuationCharacterSet].location;
+                    BOOL containsNumbers = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.decimalDigitCharacterSet].location;
+                    BOOL containsSymbols = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.symbolCharacterSet].location;
+
+                    // Check if it's a phone number
+                    if (containsNumbers && !containsLetters && !containsPunctuation && !containsSymbols)
+                    {
+                        NSMutableString * mu = [NSMutableString stringWithString:[dictRecord valueForKey:@"InvitationSentTo"]];
+                        [mu insertString:@"(" atIndex:0];
+                        [mu insertString:@")" atIndex:4];
+                        [mu insertString:@" " atIndex:5];
+                        [mu insertString:@"-" atIndex:9];
+                        
+                        NSString * phoneWithSymbolsAddedBack = [NSString stringWithString:mu];
+                        
+                        [name setText:phoneWithSymbolsAddedBack];
+                    }
+                    else
+                    {
+                        [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"]]];
+                    }
                 }
 
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
@@ -1909,17 +1647,20 @@ return customView;
                         placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 }
 
-                else {
+                else
+                {
+                    [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
                     [name setText:@""];
                 }
 
                 if (![[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
                 {
-                    UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(0, 311, 9, 72)];
-                    [indicator setBackgroundColor:[UIColor clearColor]];
+                    UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(310, 0, 9, 80)];
+                    [indicator setBackgroundColor:kNoochBlue];
                     [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
                     [indicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-left"]];
-                    [indicator setStyleClass:@"history_sidecolor_pending"];
+                    [indicator setTextColor:[UIColor whiteColor]];
+                    [indicator setTextAlignment:NSTextAlignmentCenter];
                     [cell.contentView addSubview:indicator];
                 }
 
@@ -1985,7 +1726,6 @@ return customView;
                         [date setText:[NSString stringWithFormat:@"%ld days ago",(long)[components day]]];
                     [cell.contentView addSubview:date];   
                 }
-
 
                 [cell.contentView addSubview:amount];
                 [cell.contentView addSubview:statusIndicator];
@@ -2064,6 +1804,10 @@ return customView;
 
     if (self.completed_selected)
     {
+        if (indexPathForDeletion != nil) {
+            indexPathForDeletion = nil;
+        }
+
         if (isLocalSearch)
         {
             NSDictionary *dictRecord = [histTempCompleted objectAtIndex:indexPath.row];
@@ -2081,17 +1825,19 @@ return customView;
     }
     else
     {
+        indexPathForDeletion = indexPath;
+
         if (isLocalSearch)
         {
-            NSDictionary *dictRecord=[histTempPending objectAtIndex:indexPath.row];
-            TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
+            NSDictionary * dictRecord = [histTempPending objectAtIndex:indexPath.row];
+            TransactionDetails * details = [[TransactionDetails alloc] initWithData:dictRecord];
             [self.navigationController pushViewController:details animated:YES];
             return;
         }
         if ([histShowArrayPending count] > indexPath.row)
         {
-            NSDictionary *dictRecord=[histShowArrayPending objectAtIndex:indexPath.row];
-            TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
+            NSDictionary * dictRecord = [histShowArrayPending objectAtIndex:indexPath.row];
+            TransactionDetails * details = [[TransactionDetails alloc] initWithData:dictRecord];
             [self.navigationController pushViewController:details animated:YES];
         }
     }
@@ -2173,9 +1919,10 @@ return customView;
         {  // For the Recipient of a Request
             if (ind == 0)
             { //accept
-                NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+                NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 
-                if ([[assist shared]getSuspended]) {
+                if ([[assist shared]getSuspended])
+                {
                     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended"
                                                                     message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help."
                                                                    delegate:self
@@ -2185,38 +1932,31 @@ return customView;
                     [alert show];
                     return; 
                 }
-                else if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
+                else if (![[user valueForKey:@"Status"]isEqualToString:@"Active"])
+                {
                     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Email Verification Needed"
                                                                     message:@"Please click the link we emailed you to verify your email address."
                                                                    delegate:Nil
                                                           cancelButtonTitle:@"OK"
-                                                          otherButtonTitles:Nil, nil];
+                                                          otherButtonTitles:@"Resend", nil];
+                    [alert setTag:51];
                     [alert show];
                     return;
                 }
-                if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
-                    
-                        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Profile Not Complete"
-                                                                        message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!"
-                                                                       delegate:self
-                                                              cancelButtonTitle:@"Later"
-                                                              otherButtonTitles:@"Validate Now", nil];
-                        [alert setTag:147];
-                        [alert show];
-                        return;
-                }
-                else if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
-                    UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Please Attach An Account"
+                else if (![[defaults objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+                {
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Please Attach An Account"
                                                                   message:@"Before you can send or receive money, you must add a bank account."
                                                                  delegate:self
                                                         cancelButtonTitle:@"OK"
-                                                        otherButtonTitles:Nil, nil];
-                    [set show];
+                                                        otherButtonTitles:@"Add Bank Now", nil];
+                    [alert setTag:52];
+                    [alert show];
                     return;
                 }
                 else
                 {
-                    NSMutableDictionary *input = [dictRecord mutableCopy];
+                    NSMutableDictionary * input = [dictRecord mutableCopy];
                     [input setValue:@"accept" forKey:@"response"];
                    
                     [[assist shared]setRequestMultiple:NO];
@@ -2263,32 +2003,54 @@ return customView;
     }
 }
 
+#pragma mark - SWTableView
 - (BOOL)swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:(SWTableViewCell *)cell
 {
     // allow just one cell's utility button to be open at once
     return YES;
 }
 
-#pragma mark - SWTableView
-
 #pragma mark - searching
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:NO];
     [self.search resignFirstResponder];
+    [self.search setText:@""];
+
+    [UIView animateKeyframesWithDuration:0.2
+                                   delay:0
+                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      [emptyText_localSearch setAlpha:0];
+                                      [self.glyph_emptyTable setAlpha:0];
+                                  }];
+                              } completion:^(BOOL finished){
+                                  if ([self.view.subviews containsObject:emptyText_localSearch] ||
+                                      [self.view.subviews containsObject:self.glyph_emptyTable])
+                                  {
+                                      [emptyText_localSearch setHidden:YES];
+                                      [self.glyph_emptyTable setHidden:YES];
+                                      
+                                      [emptyText_localSearch removeFromSuperview];
+                                      [self.glyph_emptyTable removeFromSuperview];
+                                  }
+                              }
+     ];
+
     isSearch = NO;
     isFilter = NO;
     listType = @"ALL";
+
     [histShowArrayCompleted removeAllObjects];
     [histShowArrayPending removeAllObjects];
-    self.search.text=@"";
 
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     [imageCache clearMemory];
     [imageCache clearDisk];
     [imageCache cleanDisk];
     countRows = 0;
-    [self.search resignFirstResponder];
+
     [self loadHist:listType index:1 len:20 subType:subTypestr];
 }
 
@@ -2297,13 +2059,17 @@ return customView;
     if ([searchBar.text length] > 0)
     {
         listType = @"ALL";
-        SearchStirng = [self.search.text lowercaseString];
+        
+        SearchStirng = [[self.search.text stringByReplacingOccurrencesOfString:@" " withString:@"%20"] lowercaseString];
+
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
+
         index = 1;
         isSearch = YES;
         isLocalSearch = NO;
         isFilter = NO;
+ 
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         [imageCache clearMemory];
         [imageCache clearDisk];
@@ -2319,37 +2085,142 @@ return customView;
     [histTempCompleted removeAllObjects];
     [histTempPending removeAllObjects];
 
+    NSMutableArray * dictToSearch = nil;
+
     if ([subTypestr isEqualToString:@"Pending"])
     {
-        for (NSMutableDictionary * tableViewBind in histShowArrayPending)
-        {
-            NSComparisonResult result = [[tableViewBind valueForKey:@"FirstName"] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
-            NSComparisonResult result2 = [[tableViewBind valueForKey:@"LastName"] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
-            NSComparisonResult result3 = [[NSString stringWithFormat:@"%@ %@",[tableViewBind valueForKey:@"FirstName"],[tableViewBind valueForKey:@"LastName"]] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
+        dictToSearch = [histShowArrayPending mutableCopy];
+    }
+    else
+    {
+        dictToSearch = [histShowArrayCompleted mutableCopy];
+    }
+    
+    for (NSMutableDictionary * tableViewBind in dictToSearch)
+    {
+        NSComparisonResult result = [[tableViewBind valueForKey:@"FirstName"] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
+        NSComparisonResult result2 = [[tableViewBind valueForKey:@"LastName"] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
+        NSComparisonResult result3 = [[NSString stringWithFormat:@"%@ %@",[tableViewBind valueForKey:@"FirstName"],[tableViewBind valueForKey:@"LastName"]] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
 
-            if (result == NSOrderedSame || result2 == NSOrderedSame || result3 == NSOrderedSame)
+        NSComparisonResult result4;
+        if (![[tableViewBind valueForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])
+        {
+            result4 = [[tableViewBind valueForKey:@"InvitationSentTo"] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
+        }
+
+        if (result == NSOrderedSame || result2 == NSOrderedSame || result3 == NSOrderedSame || result4 == NSOrderedSame)
+        {
+            if (self.completed_selected)
+            {
+                [histTempCompleted addObject:tableViewBind];
+            }
+            else
             {
                 [histTempPending addObject:tableViewBind];
             }
         }
     }
+
+    if (self.completed_selected)
+    {
+
+        if ([histTempCompleted count] == 0)
+        {
+            if ([self.list subviews])
+            {
+                NSArray * viewsToHide = [self.list subviews];
+                for (UIView * v in viewsToHide)
+                {
+                    [UIView beginAnimations:nil context:nil];
+                    [UIView setAnimationDuration:0.15];
+                    [v setAlpha:0];
+                    [UIView commitAnimations];
+                }
+            }
+
+            [self.list setStyleId:@"emptyTable"];
+
+            if (![self.view.subviews containsObject:emptyText_localSearch])
+            {
+                NSShadow * shadow_Dark = [[NSShadow alloc] init];
+                shadow_Dark.shadowColor = Rgb2UIColor(88, 90, 92, .7);
+                shadow_Dark.shadowOffset = CGSizeMake(0, -1.5);
+                NSDictionary * shadowDark = @{NSShadowAttributeName: shadow_Dark};
+
+                emptyText_localSearch = [[UILabel alloc] initWithFrame:CGRectMake(40, 78, 240, 60)];
+                [emptyText_localSearch setFont:[UIFont fontWithName:@"Roboto-regular" size:20]];
+                [emptyText_localSearch setText:@"No payments found for that name."];
+                [emptyText_localSearch setTextColor:kNoochGrayLight];
+                [emptyText_localSearch setTextAlignment:NSTextAlignmentCenter];
+                [emptyText_localSearch setNumberOfLines:0];
+                [emptyText_localSearch setHidden:NO];
+                [emptyText_localSearch setAlpha:0];
+                [self.view addSubview:emptyText_localSearch];
+
+                self.glyph_emptyTable = [[UILabel alloc] initWithFrame:CGRectMake(40, 140, 240, 70)];
+                [self.glyph_emptyTable setFont:[UIFont fontWithName:@"FontAwesome" size: 58]];
+                self.glyph_emptyTable.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-frown-o"] attributes:shadowDark];
+                [self.glyph_emptyTable setTextAlignment:NSTextAlignmentCenter];
+                [self.glyph_emptyTable setTextColor: kNoochGrayLight];
+                [self.glyph_emptyTable setHidden:NO];
+                [self.glyph_emptyTable setAlpha:0];
+                [self.view addSubview:self.glyph_emptyTable];
+            }
+            
+            [UIView beginAnimations:nil context:nil];
+            [UIView setAnimationDuration:0.2];
+            [emptyText_localSearch setAlpha:1];
+            [self.glyph_emptyTable setAlpha:1];
+            [UIView commitAnimations];
+        }
+        else if ([histTempCompleted count] > 0)
+        {
+            [self.list setStyleId:@"history"];
+
+            if ([self.list subviews])
+            {
+                NSArray * viewsToHide = [self.list subviews];
+                for (UIView * v in viewsToHide)
+                {
+                    [UIView beginAnimations:nil context:nil];
+                    [UIView setAnimationDuration:0.15];
+                    [v setAlpha:1];
+                    [UIView commitAnimations];
+                }
+            }
+
+            [UIView animateKeyframesWithDuration:0.1
+                                           delay:0
+                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                      animations:^{
+                                          [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                              [emptyText_localSearch setAlpha:0];
+                                              [self.glyph_emptyTable setAlpha:0];
+                                          }];
+                                      } completion:^(BOOL finished){
+                                          if ([self.view.subviews containsObject:emptyText_localSearch] ||
+                                              [self.view.subviews containsObject:self.glyph_emptyTable])
+                                          {
+                                              [emptyText_localSearch setHidden:YES];
+                                              [self.glyph_emptyTable setHidden:YES];
+
+                                              [emptyText_localSearch removeFromSuperview];
+                                              [self.glyph_emptyTable removeFromSuperview];
+                                          }
+                                          dispatch_async(dispatch_get_main_queue(), ^{
+                                              [self.list reloadData];
+                                          });
+                                      }
+             ];
+        }
+    }
     else
     {
-        for (NSMutableDictionary * tableViewBind in histShowArrayCompleted)
-        {
-            NSComparisonResult result = [[tableViewBind valueForKey:@"FirstName"] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
-            NSComparisonResult result2 = [[tableViewBind valueForKey:@"LastName"] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
-            NSComparisonResult result3 = [[NSString stringWithFormat:@"%@ %@",[tableViewBind valueForKey:@"FirstName"],[tableViewBind valueForKey:@"LastName"]] compare:SearchStirng options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [SearchStirng length])];
-
-            if (result == NSOrderedSame || result2 == NSOrderedSame || result3 == NSOrderedSame)
-            {
-                [histTempCompleted addObject:tableViewBind];
-            }
-        }
-        [emptyText_localSearch setText:@""];
-        [emptyText_localSearch setHidden:YES];
+        histShowArrayPending = dictToSearch;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.list reloadData];
+        });
     }
-    [self.list reloadData];
 }
 
 -(void)loadSearchByName
@@ -2373,7 +2244,8 @@ return customView;
     [serveOBJ histMoreSerachbyName:listType sPos:index len:20 name:SearchStirng subType:subTypestr];
 }
 
--(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
     [searchBar becomeFirstResponder];
     [searchBar setShowsCancelButton:YES];
 }
@@ -2392,8 +2264,7 @@ return customView;
     if ([searchText length] > 0)
     {
         SearchStirng = [self.search.text lowercaseString];
-       // isEnd = YES;
-       // isFilter = NO;
+        //isEnd = YES;
         isLocalSearch = YES;
         [self searchTableView];
         //[self.list reloadData];
@@ -2406,7 +2277,8 @@ return customView;
 }
 
 #pragma mark - file paths
-- (NSString *)autoLogin{
+- (NSString *)autoLogin
+{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
@@ -2456,7 +2328,11 @@ return customView;
         
         if ([[[dictResponse valueForKey:@"sendTransactionInCSVResult"]valueForKey:@"Result"]isEqualToString:@"1"])
         {
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Export Successful" message:@"Your personalized transaction report has been emailed to you." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Export Successful"
+                                                            message:@"Your personalized transaction report has been emailed to you."
+                                                           delegate:Nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:Nil, nil];
             [alert show];
         }
     }
@@ -2494,10 +2370,7 @@ return customView;
                 }
             }
         }
-        else if ([histArray count] == 0 && ![subTypestr isEqualToString:@"Pending"]) {
-            isEnd = YES;
-        }
-        else if ([histArray count] == 0 && [subTypestr isEqualToString:@"Pending"]) {
+        else if ([histArray count] == 0) {
             isEnd = YES;
         }
 
@@ -2523,7 +2396,9 @@ return customView;
         [self.list setDelegate:self];
         [self.list setSectionHeaderHeight:0];
         [self.view addSubview:self.list];
-        [self.list reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.list reloadData];
+        });
         if ([subTypestr isEqualToString:@"Pending"])
         {
             [self.list scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:countRows inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
@@ -2621,7 +2496,6 @@ return customView;
 
     else if ([tagName isEqualToString:@"reject"])
     {
-        [self.hud hide:YES];
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Request Rejected"
                                                         message:@"No problem, you have rejected this request successfully."
                                                        delegate:nil
@@ -2651,7 +2525,8 @@ return customView;
         [self deleteTableRow:indexPathForDeletion];
     }
 
-    else if ([tagName isEqualToString:@"cancelRequestToExisting"] || [tagName isEqualToString:@"cancelRequestToNonNoochUser"])
+    else if ([tagName isEqualToString:@"cancelRequestToExisting"] ||
+             [tagName isEqualToString:@"cancelRequestToNonNoochUser"])
     {
         [self.hud hide:YES];
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Request Cancelled"
@@ -2676,6 +2551,50 @@ return customView;
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];
         [alert show];
+    }
+
+    if ([tagName isEqualToString:@"email_verify"])
+    {
+        NSString *response = [[NSJSONSerialization
+                               JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                               options:kNilOptions
+                               error:&error] objectForKey:@"Result"];
+        if ([response isEqualToString:@"Already Activated."])
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
+                                                         message:@"Your email has already been verified."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+            [av show];
+        }
+        else if ([response isEqualToString:@"Not a nooch member."])
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
+                                                         message:@"An error occurred when attempting to fulfill this request, please try again."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+            [av show];
+        }
+        else if ([response isEqualToString:@"Success"])
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Check Your Email"
+                                                         message:[NSString stringWithFormat:@"\xF0\x9F\x93\xA5\nA verifiction link has been sent to %@.",[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]]
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+            [av show];
+        }
+        else if ([response isEqualToString:@"Failure"])
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
+                                                         message:@"An error occurred when attempting to fulfill this request, please try again."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+            [av show];
+        }
     }
 
 }
@@ -2732,11 +2651,18 @@ return customView;
         [serveObj SendReminderToRecepient:[self.responseDict valueForKey:@"TransactionId"] reminderType:@"InvitationReminderToNewUser"];
     }
 
-    else if (actionSheet.tag == 147 && buttonIndex == 1)  // go to Profile
+    else if (actionSheet.tag == 51 && buttonIndex == 1)  // Resend Email Verificaiton Link
     {
-        ProfileInfo *prof = [ProfileInfo new];
-        isProfileOpenFromSideBar = NO;
-        [self.navigationController pushViewController:prof animated:YES];
+        serve * email_verify = [serve new];
+        [email_verify setDelegate:self];
+        [email_verify setTagName:@"email_verify"];
+        [email_verify resendEmail];
+    }
+
+    else if (actionSheet.tag == 52 && buttonIndex == 1)  // go to Knox Webview
+    {
+        knoxWeb * knox = [knoxWeb new];
+        [self.navigationController pushViewController:knox animated:YES];
     }
 
     else if ((actionSheet.tag == 1010 || actionSheet.tag == 2010) && buttonIndex == 0) // CANCEL Request
@@ -2802,8 +2728,13 @@ return customView;
     
     else if (actionSheet.tag == 50 && buttonIndex == 1) // Contact Support
     {
-        if (![MFMailComposeViewController canSendMail]){
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        if (![MFMailComposeViewController canSendMail])
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                         message:@"You don't have a mail account configured for this device."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles: nil];
             [av show];
             return;
         }
@@ -2825,6 +2756,13 @@ return customView;
     int rowToRemove = rowNumber.row;
     [histShowArrayPending removeObjectAtIndex:rowToRemove];
     [self.list deleteRowsAtIndexPaths:@[rowNumber] withRowAnimation:UITableViewRowAnimationFade];
+
+    serve * getPendingCount = [serve new];
+    [getPendingCount setDelegate:self];
+    [getPendingCount setTagName:@"getPendingTransfersCount"];
+    [getPendingCount getPendingTransfersCount];
+
+    shouldDeletePendingRow = NO;
 }
 
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
@@ -2861,6 +2799,7 @@ return customView;
     // Close the Mail Interface
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

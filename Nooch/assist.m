@@ -172,7 +172,7 @@ static assist * _sharedInstance = nil;
     }
     [usr setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"] forKey:@"email"];
     
-     accountStore = [[ACAccountStore alloc] init];
+     /*accountStore = [[ACAccountStore alloc] init];
      if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
      {
          ACAccountType * facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
@@ -199,7 +199,7 @@ static assist * _sharedInstance = nil;
      
      } else {
          fbAllowed = NO;
-     }
+     }*/
 
     timer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
 
@@ -431,7 +431,8 @@ static assist * _sharedInstance = nil;
     sets.tagName = @"sets";
     [sets getSettings];
 }
--(void)getAcctInfo{
+-(void)getAcctInfo
+{
     if (!islogout) {
         serve * info = [serve new];
         info.Delegate = self;

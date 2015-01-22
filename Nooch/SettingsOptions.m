@@ -193,7 +193,7 @@
     if ([[UIScreen mainScreen] bounds].size.height == 480)
     {
         scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
-                                                                              [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
+                                                                [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
         [scroll setDelegate:self];
         [scroll setContentSize:CGSizeMake(320, 545)];
         for (UIView *subview in self.view.subviews) {
@@ -202,13 +202,33 @@
         }
         [self.view addSubview:scroll];
     }
+
+    // PUSH NOTIFICATION REGISTRATION
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+    {
+        NSLog(@"No way we're getting here before the Home screen...");
+        // Register for push in iOS 8.
+        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    }
+    else
+    {
+        // Register for push in iOS 7 and under.
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
+                                                                               UIUserNotificationTypeSound |
+                                                                               UIUserNotificationTypeAlert)];
+    }
 }
 
 -(void)attach_bank
 {
     if (isBankAttached)
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Attach New Bank Account" message:@"You can only have one bank account attached at a time.  If you link a new account, that will replace your current bank account. This cannot be undone.\n\nAre you sure you want to replace this bank account?" delegate:self cancelButtonTitle:@"Yes - Replace" otherButtonTitles:@"Cancel", nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Attach New Bank Account"
+                                                     message:@"You can only have one bank account attached at a time.  If you link a new account, that will replace your current bank account. This cannot be undone.\n\nAre you sure you want to replace this bank account?"
+                                                    delegate:self
+                                           cancelButtonTitle:@"Yes - Replace"
+                                           otherButtonTitles:@"Cancel", nil];
         [av setTag:32];
         [av show];
     }
@@ -452,7 +472,7 @@
                                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                             options:kNilOptions
                                             error:&error];
-        NSLog(@"dicResponse is: %@",dictResponse);
+        //NSLog(@"knox info is: %@",dictResponse);
 
         if (![[dictResponse valueForKey:@"AccountName"] isKindOfClass:[NSNull class]] &&
             ![[dictResponse valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]] &&
