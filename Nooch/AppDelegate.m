@@ -22,7 +22,6 @@ bool modal;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    NSLog(@"App Delegate CheckPoint A");
     inBack = NO;
     [Appirater setAppId:@"917955306"];
     [Appirater setDaysUntilPrompt:7];
@@ -106,7 +105,7 @@ bool modal;
     NSSetUncaughtExceptionHandler(&exceptionHandler);
 
     // ARTISAN SDK
-//    [ARPowerHookManager registerHookWithId:@"serverURL" friendlyName:@"Server URL To Use" defaultValue:@"https://www.noochme.com/NoochService/NoochService.svc"];
+    // [ARPowerHookManager registerHookWithId:@"serverURL" friendlyName:@"Server URL To Use" defaultValue:@"https://www.noochme.com/NoochService/NoochService.svc"];
     [ARPowerHookManager registerHookWithId:@"slogan" friendlyName:@"Slogan" defaultValue:@"Money Made Simple"];
     [ARPowerHookManager registerHookWithId:@"HUDcolor" friendlyName:@"HUD Color" defaultValue:@"black"];
     [ARPowerHookManager registerHookWithId:@"reqCodeSetting" friendlyName:@"Require Invite Code" defaultValue:@"no"];
@@ -114,7 +113,8 @@ bool modal;
     [ARPowerHookManager registerHookWithId:@"versionNum" friendlyName:@"Most Recent Version Number" defaultValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
     [ARPowerHookManager registerHookWithId:@"homeBtnClr" friendlyName:@"Home Button Color" defaultValue:@"green"];
     [ARPowerHookManager registerHookWithId:@"settingsCogIconPos" friendlyName:@"Settings Cog Icon Position" defaultValue:@"bottomBar"];
-
+    [ARPowerHookManager registerHookWithId:@"DispApts" friendlyName:@"Display Apts Section" defaultValue:@"no"];
+    
     [ARPowerHookManager registerHookWithId:@"NV_HD" friendlyName:@"New Version Alert Header Txt" defaultValue:@"New Stuff Galore"];
     [ARPowerHookManager registerHookWithId:@"NV_BODY" friendlyName:@"New Version Alert Body Txt" defaultValue:@"Check out the latest updates and enhancements in the newest version of Nooch."];
     [ARPowerHookManager registerHookWithId:@"NV_IMG" friendlyName:@"New Version Alert Image URL" defaultValue:@"https://www.nooch.com/wp-content/uploads/2014/12/ReferralCode_NOCASH.gif"];
@@ -129,16 +129,12 @@ bool modal;
 
     [ARManager startWithAppId:@"5487d09c2b22204361000011"];
 
-    
-
-    //[[NSUserDefaults standardUserDefaults] setBool:false forKey:@"VersionUpdateNoticeDisplayed"];
-    NSLog(@"App Delegate CheckPoint B");
+    [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"VersionUpdateNoticeDisplayed"];
     return YES;
 }
 
 -(void)connectCheck:(NSNotification *)notice
 {
-    NSLog(@"App Delegate CheckPoint *ConnectCheck*");
     Reachability* curReach = [notice object];
     NSParameterAssert([curReach isKindOfClass: [Reachability class]]);
     NetworkStatus netStat = [curReach currentReachabilityStatus];
@@ -196,7 +192,6 @@ void exceptionHandler(NSException *exception){
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    NSLog(@"App Delegate CheckPoint *applicationWillEnterForeground*");
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     NSTimeInterval timeAway = [inactiveDate timeIntervalSinceNow];
     [splashView removeFromSuperview];
@@ -227,7 +222,6 @@ void exceptionHandler(NSException *exception){
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    NSLog(@"App Delegate CheckPoint C");
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 
     // Call the 'activateApp' method to log an app event for use in analytics and advertising reporting.

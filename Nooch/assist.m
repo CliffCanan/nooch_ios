@@ -433,7 +433,6 @@ static assist * _sharedInstance = nil;
 }
 -(void)getAcctInfo
 {
-    NSLog(@"Assist.m CheckPoint getAccntInfo");
     if (!islogout) {
         serve * info = [serve new];
         info.Delegate = self;
@@ -447,7 +446,6 @@ static assist * _sharedInstance = nil;
 #pragma mark - file paths
 - (NSString *)autoLogin
 {
-    NSLog(@"Assist.m CheckPoint A");
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
@@ -457,7 +455,6 @@ static assist * _sharedInstance = nil;
 }
 -(void)listen:(NSString *)result tagName:(NSString *)tagName
 {
-    NSLog(@"Assist.m CheckPoint LISTEN");
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound)
     {
         if (timer!=nil)

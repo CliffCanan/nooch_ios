@@ -55,8 +55,6 @@
 {
     [super viewDidAppear:animated];
 
-    [self.login removeFromSuperview];
-
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.login setBackgroundColor:[UIColor clearColor]];
     [self.login setTitle:@"Already a Member?  Sign in here  " forState:UIControlStateNormal];
@@ -313,10 +311,14 @@
         [boxOutline setFrame:CGRectMake(9, 219, 302, 153)];
         [name setFrame:CGRectMake(0, 219, 0, 0)];
         [self.name_field setFrame:CGRectMake(0, 219, 0, 0)];
+
         [email setFrame:CGRectMake(0, 259, 0, 0)];
         [self.email_field setFrame:CGRectMake(0, 259, 0, 0)];
+        [self.emailValidator setFrame:CGRectMake(74, 259, 21, 39)];
+
         [password setFrame:CGRectMake(0, 299, 0, 0)];
         [self.password_field setFrame:CGRectMake(0, 299, 0, 0)];
+        [self.pwValidator setFrame:CGRectMake(98, 299, 21, 39)];
 
         [checkbox_box setFrame:CGRectMake(36, 345, 21, 20)];
         [checkbox_dot setFrame:CGRectMake(31, 340, 31, 30)];
@@ -657,9 +659,27 @@
     }
 }
 
-- (void)login:(UIButton*)sender
+-(void)viewDidDisappear:(BOOL)animated
 {
-    [UIView animateKeyframesWithDuration:.4
+    [self.login removeFromSuperview];
+}
+
+-(void)login:(UIButton*)sender
+{
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:.4];
+    if ([[UIScreen mainScreen] bounds].size.height > 500) {
+        [self.login setFrame:CGRectMake(321, 503, 300, 44)];
+    } else {
+        [self.login setFrame:CGRectMake(321, 429, 300, 44)];
+    }
+    [UIView commitAnimations];
+
+    [[UIApplication sharedApplication]setStatusBarHidden:YES];
+    Login * signin = [Login new];
+    [self.navigationController pushViewController:signin animated:YES];
+
+    /*[UIView animateKeyframesWithDuration:.4
                                    delay:0
                                  options:UIViewKeyframeAnimationOptionCalculationModeCubic
                               animations:^{
@@ -697,7 +717,7 @@
                                   [self.navigationController pushViewController:signin animated:YES];
                                   [self.login removeFromSuperview];
                               }
-     ];
+     ];*/
 }
 
 -(void)loginFromAlertView
@@ -1323,7 +1343,7 @@
             if ( [self.email_field.text length] < 4 ||
                  [self.email_field.text rangeOfString:@"@"].location == NSNotFound ||
                  [self.email_field.text rangeOfString:@"."].location == NSNotFound ||
-                 [self.email_field.text rangeOfString:@" "].location == NSNotFound ||
+                 [self.email_field.text rangeOfString:@" "].location != NSNotFound ||
                  [self.email_field.text rangeOfString:@"."].location > [self.email_field.text length] - 3 ||
                 (([self.email_field.text rangeOfString:@"."].location - [self.email_field.text rangeOfString:@"@"].location) == 1))
             {

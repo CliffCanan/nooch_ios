@@ -2059,13 +2059,17 @@
     if ([searchBar.text length] > 0)
     {
         listType = @"ALL";
-        SearchStirng = [self.search.text lowercaseString];
+        
+        SearchStirng = [[self.search.text stringByReplacingOccurrencesOfString:@" " withString:@"%20"] lowercaseString];
+
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
+
         index = 1;
         isSearch = YES;
         isLocalSearch = NO;
         isFilter = NO;
+ 
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         [imageCache clearMemory];
         [imageCache clearDisk];

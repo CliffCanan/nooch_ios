@@ -375,7 +375,7 @@ view {
     background-image	: linear-gradient(#7fd034, #6ab029);
     border				: 1px solid #66AE3C;
 }
-.button_green_login_4:normal {
+.button_green_login_4 {
     left                : 23px;
     top                 : 187px;
     width				: 274px;
@@ -427,8 +427,7 @@ view {
     box-shadow          : 0 2px 3px rgba(18,26,32,.16);
 }
 /****  Disabled GREEN GRADIENT  ****/
-.button_green:disabled,
-.button_green_login_4:disabled {
+.button_green:disabled {
     width				: 280px;
     height				: 48px;
     left                : 20px;

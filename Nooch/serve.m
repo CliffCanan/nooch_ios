@@ -659,7 +659,7 @@ NSString *amnt;
 {
     responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
     
-    // NSLog(@"Serve -> responseString is: %@",responseString);
+    //NSLog(@"Serve -> responseString is: %@",responseString);
 
     if ([responseString rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound)
     {

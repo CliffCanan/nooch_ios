@@ -166,7 +166,17 @@
         [self.glyph_noBank removeFromSuperview];
     }
 
-    shouldDisplayAptsSection = true;
+    NSString * disAptsFromArtisanStrg = [ARPowerHookManager getValueForHookById:@"DispApts"];
+    
+    if ([[disAptsFromArtisanStrg lowercaseString] isEqualToString:@"no"]) {
+        shouldDisplayAptsSection = false;
+    }
+    else if ([[disAptsFromArtisanStrg lowercaseString]isEqualToString:@"yes"]) {
+        shouldDisplayAptsSection = true;
+    }
+    else {
+        shouldDisplayAptsSection = false;
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated

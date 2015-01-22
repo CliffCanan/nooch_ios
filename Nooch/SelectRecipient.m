@@ -288,14 +288,11 @@
         [self.contacts setAlpha:0];
         [UIView commitAnimations];
         
-        if (!isAddRequest)
-        {
-            RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
-            spinner1.color = [UIColor whiteColor];
-            self.hud.customView = spinner1;
-            self.hud.labelText = @"Loading your recent list...";
-            [self.hud show:YES];
-        }
+        RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
+        spinner1.color = [UIColor whiteColor];
+        self.hud.customView = spinner1;
+        self.hud.labelText = @"Loading your recent list...";
+        [self.hud show:YES];
         
         serve * recents = [serve new];
         [recents setTagName:@"recents"];
@@ -1143,7 +1140,7 @@
 
             [self.glyphEmail setFont:[UIFont fontWithName:@"FontAwesome" size:22]];
             [self.glyphEmail setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope-o"]];
-            int leftValue = ([[UIScreen mainScreen] bounds].size.width / 2) - 42 - (4.9 * [searchString length]);
+            int leftValue = ([[UIScreen mainScreen] bounds].size.width / 2) - 49 - (4.5 * [searchString length]);
             if (leftValue < 3)
             {
                 [UIView beginAnimations:nil context:nil];
@@ -1227,7 +1224,7 @@
 
                 if (phoneNumEntry && [s length] > 3)
                 {
-                    [self.glyphEmail setFont:[UIFont fontWithName:@"FontAwesome" size:25]];
+                    [self.glyphEmail setFont:[UIFont fontWithName:@"FontAwesome" size:27]];
                     [self.glyphEmail setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-mobile"]];
                     int leftValue = ([[UIScreen mainScreen] bounds].size.width / 2) - 38 - (4.5 * [searchString length]);
                     if (leftValue < 3)
@@ -1442,7 +1439,6 @@
 #pragma mark - server Delegation
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
-    [self.hud hide:YES];
     [self.contacts setNeedsDisplay];
     
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound)
@@ -1519,7 +1515,7 @@
 
     else if ([tagName isEqualToString:@"recents"])
     {
-        [spinner setHidden:YES];
+        [self.hud hide:YES];
 
         NSError * error;
         self.recents = [NSJSONSerialization
@@ -1583,6 +1579,7 @@
             //return;
         }
 
+        [self.hud hide:YES];
         if ([self.recents count] > 0)
         {
             if ([self.view.subviews containsObject:self.noContact_img])
@@ -1702,6 +1699,7 @@
         {
             [self displayEmpty_SearchByLocation];
         }
+        [self.hud hide:YES];
     }
 
     else if ([tagName isEqualToString:@"emailCheck"])
@@ -1711,6 +1709,8 @@
                                            JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                            options:kNilOptions
                                            error:&error];
+
+        [self.hud hide:YES];
 
         if ([dictResult objectForKey:@"Result"] != [NSNull null])
         {
@@ -1732,7 +1732,6 @@
 
             if ([[assist shared]isRequestMultiple])
             {
-                [spinner setHidden:YES];
                 searching = NO;
                 emailEntry = NO;
                 isRecentList = NO;
@@ -1761,8 +1760,6 @@
             HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
 
-            [spinner setHidden:YES];
-
             return;
         }
     }
@@ -1774,7 +1771,9 @@
                                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                             options:kNilOptions
                                             error:&error];
-        
+
+        [self.hud hide:YES];
+
         if ([dictResult objectForKey:@"Result"] != [NSNull null])
         {
             if ([[dictResult objectForKey:@"Result"] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
@@ -1809,7 +1808,6 @@
 
             if ([[assist shared]isRequestMultiple])
             {
-                [spinner setHidden:YES];
                 searching = NO;
                 emailEntry = NO;
                 isRecentList = NO;
@@ -1838,8 +1836,6 @@
             HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
 
-            [spinner setHidden:YES];
-
             return;
         }
     }
@@ -1847,7 +1843,6 @@
     else if ([tagName isEqualToString:@"getMemberDetails"])
     {
         NSError * error;
-        [spinner setHidden:YES];
 
         NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
         [dict setDictionary:[NSJSONSerialization
@@ -1874,7 +1869,7 @@
                 [arrRequestPersons addObject:dict];
             }
             [self.contacts reloadData];
-
+            [self.hud hide:YES];
             return;
         }
         else
@@ -1902,6 +1897,8 @@
                 [dict setObject:PhotoUrl forKey:@"Photo"];
                 [arrRequestPersons addObject:dict];
             }
+
+            [self.hud hide:YES];
 
             isFromHome = NO;
             isFromMyApt = NO;
