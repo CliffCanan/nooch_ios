@@ -27,7 +27,6 @@
                                                      from:self
                                                  forEvent:nil];
         }
-        NSLog(@"3.) GetLocation.M --> Checkpoint REACHED");
 
         // send loc updates to myself
 	}
@@ -37,9 +36,7 @@
 - (void)locationManager:(CLLocationManager *)manager
      didUpdateLocations:(NSArray *)locations
 {
-    NSLog(@"GetLocation.m --> LocationManager NEW didUpdateLocationS is: %@", locations);
-
-    //- (void)transferPinLocationUpdateManager:(CLLocationManager *)managerdidUpdateLocations:(NSArray *)locationsArray
+    //NSLog(@"GetLocation.m --> LocationManager NEW didUpdateLocationS is: %@", locations);
 
     [self.delegate transferPinLocationUpdateManager:manager didUpdateLocations:locations];
     //[self.delegate locationUpdate: locations];

@@ -131,7 +131,7 @@
 
     [UIView animateKeyframesWithDuration:.2
                                    delay:0
-                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                 options:2 << 16
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                       if ([[UIScreen mainScreen] bounds].size.height > 500)
@@ -164,7 +164,7 @@
     if ([[UIScreen mainScreen] bounds].size.height > 500)
     {
         NSString * sloganFromArtisan = [ARPowerHookManager getValueForHookById:@"slogan"];
-        NSLog(@"SloganFromArtisan is: %@",sloganFromArtisan);
+        //NSLog(@"SloganFromArtisan is: %@",sloganFromArtisan);
         UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(70, 72, 180, 16)];
         [slogan setBackgroundColor:[UIColor clearColor]];
         [slogan setText:sloganFromArtisan];

@@ -705,6 +705,16 @@ view {
     color 			: #313233;
     text-align		: right;
 }
+.table_view_cell_detailtext_register {
+    left			: 90px;
+    width			: 213px;
+    height			: 40px;
+    font-family		: "Roboto";
+    font-weight		: regular;
+    font-size		: 17px;
+    color 			: #313233;
+    text-align		: right;
+}
 .tableViewCell_Profile_rightSide {
     font-family		: "Roboto";
     font-weight		: regular;
@@ -955,7 +965,13 @@ view {
     color 				: #313233;
 }
   
-/**  Signup: "Already a member...",  Select a Picture Screen, Welcome Screen **/
+/**  Signup: "Already a member..."  **/
+#label_small_register {
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 19px;
+}
+/**  Signup Flow: Select a Picture Screen, Welcome Screen **/
 .label_small {
     left                : 15px;
     width				: 290px;

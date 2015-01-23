@@ -439,9 +439,9 @@
           longitudeField:[NSString stringWithFormat:@"%f",lon]];
 }
 
--(void) updateLocation:(NSString*)latitudeField longitudeField:(NSString*)longitudeField{
-
-    NSLog(@"TransferPIN --> updateLocation: lat is: %@  & long is: %@",latitudeField,longitudeField);
+-(void) updateLocation:(NSString*)latitudeField longitudeField:(NSString*)longitudeField
+{
+    //NSLog(@"TransferPIN --> updateLocation: lat is: %@  & long is: %@",latitudeField,longitudeField);
 
     NSString * fetchURL = [NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?latlng=%@,%@&sensor=true", latitudeField, longitudeField];
     NSURL * url = [NSURL URLWithString:fetchURL];

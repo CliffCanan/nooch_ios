@@ -391,9 +391,9 @@
 {
     //[nav_ctrl setNavigationBarHidden:NO animated:YES];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [UIView animateKeyframesWithDuration:0.35
+    [UIView animateKeyframesWithDuration:0.3
                                    delay:0
-                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                 options:0 << 16
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                       [self.completed_pending setFrame:CGRectMake(7, 6, 306, 30)];
@@ -652,7 +652,7 @@
         {
             [UIView animateKeyframesWithDuration:.3
                                            delay:0
-                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                         options:1 << 16
                                       animations:^{
                                           [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                               [self.noContact_img setAlpha:0];
@@ -688,6 +688,7 @@
         {
             [locationManager startUpdatingLocation];
         }
+
         self.location = YES;
 
         [UIView beginAnimations:nil context:nil];
@@ -1054,7 +1055,7 @@
 
     [UIView animateKeyframesWithDuration:0.38
                                    delay:0
-                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                 options:0 << 16
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
                                       if (!isAddRequest)
@@ -1063,7 +1064,12 @@
                                       }
                                   }];
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.6 animations:^{
+                                      if ([self.view.subviews containsObject:self.noContact_img])
+                                      {
+                                          [self.noContact_img setAlpha:0];
+                                      }
                                       [self.view setBackgroundColor:kNoochBlue];
+                                      [self.contacts setAlpha:1];
                                       if (!isAddRequest)
                                       {
                                           [self.completed_pending setTintColor:kNoochBlue];
@@ -1085,7 +1091,12 @@
                                       }
                                       searchBar.placeholder = @"";
                                   }];
-                              } completion: nil
+                              } completion: ^(BOOL finished){
+                                  if ([self.view.subviews containsObject:self.noContact_img])
+                                  {
+                                      [self.noContact_img removeFromSuperview];
+                                  }
+                              }
      ];
 
     [searchBar becomeFirstResponder];
@@ -1119,8 +1130,19 @@
 
     else if ([searchText length] > 0)
     {
-        if ([self.view.subviews containsObject:self.noContact_img]) {
-             [self.noContact_img removeFromSuperview];
+        if ([self.view.subviews containsObject:self.noContact_img])
+        {
+            [UIView animateKeyframesWithDuration:.3
+                                           delay:0
+                                         options:1 << 16
+                                      animations:^{
+                                          [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                              [self.noContact_img setAlpha:0];
+                                          }];
+                                      } completion: ^(BOOL finished){
+                                          [self.noContact_img removeFromSuperview];
+                                      }
+             ];
         }
         [self.contacts setHidden:NO];
 
@@ -1584,7 +1606,17 @@
         {
             if ([self.view.subviews containsObject:self.noContact_img])
             {
-                [self.noContact_img removeFromSuperview];
+                [UIView animateKeyframesWithDuration:.3
+                                               delay:0
+                                             options:1 << 16
+                                          animations:^{
+                                              [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                                  [self.noContact_img setAlpha:0];
+                                              }];
+                                          } completion: ^(BOOL finished){
+                                              [self.noContact_img removeFromSuperview];
+                                          }
+                 ];
             }
 
             if ([self.contacts isHidden]) {
@@ -1692,7 +1724,7 @@
             if ([self.contacts isHidden]) {
                 [self.contacts setHidden:NO];
             }
-
+            [self.contacts setAlpha:1];
             [self.contacts reloadData];
         }
         else
@@ -1877,7 +1909,7 @@
             if (navIsUp == YES) {
                 navIsUp = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    //[self lowerNavBar];
+                    [self lowerNavBar];
                 });
             }
             [self.navigationItem setLeftBarButtonItem:nil];
@@ -2509,7 +2541,6 @@
             isphoneBook = YES;
             emailEntry = NO;
             phoneNumEntry = NO;
-            
 
             if (receiver[@"UserName"]) {
                 emailphoneBook = receiver[@"UserName"];
