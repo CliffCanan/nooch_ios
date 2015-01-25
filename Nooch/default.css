@@ -452,6 +452,18 @@ view {
     background-image	: linear-gradient(#c0c2c4, #b1b3b6);
     border				: 1px solid #A7A9AC;
 }
+.button_gray_sm {
+    left                : 205px;
+    width				: 100px;
+    height				: 30px;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 14px;
+    background-image	: linear-gradient(#c0c2c4, #b1b3b6);
+    border				: 1px solid #A7A9AC;
+}
 /****  RED BUTTON GRADIENT  ****/
 .gradient_red { 
     left                : 20px;
@@ -705,6 +717,16 @@ view {
     color 			: #313233;
     text-align		: right;
 }
+.table_view_cell_detailtext_register {
+    left			: 90px;
+    width			: 213px;
+    height			: 40px;
+    font-family		: "Roboto";
+    font-weight		: regular;
+    font-size		: 17px;
+    color 			: #313233;
+    text-align		: right;
+}
 .tableViewCell_Profile_rightSide {
     font-family		: "Roboto";
     font-weight		: regular;
@@ -845,7 +867,7 @@ view {
     left            : 15px;
     width			: 290px;
     height			: 42px;
-    top             : 216px;
+    top             : 212px;
     font-family		: "Roboto";
     font-weight     : regular;
     font-size		: 15px;
@@ -955,7 +977,13 @@ view {
     color 				: #313233;
 }
   
-/**  Signup: "Already a member...",  Select a Picture Screen, Welcome Screen **/
+/**  Signup: "Already a member..."  **/
+#label_small_register {
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 19px;
+}
+/**  Signup Flow: Select a Picture Screen, Welcome Screen **/
 .label_small {
     left                : 15px;
     width				: 290px;
@@ -3475,6 +3503,21 @@ table-view.stats_top_friends_empty {
 .animate_bubble_tour {
     animation-name: bubble;
     animation-duration: 3.0s;
+    animation-timing-function: ease;
+    animation-iteration-count: 1;
+}
+
+@keyframes bubble_noAlpha {
+    from {scale: .15;}
+    50% {scale: 1.1;}
+    65% {scale: .85;}
+    75% {scale: 1.1;}
+    85% {scale: .93;}
+    to {scale: 1;}
+}
+.animate_bubble_noAlpha {
+    animation-name: bubble_noAlpha;
+    animation-duration: 1.35s;
     animation-timing-function: ease;
     animation-iteration-count: 1;
 }

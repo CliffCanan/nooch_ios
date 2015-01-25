@@ -144,8 +144,6 @@
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
     self.hud.delegate = self;
-    self.hud.labelText = @"Building Your Recent List";
-    //[self.hud show:YES];
 
     self.noContact_img = [[UIImageView alloc] init];
     self.noContact_img.contentMode = UIViewContentModeScaleAspectFit;
@@ -292,6 +290,7 @@
         spinner1.color = [UIColor whiteColor];
         self.hud.customView = spinner1;
         self.hud.labelText = @"Loading your recent list...";
+        self.hud.detailsLabelText = nil;
         [self.hud show:YES];
         
         serve * recents = [serve new];
@@ -312,12 +311,20 @@
         !isAddRequest && !emailEntry && !phoneNumEntry)
     {
         NSLog(@"Contacts permission denied");
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Access To Contacts"
-                                                        message:@"Did you know you can send money to ANY email address OR phone number? It's really helpful to select a contact you already have in your iPhone's Address Book.\n\nTO ENABLE, turn on access to Contacts in your iPhone's Settings:\n\nSettings --> 'Privacy' --> 'Contacts'"
-                                                       delegate:Nil
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:Nil, nil];
-        [alert show];
+        NSLog(@"screenLoadedTimes is: %d  and  shouldNotDisplayContactsAlert is: %d",screenLoadedTimes,[[NSUserDefaults standardUserDefaults] boolForKey:@"shouldNotDisplayContactsAlert"]);
+
+        if (screenLoadedTimes % 2 == 0 &&
+            ![[NSUserDefaults standardUserDefaults] boolForKey:@"shouldNotDisplayContactsAlert"])
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Access To Contacts"
+                                                            message:@"Did you know you can send money to ANY email address OR phone number? It's really helpful to select a contact you already have in your iPhone's Address Book.\n\nTO ENABLE, turn on access to Contacts in your iPhone's Settings:\n\nSettings --> 'Privacy' --> 'Contacts'"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:@"Don't Show Again", nil];
+            [alert setTag:2];
+            [alert show];
+        }
+        screenLoadedTimes += 1;
     }
     else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
     {
@@ -391,9 +398,9 @@
 {
     //[nav_ctrl setNavigationBarHidden:NO animated:YES];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [UIView animateKeyframesWithDuration:0.35
+    [UIView animateKeyframesWithDuration:0.3
                                    delay:0
-                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                 options:0 << 16
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                       [self.completed_pending setFrame:CGRectMake(7, 6, 306, 30)];
@@ -636,6 +643,7 @@
         spinner1.color = [UIColor whiteColor];
         self.hud.customView = spinner1;
         self.hud.labelText = @"Loading your recent list";
+        self.hud.detailsLabelText = nil;
         [self.hud show:YES];
 
         [self.glyph_recent setTextColor: [UIColor whiteColor]];
@@ -652,7 +660,7 @@
         {
             [UIView animateKeyframesWithDuration:.3
                                            delay:0
-                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                         options:1 << 16
                                       animations:^{
                                           [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                               [self.noContact_img setAlpha:0];
@@ -683,11 +691,13 @@
                                                          from:self
                                                      forEvent:nil];
             }
+            [locationManager startUpdatingLocation];
         }
         else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
         {
             [locationManager startUpdatingLocation];
         }
+
         self.location = YES;
 
         [UIView beginAnimations:nil context:nil];
@@ -705,9 +715,10 @@
         spinner2.color = [UIColor whiteColor];
         self.hud.customView = spinner2;
         self.hud.labelText = @"Finding Nooch users near you";
+        self.hud.detailsLabelText = nil;
         [self.hud show:YES];
 
-        if ([self checkIfLocAllowed])
+        if ([[assist shared] checkIfLocAllowed])
         {
             NSString * searchRadiusString = [ARPowerHookManager getValueForHookById:@"srchRds"];
             int searchRadiusInt = [searchRadiusString integerValue];
@@ -722,8 +733,15 @@
             [ser setDelegate:self];
             [ser getLocationBasedSearch:searchRadiusString];
         }
-        else
+        else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied)
         {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Need Location Access"
+                                                            message:@"To find friends who are nearby and use Nooch please enable access to your phone's Location Services.\n\nTO ENABLE:\n• Go to your iPhone's Settings\n•  Tap 'Privacy' --> 'Location Services'\n• Scroll to Nooch and tap the button\n\n(We will never share your location without your permission.)"
+                                                           delegate:Nil
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:Nil, nil];
+            [alert show];
+
             [self displayEmpty_SearchByLocation];
         }
     }
@@ -774,24 +792,19 @@
 
     [UIView animateKeyframesWithDuration:0.45
                                    delay:0
-                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                 options:2 << 16
                               animations:^{
-                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.7 animations:^{
                                       self.contacts.alpha = 0;
                                       [self.backgroundImage setAlpha: .5];
-
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:.25 relativeDuration:.75 animations:^{
                                       [self.emptyLocHdr setAlpha:1];
                                       [self.emptyLocBody setAlpha:1];
-                                  }];
-                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
-                                      [self.glyph_emptyLoc setAlpha:.4];
-                                  }];
-                                  [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.8 animations:^{
-                                      [self.glyph_emptyLoc setStyleClass:@"animate_bubble"];
+                                      [self.glyph_emptyLoc setStyleClass:@"animate_bubble_noAlpha"];
                                       [self.glyph_emptyLoc setAlpha:1];
                                   }];
                               } completion: ^(BOOL finished){
-                                  [self.glyph_emptyLoc setAlpha:1];
                                   [search setHidden:YES];
                               }
      ];
@@ -833,32 +846,6 @@
                                               otherButtonTitles:Nil, nil];
         [alert show];
     }
-}
-
--(BOOL)checkIfLocAllowed
-{
-    if ([CLLocationManager locationServicesEnabled])
-    {
-        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
-        {
-            NSLog(@"Location Services Allowed");
-            return YES;
-        }
-        else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied)
-        {
-            NSLog(@"Location Services NOT Allowed");
-
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Need Location Access"
-                                                            message:@"To find friends who are nearby and use Nooch please enable access to your phone's Location Services.\n\nTO ENABLE:\n• Go to your iPhone's Settings\n•  Tap 'Privacy' --> 'Location Services'\n• Scroll to Nooch and tap the button\n\n(We will never share your location without your permission.)"
-                                                           delegate:Nil
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:Nil, nil];
-            [alert show];
-
-            return NO;
-        }
-    }
-    return NO;
 }
 
 -(void)phonebook:(id)sender
@@ -931,7 +918,7 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if ([actionSheet tag] == 1111)  // Not sure that this is every actually called or necessary
+    if ([actionSheet tag] == 1111)  // Not sure that this is ever actually called or necessary
     {
         if (![[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Cancel"])
         {
@@ -953,12 +940,19 @@
                                                         delegate:self
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
-            [av setTag:4];
             [av show];
         }
         else if (![selectedEmail isEqualToString:@"Cancel"])
         {
             [search resignFirstResponder];
+
+            RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
+            spinner2.color = [UIColor whiteColor];
+            self.hud.customView = spinner2;
+            self.hud.labelText = @"Checking";
+            self.hud.detailsLabelText = [NSString stringWithFormat:@"'%@'",[selectedEmail lowercaseString]];
+            self.hud.detailsLabelColor = [UIColor whiteColor];
+            [self.hud show:YES];
 
             serve * emailCheck = [serve new];
             emailCheck.Delegate = self;
@@ -975,6 +969,13 @@
         if (![selectedPhone isEqualToString:@"Cancel"])
         {
             [search resignFirstResponder];
+
+            RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
+            spinner2.color = [UIColor whiteColor];
+            self.hud.customView = spinner2;
+            self.hud.labelText = @"Checking";
+            self.hud.detailsLabelText = [NSString stringWithFormat:@"'%@'", selectedPhone];
+            [self.hud show:YES];
 
             NSString * s = selectedPhone;
             s = [s stringByReplacingOccurrencesOfString:@"("
@@ -1054,7 +1055,7 @@
 
     [UIView animateKeyframesWithDuration:0.38
                                    delay:0
-                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                 options:0 << 16
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
                                       if (!isAddRequest)
@@ -1063,7 +1064,12 @@
                                       }
                                   }];
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.6 animations:^{
+                                      if ([self.view.subviews containsObject:self.noContact_img])
+                                      {
+                                          [self.noContact_img setAlpha:0];
+                                      }
                                       [self.view setBackgroundColor:kNoochBlue];
+                                      [self.contacts setAlpha:1];
                                       if (!isAddRequest)
                                       {
                                           [self.completed_pending setTintColor:kNoochBlue];
@@ -1085,17 +1091,17 @@
                                       }
                                       searchBar.placeholder = @"";
                                   }];
-                              } completion: nil
+                              } completion: ^(BOOL finished){
+                                  if ([self.view.subviews containsObject:self.noContact_img])
+                                  {
+                                      [self.noContact_img removeFromSuperview];
+                                  }
+                              }
      ];
 
     [searchBar becomeFirstResponder];
     [searchBar setShowsCancelButton:YES animated:YES];
     [searchBar setKeyboardType:UIKeyboardTypeEmailAddress];
-}
-
--(void)startedSearching
-{
-    
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
@@ -1119,8 +1125,19 @@
 
     else if ([searchText length] > 0)
     {
-        if ([self.view.subviews containsObject:self.noContact_img]) {
-             [self.noContact_img removeFromSuperview];
+        if ([self.view.subviews containsObject:self.noContact_img])
+        {
+            [UIView animateKeyframesWithDuration:.3
+                                           delay:0
+                                         options:1 << 16
+                                      animations:^{
+                                          [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                              [self.noContact_img setAlpha:0];
+                                          }];
+                                      } completion: ^(BOOL finished){
+                                          [self.noContact_img removeFromSuperview];
+                                      }
+             ];
         }
         [self.contacts setHidden:NO];
 
@@ -1338,7 +1355,6 @@
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
-        [av setTag:4];
         [av show];
     }
     else
@@ -1362,7 +1378,6 @@
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
-        [av setTag:4];
         [av show];
     }
     else
@@ -1584,7 +1599,17 @@
         {
             if ([self.view.subviews containsObject:self.noContact_img])
             {
-                [self.noContact_img removeFromSuperview];
+                [UIView animateKeyframesWithDuration:.3
+                                               delay:0
+                                             options:1 << 16
+                                          animations:^{
+                                              [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                                  [self.noContact_img setAlpha:0];
+                                              }];
+                                          } completion: ^(BOOL finished){
+                                              [self.noContact_img removeFromSuperview];
+                                          }
+                 ];
             }
 
             if ([self.contacts isHidden]) {
@@ -1692,7 +1717,7 @@
             if ([self.contacts isHidden]) {
                 [self.contacts setHidden:NO];
             }
-
+            [self.contacts setAlpha:1];
             [self.contacts reloadData];
         }
         else
@@ -1710,8 +1735,6 @@
                                            options:kNilOptions
                                            error:&error];
 
-        [self.hud hide:YES];
-
         if ([dictResult objectForKey:@"Result"] != [NSNull null])
         {
             serve * getDetails = [serve new];
@@ -1721,6 +1744,8 @@
         }
         else
         {
+            [self.hud hide:YES];
+
             if (!emailEntry && !phoneNumEntry && navIsUp == YES) {
                 navIsUp = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -1772,8 +1797,6 @@
                                             options:kNilOptions
                                             error:&error];
 
-        [self.hud hide:YES];
-
         if ([dictResult objectForKey:@"Result"] != [NSNull null])
         {
             if ([[dictResult objectForKey:@"Result"] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
@@ -1784,8 +1807,7 @@
                                                             delegate:self
                                                    cancelButtonTitle:@"OK"
                                                    otherButtonTitles:nil];
-                [av setTag:4];
-                [av show]; 
+                [av show];
             }
             else
             {
@@ -1797,6 +1819,8 @@
         }
         else
         {
+            [self.hud hide:YES];
+
             if (!emailEntry && !phoneNumEntry && navIsUp == YES) {
                 navIsUp = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -1877,7 +1901,7 @@
             if (navIsUp == YES) {
                 navIsUp = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    //[self lowerNavBar];
+                    [self lowerNavBar];
                 });
             }
             [self.navigationItem setLeftBarButtonItem:nil];
@@ -1909,44 +1933,20 @@
     }
 }
 
-- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    /* if (alertView.tag == 6) {
-        if (buttonIndex==0) {
-            [self connect_to_facebook];
-        }
-    }
-
-    if (alertView.tag == 4 && buttonIndex == 0)
+    if (alertView.tag == 2 && buttonIndex == 1)
     {
-     // If the user attempts to select himself by entering his own email address or selecting himself from the search results for Address Book
-    } */
+        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"shouldNotDisplayContactsAlert"];
+        NSLog(@"shouldNotDisplayContactsAlert is: %d",[[NSUserDefaults standardUserDefaults] boolForKey:@"shouldNotDisplayContactsAlert"]);
+    }
 }
 
 #pragma mark - UITableViewDataSource
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
-
-/* - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    if (section == 0)
-    {
-        if (self.location) {
-            return @"Nearby Users";
-        } 
-        else if (searching) {
-            return @"Search Results";
-        }
-        else {
-            return @"Recent";
-        }
-        return @"Recent";
-    }
-    else {
-        return @"";
-    }
-}*/
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
@@ -2509,7 +2509,6 @@
             isphoneBook = YES;
             emailEntry = NO;
             phoneNumEntry = NO;
-            
 
             if (receiver[@"UserName"]) {
                 emailphoneBook = receiver[@"UserName"];
@@ -2559,6 +2558,13 @@
                 }
                 else
                 {
+                    RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStylePulse];
+                    spinner2.color = [UIColor whiteColor];
+                    self.hud.customView = spinner2;
+                    self.hud.labelText = @"Generating Transfer...";
+                    self.hud.detailsLabelText = nil;
+                    [self.hud show:YES];
+
                     [self getMemberIdByUsingUserNameFromPhoneBook];
                 }
             }
@@ -2593,6 +2599,13 @@
                 }
                 else // only 1 Phone Number
                 {
+                    RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
+                    spinner2.color = [UIColor whiteColor];
+                    self.hud.customView = spinner2;
+                    self.hud.labelText = @"Generating Tranfser...";
+                    self.hud.detailsLabelText = nil;
+                    [self.hud show:YES];
+
                     [self getMemberIdByUsingPhoneNumberFromAB];
                 }
             }

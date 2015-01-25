@@ -23,7 +23,6 @@
     GMSMarker *markerOBJ;
     UIRefreshControl *refreshControl;
 }
-@property(strong, nonatomic) GMSMapView *mapView;
 @property(nonatomic,strong) UISearchBar *search;
 @property(nonatomic,strong) UITableView *list;
 @property(nonatomic,strong) UIButton *glyph_map;
@@ -32,6 +31,10 @@
 @property(nonatomic) BOOL completed_selected;
 @property(nonatomic,strong) NSDictionary *responseDict;
 @property(nonatomic,strong) UILabel * glyph_emptyTable;
+@property(strong, nonatomic) GMSMapView *mapView;
+@property(nonatomic, strong) UILabel * glyph_emptyLoc;
+@property(nonatomic, strong) UILabel * emptyLocBody;
+@property(nonatomic, strong) UILabel * emptyLocHdr;
 
 @end
 
@@ -243,23 +246,31 @@
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self.view addGestureRecognizer:recognizer];
     
-    UISwipeGestureRecognizer * recognizer2 = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideleft:)];
+    UISwipeGestureRecognizer * recognizer2 = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(toggleMapByNavBtn)];
     [recognizer2 setDirection:(UISwipeGestureRecognizerDirectionLeft)];
     [self.view addGestureRecognizer:recognizer2];
     
     mapArea = [[UIView alloc]initWithFrame:CGRectMake(0, 84, 320, self.view.frame.size.height)];
-    [mapArea setBackgroundColor:[UIColor clearColor]];
+
+    // Google map
+    if ([[assist shared] checkIfLocAllowed])
+    {
+        [mapArea setBackgroundColor:[UIColor clearColor]];
+        camera = [GMSCameraPosition cameraWithLatitude:39.952360
+                                             longitude:-75.163602
+                                                  zoom:8];
+        mapView_ = [GMSMapView mapWithFrame:self.view.frame camera:camera];
+        mapView_.myLocationEnabled = YES;
+        mapView_.delegate = self;
+        [mapArea addSubview:mapView_];
+    }
+    else
+    {
+        [self displayEmptyMapArea];
+    }
+
     [self.view addSubview:mapArea];
     [self.view bringSubviewToFront:self.list];
-    
-    // Google map
-    camera = [GMSCameraPosition cameraWithLatitude:39.952360
-                                         longitude:-75.163602
-                                              zoom:8];
-    mapView_ = [GMSMapView mapWithFrame:self.view.frame camera:camera];
-    mapView_.myLocationEnabled = YES;
-    mapView_.delegate = self;
-    [mapArea addSubview:mapView_];
 
     indexPathForDeletion = nil;
 }
@@ -310,22 +321,78 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+-(void)displayEmptyMapArea
+{
+    [mapArea setBackgroundColor:[Helpers hexColor:@"efeff4"]];
+    
+    NSShadow * shadow_white = [[NSShadow alloc] init];
+    shadow_white.shadowColor = [UIColor whiteColor];
+    shadow_white.shadowOffset = CGSizeMake(0, 1.0);
+    NSDictionary * shadowWhite = @{NSShadowAttributeName: shadow_white};
+    
+    NSShadow * shadow_Dark = [[NSShadow alloc] init];
+    shadow_Dark.shadowColor = Rgb2UIColor(88, 90, 92, .85);
+    shadow_Dark.shadowOffset = CGSizeMake(0, -2.5);
+    NSDictionary * shadowDark = @{NSShadowAttributeName: shadow_Dark};
+    
+    self.glyph_emptyLoc = [[UILabel alloc] initWithFrame:CGRectMake(44, 35, 276, 72)];
+    [self.glyph_emptyLoc setFont:[UIFont fontWithName:@"FontAwesome" size:68]];
+    self.glyph_emptyLoc.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-map-marker"] attributes:shadowDark];
+    [self.glyph_emptyLoc setTextAlignment:NSTextAlignmentCenter];
+    [self.glyph_emptyLoc setTextColor: kNoochGrayLight];
+    [mapArea addSubview:self.glyph_emptyLoc];
+    
+    self.emptyLocHdr = [[UILabel alloc] initWithFrame:CGRectMake(44, 112, 276, 38)];
+    [self.emptyLocHdr setFont:[UIFont fontWithName:@"Roboto-regular" size: 22]];
+    self.emptyLocHdr.attributedText = [[NSAttributedString alloc] initWithString:@"No Transfers To Show" attributes:shadowWhite];
+    [self.emptyLocHdr setTextColor:kNoochGrayLight];
+    [self.emptyLocHdr setTextAlignment:NSTextAlignmentCenter];
+    [mapArea addSubview: self.emptyLocHdr];
+    
+    self.emptyLocBody = [[UILabel alloc] initWithFrame:CGRectMake(46, 151, 270, 80)];
+    [self.emptyLocBody setFont:[UIFont fontWithName:@"Roboto-light" size: 17]];
+    if ([[assist shared] checkIfLocAllowed])
+    {
+        self.emptyLocBody.attributedText = [[NSAttributedString alloc] initWithString:@"You haven't made any payments yet.  Once you do, you can come here to see where you've been paying." attributes:shadowWhite];
+    }
+    else
+    {
+        self.emptyLocBody.attributedText = [[NSAttributedString alloc] initWithString:@"To access this feature, please enable Location Services." attributes:shadowWhite];
+    }
+    [self.emptyLocBody setTextColor:kNoochGrayLight];
+    [self.emptyLocBody setTextAlignment:NSTextAlignmentCenter];
+    [self.emptyLocBody setNumberOfLines:0];
+    [mapArea addSubview: self.emptyLocBody];
+}
+
 -(void)toggleMapByNavBtn
 {
     if (!self.completed_selected) {
         return;
     }
+
+    if (!isMapOpen && ![[assist shared] checkIfLocAllowed])
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Need Location Access"
+                                                        message:@"To access this feature and view your payment locations, please enable Location Services.\n\nTO ENABLE:\n• Go to your iPhone's Settings\n•  Tap 'Privacy'\n•  Tap 'Location Services'\n• Scroll to Nooch and tap the switch"
+                                                       delegate:Nil
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:Nil, nil];
+        [alert show];
+    }
+
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDelegate:self];
-    [UIView setAnimationDuration:0.5];
-    
-    if (!isMapOpen) {
+    [UIView setAnimationDuration:0.45];
+    if (!isMapOpen)
+    {
         self.list.frame = CGRectMake(-276, 84, 320, self.view.frame.size.height);
         mapArea.frame = CGRectMake(0, 84,320,self.view.frame.size.height);
         isMapOpen = YES;
         [self mapPoints];
     }
-    else {
+    else
+    {
         self.list.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
         [self.view bringSubviewToFront:self.list];
         mapArea.frame = CGRectMake(0, 84,320,self.view.frame.size.height);
@@ -350,22 +417,6 @@
     isMapOpen = NO;
     [UIView commitAnimations];
      [self.view bringSubviewToFront:exportHistory];
-}
-
--(void)sideleft:(id)sender
-{
-    if (!self.completed_selected) {
-        return;
-    }
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDelegate:self];
-    [UIView setAnimationDuration:0.5];
-    self.list.frame=CGRectMake(-276, 84, 320, self.view.frame.size.height);
-    mapArea.frame=CGRectMake(0, 84,320,self.view.frame.size.height);
-    [UIView commitAnimations];
-    isMapOpen=YES;
-    [self mapPoints];
-    [self.view bringSubviewToFront:exportHistory];
 }
 
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker
@@ -785,8 +836,6 @@
     }
     return 0;
 }
-
-//-(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{}
 
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1215,6 +1264,8 @@
                 [cell.contentView addSubview:transferTypeLabel];
                 [cell.contentView addSubview:name];
             }
+
+            [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
         }
 
         else if (!isLocalSearch && indexPath.row == [histShowArrayCompleted count])
@@ -1230,9 +1281,9 @@
 
                     if ([[UIScreen mainScreen] bounds].size.height < 500)
                     {
-                        emptyText = [[UILabel alloc] initWithFrame:CGRectMake(8, 10, 304, 56)];
+                        emptyText = [[UILabel alloc] initWithFrame:CGRectMake(8, 4, 304, 50)];
                         [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:18]];
-                        [emptyPic setFrame:CGRectMake(33, 78, 253, 256)];
+                        [emptyPic setFrame:CGRectMake(33, 72, 253, 256)];
                     }
                     else
                     {
@@ -1250,6 +1301,8 @@
                     [self.list  addSubview: emptyText];
 
                     [exportHistory removeFromSuperview];
+
+                    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
                 }
             }
             else
@@ -1815,9 +1868,9 @@
             [self.navigationController pushViewController:details animated:YES];
             return;
         }
-        if ([histShowArrayCompleted count]>indexPath.row)
+        if ([histShowArrayCompleted count] > indexPath.row)
         {
-            NSDictionary *dictRecord = [histShowArrayCompleted objectAtIndex:indexPath.row];
+            NSDictionary * dictRecord = [histShowArrayCompleted objectAtIndex:indexPath.row];
             NSLog(@"Selected Entry is: %@", dictRecord);
             TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
             [self.navigationController pushViewController:details animated:YES];
@@ -2329,7 +2382,7 @@
         if ([[[dictResponse valueForKey:@"sendTransactionInCSVResult"]valueForKey:@"Result"]isEqualToString:@"1"])
         {
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Export Successful"
-                                                            message:@"Your personalized transaction report has been emailed to you."
+                                                            message:@"\xF0\x9F\x93\xA5\nYour personalized transaction report has been emailed to you."
                                                            delegate:Nil
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:Nil, nil];
@@ -2370,8 +2423,11 @@
                 }
             }
         }
-        else if ([histArray count] == 0) {
+        else if ([histArray count] == 0)
+        {
             isEnd = YES;
+            [mapView_ removeFromSuperview];
+            [self displayEmptyMapArea];
         }
 
         if (isMapOpen) {

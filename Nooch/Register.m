@@ -27,10 +27,12 @@
 @property(nonatomic,strong) UIButton *login;
 @property(nonatomic,strong) MBProgressHUD *hud;
 @property(nonatomic,strong) UILabel *or;
-@property(nonatomic,strong) UILabel * pwValidator;
 @property(nonatomic,strong) UILabel * emailValidator;
 @property(nonatomic,strong) UILabel * nameValidator;
 @property(nonatomic,strong) UILabel * fullNameInstruc;
+@property(nonatomic,strong) UILabel * pwValidator;
+@property(nonatomic,strong) UIView * pwValidator1, * pwValidator2, * pwValidator3, * pwValidator4;
+
 @end
 @implementation Register
 
@@ -56,17 +58,18 @@
     [super viewDidAppear:animated];
 
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.login setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height + 6, 300, 50)];
+    [self.login setStyleId:@"label_small_register"];
     [self.login setBackgroundColor:[UIColor clearColor]];
-    [self.login setTitle:@"Already a Member?  Sign in here  " forState:UIControlStateNormal];
-    [self.login setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height + 10, 300, 44)];
+    [self.login setTitle:@"Already a member?  Sign in here " forState:UIControlStateNormal];
+    [self.login setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
     [self.login addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
-    [self.login setStyleClass:@"label_small"];
-    [self.login setAlpha:0];
+    [self.login setAlpha:0.1];
     [self.view addSubview:self.login];
 
     UILabel * glyph_login = [UILabel new];
-    [glyph_login setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
-    [glyph_login setFrame:CGRectMake(0, 25, 300, 22)];
+    [glyph_login setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
+    [glyph_login setFrame:CGRectMake(0, 35, 300, 22)];
     [glyph_login setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-right"]];
     [glyph_login setTextColor:kNoochGreen];
     [glyph_login setTextAlignment:NSTextAlignmentCenter];
@@ -74,17 +77,18 @@
 
     [UIView animateKeyframesWithDuration:.4
                                    delay:0
-                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                 options:2 << 16
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                       [self.login setAlpha:1];
                                       if ([[UIScreen mainScreen] bounds].size.height > 500)
                                       {
-                                          [self.login setFrame:CGRectMake(10, 503, 300, 44)];
+                                          [self.login setFrame:CGRectMake(10, 498, 300, 50)];
                                       }
                                       else
                                       {
-                                          [self.login setFrame:CGRectMake(10, 429, 300, 44)];
+                                          [self.login setFrame:CGRectMake(10, 426, 300, 40)];
+                                          [glyph_login setFrame:CGRectMake(0, 30, 300, 22)];
                                       }
                                   }];
                               } completion: nil];
@@ -109,8 +113,6 @@
     [self.navigationController setNavigationBarHidden:YES];
 
     self.facebook_info = [NSMutableDictionary new];
-
-    [self.login removeFromSuperview];
 
     UIView * boxOutline = [[UIView alloc] initWithFrame:CGRectMake(9, 244, 302, 175)];
     boxOutline.backgroundColor = [UIColor whiteColor];
@@ -173,14 +175,14 @@
     [self.name_field setPlaceholder:@"i.e. Abe Lincoln"];
     [self.name_field setKeyboardType:UIKeyboardTypeAlphabet];
     self.name_field .returnKeyType = UIReturnKeyNext;
-    [self.name_field setTag:1];
     [self.name_field setAutocorrectionType:UITextAutocorrectionTypeNo];
-    [self.name_field setStyleClass:@"table_view_cell_detailtext_1"];
+    [self.name_field setStyleClass:@"table_view_cell_detailtext_register"];
     [self.name_field setAutocapitalizationType:UITextAutocapitalizationTypeWords];
+    [self.name_field setTag:1];
     [self.view addSubview:self.name_field];
 
     self.nameValidator = [UILabel new];
-    [self.nameValidator setFrame:CGRectMake(14, 0, 21, 40)];
+    [self.nameValidator setFrame:CGRectMake(12, 0, 21, 40)];
     [self.nameValidator setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
     [self.nameValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
     [self.nameValidator setTextAlignment:NSTextAlignmentCenter];
@@ -188,14 +190,14 @@
     [self.nameValidator setHidden:YES];
     [self.name_field addSubview:self.nameValidator];
 
-    self.fullNameInstruc = [[UILabel alloc] initWithFrame:CGRectMake(10, 38, 290, 16)];
+    self.fullNameInstruc = [[UILabel alloc] initWithFrame:CGRectMake(40, 287, 262, 13)];
     [self.fullNameInstruc setBackgroundColor:[UIColor clearColor]];
     [self.fullNameInstruc setText:@"\xF0\x9F\x99\x8F  Please enter a first AND last name"];
-    [self.fullNameInstruc setFont:[UIFont fontWithName:@"Roboto-light" size:13]];
+    [self.fullNameInstruc setFont:[UIFont fontWithName:@"Roboto-regular" size:12]];
     [self.fullNameInstruc setTextColor:kNoochRed];
-    [self.fullNameInstruc setTextAlignment:NSTextAlignmentCenter];
+    [self.fullNameInstruc setTextAlignment:NSTextAlignmentRight];
     [self.fullNameInstruc setHidden:YES];
-    [boxOutline addSubview:self.fullNameInstruc];
+    [self.view addSubview:self.fullNameInstruc];
 
     UILabel * email = [[UILabel alloc] initWithFrame:CGRectMake(20, 293, 60, 20)];
     [email setBackgroundColor:[UIColor clearColor]];
@@ -210,10 +212,10 @@
     [self.email_field setPlaceholder:@"example@email.com"];
     [self.email_field setKeyboardType:UIKeyboardTypeEmailAddress];
     self.email_field.returnKeyType = UIReturnKeyNext;
-    [self.email_field setTag:2];
     [self.email_field setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     [self.email_field setAutocorrectionType:UITextAutocorrectionTypeNo];
-    [self.email_field setStyleClass:@"table_view_cell_detailtext_1"];
+    [self.email_field setStyleClass:@"table_view_cell_detailtext_register"];
+    [self.email_field setTag:2];
     [self.view addSubview:self.email_field];
 
     self.emailValidator = [UILabel new];
@@ -239,16 +241,36 @@
     [self.password_field setKeyboardType:UIKeyboardTypeAlphabet];
     self.password_field .returnKeyType = UIReturnKeyDone;
     [self.password_field setSecureTextEntry:YES];
-    [self.password_field setTag:3];
     [self.password_field setAutocorrectionType:UITextAutocorrectionTypeNo];
-    [self.password_field setStyleClass:@"table_view_cell_detailtext_1"];
+    [self.password_field setStyleClass:@"table_view_cell_detailtext_register"];
+    [self.password_field setTag:3];
     [self.view addSubview:self.password_field];
 
+    self.pwValidator1 = [[UIView alloc] initWithFrame:CGRectMake(20, 366, 69, 4)];
+    [self.pwValidator1 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
+    [self.pwValidator1 setHidden:YES];
+    [self.view addSubview:self.pwValidator1];
+
+    self.pwValidator2 = [[UIView alloc] initWithFrame:CGRectMake(91, 366, 69, 4)];
+    [self.pwValidator2 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
+    [self.pwValidator2 setHidden:YES];
+    [self.view addSubview:self.pwValidator2];
+
+    self.pwValidator3 = [[UIView alloc] initWithFrame:CGRectMake(162, 366, 69, 4)];
+    [self.pwValidator3 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
+    [self.pwValidator3 setHidden:YES];
+    [self.view addSubview:self.pwValidator3];
+
+    self.pwValidator4 = [[UIView alloc] initWithFrame:CGRectMake(233, 366, 69, 4)];
+    [self.pwValidator4 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
+    [self.pwValidator4 setHidden:YES];
+    [self.view addSubview:self.pwValidator4];
+
     self.pwValidator = [UILabel new];
-    [self.pwValidator setFrame:CGRectMake(98, 334, 21, 39)];
-    [self.pwValidator setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
-    [self.pwValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
-    [self.pwValidator setTextAlignment:NSTextAlignmentCenter];
+    [self.pwValidator setFrame:CGRectMake(202, 370, 100, 12)];
+    [self.pwValidator setFont:[UIFont fontWithName:@"Roboto-regular" size:11]];
+    [self.pwValidator setText:@"Very Weak"];
+    [self.pwValidator setTextAlignment:NSTextAlignmentRight];
     [self.pwValidator setTextColor:kNoochRed];
     [self.pwValidator setHidden:YES];
     [self.view addSubview:self.pwValidator];
@@ -318,8 +340,13 @@
 
         [password setFrame:CGRectMake(0, 299, 0, 0)];
         [self.password_field setFrame:CGRectMake(0, 299, 0, 0)];
-        [self.pwValidator setFrame:CGRectMake(98, 299, 21, 39)];
-
+        
+        [self.pwValidator setFrame:CGRectMake(202, 336, 100, 11)];
+        [self.pwValidator1 setFrame:CGRectMake(20, 331, 69, 4)];
+        [self.pwValidator2 setFrame:CGRectMake(91, 331, 69, 4)];
+        [self.pwValidator3 setFrame:CGRectMake(162, 331, 69, 4)];
+        [self.pwValidator4 setFrame:CGRectMake(233, 331, 69, 4)];
+        
         [checkbox_box setFrame:CGRectMake(36, 345, 21, 20)];
         [checkbox_dot setFrame:CGRectMake(31, 340, 31, 30)];
         [termsText1 setFrame:CGRectMake(65, 347, 55, 14)];
@@ -666,58 +693,38 @@
 
 -(void)login:(UIButton*)sender
 {
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:.4];
-    if ([[UIScreen mainScreen] bounds].size.height > 500) {
-        [self.login setFrame:CGRectMake(321, 503, 300, 44)];
-    } else {
-        [self.login setFrame:CGRectMake(321, 429, 300, 44)];
-    }
-    [UIView commitAnimations];
-
-    [[UIApplication sharedApplication]setStatusBarHidden:YES];
-    Login * signin = [Login new];
-    [self.navigationController pushViewController:signin animated:YES];
-
-    /*[UIView animateKeyframesWithDuration:.4
+    [UIView animateKeyframesWithDuration:0.22
                                    delay:0
-                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                 options:0 << 16
                               animations:^{
-                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.2 animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                       if ([[UIScreen mainScreen] bounds].size.height > 500) {
-                                          [self.login setFrame:CGRectMake(-16, 503, 300, 44)];
+                                          [sender setFrame:CGRectMake(-29, 498, 300, 50)];
                                       } else {
-                                          [self.login setFrame:CGRectMake(-16, 429, 300, 44)];
-                                      }
-                                  }];
-                                  [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:0.21 animations:^{
-                                      if ([[UIScreen mainScreen] bounds].size.height > 500) {
-                                          [self.login setFrame:CGRectMake(-25, 503, 300, 44)];
-                                      } else {
-                                          [self.login setFrame:CGRectMake(-25, 429, 300, 44)];
-                                      }
-                                  }];
-                                  [UIView addKeyframeWithRelativeStartTime:0.46 relativeDuration:0.32 animations:^{
-                                      if ([[UIScreen mainScreen] bounds].size.height > 500) {
-                                          [self.login setFrame:CGRectMake(100, 503, 300, 44)];
-                                      } else {
-                                          [self.login setFrame:CGRectMake(100, 429, 300, 44)];
-                                      }
-                                  }];
-                                  [UIView addKeyframeWithRelativeStartTime:0.78 relativeDuration:0.22 animations:^{
-                                      if ([[UIScreen mainScreen] bounds].size.height > 500) {
-                                          [self.login setFrame:CGRectMake(321, 503, 300, 44)];
-                                      } else {
-                                          [self.login setFrame:CGRectMake(321, 429, 300, 44)];
+                                          [sender setFrame:CGRectMake(-28, 425, 300, 44)];
                                       }
                                   }];
                               } completion: ^(BOOL finished){
-                                  [[UIApplication sharedApplication]setStatusBarHidden:YES];
-                                  Login * signin = [Login new];
-                                  [self.navigationController pushViewController:signin animated:YES];
-                                  [self.login removeFromSuperview];
+                                  [UIView animateKeyframesWithDuration:0.28
+                                                                 delay:0.03
+                                                               options:1 << 16
+                                                            animations:^{
+                                                                [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                                                    if ([[UIScreen mainScreen] bounds].size.height > 500) {
+                                                                        [sender setFrame:CGRectMake(321, 498, 300, 50)];
+                                                                    } else {
+                                                                        [sender setFrame:CGRectMake(321, 419, 300, 44)];
+                                                                    }
+                                                                }];
+                                                            } completion: ^(BOOL finished){
+                                                                [[UIApplication sharedApplication]setStatusBarHidden:YES];
+                                                                Login * signin = [Login new];
+                                                                [self.navigationController pushViewController:signin animated:YES];
+                                                                [sender removeFromSuperview];
+                                                            }
+                                   ];
                               }
-     ];*/
+     ];
 }
 
 -(void)loginFromAlertView
@@ -1207,20 +1214,32 @@
     }
     else
     {
-        if (![self.emailValidator isHidden])
+        if (![self.emailValidator isHidden] || textField == self.password_field)
         {
+            [self.emailValidator setHidden:NO];
             [self.emailValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
             [self.emailValidator setTextColor:kNoochRed];
         }
     }
 
-    if ( textField == self.password_field &&
-        [textField.text length] > 0)
+    if ( textField == self.password_field)
     {
+        [self.pwValidator1 setHidden:NO];
+        [self.pwValidator2 setHidden:NO];
+        [self.pwValidator3 setHidden:NO];
+        [self.pwValidator4 setHidden:NO];
+        [self.pwValidator setHidden:NO];
+
         NSCharacterSet * digitsCharSet = [NSCharacterSet decimalDigitCharacterSet];
-        NSCharacterSet * lettercaseCharSet = [NSCharacterSet letterCharacterSet];
+        NSCharacterSet * lowercaseCharSet = [NSCharacterSet lowercaseLetterCharacterSet];
+        NSCharacterSet * uppercaseCharSet = [NSCharacterSet uppercaseLetterCharacterSet];
+        NSCharacterSet * symbolsCharSet = [NSCharacterSet symbolCharacterSet];
+        NSCharacterSet * whtspcCharSet = [NSCharacterSet whitespaceCharacterSet];
+        NSCharacterSet * punctCharSet = [NSCharacterSet punctuationCharacterSet];
 
         [self.pwValidator setHidden:NO];
+
+        double score = 0;
 
         if ([self.password_field.text length] > 5)
         {
@@ -1228,37 +1247,90 @@
         } else {
             pwLength = false;
         }
-        if ([self.password_field.text rangeOfCharacterFromSet:lettercaseCharSet].location != NSNotFound)
+        if ([self.password_field.text rangeOfCharacterFromSet:lowercaseCharSet].location != NSNotFound ||
+            [string rangeOfCharacterFromSet:lowercaseCharSet].location != NSNotFound)
         {
-            pwChar = true;
-        } else {
-            pwChar = false;
+            score += .6;
         }
-        if ([self.password_field.text rangeOfCharacterFromSet:digitsCharSet].location != NSNotFound)
+        if ([self.password_field.text rangeOfCharacterFromSet:uppercaseCharSet].location != NSNotFound ||
+            [string rangeOfCharacterFromSet:uppercaseCharSet].location != NSNotFound)
         {
-            pwNum = true;
-        } else {
-            pwNum = false;
+            score += .85;
         }
-        
-        if (pwLength && pwChar && pwNum)
+        if ([self.password_field.text rangeOfCharacterFromSet:digitsCharSet].location != NSNotFound ||
+            [string rangeOfCharacterFromSet:digitsCharSet].location != NSNotFound)
         {
-            [self.pwValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+            score += 1;
+        }
+        if ([self.password_field.text rangeOfCharacterFromSet:symbolsCharSet].location != NSNotFound ||
+            [string rangeOfCharacterFromSet:symbolsCharSet].location != NSNotFound)
+        {
+            score += 1.25;
+        }
+        if ([self.password_field.text rangeOfCharacterFromSet:punctCharSet].location != NSNotFound||
+            [string rangeOfCharacterFromSet:punctCharSet].location != NSNotFound)
+        {
+            score += 1.35;
+        }
+        if ([self.password_field.text rangeOfCharacterFromSet:whtspcCharSet].location != NSNotFound||
+            [string rangeOfCharacterFromSet:whtspcCharSet].location != NSNotFound)
+        {
+            score += 1.3;
+        }
+        if ([self.password_field.text length] > 10)
+        {
+            score += 1.2;;
+        }
+
+
+        NSLog(@"Score is: %f",score);
+        if (pwLength && score > 3.9)
+        {
+            [self.pwValidator1 setBackgroundColor:kNoochGreen];
+            [self.pwValidator2 setBackgroundColor:kNoochGreen];
+            [self.pwValidator3 setBackgroundColor:kNoochGreen];
+            [self.pwValidator4 setBackgroundColor:kNoochGreen];
+            [self.pwValidator setText:@"Extremely Strong"];
             [self.pwValidator setTextColor:kNoochGreen];
         }
-        else if (pwLength && (pwChar || pwNum))
+        else if (pwLength && score > 2.2)
         {
-            [self.pwValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-minus"]];
-            [self.pwValidator setTextColor:[UIColor orangeColor]];
+            [self.pwValidator1 setBackgroundColor:kNoochGreen];
+            [self.pwValidator2 setBackgroundColor:kNoochGreen];
+            [self.pwValidator3 setBackgroundColor:kNoochGreen];
+            [self.pwValidator4 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
+            [self.pwValidator setTextColor:kNoochGreen];
+            [self.pwValidator setText:@"Good"];
         }
-        else if (pwLength || (pwChar || pwNum))
+        else if (pwLength && score > 1)
         {
-            [self.pwValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
+            [self.pwValidator1 setBackgroundColor:[UIColor orangeColor]];
+            [self.pwValidator2 setBackgroundColor:[UIColor orangeColor]];
+            [self.pwValidator3 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
+            [self.pwValidator4 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
+            [self.pwValidator setTextColor:[UIColor orangeColor]];
+            [self.pwValidator setText:@"Fair"];
+        }
+        else if (pwLength)
+        {
+            [self.pwValidator4 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
+            [self.pwValidator3 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
+            [self.pwValidator2 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
+            [self.pwValidator1 setBackgroundColor:kNoochRed];
             [self.pwValidator setTextColor:kNoochRed];
+            [self.pwValidator setText:@"Weak"];
         }
         else
         {
-            [self.pwValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
+            if ([self.password_field.text length] > 0) {
+                [self.pwValidator setText:@"Very Weak"];
+            } else {
+                [self.pwValidator setText:@""];
+            }
+            [self.pwValidator4 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
+            [self.pwValidator3 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
+            [self.pwValidator2 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
+            [self.pwValidator1 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
             [self.pwValidator setTextColor:kNoochRed];
         }
 

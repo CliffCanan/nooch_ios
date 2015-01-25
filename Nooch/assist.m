@@ -91,6 +91,7 @@ static assist * _sharedInstance = nil;
 {
     isPOP=istrue;
 }
+// Next 2 are for 'Show In Search' setting
 -(BOOL)islocationAllowed
 {
     return islocationAllowed;
@@ -99,6 +100,24 @@ static assist * _sharedInstance = nil;
 {
     islocationAllowed=istrue;
 }
+-(BOOL)checkIfLocAllowed
+{
+    if ([CLLocationManager locationServicesEnabled])
+    {
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+        {
+            NSLog(@"Location Services Allowed");
+            return YES;
+        }
+        else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied)
+        {
+            NSLog(@"Location Services NOT Allowed");
+            return NO;
+        }
+    }
+    return NO;
+}
+
 -(BOOL)needsReload
 {
     return isNeed;

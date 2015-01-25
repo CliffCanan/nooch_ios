@@ -28,6 +28,7 @@
 @property(nonatomic,strong) UILabel *name;
 @property(nonatomic,strong) UILabel *lastName;
 @property(nonatomic,strong) UILabel *glyph_noBank;
+@property(nonatomic,strong) UIButton * settings;
 @end
 @implementation LeftMenu
 
@@ -94,29 +95,11 @@
     }
     [self.view addSubview:bottom_bar];
 
-    UIButton * settings = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    settingsIconPosition = [ARPowerHookManager getValueForHookById:@"settingsCogIconPos"];
-
-    [settings setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cogs"] forState:UIControlStateNormal];
-    [settings addTarget:self action:@selector(go_settings) forControlEvents:UIControlEventTouchUpInside];
-    [settings setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.25) forState:UIControlStateNormal];
-    settings.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-
-    if ([settingsIconPosition isEqualToString:@"topBar"])
-    {
-        [settings setStyleId:@"settings_icon_topBarPosition"];
-        [user_bar addSubview:settings];
-    }
-    else if ([[UIScreen mainScreen] bounds].size.height > 500)
-    {
-        [settings setStyleId:@"settings_icon"];
-        [self.view addSubview:settings];
-    }
-    else
-    {
-        [settings setStyleId:@"settings_icon_4"];
-        [self.view addSubview:settings];
-    }
+    self.settings = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.settings setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cogs"] forState:UIControlStateNormal];
+    [self.settings addTarget:self action:@selector(go_settings) forControlEvents:UIControlEventTouchUpInside];
+    [self.settings setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.25) forState:UIControlStateNormal];
+    self.settings.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
     UIImageView * logo = [UIImageView new];
     UILabel * version = [UILabel new];
@@ -141,42 +124,7 @@
     [self.view addSubview:version];
     [self.view addSubview:logo];
 
-
-    NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
     self.glyph_noBank = [UILabel new];
-    [self.glyph_noBank removeFromSuperview];
-    
-    if (![[defaults objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
-    {
-        [self.glyph_noBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
-        [self.glyph_noBank setStyleId:@"glyph_noBank_sidebar"];
-        if ([settingsIconPosition isEqualToString:@"bottomBar"])
-        {
-            [self.glyph_noBank setFrame:CGRectMake(5, [[UIScreen mainScreen] bounds].size.height - 50, 22, 22)];
-            [self.view addSubview:self.glyph_noBank];
-        }
-        else
-        {
-            [self.glyph_noBank setFrame:CGRectMake(240, 31, 22, 22)];
-            [user_bar addSubview:self.glyph_noBank];
-            [user_bar bringSubviewToFront:self.glyph_noBank];
-        }
-    }
-    else {
-        [self.glyph_noBank removeFromSuperview];
-    }
-
-    NSString * disAptsFromArtisanStrg = [ARPowerHookManager getValueForHookById:@"DispApts"];
-    
-    if ([[disAptsFromArtisanStrg lowercaseString] isEqualToString:@"no"]) {
-        shouldDisplayAptsSection = false;
-    }
-    else if ([[disAptsFromArtisanStrg lowercaseString]isEqualToString:@"yes"]) {
-        shouldDisplayAptsSection = true;
-    }
-    else {
-        shouldDisplayAptsSection = false;
-    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -200,8 +148,7 @@
         [user_pic setUserInteractionEnabled:YES];
     }
 
-    if ( ([[user valueForKey:@"Status"]isEqualToString:@"Registered"]   ||
-          [[user valueForKey:@"Status"]isEqualToString:@"Suspended"] )  ||
+    if ( ![[user valueForKey:@"Status"]isEqualToString:@"Active"]  ||
         ![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ||
          ([[user valueForKey:@"firstName"] length] < 1 || [[user valueForKey:@"lastName"] length] < 1) )
     {
@@ -215,6 +162,31 @@
         [self.lastName setText:[NSString stringWithFormat:@"Person"]];
     }
 
+    [self.menu reloadData];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    settingsIconPosition = [ARPowerHookManager getValueForHookById:@"settingsCogIconPos"];
+
+    if ([settingsIconPosition isEqualToString:@"topBar"])
+    {
+        [self.settings setStyleId:@"settings_icon_topBarPosition"];
+        [user_bar addSubview:self.settings];
+    }
+    else if ([[UIScreen mainScreen] bounds].size.height > 500)
+    {
+        [self.settings setStyleId:@"settings_icon"];
+        [self.view addSubview:self.settings];
+    }
+    else
+    {
+        [self.settings setStyleId:@"settings_icon_4"];
+        [self.view addSubview:self.settings];
+    }
+
     NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
 
     if ([[defaults objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
@@ -226,20 +198,23 @@
         [self.glyph_noBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
         [self.glyph_noBank setStyleId:@"glyph_noBank_sidebar"];
 
-        if ([settingsIconPosition isEqualToString:@"bottomBar"])
-        {
-            [self.glyph_noBank setFrame:CGRectMake(5, [[UIScreen mainScreen] bounds].size.height - 50, 22, 22)];
-            [self.view addSubview:self.glyph_noBank];
-        }
-        else
+        if ([settingsIconPosition isEqualToString:@"topBar"])
         {
             [self.glyph_noBank setFrame:CGRectMake(240, 31, 22, 22)];
             [user_bar addSubview:self.glyph_noBank];
             [user_bar bringSubviewToFront:self.glyph_noBank];
         }
+        else
+        {
+            [self.glyph_noBank setFrame:CGRectMake(5, [[UIScreen mainScreen] bounds].size.height - 50, 22, 22)];
+            [self.view addSubview:self.glyph_noBank];
+        }
     }
-    [self.menu reloadData];
+}
 
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
 }
 
 -(void) go_profile

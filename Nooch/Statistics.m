@@ -317,12 +317,7 @@
     [self.exportHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
     self.exportHistory.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.exportHistory setStyleId:@"exportStatsBtn"];
-    if ([UIScreen mainScreen].bounds.size.height > 500) {
-        [self.exportHistory setFrame:CGRectMake(60, 445, 200, 38)];
-    }
-    else {
-        [self.exportHistory setFrame:CGRectMake(60, 441, 200, 36)];
-    }
+    [self.exportHistory setFrame:CGRectMake(60, 445, 200, 38)];
 
     UILabel * glyph_export = [UILabel new];
     [glyph_export setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
@@ -979,10 +974,17 @@
             {
                 UILabel * emptyText = nil;
                 emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 280, 66)];
-                [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:18]];
-                [emptyText setNumberOfLines:3];
-                emptyText.text = @"Once you make or receive some payments, your top friends will show up here.";
+                if ([UIScreen mainScreen].bounds.size.height > 500)
+                {
+                    [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:18]];
+                }
+                else {
+                    [emptyText setFrame:CGRectMake(4, 0, 292, 60)];
+                    [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:17]];
+                }
                 [emptyText setTextAlignment:NSTextAlignmentCenter];
+                [emptyText setNumberOfLines:0];
+                emptyText.text = @"Once you make or receive some payments, your top friends will show up here.";
                 [cell.contentView addSubview:emptyText];
             }
             else if (indexPath.row == 1)
@@ -994,7 +996,7 @@
                 }
                 else
                 {
-                    self.emptyPic.frame = CGRectMake(25, 9, 250, 254);
+                    self.emptyPic.frame = CGRectMake(29, 7, 246, 250);
                 }
                 self.emptyPic.alpha = 0;
                 [self.emptyPic setImage:[UIImage imageNamed:@"Stats_Circled"]];
@@ -1076,7 +1078,7 @@
         }
 
         topFriendsPieTotalLabel.textColor = kNoochGrayDark;
-        rowNumber = indexPath.row+1;
+        rowNumber = indexPath.row + 1;
 
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
@@ -1238,6 +1240,7 @@
 
         pieGraphMiddleOverlay.backgroundColor = [UIColor whiteColor];
         [pieGraphMiddleOverlay setAlpha:1];
+        
         [PieElement animateChanges:^{
             for (PieElement * elem in self.pieLayer.values)
             {
@@ -1316,12 +1319,15 @@
     
     if (tappedElem.centrOffset > 0)
         tappedElem = nil;
-    [PieElement animateChanges:^{
-        for (PieElement * elem in self.pieLayer.values)
-        {
-            elem.centrOffset = tappedElem==elem? 8 : 0;
-        }
-    }];
+    if (pieSlice_count > 1)
+    {
+        [PieElement animateChanges:^{
+            for (PieElement * elem in self.pieLayer.values)
+            {
+                elem.centrOffset = tappedElem == elem ? 8 : 0;
+            }
+        }];
+    }
 
     switch (row) {
         case 0:
@@ -1450,18 +1456,6 @@
         serveOBJ.tagName=@"Total_Friends_Joined";
         [serveOBJ GetMemberStats:@"Total_Friends_Joined"];
     }
-    /*else if ([tagName isEqualToString:@"Total_$_Added_to_Nooch"]) {
-        serve*serveOBJ=[serve new];
-        [serveOBJ setDelegate:self];
-        serveOBJ.tagName=@"Total_$_withdraw_from_Nooch";
-        [serveOBJ GetMemberStats:@"Total_$_withdraw_from_Nooch"];
-    }
-    else if ([tagName isEqualToString:@"Total_$_withdraw_from_Nooch"]) {
-        serve*serveOBJ=[serve new];
-        [serveOBJ setDelegate:self];
-        serveOBJ.tagName=@"Total_Friends_Invited";
-        [serveOBJ GetMemberStats:@"Total_Friends_Invited"];
-    }*/
     else if ([tagName isEqualToString:@"Total_Friends_Invited"]) {
         serve*serveOBJ=[serve new];
         [serveOBJ setDelegate:self];
@@ -1529,7 +1523,11 @@
         
         if ([[[dictResponse valueForKey:@"sendTransactionInCSVResult"]valueForKey:@"Result"]isEqualToString:@"1"])
         {
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Export Successful" message:@"Your personalized transaction report has been emailed to you." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Export Successful"
+                                                         message:@"\xF0\x9F\x93\xA5\nYour personalized transaction report has been emailed to you."
+                                                        delegate:Nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:Nil, nil];
             [alert show];
         }
     }
@@ -1538,7 +1536,11 @@
 #pragma mark Exporting History
 - (IBAction)ExportHistory:(id)sender
 {
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Export Transfer Data" message:@"Where should we email your data?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil];
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Export Transfer Data"
+                                                     message:@"Where should we email your data?"
+                                                    delegate:self
+                                           cancelButtonTitle:@"Cancel"
+                                           otherButtonTitles:@"Send", nil];
     [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
     alert.tag = 11;
     

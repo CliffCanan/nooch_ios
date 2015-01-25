@@ -17,6 +17,8 @@
 BOOL isphoneBook;
 NSMutableArray*arrRecipientsForRequest;
 BOOL isAddRequest;
+int screenLoadedTimes;
+
 @interface SelectRecipient : GAITrackedViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate,ABPeoplePickerNavigationControllerDelegate,CLLocationManagerDelegate,UIActionSheetDelegate,MBProgressHUDDelegate>
 {
     NSMutableDictionary*facebook_info;
@@ -24,12 +26,11 @@ BOOL isAddRequest;
     //ACAccount*facebookAccount;
     UIView*loader;
     NSString*searchString;
-    BOOL searching, navIsUp;
+    BOOL searching, navIsUp, isRecentList;
     BOOL emailEntry, shouldAnimate, phoneNumEntry;
     NSMutableArray * arrSearchedRecords;
     UISearchBar * search;
     UIActivityIndicatorView * spinner;
-    BOOL isRecentList;
     NSString * emailphoneBook, * phoneBookPhoneNum , * firstNamePhoneBook, * lastNamePhoneBook;
     UIImageView *arrow;
     UILabel *em;

@@ -203,20 +203,34 @@
         [self.view addSubview:scroll];
     }
 
-    // PUSH NOTIFICATION REGISTRATION
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+    BOOL notifsEnabled;
+    // Try to use the newer isRegisteredForRemoteNotifications otherwise use the enabledRemoteNotificationTypes.
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
     {
-        NSLog(@"No way we're getting here before the Home screen...");
-        // Register for push in iOS 8.
-        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
+        notifsEnabled = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
     }
     else
     {
-        // Register for push in iOS 7 and under.
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
-                                                                               UIUserNotificationTypeSound |
-                                                                               UIUserNotificationTypeAlert)];
+        UIRemoteNotificationType types = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+        notifsEnabled = types & UIRemoteNotificationTypeAlert;
+    }
+
+    if (!notifsEnabled)
+    {
+        // PUSH NOTIFICATION REGISTRATION
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+        {
+            // Register for push in iOS 8.
+            [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+            [[UIApplication sharedApplication] registerForRemoteNotifications];
+        }
+        else
+        {
+            // Register for push in iOS 7 and under.
+            [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
+                                                                                   UIUserNotificationTypeSound |
+                                                                                   UIUserNotificationTypeAlert)];
+        }
     }
 }
 
@@ -483,9 +497,6 @@
 
             [introText setHidden:YES];
             [glyph_noBank setHidden:YES];
-            //[linked_background setHidden:YES];
-            //[bank_image setHidden:YES];;
-            //[unlink_account setHidden:YES];
 
             linked_background = [UIView new];
             [linked_background setStyleId:@"account_background"];

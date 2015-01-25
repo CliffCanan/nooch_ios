@@ -293,16 +293,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     CFRelease(people);
       if (addressBook)
     CFRelease(addressBook);
-    NSLog(@"Home -> ABChanged: Recevied notification");
+    //NSLog(@"Home -> ABChanged: Recevied notification");
 }
 
 -(void)dismiss_suspended_alert
 {
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-
-    [UIView animateKeyframesWithDuration:.35
+    [UIView animateKeyframesWithDuration:.3
                                    delay:0
-                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                 options:2 << 16
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                       CGRect frame = self.suspended.frame;
@@ -316,6 +314,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                       CGRect rect2 = self.phone_incomplete.frame;
                                       rect2.origin.y -= 56;
                                       self.phone_incomplete.frame = rect2;
+
+                                      CGRect carouselFrame = _carousel.frame;
+                                      carouselFrame.origin.y -= 40;
+                                      [_carousel setFrame:carouselFrame];
                                   }];
                               } completion: ^(BOOL finished){
                                   [self.suspended removeFromSuperview];
@@ -325,9 +327,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 -(void)dismiss_profile_unvalidated
 {
-    [UIView animateKeyframesWithDuration:.35
+    [UIView animateKeyframesWithDuration:.3
                                    delay:0
-                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                 options:2 << 16
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                       CGRect frame = self.profile_incomplete.frame;
@@ -337,6 +339,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                       CGRect rect2 = self.phone_incomplete.frame;
                                       rect2.origin.y -= 56;
                                       self.phone_incomplete.frame = rect2;
+
+                                      CGRect carouselFrame = _carousel.frame;
+                                      carouselFrame.origin.y -= 40;
+                                      [_carousel setFrame:carouselFrame];
                                   }];
                               } completion: ^(BOOL finished){
                                   [self.profile_incomplete removeFromSuperview];
@@ -346,16 +352,18 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 -(void)dismiss_phone_unvalidated
 {
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-
-    [UIView animateKeyframesWithDuration:.35
+    [UIView animateKeyframesWithDuration:.3
                                    delay:0
-                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                 options:2 << 16
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                       CGRect frame = self.phone_incomplete.frame;
                                       frame.origin.y = -57;
                                       [self.phone_incomplete setFrame:frame];
+
+                                      CGRect carouselFrame = _carousel.frame;
+                                      carouselFrame.origin.y -= 40;
+                                      [_carousel setFrame:carouselFrame];
                                   }];
                               } completion: ^(BOOL finished){
                                   [self.phone_incomplete removeFromSuperview];
@@ -367,14 +375,18 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
     
-    [UIView animateKeyframesWithDuration:.35
+    [UIView animateKeyframesWithDuration:.3
                                    delay:0
-                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                 options:2 << 16
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                       CGRect frame = self.pending_requests.frame;
                                       frame.origin.y = -57;
                                       [self.pending_requests setFrame:frame];
+
+                                      CGRect carouselFrame = _carousel.frame;
+                                      carouselFrame.origin.y -= 40;
+                                      [_carousel setFrame:carouselFrame];
                                   }];
                               } completion: ^(BOOL finished){
                                   [self.pending_requests removeFromSuperview];
@@ -642,9 +654,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     if ([[user objectForKey:@"Status"] isEqualToString:@"Suspended"] ||
         [[user objectForKey:@"Status"] isEqualToString:@"Temporarily_Blocked"])
     {
+        bannerAlert++;
+
         if (![self.view.subviews containsObject:self.suspended])
         {
-            bannerAlert++;
+            
             [self.suspended removeFromSuperview];
             self.suspended = [UIView new];
             [self.suspended setStyleId:@"suspended_home"];
@@ -688,9 +702,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [self.view addSubview:self.suspended];
         }
     }
-    else if (![[user objectForKey:@"Status"] isEqualToString:@"Suspended"] &&
-             ![[user objectForKey:@"Status"] isEqualToString:@"Registered"] &&
-              [[user valueForKey:@"Status"]  isEqualToString:@"Active"])
+    else
     {
         if ([self.view.subviews containsObject:self.suspended])
         {
@@ -747,10 +759,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [self.profile_incomplete addSubview:dis];
             [self.view addSubview:self.profile_incomplete];
 
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-            [UIView animateKeyframesWithDuration:.7
+            [UIView animateKeyframesWithDuration:.6
                                            delay:0
-                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                         options:2 << 16
                                       animations:^{
                                           [UIView addKeyframeWithRelativeStartTime:.25 relativeDuration:.75 animations:^{
                                               CGRect frame = self.profile_incomplete.frame;
@@ -773,9 +784,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
     else if ([[user valueForKey:@"Status"]isEqualToString:@"Active"])
     {
-        if (bannerAlert > 0) {
-            bannerAlert--;
-        }
         if ([self.view.subviews containsObject:self.profile_incomplete])
         {
             [self dismiss_profile_unvalidated];
@@ -839,13 +847,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
             [self.view addSubview:self.phone_incomplete];
 
-            //NSLog(@"bannerALert: %d",bannerAlert);
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-            [UIView animateKeyframesWithDuration:.7
+            [UIView animateKeyframesWithDuration:.5
                                            delay:0
-                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                         options:2 << 16
                                       animations:^{
-                                          [UIView addKeyframeWithRelativeStartTime:.25 relativeDuration:.75 animations:^{
+                                          [UIView addKeyframeWithRelativeStartTime:.15 relativeDuration:.85 animations:^{
                                               CGRect frame = self.phone_incomplete.frame;
                                               if (bannerAlert == 0)
                                               {
@@ -862,11 +868,37 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                       }
             ];
         }
+        else
+        {
+            [UIView animateKeyframesWithDuration:.25
+                                           delay:0
+                                         options:2 << 16
+                                      animations:^{
+                                          [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                              CGRect frame = self.phone_incomplete.frame;
+                                              if (bannerAlert == 0)
+                                              {
+                                                  frame.origin.y = 0;
+                                              }
+                                              else if (bannerAlert > 0)
+                                              {
+                                                  frame.origin.y = 56;
+                                              }
+                                              [self.phone_incomplete setFrame:frame];
+                                          }];
+                                      } completion: ^(BOOL finished) {
+                                          [self.view bringSubviewToFront:self.phone_incomplete];
+                                      }
+             ];
+        }
 
         bannerAlert++;
     }
     else
     {
+        if (bannerAlert > 0) {
+            bannerAlert--;
+        }
         if ([self.view.subviews containsObject:self.phone_incomplete])
         {
             [self dismiss_phone_unvalidated];
@@ -952,7 +984,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 [dis setStyleClass:@"dismiss_banner"];
                 [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
                 [dis setTitleShadowColor:Rgb2UIColor(19, 32, 38, .25) forState:UIControlStateNormal];
-                [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
+                [dis setTitleColor:[Helpers hexColor:@"a5d8f1"] forState:UIControlStateHighlighted];
                 dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
                 [dis addTarget:self action:@selector(dismiss_requestsPendingBanner) forControlEvents:UIControlEventTouchUpInside];
 
@@ -960,10 +992,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
                 [self.view addSubview:self.pending_requests];
 
-                [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-                [UIView animateKeyframesWithDuration:.75
+                [UIView animateKeyframesWithDuration:.65
                                                delay:0
-                                             options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                             options:2 << 16
                                           animations:^{
                                               [UIView addKeyframeWithRelativeStartTime:.28 relativeDuration:.72 animations:^{
                                                   CGRect frame = self.pending_requests.frame;
@@ -976,15 +1007,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                  ];
             }
         }
-        else
+        else if ([self.view.subviews containsObject:self.pending_requests])
         {
-            if ([self.view.subviews containsObject:self.pending_requests])
-            {
-                if (bannerAlert > 0) {
-                    bannerAlert--;
-                }
-                [self dismiss_requestsPendingBanner];
+            if (bannerAlert > 0) {
+                bannerAlert--;
             }
+            [self dismiss_requestsPendingBanner];
         }
     }
     else
@@ -1038,20 +1066,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     [self.view addSubview:top_button];
 
-    //NSLog(@"Banner count is: %d",bannerAlert);
+    NSLog(@"Banner count is: %d",bannerAlert);
     int carouselTop;
     if (bannerAlert == 1)
     {
         [UIView animateKeyframesWithDuration:0.5
                                        delay:0
-                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                     options:2 << 16
                                   animations:^{
-                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.5 animations:^{
-                                          [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-                                          top_button.alpha = .2;
-                                      }];
                                       [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:0.8 animations:^{
-                                          [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
                                           [top_button setFrame:CGRectMake(20, 284, 280, 54)];
                                           top_button.alpha = 1;
                                       }];
@@ -1064,11 +1087,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     {
         [UIView animateKeyframesWithDuration:0.5
                                        delay:0
-                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                     options:2 << 16
                                   animations:^{
-                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.5 animations:^{
-                                          top_button.alpha = 0.2;
-                                      }];
                                       [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:0.8 animations:^{
                                           [top_button setFrame:CGRectMake(20, 320, 280, 54)];
                                           top_button.alpha = 1;
@@ -1081,11 +1101,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     {
         [UIView animateKeyframesWithDuration:0.5
                                        delay:0
-                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                     options:2 << 16
                                   animations:^{
-                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.5 animations:^{
-                                          top_button.alpha = 1;
-                                      }];
                                       [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:.8 animations:^{
                                           [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
                                           [top_button setFrame:CGRectMake(20, 260, 280, 54)];
@@ -1129,7 +1146,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         NSLog(@"AB Not determined");
     }
 
-    [self GetFavorite];
+    [self GetFavorite]; 
 
     [_carousel removeFromSuperview];
     _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, carouselTop, 320, 175)];
@@ -1213,8 +1230,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 -(void)viewDidDisappear:(BOOL)animated
 {
-    [self.hud hide:YES];
     [super viewDidDisappear:animated];
+
+    [top_button removeFromSuperview];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1616,14 +1634,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         //NSLog(@"Selected Favorite is: %@  %@  %@  %@", favorite[@"FirstName"], favorite[@"LastName"],favorite[@"UserName"],favorite[@"addressbook"]);
 
-        if (favorite[@"MemberId"])
+        if ( favorite[@"MemberId"] ||
+            (favorite[@"UserName"] && [favorite[@"emailCount"]intValue] == 1))
         {
-            int selectedFavName_topValue = 10;
+            int selectedFavName_topValue = 11;
             if (bannerAlert == 1)
             {
                 selectedFavName_topValue = 31;
             }
-
+            
             if ([self.view.subviews containsObject:self.pending_requests])
             {
                 if (bannerAlert > 0) {
@@ -1631,72 +1650,78 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 }
                 [self dismiss_requestsPendingBanner];
             }
-
+            
             self.selectedFavName = [[UILabel alloc] initWithFrame:CGRectMake(20, carousel.bounds.origin.y + 12, 280, 30)];
             [self.selectedFavName setFont:[UIFont fontWithName:@"Roboto-regular" size: 22]];
-            [self.selectedFavName setText: [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]]];
+
+            if (favorite[@"FirstName"] && favorite[@"LastName"])
+            {
+                [self.selectedFavName setText: [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]]];
+                firstNameAB = favorite[@"FirstName"];
+                lastNameAB = favorite[@"LastName"];
+            }
+            else if (favorite[@"FirstName"])
+            {
+                [self.selectedFavName setText: [NSString stringWithFormat:@"%@",favorite[@"FirstName"]]];
+                firstNameAB = favorite[@"FirstName"];
+            }
             [self.selectedFavName setTextColor:kNoochGrayDark];
             [self.selectedFavName setTextAlignment:NSTextAlignmentCenter];
             [self.selectedFavName setAlpha:0];
             [self.view addSubview: self.selectedFavName];
 
-            double totalduration = 0.8;
 
-            [UIView animateKeyframesWithDuration:totalduration
-                                           delay:0.02
-                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
+            [UIView animateKeyframesWithDuration:0.7
+                                           delay:0.01
+                                         options:2 << 16
                                       animations:^{
-                [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.5 animations:^{
-                    [carousel itemViewAtIndex:index].transform = CGAffineTransformMakeScale(1.12, 1.12);
-                }];
-                [UIView addKeyframeWithRelativeStartTime:.5 relativeDuration:.45 animations:^{
-                    [carousel itemViewAtIndex:index].transform = CGAffineTransformMakeScale(1.18, 1.18);
-                }];
-                [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:0.95 animations:^{
-                    self.selectedFavName.transform = CGAffineTransformMakeScale(1.35, 1.35);
-                    [self.selectedFavName setAlpha:1];
+                                          [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.98 animations:^{
+                                              [carousel itemViewAtIndex:index].transform = CGAffineTransformMakeScale(1.18, 1.18);
+                                          }];
+                                          [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:0.98 animations:^{
+                                              self.selectedFavName.transform = CGAffineTransformMakeScale(1.35, 1.35);
+                                              self.selectedFavName.alpha = 1;
 
-                    for (int i = 0; i < 6; i++)
-                    {
-                        if (i != index)
-                        {
-                            [[carousel itemViewAtIndex:i] setAlpha:0];
-                            [carousel itemViewAtIndex:i].transform = CGAffineTransformMakeScale(.3, .3);
-                        }
-                    }
-                }];
-                
-                [UIView addKeyframeWithRelativeStartTime:.4 relativeDuration:.6 animations:^{
-                    top_button.alpha = 0;
-                }];
-                [UIView addKeyframeWithRelativeStartTime:.4 relativeDuration:.6 animations:^{
-                    top_button.transform = CGAffineTransformMakeScale(.1, .1);
-                }];
-
-            } completion:^(BOOL finished){
-                [favorite setObject:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
-                [top_button removeFromSuperview];
-
-                isFromHome = YES;
-                isFromMyApt = NO;
-
-                HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
-                [self.navigationController pushViewController:trans animated:YES];
-
-                [self.selectedFavName removeFromSuperview];
-                return;
-            }];
+                                              for (int i = 0; i < 6; i++)
+                                              {
+                                                  if (i != index)
+                                                  {
+                                                      [[carousel itemViewAtIndex:i] setAlpha:0];
+                                                      [carousel itemViewAtIndex:i].transform = CGAffineTransformMakeScale(.3, .3);
+                                                  }
+                                              }
+                                          }];
+                                          [UIView addKeyframeWithRelativeStartTime:.1 relativeDuration:.7 animations:^{
+                                              top_button.alpha = 0;
+                                              top_button.transform = CGAffineTransformMakeScale(.1, .1);
+                                          }];
+                                      } completion:^(BOOL finished) {
+                                          if (favorite[@"MemberId"])
+                                          {
+                                              [favorite setObject:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",favorite[@"MemberId"]] forKey:@"Photo"];
+                                              
+                                              isFromHome = YES;
+                                              isFromMyApt = NO;
+                                              
+                                              HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
+                                              [self.navigationController pushViewController:trans animated:YES];
+                                              
+                                              [self.selectedFavName removeFromSuperview];
+                                          }
+                                          else if (favorite[@"UserName"])
+                                          {
+                                              emailID = favorite[@"UserName"];
+                                              serve * emailCheck = [serve new];
+                                              emailCheck.Delegate = self;
+                                              emailCheck.tagName = @"emailCheck";
+                                              [emailCheck getMemIdFromuUsername:[emailID lowercaseString]];
+                                          }
+                                          return;
+                                      }];
         }
         
         else if (favorite[@"UserName"])
         {
-            if (favorite[@"FirstName"]) {
-                firstNameAB = favorite[@"FirstName"];
-            }
-            if (favorite[@"LastName"]) {
-                lastNameAB = favorite[@"LastName"];
-            }
-
             if ([favorite[@"emailCount"]intValue] > 1)
             {
                 UIActionSheet * actionSheetObject = [[UIActionSheet alloc] init];
@@ -1713,11 +1738,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             }
             else
             {
-                emailID = favorite[@"UserName"];
-                serve * emailCheck = [serve new];
-                emailCheck.Delegate = self;
-                emailCheck.tagName = @"emailCheck";
-                [emailCheck getMemIdFromuUsername:[emailID lowercaseString]];
+                
             }
 
             return;
@@ -2163,6 +2184,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                           
                                       } completion:^(BOOL finished){
                                           [top_button removeFromSuperview];
+                                          [self.selectedFavName removeFromSuperview];
                                       }];
 
             NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
@@ -2200,6 +2222,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
         [self.navigationController pushViewController:how_much animated:YES];
+
+        [top_button removeFromSuperview];
+        [self.selectedFavName removeFromSuperview];
     }
 
     else if ([tagName isEqualToString:@"getMemberIds"])
