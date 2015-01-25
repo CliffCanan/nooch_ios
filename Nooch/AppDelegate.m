@@ -11,7 +11,6 @@
 #import <CoreTelephony/CTCallCenter.h>
 #import "ReEnterPin.h"
 #import "ProfileInfo.h"
-#import "METoast.h"
 #import "Appirater.h"
 @implementation AppDelegate
 
@@ -386,11 +385,7 @@ void exceptionHandler(NSException *exception){
     UIApplicationState state = [application applicationState];
     if (state == UIApplicationStateActive)
     {
-        //NSString *message = [[userInfo valueForKey:@"aps"] valueForKey:@"alert"];
-        //[METoast resetToastAttribute];
-        //[METoast toastWithMessage:message];
-       
-        NSLog(@"%d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
+        NSLog(@"Badge # is: %d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
         
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     }
@@ -398,14 +393,15 @@ void exceptionHandler(NSException *exception){
     {
         // Reset the badge if you are using that functionality
         NSLog(@"Badge Number: %d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
-
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[UIApplication sharedApplication] applicationIconBadgeNumber]+1]; 
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[UIApplication sharedApplication] applicationIconBadgeNumber] + 1];
     }
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-    // Reset the badge after a push is received in a active or inactive state
+    NSLog(@"Remote Notification Recieved is: %@", userInfo);
+
+    // Reset the badge after a push is received in active or inactive state
     if (application.applicationState != UIApplicationStateBackground)
     {
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];

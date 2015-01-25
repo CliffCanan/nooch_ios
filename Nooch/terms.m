@@ -11,9 +11,15 @@
 #import "NSString+AESCrypt.h"
 #import "Home.h"
 #import "Register.h"
+
+@interface terms ()
+
+@property(nonatomic,strong) MBProgressHUD * hud;
+@end
+
 @implementation terms
 
-@synthesize termsView,spinner;
+@synthesize termsView;
 
 # pragma mark - View lifecycle
 
@@ -26,30 +32,23 @@
     return self;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.title = @"User Agreement";
+    //[self.navigationController setNavigationBarHidden:NO];
+}
+
 - (void)dealloc {
     [super dealloc];
 }
 
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc. that aren't in use.
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-}
-
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     self.screenName = @"Terms Screen";
 }
--(void)viewDidDisappear:(BOOL)animated{
-    [self.hud hide:YES];
-    [super viewDidDisappear:animated];
-}
+
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -57,14 +56,17 @@
 
     RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
     spinner1.color = [UIColor whiteColor];
-    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    MBProgressHUD * hud1 = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    self.hud = hud1;
     [self.navigationController.view addSubview:self.hud];
-    
     self.hud.labelText = @"Loading Nooch's Terms of Service";
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
     self.hud.delegate = self;
     [self.hud show:YES];
+
+    [hud1 release];
+    [spinner1 release];
 
     if (isfromRegister)
     {
@@ -79,7 +81,7 @@
         terms.textAlignment = NSTextAlignmentCenter;
         [nav_view addSubview:terms];
         [terms release];
-        
+
         UIButton * btn_Close = [UIButton buttonWithType:UIButtonTypeCustom];
         btn_Close.frame = CGRectMake(0, 20, 80, 40);
         [btn_Close setTitle:@"Close" forState:UIControlStateNormal];
@@ -89,40 +91,54 @@
         [nav_view addSubview:btn_Close];
         [nav_view release];
     }
-    else {
+    else
+    {
         UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [hamburger setStyleId:@"navbar_hamburger"];
         [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
         [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
-        [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+        [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
         hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
         [self.navigationItem setLeftBarButtonItem:menu];
+        [menu release];
     }
 
     NSURL * webURL = [NSURL URLWithString:@"https://www.nooch.com/tos"];
     termsView = [[UIWebView alloc]initWithFrame:CGRectMake(0, top, 320, [[UIScreen mainScreen] bounds].size.height - 62)];
     termsView.delegate = self;
-    
+
     [termsView loadRequest:[NSURLRequest requestWithURL:webURL]];
     termsView.scalesPageToFit = YES;
-    
+
     termsView.scrollView.hidden = NO;
     [termsView setMultipleTouchEnabled:YES];
     [self.view addSubview:termsView];
 }
 
--(void)dismissView:(id)sender{
-    [termsView setDelegate:nil];
-    [(Register *)self.parentViewController removeChild:self];
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [self.hud hide:YES];
+    [super viewDidDisappear:animated];
 }
 
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad
+- (void)didReceiveMemoryWarning
 {
-    [super viewDidLoad];
-    self.title = @"User Agreement";
-    //[self.navigationController setNavigationBarHidden:NO];
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    // Release any cached data, images, etc. that aren't in use.
+}
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+}
+
+-(void)dismissView:(id)sender
+{
+    [termsView setDelegate:nil];
+    [(Register *)self.parentViewController removeChild:self];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
@@ -146,6 +162,7 @@
     [[assist shared]setneedsReload:NO];
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
+
 -(void)Error:(NSError *)Error
 {
     [self.hud hide:YES];
@@ -164,12 +181,13 @@
     NSError *error;
     NSDictionary *template = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
     [termsView loadHTMLString:[template objectForKey:@"Result"] baseURL:nil];
-    [spinner stopAnimating];
 
     [self.hud hide:YES];
 
-    for (id subView in [termsView subviews]) {
-        if ([subView respondsToSelector:@selector(flashScrollIndicators)]) {
+    for (id subView in [termsView subviews])
+    {
+        if ([subView respondsToSelector:@selector(flashScrollIndicators)])
+        {
             [subView flashScrollIndicators];
         }
     }

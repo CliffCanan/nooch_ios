@@ -145,7 +145,7 @@ view {
         text-align  : left;
     }
     #navbar_hamburger {
-        width       :  30px;
+        width       : 30px;
         height      : 30px;
         font-family : "FontAwesome";
         font-size   : 24px;
@@ -3319,9 +3319,9 @@ table-view.stats_top_friends_empty {
     text-align		: left;
 }
 .stats_table_right_lable {
-    left			: 227px;
+    left			: 222px;
     top				: 0px;
-    width			: 73px;
+    width			: 80px;
     height			: 50px;
     color			: #3fabe1;
     font-family		: "Roboto";
