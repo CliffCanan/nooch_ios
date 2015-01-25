@@ -14,8 +14,6 @@ BOOL isfromRegister;
 
 @interface terms : GAITrackedViewController <serveD,UIWebViewDelegate,MBProgressHUDDelegate>
 
-@property(nonatomic,strong) MBProgressHUD *hud;
-@property(nonatomic,retain) IBOutlet UIActivityIndicatorView *spinner;
 @property(nonatomic, retain) IBOutlet UIWebView *termsView;
 
 @end

@@ -688,6 +688,7 @@
 
 -(void)viewDidDisappear:(BOOL)animated
 {
+    [super viewDidDisappear:YES];
     [self.login removeFromSuperview];
 }
 

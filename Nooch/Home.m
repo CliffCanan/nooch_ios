@@ -1637,12 +1637,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if ( favorite[@"MemberId"] ||
             (favorite[@"UserName"] && [favorite[@"emailCount"]intValue] == 1))
         {
-            int selectedFavName_topValue = 11;
-            if (bannerAlert == 1)
-            {
-                selectedFavName_topValue = 31;
-            }
-            
             if ([self.view.subviews containsObject:self.pending_requests])
             {
                 if (bannerAlert > 0) {

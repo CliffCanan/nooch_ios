@@ -816,12 +816,7 @@
 {
     [locationManager stopUpdatingLocation];
 
-    float lat;
-    float lon;
-
     CLLocationCoordinate2D loc = manager.location.coordinate;
-    lat = [[[NSString alloc] initWithFormat:@"%f",loc.latitude] floatValue];
-    lon = [[[NSString alloc] initWithFormat:@"%f",loc.longitude] floatValue];
     
     [[assist shared]setlocationAllowed:YES];
     
