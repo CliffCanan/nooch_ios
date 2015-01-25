@@ -27,10 +27,10 @@
 @property(nonatomic,strong) UIButton *login;
 @property(nonatomic,strong) MBProgressHUD *hud;
 @property(nonatomic,strong) UILabel *or;
-@property(nonatomic,strong) UILabel * pwValidator;
 @property(nonatomic,strong) UILabel * emailValidator;
 @property(nonatomic,strong) UILabel * nameValidator;
 @property(nonatomic,strong) UILabel * fullNameInstruc;
+@property(nonatomic,strong) UILabel * pwValidator;
 @property(nonatomic,strong) UIView * pwValidator1, * pwValidator2, * pwValidator3, * pwValidator4;
 
 @end
@@ -58,13 +58,13 @@
     [super viewDidAppear:animated];
 
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.login setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height + 6, 300, 46)];
+    [self.login setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height + 6, 300, 50)];
+    [self.login setStyleId:@"label_small_register"];
     [self.login setBackgroundColor:[UIColor clearColor]];
-    [self.login setTitle:@"Already a Member?  Sign in here  " forState:UIControlStateNormal];
+    [self.login setTitle:@"Already a member?  Sign in here " forState:UIControlStateNormal];
     [self.login setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
     [self.login addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
-    [self.login setStyleId:@"label_small_register"];
-    [self.login setAlpha:0];
+    [self.login setAlpha:0.1];
     [self.view addSubview:self.login];
 
     UILabel * glyph_login = [UILabel new];
@@ -77,7 +77,7 @@
 
     [UIView animateKeyframesWithDuration:.4
                                    delay:0
-                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                 options:2 << 16
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                       [self.login setAlpha:1];
@@ -87,7 +87,8 @@
                                       }
                                       else
                                       {
-                                          [self.login setFrame:CGRectMake(10, 429, 300, 44)];
+                                          [self.login setFrame:CGRectMake(10, 426, 300, 40)];
+                                          [glyph_login setFrame:CGRectMake(0, 30, 300, 22)];
                                       }
                                   }];
                               } completion: nil];
@@ -112,8 +113,6 @@
     [self.navigationController setNavigationBarHidden:YES];
 
     self.facebook_info = [NSMutableDictionary new];
-
-    //[self.login removeFromSuperview];
 
     UIView * boxOutline = [[UIView alloc] initWithFrame:CGRectMake(9, 244, 302, 175)];
     boxOutline.backgroundColor = [UIColor whiteColor];
@@ -341,8 +340,13 @@
 
         [password setFrame:CGRectMake(0, 299, 0, 0)];
         [self.password_field setFrame:CGRectMake(0, 299, 0, 0)];
-        [self.pwValidator setFrame:CGRectMake(98, 299, 21, 39)];
-
+        
+        [self.pwValidator setFrame:CGRectMake(202, 336, 100, 11)];
+        [self.pwValidator1 setFrame:CGRectMake(20, 331, 69, 4)];
+        [self.pwValidator2 setFrame:CGRectMake(91, 331, 69, 4)];
+        [self.pwValidator3 setFrame:CGRectMake(162, 331, 69, 4)];
+        [self.pwValidator4 setFrame:CGRectMake(233, 331, 69, 4)];
+        
         [checkbox_box setFrame:CGRectMake(36, 345, 21, 20)];
         [checkbox_dot setFrame:CGRectMake(31, 340, 31, 30)];
         [termsText1 setFrame:CGRectMake(65, 347, 55, 14)];
@@ -697,7 +701,7 @@
                                       if ([[UIScreen mainScreen] bounds].size.height > 500) {
                                           [sender setFrame:CGRectMake(-29, 498, 300, 50)];
                                       } else {
-                                          [sender setFrame:CGRectMake(-28, 429, 300, 44)];
+                                          [sender setFrame:CGRectMake(-28, 425, 300, 44)];
                                       }
                                   }];
                               } completion: ^(BOOL finished){
@@ -709,7 +713,7 @@
                                                                     if ([[UIScreen mainScreen] bounds].size.height > 500) {
                                                                         [sender setFrame:CGRectMake(321, 498, 300, 50)];
                                                                     } else {
-                                                                        [sender setFrame:CGRectMake(321, 429, 300, 44)];
+                                                                        [sender setFrame:CGRectMake(321, 419, 300, 44)];
                                                                     }
                                                                 }];
                                                             } completion: ^(BOOL finished){
@@ -1227,13 +1231,15 @@
         [self.pwValidator setHidden:NO];
 
         NSCharacterSet * digitsCharSet = [NSCharacterSet decimalDigitCharacterSet];
-        NSCharacterSet * lettercaseCharSet = [NSCharacterSet letterCharacterSet];
+        NSCharacterSet * lowercaseCharSet = [NSCharacterSet lowercaseLetterCharacterSet];
+        NSCharacterSet * uppercaseCharSet = [NSCharacterSet uppercaseLetterCharacterSet];
         NSCharacterSet * symbolsCharSet = [NSCharacterSet symbolCharacterSet];
+        NSCharacterSet * whtspcCharSet = [NSCharacterSet whitespaceCharacterSet];
         NSCharacterSet * punctCharSet = [NSCharacterSet punctuationCharacterSet];
 
         [self.pwValidator setHidden:NO];
 
-        int score = 0;
+        double score = 0;
 
         if ([self.password_field.text length] > 5)
         {
@@ -1241,10 +1247,15 @@
         } else {
             pwLength = false;
         }
-        if ([self.password_field.text rangeOfCharacterFromSet:lettercaseCharSet].location != NSNotFound ||
-            [string rangeOfCharacterFromSet:lettercaseCharSet].location != NSNotFound)
+        if ([self.password_field.text rangeOfCharacterFromSet:lowercaseCharSet].location != NSNotFound ||
+            [string rangeOfCharacterFromSet:lowercaseCharSet].location != NSNotFound)
         {
-            score += 1;
+            score += .6;
+        }
+        if ([self.password_field.text rangeOfCharacterFromSet:uppercaseCharSet].location != NSNotFound ||
+            [string rangeOfCharacterFromSet:uppercaseCharSet].location != NSNotFound)
+        {
+            score += .85;
         }
         if ([self.password_field.text rangeOfCharacterFromSet:digitsCharSet].location != NSNotFound ||
             [string rangeOfCharacterFromSet:digitsCharSet].location != NSNotFound)
@@ -1254,16 +1265,26 @@
         if ([self.password_field.text rangeOfCharacterFromSet:symbolsCharSet].location != NSNotFound ||
             [string rangeOfCharacterFromSet:symbolsCharSet].location != NSNotFound)
         {
-            score += 1;
+            score += 1.25;
         }
         if ([self.password_field.text rangeOfCharacterFromSet:punctCharSet].location != NSNotFound||
             [string rangeOfCharacterFromSet:punctCharSet].location != NSNotFound)
         {
-            score += 1;
+            score += 1.35;
+        }
+        if ([self.password_field.text rangeOfCharacterFromSet:whtspcCharSet].location != NSNotFound||
+            [string rangeOfCharacterFromSet:whtspcCharSet].location != NSNotFound)
+        {
+            score += 1.3;
+        }
+        if ([self.password_field.text length] > 10)
+        {
+            score += 1.2;;
         }
 
 
-        if (pwLength && score > 3)
+        NSLog(@"Score is: %f",score);
+        if (pwLength && score > 3.9)
         {
             [self.pwValidator1 setBackgroundColor:kNoochGreen];
             [self.pwValidator2 setBackgroundColor:kNoochGreen];
@@ -1272,7 +1293,7 @@
             [self.pwValidator setText:@"Extremely Strong"];
             [self.pwValidator setTextColor:kNoochGreen];
         }
-        else if (pwLength && score > 2)
+        else if (pwLength && score > 2.2)
         {
             [self.pwValidator1 setBackgroundColor:kNoochGreen];
             [self.pwValidator2 setBackgroundColor:kNoochGreen];

@@ -92,6 +92,7 @@ NSString *histSearching;
 -(void)setPOP:(BOOL)istrue;
 -(BOOL)islocationAllowed;
 -(void)setlocationAllowed:(BOOL)istrue;
+-(BOOL)checkIfLocAllowed;
 -(BOOL)needsReload;
 -(void)setneedsReload:(BOOL)istrue;
 -(BOOL)getSuspended;

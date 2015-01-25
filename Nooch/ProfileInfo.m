@@ -32,8 +32,9 @@ UIImageView *picture;
 @property(nonatomic,strong) UITextField *zip;
 @property(nonatomic,strong) UITableView * list;
 @property(nonatomic,strong) UITableView * list2;
-@property(nonatomic,strong) UIButton *save;
-@property(nonatomic,strong) NSString *ServiceType;
+@property(nonatomic,strong) UIButton * save;
+@property(nonatomic,strong) UIButton * resend_phone;
+@property(nonatomic,strong) NSString * ServiceType;
 @property(nonatomic,retain) NSString * SavePhoneNumber;
 @property(nonatomic,strong) MBProgressHUD *hud;
 @property(nonatomic,strong) UIView *member_since_back;
@@ -51,6 +52,356 @@ UIImageView *picture;
         // Custom initialization
     }
     return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    dictSavedInfo = [[NSMutableDictionary alloc]init];
+    [dictSavedInfo setObject:@"NO" forKey:@"ImageChanged"];
+    
+    self.navigationController.navigationBar.topItem.title = @"";
+    [self.navigationItem setHidesBackButton:YES];
+    
+    if (isProfileOpenFromSideBar)
+    {
+        UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [hamburger setStyleId:@"navbar_hamburger"];
+        [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+        [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
+        [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+        hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+        [self.navigationItem setLeftBarButtonItem:menu];
+    }
+    else
+    {
+        [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+        
+        NSShadow * shadowNavText = [[NSShadow alloc] init];
+        shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .2);
+        shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
+        NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
+        
+        UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(savePrompt2)];
+        
+        UILabel * back_button = [UILabel new];
+        [back_button setStyleId:@"navbar_back"];
+        [back_button setUserInteractionEnabled:YES];
+        [back_button addGestureRecognizer: backTap];
+        back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
+        
+        UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+        
+        [self.navigationItem setLeftBarButtonItem:menu];
+    }
+    
+    if (!isSignup) {
+        [self.slidingViewController.panGesture setEnabled:YES];
+        [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+    }
+    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    
+    isPhotoUpdate = NO;
+    
+    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
+    spinner1.color = [UIColor whiteColor];
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.hud];
+    self.hud.labelText = @"Loading your profile...";
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.customView = spinner1;
+    self.hud.delegate = self;
+    [self.hud show:YES];
+    
+    [self.navigationItem setTitle:@"Profile"];
+    
+    serve *serveOBJ = [serve new ];
+    serveOBJ.tagName = @"myset";
+    [serveOBJ setDelegate:self];
+    [serveOBJ getSettings];
+    
+    int pictureRadius = 38;
+    heightOfTopSection = 80;
+    rowHeight = 50;
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        rowHeight = 46;
+    }
+    
+    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, heightOfTopSection, 320, [[UIScreen mainScreen] bounds].size.height - heightOfTopSection - 64)];
+    [scrollView setBackgroundColor:Rgb2UIColor(255, 255, 255, 0)];
+    // [scrollView setDelegate:self];
+    scrollView.contentSize = CGSizeMake(320, [[UIScreen mainScreen] bounds].size.height);
+    
+    self.member_since_back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, heightOfTopSection)];
+    [self.view addSubview:self.member_since_back];
+    
+    NSShadow * shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = Rgb2UIColor(249, 251, 252, .3);
+    shadow.shadowOffset = CGSizeMake(0, 1);
+    NSDictionary * textAttributes_topShadow = @{NSShadowAttributeName: shadow };
+    
+    self.name = [[UILabel alloc] initWithFrame:CGRectMake(10, 1, 300, 40)];
+    [self.name setTextAlignment:NSTextAlignmentCenter];
+    [self.name setFont:[UIFont fontWithName:@"Roboto-regular" size:24]];
+    [self.name setTextColor:kNoochGrayDark];
+    self.name.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",[[user objectForKey:@"firstName"] capitalizedString],[[user objectForKey:@"lastName"] capitalizedString]] attributes:textAttributes_topShadow];
+    [self.name setUserInteractionEnabled:NO];
+    [self.name setTag:0];
+    [self.member_since_back addSubview:self.name];
+    
+    shadowUnder = [[UIView alloc] initWithFrame:CGRectMake((160 - pictureRadius), heightOfTopSection - pictureRadius, pictureRadius * 2, (pictureRadius * 2))];
+    shadowUnder.backgroundColor = Rgb2UIColor(31, 33, 32, .25);
+    shadowUnder.layer.cornerRadius = pictureRadius;
+    shadowUnder.layer.shadowColor = [UIColor blackColor].CGColor;
+    shadowUnder.layer.shadowOffset = CGSizeMake(0, 2);
+    shadowUnder.layer.shadowOpacity = 0.3;
+    shadowUnder.layer.shadowRadius = 3;
+    [shadowUnder setStyleClass:@"animate_bubble"];
+    [self.view addSubview:shadowUnder];
+    
+    picture = [UIImageView new];
+    [picture setFrame:CGRectMake((160 - pictureRadius), heightOfTopSection - pictureRadius, pictureRadius * 2, (pictureRadius * 2))];
+    picture.layer.cornerRadius = pictureRadius;
+    picture.layer.borderColor = [UIColor whiteColor].CGColor;
+    picture.layer.borderWidth = 2;
+    picture.clipsToBounds = YES;
+    [picture addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(change_pic)]];
+    [picture setUserInteractionEnabled:YES];
+    [self.view addSubview:picture];
+    [picture setStyleClass:@"animate_bubble"];
+    
+    NSShadow * shadow_edit = [[NSShadow alloc] init];
+    shadow_edit.shadowColor = Rgb2UIColor(33, 34, 35, .4);
+    shadow_edit.shadowOffset = CGSizeMake(0, 1);
+    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow_edit };
+    
+    UILabel * edit_label = [UILabel new];
+    [edit_label setBackgroundColor:[UIColor clearColor]];
+    edit_label.attributedText = [[NSAttributedString alloc] initWithString:@"edit" attributes:textAttributes];
+    [edit_label setFont:[UIFont fontWithName:@"Roboto-regular" size:12]];
+    [edit_label setFrame:CGRectMake(0, (pictureRadius * 2) - 18, pictureRadius * 2, 12)];
+    [edit_label setTextAlignment:NSTextAlignmentCenter];
+    [edit_label setTextColor:[UIColor whiteColor]];
+    [picture addSubview:edit_label];
+    
+    UILabel * bankLinkedTxt = [[UILabel alloc] initWithFrame:CGRectMake(23, 4, 100, 32)];
+    [bankLinkedTxt setBackgroundColor:[UIColor clearColor]];
+    [bankLinkedTxt setTextColor:[Helpers hexColor:@"313233"]];
+    [bankLinkedTxt setTextAlignment:NSTextAlignmentCenter];
+    
+    UILabel * glyph_bank = [[UILabel alloc] initWithFrame:CGRectMake(14, 6, 16, 27)];
+    [glyph_bank setFont:[UIFont fontWithName:@"FontAwesome" size:12]];
+    [glyph_bank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bank"]];
+    
+    UIButton * goToSettings = [[UIButton alloc] initWithFrame:CGRectMake(1, 1, 101, 32)];
+    goToSettings.backgroundColor = [UIColor clearColor];
+    [goToSettings addTarget:self action:@selector(goToSettings1) forControlEvents:UIControlEventTouchUpInside];
+    [goToSettings addSubview:bankLinkedTxt];
+    [goToSettings addSubview:glyph_bank];
+    
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    {
+        [bankLinkedTxt setFont:[UIFont fontWithName:@"Roboto-regular" size:13]];
+        bankLinkedTxt.text = @"Bank Linked";
+        
+        [glyph_bank setTextColor:kNoochGreen];
+        [glyph_bank setAlpha:1];
+    }
+    else
+    {
+        [bankLinkedTxt setFont:[UIFont fontWithName:@"Roboto-regular" size:11]];
+        bankLinkedTxt.text = @"No Funding Source";
+        
+        [glyph_bank setTextColor:kNoochGrayDark];
+        [glyph_bank setAlpha:.65];
+        [glyph_bank setFrame:CGRectMake(5, 6, 15, 25)];
+        
+        UILabel * glyph_bankX = [[UILabel alloc] initWithFrame:CGRectMake(18, 5, 8, 22)];
+        [glyph_bankX setFont:[UIFont fontWithName:@"FontAwesome" size:11]];
+        [glyph_bankX setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
+        [glyph_bankX setTextColor:kNoochRed];
+        [goToSettings addSubview:glyph_bankX];
+    }
+    [scrollView addSubview:goToSettings];
+    
+    start = [[user valueForKey:@"DateCreated"] rangeOfString:@"("];
+    end = [[user valueForKey:@"DateCreated"] rangeOfString:@")"];
+    
+    if (start.location != NSNotFound && end.location != NSNotFound && end.location > start.location)
+    {
+        betweenBraces = [[user valueForKey:@"DateCreated"] substringWithRange:NSMakeRange(start.location+1, end.location-(start.location+1))];
+    }
+    
+    newString = [betweenBraces substringToIndex:[betweenBraces length]-8];
+    
+    NSTimeInterval _interval = [newString doubleValue];
+    
+    NSDate * date = [NSDate dateWithTimeIntervalSince1970:_interval];
+    NSDateFormatter *_formatter=[[NSDateFormatter alloc]init];
+    [_formatter setDateFormat:@"M/d/yyyy"];
+    NSString *_date=[_formatter stringFromDate:date];
+    
+    UILabel * memSincelbl = [[UILabel alloc] initWithFrame:CGRectMake(206, 5, 110, 19)];
+    memSincelbl.attributedText = [[NSAttributedString alloc] initWithString:@"Member Since"
+                                                                 attributes:textAttributes_topShadow];
+    memSincelbl.userInteractionEnabled = NO;
+    [memSincelbl setBackgroundColor:[UIColor clearColor]];
+    [memSincelbl setFont:[UIFont fontWithName:@"Roboto-regular" size:14]];
+    [memSincelbl setTextColor:[Helpers hexColor:@"313233"]];
+    [memSincelbl setTextAlignment:NSTextAlignmentCenter];
+    [scrollView addSubview:memSincelbl];
+    
+    UILabel * dateText = [[UILabel alloc] initWithFrame:CGRectMake(206, 25, 110, 17)];
+    dateText.userInteractionEnabled = NO;
+    [dateText setBackgroundColor:[UIColor clearColor]];
+    [dateText setText:[NSString stringWithFormat:@"%@",_date]];
+    [dateText setFont:[UIFont fontWithName:@"Roboto-light" size:13]];
+    [dateText setTextColor:[Helpers hexColor:@"313233"]];
+    [dateText setTextAlignment:NSTextAlignmentCenter];
+    [scrollView addSubview:dateText];
+    
+    self.email = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, rowHeight)];
+    [self.email setTextAlignment:NSTextAlignmentRight];
+    [self.email setPlaceholder:@"email@email.com"];
+    [self.email setDelegate:self];
+    [self.email setKeyboardType:UIKeyboardTypeEmailAddress];
+    self.email.returnKeyType = UIReturnKeyNext;
+    [self.email setStyleClass:@"tableViewCell_Profile_rightSide"];
+    [self.email setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]];
+    [self.email setUserInteractionEnabled:NO];
+    [self.email setTag:0];
+    [scrollView addSubview:self.email];
+    
+    /* // Recovery Mail
+     self.recovery_email = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
+     [self.recovery_email setTextAlignment:NSTextAlignmentRight];
+     [self.recovery_email setBackgroundColor:[UIColor clearColor]];
+     [self.recovery_email setPlaceholder:@"(Optional)"];
+     [self.recovery_email setDelegate:self];
+     [self.recovery_email setKeyboardType:UIKeyboardTypeEmailAddress];
+     self.recovery_email.returnKeyType = UIReturnKeyNext;
+     [self.recovery_email setStyleClass:@"table_view_cell_detailtext_1"];
+     [self.recovery_email setTag:1];
+     [self.view addSubview:self.recovery_email]; */
+    
+    self.phone = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, rowHeight)];
+    [self.phone setTextAlignment:NSTextAlignmentRight];
+    [self.phone setBackgroundColor:[UIColor clearColor]];
+    [self.phone setPlaceholder:@"(215) 555-1234"];
+    [self.phone setDelegate:self];
+    [self.phone setKeyboardType:UIKeyboardTypeNumberPad];
+    self.phone.returnKeyType = UIReturnKeyNext;
+    [self.phone setStyleClass:@"tableViewCell_Profile_rightSide"];
+    [self.phone setTag:2];
+    
+    self.save = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.save setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
+    self.save.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [self.save addTarget:self action:@selector(save_changes) forControlEvents:UIControlEventTouchUpInside];
+    [self.save setTitle:@"Save" forState:UIControlStateNormal];
+    [self.save setStyleClass:@"nav_top_right"];
+    [self.save setStyleClass:@"disabled_gray"];
+    [self.save setEnabled:NO];
+    [self.save setUserInteractionEnabled:NO];
+    
+    UIBarButtonItem * nav_save = [[UIBarButtonItem alloc] initWithCustomView:self.save];
+    [self.navigationItem setRightBarButtonItem:nav_save animated:YES];
+    
+    GMTTimezonesDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:@"Samoa Standard Time",@"GMT-11:00",
+                              @"Hawaiian Standard Time",@"GMT-10:00",
+                              @"Alaskan Standard Time",@"GMT-09:00",
+                              @"Pacific Standard Time",@"GMT-08:00",
+                              @"Mountain Standard Time",@"GMT-07:00",
+                              @"Central Standard Time",@"GMT-06:00",
+                              @"Eastern Standard Time",@"GMT-05:00",
+                              @"Atlantic Standard Time",@"GMT-04:00",
+                              nil];
+    
+    self.sectionHeaderBg = [[UIView alloc] initWithFrame:CGRectMake(0, pictureRadius + 16, 320, 26)];
+    self.sectionHeaderBg.backgroundColor = Rgb2UIColor(230, 231, 232, .4);
+    
+    UILabel * sectionHeaderTxt = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 200, 26)];
+    sectionHeaderTxt.backgroundColor = [UIColor clearColor];
+    sectionHeaderTxt.textColor = [UIColor darkGrayColor];
+    sectionHeaderTxt.font = [UIFont fontWithName:@"Roboto-light" size:15];
+    sectionHeaderTxt.text = @"CONTACT INFO";
+    sectionHeaderTxt.textAlignment = NSTextAlignmentLeft;
+    [self.sectionHeaderBg addSubview:sectionHeaderTxt];
+    [scrollView addSubview:self.sectionHeaderBg];
+    
+    self.list = [UITableView new];
+    [self.list setFrame:CGRectMake(0, self.sectionHeaderBg.frame.origin.y + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 3)];
+    [self.list setDelegate:self];
+    [self.list setDataSource:self];
+    [self.list setRowHeight:rowHeight];
+    [self.list setAllowsSelection:YES];
+    [self.list setScrollEnabled:NO];
+    [self.list setBackgroundColor:[UIColor whiteColor]];
+    
+    if (![[user valueForKey:@"Status"] isEqualToString:@"Registered"] &&
+        [[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
+    {
+        [self.list setFrame:CGRectMake(0, pictureRadius + 18 + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 2)];
+        numberOfRowsToDisplay = 2;
+        emailVerifyRowIsShowing = false;
+        smsVerifyRowIsShowing = false;
+    }
+    else if ((![[user valueForKey:@"Status"] isEqualToString:@"Registered"] &&
+              ![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"]) ||
+             ( [[user valueForKey:@"Status"] isEqualToString:@"Registered"] &&
+              [[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"]) )
+    {
+        numberOfRowsToDisplay = 3;
+        [self.list setFrame:CGRectMake(0, pictureRadius + 18 + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 3)];
+        
+        if ([[user valueForKey:@"Status"] isEqualToString:@"Registered"])
+        {
+            emailVerifyRowIsShowing = true;
+        }
+        else if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
+        {
+            smsVerifyRowIsShowing = true;
+        }
+    }
+    else if (![[user valueForKey:@"Status"] isEqualToString:@"Active"] &&
+             ![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
+    {
+        numberOfRowsToDisplay = 4;
+        [self.list setFrame:CGRectMake(0, pictureRadius + 18 + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 4)];
+        
+        emailVerifyRowIsShowing = true;
+        smsVerifyRowIsShowing = true;
+    }
+    
+    self.sectionHeaderBg2 = [[UIView alloc] initWithFrame:CGRectMake(0, (pictureRadius + 43 + self.list.frame.size.height), 320, 26)];
+    self.sectionHeaderBg2.backgroundColor = Rgb2UIColor(230, 231, 232, .4);
+    
+    UILabel * sectionHeaderTxt2 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 200, 26)];
+    sectionHeaderTxt2.backgroundColor = [UIColor clearColor];
+    sectionHeaderTxt2.textColor = [UIColor darkGrayColor];
+    sectionHeaderTxt2.font = [UIFont fontWithName:@"Roboto-light" size:15];
+    sectionHeaderTxt2.text = @"ADDRESS";
+    sectionHeaderTxt2.textAlignment = NSTextAlignmentLeft;
+    [self.sectionHeaderBg2 addSubview:sectionHeaderTxt2];
+    [scrollView addSubview:self.sectionHeaderBg2];
+    
+    self.list2 = [UITableView new];
+    [self.list2 setFrame:CGRectMake(0, self.sectionHeaderBg2.frame.origin.y + 25, 320, (rowHeight * 4) + 15)];
+    [self.list2 setDelegate:self];
+    [self.list2 setDataSource:self];
+    [self.list2 setRowHeight:rowHeight];
+    [self.list2 setBackgroundColor:[UIColor whiteColor]];
+    [self.list2 setAllowsSelection:YES];
+    [self.list2 setScrollEnabled:NO];
+    
+    [scrollView addSubview:self.list];
+    [scrollView addSubview:self.list2];
+    [self.view addSubview:scrollView];
+    
+    [self.view bringSubviewToFront:shadowUnder];
+    [self.view bringSubviewToFront:picture];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -71,6 +422,17 @@ UIImageView *picture;
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+
+    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"])
+    {
+        [self.member_since_back setBackgroundColor:Rgb2UIColor(214, 25, 21, .55)];
+        [self.member_since_back setStyleId:@"profileTopSectionBg_susp"];
+    }
+    else
+    {
+        [self.member_since_back setBackgroundColor:Rgb2UIColor(219, 220, 222, .38)];
+        [self.member_since_back setStyleId:@"profileTopSectionBg"];
+    }
 }
 
 -(void) viewWillDisappear:(BOOL)animated
@@ -222,361 +584,6 @@ UIImageView *picture;
     [super viewDidDisappear:animated];
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    dictSavedInfo = [[NSMutableDictionary alloc]init];
-    [dictSavedInfo setObject:@"NO" forKey:@"ImageChanged"];
-
-    self.navigationController.navigationBar.topItem.title = @"";
-    [self.navigationItem setHidesBackButton:YES];
-    
-    if (isProfileOpenFromSideBar)
-    {
-        UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [hamburger setStyleId:@"navbar_hamburger"];
-        [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
-        [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
-        [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
-        hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-        UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
-        [self.navigationItem setLeftBarButtonItem:menu];
-    }
-    else
-    {
-        [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-
-        NSShadow * shadowNavText = [[NSShadow alloc] init];
-        shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .2);
-        shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
-        NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
-
-        UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(savePrompt2)];
-
-        UILabel * back_button = [UILabel new];
-        [back_button setStyleId:@"navbar_back"];
-        [back_button setUserInteractionEnabled:YES];
-        [back_button addGestureRecognizer: backTap];
-        back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
-
-        UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
-
-        [self.navigationItem setLeftBarButtonItem:menu];
-    }
-
-    if (!isSignup) {
-        [self.slidingViewController.panGesture setEnabled:YES];
-        [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-    }
-
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-
-    isPhotoUpdate = NO;
-
-    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
-    spinner1.color = [UIColor whiteColor];
-    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:self.hud];
-    self.hud.labelText = @"Loading your profile...";
-    self.hud.mode = MBProgressHUDModeCustomView;
-    self.hud.customView = spinner1;
-    self.hud.delegate = self;
-    [self.hud show:YES];
-
-    [self.navigationItem setTitle:@"Profile"];
-
-    serve *serveOBJ = [serve new ];
-    serveOBJ.tagName = @"myset";
-    [serveOBJ setDelegate:self];
-    [serveOBJ getSettings];
-
-    int pictureRadius = 38;
-    heightOfTopSection = 80;
-    rowHeight = 50;
-    if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        rowHeight = 46;
-    }
-
-    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, heightOfTopSection, 320, [[UIScreen mainScreen] bounds].size.height - heightOfTopSection - 64)];
-    [scrollView setBackgroundColor:Rgb2UIColor(255, 255, 255, 0)];
-    // [scrollView setDelegate:self];
-    scrollView.contentSize = CGSizeMake(320, [[UIScreen mainScreen] bounds].size.height);
-
-    self.member_since_back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, heightOfTopSection)];
-    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"])
-    {
-        [self.member_since_back setBackgroundColor:Rgb2UIColor(214, 25, 21, .55)];
-        [self.member_since_back setStyleId:@"profileTopSectionBg_susp"];
-    }
-    else {
-        [self.member_since_back setStyleId:@"profileTopSectionBg"];
-        [self.member_since_back setBackgroundColor:Rgb2UIColor(220, 220, 221, .38)];
-    }
-    [self.view addSubview:self.member_since_back];
-
-    NSShadow * shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = Rgb2UIColor(249, 251, 252, .3);
-    shadow.shadowOffset = CGSizeMake(0, 1);
-    NSDictionary * textAttributes_topShadow = @{NSShadowAttributeName: shadow };
-
-    self.name = [[UILabel alloc] initWithFrame:CGRectMake(10, 1, 300, 40)];
-    [self.name setTextAlignment:NSTextAlignmentCenter];
-    [self.name setFont:[UIFont fontWithName:@"Roboto-regular" size:24]];
-    [self.name setTextColor:kNoochGrayDark];
-    self.name.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",[[user objectForKey:@"firstName"] capitalizedString],[[user objectForKey:@"lastName"] capitalizedString]] attributes:textAttributes_topShadow];
-    [self.name setUserInteractionEnabled:NO];
-    [self.name setTag:0];
-    [self.member_since_back addSubview:self.name];
-
-    shadowUnder = [[UIView alloc] initWithFrame:CGRectMake((160 - pictureRadius), heightOfTopSection - pictureRadius, pictureRadius * 2, (pictureRadius * 2))];
-    shadowUnder.backgroundColor = Rgb2UIColor(31, 33, 32, .25);
-    shadowUnder.layer.cornerRadius = pictureRadius;
-    shadowUnder.layer.shadowColor = [UIColor blackColor].CGColor;
-    shadowUnder.layer.shadowOffset = CGSizeMake(0, 2);
-    shadowUnder.layer.shadowOpacity = 0.3;
-    shadowUnder.layer.shadowRadius = 3;
-    [shadowUnder setStyleClass:@"animate_bubble"];
-    [self.view addSubview:shadowUnder];
-
-    picture = [UIImageView new];
-    [picture setFrame:CGRectMake((160 - pictureRadius), heightOfTopSection - pictureRadius, pictureRadius * 2, (pictureRadius * 2))];
-    picture.layer.cornerRadius = pictureRadius;
-    picture.layer.borderColor = [UIColor whiteColor].CGColor;
-    picture.layer.borderWidth = 2;
-    picture.clipsToBounds = YES;
-    [picture addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(change_pic)]];
-    [picture setUserInteractionEnabled:YES];
-    [self.view addSubview:picture];
-    [picture setStyleClass:@"animate_bubble"];
-
-    NSShadow * shadow_edit = [[NSShadow alloc] init];
-    shadow_edit.shadowColor = Rgb2UIColor(33, 34, 35, .4);
-    shadow_edit.shadowOffset = CGSizeMake(0, 1);
-    NSDictionary * textAttributes = @{NSShadowAttributeName: shadow_edit };
-
-    UILabel * edit_label = [UILabel new];
-    [edit_label setBackgroundColor:[UIColor clearColor]];
-    edit_label.attributedText = [[NSAttributedString alloc] initWithString:@"edit" attributes:textAttributes];
-    [edit_label setFont:[UIFont fontWithName:@"Roboto-regular" size:12]];
-    [edit_label setFrame:CGRectMake(0, (pictureRadius * 2) - 18, pictureRadius * 2, 12)];
-    [edit_label setTextAlignment:NSTextAlignmentCenter];
-    [edit_label setTextColor:[UIColor whiteColor]];
-    [picture addSubview:edit_label];
-
-    UILabel * bankLinkedTxt = [[UILabel alloc] initWithFrame:CGRectMake(23, 4, 100, 32)];
-    [bankLinkedTxt setBackgroundColor:[UIColor clearColor]];
-    [bankLinkedTxt setTextColor:[Helpers hexColor:@"313233"]];
-    [bankLinkedTxt setTextAlignment:NSTextAlignmentCenter];
-
-    UILabel * glyph_bank = [[UILabel alloc] initWithFrame:CGRectMake(14, 6, 16, 27)];
-    [glyph_bank setFont:[UIFont fontWithName:@"FontAwesome" size:12]];
-    [glyph_bank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bank"]];
-
-    UIButton * goToSettings = [[UIButton alloc] initWithFrame:CGRectMake(1, 1, 101, 32)];
-    goToSettings.backgroundColor = [UIColor clearColor];
-    [goToSettings addTarget:self action:@selector(goToSettings1) forControlEvents:UIControlEventTouchUpInside];
-    [goToSettings addSubview:bankLinkedTxt];
-    [goToSettings addSubview:glyph_bank];
-
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
-    {
-        [bankLinkedTxt setFont:[UIFont fontWithName:@"Roboto-regular" size:13]];
-        bankLinkedTxt.text = @"Bank Linked";
-
-        [glyph_bank setTextColor:kNoochGreen];
-        [glyph_bank setAlpha:1];
-    }
-    else
-    {
-        [bankLinkedTxt setFont:[UIFont fontWithName:@"Roboto-regular" size:11]];
-        bankLinkedTxt.text = @"No Funding Source";
-
-        [glyph_bank setTextColor:kNoochGrayDark];
-        [glyph_bank setAlpha:.65];
-        [glyph_bank setFrame:CGRectMake(5, 6, 15, 25)];
-
-        UILabel * glyph_bankX = [[UILabel alloc] initWithFrame:CGRectMake(18, 5, 8, 22)];
-        [glyph_bankX setFont:[UIFont fontWithName:@"FontAwesome" size:11]];
-        [glyph_bankX setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
-        [glyph_bankX setTextColor:kNoochRed];
-        [goToSettings addSubview:glyph_bankX];
-    }
-    [scrollView addSubview:goToSettings];
-
-    start = [[user valueForKey:@"DateCreated"] rangeOfString:@"("];
-    end = [[user valueForKey:@"DateCreated"] rangeOfString:@")"];
-
-    if (start.location != NSNotFound && end.location != NSNotFound && end.location > start.location)
-    {
-        betweenBraces = [[user valueForKey:@"DateCreated"] substringWithRange:NSMakeRange(start.location+1, end.location-(start.location+1))];
-    }
-
-    newString = [betweenBraces substringToIndex:[betweenBraces length]-8];
-
-    NSTimeInterval _interval = [newString doubleValue];
-
-    NSDate * date = [NSDate dateWithTimeIntervalSince1970:_interval];
-    NSDateFormatter *_formatter=[[NSDateFormatter alloc]init];
-    [_formatter setDateFormat:@"M/d/yyyy"];
-    NSString *_date=[_formatter stringFromDate:date];
-
-    UILabel * memSincelbl = [[UILabel alloc] initWithFrame:CGRectMake(206, 5, 110, 19)];
-    memSincelbl.attributedText = [[NSAttributedString alloc] initWithString:@"Member Since"
-                                                                 attributes:textAttributes_topShadow];
-    memSincelbl.userInteractionEnabled = NO;
-    [memSincelbl setBackgroundColor:[UIColor clearColor]];
-    [memSincelbl setFont:[UIFont fontWithName:@"Roboto-regular" size:14]];
-    [memSincelbl setTextColor:[Helpers hexColor:@"313233"]];
-    [memSincelbl setTextAlignment:NSTextAlignmentCenter];
-    [scrollView addSubview:memSincelbl];
-
-    UILabel * dateText = [[UILabel alloc] initWithFrame:CGRectMake(206, 25, 110, 17)];
-    dateText.userInteractionEnabled = NO;
-    [dateText setBackgroundColor:[UIColor clearColor]];
-    [dateText setText:[NSString stringWithFormat:@"%@",_date]];
-    [dateText setFont:[UIFont fontWithName:@"Roboto-light" size:13]];
-    [dateText setTextColor:[Helpers hexColor:@"313233"]];
-    [dateText setTextAlignment:NSTextAlignmentCenter];
-    [scrollView addSubview:dateText];
-
-    self.email = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, rowHeight)];
-    [self.email setTextAlignment:NSTextAlignmentRight];
-    [self.email setPlaceholder:@"email@email.com"];
-    [self.email setDelegate:self];
-    [self.email setKeyboardType:UIKeyboardTypeEmailAddress];
-    self.email.returnKeyType = UIReturnKeyNext;
-    [self.email setStyleClass:@"tableViewCell_Profile_rightSide"];
-    [self.email setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]];
-    [self.email setUserInteractionEnabled:NO];
-    [self.email setTag:0];
-    [scrollView addSubview:self.email];
-
-    /* // Recovery Mail
-    self.recovery_email = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
-    [self.recovery_email setTextAlignment:NSTextAlignmentRight];
-    [self.recovery_email setBackgroundColor:[UIColor clearColor]];
-    [self.recovery_email setPlaceholder:@"(Optional)"];
-    [self.recovery_email setDelegate:self];
-    [self.recovery_email setKeyboardType:UIKeyboardTypeEmailAddress];
-    self.recovery_email.returnKeyType = UIReturnKeyNext;
-    [self.recovery_email setStyleClass:@"table_view_cell_detailtext_1"];
-    [self.recovery_email setTag:1];
-    [self.view addSubview:self.recovery_email]; */
-
-    self.phone = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, rowHeight)];
-    [self.phone setTextAlignment:NSTextAlignmentRight];
-    [self.phone setBackgroundColor:[UIColor clearColor]];
-    [self.phone setPlaceholder:@"(215) 555-1234"];
-    [self.phone setDelegate:self];
-    [self.phone setKeyboardType:UIKeyboardTypeNumberPad];
-    self.phone.returnKeyType = UIReturnKeyNext;
-    [self.phone setStyleClass:@"tableViewCell_Profile_rightSide"];
-    [self.phone setTag:2];
-
-    self.save = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.save setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
-    self.save.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    [self.save addTarget:self action:@selector(save_changes) forControlEvents:UIControlEventTouchUpInside];
-    [self.save setTitle:@"Save" forState:UIControlStateNormal];
-    [self.save setStyleClass:@"nav_top_right"];
-    [self.save setStyleClass:@"disabled_gray"];
-    [self.save setEnabled:NO];
-    [self.save setUserInteractionEnabled:NO];
-
-    UIBarButtonItem * nav_save = [[UIBarButtonItem alloc] initWithCustomView:self.save];
-    [self.navigationItem setRightBarButtonItem:nav_save animated:YES];
-
-    GMTTimezonesDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:@"Samoa Standard Time",@"GMT-11:00",
-                              @"Hawaiian Standard Time",@"GMT-10:00",
-                              @"Alaskan Standard Time",@"GMT-09:00",
-                              @"Pacific Standard Time",@"GMT-08:00",
-                              @"Mountain Standard Time",@"GMT-07:00",
-                              @"Central Standard Time",@"GMT-06:00",
-                              @"Eastern Standard Time",@"GMT-05:00",
-                              @"Atlantic Standard Time",@"GMT-04:00",
-                              nil];
-
-    self.sectionHeaderBg = [[UIView alloc] initWithFrame:CGRectMake(0, pictureRadius + 16, 320, 26)];
-    self.sectionHeaderBg.backgroundColor = Rgb2UIColor(230, 231, 232, .4);
-
-    UILabel * sectionHeaderTxt = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 200, 26)];
-    sectionHeaderTxt.backgroundColor = [UIColor clearColor];
-    sectionHeaderTxt.textColor = [UIColor darkGrayColor];
-    sectionHeaderTxt.font = [UIFont fontWithName:@"Roboto-light" size:15];
-    sectionHeaderTxt.text = @"CONTACT INFO";
-    sectionHeaderTxt.textAlignment = NSTextAlignmentLeft;
-    [self.sectionHeaderBg addSubview:sectionHeaderTxt];
-    [scrollView addSubview:self.sectionHeaderBg];
-
-    self.list = [UITableView new];
-    [self.list setFrame:CGRectMake(0, self.sectionHeaderBg.frame.origin.y + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 3)];
-    [self.list setDelegate:self];
-    [self.list setDataSource:self];
-    [self.list setRowHeight:rowHeight];
-    [self.list setAllowsSelection:YES];
-    [self.list setScrollEnabled:NO];
-    [self.list setBackgroundColor:[UIColor whiteColor]];
-
-    if ([[user valueForKey:@"Status"] isEqualToString:@"Active"] &&
-        [[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
-    {
-        [self.list setFrame:CGRectMake(0, pictureRadius + 18 + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 2)];
-        numberOfRowsToDisplay = 2;
-        emailVerifyRowIsShowing = false;
-        smsVerifyRowIsShowing = false;
-    }
-    else if (( [[user valueForKey:@"Status"] isEqualToString:@"Active"] &&
-              ![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"]) ||
-             ( [[user valueForKey:@"Status"] isEqualToString:@"Registered"] &&
-               [[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"]) )
-    {
-        [self.list setFrame:CGRectMake(0, pictureRadius + 18 + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 3)];
-        numberOfRowsToDisplay = 3;
-        if ([[user valueForKey:@"Status"] isEqualToString:@"Registered"]) {
-            emailVerifyRowIsShowing = true;
-        }
-        else if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"]) {
-            smsVerifyRowIsShowing = true;
-        }
-    }
-    else if ( [[user valueForKey:@"Status"] isEqualToString:@"Registered"] &&
-             ![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
-    {
-        [self.list setFrame:CGRectMake(0, pictureRadius + 18 + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 4)];
-        numberOfRowsToDisplay = 4;
-        emailVerifyRowIsShowing = true;
-        smsVerifyRowIsShowing = true;
-    }
-
-    self.sectionHeaderBg2 = [[UIView alloc] initWithFrame:CGRectMake(0, (pictureRadius + 43 + self.list.frame.size.height), 320, 26)];
-    self.sectionHeaderBg2.backgroundColor = Rgb2UIColor(230, 231, 232, .4);
-    
-    UILabel * sectionHeaderTxt2 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 200, 26)];
-    sectionHeaderTxt2.backgroundColor = [UIColor clearColor];
-    sectionHeaderTxt2.textColor = [UIColor darkGrayColor];
-    sectionHeaderTxt2.font = [UIFont fontWithName:@"Roboto-light" size:15];
-    sectionHeaderTxt2.text = @"ADDRESS";
-    sectionHeaderTxt2.textAlignment = NSTextAlignmentLeft;
-    [self.sectionHeaderBg2 addSubview:sectionHeaderTxt2];
-    [scrollView addSubview:self.sectionHeaderBg2];
-
-    self.list2 = [UITableView new];
-    [self.list2 setFrame:CGRectMake(0, self.sectionHeaderBg2.frame.origin.y + 25, 320, (rowHeight * 4) + 15)];
-    [self.list2 setDelegate:self];
-    [self.list2 setDataSource:self];
-    [self.list2 setRowHeight:rowHeight];
-    [self.list2 setBackgroundColor:[UIColor whiteColor]];
-    [self.list2 setAllowsSelection:YES];
-    [self.list2 setScrollEnabled:NO];
-
-    [scrollView addSubview:self.list];
-    [scrollView addSubview:self.list2];
-    [self.view addSubview:scrollView];
-
-    [self.view bringSubviewToFront:shadowUnder];
-    [self.view bringSubviewToFront:picture];
-}
-
 -(void)handleTap:(UIGestureRecognizer *)gestureRecognizer
 {
     [self.name resignFirstResponder];
@@ -598,7 +605,7 @@ UIImageView *picture;
 
 -(void)resend_SMS
 {
-    if ([[dictSavedInfo valueForKey:@"phoneno"] length] > 7)
+    if ([[dictSavedInfo valueForKey:@"phoneno"] length] > 9)
     {
         serve *sms_verify = [serve new];
         [sms_verify setDelegate:self];
@@ -1021,10 +1028,9 @@ UIImageView *picture;
             [ARProfileManager setUserFacebook:fbID];
 
             [[NSUserDefaults standardUserDefaults] setObject:fbID forKey:@"facebook_id"];
-            NSLog(@"Login w FB successful --> fb id is %@",[result objectForKey:@"id"]);
 
             NSString * imgURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal", fbID];
-            [ARProfileManager setUserAvatarUrl:@"http://useartisan.com/wp-content/themes/artisan-mf/images/role_developer.svg"];
+            [ARProfileManager setUserAvatarUrl:imgURL];
 
             [picture sd_setImageWithURL:[NSURL URLWithString:imgURL]
                        placeholderImage:[UIImage imageNamed:@"RoundLoading"]
@@ -1248,14 +1254,23 @@ UIImageView *picture;
             phoneVerifiedStatus.attributedText = [[NSAttributedString alloc] initWithString:@"Not Verified"
                                                                                  attributes:textAttributes];
 
-            UIButton *resend_phone = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [resend_phone setTitle:@"Resend SMS" forState:UIControlStateNormal];
-            [resend_phone addTarget:self action:@selector(resend_SMS) forControlEvents:UIControlEventTouchUpInside];
-            [resend_phone setFrame:CGRectMake(200, ((rowHeight - 30) / 2), 105, 30)];
-            [resend_phone setStyleClass:@"button_green_sm"];
-            [resend_phone setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.25) forState:UIControlStateNormal];
-            resend_phone.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-            [cell.contentView addSubview:resend_phone];
+            self.resend_phone = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [self.resend_phone setTitle:@"Resend SMS" forState:UIControlStateNormal];
+            [self.resend_phone addTarget:self action:@selector(resend_SMS) forControlEvents:UIControlEventTouchUpInside];
+            [self.resend_phone setFrame:CGRectMake(200, ((rowHeight - 30) / 2), 105, 30)];
+            if ([self.phone.text length] > 8)
+            {
+                [self.resend_phone setUserInteractionEnabled:YES];
+                [self.resend_phone setStyleClass:@"button_green_sm"];
+            }
+            else
+            {
+                [self.resend_phone setHidden:YES];
+                [self.resend_phone setUserInteractionEnabled:NO];
+            }
+            [self.resend_phone setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.25) forState:UIControlStateNormal];
+            self.resend_phone.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+            [cell.contentView addSubview:self.resend_phone];
         }
     }
     else if (tableView == self.list2)
@@ -1464,6 +1479,11 @@ UIImageView *picture;
         }
     }
 
+    if ([self.phone.text length] < 8)
+    {
+        [self.resend_phone setStyleClass:@"button_gray_sm"];
+        [self.resend_phone setUserInteractionEnabled:NO];
+    }
     return YES;
 }
 
@@ -1690,9 +1710,13 @@ UIImageView *picture;
                          JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                          options:kNilOptions
                          error:&error];
+
         [dictSavedInfo setObject:@"NO" forKey:@"ImageChanged"];
+
         NSDictionary *resultValue = [dictProfileinfo valueForKey:@"MySettingsResult"];
+
         getEncryptionOldPassword = [dictProfileinfo objectForKey:@"Password"];
+
         NSLog(@"My Settings Result:  %@",[resultValue valueForKey:@"Result"]);
         [[assist shared]setTranferImage:nil];
 
@@ -1716,12 +1740,25 @@ UIImageView *picture;
                         placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
             }
 
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Profile Saved"
-                                                         message:[resultValue valueForKey:@"Result"]
-                                                        delegate:self
-                                               cancelButtonTitle:@"OK"
-                                               otherButtonTitles:nil];
-            [av show];
+            if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] &&
+                self.phone.text.length > 8)
+            {
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Profile Saved"
+                                                             message:@"Your details were updated successfully.\n\n\xF0\x9F\x93\xB2\nTo verify your phone number, we will send you a text. Just reply with 'Go' to verify."
+                                                            delegate:self
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
+                [av show];
+            }
+            else
+            {
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Profile Saved"
+                                                             message:@"Your details have been updated successfully."
+                                                            delegate:self
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
+                [av show];
+            }
         }
         else if ([[resultValue valueForKey:@"Result"] isEqualToString:@"Phone Number already registered with Nooch"])
         {
@@ -1769,7 +1806,7 @@ UIImageView *picture;
                          options:kNilOptions
                          error:&error];
         
-        NSLog(@"MYSET --> dictProfileinfo is: %@",dictProfileinfo);
+        //NSLog(@"Profile Get User Details --> dictProfileinfo is: %@",dictProfileinfo);
 
         if ( ![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]] &&
             ![[[dictProfileinfo valueForKey:@"ContactNumber"] lowercaseString] isEqualToString:@"null"])
@@ -1791,12 +1828,23 @@ UIImageView *picture;
 
                 self.phone.text = [self.phone.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
+                [self.resend_phone setHidden:NO];
+                [self.resend_phone setUserInteractionEnabled:YES];
+                [self.resend_phone setStyleClass:@"button_green_sm"];
+
                 [dictSavedInfo setObject:self.phone.text forKey:@"phoneno"];
                 [ARProfileManager setUserPhoneNumber:self.phone.text];
             }
+            else if ([[dictProfileinfo valueForKey:@"ContactNumber"] length] > 0)
+            {
+                self.phone.text = [dictProfileinfo objectForKey:@"ContactNumber"];
+            }
             else
             {
+                [self.resend_phone setHidden:YES];
                 self.phone.text = @"";
+                [self.resend_phone setStyleClass:@"button_gray_sm"];
+                [self.resend_phone setUserInteractionEnabled:NO];
             }
          //   [self.list reloadData];
         }
@@ -1810,7 +1858,6 @@ UIImageView *picture;
         // below this first 'if' *should* never be called
         if (![[dictProfileinfo valueForKey:@"UserName"] isKindOfClass:[NSNull class]])
         {
-            NSLog(@"CheckPoint UserName");
             self.ServiceType = @"email";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
@@ -1855,7 +1902,6 @@ UIImageView *picture;
         }
         else if (![[dictProfileinfo valueForKey:@"State"] isKindOfClass:[NSNull class]])
         {
-            NSLog(@"Checkpoint 'State'");
             self.ServiceType = @"State";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;
@@ -1864,7 +1910,6 @@ UIImageView *picture;
         }
         else if (![[dictProfileinfo valueForKey:@"Zipcode"] isKindOfClass:[NSNull class]])
         {
-            NSLog(@"Checkpoint 'ZIP'");
             self.ServiceType = @"zip";
             Decryption *decry = [[Decryption alloc] init];
             decry.Delegate = self;

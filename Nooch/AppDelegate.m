@@ -41,38 +41,54 @@ bool modal;
     [internetReach startNotifier];
 
     // Set the icon badge to zero on startup (optional)
-    // [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+
+
+    BOOL notifsEnabled;
+    // Try to use the newer isRegisteredForRemoteNotifications otherwise use the enabledRemoteNotificationTypes.
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
+    {
+        notifsEnabled = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
+    }
+    else
+    {
+        UIRemoteNotificationType types = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+        notifsEnabled = types & UIRemoteNotificationTypeAlert;
+    }
 
     // GAMETHRIVE (Push Notifications)
-    self.gameThrive = [[GameThrive alloc] initWithLaunchOptions:launchOptions handleNotification:^(NSString* message, NSDictionary* additionalData, BOOL isActive) {
-        UIAlertView * alertView;
-        if (additionalData)
-        {
-            NSLog(@"APP DEL - GameThrieve --> ADDITIONALDATA: %@", additionalData);
-            // Append AdditionalData at the end of the message
-            NSString * messageTitle;
-            if (additionalData[@"title"]) {
-                messageTitle = additionalData[@"title"];
-            }
+    if (notifsEnabled)
+    {
+        self.gameThrive = [[GameThrive alloc] initWithLaunchOptions:launchOptions handleNotification:^(NSString* message, NSDictionary* additionalData, BOOL isActive) {
+            UIAlertView * alertView;
+            if (additionalData)
+            {
+                NSLog(@"APP DEL - GameThrieve --> ADDITIONALDATA: %@", additionalData);
+                // Append AdditionalData at the end of the message
+                NSString * messageTitle;
+                if (additionalData[@"title"]) {
+                    messageTitle = additionalData[@"title"];
+                }
 
-            alertView = [[UIAlertView alloc] initWithTitle:messageTitle
-                                                   message:message
-                                                  delegate:self
-                                         cancelButtonTitle:@"Close"
-                                         otherButtonTitles:nil, nil];
-        }
-        // If a push notification is received when the app is being used it does not go to the notifiction center so display in your app.
-        if (alertView == nil && isActive)
-        {
-            alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                   message:message
-                                                  delegate:self
-                                         cancelButtonTitle:@"Close"
-                                         otherButtonTitles:nil, nil];
-        }
-        if (alertView != nil)
-            [alertView show];
-    }];
+                alertView = [[UIAlertView alloc] initWithTitle:messageTitle
+                                                       message:message
+                                                      delegate:self
+                                             cancelButtonTitle:@"Close"
+                                             otherButtonTitles:nil, nil];
+            }
+            // If a push notification is received when the app is being used it does not go to the notifiction center so display in your app.
+            if (alertView == nil && isActive)
+            {
+                alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                       message:message
+                                                      delegate:self
+                                             cancelButtonTitle:@"Close"
+                                             otherButtonTitles:nil, nil];
+            }
+            if (alertView != nil)
+                [alertView show];
+        }];
+    }
 
     //Google Analytics
     [GAI sharedInstance].dispatchInterval = 20;

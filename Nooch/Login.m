@@ -115,7 +115,7 @@
     //back button
     UIButton *btnback = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnback setBackgroundColor:[UIColor whiteColor]];
-    [btnback setFrame:CGRectMake(7, -18, 44, 44)];
+    [btnback setFrame:CGRectMake(7, -40, 44, 44)];
     [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
 
     UILabel *glyph_back = [UILabel new];
@@ -129,7 +129,7 @@
 
     [self.view addSubview:btnback];
 
-    [UIView animateKeyframesWithDuration:.2
+    [UIView animateKeyframesWithDuration:.35
                                    delay:0
                                  options:2 << 16
                               animations:^{
@@ -137,7 +137,9 @@
                                       if ([[UIScreen mainScreen] bounds].size.height > 500)
                                       {
                                           [btnback setFrame:CGRectMake(7, 18, 44, 44)];
-                                      } else {
+                                      }
+                                      else
+                                      {
                                           [btnback setFrame:CGRectMake(7, 2, 44, 44)];
                                       }
                                   }];
@@ -1077,7 +1079,11 @@
             }
             else // iOS 7 and prior
             {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Invalid Email or Password" message:@"We don't recognize that information, please double check your email is entered correctly and try again." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Invalid Email or Password"
+                                                                message:@"We don't recognize that information, please double check your email is entered correctly and try again."
+                                                               delegate:Nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil, nil];
                 [alert show];
             }
         }
@@ -1117,7 +1123,7 @@
             else // iOS 7 and prior
             {
                 UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"This Is Awkward"
-                                                                message:@"\xF0\x9F\x94\x90\nThat doesn't appear to be the correct password. Please try again or contact us for futher help."
+                                                                message:@"\xF0\x9F\x94\x90\nThat doesn't appear to be the correct password. Please try again or contact us for futher help"
                                                                delegate:self
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:@"Forgot Password", nil];

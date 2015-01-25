@@ -20,5 +20,6 @@ BOOL isPasswordChanged;
     NSString*getEncryptedPasswordValue;
     NSString*getEncryptionNewPassword;
     NSString*getEncryptionOldPassword;
+    BOOL pwLength;
 }
 @end

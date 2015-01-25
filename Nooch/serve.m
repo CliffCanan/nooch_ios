@@ -786,7 +786,8 @@ NSString *amnt;
         }
         [defaults synchronize];
 
-        if ([[Dictresponse valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]])
+        if (  [Dictresponse valueForKey:@"ContactNumber"] &&
+            ![[Dictresponse valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]])
         {
             [defaults setObject:[Dictresponse valueForKey:@"ContactNumber"] forKey:@"ContactNumber"];
         }

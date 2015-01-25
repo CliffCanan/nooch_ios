@@ -694,6 +694,7 @@
         self.hud.customView = spinner1;
         self.hud.delegate = self;
         self.hud.labelText = textLoading;
+        self.hud.detailsLabelText = nil;
         [self.hud show:YES];
 
         serve * pin = [serve new];
@@ -779,9 +780,7 @@
                 [transactionInputTransfer setValue:state forKey:@"State"];
                 [transactionInputTransfer setValue:country forKey:@"Country"];
                 [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
- 
-                NSLog(@"SEND/REQUEST --> transactionInputTransfer #1 is: %@", transactionInputTransfer);
-    
+     
                 if ([self.type isEqualToString:@"send"])
                 {
                     if ([self.receiver objectForKey:@"email"])
@@ -801,50 +800,10 @@
                                                self.phone,@"receiverPhoneNumer", nil];
                     }
                 }
-                NSLog(@"SEND/REQUEST --> transactionInputTransfer #2 is: %@", transactionInputTransfer);
+                NSLog(@"SEND/REQUEST --> transactionInputTransfer #1 is: %@", transactionInputTransfer);
+
                 if ([self.type isEqualToString:@"request"])
                 {
-                 /* transactionInputTransfer = [[NSMutableDictionary alloc]init];
-                    if ([[assist shared] getTranferImage])
-                    {
-                        NSData *data = UIImagePNGRepresentation([[assist shared] getTranferImage]);
-                        NSUInteger len = data.length;
-                        uint8_t *bytes = (uint8_t *)[data bytes];
-                        NSMutableString *result1 = [NSMutableString stringWithCapacity:len * 3];
-                        
-                        for (NSUInteger i = 0; i < len; i++) {
-                            if (i) {
-                                [result1 appendString:@","];
-                            }
-                            [result1 appendFormat:@"%d", bytes[i]];
-                        }
-                        NSArray*arr=[result1 componentsSeparatedByString:@","];
-                        [transactionInputTransfer setValue:arr forKey:@"Picture"];
-                    }
-
-
-                    [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
-                    [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
-                    [transactionInputTransfer setValue:encryptedPINNonUser forKey:@"PinNumber"];
-                    [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
-
-                    NSDate *date = [NSDate date];
-                    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-                    [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss.SS"];
-                    NSString *TransactionDate = [dateFormat stringFromDate:date];
-
-                    [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
-                    [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
-                    [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
-                    [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lon] forKey:@"Longitude"];
-                    [transactionInputTransfer setValue:@"0.0" forKey:@"Altitude"];
-                    [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
-                    [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
-                    [transactionInputTransfer setValue:city forKey:@"City"];
-                    [transactionInputTransfer setValue:state forKey:@"State"];
-                    [transactionInputTransfer setValue:country forKey:@"Country"];
-                    [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
-*/
                     // set 'RecepientId' (sic) to be the Sender's MemberID, this is how some Server methods identify a Request to a Non-Noocher
                     [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
                     [transactionInputTransfer setValue:@"" forKey:@"SenderId"];
@@ -882,7 +841,7 @@
                     }
                 }
 
-                NSLog(@"SEND/REQUEST --> transactionINPUTTransfer #3 is: %@", transactionInputTransfer);
+                //NSLog(@"SEND/REQUEST --> transactionINPUTTransfer #3 is: %@", transactionInputTransfer);
                 NSLog(@"Type: %@ - transactionTransfer: %@", self.type, transactionTransfer);
 
                 postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
@@ -899,7 +858,8 @@
                     }
                     else if ([self.receiver objectForKey:@"phone"])
                     {
-                        urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserThroughPhoneUsingKnox"];
+                        // THIS MIGHT CHANGE
+                        urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyFromNonNoochUserThroughPhoneUsingKnox"];
                     }
                 }
                 else if ([self.type isEqualToString:@"send"])
