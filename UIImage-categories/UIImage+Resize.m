@@ -166,12 +166,6 @@
             transform = CGAffineTransformTranslate(transform, 0, newSize.height);
             transform = CGAffineTransformRotate(transform, -M_PI_2);
             break;
-
-       /*case UIImageOrientationUp:           // EXIF = 3
-        case UIImageOrientationUpMirrored:   // EXIF = 4
-            transform = CGAffineTransformTranslate(transform, newSize.width, newSize.height);
-            transform = CGAffineTransformRotate(transform, -M_PI);
-            break;*/
     }
     
     switch (self.imageOrientation) {

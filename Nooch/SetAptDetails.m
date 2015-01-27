@@ -422,21 +422,6 @@
         [self.dateToPay_date setText: autoPaySetting];
     }
     isAutoPayPopoverShowing = NO;
-/*    if (![listType isEqualToString:@"CANCEL"] && isFilterSelected)
-    {
-        [self.search setShowsCancelButton:NO];
-        [self.search setText:@""];
-        [self.search resignFirstResponder];
-        
-        [histShowArrayCompleted removeAllObjects];
-        [histShowArrayPending removeAllObjects];
-
-        isFilterSelected = NO;
-        
-        [self loadHist:listType index:index len:20 subType:subTypestr];
-    }
-    else
-        isFilter=NO;*/
 }
 
 -(void)enterRentPopup
@@ -535,7 +520,7 @@
     [self.rentAmountTxtFld becomeFirstResponder];
     [self.rentAmountTxtFld setDelegate:self];
     [self.rentAmountTxtFld setTag:1];
-    [self.rentAmountTxtFld setStyleId:@"enterRent_textField"];
+    [self.rentAmountTxtFld setStyleClass:@"customTextField"];
     [mainView addSubview:self.rentAmountTxtFld];
 
     UILabel * glyph_Usd = [UILabel new];
@@ -716,7 +701,7 @@
     [self.unitNumAmountTxtFld becomeFirstResponder];
     [self.unitNumAmountTxtFld setDelegate:self];
     [self.unitNumAmountTxtFld setTag:2];
-    [self.unitNumAmountTxtFld setStyleId:@"enterRent_textField"];
+    [self.unitNumAmountTxtFld setStyleClass:@"customTextField"];
     [mainView addSubview:self.unitNumAmountTxtFld];
 
     UILabel * glyph_home = [UILabel new];
@@ -1123,13 +1108,38 @@
 {
     if (![MFMailComposeViewController canSendMail])
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
-                                                     message:@"You don't have a mail account configured for this device."
-                                                    delegate:nil
-                                           cancelButtonTitle:@"OK"
-                                           otherButtonTitles: nil];
-        [av show];
-        return;
+        if ([UIAlertController class]) // for iOS 8
+        {
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"No Email Detected"
+                                         message:@"You don't have an email account configured for this device."
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction * ok = [UIAlertAction
+                                  actionWithTitle:@"OK"
+                                  style:UIAlertActionStyleDefault
+                                  handler:^(UIAlertAction * action)
+                                  {
+                                      [alert dismissViewControllerAnimated:YES completion:nil];
+                                  }];
+            [alert addAction:ok];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+            return;
+        }
+        else
+        {
+            if (![MFMailComposeViewController canSendMail])
+            {
+                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                              message:@"You don't have an email account configured for this device."
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles: nil];
+                [av show];
+                return;
+            }
+        }
     }
     
     MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];

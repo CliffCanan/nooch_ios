@@ -1287,15 +1287,47 @@
 
     else if (alertView.tag == 568 && buttonIndex == 1)  // User Disputed a Transfer, then selected "Contact Support" in Alert
     {
-        if (![MFMailComposeViewController canSendMail]){
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-            [av show];
-            return;
+        if (![MFMailComposeViewController canSendMail])
+        {
+            if ([UIAlertController class]) // for iOS 8
+            {
+                UIAlertController * alert = [UIAlertController
+                                             alertControllerWithTitle:@"No Email Detected"
+                                             message:@"You don't have an email account configured for this device."
+                                             preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction * ok = [UIAlertAction
+                                      actionWithTitle:@"OK"
+                                      style:UIAlertActionStyleDefault
+                                      handler:^(UIAlertAction * action)
+                                      {
+                                          [alert dismissViewControllerAnimated:YES completion:nil];
+                                      }];
+                [alert addAction:ok];
+                
+                [self presentViewController:alert animated:YES completion:nil];
+                return;
+            }
+            else
+            {
+                if (![MFMailComposeViewController canSendMail])
+                {
+                    UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                                  message:@"You don't have an email account configured for this device."
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles: nil];
+                    [av show];
+                    return;
+                }
+            }
         }
         MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
         mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+        
         [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+        
         [mailComposer setMessageBody:@"" isHTML:NO];
         [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
         [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
@@ -1370,10 +1402,40 @@
 
     else if (alertView.tag == 50 && buttonIndex == 1)  // IF USER IS SUSPENDED, & TAPS "CONTACT SUPPORT" IN ALERT
     {
-        if (![MFMailComposeViewController canSendMail]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't seem to have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-            [av show];
-            return;
+        if (![MFMailComposeViewController canSendMail])
+        {
+            if ([UIAlertController class]) // for iOS 8
+            {
+                UIAlertController * alert = [UIAlertController
+                                             alertControllerWithTitle:@"No Email Detected"
+                                             message:@"You don't have an email account configured for this device."
+                                             preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction * ok = [UIAlertAction
+                                      actionWithTitle:@"OK"
+                                      style:UIAlertActionStyleDefault
+                                      handler:^(UIAlertAction * action)
+                                      {
+                                          [alert dismissViewControllerAnimated:YES completion:nil];
+                                      }];
+                [alert addAction:ok];
+                
+                [self presentViewController:alert animated:YES completion:nil];
+                return;
+            }
+            else
+            {
+                if (![MFMailComposeViewController canSendMail])
+                {
+                    UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                                  message:@"You don't have an email account configured for this device."
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles: nil];
+                    [av show];
+                    return;
+                }
+            }
         }
         MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;

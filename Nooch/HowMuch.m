@@ -212,7 +212,7 @@
         UIButton * add = [[UIButton alloc]initWithFrame:CGRectMake(272, 15, 32, 30)];
         [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];
         [add setStyleClass:@"addbutton_request"];
-        [add setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-square-o"] forState:UIControlStateNormal];
+        [add setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-square"] forState:UIControlStateNormal];
         [add setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [add setTitleColor:Rgb2UIColor(220, 221, 222, .94) forState:UIControlStateHighlighted];
         [add setTitleShadowColor:Rgb2UIColor(64, 65, 66, 0.3) forState:UIControlStateNormal];
@@ -676,7 +676,7 @@
     else if ([[[self.amount text] substringFromIndex:1] doubleValue] > transLimitFromArtisanInt && !isFromMyApt)
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Big Spender"
-                                                        message:[NSString stringWithFormat:@"\xF0\x9F\x98\xA7\nWhile we definitely appreciate your enthusiasm, we are limiting transfers to $%@ for now in order to minimize our risk (and yours). We're working to raise the limit soon!", transLimitFromArtisanString]
+                                                        message:[NSString stringWithFormat:@"\xF0\x9F\x98\x87\nWhile we definitely appreciate your enthusiasm, we are limiting transfers to $%@ for now in order to minimize our risk (and yours). We're working to raise the limit soon!", transLimitFromArtisanString]
                                                        delegate:self
                                               cancelButtonTitle:nil
                                               otherButtonTitles:@"Ok", nil];

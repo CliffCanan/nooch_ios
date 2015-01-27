@@ -2126,17 +2126,11 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Nooch/artisan-sdk-2.3.7",
 					"$(PROJECT_DIR)/Nooch/artisan-sdk-latestNEW",
-					/Users/cliffcanan/Desktop/Cocoa,
-					"Libraries/ios-push-plugin-master/iOS_SDK/Framework",
-					/Users/cliffcanan/Desktop/Cocoa,
-					"Libraries/ios-push-plugin-master/iOS_SDK/Framework",
-					/Users/cliffcanan/Desktop/Cocoa,
-					"Libraries/ios-push-plugin-master/iOS_SDK/Framework",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Nooch/Nooch-Prefix.pch";
-				HEADER_SEARCH_PATHS = "../Airship/**";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Nooch/Nooch-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
@@ -2175,16 +2169,10 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Nooch/artisan-sdk-2.3.7",
 					"$(PROJECT_DIR)/Nooch/artisan-sdk-latestNEW",
-					/Users/cliffcanan/Desktop/Cocoa,
-					"Libraries/ios-push-plugin-master/iOS_SDK/Framework",
-					/Users/cliffcanan/Desktop/Cocoa,
-					"Libraries/ios-push-plugin-master/iOS_SDK/Framework",
-					/Users/cliffcanan/Desktop/Cocoa,
-					"Libraries/ios-push-plugin-master/iOS_SDK/Framework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Nooch/Nooch-Prefix.pch";
-				HEADER_SEARCH_PATHS = "../Airship/**";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Nooch/Nooch-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";

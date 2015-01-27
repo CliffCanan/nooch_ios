@@ -190,9 +190,9 @@
     [self.nameValidator setHidden:YES];
     [self.name_field addSubview:self.nameValidator];
 
-    self.fullNameInstruc = [[UILabel alloc] initWithFrame:CGRectMake(40, 287, 262, 13)];
+    self.fullNameInstruc = [[UILabel alloc] initWithFrame:CGRectMake(40, 286, 263, 15)];
     [self.fullNameInstruc setBackgroundColor:[UIColor clearColor]];
-    [self.fullNameInstruc setText:@"\xF0\x9F\x99\x8F  Please enter a first AND last name"];
+    [self.fullNameInstruc setText:@"\xF0\x9F\x98\xB3  Please enter a first AND last name"];
     [self.fullNameInstruc setFont:[UIFont fontWithName:@"Roboto-regular" size:12]];
     [self.fullNameInstruc setTextColor:kNoochRed];
     [self.fullNameInstruc setTextAlignment:NSTextAlignmentRight];
@@ -331,8 +331,10 @@
         [self.or setFrame:CGRectMake(0, 182, 320, 16)];
 
         [boxOutline setFrame:CGRectMake(9, 219, 302, 153)];
+
         [name setFrame:CGRectMake(0, 219, 0, 0)];
         [self.name_field setFrame:CGRectMake(0, 219, 0, 0)];
+        [self.fullNameInstruc setFrame:CGRectMake(40, 251, 263, 16)];
 
         [email setFrame:CGRectMake(0, 259, 0, 0)];
         [self.email_field setFrame:CGRectMake(0, 259, 0, 0)];
@@ -340,13 +342,13 @@
 
         [password setFrame:CGRectMake(0, 299, 0, 0)];
         [self.password_field setFrame:CGRectMake(0, 299, 0, 0)];
-        
+
         [self.pwValidator setFrame:CGRectMake(202, 336, 100, 11)];
         [self.pwValidator1 setFrame:CGRectMake(20, 331, 69, 4)];
         [self.pwValidator2 setFrame:CGRectMake(91, 331, 69, 4)];
         [self.pwValidator3 setFrame:CGRectMake(162, 331, 69, 4)];
         [self.pwValidator4 setFrame:CGRectMake(233, 331, 69, 4)];
-        
+
         [checkbox_box setFrame:CGRectMake(36, 345, 21, 20)];
         [checkbox_dot setFrame:CGRectMake(31, 340, 31, 30)];
         [termsText1 setFrame:CGRectMake(65, 347, 55, 14)];
@@ -500,6 +502,7 @@
 
     [self.facebookLogin addSubview:glyph_check];
 }
+
 - (void)attemptFBLogin
 {
     [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
@@ -634,7 +637,7 @@
     if ([self.password_field.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Insecure Password"
-                                                     message:@"For security reasons, et cetera, we ask that passwords contain at least 1 number.\n\nWe know it's annoying, but we're just looking out for you. Keep it safe!"
+                                                     message:@"\xF0\x9F\x98\xB3\nFor security reasons, et cetera, we ask that passwords contain at least 1 number.\n\nWe know it's annoying, but we're just looking out for you. Keep it safe!"
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
@@ -645,7 +648,7 @@
     else if ([self.password_field.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Letters Are Fun Too"
-                                                     message:@"Regrettably, your Nooch password must contain at least one actual letter."
+                                                     message:@"\xF0\x9F\x98\x8F\nRegrettably, your Nooch password must contain at least one actual letter."
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
@@ -657,7 +660,7 @@
     if (!isTermsChecked)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Who Loves Lawyers"
-                                                     message:@"Please read Nooch's Terms of Service and check the box to proceed."
+                                                     message:@"\xF0\x9F\x98\x81\nPlease read Nooch's Terms of Service and check the box to proceed."
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:@"Read Terms", nil];
@@ -1176,21 +1179,16 @@
         [self.email_field.text rangeOfString:@"."].location != NSNotFound)
     {
         [self.cont setAlpha:1];
-    }
 
-    if ([self.name_field.text length] > 1 &&
-        [self.email_field.text length] > 2 &&
-        [self.email_field.text rangeOfString:@"@"].location != NSNotFound &&
-        [self.email_field.text rangeOfString:@"."].location != NSNotFound &&
-        [self.password_field.text length] > 5)
-    {
-        [self.cont setEnabled:YES];
-        [self.cont setAlpha:1];
+        if ([self.password_field.text length] > 4)
+        {
+            [self.cont setEnabled:YES];
+            [self.cont setAlpha:1];
+        }
+        else {
+            [self.cont setEnabled:NO];
+        }
     }
-    else {
-        [self.cont setEnabled:NO];
-    }
-
 
     if ([self.name_field.text length] > 3 &&
         [self.name_field.text rangeOfString:@" "].location != NSNotFound &&
@@ -1198,6 +1196,11 @@
     {
         [self.fullNameInstruc setHidden:YES];
         [self.nameValidator setHidden:YES];
+    }
+    else if (textField != self.name_field)
+    {
+        [self.fullNameInstruc setHidden:NO];
+        [self.nameValidator setHidden:NO];
     }
 
     if ([self.email_field.text length] > 4 &&
@@ -1207,8 +1210,9 @@
         [self.email_field.text rangeOfString:@"."].location < [self.email_field.text length] - 1 &&
         (([self.email_field.text rangeOfString:@"."].location - [self.email_field.text rangeOfString:@"@"].location) != abs(1)))
     {
-        if (![self.emailValidator isHidden])
+        if (![self.emailValidator isHidden] || textField == self.password_field)
         {
+            [self.emailValidator setHidden:NO];
             [self.emailValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
             [self.emailValidator setTextColor:kNoochGreen];
         }
@@ -1251,7 +1255,7 @@
         if ([self.password_field.text rangeOfCharacterFromSet:lowercaseCharSet].location != NSNotFound ||
             [string rangeOfCharacterFromSet:lowercaseCharSet].location != NSNotFound)
         {
-            score += .6;
+            score += .5;
         }
         if ([self.password_field.text rangeOfCharacterFromSet:uppercaseCharSet].location != NSNotFound ||
             [string rangeOfCharacterFromSet:uppercaseCharSet].location != NSNotFound)
@@ -1284,8 +1288,8 @@
         }
 
 
-        NSLog(@"Score is: %f",score);
-        if (pwLength && score > 3.9)
+        //NSLog(@"Score is: %f",score);
+        if (pwLength && score > 4)
         {
             [self.pwValidator1 setBackgroundColor:kNoochGreen];
             [self.pwValidator2 setBackgroundColor:kNoochGreen];
@@ -1294,7 +1298,7 @@
             [self.pwValidator setText:@"Extremely Strong"];
             [self.pwValidator setTextColor:kNoochGreen];
         }
-        else if (pwLength && score > 2.2)
+        else if (pwLength && score > 2.3)
         {
             [self.pwValidator1 setBackgroundColor:kNoochGreen];
             [self.pwValidator2 setBackgroundColor:kNoochGreen];

@@ -240,14 +240,14 @@ static SIAlertView *__si_alert_current_view;
     appearance.viewBackgroundColor = [UIColor whiteColor];
     appearance.titleColor = [UIColor blackColor];
     appearance.messageColor = kNoochGrayDark;
-    appearance.titleFont = [UIFont boldSystemFontOfSize:19];
-    appearance.messageFont = [UIFont systemFontOfSize:14];
+    appearance.titleFont = [UIFont fontWithName:@"Roboto-medium" size:19];
+    appearance.messageFont = [UIFont fontWithName:@"Roboto" size:14];
     appearance.buttonFont = [UIFont systemFontOfSize:[UIFont buttonFontSize]];
     appearance.buttonColor = [UIColor colorWithWhite:0.4 alpha:1];
     appearance.cancelButtonColor = [UIColor colorWithWhite:0.3 alpha:1];
     appearance.destructiveButtonColor = [UIColor whiteColor];
-    appearance.cornerRadius = 18;
-    appearance.shadowRadius = 5;
+    appearance.cornerRadius = 12;
+    appearance.shadowRadius = 6;
 }
 
 - (id)init
@@ -770,44 +770,55 @@ static SIAlertView *__si_alert_current_view;
 - (CGFloat)preferredHeight
 {
 	CGFloat height = CONTENT_PADDING_TOP;
-	if (self.title) {
+	if (self.title)
+    {
 		height += [self heightForTitleLabel];
 	}
-    if (self.message) {
-        if (height > CONTENT_PADDING_TOP) {
+    NSLog(@"1.) SIAlertView height is: %f",height);
+    if (self.message)
+    {
+        if (height > CONTENT_PADDING_TOP)
+        {
             height += GAP;
         }
         height += [self heightForMessageLabel];
     }
-    if (self.items.count > 0) {
-        if (height > CONTENT_PADDING_TOP) {
+    NSLog(@"2.) SIAlertView height is: %f",height);
+    if (self.items.count > 0)
+    {
+        if (height > CONTENT_PADDING_TOP)
+        {
             height += GAP;
         }
-        if (self.items.count <= 2 && self.buttonsListStyle == SIAlertViewButtonsListStyleNormal) {
+        if (self.items.count <= 2 && self.buttonsListStyle == SIAlertViewButtonsListStyleNormal)
+        {
             height += BUTTON_HEIGHT;
-        } else {
+        }
+        else
+        {
             height += (BUTTON_HEIGHT + GAP) * self.items.count - GAP;
             if (self.buttons.count > 2 && ((SIAlertItem *)[self.items lastObject]).type == SIAlertViewButtonTypeCancel) {
                 height += CANCEL_BUTTON_PADDING_TOP;
             }
         }
     }
+    NSLog(@"3.) SIAlertView height is: %f",height);
     height += CONTENT_PADDING_BOTTOM;
 	return height;
 }
 
 - (CGFloat)heightForTitleLabel
 {
-    if (self.titleLabel) {
+    if (self.titleLabel)
+    {
         #ifdef __IPHONE_7_0
             NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-            paragraphStyle.lineBreakMode = self.titleLabel.lineBreakMode;
+            paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
             
             NSDictionary *attributes = @{NSFontAttributeName:self.titleLabel.font,
                                          NSParagraphStyleAttributeName: paragraphStyle.copy};
             
-            // NSString class method: boundingRectWithSize:options:attributes:context is
-            // available only on ios7.0 sdk.
+            // NSString class method: boundingRectWithSize:options:attributes:context is available only on ios7.0 sdk.
             CGRect rect = [self.titleLabel.text boundingRectWithSize:CGSizeMake(CONTAINER_WIDTH - CONTENT_PADDING_LEFT * 2, CGFLOAT_MAX)
                                                              options:NSStringDrawingUsesLineFragmentOrigin
                                                           attributes:attributes
@@ -823,11 +834,10 @@ static SIAlertView *__si_alert_current_view;
                                                     #endif
                                     actualFontSize:nil
                                           forWidth:CONTAINER_WIDTH - CONTENT_PADDING_LEFT * 2
-                                     lineBreakMode:self.titleLabel.lineBreakMode];
+                                     lineBreakMode:NSLineBreakByWordWrapping];
             return size.height;
         #endif
     }
-    
     return 0;
 }
 
@@ -838,40 +848,29 @@ static SIAlertView *__si_alert_current_view;
     if (self.messageLabel)
     {
         CGFloat maxHeight = MESSAGE_MAX_LINE_COUNT * 40;
-      
-        //NSLog(@"1. LINE HEIGHT is....: %f",self.messageLabel.font.lineHeight);
-        //NSLog(@"2. Message MAX LINE COUNT is....: %d",MESSAGE_MAX_LINE_COUNT);
-        //NSLog(@"3. COMPUTED MAX HEIGHT THEN IS....: %f",maxHeight);
 
         #ifdef __IPHONE_7_0
             NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-            paragraphStyle.lineBreakMode = self.messageLabel.lineBreakMode;
-            
+            paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+
             NSDictionary * attributes = @{NSFontAttributeName:self.messageLabel.font,
                                          NSParagraphStyleAttributeName: paragraphStyle.copy};
-            
-            // NSString class method: boundingRectWithSize:options:attributes:context is
-            // available only on ios7.0 sdk.
+
+            // NSString class method: boundingRectWithSize:options:attributes:context isavailable only on ios7.0 sdk.
             CGRect rect = [self.messageLabel.text boundingRectWithSize:CGSizeMake(CONTAINER_WIDTH - CONTENT_PADDING_LEFT * 2, maxHeight)
                                                              options:NSStringDrawingUsesLineFragmentOrigin
                                                           attributes:attributes
                                                              context:nil];
         
-            //NSLog(@"4. MIN HEIGHT IS....: %f",minHeight);
-            //NSLog(@"5. RECT HEIGHT IS....: %f",rect.size.height);
             return MAX(minHeight, ceil(rect.size.height));
         #else
             CGSize size = [self.message sizeWithFont:self.messageLabel.font
-                                   constrainedToSize:CGSizeMake(CONTAINER_WIDTH - CONTENT_PADDING_LEFT * 2, maxHeight*2)
-                                       lineBreakMode:self.messageLabel.lineBreakMode];
-
-            //NSLog(@"6.  size.width = %f",size.width);
-            //NSLog(@"7.  size.height = %f",size.height);
+                                   constrainedToSize:CGSizeMake(CONTAINER_WIDTH - CONTENT_PADDING_LEFT * 2, maxHeight)
+                                       lineBreakMode:NSLineBreakByWordWrapping];
 
             return MAX(minHeight, size.height);
         #endif
     }
-    
     return minHeight;
 }
 
@@ -939,7 +938,8 @@ static SIAlertView *__si_alert_current_view;
 
 - (void)updateMessageLabel
 {
-    if (self.message) {
+    if (self.message)
+    {
         if (!self.messageLabel) {
             self.messageLabel = [[UILabel alloc] initWithFrame:self.bounds];
             self.messageLabel.textAlignment = NSTextAlignmentCenter;
@@ -953,7 +953,8 @@ static SIAlertView *__si_alert_current_view;
 #endif
         }
         self.messageLabel.text = self.message;
-    } else {
+    }
+    else {
         [self.messageLabel removeFromSuperview];
         self.messageLabel = nil;
     }
