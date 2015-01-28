@@ -664,7 +664,7 @@
 {
     [sender setFrame:CGRectMake(252, 5, 37, 40)];
 
-    int rownumber = sender.tag;
+    short rownumber = sender.tag;
     NSMutableDictionary * favorite = [NSMutableDictionary new];
     [favorite addEntriesFromDictionary:[favorites objectAtIndex:rownumber]];
 
@@ -869,7 +869,7 @@
             colorIndicator.layer.cornerRadius = 4;
 
             imageView = [[UIImageView alloc] initWithFrame:CGRectMake(11, 4, 42, 42)];
-            imageView.contentMode = UIViewContentModeScaleAspectFit;
+            imageView.contentMode = UIViewContentModeScaleAspectFill;
             imageView.layer.cornerRadius = 21;
             // [imageView setStyleClass:@"animate_bubble"];
 

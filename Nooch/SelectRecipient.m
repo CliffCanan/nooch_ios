@@ -721,7 +721,7 @@
         if ([[assist shared] checkIfLocAllowed])
         {
             NSString * searchRadiusString = [ARPowerHookManager getValueForHookById:@"srchRds"];
-            int searchRadiusInt = [searchRadiusString integerValue];
+            short searchRadiusInt = [searchRadiusString integerValue];
 
             if (searchRadiusInt < 2) // Just in case value from Artisan is unavailable for some reason, we'll use a default of 12M
             {
@@ -1204,6 +1204,7 @@
                     searching = NO;
                     searchString = searchBar.text;
                 }
+
                 if (s.length > 4)
                 {
                     shouldAnimate = NO;
@@ -1796,6 +1797,7 @@
         {
             if ([[dictResult objectForKey:@"Result"] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
             {
+                [self.hud hide:YES];
                 [search becomeFirstResponder];
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Hold On There..."
                                                              message:@"\xF0\x9F\x98\xB1\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's phone number!"
@@ -2175,7 +2177,6 @@
 
             else if (info[@"phoneAdday0"])
             {
-                NSLog(@"CheckPOINT YO!");
                 [cell.textLabel setStyleClass:@"select_recipient_nameWithPhoneInCell"];
 
                 if (info[@"phoneAdday3"])
@@ -2413,6 +2414,13 @@
     {
         if ([search.text length] == 14)
         {
+            RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
+            spinner2.color = [UIColor whiteColor];
+            self.hud.customView = spinner2;
+            self.hud.labelText = @"Checking that phone number...";
+            self.hud.detailsLabelText = nil;
+            [self.hud show:YES];
+
             [self getMemberIdByUsingEnteredPhoneNumber];
         }
         else
@@ -2458,6 +2466,13 @@
             [search.text rangeOfString:@"."].location < search.text.length - 2 &&
             [search.text rangeOfString:@"."].location != NSNotFound)
         {
+            RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
+            spinner2.color = [UIColor whiteColor];
+            self.hud.customView = spinner2;
+            self.hud.labelText = @"Checking that email address...";
+            self.hud.detailsLabelText = nil;
+            [self.hud show:YES];
+
             [self getMemberIdByUsingUserName];
         }
         else
@@ -2597,7 +2612,7 @@
                     RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
                     spinner2.color = [UIColor whiteColor];
                     self.hud.customView = spinner2;
-                    self.hud.labelText = @"Generating Tranfser...";
+                    self.hud.labelText = @"Generating Transfer...";
                     self.hud.detailsLabelText = nil;
                     [self.hud show:YES];
 

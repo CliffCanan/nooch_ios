@@ -385,14 +385,14 @@ void exceptionHandler(NSException *exception){
     UIApplicationState state = [application applicationState];
     if (state == UIApplicationStateActive)
     {
-        NSLog(@"Badge # is: %d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
+        NSLog(@"Badge # is: %ld",(long)[[UIApplication sharedApplication] applicationIconBadgeNumber]);
         
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     }
     else
     {
         // Reset the badge if you are using that functionality
-        NSLog(@"Badge Number: %d",[[UIApplication sharedApplication] applicationIconBadgeNumber]);
+        NSLog(@"Badge Number: %ld",(long)[[UIApplication sharedApplication] applicationIconBadgeNumber]);
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[UIApplication sharedApplication] applicationIconBadgeNumber] + 1];
     }
 }

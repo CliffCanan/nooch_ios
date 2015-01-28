@@ -93,7 +93,7 @@
 {
     self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
     [self.prompt removeFromSuperview];
-    int len = [textField.text length] + [string length];
+    short len = [textField.text length] + [string length];
 
     if([string length] == 0) //deleting
     {

@@ -2646,9 +2646,9 @@ table-view#emptyTable {
     color               : gray;
     text-align       	: center;
 }
-.addbutton_request{
+.addbutton_request {
     font-family     : "FontAwesome";
-    font-size       : 23px;
+    font-size       : 21px;
 }
 .details_othername_nonnooch {
     width				: 260px;

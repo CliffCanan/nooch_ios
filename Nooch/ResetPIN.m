@@ -116,7 +116,7 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
-    int len = [textField.text length] + [string length];
+    short len = [textField.text length] + [string length];
     self.prompt.text = @"";
     UIColor *which;
     if([string length] == 0) //deleting

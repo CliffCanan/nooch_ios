@@ -347,7 +347,7 @@
         [nav_ctrl performSelector:@selector(reset)];
         
         NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
-        for (int i = [arrNav count]; i > 1; i--) {
+        for (short i = [arrNav count]; i > 1; i--) {
             [arrNav removeLastObject];
         }
 

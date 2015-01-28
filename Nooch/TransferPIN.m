@@ -207,7 +207,7 @@
 
         if ([self.receiver objectForKey:@"firstName"] && [self.receiver objectForKey:@"lastName"])
         {
-            int numOfChars = [[self.receiver objectForKey:@"firstName"] length] + [[self.receiver objectForKey:@"lastName"] length];
+            short numOfChars = [[self.receiver objectForKey:@"firstName"] length] + [[self.receiver objectForKey:@"lastName"] length];
             if (numOfChars > 23) {numOfChars = 23;}
 
             to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",[self.receiver objectForKey:@"firstName"],[self.receiver objectForKey:@"lastName"]] attributes:textAttributes];
@@ -217,7 +217,7 @@
         }
         else if ([self.receiver objectForKey:@"firstName"])
         {
-            int numOfChars = [[self.receiver objectForKey:@"firstName"] length];
+            short numOfChars = [[self.receiver objectForKey:@"firstName"] length];
 
             to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"firstName"]] attributes:textAttributes];
 
@@ -618,7 +618,7 @@
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochBlue.CGColor;
     }
 
-    int len = [textField.text length] + [string length];
+    short len = [textField.text length] + [string length];
 
     if ([string length] == 0)
     {
@@ -846,7 +846,7 @@
 
                 postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
                                                                options:NSJSONWritingPrettyPrinted error:&error];;
-                postLengthTransfer = [NSString stringWithFormat:@"%d", [postTransfer length]];
+                postLengthTransfer = [NSString stringWithFormat:@"%lu", (unsigned long)[postTransfer length]];
                 self.respData = [NSMutableData data];
                 urlStrTranfer = [[NSString alloc] initWithString:MyUrl];
 
@@ -1071,7 +1071,7 @@
 
         postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
                                                        options:NSJSONWritingPrettyPrinted error:&error];;
-        postLengthTransfer = [NSString stringWithFormat:@"%d", [postTransfer length]];
+        postLengthTransfer = [NSString stringWithFormat:@"%lu", (unsigned long)[postTransfer length]];
         self.respData = [NSMutableData data];
         urlStrTranfer = [[NSString alloc] initWithString:MyUrl];
         if ([self.type isEqualToString:@"request"]) {
@@ -1147,7 +1147,7 @@
 
         postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
                                                        options:NSJSONWritingPrettyPrinted error:&error];;
-        postLengthTransfer = [NSString stringWithFormat:@"%d", [postTransfer length]];
+        postLengthTransfer = [NSString stringWithFormat:@"%lu", (unsigned long)[postTransfer length]];
 
         self.respData = [NSMutableData data];
         urlStrTranfer = [[NSString alloc] initWithString:MyUrl];

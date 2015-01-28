@@ -276,7 +276,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
    
     [[assist shared] SaveAssos:additions.mutableCopy];
     
-    NSLog(@"Additions Count: %d",[additions count]);
+    NSLog(@"Additions Count: %lu",(unsigned long)[additions count]);
     NSMutableArray * get_ids_input = [NSMutableArray new];
     for (NSDictionary * person in additions)
     {
@@ -298,7 +298,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 -(void)dismiss_suspended_alert
 {
-    [UIView animateKeyframesWithDuration:.3
+    [UIView animateKeyframesWithDuration:.34
                                    delay:0
                                  options:2 << 16
                               animations:^{
@@ -331,7 +331,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 -(void)dismiss_profile_unvalidated
 {
-    [UIView animateKeyframesWithDuration:.3
+    [UIView animateKeyframesWithDuration:.34
                                    delay:0
                                  options:2 << 16
                               animations:^{
@@ -365,7 +365,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.view bringSubviewToFront:self.profile_incomplete];
     }
 
-    [UIView animateKeyframesWithDuration:.3
+    [UIView animateKeyframesWithDuration:.34
                                    delay:0
                                  options:2 << 16
                               animations:^{
@@ -392,7 +392,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
     
-    [UIView animateKeyframesWithDuration:.3
+    [UIView animateKeyframesWithDuration:.38
                                    delay:0
                                  options:2 << 16
                               animations:^{
@@ -1399,9 +1399,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     NSString * pictureURL = [ARPowerHookManager getValueForHookById:@"NV_IMG"];
     NSString * pictureWidth = [ARPowerHookManager getValueForHookById:@"NV_IMG_W"];
-    int picwidthInt = [pictureWidth integerValue];
+    NSUInteger picwidthInt = [pictureWidth integerValue];
     NSString * pictureHeight = [ARPowerHookManager getValueForHookById:@"NV_IMG_H"];
-    int picHeightInt = [pictureHeight integerValue];
+    NSUInteger picHeightInt = [pictureHeight integerValue];
     NSString * bodyHeaderTxt = [ARPowerHookManager getValueForHookById:@"NV_HD"];
     NSString * bodyTextTxt = [ARPowerHookManager getValueForHookById:@"NV_BODY"];
 
@@ -1507,11 +1507,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 }
 
 #pragma mark - iCarousel methods
--(void)scrollCarouselToIndex:(NSNumber *)index
-{
-    [_carousel scrollToItemAtIndex:index.intValue animated:YES];
-}
-
 - (NSInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
     //return the total number of items in the carousel
@@ -1620,6 +1615,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index
 {
+    [_carousel scrollToItemAtIndex:index duration:.5];
+
     if (index < [favorites count])
     {
         if ([self checkIfUserSuspendedOrBlocked])
@@ -2276,67 +2273,59 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 -(void)FavoriteContactsProcessing
 {
-    // [additions removeAllObjects];
-    // additions = nil;
-    // additions = [[NSMutableArray alloc]init];
-    // additions = [[[assist shared]assosAll] mutableCopy];
-    
-    //NSLog(@"%lu",(unsigned long)[[[assist shared]assosAll] count]);
-    //NSLog(@"%@",[[assist shared]assosAll]);
-   
-        for (int i = 0; i < [[[assist shared]assosAll] count]; i++)
+    for (int i = 0; i < [[[assist shared]assosAll] count]; i++)
+    {
+        if ([[[assist shared]assosAll] count] < 5)
         {
-            if ([[[assist shared]assosAll] count] < 5)
+             [favorites addObject:[[[assist shared]assosAll] objectAtIndex:i]];
+        }
+        else
+        {
+            if ([favorites count] == 5)
             {
-                 [favorites addObject:[[[assist shared]assosAll] objectAtIndex:i]];
+                break;
             }
-            else
+            else if (i >= [[[assist shared]assosAll] count] - 1 && [[[assist shared]assosAll] count] > 5)
             {
-                if ([favorites count] == 5)
-                {
-                    break;
-                }
-                else if (i >= [[[assist shared]assosAll] count] - 1 && [[[assist shared]assosAll] count] > 5)
-                {
-                    i = 0;
-                }
+                i = 0;
+            }
 
-                NSUInteger randomIndex = arc4random() % [[[assist shared]assosAll] count];
-                int loc = -1;
+            NSUInteger randomIndex = arc4random() % [[[assist shared]assosAll] count];
+            int loc = -1;
 
-                for (int j = 0; j < [favorites count]; j++)
+            for (int j = 0; j < [favorites count]; j++)
+            {
+                // In case of Server Record
+                if (  [[favorites objectAtIndex:j] valueForKey:@"eMailId"] &&
+                    ![[[favorites objectAtIndex:j] valueForKey:@"eMailId"]isKindOfClass:[NSNull class]])
                 {
-                    // In case of Server Record
-                    if (  [[favorites objectAtIndex:j] valueForKey:@"eMailId"] &&
-                        ![[[favorites objectAtIndex:j] valueForKey:@"eMailId"]isKindOfClass:[NSNull class]])
-                    {
-                        if ([[[favorites objectAtIndex:j] valueForKey:@"eMailId"] isEqualToString:[[[[assist shared]assosAll] objectAtIndex:randomIndex]valueForKey:@"UserName"]])
-                            loc = 0;
-                    }
-                    // In case of Address book
-                    else if (  [[favorites objectAtIndex:j] valueForKey:@"UserName"] &&
-                             ![[[favorites objectAtIndex:j] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
-                    {
-                        if ([[[favorites objectAtIndex:j] valueForKey:@"UserName"] isEqualToString:[[[[assist shared]assosAll] objectAtIndex:randomIndex]valueForKey:@"UserName"]])
-                            loc = 0;
-                    }
+                    if ([[[favorites objectAtIndex:j] valueForKey:@"eMailId"] isEqualToString:[[[[assist shared]assosAll] objectAtIndex:randomIndex]valueForKey:@"UserName"]])
+                        loc = 0;
                 }
-                // Continue outer loop
-                if (loc == 0)
+                // In case of Address book
+                else if (  [[favorites objectAtIndex:j] valueForKey:@"UserName"] &&
+                         ![[[favorites objectAtIndex:j] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
                 {
-                    continue;
+                    if ([[[favorites objectAtIndex:j] valueForKey:@"UserName"] isEqualToString:[[[[assist shared]assosAll] objectAtIndex:randomIndex]valueForKey:@"UserName"]])
+                        loc = 0;
                 }
+            }
+            // Continue outer loop
+            if (loc == 0)
+            {
+                continue;
+            }
 
-                if (  [[[[assist shared]assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"] &&
-                    ![[[[[assist shared]assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"]isEqualToString:@"(null)"] &&
-                    ![[[[[assist shared]assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
-                {
-                    [favorites addObject:[[[assist shared]assosAll] objectAtIndex:randomIndex]];
-                }
+            if (  [[[[assist shared]assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"] &&
+                ![[[[[assist shared]assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"]isEqualToString:@"(null)"] &&
+                ![[[[[assist shared]assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
+            {
+                [favorites addObject:[[[assist shared]assosAll] objectAtIndex:randomIndex]];
             }
         }
+    }
 
-        [_carousel reloadData];
+    [_carousel reloadData];
 }
 
 #pragma mark- Date From String

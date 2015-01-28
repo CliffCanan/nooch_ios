@@ -24,6 +24,7 @@
 @property(nonatomic,strong) UIImageView *divider;
 @property(nonatomic,strong) UILabel *recip_back;
 @property(nonatomic,strong) UIView *back;
+@property(nonatomic,strong) UIButton *trans_image;
 
 @end
 
@@ -138,7 +139,7 @@
 
         if ([self.receiver objectForKey:@"firstName"] && [self.receiver objectForKey:@"lastName"])
         {
-            int numOfChars = [[self.receiver objectForKey:@"firstName"] length] + [[self.receiver objectForKey:@"lastName"] length];
+            float numOfChars = [[self.receiver objectForKey:@"firstName"] length] + [[self.receiver objectForKey:@"lastName"] length];
 
             to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", [self.receiver objectForKey:@"firstName"], [self.receiver objectForKey:@"lastName"]] attributes:textAttributes];
 
@@ -147,7 +148,7 @@
         }
         else if ([self.receiver objectForKey:@"firstName"])
         {
-            int numOfChars = [[self.receiver objectForKey:@"firstName"] length];
+            float numOfChars = [[self.receiver objectForKey:@"firstName"] length];
 
             to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", [self.receiver objectForKey:@"firstName"]] attributes:textAttributes];
 
@@ -428,7 +429,7 @@
     }
 
     transLimitFromArtisanString = [ARPowerHookManager getValueForHookById:@"transLimit"];
-    transLimitFromArtisanInt = [transLimitFromArtisanString integerValue];
+    transLimitFromArtisanInt = [transLimitFromArtisanString floatValue];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -644,7 +645,25 @@
 }
 
 #pragma mark  - alert view delegation
-- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 11 && buttonIndex == 1)
+    {
+        [[assist shared]setTranferImage:nil];
+        [UIView animateKeyframesWithDuration:0.2
+                                       delay:0
+                                     options:2 << 16
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                          [self.trans_image setAlpha:0];
+                                      }];
+                                  } completion: ^(BOOL finished) {
+                                      [self.trans_image removeFromSuperview];
+                                      [self.camera setHidden:NO];
+                                  }
+         ];
+        [self attach_pic];
+    }
 }
 
 - (void) confirm_request
@@ -716,63 +735,121 @@
 {
     [self.amount resignFirstResponder];
 
-    self.shade = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, [UIScreen mainScreen].bounds.size.height)];
-    [self.shade setBackgroundColor:kNoochGrayDark]; 
-    [self.shade setAlpha:0.0];
-    [self.shade setUserInteractionEnabled:YES];
-    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancel_photo)];
-    [self.shade addGestureRecognizer:recognizer];
-    [self.navigationController.view addSubview:self.shade];
-    
-    // Set starting point to be the frame of Camera Icon, it will expand/grow from there
-    self.choose = [[UIView alloc] initWithFrame:CGRectMake(270, 220, 8, 6)];
-    self.choose.clipsToBounds = YES;
+    if ([[assist shared] getTranferImage])
+    {
+        if ([UIAlertController class]) // for iOS 8
+        {
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"Replace Picture?"
+                                         message:@"Do you want to remove the current picture?"
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction * yes = [UIAlertAction
+                                  actionWithTitle:@"Yes"
+                                  style:UIAlertActionStyleDefault
+                                  handler:^(UIAlertAction * action)
+                                  {
+                                      [[assist shared]setTranferImage:nil];
+                                      [UIView animateKeyframesWithDuration:0.2
+                                                                     delay:0
+                                                                   options:2 << 16
+                                                                animations:^{
+                                                                    [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                                                        [self.trans_image setAlpha:0];
+                                                                    }];
+                                                                } completion: ^(BOOL finished) {
+                                                                    [self.trans_image removeFromSuperview];
+                                                                    [self.camera setHidden:NO];
+                                                                }
+                                       ];
 
-    UIButton *take = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [take addTarget:self action:@selector(take_photo) forControlEvents:UIControlEventTouchUpInside];
-    [take setTitle:@"" forState:UIControlStateNormal];
-    [self.choose addSubview:take];
+                                      [alert dismissViewControllerAnimated:YES completion:nil];
+                                      [self attach_pic];
+                                  }];
+            UIAlertAction * no = [UIAlertAction
+                                  actionWithTitle:@"No"
+                                  style:UIAlertActionStyleCancel handler:^(UIAlertAction * action)
+                                  {
+                                      [alert dismissViewControllerAnimated:YES completion:nil];
+                                  }];
+            [alert addAction:no];
+            [alert addAction:yes];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+            return;
+        }
+        else
+        {
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Replace Picture?"
+                                                          message:@"Do you want to remove the current picture?"
+                                                         delegate:self
+                                                cancelButtonTitle:@"No"
+                                                otherButtonTitles:@"Yes", nil];
+            [av show];
+            [av setTag:11];
+            return;
+        }
+    }
+    else
+    {
+        self.shade = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, [UIScreen mainScreen].bounds.size.height)];
+        [self.shade setBackgroundColor:kNoochGrayDark];
+        [self.shade setAlpha:0.0];
+        [self.shade setUserInteractionEnabled:YES];
+        UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancel_photo)];
+        [self.shade addGestureRecognizer:recognizer];
+        [self.navigationController.view addSubview:self.shade];
+        
+        // Set starting point to be the frame of Camera Icon, it will expand/grow from there
+        self.choose = [[UIView alloc] initWithFrame:CGRectMake(270, 220, 8, 6)];
+        self.choose.clipsToBounds = YES;
 
-    UIButton *album = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [album addTarget:self action:@selector(from_album) forControlEvents:UIControlEventTouchUpInside];
-    [album setTitle:@"" forState:UIControlStateNormal];
-    [self.choose addSubview:album];
+        UIButton *take = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [take addTarget:self action:@selector(take_photo) forControlEvents:UIControlEventTouchUpInside];
+        [take setTitle:@"" forState:UIControlStateNormal];
+        [self.choose addSubview:take];
 
-    [UIView beginAnimations:Nil context:nil];
-    [UIView setAnimationDuration:0.4];
-    
-    [self.shade setAlpha:0.65];
+        UIButton *album = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [album addTarget:self action:@selector(from_album) forControlEvents:UIControlEventTouchUpInside];
+        [album setTitle:@"" forState:UIControlStateNormal];
+        [self.choose addSubview:album];
 
-    [self.choose setStyleId:@"attachpic_container"];
-    [take setStyleId:@"attachpic_takephoto_box"];
-    [album setStyleId:@"attachpic_choosefrom_box"];
-    
-    UIImageView *camera_icon = [UIImageView new];
-    [camera_icon setStyleId:@"attachpic_takephoto_icon"];
-    [self.choose addSubview:camera_icon];
-    
-    UIImageView *album_icon = [UIImageView new];
-    [album_icon setStyleId:@"attachpic_choosefrom_icon"];
-    [self.choose addSubview:album_icon];
-    
-    UILabel *take_label = [UILabel new];
-    [take_label setStyleId:@"attachpic_takephoto_label"];
-    [take_label setText:@"Use Camera"];
-    [self.choose addSubview:take_label];
-    
-    UILabel *album_label = [UILabel new];
-    [album_label setText:@"Choose From Album"];
-    [album_label setStyleId:@"attachpic_choosefrom_label"];
-    [self.choose addSubview:album_label];
-    
-    UILabel *or = [UILabel new];
-    [or setStyleId:@"attachpic_or"];
-    [or setText:@"or"];
-    [self.choose addSubview:or];
+        [UIView beginAnimations:Nil context:nil];
+        [UIView setAnimationDuration:0.4];
+        
+        [self.shade setAlpha:0.65];
 
-    [self.navigationController.view addSubview:self.choose];
+        [self.choose setStyleId:@"attachpic_container"];
+        [take setStyleId:@"attachpic_takephoto_box"];
+        [album setStyleId:@"attachpic_choosefrom_box"];
+        
+        UIImageView *camera_icon = [UIImageView new];
+        [camera_icon setStyleId:@"attachpic_takephoto_icon"];
+        [self.choose addSubview:camera_icon];
+        
+        UIImageView *album_icon = [UIImageView new];
+        [album_icon setStyleId:@"attachpic_choosefrom_icon"];
+        [self.choose addSubview:album_icon];
+        
+        UILabel *take_label = [UILabel new];
+        [take_label setStyleId:@"attachpic_takephoto_label"];
+        [take_label setText:@"Use Camera"];
+        [self.choose addSubview:take_label];
+        
+        UILabel *album_label = [UILabel new];
+        [album_label setText:@"Choose From Album"];
+        [album_label setStyleId:@"attachpic_choosefrom_label"];
+        [self.choose addSubview:album_label];
+        
+        UILabel *or = [UILabel new];
+        [or setStyleId:@"attachpic_or"];
+        [or setText:@"or"];
+        [self.choose addSubview:or];
 
-    [UIView commitAnimations];
+        [self.navigationController.view addSubview:self.choose];
+
+        [UIView commitAnimations];
+    }
 }
 
 - (void) cancel_photo
@@ -828,24 +905,24 @@
    
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
     chosenImage = [chosenImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(150,150) interpolationQuality:kCGInterpolationMedium];
-    [self.camera setTitleColor:kNoochBlue forState:UIControlStateNormal];
 
     [[assist shared]setTranferImage:chosenImage];
     
-    [self.camera removeFromSuperview];
+    [self.camera setHidden:YES];
 
-    UIButton *trans_image = [[UIButton alloc] initWithFrame:CGRectMake(252, 205, 56, 56)];
-    trans_image.layer.cornerRadius = 5;
-    trans_image.clipsToBounds = YES;
-    [trans_image setBackgroundImage:chosenImage forState:UIControlStateNormal];
-    [trans_image addTarget:self action:@selector(attach_pic) forControlEvents:UIControlEventTouchUpInside];
-    [self.back addSubview:trans_image];
+    self.trans_image = [[UIButton alloc] initWithFrame:CGRectMake(252, 205, 56, 56)];
+    self.trans_image.layer.cornerRadius = 5;
+    self.trans_image.clipsToBounds = YES;
+    [self.trans_image setBackgroundImage:chosenImage forState:UIControlStateNormal];
+    [self.trans_image addTarget:self action:@selector(attach_pic) forControlEvents:UIControlEventTouchUpInside];
+    [self.trans_image setAlpha:1];
+    [self.back addSubview:self.trans_image];
 
     if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        [trans_image setFrame:CGRectMake(266, 100, 27, 27)];
+        [self.trans_image setFrame:CGRectMake(266, 100, 27, 27)];
     }
     else {
-        [trans_image setFrame:CGRectMake(259, 150, 34, 34)];
+        [self.trans_image setFrame:CGRectMake(259, 150, 34, 34)];
     }
 
     [picker dismissViewControllerAnimated:YES completion:^{

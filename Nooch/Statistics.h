@@ -22,6 +22,6 @@
     UILabel * titleTopFriends;
     UIView * pieGraphMiddleOverlay;
     BOOL IsAlertShown;
-    int statsLoadedSoFar, fav_count, totalPayments, rowNumber, pieSlice_count;
+    short statsLoadedSoFar, fav_count, totalPayments, rowNumber, pieSlice_count;
 }
 @end
