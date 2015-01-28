@@ -154,9 +154,38 @@
 {
     if (![MFMailComposeViewController canSendMail])
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [av show];
-        return;
+        if ([UIAlertController class]) // for iOS 8
+        {
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"No Email Detected"
+                                         message:@"You don't have an email account configured for this device."
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction * ok = [UIAlertAction
+                                  actionWithTitle:@"OK"
+                                  style:UIAlertActionStyleDefault
+                                  handler:^(UIAlertAction * action)
+                                  {
+                                      [alert dismissViewControllerAnimated:YES completion:nil];
+                                  }];
+            [alert addAction:ok];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+            return;
+        }
+        else
+        {
+            if (![MFMailComposeViewController canSendMail])
+            {
+                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                              message:@"You don't have an email account configured for this device."
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles: nil];
+                [av show];
+                return;
+            }
+        }
     }
     MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
     mailComposer.mailComposeDelegate = self;
@@ -318,7 +347,7 @@
         [nav_ctrl performSelector:@selector(reset)];
         
         NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
-        for (int i = [arrNav count]; i > 1; i--) {
+        for (short i = [arrNav count]; i > 1; i--) {
             [arrNav removeLastObject];
         }
 

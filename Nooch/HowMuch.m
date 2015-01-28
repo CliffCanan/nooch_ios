@@ -24,6 +24,8 @@
 @property(nonatomic,strong) UIImageView *divider;
 @property(nonatomic,strong) UILabel *recip_back;
 @property(nonatomic,strong) UIView *back;
+@property(nonatomic,strong) UIButton *trans_image;
+@property(nonatomic,strong) UIImageView * user_pic;
 
 @end
 
@@ -138,7 +140,7 @@
 
         if ([self.receiver objectForKey:@"firstName"] && [self.receiver objectForKey:@"lastName"])
         {
-            int numOfChars = [[self.receiver objectForKey:@"firstName"] length] + [[self.receiver objectForKey:@"lastName"] length];
+            float numOfChars = [[self.receiver objectForKey:@"firstName"] length] + [[self.receiver objectForKey:@"lastName"] length];
 
             to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", [self.receiver objectForKey:@"firstName"], [self.receiver objectForKey:@"lastName"]] attributes:textAttributes];
 
@@ -147,7 +149,7 @@
         }
         else if ([self.receiver objectForKey:@"firstName"])
         {
-            int numOfChars = [[self.receiver objectForKey:@"firstName"] length];
+            float numOfChars = [[self.receiver objectForKey:@"firstName"] length];
 
             to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", [self.receiver objectForKey:@"firstName"]] attributes:textAttributes];
 
@@ -212,7 +214,7 @@
         UIButton * add = [[UIButton alloc]initWithFrame:CGRectMake(272, 15, 32, 30)];
         [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];
         [add setStyleClass:@"addbutton_request"];
-        [add setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-square-o"] forState:UIControlStateNormal];
+        [add setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-square"] forState:UIControlStateNormal];
         [add setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [add setTitleColor:Rgb2UIColor(220, 221, 222, .94) forState:UIControlStateHighlighted];
         [add setTitleShadowColor:Rgb2UIColor(64, 65, 66, 0.3) forState:UIControlStateNormal];
@@ -220,22 +222,22 @@
         [self.view addSubview:add];
     }
 
-    UIImageView * user_pic = [UIImageView new];
-    [user_pic setFrame:CGRectMake(18, 48, 84, 84)];
-    user_pic.layer.borderColor = [Helpers hexColor:@"939598"].CGColor;
-    user_pic.layer.borderWidth = 1;
-    user_pic.clipsToBounds = YES;
-    user_pic.layer.cornerRadius = 42;
+    self.user_pic = [UIImageView new];
+    [self.user_pic setFrame:CGRectMake(12, 48, 84, 84)];
+    self.user_pic.layer.borderColor = [Helpers hexColor:@"939598"].CGColor;
+    self.user_pic.layer.borderWidth = 1;
+    self.user_pic.clipsToBounds = YES;
+    self.user_pic.layer.cornerRadius = 42;
     if ([self.receiver valueForKey:@"nonuser"])
     {
-        [user_pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
+        [self.user_pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
     }
     else
     {
-        [user_pic setHidden:NO];
+        [self.user_pic setHidden:NO];
         if (self.receiver[@"Photo"])
         {
-            [user_pic sd_setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
+            [self.user_pic sd_setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
                      placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         }
         else
@@ -245,21 +247,21 @@
                 NSString * photoURL = @"";
                 for (NSDictionary * dictRecord in [[assist shared]getArray])
                 {
-                    NSLog(@"DictRecord is: %@",dictRecord);
+                    //NSLog(@"DictRecord is: %@",dictRecord);
                     photoURL = [NSString stringWithFormat:@"%@", dictRecord[@"Photo"]];
                 }
-                [user_pic sd_setImageWithURL:[NSURL URLWithString:photoURL]
+                [self.user_pic sd_setImageWithURL:[NSURL URLWithString:photoURL]
                             placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
 
             }
             else
             {
-                [user_pic sd_setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
+                [self.user_pic sd_setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
                      placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
             }
         }
     }
-    [self.back addSubview:user_pic];
+    [self.back addSubview:self.user_pic];
 
     self.amount = [[UITextField alloc] initWithFrame:CGRectMake(104, 58, 190, 68)];
     [self.amount setTextAlignment:NSTextAlignmentRight];
@@ -419,8 +421,8 @@
         [self.request setStyleId:@"howmuch_request_4"];
         [self.divider setStyleId:@"howmuch_divider_4"];
 
-        [user_pic setFrame:CGRectMake(6, 45, 72, 72)];
-        user_pic.layer.cornerRadius = 36;
+        [self.user_pic setFrame:CGRectMake(6, 45, 72, 72)];
+        self.user_pic.layer.cornerRadius = 36;
 
         [self.amount setStyleId:@"howmuch_amountfield_4"];
         [self.memo setStyleId:@"howmuch_memo_4"];
@@ -428,7 +430,7 @@
     }
 
     transLimitFromArtisanString = [ARPowerHookManager getValueForHookById:@"transLimit"];
-    transLimitFromArtisanInt = [transLimitFromArtisanString integerValue];
+    transLimitFromArtisanInt = [transLimitFromArtisanString floatValue];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -517,6 +519,8 @@
     origin.size.width = 149;
     origin.origin.x = 9;
 
+    self.user_pic.layer.borderColor = kNoochGreen.CGColor;
+
     [self.send addTarget:self action:@selector(confirm_send) forControlEvents:UIControlEventTouchUpInside];
     [self.send setTitle:@"Confirm Send" forState:UIControlStateNormal];
     [self.request setStyleId:@"howmuch_request_hide"];
@@ -537,6 +541,8 @@
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.55];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+
+    self.user_pic.layer.borderColor = kNoochBlue.CGColor;
 
     [self.request addTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
     [self.request setTitle:@"Confirm Request" forState:UIControlStateNormal];
@@ -564,6 +570,9 @@
 
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.25];
+
+    self.user_pic.layer.borderColor = [Helpers hexColor:@"939598"].CGColor;
+
     [self.send setTitle:@"Send" forState:UIControlStateNormal];
     [self.request setTitle:@"Request" forState:UIControlStateNormal];
 
@@ -644,7 +653,25 @@
 }
 
 #pragma mark  - alert view delegation
-- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 11 && buttonIndex == 1)
+    {
+        [[assist shared]setTranferImage:nil];
+        [UIView animateKeyframesWithDuration:0.2
+                                       delay:0
+                                     options:2 << 16
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                          [self.trans_image setAlpha:0];
+                                      }];
+                                  } completion: ^(BOOL finished) {
+                                      [self.trans_image removeFromSuperview];
+                                      [self.camera setHidden:NO];
+                                  }
+         ];
+        [self attach_pic];
+    }
 }
 
 - (void) confirm_request
@@ -676,7 +703,7 @@
     else if ([[[self.amount text] substringFromIndex:1] doubleValue] > transLimitFromArtisanInt && !isFromMyApt)
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Big Spender"
-                                                        message:[NSString stringWithFormat:@"\xF0\x9F\x98\xA7\nWhile we definitely appreciate your enthusiasm, we are limiting transfers to $%@ for now in order to minimize our risk (and yours). We're working to raise the limit soon!", transLimitFromArtisanString]
+                                                        message:[NSString stringWithFormat:@"\xF0\x9F\x98\x87\nWhile we definitely appreciate your enthusiasm, we are limiting transfers to $%@ for now in order to minimize our risk (and yours). We're working to raise the limit soon!", transLimitFromArtisanString]
                                                        delegate:self
                                               cancelButtonTitle:nil
                                               otherButtonTitles:@"Ok", nil];
@@ -716,63 +743,121 @@
 {
     [self.amount resignFirstResponder];
 
-    self.shade = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, [UIScreen mainScreen].bounds.size.height)];
-    [self.shade setBackgroundColor:kNoochGrayDark]; 
-    [self.shade setAlpha:0.0];
-    [self.shade setUserInteractionEnabled:YES];
-    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancel_photo)];
-    [self.shade addGestureRecognizer:recognizer];
-    [self.navigationController.view addSubview:self.shade];
-    
-    // Set starting point to be the frame of Camera Icon, it will expand/grow from there
-    self.choose = [[UIView alloc] initWithFrame:CGRectMake(270, 220, 8, 6)];
-    self.choose.clipsToBounds = YES;
+    if ([[assist shared] getTranferImage])
+    {
+        if ([UIAlertController class]) // for iOS 8
+        {
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"Replace Picture?"
+                                         message:@"Do you want to remove the current picture?"
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction * yes = [UIAlertAction
+                                  actionWithTitle:@"Yes"
+                                  style:UIAlertActionStyleDefault
+                                  handler:^(UIAlertAction * action)
+                                  {
+                                      [[assist shared]setTranferImage:nil];
+                                      [UIView animateKeyframesWithDuration:0.2
+                                                                     delay:0
+                                                                   options:2 << 16
+                                                                animations:^{
+                                                                    [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                                                        [self.trans_image setAlpha:0];
+                                                                    }];
+                                                                } completion: ^(BOOL finished) {
+                                                                    [self.trans_image removeFromSuperview];
+                                                                    [self.camera setHidden:NO];
+                                                                }
+                                       ];
 
-    UIButton *take = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [take addTarget:self action:@selector(take_photo) forControlEvents:UIControlEventTouchUpInside];
-    [take setTitle:@"" forState:UIControlStateNormal];
-    [self.choose addSubview:take];
+                                      [alert dismissViewControllerAnimated:YES completion:nil];
+                                      [self attach_pic];
+                                  }];
+            UIAlertAction * no = [UIAlertAction
+                                  actionWithTitle:@"No"
+                                  style:UIAlertActionStyleCancel handler:^(UIAlertAction * action)
+                                  {
+                                      [alert dismissViewControllerAnimated:YES completion:nil];
+                                  }];
+            [alert addAction:no];
+            [alert addAction:yes];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+            return;
+        }
+        else
+        {
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Replace Picture?"
+                                                          message:@"Do you want to remove the current picture?"
+                                                         delegate:self
+                                                cancelButtonTitle:@"No"
+                                                otherButtonTitles:@"Yes", nil];
+            [av show];
+            [av setTag:11];
+            return;
+        }
+    }
+    else
+    {
+        self.shade = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, [UIScreen mainScreen].bounds.size.height)];
+        [self.shade setBackgroundColor:kNoochGrayDark];
+        [self.shade setAlpha:0.0];
+        [self.shade setUserInteractionEnabled:YES];
+        UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancel_photo)];
+        [self.shade addGestureRecognizer:recognizer];
+        [self.navigationController.view addSubview:self.shade];
+        
+        // Set starting point to be the frame of Camera Icon, it will expand/grow from there
+        self.choose = [[UIView alloc] initWithFrame:CGRectMake(270, 220, 8, 6)];
+        self.choose.clipsToBounds = YES;
 
-    UIButton *album = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [album addTarget:self action:@selector(from_album) forControlEvents:UIControlEventTouchUpInside];
-    [album setTitle:@"" forState:UIControlStateNormal];
-    [self.choose addSubview:album];
+        UIButton *take = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [take addTarget:self action:@selector(take_photo) forControlEvents:UIControlEventTouchUpInside];
+        [take setTitle:@"" forState:UIControlStateNormal];
+        [self.choose addSubview:take];
 
-    [UIView beginAnimations:Nil context:nil];
-    [UIView setAnimationDuration:0.4];
-    
-    [self.shade setAlpha:0.65];
+        UIButton *album = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [album addTarget:self action:@selector(from_album) forControlEvents:UIControlEventTouchUpInside];
+        [album setTitle:@"" forState:UIControlStateNormal];
+        [self.choose addSubview:album];
 
-    [self.choose setStyleId:@"attachpic_container"];
-    [take setStyleId:@"attachpic_takephoto_box"];
-    [album setStyleId:@"attachpic_choosefrom_box"];
-    
-    UIImageView *camera_icon = [UIImageView new];
-    [camera_icon setStyleId:@"attachpic_takephoto_icon"];
-    [self.choose addSubview:camera_icon];
-    
-    UIImageView *album_icon = [UIImageView new];
-    [album_icon setStyleId:@"attachpic_choosefrom_icon"];
-    [self.choose addSubview:album_icon];
-    
-    UILabel *take_label = [UILabel new];
-    [take_label setStyleId:@"attachpic_takephoto_label"];
-    [take_label setText:@"Use Camera"];
-    [self.choose addSubview:take_label];
-    
-    UILabel *album_label = [UILabel new];
-    [album_label setText:@"Choose From Album"];
-    [album_label setStyleId:@"attachpic_choosefrom_label"];
-    [self.choose addSubview:album_label];
-    
-    UILabel *or = [UILabel new];
-    [or setStyleId:@"attachpic_or"];
-    [or setText:@"or"];
-    [self.choose addSubview:or];
+        [UIView beginAnimations:Nil context:nil];
+        [UIView setAnimationDuration:0.4];
+        
+        [self.shade setAlpha:0.65];
 
-    [self.navigationController.view addSubview:self.choose];
+        [self.choose setStyleId:@"attachpic_container"];
+        [take setStyleId:@"attachpic_takephoto_box"];
+        [album setStyleId:@"attachpic_choosefrom_box"];
+        
+        UIImageView *camera_icon = [UIImageView new];
+        [camera_icon setStyleId:@"attachpic_takephoto_icon"];
+        [self.choose addSubview:camera_icon];
+        
+        UIImageView *album_icon = [UIImageView new];
+        [album_icon setStyleId:@"attachpic_choosefrom_icon"];
+        [self.choose addSubview:album_icon];
+        
+        UILabel *take_label = [UILabel new];
+        [take_label setStyleId:@"attachpic_takephoto_label"];
+        [take_label setText:@"Use Camera"];
+        [self.choose addSubview:take_label];
+        
+        UILabel *album_label = [UILabel new];
+        [album_label setText:@"Choose From Album"];
+        [album_label setStyleId:@"attachpic_choosefrom_label"];
+        [self.choose addSubview:album_label];
+        
+        UILabel *or = [UILabel new];
+        [or setStyleId:@"attachpic_or"];
+        [or setText:@"or"];
+        [self.choose addSubview:or];
 
-    [UIView commitAnimations];
+        [self.navigationController.view addSubview:self.choose];
+
+        [UIView commitAnimations];
+    }
 }
 
 - (void) cancel_photo
@@ -828,24 +913,24 @@
    
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
     chosenImage = [chosenImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(150,150) interpolationQuality:kCGInterpolationMedium];
-    [self.camera setTitleColor:kNoochBlue forState:UIControlStateNormal];
 
     [[assist shared]setTranferImage:chosenImage];
     
-    [self.camera removeFromSuperview];
+    [self.camera setHidden:YES];
 
-    UIButton *trans_image = [[UIButton alloc] initWithFrame:CGRectMake(252, 205, 56, 56)];
-    trans_image.layer.cornerRadius = 5;
-    trans_image.clipsToBounds = YES;
-    [trans_image setBackgroundImage:chosenImage forState:UIControlStateNormal];
-    [trans_image addTarget:self action:@selector(attach_pic) forControlEvents:UIControlEventTouchUpInside];
-    [self.back addSubview:trans_image];
+    self.trans_image = [[UIButton alloc] initWithFrame:CGRectMake(252, 205, 56, 56)];
+    self.trans_image.layer.cornerRadius = 5;
+    self.trans_image.clipsToBounds = YES;
+    [self.trans_image setBackgroundImage:chosenImage forState:UIControlStateNormal];
+    [self.trans_image addTarget:self action:@selector(attach_pic) forControlEvents:UIControlEventTouchUpInside];
+    [self.trans_image setAlpha:1];
+    [self.back addSubview:self.trans_image];
 
     if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        [trans_image setFrame:CGRectMake(266, 100, 27, 27)];
+        [self.trans_image setFrame:CGRectMake(266, 100, 27, 27)];
     }
     else {
-        [trans_image setFrame:CGRectMake(259, 150, 34, 34)];
+        [self.trans_image setFrame:CGRectMake(259, 150, 34, 34)];
     }
 
     [picker dismissViewControllerAnimated:YES completion:^{

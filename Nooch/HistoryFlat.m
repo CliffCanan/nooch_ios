@@ -883,7 +883,7 @@
     static NSString * cellIdentifier = @"Cell";
     SWTableViewCell * cell = (SWTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 
-    if (cell != NULL && isLocalSearch && !self.completed_selected)
+    if (cell != NULL && tableView == NULL)
     {
         NSLog(@"The cell is:  %@",cell);
     }
@@ -959,12 +959,13 @@
         {
             NSDictionary * dictRecord = nil;
 
-            if (isLocalSearch)
+            if (!isLocalSearch)
+            {
+                dictRecord = [histShowArrayCompleted objectAtIndex:indexPath.row];
+            }
+            else
             {
                 dictRecord = [histTempCompleted objectAtIndex:indexPath.row];
-            }
-            else {
-                dictRecord = [histShowArrayCompleted objectAtIndex:indexPath.row];
             }
 
             if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]  ||
@@ -1069,8 +1070,30 @@
                         }
                         else
                         {
-                            [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"] ]];
                             [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
+
+                            BOOL containsLetters = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.letterCharacterSet].location;
+                            BOOL containsPunctuation = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.punctuationCharacterSet].location;
+                            BOOL containsNumbers = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.decimalDigitCharacterSet].location;
+                            BOOL containsSymbols = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.symbolCharacterSet].location;
+                            
+                            // Check if it's a phone number
+                            if (containsNumbers && !containsLetters && !containsPunctuation && !containsSymbols)
+                            {
+                                NSMutableString * mu = [NSMutableString stringWithString:[dictRecord valueForKey:@"InvitationSentTo"]];
+                                [mu insertString:@"(" atIndex:0];
+                                [mu insertString:@")" atIndex:4];
+                                [mu insertString:@" " atIndex:5];
+                                [mu insertString:@"-" atIndex:9];
+                                
+                                NSString * phoneWithSymbolsAddedBack = [NSString stringWithString:mu];
+                                
+                                [name setText:phoneWithSymbolsAddedBack];
+                            }
+                            else
+                            {
+                                [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"]]];
+                            }
                         }
                     }
                     else
@@ -1329,225 +1352,18 @@
 
     else if (self.completed_selected == NO)
     {
-        /*if (isLocalSearch)
-        {
-            //NSLog(@"histTempPending count is: %d",[histTempPending count]);
-            if ([histTempPending count] > indexPath.row)
-            {
-                NSDictionary * dictRecord = [histTempPending objectAtIndex:indexPath.row];
-
-                if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
-                {
-                    UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
-                    [amount setBackgroundColor:[UIColor clearColor]];
-                    [amount setTextAlignment:NSTextAlignmentRight];
-                    [amount setFont:[UIFont fontWithName:@"Roboto-Medium" size:18]];
-                    [amount setStyleClass:@"history_pending_transferamount"];
-
-                    [amount setStyleClass:@"history_transferamount_neutral"];
-                    [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]  ]];
-                    [cell.contentView addSubview:amount];
-
-                    UILabel *transferTypeLabel = [UILabel new];
-                    [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
-                    transferTypeLabel.layer.cornerRadius = 3;
-                    transferTypeLabel .clipsToBounds = YES;
-
-                    UILabel * statusIndicator = [[UILabel alloc] initWithFrame:CGRectMake(58, 7, 10, 11)];
-                    [statusIndicator setBackgroundColor:[UIColor clearColor]];
-                    [statusIndicator setTextAlignment:NSTextAlignmentCenter];
-                    [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                    [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-o"]];
-                    [statusIndicator setTextColor:kNoochBlue];
-                    [cell.contentView addSubview:statusIndicator];
-
-                    UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 9, 50, 50)];
-                    pic.layer.cornerRadius = 25;
-                    pic.clipsToBounds = YES;
-                    [cell.contentView addSubview:pic];
-                    [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
-                        placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
-
-                    UILabel *name = [UILabel new];
-                    [name setStyleClass:@"history_cell_textlabel"];
-                    [name setStyleClass:@"history_recipientname"];
-                    
-                    UILabel *date = [UILabel new];
-                    [date setStyleClass:@"history_datetext"];
-                    
-                    UILabel *glyphDate = [UILabel new];
-                    [glyphDate setFont:[UIFont fontWithName:@"FontAwesome" size:9]];
-                    [glyphDate setFrame:CGRectMake(155, 7, 14, 11)];
-                    [glyphDate setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"]];
-                    [glyphDate setTextColor:kNoochGrayLight];
-                    [cell.contentView addSubview:glyphDate];
-					
-                    if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
-                    {
-                        if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
-                        {
-                            [transferTypeLabel setText:@"Request sent to"];
-                            [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_wider"];
-                            [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
-                        }
-                        else {
-                            [transferTypeLabel setText:@"Request from"];
-                            [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"]capitalizedString]]];
-                        }
-                        [transferTypeLabel setBackgroundColor:kNoochBlue];
-                    }
-                    else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] && [dictRecord valueForKey:@"InvitationSentTo"]!=NULL)
-                    {
-                        [transferTypeLabel setText:@"Invite sent to"];
-                        [transferTypeLabel setBackgroundColor:kNoochGrayDark];
-                        [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"InvitationSentTo"] lowercaseString]]];
-                    }
-                    else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] )
-                    {
-                        if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
-                        {
-                            [transferTypeLabel setText:@"You disputed a transfer to"];
-                            [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
-                        }
-                        else {
-                            [transferTypeLabel setText:@"Transfer disputed by"];
-                            [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
-                        }
-                        
-                        [statusIndicator setTextColor:kNoochRed];
-                        [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_evenWider"];
-                        [date setStyleClass:@"history_datetext_wide"];
-                        [glyphDate setFrame:CGRectMake(180, 7, 14, 11)];
-                        [transferTypeLabel setBackgroundColor:kNoochRed];
-                    }
-
-                    else {
-                        [name setText:@""];
-                    }
-
-                    if (![[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
-                    {
-                        UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(310, 0, 9, 80)];
-                        [indicator setBackgroundColor:kNoochBlue];
-                        [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
-                        [indicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-left"]];
-                        [indicator setTextColor:[UIColor whiteColor]];
-                        [indicator setTextAlignment:NSTextAlignmentCenter];
-                        [cell.contentView addSubview:indicator];
-                    }
-
-                    [cell.contentView addSubview:transferTypeLabel];
-                    [cell.contentView addSubview:name];
-
-                    NSDate *addeddate = [self dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
-                    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-                    NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
-                           fromDate:addeddate                                               
-                           toDate:ServerDate
-                           options:0];
-                    if ((long)[components day]>3)
-                    {
-                        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                         [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
-                        //Set the AM and PM symbols
-                        [dateFormatter setAMSymbol:@"AM"];
-                        [dateFormatter setPMSymbol:@"PM"];
-                        dateFormatter.dateFormat = @"MM/dd/yyyy hh:mm:ss a";
-                        NSDate *yourDate = [dateFormatter dateFromString:[dictRecord valueForKey:@"TransactionDate"]];
-                        dateFormatter.dateFormat = @"dd-MMMM-yyyy";
-                        
-                        NSArray*arrdate=[[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
-                        [date setText:[NSString stringWithFormat:@"%@ %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0]]];
-                        [cell.contentView addSubview:date];                        
-                    }
-                    else if ((long)[components day]==0)
-                    {
-                        NSDateComponents *components = [gregorianCalendar components:NSHourCalendarUnit
-                                fromDate:addeddate
-                                toDate:ServerDate
-                                options:0];
-                        if ((long)[components hour]==0) {
-                            NSDateComponents *components = [gregorianCalendar components:NSMinuteCalendarUnit                            
-                                    fromDate:addeddate
-                                    toDate:ServerDate
-                                    options:0];
-                            if ((long)[components minute]==0) {
-                                NSDateComponents *components = [gregorianCalendar components:NSSecondCalendarUnit
-                                      fromDate:addeddate                                                                
-                                      toDate:ServerDate
-                                      options:0];
-                                [date setText:[NSString stringWithFormat:@"%ld seconds ago",(long)[components second]]];
-                                [cell.contentView addSubview:date];
-                            }
-                            else if ((long)[components minute]==1)
-                                [date setText:[NSString stringWithFormat:@"%ld minute ago",(long)[components minute]]];
-                            else
-                                [date setText:[NSString stringWithFormat:@"%ld minutes ago",(long)[components minute]]];
-                            [cell.contentView addSubview:date];
-                        }
-                        else {
-                            if ((long)[components hour]==1)
-                                [date setText:[NSString stringWithFormat:@"%ld hour ago",(long)[components hour]]];
-                            else
-                                [date setText:[NSString stringWithFormat:@"%ld hours ago",(long)[components hour]]];
-                            [cell.contentView addSubview:date];
-                        }
-                    }
-                    else
-                    {
-                        if ((long)[components day]==1)
-                            [date setText:[NSString stringWithFormat:@"%ld day ago",(long)[components day]]];
-                        else
-                            [date setText:[NSString stringWithFormat:@"%ld days ago",(long)[components day]]];
-                        [cell.contentView addSubview:date];
-                    }
-                    
-                    if ( [dictRecord valueForKey:@"Memo"] != NULL &&
-                        ![[dictRecord objectForKey:@"Memo"] isKindOfClass:[NSNull class]] &&
-                        ![[dictRecord valueForKey:@"Memo"] isEqualToString:@""] )
-                    {
-                        UILabel *label_memo = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 310, 44)];
-                        [label_memo setBackgroundColor:[UIColor clearColor]];
-                        [label_memo setTextAlignment:NSTextAlignmentRight];
-                        label_memo.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"For  \"%@\" ",[dictRecord valueForKey:@"Memo"]]
-                                                                                    attributes:nil];
-                        label_memo.numberOfLines = 0;
-                        label_memo.lineBreakMode = NSLineBreakByTruncatingTail;
-                        [label_memo setStyleClass:@"history_memo"];
-                        
-                        if (label_memo.attributedText.length > 42) {
-                            [label_memo setStyleClass:@"history_memo_long"];
-                        }
-                        [cell.contentView addSubview:label_memo];
-                        [name setStyleClass:@"history_cell_textlabel_wMemo"];
-                    }
-                }
-            }
-
-            else if ([histTempPending count] == 0)
-            {
-                if ([self.list subviews])
-                {
-                    for (UILabel * subview in [self.list subviews])
-                    {
-                        [subview setHidden:YES];
-                    }
-                }
-
-                [self.list setStyleId:@"emptyTable"];
-                
-                [emptyText_localSearch setHidden:NO];
-                [emptyText_localSearch setText:@"No pending payments found for that name."];
-                
-                [self.list addSubview:emptyText_localSearch];
-            }
-            return cell;
-        }
-         */
-
         if ([histShowArrayPending count] > indexPath.row)
         {
             NSDictionary * dictRecord = [histShowArrayPending objectAtIndex:indexPath.row];
+
+            if (!isLocalSearch)
+            {
+                dictRecord = [histShowArrayPending objectAtIndex:indexPath.row];
+            }
+            else
+            {
+                dictRecord = [histTempPending objectAtIndex:indexPath.row];
+            }
 
             if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
             {
@@ -1617,7 +1433,8 @@
                         [transferTypeLabel setText:@"Request sent to"];
                         [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_wider"];
 
-                        if ([dictRecord valueForKey:@"InvitationSentTo"] == NULL || [[dictRecord objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])
+                        if ( [dictRecord valueForKey:@"InvitationSentTo"] == NULL ||
+                            [[dictRecord objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])
                         {
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
                             [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
@@ -1625,8 +1442,32 @@
                         }
                         else
                         {
-                            [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"] ]];
                             [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
+
+                            NSString * invitationSentTo = [NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"InvitationSentTo"]];
+                            
+                            BOOL containsLetters = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.letterCharacterSet].location;
+                            BOOL containsPunctuation = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.punctuationCharacterSet].location;
+                            BOOL containsNumbers = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.decimalDigitCharacterSet].location;
+                            BOOL containsSymbols = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.symbolCharacterSet].location;
+                            
+                            // Check if it's a phone number
+                            if (containsNumbers && !containsLetters && !containsPunctuation && !containsSymbols)
+                            {
+                                NSMutableString * mu = [NSMutableString stringWithString:[dictRecord valueForKey:@"InvitationSentTo"]];
+                                [mu insertString:@"(" atIndex:0];
+                                [mu insertString:@")" atIndex:4];
+                                [mu insertString:@" " atIndex:5];
+                                [mu insertString:@"-" atIndex:9];
+                                
+                                NSString * phoneWithSymbolsAddedBack = [NSString stringWithString:mu];
+                                
+                                [name setText:phoneWithSymbolsAddedBack];
+                            }
+                            else
+                            {
+                                [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"]]];
+                            }
                         }
                     }
                     else
@@ -1677,7 +1518,7 @@
                     }
                     else
                     {
-                        [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"]]];
+                        [name setText:[NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"InvitationSentTo"]]];
                     }
                 }
 
@@ -1708,7 +1549,7 @@
 
                 if (![[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
                 {
-                    UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(310, 0, 9, 80)];
+                    UILabel * indicator = [[UILabel alloc] initWithFrame:CGRectMake(310, 0, 10, 80)];
                     [indicator setBackgroundColor:kNoochBlue];
                     [indicator setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
                     [indicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-caret-left"]];
@@ -2668,6 +2509,8 @@
 
     UITextField *textField = [alert textFieldAtIndex:0];
     textField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
+    textField.textAlignment = NSTextAlignmentCenter;
+    textField.KeyboardType = UIKeyboardTypeEmailAddress;
     [alert show];
 }
 
@@ -2786,13 +2629,38 @@
     {
         if (![MFMailComposeViewController canSendMail])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
-                                                         message:@"You don't have a mail account configured for this device."
-                                                        delegate:nil
-                                               cancelButtonTitle:@"OK"
-                                               otherButtonTitles: nil];
-            [av show];
-            return;
+            if ([UIAlertController class]) // for iOS 8
+            {
+                UIAlertController * alert = [UIAlertController
+                                             alertControllerWithTitle:@"No Email Detected"
+                                             message:@"You don't have an email account configured for this device."
+                                             preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction * ok = [UIAlertAction
+                                      actionWithTitle:@"OK"
+                                      style:UIAlertActionStyleDefault
+                                      handler:^(UIAlertAction * action)
+                                      {
+                                          [alert dismissViewControllerAnimated:YES completion:nil];
+                                      }];
+                [alert addAction:ok];
+                
+                [self presentViewController:alert animated:YES completion:nil];
+                return;
+            }
+            else
+            {
+                if (![MFMailComposeViewController canSendMail])
+                {
+                    UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                                  message:@"You don't have an email account configured for this device."
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles: nil];
+                    [av show];
+                    return;
+                }
+            }
         }
         MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
@@ -2809,7 +2677,7 @@
 
 -(void)deleteTableRow:(NSIndexPath*)rowNumber
 {
-    int rowToRemove = rowNumber.row;
+    short rowToRemove = rowNumber.row;
     [histShowArrayPending removeObjectAtIndex:rowToRemove];
     [self.list deleteRowsAtIndexPaths:@[rowNumber] withRowAnimation:UITableViewRowAnimationFade];
 

@@ -87,7 +87,7 @@ NSString *amnt;
     NSError *error;
     NSData *postData = [NSJSONSerialization dataWithJSONObject:transaction
                                                        options:NSJSONWritingPrettyPrinted error:&error];
-    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     
     responseData = [NSMutableData data];
     
@@ -119,7 +119,8 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 
--(void)deleteBank:(NSString*)bankId{
+-(void)deleteBank:(NSString*)bankId
+{
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [NSMutableData data];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&bankAcctId=%@&accessToken=%@", ServerUrl, @"DeleteBankAccountDetails", [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"], bankId,[[NSUserDefaults standardUserDefaults] objectForKey:@"OAuthToken"]]]];
@@ -127,7 +128,8 @@ NSString *amnt;
     if (!connection)
         NSLog(@"connect error");
 }
--(void)forgotPass:(NSString *)email{
+-(void)forgotPass:(NSString *)email
+{
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSString *urlString = [NSString stringWithFormat:@"%@/ForgotPassword", ServerUrl];
@@ -137,7 +139,7 @@ NSString *amnt;
     NSError *error;
     NSData *postData = [NSJSONSerialization dataWithJSONObject:emailParam
                                                        options:NSJSONWritingPrettyPrinted error:&error];
-    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request setHTTPMethod:@"POST"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
@@ -146,10 +148,10 @@ NSString *amnt;
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     if (!connection)
         NSLog(@"connect error");
-    
-    
 }
--(void)getBanks{
+
+-(void)getBanks
+{
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [NSMutableData data];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
@@ -157,10 +159,11 @@ NSString *amnt;
     NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:requestgetbanks delegate:self];
     if (!connection)
         NSLog(@"connect error");
-    
-    
+
 }
--(void)getEncrypt:(NSString *)input {
+
+-(void)getEncrypt:(NSString *)input
+{
     NSString *encodedString = [NSString encodeBase64String:input];
     
     self.responseData = [[NSMutableData alloc] init];
@@ -171,7 +174,9 @@ NSString *amnt;
     if (!connection)
         NSLog(@"connect error");
 }
--(void)getDetails:(NSString*)username {
+
+-(void)getDetails:(NSString*)username
+{
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
@@ -180,7 +185,6 @@ NSString *amnt;
     
     if (!connection)
         NSLog(@"connect error");
-    
 }
 
 -(void)getMemIdFromuUsername:(NSString*)username
@@ -222,7 +226,7 @@ NSString *amnt;
     NSError *error;
     NSData *postData = [NSJSONSerialization dataWithJSONObject:entry
                                                        options:NSJSONWritingPrettyPrinted error:&error];
-    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request setHTTPMethod:@"POST"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
@@ -343,7 +347,7 @@ NSString *amnt;
     NSError *error;
     NSData *postData = [NSJSONSerialization dataWithJSONObject:notificationDictionary
                                                        options:NSJSONWritingPrettyPrinted error:&error];
-    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     NSString *urlStr = [[NSString alloc] initWithString:ServerUrl];
     urlStr = [urlStr stringByAppendingFormat:@"/%@", @"MemberEmailNotificationSettings"];
     NSURL *url = [NSURL URLWithString:urlStr];
@@ -361,7 +365,7 @@ NSString *amnt;
     NSError *error;
     NSData *postData = [NSJSONSerialization dataWithJSONObject:notificationDictionary
                                                        options:NSJSONWritingPrettyPrinted error:&error];
-    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     NSString *urlStr = [[NSString alloc] initWithString:ServerUrl];
     urlStr = [urlStr stringByAppendingFormat:@"/%@", @"MemberPushNotificationSettings"];
     NSURL *url = [NSURL URLWithString:urlStr];
@@ -375,7 +379,8 @@ NSString *amnt;
     if (!connection)
         NSLog(@"connect error");
 }
--(void)newUser:(NSString *)email first:(NSString *)fName last:(NSString *)lName password:(NSString *)password pin:(NSString*)pin invCode:(NSString*)inv fbId:(NSString *)fbId {
+-(void)newUser:(NSString *)email first:(NSString *)fName last:(NSString *)lName password:(NSString *)password pin:(NSString*)pin invCode:(NSString*)inv fbId:(NSString *)fbId
+{
     self.responseData = [NSMutableData data];
     NSMutableDictionary*dictnew=[[NSMutableDictionary alloc]init];
     [dictnew setObject:email forKey:@"UserName"];
@@ -419,7 +424,7 @@ NSString *amnt;
     postDataSet = [NSJSONSerialization dataWithJSONObject:memDetails
                                                   options:NSJSONWritingPrettyPrinted error:&error];
     
-    postLengthSet = [NSString stringWithFormat:@"%d", [postDataSet length]];
+    postLengthSet = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataSet length]];
     urlStrSet = [[NSString alloc] initWithString:ServerUrl];
     urlStrSet = [urlStrSet stringByAppendingFormat:@"/%@", @"MemberRegistration"];
     NSURL *url = [NSURL URLWithString:urlStrSet];
@@ -445,7 +450,7 @@ NSString *amnt;
     postDataSet = [NSJSONSerialization dataWithJSONObject:settingsDictionary
                                                   options:NSJSONWritingPrettyPrinted error:&error];
     
-    postLengthSet = [NSString stringWithFormat:@"%d", [postDataSet length]];
+    postLengthSet = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataSet length]];
     urlStrSet = [[NSString alloc] initWithString:ServerUrl];
     urlStrSet = [urlStrSet stringByAppendingFormat:@"/%@", @"MySettings"];
     NSURL *url = [NSURL URLWithString:urlStrSet];
@@ -490,7 +495,7 @@ NSString *amnt;
     NSError *error;
     postDataBNK = [NSJSONSerialization dataWithJSONObject:bankDetails
                                                   options:NSJSONWritingPrettyPrinted error:&error];
-    postLengthBNK = [NSString stringWithFormat:@"%d", [postDataBNK length]];
+    postLengthBNK = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataBNK length]];
     NSString *urlStr = [[NSString alloc] initWithString:ServerUrl];
     urlStr = [urlStr stringByAppendingFormat:@"/%@", @"SaveBankAccountDetails"];
     NSURL *url = [NSURL URLWithString:urlStr];
@@ -551,7 +556,7 @@ NSString *amnt;
     NSError *error;
     NSData *postData = [NSJSONSerialization dataWithJSONObject:transaction
                                                        options:NSJSONWritingPrettyPrinted error:&error];
-    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     responseData = [NSMutableData data];
     NSString *urlStr = [NSString stringWithString:ServerUrl];
     urlStr = [urlStr stringByAppendingFormat:@"/%@", @"WithdrawFund"];
@@ -695,7 +700,7 @@ NSString *amnt;
                 NSLog(@"Serve -> nav_ctrl.viewControllers is: %@", nav_ctrl.viewControllers);
                 NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
 
-                for (int i = [arrNav count]; i > 1; i--)
+                for (short i = [arrNav count]; i > 1; i--)
                 {
                     [arrNav removeLastObject];
                 }
@@ -868,7 +873,7 @@ NSString *amnt;
     NSError *error;
     NSData *postData = [NSJSONSerialization dataWithJSONObject:emailParam
                                                        options:NSJSONWritingPrettyPrinted error:&error];
-    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request setHTTPMethod:@"POST"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
@@ -896,7 +901,7 @@ NSString *amnt;
     NSError *error;
     NSData *postData = [NSJSONSerialization dataWithJSONObject:emailParam
                                                        options:NSJSONWritingPrettyPrinted error:&error];
-    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request setHTTPMethod:@"POST"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
@@ -929,7 +934,7 @@ NSString *amnt;
     postDataRef = [NSJSONSerialization dataWithJSONObject:dictValidate
                                                   options:NSJSONWritingPrettyPrinted error:&error];
     
-    postLengthRef = [NSString stringWithFormat:@"%d", [postDataRef length]];
+    postLengthRef = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataRef length]];
     
     requestRef = [[NSMutableURLRequest alloc] initWithURL:url];
     [requestRef setHTTPMethod:@"POST"];
@@ -983,7 +988,7 @@ NSString *amnt;
     postDataRef = [NSJSONSerialization dataWithJSONObject:dictRef
                                                   options:NSJSONWritingPrettyPrinted error:&error];
     
-    postLengthRef = [NSString stringWithFormat:@"%d", [postDataRef length]];
+    postLengthRef = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataRef length]];
     requestRef = [[NSMutableURLRequest alloc] initWithURL:url];
 
     [requestRef setHTTPMethod:@"POST"];
@@ -1015,7 +1020,7 @@ NSString *amnt;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
 
-    postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
+    postLengthInv = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataInv length]];
 
     requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
     [requestInv setHTTPMethod:@"POST"];
@@ -1051,7 +1056,7 @@ NSString *amnt;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
     
-    postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
+    postLengthInv = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataInv length]];
 
     requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
     [requestInv setHTTPMethod:@"POST"];
@@ -1296,7 +1301,7 @@ NSString *amnt;
     
     
     
-    postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
+    postLengthInv = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataInv length]];
     
     requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
     [requestInv setHTTPMethod:@"POST"];
@@ -1318,7 +1323,7 @@ NSString *amnt;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     responseData = [NSMutableData data];
-    NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&SubListType=%@&%@=%@&%@=%@&accessToken=%@", ServerUrl, @"GetTransactionsList", [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"], type,subType, @"pSize", [NSString stringWithFormat:@"%d",len], @"pIndex", [NSString stringWithFormat:@"%d",sPos],[defaults valueForKey:@"OAuthToken"]];
+    NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&SubListType=%@&%@=%@&%@=%@&accessToken=%@", ServerUrl, @"GetTransactionsList", [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"], type,subType, @"pSize", [NSString stringWithFormat:@"%ld",(long)len], @"pIndex", [NSString stringWithFormat:@"%ld",(long)sPos],[defaults valueForKey:@"OAuthToken"]];
     NSLog(@"more hist: %@",type);
     requestList = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlForHis]];
     
@@ -1332,7 +1337,7 @@ NSString *amnt;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
     responseData = [NSMutableData data];
-    NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&sublist=%@&friendName=%@&%@=%@&%@=%@&accessToken=%@", ServerUrl, @"GetTransactionsSearchList", [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"], type,subType,name, @"pSize", [NSString stringWithFormat:@"%d",len], @"pIndex", [NSString stringWithFormat:@"%d",sPos],[defaults valueForKey:@"OAuthToken"]];
+    NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&sublist=%@&friendName=%@&%@=%@&%@=%@&accessToken=%@", ServerUrl, @"GetTransactionsSearchList", [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"], type,subType,name, @"pSize", [NSString stringWithFormat:@"%ld",(long)len], @"pIndex", [NSString stringWithFormat:@"%ld",(long)sPos],[defaults valueForKey:@"OAuthToken"]];
     //NSLog(@"more hist: %@",type);
     requestList = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlForHis]];
     
@@ -1385,7 +1390,7 @@ NSString *amnt;
     
     
     
-    postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
+    postLengthInv = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataInv length]];
     
     requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
     
@@ -1442,7 +1447,7 @@ NSString *amnt;
                                                   options:NSJSONWritingPrettyPrinted error:&error];
     
 
-    postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
+    postLengthInv = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataInv length]];
     
     requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
     [requestInv setHTTPMethod:@"POST"];
@@ -1514,7 +1519,7 @@ NSString *amnt;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
     
-    postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
+    postLengthInv = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataInv length]];
 
     requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
     [requestInv setHTTPMethod:@"POST"];
@@ -1625,7 +1630,7 @@ NSString *amnt;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
     
-    postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
+    postLengthInv = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataInv length]];
     
     requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
     [requestInv setHTTPMethod:@"POST"];
@@ -1690,7 +1695,7 @@ NSString *amnt;
     NSError * error;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
-    postLengthInv = [NSString stringWithFormat:@"%d", [postDataInv length]];
+    postLengthInv = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataInv length]];
     requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
 
     [requestInv setHTTPMethod:@"POST"];

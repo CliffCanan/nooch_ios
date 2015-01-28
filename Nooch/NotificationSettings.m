@@ -297,7 +297,7 @@
 
 -(void)changeSwitch:(UISwitch*)switchRef
 {
-    int tag = switchRef.tag;
+    NSUInteger tag = switchRef.tag;
     switch (tag)
     {
         case 101:

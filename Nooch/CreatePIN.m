@@ -49,7 +49,7 @@
 #pragma mark - UITextField delegation
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    int len = [textField.text length] + [string length];
+    NSUInteger len = [textField.text length] + [string length];
     
     if([string length] == 0) { //deleting
         switch (len) {

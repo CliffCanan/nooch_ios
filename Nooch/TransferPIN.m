@@ -6,6 +6,7 @@
 #import "TransferPIN.h"
 #import <QuartzCore/QuartzCore.h>
 #import "GetLocation.h"
+#import "HistoryFlat.h"
 #import "TransactionDetails.h"
 #import "UIImageView+WebCache.h"
 #import "SelectRecipient.h"
@@ -207,7 +208,7 @@
 
         if ([self.receiver objectForKey:@"firstName"] && [self.receiver objectForKey:@"lastName"])
         {
-            int numOfChars = [[self.receiver objectForKey:@"firstName"] length] + [[self.receiver objectForKey:@"lastName"] length];
+            short numOfChars = [[self.receiver objectForKey:@"firstName"] length] + [[self.receiver objectForKey:@"lastName"] length];
             if (numOfChars > 23) {numOfChars = 23;}
 
             to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",[self.receiver objectForKey:@"firstName"],[self.receiver objectForKey:@"lastName"]] attributes:textAttributes];
@@ -217,7 +218,7 @@
         }
         else if ([self.receiver objectForKey:@"firstName"])
         {
-            int numOfChars = [[self.receiver objectForKey:@"firstName"] length];
+            short numOfChars = [[self.receiver objectForKey:@"firstName"] length];
 
             to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[self.receiver objectForKey:@"firstName"]] attributes:textAttributes];
 
@@ -618,7 +619,7 @@
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochBlue.CGColor;
     }
 
-    int len = [textField.text length] + [string length];
+    short len = [textField.text length] + [string length];
 
     if ([string length] == 0)
     {
@@ -835,18 +836,18 @@
                     else if ([self.receiver objectForKey:@"phone"] )
                     {
                         transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                               transactionInputTransfer, @"transactionInput",
+                                               transactionInputTransfer, @"requestInput",
                                                [[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"], @"accessToken",
-                                               self.phone,@"receiverPhoneNumer", nil];
+                                               self.phone,@"PayorPhoneNumber", nil];
                     }
                 }
 
-                //NSLog(@"SEND/REQUEST --> transactionINPUTTransfer #3 is: %@", transactionInputTransfer);
+                NSLog(@"SEND/REQUEST --> transactionINPUTTransfer #3 is: %@", transactionInputTransfer);
                 NSLog(@"Type: %@ - transactionTransfer: %@", self.type, transactionTransfer);
 
                 postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
                                                                options:NSJSONWritingPrettyPrinted error:&error];;
-                postLengthTransfer = [NSString stringWithFormat:@"%d", [postTransfer length]];
+                postLengthTransfer = [NSString stringWithFormat:@"%lu", (unsigned long)[postTransfer length]];
                 self.respData = [NSMutableData data];
                 urlStrTranfer = [[NSString alloc] initWithString:MyUrl];
 
@@ -858,8 +859,7 @@
                     }
                     else if ([self.receiver objectForKey:@"phone"])
                     {
-                        // THIS MIGHT CHANGE
-                        urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyFromNonNoochUserThroughPhoneUsingKnox"];
+                        urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyToNonNoochUserThroughPhoneUsingKnox"];
                     }
                 }
                 else if ([self.type isEqualToString:@"send"])
@@ -901,8 +901,6 @@
             
             if ([[dictResult objectForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."])
             {
-                [spinner stopAnimating];
-                [spinner setHidden:YES];
                 [self.hud hide:YES];
 
                 AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
@@ -921,8 +919,6 @@
             }
             else if([[dictResult objectForKey:@"Result"]isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."])
             {
-                [spinner stopAnimating];
-                [spinner setHidden:YES];
                 [self.hud hide:YES];
 
                 AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
@@ -940,8 +936,6 @@
             }
             else if (([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))
             {
-                [spinner stopAnimating];
-                [spinner setHidden:YES];
                 [self.hud hide:YES];
 
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Suspended"
@@ -968,8 +962,6 @@
             }
             else if (([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))
             {
-                [spinner stopAnimating];
-                [spinner setHidden:YES];
                 [self.hud hide:YES];
 
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Suspended"
@@ -1071,7 +1063,7 @@
 
         postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
                                                        options:NSJSONWritingPrettyPrinted error:&error];;
-        postLengthTransfer = [NSString stringWithFormat:@"%d", [postTransfer length]];
+        postLengthTransfer = [NSString stringWithFormat:@"%lu", (unsigned long)[postTransfer length]];
         self.respData = [NSMutableData data];
         urlStrTranfer = [[NSString alloc] initWithString:MyUrl];
         if ([self.type isEqualToString:@"request"]) {
@@ -1147,7 +1139,7 @@
 
         postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
                                                        options:NSJSONWritingPrettyPrinted error:&error];;
-        postLengthTransfer = [NSString stringWithFormat:@"%d", [postTransfer length]];
+        postLengthTransfer = [NSString stringWithFormat:@"%lu", (unsigned long)[postTransfer length]];
 
         self.respData = [NSMutableData data];
         urlStrTranfer = [[NSString alloc] initWithString:MyUrl];
@@ -1248,7 +1240,7 @@
         }
         else if (buttonIndex == 1)
         {
-            [nav_ctrl popToRootViewControllerAnimated:NO];
+            //[nav_ctrl popToRootViewControllerAnimated:NO];
             NSMutableDictionary *input = [self.trans mutableCopy];
             
             if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
@@ -1258,7 +1250,6 @@
                 NSString *ResID = [input valueForKey:@"SenderId"];
                 [input setObject:MemberId forKey:@"RecepientId"];
                 [input setObject:ResID forKey:@"MemberId"];
-                NSLog(@"Input: %@",input);
                 [input setObject:dictResultTransfer[@"requestId"] forKey:@"TransactionId"];
             }
             else  if ([self.type isEqualToString:@"send"])
@@ -1299,29 +1290,61 @@
                 }
             }
             NSLog(@"Input: %@",input);
+
+            NSLog(@"TransferPIN -> nav_ctrl.viewControllers is: %@", nav_ctrl.viewControllers);
+            NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
+            
+            for (short i = [arrNav count]; i > 1; i--)
+            {
+                [arrNav removeLastObject];
+            }
+
+            HistoryFlat * mainHistoryScreen = [HistoryFlat new];
+            [arrNav addObject: mainHistoryScreen];
+            [nav_ctrl setViewControllers:arrNav animated:NO];
+
+            NSLog(@"TransferPIN -> nav_ctrl.viewControllers is: %@", nav_ctrl.viewControllers);
+
             TransactionDetails *td = [[TransactionDetails alloc] initWithData:input];
             [nav_ctrl pushViewController:td animated:YES];
-        }
-    }
-    else if (alertView.tag == 2500)
-    {
-        if (buttonIndex == 0) {
-            [nav_ctrl popToRootViewControllerAnimated:YES];
-        }
-    }
-    else if (alertView.tag == 20230)
-    {
-        if (buttonIndex == 0) {
-            [nav_ctrl popToRootViewControllerAnimated:YES];
         }
     }
     else if ((alertView.tag == 50 || alertView.tag == 51 || alertView.tag == 52) && buttonIndex == 1)
     {
         if (![MFMailComposeViewController canSendMail])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have a mail account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-            [av show];
-            return;
+            if ([UIAlertController class]) // for iOS 8
+            {
+                UIAlertController * alert = [UIAlertController
+                                             alertControllerWithTitle:@"No Email Detected"
+                                             message:@"You don't have an email account configured for this device."
+                                             preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction * ok = [UIAlertAction
+                                      actionWithTitle:@"OK"
+                                      style:UIAlertActionStyleDefault
+                                      handler:^(UIAlertAction * action)
+                                      {
+                                          [alert dismissViewControllerAnimated:YES completion:nil];
+                                      }];
+                [alert addAction:ok];
+                
+                [self presentViewController:alert animated:YES completion:nil];
+                return;
+            }
+            else
+            {
+                if (![MFMailComposeViewController canSendMail])
+                {
+                    UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                                  message:@"You don't have an email account configured for this device."
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles: nil];
+                    [av show];
+                    return;
+                }
+            }
         }
         MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
@@ -1334,7 +1357,12 @@
         [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
         [self presentViewController:mailComposer animated:YES completion:nil];
     }
-    else if (alertView.tag == 50 && buttonIndex == 1) {
+    else if (alertView.tag == 50 && buttonIndex == 1)
+    {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    else
+    {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
@@ -1352,6 +1380,17 @@
 	NSLog(@"Connection failed: %@", [error description]);
 }
 
+-(void)errorAlerts:(NSString *)referenceNumber
+{
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error #2650"
+                                                 message:@"\xF0\x9F\x98\xB3\nUnfortunately something is not quite right. This is a polite way of saying we screwed up.\n\nPlease try your transfer again or contact us if the problem persists."
+                                                delegate:self
+                                       cancelButtonTitle:@"OK"
+                                       otherButtonTitles:@"Contact Support",nil];
+    [av setTag:52];
+    [av show];
+}
+
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     [self.hud hide:YES];
@@ -1365,8 +1404,8 @@
     NSLog(@"This is the response:  %@",responseString);
     if ([self.receiver valueForKey:@"nonuser"])
     {
-        if ([[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Your cash was sent successfully"] ||
-            [[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Your cash was sent successfully"])
+        if ([[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]localizedCaseInsensitiveContainsString:@"Your cash was sent successfully"] ||
+            [[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"]localizedCaseInsensitiveContainsString:@"Your cash was sent successfully"])
         {
             [[assist shared] setTranferImage:nil];
             UIImage * imgempty = [UIImage imageNamed:@""];
@@ -1380,18 +1419,31 @@
             [av show];
             return;
         }
-        if ([[[dictResultTransfer valueForKey:@"RequestMoneyFromNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Request made successfully."])
+        else if ([[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingKnoxResult"] valueForKey:@"Result"] ||
+                 [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"])
+        {
+            [self errorAlerts:@"420"];
+            return;
+        }
+        if ([[[dictResultTransfer valueForKey:@"RequestMoneyFromNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]localizedCaseInsensitiveContainsString:@"Request made successfully."] ||
+            [[[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"]localizedCaseInsensitiveContainsString:@"Request made successfully"])
         {
             [[assist shared] setTranferImage:nil];
             UIImage * imgempty = [UIImage imageNamed:@""];
             [[assist shared] setTranferImage:imgempty];
             UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Great Success"
-                                                          message:@"\xF0\x9F\x91\x8D\nYour request was sent successfully.\n\nThe recipient can pay this request by clicking the link we emailed to them.\n\nThey do not have to download this app to pay the request (but they totally can too)."
+                                                          message:@"\xF0\x9F\x91\x8D\nYour request was sent successfully.\n\nThe recipient can pay this request by clicking the link we emailed to them.\n\nThey do not have to download Nooch to pay the request (but they totally can too)."
                                                          delegate:self
                                                 cancelButtonTitle:@"OK"
                                                 otherButtonTitles:@"View Details",nil];
             av.tag = 1;
             [av show];
+            return;
+        }
+        else if ([[dictResultTransfer valueForKey:@"RequestMoneyFromNonNoochUserUsingKnoxResult"] valueForKey:@"Result"] ||
+                 [[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"])
+        {
+            [self errorAlerts:@"421"];
             return;
         }
     }
@@ -1432,7 +1484,7 @@
         UIImage * imgempty = [UIImage imageNamed:@""];
         [[assist shared] setTranferImage:imgempty];
 
-        int randNum = arc4random() % 14;
+        int randNum = arc4random() % 15;
         UIAlertView *av;
         NSString * alertTitleFromArtisan = [ARPowerHookManager getValueForHookById:@"transSuccessAlertTitle"];
         NSString * alertMsgFromArtisan = [ARPowerHookManager getValueForHookById:@"transSuccessAlertMsg"];
@@ -1567,25 +1619,6 @@
         [av setTag:1];
         [av show];
     }
-    /* else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request successfully declined."])
-    {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Denied"
-                                                     message:[NSString stringWithFormat:@"You successfully denied %@'s request for $%.02f.",[receiverFirst capitalizedString],self.amnt]
-                                                    delegate:self
-                                           cancelButtonTitle:nil
-                                           otherButtonTitles:@"OK",nil];
-        [av setTag:1];
-        [av show];
-    }
-    else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request successfully cancelled."])
-    {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request Cancelled"
-                                                     message:[NSString stringWithFormat:@"You successfully cancelled your request for $%.02f from %@.",self.amnt,[receiverFirst capitalizedString]]
-                                                    delegate:self cancelButtonTitle:nil
-                                           otherButtonTitles:@"OK",nil];
-        [av setTag:1];
-        [av show];
-    }*/
     else if ([[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request made successfully."])
     {
         [[assist shared] setTranferImage:nil];
@@ -1610,7 +1643,8 @@
             [av setTag:1];
             [av show];
         }
-        else {
+        else
+        {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Pay Me"
                                                          message:[NSString stringWithFormat:@"\xF0\x9F\x98\x80\nYou requested $%.02f from %@ successfully.",self.amnt,[receiverFirst capitalizedString]]
                                                         delegate:self
@@ -1645,6 +1679,7 @@
             || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."]
             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."])
     {
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         self.prompt.text = @"2nd failed attempt";
         self.fourth_num.layer.borderColor = kNoochRed.CGColor;
         self.third_num.layer.borderColor = kNoochRed.CGColor;
@@ -1668,7 +1703,7 @@
         [suspendedAlert show];
         [suspendedAlert setTag:9];
     }
-    else if([[resultValueTransfer valueForKey:@"Result"]isEqual:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]
+    else if ([[resultValueTransfer valueForKey:@"Result"]isEqual:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]
             || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]
             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])
     {
@@ -1700,7 +1735,7 @@
              || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Receiver does not exist."]
              || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Receiver does not exist."])
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Transfer Error #1350"
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Transfer Error #423"
                                                      message:@"\xF0\x9F\x98\xB3\nLooks like we screwed up. We hate when this happens - sorry for the delay!\n\nPlease try making your transfer again or contact us if the problem persists."
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
@@ -1722,18 +1757,10 @@
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
             [av show];
-            return;
         }
         else
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error #2650"
-                                                         message:@"\xF0\x9F\x98\xB3\nUnfortunately something is not quite right. This is a polite way of saying we screwed up.\n\nPlease try your transfer again or contact us if the problem persists."
-                                                        delegate:self
-                                               cancelButtonTitle:@"OK"
-                                               otherButtonTitles:@"Contact Support",nil];
-            [av setTag:52];
-            [av show];
-            return;
+            [self errorAlerts:@"430"];
         }
 
         transferFinished = YES;

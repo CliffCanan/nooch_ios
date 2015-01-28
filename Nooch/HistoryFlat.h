@@ -23,7 +23,7 @@ NSString *listType;
 serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate,MBProgressHUDDelegate,MFMailComposeViewControllerDelegate>
 {
     UISegmentedControl *completed_pending;
-    int countRows;
+    short countRows;
     NSMutableArray *histArray;
     NSMutableArray *histShowArrayCompleted;
     NSMutableArray *histShowArrayPending;

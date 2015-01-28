@@ -37,17 +37,6 @@
     return self;
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [self.navigationItem setTitle:@"Transfer Details"];
-    [super viewWillAppear:animated];
-    self.screenName = @"TransactionDetail Screen";
-}
--(void)viewDidDisappear:(BOOL)animated{
-    [self.hud hide:YES];
-    [super viewDidDisappear:animated];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -82,9 +71,9 @@
     shadowUnder.backgroundColor = Rgb2UIColor(207, 210, 213, .5);
     shadowUnder.layer.cornerRadius = 38;
     shadowUnder.layer.shadowColor = [UIColor blackColor].CGColor;
-    shadowUnder.layer.shadowOffset = CGSizeMake(0, 1.0);
-    shadowUnder.layer.shadowOpacity = 0.45;
-    shadowUnder.layer.shadowRadius = 2.5;
+    shadowUnder.layer.shadowOffset = CGSizeMake(0, 1.5);
+    shadowUnder.layer.shadowOpacity = 0.5;
+    shadowUnder.layer.shadowRadius = 3.0;
     [self.view addSubview:shadowUnder];
 
     UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];  // Other user's NAME
@@ -389,12 +378,13 @@
               [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Invite"] ) &&
               [[self.trans valueForKey:@"TransactionStatus"] isEqualToString:@"Success"])
     {
-            
-        if ([[self.trans objectForKey:@"MemberId"] isEqualToString:[user objectForKey:@"MemberId"]]) {
+        if ([[self.trans objectForKey:@"MemberId"] isEqualToString:[user objectForKey:@"MemberId"]])
+        {
             [self.view addSubview:disp];
             [self.view addSubview:disp_text];
         }
-        else {
+        else
+        {
             [fb setStyleId:@"details_twit_donate"];
             [fb_text setFrame:fb.frame];
             [twit setStyleId:@"details_disp"];
@@ -414,6 +404,20 @@
     [serveOBJ GetTransactionDetail:[self.trans valueForKey:@"TransactionId"]];
 
     shouldDeletePendingRow = NO;
+}
+
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.navigationItem setTitle:@"Transfer Details"];
+    [super viewWillAppear:animated];
+    self.screenName = @"TransactionDetail Screen";
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [self.hud hide:YES];
+    [super viewDidDisappear:animated];
 }
 
 -(void)remind_request_existinguser
@@ -785,7 +789,8 @@
     [av setTag:310];
 }
 
-- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
     UIAlertView *alert = [[UIAlertView alloc] init];
     [alert addButtonWithTitle:@"OK"];
     [alert setDelegate:nil];
@@ -822,28 +827,47 @@
 {
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     
-    if ([[assist shared]getSuspended]) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+    if ([[assist shared]getSuspended])
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended"
+                                                    message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help."
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:@"Contact Support", nil];
         [alert setTag:50];
         [alert show];
         return;
     }
-    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Email Verification Needed" message:@"Please click the link sent to your email to verify your email address." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"])
+    {
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Email Verification Needed"
+                                                    message:@"Please click the link sent to your email to verify your email address."
+                                                   delegate:Nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:Nil, nil];
         [alert show];
         return;
     }
-    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] ) {
-        UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Profile Not Complete" message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!" delegate:self cancelButtonTitle:@"Later" otherButtonTitles:@"Validate Now", nil];
+    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"])
+    {
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Profile Not Complete"
+                                                    message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Later"
+                                          otherButtonTitles:@"Validate Now", nil];
         [alert setTag:147];
         [alert show];
         return;
     }
-    if ( ![[[NSUserDefaults standardUserDefaults]
-            objectForKey:@"IsBankAvailable"]isEqualToString:@"1"]) {
-        UIAlertView *set = [[UIAlertView alloc] initWithTitle:@"Please Link A Bank Account" message:@"Before you can make any transfer you must attach a bank account." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+    if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Please Link A Bank Account"
+                                                      message:@"Before you can make any transfer you must attach a bank account."
+                                                     delegate:self
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles:Nil, nil];
 
-        [set show];
+        [alert show];
         return;
     }
 
@@ -878,7 +902,11 @@
 
 - (void)cancel_request_to_nonNoochUser
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Request" message:@"Are you sure you want to cancel this request?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Request"
+                                                 message:@"Are you sure you want to cancel this request?"
+                                                delegate:self
+                                       cancelButtonTitle:@"Yes"
+                                       otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:2010];
 }
@@ -898,7 +926,7 @@
         [alert show];
         return;
     }
-    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"] )
+    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"])
     {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Email Verification Needed"
                                                         message:@"Please click the link sent to your email to verify your email address."
@@ -1287,15 +1315,47 @@
 
     else if (alertView.tag == 568 && buttonIndex == 1)  // User Disputed a Transfer, then selected "Contact Support" in Alert
     {
-        if (![MFMailComposeViewController canSendMail]){
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-            [av show];
-            return;
+        if (![MFMailComposeViewController canSendMail])
+        {
+            if ([UIAlertController class]) // for iOS 8
+            {
+                UIAlertController * alert = [UIAlertController
+                                             alertControllerWithTitle:@"No Email Detected"
+                                             message:@"You don't have an email account configured for this device."
+                                             preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction * ok = [UIAlertAction
+                                      actionWithTitle:@"OK"
+                                      style:UIAlertActionStyleDefault
+                                      handler:^(UIAlertAction * action)
+                                      {
+                                          [alert dismissViewControllerAnimated:YES completion:nil];
+                                      }];
+                [alert addAction:ok];
+                
+                [self presentViewController:alert animated:YES completion:nil];
+                return;
+            }
+            else
+            {
+                if (![MFMailComposeViewController canSendMail])
+                {
+                    UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                                  message:@"You don't have an email account configured for this device."
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles: nil];
+                    [av show];
+                    return;
+                }
+            }
         }
         MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
         mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+        
         [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+        
         [mailComposer setMessageBody:@"" isHTML:NO];
         [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
         [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
@@ -1370,10 +1430,40 @@
 
     else if (alertView.tag == 50 && buttonIndex == 1)  // IF USER IS SUSPENDED, & TAPS "CONTACT SUPPORT" IN ALERT
     {
-        if (![MFMailComposeViewController canSendMail]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email Detected" message:@"You don't seem to have an email account configured for this device." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-            [av show];
-            return;
+        if (![MFMailComposeViewController canSendMail])
+        {
+            if ([UIAlertController class]) // for iOS 8
+            {
+                UIAlertController * alert = [UIAlertController
+                                             alertControllerWithTitle:@"No Email Detected"
+                                             message:@"You don't have an email account configured for this device."
+                                             preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction * ok = [UIAlertAction
+                                      actionWithTitle:@"OK"
+                                      style:UIAlertActionStyleDefault
+                                      handler:^(UIAlertAction * action)
+                                      {
+                                          [alert dismissViewControllerAnimated:YES completion:nil];
+                                      }];
+                [alert addAction:ok];
+                
+                [self presentViewController:alert animated:YES completion:nil];
+                return;
+            }
+            else
+            {
+                if (![MFMailComposeViewController canSendMail])
+                {
+                    UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                                  message:@"You don't have an email account configured for this device."
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles: nil];
+                    [av show];
+                    return;
+                }
+            }
         }
         MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
@@ -1434,9 +1524,9 @@
                   [tranDetailResult valueForKey:@"Picture"] != NULL)
             {
                 NSArray *bytedata = [tranDetailResult valueForKey:@"Picture"];
-                unsigned c = bytedata.count;
+                long c = bytedata.count;
                 uint8_t *bytes = malloc(sizeof(*bytes) * c);
-                
+
                 unsigned i;
                 for (i = 0; i < c; i++) {
                     NSString *str = [bytedata objectAtIndex:i];
@@ -1507,7 +1597,6 @@
             [self.view addSubview:btnShowMapOverlay];
             [self.view bringSubviewToFront:btnShowMapOverlay];
             [btnShowMapOverlay addTarget:self action:@selector(Map_LightBox) forControlEvents:UIControlEventTouchUpInside];
-            
         }
 
         if ([self.trans objectForKey:@"Amount"] != NULL)
