@@ -317,7 +317,7 @@
     [self.exportHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
     self.exportHistory.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.exportHistory setStyleId:@"exportStatsBtn"];
-    [self.exportHistory setFrame:CGRectMake(60, 445, 200, 38)];
+    [self.exportHistory setFrame:CGRectMake(60, 448, 200, 38)];
 
     UILabel * glyph_export = [UILabel new];
     [glyph_export setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
@@ -361,155 +361,175 @@
 
 -(void)go_2nd_panel_from_1st
 {
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.4];
- 
-    [self.exportHistory setFrame:CGRectMake(60, 570, 200, 38)];
-    
-    self.selected++;
+    [UIView animateKeyframesWithDuration:0.5
+                                   delay:0
+                                 options:0 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      [self.exportHistory setFrame:CGRectMake(60, 570, 200, 38)];
 
-    CGRect frame;
-    frame = self.back_profile.frame;
-    frame.origin.x -= 320;
-    [self.back_profile setFrame:frame];
-    
-    frame = self.back_transfer.frame;
-    frame.origin.x -= 320;
-    [self.back_transfer setFrame:frame];
-    
-    frame = self.back_donation.frame;
-    frame.origin.x -= 320;
-    [self.back_donation setFrame:frame];
-    
-    [UIView commitAnimations];
+                                      CGRect frame;
+                                      frame = self.back_profile.frame;
+                                      frame.origin.x -= 320;
+                                      [self.back_profile setFrame:frame];
+                                      
+                                      frame = self.back_transfer.frame;
+                                      frame.origin.x -= 320;
+                                      [self.back_transfer setFrame:frame];
+                                      
+                                      frame = self.back_donation.frame;
+                                      frame.origin.x -= 320;
+                                      [self.back_donation setFrame:frame];
+
+                                  }];
+                              } completion: nil
+     ];
+
+    self.selected++;
 }
 
 -(void)go_3rd_panel_from_1st
 {
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.65];
-
-    [self.exportHistory setFrame:CGRectMake(60, 570, 200, 38)];
-
     self.selected += 2;
 
-    CGRect frame;
-    frame = self.back_profile.frame;
-    frame.origin.x -= 640;
-    [self.back_profile setFrame:frame];
-
-    frame = self.back_transfer.frame;
-    frame.origin.x -= 640;
-    [self.back_transfer setFrame:frame];
-
-    frame = self.back_donation.frame;
-    frame.origin.x -= 640;
-    [self.back_donation setFrame:frame];
-
-    [UIView commitAnimations];
-
-    [self performSelector:@selector(animatePieChart) withObject:nil afterDelay:.7];
+    [UIView animateKeyframesWithDuration:0.7
+                                   delay:0
+                                 options:0 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      [self.exportHistory setFrame:CGRectMake(60, 570, 200, 38)];
+                                      
+                                      self.selected += 2;
+                                      
+                                      CGRect frame;
+                                      frame = self.back_profile.frame;
+                                      frame.origin.x -= 640;
+                                      [self.back_profile setFrame:frame];
+                                      
+                                      frame = self.back_transfer.frame;
+                                      frame.origin.x -= 640;
+                                      [self.back_transfer setFrame:frame];
+                                      
+                                      frame = self.back_donation.frame;
+                                      frame.origin.x -= 640;
+                                      [self.back_donation setFrame:frame];
+                                      
+                                  }];
+                              } completion: ^(BOOL finished) {
+                                  [self performSelector:@selector(animatePieChart) withObject:nil afterDelay:.1];
+                              }
+     ];
 }
 
 -(void)go_3rd_panel_from_2nd
 {
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.4];
-
     self.selected++;
 
-    CGRect frame;
-    frame = self.back_profile.frame;
-    frame.origin.x -= 320;
-    [self.back_profile setFrame:frame];
-
-    frame = self.back_transfer.frame;
-    frame.origin.x -= 320;
-    [self.back_transfer setFrame:frame];
-
-    frame = self.back_donation.frame;
-    frame.origin.x -= 320;
-    [self.back_donation setFrame:frame];
-
-    [UIView commitAnimations];
-
-    [self performSelector:@selector(animatePieChart) withObject:nil afterDelay:.5];
+    [UIView animateKeyframesWithDuration:0.5
+                                   delay:0
+                                 options:0 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      CGRect frame;
+                                      frame = self.back_profile.frame;
+                                      frame.origin.x -= 320;
+                                      [self.back_profile setFrame:frame];
+                                      
+                                      frame = self.back_transfer.frame;
+                                      frame.origin.x -= 320;
+                                      [self.back_transfer setFrame:frame];
+                                      
+                                      frame = self.back_donation.frame;
+                                      frame.origin.x -= 320;
+                                      [self.back_donation setFrame:frame];
+                                  }];
+                              } completion: ^(BOOL finished) {
+                                  [self performSelector:@selector(animatePieChart) withObject:nil afterDelay:.05];
+                              }
+     ];
 }
 
 -(void)go_1st_panel_from_2nd
 {
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.4];
-    
-    [self.exportHistory setFrame:CGRectMake(60, 445, 200, 38)];
-
     self.selected--;
 
-    CGRect frame;
-    frame = self.back_profile.frame;
-    frame.origin.x += 320;
-    [self.back_profile setFrame:frame];
-
-    frame = self.back_transfer.frame;
-    frame.origin.x += 320;
-    [self.back_transfer setFrame:frame];
-
-    frame = self.back_donation.frame;
-    frame.origin.x += 320;
-    [self.back_donation setFrame:frame];
-    
-    [UIView commitAnimations];
+    [UIView animateKeyframesWithDuration:0.5
+                                   delay:0
+                                 options:0 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      [self.exportHistory setFrame:CGRectMake(60, 448, 200, 38)];
+                                      
+                                      CGRect frame;
+                                      frame = self.back_profile.frame;
+                                      frame.origin.x += 320;
+                                      [self.back_profile setFrame:frame];
+                                      
+                                      frame = self.back_transfer.frame;
+                                      frame.origin.x += 320;
+                                      [self.back_transfer setFrame:frame];
+                                      
+                                      frame = self.back_donation.frame;
+                                      frame.origin.x += 320;
+                                      [self.back_donation setFrame:frame];
+                                  }];
+                              } completion: nil
+     ];
 }
 
 -(void)go_2nd_panel_from_3rd
 {
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.4];
-
     self.selected--;
 
-    CGRect frame;
-    frame = self.back_profile.frame;
-    frame.origin.x += 320;
-    [self.back_profile setFrame:frame];
-    
-    frame = self.back_transfer.frame;
-    frame.origin.x += 320;
-    [self.back_transfer setFrame:frame];
-    
-    frame = self.back_donation.frame;
-    frame.origin.x += 320;
-    [self.back_donation setFrame:frame];
-
-    [UIView commitAnimations];
+    [UIView animateKeyframesWithDuration:0.5
+                                   delay:0
+                                 options:0 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      CGRect frame;
+                                      frame = self.back_profile.frame;
+                                      frame.origin.x += 320;
+                                      [self.back_profile setFrame:frame];
+                                      
+                                      frame = self.back_transfer.frame;
+                                      frame.origin.x += 320;
+                                      [self.back_transfer setFrame:frame];
+                                      
+                                      frame = self.back_donation.frame;
+                                      frame.origin.x += 320;
+                                      [self.back_donation setFrame:frame];
+                                  }];
+                              } completion: nil
+     ];
 }
 
 -(void)go_1st_panel_from_3rd
 {
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.65];
-    
-    [self.exportHistory setFrame:CGRectMake(60, 445, 200, 38)];
-
     self.selected -= 2;
-    
-    CGRect frame;
-    frame = self.back_profile.frame;
-    frame.origin.x += 640;
-    [self.back_profile setFrame:frame];
-    
-    frame = self.back_transfer.frame;
-    frame.origin.x += 640;
-    [self.back_transfer setFrame:frame];
-    
-    frame = self.back_donation.frame;
-    frame.origin.x += 640;
-    [self.back_donation setFrame:frame];
-    
-    [UIView commitAnimations];
-}
 
-- (void) button_change:(int)num {}
+    [UIView animateKeyframesWithDuration:0.5
+                                   delay:0
+                                 options:0 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      [self.exportHistory setFrame:CGRectMake(60, 448, 200, 38)];
+
+                                      CGRect frame;
+                                      frame = self.back_profile.frame;
+                                      frame.origin.x += 640;
+                                      [self.back_profile setFrame:frame];
+                                      
+                                      frame = self.back_transfer.frame;
+                                      frame.origin.x += 640;
+                                      [self.back_transfer setFrame:frame];
+                                      
+                                      frame = self.back_donation.frame;
+                                      frame.origin.x += 640;
+                                      [self.back_donation setFrame:frame];
+                                  }];
+                              } completion: nil
+     ];
+}
 
 - (void) change_stats:(UISwipeGestureRecognizer *)slide
 {
@@ -561,7 +581,7 @@
     {
         if (self.selected == 1)
         {
-            [self.exportHistory setFrame:CGRectMake(60, 445, 200, 38)];
+            [self.exportHistory setFrame:CGRectMake(60, 448, 200, 38)];
 
             self.selected--;
 
@@ -1546,6 +1566,8 @@
     
     UITextField * textField = [alert textFieldAtIndex:0];
     textField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
+    textField.textAlignment = NSTextAlignmentCenter;
+    textField.KeyboardType = UIKeyboardTypeEmailAddress;
     [alert show];
 }
 

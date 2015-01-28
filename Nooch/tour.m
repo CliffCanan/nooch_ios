@@ -83,7 +83,7 @@
     page3.descWidth = 304;
     page3.descPositionY = page3.titlePositionY - 21;
 
-    page3.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"selectRecipient-Circled"]];
+    page3.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"selectRec-circled"]];
     page3.titleIconPositionY = 155;
 
     // PAGE 4
@@ -97,7 +97,7 @@
     page4.descWidth = 300;
     page4.descPositionY = page4.titlePositionY - 26;
     
-    page4.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"howMuch_img"]];
+    page4.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"HowMuch_tour"]];
     page4.titleIconPositionY = 120;
 
     // PAGE 5
@@ -111,7 +111,7 @@
     page5.descWidth = 300;
     page5.descPositionY = page5.titlePositionY - 26;
     
-    page5.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"history_img"]];
+    page5.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"HistoryPending"]];
     page5.titleIconPositionY = 120;
 
     EAIntroPage *page6 = [EAIntroPage page];
@@ -124,7 +124,7 @@
     page6.descWidth = 300;
     page6.descPositionY = page6.titlePositionY - 26;
 
-    page6.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Stats_Circled"]];
+    page6.titleIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"StatsCircled"]];
     page6.titleIconPositionY = 120;
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)

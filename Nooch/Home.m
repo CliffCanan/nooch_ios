@@ -1196,10 +1196,21 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     [self GetFavorite]; 
 
-    // [_carousel removeFromSuperview];
     if ([self.view.subviews containsObject:_carousel])
     {
-        [UIView animateKeyframesWithDuration:0.4
+        short randNum = arc4random() % [favorites count];
+        NSLog(@"RandNum is: %d",randNum);
+
+        float duration = .35;
+        if (abs(([_carousel currentItemIndex] - randNum) == 2))
+        {
+            duration = .6;
+        }
+        else if (abs(([_carousel currentItemIndex] - randNum) > 2))
+        {
+            duration = .7;
+        }
+        [UIView animateKeyframesWithDuration:duration
                                        delay:0
                                      options:2 << 16
                                   animations:^{
@@ -1207,7 +1218,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                           [_carousel setFrame:CGRectMake(0, carouselTop, 320, 175)];
                                       }];
                                   } completion: ^(BOOL finished) {
-                                      [_carousel scrollToItemAtIndex:0 duration:.7];
+                                      [_carousel scrollToItemAtIndex:randNum duration:.7];
                                   }
          ];
     }
@@ -1241,10 +1252,16 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [[assist shared] setArray:nil];
 
     NSString * versionNumFromArtisan = [ARPowerHookManager getValueForHookById:@"versionNum"];
-    //NSLog(@"VersionNumFromArtisan is: %@",versionNumFromArtisan);
-    //NSLog(@"xCode Bundle Version Number is: %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]);
-    
-    if (![versionNumFromArtisan isEqualToString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]] &&
+    versionNumFromArtisan = [versionNumFromArtisan stringByReplacingOccurrencesOfString:@"1." withString:@""];
+    NSString * versionNumFromBundle = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    versionNumFromBundle = [versionNumFromBundle stringByReplacingOccurrencesOfString:@"1." withString:@""];
+
+    float versionNumFromArtisanDouble = [versionNumFromArtisan floatValue];
+    float bundleVersionNumDouble = [versionNumFromBundle floatValue];
+    //NSLog(@"VersionNumFromArtisan is: %f", versionNumFromArtisanDouble);
+    //NSLog(@"xCode Bundle Version Number is: %f", bundleVersionNumDouble);
+
+    if (bundleVersionNumDouble < versionNumFromArtisanDouble &&
         [[NSUserDefaults standardUserDefaults] boolForKey:@"VersionUpdateNoticeDisplayed"] == false )
     {
         [self displayVersionUpdateNotice];
@@ -1503,7 +1520,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 -(void)OpenAppInAppStore
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms://itunes.apple.com/us/app/nooch"]];
+    NSString *iTunesLink = @"https://itunes.apple.com/us/app/nooch/id917955306?mt=8&uo=4";
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
 }
 
 #pragma mark - iCarousel methods
@@ -1610,8 +1628,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 }
 
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel
-{
-}
+{}
 
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index
 {
@@ -1650,6 +1667,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 {
                     [self.selectedFavName setText: [NSString stringWithFormat:@"%@",favorite[@"FirstName"]]];
                     firstNameAB = favorite[@"FirstName"];
+                }
+                else
+                {
+                    firstNameAB = @"";
                 }
                 [self.selectedFavName setTextColor:kNoochGrayDark];
                 [self.selectedFavName setTextAlignment:NSTextAlignmentCenter];
@@ -1721,10 +1742,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                     [actionSheetObject setTag:1];
                     actionSheetObject.delegate = self;
                     [actionSheetObject showInView:self.view];
-                }
-                else
-                {
-                    
                 }
 
                 return;

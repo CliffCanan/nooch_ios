@@ -18,7 +18,7 @@
 @property(nonatomic, strong) ABPeoplePickerNavigationController *addressBookController;
 @property(nonatomic) BOOL location;
 @property(nonatomic,strong) MBProgressHUD *hud;
-@property(nonatomic,strong) UISegmentedControl *completed_pending;
+@property(nonatomic,strong) UISegmentedControl * recent_location;
 @property(nonatomic,strong) UIImageView*noContact_img;
 @property(nonatomic, strong) UILabel * glyph_recent;
 @property(nonatomic, strong) UILabel * glyph_location;
@@ -81,12 +81,12 @@
     arrRequestPersons = [[NSMutableArray alloc]init];
 
     NSArray *seg_items = @[@"Recent",@"    Find by Location"];
-    self.completed_pending = [[UISegmentedControl alloc] initWithItems:seg_items];
-    [self.completed_pending setStyleId:@"history_segcontrol"];
-    [self.completed_pending addTarget:self action:@selector(recent_or_location:) forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:self.completed_pending];
-    [self.completed_pending setSelectedSegmentIndex:0];
-    [self.completed_pending setTintColor:kNoochBlue];
+    self.recent_location = [[UISegmentedControl alloc] initWithItems:seg_items];
+    [self.recent_location setStyleId:@"history_segcontrol"];
+    [self.recent_location addTarget:self action:@selector(recent_or_location:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:self.recent_location];
+    [self.recent_location setSelectedSegmentIndex:0];
+    [self.recent_location setTintColor:kNoochBlue];
 
     self.glyph_recent = [UILabel new];
     [self.glyph_recent setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
@@ -166,8 +166,7 @@
         self.location = NO;
         [self.navigationItem setHidesBackButton:YES];
         [self.navigationItem setLeftBarButtonItem:nil];
-        [self.completed_pending setSelectedSegmentIndex:0];
-        [self.completed_pending setSelectedSegmentIndex:0];
+        [self.recent_location setSelectedSegmentIndex:0];
 
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Add Recipients"
                                                      message:@"To request money from more than one person, search for friends then tap each additional person (up to 10).\n\nTap 'Done' when finished."
@@ -240,7 +239,7 @@
         [self.navigationItem setRightBarButtonItem:Nil];
 
         [[assist shared]setRequestMultiple:NO];
-        [self.completed_pending setSelectedSegmentIndex:0];
+        [self.recent_location setSelectedSegmentIndex:0];
         self.location = NO;
 
         if (emailEntry || phoneNumEntry)
@@ -259,7 +258,7 @@
         
         [self.glyphEmail setAlpha: 0];
         
-        [self.completed_pending setTintColor:kNoochBlue];
+        [self.recent_location setTintColor:kNoochBlue];
         [search setTintColor:kNoochBlue];
         
         isphoneBook = NO;
@@ -403,8 +402,8 @@
                                  options:0 << 16
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
-                                      [self.completed_pending setFrame:CGRectMake(7, 6, 306, 30)];
-                                      [self.completed_pending setAlpha: 1];
+                                      [self.recent_location setFrame:CGRectMake(7, 6, 306, 30)];
+                                      [self.recent_location setAlpha: 1];
                                       [self.view setBackgroundColor:[UIColor whiteColor]];
                                       [self.contacts setFrame:CGRectMake(0, 82, 320, [[UIScreen mainScreen] bounds].size.height - 147)];
                                       [self.glyph_recent setAlpha: 1];
@@ -543,59 +542,10 @@
             CFRelease(phoneNumber);
         }
 
- /*       if (ABMultiValueGetCount(phoneNumber) > 0)
-        {
-            CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 0);
-            phone = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            if (phoneValue)
-                CFRelease(phoneValue);
-
-            phone = [phone stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone length])];
-            [curContact setObject:phone forKey:@"phoneNo"];
-           
-            [additions addObject:curContact];
-
-            NSLog(@"%d.) Additions count is: %d",i,[additions count]);
-        }
-
-        if (ABMultiValueGetCount(phoneNumber) > 1)
-        {
-            CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 1);
-            phone2 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            if (phoneValue)
-                CFRelease(phoneValue);
-            
-            phone2 = [phone2 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone2 length])];
-            [curContact setObject:phone2 forKey:@"phoneNo"];
-
-            [additions addObject:curContact];
-            NSLog(@"%d.) Additions count is: %d",i,[additions count]);
-        }
-
-        if (ABMultiValueGetCount(phoneNumber) > 2)
-        {
-            CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 2);
-            phone3 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            if (phoneValue)
-                CFRelease(phoneValue);
-            
-            phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
-            [curContact setObject:phone3 forKey:@"phoneNo"];
-
-            [additions addObject:curContact];
-        }
-*/
-        if (phone != NULL)
-        {
-           // NSString * strippedNumber = [phone stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone length])];
-          //  if (strippedNumber != NULL)
-           //     [curContact setObject:strippedNumber forKey:@"phoneNo"];
-        }
         else
         {
             [additions addObject:curContact];
         }
-
     }
 
     [[assist shared] addAssos:additions.mutableCopy];
@@ -743,6 +693,10 @@
             [alert show];
 
             [self displayEmpty_SearchByLocation];
+        }
+        else
+        {
+            [self.hud hide:YES];
         }
     }
 }
@@ -1020,7 +974,7 @@
 
     [self.glyphEmail setAlpha: 0];
 
-    [self.completed_pending setTintColor:kNoochBlue];
+    [self.recent_location setTintColor:kNoochBlue];
 
     searchBar.searchBarStyle = UISearchBarStyleMinimal;
     [searchBar resignFirstResponder];
@@ -1067,21 +1021,21 @@
                                       [self.contacts setAlpha:1];
                                       if (!isAddRequest)
                                       {
-                                          [self.completed_pending setTintColor:kNoochBlue];
-                                          [self.completed_pending setAlpha:0];
+                                          [self.recent_location setTintColor:kNoochBlue];
+                                          [self.recent_location setAlpha:0];
                                           [self.glyph_recent setAlpha: 0];
                                           [self.glyph_location setAlpha: 0];
                                       }
                                       else
                                       {
-                                          [self.completed_pending setTintColor:[UIColor whiteColor]];
+                                          [self.recent_location setTintColor:[UIColor whiteColor]];
                                       }
                                       [search setImage:[UIImage imageNamed:@"search_white"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
                                   }];
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                       if (!isAddRequest)
                                       {
-                                          [self.completed_pending setFrame:CGRectMake(7, -8, 306, 30)];
+                                          [self.recent_location setFrame:CGRectMake(7, -8, 306, 30)];
                                           [searchBar setFrame:CGRectMake(0, 24, 320, 40)];
                                       }
                                       searchBar.placeholder = @"";

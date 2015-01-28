@@ -1070,8 +1070,30 @@
                         }
                         else
                         {
-                            [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"] ]];
                             [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
+
+                            BOOL containsLetters = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.letterCharacterSet].location;
+                            BOOL containsPunctuation = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.punctuationCharacterSet].location;
+                            BOOL containsNumbers = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.decimalDigitCharacterSet].location;
+                            BOOL containsSymbols = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.symbolCharacterSet].location;
+                            
+                            // Check if it's a phone number
+                            if (containsNumbers && !containsLetters && !containsPunctuation && !containsSymbols)
+                            {
+                                NSMutableString * mu = [NSMutableString stringWithString:[dictRecord valueForKey:@"InvitationSentTo"]];
+                                [mu insertString:@"(" atIndex:0];
+                                [mu insertString:@")" atIndex:4];
+                                [mu insertString:@" " atIndex:5];
+                                [mu insertString:@"-" atIndex:9];
+                                
+                                NSString * phoneWithSymbolsAddedBack = [NSString stringWithString:mu];
+                                
+                                [name setText:phoneWithSymbolsAddedBack];
+                            }
+                            else
+                            {
+                                [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"]]];
+                            }
                         }
                     }
                     else
@@ -1411,7 +1433,8 @@
                         [transferTypeLabel setText:@"Request sent to"];
                         [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_wider"];
 
-                        if ([dictRecord valueForKey:@"InvitationSentTo"] == NULL || [[dictRecord objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])
+                        if ( [dictRecord valueForKey:@"InvitationSentTo"] == NULL ||
+                            [[dictRecord objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]])
                         {
                             [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
                             [pic sd_setImageWithURL:[NSURL URLWithString:[dictRecord objectForKey:@"Photo"]]
@@ -1419,8 +1442,32 @@
                         }
                         else
                         {
-                            [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"] ]];
                             [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
+
+                            NSString * invitationSentTo = [NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"InvitationSentTo"]];
+                            
+                            BOOL containsLetters = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.letterCharacterSet].location;
+                            BOOL containsPunctuation = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.punctuationCharacterSet].location;
+                            BOOL containsNumbers = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.decimalDigitCharacterSet].location;
+                            BOOL containsSymbols = NSNotFound != [invitationSentTo rangeOfCharacterFromSet:NSCharacterSet.symbolCharacterSet].location;
+                            
+                            // Check if it's a phone number
+                            if (containsNumbers && !containsLetters && !containsPunctuation && !containsSymbols)
+                            {
+                                NSMutableString * mu = [NSMutableString stringWithString:[dictRecord valueForKey:@"InvitationSentTo"]];
+                                [mu insertString:@"(" atIndex:0];
+                                [mu insertString:@")" atIndex:4];
+                                [mu insertString:@" " atIndex:5];
+                                [mu insertString:@"-" atIndex:9];
+                                
+                                NSString * phoneWithSymbolsAddedBack = [NSString stringWithString:mu];
+                                
+                                [name setText:phoneWithSymbolsAddedBack];
+                            }
+                            else
+                            {
+                                [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"]]];
+                            }
                         }
                     }
                     else
@@ -1471,7 +1518,7 @@
                     }
                     else
                     {
-                        [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"]]];
+                        [name setText:[NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"InvitationSentTo"]]];
                     }
                 }
 
@@ -2462,6 +2509,8 @@
 
     UITextField *textField = [alert textFieldAtIndex:0];
     textField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
+    textField.textAlignment = NSTextAlignmentCenter;
+    textField.KeyboardType = UIKeyboardTypeEmailAddress;
     [alert show];
 }
 

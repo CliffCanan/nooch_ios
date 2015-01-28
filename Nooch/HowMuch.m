@@ -25,6 +25,7 @@
 @property(nonatomic,strong) UILabel *recip_back;
 @property(nonatomic,strong) UIView *back;
 @property(nonatomic,strong) UIButton *trans_image;
+@property(nonatomic,strong) UIImageView * user_pic;
 
 @end
 
@@ -221,22 +222,22 @@
         [self.view addSubview:add];
     }
 
-    UIImageView * user_pic = [UIImageView new];
-    [user_pic setFrame:CGRectMake(18, 48, 84, 84)];
-    user_pic.layer.borderColor = [Helpers hexColor:@"939598"].CGColor;
-    user_pic.layer.borderWidth = 1;
-    user_pic.clipsToBounds = YES;
-    user_pic.layer.cornerRadius = 42;
+    self.user_pic = [UIImageView new];
+    [self.user_pic setFrame:CGRectMake(12, 48, 84, 84)];
+    self.user_pic.layer.borderColor = [Helpers hexColor:@"939598"].CGColor;
+    self.user_pic.layer.borderWidth = 1;
+    self.user_pic.clipsToBounds = YES;
+    self.user_pic.layer.cornerRadius = 42;
     if ([self.receiver valueForKey:@"nonuser"])
     {
-        [user_pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
+        [self.user_pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
     }
     else
     {
-        [user_pic setHidden:NO];
+        [self.user_pic setHidden:NO];
         if (self.receiver[@"Photo"])
         {
-            [user_pic sd_setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
+            [self.user_pic sd_setImageWithURL:[NSURL URLWithString:self.receiver[@"Photo"]]
                      placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
         }
         else
@@ -246,21 +247,21 @@
                 NSString * photoURL = @"";
                 for (NSDictionary * dictRecord in [[assist shared]getArray])
                 {
-                    NSLog(@"DictRecord is: %@",dictRecord);
+                    //NSLog(@"DictRecord is: %@",dictRecord);
                     photoURL = [NSString stringWithFormat:@"%@", dictRecord[@"Photo"]];
                 }
-                [user_pic sd_setImageWithURL:[NSURL URLWithString:photoURL]
+                [self.user_pic sd_setImageWithURL:[NSURL URLWithString:photoURL]
                             placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
 
             }
             else
             {
-                [user_pic sd_setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
+                [self.user_pic sd_setImageWithURL:[NSURL URLWithString:self.receiver[@"PhotoUrl"]]
                      placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
             }
         }
     }
-    [self.back addSubview:user_pic];
+    [self.back addSubview:self.user_pic];
 
     self.amount = [[UITextField alloc] initWithFrame:CGRectMake(104, 58, 190, 68)];
     [self.amount setTextAlignment:NSTextAlignmentRight];
@@ -420,8 +421,8 @@
         [self.request setStyleId:@"howmuch_request_4"];
         [self.divider setStyleId:@"howmuch_divider_4"];
 
-        [user_pic setFrame:CGRectMake(6, 45, 72, 72)];
-        user_pic.layer.cornerRadius = 36;
+        [self.user_pic setFrame:CGRectMake(6, 45, 72, 72)];
+        self.user_pic.layer.cornerRadius = 36;
 
         [self.amount setStyleId:@"howmuch_amountfield_4"];
         [self.memo setStyleId:@"howmuch_memo_4"];
@@ -518,6 +519,8 @@
     origin.size.width = 149;
     origin.origin.x = 9;
 
+    self.user_pic.layer.borderColor = kNoochGreen.CGColor;
+
     [self.send addTarget:self action:@selector(confirm_send) forControlEvents:UIControlEventTouchUpInside];
     [self.send setTitle:@"Confirm Send" forState:UIControlStateNormal];
     [self.request setStyleId:@"howmuch_request_hide"];
@@ -538,6 +541,8 @@
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.55];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+
+    self.user_pic.layer.borderColor = kNoochBlue.CGColor;
 
     [self.request addTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
     [self.request setTitle:@"Confirm Request" forState:UIControlStateNormal];
@@ -565,6 +570,9 @@
 
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.25];
+
+    self.user_pic.layer.borderColor = [Helpers hexColor:@"939598"].CGColor;
+
     [self.send setTitle:@"Send" forState:UIControlStateNormal];
     [self.request setTitle:@"Request" forState:UIControlStateNormal];
 

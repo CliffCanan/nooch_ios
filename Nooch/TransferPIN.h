@@ -43,7 +43,6 @@
     float lat;
     NSDictionary*dictLocation;
     NSDictionary*dictResultTransfer;
-    UIActivityIndicatorView*spinner;
     NSDictionary*jsonDictionary;
     NSString*encryptedPINNonUser;
     NSString*receiverId;

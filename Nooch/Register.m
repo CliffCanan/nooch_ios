@@ -118,7 +118,7 @@
     boxOutline.backgroundColor = [UIColor whiteColor];
     boxOutline.layer.cornerRadius = 8;
     boxOutline.layer.borderWidth = 0.5;
-    boxOutline.layer.borderColor = Rgb2UIColor(188, 190, 192, .45).CGColor;
+    boxOutline.layer.borderColor = Rgb2UIColor(188, 190, 192, .4).CGColor;
     [boxOutline setStyleClass:@"welcomeBoxShadow"];
     [self.view addSubview:boxOutline];
 
@@ -267,7 +267,7 @@
     [self.view addSubview:self.pwValidator4];
 
     self.pwValidator = [UILabel new];
-    [self.pwValidator setFrame:CGRectMake(202, 370, 100, 12)];
+    [self.pwValidator setFrame:CGRectMake(202, 370, 100, 13)];
     [self.pwValidator setFont:[UIFont fontWithName:@"Roboto-regular" size:11]];
     [self.pwValidator setText:@"Very Weak"];
     [self.pwValidator setTextAlignment:NSTextAlignmentRight];
@@ -280,7 +280,7 @@
     [checkbox_box setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
     [checkbox_box setTextAlignment:NSTextAlignmentCenter];
     [checkbox_box setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-square-o"]];
-    [checkbox_box setTextColor:kNoochBlue];
+    [checkbox_box setTextColor:kNoochGreen];
     [self.view addSubview:checkbox_box];
 
     UIButton * checkbox_dot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -381,6 +381,7 @@
          }];
     }
 }
+
 - (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error
 {
     // If the session was opened successfully
@@ -737,7 +738,8 @@
     [self.navigationController pushViewController:signin animated:YES];
 }
 
--(void)Error:(NSError *)Error{
+-(void)Error:(NSError *)Error
+{
     [self.hud hide:YES];
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
@@ -850,36 +852,7 @@
                                                   handler:^(UIAlertAction * action)
                                                   {
                                                       [alert dismissViewControllerAnimated:YES completion:nil];
-                                                      if (![MFMailComposeViewController canSendMail]){
-                                                          UIAlertController * alert = [UIAlertController
-                                                                                       alertControllerWithTitle:@"No Email Detected"
-                                                                                       message:@"You don't have an email account configured for this device."
-                                                                                       preferredStyle:UIAlertControllerStyleAlert];
-                                                          
-                                                          UIAlertAction * ok = [UIAlertAction
-                                                                                actionWithTitle:@"OK"
-                                                                                style:UIAlertActionStyleDefault
-                                                                                handler:^(UIAlertAction * action)
-                                                                                {
-                                                                                    [alert dismissViewControllerAnimated:YES completion:nil];
-                                                                                }];
-                                                          [alert addAction:ok];
-                                                          
-                                                          [self presentViewController:alert animated:YES completion:nil];
-                                                          return;
-                                                      }
-                                                      MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
-                                                      mailComposer.mailComposeDelegate = self;
-                                                      mailComposer.navigationBar.tintColor=[UIColor whiteColor];
-                                                      
-                                                      [mailComposer setSubject:[NSString stringWithFormat:@"Help Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-                                                      
-                                                      [mailComposer setMessageBody:@"" isHTML:NO];
-                                                      [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
-                                                      [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
-                                                      [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-                                                      [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-                                                      [self presentViewController:mailComposer animated:YES completion:nil];
+                                                      [self emailNoochSupport];
                                                   }];
                 [alert addAction:ok];
                 [alert addAction:contactSupport];
@@ -893,7 +866,7 @@
                                                                delegate:self
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:@"Contact Support", nil];
-                [alert setTag:600];
+                [alert setTag:50];
                 [alert show];
             }
             [spinner stopAnimating];
@@ -924,36 +897,7 @@
                                                   handler:^(UIAlertAction * action)
                                                   {
                                                       [alert dismissViewControllerAnimated:YES completion:nil];
-                                                      if (![MFMailComposeViewController canSendMail]){
-                                                          UIAlertController * alert = [UIAlertController
-                                                                                       alertControllerWithTitle:@"No Email Detected"
-                                                                                       message:@"You don't have an email account configured for this device."
-                                                                                       preferredStyle:UIAlertControllerStyleAlert];
-                                                          
-                                                          UIAlertAction * ok = [UIAlertAction
-                                                                                actionWithTitle:@"OK"
-                                                                                style:UIAlertActionStyleDefault
-                                                                                handler:^(UIAlertAction * action)
-                                                                                {
-                                                                                    [alert dismissViewControllerAnimated:YES completion:nil];
-                                                                                }];
-                                                          [alert addAction:ok];
-                                                          
-                                                          [self presentViewController:alert animated:YES completion:nil];
-                                                          return;
-                                                      }
-                                                      MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
-                                                      mailComposer.mailComposeDelegate = self;
-                                                      mailComposer.navigationBar.tintColor=[UIColor whiteColor];
-                                                      
-                                                      [mailComposer setSubject:[NSString stringWithFormat:@"Help Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-                                                      
-                                                      [mailComposer setMessageBody:@"" isHTML:NO];
-                                                      [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
-                                                      [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
-                                                      [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-                                                      [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-                                                      [self presentViewController:mailComposer animated:YES completion:nil];
+                                                      [self emailNoochSupport];
                                                   }];
                 [alert addAction:ok];
                 [alert addAction:contactSupport];
@@ -962,8 +906,12 @@
             }
             else // iOS 7 and prior
             {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended" message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
-                [alert setTag:500];
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended"
+                                                                message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:@"Contact Support", nil];
+                [alert setTag:51];
                 [alert show];
             }
             [spinner stopAnimating];
@@ -995,37 +943,7 @@
                                                   handler:^(UIAlertAction * action)
                                                   {
                                                       [alert dismissViewControllerAnimated:YES completion:nil];
-                                                      if (![MFMailComposeViewController canSendMail]) {
-                                                          UIAlertController * alert = [UIAlertController
-                                                                                       alertControllerWithTitle:@"No Email Detected"
-                                                                                       message:@"You don't have an email account configured for this device."
-                                                                                       preferredStyle:UIAlertControllerStyleAlert];
-                                                          
-                                                          UIAlertAction * ok = [UIAlertAction
-                                                                                actionWithTitle:@"OK"
-                                                                                style:UIAlertActionStyleDefault
-                                                                                handler:^(UIAlertAction * action)
-                                                                                {
-                                                                                    [alert dismissViewControllerAnimated:YES completion:nil];
-                                                                                }];
-                                                          [alert addAction:ok];
-                                                          
-                                                          [self presentViewController:alert animated:YES completion:nil];
-                                                          return;
-                                                      }
-                                                      MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
-                                                      mailComposer.mailComposeDelegate = self;
-                                                      mailComposer.navigationBar.tintColor=[UIColor whiteColor];
-                                                      
-                                                      [mailComposer setSubject:[NSString stringWithFormat:@"Help Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-                                                      
-                                                      [mailComposer setMessageBody:@"" isHTML:NO];
-                                                      [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
-                                                      [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
-                                                      [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-                                                      [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-                                                      [self presentViewController:mailComposer animated:YES completion:nil];
-                                                      
+                                                      [self emailNoochSupport];
                                                   }];
                 [alert addAction:ok];
                 [alert addAction:contactSupport];
@@ -1034,9 +952,13 @@
             }
             else // iOS 7 and prior
             {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended" message:@"For security your account has been temporarily suspended.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Contact Support", nil];
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended"
+                                                                message:@"For security your account has been temporarily suspended.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:@"Contact Support", nil];
                 [alert show];
-                [alert setTag:50];
+                [alert setTag:52];
             }
         }
     }
@@ -1155,13 +1077,17 @@
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag == 16 & buttonIndex == 1)
+    if (alertView.tag == 16 && buttonIndex == 1)
     {
         [self open_terms_webview];
     }
-    else if (alertView.tag == 20 & buttonIndex == 1)
+    else if (alertView.tag == 20 && buttonIndex == 1)
     {
         [self loginFromAlertView];
+    }
+    else if ((alertView.tag == 50 || alertView.tag == 51 || alertView.tag == 52) && buttonIndex == 1)
+    {
+        [self emailNoochSupport];
     }
 }
 
@@ -1452,6 +1378,57 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     self.name_field.text = self.name_field.text.capitalizedString;
+}
+
+-(void)emailNoochSupport
+{
+    if (![MFMailComposeViewController canSendMail])
+    {
+        if ([UIAlertController class]) // for iOS 8
+        {
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"No Email Detected"
+                                         message:@"You don't have an email account configured for this device."
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction * ok = [UIAlertAction
+                                  actionWithTitle:@"OK"
+                                  style:UIAlertActionStyleDefault
+                                  handler:^(UIAlertAction * action)
+                                  {
+                                      [alert dismissViewControllerAnimated:YES completion:nil];
+                                  }];
+            [alert addAction:ok];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+            return;
+        }
+        else
+        {
+            if (![MFMailComposeViewController canSendMail])
+            {
+                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                              message:@"You don't have an email account configured for this device."
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles: nil];
+                [av show];
+                return;
+            }
+        }
+    }
+    
+    MFMailComposeViewController * mailComposer = [[MFMailComposeViewController alloc] init];
+    mailComposer.mailComposeDelegate = self;
+    mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+    
+    [mailComposer setSubject:[NSString stringWithFormat:@"Help Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+    [mailComposer setMessageBody:@"" isHTML:NO];
+    [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+    [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+    [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+    [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+    [self presentViewController:mailComposer animated:YES completion:nil];
 }
 
 #pragma mark - file paths

@@ -414,7 +414,8 @@
     self.screenName = @"TransactionDetail Screen";
 }
 
--(void)viewDidDisappear:(BOOL)animated{
+-(void)viewDidDisappear:(BOOL)animated
+{
     [self.hud hide:YES];
     [super viewDidDisappear:animated];
 }
