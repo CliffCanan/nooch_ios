@@ -224,8 +224,8 @@
 
     self.user_pic = [UIImageView new];
     [self.user_pic setFrame:CGRectMake(12, 48, 84, 84)];
-    self.user_pic.layer.borderColor = [Helpers hexColor:@"939598"].CGColor;
-    self.user_pic.layer.borderWidth = 1;
+    self.user_pic.layer.borderColor = kNoochGrayLight.CGColor;
+    self.user_pic.layer.borderWidth = 2;
     self.user_pic.clipsToBounds = YES;
     self.user_pic.layer.cornerRadius = 42;
     if ([self.receiver valueForKey:@"nonuser"])

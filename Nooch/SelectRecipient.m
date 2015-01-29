@@ -275,7 +275,6 @@
         if (navIsUp == YES) {
             navIsUp = NO;
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSLog(@"Checkpoint ALPHA");
                 [self lowerNavBar];
             });
         }
@@ -532,7 +531,6 @@
                 [curContact setObject:phone forKey:[NSString stringWithFormat:@"phoneAdday%d",j]];
                 [curContact setObject:[NSString stringWithFormat:@"%d",j+1] forKey:@"phoneCount"];
 
-                // NSLog(@"\nCheckpoint DELTA.  Contact Number: %d  -  Phone Number: %d",i,j);
                 [additions addObject:curContact];
             }
             
@@ -643,7 +641,8 @@
             }
             [locationManager startUpdatingLocation];
         }
-        else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+        else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized  ||
+                 [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse)
         {
             [locationManager startUpdatingLocation];
         }
@@ -882,7 +881,7 @@
         emailphoneBook = selectedEmail;
         isphoneBook = YES;
 
-        if ([emailphoneBook isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]])
+        if ([emailphoneBook isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Very Sneaky"
                                                          message:@"\xF0\x9F\x98\xB1\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!"
@@ -1298,7 +1297,7 @@
 #pragma mark - Email From Address Book handling
 -(void)getMemberIdByUsingUserNameFromPhoneBook
 {
-    if ([emailphoneBook isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]])
+    if ([emailphoneBook isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]])
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Try That Again"
                                                      message:@"\xE2\x98\x9D\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!"
@@ -1321,8 +1320,9 @@
 #pragma mark - Manually Entered Email Handling
 -(void)getMemberIdByUsingUserName
 {
-    if ([[search.text lowercaseString] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]])
+    if ([[search.text lowercaseString] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]])
     {
+        [self.hud hide:YES];
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Hold On There..."
                                                      message:@"\xF0\x9F\x98\xB1\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!"
                                                     delegate:self

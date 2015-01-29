@@ -2491,6 +2491,7 @@ table-view#history {
 
 table-view#emptyTable {
     row-height			: 200px;
+    separator-color		: rgba(255,255,255,0);
     separator-style     : none;
 }
 

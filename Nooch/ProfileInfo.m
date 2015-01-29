@@ -59,10 +59,10 @@ UIImageView *picture;
     [super viewDidLoad];
     dictSavedInfo = [[NSMutableDictionary alloc]init];
     [dictSavedInfo setObject:@"NO" forKey:@"ImageChanged"];
-    
+
     self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setHidesBackButton:YES];
-    
+
     if (isProfileOpenFromSideBar)
     {
         UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -95,16 +95,16 @@ UIImageView *picture;
         
         [self.navigationItem setLeftBarButtonItem:menu];
     }
-    
+
     if (!isSignup) {
         [self.slidingViewController.panGesture setEnabled:YES];
         [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     }
-    
+
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    
+
     isPhotoUpdate = NO;
-    
+
     RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
@@ -114,34 +114,44 @@ UIImageView *picture;
     self.hud.customView = spinner1;
     self.hud.delegate = self;
     [self.hud show:YES];
-    
+
     [self.navigationItem setTitle:@"Profile"];
-    
+
     serve *serveOBJ = [serve new ];
     serveOBJ.tagName = @"myset";
     [serveOBJ setDelegate:self];
     [serveOBJ getSettings];
-    
+
     int pictureRadius = 38;
     heightOfTopSection = 80;
     rowHeight = 50;
     if ([[UIScreen mainScreen] bounds].size.height < 500) {
         rowHeight = 46;
     }
-    
+
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, heightOfTopSection, 320, [[UIScreen mainScreen] bounds].size.height - heightOfTopSection - 64)];
     [scrollView setBackgroundColor:Rgb2UIColor(255, 255, 255, 0)];
     // [scrollView setDelegate:self];
     scrollView.contentSize = CGSizeMake(320, [[UIScreen mainScreen] bounds].size.height);
-    
+
     self.member_since_back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, heightOfTopSection)];
+    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"])
+    {
+        [self.member_since_back setBackgroundColor:Rgb2UIColor(214, 25, 21, .55)];
+        [self.member_since_back setStyleId:@"profileTopSectionBg_susp"];
+    }
+    else
+    {
+        [self.member_since_back setBackgroundColor:Rgb2UIColor(219, 220, 222, .38)];
+        [self.member_since_back setStyleId:@"profileTopSectionBg"];
+    }
     [self.view addSubview:self.member_since_back];
-    
+
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(249, 251, 252, .3);
     shadow.shadowOffset = CGSizeMake(0, 1);
     NSDictionary * textAttributes_topShadow = @{NSShadowAttributeName: shadow };
-    
+
     self.name = [[UILabel alloc] initWithFrame:CGRectMake(10, 1, 300, 40)];
     [self.name setTextAlignment:NSTextAlignmentCenter];
     [self.name setFont:[UIFont fontWithName:@"Roboto-regular" size:24]];
@@ -150,7 +160,7 @@ UIImageView *picture;
     [self.name setUserInteractionEnabled:NO];
     [self.name setTag:0];
     [self.member_since_back addSubview:self.name];
-    
+
     shadowUnder = [[UIView alloc] initWithFrame:CGRectMake((160 - pictureRadius), heightOfTopSection - pictureRadius, pictureRadius * 2, (pictureRadius * 2))];
     shadowUnder.backgroundColor = Rgb2UIColor(31, 33, 32, .25);
     shadowUnder.layer.cornerRadius = pictureRadius;
@@ -160,7 +170,7 @@ UIImageView *picture;
     shadowUnder.layer.shadowRadius = 3;
     [shadowUnder setStyleClass:@"animate_bubble"];
     [self.view addSubview:shadowUnder];
-    
+
     picture = [UIImageView new];
     [picture setFrame:CGRectMake((160 - pictureRadius), heightOfTopSection - pictureRadius, pictureRadius * 2, (pictureRadius * 2))];
     picture.layer.cornerRadius = pictureRadius;
@@ -171,12 +181,12 @@ UIImageView *picture;
     [picture setUserInteractionEnabled:YES];
     [self.view addSubview:picture];
     [picture setStyleClass:@"animate_bubble"];
-    
+
     NSShadow * shadow_edit = [[NSShadow alloc] init];
     shadow_edit.shadowColor = Rgb2UIColor(33, 34, 35, .4);
     shadow_edit.shadowOffset = CGSizeMake(0, 1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow_edit };
-    
+
     UILabel * edit_label = [UILabel new];
     [edit_label setBackgroundColor:[UIColor clearColor]];
     edit_label.attributedText = [[NSAttributedString alloc] initWithString:@"edit" attributes:textAttributes];
@@ -185,22 +195,22 @@ UIImageView *picture;
     [edit_label setTextAlignment:NSTextAlignmentCenter];
     [edit_label setTextColor:[UIColor whiteColor]];
     [picture addSubview:edit_label];
-    
+
     UILabel * bankLinkedTxt = [[UILabel alloc] initWithFrame:CGRectMake(23, 4, 100, 32)];
     [bankLinkedTxt setBackgroundColor:[UIColor clearColor]];
     [bankLinkedTxt setTextColor:[Helpers hexColor:@"313233"]];
     [bankLinkedTxt setTextAlignment:NSTextAlignmentCenter];
-    
+
     UILabel * glyph_bank = [[UILabel alloc] initWithFrame:CGRectMake(14, 6, 16, 27)];
     [glyph_bank setFont:[UIFont fontWithName:@"FontAwesome" size:12]];
     [glyph_bank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bank"]];
-    
+
     UIButton * goToSettings = [[UIButton alloc] initWithFrame:CGRectMake(1, 1, 101, 32)];
     goToSettings.backgroundColor = [UIColor clearColor];
     [goToSettings addTarget:self action:@selector(goToSettings1) forControlEvents:UIControlEventTouchUpInside];
     [goToSettings addSubview:bankLinkedTxt];
     [goToSettings addSubview:glyph_bank];
-    
+
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
         [bankLinkedTxt setFont:[UIFont fontWithName:@"Roboto-regular" size:13]];
@@ -225,24 +235,24 @@ UIImageView *picture;
         [goToSettings addSubview:glyph_bankX];
     }
     [scrollView addSubview:goToSettings];
-    
+
     start = [[user valueForKey:@"DateCreated"] rangeOfString:@"("];
     end = [[user valueForKey:@"DateCreated"] rangeOfString:@")"];
-    
+
     if (start.location != NSNotFound && end.location != NSNotFound && end.location > start.location)
     {
         betweenBraces = [[user valueForKey:@"DateCreated"] substringWithRange:NSMakeRange(start.location+1, end.location-(start.location+1))];
     }
-    
+
     newString = [betweenBraces substringToIndex:[betweenBraces length]-8];
-    
+
     NSTimeInterval _interval = [newString doubleValue];
-    
+
     NSDate * date = [NSDate dateWithTimeIntervalSince1970:_interval];
     NSDateFormatter *_formatter=[[NSDateFormatter alloc]init];
     [_formatter setDateFormat:@"M/d/yyyy"];
     NSString *_date=[_formatter stringFromDate:date];
-    
+
     UILabel * memSincelbl = [[UILabel alloc] initWithFrame:CGRectMake(206, 5, 110, 19)];
     memSincelbl.attributedText = [[NSAttributedString alloc] initWithString:@"Member Since"
                                                                  attributes:textAttributes_topShadow];
@@ -252,7 +262,7 @@ UIImageView *picture;
     [memSincelbl setTextColor:[Helpers hexColor:@"313233"]];
     [memSincelbl setTextAlignment:NSTextAlignmentCenter];
     [scrollView addSubview:memSincelbl];
-    
+
     UILabel * dateText = [[UILabel alloc] initWithFrame:CGRectMake(206, 25, 110, 17)];
     dateText.userInteractionEnabled = NO;
     [dateText setBackgroundColor:[UIColor clearColor]];
@@ -261,7 +271,7 @@ UIImageView *picture;
     [dateText setTextColor:[Helpers hexColor:@"313233"]];
     [dateText setTextAlignment:NSTextAlignmentCenter];
     [scrollView addSubview:dateText];
-    
+
     self.email = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, rowHeight)];
     [self.email setTextAlignment:NSTextAlignmentRight];
     [self.email setPlaceholder:@"email@email.com"];
@@ -273,7 +283,7 @@ UIImageView *picture;
     [self.email setUserInteractionEnabled:NO];
     [self.email setTag:0];
     [scrollView addSubview:self.email];
-    
+
     /* // Recovery Mail
      self.recovery_email = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
      [self.recovery_email setTextAlignment:NSTextAlignmentRight];
@@ -285,7 +295,7 @@ UIImageView *picture;
      [self.recovery_email setStyleClass:@"table_view_cell_detailtext_1"];
      [self.recovery_email setTag:1];
      [self.view addSubview:self.recovery_email]; */
-    
+
     self.phone = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, rowHeight)];
     [self.phone setTextAlignment:NSTextAlignmentRight];
     [self.phone setBackgroundColor:[UIColor clearColor]];
@@ -295,7 +305,7 @@ UIImageView *picture;
     self.phone.returnKeyType = UIReturnKeyNext;
     [self.phone setStyleClass:@"tableViewCell_Profile_rightSide"];
     [self.phone setTag:2];
-    
+
     self.save = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.save setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
     self.save.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -305,10 +315,10 @@ UIImageView *picture;
     [self.save setStyleClass:@"disabled_gray"];
     [self.save setEnabled:NO];
     [self.save setUserInteractionEnabled:NO];
-    
+
     UIBarButtonItem * nav_save = [[UIBarButtonItem alloc] initWithCustomView:self.save];
     [self.navigationItem setRightBarButtonItem:nav_save animated:YES];
-    
+
     GMTTimezonesDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:@"Samoa Standard Time",@"GMT-11:00",
                               @"Hawaiian Standard Time",@"GMT-10:00",
                               @"Alaskan Standard Time",@"GMT-09:00",
@@ -318,10 +328,10 @@ UIImageView *picture;
                               @"Eastern Standard Time",@"GMT-05:00",
                               @"Atlantic Standard Time",@"GMT-04:00",
                               nil];
-    
+
     self.sectionHeaderBg = [[UIView alloc] initWithFrame:CGRectMake(0, pictureRadius + 16, 320, 26)];
     self.sectionHeaderBg.backgroundColor = Rgb2UIColor(230, 231, 232, .4);
-    
+
     UILabel * sectionHeaderTxt = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 200, 26)];
     sectionHeaderTxt.backgroundColor = [UIColor clearColor];
     sectionHeaderTxt.textColor = [UIColor darkGrayColor];
@@ -330,7 +340,7 @@ UIImageView *picture;
     sectionHeaderTxt.textAlignment = NSTextAlignmentLeft;
     [self.sectionHeaderBg addSubview:sectionHeaderTxt];
     [scrollView addSubview:self.sectionHeaderBg];
-    
+
     self.list = [UITableView new];
     [self.list setFrame:CGRectMake(0, self.sectionHeaderBg.frame.origin.y + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 3)];
     [self.list setDelegate:self];
@@ -374,10 +384,10 @@ UIImageView *picture;
         emailVerifyRowIsShowing = true;
         smsVerifyRowIsShowing = true;
     }
-    
+
     self.sectionHeaderBg2 = [[UIView alloc] initWithFrame:CGRectMake(0, (pictureRadius + 43 + self.list.frame.size.height), 320, 26)];
     self.sectionHeaderBg2.backgroundColor = Rgb2UIColor(230, 231, 232, .4);
-    
+
     UILabel * sectionHeaderTxt2 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 200, 26)];
     sectionHeaderTxt2.backgroundColor = [UIColor clearColor];
     sectionHeaderTxt2.textColor = [UIColor darkGrayColor];
@@ -386,7 +396,7 @@ UIImageView *picture;
     sectionHeaderTxt2.textAlignment = NSTextAlignmentLeft;
     [self.sectionHeaderBg2 addSubview:sectionHeaderTxt2];
     [scrollView addSubview:self.sectionHeaderBg2];
-    
+
     self.list2 = [UITableView new];
     [self.list2 setFrame:CGRectMake(0, self.sectionHeaderBg2.frame.origin.y + 25, 320, (rowHeight * 4) + 15)];
     [self.list2 setDelegate:self];
@@ -395,11 +405,11 @@ UIImageView *picture;
     [self.list2 setBackgroundColor:[UIColor whiteColor]];
     [self.list2 setAllowsSelection:YES];
     [self.list2 setScrollEnabled:NO];
-    
+
     [scrollView addSubview:self.list];
     [scrollView addSubview:self.list2];
     [self.view addSubview:scrollView];
-    
+
     [self.view bringSubviewToFront:shadowUnder];
     [self.view bringSubviewToFront:picture];
 }
@@ -422,17 +432,6 @@ UIImageView *picture;
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
-    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"])
-    {
-        [self.member_since_back setBackgroundColor:Rgb2UIColor(214, 25, 21, .55)];
-        [self.member_since_back setStyleId:@"profileTopSectionBg_susp"];
-    }
-    else
-    {
-        [self.member_since_back setBackgroundColor:Rgb2UIColor(219, 220, 222, .38)];
-        [self.member_since_back setStyleId:@"profileTopSectionBg"];
-    }
 }
 
 -(void) viewWillDisappear:(BOOL)animated

@@ -104,7 +104,8 @@ static assist * _sharedInstance = nil;
 {
     if ([CLLocationManager locationServicesEnabled])
     {
-        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized ||
+            [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse)
         {
             NSLog(@"Location Services Allowed");
             return YES;

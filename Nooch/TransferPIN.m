@@ -1303,7 +1303,7 @@
             [arrNav addObject: mainHistoryScreen];
             [nav_ctrl setViewControllers:arrNav animated:NO];
 
-            NSLog(@"TransferPIN -> nav_ctrl.viewControllers is: %@", nav_ctrl.viewControllers);
+            //NSLog(@"TransferPIN -> nav_ctrl.viewControllers is: %@", nav_ctrl.viewControllers);
 
             TransactionDetails *td = [[TransactionDetails alloc] initWithData:input];
             [nav_ctrl pushViewController:td animated:YES];
@@ -1382,7 +1382,7 @@
 
 -(void)errorAlerts:(NSString *)referenceNumber
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error #2650"
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Error #%@",referenceNumber]
                                                  message:@"\xF0\x9F\x98\xB3\nUnfortunately something is not quite right. This is a polite way of saying we screwed up.\n\nPlease try your transfer again or contact us if the problem persists."
                                                 delegate:self
                                        cancelButtonTitle:@"OK"
@@ -1404,8 +1404,8 @@
     NSLog(@"This is the response:  %@",responseString);
     if ([self.receiver valueForKey:@"nonuser"])
     {
-        if ([[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]localizedCaseInsensitiveContainsString:@"Your cash was sent successfully"] ||
-            [[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"]localizedCaseInsensitiveContainsString:@"Your cash was sent successfully"])
+        if ([[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Your cash was sent successfully"] ||
+            [[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Your cash was sent successfully"])
         {
             [[assist shared] setTranferImage:nil];
             UIImage * imgempty = [UIImage imageNamed:@""];
@@ -1425,8 +1425,9 @@
             [self errorAlerts:@"420"];
             return;
         }
-        if ([[[dictResultTransfer valueForKey:@"RequestMoneyFromNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]localizedCaseInsensitiveContainsString:@"Request made successfully."] ||
-            [[[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"]localizedCaseInsensitiveContainsString:@"Request made successfully"])
+
+        if ([[[dictResultTransfer valueForKey:@"RequestMoneyFromNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Request made successfully."] ||
+            [[[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Request made successfully."])
         {
             [[assist shared] setTranferImage:nil];
             UIImage * imgempty = [UIImage imageNamed:@""];

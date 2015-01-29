@@ -808,7 +808,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [self.profile_incomplete addSubview:dis];
             [self.view addSubview:self.profile_incomplete];
 
-            [UIView animateKeyframesWithDuration:.6
+            [UIView animateKeyframesWithDuration:.5
                                            delay:0
                                          options:2 << 16
                                       animations:^{
@@ -1041,7 +1041,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
                 [self.view addSubview:self.pending_requests];
 
-                [UIView animateKeyframesWithDuration:.65
+                [UIView animateKeyframesWithDuration:.6
                                                delay:0
                                              options:2 << 16
                                           animations:^{
@@ -1100,12 +1100,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [top_button addTarget:self action:@selector(releasePress:) forControlEvents:UIControlEventTouchDragExit];
     [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
     [top_button setTitle:@"   Search For More Friends" forState:UIControlStateNormal];
-    
+
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(26, 38, 32, .2);
     shadow.shadowOffset = CGSizeMake(0, -1);
     NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
-    
+
     UILabel * glyph_search = [UILabel new];
     [glyph_search setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
     glyph_search.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-search"] attributes:textAttributes1];
@@ -1115,7 +1115,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     [self.view addSubview:top_button];
 
-    NSLog(@"Banner count is: %d",bannerAlert);
+    //NSLog(@"Banner count is: %d",bannerAlert);
     int carouselTop;
     if (bannerAlert == 1)
     {
@@ -1198,17 +1198,21 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     if ([self.view.subviews containsObject:_carousel])
     {
-        short randNum = arc4random() % [favorites count];
-        NSLog(@"RandNum is: %d",randNum);
-
         float duration = .35;
-        if (abs(([_carousel currentItemIndex] - randNum) == 2))
+        short randNum = 0;
+
+        if (favorites && [favorites count] > 1)
         {
-            duration = .6;
-        }
-        else if (abs(([_carousel currentItemIndex] - randNum) > 2))
-        {
-            duration = .7;
+            randNum = arc4random() % [favorites count];
+
+            if (abs(([_carousel currentItemIndex] - randNum) == 2))
+            {
+                duration = .6;
+            }
+            else if (abs(([_carousel currentItemIndex] - randNum) > 2))
+            {
+                duration = .7;
+            }
         }
         [UIView animateKeyframesWithDuration:duration
                                        delay:0
@@ -1291,7 +1295,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     if ([CLLocationManager locationServicesEnabled])
     {
-        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized  ||
+            [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse)
         {
             NSLog(@"Location Services Allowed");
             
@@ -1527,7 +1532,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 #pragma mark - iCarousel methods
 - (NSInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
-    //return the total number of items in the carousel
     return 5;
 }
 
@@ -2023,6 +2027,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     [[assist shared]setlocationAllowed:YES];
 
+    NSLog(@"Got HURR");
     serve * serveOBJ = [serve new];
     [serveOBJ UpDateLatLongOfUser:[[NSString alloc] initWithFormat:@"%f",loc.latitude]
                               lng:[[NSString alloc] initWithFormat:@"%f",loc.longitude]];
@@ -2186,7 +2191,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [dict setObject:emailID forKey:@"email"];
             [dict setObject:@"nonuser" forKey:@"nonuser"];
 
-            if (![firstNameAB isEqualToString:@""])
+            if (![firstNameAB isEqualToString:@""] )
             {
                 [dict setObject:firstNameAB forKey:@"firstName"];
             }

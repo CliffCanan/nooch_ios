@@ -1012,14 +1012,14 @@
                 self.emptyPic = [UIImageView new];
                 if ([UIScreen mainScreen].bounds.size.height > 500)
                 {
-                    self.emptyPic.frame = CGRectMake(25, 28, 250, 254);
+                    self.emptyPic.frame = CGRectMake(26, 28, 253, 256);
                 }
                 else
                 {
-                    self.emptyPic.frame = CGRectMake(29, 7, 246, 250);
+                    self.emptyPic.frame = CGRectMake(29, 7, 246, 249);
                 }
                 self.emptyPic.alpha = 0;
-                [self.emptyPic setImage:[UIImage imageNamed:@"Stats_Circled"]];
+                [self.emptyPic setImage:[UIImage imageNamed:@"StatsCircled"]];
                 [cell.contentView  addSubview: self.emptyPic];
             }
         }

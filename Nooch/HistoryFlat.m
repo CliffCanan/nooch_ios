@@ -35,6 +35,8 @@
 @property(nonatomic, strong) UILabel * glyph_emptyLoc;
 @property(nonatomic, strong) UILabel * emptyLocBody;
 @property(nonatomic, strong) UILabel * emptyLocHdr;
+@property(nonatomic, strong) UILabel * emptyText;
+@property(nonatomic, strong) UIImageView * emptyPic;
 
 @end
 
@@ -271,6 +273,10 @@
 
     [self.view addSubview:mapArea];
     [self.view bringSubviewToFront:self.list];
+
+    _emptyText = [[UILabel alloc] initWithFrame:CGRectMake(15, 15, 290, 70)];
+    _emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(33, 102, 253, 256)];
+
 
     indexPathForDeletion = nil;
 }
@@ -783,7 +789,7 @@
         UIBarButtonItem *filt = [[UIBarButtonItem alloc] initWithCustomView:filter];
 
         [self.navigationItem setRightBarButtonItem:filt animated:NO ];*/
-        
+
         [self.glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
         [self.glyph_checkmark setTextColor: kNoochBlue];
 
@@ -792,11 +798,13 @@
 
         subTypestr = @"Pending";
         self.completed_selected = NO;
+
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
+        [self loadHist:listType index:1 len:20 subType:subTypestr];
+
         countRows = 0;
         index = 1;
-        [self loadHist:listType index:1 len:20 subType:subTypestr];
     }
 }
 
@@ -1297,34 +1305,6 @@
             {
                 if ([histShowArrayCompleted count] == 0)
                 {
-                    UILabel * emptyText = nil;
-                    UIImageView * emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(33, 105, 253, 256)];
-
-                    [self.list setStyleId:@"emptyTable"];
-
-                    if ([[UIScreen mainScreen] bounds].size.height < 500)
-                    {
-                        emptyText = [[UILabel alloc] initWithFrame:CGRectMake(8, 4, 304, 50)];
-                        [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:18]];
-                        [emptyPic setFrame:CGRectMake(33, 72, 253, 256)];
-                    }
-                    else
-                    {
-                        emptyText = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, 300, 72)];
-                        [emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
-                    }
-                    [emptyText setNumberOfLines:0];
-                    [emptyText setText:@"Once you make or receive a payment, come here to see all the details."];
-                    [emptyText setTextAlignment:NSTextAlignmentCenter];
-
-                    [emptyPic setImage:[UIImage imageNamed:@"history_img"]];
-                    [emptyPic setStyleClass:@"animate_bubble"];
-
-                    [self.list  addSubview: emptyPic];
-                    [self.list  addSubview: emptyText];
-
-                    [exportHistory removeFromSuperview];
-
                     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
                 }
             }
@@ -1334,7 +1314,6 @@
                 {
                     ishistLoading = YES;
                     index++;
-                    [self loadSearchByName];
                 }
                 else
                 {
@@ -1632,36 +1611,14 @@
         }
         else if (indexPath.row == [histShowArrayPending count])
         {
-            if (isEnd == YES)
-            {
-                if ([histShowArrayPending count] == 0)
-                {
-                    UILabel * emptyText_Pending = nil;
-                    
-                    [self.list setStyleId:@"emptyTable"];
-                    emptyText_Pending = [[UILabel alloc] initWithFrame:CGRectMake(6, 5, 308, 70)];
-                    [emptyText_Pending setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
-                    [emptyText_Pending setNumberOfLines:0];
-                    [emptyText_Pending setText:@"No payments found for you at the moment."];
-                    [emptyText_Pending setTextAlignment:NSTextAlignmentCenter];
-                    [self.list addSubview:emptyText_Pending];
-                }
-
-                return cell;
-            }
-            else if (isStart == YES)
+            if (isEnd != YES && isStart == YES)
             {}
             else
             {
                 if (isSearch)
                 {
-                    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-                    activityIndicator.center = CGPointMake(cell.contentView.frame.size.width / 2, cell.contentView.frame.size.height / 2);
-                    [activityIndicator startAnimating];
-                    [cell.contentView addSubview:activityIndicator];
                     ishistLoading = YES;
                     index++;
-                    [self loadSearchByName];
                 }
                 else
                 {
@@ -2125,7 +2082,6 @@
     [self.navigationController.view addSubview:self.hud];
     self.hud.labelText = @"Searching History...";
     [self.hud show:YES];
-    [spinner1 startAnimating];
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
     self.hud.delegate = self;
@@ -2161,7 +2117,6 @@
         //isEnd = YES;
         isLocalSearch = YES;
         [self searchTableView];
-        //[self.list reloadData];
     }
 }
 
@@ -2242,6 +2197,8 @@
 
         if ([histArray count] > 0)
         {
+            [self.list setStyleId:@"history"];
+
             isEnd = NO;
             isStart = NO;
 
@@ -2263,12 +2220,28 @@
                     [histShowArrayPending addObject:dict];
                 }
             }
+
+            if ([self.list.subviews containsObject:_emptyPic])
+            {
+                [UIView animateKeyframesWithDuration:0.3
+                                               delay:0
+                                             options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                          animations:^{
+                                              [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1.0 animations:^{
+                                                  [_emptyText setAlpha:0];
+                                                  [_emptyPic setAlpha:0];
+                                              }];
+                                          } completion: ^(BOOL finished) {
+                                              [_emptyText removeFromSuperview];
+                                              [_emptyPic removeFromSuperview];
+                                          }
+                 ];
+            }
         }
         else if ([histArray count] == 0)
         {
             isEnd = YES;
             [mapView_ removeFromSuperview];
-            [self displayEmptyMapArea];
         }
 
         if (isMapOpen) {
@@ -2278,6 +2251,62 @@
         [serveOBJ setDelegate:self];
         [serveOBJ setTagName:@"time"];
         [serveOBJ GetServerCurrentTime];
+
+        if (!isLocalSearch)
+        {
+            if (isEnd == YES)
+            {
+                if ((self.completed_selected && [histShowArrayCompleted count] == 0) ||
+                   (!self.completed_selected && [histShowArrayPending count] == 0))
+                {
+                    [self.list setStyleId:@"emptyTable"];
+                    [_emptyPic setImage:[UIImage imageNamed:@"HistoryPending"]];
+
+                    if ([[UIScreen mainScreen] bounds].size.height > 500)
+                    {
+                        [_emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
+                    }
+                    else
+                    {
+                        [_emptyText setFont:[UIFont fontWithName:@"Roboto-light" size:18]];
+                        [_emptyPic setFrame:CGRectMake(33, 78, 253, 256)];
+                    }
+                    [_emptyText setNumberOfLines:0];
+                    [_emptyText setTextAlignment:NSTextAlignmentCenter];
+                    if (self.completed_selected)
+                    {
+                        [_emptyText setFrame:CGRectMake(15, 14, 290, 68)];
+                        [_emptyText setText:@"Once you make or receive a payment, come here to see all the details."];
+                        [_emptyPic setStyleClass:@"animate_bubble"];
+                    }
+                    else
+                    {
+                        [_emptyText setFrame:CGRectMake(35, 14, 250, 68)];
+                        [_emptyText setText:@"No pending payments for you at the moment."];
+                    }
+
+                    if (![self.list.subviews containsObject:_emptyPic] ||
+                        ![self.list.subviews containsObject:_emptyText])
+                    {
+                        [self.list addSubview: _emptyPic];
+                        [self.list addSubview: _emptyText];
+
+                        [UIView animateKeyframesWithDuration:0.3
+                                                       delay:0
+                                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                                  animations:^{
+                                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1.0 animations:^{
+                                                          [_emptyText setAlpha:1];
+                                                          [_emptyPic setAlpha:1];
+                                                      }];
+                                                  } completion: nil
+                         ];
+                    }
+
+                    [exportHistory removeFromSuperview];
+                }
+            }
+        }
     }
 
     else if ([tagName isEqualToString:@"time"])
@@ -2286,25 +2315,23 @@
         NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         ServerDate = [self dateFromString:[dict valueForKey:@"Result"] ];
 
-        [self.list removeFromSuperview];
-        self.list = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, 320, [UIScreen mainScreen].bounds.size.height - 80)];
-        [self.list setStyleId:@"history"];
-        [self.list setDataSource:self];
-        [self.list setDelegate:self];
-        [self.list setSectionHeaderHeight:0];
-        [self.view addSubview:self.list];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.list reloadData];
         });
-        if ([subTypestr isEqualToString:@"Pending"])
+        
+        if ((self.completed_selected && [histShowArrayCompleted count] > 0) ||
+            (!self.completed_selected && [histShowArrayPending count] > 0))
         {
-            [self.list scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:countRows inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-            countRows = [histShowArrayPending count];
-        }
-        else
-        {
-            [self.list scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:countRows inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-             countRows = [histShowArrayCompleted count];
+            if ([subTypestr isEqualToString:@"Pending"])
+            {
+                [self.list scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:countRows inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+                countRows = [histShowArrayPending count];
+            }
+            else
+            {
+                [self.list scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:countRows inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+                 countRows = [histShowArrayCompleted count];
+            }
         }
         [self.view bringSubviewToFront:exportHistory];
 
@@ -2378,6 +2405,11 @@
                     [histShowArrayPending addObject:dict];
                 }
             }
+
+            serve * serveOBJ = [serve new];
+            [serveOBJ setDelegate:self];
+            [serveOBJ setTagName:@"time"];
+            [serveOBJ GetServerCurrentTime];
         }
         else {
             isEnd = YES;
@@ -2385,11 +2417,7 @@
         if (isMapOpen) {
             [self mapPoints];
         }
-        serve * serveOBJ = [serve new];
-        [serveOBJ setDelegate:self];
-        [serveOBJ setTagName:@"time"];
-        [serveOBJ GetServerCurrentTime];
-    } 
+    }
 
     else if ([tagName isEqualToString:@"reject"])
     {

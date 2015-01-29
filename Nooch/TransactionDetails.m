@@ -290,7 +290,7 @@
     }
 
 
-    if ( [[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
+    if ([[self.trans objectForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
     {
         // Pay & Cancel Buttons
         UIButton *pay = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -330,7 +330,8 @@
                 [remind setTag:14];
                 [remind setEnabled:YES];
 
-                if (([self.trans valueForKey:@"InvitationSentTo"] == NULL || [[self.trans objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]]) )
+                if (( [self.trans valueForKey:@"InvitationSentTo"] == NULL ||
+                     [[self.trans objectForKey:@"InvitationSentTo"] isKindOfClass:[NSNull class]]) )
                 {  // Requests to Existing Users
                     [cancel addTarget:self action:@selector(cancel_request_to_existing) forControlEvents:UIControlEventTouchUpInside];
                     [self.view addSubview:cancel];
@@ -359,8 +360,7 @@
                 [self.view addSubview:cancel];
             }
         }
-        else if ( [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
-                 [[self.trans valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"] )
+        else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"])
         {
             [cancel setTag:13];
             [cancel setEnabled:YES];

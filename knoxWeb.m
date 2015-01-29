@@ -122,37 +122,13 @@
     mainView = [[UIView alloc]init];
     mainView.layer.cornerRadius = 5;
     if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        mainView.frame = CGRectMake(9, -500, 302, 449);
-    } else {
+        mainView.frame = CGRectMake(9, -500, 302, 440);
+    }
+    else {
         mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 5);
     }
     mainView.backgroundColor = [UIColor whiteColor];
     mainView.layer.masksToBounds = NO;
-    
-    [UIView animateWithDuration:.4
-                     animations:^{
-                         overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
-                     }];
-    
-    [UIView animateWithDuration:0.33
-                     animations:^{
-                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                         if ([[UIScreen mainScreen] bounds].size.height < 500) {
-                             mainView.frame = CGRectMake(9, 70, 302, 449);
-                         } else {
-                             mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 5);
-                         }
-                     } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:.22
-                                          animations:^{
-                                              [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-                                              if ([[UIScreen mainScreen] bounds].size.height < 500) {
-                                                  mainView.frame = CGRectMake(9, 35, 302, 440);
-                                              } else {
-                                                  mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 5);
-                                              }
-                                          }];
-                     }];
  
     UIView * head_container = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 302, 44)];
     head_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
@@ -185,12 +161,11 @@
     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     btnLink.frame = CGRectMake(10,mainView.frame.size.height-56, 280, 50);
-    [btnLink setTitle:@"Continue" forState:UIControlStateNormal];
+    [btnLink setTitle:@"Got It" forState:UIControlStateNormal];
     [btnLink addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
-    
+
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
-        mainView.frame = CGRectMake(8, 40, 302, 440);
         head_container.frame = CGRectMake(0, 0, 302, 38);
         space_container.frame = CGRectMake(0, 28, 302, 10);
         glyph_lock.frame = CGRectMake(29, 5, 22, 29);
@@ -212,26 +187,62 @@
     [mainView addSubview:imageShow];
     [mainView addSubview:btnLink];
     [overlay addSubview:mainView];
+
+    [UIView animateKeyframesWithDuration:.55
+                                   delay:0
+                                 options:0 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.8 animations:^{
+                                      overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.6 animations:^{
+                                      if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                          mainView.frame = CGRectMake(9, 70, 302, 440);
+                                      }
+                                      else {
+                                          mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 5);
+                                      }
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:0.6 relativeDuration:0.4 animations:^{
+                                      if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                          mainView.frame = CGRectMake(9, 35, 302, 440);
+                                      }
+                                      else {
+                                          mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 5);
+                                      }
+                                  }];
+                              }
+                              completion: nil
+     ];
 }
 
 -(void)close_lightBox
 {
-    [UIView animateWithDuration:0.15
-                     animations:^{
-                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                         mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 5);
-                     } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:.38
-                                          animations:^{
-                                              [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-                                              mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 5);
-                                              overlay.alpha = 0.5;
-                                          } completion:^(BOOL finished) {
-                                              [overlay removeFromSuperview];
-                                          }
-                          ];
-                     }
-     ];
+    [UIView animateKeyframesWithDuration:0.6
+                                   delay:0
+                                 options:0 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.35 animations:^{
+                                      if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                          mainView.frame = CGRectMake(9, 70, 302, 440);
+                                      }
+                                      else {
+                                          mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 5);
+                                      }
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:0.35 relativeDuration:0.65 animations:^{
+                                      overlay.alpha = 0;
+                                      if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                          mainView.frame = CGRectMake(9, -500, 302, 440);
+                                      }
+                                      else {
+                                          mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 5);
+                                      }
+                                  }];
+                              }
+                              completion:^(BOOL finished) {
+                                  [overlay removeFromSuperview];
+                              }];
 }
 
 -(void)backToHome
@@ -242,9 +253,6 @@
 
 - (void)resignView
 {
-    //self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    //[self.navigationController.view addSubview:self.hud];
-    //self.hud.delegate = self;
     self.hud.labelText = @"Finishing up...";
     [self.hud show:YES];
 
