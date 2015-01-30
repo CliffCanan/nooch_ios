@@ -76,15 +76,6 @@
     shadowUnder.layer.shadowRadius = 3.5;
     shadowUnder.alpha = .8;
     [user_bar addSubview:shadowUnder];
-    
-    user_pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 20, 60, 60)];
-    user_pic.clipsToBounds = YES;
-    user_pic.layer.cornerRadius = 30;
-    user_pic.layer.borderWidth = 2;
-    user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
-    [user_pic setUserInteractionEnabled:YES];
-    [user_bar addSubview:user_pic];
-    [user_pic addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profile)]];
 
     UIView * bottom_bar = [UIView new];
     if ([[UIScreen mainScreen] bounds].size.height < 500) {
@@ -138,6 +129,7 @@
 
     if ([[user objectForKey:@"Photo"] length] > 0 && [user objectForKey:@"Photo"] != nil)
     {
+        user_pic = [[UIImageView alloc] initWithFrame:CGRectMake(10, 20, 60, 60)];
         [user_pic setStyleId:@"lside_userpic"];
         [user_pic sd_setImageWithURL:[NSURL URLWithString:[user objectForKey:@"Photo"]]
         placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
@@ -146,6 +138,10 @@
         user_pic.layer.borderColor = [UIColor whiteColor].CGColor;
         user_pic.clipsToBounds = YES;
         [user_pic setUserInteractionEnabled:YES];
+        [user_bar addSubview:user_pic];
+        [user_pic addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profile)]];
+        
+
     }
 
     if ( ![[user valueForKey:@"Status"]isEqualToString:@"Active"]  ||
