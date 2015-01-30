@@ -107,12 +107,12 @@ static assist * _sharedInstance = nil;
         if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized ||
             [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse)
         {
-            NSLog(@"Location Services Allowed");
+            NSLog(@"Assist: Location Services Allowed");
             return YES;
         }
         else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied)
         {
-            NSLog(@"Location Services NOT Allowed");
+            NSLog(@"Assist: Location Services NOT Allowed");
             return NO;
         }
     }
@@ -223,7 +223,7 @@ static assist * _sharedInstance = nil;
 
     timer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
 
-    [[assist shared]setneedsReload:YES];
+    [[assist shared] setneedsReload:YES];
     [self getSettings];
     [self getAcctInfo];
 }

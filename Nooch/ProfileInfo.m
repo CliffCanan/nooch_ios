@@ -117,11 +117,6 @@ UIImageView *picture;
 
     [self.navigationItem setTitle:@"Profile"];
 
-    serve *serveOBJ = [serve new ];
-    serveOBJ.tagName = @"myset";
-    [serveOBJ setDelegate:self];
-    [serveOBJ getSettings];
-
     int pictureRadius = 38;
     heightOfTopSection = 80;
     rowHeight = 50;
@@ -432,6 +427,11 @@ UIImageView *picture;
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+
+    serve *serveOBJ = [serve new ];
+    serveOBJ.tagName = @"myset";
+    [serveOBJ setDelegate:self];
+    [serveOBJ getSettings];
 }
 
 -(void) viewWillDisappear:(BOOL)animated
@@ -446,7 +446,10 @@ UIImageView *picture;
 
 -(void)GoBackOnce
 {
-    if (isSignup) {
+    if (isSignup)
+    {
+        [[assist shared] setneedsReload:YES];
+
         [self.navigationController setNavigationBarHidden:NO];
         [UIView animateWithDuration:0.75
                          animations:^{
@@ -455,7 +458,7 @@ UIImageView *picture;
                          }];
         [self.navigationController popToRootViewControllerAnimated:NO];
         [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
-        isSignup=NO;
+        isSignup = NO;
     }
     else if (isFromSettingsOptions)
     {

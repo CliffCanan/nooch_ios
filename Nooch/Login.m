@@ -1089,13 +1089,15 @@
             [[NSUserDefaults standardUserDefaults] setObject:email_fb forKey:@"UserName"];
         }
         else
-        [[NSUserDefaults standardUserDefaults] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
+            [[NSUserDefaults standardUserDefaults] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
         user = [NSUserDefaults standardUserDefaults];
         
-        if (![self.stay_logged_in isOn]) {
+        if (![self.stay_logged_in isOn])
+        {
             [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
         }
-        else {
+        else
+        {
             NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
             [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
             [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
@@ -1109,7 +1111,7 @@
              [[me usr] setObject:email_fb forKey:@"UserName"];
         }
         else
-        [[me usr] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
+            [[me usr] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
         
         serve * enc_user = [serve new];
         [enc_user setDelegate:self];

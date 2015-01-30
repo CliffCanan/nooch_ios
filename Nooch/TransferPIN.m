@@ -66,7 +66,7 @@
         self.receiver = receiver;
         self.amnt = amount;
 
-        NSLog(@"\nself.type is: %@\nself.amnt is: %f", self.type, self.amnt);
+        //NSLog(@"\nself.type is: %@\nself.amnt is: %f", self.type, self.amnt);
     }
     return self;
 }
@@ -382,6 +382,8 @@
         [trans_image setImage:[[assist shared] getTranferImage]];
         [self.view addSubview:trans_image];
     }
+
+    [[assist shared] setneedsReload:YES];
 }
 
 -(void)backPressed:(id)sender

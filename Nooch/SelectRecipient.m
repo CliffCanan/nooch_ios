@@ -43,13 +43,6 @@
 {
     [super viewDidLoad];
 
-    /*if ([user valueForKey:@"facebook_id"] && ![[user valueForKey:@"facebook_id"] length] > 0)
-    {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connect with Facebook" message:@"Do you want to connect with your facebook friends?" delegate:self cancelButtonTitle:@"YES" otherButtonTitles:@"Lator",nil];
-        [av show];
-        av.tag=6;
-    }*/
-
     self.location = NO;
     self.navigationController.navigationBar.topItem.title = @"";
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -59,7 +52,7 @@
     [self.navigationItem setLeftBarButtonItem:nil];
     UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [back_button setStyleId:@"navbar_back"];
-    [back_button addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [back_button addTarget:self action:@selector(backPressed_SelectRecip:) forControlEvents:UIControlEventTouchUpInside];
     [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
     [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.15) forState:UIControlStateNormal];
     back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -225,7 +218,7 @@
         shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
         NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
 
-        UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backPressed:)];
+        UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backPressed_SelectRecip:)];
 
         UILabel * back_button = [UILabel new];
         [back_button setStyleId:@"navbar_back"];
@@ -358,8 +351,10 @@
     [super viewDidDisappear:animated];
 }
 
--(void)backPressed:(id)sender
+-(void)backPressed_SelectRecip:(id)sender
 {
+    [[assist shared]setneedsReload:NO]; //Going right back to Home, so don't really need to reload
+
     [self.navigationItem setLeftBarButtonItem:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -2030,11 +2025,19 @@
 
         NSString * miles;
 
-        if ([[temp objectForKey:@"Miles"] intValue] < 1) {
-            miles = [NSString stringWithFormat:@"    %.0f feet",([[temp objectForKey:@"Miles"] floatValue] * 5280)];
+        if ([[temp objectForKey:@"Miles"] shortValue] < 1)
+        {
+            if ([[temp objectForKey:@"Miles"] floatValue] > (150/5280))
+            {
+                miles = [NSString stringWithFormat:@"     %.0f feet",([[temp objectForKey:@"Miles"] floatValue] * 5280)];
+            }
+            else
+            {
+                miles = @"     <  150 feet";
+            }
         }
         else {
-            miles = [NSString stringWithFormat:@"    %.0f miles",[[temp objectForKey:@"Miles"] floatValue]];
+            miles = [NSString stringWithFormat:@"     %.0f miles",[[temp objectForKey:@"Miles"] floatValue]];
         }
         [cell.detailTextLabel setText:miles];
         

@@ -98,6 +98,7 @@ NSMutableURLRequest *request;
         loadInfo = [[NSMutableDictionary alloc] initWithContentsOfFile:[self autoLogin]];
         [[NSUserDefaults standardUserDefaults] setValue:[loadInfo valueForKey:@"MemberId"] forKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] setValue:[loadInfo valueForKey:@"UserName"] forKey:@"UserName"];
+
         [me birth];
     }
     else
@@ -654,16 +655,22 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     //Update Pending Status
     NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
 
-    if (![[assist shared]isPOP])
+    if (![[assist shared] isPOP])
     {
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-        
+
+        self.slidingViewController.panGesture.enabled = YES;
+        [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+
+
         if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]])
         {
             //push login
             return;
         }
-        if ([[assist shared]needsReload])
+
+        if ([[assist shared] needsReload] &&
+            [[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"])
         {
             RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleCircleFlip];
             spinner1.color = [UIColor clearColor];
@@ -677,13 +684,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             self.hud.labelText = @"Loading your Nooch account";
             self.hud.labelColor = kNoochGrayDark;
             [self.hud show:YES];
-        }
 
-        if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
-        {
-            serve *serveOBJ = [serve new ];
+            //location
+            [self checkIfLocAllowed];
+
+            serve * serveOBJ = [serve new];
             [serveOBJ setTagName:@"sets"];
             [serveOBJ getSettings];
+
+            NSLog(@"Home: Reload Initiated");
         }
     }
     else
@@ -694,6 +703,40 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [ARProfileManager clearProfile];
         return;
     }
+
+    // Address Book Authorization grant
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
+        ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted)
+    {
+        NSLog(@"AB Denied");
+    }
+    else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+    {
+        NSLog(@"AB Authorized");
+        if ([[[assist shared]assosAll] count] == 0) {
+            [self address_book];
+        }
+    }
+    else
+    {
+        ABAddressBookRequestAccessWithCompletion(ABAddressBookCreateWithOptions(NULL, nil), ^(bool granted, CFErrorRef error)
+                                                 {
+                                                     if (!granted) {
+                                                         NSLog(@"AB Just denied");
+                                                         return;
+                                                     }
+                                                     if ([[[assist shared]assosAll] count] == 0) {
+                                                         [self address_book];
+                                                     }
+                                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                                         [self GetFavorite];
+                                                     });
+                                                     NSLog(@"AB Just authorized");
+                                                 });
+        NSLog(@"AB Not determined");
+    }
+    
+    [self GetFavorite];
 
     NSShadow * shadowRed = [[NSShadow alloc] init];
     shadowRed.shadowColor = Rgb2UIColor(71, 8, 7, .4);
@@ -1160,41 +1203,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         ];
         carouselTop = 48;
     }
-    
-    // Address Book Authorization grant
-    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
-        ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted)
-    {
-        NSLog(@"AB Denied");
-    }
-    else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
-    {
-        NSLog(@"AB Authorized");
-        if ([[[assist shared]assosAll] count] == 0) {
-            [self address_book];
-        }
-    }
-    else
-    {
-        ABAddressBookRequestAccessWithCompletion(ABAddressBookCreateWithOptions(NULL, nil), ^(bool granted, CFErrorRef error)
-                                                 {
-                                                     if (!granted) {
-                                                        NSLog(@"AB Just denied");
-                                                         return;
-                                                     }
-                                                     if ([[[assist shared]assosAll] count] == 0) {
-                                                         [self address_book];
-                                                         
-                                                     }
-                                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                                         [self GetFavorite];
-                                                     });
-                                                     NSLog(@"AB Just authorized");
-                                                 });
-        NSLog(@"AB Not determined");
-    }
-
-    [self GetFavorite]; 
 
     if ([self.view.subviews containsObject:_carousel])
     {
@@ -1243,15 +1251,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.hud hide:YES];
     }
 
-    if (![[assist shared]isPOP])
-    {
-        self.slidingViewController.panGesture.enabled = YES;
-        [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-
-        //location
-        [self checkIfLocAllowed];
-    }
-
     [[assist shared] setRequestMultiple:NO];
     [[assist shared] setArray:nil];
 
@@ -1298,7 +1297,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized  ||
             [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse)
         {
-            NSLog(@"Location Services Allowed");
+            NSLog(@"Home: Location Services Allowed");
             
             locationManager = [[CLLocationManager alloc] init];
             
@@ -1310,7 +1309,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         else
         {
-            NSLog(@"Location Services NOT Allowed");
+            NSLog(@"Home: Location Services NOT Allowed");
         }
     }
 }
@@ -2027,7 +2026,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     [[assist shared]setlocationAllowed:YES];
 
-    NSLog(@"Got HURR");
     serve * serveOBJ = [serve new];
     [serveOBJ UpDateLatLongOfUser:[[NSString alloc] initWithFormat:@"%f",loc.latitude]
                               lng:[[NSString alloc] initWithFormat:@"%f",loc.longitude]];
@@ -2069,7 +2067,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     if ([tagName isEqualToString:@"favorites"])
     {
-        [self.hud hide:YES];
         NSError * error;
         favorites = [[NSMutableArray alloc]init];
         favorites = [NSJSONSerialization
@@ -2096,6 +2093,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if ([favorites count] > 0)
         {
             [ARProfileManager setNumberValue:[NSNumber numberWithDouble:[favorites count]] forVariable:@"Fav_Nooch_Friends"];
+        }
+
+        if ([self.view.subviews containsObject:self.hud])
+        {
+            [self.hud hide:YES];
         }
     }
 
@@ -2154,6 +2156,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         [defaults setValue: count forKey:@"Pending_count"];
         [defaults synchronize];
+
+        if ([self.view.subviews containsObject:self.hud])
+        {
+            [self.hud hide:YES];
+        }
     }
 
     else if ([tagName isEqualToString:@"emailCheck"])
@@ -2268,10 +2275,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
     }
 
-    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound)
     {
         [self.hud hide:YES];
-        
+
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
