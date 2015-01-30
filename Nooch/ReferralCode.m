@@ -86,14 +86,11 @@
 
     UIButton *request = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [request setFrame:CGRectMake(10, 424, 300, 60)];
-    [request setTitleShadowColor:Rgb2UIColor(32, 33, 34, 0.22) forState:UIControlStateNormal];
-    request.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    [request setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [request setTitle:@"I Don't Have a Code" forState:UIControlStateNormal];
     [request addTarget:self action:@selector(request_code) forControlEvents:UIControlEventTouchUpInside];
     [request setStyleClass:@"label_small"];
     [self.view addSubview:request];
-    
+
     self.code_field = [[UITextField alloc] initWithFrame:CGRectMake(55, 250, 210, 60)];
     [self.code_field setBackgroundColor:[UIColor whiteColor]]; 
     [self.code_field setTextColor:kNoochGrayDark];

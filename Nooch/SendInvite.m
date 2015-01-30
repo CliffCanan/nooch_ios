@@ -54,14 +54,14 @@
 
     if (!sentFromStatsScrn)
     {
-    UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [hamburger setStyleId:@"navbar_hamburger"];
-    [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
-    [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
-    [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
-    hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
-    [self.navigationItem setLeftBarButtonItem:menu];
+        UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [hamburger setStyleId:@"navbar_hamburger"];
+        [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+        [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
+        [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+        hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+        [self.navigationItem setLeftBarButtonItem:menu];
     }
     else
     {
@@ -186,7 +186,8 @@
 }
 
 #pragma mark - file paths
-- (NSString *)autoLogin{
+- (NSString *)autoLogin
+{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
@@ -216,9 +217,9 @@
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-        
+
         [timer invalidate];
-        
+
         [nav_ctrl performSelector:@selector(disable)];
         [nav_ctrl performSelector:@selector(reset)];
         Register *reg = [Register new];
@@ -243,14 +244,14 @@
     {
         [self.hud hide:YES];
 
-        dictInviteUserList=[[NSMutableDictionary alloc]init];
-        dictInviteUserList=[NSJSONSerialization
+        dictInviteUserList = [NSJSONSerialization
                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                             options:kNilOptions
                             error:&error];
+
         if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"]count] > 0)
         {
-            UIView*view_table = [[UIView alloc]initWithFrame:CGRectMake(10, 296, 300, 200)];
+            UIView *view_table = [[UIView alloc]initWithFrame:CGRectMake(10, 296, 300, 200)];
             view_table.backgroundColor = [UIColor whiteColor];
             [self.view addSubview:view_table];
             self.contacts = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 300, 190)];
@@ -262,7 +263,7 @@
             view_table.layer.shadowOffset = CGSizeMake(0, 2);
             view_table.layer.shadowRadius = 2;
             view_table.layer.shadowOpacity = 0.4;
-            
+
             self.contacts.backgroundColor = [UIColor clearColor];
             [self.contacts setSeparatorStyle:UITableViewCellSeparatorStyleNone];
             self.contacts.separatorColor = [UIColor clearColor];
@@ -307,7 +308,8 @@
     }
     for(UIView *subview in cell.contentView.subviews)
         [subview removeFromSuperview];
-    NSDictionary*dict=[[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] objectAtIndex:indexPath.row];
+
+    NSDictionary *dict = [[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] objectAtIndex:indexPath.row];
     
     UIImageView *user_pic = [UIImageView new];
     user_pic.clipsToBounds = YES;
@@ -409,7 +411,8 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)setNavBarColor:(UIColor *)navBarColor titleColor:(UIColor *)titleColor {
+- (void)setNavBarColor:(UIColor *)navBarColor titleColor:(UIColor *)titleColor
+{
     [[UINavigationBar appearance] setBarTintColor:navBarColor];
     [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
                                                           [UIFont fontWithName:@"Roboto-Medium" size:18.0f],
@@ -538,7 +541,11 @@
 
         case MessageComposeResultFailed:
         {
-            UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to send SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                   message:@"Failed to send SMS!"
+                                                                  delegate:nil
+                                                         cancelButtonTitle:@"OK"
+                                                         otherButtonTitles:nil];
             [warningAlert show];
             break;
         }

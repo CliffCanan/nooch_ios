@@ -1333,7 +1333,7 @@
     {
         if ([histShowArrayPending count] > indexPath.row)
         {
-            NSDictionary * dictRecord = [histShowArrayPending objectAtIndex:indexPath.row];
+            NSDictionary * dictRecord = nil;
 
             if (!isLocalSearch)
             {
@@ -2275,13 +2275,27 @@
                     [_emptyText setTextAlignment:NSTextAlignmentCenter];
                     if (self.completed_selected)
                     {
-                        [_emptyText setFrame:CGRectMake(15, 14, 290, 68)];
+                        if ([[UIScreen mainScreen] bounds].size.height > 500)
+                        {
+                            [_emptyText setFrame:CGRectMake(15, 14, 290, 68)];
+                        }
+                        else
+                        {
+                            [_emptyText setFrame:CGRectMake(15, 5, 290, 68)];
+                        }
                         [_emptyText setText:@"Once you make or receive a payment, come here to see all the details."];
                         [_emptyPic setStyleClass:@"animate_bubble"];
                     }
                     else
                     {
-                        [_emptyText setFrame:CGRectMake(35, 14, 250, 68)];
+                        if ([[UIScreen mainScreen] bounds].size.height > 500)
+                        {
+                            [_emptyText setFrame:CGRectMake(35, 14, 250, 68)];
+                        }
+                        else
+                        {
+                            [_emptyText setFrame:CGRectMake(35, 5, 250, 68)];
+                        }
                         [_emptyText setText:@"No pending payments for you at the moment."];
                     }
 

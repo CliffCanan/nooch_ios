@@ -219,7 +219,7 @@
     [self.view addSubview:self.email_field];
 
     self.emailValidator = [UILabel new];
-    [self.emailValidator setFrame:CGRectMake(74, 293, 21, 39)];
+    [self.emailValidator setFrame:CGRectMake(72, 293, 21, 39)];
     [self.emailValidator setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
     [self.emailValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
     [self.emailValidator setTextAlignment:NSTextAlignmentCenter];
@@ -338,7 +338,7 @@
 
         [email setFrame:CGRectMake(0, 259, 0, 0)];
         [self.email_field setFrame:CGRectMake(0, 259, 0, 0)];
-        [self.emailValidator setFrame:CGRectMake(74, 259, 21, 39)];
+        [self.emailValidator setFrame:CGRectMake(72, 259, 21, 39)];
 
         [password setFrame:CGRectMake(0, 299, 0, 0)];
         [self.password_field setFrame:CGRectMake(0, 299, 0, 0)];
@@ -1133,7 +1133,7 @@
         [self.email_field.text rangeOfString:@"@"].location != NSNotFound &&
         [self.email_field.text rangeOfString:@"."].location != NSNotFound &&
         [self.email_field.text rangeOfString:@" "].location == NSNotFound &&
-        [self.email_field.text rangeOfString:@"."].location < [self.email_field.text length] - 1 &&
+        [self.email_field.text rangeOfString:@"."].location < [self.email_field.text length] - 2 &&
         (([self.email_field.text rangeOfString:@"."].location - [self.email_field.text rangeOfString:@"@"].location) != abs(1)))
     {
         if (![self.emailValidator isHidden] || textField == self.password_field)
@@ -1153,7 +1153,7 @@
         }
     }
 
-    if ( textField == self.password_field)
+    if (textField == self.password_field)
     {
         [self.pwValidator1 setHidden:NO];
         [self.pwValidator2 setHidden:NO];
@@ -1171,6 +1171,7 @@
         [self.pwValidator setHidden:NO];
 
         double score = 0;
+        NSString * textToCheck = [NSString stringWithFormat:@"%@%@", self.password_field.text, string];
 
         if ([self.password_field.text length] > 5)
         {
@@ -1178,33 +1179,27 @@
         } else {
             pwLength = false;
         }
-        if ([self.password_field.text rangeOfCharacterFromSet:lowercaseCharSet].location != NSNotFound ||
-            [string rangeOfCharacterFromSet:lowercaseCharSet].location != NSNotFound)
+        if ([textToCheck rangeOfCharacterFromSet:lowercaseCharSet].location != NSNotFound)
         {
             score += .5;
         }
-        if ([self.password_field.text rangeOfCharacterFromSet:uppercaseCharSet].location != NSNotFound ||
-            [string rangeOfCharacterFromSet:uppercaseCharSet].location != NSNotFound)
+        if ([textToCheck rangeOfCharacterFromSet:uppercaseCharSet].location != NSNotFound)
         {
             score += .85;
         }
-        if ([self.password_field.text rangeOfCharacterFromSet:digitsCharSet].location != NSNotFound ||
-            [string rangeOfCharacterFromSet:digitsCharSet].location != NSNotFound)
+        if ([textToCheck rangeOfCharacterFromSet:digitsCharSet].location != NSNotFound)
         {
             score += 1;
         }
-        if ([self.password_field.text rangeOfCharacterFromSet:symbolsCharSet].location != NSNotFound ||
-            [string rangeOfCharacterFromSet:symbolsCharSet].location != NSNotFound)
+        if ([textToCheck rangeOfCharacterFromSet:symbolsCharSet].location != NSNotFound)
         {
             score += 1.25;
         }
-        if ([self.password_field.text rangeOfCharacterFromSet:punctCharSet].location != NSNotFound||
-            [string rangeOfCharacterFromSet:punctCharSet].location != NSNotFound)
+        if ([textToCheck rangeOfCharacterFromSet:punctCharSet].location != NSNotFound)
         {
             score += 1.35;
         }
-        if ([self.password_field.text rangeOfCharacterFromSet:whtspcCharSet].location != NSNotFound||
-            [string rangeOfCharacterFromSet:whtspcCharSet].location != NSNotFound)
+        if ([textToCheck rangeOfCharacterFromSet:whtspcCharSet].location != NSNotFound)
         {
             score += 1.3;
         }
@@ -1253,9 +1248,10 @@
         }
         else
         {
-            if ([self.password_field.text length] > 0) {
+            if ([textToCheck length] > 0) {
                 [self.pwValidator setText:@"Very Weak"];
-            } else {
+            }
+            else {
                 [self.pwValidator setText:@""];
             }
             [self.pwValidator4 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];

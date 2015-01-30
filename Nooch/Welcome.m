@@ -23,42 +23,12 @@
     }
     return self;
 }
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear: animated];
-
-    self.screenName = @"Welcome Screen";
-
-    [self.navigationController setNavigationBarHidden:YES];
-    
-}
-- (void)validate
-{
-    //navigate to settings
-    [overlay removeFromSuperview];
-    [self.navigationController setNavigationBarHidden:NO];
-    isSignup=YES;
-    knoxWeb *knox = [knoxWeb new];
-    [self.navigationController pushViewController:knox animated:YES];
-    [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
-}
-
-- (void)later
-{
-    [self.navigationController setNavigationBarHidden:NO];
-    [UIView animateWithDuration:0.7
-                     animations:^{
-                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                         [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
-                     }];
-    [self.navigationController popToRootViewControllerAnimated:NO];
-    [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
+
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
     UIImageView * logo = [UIImageView new];
@@ -73,7 +43,7 @@
     [title setFont:[UIFont systemFontOfSize:24]];
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
-    
+
     UILabel * success_header = [[UILabel alloc] initWithFrame:CGRectMake(20, 152, 280, 21)];
     [success_header setTextColor:kNoochBlue];
     [success_header setBackgroundColor:[UIColor clearColor]];
@@ -82,13 +52,13 @@
     [success_header setFont:[UIFont fontWithName:@"Roboto-regular" size:19]];
     [success_header setStyleClass:@"animate_bubble_slow"];
     [self.view addSubview:success_header];
-    
+
     UIView * boxOutline = [[UIView alloc] initWithFrame:CGRectMake(10, 186, 300, 183)];
     boxOutline.backgroundColor = [UIColor whiteColor];
     boxOutline.layer.cornerRadius = 8;
     [boxOutline setStyleClass:@"welcomeBoxShadow"];
     [self.view addSubview:boxOutline];
-    
+
     UILabel * next_lbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 194, 300, 32)];
     [next_lbl setTextColor:kNoochGrayDark];
     [next_lbl setBackgroundColor:[UIColor clearColor]];
@@ -96,7 +66,7 @@
     [next_lbl setTextAlignment:NSTextAlignmentCenter];
     [next_lbl setFont:[UIFont fontWithName:@"Roboto-regular" size:24]];
     [self.view addSubview:next_lbl];
-    
+
     UILabel * prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 234, 300, 28)];
     [prompt setTextColor:kNoochGrayDark];
     [prompt setBackgroundColor:[UIColor clearColor]];
@@ -105,7 +75,7 @@
     [prompt setFont:[UIFont fontWithName:@"Roboto-regular" size:19]];
     prompt.numberOfLines = 0;
     [self.view addSubview:prompt];
-    
+
     UILabel * subPromptTxt = [[UILabel alloc] initWithFrame:CGRectMake(20, 260, 280, 23)];
     [subPromptTxt setTextColor:[Helpers hexColor:@"585a5c"]];
     [subPromptTxt setBackgroundColor:[UIColor clearColor]];
@@ -114,7 +84,7 @@
     [subPromptTxt setFont:[UIFont fontWithName:@"Roboto-light" size:16]];
     subPromptTxt.numberOfLines = 0;
     [self.view addSubview:subPromptTxt];
-    
+
     UILabel * prompt2 = [[UILabel alloc] initWithFrame:CGRectMake(10, 306, 300, 28)];
     [prompt2 setTextColor:kNoochGrayDark];
     [prompt2 setBackgroundColor:[UIColor clearColor]];
@@ -123,20 +93,20 @@
     [prompt2 setFont:[UIFont fontWithName:@"Roboto-regular" size:19]];
     prompt2.numberOfLines = 0;
     [self.view addSubview:prompt2];
-    
+
     UIButton * moreinfo = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [moreinfo setBackgroundColor:[UIColor clearColor]];
     [moreinfo setTitle:@"  Tell me more" forState:UIControlStateNormal];
-    [moreinfo setFrame:CGRectMake(93, 338, 134, 20)];
+    [moreinfo setFrame:CGRectMake(90, 336, 140, 23)];
     [moreinfo setStyleId:@"moreinfo_button"];
-    
+    [moreinfo addTarget:self action:@selector(moreinfo_lightBox) forControlEvents:UIControlEventTouchUpInside];
+
     UILabel * glyphinfo = [UILabel new];
     [glyphinfo setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
     [glyphinfo setFrame:CGRectMake(5, 0, 15, 19)];
     [glyphinfo setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-question-circle"]];
     [glyphinfo setTextColor:kNoochPurple];
     [moreinfo addSubview:glyphinfo];
-    [moreinfo addTarget:self action:@selector(moreinfo_lightBox) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:moreinfo];
 
     UIButton * goToKnoxBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -168,8 +138,8 @@
     [later addTarget:self action:@selector(later) forControlEvents:UIControlEventTouchUpInside];
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
-        [goToKnoxBtn setFrame:CGRectMake(10, 386, 300, 50)];
-        [later setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height - 44, 300, 44)];
+        [goToKnoxBtn setFrame:CGRectMake(10, 384, 300, 50)];
+        [later setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height - 42, 300, 42)];
     }
     else
     {
@@ -180,29 +150,67 @@
     [self.view addSubview:later];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear: animated];
+    self.screenName = @"Welcome Screen";
+    [self.navigationController setNavigationBarHidden:YES];
+}
+
+- (void)validate
+{
+    //navigate to settings
+    [overlay removeFromSuperview];
+
+    [self.navigationController setNavigationBarHidden:NO];
+
+    isSignup = YES;
+
+    knoxWeb *knox = [knoxWeb new];
+    [self.navigationController pushViewController:knox animated:YES];
+    [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
+}
+
+- (void)later
+{
+    [self.navigationController setNavigationBarHidden:NO];
+    [UIView animateWithDuration:0.7
+                     animations:^{
+                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                         [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
+                     }];
+    [self.navigationController popToRootViewControllerAnimated:NO];
+    [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
+}
+
 -(void)moreinfo_lightBox
 {
     overlay = [[UIView alloc]init];
     overlay.frame = CGRectMake(0, 0, 320, [[UIScreen mainScreen] bounds].size.height);
     overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [self.navigationController.view addSubview:overlay];
-    
+
     mainView = [[UIView alloc]init];
     mainView.layer.cornerRadius = 5;
-    mainView.frame = CGRectMake(8, -540, 302, 504);
     mainView.backgroundColor = [UIColor whiteColor];
     mainView.layer.masksToBounds = NO;
-    
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        mainView.frame = CGRectMake(9, -500, 302, 440);
+    }
+    else {
+        mainView.frame = CGRectMake(9, -540, 302, 499);
+    }
+
     UIView * head_container = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 302, 44)];
     head_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
     [mainView addSubview:head_container];
     head_container.layer.cornerRadius = 10;
-    
+
     UIView * space_container = [[UIView alloc]initWithFrame:CGRectMake(0, 34, 302, 10)];
     space_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
     [mainView addSubview:space_container];
-    
-    UILabel * title = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 304, 30)];
+
+    UILabel * title = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 302, 28)];
     [title setBackgroundColor:[UIColor clearColor]];
     [title setText:@"Connect Your Bank"];
     [title setStyleClass:@"lightbox_title"];
@@ -210,21 +218,21 @@
 
     UILabel * glyph_lock = [UILabel new];
     [glyph_lock setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
-    [glyph_lock setFrame:CGRectMake(32, 11, 22, 29)];
+    [glyph_lock setFrame:CGRectMake(29, 11, 22, 29)];
     [glyph_lock setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
     [glyph_lock setTextColor:kNoochBlue];
     [head_container addSubview:glyph_lock];
 
-    UIImageView * imageShow = [[UIImageView alloc]initWithFrame:CGRectMake(2, 50, 300, 380)];
+    UIImageView * imageShow = [[UIImageView alloc]initWithFrame:CGRectMake(1, 50, 300, 380)];
     imageShow.image = [UIImage imageNamed:@"Knox_Infobox"];
     imageShow.contentMode = UIViewContentModeScaleAspectFit;
-    
+
     UIButton * btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnLink setStyleClass:@"button_green_welcome"];
     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.22) forState:UIControlStateNormal];
     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    btnLink.frame = CGRectMake(10,mainView.frame.size.height-56, 280, 50);
-    [btnLink setTitle:@" Link Now" forState:UIControlStateNormal];
+    btnLink.frame = CGRectMake(10, mainView.frame.size.height - 56, 280, 50);
+    [btnLink setTitle:@"  Link Now" forState:UIControlStateNormal];
     [btnLink addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
 
     NSShadow * shadow = [[NSShadow alloc] init];
@@ -234,75 +242,92 @@
 
     UILabel * glyphLink = [UILabel new];
     [glyphLink setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
-    [glyphLink setFrame:CGRectMake(70, 9, 24, 28)];
+    [glyphLink setFrame:CGRectMake(69, 9, 22, 27)];
     glyphLink.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-link"]
-                                                             attributes:textAttributes1];
+                                                               attributes:textAttributes1];
     [glyphLink setTextColor:[UIColor whiteColor]];
     [btnLink addSubview:glyphLink];
-    [mainView addSubview:btnLink];
+
+    if ([[UIScreen mainScreen] bounds].size.height < 500)
+    {
+        head_container.frame = CGRectMake(0, 0, 302, 38);
+        space_container.frame = CGRectMake(0, 28, 302, 10);
+        glyph_lock.frame = CGRectMake(28, 5, 22, 28);
+        title.frame = CGRectMake(0, 5, 302, 28);
+        imageShow.frame = CGRectMake(2, 42, 298, 338);
+        btnLink.frame = CGRectMake(10, mainView.frame.size.height - 51, 280, 44);
+    }
 
     UIImageView * btnClose = [[UIImageView alloc] initWithFrame:self.view.frame];
     btnClose.image = [UIImage imageNamed:@"close_button"];
     btnClose.frame = CGRectMake(9, 6, 35, 35);
-    
+
     UIButton * btnClose_shell = [UIButton buttonWithType:UIButtonTypeCustom];
     btnClose_shell.frame = CGRectMake(mainView.frame.size.width - 35, head_container.frame.origin.y - 21, 48, 46);
     [btnClose_shell addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
     [btnClose_shell addSubview:btnClose];
-    
+
     [mainView addSubview:btnClose_shell];
     [mainView addSubview:imageShow];
+    [mainView addSubview:btnLink];
     [overlay addSubview:mainView];
 
-    [UIView animateWithDuration:.4
-                     animations:^{
-                         overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
-                     }];
-    
-    [UIView animateWithDuration:0.35
-                     animations:^{
-                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                         mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 52);
-                     } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:.24
-                                          animations:^{
-                                              [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-                                              mainView.frame = CGRectMake(9, 45, 302, self.view.frame.size.height - 52);
-                                          }
-                          ];
-                     }
+
+    [UIView animateKeyframesWithDuration:.55
+                                   delay:0
+                                 options:0 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.8 animations:^{
+                                      overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.6 animations:^{
+                                      if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                          mainView.frame = CGRectMake(9, 74, 302, 440);
+                                      }
+                                      else {
+                                          mainView.frame = CGRectMake(9, 74, 302, 499);
+                                      }
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:0.6 relativeDuration:0.4 animations:^{
+                                      if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                          mainView.frame = CGRectMake(9, 35, 302, 440);
+                                      }
+                                      else {
+                                          mainView.frame = CGRectMake(9, 45, 302, 499);
+                                      }
+                                  }];
+                              }
+                              completion: nil
      ];
-
-    if ([[UIScreen mainScreen] bounds].size.height < 500)
-    {
-        mainView.frame = CGRectMake(9, 40, 302, 430);
-        head_container.frame = CGRectMake(0, 0, 302, 38);
-        space_container.frame = CGRectMake(0, 28, 302, 10);
-        glyph_lock.frame = CGRectMake(29, 5, 22, 29);
-        title.frame = CGRectMake(0, 5, 302, 28);
-        imageShow.frame = CGRectMake(2, 42, 298, 338);
-        btnLink.frame = CGRectMake(10,mainView.frame.size.height-51, 280, 44);
-    }
-
 }
 
 -(void)close_lightBox
 {
-    [UIView animateWithDuration:0.15
-                     animations:^{
-                         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                         mainView.frame = CGRectMake(9, 70, 302, self.view.frame.size.height - 52);
-                     } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:.38
-                                          animations:^{
-                                              [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-                                              mainView.frame = CGRectMake(9, -540, 302, self.view.frame.size.height - 52);
-                                              overlay.alpha = 0.5;
-                                          } completion:^(BOOL finished) {
-                                              [overlay removeFromSuperview];
-                                          }
-                          ];
-                     }
+    [UIView animateKeyframesWithDuration:0.6
+                                   delay:0
+                                 options:0 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.35 animations:^{
+                                      if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                          mainView.frame = CGRectMake(9, 70, 302, 440);
+                                      }
+                                      else {
+                                          mainView.frame = CGRectMake(9, 70, 302, 499);
+                                      }
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:0.35 relativeDuration:0.65 animations:^{
+                                      overlay.alpha = 0;
+                                      if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                          mainView.frame = CGRectMake(9, -500, 302, 440);
+                                      }
+                                      else {
+                                          mainView.frame = CGRectMake(9, -540, 302, 499);
+                                      }
+                                  }];
+                              }
+                              completion:^(BOOL finished) {
+                                  [overlay removeFromSuperview];
+                              }
      ];
 }
 

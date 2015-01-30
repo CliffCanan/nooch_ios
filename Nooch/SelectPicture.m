@@ -142,6 +142,8 @@
     [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.next_button addTarget:self action:@selector(cont) forControlEvents:UIControlEventTouchUpInside];
     [self.next_button setStyleClass:@"button_green"];
+    [self.next_button setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.21) forState:UIControlStateNormal];
+    self.next_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker1
@@ -262,12 +264,15 @@
         [[assist shared]setTranferImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
 
         [self.message setText:@"Great Pic! If you're happy with it tap \"Continue\" or if you wish to change it tap \"Change Picture\""];
+
         [self.choose_pic setTitle:@"  Change Picture" forState:UIControlStateNormal];
 
         [self.next_button setTitle:@"Continue" forState:UIControlStateNormal];
         [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
         [self.next_button addTarget:self action:@selector(cont) forControlEvents:UIControlEventTouchUpInside];
         [self.next_button setStyleClass:@"button_green"];
+        [self.next_button setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.21) forState:UIControlStateNormal];
+        self.next_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     }
     else
     {
@@ -281,6 +286,8 @@
         [self.next_button setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
         [self.next_button setTitle:@"I don't want to add a picture now..." forState:UIControlStateNormal];
         [self.next_button setStyleClass:@"label_small"];
+        [self.next_button setTitleShadowColor:Rgb2UIColor(255, 255, 255, 0) forState:UIControlStateNormal];
+        self.next_button.titleLabel.shadowOffset = CGSizeMake(0, 0);
     }
 
     [self.choose_pic addSubview:glyphcamera];
@@ -392,6 +399,8 @@
     [self.next_button setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
     [self.next_button setTitle:@"I don't want to add a picture now..." forState:UIControlStateNormal];
     [self.next_button setStyleClass:@"label_small"];
+    [self.next_button setTitleShadowColor:Rgb2UIColor(255, 255, 255, 0) forState:UIControlStateNormal];
+    self.next_button.titleLabel.shadowOffset = CGSizeMake(0, 0);
 }
 
 // Facebook: Show the user the logged-in UI
@@ -429,6 +438,8 @@
             [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
             [self.next_button addTarget:self action:@selector(cont) forControlEvents:UIControlEventTouchUpInside];
             [self.next_button setStyleClass:@"button_green"];
+            [self.next_button setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.21) forState:UIControlStateNormal];
+            self.next_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         }
         else
         {
