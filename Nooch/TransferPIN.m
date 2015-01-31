@@ -431,23 +431,26 @@
 - (void)transferPinLocationUpdateManager:(CLLocationManager *)manager
                       didUpdateLocations:(NSArray *)locationsArray
 {
-    CLLocationCoordinate2D loc = manager.location.coordinate;
-    lat = [[[NSString alloc] initWithFormat:@"%f",loc.latitude] floatValue];
-    lon = [[[NSString alloc] initWithFormat:@"%f",loc.longitude] floatValue];
+    if (lat == 0 || lon == 0)
+    {
+        CLLocationCoordinate2D loc = manager.location.coordinate;
+        lat = [[[NSString alloc] initWithFormat:@"%f",loc.latitude] floatValue];
+        lon = [[[NSString alloc] initWithFormat:@"%f",loc.longitude] floatValue];
 
-    latitude = [NSString stringWithFormat:@"%f",lat];
-    longitude = [NSString stringWithFormat:@"%f",lon];
+        latitude = [NSString stringWithFormat:@"%f",lat];
+        longitude = [NSString stringWithFormat:@"%f",lon];
 
-    [self updateLocation:[NSString stringWithFormat:@"%f",lat]
+        [self updateLocation:[NSString stringWithFormat:@"%f",lat]
           longitudeField:[NSString stringWithFormat:@"%f",lon]];
+    }
 }
 
--(void) updateLocation:(NSString*)latitudeField longitudeField:(NSString*)longitudeField
+-(void)updateLocation:(NSString*)latitudeField longitudeField:(NSString*)longitudeField
 {
-    //NSLog(@"TransferPIN --> updateLocation: lat is: %@  & long is: %@",latitudeField,longitudeField);
+    // The parameter 'result_type = locality' below makes Google return only a City level address. Since that's all we need, we shouldn't ask for everything, which can be a lot more unnecessary data from Google parsing the variations of the address
+    NSString * googleGeocodeUrl = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/geocode/json?latlng=%@,%@&result_type=locality&key=AIzaSyDrUnX1gGpPL9fWmsWfhOxIDIy3t7YjcEY", latitudeField, longitudeField];
 
-    NSString * fetchURL = [NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?latlng=%@,%@&sensor=true", latitudeField, longitudeField];
-    NSURL * url = [NSURL URLWithString:fetchURL];
+    NSURL * url = [NSURL URLWithString:googleGeocodeUrl];
 
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
 
@@ -455,7 +458,7 @@
                                        queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse * response, NSData *data, NSError *err) {
         NSError * error;
-        jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options: NSJSONReadingMutableContainers error: &error];
+        googleLocationResults = [NSJSONSerialization JSONObjectWithData:data options: NSJSONReadingMutableContainers error: &error];
         [self setLocation];
     }];
 }
@@ -467,124 +470,72 @@
 
 -(void)setLocation
 {
-    NSArray * placemark = [jsonDictionary objectForKey:@"results"];
-    //NSLog(@"Placemark COUNT is: %d\nPlacemark is: %@", [placemark count], placemark);
+    NSArray * addressResults = [googleLocationResults objectForKey:@"results"];
 
-    if ([placemark count] > 0)
+    if (![[googleLocationResults objectForKey:@"status"] isEqualToString:@"OK"])
     {
-        // if Google returned a Street Address
-        if ([[placemark objectAtIndex:0] objectForKey:@"address_components"] &&
-            [[[[placemark objectAtIndex:0] objectForKey:@"types"] objectAtIndex:0] isEqualToString: @"street_address"])
-        {
-            NSArray * addressComponents = [[placemark objectAtIndex:0] objectForKey:@"address_components"];
+        NSLog(@"Google Geocode Results Error --> Status is: %@", [googleLocationResults objectForKey:@"status"]);
 
-            // Get Street Address
-            if ([[[[addressComponents objectAtIndex:0] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"street_number"])
-            {
-                addressLine1 = [NSString stringWithFormat:@"%@ %@", [[addressComponents objectAtIndex:0] objectForKey:@"long_name"],[[addressComponents objectAtIndex:1] objectForKey:@"long_name"]];
-            }
+        if ([googleLocationResults objectForKey:@"error_message"])
+        {
+            NSLog(@"Google Geocode Error Message: %@",[googleLocationResults objectForKey:@"error_message"]);
+        }
+    }
+    else if ([addressResults count] > 0)
+    {
+        // if Google returned a City
+        if (  [[addressResults objectAtIndex:0] objectForKey:@"address_components"] &&
+            [[[[addressResults objectAtIndex:0] objectForKey:@"types"] objectAtIndex:0] isEqualToString: @"locality"])
+        {
+            NSArray * address_components = [[addressResults objectAtIndex:0] objectForKey:@"address_components"];
 
             // Get City
-            if ( [[[[addressComponents objectAtIndex:2] objectForKey:@"types"] objectAtIndex:0]isEqualToString:@"administrative_area_level_3"] ||
-                 [[[[addressComponents objectAtIndex:2] objectForKey:@"types"] objectAtIndex:1]isEqualToString:@"administrative_area_level_3"] )
+            if ( [[[[address_components objectAtIndex:0] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"locality"] ||
+                 [[[[address_components objectAtIndex:0] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_3"])
             {
-                city = [[addressComponents objectAtIndex:2] objectForKey:@"long_name"];
+                city = [[address_components objectAtIndex:0] objectForKey:@"long_name"];
             }
-            else if ([[[[addressComponents objectAtIndex:3] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_3"] ||
-                     [[[[addressComponents objectAtIndex:3] objectForKey:@"types"] objectAtIndex:1] isEqualToString:@"administrative_area_level_3"] )
+            else if ( [[[[address_components objectAtIndex:1] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"locality"] ||
+                      [[[[address_components objectAtIndex:1] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_3"])
             {
-                city = [[addressComponents objectAtIndex:3] objectForKey:@"long_name"];
+                city = [[address_components objectAtIndex:1] objectForKey:@"long_name"];
+            }
+            // There was no city/locality, so attempt to grab the County instead
+            else if ( [[[[address_components objectAtIndex:0] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_2"])
+            {
+                city = [[address_components objectAtIndex:0] objectForKey:@"long_name"];
+            }
+            else if ([[[[address_components objectAtIndex:1] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_2"])
+            {
+                city = [[address_components objectAtIndex:1] objectForKey:@"long_name"];
             }
 
             // Get State
-            if ( [[[[addressComponents objectAtIndex:4] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_1"] ||
-                 [[[[addressComponents objectAtIndex:4] objectForKey:@"types"] objectAtIndex:1] isEqualToString:@"administrative_area_level_1"] )
+            if ( [[[[address_components objectAtIndex:1] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_1"])
             {
-                state = [[addressComponents objectAtIndex:4] objectForKey:@"short_name"];
+                state = [[address_components objectAtIndex:1] objectForKey:@"short_name"];
             }
-            else if ([[[[addressComponents objectAtIndex:5] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_1"] ||
-                     [[[[addressComponents objectAtIndex:5] objectForKey:@"types"] objectAtIndex:1] isEqualToString:@"administrative_area_level_1"] )
+            else if ([[[[address_components objectAtIndex:2] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_1"])
             {
-                state = [[addressComponents objectAtIndex:5] objectForKey:@"short_name"];
+                state = [[address_components objectAtIndex:2] objectForKey:@"short_name"];
             }
 
-            // Get ZIP
-            if ([[[[addressComponents objectAtIndex:4] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"postal_code"])
+            // Get Country
+            if ([[[[address_components objectAtIndex:3] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"country"])
             {
-                zipcode = [[addressComponents objectAtIndex:4] objectForKey:@"short_name"];
-            }
-            else if ([[[[addressComponents objectAtIndex:5] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"postal_code"])
-            {
-                zipcode = [[addressComponents objectAtIndex:5] objectForKey:@"short_name"];
-            }
-            else if ([[[[addressComponents objectAtIndex:6] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"postal_code"])
-            {
-                zipcode = [[addressComponents objectAtIndex:6] objectForKey:@"short_name"];
-            }
-            else if ([[[[addressComponents objectAtIndex:7] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"postal_code"])
-            {
-                zipcode = [[addressComponents objectAtIndex:7] objectForKey:@"short_name"];
-            }
-        }
-
-        // Get Country
-        if ( [[placemark objectAtIndex:1] objectForKey:@"address_components"] &&
-            [[[[placemark objectAtIndex:1] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"postal_code"])
-        {
-            NSArray * addressComponents2 = [[placemark objectAtIndex:1] objectForKey:@"address_components"];
-            NSUInteger lastObject = [addressComponents2 count] - 1;
-
-            // Country should always be "US", but adding this code just to make sure
-            if ([[addressComponents2 objectAtIndex:lastObject] objectForKey:@"short_name"])
-            {
-                country = [[addressComponents2 objectAtIndex:lastObject] objectForKey:@"short_name"];
-                if ([country rangeOfString:@"US"].location == NSNotFound)
+                if ([[address_components objectAtIndex:3] objectForKey:@"short_name"])
                 {
-                    country = @"NOT US";
+                    country = [[address_components objectAtIndex:3] objectForKey:@"short_name"];
+                    if ([country rangeOfString:@"US"].location == NSNotFound)
+                    {
+                        country = [@"NOT US" stringByAppendingFormat:@" - %@", country];
+                    }
+                }
+                else
+                {
+                    country = @"US of A";
                 }
             }
-            else
-            {
-                country = @"USA";
-            }
-        }
-
-        //NSLog(@"1.) ADDRESS NOW IS: %@, %@, %@, %@, %@",addressLine1,city, state, zipcode, country);
-
-        // Old method of parsing by getting entire formatted address and breaking it down
-        if ([addressLine1 length] < 2 && [city length] < 2 && [zipcode length] < 5)
-        {
-            NSString * addr = [[placemark objectAtIndex:0] objectForKey:@"formatted_address"];
-
-            NSLog(@"addr is: %@", addr);
-
-            NSArray *addrParse = [addr componentsSeparatedByString:@","];
-
-            if ([addrParse count] == 4)
-            {
-                addressLine1 = [addrParse objectAtIndex:0];
-                city = [addrParse objectAtIndex:1];
-                state = [[addrParse objectAtIndex:2] substringToIndex:3];
-                zipcode = [[addrParse objectAtIndex:2] substringFromIndex:3];
-                country = [addrParse objectAtIndex:3];
-            }
-            else if ([addrParse count] > 4)
-            {
-                addressLine1 = [addrParse objectAtIndex:0];
-                addressLine2 = [addrParse objectAtIndex:1];
-                city = [addrParse objectAtIndex:2];
-                state = [[addrParse objectAtIndex:3] substringToIndex:3];
-                zipcode = [[addrParse objectAtIndex:3] substringFromIndex:3];
-                country = [addrParse objectAtIndex:4];
-            }
-            else
-            {
-                addressLine1 = [addrParse objectAtIndex:0];
-                addressLine2 = @"";
-                city = [addrParse objectAtIndex:1];
-            }
-
-            NSLog(@"2.) ADDRESS NOW IS: %@, %@, %@, %@, %@",addressLine1,city, state, zipcode, country);
         }
     }
 
@@ -595,18 +546,14 @@
     if ([state rangeOfString:@"null"].location != NSNotFound || state == NULL) {
         state = @"";
     }
-    if ([zipcode rangeOfString:@"null"].location != NSNotFound || zipcode == NULL) {
-        zipcode = @"";
+    if ([country rangeOfString:@"null"].location != NSNotFound || country == NULL) {
+        country = @"";
     }
     if ([addressLine1 rangeOfString:@"null"].location != NSNotFound || addressLine1 == NULL) {
         addressLine1 = @"";
     }
-    if ([addressLine2 rangeOfString:@"null"].location != NSNotFound || addressLine2 == NULL) {
-        addressLine2 = @"";
-    }
-    if ([Altitude rangeOfString:@"null"].location != NSNotFound || Altitude == NULL) {
-        Altitude = @"0.0";
-    }
+
+    //NSLog(@"Full Address Is: %@, %@, %@, %@", addressLine1, city, state, country);
 }
 
 #pragma mark - UITextField delegation
@@ -776,13 +723,13 @@
                 [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
                 [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
                 [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lon] forKey:@"Longitude"];
-                [transactionInputTransfer setValue:Altitude forKey:@"Altitude"];
+                [transactionInputTransfer setValue:@"" forKey:@"Altitude"];
                 [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
-                [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
+                [transactionInputTransfer setValue:@"" forKey:@"AddressLine2"];
                 [transactionInputTransfer setValue:city forKey:@"City"];
                 [transactionInputTransfer setValue:state forKey:@"State"];
                 [transactionInputTransfer setValue:country forKey:@"Country"];
-                [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
+                [transactionInputTransfer setValue:@"" forKey:@"Zipcode"];
      
                 if ([self.type isEqualToString:@"send"])
                 {
@@ -1045,11 +992,11 @@
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lon] forKey:@"Longitude"];
             [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
-            [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
+            [transactionInputTransfer setValue:@"" forKey:@"AddressLine2"];
             [transactionInputTransfer setValue:city forKey:@"City"];
             [transactionInputTransfer setValue:state forKey:@"State"];
             [transactionInputTransfer setValue:country forKey:@"Country"];
-            [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
+            [transactionInputTransfer setValue:@"" forKey:@"Zipcode"];
             [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
             if ([self.type isEqualToString:@"request"]) {
                 transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"requestInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
@@ -1127,11 +1074,11 @@
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lon] forKey:@"Longitude"];
             [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
-            [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
+            [transactionInputTransfer setValue:@"" forKey:@"AddressLine2"];
             [transactionInputTransfer setValue:city forKey:@"City"];
             [transactionInputTransfer setValue:state forKey:@"State"];
             [transactionInputTransfer setValue:country forKey:@"Country"];
-            [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
+            [transactionInputTransfer setValue:@"" forKey:@"Zipcode"];
             [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
 
             transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"handleRequestInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
@@ -1193,7 +1140,7 @@
             [transactionInputTransfer setValue:city forKey:@"City"];
             [transactionInputTransfer setValue:state forKey:@"State"];
             [transactionInputTransfer setValue:country forKey:@"Country"];
-            [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
+            [transactionInputTransfer setValue:@"" forKey:@"Zipcode"];
             [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
 
             transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];

@@ -1623,29 +1623,32 @@
             [location setStyleClass:@"details_label_location_4"];
         }
 
-        if ([self.trans objectForKey:@"City"] != NULL &&
-            [self.trans objectForKey:@"State"] != NULL)
+        if ( ([self.trans objectForKey:@"City"] != NULL && [self.trans objectForKey:@"State"] != NULL) &&
+            ([[self.trans objectForKey:@"City"] length] > 0 || [[self.trans objectForKey:@"State"] length] > 0) )
         {
-            if (![[self.trans objectForKey:@"State"] isEqualToString:@""])
+            NSString * address = nil;
+
+            if ([[self.trans objectForKey:@"City"] length] > 0)
             {
-                NSString * address = [self.trans objectForKey:@"City"]; //stringByReplacingOccurrencesOfString:@"," withString:@" "];
-                address = [address stringByAppendingString:[NSString stringWithFormat:@", %@",[self.trans objectForKey:@"State"]]];
-                [location setText:[NSString stringWithFormat:@"%@",address]];
+                address = [self.trans objectForKey:@"City"];
+
+                if ([[self.trans objectForKey:@"State"] length] > 0)
+                {
+                    address = [address stringByAppendingString:[NSString stringWithFormat:@", %@",[self.trans objectForKey:@"State"]]];
+                }
             }
-            else
+            else if ([[self.trans objectForKey:@"State"] length] > 0)
             {
-                NSString * address = [self.trans objectForKey:@"AddressLine1"];
-                address = [address stringByAppendingString:[self.trans objectForKey:@"City"]];
-                [location setText:[NSString stringWithFormat:@"%@",address]];
+                address = [self.trans objectForKey:@"State"];
             }
 
-            [mapView_ addSubview:location];
-            
-            if ([[self.trans objectForKey:@"AddressLine1"]length] == 0 && [[self.trans objectForKey:@"City"]length] == 0)
-            {
-                [location setText:@""];
-                [location removeFromSuperview];
-            }
+            [location setText: address];
+            [mapView_ addSubview: location];
+        }
+        else if ([[self.trans objectForKey:@"City"] length] == 0 &&
+                 [[self.trans objectForKey:@"State"] length] == 0)
+        {
+            [location removeFromSuperview];
         }
 
         //Set Status
