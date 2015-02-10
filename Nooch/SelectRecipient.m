@@ -73,7 +73,7 @@
 
     arrRequestPersons = [[NSMutableArray alloc]init];
 
-    NSArray *seg_items = @[@"Recent",@"    Find by Location"];
+    NSArray *seg_items = @[NSLocalizedString(@"SelectRecip_RecentToggle", @"Select Recipient Recent Segmented Toggle"),NSLocalizedString(@"SelectRecip_LocationToggle", @"Select Recipient Find By Location Segemented Toggle")];
     self.recent_location = [[UISegmentedControl alloc] initWithItems:seg_items];
     [self.recent_location setStyleId:@"history_segcontrol"];
     [self.recent_location addTarget:self action:@selector(recent_or_location:) forControlEvents:UIControlEventValueChanged];
@@ -99,7 +99,8 @@
 
     search = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 40, 320, 40)];
     search.searchBarStyle = UISearchBarStyleMinimal;
-    search.placeholder = @"Search by Name or Enter an Email";
+    //@"Search by Name or Enter an Email"
+    search.placeholder = NSLocalizedString(@"SelectRecip_SearchPlaceholder", @"Select Recipient Search Bar Placeholder");
     [search setDelegate:self];
     [search setImage:[UIImage imageNamed:@"search_blue"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
     [search setImage:[UIImage imageNamed:@"clear_white"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
@@ -210,7 +211,7 @@
     }
     else
     {
-        [self.navigationItem setTitle:@"Select Recipient"];
+        [self.navigationItem setTitle:NSLocalizedString(@"SelectRecipientScrnTitle", @"Select Recipient Screen Title")];
         [self.navigationItem setHidesBackButton:YES];
 
         NSShadow * shadowNavText = [[NSShadow alloc] init];
@@ -280,7 +281,8 @@
         RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
         spinner1.color = [UIColor whiteColor];
         self.hud.customView = spinner1;
-        self.hud.labelText = @"Loading your recent list...";
+        //@"Loading your recent list..."
+        self.hud.labelText = NSLocalizedString(@"SelectRecip_RecentLoading", @"Select Recipient Recent List Loading Text");
         self.hud.detailsLabelText = nil;
         [self.hud show:YES];
         
@@ -585,7 +587,8 @@
         RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
         spinner1.color = [UIColor whiteColor];
         self.hud.customView = spinner1;
-        self.hud.labelText = @"Loading your recent list";
+        //@"Loading your recent list..."
+        self.hud.labelText = NSLocalizedString(@"SelectRecip_RecentLoading2", @"Select Recipient Recent List Loading Text 2");
         self.hud.detailsLabelText = nil;
         [self.hud show:YES];
 
@@ -658,7 +661,8 @@
         RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWordPress];
         spinner2.color = [UIColor whiteColor];
         self.hud.customView = spinner2;
-        self.hud.labelText = @"Finding Nooch users near you";
+        //@"Finding Nooch users near you"
+        self.hud.labelText = NSLocalizedString(@"SelectRecip_LoadingLocation", @"Select Recipient Find By Location Loading Text");
         self.hud.detailsLabelText = nil;
         [self.hud show:YES];
 
@@ -679,8 +683,8 @@
         }
         else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied)
         {
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Need Location Access"
-                                                            message:@"To find friends who are nearby and use Nooch please enable access to your phone's Location Services.\n\nTO ENABLE:\n• Go to your iPhone's Settings\n•  Tap 'Privacy' --> 'Location Services'\n• Scroll to Nooch and tap the button\n\n(We will never share your location without your permission.)"
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SelectRecip_NoLocAlertTitle", @"Select Recipient No Location Alert Title")//@"Need Location Access"
+                                                            message:NSLocalizedString(@"SelectRecip_NoLocAlertBody", @"Select Recipient No Locaiton Alert Body Text")//@"To find friends who are nearby and use Nooch please enable access to your phone's Location Services.\n\nTO ENABLE:\n• Go to your iPhone's Settings\n•  Tap 'Privacy' --> 'Location Services'\n• Scroll to Nooch and tap the button\n\n(We will never share your location without your permission.)"
                                                            delegate:Nil
                                                   cancelButtonTitle:@"Ok"
                                                   otherButtonTitles:Nil, nil];
@@ -723,7 +727,8 @@
 
     self.emptyLocHdr = [[UILabel alloc] initWithFrame:CGRectMake(20, 146, 280, 40)];
     [self.emptyLocHdr setFont:[UIFont fontWithName:@"Roboto-regular" size: 23]];
-    self.emptyLocHdr.attributedText = [[NSAttributedString alloc] initWithString:@"No Nearby Noochers" attributes:shadowWhite];
+    //@"No Nearby Noochers"
+    self.emptyLocHdr.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"SelectRecip_NoNearbyUsers", @"Select Recipient No Nearby Users Title") attributes:shadowWhite];
     [self.emptyLocHdr setTextColor:kNoochGrayLight];
     [self.emptyLocHdr setTextAlignment:NSTextAlignmentCenter];
     [self.emptyLocHdr setAlpha:0];
@@ -731,7 +736,8 @@
     
     self.emptyLocBody = [[UILabel alloc] initWithFrame:CGRectMake(16, 185, 288, 95)];
     [self.emptyLocBody setFont:[UIFont fontWithName:@"Roboto-light" size: 18]];
-    self.emptyLocBody.attributedText = [[NSAttributedString alloc] initWithString:@"There are no other Nooch users nearby. Tap 'Recent' to select a contact from your address book or list of recent friends." attributes:shadowWhite];
+    //@"There are no other Nooch users nearby. Tap 'Recent' to select a contact from your address book or list of recent friends."
+    self.emptyLocBody.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"SelectRecip_NoNearbyUsersBody", @"Select Recipient No Nearby Users Body Text") attributes:shadowWhite];
     [self.emptyLocBody setTextColor:kNoochGrayLight];
     [self.emptyLocBody setTextAlignment:NSTextAlignmentCenter];
     [self.emptyLocBody setNumberOfLines:0];
@@ -782,8 +788,9 @@
 
     if ([error code] == kCLErrorDenied)
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Need Location Access"
-                                                        message:@"To find friends who are nearby and use Nooch please enable access to your phone's Location Services.\n\nTO ENABLE:\n• Go to your iPhone's Settings\n•  Tap 'Privacy' --> 'Location Services'\n• Scroll to Nooch and toggle the button\n\n(We will never share your location without your permission.)"
+        //@"Need Location Access"
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SelectRecip_NeedLocAccessTitle", @"Select Recipient Need Location Alert Title")
+                                                        message:NSLocalizedString(@"SelectRecip_NeedLocAccessBody", @"Select Recipient Need Location Alert Body Text")//@"To find friends who are nearby and use Nooch please enable access to your phone's Location Services.\n\nTO ENABLE:\n• Go to your iPhone's Settings\n•  Tap 'Privacy' --> 'Location Services'\n• Scroll to Nooch and toggle the button\n\n(We will never share your location without your permission.)"
                                                        delegate:Nil
                                               cancelButtonTitle:@"Ok"
                                               otherButtonTitles:Nil, nil];
@@ -819,9 +826,9 @@
         if ([emailAddresses count] == 0)
         {
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Uh Oh"
-                                                            message:@"No email address has been specified. Please try again."
+                                                            message:NSLocalizedString(@"SelectRecip_NoEmailSelected", @"Select Recipient No Email Address Selected Alert Body")//@"No email address has been specified. Please try again."
                                                            delegate:Nil
-                                                  cancelButtonTitle:@"OK"
+                                                  cancelButtonTitle:@"Ok"
                                                   otherButtonTitles:Nil, nil];
             [alert show];
         }
@@ -878,10 +885,10 @@
 
         if ([emailphoneBook isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Very Sneaky"
-                                                         message:@"\xF0\x9F\x98\xB1\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!"
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SelectRecip_VerySneaky", @"Select Recipient Very Sneaky Alert Title")//@"Very Sneaky"
+                                                         message:NSLocalizedString(@"SelectRecip_VerySneakyBody", @"Select Recipient Very Sneak Body Text")//@"\xF0\x9F\x98\xB1\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!"
                                                         delegate:self
-                                               cancelButtonTitle:@"OK"
+                                               cancelButtonTitle:@"Ok"
                                                otherButtonTitles:nil];
             [av show];
         }
@@ -892,7 +899,8 @@
             RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
             spinner2.color = [UIColor whiteColor];
             self.hud.customView = spinner2;
-            self.hud.labelText = @"Checking";
+            //@"Checking"
+            self.hud.labelText = NSLocalizedString(@"SelectRecip_HUDchecking", @"Select Recipient HUD Checking Text");
             self.hud.detailsLabelText = [NSString stringWithFormat:@"'%@'",[selectedEmail lowercaseString]];
             self.hud.detailsLabelColor = [UIColor whiteColor];
             [self.hud show:YES];
@@ -916,7 +924,8 @@
             RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
             spinner2.color = [UIColor whiteColor];
             self.hud.customView = spinner2;
-            self.hud.labelText = @"Checking";
+            //@"Checking"
+            self.hud.labelText = NSLocalizedString(@"SelectRecip_HUDchecking2", @"Select Recipient HUD Checking Text");
             self.hud.detailsLabelText = [NSString stringWithFormat:@"'%@'", selectedPhone];
             [self.hud show:YES];
 
@@ -982,7 +991,7 @@
 {
     [searchBar resignFirstResponder];
     [searchBar setShowsCancelButton:NO animated:YES];
-    
+
     [self.contacts reloadData];
 }
 
@@ -1294,8 +1303,8 @@
 {
     if ([emailphoneBook isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]])
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Try That Again"
-                                                     message:@"\xE2\x98\x9D\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!"
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SelectRecip_TryAgainAlertTitle", @"Select Recipient Try That Again Alert Title")//@"Try That Again"
+                                                     message:NSLocalizedString(@"SelectRecip_TryAgainAlertBody", @"Select Recipient Try That Again Alert Body Text")//@"\xE2\x98\x9D\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!"
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
@@ -1318,8 +1327,8 @@
     if ([[search.text lowercaseString] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]])
     {
         [self.hud hide:YES];
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Hold On There..."
-                                                     message:@"\xF0\x9F\x98\xB1\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!"
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SelectRecip_HoldOnThere", @"Select Recipient Hold On There Alert Title")//@"Hold On There..."
+                                                     message:NSLocalizedString(@"SelectRecip_HoldOnThereBody", @"Select Recipient Hold On There Alert Body Text")//@"\xF0\x9F\x98\xB1\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try someone ELSE's email address!"
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
@@ -1388,10 +1397,10 @@
     [self.hud hide:YES];
 
     UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Connection Error"
-                          message:@"Looks like there was some trouble connecting to the right place.  Please try again!"
+                          initWithTitle:NSLocalizedString(@"SelectRecip_ConnectionErrorAlertTitle", @"Select Recipient Connection Error Alert Title")//@"Connection Error"
+                          message:NSLocalizedString(@"SelectRecip_ConnectionErrorAlertBody", @"Select Recipient Connection Error Alert Body Text")
                           delegate:nil
-                          cancelButtonTitle:@"OK"
+                          cancelButtonTitle:@"Ok"
                           otherButtonTitles:nil];
     [alert show];
 }
@@ -1904,17 +1913,26 @@
     if (section == 0)
     {
         if (self.location) {
-            title.text = @"Nearby Users";
+            //@"Nearby Users"
+            title.text = NSLocalizedString(@"SelectRecip_NearbyUsers", @"Select Recipient Nearby Users");
         }
         else if (searching) {
-            title.text = @"Search Results";
+            //@"Search Results"
+            title.text = NSLocalizedString(@"SelectRecip_SearchResults", @"Select Recipient Search Results");
         }
         else if (isRecentList) {
-            title.text = @"Recent Contacts";
+            //@"Recent Contacts"
+            title.text = NSLocalizedString(@"SelectRecip_RecentContacts", @"Select Recipient Recent Contacts");
         }
-        else
-            title.text = @"Send To Email Address";
-    } 
+        else if (emailEntry) {
+            //@"Send To Email Address"
+            title.text = NSLocalizedString(@"SelectRecip_Emai", @"Select Recipient Email Address Entry");
+        }
+        else if (phoneNumEntry) {
+            //"Send To Phone Number
+            title.text = NSLocalizedString(@"SelectRecip_Phone", @"Select Recipient Phone Number Entry");
+        }
+    }
     else {
         title.text = @"";
     }
@@ -2175,8 +2193,8 @@
             }
 
             [cell.contentView addSubview:phoneOrEmailLabel];
-            
         }
+
         if ([[assist shared] isRequestMultiple])
         {
             [npic removeFromSuperview];
@@ -2300,7 +2318,8 @@
         UILabel * send_to_label = [UILabel new];
         [send_to_label setFont:[UIFont fontWithName:@"Roboto-light" size:19]];
         [send_to_label setFrame:CGRectMake(60, 2, 200, 25)];
-        [send_to_label setText:@"Send To:"];
+        //@"Send To:"
+        [send_to_label setText:NSLocalizedString(@"SelectRecip_SendToTxt", @"Select Recipient Send To Text")];
         [send_to_label setTextColor:kNoochBlue];
         [send_to_label setTextAlignment:NSTextAlignmentCenter];
         [cell.contentView addSubview:send_to_label];
@@ -2352,8 +2371,8 @@
         {
             if ([[[assist shared]getArray] count] == 10)
             {
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Too Many Recipients"
-                                                               message:@"\xE2\x98\x9D\nYou can't request more than 10 Users!"
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SelectRecip_TooManyRecipAlertTitle", @"Select Recipient Too Many Recipients Alert Title")//@"Too Many Recipients"
+                                                               message:NSLocalizedString(@"SelectRecip_TooManyRecipAlertBody", @"Select Recipient Too Many Recipients Alert Body Text")//@"\xE2\x98\x9D\nYou can't request more than 10 Users!"
                                                               delegate:Nil
                                                      cancelButtonTitle:@"Ok"
                                                      otherButtonTitles:Nil, nil];
@@ -2374,7 +2393,8 @@
             RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
             spinner2.color = [UIColor whiteColor];
             self.hud.customView = spinner2;
-            self.hud.labelText = @"Checking that phone number...";
+            //@"Checking that phone number..."
+            self.hud.labelText = NSLocalizedString(@"SelectRecip_HUD_CheckingPhoneNum", @"Select Recipient HUD Checking That Phone Text");
             self.hud.detailsLabelText = nil;
             [self.hud show:YES];
 
@@ -2386,8 +2406,8 @@
             if ([UIAlertController class]) // for iOS 8
             {
                 UIAlertController * alert = [UIAlertController
-                                             alertControllerWithTitle:@"Phone Number Trouble"
-                                             message:@"Please double check that you entered a valid 10-digit phone number."
+                                             alertControllerWithTitle:NSLocalizedString(@"SelectRecip_PhoneNumTroubleAlertTitle", @"Select Recipient Phone Number Trouble Alert Title")//@"Phone Number Trouble"
+                                             message:NSLocalizedString(@"SelectRecip_PhoneNumTroubleAlertBody", @"Select Recipient Phone Number Trouble Body Text")//@"Please double check that you entered a valid 10-digit phone number."
                                              preferredStyle:UIAlertControllerStyleAlert];
                 
                 UIAlertAction * ok = [UIAlertAction
@@ -2403,8 +2423,8 @@
             }
             else  // for iOS 7 and prior
             {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Phone Number Trouble"
-                                                                message:@"Please double check that you entered a valid 10-digit phone number."
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SelectRecip_PhoneNumTroubleAlertTitle2", @"Select Recipient Phone Number Trouble Alert Title")//@"Phone Number Trouble"
+                                                                message:NSLocalizedString(@"SelectRecip_PhoneNumTroubleAlertBody", @"Select Recipient Phone Number Trouble Body Text")//@"Please double check that you entered a valid 10-digit phone number."
                                                                delegate:nil
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil, nil];
@@ -2437,12 +2457,12 @@
             if ([UIAlertController class]) // for iOS 8
             {
                 UIAlertController * alert = [UIAlertController
-                                             alertControllerWithTitle:@"Please Check That Email"
-                                             message:@"\xF0\x9F\x93\xA7\nThat doesn't look like a valid email address.  Please check it and try again."
+                                             alertControllerWithTitle:NSLocalizedString(@"SelectRecip_PlsCheckEmailAlertTitle", @"Select Recipient Please Check That Email Alert Title")//@"Please Check That Email"
+                                             message:NSLocalizedString(@"SelectRecip_PlsCheckEmailAlertBody", @"Select Recipient Please Check That Email Alert Body Text") //@"\xF0\x9F\x93\xA7\nThat doesn't look like a valid email address.  Please check it and try again."
                                              preferredStyle:UIAlertControllerStyleAlert];
                 
                 UIAlertAction * ok = [UIAlertAction
-                                      actionWithTitle:@"OK"
+                                      actionWithTitle:@"Ok"
                                       style:UIAlertActionStyleDefault
                                       handler:^(UIAlertAction * action)
                                       {
@@ -2454,8 +2474,8 @@
             }
             else  // for iOS 7 and prior
             {
-                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Please Check That Email"
-                                                              message:@"\xF0\x9F\x93\xA7\nThat doesn't look like a valid email address. Please check it and try again."
+                UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SelectRecip_PlsCheckEmailAlertTitle2", @"Select Recipient Please Check That Email Alert Title")//@"Please Check That Email"
+                                                              message:NSLocalizedString(@"SelectRecip_PlsCheckEmailAlertBody2", @"Select Recipient Please Check That Email Alert Body Text") //@"\xF0\x9F\x93\xA7\nThat doesn't look like a valid email address. Please check it and try again."
                                                              delegate:nil
                                                     cancelButtonTitle:@"OK"
                                                     otherButtonTitles: nil];
@@ -2528,7 +2548,7 @@
                     RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStylePulse];
                     spinner2.color = [UIColor whiteColor];
                     self.hud.customView = spinner2;
-                    self.hud.labelText = @"Generating Transfer...";
+                    self.hud.labelText = NSLocalizedString(@"SelectRecip_HUD_GeneratingTrnsfr", @"Select Recipient HUD Generating Transfer Text"); //@"Generating Transfer...";
                     self.hud.detailsLabelText = nil;
                     [self.hud show:YES];
 
@@ -2569,7 +2589,7 @@
                     RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
                     spinner2.color = [UIColor whiteColor];
                     self.hud.customView = spinner2;
-                    self.hud.labelText = @"Generating Transfer...";
+                    self.hud.labelText = NSLocalizedString(@"SelectRecip_HUD_GeneratingTrnsfr2", @"Select Recipient HUD Generating Transfer Text"); //@"Generating Transfer...";
                     self.hud.detailsLabelText = nil;
                     [self.hud show:YES];
 

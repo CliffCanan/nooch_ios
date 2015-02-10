@@ -723,7 +723,7 @@
                 [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
                 [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
                 [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lon] forKey:@"Longitude"];
-                [transactionInputTransfer setValue:@"" forKey:@"Altitude"];
+                [transactionInputTransfer setValue:@"0" forKey:@"Altitude"];
                 [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
                 [transactionInputTransfer setValue:@"" forKey:@"AddressLine2"];
                 [transactionInputTransfer setValue:city forKey:@"City"];

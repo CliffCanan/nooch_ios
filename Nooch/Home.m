@@ -758,14 +758,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
             UILabel * sus_header = [UILabel new];
             [sus_header setStyleClass:@"banner_header"];
-            sus_header.attributedText = [[NSAttributedString alloc] initWithString:@"Account Suspended"
+            sus_header.attributedText = [[NSAttributedString alloc] initWithString:[NSString  stringWithFormat:NSLocalizedString(@"SuspBannerTitle", @"Home Screen Suspended Banner Title")]
                                                                    attributes:textAttributes];
             [self.suspended addSubview:sus_header];
 
             UILabel * sus_info = [UILabel new];
             [sus_info setStyleClass:@"banner_info"];
             [sus_info setNumberOfLines:0];
-            sus_info.attributedText = [[NSAttributedString alloc] initWithString:@"Your account will be limited while you are suspended."
+            sus_info.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"SuspBannerBodyTxt", @"Home Screen Suspended Banner Body Text")]
                                                                         attributes:textAttributes];
             [self.suspended addSubview:sus_info];
 
@@ -776,7 +776,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
             UIButton * contact = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [contact setStyleClass:@"go_now_text"];
-            [contact setTitle:@"TAP TO CONTACT NOOCH" forState:UIControlStateNormal];
+            [contact setTitle:[NSString stringWithFormat:NSLocalizedString(@"SuspBannerAction", @"Home Screen Suspended Banner Action Text")] forState:UIControlStateNormal];
             [contact setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
             contact.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [contact addTarget:self action:@selector(contact_support) forControlEvents:UIControlEventTouchUpInside];
@@ -816,7 +816,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
           
             UILabel * em = [UILabel new];
             [em setStyleClass:@"banner_header"];
-            em.attributedText = [[NSAttributedString alloc] initWithString:@"Confirm Your Email Address"
+            em.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"EmailUnverifiedTitle", @"Home Screen Email Unregistered Title")]
                                                                        attributes:textAttributes];
             [self.profile_incomplete addSubview:em];
             
@@ -828,13 +828,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             UILabel * em_info = [UILabel new];
             [em_info setStyleClass:@"banner_info"];
             [em_info setNumberOfLines:0];
-            em_info.attributedText = [[NSAttributedString alloc] initWithString:@"Complete your profile to unlock all features."
-                                                             attributes:textAttributes];
+            em_info.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"EmailUnverifiedBodyTxt", @"Home Screen Email Unregistered Body Text") attributes:textAttributes];
             [self.profile_incomplete addSubview:em_info];
             
             UIButton * go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [go setStyleClass:@"go_now_text"];
-            [go setTitle:@"TAP TO FIX NOW" forState:UIControlStateNormal];
+            [go setTitle:NSLocalizedString(@"EmailUnverifiedActinoTxt", @"Home Screen Email Unregistered Action Text") forState:UIControlStateNormal];
             [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
             go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [go addTarget:self action:@selector(go_profileFromHome) forControlEvents:UIControlEventTouchUpInside];
@@ -898,8 +897,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
             UILabel * em = [UILabel new];
             [em setStyleClass:@"banner_header"];
-            em.attributedText = [[NSAttributedString alloc] initWithString:@"Phone Number Not Verified"
-                                                                      attributes:textAttributes];
+            em.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"PhoneUnverifiedTitle", @"Home Screen Phone Unverified Title") attributes:textAttributes];
             [self.phone_incomplete addSubview:em];
 
             UILabel * em_exclaim = [UILabel new];
@@ -915,13 +913,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             UILabel * em_info = [UILabel new];
             [em_info setStyleClass:@"banner_info"];
             [em_info setNumberOfLines:0];
-            em_info.attributedText = [[NSAttributedString alloc] initWithString:@"Please verify your phone - respond 'Go' to the SMS."
+            em_info.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"PhoneUnverifiedBodyTxt", @"Home Screen Phone Unregistered Body Text")
                                                                     attributes:textAttributes];
             [self.phone_incomplete addSubview:em_info];
 
             UIButton * go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [go setStyleClass:@"go_now_text"];
-            [go setTitle:@"TAP TO ADD NUMBER" forState:UIControlStateNormal];
+            [go setTitle:NSLocalizedString(@"PhoneUnverifiedActionTxt", @"Home Screen Phone Unverified Action Text") forState:UIControlStateNormal];
             [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
             go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [go addTarget:self action:@selector(go_profileFromHome) forControlEvents:UIControlEventTouchUpInside];
@@ -1049,24 +1047,20 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 [em_info setNumberOfLines:0];
                 if ([[defaults objectForKey:@"Pending_count"] intValue] == 1)
                 {
-                    em.attributedText = [[NSAttributedString alloc] initWithString:@"Pending Request Waiting"
-                                                                        attributes:textShadowBlue];
-                    em_info.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"You have %d payment request waiting for a response.",[[defaults objectForKey:@"Pending_count"] intValue]]
-                                                                             attributes:textShadowBlue];
+                    em.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"PendingBannerTitleSingular", @"Home Screen Pending Title Singular") attributes:textShadowBlue];
+                    em_info.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"PendingBannerBodyTxtSingular", @"Home Screen Pending Body Text Singular") attributes:textShadowBlue];
                 }
                 else if ([[defaults objectForKey:@"Pending_count"] intValue] > 1)
                 {
-                    em.attributedText = [[NSAttributedString alloc] initWithString:@"Pending Requests Waiting"
-                                                                        attributes:textShadowBlue];
-                    em_info.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"You have %d payment requests waiting for a response.",[[defaults objectForKey:@"Pending_count"] intValue]]
-                                                                             attributes:textShadowBlue];
+                    em.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"PendingBannerTitlePlural", @"Home Screen Pending Title Plural") attributes:textShadowBlue];
+                    em_info.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"PendingBannerBodyTxtPlural", @"Home Screen Pending Body Text Plural"), [[defaults objectForKey:@"Pending_count"] intValue]] attributes:textShadowBlue];
                 }
                 [self.pending_requests addSubview:em];
                 [self.pending_requests addSubview:em_info];
 
                 UIButton * goHistory = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                 [goHistory setStyleClass:@"go_now_text"];
-                [goHistory setTitle:@"TAP TO VIEW & RESPOND" forState:UIControlStateNormal];
+                [goHistory setTitle:NSLocalizedString(@"PendingBannerActionTxt", @"Home Screen Pending Banner Action Text") forState:UIControlStateNormal];
                 [goHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, .25) forState:UIControlStateNormal];
                 goHistory.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
                 [goHistory addTarget:self action:@selector(go_history) forControlEvents:UIControlEventTouchUpInside];
@@ -1142,7 +1136,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [top_button addTarget:self action:@selector(stayPressed:) forControlEvents:UIControlEventTouchDown];
     [top_button addTarget:self action:@selector(releasePress:) forControlEvents:UIControlEventTouchDragExit];
     [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
-    [top_button setTitle:@"   Search For More Friends" forState:UIControlStateNormal];
+    [top_button setTitle:[NSString stringWithFormat:NSLocalizedString(@"HomeBtnTitle", @"Home Screen Btn Title")] forState:UIControlStateNormal];
 
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(26, 38, 32, .2);
@@ -1152,7 +1146,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     UILabel * glyph_search = [UILabel new];
     [glyph_search setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
     glyph_search.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-search"] attributes:textAttributes1];
-    [glyph_search setFrame:CGRectMake(14, 0, 15, 52)];
+    [glyph_search setFrame:CGRectMake(17, 0, 15, 52)];
     [glyph_search setTextColor:[UIColor whiteColor]];
     [top_button addSubview:glyph_search];
 
@@ -1324,7 +1318,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Home Screen";
+    //self.screenName = @"Home Screen";
 
     NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] &&
