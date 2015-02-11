@@ -38,7 +38,7 @@
     UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake(10, 110, 300, 40)];
     [title setTextColor:kNoochGrayDark];
     [title setBackgroundColor:[UIColor clearColor]];
-    [title setText:@"Congratulations!"];
+    [title setText:NSLocalizedString(@"Welcom_HdrTxt", @"'Congratulations!' Header Text")];
     [title setTextAlignment:NSTextAlignmentCenter];
     [title setFont:[UIFont systemFontOfSize:24]];
     [title setStyleClass:@"header_signupflow"];
@@ -47,7 +47,7 @@
     UILabel * success_header = [[UILabel alloc] initWithFrame:CGRectMake(20, 152, 280, 21)];
     [success_header setTextColor:kNoochBlue];
     [success_header setBackgroundColor:[UIColor clearColor]];
-    [success_header setText:@"Account Created Successfully"];
+    [success_header setText:NSLocalizedString(@"Welcom_AcntCrtdSccssTxt", @"'Account Created Successfully' Header Text")];
     [success_header setTextAlignment:NSTextAlignmentCenter];
     [success_header setFont:[UIFont fontWithName:@"Roboto-regular" size:19]];
     [success_header setStyleClass:@"animate_bubble_slow"];
@@ -62,7 +62,7 @@
     UILabel * next_lbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 194, 300, 32)];
     [next_lbl setTextColor:kNoochGrayDark];
     [next_lbl setBackgroundColor:[UIColor clearColor]];
-    [next_lbl setText:@"What Next?"];
+    [next_lbl setText:NSLocalizedString(@"Welcome_WhtNxtTxt", @"'What Next?' Text")];
     [next_lbl setTextAlignment:NSTextAlignmentCenter];
     [next_lbl setFont:[UIFont fontWithName:@"Roboto-regular" size:24]];
     [self.view addSubview:next_lbl];
@@ -70,7 +70,7 @@
     UILabel * prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 234, 300, 28)];
     [prompt setTextColor:kNoochGrayDark];
     [prompt setBackgroundColor:[UIColor clearColor]];
-    [prompt setText:@"1. Confirm your email address"];
+    [prompt setText:NSLocalizedString(@"Welcome_Instruct1a", @"'1. Confirm your email address' instruction Text")];
     [prompt setTextAlignment:NSTextAlignmentCenter];
     [prompt setFont:[UIFont fontWithName:@"Roboto-regular" size:19]];
     prompt.numberOfLines = 0;
@@ -79,7 +79,7 @@
     UILabel * subPromptTxt = [[UILabel alloc] initWithFrame:CGRectMake(20, 260, 280, 23)];
     [subPromptTxt setTextColor:[Helpers hexColor:@"585a5c"]];
     [subPromptTxt setBackgroundColor:[UIColor clearColor]];
-    [subPromptTxt setText:@"(we sent a link - check your email)"];
+    [subPromptTxt setText:NSLocalizedString(@"Welcome_Instruct1b", @"'(we sent a link - check your email)' instruction Text")];
     [subPromptTxt setTextAlignment:NSTextAlignmentCenter];
     [subPromptTxt setFont:[UIFont fontWithName:@"Roboto-light" size:16]];
     subPromptTxt.numberOfLines = 0;
@@ -88,7 +88,7 @@
     UILabel * prompt2 = [[UILabel alloc] initWithFrame:CGRectMake(10, 306, 300, 28)];
     [prompt2 setTextColor:kNoochGrayDark];
     [prompt2 setBackgroundColor:[UIColor clearColor]];
-    [prompt2 setText:@"2. Link a funding source"];
+    [prompt2 setText:NSLocalizedString(@"Welcome_Instruct2", @"'2. Link a funding source' instruction Text")];
     [prompt2 setTextAlignment:NSTextAlignmentCenter];
     [prompt2 setFont:[UIFont fontWithName:@"Roboto-regular" size:19]];
     prompt2.numberOfLines = 0;
@@ -96,7 +96,7 @@
 
     UIButton * moreinfo = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [moreinfo setBackgroundColor:[UIColor clearColor]];
-    [moreinfo setTitle:@"  Tell me more" forState:UIControlStateNormal];
+    [moreinfo setTitle:NSLocalizedString(@"Welcome_TellMoreTxt", @"'  Tell me more' Text") forState:UIControlStateNormal];
     [moreinfo setFrame:CGRectMake(90, 336, 140, 23)];
     [moreinfo setStyleId:@"moreinfo_button"];
     [moreinfo addTarget:self action:@selector(moreinfo_lightBox) forControlEvents:UIControlEventTouchUpInside];
@@ -111,7 +111,7 @@
 
     UIButton * goToKnoxBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [goToKnoxBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [goToKnoxBtn setTitle:@"   Link Funding Source" forState:UIControlStateNormal];
+    [goToKnoxBtn setTitle:NSLocalizedString(@"Welcome_LnkBtn", @"'   Link Funding Source' Button Text") forState:UIControlStateNormal];
     [goToKnoxBtn setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     goToKnoxBtn.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [goToKnoxBtn addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
@@ -133,7 +133,7 @@
     UIButton * later = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [later setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
     [later setBackgroundColor:[UIColor clearColor]];
-    [later setTitle:@"I'll link a bank later..." forState:UIControlStateNormal];
+    [later setTitle:NSLocalizedString(@"Welcome_later", @"'I'll link a bank later...' Button Text") forState:UIControlStateNormal];
     [later setStyleClass:@"label_small"];
     [later addTarget:self action:@selector(later) forControlEvents:UIControlEventTouchUpInside];
     if ([[UIScreen mainScreen] bounds].size.height < 500)
@@ -212,7 +212,7 @@
 
     UILabel * title = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 302, 28)];
     [title setBackgroundColor:[UIColor clearColor]];
-    [title setText:@"Connect Your Bank"];
+    [title setText:NSLocalizedString(@"Welcome_LtBxTtl", @"'Connect Your Bank' Lightbox Title")];
     [title setStyleClass:@"lightbox_title"];
     [head_container addSubview:title];
 
@@ -232,7 +232,7 @@
     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.22) forState:UIControlStateNormal];
     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     btnLink.frame = CGRectMake(10, mainView.frame.size.height - 56, 280, 50);
-    [btnLink setTitle:@"  Link Now" forState:UIControlStateNormal];
+    [btnLink setTitle:NSLocalizedString(@"Welcome_LtBxBtn", @"'  Link Now' Lightbox Button Text") forState:UIControlStateNormal];
     [btnLink addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
 
     NSShadow * shadow = [[NSShadow alloc] init];

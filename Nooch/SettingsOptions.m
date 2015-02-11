@@ -540,7 +540,7 @@
 
             unlink_account = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [unlink_account setStyleId:@"remove_account"];
-            [unlink_account setTitle:NSLocalizedString(@"EditTxt", @"Any Screen 'Edit' Txt") forState:UIControlStateNormal];
+            [unlink_account setTitle:NSLocalizedString(@"Settings_EditTxt", @"Settings 'Edit' Txt") forState:UIControlStateNormal];
             [unlink_account addTarget:self action:@selector(edit_attached_bank) forControlEvents:UIControlEventTouchUpInside];
             [linked_background addSubview:unlink_account];
 

@@ -34,9 +34,9 @@
 {
     self.navigationController.navigationBar.hidden = YES;
     [super viewWillAppear:animated];
-    
+
     self.screenName = @"How Nooch Works Tour";
-    
+
     [self showIntroWithCrossDissolve];
 }
 
@@ -46,10 +46,10 @@
     EAIntroPage * page1 = [EAIntroPage page];
     page1.bgImage = [UIImage imageNamed:@"0_home-bg"];
 
-    page1.title = @"Welcome To Nooch";
+    page1.title = NSLocalizedString(@"Tour_Page1Title", @"Tour 'Welcome To Nooch' page Title");
     page1.titlePositionY = 430;
 
-    page1.desc = @"Pay back a friend or send a payment request to anyone. The people you Nooch most will appear on the Home Screen. Send to anyone - even if they don't have Nooch.";
+    page1.desc = NSLocalizedString(@"Tour_Page1Desc", @"Tour page 1 Description");//@"Pay back a friend or send a payment request to anyone. The people you Nooch most will appear on the Home Screen. Send to anyone - even if they don't have Nooch."
     page1.descWidth = 302;
     page1.descPositionY = 126;
 
@@ -61,10 +61,10 @@
     EAIntroPage * page2 = [EAIntroPage page];
     page2.bgImage = [UIImage imageNamed:@"1_connectBank_bg.png"];
 
-    page2.title = @"Link A Funding Source";
+    page2.title = NSLocalizedString(@"Tour_Page2Title", @"Tour 'Link A Funding Source' page Title");
     page2.titlePositionY = 120;
 
-    page2.desc = @"No long forms or waiting periods.  Just select your bank and sign in using your existing online banking credentials.";
+    page2.desc = NSLocalizedString(@"Tour_Page2Desc", @"Tour page 2 Description");//@"No long forms or waiting periods.  Just select your bank and sign in using your existing online banking credentials.";
     page2.descWidth = 302;
     page2.descPositionY = page2.titlePositionY - 26;
 
@@ -76,10 +76,9 @@
     EAIntroPage *page3 = [EAIntroPage page];
     page3.bgImage = [UIImage imageNamed:@"2_selectRecipient_bg"];
 
-    // page3.title = @"Choose A Recipient";
     page3.titlePositionY = 116;
-    
-    page3.desc = @"To send or request money, select from a recent contact, find nearby Nooch users, or enter ANY email address.";
+
+    page3.desc = NSLocalizedString(@"Tour_Page3Desc", @"Tour page 3 Description");//@"To send or request money, select from a recent contact, find nearby Nooch users, or enter ANY email address.";
     page3.descWidth = 304;
     page3.descPositionY = page3.titlePositionY - 21;
 
@@ -90,10 +89,10 @@
     EAIntroPage *page4 = [EAIntroPage page];
     page4.bgImage = [UIImage imageNamed:@"3_howMuch_bg"];
 
-    page4.title = @"Send or Request?";
+    page4.title = NSLocalizedString(@"Tour_Page4Title", @"Tour 'Send or Request?' page Title");
     page4.titlePositionY = 120;
 
-    page4.desc = @"Enter an amount, add a memo, or picture to any transfer.  Then tap 'Send' or 'Request'.";
+    page4.desc = NSLocalizedString(@"Tour_Page4Desc", @"Tour page 4 Description");//@"Enter an amount, add a memo, or picture to any transfer.  Then tap 'Send' or 'Request'.";
     page4.descWidth = 300;
     page4.descPositionY = page4.titlePositionY - 26;
     
@@ -104,10 +103,10 @@
     EAIntroPage *page5 = [EAIntroPage page];
     page5.bgImage = [UIImage imageNamed:@"4_history_bg"];
 
-    page5.title = @"Transfer History";
+    page5.title = NSLocalizedString(@"Tour_Page5Title", @"Tour 'Transaction History' page Title");
     page5.titlePositionY = 120;
     
-    page5.desc = @"See all your Nooch transfers and filter by type.  To see a map of your payments, swipe left or tap the map icon in the navigation bar.";
+    page5.desc = NSLocalizedString(@"Tour_Page5Desc", @"Tour page 5 Description");//@"See all your Nooch transfers and filter by type.  To see a map of your payments, swipe left or tap the map icon in the navigation bar.";
     page5.descWidth = 300;
     page5.descPositionY = page5.titlePositionY - 26;
     
@@ -117,10 +116,10 @@
     EAIntroPage *page6 = [EAIntroPage page];
     page6.bgImage = [UIImage imageNamed:@"Tour_stats_bg"];
 
-    page6.title = @"Stats & Analytics";
+    page6.title = NSLocalizedString(@"Tour_Page6Title", @"Tour 'Stats & Analytics' page Title");
     page6.titlePositionY = 120;
 
-    page6.desc = @"Check out a breakdown of your payments including average payment amount and top friends.";
+    page6.desc = NSLocalizedString(@"Tour_Page6Desc", @"Tour page 6 Description");//@"Check out a breakdown of your payments including average payment amount and top friends.";
     page6.descWidth = 300;
     page6.descPositionY = page6.titlePositionY - 26;
 
@@ -149,7 +148,7 @@
     [intro setBgViewContentMode:UIViewContentModeScaleAspectFill];
 
     intro.showSkipButtonOnlyOnLastPage = false;
-    [intro.skipButton setTitle:@"Skip" forState:UIControlStateNormal];
+    [intro.skipButton setTitle:NSLocalizedString(@"Tour_SkipBtn", @"Tour 'Skip' Button Text") forState:UIControlStateNormal];
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
@@ -163,11 +162,11 @@
 {
     if (pageIndex == 5)
     {
-        [intro.skipButton setTitle:@"Done" forState:UIControlStateNormal];
+        [intro.skipButton setTitle:NSLocalizedString(@"Tour_DoneBtn", @"Tour 'Done' Button Text") forState:UIControlStateNormal];
     }
     else
     {
-        [intro.skipButton setTitle:@"Skip" forState:UIControlStateNormal];
+        [intro.skipButton setTitle:NSLocalizedString(@"Tour_SkipBtn2", @"Tour 'Skip' Button Text (2nd)") forState:UIControlStateNormal];
     }
 }
 
@@ -179,7 +178,6 @@
 
 - (void)introDidFinish:(EAIntroView *)introView
 {
-    NSLog(@"introDidFinish callback");
     self.navigationController.navigationBar.hidden = NO;
     
     [nav_ctrl popViewControllerAnimated:YES];

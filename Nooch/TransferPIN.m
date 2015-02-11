@@ -673,8 +673,8 @@
 {
     [self.hud hide:YES];
      UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:NSLocalizedString(@"ConnectionErrorAlrtTitle", @"Any screen Connection Error Alert Text")//@"Connection Error"
-                          message:NSLocalizedString(@"ConnectionErrorAlrtBody", @"Any screen Connection Error Alert Body Text")//@"Looks like we're having trouble finding an internet connection! Please try again."
+                          initWithTitle:NSLocalizedString(@"TrnsfrPIN_CnctnErrAlrtTitle", @"Transfer PIN screen 'Connection Error' Alert Text")//@"Connection Error"
+                          message:NSLocalizedString(@"TrnsfrPIN_CnctnErrAlrtBody", @"Transfer PIN screen Connection Error Alert Body Text")//@"Looks like we're having trouble finding an internet connection! Please try again."
                           delegate:nil
                           cancelButtonTitle:@"Ok"
                           otherButtonTitles:nil];

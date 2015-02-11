@@ -61,7 +61,7 @@
     [self.login setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height + 6, 300, 50)];
     [self.login setStyleId:@"label_small_register"];
     [self.login setBackgroundColor:[UIColor clearColor]];
-    [self.login setTitle:@"Already a member?  Sign in here " forState:UIControlStateNormal];
+    [self.login setTitle:NSLocalizedString(@"Register_loginTxt", @"Register Screen 'Already a member?  Sign in here ") forState:UIControlStateNormal];
     [self.login setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
     [self.login addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
     [self.login setAlpha:0.1];
@@ -128,7 +128,7 @@
     [self.view addSubview:logo];
 
     UILabel * signup = [[UILabel alloc] initWithFrame:CGRectMake(0, 76, 320, 16)];
-    [signup setText:@"Sign Up With"];
+    [signup setText:NSLocalizedString(@"Register_SgnUpWthTxt", @"Register Screen 'Sign Up With")];
     [signup setStyleClass:@"instruction_text"];
     [self.view addSubview:signup];
 
@@ -158,14 +158,14 @@
     [self.or setFrame:CGRectMake(0, 205, 320, 16)];
     [self.or setBackgroundColor:[UIColor clearColor]];
     [self.or setTextAlignment:NSTextAlignmentCenter];
-    [self.or setText:@"Or..."];
+    [self.or setText:NSLocalizedString(@"Register_OrTxt", @"Register Screen 'Or...' Text")];
     [self.or setStyleClass:@"label_small"];
     [self.view addSubview:self.or];
 
     UILabel * name = [[UILabel alloc] initWithFrame:CGRectMake(20, 252, 60, 20)];
     [name setBackgroundColor:[UIColor clearColor]];
     [name setTextColor:kNoochBlue];
-    [name setText:@" Full Name"];
+    [name setText:NSLocalizedString(@"Register_NameLbl", @"Register Screen ' Full Name' Text")];
     [name setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:name];
 
@@ -192,7 +192,7 @@
 
     self.fullNameInstruc = [[UILabel alloc] initWithFrame:CGRectMake(40, 286, 263, 15)];
     [self.fullNameInstruc setBackgroundColor:[UIColor clearColor]];
-    [self.fullNameInstruc setText:@"\xF0\x9F\x98\xB3  Please enter a first AND last name"];
+    [self.fullNameInstruc setText:NSLocalizedString(@"Register_NameInstruct", @"Register Screen Full Name Instructions Text")];//@"\xF0\x9F\x98\xB3  Please enter a first AND last name"];
     [self.fullNameInstruc setFont:[UIFont fontWithName:@"Roboto-regular" size:12]];
     [self.fullNameInstruc setTextColor:kNoochRed];
     [self.fullNameInstruc setTextAlignment:NSTextAlignmentRight];
@@ -202,7 +202,7 @@
     UILabel * email = [[UILabel alloc] initWithFrame:CGRectMake(20, 293, 60, 20)];
     [email setBackgroundColor:[UIColor clearColor]];
     [email setTextColor:kNoochBlue];
-    [email setText:@" Email"];
+    [email setText:NSLocalizedString(@"Register_EmailLbl", @"Register Screen ' Email' Text")];
     [email setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:email];
 
@@ -230,14 +230,14 @@
     UILabel * password = [[UILabel alloc] initWithFrame:CGRectMake(20, 334, 80, 20)];
     [password setBackgroundColor:[UIColor clearColor]];
     [password setTextColor:kNoochBlue];
-    [password setText:@" Password"];
+    [password setText:NSLocalizedString(@"Register_PwLbl", @"Register Screen ' Password' Text")];
     [password setStyleClass:@"table_view_cell_textlabel_1"];
     [self.view addSubview:password];
 
     self.password_field = [[UITextField alloc] initWithFrame:CGRectMake(90, 334, 200, 40)];
     [self.password_field setBackgroundColor:[UIColor clearColor]];
     [self.password_field setDelegate:self];
-    [self.password_field setPlaceholder:@"Password "];
+    [self.password_field setPlaceholder:NSLocalizedString(@"Register_PwPlchldr", @"Register Screen 'Password ' Placeholder Text")];
     [self.password_field setKeyboardType:UIKeyboardTypeAlphabet];
     self.password_field .returnKeyType = UIReturnKeyDone;
     [self.password_field setSecureTextEntry:YES];
@@ -269,7 +269,7 @@
     self.pwValidator = [UILabel new];
     [self.pwValidator setFrame:CGRectMake(202, 370, 100, 13)];
     [self.pwValidator setFont:[UIFont fontWithName:@"Roboto-regular" size:11]];
-    [self.pwValidator setText:@"Very Weak"];
+    [self.pwValidator setText:NSLocalizedString(@"Register_VryWk", @"Register Screen 'Very Weak' PW Validator Text")];
     [self.pwValidator setTextAlignment:NSTextAlignmentRight];
     [self.pwValidator setTextColor:kNoochRed];
     [self.pwValidator setHidden:YES];
@@ -295,14 +295,14 @@
     UILabel * termsText1 = [UILabel new];
     [termsText1 setFont:[UIFont fontWithName:@"Roboto-light" size:13]];
     [termsText1 setFrame:CGRectMake(65, 388, 55, 14)];
-    [termsText1 setText:@"I agree to "];
+    [termsText1 setText:NSLocalizedString(@"Register_AgreeTxt1", @"Register Screen 'I agree to ' Text")];
     [termsText1 setTextColor:kNoochGrayDark];
     [self.view addSubview:termsText1];
 
     UIButton * termsText2 = [UIButton buttonWithType:UIButtonTypeCustom];
     [termsText2 setFrame:CGRectMake(122, 382, 150, 26)];
     [termsText2 setBackgroundColor:[UIColor clearColor]];
-    [termsText2 setTitle:@"Nooch's Terms of Service." forState:UIControlStateNormal];
+    [termsText2 setTitle:NSLocalizedString(@"Register_AgreeTxt2", @"Register Screen 'Nooch's Terms of Service.' Text") forState:UIControlStateNormal];
     [termsText2 setStyleClass:@"termsCheckText"];
     [termsText2 addTarget:self action:@selector(open_terms_webview) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:termsText2];
@@ -316,7 +316,7 @@
     self.cont = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.cont setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
     self.cont.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    [self.cont setTitle:@"Continue" forState:UIControlStateNormal];
+    [self.cont setTitle:NSLocalizedString(@"Register_CntnBtnWk", @"Register Screen 'Continue' Btm Text") forState:UIControlStateNormal];
     [self.cont setFrame:CGRectMake(10, 434, 300, 60)];
     [self.cont addTarget:self action:@selector(continue_to_signup) forControlEvents:UIControlEventTouchUpInside];
     [self.cont setStyleClass:@"button_green"];
@@ -446,6 +446,7 @@
         [self userLoggedOut];
     }
 }
+
 // Facebook: Show the user the logged-out UI (In theory this should never be called since the FB session is either already closed when the app is opened, or the user gets automatically logged in after clicking Login with FB button)
 - (void)userLoggedOut
 {
@@ -636,8 +637,8 @@
 
     if ([self.password_field.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound)
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Insecure Password"
-                                                     message:@"\xF0\x9F\x98\xB3\nFor security reasons, et cetera, we ask that passwords contain at least 1 number.\n\nWe know it's annoying, but we're just looking out for you. Keep it safe!"
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Rgstr_InscrPwAlrtTtl", @"Register screen 'Insecure Password' Alert Title")
+                                                     message:NSLocalizedString(@"Rgstr_InscrPwAlrtBody", @"Register screen Insecure Pw Alert Body Text")//@"\xF0\x9F\x98\xB3\nFor security reasons, et cetera, we ask that passwords contain at least 1 number.\n\nWe know it's annoying, but we're just looking out for you. Keep it safe!"
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
@@ -647,8 +648,8 @@
     }
     else if ([self.password_field.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound)
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Letters Are Fun Too"
-                                                     message:@"\xF0\x9F\x98\x8F\nRegrettably, your Nooch password must contain at least one actual letter."
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Rgstr_NeedLtrAlrtTtl", @"Register screen 'Letters Are Fun Too' Alert Title")
+                                                     message:NSLocalizedString(@"Rgstr_NeedLtrAlrtBody", @"Register screen Letters Are Fun Too Alert Body Text")//@"\xF0\x9F\x98\x8F\nRegrettably, your Nooch password must contain at least one actual letter."
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
@@ -659,8 +660,8 @@
 
     if (!isTermsChecked)
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Who Loves Lawyers"
-                                                     message:@"\xF0\x9F\x98\x81\nPlease read Nooch's Terms of Service and check the box to proceed."
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Rgstr_TrmsAlrtTtl", @"Register screen 'Who Loves Lawyers' Alert Title")
+                                                     message:NSLocalizedString(@"Rgstr_TrmsAlrtBody", @"Register screen 'Who Loves Lawyers' Alert Body Text")//@"\xF0\x9F\x98\x81\nPlease read Nooch's Terms of Service and check the box to proceed."
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:@"Read Terms", nil];
@@ -674,7 +675,7 @@
         spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
-        self.hud.labelText = @"Checking if email already in use";
+        self.hud.labelText = NSLocalizedString(@"Rgstr_HUDchkngEml", @"Register screen 'Checking if email already in use' HUD Label");
         self.hud.mode = MBProgressHUDModeCustomView;
         self.hud.customView = spinner1;
         self.hud.delegate = self;
@@ -741,8 +742,8 @@
 {
     [self.hud hide:YES];
     UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Message"
-                          message:@"Error connecting to server"
+                          initWithTitle:NSLocalizedString(@"Rgstr_CnctnErrAlrtTitle", @"Register screen 'Connection Error' Alert Text")
+                          message:NSLocalizedString(@"Rgstr_CnctnErrAlrtBody", @"Register screen Connection Error Alert Body Text")//@"Looks like we're having trouble finding an internet connection! Please try again."
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
@@ -780,7 +781,7 @@
                 self.facebook_info = [dictWithFbImage mutableCopy];
             }
 
-            [self.or setText:@"Now just create a password..."];
+            [self.or setText:NSLocalizedString(@"Rgstr_NwCrtPwTxt", @"Register screen 'Now just create a password...' Instruction Text")];
 
             [self.facebookLogin setTitle:@"       Facebook Connected" forState:UIControlStateNormal];
 
@@ -925,8 +926,8 @@
             if ([UIAlertController class]) // for iOS 8
             {
                 UIAlertController * alert = [UIAlertController
-                                             alertControllerWithTitle:@"Account Temporarily Suspended"
-                                             message:@"For security your account has been temporarily suspended.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information."
+                                             alertControllerWithTitle:NSLocalizedString(@"Rgstr_SuspAlrtTtl1", @"Register screen 'Account Temporarily Suspended' Alert Title")
+                                             message:NSLocalizedString(@"Rgstr_SuspAlrtBody1", @"Register screen Account Temporarily Suspended Alert Body Text")//@"For security your account has been temporarily suspended.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n\nPlease contact us at support@nooch.com if you would like more information."
                                              preferredStyle:UIAlertControllerStyleAlert];
                 
                 UIAlertAction * ok = [UIAlertAction
@@ -937,7 +938,7 @@
                                           [alert dismissViewControllerAnimated:YES completion:nil];
                                       }];
                 UIAlertAction * contactSupport = [UIAlertAction
-                                                  actionWithTitle:@"Contact Support"
+                                                  actionWithTitle:NSLocalizedString(@"Rgstr_SuspAlrtBtn1", @"Register screen 'Contact Support' Alert Btn")
                                                   style:UIAlertActionStyleDefault
                                                   handler:^(UIAlertAction * action)
                                                   {
@@ -951,11 +952,11 @@
             }
             else // iOS 7 and prior
             {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended"
-                                                                message:@"For security your account has been temporarily suspended.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com if you would like more information."
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Rgstr_SuspAlrtTtl2", @"Register screen 'Account Temporarily Suspended' Alert Title (2nd)")
+                                                                message:NSLocalizedString(@"Rgstr_SuspAlrtBody2", @"Register screen Account Temporarily Suspended Alert Body Text (2nd)")//@"For security your account has been temporarily suspended.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n\nPlease contact us at support@nooch.com if you would like more information."
                                                                delegate:self
                                                       cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:@"Contact Support", nil];
+                                                      otherButtonTitles:NSLocalizedString(@"Rgstr_SuspAlrtBtn2", @"Register screen 'Contact Support' Alert Btn (2nd)"), nil];
                 [alert show];
                 [alert setTag:52];
             }
@@ -1026,10 +1027,11 @@
         [self.hud hide:YES];
         NSError *error;
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+
         if (![[loginResult objectForKey:@"Result"] isEqualToString:@"Not a nooch member."])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Email in Use"
-                                                         message:@"That email address you are attempting to sign up with is already in use. Do you want to login now?"
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Rgstr_EmlInUseAlrtTtl", @"Register screen 'Email In Use Already' Alert Title")
+                                                         message:NSLocalizedString(@"Rgstr_EmlInUseAlrtBody", @"Register screen 'Email In Use Already' Alert Body Text")//@"The email address you are attempting to sign up with is already in use. Do you want to login now?"
                                                         delegate:self
                                                cancelButtonTitle:@"No"
                                                otherButtonTitles:@"Login", nil];
@@ -1215,7 +1217,7 @@
             [self.pwValidator2 setBackgroundColor:kNoochGreen];
             [self.pwValidator3 setBackgroundColor:kNoochGreen];
             [self.pwValidator4 setBackgroundColor:kNoochGreen];
-            [self.pwValidator setText:@"Extremely Strong"];
+            [self.pwValidator setText:NSLocalizedString(@"Rgstr_ExtrStrngTxt", @"Register screen 'Extremely Strong' PW Validator Text")];
             [self.pwValidator setTextColor:kNoochGreen];
         }
         else if (pwLength && score > 2.3)
@@ -1225,7 +1227,7 @@
             [self.pwValidator3 setBackgroundColor:kNoochGreen];
             [self.pwValidator4 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
             [self.pwValidator setTextColor:kNoochGreen];
-            [self.pwValidator setText:@"Good"];
+            [self.pwValidator setText:NSLocalizedString(@"Rgstr_GoodTxt", @"Register screen 'Good' PW Validator Text")];
         }
         else if (pwLength && score > 1)
         {
@@ -1234,7 +1236,7 @@
             [self.pwValidator3 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
             [self.pwValidator4 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
             [self.pwValidator setTextColor:[UIColor orangeColor]];
-            [self.pwValidator setText:@"Fair"];
+            [self.pwValidator setText:NSLocalizedString(@"Rgstr_FairTxt", @"Register screen 'Fair' PW Validator Text")];
         }
         else if (pwLength)
         {
@@ -1243,12 +1245,12 @@
             [self.pwValidator2 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
             [self.pwValidator1 setBackgroundColor:kNoochRed];
             [self.pwValidator setTextColor:kNoochRed];
-            [self.pwValidator setText:@"Weak"];
+            [self.pwValidator setText:NSLocalizedString(@"Rgstr_WeakTxt", @"Register screen 'Weak' PW Validator Text")];
         }
         else
         {
             if ([textToCheck length] > 0) {
-                [self.pwValidator setText:@"Very Weak"];
+                [self.pwValidator setText:NSLocalizedString(@"Rgstr_VrWeakTxt", @"Register screen 'Very Weak' PW Validator Text (2nd)")];
             }
             else {
                 [self.pwValidator setText:@""];
@@ -1309,8 +1311,8 @@
                     [self.nameValidator setHidden:NO];
                     [self.name_field becomeFirstResponder];
 
-                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"\xF0\x9F\x98\x8F  Really?"
-                                                                 message:@"Your name has a number in it?\n\nPlease enter a real name.\n\nOr if your name actually does contain a number, our bad... please contact support@nooch.com and we'll create an account for you."
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Rgstr_ReallyAlrtTtl1", @"Register screen Really Alert Title")//@"\xF0\x9F\x98\x8F  Really?"
+                                                                 message:NSLocalizedString(@"Rgstr_ReallyAlrtBody1", @"Register screen Really Alert Body Text")//@"Your name has a number in it?\n\nPlease enter a real name.\n\nOr if your name actually does contain a number, our bad... please contact support@nooch.com and we'll create an account for you."
                                                                 delegate:self
                                                        cancelButtonTitle:@"OK"
                                                        otherButtonTitles:nil];
@@ -1322,8 +1324,8 @@
                     [self.nameValidator setHidden:NO];
                     [self.name_field becomeFirstResponder];
                         
-                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"\xF0\x9F\x98\x8F  Really?"
-                                                                 message:@"Your name has a symbol in it now?\n\nPlease enter a real name.\n\nOr if your name actually does contain a symbol, our apologies... please contact support@nooch.com and we'll create an account for you."
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Rgstr_ReallyAlrtTtl2", @"Register screen Really Alert Title")//@"\xF0\x9F\x98\x8F  Really?"
+                                                                 message:NSLocalizedString(@"Rgstr_ReallyAlrtBody2", @"Register screen Really Alert Body (2nd - symbol)")//@"Your name has a symbol in it now?\n\nPlease enter a real name.\n\nOr if your name actually does contain a symbol, our apologies... please contact support@nooch.com and we'll create an account for you."
                                                                 delegate:self
                                                        cancelButtonTitle:@"OK"
                                                        otherButtonTitles:nil];

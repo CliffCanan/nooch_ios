@@ -35,7 +35,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"User Agreement";
+    self.title = NSLocalizedString(@"Terms_ScrnTitle", @"Terms 'User Agreement' Screen Title");
     //[self.navigationController setNavigationBarHidden:NO];
 }
 
@@ -59,7 +59,7 @@
     MBProgressHUD * hud1 = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     self.hud = hud1;
     [self.navigationController.view addSubview:self.hud];
-    self.hud.labelText = @"Loading Nooch's Terms of Service";
+    self.hud.labelText = NSLocalizedString(@"Terms_HUDlbl", @"Terms 'Loading Nooch's Terms of Service' HUD Label");
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
     self.hud.delegate = self;
@@ -77,14 +77,14 @@
 
         UILabel * terms = [[UILabel alloc]initWithFrame:CGRectMake(0, 20, 320, 40)];
         terms.textColor = [UIColor whiteColor];
-        terms.text = @"User Agreement";
+        terms.text = NSLocalizedString(@"Terms_ScrnTitle2", @"Terms 'User Agreement' Screen Title (2nd)");
         terms.textAlignment = NSTextAlignmentCenter;
         [nav_view addSubview:terms];
         [terms release];
 
         UIButton * btn_Close = [UIButton buttonWithType:UIButtonTypeCustom];
         btn_Close.frame = CGRectMake(0, 20, 80, 40);
-        [btn_Close setTitle:@"Close" forState:UIControlStateNormal];
+        [btn_Close setTitle:NSLocalizedString(@"Terms_CloseBtn", @"Terms 'Close' Button Text") forState:UIControlStateNormal];
         [btn_Close setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.175) forState:UIControlStateNormal];
         btn_Close.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         [btn_Close addTarget:self action:@selector(dismissView:) forControlEvents:UIControlEventTouchUpInside];

@@ -37,7 +37,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"ReferralCode Screen";
+    self.screenName = @"Referral Code Screen";
 }
 
 - (void)viewDidLoad
@@ -61,7 +61,7 @@
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, 300, 40)];
     [title setTextColor:kNoochGrayDark];
     [title setBackgroundColor:[UIColor clearColor]];
-    [title setText:@"Enter Referral Code"];
+    [title setText:NSLocalizedString(@"ReferCode_HdrTxt", @"'Enter Referral Code' Header Text")];
     [title setTextAlignment:NSTextAlignmentCenter];
     [title setFont:[UIFont systemFontOfSize:24]];
     [title setStyleClass:@"header_signupflow"];
@@ -70,7 +70,7 @@
     UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 166, 300, 70)];
     [prompt setBackgroundColor:[UIColor clearColor]];
     [prompt setNumberOfLines:3];
-    [prompt setText:@"If you have a Referral Code from a current Nooch user, enter it below:"];
+    [prompt setText:NSLocalizedString(@"ReferCode_Instruct", @"Referral Code screen instruction Text")];//@"If you have a Referral Code from a current Nooch user, enter it below:"];
     [prompt setStyleClass:@"instruction_text"];
     [self.view addSubview:prompt];
 
@@ -78,7 +78,7 @@
     [enter setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     enter.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [enter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [enter setTitle:@"Submit" forState:UIControlStateNormal];
+    [enter setTitle:NSLocalizedString(@"ReferCode_SbmtBtn", @"'Submit' Button Text") forState:UIControlStateNormal];
     [enter addTarget:self action:@selector(enter_code) forControlEvents:UIControlEventTouchUpInside];
     [enter setFrame:CGRectMake(10, 350, 300, 60)];
     [enter setStyleClass:@"button_green"];
@@ -86,7 +86,7 @@
 
     UIButton *request = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [request setFrame:CGRectMake(10, 424, 300, 60)];
-    [request setTitle:@"I Don't Have a Code" forState:UIControlStateNormal];
+    [request setTitle:NSLocalizedString(@"ReferCode_DntHvCodeTxt", @"'I Don't Have a Code' Button Text") forState:UIControlStateNormal];
     [request addTarget:self action:@selector(request_code) forControlEvents:UIControlEventTouchUpInside];
     [request setStyleClass:@"label_small"];
     [self.view addSubview:request];
@@ -99,7 +99,7 @@
     [self.code_field setDelegate:self];
     [self.code_field setTextAlignment:NSTextAlignmentCenter];
     [self.code_field setFont:[UIFont systemFontOfSize:24]];
-    [self.code_field setPlaceholder:@"ENTER CODE"];
+    [self.code_field setPlaceholder:NSLocalizedString(@"ReferCode_PlchldrTxt", @"'ENTER CODE' Placeholder Text")];
     self.code_field.layer.borderWidth = 2;
     self.code_field.layer.borderColor = kNoochGrayLight.CGColor;
     [self.code_field setAutocorrectionType:UITextAutocorrectionTypeNo];
@@ -121,7 +121,11 @@
 {
     if ([self.code_field.text length] == 0)
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Please Enter An Invite Code" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"ReferCode_EntrCodeAlrtTtl", @"'Please Enter An Invite Code' Alert Title")
+                                                        message:nil
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
         [alert show];
         [enter setEnabled:YES];
         return;
@@ -134,7 +138,7 @@
 
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
-    self.hud.labelText = @"Validating your invite code";
+    self.hud.labelText = NSLocalizedString(@"ReferCode_HUDlbl1", @"'Validating your code' HUD Label");
     [self.hud show:YES];
 
     [enter setEnabled:NO];
@@ -149,11 +153,11 @@
     NSString * requireCodeSettingFromArtisan = [ARPowerHookManager getValueForHookById:@"reqCodeSetting"];
     if ([requireCodeSettingFromArtisan isEqualToString:@"yes"])
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Request An Invite Code"
-                                                     message:@"To make sure every Nooch user has the best experience, you must have an invite or referral code.\n\nYou can get a code from any current Nooch user, or request an invite directly from us. We try to send out codes as quickly as possible when they are requested."
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReferCode_RqstCdAlrtTtl", @"'Request An Invite Code' Alert Title")
+                                                     message:NSLocalizedString(@"ReferCode_RqstCdAlrtBody", @"'Request An Invite Code' Alert Body")//@"To make sure every Nooch user has the best experience, you must have an invite or referral code.\n\nYou can get a code from any current Nooch user, or request an invite directly from us. We try to send out codes as quickly as possible when they are requested."
                                                     delegate:self
-                                           cancelButtonTitle:@"Ok"
-                                           otherButtonTitles:@"Request Code", nil];
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:NSLocalizedString(@"ReferCode_RqstCdAlrtBtn", @"'Request code' Alert Button"), nil];
         [av show];
         [av setTag:101];
     }
@@ -185,8 +189,8 @@
     [self.hud hide:YES];
 
     UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Message"
-                          message:@"Error connecting to server"
+                          initWithTitle:NSLocalizedString(@"ReferCode_CnctnErrAlrtTitle", @"Referral Code screen 'Connection Error' Alert Text")
+                          message:NSLocalizedString(@"ReferCode_CnctnErrAlrtBody", @"Referral Code screen Connection Error Alert Body Text")//@"Looks like we're having trouble finding an internet connection! Please try again."
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
@@ -221,7 +225,7 @@
 
             self.hud.mode = MBProgressHUDModeCustomView;
             self.hud.customView = spinner1;
-            self.hud.labelText = @"Creating your Nooch account";
+            self.hud.labelText = NSLocalizedString(@"ReferCode_HUDlbl2", @"'Creating your Nooch account...' HUD Label");
             [self.hud show:YES];
 
             serve * serveOBJ = [serve new];
@@ -266,8 +270,8 @@
         else
         {
             [self.hud hide:YES];
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Expired Referral Code"
-                                                            message:@"Sorry, looks like that referral code is no longer valid.  Please try another code."
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"ReferCode_ExprdAlrtTtl", @"'Expired Code' Alert Title")
+                                                            message:NSLocalizedString(@"ReferCode_ExprdAlrtBody", @"'Expired Code' Alert Body")//@"Sorry, looks like that referral code is no longer valid.  Please try another code."
                                                            delegate:nil
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil, nil];

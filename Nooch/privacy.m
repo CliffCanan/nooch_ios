@@ -26,10 +26,13 @@
     }
     return self;
 }
--(void)viewDidDisappear:(BOOL)animated{
+
+-(void)viewDidDisappear:(BOOL)animated
+{
     [self.hud hide:YES];
     [super viewDidDisappear:animated];
 }
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -45,7 +48,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationItem.title = @"Privacy Policy";
+    self.navigationItem.title = NSLocalizedString(@"Privacy_ScrnTitle", @"'Privacy Policy' Screen Title");
     privacyView.backgroundColor = [UIColor whiteColor];
 
     UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -65,7 +68,7 @@
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
     self.hud.delegate = self;
-    self.hud.labelText = @"Loading Privacy Policy...";
+    self.hud.labelText = NSLocalizedString(@"Privacy_HUDlbl", @"Privacy 'Loading Privacy Policy...' HUD Label");
     [self.hud show:YES];
 
     NSURL * webURL = [NSURL URLWithString:@"https://www.nooch.com/privacy/"];

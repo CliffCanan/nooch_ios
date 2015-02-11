@@ -52,13 +52,13 @@
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
     self.hud.delegate = self;
-    self.hud.labelText = @"Assembling this transfer...";
+    self.hud.labelText = NSLocalizedString(@"TransDeets_HUDlbl", @"Transfer Details 'Assembling this transfer...' text");
     [self.hud show:YES];
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
 	// Do any additional setup after loading the view.
-    [self.navigationItem setTitle:@"Transfer Details"];
+    [self.navigationItem setTitle:NSLocalizedString(@"TransDeets_ScrnTtl", @"'Transfer Details' Screen Title")];
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
@@ -127,7 +127,7 @@
     [self.view addSubview:other_party];
     [self.view addSubview:user_picture];
 
-	
+
 	// SET TEXT LABEL ABOVE OTHER USER'S NAME
     UILabel *payment = [UILabel new];
     [payment setStyleClass:@"details_intro"];
@@ -142,38 +142,38 @@
          [[self.trans valueForKey:@"InvitationSentTo"] isEqualToString:[user valueForKey:@"UserName"]]))
     {
 	    if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]]) {
-	        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Paid To:" attributes:textAttributes];
+	        payment.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"TransDeets_PaidToTxt", @"Transfer Details 'Paid To:' text") attributes:textAttributes];
             [payment setStyleClass:@"details_intro_red"];
         }
 		else {
-            payment.attributedText = [[NSAttributedString alloc] initWithString:@"Payment From:" attributes:textAttributes];
+            payment.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"TransDeets_PymntFrm", @"Transfer Details 'Payment From' text") attributes:textAttributes];
             [payment setStyleClass:@"details_intro_green"];
         }
 	}
     else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"])
     {
         if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]]) {
-            payment.attributedText = [[NSAttributedString alloc] initWithString:@"Request Sent To:" attributes:textAttributes];
+            payment.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"TransDeets_RqstSntToTxt1", @"Transfer Details 'Request Sent To:' text") attributes:textAttributes];
         }
         else {
-            payment.attributedText = [[NSAttributedString alloc] initWithString:@"Request From:" attributes:textAttributes];
+            payment.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"TransDeets_RqstFrmTxt", @"Transfer Details 'Request From:' text") attributes:textAttributes];
         }
         [payment setStyleClass:@"details_intro_blue"];
     }
     else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Invite"])
     {
-        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Invite Sent To:" attributes:textAttributes];
+        payment.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"TransDeets_InvtSntTo", @"Transfer Details 'Invite Sent To:' text") attributes:textAttributes];
         [payment setStyleClass:@"details_intro_green"];
     }
     else if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"InviteRequest"] ||
 	         ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] && [[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"RecepientId"]]))
     {
-        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Request Sent To:" attributes:textAttributes];
+        payment.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"TransDeets_RqstSntToTxt2", @"Transfer Details 'Request Sent To:' text (2nd)") attributes:textAttributes];
         [payment setStyleClass:@"details_intro_blue"];
     }
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"])
     {
-        payment.attributedText = [[NSAttributedString alloc] initWithString:@"Disputed Transfer:" attributes:textAttributes];
+        payment.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"TransDeets_DsptdTrnsfrTxt", @"Transfer Details 'Disputed Transfer:' text") attributes:textAttributes];
         [payment setStyleClass:@"details_intro_red"];
     }
     [self.view addSubview:payment];
@@ -189,13 +189,13 @@
     {
         if ([[self.trans valueForKey:@"Memo"] length] == 0 || [[self.trans valueForKey:@"Memo"] isEqualToString:@"\"\""])
         {
-            memo.text = @"No memo attached";
+            memo.text = NSLocalizedString(@"TransDeets_NoMemoTxt1", @"Transfer Details 'No memo attached' text");
         } 
         else
             [memo setText:[NSString stringWithFormat:@"\"%@\"",[self.trans valueForKey:@"Memo"]]];
     }
     else  {
-        memo.text = @"No memo attached";
+        memo.text = NSLocalizedString(@"TransDeets_NoMemoTxt2", @"Transfer Details 'No memo attached' text (2nd)");
     }
 
     memo.numberOfLines = 2;
@@ -255,7 +255,7 @@
 
     UILabel * disp_text = [UILabel new];
     [disp_text setFrame:disp.frame];
-    [disp_text setText:@"Dispute"];
+    [disp_text setText:NSLocalizedString(@"TransDeets_DsptTxt", @"Transfer Details 'Dispute' text")];
 
     if ([[UIScreen mainScreen] bounds].size.height > 500) {
         [pay_back setStyleClass:@"details_buttons"];
@@ -283,10 +283,10 @@
         [pay_text setStyleId:@"details_buttons_labels_long"];
         CGRect frame1 = pay_text.frame;
         [pay_text setFrame:CGRectMake(frame1.origin.x - 5, frame1.origin.y, frame1.size.width, frame1.size.height)];
-        [pay_text setText:@"Pay Again"];
+        [pay_text setText:NSLocalizedString(@"TransDeets_PayAgn", @"Transfer Details 'Pay Again' text")];
     }
     else {
-        [pay_text setText:@"Pay Back"];
+        [pay_text setText:NSLocalizedString(@"TransDeets_PayBck", @"Transfer Details 'Pay Back' text")];
     }
 
 
@@ -295,29 +295,29 @@
         // Pay & Cancel Buttons
         UIButton *pay = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [pay setStyleClass:@"details_btn_left"];
-        [pay setTitle:@"Pay" forState:UIControlStateNormal];
+        [pay setTitle:NSLocalizedString(@"TransDeets_PayBtn", @"Transfer Details 'Pay' Btn Text") forState:UIControlStateNormal];
         [pay setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
         pay.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
         UIButton *cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [cancel setTitle:@"Cancel" forState:UIControlStateNormal];
+        [cancel setTitle:NSLocalizedString(@"TransDeets_CnclBtn", @"Transfer Details 'Cancel' Btn Text") forState:UIControlStateNormal];
         [cancel setStyleClass:@"details_btn_right"];
         [cancel setTitleShadowColor:Rgb2UIColor(36, 22, 19, 0.26) forState:UIControlStateNormal];
         cancel.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
         UIButton *remind = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [remind setTitle:@"Remind" forState:UIControlStateNormal];
+        [remind setTitle:NSLocalizedString(@"TransDeets_RmndBtn", @"Transfer Details 'Remind' Btn Text") forState:UIControlStateNormal];
         [remind setStyleClass:@"details_btn_remind"];
         [remind setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
         remind.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-        
+
         if ([[UIScreen mainScreen] bounds].size.height == 480)
         {
             [pay setStyleClass:@"details_btn_left_4"];
             [cancel setStyleClass:@"details_btn_right_4"];
             [remind setStyleClass:@"details_btn_remind_4"];
         }
-        
+
         if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Request"] ||
             [[self.trans objectForKey:@"TransactionType"] isEqualToString:@"InviteRequest"])
         {
@@ -353,7 +353,7 @@
                 [pay addTarget:self action:@selector(fulfill_request) forControlEvents:UIControlEventTouchUpInside];
                 [pay setTag:23];
 
-                [cancel setTitle:@"Reject" forState:UIControlStateNormal];
+                [cancel setTitle:NSLocalizedString(@"TransDeets_RjctBtn", @"Transfer Details 'Reject' Btn Text") forState:UIControlStateNormal];
                 [cancel addTarget:self action:@selector(decline_request) forControlEvents:UIControlEventTouchUpInside];
                 [cancel setTag:24];
                 [self.view addSubview:pay];
@@ -409,7 +409,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    [self.navigationItem setTitle:@"Transfer Details"];
+    [self.navigationItem setTitle:NSLocalizedString(@"TransDeets_ScrnTtl2", @"'Transfer Details' Screen Title (2nd)")];
     [super viewWillAppear:animated];
     self.screenName = @"TransactionDetail Screen";
 }
@@ -422,33 +422,33 @@
 
 -(void)remind_request_existinguser
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder"
-                                                 message:[NSString stringWithFormat:@"Do you want to send %@ a reminder about this request?",[[self.trans objectForKey:@"FirstName"] capitalizedString]]
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtTtl1", @"'Send Reminder' Alert Title")
+                                                 message:[NSString stringWithFormat:NSLocalizedString(@"TransDeets_SndRmndrAlrtBody1", @"'Send Reminder' Alert Body Text"),[[self.trans objectForKey:@"FirstName"] capitalizedString]]//@"Do you want to send %@ a reminder about this request?"
                                                 delegate:self
-                                       cancelButtonTitle:@"Yes"
-                                       otherButtonTitles:@"No", nil];
+                                       cancelButtonTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtYesBtn1", @"'Yes' Button Text")
+                                       otherButtonTitles:NSLocalizedString(@"TransDeets_SndRmndrAlrtNoBtn1", @"'No' Button Text"), nil];
     [av setTag:2012];
     [av show];
 }
 
 -(void)remind_request_newuser
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder"
-                                                 message:@"Do you want to send a reminder about this request?"
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtTtl2", @"'Send Reminder' Alert Title (2nd)")
+                                                 message:NSLocalizedString(@"TransDeets_SndRmndrAlrtBody", @"'Send Reminder' Alert Body Text")//@"Do you want to send a reminder about this request?"
                                                 delegate:self
-                                       cancelButtonTitle:@"Yes"
-                                       otherButtonTitles:@"No", nil];
+                                       cancelButtonTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtYesBtn2", @"'Yes' Button Text (2nd)")
+                                       otherButtonTitles:NSLocalizedString(@"TransDeets_SndRmndrAlrtNoBtn2", @"'No' Button Text (2nd)"), nil];
     [av setTag:2013];
     [av show];
 }
 
 -(void)remind_invite_newuser
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Send Reminder"
-                                                 message:@"Do you want to send a reminder about this transfer?"
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtTtl3", @"'Send Reminder' Alert Body Text (3rd)")
+                                                 message:NSLocalizedString(@"TransDeets_SndRmndrAlrtBody3", @"'Send Reminder' Alert Body Text (3rd)")//@"Do you want to send a reminder about this transfer?"
                                                 delegate:self
-                                       cancelButtonTitle:@"Yes"
-                                       otherButtonTitles:@"No", nil];
+                                       cancelButtonTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtYesBtn3", @"'Yes' Button Text (3rd)")
+                                       otherButtonTitles:NSLocalizedString(@"TransDeets_SndRmndrAlrtYesBtn3", @"'No' Button Text (3rd)"), nil];
     [av setTag:2014];
     [av show];
 }
@@ -514,7 +514,7 @@
 
     UILabel * title = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 302, 30)];
     [title setBackgroundColor:[UIColor clearColor]];
-    [title setText:@"Transfer Location"];
+    [title setText:NSLocalizedString(@"TransDeets_LocTrnsfrLocTtle", @"'Transfer Loaction' Lightbox Title")];
     [title setStyleClass:@"lightbox_title"];
     [mainView addSubview:title];
 
@@ -551,7 +551,7 @@
 
     UILabel * desc=[[UILabel alloc]initWithFrame:CGRectMake(5, 0, 270, 36)];
     [desc setBackgroundColor:[UIColor clearColor]];
-    desc.text = @"This shows the location of the user who initiated the transfer.";
+    desc.text = NSLocalizedString(@"TransDeets_LocLtBxDesc", @"Location Lightbox description text");//@"This shows the location of the user who initiated the transfer.";
     desc.font = [UIFont fontWithName:@"Roboto" size:12];
     [desc setStyleId:@"mapLightBox_paraText"];
     desc.numberOfLines = 0;
@@ -562,7 +562,7 @@
     [mainView addSubview:line_container];
 
     UIButton * btnclose = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btnclose setTitle:@"Close" forState:UIControlStateNormal];
+    [btnclose setTitle:NSLocalizedString(@"TransDeets_LocLtBxClsBtn", @"Location Lightbox 'Close' Btn Text") forState:UIControlStateNormal];
     [btnclose setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.26) forState:UIControlStateNormal];
     btnclose.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [btnclose addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
@@ -668,7 +668,7 @@
     
     UILabel * title = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 302, 30)];
     [title setBackgroundColor:[UIColor clearColor]];
-    [title setText:@"Transfer Picture"];
+    [title setText:NSLocalizedString(@"TransDeets_PicLtBxDesc", @"Picture Lightbox 'Transfer Picture' Title")];
     [title setStyleClass:@"lightbox_title"];
     [mainView addSubview:title];
 
@@ -736,7 +736,7 @@
     
     UIButton * btnclose = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnclose setFrame:CGRectMake(170, mainView.frame.size.height - 52, 110, 40)];
-    [btnclose setTitle:@"Close" forState:UIControlStateNormal];
+    [btnclose setTitle:NSLocalizedString(@"TransDeets_PicLtBxClsBtn", @"Picture Lightbox 'Close' Btn Title") forState:UIControlStateNormal];
     [btnclose setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.26) forState:UIControlStateNormal];
     btnclose.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [btnclose addTarget:self action:@selector(close_PicturelightBox) forControlEvents:UIControlEventTouchUpInside];
@@ -780,11 +780,11 @@
 
 -(void)cancel_invite
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Transfer"
-                                                 message:@"Are you sure you want to cancel this transfer?"
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_CnclTrnsfrAlrtTitl", @"'Cancel This Transfer' Alert Title")
+                                                 message:NSLocalizedString(@"TransDeets_CnclTrnsfrAlrtBody", @"Cancel This Transfer Alert Body Text")//@"Are you sure you want to cancel this transfer?"
                                                 delegate:self
-                                       cancelButtonTitle:@"Yes"
-                                       otherButtonTitles:@"No", nil];
+                                       cancelButtonTitle:NSLocalizedString(@"TransDeets_CnclTrnsfrAlrtYesBtn", @"Cancel This Transfer Alert 'Yes' Btn")
+                                       otherButtonTitles:NSLocalizedString(@"TransDeets_CnclTrnsfrAlrtNoBtn", @"Cancel This Transfer Alert 'No' Btn"), nil];
     [av show];
     [av setTag:310];
 }
@@ -829,19 +829,19 @@
     
     if ([[assist shared]getSuspended])
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended"
-                                                    message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help."
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"TransDeets_SuspAlrtTtl", @"'Account Suspended' Alert Title")
+                                                    message:NSLocalizedString(@"TransDeets_SuspAlrtBody", @"Account Suspended Alert Body Text")//@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help."
                                                    delegate:self
                                           cancelButtonTitle:@"OK"
-                                          otherButtonTitles:@"Contact Support", nil];
+                                          otherButtonTitles:NSLocalizedString(@"TransDeets_SuspAlrtTtl", @"'Contact Support' Btn"), nil];
         [alert setTag:50];
         [alert show];
         return;
     }
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"])
     {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Email Verification Needed"
-                                                    message:@"Please click the link sent to your email to verify your email address."
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"TransDeets_EmlVerNddAlrtTtl", @"'Email Verification Needed' Alert Title")
+                                                    message:NSLocalizedString(@"TransDeets_EmlVerNddAlrtBody", @"'Email Verification Needed' Alert Body Text")//@"Please click the link sent to your email to verify your email address."
                                                    delegate:Nil
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:Nil, nil];
@@ -891,22 +891,22 @@
 
 - (void)cancel_request_to_existing
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Request"
-                                                 message:[NSString stringWithFormat:@"Are you sure you want to cancel this request to %@?",[[self.trans objectForKey:@"Name"] capitalizedString]]
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_CnclRqstAlrtTtl1", @"Cancel This Request Alert Title")
+                                                 message:[NSString stringWithFormat:NSLocalizedString(@"TransDeets_CnclRqstAlrtBody1", @"Cancel This Request Alert Body Text"),[[self.trans objectForKey:@"Name"] capitalizedString]]//@"Are you sure you want to cancel this request to %@?"
                                                 delegate:self
-                                       cancelButtonTitle:@"Yes"
-                                       otherButtonTitles:@"No", nil];
+                                       cancelButtonTitle:NSLocalizedString(@"TransDeets_CnclRqstAlrtYesBtn1", @"Cancel This Request Alert 'Yes' Btn")
+                                       otherButtonTitles:NSLocalizedString(@"TransDeets_CnclRqstfrAlrtNoBtn1", @"Cancel This Request Alert 'No' Btn"), nil];
     [av show];
     [av setTag:1010];
 }
 
 - (void)cancel_request_to_nonNoochUser
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Cancel This Request"
-                                                 message:@"Are you sure you want to cancel this request?"
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_CnclRqstAlrtTtl2", @"Cancel This Request Alert Title (2nd)")
+                                                 message:NSLocalizedString(@"TransDeets_CnclRqstAlrtBody2", @"Cancel This Request Alert Body (2nd)")//@"Are you sure you want to cancel this request?"
                                                 delegate:self
-                                       cancelButtonTitle:@"Yes"
-                                       otherButtonTitles:@"No", nil];
+                                       cancelButtonTitle:NSLocalizedString(@"TransDeets_CnclRqstAlrtYesBtn2", @"Cancel This Request Alert 'Yes' Btn")
+                                       otherButtonTitles:NSLocalizedString(@"TransDeets_CnclRqstAlrtNoBtn2", @"Cancel This Request Alert 'No' Btn"), nil];
     [av show];
     [av setTag:2010];
 }
@@ -1017,7 +1017,7 @@
     {
         UIAlertView * alertView = [[UIAlertView alloc]
                                   initWithTitle:@"Can't Post"
-                                  message:@"Please make sure your Facebook account is connected to your iPhone!"
+                                  message:@"Please connect your Facebook account to your iPhone to post to Facebook."
                                   delegate:self
                                   cancelButtonTitle:@"OK"
                                   otherButtonTitles:nil];
@@ -1243,11 +1243,11 @@
 
 - (void) dispute
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Confirm Dispute"
-                                                 message:@"To protect your account, if you dispute a transfer your Nooch account will be temporarily suspended while we investigate."
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_CnfrmDsptAlrtTtl", @"'Confirm Dispute' Alert Title")
+                                                 message:NSLocalizedString(@"TransDeets_CnfrmDsptAlrtBody", @"'Confirm Dispute' Alert Body Text")//@"To protect your account, if you dispute a transfer your Nooch account will be temporarily suspended while we investigate."
                                                 delegate:self
-                                       cancelButtonTitle:@"Yes - Dispute"
-                                       otherButtonTitles:@"No", nil];
+                                       cancelButtonTitle:NSLocalizedString(@"TransDeets_CnfrmDsptAlrtYesBtn", @"Confirm Dispute Alert 'Yes - Dispute' Btn Text")
+                                       otherButtonTitles:NSLocalizedString(@"TransDeets_CnfrmDsptAlrtNoBtn", @"Confirm Dispute Alert 'No' Btn Text"), nil];
     [av show];
     [av setTag:1];
 }
@@ -1295,7 +1295,7 @@
         self.hud.mode = MBProgressHUDModeCustomView;
         self.hud.customView = spinner1;
         self.hud.delegate = self;
-        self.hud.labelText = @"Disputing this transfer...";
+        self.hud.labelText = NSLocalizedString(@"TransDeets_disputeHUDlbl", @"'Disputing this transfer...' HUD Text");
         [self.hud show:YES];
         
         self.responseData = [NSMutableData data];
@@ -1374,7 +1374,7 @@
         self.hud.mode = MBProgressHUDModeCustomView;
         self.hud.customView = spinner1;
         self.hud.delegate = self;
-        self.hud.labelText = @"Cancelling this request...";
+        self.hud.labelText = NSLocalizedString(@"TransDeets_cnclRqstHUDlbl", @"'Cancelling this request...' HUD Text");
         [self.hud show:YES];
         
         serve *serveObj = [serve new];
@@ -1400,7 +1400,7 @@
         self.hud.mode = MBProgressHUDModeCustomView;
         self.hud.customView = spinner1;
         self.hud.delegate = self;
-        self.hud.labelText = @"Cancelling this transfer...";
+        self.hud.labelText = NSLocalizedString(@"TransDeets_cnclTrnsfrHUDlbl", @"'Cancelling this transfer...' HUD Text");
         [self.hud show:YES];
 
         serve * serveObj = [serve new];
@@ -1419,7 +1419,7 @@
         self.hud.mode = MBProgressHUDModeCustomView;
         self.hud.customView = spinner1;
         self.hud.delegate = self;
-        self.hud.labelText = @"Rejecting this request...";
+        self.hud.labelText = NSLocalizedString(@"TransDeets_RejRqstHUDlbl", @"'Rejecting this request...' HUD Text");
         [self.hud show:YES];
 
         serve * serveObj = [serve new];
@@ -1616,6 +1616,7 @@
             frame.size.width = 155;
             [location setFrame:frame];
         }
+
         location.numberOfLines = 1;
         [location setStyleClass:@"details_label_location"];
         
@@ -1672,22 +1673,22 @@
             NSString *statusstr;
 
             if ([[tranDetailResult objectForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
-                statusstr = @"Canceled";
+                statusstr = NSLocalizedString(@"TransDeets_CncldTxt", @"'Canceled' Status Text");
                 [status setStyleClass:@"red_text"];
             }
             else if ([[tranDetailResult objectForKey:@"TransactionStatus"]isEqualToString:@"Rejected"]) {
-                statusstr = @"Rejected";
+                statusstr = NSLocalizedString(@"TransDeets_RjctdTxt", @"'Rejected' Status Text");
                 [status setStyleClass:@"red_text"];
             }
             else if (![[tranDetailResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
                       [[tranDetailResult objectForKey:@"TransactionStatus"]isEqualToString:@"Pending"]) {
-                statusstr = @"Pending";
+                statusstr = NSLocalizedString(@"TransDeets_PndngTxt", @"'Pending' Status Text");
                 [status setStyleClass:@"yellow_text"];
             }
             else if ([[tranDetailResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
                      [[tranDetailResult objectForKey:@"TransactionStatus"]isEqualToString:@"Success"])
             {
-                statusstr = @"Complete (Payment Accepted)";
+                statusstr = NSLocalizedString(@"TransDeets_PymntAccptdPdTxt", @"'Complete (Payment Accepted)' Status Text");
                 [status setFont: [UIFont fontWithName:@"Roboto-medium" size:18]];
                 [status setStyleClass:@"green_text"];
             }
@@ -1695,34 +1696,34 @@
                      [[tranDetailResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]  ||
                      [[tranDetailResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
             {
-                statusstr = @"Completed";
+                statusstr = NSLocalizedString(@"TransDeets_CmpltTxt", @"'Complete' Status Text");
                 [status setStyleClass:@"green_text"];
             }
             else if ([[tranDetailResult valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
                      [[tranDetailResult objectForKey:@"TransactionStatus"]isEqualToString:@"Success"])
             {
-                statusstr = @"Complete (Request Paid)";
+                statusstr = NSLocalizedString(@"TransDeets_CmpltRqstPdTxt", @"'Complete (Request Paid)' Status Text");
                 [status setStyleClass:@"green_text"];
             }
             else if ([[tranDetailResult valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
                      [[tranDetailResult valueForKey:@"TransactionStatus"]isEqualToString:@"Pending"])
             {
-                statusstr = @"Invited - Pending";
+                statusstr = NSLocalizedString(@"TransDeets_InvtdPndgTxt", @"'Invited - Pending' Status Text");
                 [status setStyleClass:@"yellow_text"];
             }
             
             if ( ![[self.trans valueForKey:@"DisputeId"] isKindOfClass:[NSNull class]] && [self.trans valueForKey:@"DisputeId"]!=NULL )
             {
-                statusstr = @"Disputed:";
+                statusstr = NSLocalizedString(@"TransDeets_DsptdsTxt", @"'Disputed:' Status Text");
                 [status setStyleClass:@"red_text"];
 
 				UIButton *detailbutton = [UIButton buttonWithType:UIButtonTypeCustom];
                 [detailbutton addTarget:self
                            action:@selector(DisputeDetailClicked:)
                  forControlEvents:UIControlEventTouchUpInside];
-                [detailbutton setTitle:@"See Details" forState:UIControlStateNormal];
-                [detailbutton setTitle:@"See Details" forState:UIControlStateHighlighted];
-                [detailbutton setTitle:@"See Details" forState:UIControlStateSelected];
+                [detailbutton setTitle:NSLocalizedString(@"TransDeets_SeeDetTxt1", @"'See Details' Status Text") forState:UIControlStateNormal];
+                [detailbutton setTitle:NSLocalizedString(@"TransDeets_SeeDetTxt2", @"'See Details' Status Text (2nd)") forState:UIControlStateHighlighted];
+                [detailbutton setTitle:NSLocalizedString(@"TransDeets_SeeDetTxt3", @"'See Details' Status Text (3rd)") forState:UIControlStateSelected];
                 detailbutton.frame = CGRectMake(97, 195, 120, 20);
                 detailbutton.titleLabel.font=[UIFont fontWithName:@"Roboto-Regular" size:15];
                 detailbutton.titleLabel.textColor=kNoochBlue;
@@ -1752,7 +1753,6 @@
                 datelbl.text = [NSString stringWithFormat:@"%@ %@, %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]];
                 [self.view addSubview:datelbl];
             }
-
         }
 
         serve *info = [serve new];
@@ -1900,7 +1900,6 @@
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Reminder Sent Successfully" message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
-
 }
 
 -(void)DisputeDetailClicked:(UIButton*)sender
@@ -1909,7 +1908,8 @@
     [self.navigationController pushViewController:dd animated:YES];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     [imageCache clearMemory];

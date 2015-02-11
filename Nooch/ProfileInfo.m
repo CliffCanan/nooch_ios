@@ -186,7 +186,7 @@ UIImageView *picture;
 
     UILabel * edit_label = [UILabel new];
     [edit_label setBackgroundColor:[UIColor clearColor]];
-    edit_label.attributedText = [[NSAttributedString alloc] initWithString:@"edit" attributes:textAttributes];
+    edit_label.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Profile_EditTxt", @"Profile 'Edit' Txt (for profile pic)") attributes:textAttributes];
     [edit_label setFont:[UIFont fontWithName:@"Roboto-regular" size:12]];
     [edit_label setFrame:CGRectMake(0, (pictureRadius * 2) - 18, pictureRadius * 2, 12)];
     [edit_label setTextAlignment:NSTextAlignmentCenter];
@@ -333,7 +333,7 @@ UIImageView *picture;
     sectionHeaderTxt.backgroundColor = [UIColor clearColor];
     sectionHeaderTxt.textColor = [UIColor darkGrayColor];
     sectionHeaderTxt.font = [UIFont fontWithName:@"Roboto-light" size:15];
-    sectionHeaderTxt.text = @"CONTACT INFO";
+    sectionHeaderTxt.text = NSLocalizedString(@"Profile_TblHdr_Contact", @"Profile 'CONTACT INFO' Txt");
     sectionHeaderTxt.textAlignment = NSTextAlignmentLeft;
     [self.sectionHeaderBg addSubview:sectionHeaderTxt];
     [scrollView addSubview:self.sectionHeaderBg];
@@ -377,7 +377,7 @@ UIImageView *picture;
     {
         numberOfRowsToDisplay = 4;
         [self.list setFrame:CGRectMake(0, pictureRadius + 18 + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 4)];
-        
+
         emailVerifyRowIsShowing = true;
         smsVerifyRowIsShowing = true;
     }
@@ -389,7 +389,7 @@ UIImageView *picture;
     sectionHeaderTxt2.backgroundColor = [UIColor clearColor];
     sectionHeaderTxt2.textColor = [UIColor darkGrayColor];
     sectionHeaderTxt2.font = [UIFont fontWithName:@"Roboto-light" size:15];
-    sectionHeaderTxt2.text = @"ADDRESS";
+    sectionHeaderTxt2.text = NSLocalizedString(@"Profile_TblHdr_Address", @"Profile 'ADDRESS' Txt");
     sectionHeaderTxt2.textAlignment = NSTextAlignmentLeft;
     [self.sectionHeaderBg2 addSubview:sectionHeaderTxt2];
     [scrollView addSubview:self.sectionHeaderBg2];
@@ -417,7 +417,7 @@ UIImageView *picture;
 
     self.screenName = @"Profile Screen";
 
-    [self.navigationItem setTitle:@"Profile"];
+    [self.navigationItem setTitle:NSLocalizedString(@"Profile_ScrnTitle", @"'Profile' Screen Title")];
 
     if ([[user objectForKey:@"Photo"] length] > 0 && [user objectForKey:@"Photo"] != nil && !isPhotoUpdate)
     {
@@ -487,11 +487,11 @@ UIImageView *picture;
 
 -(void)SaveAlert1
 {
-    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Save Changes"
-                                                    message:@"Do you want to save the changes in your profile?"
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Profile_SaveAlrtTitle1", @"Profile 'Save Changes' Alert Title")
+                                                    message:NSLocalizedString(@"Profile_SaveAlrtBody1", @"Profile Save Changes Alert Body Text")//@"Do you want to save the changes in your profile?"
                                                    delegate:self
-                                          cancelButtonTitle:@"Yes"
-                                          otherButtonTitles:@"No", nil];
+                                          cancelButtonTitle:NSLocalizedString(@"Profile_AlrtBtnYes1", @"Profile 'Yes' Button Text")
+                                          otherButtonTitles:NSLocalizedString(@"Profile_AlrtBtnNo1", @"Profile 'No' Button Text"), nil];
     [alert setTag:5021];
     [alert show];
     return;
@@ -518,38 +518,17 @@ UIImageView *picture;
 -(void)savePrompt
 {
     if ( [[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"] ||
-         (self.address_one.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]) ||
-         (self.address_two.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]) ||
-         (self.zip.text.length > 2 && ![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]) ||
-         (self.city.text.length > 2 && ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]) ||
-         (self.phone.text.length > 3 && ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) )
+        (self.address_one.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]) ||
+        (self.address_two.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]) ||
+        (self.zip.text.length > 2 && ![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]) ||
+        (self.city.text.length > 2 && ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]) ||
+        (self.phone.text.length > 3 && ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) )
     {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Save Changes"
                                                         message:@"Do you want to save the changes in your profile?"
                                                        delegate:self
-                                              cancelButtonTitle:@"YES"
-                                              otherButtonTitles:@"NO", nil];
-        [alert setTag:5020];
-        [alert show];
-
-        return;
-    }
-    else
-    {
-        [self.slidingViewController anchorTopViewTo:ECRight];
-    }
-    if ( [[dictSavedInfo valueForKey:@"ImageChanged"]isEqualToString:@"YES"] ||
-         (self.address_one.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address1"]isEqualToString:self.address_one.text]) ||
-         (self.address_two.text.length > 3 && ![[dictSavedInfo valueForKey:@"Address2"]isEqualToString:self.address_two.text]) ||
-         (self.zip.text.length > 2 && ![[dictSavedInfo valueForKey:@"zip"]isEqualToString:self.zip.text]) ||
-         (self.city.text.length > 2 && ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]) ||
-         (self.phone.text.length > 3 && ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) )
-    {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Save Changes"
-                                                        message:@"Do you want to save the changes in your profile?"
-                                                       delegate:self
-                                              cancelButtonTitle:@"YES"
-                                              otherButtonTitles:@"NO", nil];
+                                              cancelButtonTitle:NSLocalizedString(@"Profile_AlrtBtnYes2", @"Profile 'YES' Button Text")
+                                              otherButtonTitles:NSLocalizedString(@"Profile_AlrtBtnNo2", @"Profile 'NO' Button Text"), nil];
         [alert setTag:5020];
         [alert show];
 
@@ -619,8 +598,8 @@ UIImageView *picture;
     else
     {
         [self.phone becomeFirstResponder];
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Phone Number Trouble"
-                                                        message:@"Please double check that you entered a valid 10-digit phone number."
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Profile_PhnTrblAlrtTtl", @"Profile 'Phone Number Trouble' Alert Title")
+                                                        message:NSLocalizedString(@"Profile_PhnTrblAlrtBody", @"Profile 'Phone Number Trouble' Alert Body Text")//@"Please double check that you entered a valid 10-digit phone number."
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];
@@ -654,8 +633,8 @@ UIImageView *picture;
 
     if ([self.name.text length] == 0)
     {
-        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Need A Name"
-                                                      message:@"\xF0\x9F\x99\x87\nWe can call you 'Blank' if you want, but it's probably better if you entered a name..."
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_NoNameAlrtTtl", @"Profile 'Need A Name' Alert Title")
+                                                      message:NSLocalizedString(@"Profile_NoNameAlrtBody", @"Profile Need A Name Alert Body Text")//@"\xF0\x9F\x99\x87\nWe can call you 'Blank' if you want, but it's probably better if you entered a name..."
                                                      delegate:Nil
                                             cancelButtonTitle:@"OK"
                                             otherButtonTitles:Nil, nil];
@@ -666,8 +645,8 @@ UIImageView *picture;
     if (![self validateEmail:[self.email text]])
     {
         [self.email becomeFirstResponder];
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Invalid Email Address"
-                                                        message:@"Hmm... please double check that you have entered a valid email address."
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Profile_InvldEmlAlrtTtl", @"Profile 'Invalid Email Address' Alert Title")
+                                                        message:NSLocalizedString(@"Profile_InvldEmlAlrtTtl", @"Profile 'Invalid Email Address' Alert Title")//@"Hmm... please double check that you have entered a valid email address."
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];
@@ -714,8 +693,8 @@ UIImageView *picture;
         if ([strPhoneNumber length] != 10)
         {
             [self.phone becomeFirstResponder];
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Phone Number Trouble"
-                                                            message:@"Please double check that you entered a valid 10-digit phone number."
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Profile_PhnTrblAlrtTtl2", @"Profile 'Phone Number Trouble' Alert Title (2nd)")
+                                                            message:NSLocalizedString(@"Profile_PhnTrblAlrtBody2", @"Profile 'Phone Number Trouble' Alert Body Text (2nd)")//@"Please double check that you entered a valid 10-digit phone number."
                                                            delegate:nil
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil, nil];
@@ -726,11 +705,11 @@ UIImageView *picture;
 
     if ([[me pic] isKindOfClass:[NSNull class]]) //|| [[user objectForKey:@"Photo"] rangeOfString:@"gv_no_photo.png"].location != NSNotFound)
     {
-        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"I don't see you!"
-                                                      message:@"\xF0\x9F\x91\x80\n\nYou haven't set your profile picture, would you like to do that now?"
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_NoPicAlrtTitle", @"Profile 'I don't see you!' Alert Title")
+                                                      message:NSLocalizedString(@"Profile_NoPicAlrtBody", @"Profile 'I don't see you!' Alert Body Text")//@"\xF0\x9F\x91\x80\n\nYou haven't set your profile picture, would you like to do that now?"
                                                      delegate:self
-                                            cancelButtonTitle:@"No Thanks"
-                                            otherButtonTitles:@"Yes - Set Now", nil];
+                                            cancelButtonTitle:NSLocalizedString(@"Profile_NoPicAlrtBtnNo", @"Profile I don't see you Alert 'No Thanks' Btn")
+                                            otherButtonTitles:NSLocalizedString(@"Profile_NoPicAlrtBtnYes", @"Profile I don't see you! Alert 'Yes - Set Now' Btn"),nil];
         [av setTag:20];
         [av show];
     }
@@ -774,8 +753,8 @@ UIImageView *picture;
     {
         [transactionInput setObject:@"" forKey:@"City"];
     }
-    
-    
+
+
     if ( [[assist shared]islocationAllowed])
     {
         [transactionInput setObject:[[assist shared]islocationAllowed]?[NSNumber numberWithBool:YES]:[NSNumber numberWithBool:NO] forKey:@"ShowInSearch"];
@@ -812,7 +791,7 @@ UIImageView *picture;
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
     self.hud.delegate = self;
-    self.hud.labelText = @"Saving Your Profile";
+    self.hud.labelText = NSLocalizedString(@"Profile_HUDsaving", @"Profile HUD 'Saving Your Profile' Text");
     [self.hud show:YES];
     
     transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"mySettings", nil];
@@ -827,9 +806,9 @@ UIImageView *picture;
 {
     UIActionSheet * actionSheetObject = [[UIActionSheet alloc] initWithTitle:@""
                                                                     delegate:self
-                                                           cancelButtonTitle:@"Cancel"
+                                                           cancelButtonTitle:NSLocalizedString(@"Profile_CancelTxt", @"Profile 'Cancel' Text")//
                                                       destructiveButtonTitle:nil
-                                                           otherButtonTitles:@"Use Facebook Picture", @"Use Camera", @"From iPhone Library", nil];
+                                                           otherButtonTitles:NSLocalizedString(@"Profile_UseCamera", @"Profile 'Use Camera' Text"), NSLocalizedString(@"Profile_FrmLbry", @"Profile 'From iPhone Library' Text"), nil];
     actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
     [actionSheetObject showInView:self.view];
 }
@@ -844,7 +823,7 @@ UIImageView *picture;
     {
         if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
         {
-            UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
+            UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_ErrorTxt", @"Profile 'Error' Text")
                                                                   message:@"Device has no camera"
                                                                  delegate:nil
                                                         cancelButtonTitle:@"OK"
@@ -1109,8 +1088,7 @@ UIImageView *picture;
     NSLog(@"Just a checkin'");
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-//    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
-
+    // UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
 
     if (cell == nil)
     {
@@ -1133,9 +1111,9 @@ UIImageView *picture;
             UILabel * mail = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
             [mail setBackgroundColor:[UIColor clearColor]];
             [mail setStyleClass:@"tableViewCell_Profile_leftSide"];
-            mail.attributedText = [[NSAttributedString alloc] initWithString:@"Email"
+            mail.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Profile_EmailTxt", @"Profile 'Email' Text")
                                                                   attributes:textAttributes_white];
-            
+
             if ([[user valueForKey:@"Status"] isEqualToString:@"Registered"])
             {
                 UIView * email_not_validated = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, rowHeight)];
@@ -1185,11 +1163,11 @@ UIImageView *picture;
             shadow.shadowColor = Rgb2UIColor(255, 252, 249, .25);
             shadow.shadowOffset = CGSizeMake(0, 1);
             NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
-            
+    
             UILabel * emailVerifiedStatus = [[UILabel alloc] initWithFrame:CGRectMake(32, 0, 130, rowHeight)];
             [emailVerifiedStatus setBackgroundColor:[UIColor clearColor]];
             [emailVerifiedStatus setStyleClass:@"notVerifiedLabel"];
-            emailVerifiedStatus.attributedText = [[NSAttributedString alloc] initWithString:@"Not Verified"
+            emailVerifiedStatus.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Profile_NotVerifTxt", @"Profile 'Not Verified' Text")
                                                                                  attributes:textAttributes];
             [cell.contentView addSubview:emailVerifiedStatus];
 
@@ -1197,7 +1175,7 @@ UIImageView *picture;
             [resend_mail setFrame:CGRectMake(200, ((rowHeight - 30) / 2), 105, 30)];
             [resend_mail setStyleClass:@"button_green_sm"];
             [resend_mail addTarget:self action:@selector(resend_email) forControlEvents:UIControlEventTouchUpInside];
-            [resend_mail setTitle:@"Resend Email" forState:UIControlStateNormal];
+            [resend_mail setTitle:NSLocalizedString(@"Profile_ResendEmBtn", @"Profile 'Resend Email' Text") forState:UIControlStateNormal];
             [resend_mail setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
             resend_mail.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
             [cell.contentView addSubview:resend_mail];
@@ -1256,11 +1234,11 @@ UIImageView *picture;
             shadow.shadowColor = Rgb2UIColor(255, 252, 249, .3);
             shadow.shadowOffset = CGSizeMake(0, 1);
             NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
-            phoneVerifiedStatus.attributedText = [[NSAttributedString alloc] initWithString:@"Not Verified"
+            phoneVerifiedStatus.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Profile_NotVerifTxt2", @"Profile 'Not Verified' Text (2nd)")
                                                                                  attributes:textAttributes];
 
             self.resend_phone = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [self.resend_phone setTitle:@"Resend SMS" forState:UIControlStateNormal];
+            [self.resend_phone setTitle:NSLocalizedString(@"Profile_ResendSmsBtn", @"Profile 'Resend SMS' Btn Text") forState:UIControlStateNormal];
             [self.resend_phone addTarget:self action:@selector(resend_SMS) forControlEvents:UIControlEventTouchUpInside];
             [self.resend_phone setFrame:CGRectMake(200, ((rowHeight - 30) / 2), 105, 30)];
             if ([self.phone.text length] > 8)
@@ -1284,14 +1262,14 @@ UIImageView *picture;
         {
             UILabel * addr1 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
             [addr1 setBackgroundColor:[UIColor clearColor]];
-            [addr1 setText:@"Address"];
+            [addr1 setText:NSLocalizedString(@"Profile_AddressTxt", @"Profile 'Address' Text")];
             [addr1 setStyleClass:@"tableViewCell_Profile_leftSide"];
             [cell.contentView addSubview:addr1];
 
             self.address_one = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, rowHeight)];
             [self.address_one setTextAlignment:NSTextAlignmentRight];
             [self.address_one setBackgroundColor:[UIColor clearColor]];
-            [self.address_one setPlaceholder:@"123 Nooch St"];
+            [self.address_one setPlaceholder:NSLocalizedString(@"Profile_AdrsPlchldrt", @"Profile address placeholder Text")];//@"123 Nooch St"
             [self.address_one setDelegate:self];
             [self.address_one setKeyboardType:UIKeyboardTypeDefault];
             self.address_one.returnKeyType = UIReturnKeyNext;
@@ -1304,14 +1282,14 @@ UIImageView *picture;
         {
             UILabel * addr2 = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
             [addr2 setBackgroundColor:[UIColor clearColor]];
-            [addr2 setText:@"Address 2"];
+            [addr2 setText:NSLocalizedString(@"Profile_Address2Txt", @"Profile 'Address2' Text")];
             [addr2 setStyleClass:@"tableViewCell_Profile_leftSide"];
             [cell.contentView addSubview:addr2];
 
             self.address_two = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, rowHeight)];
             [self.address_two setTextAlignment:NSTextAlignmentRight];
             [self.address_two setBackgroundColor:[UIColor clearColor]];
-            [self.address_two setPlaceholder:@"(Optional)"];
+            [self.address_two setPlaceholder:NSLocalizedString(@"Profile_Adrs2Plchldr", @"Profile '(Optional)' Text")];
             [self.address_two setDelegate:self];
             [self.address_two setKeyboardType:UIKeyboardTypeDefault];
             self.address_two.returnKeyType = UIReturnKeyNext;
@@ -1324,14 +1302,14 @@ UIImageView *picture;
         {
             UILabel * city_lbl = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
             [city_lbl setBackgroundColor:[UIColor clearColor]];
-            [city_lbl setText:@"City"];
+            [city_lbl setText:NSLocalizedString(@"Profile_CityTxt", @"Profile 'City' Text")];
             [city_lbl setStyleClass:@"tableViewCell_Profile_leftSide"];
             [cell.contentView addSubview:city_lbl];
 
             self.city = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, rowHeight)];
             [self.city setTextAlignment:NSTextAlignmentRight];
             [self.city setBackgroundColor:[UIColor clearColor]];
-            [self.city setPlaceholder:@"City"];
+            [self.city setPlaceholder:NSLocalizedString(@"Profile_CityPlchldr", @"Profile 'City' Placeholder")];
             [self.city setDelegate:self];
             [self.city setTag:5];
             [self.city setKeyboardType:UIKeyboardTypeDefault];
@@ -1344,14 +1322,14 @@ UIImageView *picture;
         {
             UILabel * zip_lbl = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, 140, rowHeight)];
             [zip_lbl setBackgroundColor:[UIColor clearColor]];
-            [zip_lbl setText:@"ZIP"];
+            [zip_lbl setText:NSLocalizedString(@"Profile_ZipTxt", @"Profile 'ZIP' Text")];
             [zip_lbl setStyleClass:@"tableViewCell_Profile_leftSide"];
             [cell.contentView addSubview:zip_lbl];
 
             self.zip = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, rowHeight)];
             [self.zip setTextAlignment:NSTextAlignmentRight];
             [self.zip setBackgroundColor:[UIColor clearColor]];
-            [self.zip setPlaceholder:@"12345"];
+            [self.zip setPlaceholder:NSLocalizedString(@"Profile_ZipPlchldr", @"Profile '90210' placeholder text")];
             [self.zip setDelegate:self];
             [self.zip setKeyboardType:UIKeyboardTypeNumberPad];
             [self.zip setStyleClass:@"tableViewCell_Profile_rightSide"];
@@ -1580,7 +1558,7 @@ UIImageView *picture;
         if ([response isEqualToString:@"Already Activated."])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
-                                                         message:@"Your email has already been verified."
+                                                         message:NSLocalizedString(@"Profile_EmailAlrdyVerAlrtBody", @"Profile Email already verified Alert Body Text")//@"Your email has already been verified."
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1595,7 +1573,7 @@ UIImageView *picture;
         else if ([response isEqualToString:@"Not a nooch member."])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
-                                                         message:@"An error occurred when attempting to fulfill this request, please try again."
+                                                         message:NSLocalizedString(@"Profile_NotAMbmrAlrtBody", @"Profile not a member Alert Body Text")//@"An error occurred when attempting to fulfill this request, please try again."
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1603,8 +1581,8 @@ UIImageView *picture;
         }
         else if ([response isEqualToString:@"Success"])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Check Your Email"
-                                                         message:[NSString stringWithFormat:@"\xF0\x9F\x93\xA5\nA verifiction link has been sent to %@.",self.email.text]
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_ChkEmlAlrtTitle", @"Profile 'Check Your Email' Alert Title")
+                                                         message:NSLocalizedString(@"Profile_ChkEmlAlrtBody", @"Profile 'Check Your Email' Alert Body Text")//[NSString stringWithFormat:@"\xF0\x9F\x93\xA5\nA verifiction link has been sent to %@.",self.email.text]
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1619,7 +1597,7 @@ UIImageView *picture;
         else if ([response isEqualToString:@"Failure"])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
-                                                         message:@"An error occurred when attempting to fulfill this request, please try again."
+                                                         message:NSLocalizedString(@"Profile_FailureAlrtBody", @"Profile failure Alert Body Text")//@"An error occurred when attempting to fulfill this request, please try again."
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1635,8 +1613,8 @@ UIImageView *picture;
                                error:&error] objectForKey:@"Result"];
         
         if ([response isEqualToString:@"Already Verified."]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"You're Good To Go  \xF0\x9F\x91\x8D"
-                                                         message:@"Your phone number has already been verified."
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_SmsAlrdyVerAlrtTitle", @"Profile phone already verified Alert Title")//@"You're Good To Go  \xF0\x9F\x91\x8D"
+                                                         message:NSLocalizedString(@"Profile_SmsAlrdyVerAlrtBody", @"Profile phone already verified Alert Body Text")//@"Your phone number has already been verified."
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1647,8 +1625,8 @@ UIImageView *picture;
             [self.list endUpdates];
         }
         else if ([response isEqualToString:@"Not a nooch member."]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Unexpected Error"
-                                                         message:@"An error occurred when attempting to fulfill this request, please try again."
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_UnexpErrorAlrtTitle1", @"Profile 'Unexpected Error' Alert Title")
+                                                         message:NSLocalizedString(@"Profile_UnexpErrorAlrtBody1", @"Profile 'Unexpected Error' Alert Body Text")//@"An error occurred when attempting to fulfill this request, please try again."
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1656,8 +1634,8 @@ UIImageView *picture;
         }
         else if ([response isEqualToString:@"Success"])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Check Your Texts"
-                                                         message:@"\xF0\x9F\x93\xB2\nA verifiction SMS has been sent to your phone. Please respond \"Go\" (case doesn't matter) to confirm your number."
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_ChkSmsAlrtTitle", @"Profile 'Check Your Texts' Alert Title")
+                                                         message:NSLocalizedString(@"Profile_ChkSmsAlrtBody", @"Profile Check Your Texts Alert Body Text")//@"\xF0\x9F\x93\xB2\nA verifiction SMS has been sent to your phone. Please respond \"Go\" (case doesn't matter) to confirm your number."
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1682,26 +1660,18 @@ UIImageView *picture;
         }
         else if ([response isEqualToString:@"Failure"])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Unexpected Error"
-                                                         message:@"An error occurred when attempting to fulfill this request, please try again."
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_UnexpErrorAlrtTitle2", @"Profile 'Unexpected Error' Alert Title (2nd)")
+                                                         message:NSLocalizedString(@"Profile_UnexpErrorAlrtBody2", @"Profile 'Unexpected Error' Alert Body Text (2nd)")//@"An error occurred when attempting to fulfill this request, please try again."
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
             [av show];
         }
-        else if ([response isEqualToString:@"Temporarily_Blocked"])
+        else if ([response isEqualToString:@"Temporarily_Blocked"] ||
+                 [response isEqualToString:@"Suspended"])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Is Suspended"
-                                                         message:@"Your account is currently suspended, please attempt to verify your phone number when your account is no longer suspended."
-                                                        delegate:nil
-                                               cancelButtonTitle:@"OK"
-                                               otherButtonTitles:nil];
-            [av show];
-        }
-        else if ([response isEqualToString:@"Suspended"])
-        {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Is Suspended"
-                                                         message:@"Your account is currently suspended, please attempt to verify your phone number when your account is no longer suspended."
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_AcntSuspTitle", @"Profile 'Account Is Suspended' Alert Title")
+                                                         message:NSLocalizedString(@"Profile_AcntSuspBody", @"Profile 'Account Is Suspended' Alert Body Text")//@"Your account is currently suspended, please attempt to verify your phone number when your account is no longer suspended."
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1748,8 +1718,8 @@ UIImageView *picture;
             if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] &&
                 self.phone.text.length > 8)
             {
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Profile Saved"
-                                                             message:@"Your details were updated successfully.\n\n\xF0\x9F\x93\xB2\nTo verify your phone number, we will send you a text. Just reply with 'Go' to verify."
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_SvdSucAlrtTtle", @"Profile 'Profile Saved' Alert Title")
+                                                             message:NSLocalizedString(@"Profile_SvdSucAlrtBody", @"Profile Profile Saved and phone not yet verified Alert Body Text")//@"Your details were updated successfully.\n\n\xF0\x9F\x93\xB2\nTo verify your phone number, we will send you a text. Just reply with 'Go' to verify."
                                                             delegate:self
                                                    cancelButtonTitle:@"OK"
                                                    otherButtonTitles:nil];
@@ -1757,8 +1727,8 @@ UIImageView *picture;
             }
             else
             {
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Profile Saved"
-                                                             message:@"Your details have been updated successfully."
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_SvdSucAlrtTtle2", @"Profile 'Profile Saved' Alert Title (2nd)")
+                                                             message:NSLocalizedString(@"Profile_SvdSucAlrtBody2", @"Profile Profile Saved Alert Body Text")//@"Your details have been updated successfully."
                                                             delegate:self
                                                    cancelButtonTitle:@"OK"
                                                    otherButtonTitles:nil];
@@ -1767,8 +1737,8 @@ UIImageView *picture;
         }
         else if ([[resultValue valueForKey:@"Result"] isEqualToString:@"Phone Number already registered with Nooch"])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Phone Number Already Registered"
-                                                         message:[NSString stringWithFormat:@"Looks like %@ is already registered with another Nooch account. Please contact us if this is a mistake or for further help.",self.phone.text]
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_PhnAlrdRegAlrtTitle", @"Profile 'Phone Number Already Registered' Alert Title")
+                                                         message:[NSString stringWithFormat:NSLocalizedString(@"Profile_PhnAlrdRegAlrtBody", @"Profile 'Phone Number Already Registered' Alert Body Text"),self.phone.text]//@"Looks like %@ is already registered with another Nooch account. Please contact us if this is a mistake or for further help."
                                                         delegate:self
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1782,8 +1752,8 @@ UIImageView *picture;
                 [[me usr] setObject:validated forKey:@"validated"];
             }
 
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Something Went Wrong"
-                                                         message:@"Please double check to make sure your info is correct and try again. If the problem persists, please contact Nooch support."
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_SmthngWrngAlrtTitle", @"Profile 'Something Went Wrong' Alert Title")
+                                                         message:NSLocalizedString(@"Profile_SmthngWrngAlrtBody", @"Profile Something Went Wrong Alert Body Text")//@"Please double check to make sure your info is correct and try again. If the problem persists, please contact Nooch support."
                                                         delegate:self
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -2011,7 +1981,7 @@ UIImageView *picture;
         }
         else
         {
-            UIAlertView * newUserNoName = [[UIAlertView alloc] initWithTitle:@"Nice To Meet You"
+            UIAlertView * newUserNoName = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_NcToMtYouAlrtTitle", @"Profile 'Nice To Meet You' Alert Title")
                                                                      message:@"Thanks for joining Nooch! Please complete your profile to get started."
                                                                     delegate:self
                                                            cancelButtonTitle:@"OK"

@@ -660,7 +660,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         self.slidingViewController.panGesture.enabled = YES;
         [self.view addGestureRecognizer:self.slidingViewController.panGesture];
 
-
         if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]])
         {
             //push login
@@ -736,7 +735,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     
     [self GetFavorite];
 
-    NSLog(@"viewDidAppear CHECKPOINT");
     [self checkAllBannerStatuses];
 
     [[assist shared] setRequestMultiple:NO];
@@ -772,8 +770,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 - (void)applicationWillEnterFG:(NSNotification *)notification
 {
-    NSLog(@"Checkpoint: applicationWillEnterFG notification");
-
+    //NSLog(@"Checkpoint: applicationWillEnterFG notification");
     [self checkAllBannerStatuses];
 }
 
@@ -781,12 +778,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     NSLog(@"checkAllBannerStatuses Checkpoint # 1");
     bannerAlert = 0;
-    
+
     NSShadow * shadowRed = [[NSShadow alloc] init];
     shadowRed.shadowColor = Rgb2UIColor(71, 8, 7, .4);
     shadowRed.shadowOffset = CGSizeMake(0, 1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadowRed };
-    
+
     if ([[user objectForKey:@"Status"] isEqualToString:@"Suspended"] ||
         [[user objectForKey:@"Status"] isEqualToString:@"Temporarily_Blocked"])
     {
@@ -803,30 +800,29 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         bannerAlert++;
         if (![self.view.subviews containsObject:self.suspended])
         {
-            NSLog(@"checkAllBannerStatuses Checkpoint # 3");
             [self.suspended removeFromSuperview];
             self.suspended = [UIView new];
             [self.suspended setStyleId:@"suspended_home"];
             [self.suspended addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(contact_support)]];
-            
+
             UILabel * sus_header = [UILabel new];
             [sus_header setStyleClass:@"banner_header"];
             sus_header.attributedText = [[NSAttributedString alloc] initWithString:[NSString  stringWithFormat:NSLocalizedString(@"SuspBannerTitle", @"Home Screen Suspended Banner Title")]
                                                                         attributes:textAttributes];
             [self.suspended addSubview:sus_header];
-            
+
             UILabel * sus_info = [UILabel new];
             [sus_info setStyleClass:@"banner_info"];
             [sus_info setNumberOfLines:0];
             sus_info.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"SuspBannerBodyTxt", @"Home Screen Suspended Banner Body Text")]
                                                                       attributes:textAttributes];
             [self.suspended addSubview:sus_info];
-            
+
             UILabel * sus_exclaim = [UILabel new];
             [sus_exclaim setStyleClass:@"banner_alert_glyph"];
             [sus_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
             [self.suspended addSubview:sus_exclaim];
-            
+
             UIButton * contact = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [contact setStyleClass:@"go_now_text"];
             [contact setTitle:[NSString stringWithFormat:NSLocalizedString(@"SuspBannerAction", @"Home Screen Suspended Banner Action Text")] forState:UIControlStateNormal];
@@ -834,7 +830,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             contact.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [contact addTarget:self action:@selector(contact_support) forControlEvents:UIControlEventTouchUpInside];
             [self.suspended addSubview:contact];
-            
+
             UIButton * dis = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [dis setStyleClass:@"dismiss_banner"];
             [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
@@ -843,7 +839,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
             [dis addTarget:self action:@selector(dismiss_suspended_alert) forControlEvents:UIControlEventTouchUpInside];
             [self.suspended addSubview:dis];
-            
+
             [self.view addSubview:self.suspended];
         }
     }
@@ -867,24 +863,24 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             self.profile_incomplete = [UIView new];
             [self.profile_incomplete setStyleId:@"email_unverified"];
             [self.profile_incomplete addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profileFromHome)]];
-            
+
             UILabel * em = [UILabel new];
             [em setStyleClass:@"banner_header"];
             em.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"EmailUnverifiedTitle", @"Home Screen Email Unregistered Title")]
                                                                 attributes:textAttributes];
             [self.profile_incomplete addSubview:em];
-            
+
             UILabel * em_exclaim = [UILabel new];
             [em_exclaim setStyleClass:@"banner_alert_glyph"];
             [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
             [self.profile_incomplete addSubview:em_exclaim];
-            
+
             UILabel * em_info = [UILabel new];
             [em_info setStyleClass:@"banner_info"];
             [em_info setNumberOfLines:0];
             em_info.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"EmailUnverifiedBodyTxt", @"Home Screen Email Unregistered Body Text") attributes:textAttributes];
             [self.profile_incomplete addSubview:em_info];
-            
+
             UIButton * go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [go setStyleClass:@"go_now_text"];
             [go setTitle:NSLocalizedString(@"EmailUnverifiedActinoTxt", @"Home Screen Email Unregistered Action Text") forState:UIControlStateNormal];
@@ -892,7 +888,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [go addTarget:self action:@selector(go_profileFromHome) forControlEvents:UIControlEventTouchUpInside];
             [self.profile_incomplete addSubview:go];
-            
+
             UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
             [dis setStyleClass:@"dismiss_banner"];
             [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
