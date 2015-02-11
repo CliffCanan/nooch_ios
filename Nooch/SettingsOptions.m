@@ -42,33 +42,12 @@
     return self;
 }
 
--(void)showMenu
-{
-    [self.slidingViewController anchorTopViewTo:ECRight];
-}
-
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationItem setTitle:@"Settings"];
+    [self.navigationItem setTitle:NSLocalizedString(@"Settings_ScrnTitle", @"Settings Screen Title")];
     self.screenName = @"Settings Main Screen";
     [self getBankInfo];
-}
-
--(void)getBankInfo
-{
-    serve * serveOBJ = [serve new];
-    serveOBJ.Delegate = self;
-    serveOBJ.tagName = @"knox_bank_info";
-    [serveOBJ GetKnoxBankAccountDetails];
-}
-
--(void)RemoveKnoxBankAccount
-{
-    serve * serveOBJ = [serve new];
-    serveOBJ.Delegate = self;
-    serveOBJ.tagName = @"RemoveKnoxBankAccount";
-    [serveOBJ RemoveKnoxBankAccount];
 }
 
 - (void)viewDidLoad
@@ -91,7 +70,8 @@
         introText = [UILabel new];
         [introText setFrame:CGRectMake(10, 38, 300, 76)];
         introText.numberOfLines = 0;
-        [introText setText:@"Attach a bank account to send or receive payments. Just select your bank, login to your online banking, and you're done."];
+        //@"Attach a bank account to send or receive payments. Just select your bank, login to your online banking, and you're done."
+        [introText setText:NSLocalizedString(@"Settings_NoBankIntroTxt", @"Settings Screen instruction text when no bank is attached")];
         [introText setTextAlignment:NSTextAlignmentCenter];
         [introText setStyleId:@"settings_introText"];
         [self.view addSubview:introText];
@@ -125,16 +105,19 @@
 
     UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake(15, 16, 250, 25)];
     [title setStyleClass:@"refer_header"];
-    [title setText:@"Linked Bank Account"];
+    [title setText:NSLocalizedString(@"Settings_LinkedBankHdr", @"Settings Screen header - 'Linked Bank Account'")];
     [self.view addSubview:title];
 
     link_bank = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [link_bank setFrame:CGRectMake(0, 123, 0, 0)];
-    if (isBankAttached) {
-        [link_bank setTitle:@"Link a New Bank" forState:UIControlStateNormal];
+    if (isBankAttached)
+    {//@"Link a New Bank"
+        [link_bank setTitle:NSLocalizedString(@"Settings_LinkNewBnk", @"Settings Screen button text when bank is attached") forState:UIControlStateNormal];
     }
-    else {
-        [link_bank setTitle:@"Link a Bank Now" forState:UIControlStateNormal];
+    else
+    {
+        //@"Link a Bank Now"
+        [link_bank setTitle:NSLocalizedString(@"Settings_LinkBnkNow", @"Settings Screen button text when bank is NOT attached") forState:UIControlStateNormal];
     }
     [link_bank setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
     link_bank.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -167,7 +150,7 @@
     [self.view addSubview:menu];
     
     self.logout = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.logout setTitle:@"Sign Out" forState:UIControlStateNormal];
+    [self.logout setTitle:NSLocalizedString(@"Settings_SignOutBtn", @"Settings Screen 'Sign Out' button text") forState:UIControlStateNormal];
     [self.logout setTitleShadowColor:Rgb2UIColor(30, 31, 33, 0.24) forState:UIControlStateNormal];
     self.logout.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     
@@ -189,7 +172,6 @@
 
     [self.view addSubview: self.logout];
 
-
     if ([[UIScreen mainScreen] bounds].size.height == 480)
     {
         scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
@@ -203,6 +185,7 @@
         [self.view addSubview:scroll];
     }
 
+    // PUSH NOTIFICATIONS
     BOOL notifsEnabled;
     // Try to use the newer isRegisteredForRemoteNotifications otherwise use the enabledRemoteNotificationTypes.
     if ([[UIApplication sharedApplication] respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
@@ -238,11 +221,11 @@
 {
     if (isBankAttached)
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Attach New Bank Account"
-                                                     message:@"You can only have one bank account attached at a time.  If you link a new account, that will replace your current bank account. This cannot be undone.\n\nAre you sure you want to replace this bank account?"
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Settings_AttchBnkAlrtTitle", @"Settings Screen attach a new bank Alert Title")//@"Attach New Bank Account"
+                                                     message:NSLocalizedString(@"Settings_AttchBnkAlrtBody", @"Settings Screen attach a new bank Alert Body Text")//@"You can only have one bank account attached at a time.  If you link a new account, that will replace your current bank account. This cannot be undone.\n\nAre you sure you want to replace this bank account?"
                                                     delegate:self
-                                           cancelButtonTitle:@"Yes - Replace"
-                                           otherButtonTitles:@"Cancel", nil];
+                                           cancelButtonTitle:NSLocalizedString(@"Settings_AttchBnkAlrtYesBtn", @"Settings Screen attach a new bank Alert Btn - 'Yes - Replace'")//@"Yes - Replace"
+                                           otherButtonTitles:NSLocalizedString(@"CancelTxt", @"Any screen 'Cancel' Button Text"), nil];
         [av setTag:32];
         [av show];
     }
@@ -264,11 +247,11 @@
 
 -(void)remove_attached_bank
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Remove Bank Account"
-                                                 message:@"If you remove this bank account, you will not be able to send or receive money. This cannot be undone.\n\nAre you sure you want to remove this bank account?"
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Settings_RemoveBnkAlrtTitle1", @"Settings Screen remove bank Alert Title")//@"Remove Bank Account"
+                                                 message:NSLocalizedString(@"Settings_RemoveBnkAlrtBody1", @"Settings Screen remove bank Alert Body Text")//@"If you remove this bank account, you will not be able to send or receive money. This cannot be undone.\n\nAre you sure you want to remove this bank account?"
                                                 delegate:self
-                                       cancelButtonTitle:@"Yes - Remove"
-                                       otherButtonTitles:@"Cancel", nil];
+                                       cancelButtonTitle:NSLocalizedString(@"Settings_RemoveBnkAlrtYesBtn", @"Settings Screen remove bank Alert Btn - 'Yes - Remove'")//@"Yes - Remove"
+                                       otherButtonTitles:NSLocalizedString(@"CancelTxt", @"Any screen 'Cancel' Button Text"), nil];
     [av setTag:2];
     [av show];
 }
@@ -299,19 +282,19 @@
     [glyph setStyleClass:@"table_glyph"];
 
     if (indexPath.row == 0) {
-        title.text = @"Profile Info";
+        title.text = NSLocalizedString(@"Settings_TableRowLbl1", @"Settings Screen table label row 1 - 'Profile Info'");
         [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-user"]];
     }
     else if (indexPath.row == 1) {
-        title.text = @"Security Settings";
+        title.text = NSLocalizedString(@"Settings_TableRowLbl2", @"Settings Screen table label row 2 - 'Security Settings'");
         [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
     }
     else if (indexPath.row == 2) {
-        title.text = @"Notification Settings";
+        title.text = NSLocalizedString(@"Settings_TableRowLbl3", @"Settings Screen table label row 3 - 'Security Settings'");
         [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bell"]];
     }
     else if(indexPath.row == 3) {
-        title.text = @"Social Settings";
+        title.text = NSLocalizedString(@"Settings_TableRowLbl4", @"Settings Screen table label row 4 - 'Social Settings'");
         [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook"]];
     }
 
@@ -347,6 +330,27 @@
     }
 }
 
+-(void)showMenu
+{
+    [self.slidingViewController anchorTopViewTo:ECRight];
+}
+
+-(void)getBankInfo
+{
+    serve * serveOBJ = [serve new];
+    serveOBJ.Delegate = self;
+    serveOBJ.tagName = @"knox_bank_info";
+    [serveOBJ GetKnoxBankAccountDetails];
+}
+
+-(void)RemoveKnoxBankAccount
+{
+    serve * serveOBJ = [serve new];
+    serveOBJ.Delegate = self;
+    serveOBJ.tagName = @"RemoveKnoxBankAccount";
+    [serveOBJ RemoveKnoxBankAccount];
+}
+
 - (void)profile
 {
     isProfileOpenFromSideBar = NO;
@@ -366,6 +370,7 @@
     NotificationSettings * notes = [NotificationSettings new];
     [self performSelector:@selector(navigate_to:) withObject:notes afterDelay:0.01];
 }
+
 - (void)connect_fb
 {
     fbConnect * fb = [fbConnect new];
@@ -379,26 +384,24 @@
 
 - (void)sign_out
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Sign Out"
-                                                 message:@"Are you sure you want to sign out?"
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Settings_SignOutAlrtTitle", @"Settings Screen sign out Alert Title")//@"Sign Out"
+                                                 message:NSLocalizedString(@"Settings_SignOutAlrtBody", @"Settings Screen sign out Alert Body Text")//@"Are you sure you want to sign out?"
                                                 delegate:self
-                                       cancelButtonTitle:@"Cancel"
-                                       otherButtonTitles:@"I'm Sure", nil];
+                                       cancelButtonTitle:NSLocalizedString(@"CancelTxt", @"Any screen 'Cancel' Button Text")
+                                       otherButtonTitles:NSLocalizedString(@"Settings_SignOutAlrtBtn", @"Settings Screen sign out Alert Btn - 'I'm Sure'"), nil];//@"I'm Sure"
     [av setTag:15];
     [av show];
 }
 
--(void)Error:(NSError *)Error{
-  
+-(void)Error:(NSError *)Error
+{
     UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Message"
-                          message:@"Error connecting to server"
+                          initWithTitle:NSLocalizedString(@"ConnectionErrorAlrtTitle", @"Any screen Connection Error Alert Text")
+                          message:NSLocalizedString(@"ConnectionErrorAlrtBody", @"Any screen Connection Error Alert Body Text")
                           delegate:nil
-                          cancelButtonTitle:@"OK"
+                          cancelButtonTitle:@"Ok"
                           otherButtonTitles:nil];
-    
     [alert show];
-    
 }
 
 -(void)listen:(NSString *)result tagName:(NSString *)tagName
@@ -410,10 +413,10 @@
                                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                             options:kNilOptions
                                             error:&error];
-        if([dictResponse valueForKey:@"Result"])
+        if ([dictResponse valueForKey:@"Result"])
         {
-            if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"Success."]) {
-                
+            if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"Success."])
+            {
                 [blankView removeFromSuperview];
                 [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"email"];
@@ -439,10 +442,10 @@
 
         if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"Bank account deleted successfully"])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Removed"
-                                                         message:@"This bank account is no longer linked to your Nooch account. To make or receive payments, you must link a new bank account."
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Settings_RemoveBnkAlrtTitle2", @"Settings Screen 'Bank Removed' Alert Title")
+                                                         message:NSLocalizedString(@"Settings_RemoveBnkAlrtBody2", @"Settings Screen 'Bank Removed' Alert Body Text")//@"This bank account is no longer linked to your Nooch account. To make or receive payments, you must link a new bank account."
                                                         delegate:self
-                                               cancelButtonTitle:@"OK"
+                                               cancelButtonTitle:@"Ok"
                                                otherButtonTitles:nil, nil];
             [av show];
 
@@ -459,7 +462,7 @@
         }
         else if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"No active bank account found for this user."])
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Not Found"
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Settings_NoBnkFndAlrtTitle", @"Settings Screen 'Account Not Found' Alert Title")//@"Account Not Found"
                                                          message:[dictResponse valueForKey:@"Result"]
                                                         delegate:self
                                                cancelButtonTitle:@"OK"
@@ -468,7 +471,7 @@
         }
         else
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Nooch"
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:nil
                                                          message:[dictResponse valueForKey:@"Result"]
                                                         delegate:self
                                                cancelButtonTitle:@"OK"
@@ -537,7 +540,7 @@
 
             unlink_account = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [unlink_account setStyleId:@"remove_account"];
-            [unlink_account setTitle:@"Edit" forState:UIControlStateNormal];
+            [unlink_account setTitle:NSLocalizedString(@"EditTxt", @"Any Screen 'Edit' Txt") forState:UIControlStateNormal];
             [unlink_account addTarget:self action:@selector(edit_attached_bank) forControlEvents:UIControlEventTouchUpInside];
             [linked_background addSubview:unlink_account];
 

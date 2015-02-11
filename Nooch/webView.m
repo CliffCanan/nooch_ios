@@ -34,8 +34,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self.navigationItem setTitle:@"Support Center"];
+    //@"Support Center"
+    [self.navigationItem setTitle:NSLocalizedString(@"webView_ScrnTitle", @"Support Center webview screen title")];
 
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];

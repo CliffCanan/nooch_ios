@@ -20,9 +20,6 @@ NSMutableArray *newHistForHis;
 NSString *urlForHis;
 NSMutableURLRequest *requestForHis;
 NSURLConnection *connectionForHis;
-NSString *whichPing;
-NSString *endTransId;
-NSString *oldFilter;
 NSMutableDictionary *objModel;
 NSMutableDictionary *dictsort;
 @synthesize fbAllowed,twitterAllowed,facebookAccount,accountStore,twitterAccount;
@@ -34,14 +31,15 @@ static assist * _sharedInstance = nil;
     dispatch_once(&pred, ^{
         _sharedInstance = [[self alloc] init];
     });
-    
+
     return _sharedInstance;
 }
 -(UIImage*)getTranferImage
 {
     return imageOBJFortransfer;
 }
--(BOOL)getSuspended{
+-(BOOL)getSuspended
+{
     return isUserSuspended;
 }
 -(void)setSusPended:(BOOL)istrue
@@ -51,20 +49,6 @@ static assist * _sharedInstance = nil;
 -(void)setTranferImage:(UIImage*)image
 {
     imageOBJFortransfer=image;
-}
--(BOOL)isBankVerified
-{
-    return isPrimaryBankVerified;
-}
--(void)setBankVerified:(BOOL)istrue
-{
-    isPrimaryBankVerified=istrue;
-}
--(BOOL)isSecondBankVerified{
-    return isSecondBankVerified;
-}
--(void)setSecondBankVerified:(BOOL)istrue{
-    isSecondBankVerified=istrue;
 }
 -(BOOL)isloggedout
 {
@@ -154,7 +138,7 @@ static assist * _sharedInstance = nil;
 
 -(void)birth
 {
-    limit = NO; oldFilter = @""; needsUpdating = YES;
+    needsUpdating = YES;
     sortedHist = [NSMutableArray new];
     usr = [NSMutableDictionary new];
     histCache = [NSMutableArray new];
@@ -191,37 +175,8 @@ static assist * _sharedInstance = nil;
         [self fetchPic];
     }
     [usr setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"] forKey:@"email"];
-    
-     /*accountStore = [[ACAccountStore alloc] init];
-     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
-     {
-         ACAccountType * facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-         facebookAccount = nil;
-         NSDictionary *options = @{
-                                    ACFacebookAppIdKey: @"198279616971457",
-                                    ACFacebookPermissionsKey: @[@"email",@"user_about_me"],
-                                    ACFacebookAudienceKey: ACFacebookAudienceFriends
-                                   };
-     
-         [accountStore requestAccessToAccountsWithType:facebookAccountType
-                                               options:options completion:^(BOOL granted, NSError *e) {
-              if (granted)
-              {
-                  NSArray * accounts = [accountStore accountsWithAccountType:facebookAccountType];
-                  facebookAccount = [accounts lastObject];
-                  fbAllowed = YES;
-                  // NSLog(@"fb connected");
-              }
-              else { // Handle Failure
-                  fbAllowed = NO;
-              }
-          }];
-     
-     } else {
-         fbAllowed = NO;
-     }*/
 
-    timer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
+    timer = [NSTimer scheduledTimerWithTimeInterval:12 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
 
     [[assist shared] setneedsReload:YES];
     [self getSettings];
@@ -337,21 +292,6 @@ static assist * _sharedInstance = nil;
 -(NSMutableArray*)allHist{/*{{{*/
     return histCache;
 }
--(void)histPoll{
-    histSafe=NO;
-    responseData = [NSMutableData data];
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@&accessToken=%@", MyUrl, @"GetTransactionsList", [usr objectForKey:@"MemberId"], @"ALL", @"pSize", [NSString stringWithFormat:@"%lu",(unsigned long)[histCache count]], @"pIndex", @"1",[defaults valueForKey:@"OAuthToken"]]]];
-    [NSURLConnection connectionWithRequest:request delegate:self];
-}
--(void)histUpdate{
-    histSafe=NO;
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    responseData = [NSMutableData data];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@&accessToken=%@", MyUrl, @"GetTransactionsList", [usr objectForKey:@"MemberId"], @"ALL", @"pSize", @"20", @"pIndex", @"1",[defaults valueForKey:@"OAuthToken"]]]];
-    [NSURLConnection connectionWithRequest:request delegate:self];
-}
 -(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len
 {
     histSafe=NO;
@@ -439,12 +379,6 @@ static assist * _sharedInstance = nil;
     needsUpdating = NO;
     return sortedHist;
 }
--(void)getBanks{
-    serve *banks = [serve new];
-    banks.Delegate = self;
-    banks.tagName = @"banks";
-    [banks getBanks];
-}
 -(void)getSettings{
     serve *sets = [serve new];
     sets.Delegate = self;
@@ -453,7 +387,8 @@ static assist * _sharedInstance = nil;
 }
 -(void)getAcctInfo
 {
-    if (!islogout) {
+    if (!islogout)
+    {
         serve * info = [serve new];
         info.Delegate = self;
         info.tagName = @"info";
@@ -618,10 +553,10 @@ static assist * _sharedInstance = nil;
 {
     [newHist setArray:[self sortByStringDate:newHist]];
     arrRecordsCheck=[[NSArray alloc]initWithArray:newHist];
-    if ([[[newHist lastObject] objectForKey:@"TransactionId"] isEqualToString:[[sortedHist lastObject] objectForKey:@"TransactionId"]] && loadingCheck)
+    /*if ([[[newHist lastObject] objectForKey:@"TransactionId"] isEqualToString:[[sortedHist lastObject] objectForKey:@"TransactionId"]])
     {
         limit = YES;
-    }
+    }*/
     NSMutableArray *hist = [histCache mutableCopy];
     NSMutableArray *toAddTrans = [NSMutableArray new];
     if ([hist count] != 0)
@@ -663,7 +598,7 @@ static assist * _sharedInstance = nil;
         [histCache setArray:newHist];
     }
     histSafe = YES;
-    loadingCheck = NO;
+    //loadingCheck = NO;
     needsUpdating = YES;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"tableReload" object:self userInfo:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTable" object:self userInfo:nil];

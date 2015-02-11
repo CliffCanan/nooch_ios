@@ -190,12 +190,15 @@ void exceptionHandler(NSException *exception){
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates.
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application{
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    NSLog(@"Checkpoint - applicationDidEnterBackground");
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 
     inBack = YES;
     inactiveDate = [NSDate date];
+
     splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, [[UIScreen mainScreen] bounds].size.height)];
 
     if ([[UIScreen mainScreen] bounds].size.height > 500) {
@@ -207,6 +210,7 @@ void exceptionHandler(NSException *exception){
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+    NSLog(@"Checkpoint - applicationWillEnterForeground");
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     NSTimeInterval timeAway = [inactiveDate timeIntervalSinceNow];
     [splashView removeFromSuperview];
@@ -237,7 +241,15 @@ void exceptionHandler(NSException *exception){
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    NSLog(@"CHECKPOINT - applicationDidBecomeActive");
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
+    NSString * path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+    {
+        [[assist shared] getAcctInfo];
+    }
 
     // Call the 'activateApp' method to log an app event for use in analytics and advertising reporting.
     [FBAppEvents activateApp];
@@ -317,7 +329,6 @@ void exceptionHandler(NSException *exception){
     [user removeObjectForKey:@"facebook_id"];
     [user synchronize];
 }
-
 // Facebook: Show the user the logged-in UI
 - (void)userLoggedIn
 {
@@ -366,9 +377,10 @@ void exceptionHandler(NSException *exception){
     [[NSUserDefaults standardUserDefaults] setValue:@"123456" forKey:@"DeviceToken"];
 }
 
--(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
+-(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
     NSLog(@"%@",notification.userInfo);
-    
+
     if ([notification.userInfo valueForKey:@"Profile1"] ||
         [notification.userInfo valueForKey:@"Profile2"] ||
         [notification.userInfo valueForKey:@"Profile3"] ||
@@ -386,7 +398,7 @@ void exceptionHandler(NSException *exception){
     if (state == UIApplicationStateActive)
     {
         NSLog(@"Badge # is: %ld",(long)[[UIApplication sharedApplication] applicationIconBadgeNumber]);
-        
+
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     }
     else

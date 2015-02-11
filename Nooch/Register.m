@@ -510,7 +510,6 @@
         if (!error)
         {
             // Success! Now Log User into Nooch using the FB ID
-            // NSLog(@"user info: %@", result);
             
             [[NSUserDefaults standardUserDefaults] setObject:[result objectForKey:@"id"] forKey:@"facebook_id"];
             NSLog(@"Login w FB successful --> fb id is %@",[result objectForKey:@"id"]);

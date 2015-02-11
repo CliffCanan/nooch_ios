@@ -10,18 +10,8 @@
 #import <CoreData/CoreData.h>
 #import <QuartzCore/QuartzCore.h>
 #import "assist.h"
-BOOL profileGO;
-@interface core : assist{
-    UIActivityIndicatorView * activityView;
-    UIView *loadingView;
-    UILabel *loadingLabel;
-    UIProgressView *progress;
-}
 
--(UIView*)waitStat:(NSString*)label;
--(UIView*)waitStatProg:(NSString*)label;
--(void)endWaitStat;
--(void)setWaitProg:(float)p;
+@interface core : assist
 
 +(BOOL)isAlive:(NSString*)path;
 +(BOOL)isClean:(id)object;

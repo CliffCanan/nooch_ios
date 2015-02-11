@@ -109,13 +109,15 @@ UIImageView *picture;
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
-    self.hud.labelText = @"Loading your profile...";
+    //@"Loading your profile..."
+    self.hud.labelText = NSLocalizedString(@"Profile_HUDloading", @"Profile Scrn initial HUD loading text");
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
     self.hud.delegate = self;
     [self.hud show:YES];
 
-    [self.navigationItem setTitle:@"Profile"];
+    //@"Profile"
+    [self.navigationItem setTitle:NSLocalizedString(@"Profile_ScrnTitle", @"Profile Scrn Title")];
 
     int pictureRadius = 38;
     heightOfTopSection = 80;
@@ -209,20 +211,20 @@ UIImageView *picture;
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
         [bankLinkedTxt setFont:[UIFont fontWithName:@"Roboto-regular" size:13]];
-        bankLinkedTxt.text = @"Bank Linked";
-        
+        bankLinkedTxt.text = NSLocalizedString(@"Profile_BnkLnkd", @"Profile 'Bank Linked' text");
+
         [glyph_bank setTextColor:kNoochGreen];
         [glyph_bank setAlpha:1];
     }
     else
     {
         [bankLinkedTxt setFont:[UIFont fontWithName:@"Roboto-regular" size:11]];
-        bankLinkedTxt.text = @"No Funding Source";
-        
+        bankLinkedTxt.text = NSLocalizedString(@"Profile_NoBankTxt", @"Profile 'No Funding Source' text");
+
         [glyph_bank setTextColor:kNoochGrayDark];
         [glyph_bank setAlpha:.65];
         [glyph_bank setFrame:CGRectMake(5, 6, 15, 25)];
-        
+
         UILabel * glyph_bankX = [[UILabel alloc] initWithFrame:CGRectMake(18, 5, 8, 22)];
         [glyph_bankX setFont:[UIFont fontWithName:@"FontAwesome" size:11]];
         [glyph_bankX setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
@@ -236,7 +238,7 @@ UIImageView *picture;
 
     if (start.location != NSNotFound && end.location != NSNotFound && end.location > start.location)
     {
-        betweenBraces = [[user valueForKey:@"DateCreated"] substringWithRange:NSMakeRange(start.location+1, end.location-(start.location+1))];
+        betweenBraces = [[user valueForKey:@"DateCreated"] substringWithRange:NSMakeRange(start.location+1, end.location-(start.location + 1))];
     }
 
     newString = [betweenBraces substringToIndex:[betweenBraces length]-8];
@@ -249,7 +251,7 @@ UIImageView *picture;
     NSString *_date=[_formatter stringFromDate:date];
 
     UILabel * memSincelbl = [[UILabel alloc] initWithFrame:CGRectMake(206, 5, 110, 19)];
-    memSincelbl.attributedText = [[NSAttributedString alloc] initWithString:@"Member Since"
+    memSincelbl.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Profile_MemSinceTxt", @"Profile 'Member Since' text")
                                                                  attributes:textAttributes_topShadow];
     memSincelbl.userInteractionEnabled = NO;
     [memSincelbl setBackgroundColor:[UIColor clearColor]];
@@ -1104,6 +1106,7 @@ UIImageView *picture;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"Just a checkin'");
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 //    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
@@ -1189,7 +1192,7 @@ UIImageView *picture;
             emailVerifiedStatus.attributedText = [[NSAttributedString alloc] initWithString:@"Not Verified"
                                                                                  attributes:textAttributes];
             [cell.contentView addSubview:emailVerifiedStatus];
-            
+
             UIButton * resend_mail = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [resend_mail setFrame:CGRectMake(200, ((rowHeight - 30) / 2), 105, 30)];
             [resend_mail setStyleClass:@"button_green_sm"];
@@ -1857,7 +1860,7 @@ UIImageView *picture;
 
 
         // The UserName value should never be NULL, so all the 'else if' statements
-        // below this first 'if' *should* never be called
+        // below this first 'if' *should* never be called, but are added just in case as backup
         if (![[dictProfileinfo valueForKey:@"UserName"] isKindOfClass:[NSNull class]])
         {
             self.ServiceType = @"email";
@@ -1973,7 +1976,7 @@ UIImageView *picture;
         {
             if (![[[sourceData objectForKey:@"Status"] capitalizedString] isEqualToString:[[user objectForKey:@"firstName"] capitalizedString]])
             {
-                NSLog(@"First name isn't the same apparently");
+                NSLog(@"First name from server isn't the same as local First Name apparently");
                 NSString * letterA = [[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
                 [ARProfileManager setUserFirstName:letterA];
                 [dictSavedInfo setObject:self.name.text forKey:@"name"];
@@ -1999,7 +2002,6 @@ UIImageView *picture;
             }
             else if (![[dictProfileinfo objectForKey:@"Address"] isKindOfClass:[NSNull class]])
             {
-                NSLog(@"Checkpoint BRAVO");
                 self.ServiceType = @"Address";
                 Decryption * decry = [[Decryption alloc] init];
                 decry.Delegate = self;
@@ -2033,10 +2035,10 @@ UIImageView *picture;
         if ( [[sourceData objectForKey:@"Status"] length] > 0 &&
             ![[[sourceData objectForKey:@"Status"] capitalizedString] isEqualToString:[[user objectForKey:@"lastName"] capitalizedString]])
         {
-            NSLog(@"Last name isn't the same apparently");
+            NSLog(@"Last name from server isn't the same as Last name in app apparently");
             NSString * letterA = [[[sourceData objectForKey:@"Status"] substringToIndex:1] uppercaseString];
             self.name.text = [self.name.text stringByAppendingString:[NSString stringWithFormat:@" %@%@",letterA,[[sourceData objectForKey:@"Status"] substringFromIndex:1]]];
-            
+
             [ARProfileManager setUserLastName:letterA];
             [dictSavedInfo setObject:self.name.text forKey:@"name"];
             

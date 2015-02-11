@@ -13,10 +13,8 @@
 #import <Social/Social.h>
 #import <Accounts/Accounts.h>
 NSTimer*timer;
-BOOL profileGO;
 bool histSafe;
-bool limit;
-bool loadingCheck;
+//bool limit;
 bool needsUpdating;
 NSString *histSearching;
 @interface assist : NSObject<serveD>{
@@ -36,7 +34,6 @@ NSString *histSearching;
     BOOL isUserSuspended;
     NSMutableArray*arrRequestMultiple;
     BOOL isMutipleRequest;
-    BOOL isSecondBankVerified;
     BOOL isPOP;
     BOOL isLoginFromOther;
     NSString*passValue;
@@ -60,8 +57,6 @@ NSString *histSearching;
 -(void)addAssos:(NSMutableArray*)additions;
 -(void)SaveAssos:(NSMutableArray*)additions;
 -(NSMutableArray*)assosSearch:(NSString*)searchText;
--(void)histPoll;
--(void)histUpdate;
 -(BOOL)isloginFromOther;
 -(void)setIsloginFromOther:(BOOL)islog;
 -(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len;
@@ -76,18 +71,13 @@ NSString *histSearching;
 -(id)cleanForSave:(id)array;
 -(UIFont *)nFont:(NSString*)weight size:(int)size;
 -(void)fetchPic;
--(void)getBanks;
 -(void)getSettings;
-
+-(void)getAcctInfo;
 -(void)setTranferImage:(UIImage*)image;
 +(assist*)shared;
 -(UIImage*)getTranferImage;
 -(BOOL)isloggedout;
 -(void)setisloggedout:(BOOL)islog;
--(BOOL)isBankVerified;
--(void)setBankVerified:(BOOL)istrue;
--(BOOL)isSecondBankVerified;
--(void)setSecondBankVerified:(BOOL)istrue;
 -(BOOL)isPOP;
 -(void)setPOP:(BOOL)istrue;
 -(BOOL)islocationAllowed;

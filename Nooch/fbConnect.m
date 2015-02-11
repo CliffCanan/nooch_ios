@@ -29,7 +29,8 @@
     [super viewDidLoad];
     
     self.navigationController.navigationBar.topItem.title = @"";
-    [self.navigationItem setTitle:@"Social Settings"];
+    //@"Social Settings"
+    [self.navigationItem setTitle:NSLocalizedString(@"SocSettings_ScrnTitle", @"Social Settings Screen Title")];
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
@@ -58,13 +59,15 @@
 
     UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake(15, 16, 250, 25)];
     [title setStyleClass:@"refer_header"];
-    [title setText:@"Linked Social Networks"];
+    //@"Linked Social Networks"
+    [title setText:NSLocalizedString(@"SocSettings_LnkdNtwrksHdr", @"Social Settings linked networks header")];
     [self.view addSubview:title];
 
     self.facebook = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.facebook setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.19) forState:UIControlStateNormal];
     self.facebook.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    [self.facebook setTitle:@"    Connect To Facebook" forState:UIControlStateNormal];
+    //@"    Connect To Facebook"
+    [self.facebook setTitle:NSLocalizedString(@"SocSettings_FbBtn1", @"Social Settings FB Btn not connected text") forState:UIControlStateNormal];
     [self.facebook setFrame:CGRectMake(20, 60, 280, 50)];
     [self.facebook setStyleClass:@"button_blue"];
     [self.view addSubview:self.facebook];
@@ -74,7 +77,7 @@
     shadow.shadowOffset = CGSizeMake(0, -1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
 
-    NSLog(@"fb id: %@",[user valueForKey:@"facebook_id"]);
+    //NSLog(@"fb id: %@",[user valueForKey:@"facebook_id"]);
 
     if ([[user valueForKey:@"facebook_id"] length] == 0 ||
         [[user valueForKey:@"facebook_id"] isKindOfClass:[NSNull class]])
@@ -91,7 +94,8 @@
     else if ( ([user valueForKey:@"facebook_id"] && [[user valueForKey:@"facebook_id"] length] > 2) ||
               (FBSession.activeSession.state == FBSessionStateOpen || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) )
     {
-        [self.facebook setTitle:@"       Facebook Connected" forState:UIControlStateNormal];
+        //@"       Facebook Connected"
+        [self.facebook setTitle:NSLocalizedString(@"SocSettings_FbBtn2", @"Social Settings FB Btn connected text") forState:UIControlStateNormal];
 
         UILabel * glyphFB = [UILabel new];
         [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
@@ -116,18 +120,19 @@
     [info setTextAlignment:NSTextAlignmentCenter];
     [info setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
     [info setTextColor:[Helpers hexColor:@"6c6e71"]];
-    [info setText:@"Connect your Facebook account to Nooch to allow quicker login and to share payments with friends."];
+    //@"Connect your Facebook account to Nooch to allow quicker login and to share payments with friends."
+    [info setText:NSLocalizedString(@"SocSettings_Instruct", @"Social Settings instruction text")];
     [self.view addSubview:info];
 
 }
 
 -(void)disconnect_fb
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Confirmation"
-                                                 message:@"Are you sure you want to disconnect Nooch from facebook?"
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SocSettings_DisconnectAlrtTitle", @"Social Settings FB disconnect Alert Title")//@"Confirmation"
+                                                 message:NSLocalizedString(@"SocSettings_DisconnectAlrtBody", @"Social Settings FB disconnect Alert Body Text")//@"Are you sure you want to disconnect Nooch from facebook?"
                                                 delegate:self
-                                       cancelButtonTitle:@"No"
-                                       otherButtonTitles:@"Yes",nil];
+                                       cancelButtonTitle:NSLocalizedString(@"SocSettings_NoTxt", @"'No' button")
+                                       otherButtonTitles:NSLocalizedString(@"SocSettings_YesTxt", @"'Yes' button"),nil];
     av.tag = 10;
     [av show];
 }
@@ -243,6 +248,7 @@
         // [self userLoggedOut];
     }
 }
+
 // Facebook: Show the user the logged-out UI
 - (void)userLoggedOut
 {
@@ -257,7 +263,7 @@
     shadow.shadowOffset = CGSizeMake(0, -1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
 
-    [self.facebook setTitle:@"    Connect To Facebook" forState:UIControlStateNormal];
+    [self.facebook setTitle:NSLocalizedString(@"SocSettings_FbBtn1", @"Social Settings FB Btn not connected text") forState:UIControlStateNormal];
     UILabel * glyphFB = [UILabel new];
     [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
     [glyphFB setFrame:CGRectMake(19, 8, 30, 30)];
@@ -285,7 +291,7 @@
     shadow.shadowOffset = CGSizeMake(0, -1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
 
-    [self.facebook setTitle:@"       Facebook Connected" forState:UIControlStateNormal];
+    [self.facebook setTitle:NSLocalizedString(@"SocSettings_FbBtn2", @"Social Settings FB Btn connected text") forState:UIControlStateNormal];
 
     UILabel * glyphFB = [UILabel new];
     [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
@@ -326,13 +332,14 @@
         }
     }];
 }
+
 // Show an alert message (For Facebook methods)
 - (void)showMessage:(NSString *)text withTitle:(NSString *)title
 {
     [[[UIAlertView alloc] initWithTitle:title
                                 message:text
                                delegate:self
-                      cancelButtonTitle:@"OK"
+                      cancelButtonTitle:@"Ok"
                       otherButtonTitles:nil] show];
 }
 
@@ -367,7 +374,7 @@
 
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Connection Error"
-                          message:@"Looks like there was some trouble connecting to the right place.  Please try again!"
+                          message:@"Looks like there was some trouble connecting to the right place. Please try again!"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];

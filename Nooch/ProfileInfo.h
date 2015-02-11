@@ -23,7 +23,6 @@ BOOL isProfileOpenFromSideBar, sentFromHomeScrn, isFromSettingsOptions;
     NSMutableDictionary*transaction;
     NSMutableDictionary*transactionInput;
     NSMutableDictionary*dictProfileinfo;
-    
     NSDictionary*GMTTimezonesDictionary;
     UIScrollView *scrollView;
     BOOL isPhotoUpdate,emailVerifyRowIsShowing,smsVerifyRowIsShowing;

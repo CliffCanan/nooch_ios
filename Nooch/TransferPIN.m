@@ -87,6 +87,26 @@
 {
     [super viewDidLoad];
 
+    //@"Enter PIN"
+    [self.navigationItem setTitle:NSLocalizedString(@"EnterPIN_ScrnTitle", @"Enter PIN Screen Title")];
+    [self.navigationItem setHidesBackButton:YES];
+
+    NSShadow * shadowNavText = [[NSShadow alloc] init];
+    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .2);
+    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
+    NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
+
+    UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backPressed:)];
+
+    UILabel * back_button = [UILabel new];
+    [back_button setStyleId:@"navbar_back"];
+    [back_button setUserInteractionEnabled:YES];
+    [back_button addGestureRecognizer: backTap];
+    back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
+
+    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+    [self.navigationItem setLeftBarButtonItem:menu];
+
     getlocation = [[GetLocation alloc] init];
 	getlocation.delegate = self;
 
@@ -111,30 +131,12 @@
     [self.pin becomeFirstResponder];
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
-    [self.navigationItem setTitle:@"Enter PIN"];
-    [self.navigationItem setHidesBackButton:YES];
-
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, 300, 60)];
-    [title setText:@"Enter Your PIN to confirm your"]; [title setTextAlignment:NSTextAlignmentCenter];
+    //@"Enter Your PIN to confirm your"
+    [title setText:NSLocalizedString(@"EnterPIN_InstructionTxt", @"Enter PIN Screen instruction text")]; [title setTextAlignment:NSTextAlignmentCenter];
     [title setNumberOfLines:2];
     [title setStyleClass:@"pin_instructiontext"];
     [self.view addSubview:title];
-
-    NSShadow * shadowNavText = [[NSShadow alloc] init];
-    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .2);
-    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
-    NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
-
-    UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backPressed:)];
-
-    UILabel * back_button = [UILabel new];
-    [back_button setStyleId:@"navbar_back"];
-    [back_button setUserInteractionEnabled:YES];
-    [back_button addGestureRecognizer: backTap];
-    back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
-
-    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
-    [self.navigationItem setLeftBarButtonItem:menu];
 
     if ([[UIScreen mainScreen] bounds].size.height == 480)
     {
@@ -144,19 +146,24 @@
     {
         self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 42, 300, 18)];
     }
+
     if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"])
     {
-        [self.prompt setText:@"transfer"];
+        //@"transfer"
+        [self.prompt setText:NSLocalizedString(@"EnterPIN_InstructTransfer", @"Enter PIN Screen instructions transfer")];
         [self.prompt setStyleId:@"Transferpin_instructiontext_send"];
     }
-    else if ([self.type isEqualToString:@"request"]) {    
-        [self.prompt setText:@"request"];
+    else if ([self.type isEqualToString:@"request"])
+    {
+        //@"request"
+        [self.prompt setText:NSLocalizedString(@"EnterPIN_InstructRequest", @"Enter PIN Screen instructions request")];
         [self.prompt setStyleId:@"pin_instructiontext_request"];
-    }
-    else {
+    }/*
+    else
+    {
         [self.prompt setText:@"contribution"];
         [self.prompt setStyleId:@"pin_instructiontext_donate"];
-    }
+    }*/
     [self.prompt setTextAlignment:NSTextAlignmentCenter];
     [self.view addSubview:self.prompt];
 
@@ -275,7 +282,8 @@
     }
     else
     {
-        [memo_label setText:@"No memo attached"];
+        //@"No memo attached"
+        [memo_label setText:NSLocalizedString(@"EnterPIN_NoMemoTxt", @"Enter PIN Screen no memo attached text")];
     }
 
     if (memo_label.text.length > 34)
@@ -349,10 +357,12 @@
     self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor clearColor];
     self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
 
-    if ([self.type isEqualToString:@"send"]) {
+    if ([self.type isEqualToString:@"send"])
+    {
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;        
     }
-    else {
+    else
+    {
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochBlue.CGColor;    
     }
 
@@ -397,7 +407,7 @@
                          error:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc] init];
-    [alert addButtonWithTitle:@"OK"];
+    [alert addButtonWithTitle:@"Ok"];
     [alert setDelegate:nil];
     switch (result)
     {
@@ -628,11 +638,15 @@
     if (len == 4)
     {
         NSString * textLoading=@"";
-        if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"]) {
-            textLoading = @"Sending your payment...";
+        if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"])
+        {
+            //@"Sending your payment..."
+            textLoading = NSLocalizedString(@"EnterPIN_HUDlblSend", @"Enter PIN Screen HUD label text for sending a payment");
         }
-        else if ([self.type isEqualToString:@"request"]) {
-            textLoading = @"Generating your request...";
+        else if ([self.type isEqualToString:@"request"])
+        {
+            //@"Generating your request..."
+            textLoading = NSLocalizedString(@"EnterPIN_HUDlblRequest", @"Enter PIN Screen HUD label text for sending a request");
         }
 
         RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
@@ -659,10 +673,10 @@
 {
     [self.hud hide:YES];
      UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Message"
-                          message:@"Error connecting to server"
+                          initWithTitle:NSLocalizedString(@"ConnectionErrorAlrtTitle", @"Any screen Connection Error Alert Text")//@"Connection Error"
+                          message:NSLocalizedString(@"ConnectionErrorAlrtBody", @"Any screen Connection Error Alert Body Text")//@"Looks like we're having trouble finding an internet connection! Please try again."
                           delegate:nil
-                          cancelButtonTitle:@"OK"
+                          cancelButtonTitle:@"Ok"
                           otherButtonTitles:nil];
     [alert show];
 }
@@ -862,7 +876,8 @@
                 [self.second_num setStyleClass:@"shakePin2"];
                 [self.first_num setStyleClass:@"shakePin1"];
 
-                self.prompt.text=@"1 failed attempt. Please try again.";
+                //@"1 failed attempt. Please try again."
+                self.prompt.text = NSLocalizedString(@"EnterPIN_IncorrectPin1x", @"Enter PIN Screen PIN entered incorrectly once text");
                 self.prompt.textColor = kNoochRed;
 
             }
@@ -880,18 +895,21 @@
                 [self.second_num setStyleClass:@"shakePin2"];
                 [self.first_num setStyleClass:@"shakePin1"];
 
-                self.prompt.text=@"2nd Failed Attempt";
+                //@"2nd Failed Attempt"
+                self.prompt.text = NSLocalizedString(@"EnterPIN_IncorrectPin2x", @"Enter PIN Screen PIN entered incorrectly twice text");
                 self.prompt.textColor = kNoochRed;
             }
             else if (([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))
             {
                 [self.hud hide:YES];
 
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Suspended"
-                                                             message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately."
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_AccntSuspAlertTitle", @"Enter PIN Screen account suspended Alert Title")//@"Account Suspended"
+                                                             message:NSLocalizedString(@"EnterPIN_AccntSuspAlertBody", @"Enter PIN Screen account suspended Alert Body Text")
+                                   //@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately."
                                                             delegate:self
-                                                   cancelButtonTitle:@"OK"
-                                                   otherButtonTitles:@"Contact Support",nil];
+                                                   cancelButtonTitle:@"Ok"
+                                                                     //@"Contact Support"
+                                                   otherButtonTitles:NSLocalizedString(@"EnterPIN_ContactSupportBtn", @"Enter PIN Screen account suspended Alert Button Contact Support"),nil];
                 [av setTag:50];
                 [av show];
 
@@ -906,24 +924,25 @@
                 [self.second_num setStyleClass:@"shakePin2"];
                 [self.first_num setStyleClass:@"shakePin1"];
 
-                self.prompt.text=@"Account suspended.";
+                //@"Account suspended."
+                self.prompt.text = NSLocalizedString(@"EnterPIN_InstructAccntSusp", @"Enter PIN Screen account suspended Instruction Text");
                 self.prompt.textColor = kNoochRed;
             }
             else if (([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))
             {
                 [self.hud hide:YES];
 
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Suspended"
-                                                             message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately."
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_AccntSuspAlertTitle", @"Enter PIN Screen account suspended Alert Title")
+                                                             message:NSLocalizedString(@"EnterPIN_AccntSuspAlertBody", @"Enter PIN Screen account suspended Alert Body Text")
                                                             delegate:self
-                                                   cancelButtonTitle:@"OK"
-                                                   otherButtonTitles:@"Contact Support",nil];
+                                                   cancelButtonTitle:@"Ok"
+                                                   otherButtonTitles:NSLocalizedString(@"EnterPIN_ContactSupportBtn", @"Enter PIN Screen account suspended Alert Button Contact Support"),nil];
                 [av setTag:50];
                 [av show];
 
                 [[assist shared] setSusPended:YES];
 
-                self.prompt.text = @"Account suspended.";
+                self.prompt.text = NSLocalizedString(@"EnterPIN_InstructAccntSusp", @"Enter PIN Screen account suspended Instruction Text");
                 self.prompt.textColor = kNoochRed;
             }
         }
@@ -1331,11 +1350,13 @@
 
 -(void)errorAlerts:(NSString *)referenceNumber
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Error #%@",referenceNumber]
-                                                 message:@"\xF0\x9F\x98\xB3\nUnfortunately something is not quite right. This is a polite way of saying we screwed up.\n\nPlease try your transfer again or contact us if the problem persists."
+    //@"Error #%@"
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"EnterPIN_ErrorAlrtTitle", @"Enter PIN Screen error Alert Title"),referenceNumber]
+                                                 message:NSLocalizedString(@"EnterPIN_ErrorAlrtBody", @"Enter PIN Screen error alert Body Text")
+                                                        // @"\xF0\x9F\x98\xB3\nUnfortunately something is not quite right. This is a polite way of saying we screwed up.\n\nPlease try your transfer again or contact us if the problem persists."
                                                 delegate:self
                                        cancelButtonTitle:@"OK"
-                                       otherButtonTitles:@"Contact Support",nil];
+                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_ContactSupportBtn", @"Enter PIN Screen account suspended Alert Button Contact Support"),nil];
     [av setTag:52];
     [av show];
 }
@@ -1359,11 +1380,13 @@
             [[assist shared] setTranferImage:nil];
             UIImage * imgempty = [UIImage imageNamed:@""];
             [[assist shared] setTranferImage:imgempty];
-            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Great Success"
-                                                          message:@"\xF0\x9F\x91\x8D\nYour transfer was sent successfully.\n\nThe recipient must accept this payment by linking a bank account. We will contact them and let you know when they respond."
+            //@"Great Success"
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_GrtSuccessAlrtTitle", @"Enter PIN Screen Great Success Alert Title")
+                                                          message:NSLocalizedString(@"EnterPIN_NonUsrSuccessAlrtTitle", @"Enter PIN Screen send to nonuser success Alert Body Text")
+                                                                 //@"\xF0\x9F\x91\x8D\nYour transfer was sent successfully.\n\nThe recipient must accept this payment by linking a bank account. We will contact them and let you know when they respond."
                                                          delegate:self
                                                 cancelButtonTitle:@"OK"
-                                                otherButtonTitles:@"View Details",nil];
+                                                otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
             av.tag = 1;
             [av show];
             return;
@@ -1381,11 +1404,12 @@
             [[assist shared] setTranferImage:nil];
             UIImage * imgempty = [UIImage imageNamed:@""];
             [[assist shared] setTranferImage:imgempty];
-            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Great Success"
-                                                          message:@"\xF0\x9F\x91\x8D\nYour request was sent successfully.\n\nThe recipient can pay this request by clicking the link we emailed to them.\n\nThey do not have to download Nooch to pay the request (but they totally can too)."
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_GrtSuccessAlrtTitle", @"Enter PIN Screen Great Success Alert Title")
+                                                          message:NSLocalizedString(@"EnterPIN_NonUsrRqstSuccessAlrtTitle", @"Enter PIN Screen request to nonuser success Alert Body Text")
+                                                                 //@"\xF0\x9F\x91\x8D\nYour request was sent successfully.\n\nThe recipient can pay this request by clicking the link we emailed to them.\n\nThey do not have to download Nooch to pay the request (but they totally can too)."
                                                          delegate:self
                                                 cancelButtonTitle:@"OK"
-                                                otherButtonTitles:@"View Details",nil];
+                                                otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
             av.tag = 1;
             [av show];
             return;
@@ -1421,8 +1445,9 @@
 
     if ([[resultValueTransfer valueForKey:@"Result"] isEqualToString:@"Recepient does not have any active bank account."])
     {
-         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Transfer Failed"
-                                                      message:@"\xF0\x9F\x98\xA9\nThe recepient has a Nooch account, but has not linked a bank funding source yet, so they can't receive transfers quite yet!"
+         UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_TrnsfrFaildAlrtTitle", @"Enter PIN Screen transfer failed Alert Title")//@"Transfer Failed"
+                                                      message:NSLocalizedString(@"EnterPIN_TrnsfrFaildAlrtBody", @"Enter PIN Screen transfer failed Alert Body Text")
+                                                             //@"\xF0\x9F\x98\xA9\nThe recepient has a Nooch account, but has not linked a bank funding source yet, so they can't receive transfers quite yet!"
                                                      delegate:self
                                             cancelButtonTitle:nil
                                             otherButtonTitles:@"OK",nil];
@@ -1440,113 +1465,113 @@
         NSString * alertMsgFromArtisan = [ARPowerHookManager getValueForHookById:@"transSuccessAlertMsg"];
         switch (randNum) {
             case 0:
-                av = [[UIAlertView alloc] initWithTitle:@"Nice Work"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt1", @"Enter PIN Screen success alert title - Nice Work")//@"Nice Work"
                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x98\x8E\nYou just sent money to %@, and you did it with style… and class.",[receiverFirst capitalizedString]]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details",nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 1:
-                av = [[UIAlertView alloc] initWithTitle:@"Payment Sent"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt2", @"Enter PIN Screen success alert title - Payment Sent")//@"Payment Sent"
                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x92\xB8\nYour money has successfully been digitalized into pixie dust and is currently floating over our heads in a million pieces on its way to %@.",[receiverFirst capitalizedString]]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details",nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 2:
-                av = [[UIAlertView alloc] initWithTitle:@"Success"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt3", @"Enter PIN Screen success alert title - Success")//@"Success"
                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x98\x89\nYou have officially 'Nooched' %@. That's right, it's a verb.",[receiverFirst capitalizedString]]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details" ,nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details") ,nil];
                 break;
             case 3:
-                av = [[UIAlertView alloc] initWithTitle:@"Congratulations"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt4", @"Enter PIN Screen success alert title - Congratulations")//@"Congratulations"
                                                 message:@"\xE2\x98\xBA\nYou now have less money. Eh, it's just money."
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details" ,nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 4:
-                av = [[UIAlertView alloc] initWithTitle:@"Congratulations"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt4", @"Enter PIN Screen success alert title - Congratulations")
                                                 message:@"\xF0\x9F\x91\x8F\nYour debt burden has been lifted!"
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details" ,nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 5:
-                av = [[UIAlertView alloc] initWithTitle:@"Money Sent"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt5", @"Enter PIN Screen success alert title - Money Sent")//@"Money Sent"
                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x98\x87\nNo need to thank us, it's our job.\n\n%@ should probably thank you though.",[receiverFirst capitalizedString]]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details" ,nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 6:
-                av = [[UIAlertView alloc] initWithTitle:@"Payment Sent"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt6", @"Enter PIN Screen success alert title - Payment Sent")//@"Payment Sent"
                                                 message:@"\xF0\x9F\x91\x8D\nYou are now free to close Nooch and put your phone away. You're good to go." delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details" ,nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 7:
-                av = [[UIAlertView alloc] initWithTitle:@"You're Welcome"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt7", @"Enter PIN Screen success alert title - Payment Sent")//@"You're Welcome"
                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x91\x8C\nThat was some good Nooching. Money sent to %@.",[receiverFirst capitalizedString]]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details" ,nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 8:
-                av = [[UIAlertView alloc] initWithTitle:@"Great Scott!"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt8", @"Enter PIN Screen success alert title - Great Scott")//@"Great Scott!"
                                                 message:@"\xE2\x9A\xA1\nThis sucker generated 1.21 gigawatts and sent your money, even without plutonium."
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details", nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"), nil];
                 break;
             case 9:
-                av = [[UIAlertView alloc] initWithTitle:@"Knowledge Is Power"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt9", @"Enter PIN Screen success alert title - Knowledge Is Power")//@"Knowledge Is Power"
                                                 message:@"You know how easy Nooch is. But with great power, comes great responsibility..."
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details" ,nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 10:
-                av = [[UIAlertView alloc] initWithTitle:@"Humpty Dumpty Sat on a Wall"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt10", @"Enter PIN Screen success alert title - Humpty Dumpty")//@"Humpty Dumpty Sat on a Wall"
                                                 message:@"And processed Nooch transfers."
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details", nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"), nil];
                 break;
             case 11:
-                av = [[UIAlertView alloc] initWithTitle:@"Nooch Haiku"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt11", @"Enter PIN Screen success alert title - Nooch Haiku")//@"Nooch Haiku"
                                                 message:@"Nooch application.\nEasy, Simple, Convenient.\nGetting the job done." delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details" ,nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 12:
-                av = [[UIAlertView alloc] initWithTitle:@"Nooch Loves You"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt12", @"Enter PIN Screen success alert title - Nooch Loves You")//@"Nooch Loves You"
                                                 message:@"\xF0\x9F\x92\x99\nThat is all. Pay it forward.\n\n...and yes, Nooch's heart is actually blue."
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details",nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 13:
-                av = [[UIAlertView alloc] initWithTitle:@"Easy As Pie"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt13", @"Enter PIN Screen success alert title - Easy As Pie")//@"Easy As Pie"
                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x8D\xB0\nWasn't that easier than lugging to an ATM and forking over colored pieces of paper to %@?",[receiverFirst capitalizedString]]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details",nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 14:
                 av = [[UIAlertView alloc] initWithTitle:alertTitleFromArtisan
                                                 message:alertMsgFromArtisan
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details",nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             default:
-                av = [[UIAlertView alloc] initWithTitle:@"Nice Work"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt1", @"Enter PIN Screen success alert title - Nice Work")
                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x92\xB8\nYour cash was sent successfully to %@.",[receiverFirst capitalizedString]]
                                                delegate:self cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details" ,nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
         }
         [av show];
@@ -1561,7 +1586,7 @@
         UIImage * imgempty = [UIImage imageNamed:@""];
         [[assist shared] setTranferImage:imgempty];
 
-        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Request Fulfilled"
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_RequestFulfilledAlertTitle", @"Enter PIN Screen request fulfilled successfully Alert Title")//@"Request Fulfilled"
                                                       message:[NSString stringWithFormat:@"\xF0\x9F\x91\x8D\nYou successfully fulfilled %@'s request for $%.02f.",[receiverFirst capitalizedString],self.amnt]
                                                      delegate:self
                                             cancelButtonTitle:nil
@@ -1585,7 +1610,7 @@
             }
 
             strMultiple = [strMultiple substringFromIndex:1];
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Pay Me"
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_RequestSuccessAlrtTitle", @"Enter PIN Screen request made successfully Alert Title")//@"Pay Me"
                                                          message:[NSString stringWithFormat:@"\xF0\x9F\x98\x80\nYou requested $%.02f from %@ successfully.",self.amnt,strMultiple]
                                                         delegate:self
                                                cancelButtonTitle:nil
@@ -1595,7 +1620,7 @@
         }
         else
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Pay Me"
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_RequestSuccessAlrtTitle", @"Enter PIN Screen request made successfully Alert Title")
                                                          message:[NSString stringWithFormat:@"\xF0\x9F\x98\x80\nYou requested $%.02f from %@ successfully.",self.amnt,[receiverFirst capitalizedString]]
                                                         delegate:self
                                                cancelButtonTitle:nil otherButtonTitles:@"OK",@"View Details",nil];
@@ -1610,7 +1635,7 @@
     {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         self.prompt.textColor = kNoochRed;
-        self.prompt.text=@"1 failed attempt. Please try again.";
+        self.prompt.text = NSLocalizedString(@"EnterPIN_IncorrectPin1x", @"Enter PIN Screen PIN entered incorrectly once text");
         self.fourth_num.layer.borderColor = kNoochRed.CGColor;
         self.third_num.layer.borderColor = kNoochRed.CGColor;
         self.second_num.layer.borderColor = kNoochRed.CGColor;
@@ -1630,7 +1655,7 @@
             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."])
     {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-        self.prompt.text = @"2nd failed attempt";
+        self.prompt.text = NSLocalizedString(@"EnterPIN_IncorrectPin2x", @"Enter PIN Screen PIN entered incorrectly twice text");
         self.fourth_num.layer.borderColor = kNoochRed.CGColor;
         self.third_num.layer.borderColor = kNoochRed.CGColor;
         self.second_num.layer.borderColor = kNoochRed.CGColor;
@@ -1658,7 +1683,7 @@
             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])
     {
         [[assist shared]setSusPended:YES];
-        self.prompt.text=@"3rd failed attempt";
+        self.prompt.text = NSLocalizedString(@"EnterPIN_InstructAccntSusp", @"Enter PIN Screen account suspended Instruction Text");
         self.fourth_num.layer.borderColor = kNoochRed.CGColor;
         self.third_num.layer.borderColor = kNoochRed.CGColor;
         self.second_num.layer.borderColor = kNoochRed.CGColor;
@@ -1677,7 +1702,7 @@
                                                               message:@"We're terribly sorry, but to keep Nooch safe, your account has been suspended for 24 hours. Please contact us anytime at support@nooch.com if you believe this was a mistake or would like more information."
                                                              delegate:self
                                                     cancelButtonTitle:@"Ok"
-                                                    otherButtonTitles:@"Contact Support",nil];
+                                                    otherButtonTitles:NSLocalizedString(@"EnterPIN_ContactSupportBtn", @"Enter PIN Screen account suspended Alert Button Contact Support"),nil];
         [suspendedAlert setTag:50];
         [suspendedAlert show];
     }
@@ -1689,7 +1714,7 @@
                                                      message:@"\xF0\x9F\x98\xB3\nLooks like we screwed up. We hate when this happens - sorry for the delay!\n\nPlease try making your transfer again or contact us if the problem persists."
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
-                                           otherButtonTitles:@"Contact Support",nil];
+                                           otherButtonTitles:NSLocalizedString(@"EnterPIN_ContactSupportBtn", @"Enter PIN Screen account suspended Alert Button Contact Support"),nil];
         [av setTag:51];
         [av show];
         transferFinished = YES;
@@ -1722,7 +1747,8 @@
     return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
+- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+{
     if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
         [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
     [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
@@ -1733,6 +1759,7 @@
     [textField resignFirstResponder];
     return YES;
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

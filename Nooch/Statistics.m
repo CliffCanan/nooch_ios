@@ -919,7 +919,14 @@
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
-                frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
+                if ([favorite[@"Frequency"] isEqualToString:@"1"])
+                {
+                    frequency.text = @"1 Payment";
+                }
+                else
+                {
+                    frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
+                }
                 colorIndicator.backgroundColor = kNoochGreen;
 
                 [cell.contentView addSubview:goToHowMuch];
@@ -932,7 +939,14 @@
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
-                frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
+                if ([favorite[@"Frequency"] isEqualToString:@"1"])
+                {
+                    frequency.text = @"1 Payment";
+                }
+                else
+                {
+                    frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
+                }
                 colorIndicator.backgroundColor = kNoochPurple;
 
                 [cell.contentView addSubview:goToHowMuch];
@@ -945,7 +959,14 @@
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
-                frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
+                if ([favorite[@"Frequency"] isEqualToString:@"1"])
+                {
+                    frequency.text = @"1 Payment";
+                }
+                else
+                {
+                    frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
+                }
                 colorIndicator.backgroundColor = kNoochRed;
 
                 [cell.contentView addSubview:goToHowMuch];
@@ -958,7 +979,14 @@
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
-                frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
+                if ([favorite[@"Frequency"] isEqualToString:@"1"])
+                {
+                    frequency.text = @"1 Payment";
+                }
+                else
+                {
+                    frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
+                }
                 colorIndicator.backgroundColor = kNoochBlue;
 
                 [cell.contentView addSubview:goToHowMuch];
@@ -971,7 +999,14 @@
                           placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
                 
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
-                frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
+                if ([favorite[@"Frequency"] isEqualToString:@"1"])
+                {
+                    frequency.text = @"1 Payment";
+                }
+                else
+                {
+                    frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
+                }
                 colorIndicator.backgroundColor = kNoochGrayLight;
 
                 [cell.contentView addSubview:goToHowMuch];

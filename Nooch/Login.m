@@ -462,7 +462,6 @@
         if (!error)
         {
             // Success! Now Log User into Nooch using the FB ID
-            // NSLog(@"user info: %@", result);
 
             [self checkIfLocationAllowed];
 
