@@ -554,6 +554,8 @@
 		5C69D06F19CA0F5B00EB406F /* EAIntroView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAIntroView.m; sourceTree = "<group>"; };
 		5C69D09619CA244C00EB406F /* tour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tour.h; sourceTree = "<group>"; };
 		5C69D09719CA244C00EB406F /* tour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tour.m; sourceTree = "<group>"; };
+		5C7C60BE1A8C83AA0071BA03 /* es-MX */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-MX"; path = "Nooch/es-MX.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		5C7C60BF1A8C83AA0071BA03 /* es-MX */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-MX"; path = "es-MX.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		5C822EF11A639C8F00D12D20 /* Tour_stats_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Tour_stats_bg.png; sourceTree = "<group>"; };
 		5C822EF51A64D77700D12D20 /* GameThrive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GameThrive.framework; sourceTree = "<group>"; };
 		5C83949419EC60C200EBEBA4 /* No-Internet-Full-Screen_medium@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No-Internet-Full-Screen_medium@2x.png"; sourceTree = "<group>"; };
@@ -2063,6 +2065,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				5CFE3C831A899D27005BEF45 /* en */,
+				5C7C60BE1A8C83AA0071BA03 /* es-MX */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -2071,6 +2074,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				6B30372F15FA3FF300056DAD /* en */,
+				5C7C60BF1A8C83AA0071BA03 /* es-MX */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

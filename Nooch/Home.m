@@ -906,7 +906,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [self.profile_incomplete addSubview:dis];
             [self.view addSubview:self.profile_incomplete];
             
-            [UIView animateKeyframesWithDuration:.5
+            [UIView animateKeyframesWithDuration:.4
                                            delay:0
                                          options:2 << 16
                                       animations:^{
@@ -993,7 +993,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             
             [self.view addSubview:self.phone_incomplete];
             
-            [UIView animateKeyframesWithDuration:.5
+            [UIView animateKeyframesWithDuration:.4
                                            delay:0
                                          options:2 << 16
                                       animations:^{
@@ -1016,7 +1016,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         else
         {
-            [UIView animateKeyframesWithDuration:.25
+            [UIView animateKeyframesWithDuration:.4
                                            delay:0
                                          options:2 << 16
                                       animations:^{
