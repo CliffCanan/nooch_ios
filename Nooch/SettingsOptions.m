@@ -422,6 +422,8 @@
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"email"];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hasPendingItems"];
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"Pending_count"];
 
                 [nav_ctrl performSelector:@selector(disable)];
                 Register *reg = [Register new];
@@ -610,14 +612,16 @@
 
             [self.view addSubview:blankView];
             [self.view bringSubviewToFront:blankView];
-            [[assist shared]setisloggedout:YES];
+
+            [[assist shared] setisloggedout:YES];
+
             [timer invalidate];
             timer = nil;
 
             serve *  serveOBJ = [serve new];
             serveOBJ.Delegate = self;
             serveOBJ.tagName = @"logout";
-            [serveOBJ LogOutRequest:[[NSUserDefaults standardUserDefaults ]valueForKey:@"MemberId"]];
+            [serveOBJ LogOutRequest:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]];
         }
     }
 }

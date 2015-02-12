@@ -51,6 +51,7 @@ BOOL shouldDisplayAptsSection;
     NSString * emailID, * firstNameAB, * lastNameAB;
     UIButton *top_button;
     int bannerAlert;
+    short carouselTopValue, topBtnTopValue;
 }
 -(void)hide;
 @end

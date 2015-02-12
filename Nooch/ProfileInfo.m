@@ -40,6 +40,9 @@ UIImageView *picture;
 @property(nonatomic,strong) UIView *member_since_back;
 @property(nonatomic,strong) UIView * sectionHeaderBg2;
 @property(nonatomic,strong) UIView * sectionHeaderBg;
+@property(nonatomic,strong) UILabel * emailGlyphIndicator;
+@property(nonatomic,strong) UILabel * phoneGlyphIndicator;
+
 @end
 @implementation ProfileInfo
 
@@ -77,22 +80,22 @@ UIImageView *picture;
     else
     {
         [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-        
+
         NSShadow * shadowNavText = [[NSShadow alloc] init];
         shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .2);
         shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
         NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
-        
+
         UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(savePrompt2)];
-        
+
         UILabel * back_button = [UILabel new];
         [back_button setStyleId:@"navbar_back"];
         [back_button setUserInteractionEnabled:YES];
         [back_button addGestureRecognizer: backTap];
         back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
-        
+
         UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
-        
+
         [self.navigationItem setLeftBarButtonItem:menu];
     }
 
@@ -409,6 +412,8 @@ UIImageView *picture;
 
     [self.view bringSubviewToFront:shadowUnder];
     [self.view bringSubviewToFront:picture];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterFG_Profile:) name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -430,15 +435,38 @@ UIImageView *picture;
 {
     [super viewDidAppear:animated];
 
+    [self checkUsersStatus];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+}
+
+- (void)applicationWillEnterFG_Profile:(NSNotification *)notification
+{
+    //NSLog(@"Checkpoint: applicationWillEnterFG notification");
+    [self checkUsersStatus];
+}
+
+-(void)checkUsersStatus
+{
     serve *serveOBJ = [serve new ];
     serveOBJ.tagName = @"myset";
     [serveOBJ setDelegate:self];
     [serveOBJ getSettings];
-}
 
--(void) viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
+
+    if (![[user valueForKey:@"Status"] isEqualToString:@"Active"])
+    {
+        [self.member_since_back setBackgroundColor:Rgb2UIColor(214, 25, 21, .55)];
+        [self.member_since_back setStyleId:@"profileTopSectionBg_susp"];
+    }
+    else
+    {
+        [self.member_since_back setBackgroundColor:Rgb2UIColor(219, 220, 222, .38)];
+        [self.member_since_back setStyleId:@"profileTopSectionBg"];
+    }
 }
 
 -(void)showMenu
@@ -599,7 +627,7 @@ UIImageView *picture;
     {
         [self.phone becomeFirstResponder];
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Profile_PhnTrblAlrtTtl", @"Profile 'Phone Number Trouble' Alert Title")
-                                                        message:NSLocalizedString(@"Profile_PhnTrblAlrtBody", @"Profile 'Phone Number Trouble' Alert Body Text")//@"Please double check that you entered a valid 10-digit phone number."
+                                                        message:NSLocalizedString(@"Profile_PhnTrblAlrtBody", @"Profile Phone Number Trouble Alert Body Text")//@"Please double check that you entered a valid 10-digit phone number."
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];
@@ -1120,23 +1148,22 @@ UIImageView *picture;
                 [email_not_validated setBackgroundColor:Rgb2UIColor(250, 228, 3, .25)];
                 [cell.contentView addSubview:email_not_validated];
 
-                UILabel * glyph_excl = [UILabel new];
-                [glyph_excl setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
-                [glyph_excl setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
-                [glyph_excl setStyleClass:@"animate_bubble_slow"];
-                [glyph_excl setFrame:CGRectMake(34, 6, 20, 38)];
-                [glyph_excl setTextColor:kNoochRed];
-                [cell.contentView addSubview:glyph_excl];
+                self.emailGlyphIndicator = [UILabel new];
+                [self.emailGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
+                [self.emailGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+                [self.emailGlyphIndicator setStyleClass:@"animate_bubble_slow"];
+                [self.emailGlyphIndicator setFrame:CGRectMake(34, 6, 20, 38)];
+                [self.emailGlyphIndicator setTextColor:kNoochRed];
+                [cell.contentView addSubview:self.emailGlyphIndicator];
             }
             else
             {
-                UILabel * glyph_checkMark = [UILabel new];
-                [glyph_checkMark setBackgroundColor:[UIColor clearColor]];
-                [glyph_checkMark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-                [glyph_checkMark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
-                [glyph_checkMark setFrame:CGRectMake(40, 6, 20, 39)];
-                [glyph_checkMark setTextColor:kNoochGreen];
-                [cell.contentView addSubview:glyph_checkMark];
+                [self.emailGlyphIndicator setBackgroundColor:[UIColor clearColor]];
+                [self.emailGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+                [self.emailGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+                [self.emailGlyphIndicator setFrame:CGRectMake(40, 6, 20, 39)];
+                [self.emailGlyphIndicator setTextColor:kNoochGreen];
+                [cell.contentView addSubview:self.emailGlyphIndicator];
             }
 
             [cell.contentView addSubview:mail];

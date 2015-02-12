@@ -665,7 +665,7 @@ NSString *amnt;
         {
             [defaults setObject:@"NO" forKey:@"IsVerifiedPhone"];
         }
-        [defaults synchronize];
+        //[defaults synchronize];
 
         if (  [Dictresponse valueForKey:@"ContactNumber"] &&
             ![[Dictresponse valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]])
