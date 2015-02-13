@@ -40,6 +40,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.screenName = @"Refer a Friend Screen";
+    self.artisanNameTag = @"Refer a Friend Screen";
 }
 
 -(void)viewDidDisappear:(BOOL)animated

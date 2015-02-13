@@ -36,7 +36,8 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Privacy Screen";
+    self.screenName = @"Privacy Policy Screen";
+    self.artisanNameTag = @"Privacy Policy Screen";
 }
 
 - (void)viewDidUnload {

@@ -38,6 +38,7 @@
 {
     [super viewWillAppear:animated];
     self.screenName = @"Referral Code Screen";
+    self.artisanNameTag = @"Referral Code Screen";
 }
 
 - (void)viewDidLoad

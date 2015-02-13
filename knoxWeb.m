@@ -35,6 +35,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.screenName = @"KnoxWeb Screen";
+    self.artisanNameTag = @"Knox Webview Screen";
 }
 -(void)viewDidDisappear:(BOOL)animated{
     [self.hud hide:YES];

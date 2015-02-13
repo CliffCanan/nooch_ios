@@ -40,6 +40,7 @@
 {
     [super viewWillAppear:animated];
     self.screenName = @"Select Picture Screen";
+    self.artisanNameTag = @"Select Picture Screen";
 }
 
 - (void)change_pic
@@ -138,7 +139,7 @@
 
     [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChngPicBtn1", @"Select Picture screen 'Change Picture' Btn Text") forState:UIControlStateNormal];
 
-    [self.next_button setTitle:NSLocalizedString(@"SelPic_ContinBtn1", @"Select Picture screen 'Continue' Btn Text") forState:UIControlStateNormal];
+    [self.next_button setTitle:NSLocalizedString(@"SelPic_ContinBtn3", @"Select Picture screen 'Continue' Btn Text") forState:UIControlStateNormal];
     [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.next_button addTarget:self action:@selector(cont) forControlEvents:UIControlEventTouchUpInside];
     [self.next_button setStyleClass:@"button_green"];
@@ -266,7 +267,7 @@
 
         [self.message setText:NSLocalizedString(@"SelPic_InstrctTxt2", @"Select Picture screen Instruction Text after selecting a pic (2nd)")];//@"Great Pic! If you're happy with it tap \"Continue\" or if you wish to change it tap \"Change Picture\""];
 
-        [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChngPicBtn", @"Select Picture screen '  Change Picture' Btn Text") forState:UIControlStateNormal];
+        [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChngPicBtn2", @"Select Picture screen '  Change Picture' Btn Text") forState:UIControlStateNormal];
 
         [self.next_button setTitle:NSLocalizedString(@"SelPic_ContinBtn2", @"Select Picture screen 'Continue' Btn Text (2nd)") forState:UIControlStateNormal];
         [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
@@ -433,9 +434,9 @@
             //  [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
             
             [self.message setText:NSLocalizedString(@"SelPic_InstrctTxt3", @"Select Picture screen Instruction Text after selecting a pic (3rd)")];//@"Great Pic! If you're happy with it tap \"Continue\" or if you wish to change it tap \"Change Picture\""
-            [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChngPicBtn1", @"Select Picture screen '  Change Picture' Btn Text") forState:UIControlStateNormal];
+            [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChngPicBtn3", @"Select Picture screen '  Change Picture' Btn Text") forState:UIControlStateNormal];
             
-            [self.next_button setTitle:NSLocalizedString(@"SelPic_ContinBtn3", @"Select Picture screen 'Continue' Btn Text (3rd)") forState:UIControlStateNormal];
+            [self.next_button setTitle:NSLocalizedString(@"SelPic_ContinBtn4", @"Select Picture screen 'Continue' Btn Text (3rd)") forState:UIControlStateNormal];
             [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
             [self.next_button addTarget:self action:@selector(cont) forControlEvents:UIControlEventTouchUpInside];
             [self.next_button setStyleClass:@"button_green"];

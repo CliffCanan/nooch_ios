@@ -472,7 +472,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"HowMuch Screen";
+    self.screenName = @"How Much Screen";
+    self.artisanNameTag = @"How Much Screen";
+
     [self.amount becomeFirstResponder];
     //@"How Much?"
     [self.navigationItem setTitle:NSLocalizedString(@"HowMuch_ScrnTitle", @"How Much Screen Title")];

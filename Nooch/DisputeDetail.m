@@ -50,6 +50,7 @@
 {
     [super viewWillAppear:animated];
     self.screenName = @"Dispute Detail Screen";
+    self.artisanNameTag = @"Dispute Details Screen";
 }
 
 - (void)viewDidLoad

@@ -40,6 +40,7 @@
     [super viewWillAppear:animated];
   
     self.screenName = @"Reset Pin Screen";
+    self.artisanNameTag = @"Reset PIN Screen";
 
     pinchangeProgress = 1;
     [self.view setBackgroundColor:[UIColor whiteColor]];

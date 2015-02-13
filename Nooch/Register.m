@@ -50,6 +50,7 @@
 {
     [super viewWillAppear:animated];
     self.screenName = @"Register Screen";
+    self.artisanNameTag = @"Register Screen";
     [self.navigationController setNavigationBarHidden:YES];
 }
 

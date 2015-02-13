@@ -40,6 +40,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.screenName = @"Statistics Screen";
+    self.artisanNameTag = @"Statistics Screen";
 }
 -(void)viewDidDisappear:(BOOL)animated{
     [self.hud hide:YES];

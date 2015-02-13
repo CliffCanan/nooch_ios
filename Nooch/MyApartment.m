@@ -251,6 +251,7 @@
     [super viewWillAppear:animated];
     [self.navigationItem setTitle:@"My Apartment"];
     self.screenName = @"My Apartment Screen";
+    self.artisanNameTag = @"My Apartment Screen";
 }
 
 -(void)viewDidAppear:(BOOL)animated

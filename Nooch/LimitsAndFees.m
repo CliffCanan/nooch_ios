@@ -4,6 +4,7 @@
 //  Copyright (c) 2015 Nooch. All rights reserved.
 
 #import "LimitsAndFees.h"
+#import "Home.h"
 #import "ECSlidingViewController.h"
 #import <PixateFreestyle/PixateFreestyle.h>
 #import "NSString+FontAwesome.h"
@@ -29,7 +30,9 @@
 {
     [super viewWillAppear:animated];
     self.screenName = @"Limits & Fees Screen";
+    self.artisanNameTag = @"Limist and Fees Screen";
 }
+
 -(void)viewDidDisappear:(BOOL)animated{
     [self.hud hide:YES];
     [super viewDidDisappear:animated];

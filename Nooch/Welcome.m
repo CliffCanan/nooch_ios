@@ -154,6 +154,7 @@
 {
     [super viewWillAppear: animated];
     self.screenName = @"Welcome Screen";
+    self.artisanNameTag = @"Welcome Screen";
     [self.navigationController setNavigationBarHidden:YES];
 }
 

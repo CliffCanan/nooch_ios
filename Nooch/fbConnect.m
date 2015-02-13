@@ -22,6 +22,7 @@
 {
     [super viewWillAppear:animated];
     self.screenName = @"Social Settings";
+    self.artisanNameTag = @"Social Settings Screen";
 }
 
 - (void)viewDidLoad

@@ -231,6 +231,7 @@
     }
     else
     {
+        [ARTrackingManager trackEvent:@"TappedAddBankAndGoingToKnoxWebview"];
         knoxWeb *knox = [knoxWeb new];
         [self.navigationController pushViewController:knox animated:YES];
     }
@@ -592,6 +593,7 @@
     {
         if (buttonIndex == 0)
         {
+            [ARTrackingManager trackEvent:@"TappedAddBankAndGoingToKnoxWebview_ReplacingBnk"];
             knoxWeb *knox = [knoxWeb new];
             [self.navigationController pushViewController:knox animated:YES];
         }
@@ -602,6 +604,8 @@
     {
         if (buttonIndex == 1)
         {
+            [ARTrackingManager trackEvent:@"UserLoggedOutManually"];
+
             blankView = [[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
             [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
 

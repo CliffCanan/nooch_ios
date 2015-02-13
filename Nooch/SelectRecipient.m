@@ -154,6 +154,7 @@
 
     [search setHidden:NO];
     self.screenName = @"SelectRecipient Screen";
+    self.artisanNameTag = @"Select Recipient Screen";
 
     if ([[assist shared] isRequestMultiple] && isAddRequest)
     {

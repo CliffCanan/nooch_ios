@@ -110,6 +110,7 @@
 {
     [super viewWillAppear:animated];
      self.screenName = @"Login Screen";
+    self.artisanNameTag = @"Login Screen";
 }
 
 -(void)viewDidAppear:(BOOL)animated

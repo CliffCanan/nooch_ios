@@ -291,6 +291,7 @@
     
     [super viewWillAppear:animated];
     self.screenName = @"HistoryFlat Screen";
+    self.artisanNameTag = @"History Screen";
 }
 
 -(void)viewDidAppear:(BOOL)animated

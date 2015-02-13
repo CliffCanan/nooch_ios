@@ -140,6 +140,7 @@
     [super viewWillAppear:animated];
     [self.navigationItem setTitle:NSLocalizedString(@"SecSettings_ScrnTitle", @"Security Settings Scrn Title")];
     self.screenName = @"Pin Settings Screen";
+    self.artisanNameTag = @"Security Settings Screen";
 }
 
 -(void)backtn

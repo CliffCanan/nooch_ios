@@ -412,6 +412,7 @@
     [self.navigationItem setTitle:NSLocalizedString(@"TransDeets_ScrnTtl2", @"'Transfer Details' Screen Title (2nd)")];
     [super viewWillAppear:animated];
     self.screenName = @"TransactionDetail Screen";
+    self.artisanNameTag = @"Transfer Details Screen";
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -448,7 +449,7 @@
                                                  message:NSLocalizedString(@"TransDeets_SndRmndrAlrtBody3", @"'Send Reminder' Alert Body Text (3rd)")//@"Do you want to send a reminder about this transfer?"
                                                 delegate:self
                                        cancelButtonTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtYesBtn3", @"'Yes' Button Text (3rd)")
-                                       otherButtonTitles:NSLocalizedString(@"TransDeets_SndRmndrAlrtYesBtn3", @"'No' Button Text (3rd)"), nil];
+                                       otherButtonTitles:NSLocalizedString(@"TransDeets_SndRmndrAlrtNoBtn3", @"'No' Button Text (3rd)"), nil];
     [av setTag:2014];
     [av show];
 }
@@ -833,7 +834,7 @@
                                                     message:NSLocalizedString(@"TransDeets_SuspAlrtBody", @"Account Suspended Alert Body Text")//@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help."
                                                    delegate:self
                                           cancelButtonTitle:@"OK"
-                                          otherButtonTitles:NSLocalizedString(@"TransDeets_SuspAlrtTtl", @"'Contact Support' Btn"), nil];
+                                          otherButtonTitles:NSLocalizedString(@"TransDeets_SuspAlrtBtn", @"'Contact Support' Btn"), nil];
         [alert setTag:50];
         [alert show];
         return;

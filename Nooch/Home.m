@@ -1369,7 +1369,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    //self.screenName = @"Home Screen";
+    self.screenName = @"Home Screen";
+    self.artisanNameTag = @"Home Screen";
 
     NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] &&

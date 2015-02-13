@@ -46,6 +46,7 @@
 {
     [super viewWillAppear:animated];
     self.screenName = @"Notification Settings Screen";
+    self.artisanNameTag = @"Notification Settings Screen";
 }
 
 -(void)viewDidDisappear:(BOOL)animated{

@@ -75,6 +75,7 @@
 {
     [super viewWillAppear:animated];
     self.screenName = @"TransferPin Screen";
+    self.artisanNameTag = @"TransferPIN Screen";
 }
 
 -(void)viewDidDisappear:(BOOL)animated

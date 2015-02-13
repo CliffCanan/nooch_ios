@@ -124,7 +124,7 @@ UIImageView *picture;
     [self.hud show:YES];
 
     //@"Profile"
-    [self.navigationItem setTitle:NSLocalizedString(@"Profile_ScrnTitle", @"Profile Scrn Title")];
+    [self.navigationItem setTitle:NSLocalizedString(@"Profile_ScrnTtl1", @"Profile Scrn Title")];
 
     int pictureRadius = 38;
     heightOfTopSection = 80;
@@ -440,8 +440,9 @@ UIImageView *picture;
     [super viewWillAppear:animated];
 
     self.screenName = @"Profile Screen";
+    self.artisanNameTag = @"Profile Screen";
 
-    [self.navigationItem setTitle:NSLocalizedString(@"Profile_ScrnTitle", @"'Profile' Screen Title")];
+    [self.navigationItem setTitle:NSLocalizedString(@"Profile_ScrnTtl2", @"'Profile' Screen Title")];
 
     if ([[user objectForKey:@"Photo"] length] > 0 && [user objectForKey:@"Photo"] != nil && !isPhotoUpdate)
     {

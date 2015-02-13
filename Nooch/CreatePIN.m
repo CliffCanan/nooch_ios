@@ -37,6 +37,7 @@
     self.pin_check = @"";
  
     self.screenName = @"Create PIN Screen";
+    self.artisanNameTag = @"Create PIN Screen";
 
     [self.pin setText:@""];
     [self.first_num setBackgroundColor:[UIColor clearColor]];

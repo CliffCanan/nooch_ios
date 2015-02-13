@@ -47,6 +47,7 @@
 {
     [super viewWillAppear:animated];
     self.screenName = @"Terms Screen";
+    self.artisanNameTag = @"Terms Webview Screen";
 }
 
 -(void)viewDidAppear:(BOOL)animated
