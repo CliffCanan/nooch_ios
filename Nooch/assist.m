@@ -365,12 +365,15 @@ static assist * _sharedInstance = nil;
     needsUpdating = NO;
     return sortedHist;
 }
--(void)getSettings{
+
+-(void)getSettings
+{
     serve *sets = [serve new];
     sets.Delegate = self;
     sets.tagName = @"sets";
     [sets getSettings];
 }
+
 -(void)getAcctInfo
 {
     if (!islogout)
@@ -408,8 +411,15 @@ static assist * _sharedInstance = nil;
     {
         NSError *error;
         NSMutableDictionary *setsResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        
-        [usr setObject:setsResult forKey:@"sets"];
+
+        if (setsResult != NULL)
+        {
+            [usr setObject:setsResult forKey:@"sets"];
+        }
+        else
+        {
+            NSLog(@"assist.m --> 'sets' returned NULL from server");
+        }
     }
     else if ([tagName isEqualToString:@"info"])
     {
@@ -417,7 +427,15 @@ static assist * _sharedInstance = nil;
 
         NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
-        NSLog(@"User Info: %@",loginResult);
+        if (loginResult != NULL)
+        {
+            NSLog(@"User Info: %@",loginResult);
+        }
+        else
+        {
+            NSLog(@"assist.m --> 'info' returned NULL from server");
+        }
+        
 
         if (  [loginResult valueForKey:@"Status"] != NULL &&
             ![[loginResult valueForKey:@"Status"] isKindOfClass:[NSNull class]])

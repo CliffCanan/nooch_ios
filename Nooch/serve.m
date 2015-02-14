@@ -650,39 +650,46 @@ NSString *amnt;
                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
-        //NSLog(@"user info: %@",Dictresponse);
-        if ([[Dictresponse valueForKey:@"IsValidProfile"] intValue]) {
-            [defaults setObject:@"1" forKey:@"FullyVerified"];
-        }
-        else
-        {
-            [defaults setObject:@"0" forKey:@"FullyVerified"];
-        }
-        if ([[Dictresponse valueForKey:@"IsVerifiedPhone"] intValue]) {
-            [defaults setObject:@"YES" forKey:@"IsVerifiedPhone"];
-        }
-        else
-        {
-            [defaults setObject:@"NO" forKey:@"IsVerifiedPhone"];
-        }
-        //[defaults synchronize];
 
-        if (  [Dictresponse valueForKey:@"ContactNumber"] &&
-            ![[Dictresponse valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]])
+        if (Dictresponse != NULL)
         {
-            [defaults setObject:[Dictresponse valueForKey:@"ContactNumber"] forKey:@"ContactNumber"];
-        }
-        if ([[Dictresponse valueForKey:@"ContactNumber"]isKindOfClass:[NSNull class]] ||
-            [[Dictresponse valueForKey:@"Address"]isKindOfClass:[NSNull class]])
-        {
-            [defaults setObject:@"NO"forKey:@"ProfileComplete"];
+            if ([[Dictresponse valueForKey:@"IsValidProfile"] intValue]) {
+                [defaults setObject:@"1" forKey:@"FullyVerified"];
+            }
+            else
+            {
+                [defaults setObject:@"0" forKey:@"FullyVerified"];
+            }
+            if ([[Dictresponse valueForKey:@"IsVerifiedPhone"] intValue]) {
+                [defaults setObject:@"YES" forKey:@"IsVerifiedPhone"];
+            }
+            else
+            {
+                [defaults setObject:@"NO" forKey:@"IsVerifiedPhone"];
+            }
+            //[defaults synchronize];
+
+            if (  [Dictresponse valueForKey:@"ContactNumber"] &&
+                ![[Dictresponse valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]])
+            {
+                [defaults setObject:[Dictresponse valueForKey:@"ContactNumber"] forKey:@"ContactNumber"];
+            }
+            if ([[Dictresponse valueForKey:@"ContactNumber"]isKindOfClass:[NSNull class]] ||
+                [[Dictresponse valueForKey:@"Address"]isKindOfClass:[NSNull class]])
+            {
+                [defaults setObject:@"NO"forKey:@"ProfileComplete"];
+            }
+            else
+            {
+                [[me usr] setObject:@"YES" forKey:@"validated"];
+                [defaults setObject:@"YES"forKey:@"ProfileComplete"];
+            }
+            [defaults synchronize];
         }
         else
         {
-            [[me usr] setObject:@"YES" forKey:@"validated"];
-            [defaults setObject:@"YES"forKey:@"ProfileComplete"];
+            NSLog(@"serve.m --> 'Sets' response from server was NULL:  %@",Dictresponse);
         }
-        [defaults synchronize];
         
     }
     else if ([tagName isEqualToString:@"login"] ||

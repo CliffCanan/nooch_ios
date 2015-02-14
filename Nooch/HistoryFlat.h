@@ -20,7 +20,7 @@ BOOL isFromApts;
 NSString *listType;
 
 @interface HistoryFlat : GAITrackedViewController<UITableViewDataSource,UITableViewDelegate,
-serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate,MBProgressHUDDelegate,MFMailComposeViewControllerDelegate>
+serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate,MBProgressHUDDelegate,CLLocationManagerDelegate,MFMailComposeViewControllerDelegate>
 {
     UISegmentedControl *completed_pending;
     short countRows;
@@ -47,6 +47,7 @@ serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate,M
     NSDate*ServerDate;
     UILabel * emptyText_localSearch;
     NSIndexPath * indexPathForDeletion;
+    CLLocationManager*locationManager;
 }
 @property(nonatomic,strong) MBProgressHUD *hud;
 @end

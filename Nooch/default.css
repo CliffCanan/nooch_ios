@@ -2493,6 +2493,7 @@ table-view#emptyTable {
     row-height			: 200px;
     separator-color		: rgba(255,255,255,0);
     separator-style     : none;
+    box-shadow          : 2px 2px 3px rgba(64, 65, 66, 0.25);
 }
 
 /**  Profile Pic of other user  **/

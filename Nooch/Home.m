@@ -2087,7 +2087,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [self.hud hide:YES];
 
     UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Whoops"
+                          initWithTitle:@"Trouble Connecting"
                           message:@"We aren't able to connect to the server right now, the internet must be unusually congested.  Sorry about that, please try again!"
                           delegate:nil
                           cancelButtonTitle:@"OK"
@@ -2324,7 +2324,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
     }
 
-    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound)
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound ||
+        result == NULL)
     {
         [self.hud hide:YES];
 
@@ -2336,6 +2337,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
 
         [nav_ctrl performSelector:@selector(reset)];
+
         Register *reg = [Register new];
         [nav_ctrl pushViewController:reg animated:YES];
         me = [core new];
